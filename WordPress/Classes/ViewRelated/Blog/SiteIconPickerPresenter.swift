@@ -1,7 +1,7 @@
 import Foundation
 import SVProgressHUD
 import WPMediaPicker
-import WordPressComAnalytics
+import WordPressShared
 
 
 /// Encapsulates the interactions required to capture a new site icon image, crop it and resize it.
@@ -143,10 +143,14 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
             showLoadingMessage()
             originalMedia = media
             let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-            mediaService.image(for: media, size: CGSize.zero, success: { [weak self] image in
-                self?.showImageCropViewController(image)
-            }, failure: { [weak self] _ in
-                self?.showErrorLoadingImageMessage()
+            mediaService.thumbnailImage(for: media,
+                                        preferredSize: CGSize.zero,
+                                        completion: { [weak self] (image, error) in
+                                            guard let image = image else {
+                                                self?.showErrorLoadingImageMessage()
+                                                return
+                                            }
+                                            self?.showImageCropViewController(image)
             })
         default:
             break

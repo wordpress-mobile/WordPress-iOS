@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import CocoaLumberjack
+import WordPressKit
 
 // MARK: - Notification Entity
 //

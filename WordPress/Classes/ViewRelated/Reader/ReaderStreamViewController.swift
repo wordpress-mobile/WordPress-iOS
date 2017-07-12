@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
-import WordPressComAnalytics
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:

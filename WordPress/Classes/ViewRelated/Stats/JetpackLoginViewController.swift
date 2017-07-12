@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import SVProgressHUD
 import WordPressShared
-import WordPressComAnalytics
 
 /// A view controller that presents a Jetpack login form
 ///

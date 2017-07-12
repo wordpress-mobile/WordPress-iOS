@@ -1,6 +1,5 @@
 import UIKit
 import CocoaLumberjack
-import WordPressComAnalytics
 import WordPressShared
 
 
