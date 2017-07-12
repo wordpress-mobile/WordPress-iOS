@@ -86,6 +86,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
 
         sendCodeButton.setTitle(NSLocalizedString("Text me a code instead", comment: "Button title"),
                                 for: .normal)
+        sendCodeButton.titleLabel?.numberOfLines = 0
     }
 
 
