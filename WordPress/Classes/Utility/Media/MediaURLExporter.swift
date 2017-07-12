@@ -1,11 +1,11 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of URLs.
+/// Media export handling of URLs.
 ///
 class MediaURLExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaDirectory = .uploads
 
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
@@ -25,6 +25,7 @@ class MediaURLExporter: MediaExporter {
     public enum URLExportError: MediaExportError {
         case invalidFileURL
         case unknownFileUTI
+        case unsupportedFileType
 
         var description: String {
             switch self {
@@ -60,7 +61,7 @@ class MediaURLExporter: MediaExporter {
         } else if UTTypeConformsTo(typeIdentifier, kUTTypeImage) {
             return .image
         }
-        throw URLExportError.unknownFileUTI
+        throw URLExportError.unsupportedFileType
     }
 
     /// Exports a file of a supported type, to a new Media URL.
@@ -120,9 +121,8 @@ class MediaURLExporter: MediaExporter {
     fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping OnURLExport, onError: @escaping OnExportError) {
         do {
             let fileManager = FileManager.default
-            let mediaURL = try MediaLibrary.makeLocalMediaURL(withFilename: url.lastPathComponent,
-                                                              fileExtension: "gif",
-                                                              type: mediaDirectoryType)
+            let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
+                                                                    fileExtension: "gif")
             try fileManager.copyItem(at: url, to: mediaURL)
             onCompletion(URLExport.exportedGIF(MediaGIFExport(url: mediaURL,
                                                               fileSize: mediaURL.resourceFileSize)))

@@ -355,7 +355,7 @@ NSString *const TodayCacheKey = @"Today";
 - (void)retrievePostDetailsStatsForPostID:(NSNumber *)postID
                     withCompletionHandler:(StatsPostDetailsCompletion)completion
 {
-    if (!postID || !completion) {
+    if (postID == nil || completion == nil) {
         return;
     }
     

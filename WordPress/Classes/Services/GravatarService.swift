@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import WordPressKit
 
 
 @objc public enum GravatarServiceError: Int, Error {

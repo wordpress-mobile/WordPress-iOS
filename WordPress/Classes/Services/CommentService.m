@@ -2,17 +2,14 @@
 #import "AccountService.h"
 #import "Blog.h"
 #import "Comment.h"
-#import "CommentServiceRemote.h"
-#import "CommentServiceRemoteXMLRPC.h"
-#import "CommentServiceRemoteREST.h"
 #import "ContextManager.h"
-#import "NSString+Helpers.h"
 #import "ReaderPost.h"
 #import "WPAccount.h"
 #import "PostService.h"
 #import "AbstractPost.h"
-@import WordPressKit;
 #import "WordPress-Swift.h"
+
+@import WordPressKit;
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 NSInteger const  WPNumberOfCommentsToSync = 100;
