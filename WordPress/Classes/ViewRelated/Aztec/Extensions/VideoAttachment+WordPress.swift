@@ -8,13 +8,13 @@ extension VideoAttachment {
 
     var videoPressID: String? {
         get {
-            return namedAttributes[VideoProcessor.videoPressHTMLAttribute]
+            return extraAttributes[VideoProcessor.videoPressHTMLAttribute]
         }
         set {
             if let nonNilValue = newValue {
-                namedAttributes[VideoProcessor.videoPressHTMLAttribute] = nonNilValue
+                extraAttributes[VideoProcessor.videoPressHTMLAttribute] = nonNilValue
             } else {
-                namedAttributes.removeValue(forKey: VideoProcessor.videoPressHTMLAttribute)
+                extraAttributes.removeValue(forKey: VideoProcessor.videoPressHTMLAttribute)
             }
         }
     }
