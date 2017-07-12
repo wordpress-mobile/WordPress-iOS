@@ -1,4 +1,5 @@
-@testable import WordPress
+import Foundation
+@testable import WordPressKit
 
 class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
 
