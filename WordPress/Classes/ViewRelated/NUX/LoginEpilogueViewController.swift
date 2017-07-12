@@ -97,7 +97,7 @@ class LoginEpilogueViewController: UIViewController {
         dismissBlock?(false)
         navigationController?.dismiss(animated: true, completion: nil)
     }
-	
+
     @IBAction func handleConnectAnotherButton() {
         dismissBlock?(false)
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
