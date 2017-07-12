@@ -2,11 +2,11 @@ import Foundation
 
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
-class PeopleServiceRemote: ServiceRemoteWordPressComREST {
+public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 
     /// Defines the PeopleServiceRemote possible errors.
     ///
-    enum ResponseError: Error {
+    public enum ResponseError: Error {
         case decodingFailure
         case invalidInputError
         case userAlreadyHasRoleError
@@ -25,7 +25,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Users.
     ///
-    func getUsers(_ siteID: Int,
+    public func getUsers(_ siteID: Int,
                   offset: Int = 0,
                   count: Int,
                   success: @escaping ((_ users: [User], _ hasMore: Bool) -> Void),
@@ -67,7 +67,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Followers.
     ///
-    func getFollowers(_ siteID: Int,
+    public func getFollowers(_ siteID: Int,
                       offset: Int = 0,
                       count: Int,
                       success: @escaping ((_ followers: [Follower], _ hasMore: Bool) -> Void),
@@ -108,7 +108,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Followers.
     ///
-    func getViewers(_ siteID: Int,
+    public func getViewers(_ siteID: Int,
                     offset: Int = 0,
                     count: Int,
                     success: @escaping ((_ followers: [Viewer], _ hasMore: Bool) -> Void),
@@ -148,10 +148,10 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: A single User instance.
     ///
-    func updateUserRole(_ siteID: Int,
+    public func updateUserRole(_ siteID: Int,
                         userID: Int,
                         newRole: Role,
-                        success: ((Person) -> ())? = nil,
+                        success: ((RemotePerson) -> ())? = nil,
                         failure: ((Error) -> ())? = nil) {
         let endpoint = "sites/\(siteID)/users/\(userID)"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
@@ -184,7 +184,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deleteUser(_ siteID: Int,
+    public func deleteUser(_ siteID: Int,
                     userID: Int,
                     reassignID: Int? = nil,
                     success: (() -> Void)? = nil,
@@ -213,7 +213,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deleteFollower(_ siteID: Int,
+    public func deleteFollower(_ siteID: Int,
                         userID: Int,
                         success: (() -> Void)? = nil,
                         failure: ((Error) -> Void)? = nil) {
@@ -236,7 +236,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    func deleteViewer(_ siteID: Int,
+    public func deleteViewer(_ siteID: Int,
                       userID: Int,
                       success: (() -> Void)? = nil,
                       failure: ((Error) -> Void)? = nil) {
@@ -260,7 +260,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An array of Person.Role entities.
     ///
-    func getUserRoles(_ siteID: Int,
+    public func getUserRoles(_ siteID: Int,
                       success: @escaping (([Role]) -> Void),
                       failure: ((Error) -> ())? = nil) {
         let endpoint = "sites/\(siteID)/roles"
@@ -289,7 +289,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
-    func validateInvitation(_ siteID: Int,
+    public func validateInvitation(_ siteID: Int,
                             usernameOrEmail: String,
                             role: Role,
                             success: @escaping (() -> Void),
@@ -331,7 +331,7 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
-    func sendInvitation(_ siteID: Int,
+    public func sendInvitation(_ siteID: Int,
                         usernameOrEmail: String,
                         role: Role,
                         message: String,
@@ -369,16 +369,16 @@ class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 /// Encapsulates PeopleServiceRemote Private Methods
 ///
 private extension PeopleServiceRemote {
-    /// Parses a dictionary containing an array of Persons, and returns an array of Person instances.
+    /// Parses a dictionary containing an array of RemotePersons, and returns an array of RemotePersons instances.
     ///
     /// - Parameters:
     ///     - response: Raw array of entity dictionaries
     ///     - siteID: the ID of the site associated
     ///     - type: The kind of Person we should parse.
     ///
-    /// - Returns: An array of *Person* instances.
+    /// - Returns: An array of *RemotePerson* instances.
     ///
-    func peopleFromResponse<T: Person>(_ rawPeople: [[String: AnyObject]],
+    func peopleFromResponse<T: RemotePerson>(_ rawPeople: [[String: AnyObject]],
                                         siteID: Int,
                                         type: T.Type) throws -> [T] {
         let people = try rawPeople.flatMap { (user) -> T? in
@@ -388,7 +388,7 @@ private extension PeopleServiceRemote {
         return people
     }
 
-    /// Parses a dictionary representing a Person, and returns an instance.
+    /// Parses a dictionary representing a RemotePerson, and returns an instance.
     ///
     /// - Parameters:
     ///     - response: Raw backend dictionary
@@ -397,7 +397,7 @@ private extension PeopleServiceRemote {
     ///
     /// - Returns: A single *Person* instance.
     ///
-    func personFromResponse<T: Person>(_ user: [String: AnyObject],
+    func personFromResponse<T: RemotePerson>(_ user: [String: AnyObject],
                                         siteID: Int,
                                         type: T.Type) throws -> T {
         guard let ID = user["ID"] as? Int else {
@@ -449,7 +449,7 @@ private extension PeopleServiceRemote {
     }
 
 
-    /// Parses a collection of Roles, and returns instances of the Person.Role Enum.
+    /// Parses a collection of Roles, and returns instances of the RemotePerson.Role Enum.
     ///
     /// - Parameter roles: Raw backend dictionary
     ///
