@@ -714,16 +714,16 @@
                                 <rect key="frame" x="-4" y="64" width="391" height="612"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
-                                        <rect key="frame" x="0.0" y="0.0" width="391" height="612"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="48" text="Enter the password for your WordPress.com account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBi-2N-RAh">
-                                                <rect key="frame" x="20" y="189.5" width="351" height="48"/>
+                                                <rect key="frame" x="20" y="172" width="351" height="48"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3be-99-g62">
-                                                <rect key="frame" x="0.0" y="269.5" width="391" height="72.5"/>
+                                                <rect key="frame" x="0.0" y="252" width="391" height="72.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Xgi-ZQ-8YL">
                                                         <rect key="frame" x="20" y="0.0" width="351" height="20.5"/>
@@ -764,7 +764,7 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
-                                                <rect key="frame" x="20" y="362" width="351" height="18"/>
+                                                <rect key="frame" x="20" y="344.5" width="351" height="18"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -776,11 +776,11 @@
                                             <constraint firstItem="3be-99-g62" firstAttribute="leading" secondItem="ZWc-TJ-W9T" secondAttribute="leading" id="7nc-IA-WRQ"/>
                                             <constraint firstAttribute="trailing" secondItem="3be-99-g62" secondAttribute="trailing" id="J3T-Wn-sCt"/>
                                             <constraint firstAttribute="trailing" secondItem="bBi-2N-RAh" secondAttribute="trailing" constant="20" id="JR4-H1-jSu"/>
+                                            <constraint firstItem="Xgi-ZQ-8YL" firstAttribute="centerY" secondItem="ZWc-TJ-W9T" secondAttribute="centerY" priority="900" constant="-12" id="Mvg-8n-vRh"/>
                                             <constraint firstItem="Xgi-ZQ-8YL" firstAttribute="width" secondItem="bBi-2N-RAh" secondAttribute="width" id="TEB-A9-Hw8"/>
                                             <constraint firstItem="bBi-2N-RAh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ZWc-TJ-W9T" secondAttribute="top" constant="20" id="UtP-9Q-0ZZ"/>
                                             <constraint firstItem="3be-99-g62" firstAttribute="top" secondItem="bBi-2N-RAh" secondAttribute="bottom" constant="32" id="Vta-qL-UfT"/>
                                             <constraint firstAttribute="trailing" secondItem="ZqY-I8-yWG" secondAttribute="trailing" constant="20" id="f3e-Y7-O2r"/>
-                                            <constraint firstItem="3be-99-g62" firstAttribute="centerY" secondItem="ZWc-TJ-W9T" secondAttribute="centerY" priority="900" id="g0V-37-vOa"/>
                                             <constraint firstItem="ZqY-I8-yWG" firstAttribute="leading" secondItem="ZWc-TJ-W9T" secondAttribute="leading" constant="20" id="ugU-fq-Kc8"/>
                                             <constraint firstItem="bBi-2N-RAh" firstAttribute="leading" secondItem="ZWc-TJ-W9T" secondAttribute="leading" constant="20" id="xca-YW-pid"/>
                                         </constraints>
@@ -823,11 +823,11 @@
                                     <constraint firstItem="ilv-iW-HgP" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" constant="20" id="0Zk-0j-bUt"/>
                                     <constraint firstAttribute="bottom" secondItem="ilv-iW-HgP" secondAttribute="bottom" constant="20" id="8xQ-I1-LZB"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" secondItem="7OQ-0t-1zq" secondAttribute="top" id="Auv-Qn-vWa"/>
+                                    <constraint firstItem="ilv-iW-HgP" firstAttribute="top" secondItem="ZWc-TJ-W9T" secondAttribute="bottom" id="CvW-DU-wCv"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" id="Osp-Ar-qix"/>
                                     <constraint firstAttribute="width" constant="383" id="VgM-uK-kk3"/>
                                     <constraint firstAttribute="trailing" secondItem="ZWc-TJ-W9T" secondAttribute="trailing" id="p8c-n5-W3X"/>
                                     <constraint firstAttribute="trailing" secondItem="ilv-iW-HgP" secondAttribute="trailing" constant="20" id="sLX-Xa-ldK"/>
-                                    <constraint firstAttribute="bottom" secondItem="ZWc-TJ-W9T" secondAttribute="bottom" id="sSC-44-fTn"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -885,19 +885,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hTY-xb-H5h">
-                                <rect key="frame" x="0.0" y="64" width="383" height="612"/>
+                                <rect key="frame" x="-4" y="64" width="391" height="612"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DHF-bN-so0">
-                                        <rect key="frame" x="0.0" y="0.0" width="383" height="612"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Almost there" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0i-9g-1E6">
-                                                <rect key="frame" x="20" y="246" width="343" height="18"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Almost there" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0i-9g-1E6">
+                                                <rect key="frame" x="20" y="214" width="351" height="18"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A2K-lq-6XM" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="284" width="383" height="44"/>
+                                                <rect key="frame" x="0.0" y="252" width="391" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="Verification Code"/>
                                                 <constraints>
@@ -926,8 +926,8 @@
                                                     <outlet property="delegate" destination="bAd-Df-IzS" id="Bgq-yf-mas"/>
                                                 </connections>
                                             </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
-                                                <rect key="frame" x="20" y="348" width="343" height="0.0"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
+                                                <rect key="frame" x="20" y="316" width="351" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039215686272" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -946,8 +946,8 @@
                                             <constraint firstItem="A2K-lq-6XM" firstAttribute="top" secondItem="h0i-9g-1E6" secondAttribute="bottom" constant="20" id="ycZ-Hd-5Z2"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="x1G-Lf-mra">
-                                        <rect key="frame" x="20" y="548" width="343" height="44"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="x1G-Lf-mra">
+                                        <rect key="frame" x="20" y="548" width="351" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx">
                                                 <rect key="frame" x="0.0" y="0.0" width="131" height="44"/>
@@ -964,7 +964,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="296" y="0.0" width="47" height="44"/>
+                                                <rect key="frame" x="304" y="0.0" width="47" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="eoc-KU-71N"/>
                                                 </constraints>
@@ -988,19 +988,29 @@
                                     <constraint firstItem="DHF-bN-so0" firstAttribute="leading" secondItem="hTY-xb-H5h" secondAttribute="leading" id="3Og-Ew-r3y"/>
                                     <constraint firstItem="DHF-bN-so0" firstAttribute="top" secondItem="hTY-xb-H5h" secondAttribute="top" id="9hm-xn-6lZ"/>
                                     <constraint firstAttribute="bottom" secondItem="x1G-Lf-mra" secondAttribute="bottom" constant="20" id="XBv-Gg-JAY"/>
-                                    <constraint firstAttribute="bottom" secondItem="DHF-bN-so0" secondAttribute="bottom" id="blP-qB-Bvl"/>
+                                    <constraint firstItem="x1G-Lf-mra" firstAttribute="top" secondItem="DHF-bN-so0" secondAttribute="bottom" id="YdZ-5s-UBx"/>
                                     <constraint firstAttribute="width" constant="383" id="eWE-lA-7Kg"/>
                                     <constraint firstAttribute="trailing" secondItem="DHF-bN-so0" secondAttribute="trailing" id="pId-Zh-c89"/>
                                     <constraint firstItem="x1G-Lf-mra" firstAttribute="leading" secondItem="hTY-xb-H5h" secondAttribute="leading" constant="20" id="yEl-i3-fts"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="eWE-lA-7Kg"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="eWE-lA-7Kg"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="hTY-xb-H5h" secondAttribute="trailing" id="23h-QU-eyB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hTY-xb-H5h" secondAttribute="trailing" constant="-20" id="23h-QU-eyB"/>
                             <constraint firstItem="hTY-xb-H5h" firstAttribute="centerX" secondItem="cm5-76-st7" secondAttribute="centerX" id="PRb-I7-O07"/>
                             <constraint firstItem="hTY-xb-H5h" firstAttribute="top" secondItem="959-UQ-1Jm" secondAttribute="bottom" id="lqc-JK-kaQ"/>
-                            <constraint firstItem="hTY-xb-H5h" firstAttribute="leading" secondItem="cm5-76-st7" secondAttribute="leading" id="riV-3j-5QK"/>
+                            <constraint firstItem="hTY-xb-H5h" firstAttribute="leading" secondItem="cm5-76-st7" secondAttribute="leadingMargin" constant="-20" id="riV-3j-5QK"/>
                             <constraint firstItem="fG1-qw-2YS" firstAttribute="top" secondItem="hTY-xb-H5h" secondAttribute="bottom" id="tJ5-Do-kBC"/>
                         </constraints>
                         <variation key="heightClass=regular-widthClass=regular">
@@ -1073,20 +1083,20 @@
                         <viewControllerLayoutGuide type="bottom" id="pCc-dg-bxb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="gJB-TV-Tpp">
-                        <rect key="frame" x="0.0" y="64" width="383" height="612"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
-                                <rect key="frame" x="0.0" y="0.0" width="383" height="528"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
                                 <connections>
                                     <segue destination="0GP-rM-Hvu" kind="embed" id="taY-7m-sQh"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juu-ng-v2N">
-                                <rect key="frame" x="0.0" y="528" width="383" height="84"/>
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
-                                        <rect key="frame" x="20" y="20" width="343" height="44"/>
+                                        <rect key="frame" x="20" y="20" width="335" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
                                         </constraints>
@@ -1103,7 +1113,7 @@
                                         </connections>
                                     </button>
                                     <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
-                                        <rect key="frame" x="0.0" y="-10" width="383" height="10"/>
+                                        <rect key="frame" x="0.0" y="-10" width="375" height="10"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="10" id="P6k-Ic-btx"/>
                                         </constraints>
@@ -1148,16 +1158,16 @@
             <objects>
                 <tableViewController id="0GP-rM-Hvu" customClass="LoginEpilogueTableView" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
-                        <rect key="frame" x="0.0" y="0.0" width="383" height="528"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="userInfo" rowHeight="148" id="rFk-m6-PzB" customClass="LoginEpilogueUserInfoCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="383" height="148"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="148"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rFk-m6-PzB" id="Be1-mM-Agr">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="148"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-ni-wZB" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -1236,10 +1246,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="52" id="Efm-ja-Y8C" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="176" width="383" height="52"/>
+                                <rect key="frame" x="0.0" y="176" width="375" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Efm-ja-Y8C" id="Xid-Yh-Kpa">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rtc-ao-Fl6">
@@ -2067,8 +2077,8 @@
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fWM-mD-lXg"/>
-        <segue reference="fA5-mb-vrv"/>
         <segue reference="0ao-yi-yZI"/>
+        <segue reference="qLI-qX-rkG"/>
+        <segue reference="lIb-sw-yM7"/>
     </inferredMetricsTieBreakers>
 </document>
