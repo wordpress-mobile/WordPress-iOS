@@ -1,6 +1,5 @@
 import UIKit
 import CocoaLumberjack
-import WordPressComAnalytics
 import WordPressShared
 
 /// This vc is the entry point for the normal sign in flow.

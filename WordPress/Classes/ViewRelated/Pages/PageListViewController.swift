@@ -1,7 +1,6 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
-import WordPressComAnalytics
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
 

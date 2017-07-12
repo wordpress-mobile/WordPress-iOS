@@ -1,5 +1,5 @@
 import Foundation
-import WordPressComAnalytics
+import WordPressShared
 import UserNotifications
 import CocoaLumberjack
 

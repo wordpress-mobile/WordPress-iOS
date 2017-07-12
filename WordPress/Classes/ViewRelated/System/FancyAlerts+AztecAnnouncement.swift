@@ -1,5 +1,6 @@
 import UIKit
-import WordPressComAnalytics
+import Gridicons
+import WordPressShared
 
 let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")
 
@@ -18,14 +19,6 @@ extension FancyAlertViewController {
         static let successAnimationDampingRaio: CGFloat = 0.6
         static let confettiViewInset: CGFloat = -40.0
         static let confettiDuration: TimeInterval = 2.0
-    }
-
-    private func presentWhatsNewWebView() {
-        guard let webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL) else { return }
-
-        let navigationController = UINavigationController(rootViewController: webViewController)
-
-        present(navigationController, animated: true, completion: nil)
     }
 
     static func aztecAnnouncementController() -> FancyAlertViewController {
@@ -69,6 +62,8 @@ extension FancyAlertViewController {
         }
 
         let defaultButton = Button(Strings.tryIt, { controller in
+            WPAppAnalytics.track(.editorAztecPromoPositive)
+
             enableEditor()
 
             controller.setViewConfiguration(aztecAnnouncementSuccessConfig,
@@ -93,15 +88,18 @@ extension FancyAlertViewController {
         })
 
         let cancelButton = Button(Strings.notNow, { controller in
+            WPAppAnalytics.track(.editorAztecPromoNegative)
             controller.dismiss(animated: true, completion: nil)
         })
 
         let moreInfoButton = Button(Strings.whatsNew, { controller in
-            controller.presentWhatsNewWebView()
+            WPAppAnalytics.track(.editorAztecPromoLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
         })
 
         let titleAccessoryButton = Button(Strings.beta, { controller in
-            controller.presentWhatsNewWebView()
+            WPAppAnalytics.track(.editorAztecBetaLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
         })
 
         let image = UIImage(named: "wp-illustration-hand-write")
@@ -109,7 +107,11 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     defaultButton: defaultButton, cancelButton: cancelButton, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
+                                                     defaultButton: defaultButton,
+                                                     cancelButton: cancelButton,
+                                                     moreInfoButton: moreInfoButton,
+                                                     titleAccessoryButton: titleAccessoryButton,
+                                                     dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
@@ -125,8 +127,15 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.whatsNew, { _ in })
-        let titleAccessoryButton = Button(Strings.beta, { _ in })
+        let moreInfoButton = Button(Strings.whatsNew, { controller in
+            WPAppAnalytics.track(.editorAztecPromoLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
+        })
+
+        let titleAccessoryButton = Button(Strings.beta, { controller in
+            WPAppAnalytics.track(.editorAztecBetaLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
+        })
 
         let image = UIImage(named: "wp-illustration-hand-write")
 
@@ -157,7 +166,8 @@ extension FancyAlertViewController {
         })
 
         let titleAccessoryButton = Button(Strings.beta, { controller in
-            controller.presentWhatsNewWebView()
+            WPAppAnalytics.track(.editorAztecBetaLink)
+            WPWebViewController.presentWhatsNewWebView(from: controller)
         })
 
         let image = UIImage(named: "wp-illustration-thank-you")
@@ -202,3 +212,42 @@ extension UserDefaults {
         }
     }
 }
+
+// MARK: - What's New Web View
+
+extension WPWebViewController {
+    static func presentWhatsNewWebView(from viewController: UIViewController) {
+        // Replace the web view's options button with our own bug reporting button
+        let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
+        bugButton.accessibilityLabel = NSLocalizedString("Report a bug", comment: "Button allowing the user to report a bug with the beta Aztec editor")
+
+        var webViewController: WPWebViewController
+
+        if HelpshiftUtils.isHelpshiftEnabled() {
+            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL, optionsButton: bugButton)
+        } else {
+            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL)
+        }
+
+        let navigationController = UINavigationController(rootViewController: webViewController)
+
+        viewController.present(navigationController, animated: true, completion: nil)
+    }
+
+    @objc static private func bugButtonTapped() {
+        // Find the topmost view controller that we can present from
+        guard let delegate = UIApplication.shared.delegate,
+            let window = delegate.window,
+            let viewController = window?.topmostPresentedViewController else { return }
+
+        guard HelpshiftUtils.isHelpshiftEnabled() else { return }
+
+        let presenter = HelpshiftPresenter()
+        presenter.sourceTag = SupportSourceTag.aztecFeedback
+        presenter.presentHelpshiftConversationWindowFromViewController(viewController,
+                                                                       refreshUserDetails: true,
+                                                                       completion:nil)
+    }
+}
+
+private let contactURL = "https://support.wordpress.com/contact/"
