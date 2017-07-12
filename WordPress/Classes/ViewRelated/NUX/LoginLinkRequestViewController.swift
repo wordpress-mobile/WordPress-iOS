@@ -100,6 +100,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
             }, failure: { [weak self] (error: Error) in
                 WPAppAnalytics.track(.loginMagicLinkFailed)
+                WPAppAnalytics.track(.loginFailed, error: error)
                 guard let strongSelf = self else {
                     return
                 }
