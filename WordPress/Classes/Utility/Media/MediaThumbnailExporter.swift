@@ -18,7 +18,7 @@ class MediaThumbnailExporter: MediaExporter {
     struct Options {
 
         /// The preferred size of the image, in points, typically for the actual display
-        /// of the image within a layout's dimensions.
+        /// of the image within a layout's dimensions. If nil, the image will not be resized.
         ///
         /// - Note: The final size may or may not match the preferred dimensions, depending
         ///   on the original image.
@@ -33,9 +33,9 @@ class MediaThumbnailExporter: MediaExporter {
         ///
         var scale: CGFloat = UIScreen.main.scale
 
-        /// The compression quality of the thumbnail, if the image type support compression.
+        /// The compression quality of the thumbnail, if the image type supports compression.
         ///
-        var compressionQuality = 0.70
+        var compressionQuality = 0.90
 
         /// The target image type of the exported thumbnail images.
         ///
@@ -82,11 +82,9 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     public enum ThumbnailExportError: MediaExportError {
         case failedToGenerateThumbnailFileURL
-        case gifThumbnailsUnsupported
+        case unsupportedThumbnailFromOriginalType
         var description: String {
             switch self {
-            case .gifThumbnailsUnsupported:
-                return NSLocalizedString("GIF preview unavailable.", comment: "Message shown if a preview of a GIF media item is unavailable.")
             default:
                 return NSLocalizedString("Thumbnail unavailable.", comment: "Message shown if a thumbnail preview of a media item unavailable.")
             }
@@ -110,6 +108,20 @@ class MediaThumbnailExporter: MediaExporter {
         return thumbnail
     }
 
+    /// Check for whether or not a file URL supports a thumbnail export.
+    ///
+    func supportsThumbnailExport(forFile url: URL) -> Bool {
+        do {
+            let expected = try MediaURLExporter.expectedExport(with: url)
+            switch expected {
+            case .image, .video, .gif:
+                return true
+            }
+        } catch {
+            return false
+        }
+    }
+
     /// Export a thumbnail image for a file at the URL, with an expected type of an image or video.
     ///
     /// - Note: GIFs are currently unsupported and throw the .gifThumbnailsUnsupported error.
@@ -118,12 +130,10 @@ class MediaThumbnailExporter: MediaExporter {
         do {
             let expected = try MediaURLExporter.expectedExport(with: url)
             switch expected {
-            case .image:
+            case .image, .gif:
                 exportImageThumbnail(at: url, onCompletion: onCompletion, onError: onError)
             case .video:
                 exportVideoThumbnail(at: url, onCompletion: onCompletion, onError: onError)
-            case .gif:
-                throw ThumbnailExportError.gifThumbnailsUnsupported
             }
         } catch {
             onError(exporterErrorWith(error: error))
@@ -137,10 +147,20 @@ class MediaThumbnailExporter: MediaExporter {
         exporter.mediaDirectoryType = .temporary
         exporter.options = imageExporterOptions
         exporter.exportImage(image,
-                             fileName: nil,
+                             fileName: UUID().uuidString,
                              onCompletion: { (export) in
                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         }, onError: onError)
+    }
+
+    /// Export a known video at the URL, being either a file URL or a remote URL.
+    ///
+    func exportThumbnail(forVideoURL url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
+        if url.isFileURL {
+            exportThumbnail(forFile: url, onCompletion: onCompletion, onError: onError)
+        } else {
+            exportVideoThumbnail(at: url, onCompletion: onCompletion, onError: onError)
+        }
     }
 
     // MARK: - Private
