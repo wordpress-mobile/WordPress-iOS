@@ -275,7 +275,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     override func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
-        self.errorToPresent = error
+        errorToPresent = error
         performSegue(withIdentifier: .showWPComLogin, sender: self)
     }
 
