@@ -11,8 +11,7 @@ extension WPStyleGuide {
         view.backgroundColor = wordPressBlue()
     }
 
-
-    ///
+    /// Adds a 1password button to a WPWalkthroughTextField, if available
     ///
     class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
         if !OnePasswordFacade().isOnePasswordEnabled() {
@@ -30,6 +29,22 @@ extension WPStyleGuide {
         onePasswordButton.addTarget(target, action: selector, for: .touchUpInside)
     }
 
+    /// Adds a 1password button to a stack view, if available
+    ///
+    class func configureOnePasswordButtonForStackView(_ stack: UIStackView, target: NSObject, selector: Selector) {
+        if !OnePasswordFacade().isOnePasswordEnabled() {
+            return
+        }
+
+        let onePasswordButton = UIButton(type: .custom)
+        onePasswordButton.setImage(UIImage(named: "onepassword-wp-button"), for: UIControlState())
+        onePasswordButton.sizeToFit()
+        onePasswordButton.setContentHuggingPriority(1000, for: .horizontal)
+
+        stack.addArrangedSubview(onePasswordButton)
+
+        onePasswordButton.addTarget(target, action: selector, for: .touchUpInside)
+    }
 
     ///
     ///
@@ -37,7 +52,6 @@ extension WPStyleGuide {
         let alpha: CGFloat = opaque ? 1.0 : 0.95
         return UIColor(fromRGBAColorWithRed: 17.0, green: 17.0, blue: 17.0, alpha: alpha)
     }
-
 
     ///
     ///

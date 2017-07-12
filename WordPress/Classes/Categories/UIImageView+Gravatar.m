@@ -1,6 +1,5 @@
 #import "UIImageView+Gravatar.h"
 #import "UIImageView+AFNetworking.h"
-#import "NSString+Helpers.h"
 #import "Constants.h"
 #import "PhotonImageURLHelper.h"
 #import "PrivateSiteURLProtocol.h"

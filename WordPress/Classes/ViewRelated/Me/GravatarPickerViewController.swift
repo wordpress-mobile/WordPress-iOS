@@ -1,6 +1,6 @@
 import Foundation
 import WPMediaPicker
-import WordPressComAnalytics
+import WordPressShared
 
 
 // Encapsulates all of the interactions required to capture a new Gravatar image, and resize it.

@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <WordPressShared/WPAnalytics.h>
 
 @class Blog, AbstractPost;
 

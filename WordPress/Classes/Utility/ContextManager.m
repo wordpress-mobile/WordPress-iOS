@@ -1,7 +1,7 @@
 #import "ContextManager.h"
 #import "ContextManager-Internals.h"
 #import "ALIterativeMigrator.h"
-
+@import WordPressShared.WPAnalytics;
 
 // MARK: - Static Variables
 //

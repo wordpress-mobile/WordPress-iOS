@@ -53,27 +53,8 @@ class EditorSettings: NSObject {
         }
     }
 
-    var nativeEditorAvailable: Bool {
-        get {
-            // If the available flag exists in user settings, return it's value
-            if let nativeEditorAvailable = database.object(forKey: nativeEditorAvailableKey) as? Bool {
-                return nativeEditorAvailable
-            }
-
-            // If the flag doesn't exist in settings, look at FeatureFlag
-            return FeatureFlag.nativeEditor.enabled
-        }
-        set {
-            database.set(newValue, forKey: nativeEditorAvailableKey)
-        }
-    }
-
     var nativeEditorEnabled: Bool {
         get {
-            guard nativeEditorAvailable else {
-                return false
-            }
-
             if let nativeEditorEnabled = database.object(forKey: nativeEditorEnabledKey) as? Bool {
                 return nativeEditorEnabled
             } else {

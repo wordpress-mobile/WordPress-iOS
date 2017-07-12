@@ -3,7 +3,6 @@ import CoreData
 import StoreKit
 import CocoaLumberjack
 import MGSwipeTableCell
-import WordPressComAnalytics
 import WordPressShared
 
 
