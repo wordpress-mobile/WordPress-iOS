@@ -301,7 +301,7 @@ class FancyAlertViewController: UIViewController {
         return defaultButton.isHiddenInStackView && cancelButton.isHiddenInStackView
     }
 
-    /// An alert is buttonless if both of the bottom buttons are hidden
+    /// An alert is image compact if the divider is at the top or the alert is buttonless
     ///
     private var isImageCompact: Bool {
         return configuration?.dividerPosition == .top || isButtonless
