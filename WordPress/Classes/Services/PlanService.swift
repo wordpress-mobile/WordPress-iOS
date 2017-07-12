@@ -1,8 +1,11 @@
 import Foundation
 import CocoaLumberjack
+import WordPressKit
 
-
-typealias PlanFeatures = [PlanID: [PlanFeature]]
+public typealias Plan = RemotePlan
+public typealias PlanFeature = RemotePlanFeature
+public typealias PlanFeatureGroup = RemotePlanFeatureGroup
+public typealias PlanFeatures = RemotePlanFeatures
 
 struct PlanService<S: Store> {
     // FIXME: @koke 2016-03-22
