@@ -31,8 +31,6 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         configureTextFields()
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
-
-        WPAppAnalytics.track(.loginURLFormViewed)
     }
 
 
@@ -41,7 +39,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
-
+        WPAppAnalytics.track(.loginURLFormViewed)
     }
 
 
@@ -240,6 +238,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
         // TODO: Wire up when the new help screen is implemented.
+        WPAnalytics.track(.loginURLHelpScreenViewed)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {

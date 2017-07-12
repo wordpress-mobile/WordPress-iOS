@@ -46,6 +46,7 @@ class LoginLinkRequestViewController: LoginViewController {
         super.viewDidAppear(animated)
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
                "Only present parts of the magic link signin flow from the application's root vc.")
+        WPAppAnalytics.track(.loginMagicLinkRequestFormViewed)
     }
 
     // MARK: - Configuration
