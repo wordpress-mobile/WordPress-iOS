@@ -1,7 +1,6 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
-import WordPressComAnalytics
 import QuartzCore
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {

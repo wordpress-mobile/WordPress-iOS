@@ -1,6 +1,6 @@
 import Foundation
 import CocoaLumberjack
-
+import WordPressKit
 
 /// Notes:
 ///

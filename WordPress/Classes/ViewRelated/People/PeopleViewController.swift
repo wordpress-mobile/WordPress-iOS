@@ -1,7 +1,6 @@
 import UIKit
 import CocoaLumberjack
 import WordPressShared
-import WordPressComAnalytics
 
 open class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate, UIViewControllerRestoration {
 
