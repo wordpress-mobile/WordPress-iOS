@@ -41,7 +41,6 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     headerBackgroundColor: WPStyleGuide.lightGrey(),
                                                      dividerPosition: .top,
                                                      defaultButton: defaultButton,
                                                      cancelButton: nil,
