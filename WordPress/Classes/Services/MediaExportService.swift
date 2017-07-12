@@ -41,7 +41,9 @@ open class MediaExportService: LocalCoreDataService {
 
                     let media = Media.makeMedia(blog: blog)
                     self.configureMedia(media, withExport: assetExport)
-                    onCompletion(media)
+                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                        onCompletion(media)
+                    })
                 }
             }, onError: { (error) in
                 self.handleExportError(error, errorHandler: onError)
@@ -67,7 +69,9 @@ open class MediaExportService: LocalCoreDataService {
 
                     let media = Media.makeMedia(blog: blog)
                     self.configureMedia(media, withExport: imageExport)
-                    onCompletion(media)
+                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                        onCompletion(media)
+                    })
                 }
             }, onError: { (error) in
                 self.handleExportError(error, errorHandler: onError)
@@ -94,7 +98,9 @@ open class MediaExportService: LocalCoreDataService {
 
                     let media = Media.makeMedia(blog: blog)
                     self.configureMedia(media, withExport: urlExport)
-                    onCompletion(media)
+                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                        onCompletion(media)
+                    })
                 }
             }, onError: { (error) in
                 self.handleExportError(error, errorHandler: onError)
