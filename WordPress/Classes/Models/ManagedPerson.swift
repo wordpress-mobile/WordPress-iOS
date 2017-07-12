@@ -101,23 +101,23 @@ extension Role {
         guard let color = type(of: self).colorsMap[self] else {
             fatalError()
         }
-        
+
         return color
     }
-    
+
     var localizedName: String {
         guard let localized = type(of: self).localizedMap[self] else {
             fatalError()
         }
-        
+
         return localized
     }
-    
+
     // MARK: - Static Properties
     //
     static let inviteRoles: [Role] = [.Follower, .Admin, .Editor, .Author, .Contributor]
     static let inviteRolesForPrivateSite: [Role] = [.Viewer, .Admin, .Editor, .Author, .Contributor]
-    
+
     // MARK: - Private Properties
     //
     fileprivate static let colorsMap = [
@@ -131,7 +131,7 @@ extension Role {
         Viewer: WPStyleGuide.People.contributorColor,
         Unsupported: WPStyleGuide.People.contributorColor
     ]
-    
+
     fileprivate static let localizedMap = [
         SuperAdmin: NSLocalizedString("Super Admin", comment: "User role badge"),
         Admin: NSLocalizedString("Admin", comment: "User role badge"),

@@ -22,7 +22,7 @@ extension UIImageView {
             }
         }
     }
-    
+
     /// Downloads and sets the User's Gravatar, given his email.
     /// TODO: This is a convenience method. Please, remove once all of the code has been migrated over to Swift.
     ///
@@ -48,7 +48,7 @@ extension UIImageView {
 
         setImageWith(targetRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
-    
+
     /// Downloads the provided Gravitar.
     ///
     /// - Parameters:
@@ -62,23 +62,23 @@ extension UIImageView {
             self.image = placeholder
             return
         }
-        
+
         // Starting with iOS 10, it seems `initWithCoder` uses a default size
         // of 1000x1000, which was messing with our size calculations for gravatars
         // on newly created table cells.
         // Calling `layoutIfNeeded()` forces UIKit to calculate the actual size.
         layoutIfNeeded()
-        
+
         let size = Int(ceil(frame.width * UIScreen.main.scale))
         let url = gravatar.urlWithSize(size)
-        
+
         self.downloadImage(url,
                            placeholderImage: placeholder,
                            success: { image in
                             guard image != self.image else {
                                 return
                             }
-                            
+
                             self.image = image
                             if animate {
                                 self.fadeInAnimation()
@@ -117,7 +117,7 @@ extension UIImageView {
         let sessionConfiguration = type(of: self).sharedImageDownloader().sessionManager.value(forKey: "sessionConfiguration") as? URLSessionConfiguration
         sessionConfiguration?.urlCache?.removeAllCachedResponses()
     }
-    
+
     // MARK: - Private Helpers
 
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
