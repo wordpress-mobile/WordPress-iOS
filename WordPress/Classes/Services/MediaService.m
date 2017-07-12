@@ -14,18 +14,24 @@
 #import <WordPressShared/WPAnalytics.h>
 @import WordPressKit;
 
+@interface MediaService ()
+
+@property (nonatomic, strong) MediaThumbnailService *thumbnailService;
+
+@end
+
 @implementation MediaService
+
+#pragma mark - Creating media
 
 - (void)createMediaWithURL:(NSURL *)url
            forPostObjectID:(NSManagedObjectID *)postObjectID
          thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                 completion:(void (^)(Media *media, NSError *error))completion
 {
-
     NSString *mediaName = [[url pathComponents] lastObject];
-
-    [self createMediaWith:url
-              forObjectID:postObjectID
+    [self exportMediaWith:url
+                 objectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -38,8 +44,8 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self createMediaWith:image
-              forObjectID:postObjectID
+    [self exportMediaWith:image
+                 objectID:postObjectID
                 mediaName:mediaID
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -52,9 +58,8 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-    
-    [self createMediaWith:asset
-              forObjectID:postObjectID
+    [self exportMediaWith:asset
+                 objectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -67,26 +72,137 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-
-    [self createMediaWith:asset
-              forObjectID:blogObjectID
+    [self exportMediaWith:asset
+                 objectID:blogObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
      ];
 }
 
-- (void)createMediaWithImage:(nonnull UIImage *)image
-             forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
-           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                  completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion
+- (void)createMediaWithImage:(UIImage *)image
+             forBlogObjectID:(NSManagedObjectID *)blogObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                  completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self createMediaWith:image
-              forObjectID:blogObjectID
+    [self exportMediaWith:image
+                 objectID:blogObjectID
                 mediaName:[[NSUUID UUID] UUIDString]
         thumbnailCallback:thumbnailCallback
                completion:completion];
 }
+
+#pragma mark - Private exporting
+
+- (void)exportMediaWith:(id<ExportableAsset>)exportable
+               objectID:(NSManagedObjectID *)objectID
+              mediaName:(NSString *)mediaName
+      thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+             completion:(void (^)(Media *media, NSError *error))completion
+{
+    // Revert to legacy category methods if not using the new exporting services.
+    if (![self supportsNewMediaExports]) {
+        [self createMediaWith:exportable
+                  forObjectID:objectID
+                    mediaName:mediaName
+            thumbnailCallback:thumbnailCallback
+                   completion:completion];
+        return;
+    }
+
+    // Use the new export services as indicated by the FeatureFlag.
+    AbstractPost *post = nil;
+    Blog *blog = nil;
+    NSError *error = nil;
+    NSManagedObject *existingObject = [self.managedObjectContext existingObjectWithID:objectID error:&error];
+    if ([existingObject isKindOfClass:[AbstractPost class]]) {
+        post = (AbstractPost *)existingObject;
+        blog = post.blog;
+    } else if ([existingObject isKindOfClass:[Blog class]]) {
+        blog = (Blog *)existingObject;
+    }
+    if (!post && !blog) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+
+    // Setup completion handlers
+    void(^completionWithMedia)(Media *) = ^(Media *media) {
+        // Pre-generate a thumbnail image, see the method notes.
+        [self exportPlaceholderThumbnailForMedia:media
+                                      completion:thumbnailCallback];
+        if (completion) {
+            completion(media, nil);
+        }
+    };
+    void(^completionWithError)( NSError *) = ^(NSError *error) {
+        if (completion) {
+            completion(nil, error);
+        }
+    };
+
+    // Export based on the type of the exportable.
+    MediaExportService *exportService = [[MediaExportService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    if ([exportable isKindOfClass:[PHAsset class]]) {
+        [exportService exportMediaWithBlog:blog
+                                     asset:(PHAsset *)exportable
+                              onCompletion:completionWithMedia
+                                   onError:completionWithError];
+    } else if ([exportable isKindOfClass:[UIImage class]]) {
+        [exportService exportMediaWithBlog:blog
+                                     image:(UIImage *)exportable
+                              onCompletion:completionWithMedia
+                                   onError:completionWithError];
+    } else if ([exportable isKindOfClass:[NSURL class]]) {
+        [exportService exportMediaWithBlog:blog
+                                       url:(NSURL *)exportable
+                              onCompletion:completionWithMedia
+                                   onError:completionWithError];
+    } else {
+        completionWithError(nil);
+    }
+}
+
+/**
+ Generate a thumbnail image for the Media asset so that consumers of the absoluteThumbnailLocalURL property
+ will have an image ready to load, without using the async methods provided via MediaThumbnailService.
+ 
+ This is primarily used as a placeholder image throughout the code-base, particulary within the editors.
+ 
+ Note: Ideally we wouldn't need this at all, but the synchronous usage of absoluteThumbnailLocalURL across the code-base
+       to load a thumbnail image is relied on quite heavily. In the future, transitioning to asynchronous thumbnail loading
+       via the new thumbnail service methods is much preferred, but would indeed take a good bit of refactoring away from
+       using absoluteThumbnailLocalURL.
+*/
+- (void)exportPlaceholderThumbnailForMedia:(Media *)media completion:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+{
+    [self.thumbnailService thumbnailURLForMedia:media
+                                  preferredSize:CGSizeZero
+                                   onCompletion:^(NSURL *url) {
+                                       [self.managedObjectContext performBlock:^{
+                                           if (url) {
+                                               // Set the absoluteThumbnailLocalURL with the generated thumbnail's URL.
+                                               media.absoluteThumbnailLocalURL = url;
+                                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                           }
+                                           if (thumbnailCallback) {
+                                               thumbnailCallback(url);
+                                           }
+                                       }];
+                                   }
+                                        onError:^(NSError *error) {
+                                            DDLogError(@"Error occurred exporting placeholder thumbnail: %@", error);
+                                        }];
+}
+
+- (BOOL)supportsNewMediaExports
+{
+    return [Feature enabled:FeatureFlagNewMediaExports];
+}
+
+#pragma mark - Uploading media
 
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
@@ -153,6 +269,8 @@
                 failure:failureBlock];
 }
 
+#pragma mark - Private helpers
+
 - (void)trackUploadError:(NSError *)error
 {
     if (error.code == NSURLErrorCancelled) {
@@ -161,6 +279,8 @@
         [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadFailed error:error];
     }
 }
+
+#pragma mark - Updating media
 
 - (void)updateMedia:(Media *)media
             success:(void (^)())success
@@ -249,6 +369,8 @@
     }
 }
 
+#pragma mark - Private helpers
+
 - (NSError *)customMediaUploadError:(NSError *)error remote:(id <MediaServiceRemote>)remote {
     NSString *customErrorMessage = nil;
     if ([remote isKindOfClass:[MediaServiceRemoteXMLRPC class]]) {
@@ -293,6 +415,8 @@
     }
     return error;
 }
+
+#pragma mark - Deleting media
 
 - (void)deleteMedia:(nonnull Media *)media
             success:(nullable void (^)())success
@@ -362,6 +486,8 @@
         }
     });
 }
+
+#pragma mark - Getting media
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
             withSuccess:(void (^)(Media *media))success
@@ -482,16 +608,81 @@
     }];
 }
 
-- (void)imageForMedia:(nonnull Media *)mediaInRandomContext
-        preferredSize:(CGSize)preferredSize
-              success:(nullable void (^)(UIImage * _Nonnull image))success
-              failure:(nullable void (^)(NSError * _Nonnull error))failure
+#pragma mark - Thumbnails
+
+- (void)thumbnailFileURLForMedia:(Media *)mediaInRandomContext
+                   preferredSize:(CGSize)preferredSize
+                      completion:(void (^)(NSURL * _Nullable, NSError * _Nullable))completion
 {
-    [self imageForMedia:mediaInRandomContext
-                   size:preferredSize
-                success:success
-                failure:failure];
+    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
+    [self.managedObjectContext performBlock:^{
+        /*
+         When using the new Media export services, return the URL via the MediaThumbnailService.
+         Otherwise, use the original implementation's `absoluteThumbnailLocalURL`.
+         */
+        Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
+        if ([self supportsNewMediaExports]) {
+            [self.thumbnailService thumbnailURLForMedia:media
+                                          preferredSize:preferredSize
+                                           onCompletion:^(NSURL *url) {
+                                               completion(url, nil);
+                                           }
+                                                onError:^(NSError *error) {
+                                                    completion(nil, error);
+                                                }];
+        } else {
+            completion(media.absoluteThumbnailLocalURL, nil);
+        }
+    }];
 }
+
+- (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
+                 preferredSize:(CGSize)preferredSize
+                    completion:(void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion
+{
+    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
+    [self.managedObjectContext performBlock:^{
+        /*
+         When using the new Media export services, generate a thumbnail image from the URL
+         of the MediaThumbnailService.
+         Otherwise, use the legacy category method `imageForMedia:`.
+         */
+        Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
+        if ([self supportsNewMediaExports]) {
+            [self.thumbnailService thumbnailURLForMedia:media
+                                          preferredSize:preferredSize
+                                           onCompletion:^(NSURL *url) {
+                                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+                                                   UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+                                                   [self.managedObjectContext performBlock:^{
+                                                       completion(image, nil);
+                                                   }];
+                                               });
+                                           }
+                                                onError:^(NSError *error) {
+                                                    completion(nil, error);
+                                                }];
+        } else {
+            [self imageForMedia:mediaInRandomContext
+                           size:preferredSize
+                        success:^(UIImage *image) {
+                            completion(image, nil);
+                        } failure:^(NSError *error) {
+                            completion(nil, error);
+                        }];
+        }
+    }];
+}
+
+- (MediaThumbnailService *)thumbnailService
+{
+    if (!_thumbnailService) {
+        _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    }
+    return _thumbnailService;
+}
+
+#pragma mark - Private helpers
 
 - (NSString *)mimeTypeForMediaType:(NSNumber *)mediaType
 {
@@ -519,8 +710,6 @@
 
     return predicate;
 }
-
-#pragma mark - Private
 
 #pragma mark - Media helpers
 
