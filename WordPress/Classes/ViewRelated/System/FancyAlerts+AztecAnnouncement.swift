@@ -106,7 +106,6 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     headerBackgroundColor: nil,
                                                      dividerPosition: .bottom,
                                                      defaultButton: defaultButton,
                                                      cancelButton: cancelButton,
@@ -143,7 +142,6 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
-                                                     headerBackgroundColor: nil,
                                                      dividerPosition: .bottom,
                                                      defaultButton: nil,
                                                      cancelButton: nil,
@@ -178,7 +176,6 @@ extension FancyAlertViewController {
         return FancyAlertViewController.Config(titleText: Strings.titleText,
                                                bodyText: Strings.bodyText,
                                                headerImage: image,
-                                               headerBackgroundColor: nil,
                                                dividerPosition: .bottom,
                                                defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton,
                                                dismissAction: {

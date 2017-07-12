@@ -38,9 +38,6 @@ class FancyAlertViewController: UIViewController {
         /// The image displayed at the top of the dialog
         let headerImage: UIImage?
 
-        /// The background color behind the headerImage
-        let headerBackgroundColor: UIColor?
-
         /// The position of the horizontal rule
         let dividerPosition: DividerPosition?
 
@@ -69,7 +66,7 @@ class FancyAlertViewController: UIViewController {
         static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
-        static let headerDefaultBackgroundColor = WPStyleGuide.lightGrey()
+        static let headerBackgroundColor = WPStyleGuide.lightGrey()
 
         static let fadeAnimationDuration: TimeInterval = 0.3
         static let resizeAnimationDuration: TimeInterval = 0.3
@@ -216,7 +213,7 @@ class FancyAlertViewController: UIViewController {
         updateDivider()
 
         updateHeaderImage()
-        headerImageWrapperView.backgroundColor = configuration.headerBackgroundColor ?? Constants.headerDefaultBackgroundColor
+        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
 
         update(defaultButton, with: configuration.defaultButton)
         update(cancelButton, with: configuration.cancelButton)
@@ -247,7 +244,6 @@ class FancyAlertViewController: UIViewController {
         if let headerImage = configuration?.headerImage {
             headerImageView.image = headerImage
             headerImageWrapperView.isHiddenInStackView = false
-            headerImageWrapperView.backgroundColor = configuration?.headerBackgroundColor ?? Constants.headerDefaultBackgroundColor
 
             if let heightConstraint = headerImageViewHeightConstraint {
                 headerImageView.removeConstraint(heightConstraint)
