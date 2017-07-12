@@ -129,7 +129,7 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.7)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `53de5ebf3e73b13f495e943d4fb4eb6dc85be88b`)
   - WordPress-iOS-Editor (= 1.9.3)
   - WordPressCom-Analytics-iOS (= 0.1.31)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
@@ -143,6 +143,9 @@ EXTERNAL SOURCES:
   Starscream:
     :branch: wordpress-ios
     :git: https://github.com/wordpress-mobile/Starscream
+  WordPress-Aztec-iOS:
+    :commit: 53de5ebf3e73b13f495e943d4fb4eb6dc85be88b
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -154,6 +157,9 @@ CHECKOUT OPTIONS:
   Starscream:
     :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
     :git: https://github.com/wordpress-mobile/Starscream
+  WordPress-Aztec-iOS:
+    :commit: 53de5ebf3e73b13f495e943d4fb4eb6dc85be88b
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -185,13 +191,13 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 88c7dd91f7db8f4967606cbf21fd3df67694e297
+  WordPress-Aztec-iOS: 5bf1f24dd104e21993468a22617fcffeff84f603
   WordPress-iOS-Editor: ed02135d783ecb9aa4ee5e2462935432d464d461
   WordPressCom-Analytics-iOS: a64e051690f9408fd71343625bf68f55389cd42d
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 527bca5102c27a49f1891b618c101b05217965da
+PODFILE CHECKSUM: d6305414cc0d619545c2b70297e8a8c2e2ec3999
 
 COCOAPODS: 1.2.1
