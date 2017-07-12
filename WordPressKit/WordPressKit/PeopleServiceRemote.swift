@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Encapsulates all of the People Management WordPress.com Methods
 ///
