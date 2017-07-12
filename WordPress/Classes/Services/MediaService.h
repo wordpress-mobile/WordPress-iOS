@@ -155,12 +155,12 @@
  @discussion If the media asset is a video a frame of the video is returned.
 
  @param mediaInRandomContext the object from where to get the thumbnail
- @param requestSize the request size for the image, if CGSizeZero the image returned has the image original pixel dimensions.
+ @param preferredSize the preferred size for the image, if CGSizeZero the image returned has the image original pixel dimensions.
  @param success a block that will be invoked when the media is retrieved
  @param failure a block that will be invoked if an error happens, provinding an error object with details.
  */
 - (void)imageForMedia:(nonnull Media *)mediaInRandomContext
-                 size:(CGSize)requestSize
+        preferredSize:(CGSize)preferredSize
               success:(nullable void (^)(UIImage * _Nonnull image))success
               failure:(nullable void (^)(NSError * _Nonnull error))failure;
 

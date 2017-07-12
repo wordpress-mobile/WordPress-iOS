@@ -286,6 +286,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_video_added";
             eventProperties = @{ @"via" : @"media_library" };
             break;
+        case WPAnalyticsStatEditorAztecBetaLink:
+            eventName = @"editor_aztec_beta_link";
+            break;
+        case WPAnalyticsStatEditorAztecPromoLink:
+            eventName = @"editor_aztec_promo_link";
+            break;
+        case WPAnalyticsStatEditorAztecPromoPositive:
+            eventName = @"editor_aztec_promo_positive";
+            break;
+        case WPAnalyticsStatEditorAztecPromoNegative:
+            eventName = @"editor_aztec_promo_negative";
+            break;
         case WPAnalyticsStatEditorClosed:
             eventName = @"editor_closed";
             break;

@@ -6,7 +6,7 @@
 #import "StatsItemAction.h"
 #import "StatsStreak.h"
 #import "StatsStreakItem.h"
-#import <WordPressComAnalytics/WPAnalytics.h>
+#import <WordPressShared/WPAnalytics.h>
 @import OHHTTPStubs;
 
 @interface WPStatsServiceRemoteTests : XCTestCase
