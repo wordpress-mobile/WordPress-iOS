@@ -1,18 +1,34 @@
 import UIKit
+import CocoaLumberjack
 
-class LoginLinkRequestViewController: SigninLinkRequestViewController, LoginViewController {
+/// Step one in the auth link flow. This VC displays a form to request a "magic"
+/// authentication link be emailed to the user.  Allows the user to signin via
+/// email instead of their password.
+///
+class LoginLinkRequestViewController: LoginViewController {
     @IBOutlet var gravatarView: UIImageView?
+    @IBOutlet var label: UILabel?
+    @IBOutlet var sendLinkButton: NUXSubmitButton?
+    @IBOutlet var usePasswordButton: UIButton?
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
-
-    @IBAction override func handleUsePasswordTapped(_ sender: UIButton) {
-        WPAppAnalytics.track(.loginMagicLinkExited)
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComLogin
+        }
     }
+
+
+    // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBarIcon()
+
+        localizeControls()
+
+        let email = loginFields.username
+        if !email.isValidEmail() {
+            assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -26,24 +42,85 @@ class LoginLinkRequestViewController: SigninLinkRequestViewController, LoginView
         }
     }
 
-    /// Assigns localized strings to various UIControl defined in the storyboard.
-    ///
-    override func localizeControls() {
-        let format = NSLocalizedString("We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!", comment: "Instructional text for the magic link login flow.")
-        label.text = NSString(format: format as NSString, loginFields.username) as String
-
-        let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.")
-        sendLinkButton.setTitle(sendLinkButtonTitle, for: UIControlState())
-        sendLinkButton.setTitle(sendLinkButtonTitle, for: .highlighted)
-
-        let usePasswordTitle = NSLocalizedString("Enter your password instead.", comment: "Title of a button. ")
-        usePasswordButton.setTitle(usePasswordTitle, for: UIControlState())
-        usePasswordButton.setTitle(usePasswordTitle, for: .highlighted)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
+               "Only present parts of the magic link signin flow from the application's root vc.")
     }
 
-    override func didRequestAuthenticationLink() {
+    // MARK: - Configuration
+
+    /// Assigns localized strings to various UIControl defined in the storyboard.
+    ///
+    func localizeControls() {
+        let format = NSLocalizedString("We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!", comment: "Instructional text for the magic link login flow.")
+        label?.text = NSString(format: format as NSString, loginFields.username) as String
+
+        let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.")
+        sendLinkButton?.setTitle(sendLinkButtonTitle, for: UIControlState())
+        sendLinkButton?.setTitle(sendLinkButtonTitle, for: .highlighted)
+
+        let usePasswordTitle = NSLocalizedString("Enter your password instead.", comment: "Title of a button. ")
+        usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
+        usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
+        usePasswordButton?.titleLabel?.numberOfLines = 0
+    }
+
+    func configureLoading(_ animating: Bool) {
+        sendLinkButton?.showActivityIndicator(animating)
+
+        sendLinkButton?.isEnabled = !animating
+    }
+
+    // let the storyboard's style stay
+    override func setupStyles() {}
+
+
+    // MARK: - Instance Methods
+
+    /// Makes the call to request a magic authentication link be emailed to the user.
+    ///
+    func requestAuthenticationLink() {
+        let email = loginFields.username
+        guard email.isValidEmail() else {
+            // This is a bit of paranioa as in practice it should never happen.
+            // However, let's make sure we give the user some useful feedback just in case.
+            DDLogError("Attempted to request authentication link, but the email address did not appear valid.")
+            WPError.showAlert(withTitle: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
+                              message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."))
+            return
+        }
+
+        configureLoading(true)
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.requestAuthenticationLink(email,
+                                          success: { [weak self] in
+                                            self?.didRequestAuthenticationLink()
+                                            self?.configureLoading(false)
+
+            }, failure: { [weak self] (error: Error) in
+                WPAppAnalytics.track(.loginMagicLinkFailed)
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
+                strongSelf.configureLoading(false)
+        })
+    }
+
+    // MARK: - Actions
+
+    @IBAction func handleSendLinkTapped(_ sender: UIButton) {
+        requestAuthenticationLink()
+    }
+
+    func didRequestAuthenticationLink() {
         WPAppAnalytics.track(.loginMagicLinkRequested)
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         performSegue(withIdentifier: .showLinkMailView, sender: self)
+    }
+
+    @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
+        WPAppAnalytics.track(.loginMagicLinkExited)
     }
 }

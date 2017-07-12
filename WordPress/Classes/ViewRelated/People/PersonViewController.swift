@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import CocoaLumberjack
 import WordPressShared
-import WordPressComAnalytics
 
 /// Displays a Blog's User Details
 ///

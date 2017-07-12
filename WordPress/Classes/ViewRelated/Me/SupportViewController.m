@@ -9,14 +9,12 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "Blog.h"
-#import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
 #import "WPTabBarController.h"
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
 @import CocoaLumberjack;
-@import WordPressComAnalytics;
 @import WordPressShared;
 
 SupportSourceTag const SupportSourceTagWPComLogin = @"origin:wpcom-login-screen";

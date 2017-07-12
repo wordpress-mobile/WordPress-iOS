@@ -1,5 +1,5 @@
 import WordPressEditor
-import WordPressComAnalytics
+import WordPressShared
 
 class WPEditorStatMap: NSObject {
     class func map(_ stat: WPEditorStat) -> WPAnalyticsStat {
