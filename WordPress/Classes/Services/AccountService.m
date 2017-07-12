@@ -5,7 +5,6 @@
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 
-#import "NSString+Helpers.h"
 @import WordPressKit;
 @import WordPressShared;
 #import "WordPress-Swift.h"

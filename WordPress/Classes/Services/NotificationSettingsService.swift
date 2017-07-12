@@ -1,6 +1,6 @@
 import Foundation
 import CocoaLumberjack
-
+import WordPressKit
 
 /// This service encapsulates the Restful API related to WordPress Notifications.
 ///
@@ -94,7 +94,10 @@ open class NotificationSettingsService: LocalCoreDataService {
             return
         }
 
-        notificationsServiceRemote?.registerDeviceForPushNotifications(token, success: success, failure: failure)
+        notificationsServiceRemote?.registerDeviceForPushNotifications(token,
+                                                                       pushNotificationAppId: WPPushNotificationAppId,
+                                                                       success: success,
+                                                                       failure: failure)
     }
 
 
