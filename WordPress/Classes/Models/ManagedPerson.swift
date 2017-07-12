@@ -36,6 +36,20 @@ class ManagedPerson: NSManagedObject {
 
 // MARK: - Extensions
 //
+extension Person {
+    init(managedPerson: ManagedPerson) {
+        self.init(ID: Int(managedPerson.userID),
+                  username: managedPerson.username,
+                  firstName: managedPerson.firstName,
+                  lastName: managedPerson.lastName,
+                  displayName: managedPerson.displayName,
+                  role: Role(string: managedPerson.role),
+                  siteID: Int(managedPerson.siteID),
+                  linkedUserID: Int(managedPerson.linkedUserID),
+                  avatarURL: managedPerson.avatarURL.flatMap { URL(string: $0) },
+                  isSuperAdmin: managedPerson.isSuperAdmin)
+    }
+}
 
 extension User {
     init(managedPerson: ManagedPerson) {

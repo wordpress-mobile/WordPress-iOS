@@ -1,7 +1,6 @@
 import Foundation
 
-
-/// UIImageView Helper Methods that allow us to download a gravar, given the User's Email
+/// UIImageView Helper Methods that allow us to download a gravitar, given the User's Email
 ///
 extension UIImageView {
     /// Helper Enum that specifies all of the available Gravatar Image Ratings
@@ -23,7 +22,7 @@ extension UIImageView {
             }
         }
     }
-
+    
     /// Downloads and sets the User's Gravatar, given his email.
     /// TODO: This is a convenience method. Please, remove once all of the code has been migrated over to Swift.
     ///
@@ -48,6 +47,45 @@ extension UIImageView {
         let targetRequest = URLRequest(url: targetURL!)
 
         setImageWith(targetRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
+    }
+    
+    /// Downloads the provided Gravitar.
+    ///
+    /// - Parameters:
+    ///     - gravatar: the user's Gravatar
+    ///     - placeholder: Image to be used as Placeholder
+    ///     - animate: enable/disable fade in animation
+    ///     - failure: Callback block to be invoked when an error occurs while fetching the Gravitar image
+    ///
+    func downloadGravatar(_ gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
+        guard let gravatar = gravatar else {
+            self.image = placeholder
+            return
+        }
+        
+        // Starting with iOS 10, it seems `initWithCoder` uses a default size
+        // of 1000x1000, which was messing with our size calculations for gravatars
+        // on newly created table cells.
+        // Calling `layoutIfNeeded()` forces UIKit to calculate the actual size.
+        layoutIfNeeded()
+        
+        let size = Int(ceil(frame.width * UIScreen.main.scale))
+        let url = gravatar.urlWithSize(size)
+        
+        self.downloadImage(url,
+                           placeholderImage: placeholder,
+                           success: { image in
+                            guard image != self.image else {
+                                return
+                            }
+                            
+                            self.image = image
+                            if animate {
+                                self.fadeInAnimation()
+                            }
+        }, failure: { error in
+            failure?(error)
+        })
     }
 
     /// Sets an Image Override in both, AFNetworking's Private Cache + NSURLCache
@@ -79,9 +117,7 @@ extension UIImageView {
         let sessionConfiguration = type(of: self).sharedImageDownloader().sessionManager.value(forKey: "sessionConfiguration") as? URLSessionConfiguration
         sessionConfiguration?.urlCache?.removeAllCachedResponses()
     }
-
-
-
+    
     // MARK: - Private Helpers
 
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.

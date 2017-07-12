@@ -18,7 +18,7 @@ public protocol RemotePerson {
     var isSuperAdmin: Bool { get }
     var fullName: String { get }
 
-    /// Static Properties
+    ///  Static Properties
     ///
     static var kind: PersonKind { get }
 
@@ -72,6 +72,28 @@ public struct User: RemotePerson {
     public let avatarURL: URL?
     public let isSuperAdmin: Bool
     public static let kind = PersonKind.user
+    
+    public init(ID: Int,
+         username: String,
+         firstName: String?,
+         lastName: String?,
+         displayName: String,
+         role: Role,
+         siteID: Int,
+         linkedUserID: Int,
+         avatarURL: URL?,
+         isSuperAdmin: Bool) {
+        self.ID = ID
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.displayName = displayName
+        self.role = role
+        self.siteID = siteID
+        self.linkedUserID = linkedUserID
+        self.avatarURL = avatarURL
+        self.isSuperAdmin = isSuperAdmin
+    }
 }
 
 // MARK: - Defines a Blog's Follower
@@ -88,6 +110,28 @@ public struct Follower: RemotePerson {
     public let avatarURL: URL?
     public let isSuperAdmin: Bool
     public static let kind = PersonKind.follower
+    
+    public init(ID: Int,
+                username: String,
+                firstName: String?,
+                lastName: String?,
+                displayName: String,
+                role: Role,
+                siteID: Int,
+                linkedUserID: Int,
+                avatarURL: URL?,
+                isSuperAdmin: Bool) {
+        self.ID = ID
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.displayName = displayName
+        self.role = role
+        self.siteID = siteID
+        self.linkedUserID = linkedUserID
+        self.avatarURL = avatarURL
+        self.isSuperAdmin = isSuperAdmin
+    }
 }
 
 // MARK: - Defines a Blog's Viewer
@@ -104,6 +148,28 @@ public struct Viewer: RemotePerson {
     public let avatarURL: URL?
     public let isSuperAdmin: Bool
     public static let kind = PersonKind.viewer
+    
+    public init(ID: Int,
+                username: String,
+                firstName: String?,
+                lastName: String?,
+                displayName: String,
+                role: Role,
+                siteID: Int,
+                linkedUserID: Int,
+                avatarURL: URL?,
+                isSuperAdmin: Bool) {
+        self.ID = ID
+        self.username = username
+        self.firstName = firstName
+        self.lastName = lastName
+        self.displayName = displayName
+        self.role = role
+        self.siteID = siteID
+        self.linkedUserID = linkedUserID
+        self.avatarURL = avatarURL
+        self.isSuperAdmin = isSuperAdmin
+    }
 }
 
 // MARK: - Extensions
