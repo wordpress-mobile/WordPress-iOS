@@ -47,6 +47,10 @@ class LoginEpilogueViewController: UIViewController {
         }
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         colorPanelBasedOnTableViewContents()
@@ -93,7 +97,7 @@ class LoginEpilogueViewController: UIViewController {
         dismissBlock?(false)
         navigationController?.dismiss(animated: true, completion: nil)
     }
-
+	
     @IBAction func handleConnectAnotherButton() {
         dismissBlock?(false)
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
