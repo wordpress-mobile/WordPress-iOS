@@ -43,7 +43,11 @@ class LoginProloguePromoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        animationView?.loopAnimation = true
+        animationView?.animationProgress = 0.0
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         animationView?.play()
     }
 
