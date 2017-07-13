@@ -4,9 +4,9 @@
 #import "TestContextManager.h"
 #import "Theme.h"
 #import "ThemeService.h"
-#import "ThemeServiceRemote.h"
 #import "WPAccount.h"
 #import "WordPressTest-Swift.h"
+@import WordPressKit;
 
 #pragma mark - Support classes
 

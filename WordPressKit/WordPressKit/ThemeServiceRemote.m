@@ -1,7 +1,8 @@
 #import "ThemeServiceRemote.h"
 
 #import "RemoteTheme.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
 
 // Service dictionary keys
 static NSString* const ThemeServiceRemoteThemesKey = @"themes";
