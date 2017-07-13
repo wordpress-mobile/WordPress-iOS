@@ -15,7 +15,6 @@ typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
 };
 
 static NSString *const CellIdentifier = @"CellIdentifier";
-static NSString *const GooglePlusServiceId = @"google_plus";
 
 @interface SharingViewController ()
 
@@ -128,7 +127,7 @@ static NSString *const GooglePlusServiceId = @"google_plus";
 {
     PublicizeService *publicizer = self.publicizeServices[indexPath.row];
     NSArray *connections = [self connectionsForService:publicizer];
-    if ([publicizer.serviceID isEqualToString:GooglePlusServiceId] && [connections count] == 0) { // Temporarily hiding Google+
+    if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceId] && [connections count] == 0) { // Temporarily hiding Google+
         return 0;
     } else {
         return UITableViewAutomaticDimension;
@@ -163,7 +162,7 @@ static NSString *const GooglePlusServiceId = @"google_plus";
     PublicizeService *publicizer = self.publicizeServices[indexPath.row];
     NSArray *connections = [self connectionsForService:publicizer];
     
-    if ([publicizer.serviceID isEqualToString:GooglePlusServiceId] && [connections count] == 0) { // Temporarily hiding Google+
+    if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceId] && [connections count] == 0) { // Temporarily hiding Google+
         cell.hidden = YES;
         return;
     }
