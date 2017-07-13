@@ -12,7 +12,11 @@ class LoginProloguePromoViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.clear
-        headingLabel?.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: UIFontWeightBold)
+
+        // iOS won't return UIFontWeightMedium for dynamic system font :(
+        // -So instead get the dynamic font size, then ask for the non-dynamic font at that size
+        let fontToGetSize = WPStyleGuide.fontForTextStyle(.title3)
+        headingLabel?.font = UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: UIFontWeightMedium)
         headingLabel?.text = headlineText()
         headingLabel?.sizeToFit()
 
