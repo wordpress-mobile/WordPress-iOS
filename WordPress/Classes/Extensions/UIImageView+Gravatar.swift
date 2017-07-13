@@ -1,6 +1,6 @@
 import Foundation
 
-/// UIImageView Helper Methods that allow us to download a gravitar, given the User's Email
+/// UIImageView Helper Methods that allow us to download a Gravatar, given the User's Email
 ///
 extension UIImageView {
     /// Helper Enum that specifies all of the available Gravatar Image Ratings
@@ -49,13 +49,13 @@ extension UIImageView {
         setImageWith(targetRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
 
-    /// Downloads the provided Gravitar.
+    /// Downloads the provided Gravatar.
     ///
     /// - Parameters:
     ///     - gravatar: the user's Gravatar
     ///     - placeholder: Image to be used as Placeholder
     ///     - animate: enable/disable fade in animation
-    ///     - failure: Callback block to be invoked when an error occurs while fetching the Gravitar image
+    ///     - failure: Callback block to be invoked when an error occurs while fetching the Gravatar image
     ///
     func downloadGravatar(_ gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
         guard let gravatar = gravatar else {
