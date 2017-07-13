@@ -12,7 +12,7 @@ class LoginProloguePromoViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.clear
-        headingLabel?.font = WPStyleGuide.fontForTextStyle(.title2, symbolicTraits: .traitBold)
+        headingLabel?.font = WPStyleGuide.fontForTextStyle(.title3, fontWeight: UIFontWeightBold)
         headingLabel?.text = headlineText()
         headingLabel?.sizeToFit()
 
@@ -20,6 +20,10 @@ class LoginProloguePromoViewController: UIViewController {
             let animation = Lottie.LOTAnimationView(name: animationKey()) else {
                 return
         }
+
+        stackView?.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
+        stackView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.85).isActive = true
 
         animation.translatesAutoresizingMaskIntoConstraints = false
         animation.contentMode = .scaleAspectFit
