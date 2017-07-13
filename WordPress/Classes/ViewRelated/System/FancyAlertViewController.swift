@@ -18,6 +18,11 @@ class FancyAlertViewController: UIViewController {
             .instantiateInitialViewController() as! FancyAlertViewController
     }
 
+    enum DividerPosition {
+        case top
+        case bottom
+    }
+
     /// Enapsulates values for all UI components of the info dialog.
     ///
     struct Config {
@@ -32,6 +37,9 @@ class FancyAlertViewController: UIViewController {
 
         /// The image displayed at the top of the dialog
         let headerImage: UIImage?
+
+        /// The position of the horizontal rule
+        let dividerPosition: DividerPosition?
 
         /// Title / handler for the primary button on the dialog
         let defaultButton: ButtonConfig?
@@ -53,9 +61,12 @@ class FancyAlertViewController: UIViewController {
 
     private struct Constants {
         static let cornerRadius: CGFloat = 15.0
-        static let buttonFont = UIFont.boldSystemFont(ofSize: 14.0)
+        static let buttonFont = WPStyleGuide.fontForTextStyle(.headline)
+        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: UIFontWeightSemibold)
+        static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
+        static let headerBackgroundColor = WPStyleGuide.lightGrey()
 
         static let fadeAnimationDuration: TimeInterval = 0.3
         static let resizeAnimationDuration: TimeInterval = 0.3
@@ -69,15 +80,19 @@ class FancyAlertViewController: UIViewController {
 
     @IBOutlet private weak var headerImageWrapperView: UIView!
     @IBOutlet private(set) weak var headerImageView: UIImageView!
+    private var headerImageViewHeightConstraint: NSLayoutConstraint?
     @IBOutlet private weak var headerImageViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var headerImageViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var headerImageViewWrapperBottomConstraint: NSLayoutConstraint?
+    @IBOutlet private weak var buttonWrapperViewTopConstraint: NSLayoutConstraint?
 
     @IBOutlet private weak var titleStackView: UIStackView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var bodyLabel: UILabel!
 
     /// Divides the primary buttons from the rest of the dialog
-    @IBOutlet private weak var dividerView: UIView!
+    @IBOutlet private weak var topDividerView: UIView!
+    @IBOutlet private weak var bottomDividerView: UIView!
     @IBOutlet private weak var buttonWrapperView: UIView!
     @IBOutlet private weak var buttonStackView: UIStackView!
 
@@ -149,18 +164,21 @@ class FancyAlertViewController: UIViewController {
         wrapperView.layer.masksToBounds = true
         wrapperView.layer.cornerRadius = Constants.cornerRadius
 
-        headerImageWrapperView.backgroundColor = WPStyleGuide.lightGrey()
-        dividerView.backgroundColor = WPStyleGuide.lightGrey()
+        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
+        topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
+        bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
 
+        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: UIFontWeightSemibold)
         titleLabel.textColor = WPStyleGuide.darkGrey()
-        bodyLabel.textColor = WPStyleGuide.greyDarken10()
+        WPStyleGuide.configureLabel(bodyLabel, textStyle: .body)
+        bodyLabel.textColor = WPStyleGuide.darkGrey()
 
         WPStyleGuide.configureBetaButton(titleAccessoryButton)
 
         defaultButton.titleLabel?.font = Constants.buttonFont
         cancelButton.titleLabel?.font = Constants.buttonFont
 
-        moreInfoButton.titleLabel?.font = WPFontManager.systemBoldFont(ofSize: bodyLabel.font.pointSize)
+        moreInfoButton.titleLabel?.font = Constants.moreInfoFont
         moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
 
         updateViewConfiguration()
@@ -193,6 +211,8 @@ class FancyAlertViewController: UIViewController {
         titleLabel.text = configuration.titleText
         bodyLabel.text = configuration.bodyText
 
+        updateDivider()
+
         updateHeaderImage()
 
         update(defaultButton, with: configuration.defaultButton)
@@ -201,22 +221,21 @@ class FancyAlertViewController: UIViewController {
         update(titleAccessoryButton, with: configuration.titleAccessoryButton)
 
         // If both primary buttons are hidden, we'll hide the bottom area of the dialog
-        buttonWrapperView.isHiddenInStackView = isAlertCompact
-        dividerView.isHiddenInStackView = isAlertCompact
+        buttonWrapperView.isHiddenInStackView = isButtonless
 
         // If both primary buttons are hidden, we'll shrink the header image view down a little
-        let constant = isAlertCompact ? Constants.headerImageVerticalConstraintCompact : Constants.headerImageVerticalConstraintRegular
+        let constant = isImageCompact ? Constants.headerImageVerticalConstraintCompact : Constants.headerImageVerticalConstraintRegular
         headerImageViewTopConstraint.constant = constant
         headerImageViewBottomConstraint.constant = constant
 
         updateFlingableViewHandler()
 
         // If both primary buttons are hidden, the user can tap anywhere on the dialog to dismiss it
-        dismissGestureRecognizer.isEnabled = isAlertCompact
+        dismissGestureRecognizer.isEnabled = isButtonless
 
         view.layoutIfNeeded()
 
-        titleLabel.accessibilityHint = (isAlertCompact) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
+        titleLabel.accessibilityHint = (isButtonless) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
 
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, titleLabel)
     }
@@ -225,9 +244,27 @@ class FancyAlertViewController: UIViewController {
         if let headerImage = configuration?.headerImage {
             headerImageView.image = headerImage
             headerImageWrapperView.isHiddenInStackView = false
+
+            if let heightConstraint = headerImageViewHeightConstraint {
+                headerImageView.removeConstraint(heightConstraint)
+            }
+
+            // set the aspect ratio constraint
+            let imageAspectRatio = headerImage.size.height / headerImage.size.width
+            headerImageViewHeightConstraint = headerImageView.heightAnchor.constraint(equalTo: headerImageView.widthAnchor, multiplier: imageAspectRatio)
+            headerImageViewHeightConstraint?.isActive = true
         } else {
             headerImageWrapperView.isHiddenInStackView = true
         }
+    }
+
+    private func updateDivider() {
+        topDividerView.isHiddenInStackView = configuration?.dividerPosition == .bottom
+        bottomDividerView.isHiddenInStackView = isButtonless || configuration?.dividerPosition == .top
+
+        // the image touches the divider if it is at the top
+        headerImageViewWrapperBottomConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
+        buttonWrapperViewTopConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
     }
 
     private func update(_ button: UIButton, with buttonConfig: Config.ButtonConfig?) {
@@ -251,13 +288,19 @@ class FancyAlertViewController: UIViewController {
         }
 
         // Flingable handler is active if both buttons are hidden
-        handler.isActive = isAlertCompact
+        handler.isActive = isButtonless
     }
 
-    /// An alert is compact if both of the bottom buttons are hidden
+    /// An alert is buttonless if both of the bottom buttons are hidden
     ///
-    private var isAlertCompact: Bool {
+    private var isButtonless: Bool {
         return defaultButton.isHiddenInStackView && cancelButton.isHiddenInStackView
+    }
+
+    /// The header image is compact if the divider is at the top or the alert is buttonless
+    ///
+    private var isImageCompact: Bool {
+        return configuration?.dividerPosition == .top || isButtonless
     }
 
     // MARK: - Animation
