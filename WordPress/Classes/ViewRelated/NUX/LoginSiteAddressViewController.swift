@@ -33,8 +33,6 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         configureViewForEditingIfNeeded()
 
         navigationController?.setNavigationBarHidden(false, animated: false)
-
-        WPAppAnalytics.track(.loginURLFormViewed)
     }
 
 
@@ -43,7 +41,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
-
+        WPAppAnalytics.track(.loginURLFormViewed)
     }
 
 
@@ -244,6 +242,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = self
         present(alert, animated: true, completion: nil)
+        WPAnalytics.track(.loginURLHelpScreenViewed)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
