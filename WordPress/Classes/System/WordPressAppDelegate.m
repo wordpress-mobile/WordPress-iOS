@@ -21,8 +21,6 @@
 #import "WPCrashlytics.h"
 
 // Categories & extensions
-#import "NSBundle+VersionNumberHelper.h"
-#import "UIDevice+Helpers.h"
 
 // Data model
 #import "Blog.h"

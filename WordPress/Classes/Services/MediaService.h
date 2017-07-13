@@ -150,20 +150,31 @@
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
- Fetchs the associated the image for a Media object by downloading it or using the local cache if available.
+ Gets a local thumbnail image file URL for the Media item, or generates one, if available.
+
+ @discussion If the media asset is a video a frame of the video is returned.
+
+ @param mediaInRandomContext the Media object from where to get the thumbnail.
+ @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
+        exceed the maximum dimension of the UIScreen size.
+ @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
+ */
+- (void)thumbnailFileURLForMedia:(nonnull Media *)mediaInRandomContext
+                   preferredSize:(CGSize)preferredSize
+                      completion:(nonnull void (^)(NSURL * _Nullable url, NSError * _Nullable error))completion;
+/**
+ Gets a thumbnail image for the Media item, or generates one, if available.
  
  @discussion If the media asset is a video a frame of the video is returned.
 
- @param mediaInRandomContext the object from where to get the thumbnail
- @param preferredSize the preferred size for the image, if CGSizeZero the image returned has the image original pixel dimensions.
- @param success a block that will be invoked when the media is retrieved
- @param failure a block that will be invoked if an error happens, provinding an error object with details.
+ @param mediaInRandomContext the Media object from where to get the thumbnail.
+ @param preferredSize the preferred size for the image in points. If set to CGSizeZero the resulting image will not
+        exceed the maximum dimension of the UIScreen size.
+ @param completion block that will be invoked when the thumbnail is ready, if available, or an error if something went wrong.
  */
-- (void)imageForMedia:(nonnull Media *)mediaInRandomContext
-        preferredSize:(CGSize)preferredSize
-              success:(nullable void (^)(UIImage * _Nonnull image))success
-              failure:(nullable void (^)(NSError * _Nonnull error))failure;
-
+- (void)thumbnailImageForMedia:(nonnull Media *)mediaInRandomContext
+                 preferredSize:(CGSize)preferredSize
+                    completion:(nonnull void (^)(UIImage * _Nullable image, NSError * _Nullable error))completion;
 /**
  *  Get the number of items in a blog media library that are of a certain type.
  *

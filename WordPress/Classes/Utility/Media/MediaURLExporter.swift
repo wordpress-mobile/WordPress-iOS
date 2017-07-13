@@ -25,6 +25,7 @@ class MediaURLExporter: MediaExporter {
     public enum URLExportError: MediaExportError {
         case invalidFileURL
         case unknownFileUTI
+        case unsupportedFileType
 
         var description: String {
             switch self {
@@ -60,7 +61,7 @@ class MediaURLExporter: MediaExporter {
         } else if UTTypeConformsTo(typeIdentifier, kUTTypeImage) {
             return .image
         }
-        throw URLExportError.unknownFileUTI
+        throw URLExportError.unsupportedFileType
     }
 
     /// Exports a file of a supported type, to a new Media URL.
