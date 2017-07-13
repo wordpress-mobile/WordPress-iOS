@@ -9,7 +9,7 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
     open var title: String = "" {
         didSet {
             if title != oldValue {
-                titleLabel.text = title.uppercased(with: Locale.current)
+                titleLabel.text = title.localizedUppercase()
                 setNeedsLayout()
             }
         }
