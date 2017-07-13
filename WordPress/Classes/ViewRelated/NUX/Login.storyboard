@@ -306,7 +306,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Create an account on WordPress.com" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onu-DI-gxe">
                                                 <rect key="frame" x="16" y="59" width="343" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yx4-Vw-DFk">
@@ -386,7 +386,7 @@
                                                 <color key="textColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3A-gQ-xPp" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b3A-gQ-xPp" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="124.5" y="287" width="125" height="34"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxCreateAccountButton"/>
                                                 <constraints>
@@ -394,9 +394,6 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="CREATE ACCOUNT"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="handleSubmitButtonTapped:" destination="QDy-AC-sAr" eventType="touchUpInside" id="lYE-Ow-tKz"/>
                                                 </connections>
@@ -1086,26 +1083,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
-                                <rect key="frame" x="0.0" y="20" width="375" height="495"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
+                                <rect key="frame" x="-4" y="20" width="383" height="495"/>
                                 <connections>
                                     <segue destination="0GP-rM-Hvu" kind="embed" id="taY-7m-sQh"/>
                                 </connections>
                             </containerView>
                             <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juu-ng-v2N">
-                                <rect key="frame" x="0.0" y="515" width="375" height="152"/>
+                                <rect key="frame" x="-4" y="515" width="383" height="152"/>
                                 <subviews>
                                     <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
-                                        <rect key="frame" x="0.0" y="-10" width="375" height="10"/>
+                                        <rect key="frame" x="0.0" y="-10" width="383" height="10"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="10" id="P6k-Ic-btx"/>
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tnB-lr-Pvr">
-                                        <rect key="frame" x="20" y="20" width="335" height="108"/>
+                                        <rect key="frame" x="20" y="20" width="343" height="108"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTC-PV-ffk">
-                                                <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="cSh-Lw-mAl"/>
                                                 </constraints>
@@ -1118,7 +1115,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
-                                                <rect key="frame" x="0.0" y="64" width="335" height="44"/>
+                                                <rect key="frame" x="0.0" y="64" width="343" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
                                                 </constraints>
@@ -1152,10 +1149,10 @@
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="pCc-dg-bxb" firstAttribute="top" secondItem="juu-ng-v2N" secondAttribute="bottom" id="2YQ-AQ-fc2"/>
-                            <constraint firstItem="juu-ng-v2N" firstAttribute="leading" secondItem="gJB-TV-Tpp" secondAttribute="leading" id="LvJ-ZH-lPS"/>
-                            <constraint firstAttribute="trailing" secondItem="Onf-X6-J5w" secondAttribute="trailing" id="OQw-38-rm1"/>
-                            <constraint firstAttribute="trailing" secondItem="juu-ng-v2N" secondAttribute="trailing" id="UWB-Dd-jb9"/>
-                            <constraint firstItem="Onf-X6-J5w" firstAttribute="leading" secondItem="gJB-TV-Tpp" secondAttribute="leading" id="h9l-pW-sPl"/>
+                            <constraint firstItem="juu-ng-v2N" firstAttribute="leading" secondItem="gJB-TV-Tpp" secondAttribute="leadingMargin" constant="-20" id="LvJ-ZH-lPS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Onf-X6-J5w" secondAttribute="trailing" constant="-20" id="OQw-38-rm1"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="juu-ng-v2N" secondAttribute="trailing" constant="-20" id="UWB-Dd-jb9"/>
+                            <constraint firstItem="Onf-X6-J5w" firstAttribute="leading" secondItem="gJB-TV-Tpp" secondAttribute="leadingMargin" constant="-20" id="h9l-pW-sPl"/>
                             <constraint firstItem="juu-ng-v2N" firstAttribute="top" secondItem="Onf-X6-J5w" secondAttribute="bottom" id="kSC-dQ-z75"/>
                             <constraint firstItem="Onf-X6-J5w" firstAttribute="top" secondItem="Vw0-RX-ERM" secondAttribute="bottom" id="zHX-lw-7Nx"/>
                         </constraints>
@@ -1178,27 +1175,27 @@
             <objects>
                 <tableViewController id="0GP-rM-Hvu" customClass="LoginEpilogueTableView" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="495"/>
+                        <rect key="frame" x="0.0" y="0.0" width="383" height="495"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="userInfo" rowHeight="148" id="rFk-m6-PzB" customClass="LoginEpilogueUserInfoCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="148"/>
+                                <rect key="frame" x="0.0" y="28" width="383" height="148"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rFk-m6-PzB" id="Be1-mM-Agr">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="148"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-ni-wZB" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="157.5" y="20" width="60" height="60"/>
+                                            <rect key="frame" x="161.5" y="20" width="60" height="60"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="60" id="Omr-X8-XDl"/>
                                                 <constraint firstAttribute="width" constant="60" id="pI0-bo-l6s"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ONy-ZJ-GTI">
-                                            <rect key="frame" x="0.0" y="109.5" width="375" height="18"/>
+                                            <rect key="frame" x="0.0" y="109.5" width="383" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="UkN-Od-n0K"/>
                                             </constraints>
@@ -1207,21 +1204,21 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4RV-hS-DYN" userLabel="bottom hairline">
-                                            <rect key="frame" x="0.0" y="139.5" width="375" height="0.5"/>
+                                            <rect key="frame" x="0.0" y="139.5" width="383" height="0.5"/>
                                             <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.84313725490196079" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="A3O-Oh-nqx"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hv-UB-D9b" userLabel="top hairline">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="0.5"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="0.5" id="gaI-rY-zWc"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Men-mq-jKi">
-                                            <rect key="frame" x="20" y="89" width="335" height="20.5"/>
+                                            <rect key="frame" x="20" y="89" width="343" height="20.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Z2K-dy-J3D"/>
                                             </constraints>
@@ -1230,7 +1227,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zfb-lS-v47" userLabel="bottom pad">
-                                            <rect key="frame" x="0.0" y="140" width="375" height="8"/>
+                                            <rect key="frame" x="0.0" y="140" width="383" height="8"/>
                                             <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="8" id="wB5-3u-5Pm"/>
@@ -1266,10 +1263,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="52" id="Efm-ja-Y8C" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="176" width="375" height="52"/>
+                                <rect key="frame" x="0.0" y="176" width="383" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Efm-ja-Y8C" id="Xid-Yh-Kpa">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="52"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rtc-ao-Fl6">
@@ -1470,8 +1467,8 @@
                                 </variation>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9">
-                                <rect key="frame" x="105.5" y="628" width="172" height="28"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <rect key="frame" x="94" y="626" width="195" height="30"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <state key="normal" title="Enter your password instead">
                                     <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -1583,8 +1580,8 @@
                                 </variation>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax">
-                                <rect key="frame" x="105.5" y="628" width="172" height="28"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <rect key="frame" x="94" y="626" width="195" height="30"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <state key="normal" title="Enter your password instead">
                                     <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -2098,8 +2095,8 @@
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ySQ-EM-6JI"/>
         <segue reference="qLI-qX-rkG"/>
-        <segue reference="lIb-sw-yM7"/>
+        <segue reference="Jfl-Zm-PRR"/>
+        <segue reference="7lv-19-h36"/>
     </inferredMetricsTieBreakers>
 </document>
