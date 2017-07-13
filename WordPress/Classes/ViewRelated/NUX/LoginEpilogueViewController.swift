@@ -36,6 +36,10 @@ class LoginEpilogueViewController: UIViewController {
         }
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     @IBAction func dismissEpilogue() {
         dismissBlock?(false)
         navigationController?.dismiss(animated: true, completion: nil)
