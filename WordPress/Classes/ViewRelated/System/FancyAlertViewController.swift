@@ -164,6 +164,7 @@ class FancyAlertViewController: UIViewController {
         wrapperView.layer.masksToBounds = true
         wrapperView.layer.cornerRadius = Constants.cornerRadius
 
+        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
         topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
         bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
 
@@ -213,7 +214,6 @@ class FancyAlertViewController: UIViewController {
         updateDivider()
 
         updateHeaderImage()
-        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
 
         update(defaultButton, with: configuration.defaultButton)
         update(cancelButton, with: configuration.cancelButton)
@@ -262,7 +262,7 @@ class FancyAlertViewController: UIViewController {
         topDividerView.isHiddenInStackView = configuration?.dividerPosition == .bottom
         bottomDividerView.isHiddenInStackView = isButtonless || configuration?.dividerPosition == .top
 
-        // the image touches the divider if its at the top
+        // the image touches the divider if it is at the top
         headerImageViewWrapperBottomConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
         buttonWrapperViewTopConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
     }
@@ -297,7 +297,7 @@ class FancyAlertViewController: UIViewController {
         return defaultButton.isHiddenInStackView && cancelButton.isHiddenInStackView
     }
 
-    /// An alert is image compact if the divider is at the top or the alert is buttonless
+    /// The header image is compact if the divider is at the top or the alert is buttonless
     ///
     private var isImageCompact: Bool {
         return configuration?.dividerPosition == .top || isButtonless
