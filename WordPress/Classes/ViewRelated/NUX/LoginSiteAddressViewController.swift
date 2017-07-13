@@ -237,9 +237,11 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         validateForm()
     }
 
-
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        // TODO: Wire up when the new help screen is implemented.
+        let alert = FancyAlertViewController.siteAddressHelpController()
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true, completion: nil)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
@@ -258,5 +260,15 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
+    }
+}
+
+extension LoginSiteAddressViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
     }
 }
