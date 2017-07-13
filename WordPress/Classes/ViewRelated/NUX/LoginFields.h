@@ -4,12 +4,17 @@
  *  This class is a wrapper for the fields needed for logging into a WordPress site.
  */
 NS_ASSUME_NONNULL_BEGIN
+
+@class SiteInfo;
+
 @interface LoginFields : NSObject
 
 @property (nonatomic, copy) NSString *emailAddress;
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) NSString *siteUrl;
+@property (nonatomic, copy, nullable) NSURL *xmlRPCURL; // Should be the sites xmlrpc endpoint if logging in that way.
+@property (nonatomic, nullable) SiteInfo *siteInfo;
 @property (nonatomic, copy) NSString *multifactorCode;
 @property (nonatomic, assign) BOOL passwordless; // only wpcom users will be passwordless.
 @property (nonatomic, assign) BOOL userIsDotCom;

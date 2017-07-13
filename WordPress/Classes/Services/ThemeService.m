@@ -1,11 +1,10 @@
 #import "ThemeService.h"
 
 #import "Blog.h"
-#import "RemoteTheme.h"
 #import "Theme.h"
-#import "ThemeServiceRemote.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
+@import WordPressKit;
 
 /**
  *  @brief      Place unordered themes after loaded pages

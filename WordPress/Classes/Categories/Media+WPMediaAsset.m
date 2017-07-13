@@ -10,15 +10,9 @@
 {
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-    [mediaService imageForMedia:self size:size success:^(UIImage *image) {
-        if (completionHandler) {
-            completionHandler(image, nil);
-        }
-    } failure:^(NSError *error) {
-        if (completionHandler) {
-            completionHandler(nil, error);
-        }
-    }];
+    [mediaService thumbnailImageForMedia:self
+                           preferredSize:size
+                              completion:completionHandler];
 
     return [self.mediaID intValue];
 }

@@ -1,7 +1,7 @@
 import UIKit
 import CocoaLumberjack
 import NSURL_IDN
-import WordPressComAnalytics
+import WordPressShared
 
 /// A collection of helper methods for NUX.
 ///
@@ -80,7 +80,7 @@ import WordPressComAnalytics
         }
         controller.restrictToWPCom = true
 
-        let navController = NUXNavigationController(rootViewController: controller)
+        let navController = LoginNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
     }
 
@@ -106,11 +106,11 @@ import WordPressComAnalytics
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "selfHosted") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController else {
             return
         }
 
-        let navController = NUXNavigationController(rootViewController: controller)
+        let navController = LoginNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
     }
 
@@ -168,7 +168,15 @@ import WordPressComAnalytics
 
         var controller: UIViewController
         if let email = getEmailAddressForTokenAuth() {
-            controller = SigninLinkAuthViewController.controller(email, token: token)
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            if Feature.enabled(.newLogin),
+                let loginController = storyboard.instantiateViewController(withIdentifier: "loginLinkAuth") as? LoginLinkAuthViewController {
+                loginController.email = email
+                loginController.token = token
+                controller = loginController
+            } else {
+                controller = SigninLinkAuthViewController.controller(email, token: token)
+            }
             WPAppAnalytics.track(.loginMagicLinkOpened)
         } else {
             controller = SigninEmailViewController.controller()
@@ -186,7 +194,7 @@ import WordPressComAnalytics
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
-        if let presenter = rootViewController.presentedViewController, presenter.isKind(of: NUXNavigationController.self) {
+        if let presenter = rootViewController.presentedViewController, presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of:LoginNavigationController.self) {
             rootViewController.dismiss(animated: false, completion: {
                 rootViewController.present(navController, animated: false, completion: nil)
             })

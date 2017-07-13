@@ -11,7 +11,7 @@ def shared_with_all_pods
   pod 'CocoaLumberjack', '~> 3.2.0'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.1'
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'WordPressCom-Analytics-iOS', '0.1.30'
+  pod 'UIDeviceIdentifier', '~> 0.1'
 end
 
 def shared_with_networking_pods
@@ -39,7 +39,6 @@ target 'WordPress' do
   pod 'MRProgress', '~>0.7.0'
   pod 'Reachability',	'3.2'
   pod 'SVProgressHUD', '~>2.1.2'
-  pod 'UIDeviceIdentifier', '~> 0.1'
   pod 'Crashlytics'
   pod 'BuddyBuildSDK', '~> 1.0.15', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '~> 1.0'
@@ -53,12 +52,11 @@ target 'WordPress' do
   # WordPress components
   # --------------------
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
-  pod 'Gridicons', '0.8'
+  pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.18'
-  pod 'WordPress-iOS-Editor', '1.9.2'
-	# Temporarily point at a develop commit to get Frosty's delegate method for tapping the more items/overflow button
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '111f22d959e6e0ae6304ef1886413ee0437105a4' # '1.0.0-beta.4'
+  pod 'WordPress-iOS-Editor', '1.9.3'
+  pod 'WordPress-Aztec-iOS', '= 1.0.0-beta.8'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -122,5 +120,7 @@ target 'WordPressShared' do
     inherit! :search_paths
 
     shared_test_pods
+    pod 'Specta', '1.0.5'
+    pod 'Expecta', '1.0.5'
   end
 end

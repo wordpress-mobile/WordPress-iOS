@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComAnalytics
 import WordPressShared
 
 /// A base class for the various NUX related related view controllers.
@@ -61,20 +60,6 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let source = segue.source as? NUXAbstractViewController else {
-            return
-        }
-
-        if let destination = segue.destination as? LoginEpilogueViewController {
-            destination.dismissBlock = source.dismissBlock
-        } else if let destination = segue.destination as? NUXAbstractViewController {
-            destination.loginFields = source.loginFields
-            destination.restrictToWPCom = source.restrictToWPCom
-            destination.dismissBlock = source.dismissBlock
-        }
     }
 
 
