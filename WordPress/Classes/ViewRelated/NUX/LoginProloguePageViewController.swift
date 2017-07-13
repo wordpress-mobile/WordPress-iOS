@@ -5,7 +5,7 @@ class LoginProloguePageViewController: UIPageViewController {
     fileprivate var pageControl: UIPageControl?
     fileprivate var bgAnimation: UIViewPropertyAnimator?
     fileprivate struct Constants {
-        static let topPadding: CGFloat = 20.0
+        static let topPadding: CGFloat = 26.0
         static let pageControlHeight: CGFloat = 40.0
     }
 
