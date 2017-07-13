@@ -1,5 +1,6 @@
 import XCTest
 
+import WordPressKit
 @testable import WordPress
 
 class AbstractPostTest: XCTestCase {

@@ -31,6 +31,7 @@
 #import "AbstractPost.h"
 #import "Media+HTML.h"
 #import "WordPress-Swift.h"
+@import WordPressKit;
 
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
