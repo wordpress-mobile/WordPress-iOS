@@ -31,13 +31,8 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         configureTextFields()
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
-<<<<<<< HEAD
-=======
 
         navigationController?.setNavigationBarHidden(false, animated: false)
-
-        WPAppAnalytics.track(.loginURLFormViewed)
->>>>>>> a06e2bc4fedcbeebf47dc74c1ceb58ca205539f0
     }
 
 
