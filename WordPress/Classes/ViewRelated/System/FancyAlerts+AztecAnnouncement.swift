@@ -17,7 +17,7 @@ extension FancyAlertViewController {
         }()
         static let successAnimationDuration: TimeInterval = 0.8
         static let successAnimationDampingRaio: CGFloat = 0.6
-        static let confettiViewInset: CGFloat = -40.0
+        static let confettiViewInset: CGSize = CGSize(width: -20.0, height: -40.0)
         static let confettiDuration: TimeInterval = 2.0
     }
 
@@ -51,11 +51,11 @@ extension FancyAlertViewController {
         }
 
         let addConfetti: (FancyAlertButtonHandler) = { controller in
-            guard let imageView = controller.headerImageView else { return }
+            guard let imageView = controller.headerImageView, let imageViewHolder = imageView.superview else { return }
 
             let confettiView = ConfettiView.aztecAnnouncementConfettiView()
-            confettiView.frame = imageView.bounds.insetBy(dx: Constants.confettiViewInset,
-                                                          dy: Constants.confettiViewInset)
+            confettiView.frame = imageViewHolder.bounds.insetBy(dx: Constants.confettiViewInset.width,
+                                                                dy: Constants.confettiViewInset.height)
             imageView.superview?.addSubview(confettiView)
 
             confettiView.start(duration: Constants.confettiDuration)
@@ -107,6 +107,7 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
+                                                     dividerPosition: .bottom,
                                                      defaultButton: defaultButton,
                                                      cancelButton: cancelButton,
                                                      moreInfoButton: moreInfoButton,
@@ -142,6 +143,7 @@ extension FancyAlertViewController {
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
                                                      headerImage: image,
+                                                     dividerPosition: .bottom,
                                                      defaultButton: nil,
                                                      cancelButton: nil,
                                                      moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
@@ -175,6 +177,7 @@ extension FancyAlertViewController {
         return FancyAlertViewController.Config(titleText: Strings.titleText,
                                                bodyText: Strings.bodyText,
                                                headerImage: image,
+                                               dividerPosition: .bottom,
                                                defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton,
                                                dismissAction: {
                                                 WPTabBarController.sharedInstance().showPostTab(animated: true, toMedia: false)
