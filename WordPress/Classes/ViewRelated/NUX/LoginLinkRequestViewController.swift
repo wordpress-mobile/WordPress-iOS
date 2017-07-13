@@ -63,6 +63,7 @@ class LoginLinkRequestViewController: LoginViewController {
         let usePasswordTitle = NSLocalizedString("Enter your password instead.", comment: "Title of a button. ")
         usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
+        usePasswordButton?.titleLabel?.numberOfLines = 0
     }
 
     func configureLoading(_ animating: Bool) {
