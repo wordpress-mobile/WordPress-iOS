@@ -245,7 +245,7 @@ extension WPWebViewController {
         guard HelpshiftUtils.isHelpshiftEnabled() else { return }
 
         let presenter = HelpshiftPresenter()
-        presenter.sourceTag = SupportSourceTag.inAppFeedback
+        presenter.sourceTag = SupportSourceTag.aztecFeedback
         presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                        refreshUserDetails: true,
                                                                        completion:nil)

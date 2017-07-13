@@ -11,6 +11,7 @@ def shared_with_all_pods
   pod 'CocoaLumberjack', '~> 3.2.0'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.1'
   pod 'NSObject-SafeExpectations', '0.0.2'
+  pod 'UIDeviceIdentifier', '~> 0.1'
 end
 
 def shared_with_networking_pods
@@ -38,7 +39,6 @@ target 'WordPress' do
   pod 'MRProgress', '~>0.7.0'
   pod 'Reachability',	'3.2'
   pod 'SVProgressHUD', '~>2.1.2'
-  pod 'UIDeviceIdentifier', '~> 0.1'
   pod 'Crashlytics'
   pod 'BuddyBuildSDK', '~> 1.0.15', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '~> 1.0'
