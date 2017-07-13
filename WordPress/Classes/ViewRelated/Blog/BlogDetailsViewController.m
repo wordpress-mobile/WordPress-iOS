@@ -108,7 +108,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
@@ -262,6 +262,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self reloadTableViewPreservingSelection];
     [self preloadBlogData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [self showAztecAnnouncement];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -1005,6 +1012,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 }
 
+- (void)showAztecAnnouncement
+{
+    if (![[NSUserDefaults standardUserDefaults] aztecAnnouncementWasDisplayed]) {
+        [[NSUserDefaults standardUserDefaults] setAztecAnnouncementWasDisplayed:YES];
+
+        FancyAlertViewController *controller = [FancyAlertViewController aztecAnnouncementController];
+        controller.modalPresentationStyle = UIModalPresentationCustom;
+        controller.transitioningDelegate = self;
+
+        [self.tabBarController presentViewController:controller animated:YES completion:nil];
+    }
+}
+
 #pragma mark - Remove Site
 
 - (void)showRemoveSiteAlert
@@ -1060,6 +1080,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     statsView.statsService = self.statsService;
 
     return statsView;
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
+{
+    if ([presented isKindOfClass:[FancyAlertViewController class]]) {
+        return [[FancyAlertPresentationController alloc] initWithPresentedViewController:presented
+                                                                presentingViewController:presenting];
+    }
+
+    return nil;
 }
 
 @end

@@ -1,10 +1,8 @@
 import UIKit
 
-class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
+class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
-    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
@@ -20,8 +18,6 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBarIcon()
-
         localizeControls()
     }
 
@@ -35,6 +31,8 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
         configureTextFields()
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
+
+        navigationController?.setNavigationBarHidden(false, animated: false)
 
         WPAppAnalytics.track(.loginURLFormViewed)
     }
@@ -69,12 +67,12 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     func localizeControls() {
         instructionLabel.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
 
-        siteURLField.placeholder = NSLocalizedString("example.wordress.com", comment: "Site Address placeholder")
+        siteURLField.placeholder = NSLocalizedString("example.wordpress.com", comment: "Site Address placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Next Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
 
         let siteAddressHelpTitle = NSLocalizedString("Need help finding your site address?", comment: "A button title.")
         siteAddressHelpButton.setTitle(siteAddressHelpTitle, for: UIControlState())
@@ -93,10 +91,10 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
-        submitButton.showActivityIndicator(animating)
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
 
-        submitButton.isEnabled = (
+        submitButton?.isEnabled = (
             !animating && canSubmit()
         )
     }
@@ -106,7 +104,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         siteURLField.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
@@ -144,8 +142,10 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
         let facade = WordPressXMLRPCAPIFacade()
         facade.guessXMLRPCURL(forSite: loginFields.siteUrl, success: { [weak self] (url) in
-            self?.configureViewLoading(false)
-            self?.showSelfHostedUsernamePassword()
+            if let url = url {
+                self?.loginFields.xmlRPCURL = url
+            }
+            self?.fetchSiteInfo()
 
         }, failure: { [weak self] (error) in
             guard let error = error, let strongSelf = self else {
@@ -178,6 +178,24 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     }
 
 
+    func fetchSiteInfo() {
+        let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteUrl) as NSString
+        if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
+
+            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            service.fetchSiteInfo(forAddress: siteAddress, success: { [weak self] (siteInfo) in
+                self?.loginFields.siteInfo = siteInfo
+                self?.showSelfHostedUsernamePassword()
+            }, failure: { [weak self] (error) in
+                self?.showSelfHostedUsernamePassword()
+            })
+
+        } else {
+            showSelfHostedUsernamePassword()
+        }
+    }
+
+
     func originalErrorOrError(error: NSError) -> NSError {
         guard let err = error.userInfo[XMLRPCOriginalErrorKey] as? NSError else {
             return error
@@ -196,14 +214,8 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
 
     func showSelfHostedUsernamePassword() {
+        configureViewLoading(false)
         performSegue(withIdentifier: .showURLUsernamePassword, sender: self)
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
     }
 
 
@@ -227,9 +239,11 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
         validateForm()
     }
 
-
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        // TODO: Wire up when the new help screen is implemented.
+        let alert = FancyAlertViewController.siteAddressHelpController()
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true, completion: nil)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
@@ -248,5 +262,15 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
     func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
+    }
+}
+
+extension LoginSiteAddressViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
     }
 }

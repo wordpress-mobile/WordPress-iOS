@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import WordPressShared
+import WordPressKit
 
 class PlanPostPurchaseViewController: UIViewController {
 

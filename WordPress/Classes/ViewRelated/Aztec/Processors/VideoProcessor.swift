@@ -77,7 +77,7 @@ public struct VideoProcessor {
             if let src = shortcode.attributes.named["src"] {
                 html += "src=\"\(src)\" "
             }
-            if let poster = shortcode.attributes.named["poster"] {
+            if let poster = shortcode.attributes.named["poster"], let posterURL = URL(string: poster), !posterURL.isFileURL {
                 html += "poster=\"\(poster)\" "
             }
             html += "]"

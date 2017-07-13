@@ -35,7 +35,7 @@ class MediaImageExporterTests: XCTestCase {
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (imageExport) in
                                 MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
                                 MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
@@ -55,7 +55,7 @@ class MediaImageExporterTests: XCTestCase {
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (imageExport) in
                                 MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
                                 MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
@@ -97,7 +97,7 @@ class MediaImageExporterTests: XCTestCase {
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = true
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (imageExport) in
                                 MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
                                 MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
@@ -116,7 +116,7 @@ class MediaImageExporterTests: XCTestCase {
         let exporter = MediaImageExporter()
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = false
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (imageExport) in
                                 MediaImageExporterTests.validateImageExportDidNotStripGPS(imageExport)
                                 MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
@@ -137,7 +137,7 @@ class MediaImageExporterTests: XCTestCase {
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = true
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (imageExport) in
                                 MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
                                 MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
@@ -159,7 +159,7 @@ class MediaImageExporterTests: XCTestCase {
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = false
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(atURL: url,
+        exporter.exportImage(atFile: url,
                              onCompletion: { (imageExport) in
                                 MediaImageExporterTests.validateImageExportDidNotStripGPS(imageExport)
                                 MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)

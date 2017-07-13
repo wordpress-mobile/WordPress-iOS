@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSNumber *filesize;
 @property (nonatomic, strong, nullable) NSNumber *height;
 @property (nonatomic, strong, nullable) NSNumber *length;
+@property (nonatomic, strong, nullable) NSString *localThumbnailIdentifier;
 @property (nonatomic, strong, nullable) NSString *localThumbnailURL;
 @property (nonatomic, strong, nullable) NSString *localURL;
 @property (nonatomic, strong, nullable) NSNumber *mediaID;
@@ -53,10 +54,23 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 @property (nonatomic, assign) MediaType mediaType;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
+
+/**
+ Local file URL for the Media's asset. e.g. an image, video, gif or other file.
+ */
 @property (nonatomic, strong, nullable) NSURL *absoluteLocalURL;
+
+/**
+ Local file URL for a preprocessed thumbnail of the Media's asset. This may be nil if the
+ thumbnail has been deleted from the cache directory.
+
+ Note: it is recommended to instead use MediaService to generate thumbnails with a preferred size.
+ */
 @property (nonatomic, strong, nullable) NSURL *absoluteThumbnailLocalURL;
+
 /// Returns true if the media object already exists on the server
 @property (nonatomic, readonly) BOOL hasRemote;
+
 // Helper methods
 
 + (NSString *)stringFromMediaType:(MediaType)mediaType;

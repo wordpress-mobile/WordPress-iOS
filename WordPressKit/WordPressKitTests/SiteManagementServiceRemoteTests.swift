@@ -39,7 +39,7 @@ class SiteManagementServiceRemoteTests: RemoteTestCase, RESTTestable {
     override func setUp() {
         super.setUp()
 
-        remote = SiteManagementServiceRemote(wordPressComRestApi: restApi)
+        remote = SiteManagementServiceRemote(wordPressComRestApi: getRestApi())
     }
 
     override func tearDown() {

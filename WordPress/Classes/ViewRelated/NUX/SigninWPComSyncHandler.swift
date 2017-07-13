@@ -1,6 +1,6 @@
 import UIKit
 import CocoaLumberjack
-import WordPressComAnalytics
+import WordPressShared
 
 /// A protocol and extension encapsulating syncing behavior common to WPCom
 /// signin controllers.  Responsible for syncing account information and blog
