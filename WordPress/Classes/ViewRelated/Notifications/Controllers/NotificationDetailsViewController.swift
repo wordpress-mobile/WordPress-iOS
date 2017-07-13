@@ -380,7 +380,7 @@ extension NotificationDetailsViewController {
     func setupReplyTextView() {
         let replyTextView = ReplyTextView(width: view.frame.width)
         replyTextView.placeholder = NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view")
-        replyTextView.replyText = NSLocalizedString("Reply", comment: "").localizedUppercase()
+        replyTextView.replyText = NSLocalizedString("Reply", comment: "").localizedUppercase
         replyTextView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
         replyTextView.onReply = { [weak self] content in
