@@ -51,6 +51,7 @@ class LoginLinkMailViewController: LoginViewController {
         let usePasswordTitle = NSLocalizedString("Enter your password instead.", comment: "Title of a button on the magic link screen.")
         usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
+        usePasswordButton?.titleLabel?.numberOfLines = 0
     }
 
     // let the storyboard's style stay

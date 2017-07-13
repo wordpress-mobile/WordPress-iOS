@@ -122,6 +122,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
+        forgotPasswordButton?.titleLabel?.numberOfLines = 0
     }
 
     // let the storyboard's style stay
