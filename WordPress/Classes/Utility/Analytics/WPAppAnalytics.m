@@ -75,13 +75,23 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 - (void)initializeAppTracking
 {
     [self initializeUsageTrackingIfNecessary];
-    
-    [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
-    [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
 
-    if ([self isTrackingUsage]) {
+    BOOL trackingEnabled = [WPAppAnalytics isTrackingUsage];
+    if (trackingEnabled) {
+        [self registerTrackers];
         [self beginSession];
     }
+}
+
+- (void)registerTrackers
+{
+    [WPAnalytics registerTracker:[WPAnalyticsTrackerWPCom new]];
+    [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
+}
+
+- (void)clearTrackers
+{
+    [WPAnalytics clearTrackers];
 }
 
 #pragma mark - Notifications
@@ -291,21 +301,24 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 #pragma mark - Usage tracking
 
-- (BOOL)isTrackingUsage
++ (BOOL)isTrackingUsage
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking];
 }
 
 - (void)setTrackingUsage:(BOOL)trackingUsage
 {
-    if (trackingUsage != [self isTrackingUsage]) {
+    if (trackingUsage != [WPAppAnalytics isTrackingUsage]) {
         [[NSUserDefaults standardUserDefaults] setBool:trackingUsage
                                                 forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
         if (trackingUsage) {
+            [self registerTrackers];
             [self beginSession];
         } else {
             [self endSession];
+            [self clearTrackers];
         }
     }
 }

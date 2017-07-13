@@ -1,6 +1,5 @@
 import UIKit
 import SVProgressHUD
-import WordPressComAnalytics
 import WordPressShared
 
 /// Provides a form and functionality for entering a two factor auth code and

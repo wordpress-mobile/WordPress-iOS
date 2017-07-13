@@ -1,11 +1,11 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of UIImages.
+/// Media export handling of UIImages.
 ///
 class MediaImageExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaDirectory = .uploads
 
     /// Export options.
     ///
@@ -125,15 +125,17 @@ class MediaImageExporter: MediaExporter {
         }
     }
 
-    /// Exports and writes image data located at a URL, to a local Media URL.
+    /// Exports and writes image data located at a file URL, to a local Media URL.
     ///
     /// A JPEG or PNG is expected, but not necessarily required. The export will write the same data format
     /// as found at the URL, or will throw if the type is unknown or fails.
     ///
-    /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
-    /// - parameter onError: Called if an error was encountered during creation.
+    /// - Parameters:
+    ///     - url: The fileURL of image.
+    ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
+    ///     - onError: Called if an error was encountered during creation.
     ///
-    func exportImage(atURL url: URL, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
+    func exportImage(atFile url: URL, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
             let identifierHint = url.resourceTypeIdentifierFileExtension ?? kUTTypeJPEG as String
             let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: identifierHint as CFString]
@@ -155,17 +157,17 @@ class MediaImageExporter: MediaExporter {
 
     /// Exports and writes an image source, to a local Media URL.
     ///
-    /// - parameter fileName: Filename if it's known.
-    /// - parameter onCompletion: Called on successful export, with the local file URL of the exported UIImage.
-    /// - parameter onError: Called if an error was encountered during creation.
+    /// - Parameters:
+    ///     - fileName: Filename if it's known.
+    ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
+    ///     - onError: Called if an error was encountered during creation.
     ///
     func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping OnImageExport, onError: OnExportError) {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
-            let url = try MediaLibrary.makeLocalMediaURL(withFilename: filename,
-                                                         fileExtension: URL.fileExtensionForUTType(type),
-                                                         type: mediaDirectoryType)
+            let url = try mediaFileManager.makeLocalMediaURL(withFilename: filename,
+                                                               fileExtension: URL.fileExtensionForUTType(type))
 
             // Check MediaSettings and configure the image writer as needed.
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)

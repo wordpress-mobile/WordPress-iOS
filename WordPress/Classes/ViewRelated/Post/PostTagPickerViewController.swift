@@ -197,6 +197,10 @@ private extension PostTagPickerViewController {
 
 extension PostTagPickerViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
+        guard textView.markedTextRange == nil else {
+            // Don't try to normalize if we're still in multistage input
+            return
+        }
         normalizeText()
         updateSuggestions()
     }
