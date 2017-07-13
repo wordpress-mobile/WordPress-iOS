@@ -127,7 +127,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     PublicizeService *publicizer = self.publicizeServices[indexPath.row];
     NSArray *connections = [self connectionsForService:publicizer];
-    if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceId] && [connections count] == 0) { // Temporarily hiding Google+
+    if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceID] && [connections count] == 0) { // Temporarily hiding Google+
         return 0;
     } else {
         return UITableViewAutomaticDimension;
@@ -162,7 +162,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     PublicizeService *publicizer = self.publicizeServices[indexPath.row];
     NSArray *connections = [self connectionsForService:publicizer];
     
-    if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceId] && [connections count] == 0) { // Temporarily hiding Google+
+    if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceID] && [connections count] == 0) { // Temporarily hiding Google+
         cell.hidden = YES;
         return;
     }
