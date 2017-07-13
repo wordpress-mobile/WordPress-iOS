@@ -9,7 +9,6 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "Blog.h"
-#import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
 #import "WPTabBarController.h"
 #import "HelpshiftUtils.h"
@@ -24,6 +23,7 @@ SupportSourceTag const SupportSourceTagWPOrgLogin = @"origin:wporg-login-screen"
 SupportSourceTag const SupportSourceTagJetpackLogin = @"origin:jetpack-login-screen";
 SupportSourceTag const SupportSourceTagGeneralLogin = @"origin:login-screen";
 SupportSourceTag const SupportSourceTagInAppFeedback = @"origin:in-app-feedback";
+SupportSourceTag const SupportSourceTagAztecFeedback = @"origin:aztec-feedback";
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 

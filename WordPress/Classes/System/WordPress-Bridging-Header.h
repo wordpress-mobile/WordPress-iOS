@@ -49,7 +49,6 @@
 
 #import "NavBarTitleDropdownButton.h"
 #import "NSAttributedString+Util.h"
-#import "NSBundle+VersionNumberHelper.h"
 #import "NSObject+Helpers.h"
 #import "NSURL+Util.h"
 
@@ -109,7 +108,6 @@
 
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
-#import "UIDevice+Helpers.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
 #import "UIView+Subviews.h"
