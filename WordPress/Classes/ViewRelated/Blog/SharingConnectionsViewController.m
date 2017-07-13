@@ -89,7 +89,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (![self hasConnectedAccounts] || [self.publicizeService.serviceID isEqualToString:@"google_plus"]) {
+    if (![self hasConnectedAccounts] || [self.publicizeService.serviceID isEqualToString:PublicizeService.googlePlusServiceId]) {
         return 1;
     } else {
         return 2;
