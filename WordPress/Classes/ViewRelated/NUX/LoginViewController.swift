@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 
 class LoginViewController: NUXAbstractViewController {
     @IBOutlet var errorLabel: UILabel?
@@ -24,8 +25,8 @@ class LoginViewController: NUXAbstractViewController {
     /// Places the WordPress logo in the navbar
     ///
     func setupNavBarIcon() {
-        let image = UIImage(named: "social-wordpress")
-        let imageView = UIImageView(image: image?.imageWithTintColor(UIColor.white))
+        let image = Gridicon.iconOfType(.mySites)
+        let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
     }
 
