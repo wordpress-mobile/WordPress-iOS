@@ -46,6 +46,7 @@ class LoginLinkRequestViewController: LoginViewController {
         super.viewDidAppear(animated)
         assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
                "Only present parts of the magic link signin flow from the application's root vc.")
+        WPAppAnalytics.track(.loginMagicLinkRequestFormViewed)
     }
 
     // MARK: - Configuration
@@ -100,6 +101,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
             }, failure: { [weak self] (error: Error) in
                 WPAppAnalytics.track(.loginMagicLinkFailed)
+                WPAppAnalytics.track(.loginFailed, error: error)
                 guard let strongSelf = self else {
                     return
                 }

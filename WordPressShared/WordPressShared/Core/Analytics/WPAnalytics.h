@@ -74,7 +74,6 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatLoginAutoFillCredentialsFilled,
     WPAnalyticsStatLoginAutoFillCredentialsUpdated,
     WPAnalyticsStatLoginEmailFormViewed,
-    WPAnalyticsStatLoginEmailRetryViewed,
     WPAnalyticsStatLoginEpilogueViewed,
     WPAnalyticsStatLoginForgotPasswordClicked,
     WPAnalyticsStatLoginMagicLinkOpenEmailClientViewed,
