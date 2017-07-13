@@ -54,7 +54,8 @@ extension FancyAlertViewController {
             guard let imageView = controller.headerImageView, let imageViewHolder = imageView.superview else { return }
 
             let confettiView = ConfettiView.aztecAnnouncementConfettiView()
-            confettiView.frame = imageViewHolder.bounds.insetBy(dx: Constants.confettiViewInset.width, dy: Constants.confettiViewInset.height)
+            confettiView.frame = imageViewHolder.bounds.insetBy(dx: Constants.confettiViewInset.width,
+                                                                dy: Constants.confettiViewInset.height)
             imageView.superview?.addSubview(confettiView)
 
             confettiView.start(duration: Constants.confettiDuration)

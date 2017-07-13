@@ -1,10 +1,6 @@
 import UIKit
 
 extension FancyAlertViewController {
-    private enum Constants {
-        static let successAnimationDuration: TimeInterval = 0.8
-    }
-
     static func siteAddressHelpController() -> FancyAlertViewController {
         struct Strings {
             static let titleText = NSLocalizedString("What's my site address?", comment: "Title of alert helping users understand their site address")
