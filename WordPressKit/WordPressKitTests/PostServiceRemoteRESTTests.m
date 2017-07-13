@@ -1,10 +1,9 @@
+#import <Foundation/Foundation.h>
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
-#import "Blog.h"
-#import "ContextManager.h"
 #import "PostServiceRemoteREST.h"
 #import "RemotePost.h"
-#import "TestContextManager.h"
+#import <WordPressKit/WordPressKit-Swift.h>
 
 @interface PostServiceRemoteRESTTests : XCTestCase
 @end
