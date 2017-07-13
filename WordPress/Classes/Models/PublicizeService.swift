@@ -3,7 +3,7 @@ import CoreData
 
 open class PublicizeService: NSManagedObject {
     static let googlePlusServiceId = "google_plus"
-    
+
     @NSManaged open var connectURL: String
     @NSManaged open var detail: String
     @NSManaged open var icon: String
