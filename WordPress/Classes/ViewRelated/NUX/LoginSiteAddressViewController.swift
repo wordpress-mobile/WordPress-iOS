@@ -31,6 +31,13 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         configureTextFields()
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
+<<<<<<< HEAD
+=======
+
+        navigationController?.setNavigationBarHidden(false, animated: false)
+
+        WPAppAnalytics.track(.loginURLFormViewed)
+>>>>>>> a06e2bc4fedcbeebf47dc74c1ceb58ca205539f0
     }
 
 
@@ -235,9 +242,11 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         validateForm()
     }
 
-
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        // TODO: Wire up when the new help screen is implemented.
+        let alert = FancyAlertViewController.siteAddressHelpController()
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true, completion: nil)
         WPAnalytics.track(.loginURLHelpScreenViewed)
     }
 
@@ -257,5 +266,15 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
+    }
+}
+
+extension LoginSiteAddressViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
     }
 }

@@ -12,7 +12,7 @@ import WordPressShared
     override func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
 
-        titleLabel?.font = WPFontManager.systemSemiBoldFont(ofSize: 17.0)
+        titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline)
 
         let normalImage: UIImage?
         let highlightImage: UIImage?
