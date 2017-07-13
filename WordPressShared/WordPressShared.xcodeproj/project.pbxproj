@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		740B23CC1F17F1FF00067A2A /* DisplayableImageHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 740B23CA1F17F1FF00067A2A /* DisplayableImageHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740B23CD1F17F1FF00067A2A /* DisplayableImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B23CB1F17F1FF00067A2A /* DisplayableImageHelper.m */; };
+		740B23CF1F17F28E00067A2A /* DisplayableImageHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B23CE1F17F28E00067A2A /* DisplayableImageHelperTest.m */; };
 		7414BD521F13CB90005759F8 /* DictionaryHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414BD511F13CB90005759F8 /* DictionaryHelpersTests.swift */; };
 		7414BD551F13CBE0005759F8 /* Dictionary+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414BD531F13CBE0005759F8 /* Dictionary+Helpers.swift */; };
 		7414BD561F13CBE0005759F8 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7414BD541F13CBE0005759F8 /* String+Helpers.swift */; };
@@ -94,6 +97,9 @@
 		3BEDE0D11F9FF330B15F3EBB /* Pods-WordPressShared.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShared.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared.release-internal.xcconfig"; sourceTree = "<group>"; };
 		43E0D903D4F0FD20F82AF73E /* Pods_WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DFF858893655555943F9A96 /* Pods-WordPressSharedTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressSharedTests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressSharedTests/Pods-WordPressSharedTests.debug.xcconfig"; sourceTree = "<group>"; };
+		740B23CA1F17F1FF00067A2A /* DisplayableImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DisplayableImageHelper.h; path = WordPressShared/Core/Utility/DisplayableImageHelper.h; sourceTree = SOURCE_ROOT; };
+		740B23CB1F17F1FF00067A2A /* DisplayableImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DisplayableImageHelper.m; path = WordPressShared/Core/Utility/DisplayableImageHelper.m; sourceTree = SOURCE_ROOT; };
+		740B23CE1F17F28E00067A2A /* DisplayableImageHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayableImageHelperTest.m; sourceTree = "<group>"; };
 		7414BD511F13CB90005759F8 /* DictionaryHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryHelpersTests.swift; sourceTree = "<group>"; };
 		7414BD531F13CBE0005759F8 /* Dictionary+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Dictionary+Helpers.swift"; path = "WordPressShared/Core/Utility/Dictionary+Helpers.swift"; sourceTree = SOURCE_ROOT; };
 		7414BD541F13CBE0005759F8 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Helpers.swift"; path = "WordPressShared/Core/Utility/String+Helpers.swift"; sourceTree = SOURCE_ROOT; };
@@ -249,6 +255,8 @@
 		82706FE01ECA32D400155CBF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				740B23CA1F17F1FF00067A2A /* DisplayableImageHelper.h */,
+				740B23CB1F17F1FF00067A2A /* DisplayableImageHelper.m */,
 				747EEFDB1F168A73001FA132 /* Gravatar.swift */,
 				7414BD531F13CBE0005759F8 /* Dictionary+Helpers.swift */,
 				7414BD541F13CBE0005759F8 /* String+Helpers.swift */,
@@ -299,6 +307,7 @@
 				E18EABE81F0E2C6800BFCB0B /* TestAnalyticsTracker.m */,
 				E18EABE91F0E2C6800BFCB0B /* WPAnalyticsTests.m */,
 				7414BD511F13CB90005759F8 /* DictionaryHelpersTests.swift */,
+				740B23CE1F17F28E00067A2A /* DisplayableImageHelperTest.m */,
 				93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */,
 				748710AB1F06C465008095AB /* StringHelperTests.swift */,
 				74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */,
@@ -410,6 +419,7 @@
 				7414BD591F13CEA5005759F8 /* NSBundle+VersionNumberHelper.h in Headers */,
 				7414BD611F13D084005759F8 /* UIDevice+Helpers.h in Headers */,
 				8270700D1ECA43AA00155CBF /* WPFontManager.h in Headers */,
+				740B23CC1F17F1FF00067A2A /* DisplayableImageHelper.h in Headers */,
 				74650F7B1F0EA2FA00188EDB /* NSString+Helpers.h in Headers */,
 				82706FF11ECA438500155CBF /* WPSharedLoggingPrivate.h in Headers */,
 			);
@@ -628,6 +638,7 @@
 				93C882AD1EEB1E2F00227A59 /* NSDate+Helpers.swift in Sources */,
 				74650F801F0EA4BD00188EDB /* NSMutableData+Helpers.swift in Sources */,
 				7414BD621F13D084005759F8 /* UIDevice+Helpers.m in Sources */,
+				740B23CD1F17F1FF00067A2A /* DisplayableImageHelper.m in Sources */,
 				937BA5881EF1DAC100D301B2 /* CocoaLumberjack.swift in Sources */,
 				93AB06061EE884C000EF8764 /* UIAlertController+Helpers.swift in Sources */,
 				8270700A1ECA43AA00155CBF /* UIImage+Util.m in Sources */,
@@ -647,6 +658,7 @@
 				E18EABEA1F0E2C6800BFCB0B /* TestAnalyticsTracker.m in Sources */,
 				93AB05FD1EE8405A00EF8764 /* LanguagesTests.swift in Sources */,
 				747EEFDE1F168B15001FA132 /* GravatarTest.swift in Sources */,
+				740B23CF1F17F28E00067A2A /* DisplayableImageHelperTest.m in Sources */,
 				E18EABEB1F0E2C6800BFCB0B /* WPAnalyticsTests.m in Sources */,
 				748710AC1F06C465008095AB /* StringHelperTests.swift in Sources */,
 			);
