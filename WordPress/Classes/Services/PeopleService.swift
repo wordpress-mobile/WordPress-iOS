@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import WordPressKit
 
 /// Service providing access to the People Management WordPress.com API.
 ///
