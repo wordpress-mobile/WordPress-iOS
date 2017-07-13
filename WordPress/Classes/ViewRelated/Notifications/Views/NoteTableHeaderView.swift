@@ -9,7 +9,7 @@ class NoteTableHeaderView: UIView {
     var title: String? {
         set {
             // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
-            let unwrappedTitle = newValue?.uppercased(with: Locale.current) ?? String()
+            let unwrappedTitle = newValue?.localizedUppercase() ?? String()
             let attributes = Style.sectionHeaderRegularStyle
             titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: attributes)
             setNeedsLayout()
