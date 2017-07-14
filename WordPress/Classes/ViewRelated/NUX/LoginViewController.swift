@@ -30,6 +30,42 @@ class LoginViewController: NUXAbstractViewController {
         navigationItem.titleView = imageView
     }
 
+    /// Sets up the help button and the helpshift conversation badge.
+    ///
+    override func setupHelpButtonAndBadge() {
+        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+
+        let customView = UIView(frame: helpButtonContainerFrame)
+
+        helpButton = UIButton(type: .custom)
+        //let helpButton = UIBarButtonItem(title: NSLocalizedString("Help", comment: "Help button"), style: .plain, target: self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)))
+        //helpButton.setImage(UIImage(named: "btn-help"), for: UIControlState())
+        helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
+        helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.5), for: .highlighted)
+        //        helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
+        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
+
+        customView.addSubview(helpButton)
+        helpButton.translatesAutoresizingMaskIntoConstraints = false
+        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
+        helpButton.centerYAnchor.constraint(equalTo: customView.centerYAnchor).isActive = true
+
+        helpBadge = WPNUXHelpBadgeLabel()
+        helpBadge.translatesAutoresizingMaskIntoConstraints = false
+        helpBadge.isHidden = true
+        customView.addSubview(helpBadge)
+        helpBadge.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
+        helpBadge.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
+        helpBadge.widthAnchor.constraint(equalToConstant: helpBadgeSize.width).isActive = true
+        helpBadge.heightAnchor.constraint(equalToConstant: helpBadgeSize.height).isActive = true
+
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spacer.width = helpButtonMarginSpacerWidth
+
+        let barButton = UIBarButtonItem(customView: customView)
+        navigationItem.rightBarButtonItems = [spacer, barButton]
+    }
+
     /// Sets the text of the error label.
     ///
     func displayError(message: String) {
