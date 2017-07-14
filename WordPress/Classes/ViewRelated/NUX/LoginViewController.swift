@@ -41,10 +41,7 @@ class LoginViewController: NUXAbstractViewController {
     /// Configures instruction label font
     ///
     func styleInstructions() {
-        // iOS won't return UIFontWeightMedium for dynamic system font :(
-        // -So instead get the dynamic font size, then ask for the non-dynamic font at that size
-        let fontToGetSize = WPStyleGuide.fontForTextStyle(.subheadline)
-        instructionLabel?.font = UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: UIFontWeightMedium)
+        instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
     }
 
     /// Sets up the help button and the helpshift conversation badge.
@@ -55,11 +52,8 @@ class LoginViewController: NUXAbstractViewController {
         let customView = UIView(frame: helpButtonContainerFrame)
 
         helpButton = UIButton(type: .custom)
-        //let helpButton = UIBarButtonItem(title: NSLocalizedString("Help", comment: "Help button"), style: .plain, target: self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)))
-        //helpButton.setImage(UIImage(named: "btn-help"), for: UIControlState())
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
-        helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.5), for: .highlighted)
-        //        helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
+        helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
         helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
 
         customView.addSubview(helpButton)
