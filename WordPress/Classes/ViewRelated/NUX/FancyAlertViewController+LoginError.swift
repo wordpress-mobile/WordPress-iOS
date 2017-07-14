@@ -81,7 +81,6 @@ extension FancyAlertViewController {
         if error.domain != WPXMLRPCFaultErrorDomain && error.code != NSURLErrorBadURL {
             if HelpshiftUtils.isHelpshiftEnabled() {
                 return alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
-
             } else {
                 return alertForGenericErrorMessage(message, sourceTag: sourceTag)
             }
@@ -97,9 +96,9 @@ extension FancyAlertViewController {
 
         if error.code == NSURLErrorBadURL {
             return alertForBadURLMessage(message)
-        } else {
-            return alertForGenericErrorMessage(message, sourceTag: sourceTag)
         }
+
+        return alertForGenericErrorMessage(message, sourceTag: sourceTag)
     }
 
 
