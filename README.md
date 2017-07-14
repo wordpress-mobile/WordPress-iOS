@@ -100,3 +100,7 @@ GitHub: https://github.com/wordpress-mobile/WordPress-iOS/
 ### How to Contribute
 
 http://make.wordpress.org/mobile/handbook/pathways/ios/how-to-contribute/
+
+### How to help with translations
+
+https://translate.wordpress.org/projects/apps/ios
