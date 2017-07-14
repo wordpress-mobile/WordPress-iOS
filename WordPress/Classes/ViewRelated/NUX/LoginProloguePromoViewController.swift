@@ -7,16 +7,18 @@ class LoginProloguePromoViewController: UIViewController {
     @IBOutlet var animationHolder: UIView?
     @IBInspectable var pageNum: Int = 0
     fileprivate var animationView: LOTAnimationView?
+    fileprivate struct Constants {
+        static let stackSpacing: CGFloat = 36.0
+        static let stackHeightMultiplier: CGFloat = 0.87
+        static let stackWidthMultiplier: CGFloat = 0.8
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.clear
 
-        // iOS won't return UIFontWeightMedium for dynamic system font :(
-        // -So instead get the dynamic font size, then ask for the non-dynamic font at that size
-        let fontToGetSize = WPStyleGuide.fontForTextStyle(.title3)
-        headingLabel?.font = UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: UIFontWeightMedium)
+        headingLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .title3)
         headingLabel?.text = headlineText()
         headingLabel?.sizeToFit()
 
@@ -25,10 +27,10 @@ class LoginProloguePromoViewController: UIViewController {
                 return
         }
 
-        stackView?.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
+        stackView?.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.stackWidthMultiplier).isActive = true
         stackView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stackView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.87).isActive = true
-        stackView?.spacing = 36.0
+        stackView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.stackHeightMultiplier).isActive = true
+        stackView?.spacing = Constants.stackSpacing
 
         animation.translatesAutoresizingMaskIntoConstraints = false
         animation.contentMode = .scaleAspectFit

@@ -4,6 +4,7 @@
 #import "WordPress-Swift.h"
 
 NSInteger const LeftImageSpacing = 8;
+CGFloat const secureImagePadding = 20.0;
 
 @import Gridicons;
 
@@ -66,8 +67,9 @@ NSInteger const LeftImageSpacing = 8;
     self.secureTextEntryImageHidden = [Gridicon iconOfType:GridiconTypeNotVisible];
 
     self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.secureTextEntryToggle.clipsToBounds = true;
     self.secureTextEntryToggle.tintColor = [WPStyleGuide greyLighten10];
-    self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
+    self.secureTextEntryToggle.frame = CGRectMake(0, 0, 24, 24);
     [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
 
     [self addSubview:self.secureTextEntryToggle];
@@ -113,12 +115,12 @@ NSInteger const LeftImageSpacing = 8;
     if (self.showSecureTextEntryToggle) {
         CGRect frame = self.secureTextEntryToggle.frame;
         if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
-            frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame),
+            frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame) - secureImagePadding,
                                               (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
                                               CGRectGetWidth(self.secureTextEntryToggle.frame),
                                               CGRectGetHeight(self.secureTextEntryToggle.frame)));
         } else {
-            frame = CGRectIntegral(CGRectMake(CGRectGetMinX(self.bounds),
+            frame = CGRectIntegral(CGRectMake(CGRectGetMinX(self.bounds) + secureImagePadding,
                                               (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
                                               CGRectGetWidth(self.secureTextEntryToggle.frame),
                                               CGRectGetHeight(self.secureTextEntryToggle.frame)));
