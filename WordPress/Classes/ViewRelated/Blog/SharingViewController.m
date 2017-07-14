@@ -125,13 +125,15 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PublicizeService *publicizer = self.publicizeServices[indexPath.row];
-    NSArray *connections = [self connectionsForService:publicizer];
-    if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceID] && [connections count] == 0) { // Temporarily hiding Google+
-        return 0;
-    } else {
-        return UITableViewAutomaticDimension;
+    if ([self.publicizeServices count] > 0) {
+        PublicizeService *publicizer = self.publicizeServices[indexPath.row];
+        NSArray *connections = [self connectionsForService:publicizer];
+        if ([publicizer.serviceID isEqualToString:PublicizeService.googlePlusServiceID] && [connections count] == 0) { // Temporarily hiding Google+
+            return 0;
+        }
     }
+    
+    return UITableViewAutomaticDimension;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
