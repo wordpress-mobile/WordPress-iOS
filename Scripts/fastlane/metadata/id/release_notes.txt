@@ -1,1 +1,0 @@
-Untuk rilis ini, kami menyempurnakan piksel, menyingkirkan bug, dan bekerja di balik layar untuk memastikan pengalaman WordPress yang lebih lancar bagi pengguna aplikasi kami.

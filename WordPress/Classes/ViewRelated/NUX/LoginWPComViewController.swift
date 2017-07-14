@@ -47,6 +47,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
         passwordField?.becomeFirstResponder()
+        WPAppAnalytics.track(.loginPasswordFormViewed)
     }
 
 
@@ -155,6 +156,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         SigninHelpers.openForgotPasswordURL(loginFields)
+        WPAppAnalytics.track(.loginForgotPasswordClicked)
     }
 
     func handleOnePasswordButtonTapped(_ sender: UIButton) {

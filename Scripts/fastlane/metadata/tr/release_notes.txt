@@ -1,2 +1,0 @@
-Sitenizin simgesini site detayları ekranında düzenleyin. Başlamak için dokunmanız yeterli.
-Yazı etiketleri alanına otomatik düzeltme desteği ekledik.

@@ -1,5 +1,0 @@
-Inspirasjonen kommer når som helst, hvor som helst. Bruk WordPress uansett hvor du er, fra din iPhone eller iPad: se statistikk, moderer kommentarer, skriv og rediger innlegg og sider, og last opp bilder og filmer. Alt du trenger er en WordPress.com-blogg eller en egen WordPress-installasjon (minimum versjon 3.6),
-Med WordPress for iOS har du muligheten til å publisere i lomma. Skriv haiku på toget. Ta et bilde på ettermiddagsturen. Svar på dine siste kommentarer eller følg med på din statistikk for å se hvor dagens lesere kommer fra.
-Glem ikke å merke dine innlegg som du publiserer fra appen med #wponthego, slik at vi alle kan finne dine bidrag.
-WordPress for iOS er et prosjekt med åpen kildekode, som betyr at du også kan bidra til utviklingen. Lær mer på http://ios.wordpress.org
-Trenger du hjelp med appen? Besøk forumene på http://ios.forums.wordpress.org eller tweet til oss på @WordPressiOS.
