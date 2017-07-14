@@ -6,6 +6,10 @@ class LoginPrologueViewController: UIViewController {
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var signupButton: UIButton!
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {

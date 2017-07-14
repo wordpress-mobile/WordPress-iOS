@@ -3,7 +3,6 @@ import UIKit
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
 class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
-    @IBOutlet var instructionLabel: UILabel!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
@@ -98,7 +97,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
-        instructionLabel.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email addresss screen.")
+        instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email addresss screen.")
 
         emailTextField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
         emailTextField.accessibilityIdentifier = "Email address"
