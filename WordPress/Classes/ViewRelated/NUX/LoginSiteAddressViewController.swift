@@ -1,7 +1,6 @@
 import UIKit
 
 class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
-    @IBOutlet var instructionLabel: UILabel!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
@@ -63,7 +62,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
-        instructionLabel.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
+        instructionLabel?.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
 
         siteURLField.placeholder = NSLocalizedString("example.wordpress.com", comment: "Site Address placeholder")
 
