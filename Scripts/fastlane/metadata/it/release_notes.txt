@@ -1,1 +1,0 @@
-Per questo rilascio, abbiamo raffinato alcuni pixel, salutato alcuni bug e lavorato dietro le quinte per rendere più agevole l'esperienza su WordPress ai nostri utenti.

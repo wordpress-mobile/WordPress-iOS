@@ -1,2 +1,1 @@
-Edit your site's icon on the site details screen, just tap on it to get started.
-We've added autocorrect support on the post tags field.
+Shiny and new rich-text and HTML native editor, try it out and let us know what you think.
