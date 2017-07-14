@@ -17,7 +17,7 @@ class MediaThumbnailService: LocalCoreDataService {
     ///
     /// - Parameters:
     ///   - media: The Media object the URL should be a thumbnail of.
-    ///   - preferredSize: An ideal size of the thumbnail in points.
+    ///   - preferredSize: An ideal size of the thumbnail in points. If `zero`, the maximum dimension of the UIScreen is used.
     ///   - onCompletion: Completion handler passing the URL once available, or nil if unavailable.
     ///   - onError: Error handler.
     ///
@@ -25,54 +25,82 @@ class MediaThumbnailService: LocalCoreDataService {
     ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
     ///
     func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
-        // Configure a thumbnail exporter.
-        let exporter = MediaThumbnailExporter()
-        exporter.options.preferredSize = preferredSize
-
-        // Check if there is already an exported thumbnail available.
-        if let identifier = media.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
-            onCompletion(availableThumbnail)
-            return
-        }
-        // Check if a local copy of the asset is available.
-        if let localAssetURL = media.absoluteLocalURL {
-            DispatchQueue.global(qos: .default).async {
-                exporter.exportThumbnail(forFile: localAssetURL,
-                                         onCompletion: { (identifier, export) in
-                                            self.managedObjectContext.perform {
-                                                self.handleThumbnailExport(media: media,
-                                                                           identifier: identifier,
-                                                                           export: export,
-                                                                           onCompletion: onCompletion)
-                                            }
-                }, onError: { (error) in
-                    self.handleExportError(error, errorHandler: onError)
-                })
+        managedObjectContext.perform {
+            // Configure a thumbnail exporter.
+            let exporter = MediaThumbnailExporter()
+            if preferredSize == CGSize.zero {
+                // When using a zero size, default to the maximum screen dimension.
+                let screenSize = UIScreen.main.bounds
+                let screenSizeMax = max(screenSize.width, screenSize.height)
+                exporter.options.preferredSize = CGSize(width: screenSizeMax, height: screenSizeMax)
+            } else {
+                exporter.options.preferredSize = preferredSize
             }
-            return
-        }
-        // Try and download a remote thumbnail, and export if available.
-        downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
-            guard let image = image else {
-                onCompletion(nil)
+
+            // Check if there is already an exported thumbnail available.
+            if let identifier = media.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
+                onCompletion(availableThumbnail)
                 return
             }
-            DispatchQueue.global(qos: .default).async {
-                exporter.exportThumbnail(forImage: image,
-                                         onCompletion: { (identifier, export) in
-                                            self.managedObjectContext.perform {
-                                                self.handleThumbnailExport(media: media,
-                                                                           identifier: identifier,
-                                                                           export: export,
-                                                                           onCompletion: onCompletion)
-                                            }
+
+            // Configure a handler for any thumbnail exports
+            let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
+                self.managedObjectContext.perform {
+                    self.handleThumbnailExport(media: media,
+                                               identifier: identifier,
+                                               export: export,
+                                               onCompletion: onCompletion)
+                }
+            }
+            // Configure an error handler
+            let onThumbnailExportError: OnExportError = { (error) in
+                self.handleExportError(error, errorHandler: onError)
+            }
+
+            // Configure an attempt to download a remote thumbnail and export it as a thumbnail.
+            let attemptDownloadingThumbnail: () -> Void = {
+                self.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
+                    guard let image = image else {
+                        onCompletion(nil)
+                        return
+                    }
+                    DispatchQueue.global(qos: .default).async {
+                        exporter.exportThumbnail(forImage: image,
+                                                 onCompletion: onThumbnailExport,
+                                                 onError: onThumbnailExportError)
+                    }
                 }, onError: { (error) in
-                    self.handleExportError(error, errorHandler: onError)
+                    onError?(error)
                 })
             }
-        }, onError: { (error) in
-            onError?(error)
-        })
+
+            // If the Media asset is available locally, export thumbnails from the local asset.
+            if let localAssetURL = media.absoluteLocalURL, exporter.supportsThumbnailExport(forFile: localAssetURL) {
+                DispatchQueue.global(qos: .default).async {
+                    exporter.exportThumbnail(forFile: localAssetURL,
+                                             onCompletion: onThumbnailExport,
+                                             onError: onThumbnailExportError)
+                }
+                return
+            }
+
+            // If the Media item is a video and has a remote video URL, try and export from the remote video URL.
+            if media.mediaType == .video, let remoteURLStr = media.remoteURL, let videoURL = URL(string: remoteURLStr) {
+                DispatchQueue.global(qos: .default).async {
+                    exporter.exportThumbnail(forVideoURL: videoURL,
+                                             onCompletion: onThumbnailExport,
+                                             onError: { (error) in
+                                                // If an error occurred with the remote video URL, try and download the Media's
+                                                // remote thumbnail instead.
+                                                attemptDownloadingThumbnail()
+                    })
+                }
+                return
+            }
+
+            // Try and download a remote thumbnail, if available.
+            attemptDownloadingThumbnail()
+        }
     }
 
     /// Download a thumbnail image for a Media item, if available.
@@ -89,66 +117,64 @@ class MediaThumbnailService: LocalCoreDataService {
                                        preferredSize: CGSize,
                                        onCompletion: @escaping (UIImage?) -> Void,
                                        onError: @escaping (Error) -> Void) {
-        managedObjectContext.perform {
-            var remoteURL: URL?
-            // Check if the Media item is a video or image.
-            if media.mediaType == .video {
-                // If a video, ensure there is a remoteThumbnailURL
-                guard let remoteThumbnailURL = media.remoteThumbnailURL else {
-                    // No video thumbnail available.
-                    onCompletion(nil)
-                    return
-                }
-                remoteURL = URL(string: remoteThumbnailURL)
-            } else {
-                // Check if a remote URL for the media itself is available.
-                guard let remoteAssetURLStr = media.remoteURL, let remoteAssetURL = URL(string: remoteAssetURLStr) else {
-                    // No remote asset URL available.
-                    onCompletion(nil)
-                    return
-                }
-                // Get an expected WP URL, for sizing.
-                if media.blog.isPrivate() {
-                    remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
-                } else {
-                    remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
-                }
-            }
-            guard let imageURL = remoteURL else {
-                // No URL's available, no images available.
+        var remoteURL: URL?
+        // Check if the Media item is a video or image.
+        if media.mediaType == .video {
+            // If a video, ensure there is a remoteThumbnailURL
+            guard let remoteThumbnailURL = media.remoteThumbnailURL else {
+                // No video thumbnail available.
                 onCompletion(nil)
                 return
             }
-            let inContextImageHandler: (UIImage?) -> Void = { (image) in
-                self.managedObjectContext.perform {
-                    onCompletion(image)
-                }
+            remoteURL = URL(string: remoteThumbnailURL)
+        } else {
+            // Check if a remote URL for the media itself is available.
+            guard let remoteAssetURLStr = media.remoteURL, let remoteAssetURL = URL(string: remoteAssetURLStr) else {
+                // No remote asset URL available.
+                onCompletion(nil)
+                return
             }
-            let inContextErrorHandler: (Error?) -> Void = { (error) in
-                self.managedObjectContext.perform {
-                    guard let error = error else {
-                        onCompletion(nil)
-                        return
-                    }
-                    onError(error)
-                }
-            }
+            // Get an expected WP URL, for sizing.
             if media.blog.isPrivate() {
-                let accountService = AccountService(managedObjectContext: self.managedObjectContext)
-                guard let authToken = accountService.defaultWordPressComAccount()?.authToken else {
-                    // Don't have an auth token for some reason, return nothing.
+                remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
+            } else {
+                remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
+            }
+        }
+        guard let imageURL = remoteURL else {
+            // No URL's available, no images available.
+            onCompletion(nil)
+            return
+        }
+        let inContextImageHandler: (UIImage?) -> Void = { (image) in
+            self.managedObjectContext.perform {
+                onCompletion(image)
+            }
+        }
+        let inContextErrorHandler: (Error?) -> Void = { (error) in
+            self.managedObjectContext.perform {
+                guard let error = error else {
                     onCompletion(nil)
                     return
                 }
-                WPImageSource.shared().downloadImage(for: imageURL,
-                                                     authToken: authToken,
-                                                     withSuccess: inContextImageHandler,
-                                                     failure: inContextErrorHandler)
-            } else {
-                WPImageSource.shared().downloadImage(for: imageURL,
-                                                     withSuccess: inContextImageHandler,
-                                                     failure: inContextErrorHandler)
+                onError(error)
             }
+        }
+        if media.blog.isPrivate() {
+            let accountService = AccountService(managedObjectContext: self.managedObjectContext)
+            guard let authToken = accountService.defaultWordPressComAccount()?.authToken else {
+                // Don't have an auth token for some reason, return nothing.
+                onCompletion(nil)
+                return
+            }
+            WPImageSource.shared().downloadImage(for: imageURL,
+                                                 authToken: authToken,
+                                                 withSuccess: inContextImageHandler,
+                                                 failure: inContextErrorHandler)
+        } else {
+            WPImageSource.shared().downloadImage(for: imageURL,
+                                                 withSuccess: inContextImageHandler,
+                                                 failure: inContextErrorHandler)
         }
     }
 
