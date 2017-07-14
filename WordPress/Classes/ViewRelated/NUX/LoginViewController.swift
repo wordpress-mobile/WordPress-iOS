@@ -1,6 +1,8 @@
 import Foundation
+import Gridicons
 
 class LoginViewController: NUXAbstractViewController {
+    @IBOutlet var instructionLabel: UILabel?
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
     var errorToPresent: Error?
@@ -11,22 +13,68 @@ class LoginViewController: NUXAbstractViewController {
         return facade
     }()
 
+
+    // MARK: Lifecycle Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         displayError(message: "")
         setupNavBarIcon()
+        styleInstructions()
 
         if let error = errorToPresent {
             displayRemoteError(error)
         }
     }
 
+
+    // MARK: - Setup and Configuration
+
     /// Places the WordPress logo in the navbar
     ///
     func setupNavBarIcon() {
-        let image = UIImage(named: "social-wordpress")
-        let imageView = UIImageView(image: image?.imageWithTintColor(UIColor.white))
+        let image = Gridicon.iconOfType(.mySites)
+        let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
+    }
+
+    /// Configures instruction label font
+    ///
+    func styleInstructions() {
+        instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+    }
+
+    /// Sets up the help button and the helpshift conversation badge.
+    ///
+    override func setupHelpButtonAndBadge() {
+        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+
+        let customView = UIView(frame: helpButtonContainerFrame)
+
+        helpButton = UIButton(type: .custom)
+        helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
+        helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
+        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
+
+        customView.addSubview(helpButton)
+        helpButton.translatesAutoresizingMaskIntoConstraints = false
+        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
+        helpButton.centerYAnchor.constraint(equalTo: customView.centerYAnchor).isActive = true
+
+        helpBadge = WPNUXHelpBadgeLabel()
+        helpBadge.translatesAutoresizingMaskIntoConstraints = false
+        helpBadge.isHidden = true
+        customView.addSubview(helpBadge)
+        helpBadge.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
+        helpBadge.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
+        helpBadge.widthAnchor.constraint(equalToConstant: helpBadgeSize.width).isActive = true
+        helpBadge.heightAnchor.constraint(equalToConstant: helpBadgeSize.height).isActive = true
+
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spacer.width = helpButtonMarginSpacerWidth
+
+        let barButton = UIBarButtonItem(customView: customView)
+        navigationItem.rightBarButtonItems = [spacer, barButton]
     }
 
     /// Sets the text of the error label.
