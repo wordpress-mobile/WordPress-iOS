@@ -189,11 +189,12 @@ extension FancyAlertViewController {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
                     let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController else { return }
+                    let viewController = window?.topmostPresentedViewController,
+                    let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3"),
+                    let webController = WPWebViewController(url: url)
+                    else { return }
 
-                let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3")!
-                let webController = WPWebViewController(url: url)
-                let navController = UINavigationController(rootViewController: webController!)
+                let navController = UINavigationController(rootViewController: webController)
                 viewController.present(navController, animated: true, completion: nil)
             }
         }
