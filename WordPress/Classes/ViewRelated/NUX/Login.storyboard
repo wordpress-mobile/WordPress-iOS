@@ -873,6 +873,7 @@
                         <outlet property="emailStackView" destination="Xgi-ZQ-8YL" id="nwq-43-TGi"/>
                         <outlet property="errorLabel" destination="ZqY-I8-yWG" id="dD9-4a-eqs"/>
                         <outlet property="forgotPasswordButton" destination="0P1-6g-BI3" id="UkJ-jm-n4v"/>
+                        <outlet property="instructionLabel" destination="bBi-2N-RAh" id="NDi-pM-b0p"/>
                         <outlet property="passwordField" destination="BtS-3D-CIU" id="FjI-Ba-FDh"/>
                         <outlet property="submitButton" destination="E3x-LN-sUk" id="9eE-vi-xgc"/>
                         <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7lv-19-h36"/>
