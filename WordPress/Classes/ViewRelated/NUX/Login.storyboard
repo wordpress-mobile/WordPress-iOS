@@ -1797,11 +1797,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="xq1-9j-UiF">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="xq1-9j-UiF">
                                 <rect key="frame" x="32" y="52.5" width="256" height="297.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Post Promo" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xC8-Qq-5Qg">
-                                        <rect key="frame" x="0.0" y="0.0" width="256" height="26.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="256" height="34.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="Utj-fH-zVQ"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="oqA-ZY-DKn"/>
@@ -1827,7 +1827,7 @@
                             <constraint firstItem="xq1-9j-UiF" firstAttribute="bottom" secondItem="6DO-hT-Ikx" secondAttribute="bottomMargin" id="4OS-7m-XxM"/>
                             <constraint firstItem="xq1-9j-UiF" firstAttribute="width" secondItem="6DO-hT-Ikx" secondAttribute="width" multiplier="0.8" id="FBF-gR-gai"/>
                             <constraint firstItem="xq1-9j-UiF" firstAttribute="centerX" secondItem="6DO-hT-Ikx" secondAttribute="centerX" id="ISB-FR-iTI"/>
-                            <constraint firstItem="xq1-9j-UiF" firstAttribute="height" secondItem="6DO-hT-Ikx" secondAttribute="height" multiplier="0.85" id="spN-bY-bk0"/>
+                            <constraint firstItem="xq1-9j-UiF" firstAttribute="height" secondItem="6DO-hT-Ikx" secondAttribute="height" multiplier="0.85" placeholder="YES" id="spN-bY-bk0"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -1859,11 +1859,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="4g1-pG-vfv">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="4g1-pG-vfv">
                                 <rect key="frame" x="16" y="60" width="288" height="290"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Stats Promo" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6II-1H-TGx">
-                                        <rect key="frame" x="0.0" y="0.0" width="288" height="26.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="34.5"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="KIm-eM-VVY"/>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="N5S-GQ-csI"/>

@@ -27,7 +27,8 @@ class LoginProloguePromoViewController: UIViewController {
 
         stackView?.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8).isActive = true
         stackView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stackView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.85).isActive = true
+        stackView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.87).isActive = true
+        stackView?.spacing = 36.0
 
         animation.translatesAutoresizingMaskIntoConstraints = false
         animation.contentMode = .scaleAspectFit
