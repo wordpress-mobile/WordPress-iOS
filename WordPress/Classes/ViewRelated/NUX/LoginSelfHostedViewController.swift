@@ -59,7 +59,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
-
+        WPAppAnalytics.track(.loginUsernamePasswordFormViewed)
     }
 
 
@@ -98,6 +98,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: .highlighted)
+        forgotPasswordButton.titleLabel?.numberOfLines = 0
     }
 
 
@@ -320,6 +321,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         SigninHelpers.openForgotPasswordURL(loginFields)
+        WPAppAnalytics.track(.loginForgotPasswordClicked)
     }
 
 
