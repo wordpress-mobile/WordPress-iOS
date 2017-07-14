@@ -117,7 +117,11 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
             return
         }
 
-        displayError(error as NSError, sourceTag: sourceTag)
+        let presentingController = navigationController ?? self
+        let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = self
+        presentingController.present(controller, animated: true, completion: nil)
     }
 
     func needsMultifactorCode() {
@@ -136,5 +140,15 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     func loginDismissal() {
         self.performSegue(withIdentifier: .showEpilogue, sender: self)
+    }
+}
+
+extension LoginViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
     }
 }
