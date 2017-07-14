@@ -5,8 +5,8 @@ class LoginProloguePageViewController: UIPageViewController {
     fileprivate var pageControl: UIPageControl?
     fileprivate var bgAnimation: UIViewPropertyAnimator?
     fileprivate struct Constants {
-        static let topPadding: CGFloat = 20.0
-        static let pageControlHeight: CGFloat = 40.0
+        static let pagerPadding: CGFloat = 9.0
+        static let pagerHeight: CGFloat = 0.13
     }
 
     override func viewDidLoad() {
@@ -31,10 +31,12 @@ class LoginProloguePageViewController: UIPageViewController {
         newControl.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(newControl)
 
-        newControl.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.topPadding).isActive = true
+        newControl.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.pagerPadding).isActive = true
         newControl.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         newControl.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        newControl.heightAnchor.constraint(equalToConstant: Constants.pageControlHeight).isActive = true
+        newControl.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        newControl.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.pagerHeight).isActive = true
+
 
         newControl.numberOfPages = pages.count
         pageControl = newControl
