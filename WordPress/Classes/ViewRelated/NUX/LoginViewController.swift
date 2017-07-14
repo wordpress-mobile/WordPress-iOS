@@ -88,6 +88,14 @@ class LoginViewController: NUXAbstractViewController {
             destination.errorToPresent = source.errorToPresent
         }
     }
+
+    override func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
+        let presentingController = navigationController ?? self
+        let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = self
+        presentingController.present(controller, animated: true, completion: nil)
+    }
 }
 
 extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
@@ -111,17 +119,14 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
     func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
-        guard (error as NSError).code != 403 else {
+        let err = error as NSError
+        guard err.code != 403 else {
             let message = NSLocalizedString("Whoops, something went wrong and we couldn't log you in. Please try again!", comment: "An error message shown when a wpcom user provides the wrong password.")
             displayError(message: message)
             return
         }
 
-        let presentingController = navigationController ?? self
-        let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
-        controller.modalPresentationStyle = .custom
-        controller.transitioningDelegate = self
-        presentingController.present(controller, animated: true, completion: nil)
+        displayError(err, sourceTag: sourceTag)
     }
 
     func needsMultifactorCode() {
