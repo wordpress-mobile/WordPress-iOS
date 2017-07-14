@@ -142,6 +142,11 @@
 		74DA563A1F06EB3000FE9BF4 /* RemoteMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 74DA56381F06EB3000FE9BF4 /* RemoteMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74DA563B1F06EB3000FE9BF4 /* RemoteMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DA56391F06EB3000FE9BF4 /* RemoteMedia.m */; };
 		74DA563D1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA563C1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift */; };
+		74FC6F3B1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FC6F3A1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift */; };
+		74FC6F401F191C1D00112505 /* notifications-mark-as-read.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3C1F191C1D00112505 /* notifications-mark-as-read.json */; };
+		74FC6F411F191C1D00112505 /* notifications-last-seen.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3D1F191C1D00112505 /* notifications-last-seen.json */; };
+		74FC6F421F191C1D00112505 /* notifications-load-hash.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3E1F191C1D00112505 /* notifications-load-hash.json */; };
+		74FC6F431F191C1D00112505 /* notifications-load-all.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3F1F191C1D00112505 /* notifications-load-all.json */; };
 		9309994D1F1657C600F006A1 /* ThemeServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 9309994B1F1657C600F006A1 /* ThemeServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9309994E1F1657C600F006A1 /* ThemeServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 9309994C1F1657C600F006A1 /* ThemeServiceRemote.m */; };
 		930999521F1658F800F006A1 /* ThemeServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 930999511F1658F800F006A1 /* ThemeServiceRemoteTests.m */; };
@@ -406,6 +411,11 @@
 		74DA56381F06EB3000FE9BF4 /* RemoteMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMedia.h; sourceTree = "<group>"; };
 		74DA56391F06EB3000FE9BF4 /* RemoteMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMedia.m; sourceTree = "<group>"; };
 		74DA563C1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
+		74FC6F3A1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSyncServiceRemoteTests.swift; sourceTree = "<group>"; };
+		74FC6F3C1F191C1D00112505 /* notifications-mark-as-read.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-mark-as-read.json"; sourceTree = "<group>"; };
+		74FC6F3D1F191C1D00112505 /* notifications-last-seen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-last-seen.json"; sourceTree = "<group>"; };
+		74FC6F3E1F191C1D00112505 /* notifications-load-hash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-load-hash.json"; sourceTree = "<group>"; };
+		74FC6F3F1F191C1D00112505 /* notifications-load-all.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-load-all.json"; sourceTree = "<group>"; };
 		9309994B1F1657C600F006A1 /* ThemeServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeServiceRemote.h; sourceTree = "<group>"; };
 		9309994C1F1657C600F006A1 /* ThemeServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeServiceRemote.m; sourceTree = "<group>"; };
 		930999511F1658F800F006A1 /* ThemeServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeServiceRemoteTests.m; sourceTree = "<group>"; };
@@ -592,6 +602,7 @@
 			children = (
 				74A44DD21F13C6D8006CD8F4 /* RemoteNotificationTests.swift */,
 				74A44DD31F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift */,
+				74FC6F3A1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -917,6 +928,10 @@
 				7403A2F21EF06FEB00DED7DC /* me-settings-revert-email-success.json */,
 				7403A2F31EF06FEB00DED7DC /* me-settings-success.json */,
 				93BD274D1EE73442002BB00B /* me-sites-auth-failure.json */,
+				74FC6F3C1F191C1D00112505 /* notifications-mark-as-read.json */,
+				74FC6F3D1F191C1D00112505 /* notifications-last-seen.json */,
+				74FC6F3E1F191C1D00112505 /* notifications-load-hash.json */,
+				74FC6F3F1F191C1D00112505 /* notifications-load-all.json */,
 				74D67F1A1F15C3240010C5ED /* people-send-invitation-failure.json */,
 				93BD274E1EE73442002BB00B /* me-sites-bad-json-failure.json */,
 				93BD274F1EE73442002BB00B /* me-sites-empty-success.json */,
@@ -1173,10 +1188,12 @@
 				74D67F2F1F15C3740010C5ED /* site-followers-delete-auth-failure.json in Resources */,
 				74C473B51EF320CC009918F2 /* site-delete-bad-json-failure.json in Resources */,
 				93AC8EDA1ED32FD000900F5A /* stats-v1.1-video-plays-day.json in Resources */,
+				74FC6F401F191C1D00112505 /* notifications-mark-as-read.json in Resources */,
 				74D67F3A1F15C3740010C5ED /* site-viewers-delete-failure.json in Resources */,
 				93BD275C1EE73442002BB00B /* is-available-username-success.json in Resources */,
 				93AC8ED81ED32FD000900F5A /* stats-v1.1-top-posts-day.json in Resources */,
 				74D67F331F15C3740010C5ED /* site-users-delete-auth-failure.json in Resources */,
+				74FC6F411F191C1D00112505 /* notifications-last-seen.json in Resources */,
 				74C473BD1EF329CA009918F2 /* site-export-auth-failure.json in Resources */,
 				E6C1E84A1EF21FC100D139D9 /* is-passwordless-account-success.json in Resources */,
 				93BD27591EE73442002BB00B /* is-available-email-failure.json in Resources */,
@@ -1192,6 +1209,7 @@
 				7403A2F41EF06FEB00DED7DC /* me-settings-auth-failure.json in Resources */,
 				930999581F16598A00F006A1 /* get-single-theme-v1.1.json in Resources */,
 				74B335E61F06F6E90053A184 /* WordPressComRestApiMedia.json in Resources */,
+				74FC6F421F191C1D00112505 /* notifications-load-hash.json in Resources */,
 				930999571F16598A00F006A1 /* get-purchased-themes-v1.1.json in Resources */,
 				93AC8EC51ED32FD000900F5A /* stats-batch.json in Resources */,
 				E6C1E8491EF21FC100D139D9 /* is-passwordless-account-no-account-found.json in Resources */,
@@ -1241,6 +1259,7 @@
 				74D67F131F15C2D70010C5ED /* site-roles-auth-failure.json in Resources */,
 				74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */,
 				93BD27611EE73442002BB00B /* me-sites-empty-success.json in Resources */,
+				74FC6F431F191C1D00112505 /* notifications-load-all.json in Resources */,
 				74C473C11EF32C74009918F2 /* site-export-missing-status-failure.json in Resources */,
 				74D67F1E1F15C3240010C5ED /* people-send-invitation-failure.json in Resources */,
 				7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */,
@@ -1448,6 +1467,7 @@
 				74B5F0DE1EF82A9600B411E7 /* BlogServiceRemoteRESTTests.m in Sources */,
 				7433BC041EFC4556002D9E92 /* PlanFeatureServiceRemoteTests.swift in Sources */,
 				93AC8EDE1ED32FD000900F5A /* StatsItemTests.m in Sources */,
+				74FC6F3B1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift in Sources */,
 				7433BC051EFC4556002D9E92 /* PlanServiceRemoteTests.swift in Sources */,
 				93AB06041EE8838400EF8764 /* RemoteTestCase.swift in Sources */,
 				93BD27411EE73311002BB00B /* AccountServiceRemoteRESTTests.swift in Sources */,
