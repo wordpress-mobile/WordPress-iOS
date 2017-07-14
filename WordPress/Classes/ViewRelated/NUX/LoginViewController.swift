@@ -2,6 +2,7 @@ import Foundation
 import Gridicons
 
 class LoginViewController: NUXAbstractViewController {
+    @IBOutlet var instructionLabel: UILabel?
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
     var errorToPresent: Error?
@@ -12,15 +13,22 @@ class LoginViewController: NUXAbstractViewController {
         return facade
     }()
 
+
+    // MARK: Lifecycle Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         displayError(message: "")
         setupNavBarIcon()
+        styleInstructions()
 
         if let error = errorToPresent {
             displayRemoteError(error)
         }
     }
+
+
+    // MARK: - Setup and Configuration
 
     /// Places the WordPress logo in the navbar
     ///
@@ -28,6 +36,15 @@ class LoginViewController: NUXAbstractViewController {
         let image = Gridicon.iconOfType(.mySites)
         let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
+    }
+
+    /// Configures instruction label font
+    ///
+    func styleInstructions() {
+        // iOS won't return UIFontWeightMedium for dynamic system font :(
+        // -So instead get the dynamic font size, then ask for the non-dynamic font at that size
+        let fontToGetSize = WPStyleGuide.fontForTextStyle(.subheadline)
+        instructionLabel?.font = UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: UIFontWeightMedium)
     }
 
     /// Sets up the help button and the helpshift conversation badge.
