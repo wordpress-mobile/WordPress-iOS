@@ -33,6 +33,9 @@ FOUNDATION_EXPORT const unsigned char WordPressKitVersionString[];
 #import "MediaServiceRemoteXMLRPC.h"
 #import "MenusServiceRemote.h"
 #import "ThemeServiceRemote.h"
+#import "ReaderPostServiceRemote.h"
+#import "ReaderSiteServiceRemote.h"
+#import "ReaderTopicServiceRemote.h"
 
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
@@ -44,5 +47,10 @@ FOUNDATION_EXPORT const unsigned char WordPressKitVersionString[];
 #import "RemoteTheme.h"
 #import "RemoteUser.h"
 #import "RemoteComment.h"
+#import "RemoteReaderPost.h"
+#import "RemoteReaderSite.h"
+#import "RemoteReaderSiteInfo.h"
+#import "RemoteReaderTopic.h"
+#import "RemoteSourcePostAttribution.h"
 
 #import "NSDate+WordPressJSON.h"

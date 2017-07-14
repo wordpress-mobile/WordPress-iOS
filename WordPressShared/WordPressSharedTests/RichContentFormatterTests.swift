@@ -1,7 +1,5 @@
 import XCTest
-@testable import WordPress
-
-
+@testable import WordPressKit
 
 class RichContentFormatterTests: XCTestCase {
 
