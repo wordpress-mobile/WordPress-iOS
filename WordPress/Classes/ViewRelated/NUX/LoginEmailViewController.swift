@@ -51,8 +51,6 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         configureEmailField()
         configureSubmitButton()
         configureViewForEditingIfNeeded()
-
-        WPAppAnalytics.track(.loginEmailFormViewed)
     }
 
 
@@ -64,6 +62,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
+
+        WPAppAnalytics.track(.loginEmailFormViewed)
     }
 
 
@@ -198,7 +198,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         loginFields.safariStoredUsernameHash = username.hash
         loginFields.safariStoredPasswordHash = password.hash
 
-        loginWithUsernamePassword(immediately: false)
+        loginWithUsernamePassword(immediately: true)
 
         WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
     }
@@ -270,6 +270,13 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
                                             strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
                                         }
         })
+    }
+
+    override func displayRemoteError(_ error: Error!) {
+        configureViewLoading(false)
+
+        errorToPresent = error
+        performSegue(withIdentifier: .showWPComLogin, sender: self)
     }
 
 

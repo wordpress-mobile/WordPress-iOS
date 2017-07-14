@@ -47,6 +47,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
         passwordField?.becomeFirstResponder()
+        WPAppAnalytics.track(.loginPasswordFormViewed)
     }
 
 
@@ -121,6 +122,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
+        forgotPasswordButton?.titleLabel?.numberOfLines = 0
     }
 
     // let the storyboard's style stay
@@ -154,6 +156,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         SigninHelpers.openForgotPasswordURL(loginFields)
+        WPAppAnalytics.track(.loginForgotPasswordClicked)
     }
 
     func handleOnePasswordButtonTapped(_ sender: UIButton) {
