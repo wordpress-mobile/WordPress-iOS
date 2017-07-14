@@ -6,7 +6,6 @@ import WordPressShared
 /// signing into WordPress.com
 ///
 class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
-    @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
@@ -76,7 +75,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
-        instructionLabel.text = NSLocalizedString("Almost there! Please enter the verification code from your authenticator app.", comment: "Instructions for users with two-factor authentication enabled.")
+        instructionLabel?.text = NSLocalizedString("Almost there! Please enter the verification code from your authenticator app.", comment: "Instructions for users with two-factor authentication enabled.")
 
         verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
 
