@@ -4,7 +4,6 @@
 #import "WordPress-Swift.h"
 
 NSInteger const LeftImageSpacing = 8;
-CGFloat const secureImagePadding = 20.0;
 
 @import Gridicons;
 
@@ -69,7 +68,7 @@ CGFloat const secureImagePadding = 20.0;
     self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
     self.secureTextEntryToggle.clipsToBounds = true;
     self.secureTextEntryToggle.tintColor = [WPStyleGuide greyLighten10];
-    self.secureTextEntryToggle.frame = CGRectMake(0, 0, 24, 24);
+    self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
     [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
 
     [self addSubview:self.secureTextEntryToggle];
@@ -113,6 +112,7 @@ CGFloat const secureImagePadding = 20.0;
 
     self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
     if (self.showSecureTextEntryToggle) {
+        CGFloat secureImagePadding = [self calculateSecureImagePadding];
         CGRect frame = self.secureTextEntryToggle.frame;
         if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
             frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame) - secureImagePadding,
@@ -128,6 +128,14 @@ CGFloat const secureImagePadding = 20.0;
         self.secureTextEntryToggle.frame = frame;
         [self bringSubviewToFront:self.secureTextEntryToggle];
     }
+}
+
+- (CGFloat)calculateSecureImagePadding {
+    CGFloat desiredPadding = 20.0;
+    CGSize imageSize = self.secureTextEntryToggle.imageView.image.size;
+    CGSize buttonSize = self.secureTextEntryToggle.frame.size;
+    CGFloat buttonPadding = (buttonSize.width - imageSize.width) / 2.0;
+    return desiredPadding - buttonPadding;
 }
 
 - (CGRect)calculateTextRectForBounds:(CGRect)bounds
