@@ -1,2 +1,1 @@
-Edita el icono de tu sitio en la pantalla de detalles del sitio, simplemente toca sobre ella para empezar.
-Hemos añadido compatibilidad con autocorrección en el campo de etiquetas de entrada.
+Brillante y nuevo editor de texto enriquecido y HTML, pruébalo y cuéntanos qué te parece.

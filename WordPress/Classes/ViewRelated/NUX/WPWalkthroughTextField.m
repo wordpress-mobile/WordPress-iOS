@@ -66,6 +66,7 @@ NSInteger const LeftImageSpacing = 8;
     self.secureTextEntryImageHidden = [Gridicon iconOfType:GridiconTypeNotVisible];
 
     self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.secureTextEntryToggle.clipsToBounds = true;
     self.secureTextEntryToggle.tintColor = [WPStyleGuide greyLighten10];
     self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
     [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -111,14 +112,15 @@ NSInteger const LeftImageSpacing = 8;
 
     self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
     if (self.showSecureTextEntryToggle) {
+        CGFloat secureImagePadding = [self calculateSecureImagePadding];
         CGRect frame = self.secureTextEntryToggle.frame;
         if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
-            frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame),
+            frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame) - secureImagePadding,
                                               (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
                                               CGRectGetWidth(self.secureTextEntryToggle.frame),
                                               CGRectGetHeight(self.secureTextEntryToggle.frame)));
         } else {
-            frame = CGRectIntegral(CGRectMake(CGRectGetMinX(self.bounds),
+            frame = CGRectIntegral(CGRectMake(CGRectGetMinX(self.bounds) + secureImagePadding,
                                               (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
                                               CGRectGetWidth(self.secureTextEntryToggle.frame),
                                               CGRectGetHeight(self.secureTextEntryToggle.frame)));
@@ -126,6 +128,14 @@ NSInteger const LeftImageSpacing = 8;
         self.secureTextEntryToggle.frame = frame;
         [self bringSubviewToFront:self.secureTextEntryToggle];
     }
+}
+
+- (CGFloat)calculateSecureImagePadding {
+    CGFloat desiredPadding = 20.0;
+    CGSize imageSize = self.secureTextEntryToggle.imageView.image.size;
+    CGSize buttonSize = self.secureTextEntryToggle.frame.size;
+    CGFloat buttonPadding = (buttonSize.width - imageSize.width) / 2.0;
+    return desiredPadding - buttonPadding;
 }
 
 - (CGRect)calculateTextRectForBounds:(CGRect)bounds

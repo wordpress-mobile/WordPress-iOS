@@ -61,7 +61,7 @@ class PlanDetailViewController: UIViewController {
         let label = UILabel()
         label.font = WPFontManager.systemSemiBoldFont(ofSize: 13.0)
         label.textColor = WPStyleGuide.validGreen()
-        label.text = NSLocalizedString("Current Plan", comment: "").uppercased(with: Locale.current)
+        label.text = NSLocalizedString("Current Plan", comment: "").localizedUppercase
         label.translatesAutoresizingMaskIntoConstraints = false
 
         // Wrapper view required for spacing to work out correctly, as the header stackview

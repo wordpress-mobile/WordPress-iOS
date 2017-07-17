@@ -2,6 +2,8 @@ import Foundation
 import CoreData
 
 open class PublicizeService: NSManagedObject {
+    static let googlePlusServiceID = "google_plus"
+
     @NSManaged open var connectURL: String
     @NSManaged open var detail: String
     @NSManaged open var icon: String

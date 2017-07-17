@@ -1,7 +1,6 @@
 import UIKit
 
 class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
-    @IBOutlet var instructionLabel: UILabel!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
@@ -32,7 +31,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
 
-        WPAppAnalytics.track(.loginURLFormViewed)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
 
@@ -41,7 +40,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
-
+        WPAppAnalytics.track(.loginURLFormViewed)
     }
 
 
@@ -63,7 +62,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
-        instructionLabel.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
+        instructionLabel?.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
 
         siteURLField.placeholder = NSLocalizedString("example.wordpress.com", comment: "Site Address placeholder")
 
@@ -237,9 +236,12 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         validateForm()
     }
 
-
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        // TODO: Wire up when the new help screen is implemented.
+        let alert = FancyAlertViewController.siteAddressHelpController()
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true, completion: nil)
+        WPAnalytics.track(.loginURLHelpScreenViewed)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {

@@ -26,3 +26,4 @@ FOUNDATION_EXPORT const unsigned char WordPressSharedVersionString[];
 #import <WordPressShared/WPMapFilterReduce.h>
 #import <WordPressShared/NSBundle+VersionNumberHelper.h>
 #import <WordPressShared/UIDevice+Helpers.h>
+#import <WordPressShared/DisplayableImageHelper.h>

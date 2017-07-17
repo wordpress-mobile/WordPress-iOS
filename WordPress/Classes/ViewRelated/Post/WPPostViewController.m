@@ -40,6 +40,7 @@
 #import <WordPressShared/WPTableViewCell.h>
 
 @import Gridicons;
+@import WordPressKit;
 
 // State Restoration
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
