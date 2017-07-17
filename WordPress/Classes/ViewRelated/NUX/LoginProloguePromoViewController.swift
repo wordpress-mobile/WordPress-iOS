@@ -7,12 +7,18 @@ class LoginProloguePromoViewController: UIViewController {
     @IBOutlet var animationHolder: UIView?
     @IBInspectable var pageNum: Int = 0
     fileprivate var animationView: LOTAnimationView?
+    fileprivate struct Constants {
+        static let stackSpacing: CGFloat = 36.0
+        static let stackHeightMultiplier: CGFloat = 0.87
+        static let stackWidthMultiplier: CGFloat = 0.8
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.clear
-        headingLabel?.font = WPStyleGuide.fontForTextStyle(.title2, symbolicTraits: .traitBold)
+
+        headingLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .title3)
         headingLabel?.text = headlineText()
         headingLabel?.sizeToFit()
 
@@ -20,6 +26,11 @@ class LoginProloguePromoViewController: UIViewController {
             let animation = Lottie.LOTAnimationView(name: animationKey()) else {
                 return
         }
+
+        stackView?.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.stackWidthMultiplier).isActive = true
+        stackView?.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stackView?.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.stackHeightMultiplier).isActive = true
+        stackView?.spacing = Constants.stackSpacing
 
         animation.translatesAutoresizingMaskIntoConstraints = false
         animation.contentMode = .scaleAspectFit
@@ -35,7 +46,11 @@ class LoginProloguePromoViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        animationView?.loopAnimation = true
+        animationView?.animationProgress = 0.0
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         animationView?.play()
     }
 

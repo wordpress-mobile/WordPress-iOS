@@ -5,9 +5,9 @@
 #import "PostCategoryService.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemoteTaxonomyPaging.h"
-#import "RemotePostCategory.h"
 #import "TestContextManager.h"
 #import "WordPressTest-Swift.h"
+@import WordPressKit;
 
 @interface WPAccount ()
 @property (nonatomic, readwrite) WordPressComRestApi *wordPressComRestApi;

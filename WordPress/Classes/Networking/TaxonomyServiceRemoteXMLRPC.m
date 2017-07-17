@@ -1,9 +1,9 @@
 #import "TaxonomyServiceRemoteXMLRPC.h"
-#import "RemotePostCategory.h"
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
 #import <WordPressShared/NSString+Util.h>
 #import "WordPress-Swift.h"
+@import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -144,9 +144,9 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController {
     func heightDeltaFromKeyboardFrame(_ keyboardFrame: CGRect) -> CGFloat {
         // If an external keyboard is connected, the ending keyboard frame's maxY
         // will exceed the height of the view controller's view.
-        // There is no need to adjust the view in this case so just return 0.0.
-        if (keyboardFrame.maxY > self.view.frame.height) {
-            return 0.0
+        // In these cases, just adjust the height by the amount of the keyboard visible.
+        if (keyboardFrame.maxY > view.frame.height) {
+            return view.frame.height - keyboardFrame.minY
         }
         return keyboardFrame.height
     }

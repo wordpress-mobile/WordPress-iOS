@@ -23,7 +23,7 @@ extension WPStyleGuide {
         onePasswordButton.sizeToFit()
 
         textField.rightView = onePasswordButton
-        textField.rightViewPadding = UIOffset(horizontal: 9.0, vertical: 0.0)
+        textField.rightViewPadding = UIOffset(horizontal: 20.0, vertical: 0.0)
         textField.rightViewMode = .always
 
         onePasswordButton.addTarget(target, action: selector, for: .touchUpInside)
@@ -59,4 +59,13 @@ extension WPStyleGuide {
         return UIEdgeInsetsMake(7, 20, 7, 20)
     }
 
+    /// Return the system font in medium weight for the given style
+    ///
+    /// - note: iOS won't return UIFontWeightMedium for dynamic system font :(
+    /// So instead get the dynamic font size, then ask for the non-dynamic font at that size
+    ///
+    class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
+        let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
+        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: UIFontWeightMedium)
+    }
 }
