@@ -1,13 +1,13 @@
 #import "ReaderPostServiceRemote.h"
 
 #import "DateUtils.h"
-#import "DisplayableImageHelper.h"
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "ReaderTopicServiceRemote.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 #import "PhotonImageURLHelper.h"
+@import WordPressShared;
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";

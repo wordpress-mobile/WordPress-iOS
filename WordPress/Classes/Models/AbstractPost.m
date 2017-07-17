@@ -3,14 +3,7 @@
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 #import "BasePost.h"
-
-NSString * const PostStatusDraft = @"draft";
-NSString * const PostStatusPending = @"pending";
-NSString * const PostStatusPrivate = @"private";
-NSString * const PostStatusPublish = @"publish";
-NSString * const PostStatusScheduled = @"future";
-NSString * const PostStatusTrash = @"trash";
-NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API when a post is permanently deleted.
+@import WordPressKit;
 
 @implementation AbstractPost
 
