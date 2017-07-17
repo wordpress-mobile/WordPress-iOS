@@ -36,9 +36,9 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
   - Gridicons (0.10)
-  - HockeySDK (4.1.5):
-    - HockeySDK/DefaultLib (= 4.1.5)
-  - HockeySDK/DefaultLib (4.1.5)
+  - HockeySDK (4.1.6):
+    - HockeySDK/DefaultLib (= 4.1.6)
+  - HockeySDK/DefaultLib (4.1.6)
   - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.5.6)
   - MRProgress (0.7.0):
@@ -113,10 +113,10 @@ DEPENDENCIES:
   - FLAnimatedImage (~> 1.0)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gridicons (= 0.10)
-  - HockeySDK (~> 4.1.5)
   - lottie-ios (~> 1.5.1)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
+  - HockeySDK (= 4.1.6)
   - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
@@ -169,7 +169,7 @@ SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
-  HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
+  HockeySDK: 95db557d54489a570dcdefae0d02f98eecc279a3
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
