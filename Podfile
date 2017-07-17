@@ -35,8 +35,8 @@ target 'WordPress' do
   # Third party libraries
   # ---------------------
   pod '1PasswordExtension', '1.8.4'
-  pod 'HockeySDK', '~> 4.1.5', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
+  pod 'HockeySDK', '4.1.6', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'Reachability',	'3.2'
   pod 'SVProgressHUD', '~>2.1.2'
   pod 'Crashlytics'
