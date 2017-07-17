@@ -120,7 +120,7 @@ DEPENDENCIES:
   - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
-  - OCMock (~> 3.0)
+  - OCMock (~> 3.4)
   - OHHTTPStubs
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)

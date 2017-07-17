@@ -22,7 +22,7 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs'
   pod 'OHHTTPStubs/Swift'
-  pod 'OCMock', '~> 3.0'
+  pod 'OCMock', '~> 3.4'
 end
 
 target 'WordPress' do
