@@ -4,6 +4,7 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case newLogin
+    case newMediaExports
     case newInputMediaPicker
 
     /// Returns a boolean indicating if the feature is enabled
@@ -12,6 +13,8 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .newLogin:
+            return true
+        case .newMediaExports:
             return build(.localDeveloper, .a8cBranchTest)
         case .newInputMediaPicker:
             if build(.a8cBranchTest, .localDeveloper) {

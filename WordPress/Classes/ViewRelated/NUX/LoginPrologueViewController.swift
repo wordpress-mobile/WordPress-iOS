@@ -6,6 +6,10 @@ class LoginPrologueViewController: UIViewController {
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var signupButton: UIButton!
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
@@ -20,10 +24,19 @@ class LoginPrologueViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAppAnalytics.track(.loginPrologueViewed)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
     }
 
     // MARK: - Setup and Config

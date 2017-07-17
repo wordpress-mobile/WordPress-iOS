@@ -1,2 +1,1 @@
-Ändra ikonen för din webbplats på sidan med uppgifter om webbplatsen, knacka på ikonen för att komma igång.
-Vi har lagt till stöd från autokorrigering i fältet för inläggsetiketter.
+Sprillans ny egen inbyggd redigerare för formaterad text och HTML. Prova den och berätta vad du tycker.

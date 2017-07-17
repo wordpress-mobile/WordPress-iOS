@@ -1,8 +1,7 @@
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
-#import "RemoteTheme.h"
-#import "ThemeServiceRemote.h"
-#import "WordPressTest-Swift.h"
+#import "WordPressKitTests-Swift.h"
+@import WordPressKit;
 
 // OCMock helper typedefs
 typedef BOOL (^DictionaryVerificationBlock)(NSDictionary *dictionary);

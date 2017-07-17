@@ -454,6 +454,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         coordinator.animate(alongsideTransition: { _ in
             self.resizeBlogPickerButton()
+            self.updateTitleHeight()
         })
 
         dismissOptionsViewControllerIfNecessary()
@@ -893,16 +894,11 @@ extension AztecPostViewController {
 
         // If there is any failed media allow it to be removed or cancel publishing
         if mediaProgressCoordinator.hasFailedMedia {
-            let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
-                self.removeFailedMedia()
+            displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
                 self.publishTapped(dismissWhenDone: dismissWhenDone)
-            }
-
-            alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
-            present(alertController, animated: true, completion: nil)
+            })
             return
         }
         SVProgressHUD.setDefaultMaskType(.clear)
@@ -1086,6 +1082,17 @@ private extension AztecPostViewController {
     func displayMediaIsUploadingAlert() {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func displayHasFailedMediaAlert(then: @escaping () -> ()) {
+        let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
+            self.removeFailedMedia()
+            then()
+        }
+
+        alertController.addCancelActionWithTitle(FailedMediaRemovalAlert.cancelTitle)
         present(alertController, animated: true, completion: nil)
     }
 
@@ -1718,6 +1725,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func toggleEditingMode() {
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
+            return
+        }
+
+        if mediaProgressCoordinator.hasFailedMedia {
+            displayHasFailedMediaAlert(then: {
+                self.toggleEditingMode()
+            })
             return
         }
 
