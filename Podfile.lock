@@ -111,7 +111,7 @@ DEPENDENCIES:
   - Crashlytics
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
-  - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
+  - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gridicons (= 0.10)
   - HockeySDK (~> 4.1.5)
   - lottie-ios (~> 1.5.1)
