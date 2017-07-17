@@ -14,14 +14,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusSync,       // Post uploaded
 };
 
-extern NSString * const PostStatusDraft;
-extern NSString * const PostStatusPending;
-extern NSString * const PostStatusPrivate;
-extern NSString * const PostStatusPublish;
-extern NSString * const PostStatusScheduled;
-extern NSString * const PostStatusTrash;
-extern NSString * const PostStatusDeleted;
-
 @interface AbstractPost : BasePost
 
 // Relationships

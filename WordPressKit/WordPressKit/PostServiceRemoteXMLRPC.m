@@ -1,13 +1,13 @@
 #import "PostServiceRemoteXMLRPC.h"
-#import "AbstractPost.h"
-#import "Blog.h"
-#import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSMutableDictionary+Helpers.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 const NSInteger HTTP404ErrorCode = 404;
+NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";
 
 static NSString * const RemoteOptionKeyNumber = @"number";
 static NSString * const RemoteOptionKeyOffset = @"offset";

@@ -1,5 +1,13 @@
 #import <Foundation/Foundation.h>
 
+extern NSString * const PostStatusDraft;
+extern NSString * const PostStatusPending;
+extern NSString * const PostStatusPrivate;
+extern NSString * const PostStatusPublish;
+extern NSString * const PostStatusScheduled;
+extern NSString * const PostStatusTrash;
+extern NSString * const PostStatusDeleted;
+
 @interface RemotePost : NSObject
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSNumber *siteID;

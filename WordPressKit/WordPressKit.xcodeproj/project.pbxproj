@@ -23,6 +23,31 @@
 		7403A2FF1EF06FEB00DED7DC /* me-settings-revert-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7403A2F21EF06FEB00DED7DC /* me-settings-revert-email-success.json */; };
 		7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7403A2F31EF06FEB00DED7DC /* me-settings-success.json */; };
 		7403A3021EF0726E00DED7DC /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403A3011EF0726E00DED7DC /* AccountSettings.swift */; };
+		740B23B71F17EC7300067A2A /* PostServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 740B23B21F17EC7300067A2A /* PostServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740B23B81F17EC7300067A2A /* PostServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 740B23B31F17EC7300067A2A /* PostServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740B23B91F17EC7300067A2A /* PostServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B23B41F17EC7300067A2A /* PostServiceRemoteREST.m */; };
+		740B23BA1F17EC7300067A2A /* PostServiceRemoteXMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 740B23B51F17EC7300067A2A /* PostServiceRemoteXMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740B23BB1F17EC7300067A2A /* PostServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B23B61F17EC7300067A2A /* PostServiceRemoteXMLRPC.m */; };
+		740B23BD1F17ECB500067A2A /* PostServiceRemoteOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 740B23BC1F17ECB500067A2A /* PostServiceRemoteOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740B23C21F17EE8000067A2A /* RemotePostCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = 740B23BE1F17EE8000067A2A /* RemotePostCategory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740B23C31F17EE8000067A2A /* RemotePostCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B23BF1F17EE8000067A2A /* RemotePostCategory.m */; };
+		740B23C41F17EE8000067A2A /* RemotePost.h in Headers */ = {isa = PBXBuildFile; fileRef = 740B23C01F17EE8000067A2A /* RemotePost.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		740B23C51F17EE8000067A2A /* RemotePost.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B23C11F17EE8000067A2A /* RemotePost.m */; };
+		740B23D21F17F6BB00067A2A /* PostServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 740B23D01F17F6BB00067A2A /* PostServiceRemoteRESTTests.m */; };
+		740B23D31F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740B23D11F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift */; };
+		740B23D61F17F7C100067A2A /* XMLRPCTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740B23D51F17F7C100067A2A /* XMLRPCTestable.swift */; };
+		740B23E11F17FB4200067A2A /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23D71F17FB4200067A2A /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */; };
+		740B23E21F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-format-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23D81F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-format-failure.xml */; };
+		740B23E31F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-type-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23D91F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-type-failure.xml */; };
+		740B23E41F17FB4200067A2A /* xmlrpc-metaweblog-editpost-success.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23DA1F17FB4200067A2A /* xmlrpc-metaweblog-editpost-success.xml */; };
+		740B23E51F17FB4200067A2A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23DB1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml */; };
+		740B23E61F17FB4200067A2A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23DC1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml */; };
+		740B23E71F17FB4200067A2A /* xmlrpc-metaweblog-newpost-success.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23DD1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-success.xml */; };
+		740B23E81F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23DE1F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml */; };
+		740B23E91F17FB4200067A2A /* xmlrpc-wp-getpost-invalid-id-failure.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23DF1F17FB4200067A2A /* xmlrpc-wp-getpost-invalid-id-failure.xml */; };
+		740B23EA1F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23E01F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml */; };
+		740B23ED1F17FB7E00067A2A /* xmlrpc-bad-username-password-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23EB1F17FB7E00067A2A /* xmlrpc-bad-username-password-error.xml */; };
+		740B23EE1F17FB7E00067A2A /* xmlrpc-malformed-request-xml-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 740B23EC1F17FB7E00067A2A /* xmlrpc-malformed-request-xml-error.xml */; };
 		74155E251EF87DDF00A06AEA /* ServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */; };
 		742362D61F10250600BD0A7F /* MenusServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 742362D41F10250600BD0A7F /* MenusServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		742362D71F10250600BD0A7F /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 742362D51F10250600BD0A7F /* MenusServiceRemote.m */; };
@@ -154,6 +179,7 @@
 		74D67F391F15C3740010C5ED /* site-viewers-delete-bad-json.json in Resources */ = {isa = PBXBuildFile; fileRef = 74D67F2C1F15C3740010C5ED /* site-viewers-delete-bad-json.json */; };
 		74D67F3A1F15C3740010C5ED /* site-viewers-delete-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74D67F2D1F15C3740010C5ED /* site-viewers-delete-failure.json */; };
 		74D67F3B1F15C3740010C5ED /* site-viewers-delete-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74D67F2E1F15C3740010C5ED /* site-viewers-delete-success.json */; };
+		74D97CB81F1CF6D500AC49B7 /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D97CB71F1CF6D500AC49B7 /* MenusServiceRemoteTests.m */; };
 		74DA56321F06EAF000FE9BF4 /* MediaServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 74DA562E1F06EAF000FE9BF4 /* MediaServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74DA56331F06EAF000FE9BF4 /* MediaServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DA562F1F06EAF000FE9BF4 /* MediaServiceRemoteREST.m */; };
 		74DA56341F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 74DA56301F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -312,6 +338,31 @@
 		7403A2F21EF06FEB00DED7DC /* me-settings-revert-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "me-settings-revert-email-success.json"; path = "WordPressKitTests/me-settings-revert-email-success.json"; sourceTree = SOURCE_ROOT; };
 		7403A2F31EF06FEB00DED7DC /* me-settings-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "me-settings-success.json"; path = "WordPressKitTests/me-settings-success.json"; sourceTree = SOURCE_ROOT; };
 		7403A3011EF0726E00DED7DC /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
+		740B23B21F17EC7300067A2A /* PostServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostServiceRemote.h; sourceTree = "<group>"; };
+		740B23B31F17EC7300067A2A /* PostServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostServiceRemoteREST.h; sourceTree = "<group>"; };
+		740B23B41F17EC7300067A2A /* PostServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceRemoteREST.m; sourceTree = "<group>"; };
+		740B23B51F17EC7300067A2A /* PostServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		740B23B61F17EC7300067A2A /* PostServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
+		740B23BC1F17ECB500067A2A /* PostServiceRemoteOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostServiceRemoteOptions.h; sourceTree = "<group>"; };
+		740B23BE1F17EE8000067A2A /* RemotePostCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemotePostCategory.h; sourceTree = "<group>"; };
+		740B23BF1F17EE8000067A2A /* RemotePostCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemotePostCategory.m; sourceTree = "<group>"; };
+		740B23C01F17EE8000067A2A /* RemotePost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemotePost.h; sourceTree = "<group>"; };
+		740B23C11F17EE8000067A2A /* RemotePost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemotePost.m; sourceTree = "<group>"; };
+		740B23D01F17F6BB00067A2A /* PostServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceRemoteRESTTests.m; sourceTree = "<group>"; };
+		740B23D11F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostServiceRemoteXMLRPCTests.swift; sourceTree = "<group>"; };
+		740B23D51F17F7C100067A2A /* XMLRPCTestable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLRPCTestable.swift; sourceTree = "<group>"; };
+		740B23D71F17FB4200067A2A /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-bad-xml-failure.xml"; sourceTree = "<group>"; };
+		740B23D81F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-format-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-change-format-failure.xml"; sourceTree = "<group>"; };
+		740B23D91F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-type-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-change-type-failure.xml"; sourceTree = "<group>"; };
+		740B23DA1F17FB4200067A2A /* xmlrpc-metaweblog-editpost-success.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-editpost-success.xml"; sourceTree = "<group>"; };
+		740B23DB1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-newpost-bad-xml-failure.xml"; sourceTree = "<group>"; };
+		740B23DC1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml"; sourceTree = "<group>"; };
+		740B23DD1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-success.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-metaweblog-newpost-success.xml"; sourceTree = "<group>"; };
+		740B23DE1F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-wp-getpost-bad-xml-failure.xml"; sourceTree = "<group>"; };
+		740B23DF1F17FB4200067A2A /* xmlrpc-wp-getpost-invalid-id-failure.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-wp-getpost-invalid-id-failure.xml"; sourceTree = "<group>"; };
+		740B23E01F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-wp-getpost-success.xml"; sourceTree = "<group>"; };
+		740B23EB1F17FB7E00067A2A /* xmlrpc-bad-username-password-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-bad-username-password-error.xml"; sourceTree = "<group>"; };
+		740B23EC1F17FB7E00067A2A /* xmlrpc-malformed-request-xml-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-malformed-request-xml-error.xml"; sourceTree = "<group>"; };
 		74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteRESTTests.m; sourceTree = "<group>"; };
 		742362D41F10250600BD0A7F /* MenusServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusServiceRemote.h; sourceTree = "<group>"; };
 		742362D51F10250600BD0A7F /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
@@ -443,6 +494,7 @@
 		74D67F2C1F15C3740010C5ED /* site-viewers-delete-bad-json.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-viewers-delete-bad-json.json"; sourceTree = "<group>"; };
 		74D67F2D1F15C3740010C5ED /* site-viewers-delete-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-viewers-delete-failure.json"; sourceTree = "<group>"; };
 		74D67F2E1F15C3740010C5ED /* site-viewers-delete-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-viewers-delete-success.json"; sourceTree = "<group>"; };
+		74D97CB71F1CF6D500AC49B7 /* MenusServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemoteTests.m; sourceTree = "<group>"; };
 		74DA562E1F06EAF000FE9BF4 /* MediaServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemoteREST.h; sourceTree = "<group>"; };
 		74DA562F1F06EAF000FE9BF4 /* MediaServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaServiceRemoteREST.m; sourceTree = "<group>"; };
 		74DA56301F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
@@ -612,12 +664,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		742362E61F10275E00BD0A7F /* Menu */ = {
+		740B23D41F17F6D200067A2A /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				742362E41F10274600BD0A7F /* MenusServiceRemoteTests.m */,
+				740B23D01F17F6BB00067A2A /* PostServiceRemoteRESTTests.m */,
+				740B23D11F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift */,
 			);
-			name = Menu;
+			name = Post;
 			sourceTree = "<group>";
 		};
 		7430C9BF1F192C210051B8E6 /* Reader */ = {
@@ -681,6 +734,14 @@
 			name = People;
 			sourceTree = "<group>";
 		};
+		74D97CB91F1CF6E200AC49B7 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				74D97CB71F1CF6D500AC49B7 /* MenusServiceRemoteTests.m */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
 		74DA563E1F06ED3900FE9BF4 /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -739,16 +800,18 @@
 				74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */,
 				93AB06031EE8838400EF8764 /* RemoteTestCase.swift */,
 				93C882961EEB179600227A59 /* RESTTestable.swift */,
+				740B23D51F17F7C100067A2A /* XMLRPCTestable.swift */,
 				74B335D91F06F3D60053A184 /* WordPressComRestApiTests.swift */,
 				74B335DB1F06F4180053A184 /* WordPressOrgXMLRPCApiTests.swift */,
 				93BD273E1EE732CC002BB00B /* Accounts */,
 				74B5F0DF1EF82AAB00B411E7 /* Blog */,
 				74585B911F0D520700E7E667 /* Domains */,
 				74DA563E1F06ED3900FE9BF4 /* Media */,
-				742362E61F10275E00BD0A7F /* Menu */,
+				74D97CB91F1CF6E200AC49B7 /* Menu */,
 				74A44DD61F13C6F3006CD8F4 /* Notifications */,
 				74D67F0B1F15C2570010C5ED /* People */,
 				7433BC061EFC456B002D9E92 /* Plans */,
+				740B23D41F17F6D200067A2A /* Post */,
 				7430C9BF1F192C210051B8E6 /* Reader */,
 				74C473AD1EF2F7BF009918F2 /* Site */,
 				930F52BB1ECF8A78002F921B /* Stats */,
@@ -853,6 +916,12 @@
 				74A44DCA1F13C533006CD8F4 /* PushAuthenticationServiceRemote.swift */,
 				7433BBFE1EFC4505002D9E92 /* PlanFeatureServiceRemote.swift */,
 				7433BBFF1EFC4505002D9E92 /* PlanServiceRemote.swift */,
+				740B23B21F17EC7300067A2A /* PostServiceRemote.h */,
+				740B23BC1F17ECB500067A2A /* PostServiceRemoteOptions.h */,
+				740B23B31F17EC7300067A2A /* PostServiceRemoteREST.h */,
+				740B23B41F17EC7300067A2A /* PostServiceRemoteREST.m */,
+				740B23B51F17EC7300067A2A /* PostServiceRemoteXMLRPC.h */,
+				740B23B61F17EC7300067A2A /* PostServiceRemoteXMLRPC.m */,
 				7430C99D1F1927180051B8E6 /* ReaderPostServiceRemote.h */,
 				7430C99E1F1927180051B8E6 /* ReaderPostServiceRemote.m */,
 				7430C99F1F1927180051B8E6 /* ReaderSiteServiceRemote.h */,
@@ -897,6 +966,10 @@
 				74A44DCF1F13C64B006CD8F4 /* RemoteNotificationSettings.swift */,
 				74D67F071F15BEB70010C5ED /* RemotePerson.swift */,
 				748710A71F06B542008095AB /* RemotePlan.swift */,
+				740B23C01F17EE8000067A2A /* RemotePost.h */,
+				740B23C11F17EE8000067A2A /* RemotePost.m */,
+				740B23BE1F17EE8000067A2A /* RemotePostCategory.h */,
+				740B23BF1F17EE8000067A2A /* RemotePostCategory.m */,
 				74B5F0E41EF8699C00B411E7 /* RemotePostType.h */,
 				74B5F0E51EF8699C00B411E7 /* RemotePostType.m */,
 				7430C9D61F1933200051B8E6 /* RemoteReaderCrossPostMeta.swift */,
@@ -1063,6 +1136,18 @@
 				74B335E51F06F6E90053A184 /* WordPressComRestApiMedia.json */,
 				74B335E31F06F6B30053A184 /* WordPressComRestApiMultipleErrors.json */,
 				74B335E91F06F76B0053A184 /* xmlrpc-response-getpost.xml */,
+				740B23EB1F17FB7E00067A2A /* xmlrpc-bad-username-password-error.xml */,
+				740B23EC1F17FB7E00067A2A /* xmlrpc-malformed-request-xml-error.xml */,
+				740B23D71F17FB4200067A2A /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml */,
+				740B23D81F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-format-failure.xml */,
+				740B23D91F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-type-failure.xml */,
+				740B23DA1F17FB4200067A2A /* xmlrpc-metaweblog-editpost-success.xml */,
+				740B23DB1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml */,
+				740B23DC1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml */,
+				740B23DD1F17FB4200067A2A /* xmlrpc-metaweblog-newpost-success.xml */,
+				740B23DE1F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml */,
+				740B23DF1F17FB4200067A2A /* xmlrpc-wp-getpost-invalid-id-failure.xml */,
+				740B23E01F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml */,
 			);
 			path = "Mock Data";
 			sourceTree = "<group>";
@@ -1148,9 +1233,15 @@
 				7430C9A31F1927180051B8E6 /* ReaderPostServiceRemote.h in Headers */,
 				742362D61F10250600BD0A7F /* MenusServiceRemote.h in Headers */,
 				742362E21F1025B400BD0A7F /* RemoteMenuLocation.h in Headers */,
+				740B23BA1F17EC7300067A2A /* PostServiceRemoteXMLRPC.h in Headers */,
+				740B23BD1F17ECB500067A2A /* PostServiceRemoteOptions.h in Headers */,
+				740B23B71F17EC7300067A2A /* PostServiceRemote.h in Headers */,
+				740B23B81F17EC7300067A2A /* PostServiceRemoteREST.h in Headers */,
 				74BA04F31F06DC0A00ED5CD8 /* CommentServiceRemoteREST.h in Headers */,
 				7430C9CA1F192F260051B8E6 /* RemoteSourcePostAttribution.h in Headers */,
 				9309994D1F1657C600F006A1 /* ThemeServiceRemote.h in Headers */,
+				740B23C41F17EE8000067A2A /* RemotePost.h in Headers */,
+				740B23C21F17EE8000067A2A /* RemotePostCategory.h in Headers */,
 				9309995B1F16616A00F006A1 /* RemoteTheme.h in Headers */,
 				93F08F111EEF0E9B000C2DF6 /* Logging.h in Headers */,
 				93C674EB1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h in Headers */,
@@ -1260,15 +1351,18 @@
 				74B335E41F06F6B30053A184 /* WordPressComRestApiMultipleErrors.json in Resources */,
 				7433BC0B1EFC4598002D9E92 /* plans-feature-empty-success.json in Resources */,
 				93AC8ED21ED32FD000900F5A /* stats-v1.1-referrers-day.json in Resources */,
+				740B23E61F17FB4200067A2A /* xmlrpc-metaweblog-newpost-invalid-posttype-failure.xml in Resources */,
 				7433BC0C1EFC4598002D9E92 /* plans-feature-success.json in Resources */,
 				74D67F2F1F15C3740010C5ED /* site-followers-delete-auth-failure.json in Resources */,
 				74C473B51EF320CC009918F2 /* site-delete-bad-json-failure.json in Resources */,
 				93AC8EDA1ED32FD000900F5A /* stats-v1.1-video-plays-day.json in Resources */,
+				740B23E21F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-format-failure.xml in Resources */,
 				74FC6F401F191C1D00112505 /* notifications-mark-as-read.json in Resources */,
 				74D67F3A1F15C3740010C5ED /* site-viewers-delete-failure.json in Resources */,
 				93BD275C1EE73442002BB00B /* is-available-username-success.json in Resources */,
 				93AC8ED81ED32FD000900F5A /* stats-v1.1-top-posts-day.json in Resources */,
 				74D67F331F15C3740010C5ED /* site-users-delete-auth-failure.json in Resources */,
+				740B23E71F17FB4200067A2A /* xmlrpc-metaweblog-newpost-success.xml in Resources */,
 				74FC6F411F191C1D00112505 /* notifications-last-seen.json in Resources */,
 				74C473BD1EF329CA009918F2 /* site-export-auth-failure.json in Resources */,
 				E6C1E84A1EF21FC100D139D9 /* is-passwordless-account-success.json in Resources */,
@@ -1301,6 +1395,7 @@
 				93AC8ED41ED32FD000900F5A /* stats-v1.1-summary.json in Resources */,
 				74C473B71EF3229B009918F2 /* site-delete-unexpected-json-failure.json in Resources */,
 				93AC8ECD1ED32FD000900F5A /* stats-v1.1-insights.json in Resources */,
+				740B23EE1F17FB7E00067A2A /* xmlrpc-malformed-request-xml-error.xml in Resources */,
 				93BD27551EE73442002BB00B /* auth-send-login-email-invalid-client-failure.json in Resources */,
 				74C473CD1EF336BD009918F2 /* site-active-purchases-bad-json-failure.json in Resources */,
 				74D67F351F15C3740010C5ED /* site-users-delete-not-member-failure.json in Resources */,
@@ -1312,6 +1407,7 @@
 				93AC8ED31ED32FD000900F5A /* stats-v1.1-streak.json in Resources */,
 				7403A2F91EF06FEB00DED7DC /* me-settings-change-email-success.json in Resources */,
 				7433BC121EFC45C7002D9E92 /* site-plans-auth-failure.json in Resources */,
+				740B23ED1F17FB7E00067A2A /* xmlrpc-bad-username-password-error.xml in Resources */,
 				93BD275B1EE73442002BB00B /* is-available-username-failure.json in Resources */,
 				93BD27581EE73442002BB00B /* auth-send-login-email-success.json in Resources */,
 				74B335E01F06F6290053A184 /* WordPressComRestApiFailInvalidInput.json in Resources */,
@@ -1331,6 +1427,7 @@
 				93AC8ECA1ED32FD000900F5A /* stats-v1.1-country-views-day.json in Resources */,
 				74C473BF1EF32B64009918F2 /* site-export-bad-json-failure.json in Resources */,
 				74D67F151F15C2D70010C5ED /* site-roles-success.json in Resources */,
+				740B23E11F17FB4200067A2A /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */,
 				93AC8ED51ED32FD000900F5A /* stats-v1.1-tags-categories-views-day.json in Resources */,
 				74D67F131F15C2D70010C5ED /* site-roles-auth-failure.json in Resources */,
 				74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */,
@@ -1340,6 +1437,7 @@
 				74D67F1E1F15C3240010C5ED /* people-send-invitation-failure.json in Resources */,
 				7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */,
 				74B335EA1F06F76B0053A184 /* xmlrpc-response-getpost.xml in Resources */,
+				740B23E91F17FB4200067A2A /* xmlrpc-wp-getpost-invalid-id-failure.xml in Resources */,
 				93AC8EC81ED32FD000900F5A /* stats-v1.1-clicks-month-large.json in Resources */,
 				930999561F16598A00F006A1 /* get-multiple-themes-v1.2.json in Resources */,
 				93AC8EC41ED32FD000900F5A /* emptyarray.json in Resources */,
@@ -1350,11 +1448,15 @@
 				74C473C31EF32DD7009918F2 /* site-export-failure.json in Resources */,
 				93AC8ECE1ED32FD000900F5A /* stats-v1.1-latest-post-views.json in Resources */,
 				74A44DD81F13C7AC006CD8F4 /* remote-notification.json in Resources */,
+				740B23E31F17FB4200067A2A /* xmlrpc-metaweblog-editpost-change-type-failure.xml in Resources */,
 				74D67F311F15C3740010C5ED /* site-followers-delete-failure.json in Resources */,
 				74B335E81F06F7200053A184 /* WordPressComRestApiFailUnauthorized.json in Resources */,
+				740B23E51F17FB4200067A2A /* xmlrpc-metaweblog-newpost-bad-xml-failure.xml in Resources */,
 				74C473C91EF335B8009918F2 /* site-active-purchases-empty-response.json in Resources */,
 				93AC8ECC1ED32FD000900F5A /* stats-v1.1-followers-wpcom-day.json in Resources */,
+				740B23EA1F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml in Resources */,
 				74C473B31EF3204B009918F2 /* site-delete-auth-failure.json in Resources */,
+				740B23E81F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml in Resources */,
 				74585B951F0D53B800E7E667 /* domain-service-all-domain-types.json in Resources */,
 				74D67F371F15C3740010C5ED /* site-users-delete-success.json in Resources */,
 				74D67F341F15C3740010C5ED /* site-users-delete-bad-json-failure.json in Resources */,
@@ -1377,6 +1479,7 @@
 				74D67F381F15C3740010C5ED /* site-viewers-delete-auth-failure.json in Resources */,
 				93AC8EDB1ED32FD000900F5A /* stats-v1.1-visits-day-bad-date.json in Resources */,
 				93AC8ECB1ED32FD000900F5A /* stats-v1.1-followers-email-day.json in Resources */,
+				740B23E41F17FB4200067A2A /* xmlrpc-metaweblog-editpost-success.xml in Resources */,
 				7434E1DE1F17C3C900C40DDB /* site-users-update-role-unknown-user-failure.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1476,11 +1579,13 @@
 				93BD27701EE737A8002BB00B /* ServiceRemoteWordPressComREST.m in Sources */,
 				7433BC001EFC4505002D9E92 /* PlanFeatureServiceRemote.swift in Sources */,
 				93BD277F1EE73944002BB00B /* WordPressComOAuthClient.swift in Sources */,
+				740B23B91F17EC7300067A2A /* PostServiceRemoteREST.m in Sources */,
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
 				74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				7433BC011EFC4505002D9E92 /* PlanServiceRemote.swift in Sources */,
 				74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */,
+				740B23BB1F17EC7300067A2A /* PostServiceRemoteXMLRPC.m in Sources */,
 				74B5F0E31EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m in Sources */,
 				7430C9D71F1933210051B8E6 /* RemoteReaderCrossPostMeta.swift in Sources */,
 				93BD277E1EE73944002BB00B /* NSDate+WordPressJSON.m in Sources */,
@@ -1504,6 +1609,7 @@
 				7430C9A81F1927180051B8E6 /* ReaderTopicServiceRemote.m in Sources */,
 				93C674F21EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m in Sources */,
 				74D67F061F1528470010C5ED /* PeopleServiceRemote.swift in Sources */,
+				740B23C31F17EE8000067A2A /* RemotePostCategory.m in Sources */,
 				74B5F0E71EF8699C00B411E7 /* RemotePostType.m in Sources */,
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
 				74D67F081F15BEB70010C5ED /* RemotePerson.swift in Sources */,
@@ -1530,6 +1636,7 @@
 				74DA563B1F06EB3000FE9BF4 /* RemoteMedia.m in Sources */,
 				93BD27821EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift in Sources */,
 				748710A81F06B542008095AB /* RemotePlan.swift in Sources */,
+				740B23C51F17EE8000067A2A /* RemotePost.m in Sources */,
 				74B5F0DA1EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.m in Sources */,
 				93C674EE1EE834B700BFAF05 /* RemoteBlogSettings.swift in Sources */,
 				9309994E1F1657C600F006A1 /* ThemeServiceRemote.m in Sources */,
@@ -1553,8 +1660,10 @@
 				74B5F0DE1EF82A9600B411E7 /* BlogServiceRemoteRESTTests.m in Sources */,
 				7433BC041EFC4556002D9E92 /* PlanFeatureServiceRemoteTests.swift in Sources */,
 				93AC8EDE1ED32FD000900F5A /* StatsItemTests.m in Sources */,
+				740B23D31F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift in Sources */,
 				74FC6F3B1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift in Sources */,
 				7433BC051EFC4556002D9E92 /* PlanServiceRemoteTests.swift in Sources */,
+				740B23D61F17F7C100067A2A /* XMLRPCTestable.swift in Sources */,
 				93AB06041EE8838400EF8764 /* RemoteTestCase.swift in Sources */,
 				93BD27411EE73311002BB00B /* AccountServiceRemoteRESTTests.swift in Sources */,
 				7430C9BC1F192C0F0051B8E6 /* ReaderSiteServiceRemoteTests.swift in Sources */,
@@ -1567,6 +1676,8 @@
 				742362E51F10274600BD0A7F /* MenusServiceRemoteTests.m in Sources */,
 				931924241F1662FA0069CBCC /* JSONLoader.swift in Sources */,
 				93AC8EE21ED32FD000900F5A /* WPStatsServiceRemoteTests.m in Sources */,
+				740B23D21F17F6BB00067A2A /* PostServiceRemoteRESTTests.m in Sources */,
+				74D97CB81F1CF6D500AC49B7 /* MenusServiceRemoteTests.m in Sources */,
 				7430C9BE1F192C0F0051B8E6 /* ReaderTopicServiceRemoteTests.m in Sources */,
 				74B335DC1F06F4180053A184 /* WordPressOrgXMLRPCApiTests.swift in Sources */,
 				93C882971EEB179600227A59 /* RESTTestable.swift in Sources */,
@@ -1687,6 +1798,9 @@
 			baseConfigurationReference = B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES_NONAGGRESSIVE;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1710,6 +1824,9 @@
 			baseConfigurationReference = 64D3C3AD47D5D2C05759A075 /* Pods-WordPressKit.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES_NONAGGRESSIVE;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1819,6 +1936,9 @@
 			baseConfigurationReference = E5273E8FA8F6117F941D6CC1 /* Pods-WordPressKit.release-internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES_NONAGGRESSIVE;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1907,6 +2027,9 @@
 			baseConfigurationReference = A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "${inherited}";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES_NONAGGRESSIVE;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";

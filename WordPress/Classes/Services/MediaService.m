@@ -770,7 +770,11 @@
         media.creationDate = remoteMedia.date;
     }
     media.filename = remoteMedia.file;
-    [media setMediaTypeForExtension:remoteMedia.extension];
+    if (remoteMedia.mimeType.length > 0) {
+        [media setMediaTypeForMimeType:remoteMedia.mimeType];
+    } else if (remoteMedia.extension.length > 0) {
+        [media setMediaTypeForExtension:remoteMedia.extension];
+    }
     media.title = remoteMedia.title;
     media.caption = remoteMedia.caption;
     media.desc = remoteMedia.descriptionText;

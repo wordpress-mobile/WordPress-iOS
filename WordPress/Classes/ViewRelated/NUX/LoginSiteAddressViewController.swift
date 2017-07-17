@@ -262,13 +262,3 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         keyboardWillHide(notification)
     }
 }
-
-extension LoginSiteAddressViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        if presented is FancyAlertViewController {
-            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-        }
-
-        return nil
-    }
-}
