@@ -85,8 +85,8 @@ class FancyAlertViewController: UIViewController {
     @IBOutlet private weak var headerImageViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var headerImageViewWrapperBottomConstraint: NSLayoutConstraint?
     @IBOutlet private weak var buttonWrapperViewTopConstraint: NSLayoutConstraint?
+    @IBOutlet private var titleAccessoryButtonTrailingConstraint: NSLayoutConstraint!
 
-    @IBOutlet private weak var titleStackView: UIStackView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var bodyLabel: UILabel!
 
@@ -220,6 +220,10 @@ class FancyAlertViewController: UIViewController {
         update(moreInfoButton, with: configuration.moreInfoButton)
         update(titleAccessoryButton, with: configuration.titleAccessoryButton)
 
+        // If we have no title accessory button, we need to
+        // disable the trailing constraint to allow the title to flow correctly
+        titleAccessoryButtonTrailingConstraint.isActive = (configuration.titleAccessoryButton != nil)
+        
         // If both primary buttons are hidden, we'll hide the bottom area of the dialog
         buttonWrapperView.isHiddenInStackView = isButtonless
 
