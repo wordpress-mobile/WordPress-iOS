@@ -9,13 +9,9 @@
 #import "PostCategoryService.h"
 #import "CommentService.h"
 #import "PostService.h"
-#import "BlogServiceRemote.h"
-#import "BlogServiceRemoteXMLRPC.h"
-#import "BlogServiceRemoteREST.h"
 #import "TodayExtensionService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
-#import "RemotePostType.h"
 #import "PostType.h"
 @import WordPressKit;
 @import WordPressShared;
@@ -24,7 +20,10 @@ NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const WordPressMinimumVersion = @"4.0";
 NSString *const HttpsPrefix = @"https://";
+NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
+
 CGFloat const OneHourInSeconds = 60.0 * 60.0;
+
 
 @implementation BlogService
 
@@ -143,6 +142,27 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         if (failure) {
             failure(error);
         }
+    }];
+}
+
+- (void)fetchSiteInfoForAddress:(NSString *)siteAddress
+                        success:(void (^)(SiteInfo *siteInfo))success
+                        failure:(void (^)(NSError *error))failure
+{
+    WordPressComRestApi *api = [ServiceRemoteWordPressComREST anonymousWordPressComRestApiWithUserAgent:WPUserAgent.wordPressUserAgent];
+
+    BlogServiceRemoteREST *remote = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:@0];
+    [remote fetchSiteInfoForAddress:siteAddress success:^(NSDictionary *responseDict) {
+        SiteInfo *siteInfo = [[SiteInfo alloc] init];
+        siteInfo.name = [responseDict stringForKey:@"name"] ?: @"";
+        siteInfo.tagline = [responseDict stringForKey:@"description"] ?: @"";
+        siteInfo.url = [responseDict stringForKey:@"URL"] ?: @"";
+        siteInfo.hasJetpack = [[responseDict numberForKey:@"jetpack"] boolValue] ?: NO;
+        siteInfo.icon = [responseDict stringForKeyPath:@"icon.img"] ?: @"";
+        success(siteInfo);
+
+    } failure:^(NSError *error) {
+        failure(error);
     }];
 }
 
@@ -662,6 +682,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     BlogSettings *settings = blog.settings;
     settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
     settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
+    
+    [NSNotificationCenter.defaultCenter postNotificationName:WPBlogUpdatedNotification object:nil];
 }
 
 /**

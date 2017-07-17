@@ -1,10 +1,16 @@
 import Foundation
 import UIKit
+import Gridicons
 import WordPressShared
 import WordPressComAnalytics
 import SVProgressHUD
 
 class AppSettingsViewController: UITableViewController {
+    enum Sections: Int {
+        case media
+        case editor
+        case other
+    }
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -25,6 +31,9 @@ class AppSettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.register(AppSettingsEditorFooterView.self,
+                           forHeaderFooterViewReuseIdentifier: AppSettingsEditorFooterView.reuseIdentifier)
 
         ImmuTable.registerRows([
             DestructiveButtonRow.self,
@@ -78,23 +87,38 @@ class AppSettingsViewController: UITableViewController {
         let editorSettings = EditorSettings()
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         var editorRows = [ImmuTableRow]()
-        let visualEditor = SwitchRow(
-            title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
-            value: editorSettings.visualEditorEnabled,
-            onChange: visualEditorChanged()
+
+        let editor = editorSettings.editor
+
+        let textEditor = CheckmarkRow(
+            title: NSLocalizedString("Plain Text", comment: "Option to enable the plain text (legacy) editor"),
+            checked: (editor == .legacy),
+            action: visualEditorChanged(editor: .legacy)
+        )
+        editorRows.append(textEditor)
+
+        let visualEditor = CheckmarkRow(
+            title: NSLocalizedString("Visual", comment: "Option to enable the hybrid visual editor"),
+            checked: (editor == .hybrid),
+            action: visualEditorChanged(editor: .hybrid)
         )
         editorRows.append(visualEditor)
 
-        if editorSettings.nativeEditorAvailable && editorSettings.visualEditorEnabled {
-            let nativeEditor = SwitchRow(
-                title: NSLocalizedString("Native Editor", comment: "Option to enable the native visual editor"),
-                value: editorSettings.nativeEditorEnabled,
-                onChange: nativeEditorChanged()
-            )
-            editorRows.append(nativeEditor)
-        }
+        let nativeEditor = CheckmarkRow(
+            title: NSLocalizedString("Beta", comment: "Option to enable the beta native editor (Aztec)"),
+            checked: (editor == .aztec),
+            action: visualEditorChanged(editor: .aztec)
+        )
+        editorRows.append(nativeEditor)
 
-        let aboutHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
+        let usageTrackingHeader = NSLocalizedString("Usage Statistics", comment: "App usage data settings section header")
+        let usageTrackingRow = SwitchRow(
+            title: NSLocalizedString("Send Statistics", comment: "Label for switch to turn on/off sending app usage data"),
+            value: WPAppAnalytics.isTrackingUsage(),
+            onChange: usageTrackingChanged())
+        let usageTrackingFooter = NSLocalizedString("Automatically send usage statistics to help us improve WordPress for iOS", comment: "App usage data settings section footer describing what the setting does.")
+
+        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
@@ -120,13 +144,50 @@ class AppSettingsViewController: UITableViewController {
                 rows: editorRows,
                 footerText: nil),
             ImmuTableSection(
-                headerText: aboutHeader,
+                headerText: usageTrackingHeader,
+                rows: [usageTrackingRow],
+                footerText: usageTrackingFooter
+            ),
+            ImmuTableSection(
+                headerText: otherHeader,
                 rows: [
                     settingsRow,
                     aboutRow
                 ],
                 footerText: nil)
             ])
+    }
+
+    // MARK: - UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if shouldShowEditorFooterForSection(section) {
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier) as! AppSettingsEditorFooterView
+
+            view.tapBlock = { [weak self] in
+                WPAppAnalytics.track(.editorAztecBetaLink)
+
+                if let controller = self {
+                    WPWebViewController.presentWhatsNewWebView(from: controller)
+                }
+            }
+
+            return view
+        }
+
+        return nil
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if shouldShowEditorFooterForSection(section) {
+            return AppSettingsEditorFooterView.height
+        }
+
+        return UITableViewAutomaticDimension
+    }
+
+    private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
+        return section == Sections.editor.rawValue && EditorSettings().editor == .aztec
     }
 
     // MARK: - Media cache methods
@@ -200,14 +261,31 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func visualEditorChanged() -> (Bool) -> Void {
-        return { [weak self] enabled in
-            if enabled {
-                WPAnalytics.track(.editorToggledOn)
-            } else {
-                WPAnalytics.track(.editorToggledOff)
+    func visualEditorChanged(editor: EditorSettings.Editor) -> ImmuTableAction {
+        return { [weak self] row in
+            let currentEditorIsAztec = EditorSettings().nativeEditorEnabled
+
+            switch editor {
+            case .legacy:
+                EditorSettings().nativeEditorEnabled = false
+                EditorSettings().visualEditorEnabled = false
+                if currentEditorIsAztec {
+                    WPAnalytics.track(.editorToggledOff)
+                }
+            case .hybrid:
+                EditorSettings().nativeEditorEnabled = false
+                EditorSettings().visualEditorEnabled = true
+                if currentEditorIsAztec {
+                    WPAnalytics.track(.editorToggledOff)
+                }
+            case .aztec:
+                EditorSettings().visualEditorEnabled = true
+                EditorSettings().nativeEditorEnabled = true
+                if !currentEditorIsAztec {
+                    WPAnalytics.track(.editorToggledOn)
+                }
             }
-            EditorSettings().visualEditorEnabled = enabled
+
             self?.reloadViewModel()
         }
     }
@@ -215,6 +293,13 @@ class AppSettingsViewController: UITableViewController {
     func nativeEditorChanged() -> (Bool) -> Void {
         return { enabled in
             EditorSettings().nativeEditorEnabled = enabled
+        }
+    }
+
+    func usageTrackingChanged() -> (Bool) -> Void {
+        return { enabled in
+            let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
+            appAnalytics?.setTrackingUsage(enabled)
         }
     }
 
@@ -263,5 +348,50 @@ fileprivate struct MediaSizingRow: ImmuTableRow {
         cell.selectionStyle = .none
 
         (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
+    }
+}
+
+fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
+    static let height: CGFloat = 38.0
+    static let reuseIdentifier = "AppSettingsEditorFooterView"
+    var tapBlock: (() -> Void)? = nil
+
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        stackView.axis = .horizontal
+
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.text = NSLocalizedString("Editor beta release notes & bug reporting", comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
+        label.textColor = WPStyleGuide.greyDarken10()
+        stackView.addArrangedSubview(label)
+
+        let button = UIButton(type: .custom)
+        button.setImage(Gridicon.iconOfType(.infoOutline), for: .normal)
+        button.tintColor = WPStyleGuide.greyDarken10()
+        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
+
+        contentView.addSubview(stackView)
+        stackView.addArrangedSubview(button)
+
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
+            ])
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    @IBAction private func footerButtonTapped() {
+        tapBlock?()
     }
 }

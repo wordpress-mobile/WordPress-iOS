@@ -35,10 +35,11 @@ PODS:
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - Gridicons (0.8)
+  - Gridicons (0.10)
   - HockeySDK (4.1.5):
     - HockeySDK/DefaultLib (= 4.1.5)
   - HockeySDK/DefaultLib (4.1.5)
+  - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.5.6)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
@@ -92,13 +93,11 @@ PODS:
   - Starscream (2.0.2)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.4):
-    - Gridicons (= 0.8)
-  - WordPress-iOS-Editor (1.9.2):
+  - WordPress-Aztec-iOS (1.0.0-beta.8)
+  - WordPress-iOS-Editor (1.9.3):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-    - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPressCom-Analytics-iOS (0.1.29)
+  - WordPressCom-Analytics-iOS (0.1.31)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
   - WPMediaPicker (0.18)
@@ -114,8 +113,9 @@ DEPENDENCIES:
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
   - FormatterKit/TimeIntervalFormatter (~> 1.8.1)
-  - Gridicons (= 0.8)
+  - Gridicons (= 0.10)
   - HockeySDK (~> 4.1.5)
+  - lottie-ios (~> 1.5.1)
   - MGSwipeTableCell (~> 1.5.6)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 7.0.0)
@@ -129,9 +129,9 @@ DEPENDENCIES:
   - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
   - SVProgressHUD (~> 2.1.2)
   - UIDeviceIdentifier (~> 0.1)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.4)
-  - WordPress-iOS-Editor (= 1.9.2)
-  - WordPressCom-Analytics-iOS (= 0.1.29)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.8)
+  - WordPress-iOS-Editor (= 1.9.3)
+  - WordPressCom-Analytics-iOS (= 0.1.31)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.18)
   - wpxmlrpc (= 0.8.3)
@@ -170,8 +170,9 @@ SPEC CHECKSUMS:
   Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
-  Gridicons: 80b979a3ada21189f96bd7af9f1a5b2751fb50e3
+  Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
   HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
+  lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
@@ -184,13 +185,13 @@ SPEC CHECKSUMS:
   Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 859ca14e0f6d9cc6d99a173fa07e5862fe67a749
-  WordPress-iOS-Editor: e71fa013ac3bf8f448d0ee43421beed3f56500f0
-  WordPressCom-Analytics-iOS: db0e9449bafaaa7beb2c7f663ecc806d45da992e
+  WordPress-Aztec-iOS: 6da5ac2e8b78bc301cf9dbc67e512fd6a015a799
+  WordPress-iOS-Editor: ed02135d783ecb9aa4ee5e2462935432d464d461
+  WordPressCom-Analytics-iOS: a64e051690f9408fd71343625bf68f55389cd42d
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 70b9a8221f70f52d395f2753421a19fb618deff7
+PODFILE CHECKSUM: 82ab78aa137b4fd49d2396bbd78b6ea89cc3325d
 
 COCOAPODS: 1.2.1
