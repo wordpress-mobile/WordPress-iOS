@@ -1,7 +1,9 @@
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
 #import "RemoteReaderSiteInfo.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 static NSString * const TopicMenuSectionDefaultKey = @"default";
 static NSString * const TopicMenuSectionSubscribedKey = @"subscribed";
@@ -32,7 +34,6 @@ static NSString * const SiteDictionaryIDKey = @"ID";
 static NSString * const SiteDictionaryNameKey = @"name";
 static NSString * const SiteDictionaryURLKey = @"URL";
 static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
-
 
 @implementation ReaderTopicServiceRemote
 
