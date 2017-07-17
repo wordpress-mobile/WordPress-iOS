@@ -12,7 +12,7 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .newLogin:
-            return build(.localDeveloper, .a8cBranchTest)
+            return true
         case .newMediaExports:
             return build(.localDeveloper, .a8cBranchTest)
         }
