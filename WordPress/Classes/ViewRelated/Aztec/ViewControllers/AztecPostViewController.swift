@@ -1674,8 +1674,9 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         richTextView.inputAssistantItem.leadingBarButtonGroups = originalLeadingBarButtonGroup
         richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
-
         richTextView.autocorrectionType = .yes
+        richTextView.resignFirstResponder()
+        richTextView.becomeFirstResponder()
     }
 
     @IBAction func presentMediaPicker() {
