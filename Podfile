@@ -11,7 +11,7 @@ def shared_with_all_pods
   pod 'CocoaLumberjack', '~> 3.2.0'
   pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.1'
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'WordPressCom-Analytics-iOS', '0.1.29'
+  pod 'WordPressCom-Analytics-iOS', '0.1.31'
 end
 
 def shared_with_networking_pods
@@ -44,6 +44,7 @@ target 'WordPress' do
   pod 'BuddyBuildSDK', '~> 1.0.15', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '~> 1.0'
   pod 'MGSwipeTableCell', '~> 1.5.6'
+  pod 'lottie-ios', '~> 1.5.1'
   # Temporary until this fix is merged and released
   # https://github.com/daltoniam/Starscream/pull/294
   pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
@@ -52,11 +53,11 @@ target 'WordPress' do
   # WordPress components
   # --------------------
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
-  pod 'Gridicons', '0.8'
+  pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.18'
-  pod 'WordPress-iOS-Editor', '1.9.2'
-  pod 'WordPress-Aztec-iOS', '1.0.0-beta.4'
+  pod 'WordPress-iOS-Editor', '1.9.3'
+  pod 'WordPress-Aztec-iOS', '= 1.0.0-beta.8'
 
   target 'WordPressTest' do
     inherit! :search_paths

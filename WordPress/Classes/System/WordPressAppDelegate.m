@@ -39,7 +39,6 @@
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
 #import "HockeyManager.h"
-#import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
 
@@ -66,13 +65,13 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
-@property (nonatomic, strong, readwrite) WPLookbackPresenter            *lookbackPresenter;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
+@property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
 
 @end
 
@@ -126,7 +125,6 @@ int ddLogLevel = DDLogLevelInfo;
         [defaults synchronize];
 
         EditorSettings *settings = [EditorSettings new];
-        [settings setNativeEditorAvailable:TRUE];
         [settings setVisualEditorEnabled:TRUE];
         [settings setNativeEditorEnabled:TRUE];
     }
@@ -141,39 +139,13 @@ int ddLogLevel = DDLogLevelInfo;
 
     [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
-    [self setupLookback];
     [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
+    [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
 
     return YES;
-}
-
-- (void)setupLookback
-{
-#ifdef LOOKBACK_ENABLED
-    // Kick this off on a background thread so as to not slow down the app initialization
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        
-        NSString *lookbackToken = [ApiCredentials lookbackToken];
-        
-        if ([lookbackToken length] > 0) {
-            UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            
-            [context performBlock:^{
-                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                WPAccount *account = [accountService defaultWordPressComAccount];
-
-                self.lookbackPresenter = [[WPLookbackPresenter alloc] initWithToken:lookbackToken
-                                                                             userId:account.username
-                                                                             window:keyWindow];
-            }];
-        }
-    });
-#endif
 }
 
 - (void)setupStoreKit
@@ -205,6 +177,11 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)setupPingHub
 {
     self.pinghubManager = [PingHubManager new];
+}
+
+- (void)setupShortcutCreator
+{
+    self.shortcutCreator = [WP3DTouchShortcutCreator new];
 }
 
 - (void)setupBackgroundRefresh:(UIApplication *)application {
@@ -295,18 +272,6 @@ int ddLogLevel = DDLogLevelInfo;
                 }
 
                 return YES;
-            }
-        } else if ([[url host] isEqualToString:@"editor"] || [[url host] isEqualToString:@"aztec"]) {
-            // Example: wordpress://editor?available=1&enabled=0
-            NSDictionary* params = [[url query] dictionaryFromQueryString];
-
-            if (params.count > 0) {
-                BOOL available = [[params objectForKey:@"available"] boolValue];
-                BOOL enabled = [[params objectForKey:@"enabled"] boolValue];
-
-                EditorSettings *editorSettings = [EditorSettings new];
-                editorSettings.nativeEditorAvailable = available;
-                editorSettings.nativeEditorEnabled = enabled;
             }
         }
     }
@@ -457,7 +422,7 @@ int ddLogLevel = DDLogLevelInfo;
     // Configure Extensions
     [self setupWordPressExtensions];
 
-    [self create3DTouchShortcutItems];
+    [self.shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
@@ -631,12 +596,6 @@ int ddLogLevel = DDLogLevelInfo;
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
     [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
-}
-
-- (void)create3DTouchShortcutItems
-{
-    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
-    [shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
 }
 
 #pragma mark - Analytics
@@ -900,8 +859,7 @@ int ddLogLevel = DDLogLevelInfo;
         [self removeShareExtensionConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
-    
-    [self create3DTouchShortcutItems];
+
     [self toggleExtraDebuggingIfNeeded];
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];

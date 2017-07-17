@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+@class WordPressComRestApi;
+
 typedef NS_ENUM(NSInteger, ServiceRemoteWordPressComRESTApiVersion)
 {
     ServiceRemoteWordPressComRESTApiNoVersion   = 0000,
@@ -7,8 +9,6 @@ typedef NS_ENUM(NSInteger, ServiceRemoteWordPressComRESTApiVersion)
     ServiceRemoteWordPressComRESTApiVersion_1_2 = 1002,
     ServiceRemoteWordPressComRESTApiVersion_1_3 = 1003,
 };
-
-@class WordPressComRestApi;
 
 /**
  *  @class  ServiceRemoteREST

@@ -286,6 +286,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_video_added";
             eventProperties = @{ @"via" : @"media_library" };
             break;
+        case WPAnalyticsStatEditorAztecBetaLink:
+            eventName = @"editor_aztec_beta_link";
+            break;
+        case WPAnalyticsStatEditorAztecPromoLink:
+            eventName = @"editor_aztec_promo_link";
+            break;
+        case WPAnalyticsStatEditorAztecPromoPositive:
+            eventName = @"editor_aztec_promo_positive";
+            break;
+        case WPAnalyticsStatEditorAztecPromoNegative:
+            eventName = @"editor_aztec_promo_negative";
+            break;
         case WPAnalyticsStatEditorClosed:
             eventName = @"editor_closed";
             break;
@@ -330,6 +342,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"bold" };
             break;
+        case WPAnalyticsStatEditorTappedHeader:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"header" };
+            break;
+        case WPAnalyticsStatEditorTappedHeaderSelection:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"header_selection" };
+            break;
+        case WPAnalyticsStatEditorTappedHorizontalRule:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"horizontal_rule" };
+            break;
         case WPAnalyticsStatEditorTappedHTML:
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"html" };
@@ -349,6 +373,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorTappedMore:
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"more" };
+            break;
+        case WPAnalyticsStatEditorTappedMoreItems:
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"overflow_ellipsis" };
             break;
         case WPAnalyticsStatEditorTappedOrderedList:
             eventName = @"editor_button_tapped";
