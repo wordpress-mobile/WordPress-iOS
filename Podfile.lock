@@ -90,7 +90,7 @@ PODS:
     - OHHTTPStubs/Default
   - Reachability (3.2)
   - Specta (1.0.5)
-  - Starscream (2.0.2)
+  - Starscream (2.1.0)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.8)
@@ -106,8 +106,8 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.4)
   - AFNetworking (= 3.1.0)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
-  - CocoaLumberjack (~> 3.2.0)
   - BuddyBuildSDK (= 1.0.16)
+  - CocoaLumberjack (= 3.2.0)
   - Crashlytics (= 3.8.5)
   - Expecta (= 1.0.5)
   - FLAnimatedImage (= 1.0.12)
@@ -125,7 +125,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)
   - Specta (= 1.0.5)
-  - Starscream (from `https://github.com/wordpress-mobile/Starscream`, branch `wordpress-ios`)
+  - Starscream (= 2.1.0)
   - SVProgressHUD (= 2.1.2)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.8)
@@ -138,9 +138,6 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.0
-  Starscream:
-    :branch: wordpress-ios
-    :git: https://github.com/wordpress-mobile/Starscream
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -149,9 +146,6 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.0
-  Starscream:
-    :commit: 60b27a4388bcb1b8b170c645dd19142cfa674f59
-    :git: https://github.com/wordpress-mobile/Starscream
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -180,7 +174,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
-  Starscream: 4ee1be18da5170faafce1698225b61f9765634d5
+  Starscream: 168fd64c345fb2dea71b0a869c482aeffcf866e4
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 6da5ac2e8b78bc301cf9dbc67e512fd6a015a799
@@ -189,6 +183,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 71152f51bcce902b70d03caf47ef03f4757c0019
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 84d8f650d4e99b209bd5df0a113b7d8e94eadf51
+PODFILE CHECKSUM: f3ee6c93af7dcf18031a42cba6c8bee40a550213
 
 COCOAPODS: 1.2.1
