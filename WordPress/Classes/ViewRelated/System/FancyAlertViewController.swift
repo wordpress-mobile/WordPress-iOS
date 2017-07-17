@@ -223,7 +223,7 @@ class FancyAlertViewController: UIViewController {
         // If we have no title accessory button, we need to
         // disable the trailing constraint to allow the title to flow correctly
         titleAccessoryButtonTrailingConstraint.isActive = (configuration.titleAccessoryButton != nil)
-        
+
         // If both primary buttons are hidden, we'll hide the bottom area of the dialog
         buttonWrapperView.isHiddenInStackView = isButtonless
 
