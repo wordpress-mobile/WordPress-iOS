@@ -121,13 +121,13 @@
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cUO-4N-FhV" secondAttribute="trailing" constant="28" id="8Dt-2R-IOW"/>
+                                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rH2-Nt-ZNa" secondAttribute="trailing" constant="20" id="A7y-8k-dtG"/>
                                                             <constraint firstItem="75Q-Jn-AFH" firstAttribute="firstBaseline" secondItem="cUO-4N-FhV" secondAttribute="firstBaseline" id="CuZ-hU-uES"/>
                                                             <constraint firstItem="75Q-Jn-AFH" firstAttribute="leading" secondItem="cUO-4N-FhV" secondAttribute="trailing" id="JAl-Yr-Eh3"/>
                                                             <constraint firstItem="Er7-dR-3IB" firstAttribute="top" secondItem="rzT-7k-QCD" secondAttribute="top" constant="20" id="Rxa-JT-XKl"/>
                                                             <constraint firstAttribute="trailing" secondItem="Er7-dR-3IB" secondAttribute="trailing" constant="20" id="aEb-Sn-pwu"/>
+                                                            <constraint firstItem="rH2-Nt-ZNa" firstAttribute="leading" secondItem="cUO-4N-FhV" secondAttribute="trailing" constant="8" id="iHd-gE-XBa"/>
                                                             <constraint firstAttribute="bottom" secondItem="Er7-dR-3IB" secondAttribute="bottom" constant="20" id="nJT-ly-DDr"/>
-                                                            <constraint firstItem="rH2-Nt-ZNa" firstAttribute="leading" secondItem="cUO-4N-FhV" secondAttribute="trailing" constant="8" id="o0I-ch-GMs"/>
                                                             <constraint firstItem="Er7-dR-3IB" firstAttribute="leading" secondItem="rzT-7k-QCD" secondAttribute="leading" constant="20" id="v3D-07-SBb"/>
                                                             <constraint firstItem="rH2-Nt-ZNa" firstAttribute="centerY" secondItem="75Q-Jn-AFH" secondAttribute="centerY" id="xqs-mT-uoA"/>
                                                         </constraints>
@@ -223,6 +223,7 @@
                         <outlet property="headerImageWrapperView" destination="zUD-7D-1OQ" id="oXI-vd-cPX"/>
                         <outlet property="moreInfoButton" destination="bwf-Ap-GLo" id="Z0W-pQ-eVj"/>
                         <outlet property="titleAccessoryButton" destination="rH2-Nt-ZNa" id="iCK-Op-GF7"/>
+                        <outlet property="titleAccessoryButtonTrailingConstraint" destination="A7y-8k-dtG" id="WVS-5E-dUP"/>
                         <outlet property="titleLabel" destination="cUO-4N-FhV" id="kjQ-N0-LhA"/>
                         <outlet property="topDividerView" destination="JVE-OD-Ia7" id="hhk-Ox-h6f"/>
                         <outlet property="wrapperView" destination="Zfy-Hg-zeP" id="g4f-8K-r32"/>
