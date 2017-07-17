@@ -108,7 +108,7 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
   - BuddyBuildSDK (~> 1.0.15)
   - CocoaLumberjack (~> 3.2.0)
-  - Crashlytics
+  - Crashlytics (= 3.8.5)
   - Expecta (= 1.0.5)
   - FLAnimatedImage (~> 1.0)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -163,9 +163,9 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: edc4365d31602490af88dbed181b0b666cbdcf75
   BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
   CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
-  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  Crashlytics: dfbae35ef22ca189240d230ad501feea4ee85d2d
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  Fabric: f050464eac45a2ce5a8e6e6a07e977c0df32fe28
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
