@@ -38,7 +38,6 @@ target 'WordPress' do
   pod 'HockeySDK', '4.1.6', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
-  pod 'SVProgressHUD', '~>2.1.2'
   pod 'Crashlytics'
   pod 'BuddyBuildSDK', '~> 1.0.15', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '~> 1.0'
@@ -47,6 +46,7 @@ target 'WordPress' do
   # Temporary until this fix is merged and released
   # https://github.com/daltoniam/Starscream/pull/294
   pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
+  pod 'SVProgressHUD', '2.1.2'
 
   # --------------------
   # WordPress components
