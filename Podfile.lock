@@ -110,7 +110,7 @@ DEPENDENCIES:
   - BuddyBuildSDK (= 1.0.16)
   - Crashlytics (= 3.8.5)
   - Expecta (= 1.0.5)
-  - FLAnimatedImage (~> 1.0)
+  - FLAnimatedImage (= 1.0.12)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gridicons (= 0.10)
   - lottie-ios (~> 1.5.1)
