@@ -27,10 +27,10 @@ PODS:
   - CocoaLumberjack/Default (3.2.0)
   - CocoaLumberjack/Extensions (3.2.0):
     - CocoaLumberjack/Default
-  - Crashlytics (3.8.4):
+  - Crashlytics (3.8.5):
     - Fabric (~> 1.6.3)
   - Expecta (1.0.5)
-  - Fabric (1.6.11)
+  - Fabric (1.6.12)
   - FLAnimatedImage (1.0.12)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
@@ -41,33 +41,33 @@ PODS:
   - HockeySDK/DefaultLib (4.1.6)
   - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.5.6)
-  - MRProgress (0.7.0):
-    - MRProgress/ActivityIndicator (= 0.7.0)
-    - MRProgress/Blur (= 0.7.0)
-    - MRProgress/Circular (= 0.7.0)
-    - MRProgress/Icons (= 0.7.0)
-    - MRProgress/NavigationBarProgress (= 0.7.0)
-    - MRProgress/Overlay (= 0.7.0)
-  - MRProgress/ActivityIndicator (0.7.0):
+  - MRProgress (0.8.3):
+    - MRProgress/ActivityIndicator (= 0.8.3)
+    - MRProgress/Blur (= 0.8.3)
+    - MRProgress/Circular (= 0.8.3)
+    - MRProgress/Icons (= 0.8.3)
+    - MRProgress/NavigationBarProgress (= 0.8.3)
+    - MRProgress/Overlay (= 0.8.3)
+  - MRProgress/ActivityIndicator (0.8.3):
     - MRProgress/Stopable
-  - MRProgress/Blur (0.7.0):
+  - MRProgress/Blur (0.8.3):
     - MRProgress/Helper
-  - MRProgress/Circular (0.7.0):
+  - MRProgress/Circular (0.8.3):
     - MRProgress/Helper
     - MRProgress/ProgressBaseClass
     - MRProgress/Stopable
-  - MRProgress/Helper (0.7.0)
-  - MRProgress/Icons (0.7.0)
-  - MRProgress/NavigationBarProgress (0.7.0):
+  - MRProgress/Helper (0.8.3)
+  - MRProgress/Icons (0.8.3)
+  - MRProgress/NavigationBarProgress (0.8.3):
     - MRProgress/ProgressBaseClass
-  - MRProgress/Overlay (0.7.0):
+  - MRProgress/Overlay (0.8.3):
     - MRProgress/ActivityIndicator
     - MRProgress/Blur
     - MRProgress/Circular
     - MRProgress/Helper
     - MRProgress/Icons
-  - MRProgress/ProgressBaseClass (0.7.0)
-  - MRProgress/Stopable (0.7.0):
+  - MRProgress/ProgressBaseClass (0.8.3)
+  - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
   - Nimble (7.0.1)
   - NSObject-SafeExpectations (0.0.2)
@@ -115,8 +115,8 @@ DEPENDENCIES:
   - Gridicons (= 0.10)
   - lottie-ios (~> 1.5.1)
   - MGSwipeTableCell (~> 1.5.6)
-  - MRProgress (~> 0.7.0)
   - HockeySDK (= 4.1.6)
+  - MRProgress (= 0.8.3)
   - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
@@ -172,7 +172,7 @@ SPEC CHECKSUMS:
   HockeySDK: 95db557d54489a570dcdefae0d02f98eecc279a3
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
-  MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
+  MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
