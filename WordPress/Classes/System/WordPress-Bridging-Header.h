@@ -66,9 +66,6 @@
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostServiceOptions.h"
-#import "PostServiceRemote.h"
-#import "PostServiceRemoteOptions.h"
-#import "PostServiceRemoteXMLRPC.h"
 #import "PostSettingsViewController.h"
 #import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"
@@ -81,7 +78,6 @@
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
-#import "RemotePost.h"
 #import "RotationAwareNavigationViewController.h"
 
 #import "SettingsSelectionViewController.h"

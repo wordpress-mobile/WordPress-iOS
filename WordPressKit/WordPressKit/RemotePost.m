@@ -1,6 +1,14 @@
 #import "RemotePost.h"
 #import <objc/runtime.h>
 
+NSString * const PostStatusDraft = @"draft";
+NSString * const PostStatusPending = @"pending";
+NSString * const PostStatusPrivate = @"private";
+NSString * const PostStatusPublish = @"publish";
+NSString * const PostStatusScheduled = @"future";
+NSString * const PostStatusTrash = @"trash";
+NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API when a post is permanently deleted.
+
 @implementation RemotePost
 - (NSString *)debugDescription {
     NSDictionary *properties = [self debugProperties];

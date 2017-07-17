@@ -1,19 +1,14 @@
 #import "PostService.h"
 #import "Coordinate.h"
 #import "PostCategory.h"
-#import "PostServiceRemote.h"
-#import "PostServiceRemoteREST.h"
-#import "PostServiceRemoteXMLRPC.h"
-#import "RemotePost.h"
-#import "RemotePostCategory.h"
 #import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "CommentService.h"
 #import "MediaService.h"
 #import "Media.h"
-#import "DisplayableImageHelper.h"
 #import "WordPress-Swift.h"
 @import WordPressKit;
+@import WordPressShared;
 
 PostServiceType const PostServiceTypePost = @"post";
 PostServiceType const PostServiceTypePage = @"page";
