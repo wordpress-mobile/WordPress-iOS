@@ -10,7 +10,7 @@
 
  @param algorithm meta data used in paging
  @param count number of posts to fetch.
- @param before the date to fetch posts before.
+ @param date the date to fetch posts before.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */

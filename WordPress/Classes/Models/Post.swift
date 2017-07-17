@@ -69,7 +69,7 @@ class Post: AbstractPost {
         if let excerpt = mt_excerpt, excerpt.characters.count > 0 {
             storedContentPreviewForDisplay = String.makePlainText(excerpt)
         } else if let content = content {
-            storedContentPreviewForDisplay = BasePost.summary(fromContent: content)
+            storedContentPreviewForDisplay = NSString.summary(fromContent: content)
         }
     }
 

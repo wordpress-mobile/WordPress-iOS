@@ -57,7 +57,6 @@
 		742362E11F1025B400BD0A7F /* RemoteMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 742362DB1F1025B400BD0A7F /* RemoteMenuItem.m */; };
 		742362E21F1025B400BD0A7F /* RemoteMenuLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 742362DC1F1025B400BD0A7F /* RemoteMenuLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		742362E31F1025B400BD0A7F /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 742362DD1F1025B400BD0A7F /* RemoteMenuLocation.m */; };
-		742362E51F10274600BD0A7F /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 742362E41F10274600BD0A7F /* MenusServiceRemoteTests.m */; };
 		7430C9A31F1927180051B8E6 /* ReaderPostServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 7430C99D1F1927180051B8E6 /* ReaderPostServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7430C9A41F1927180051B8E6 /* ReaderPostServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430C99E1F1927180051B8E6 /* ReaderPostServiceRemote.m */; };
 		7430C9A51F1927180051B8E6 /* ReaderSiteServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 7430C99F1F1927180051B8E6 /* ReaderSiteServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -99,6 +98,7 @@
 		74585BA11F0D6F5300E7E667 /* domain-service-empty.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585BA01F0D6F5300E7E667 /* domain-service-empty.json */; };
 		74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F711F0EA1A700188EDB /* GravatarServiceRemote.swift */; };
 		74650F741F0EA1E200188EDB /* RemoteGravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F731F0EA1E200188EDB /* RemoteGravatarProfile.swift */; };
+		748437EF1F1D4D8B00E8DDAF /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D97CB71F1CF6D500AC49B7 /* MenusServiceRemoteTests.m */; };
 		748710A81F06B542008095AB /* RemotePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748710A71F06B542008095AB /* RemotePlan.swift */; };
 		74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DC81F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift */; };
 		74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A44DC91F13C533006CD8F4 /* NotificationSyncServiceRemote.swift */; };
@@ -179,7 +179,6 @@
 		74D67F391F15C3740010C5ED /* site-viewers-delete-bad-json.json in Resources */ = {isa = PBXBuildFile; fileRef = 74D67F2C1F15C3740010C5ED /* site-viewers-delete-bad-json.json */; };
 		74D67F3A1F15C3740010C5ED /* site-viewers-delete-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 74D67F2D1F15C3740010C5ED /* site-viewers-delete-failure.json */; };
 		74D67F3B1F15C3740010C5ED /* site-viewers-delete-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 74D67F2E1F15C3740010C5ED /* site-viewers-delete-success.json */; };
-		74D97CB81F1CF6D500AC49B7 /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D97CB71F1CF6D500AC49B7 /* MenusServiceRemoteTests.m */; };
 		74DA56321F06EAF000FE9BF4 /* MediaServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 74DA562E1F06EAF000FE9BF4 /* MediaServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74DA56331F06EAF000FE9BF4 /* MediaServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DA562F1F06EAF000FE9BF4 /* MediaServiceRemoteREST.m */; };
 		74DA56341F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 74DA56301F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -372,7 +371,6 @@
 		742362DB1F1025B400BD0A7F /* RemoteMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMenuItem.m; sourceTree = "<group>"; };
 		742362DC1F1025B400BD0A7F /* RemoteMenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMenuLocation.h; sourceTree = "<group>"; };
 		742362DD1F1025B400BD0A7F /* RemoteMenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMenuLocation.m; sourceTree = "<group>"; };
-		742362E41F10274600BD0A7F /* MenusServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemoteTests.m; sourceTree = "<group>"; };
 		7430C99D1F1927180051B8E6 /* ReaderPostServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostServiceRemote.h; sourceTree = "<group>"; };
 		7430C99E1F1927180051B8E6 /* ReaderPostServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceRemote.m; sourceTree = "<group>"; };
 		7430C99F1F1927180051B8E6 /* ReaderSiteServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSiteServiceRemote.h; sourceTree = "<group>"; };
@@ -1648,6 +1646,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				748437EF1F1D4D8B00E8DDAF /* MenusServiceRemoteTests.m in Sources */,
 				93AC8EDF1ED32FD000900F5A /* StatsStreakItemTests.m in Sources */,
 				74DA563D1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift in Sources */,
 				74A44DD41F13C6D8006CD8F4 /* RemoteNotificationTests.swift in Sources */,
@@ -1673,11 +1672,9 @@
 				93AC8EE11ED32FD000900F5A /* StatsStringUtilitiesTest.m in Sources */,
 				74C473AF1EF2F7D1009918F2 /* SiteManagementServiceRemoteTests.swift in Sources */,
 				74A44DD51F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift in Sources */,
-				742362E51F10274600BD0A7F /* MenusServiceRemoteTests.m in Sources */,
 				931924241F1662FA0069CBCC /* JSONLoader.swift in Sources */,
 				93AC8EE21ED32FD000900F5A /* WPStatsServiceRemoteTests.m in Sources */,
 				740B23D21F17F6BB00067A2A /* PostServiceRemoteRESTTests.m in Sources */,
-				74D97CB81F1CF6D500AC49B7 /* MenusServiceRemoteTests.m in Sources */,
 				7430C9BE1F192C0F0051B8E6 /* ReaderTopicServiceRemoteTests.m in Sources */,
 				74B335DC1F06F4180053A184 /* WordPressOrgXMLRPCApiTests.swift in Sources */,
 				93C882971EEB179600227A59 /* RESTTestable.swift in Sources */,

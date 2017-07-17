@@ -842,7 +842,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
  */
 - (NSString *)createSummaryFromContent:(NSString *)string
 {
-    return [BasePost summaryFromContent:string];
+    return [NSString summaryFromContent:string];
 }
 
 /**
