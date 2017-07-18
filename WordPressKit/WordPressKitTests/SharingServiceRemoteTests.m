@@ -1,6 +1,7 @@
+#import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
-#import "Blog.h"
-#import "WordPressTest-Swift.h"
+#import "WordPressKitTests-Swift.h"
+@import WordPressKit;
 
 @interface SharingServiceRemoteTests : XCTestCase
 

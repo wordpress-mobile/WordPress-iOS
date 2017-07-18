@@ -1,8 +1,6 @@
 #import "ReaderPostService.h"
-
 #import "AccountService.h"
 #import "ContextManager.h"
-#import "DateUtils.h"
 #import "ReaderGapMarker.h"
 #import "ReaderPost.h"
 #import "ReaderPostServiceRemote.h"
@@ -14,6 +12,7 @@
 #import "WPAppAnalytics.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
+@import WordPressShared;
 
 NSUInteger const ReaderPostServiceNumberToSync = 40;
 // NOTE: The search endpoint is currently capped to max results of 20 and returns
