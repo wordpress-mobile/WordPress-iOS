@@ -1,0 +1,3 @@
+machine:
+  xcode:
+    version: 8.3
