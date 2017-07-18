@@ -9,6 +9,7 @@
 #import "RemoteReaderPost.h"
 #import <XCTest/XCTest.h>
 #import "TestContextManager.h"
+@import WordPressShared;
 
 @interface ReaderPostServiceRemote ()
 
