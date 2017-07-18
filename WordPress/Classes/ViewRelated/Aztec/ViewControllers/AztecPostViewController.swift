@@ -43,7 +43,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
-
+        textView.textAlignment = .natural
         return textView
     }()
 
@@ -58,6 +58,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
+        label.textAlignment = .natural
         return label
     }()
 
@@ -98,9 +99,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.font = Fonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        textView.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title]
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .natural
+        textView.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title, NSParagraphStyleAttributeName: titleParagraphStyle]
         textView.translatesAutoresizingMaskIntoConstraints = false
-
+        textView.textAlignment = .natural
         textView.isScrollEnabled = false
         textView.backgroundColor = .clear
 
@@ -118,6 +121,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText, attributes: attributes)
         titlePlaceholderLabel.sizeToFit()
         titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        titlePlaceholderLabel.textAlignment = .natural
 
         return titlePlaceholderLabel
     }()
@@ -548,7 +552,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         NSLayoutConstraint.activate([
             placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: Constants.placeholderPadding.left + defaultMargin),
-            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: Constants.placeholderPadding.right + defaultMargin),
+            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -(Constants.placeholderPadding.right + defaultMargin)),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
@@ -1200,6 +1204,7 @@ extension AztecPostViewController : UITextViewDelegate {
     }
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        textView.textAlignment = .natural
         switch textView {
         case titleTextField:
             formatBar.enabled = false
