@@ -24,6 +24,8 @@
 		747EEFDE1F168B15001FA132 /* GravatarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747EEFDD1F168B15001FA132 /* GravatarTest.swift */; };
 		748710AC1F06C465008095AB /* StringHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748710AB1F06C465008095AB /* StringHelperTests.swift */; };
 		74D44ED91F0EC6230075F96B /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */; };
+		74E229571F1E764F0085F7F2 /* DateUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 74E229551F1E764F0085F7F2 /* DateUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74E229581F1E764F0085F7F2 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E229561F1E764F0085F7F2 /* DateUtils.m */; };
 		76E20BA846247380DFDB836C /* Pods_WordPressSharedTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07BBC146D906E974A7086162 /* Pods_WordPressSharedTests.framework */; };
 		820ECCA11ECCE002004C7679 /* WPStyleGuide+DynamicType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ECCA01ECCE002004C7679 /* WPStyleGuide+DynamicType.swift */; };
 		82706FF11ECA438500155CBF /* WPSharedLoggingPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 82706FED1ECA438500155CBF /* WPSharedLoggingPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -114,6 +116,8 @@
 		747EEFDD1F168B15001FA132 /* GravatarTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarTest.swift; sourceTree = "<group>"; };
 		748710AB1F06C465008095AB /* StringHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringHelperTests.swift; sourceTree = "<group>"; };
 		74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTests.m; sourceTree = "<group>"; };
+		74E229551F1E764F0085F7F2 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateUtils.h; path = WordPressShared/Core/Utility/DateUtils.h; sourceTree = SOURCE_ROOT; };
+		74E229561F1E764F0085F7F2 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateUtils.m; path = WordPressShared/Core/Utility/DateUtils.m; sourceTree = SOURCE_ROOT; };
 		820ECCA01ECCE002004C7679 /* WPStyleGuide+DynamicType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "WPStyleGuide+DynamicType.swift"; path = "WordPressShared/Core/Views/WPStyleGuide+DynamicType.swift"; sourceTree = SOURCE_ROOT; };
 		82706FED1ECA438500155CBF /* WPSharedLoggingPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSharedLoggingPrivate.h; path = WordPressShared/Core/Logging/WPSharedLoggingPrivate.h; sourceTree = SOURCE_ROOT; };
 		82706FEE1ECA438500155CBF /* WPSharedLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSharedLogging.h; path = WordPressShared/Core/Logging/WPSharedLogging.h; sourceTree = SOURCE_ROOT; };
@@ -255,6 +259,8 @@
 		82706FE01ECA32D400155CBF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				74E229551F1E764F0085F7F2 /* DateUtils.h */,
+				74E229561F1E764F0085F7F2 /* DateUtils.m */,
 				740B23CA1F17F1FF00067A2A /* DisplayableImageHelper.h */,
 				740B23CB1F17F1FF00067A2A /* DisplayableImageHelper.m */,
 				747EEFDB1F168A73001FA132 /* Gravatar.swift */,
@@ -420,6 +426,7 @@
 				7414BD611F13D084005759F8 /* UIDevice+Helpers.h in Headers */,
 				8270700D1ECA43AA00155CBF /* WPFontManager.h in Headers */,
 				740B23CC1F17F1FF00067A2A /* DisplayableImageHelper.h in Headers */,
+				74E229571F1E764F0085F7F2 /* DateUtils.h in Headers */,
 				74650F7B1F0EA2FA00188EDB /* NSString+Helpers.h in Headers */,
 				82706FF11ECA438500155CBF /* WPSharedLoggingPrivate.h in Headers */,
 			);
@@ -633,6 +640,7 @@
 				8270700E1ECA43AA00155CBF /* WPFontManager.m in Sources */,
 				820ECCA11ECCE002004C7679 /* WPStyleGuide+DynamicType.swift in Sources */,
 				827070241ECA43C100155CBF /* WPTextFieldTableViewCell.m in Sources */,
+				74E229581F1E764F0085F7F2 /* DateUtils.m in Sources */,
 				827070061ECA43AA00155CBF /* NSString+XMLExtensions.m in Sources */,
 				82706FF31ECA438500155CBF /* WPSharedLogging.m in Sources */,
 				93C882AD1EEB1E2F00227A59 /* NSDate+Helpers.swift in Sources */,
