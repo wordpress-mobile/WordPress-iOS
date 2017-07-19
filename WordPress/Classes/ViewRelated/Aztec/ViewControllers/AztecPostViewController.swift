@@ -1611,10 +1611,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func presentMediaPicker(animated: Bool = true) {
         trackFormatBarAnalytics(stat: .editorTappedImage)
 
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.video, .image]
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
-        picker.showMostRecentFirst = true
-        picker.filter = WPMediaType.videoOrImage
+        picker.options = options
+
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
 
