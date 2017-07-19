@@ -43,6 +43,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
+        textView.linkTextAttributes = [NSUnderlineStyleAttributeName: NSNumber(value:NSUnderlineStyle.styleSingle.rawValue), NSForegroundColorAttributeName: Colors.aztecLinkColor]
         textView.textAlignment = .natural
         return textView
     }()
@@ -2805,6 +2806,7 @@ extension AztecPostViewController {
         static let mediaProgressOverlay = UIColor(white: 1, alpha: 0.6)
         static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
         static let mediaProgressBarTrack = WPStyleGuide.wordPressBlue()
+        static let aztecLinkColor = WPStyleGuide.mediumBlue()
     }
 
     struct Fonts {
