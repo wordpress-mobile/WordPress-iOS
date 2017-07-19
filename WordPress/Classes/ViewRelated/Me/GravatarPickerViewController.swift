@@ -85,10 +85,12 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
     fileprivate func newMediaPickerViewController() -> WPNavigationMediaPickerViewController {
         let pickerViewController = WPNavigationMediaPickerViewController()
         pickerViewController.delegate = self
-        pickerViewController.showMostRecentFirst = true
-        pickerViewController.allowMultipleSelection = false
-        pickerViewController.filter = .image
-        pickerViewController.preferFrontCamera = true
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.image]
+        options.preferFrontCamera = true
+        options.allowMultipleSelection = false
+        pickerViewController.options = options
         pickerViewController.dataSource = mediaPickerAssetDataSource
         return pickerViewController
     }

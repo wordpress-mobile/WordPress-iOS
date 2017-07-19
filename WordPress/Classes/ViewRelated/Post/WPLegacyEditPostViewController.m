@@ -367,9 +367,11 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
         self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     }
     picker.dataSource = self.mediaLibraryDataSource;
-    picker.allowCaptureOfMedia = YES;
-    picker.showMostRecentFirst = YES;
-    picker.filter = WPMediaTypeVideoOrImage;
+    WPMediaPickerOptions *options = [WPMediaPickerOptions new];
+    options.allowCaptureOfMedia = YES;
+    options.showMostRecentFirst = YES;
+    options.filter = WPMediaTypeVideo | WPMediaTypeImage;
+    picker.options = options;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
