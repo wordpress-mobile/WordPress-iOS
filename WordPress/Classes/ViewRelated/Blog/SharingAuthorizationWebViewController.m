@@ -62,7 +62,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     SharingAuthorizationWebViewController *webViewController = [[self alloc] initWithNibName:@"WPWebViewController" bundle:nil];
 
     webViewController.authToken = blog.authToken;
-    webViewController.username = blog.jetpackAccount.username ?: blog.account.username;
+    webViewController.username = blog.account.username;
     webViewController.wpLoginURL = [NSURL URLWithString:SharingAuthorizationLoginURL];
     webViewController.publicizer = publicizer;
     webViewController.secureInteraction = YES;
