@@ -148,8 +148,6 @@ extern NSString *const WPBlogUpdatedNotification;
  */
 - (void)updatePassword:(NSString *)password forBlog:(Blog *)blog;
 
-- (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
-
 - (BOOL)hasVisibleWPComAccounts;
 
 - (BOOL)hasAnyJetpackBlogs;
