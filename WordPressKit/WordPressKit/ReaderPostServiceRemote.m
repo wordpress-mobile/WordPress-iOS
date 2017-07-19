@@ -2,9 +2,8 @@
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "ReaderTopicServiceRemote.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
-#import "WordPress-Swift.h"
-#import "PhotonImageURLHelper.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
 @import WordPressShared;
 
 // REST Post dictionary keys
@@ -133,7 +132,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
-    NSString *path = [NSString stringWithFormat:@"read/sites/%d/posts/%d/?meta=site", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"read/sites/%lu/posts/%lu/?meta=site", (unsigned long)siteID, (unsigned long)postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     
@@ -165,7 +164,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
          success:(void (^)())success
          failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/new", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"sites/%lu/posts/%lu/likes/new", (unsigned long)siteID, (unsigned long)postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -185,7 +184,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/mine/delete", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"sites/%lu/posts/%lu/likes/mine/delete", (unsigned long)siteID, (unsigned long)postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -843,7 +842,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
  */
 - (NSString *)createSummaryFromContent:(NSString *)string
 {
-    return [BasePost summaryFromContent:string];
+    return [NSString summaryFromContent:string];
 }
 
 /**

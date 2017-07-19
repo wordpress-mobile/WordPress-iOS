@@ -1,7 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "PhotonImageURLHelper.h"
 
-
 @interface PhotonImageURLHelperTest : XCTestCase
 
 @end

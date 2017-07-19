@@ -1,17 +1,16 @@
 #import "ReaderPostService.h"
+
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "ReaderGapMarker.h"
 #import "ReaderPost.h"
-#import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
-#import "RemoteReaderPost.h"
-#import "RemoteSourcePostAttribution.h"
 #import "SourcePostAttribution.h"
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
+@import WordPressKit;
 @import WordPressShared;
 
 NSUInteger const ReaderPostServiceNumberToSync = 40;
