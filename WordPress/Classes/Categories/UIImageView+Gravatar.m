@@ -1,9 +1,8 @@
 #import "UIImageView+Gravatar.h"
 #import "UIImageView+AFNetworking.h"
 #import "Constants.h"
-#import "PhotonImageURLHelper.h"
 #import "PrivateSiteURLProtocol.h"
-
+@import WordPressShared;
 
 #pragma mark - Constants
 
