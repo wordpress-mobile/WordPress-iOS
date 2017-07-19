@@ -4,13 +4,10 @@
 #import "ContextManager.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
-#import "ReaderPostServiceRemote.h"
-#import "RemoteReaderSiteInfo.h"
-#import "ReaderTopicServiceRemote.h"
-#import "RemoteReaderTopic.h"
 #import "WPAccount.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
+@import WordPressKit;
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";

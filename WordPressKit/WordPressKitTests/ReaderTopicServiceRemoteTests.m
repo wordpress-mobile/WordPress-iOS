@@ -2,6 +2,7 @@
 
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
+#import <WordPressKit/WordPressKit-Swift.h>
 
 @interface ReaderTopicServiceRemote()
 - (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended;
