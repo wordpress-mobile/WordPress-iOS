@@ -269,10 +269,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                             }];
 
     dispatch_group_enter(syncGroup);
-    [remote checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {
-        [self updateMultiAuthor:isMultiAuthor forBlog:blogObjectID];
+    [remote getAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
+        [self updateMultiAuthor:users forBlog:blogObjectID];
         dispatch_group_leave(syncGroup);
-
     } failure:^(NSError *error) {
         DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
@@ -820,7 +819,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 #pragma mark - Completion handlers
 
-- (void)updateMultiAuthor:(BOOL)isMultiAuthor forBlog:(NSManagedObjectID *)blogObjectID
+- (void)updateMultiAuthor:(NSArray<RemoteUser *> *)users forBlog:(NSManagedObjectID *)blogObjectID
 {
     [self.managedObjectContext performBlock:^{
         NSError *error;
@@ -831,7 +830,15 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         if (!blog) {
             return;
         }
-        blog.isMultiAuthor = isMultiAuthor;
+        blog.isMultiAuthor = users.count > 1;
+        if (blog.username != nil) {
+            for (RemoteUser *user in users) {
+                if ([user.username isEqualToString:blog.username]) {
+                    blog.userID = user.userID;
+                    break;
+                }
+            }
+        }
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }
