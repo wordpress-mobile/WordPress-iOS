@@ -96,7 +96,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *postTypes;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *postFormats;
 @property (nonatomic, strong, readwrite, nullable) WPAccount *account;
-@property (nonatomic, strong, readwrite, nullable) WPAccount *jetpackAccount;
 @property (nonatomic, strong, readwrite, nullable) WPAccount *accountForDefaultBlog;
 @property (nonatomic, assign, readwrite) BOOL videoPressEnabled;
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
@@ -208,18 +207,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return a WordPressComRestApi object if available
  */
 - (nullable WordPressComRestApi *)wordPressComRestApi;
-
-/**
- Returns the wp.com or Jetpack ID as appropriate
- 
- If the blog is a WordPress.com one or it has Jetpack it will return a site ID,
- otherwise it will return nil
- 
- @warning Nate wrote this and he's a bad
- 
- @return a WordPressComRestApi object if available
- */
-- (nullable NSNumber *)siteID;
 
 @end
 

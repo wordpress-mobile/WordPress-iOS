@@ -684,7 +684,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if (jetpackBlog) {
         DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
         jetpackBlog.account = account;
-        jetpackBlog.jetpackAccount = nil;
     }
 
     return jetpackBlog;
