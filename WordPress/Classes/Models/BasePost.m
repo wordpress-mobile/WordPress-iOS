@@ -4,8 +4,6 @@
 #import "ContextManager.h"
 @import WordPressShared;
 
-static const NSUInteger PostDerivedSummaryLength = 150;
-
 @implementation BasePost
 
 @dynamic authorID;
@@ -25,14 +23,6 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 @dynamic pathForDisplayImage;
 
 @synthesize isFeaturedImageChanged;
-
-+ (NSString *)summaryFromContent:(NSString *)string
-{
-    string = [NSString makePlainText:string];
-    string = [NSString stripShortcodesFromString:string];
-    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
-    return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
-}
 
 - (NSDate *)dateCreated
 {

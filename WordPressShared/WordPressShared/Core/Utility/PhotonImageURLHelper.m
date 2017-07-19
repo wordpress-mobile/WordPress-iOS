@@ -51,9 +51,9 @@ static const NSInteger MinPhotonImageQuality = 1;
     // Photon rejects resizing mshots
     if ([urlString rangeOfString:@"/mshots/"].location != NSNotFound) {
         if (size.height == 0) {
-            urlString = [urlString stringByAppendingFormat:@"?w=%i", size.width];
+            urlString = [urlString stringByAppendingFormat:@"?w=%i", (int)size.width];
         } else {
-            urlString = [urlString stringByAppendingFormat:@"?w=%i&h=%i", size.width, size.height];
+            urlString = [urlString stringByAppendingFormat:@"?w=%i&h=%i", (int)size.width, (int)size.height];
         }
         return [NSURL URLWithString:urlString];
     }
@@ -77,7 +77,7 @@ static const NSInteger MinPhotonImageQuality = 1;
 {
     NSString *queryString;
     if (size.height == 0) {
-        queryString = [NSString stringWithFormat:@"w=%i", size.width];
+        queryString = [NSString stringWithFormat:@"w=%i", (int)size.width];
     } else {
         NSString *method = forceResize ? @"resize" : @"fit";
         queryString = [NSString stringWithFormat:@"%@=%.0f,%.0f", method, size.width, size.height];
@@ -87,7 +87,7 @@ static const NSInteger MinPhotonImageQuality = 1;
         queryString = [NSString stringWithFormat:@"%@&ssl=1", queryString];
     }
 
-    queryString = [NSString stringWithFormat:@"quality=%d&%@", quality, queryString];
+    queryString = [NSString stringWithFormat:@"quality=%lu&%@", (unsigned long)quality, queryString];
     
     return queryString;
 }

@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /**
  Helper class for creating a photon URL from the passed image URL.
