@@ -1241,10 +1241,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
                                                              initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
     picker.dataSource = self.mediaDataSource;
-    picker.filter = WPMediaTypeImage;
+    WPMediaPickerOptions *options = [WPMediaPickerOptions new];
+    options.showMostRecentFirst = YES;
+    options.allowMultipleSelection = NO;
+    options.filter = WPMediaTypeImage;
+    picker.options = options;
     picker.delegate = self;
-    picker.allowMultipleSelection = NO;
-    picker.showMostRecentFirst = YES;
     picker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:picker animated:YES completion:nil];
 }

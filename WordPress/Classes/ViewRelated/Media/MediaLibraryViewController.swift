@@ -80,10 +80,12 @@ class MediaLibraryViewController: UIViewController {
 
     private func configurePickerViewController() {
         pickerViewController.mediaPickerDelegate = self
-        pickerViewController.allowCaptureOfMedia = false
-        pickerViewController.filter = .all
-        pickerViewController.allowMultipleSelection = false
-        pickerViewController.showMostRecentFirst = true
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.all]
+        options.allowMultipleSelection = false
+        options.allowCaptureOfMedia = false
+        pickerViewController.options = options
         pickerViewController.dataSource = pickerDataSource
     }
 
@@ -335,8 +337,10 @@ class MediaLibraryViewController: UIViewController {
     @objc fileprivate func addTapped() {
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = WPPHAssetDataSource()
-        picker.showMostRecentFirst = true
-        picker.filter = .all
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.all]
+        picker.options = options
         picker.delegate = self
 
         present(picker, animated: true, completion: nil)
@@ -345,7 +349,9 @@ class MediaLibraryViewController: UIViewController {
     @objc private func editTapped() {
         isEditing = !isEditing
 
-        pickerViewController.allowMultipleSelection = isEditing
+        let options = pickerViewController.options
+        options.allowMultipleSelection = isEditing
+        pickerViewController.options = options
 
         pickerViewController.clearSelectedAssets(true)
     }
