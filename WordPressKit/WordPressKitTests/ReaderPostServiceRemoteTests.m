@@ -1,14 +1,9 @@
-#import "ContextManager.h"
-#import "WPAccount.h"
-#import "ReaderTopicService.h"
+#import <XCTest/XCTest.h>
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
-#import "ReaderPost.h"
-#import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
 #import "RemoteReaderPost.h"
-#import <XCTest/XCTest.h>
-#import "TestContextManager.h"
+#import <WordPressKit/WordPressKit-Swift.h>
 @import WordPressShared;
 
 @interface ReaderPostServiceRemote ()
