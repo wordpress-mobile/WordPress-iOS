@@ -1,5 +1,6 @@
 import Foundation
 import NSObject_SafeExpectations
+import WordPressShared
 
 
 /// SharingServiceRemote is responsible for wrangling the REST API calls related to

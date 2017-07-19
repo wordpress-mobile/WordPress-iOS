@@ -186,7 +186,14 @@
 		74DA56371F06EB0500FE9BF4 /* MediaServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 74DA56361F06EB0500FE9BF4 /* MediaServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74DA563A1F06EB3000FE9BF4 /* RemoteMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 74DA56381F06EB3000FE9BF4 /* RemoteMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74DA563B1F06EB3000FE9BF4 /* RemoteMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DA56391F06EB3000FE9BF4 /* RemoteMedia.m */; };
-		74DA563D1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA563C1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift */; };
+		74E229491F1E73060085F7F2 /* SharingServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E229481F1E73060085F7F2 /* SharingServiceRemote.swift */; };
+		74E2294B1F1E73340085F7F2 /* SharingServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E2294A1F1E73340085F7F2 /* SharingServiceRemoteTests.m */; };
+		74E2294E1F1E73FE0085F7F2 /* RemotePublicizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E2294D1F1E73FE0085F7F2 /* RemotePublicizeService.swift */; };
+		74E229501F1E741B0085F7F2 /* RemotePublicizeConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E2294F1F1E741B0085F7F2 /* RemotePublicizeConnection.swift */; };
+		74E2295B1F1E77290085F7F2 /* KeyringConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E229591F1E77290085F7F2 /* KeyringConnection.swift */; };
+		74E2295C1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E2295A1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift */; };
+		74E2295E1F1E777B0085F7F2 /* RemoteSharingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E2295D1F1E777B0085F7F2 /* RemoteSharingButton.swift */; };
+		74FA25F71F1FDA200044BC54 /* MediaServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FA25F61F1FDA200044BC54 /* MediaServiceRemoteRESTTests.swift */; };
 		74FC6F3B1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FC6F3A1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift */; };
 		74FC6F401F191C1D00112505 /* notifications-mark-as-read.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3C1F191C1D00112505 /* notifications-mark-as-read.json */; };
 		74FC6F411F191C1D00112505 /* notifications-last-seen.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3D1F191C1D00112505 /* notifications-last-seen.json */; };
@@ -500,7 +507,14 @@
 		74DA56361F06EB0500FE9BF4 /* MediaServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaServiceRemote.h; sourceTree = "<group>"; };
 		74DA56381F06EB3000FE9BF4 /* RemoteMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteMedia.h; sourceTree = "<group>"; };
 		74DA56391F06EB3000FE9BF4 /* RemoteMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteMedia.m; sourceTree = "<group>"; };
-		74DA563C1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
+		74E229481F1E73060085F7F2 /* SharingServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingServiceRemote.swift; sourceTree = "<group>"; };
+		74E2294A1F1E73340085F7F2 /* SharingServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingServiceRemoteTests.m; sourceTree = "<group>"; };
+		74E2294D1F1E73FE0085F7F2 /* RemotePublicizeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemotePublicizeService.swift; sourceTree = "<group>"; };
+		74E2294F1F1E741B0085F7F2 /* RemotePublicizeConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemotePublicizeConnection.swift; sourceTree = "<group>"; };
+		74E229591F1E77290085F7F2 /* KeyringConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyringConnection.swift; sourceTree = "<group>"; };
+		74E2295A1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyringConnectionExternalUser.swift; sourceTree = "<group>"; };
+		74E2295D1F1E777B0085F7F2 /* RemoteSharingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteSharingButton.swift; sourceTree = "<group>"; };
+		74FA25F61F1FDA200044BC54 /* MediaServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
 		74FC6F3A1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSyncServiceRemoteTests.swift; sourceTree = "<group>"; };
 		74FC6F3C1F191C1D00112505 /* notifications-mark-as-read.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-mark-as-read.json"; sourceTree = "<group>"; };
 		74FC6F3D1F191C1D00112505 /* notifications-last-seen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-last-seen.json"; sourceTree = "<group>"; };
@@ -740,10 +754,18 @@
 			name = Menu;
 			sourceTree = "<group>";
 		};
-		74DA563E1F06ED3900FE9BF4 /* Media */ = {
+		74E2294C1F1E73650085F7F2 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
-				74DA563C1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift */,
+				74E2294A1F1E73340085F7F2 /* SharingServiceRemoteTests.m */,
+			);
+			name = Sharing;
+			sourceTree = "<group>";
+		};
+		74FA25F81F1FDA240044BC54 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				74FA25F61F1FDA200044BC54 /* MediaServiceRemoteRESTTests.swift */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -804,7 +826,7 @@
 				93BD273E1EE732CC002BB00B /* Accounts */,
 				74B5F0DF1EF82AAB00B411E7 /* Blog */,
 				74585B911F0D520700E7E667 /* Domains */,
-				74DA563E1F06ED3900FE9BF4 /* Media */,
+				74FA25F81F1FDA240044BC54 /* Media */,
 				74D97CB91F1CF6E200AC49B7 /* Menu */,
 				74A44DD61F13C6F3006CD8F4 /* Notifications */,
 				74D67F0B1F15C2570010C5ED /* People */,
@@ -813,6 +835,7 @@
 				7430C9BF1F192C210051B8E6 /* Reader */,
 				74C473AD1EF2F7BF009918F2 /* Site */,
 				930F52BB1ECF8A78002F921B /* Stats */,
+				74E2294C1F1E73650085F7F2 /* Sharing */,
 				9309994F1F1658DB00F006A1 /* Theme */,
 			);
 			name = Tests;
@@ -930,6 +953,7 @@
 				93BD276C1EE737A8002BB00B /* ServiceRemoteWordPressComREST.m */,
 				93BD276D1EE737A8002BB00B /* ServiceRemoteWordPressXMLRPC.h */,
 				93BD276E1EE737A8002BB00B /* ServiceRemoteWordPressXMLRPC.m */,
+				74E229481F1E73060085F7F2 /* SharingServiceRemote.swift */,
 				74C473AB1EF2F75E009918F2 /* SiteManagementServiceRemote.swift */,
 				9368C7BD1EC630CE0092CE8E /* StatsStringUtilities.h */,
 				9368C7BE1EC630CE0092CE8E /* StatsStringUtilities.m */,
@@ -943,6 +967,8 @@
 			isa = PBXGroup;
 			children = (
 				7403A3011EF0726E00DED7DC /* AccountSettings.swift */,
+				74E229591F1E77290085F7F2 /* KeyringConnection.swift */,
+				74E2295A1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift */,
 				93C674E51EE8345300BFAF05 /* RemoteBlog.h */,
 				93C674E61EE8345300BFAF05 /* RemoteBlog.m */,
 				93C674E91EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h */,
@@ -978,6 +1004,9 @@
 				7430C9AD1F1927C50051B8E6 /* RemoteReaderSiteInfo.h */,
 				7430C9AE1F1927C50051B8E6 /* RemoteReaderSiteInfo.m */,
 				7430C9AF1F1927C50051B8E6 /* RemoteReaderTopic.h */,
+				74E2294F1F1E741B0085F7F2 /* RemotePublicizeConnection.swift */,
+				74E2294D1F1E73FE0085F7F2 /* RemotePublicizeService.swift */,
+				74E2295D1F1E777B0085F7F2 /* RemoteSharingButton.swift */,
 				7430C9B01F1927C50051B8E6 /* RemoteReaderTopic.m */,
 				7430C9C81F192F260051B8E6 /* RemoteSourcePostAttribution.h */,
 				7430C9C91F192F260051B8E6 /* RemoteSourcePostAttribution.m */,
@@ -1571,20 +1600,24 @@
 				7430C9B41F1927C50051B8E6 /* RemoteReaderSite.m in Sources */,
 				74585B8E1F0D51A100E7E667 /* DomainsServiceRemote.swift in Sources */,
 				7430C9A41F1927180051B8E6 /* ReaderPostServiceRemote.m in Sources */,
+				74E2294E1F1E73FE0085F7F2 /* RemotePublicizeService.swift in Sources */,
 				7430C9CB1F192F260051B8E6 /* RemoteSourcePostAttribution.m in Sources */,
 				742362E11F1025B400BD0A7F /* RemoteMenuItem.m in Sources */,
 				93BD27721EE737A9002BB00B /* ServiceRemoteWordPressXMLRPC.m in Sources */,
+				74E2295E1F1E777B0085F7F2 /* RemoteSharingButton.swift in Sources */,
 				93BD27701EE737A8002BB00B /* ServiceRemoteWordPressComREST.m in Sources */,
 				7433BC001EFC4505002D9E92 /* PlanFeatureServiceRemote.swift in Sources */,
 				93BD277F1EE73944002BB00B /* WordPressComOAuthClient.swift in Sources */,
 				740B23B91F17EC7300067A2A /* PostServiceRemoteREST.m in Sources */,
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
 				74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */,
+				74E229501F1E741B0085F7F2 /* RemotePublicizeConnection.swift in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				7433BC011EFC4505002D9E92 /* PlanServiceRemote.swift in Sources */,
 				74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */,
 				740B23BB1F17EC7300067A2A /* PostServiceRemoteXMLRPC.m in Sources */,
 				74B5F0E31EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m in Sources */,
+				74E2295C1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift in Sources */,
 				7430C9D71F1933210051B8E6 /* RemoteReaderCrossPostMeta.swift in Sources */,
 				93BD277E1EE73944002BB00B /* NSDate+WordPressJSON.m in Sources */,
 				9368C7B61EC630270092CE8E /* StatsStreak.m in Sources */,
@@ -1635,9 +1668,11 @@
 				93BD27821EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift in Sources */,
 				748710A81F06B542008095AB /* RemotePlan.swift in Sources */,
 				740B23C51F17EE8000067A2A /* RemotePost.m in Sources */,
+				74E2295B1F1E77290085F7F2 /* KeyringConnection.swift in Sources */,
 				74B5F0DA1EF8299B00B411E7 /* BlogServiceRemoteXMLRPC.m in Sources */,
 				93C674EE1EE834B700BFAF05 /* RemoteBlogSettings.swift in Sources */,
 				9309994E1F1657C600F006A1 /* ThemeServiceRemote.m in Sources */,
+				74E229491F1E73060085F7F2 /* SharingServiceRemote.swift in Sources */,
 				9309995C1F16616A00F006A1 /* RemoteTheme.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1648,7 +1683,6 @@
 			files = (
 				748437EF1F1D4D8B00E8DDAF /* MenusServiceRemoteTests.m in Sources */,
 				93AC8EDF1ED32FD000900F5A /* StatsStreakItemTests.m in Sources */,
-				74DA563D1F06ED3200FE9BF4 /* MediaServiceRemoteRESTTests.swift in Sources */,
 				74A44DD41F13C6D8006CD8F4 /* RemoteNotificationTests.swift in Sources */,
 				74155E251EF87DDF00A06AEA /* ServiceRemoteRESTTests.m in Sources */,
 				74D67F0A1F15C24C0010C5ED /* PeopleServiceRemoteTests.swift in Sources */,
@@ -1658,9 +1692,11 @@
 				74B335D81F06F1CA0053A184 /* MockWordPressComRestApi.swift in Sources */,
 				74B5F0DE1EF82A9600B411E7 /* BlogServiceRemoteRESTTests.m in Sources */,
 				7433BC041EFC4556002D9E92 /* PlanFeatureServiceRemoteTests.swift in Sources */,
+				74E2294B1F1E73340085F7F2 /* SharingServiceRemoteTests.m in Sources */,
 				93AC8EDE1ED32FD000900F5A /* StatsItemTests.m in Sources */,
 				740B23D31F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift in Sources */,
 				74FC6F3B1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift in Sources */,
+				74FA25F71F1FDA200044BC54 /* MediaServiceRemoteRESTTests.swift in Sources */,
 				7433BC051EFC4556002D9E92 /* PlanServiceRemoteTests.swift in Sources */,
 				740B23D61F17F7C100067A2A /* XMLRPCTestable.swift in Sources */,
 				93AB06041EE8838400EF8764 /* RemoteTestCase.swift in Sources */,
