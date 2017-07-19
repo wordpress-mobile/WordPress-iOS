@@ -116,16 +116,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         return;
     }
 
-    // Jetpack Legacy (WPJetpackRESTEnabled == NO)
-    BOOL needsJetpackLogin = ![self.blog.jetpackAccount.wordPressComRestApi hasCredentials];
-    if (!needsJetpackLogin && self.blog.jetpack.siteID && self.blog.jetpackAccount) {
-        self.statsVC.siteID = self.blog.jetpack.siteID;
-        self.statsVC.oauth2Token = self.blog.jetpackAccount.authToken;
-        [self addStatsViewControllerToView];
-
-    } else {
-        [self promptForJetpackCredentials];
-    }
+    [self promptForJetpackCredentials];
 }
 
 
