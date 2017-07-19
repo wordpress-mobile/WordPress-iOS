@@ -191,7 +191,6 @@
                                           @"readonly": @YES,
                                           },
                                   };
-    jetpackLegacyBlog.jetpackAccount = wpComAccount;
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -204,8 +203,6 @@
     XCTAssertEqual(1, wpComAccount.blogs.count);
     Blog *testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 1"]] anyObject];
     XCTAssertNotNil(testBlog);
-    XCTAssertEqual(1, wpComAccount.jetpackBlogs.count);
-    XCTAssertEqual(wpComAccount.jetpackBlogs.anyObject, jetpackLegacyBlog);
 
     XCTestExpectation *syncExpectation = [self expectationWithDescription:@"Blogs sync"];
     [blogService syncBlogsForAccount:wpComAccount success:^{
@@ -219,7 +216,6 @@
     XCTAssertEqual(1, [accountService numberOfAccounts]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
-    XCTAssertEqual(0, wpComAccount.jetpackBlogs.count);
     // test.blog + wp.com + jetpack (wpcc)
     XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
 
