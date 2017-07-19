@@ -1,6 +1,10 @@
 #import "ReaderSiteServiceRemote.h"
 #import "RemoteReaderSite.h"
-#import "WordPress-Swift.h"
+#import <AFNetworking/AFNetworking.h>
+#import <WordPressKit/WordPressKit-Swift.h>
+#import "Logging.h"
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteErrorDomain";
 
@@ -35,7 +39,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)followSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
+    NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/new", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -52,7 +56,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)unfollowSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
+    NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/mine/delete", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -193,7 +197,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)checkSubscribedToSiteByID:(NSUInteger)siteID success:(void (^)(BOOL follows))success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine", siteID];
+    NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/mine", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
@@ -241,9 +245,9 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     NSString *path;
     if (blocked) {
-        path = [NSString stringWithFormat:@"me/block/sites/%d/new", siteID];
+        path = [NSString stringWithFormat:@"me/block/sites/%lu/new", (unsigned long)siteID];
     } else {
-        path = [NSString stringWithFormat:@"me/block/sites/%d/delete", siteID];
+        path = [NSString stringWithFormat:@"me/block/sites/%lu/delete", (unsigned long)siteID];
     }
     
     NSString *requestUrl = [self pathForEndpoint:path
