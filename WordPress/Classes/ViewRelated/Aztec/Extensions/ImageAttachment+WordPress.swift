@@ -48,7 +48,7 @@ extension ImageAttachment {
             }).first else {
                 return nil
             }
-            let imageIDString = imageIDAttribute.removingPrefix("wp-image-")            
+            let imageIDString = imageIDAttribute.removingPrefix("wp-image-")
             return Int(imageIDString)
         }
         set {
@@ -61,7 +61,6 @@ extension ImageAttachment {
             })
             if let nonNilValue = newValue {
                 attributes.append("wp-image-\(nonNilValue)")
-
             }
             if extraAttributes.isEmpty {
                 extraAttributes.removeValue(forKey: "class")
