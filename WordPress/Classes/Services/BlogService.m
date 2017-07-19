@@ -570,14 +570,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
-    WPAccount *jetpackAccount = blog.jetpackAccount;
+    WPAccount *account = blog.account;
 
     [self.managedObjectContext deleteObject:blog];
     [self.managedObjectContext processPendingChanges];
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    if (jetpackAccount) {
-        [accountService purgeAccount:jetpackAccount];
+    if (account) {
+        [accountService purgeAccountIfUnused:account];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

@@ -377,13 +377,13 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     
 }
 
-- (void)purgeAccount:(WPAccount *)account
+- (void)purgeAccountIfUnused:(WPAccount *)account
 {
     NSParameterAssert(account);
 
     BOOL purge = NO;
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
-    if ([account.jetpackBlogs count] == 0
+    if ([account.blogs count] == 0
         && ![defaultAccount isEqual:account]) {
         purge = YES;
     }
