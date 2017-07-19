@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 62
+
+- @koke 2017-07-19
+- `Blog` added `userID` Int64 property. Stores the current user ID.
+
 ## WordPress 61
 - @kurzee 2017-06-16
 - `Media` added `localThumbnailIdentifier` string property. Stores the locally generated thumbnail identifier.

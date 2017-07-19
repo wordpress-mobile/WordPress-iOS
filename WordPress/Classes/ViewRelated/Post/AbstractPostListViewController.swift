@@ -955,7 +955,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     ///     WordPress.com, `nil` is returned instead.
     ///
     func blogUserID() -> NSNumber? {
-        return blog.account?.userID
+        return blog.userID
     }
 
     // MARK: - Filtering

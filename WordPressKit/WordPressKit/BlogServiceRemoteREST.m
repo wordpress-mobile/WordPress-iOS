@@ -64,28 +64,27 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
 
 @implementation BlogServiceRemoteREST
 
-- (void)checkMultiAuthorWithSuccess:(void(^)(BOOL isMultiAuthor))success
-                            failure:(void (^)(NSError *error))failure
+- (void)getAuthorsWithSuccess:(UsersHandler)success
+                      failure:(void (^)(NSError *error))failure
 {
     NSDictionary *parameters = @{@"authors_only":@(YES)};
-    
+
     NSString *path = [self pathForUsers];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    
+
     [self.wordPressComRestApi GET:requestUrl
-       parameters:parameters
-          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-              if (success) {
-                  NSDictionary *response = (NSDictionary *)responseObject;
-                  BOOL isMultiAuthor = [[response arrayForKey:@"users"] count] > 1;
-                  success(isMultiAuthor);
-              }
-          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+                       parameters:parameters
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              if (success) {
+                                  NSArray *users = [self usersFromJSONArray:responseObject[@"users"]];
+                                  success(users);
+                              }
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
 }
 
 - (void)syncPostTypesWithSuccess:(PostTypesHandler)success
@@ -272,6 +271,25 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
 
 
 #pragma mark - Mapping methods
+
+- (NSArray *)usersFromJSONArray:(NSArray *)jsonUsers
+{
+    return [jsonUsers wp_map:^RemoteUser *(NSDictionary *jsonUser) {
+        return [self userFromJSONDictionary:jsonUser];
+    }];
+}
+
+- (RemoteUser *)userFromJSONDictionary:(NSDictionary *)jsonUser
+{
+    RemoteUser *user = [RemoteUser new];
+    user.userID = jsonUser[@"ID"];
+    user.username = jsonUser[@"login"];
+    user.email = jsonUser[@"email"];
+    user.displayName = jsonUser[@"name"];
+    user.primaryBlogID = jsonUser[@"site_ID"];
+    user.avatarURL = jsonUser[@"avatar_URL"];
+    return user;
+}
 
 - (NSDictionary *)mapPostFormatsFromResponse:(id)response
 {
