@@ -831,8 +831,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             return;
         }
         blog.isMultiAuthor = users.count > 1;
+        /// Search for a matching user ID
+        /// - wp.com hosted: blog.account.userID
+        /// - Jetpack: user.linkedUserID == blog.account.userID
+        /// - self hosted: user.username == blog.username
         if (blog.account) {
-            blog.userID = blog.account.userID;
+            if ([blog isHostedAtWPcom]) {
+                blog.userID = blog.account.userID;
+            } else {
+                for (RemoteUser *user in users) {
+                    if ([user.linkedUserID isEqual:blog.account.userID]) {
+                        blog.userID = user.userID;
+                        break;
+                    }
+                }
+            }
         } else if (blog.username != nil) {
             for (RemoteUser *user in users) {
                 if ([user.username isEqualToString:blog.username]) {

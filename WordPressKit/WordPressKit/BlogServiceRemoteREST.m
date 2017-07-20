@@ -288,6 +288,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     user.displayName = jsonUser[@"name"];
     user.primaryBlogID = jsonUser[@"site_ID"];
     user.avatarURL = jsonUser[@"avatar_URL"];
+    user.linkedUserID = jsonUser[@"linked_user_ID"];
     return user;
 }
 
