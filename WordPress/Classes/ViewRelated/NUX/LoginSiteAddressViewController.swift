@@ -176,6 +176,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
 
     func fetchSiteInfo() {
+        loginFields.siteInfo = nil
         let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteUrl) as NSString
         if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
 
