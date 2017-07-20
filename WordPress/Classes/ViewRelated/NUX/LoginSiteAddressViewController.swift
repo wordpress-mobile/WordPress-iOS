@@ -15,8 +15,9 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     override var loginFields: LoginFields {
         didSet {
-            // Clear the username & password (if any) from LoginFields
+            // Clear the site url and site info (if any) from LoginFields
             loginFields.siteUrl = ""
+            loginFields.siteInfo = nil
         }
     }
 
@@ -184,7 +185,6 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
 
     func fetchSiteInfo() {
-        loginFields.siteInfo = nil
         let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteUrl) as NSString
         if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
 
