@@ -208,6 +208,7 @@
 {
     NSParameterAssert(changeRequestBlock);
     __block NSString * assetIdentifier = nil;
+    __weak __typeof__(self) weakSelf = self;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
         // Request creating an asset from the image.
         PHAssetChangeRequest *createAssetRequest = changeRequestBlock();
@@ -222,7 +223,7 @@
             }
             return;
         }
-        [self addMediaFromAssetIdentifier:assetIdentifier completionBlock:completionBlock];
+        [weakSelf addMediaFromAssetIdentifier:assetIdentifier completionBlock:completionBlock];
     }];
 }
 
