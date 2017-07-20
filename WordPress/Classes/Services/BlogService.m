@@ -831,7 +831,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             return;
         }
         blog.isMultiAuthor = users.count > 1;
-        if (blog.username != nil) {
+        if (blog.account) {
+            blog.userID = blog.account.userID;
+        } else if (blog.username != nil) {
             for (RemoteUser *user in users) {
                 if ([user.username isEqualToString:blog.username]) {
                     blog.userID = user.userID;
