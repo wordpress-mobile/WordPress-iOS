@@ -40,6 +40,7 @@ FOUNDATION_EXPORT const unsigned char WordPressKitVersionString[];
 #import "ReaderPostServiceRemote.h"
 #import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicServiceRemote.h"
+#import "WordPressComServiceRemote.h"
 
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
