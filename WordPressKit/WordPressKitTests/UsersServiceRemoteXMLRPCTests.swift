@@ -1,5 +1,6 @@
-@testable import WordPress
+import WordPressKit
 import wpxmlrpc
+import XCTest
 
 class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
 
