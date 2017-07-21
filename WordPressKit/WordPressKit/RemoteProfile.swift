@@ -1,19 +1,19 @@
 import Foundation
 
-open class RemoteProfile {
-    let bio: String
-    let displayName: String
-    let email: String
-    let firstName: String
-    let lastName: String
-    let nicename: String
-    let nickname: String
-    let url: String
-    let userID: Int
-    let username: String
+public class RemoteProfile {
+    public let bio: String
+    public let displayName: String
+    public let email: String
+    public let firstName: String
+    public let lastName: String
+    public let nicename: String
+    public let nickname: String
+    public let url: String
+    public let userID: Int
+    public let username: String
 
 
-    init(dictionary: NSDictionary) {
+    public init(dictionary: NSDictionary) {
         bio = dictionary.string(forKey: "bio") ?? ""
         displayName = dictionary.string(forKey: "display_name") ?? ""
         email = dictionary.string(forKey: "email") ?? ""
