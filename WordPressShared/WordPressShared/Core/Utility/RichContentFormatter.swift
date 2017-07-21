@@ -2,11 +2,11 @@ import Foundation
 
 /// Contains methods for formatting post or comment content for display.
 ///
-@objc class RichContentFormatter: NSObject {
+@objc public class RichContentFormatter: NSObject {
 
     /// Encapsulates regex instances used in class methods.
     ///
-    struct RegEx {
+    public struct RegEx {
         // Forbidden tags
         static let styleTags = try! NSRegularExpression(pattern: "<style[^>]*?>[\\s\\S]*?</style>", options: .caseInsensitive)
         static let scriptTags = try! NSRegularExpression(pattern: "<script[^>]*?>[\\s\\S]*?</script>", options: .caseInsensitive)
@@ -40,7 +40,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func formatContentString(_ string: String, isPrivateStie isPrivate: Bool) -> String {
+    public class func formatContentString(_ string: String, isPrivateStie isPrivate: Bool) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -63,7 +63,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func removeForbiddenTags(_ string: String) -> String {
+    public class func removeForbiddenTags(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -95,7 +95,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func normalizeParagraphs(_ string: String) -> String {
+    public class func normalizeParagraphs(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -131,7 +131,7 @@ import Foundation
     }
 
 
-    class func filterNewLines(_ string: String) -> String {
+    public class func filterNewLines(_ string: String) -> String {
         var content = string
 
         var ranges = [NSRange]()
@@ -181,7 +181,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func removeInlineStyles(_ string: String) -> String {
+    public class func removeInlineStyles(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -204,7 +204,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
+    public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -262,7 +262,7 @@ import Foundation
     ///
     /// - Returns: The value for the attribute or an empty string..
     ///
-    class func parseValueForAttribute(_ attribute: String, inElement element: String) -> String {
+    public class func parseValueForAttribute(_ attribute: String, inElement element: String) -> String {
         let elementStr = element as NSString
         var value = ""
         let attrStr = "\(attribute)=\""
@@ -286,7 +286,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    class func removeTrailingBreakTags(_ string: String) -> String {
+    public class func removeTrailingBreakTags(_ string: String) -> String {
         guard string.characters.count > 0 else {
             return string
         }

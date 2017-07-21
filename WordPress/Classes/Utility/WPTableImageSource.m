@@ -1,10 +1,9 @@
 #import "WPTableImageSource.h"
 #import "AccountService.h"
 #import "ContextManager.h"
-#import "PhotonImageURLHelper.h"
 #import "WPAccount.h"
 #import "UIImage+Resize.h"
-#import <WordPressShared/WPImageSource.h>
+@import WordPressShared;
 
 static const NSInteger WPTableImageSourceMaxPhotonQuality = 100;
 static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
