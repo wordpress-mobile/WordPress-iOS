@@ -10,5 +10,6 @@
 @property (nonatomic, strong) NSString *avatarURL;
 @property (nonatomic, strong) NSDate *dateCreated;
 @property (nonatomic, assign) BOOL emailVerified;
+@property (nonatomic, strong) NSNumber *linkedUserID;
 
 @end
