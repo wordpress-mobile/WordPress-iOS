@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 63
+
+- @koke 2017-07-21
+- `Blog` removed `jetpackAccount`
+- `WPAccount` removed `jetpackBlogs`
+
 ## WordPress 62
 
 - @koke 2017-07-19
