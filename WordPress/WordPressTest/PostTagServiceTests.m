@@ -3,9 +3,8 @@
 #import "Blog.h"
 #import "PostTag.h"
 #import "PostTagService.h"
-#import "TaxonomyServiceRemoteREST.h"
 #import "TestContextManager.h"
-#import "RemoteTaxonomyPaging.h"
+@import WordPressKit;
 #import "WordPressTest-Swift.h"
 
 @interface PostTagServiceForStubbing : PostTagService
