@@ -1,4 +1,5 @@
 #import "CreateNewBlogViewController.h"
+#import "ApiCredentials.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
@@ -7,7 +8,6 @@
 #import "UILabel+SuggestSize.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "WordPressComServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -16,6 +16,8 @@
 #import <WordPressShared/WPNUXUtility.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
+@import WordPressKit;
+@import WordPressShared;
 
 NSString * const NewWPComBlogCreatedNotification = @"NewWPComBlogCreatedNotification";
 NSString * const NewWPComBlogCreatedNotificationBlogUserInfoKey = @"NewWPComBlogCreatedNotificationBlogUserInfoKey";
@@ -552,6 +554,8 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
                            andBlogTitle:_siteTitleField.text
                           andLanguageId:languageId
                       andBlogVisibility:WordPressComServiceBlogVisibilityPublic
+                            andClientID:ApiCredentials.client
+                        andClientSecret:ApiCredentials.secret
                                 success:createBlogSuccess
                                 failure:createBlogFailure];
     }];
