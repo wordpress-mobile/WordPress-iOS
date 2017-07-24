@@ -59,4 +59,26 @@ class CalypsoProcessorTests: XCTestCase {
         NSLog("Output: \(output)")
         XCTAssertEqual(output, input)
     }
+
+    /// Verifies that Ordered Lists (with nested levels) will keep their contents untouched.
+    ///
+    func testOrderedListsWithNestedEntitiesAreLeftUntouched() {
+        let input = "<ol>\n<li>hello\nbye</li>\n<li><ol><li>WAT\nWAT</li></ol></li></ol>"
+        let output = processor.process(text: input)
+
+        NSLog("Input: \(input)")
+        NSLog("Output: \(output)")
+        XCTAssertEqual(output, input)
+    }
+
+    /// Verifies that Unordered Lists (with nested levels) will keep their contents untouched.
+    ///
+    func testUnorderedListsWithNestedEntitiesAreLeftUntouched() {
+        let input = "<ul>\n<li>hello\nbye</li>\n<li><ul><li>WAT\nWAT</li></ul></li></ul>"
+        let output = processor.process(text: input)
+
+        NSLog("Input: \(input)")
+        NSLog("Output: \(output)")
+        XCTAssertEqual(output, input)
+    }
 }
