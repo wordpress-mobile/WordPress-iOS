@@ -3,8 +3,6 @@
 #import "Blog.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
-#import "TaxonomyServiceRemoteREST.h"
-#import "RemoteTaxonomyPaging.h"
 #import "TestContextManager.h"
 #import "WordPressTest-Swift.h"
 @import WordPressKit;
