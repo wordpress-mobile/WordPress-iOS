@@ -1,12 +1,41 @@
 import Foundation
+import AVFoundation
 
 class MediaSettings: NSObject {
     // MARK: - Constants
     fileprivate let maxImageSizeKey = "SavedMaxImageSizeSetting"
     fileprivate let removeLocationKey = "SavedRemoveLocationSetting"
+    fileprivate let maxVideoSizeKey = "SavedMaxVideoSizeSetting"
+
 
     fileprivate let minImageDimension = 150
     fileprivate let maxImageDimension = 3000
+
+    enum VideoResolution: String {
+        case preset640x480 = "AVAssetExportPreset640x480"
+        case preset960x540 = "AVAssetExportPreset960x540"
+        case size1280x720 = "AVAssetExportPreset1280x720"
+        case size1920x1080 = "AVAssetExportPreset1920x1080"
+        case size3840x2160 = "AVAssetExportPreset3840x2160"
+        case sizeOriginal = "AVAssetExportPresetPassthrough"
+
+        var videoSetting: String {
+            switch (self) {
+            case(.preset640x480):
+                return AVAssetExportPreset640x480
+            case(.preset960x540):
+                return AVAssetExportPreset960x540
+            case(.size1280x720):
+                return AVAssetExportPreset1280x720
+            case(.size1920x1080):
+                return AVAssetExportPreset1920x1080
+            case(.size3840x2160):
+                return AVAssetExportPreset3840x2160
+            case(.sizeOriginal):
+                return AVAssetExportPresetPassthrough
+            }
+        }
+    }
 
     // MARK: - Internal variables
     fileprivate let database: KeyValueDatabase
@@ -80,6 +109,19 @@ class MediaSettings: NSObject {
         }
         set {
             database.set(newValue, forKey: removeLocationKey)
+        }
+    }
+
+    var maxVideoSizeSetting: VideoResolution {
+        get {
+            guard let savedSize = database.object(forKey: maxVideoSizeKey) as? String,
+                  let videoSize = VideoResolution(rawValue: savedSize) else {
+                    return .sizeOriginal
+            }
+            return videoSize
+        }
+        set {
+            database.set(newValue.rawValue, forKey: maxVideoSizeKey)
         }
     }
 }
