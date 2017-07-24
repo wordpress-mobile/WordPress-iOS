@@ -1,8 +1,11 @@
 #import "TaxonomyServiceRemoteREST.h"
-#import "WordPress-Swift.h"
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
-@import WordPressKit;
+#import "RemotePostCategory.h"
+#import "Logging.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 NS_ASSUME_NONNULL_BEGIN
 

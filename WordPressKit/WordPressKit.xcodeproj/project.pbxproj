@@ -208,6 +208,16 @@
 		9309995B1F16616A00F006A1 /* RemoteTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 930999591F16616A00F006A1 /* RemoteTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9309995C1F16616A00F006A1 /* RemoteTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 9309995A1F16616A00F006A1 /* RemoteTheme.m */; };
 		930F52B81ECF88F9002F921B /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930F52B71ECF88F9002F921B /* WordPressShared.framework */; };
+		9311A6851F22625A00704AC9 /* RemoteTaxonomyPaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 9311A67E1F22625A00704AC9 /* RemoteTaxonomyPaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9311A6861F22625A00704AC9 /* RemoteTaxonomyPaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 9311A67F1F22625A00704AC9 /* RemoteTaxonomyPaging.m */; };
+		9311A6871F22625A00704AC9 /* TaxonomyServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 9311A6801F22625A00704AC9 /* TaxonomyServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9311A6881F22625A00704AC9 /* TaxonomyServiceRemoteREST.h in Headers */ = {isa = PBXBuildFile; fileRef = 9311A6811F22625A00704AC9 /* TaxonomyServiceRemoteREST.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9311A6891F22625A00704AC9 /* TaxonomyServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 9311A6821F22625A00704AC9 /* TaxonomyServiceRemoteREST.m */; };
+		9311A68A1F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.h in Headers */ = {isa = PBXBuildFile; fileRef = 9311A6831F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9311A68B1F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9311A6841F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.m */; };
+		93188D1E1F2262BF0028ED4D /* RemotePostTag.h in Headers */ = {isa = PBXBuildFile; fileRef = 93188D1C1F2262BF0028ED4D /* RemotePostTag.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		93188D1F1F2262BF0028ED4D /* RemotePostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 93188D1D1F2262BF0028ED4D /* RemotePostTag.m */; };
+		93188D221F2264E60028ED4D /* TaxonomyServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93188D211F2264E60028ED4D /* TaxonomyServiceRemoteRESTTests.m */; };
 		931924241F1662FA0069CBCC /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931924231F1662FA0069CBCC /* JSONLoader.swift */; };
 		9368C7851EC5EF1B0092CE8E /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9368C77B1EC5EF1B0092CE8E /* WordPressKit.framework */; };
 		9368C78C1EC5EF1B0092CE8E /* WordPressKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9368C77E1EC5EF1B0092CE8E /* WordPressKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -534,6 +544,16 @@
 		930999591F16616A00F006A1 /* RemoteTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteTheme.h; sourceTree = "<group>"; };
 		9309995A1F16616A00F006A1 /* RemoteTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteTheme.m; sourceTree = "<group>"; };
 		930F52B71ECF88F9002F921B /* WordPressShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WordPressShared.framework; path = "../../../Library/Developer/Xcode/DerivedData/WordPress-gvhisgbaqipfupeijvwdwkhpgxbd/Build/Products/Debug-iphonesimulator/WordPressShared.framework"; sourceTree = "<group>"; };
+		9311A67E1F22625A00704AC9 /* RemoteTaxonomyPaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteTaxonomyPaging.h; sourceTree = "<group>"; };
+		9311A67F1F22625A00704AC9 /* RemoteTaxonomyPaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteTaxonomyPaging.m; sourceTree = "<group>"; };
+		9311A6801F22625A00704AC9 /* TaxonomyServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemote.h; sourceTree = "<group>"; };
+		9311A6811F22625A00704AC9 /* TaxonomyServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemoteREST.h; sourceTree = "<group>"; };
+		9311A6821F22625A00704AC9 /* TaxonomyServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxonomyServiceRemoteREST.m; sourceTree = "<group>"; };
+		9311A6831F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		9311A6841F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxonomyServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
+		93188D1C1F2262BF0028ED4D /* RemotePostTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemotePostTag.h; sourceTree = "<group>"; };
+		93188D1D1F2262BF0028ED4D /* RemotePostTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemotePostTag.m; sourceTree = "<group>"; };
+		93188D211F2264E60028ED4D /* TaxonomyServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxonomyServiceRemoteRESTTests.m; sourceTree = "<group>"; };
 		931924231F1662FA0069CBCC /* JSONLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONLoader.swift; sourceTree = "<group>"; };
 		9368C77B1EC5EF1B0092CE8E /* WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9368C77E1EC5EF1B0092CE8E /* WordPressKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressKit.h; sourceTree = "<group>"; };
@@ -847,6 +867,7 @@
 				930F52BB1ECF8A78002F921B /* Stats */,
 				74E2294C1F1E73650085F7F2 /* Sharing */,
 				9309994F1F1658DB00F006A1 /* Theme */,
+				93188D201F2264A80028ED4D /* Taxonomy */,
 				93F50A421F227CC400B5BEBA /* Users */,
 			);
 			name = Tests;
@@ -863,6 +884,14 @@
 				93AC8EC31ED32FD000900F5A /* WPStatsServiceRemoteTests.m */,
 			);
 			name = Stats;
+			sourceTree = "<group>";
+		};
+		93188D201F2264A80028ED4D /* Taxonomy */ = {
+			isa = PBXGroup;
+			children = (
+				93188D211F2264E60028ED4D /* TaxonomyServiceRemoteRESTTests.m */,
+			);
+			name = Taxonomy;
 			sourceTree = "<group>";
 		};
 		9368C7711EC5EF1B0092CE8E = {
@@ -966,6 +995,11 @@
 				74B5F0E11EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m */,
 				9368C7BD1EC630CE0092CE8E /* StatsStringUtilities.h */,
 				9368C7BE1EC630CE0092CE8E /* StatsStringUtilities.m */,
+				9311A6801F22625A00704AC9 /* TaxonomyServiceRemote.h */,
+				9311A6811F22625A00704AC9 /* TaxonomyServiceRemoteREST.h */,
+				9311A6821F22625A00704AC9 /* TaxonomyServiceRemoteREST.m */,
+				9311A6831F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.h */,
+				9311A6841F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.m */,
 				9309994B1F1657C600F006A1 /* ThemeServiceRemote.h */,
 				9309994C1F1657C600F006A1 /* ThemeServiceRemote.m */,
 				93F50A3E1F227C8900B5BEBA /* UsersServiceRemoteXMLRPC.swift */,
@@ -1006,6 +1040,8 @@
 				740B23C11F17EE8000067A2A /* RemotePost.m */,
 				740B23BE1F17EE8000067A2A /* RemotePostCategory.h */,
 				740B23BF1F17EE8000067A2A /* RemotePostCategory.m */,
+				93188D1C1F2262BF0028ED4D /* RemotePostTag.h */,
+				93188D1D1F2262BF0028ED4D /* RemotePostTag.m */,
 				74B5F0E41EF8699C00B411E7 /* RemotePostType.h */,
 				74B5F0E51EF8699C00B411E7 /* RemotePostType.m */,
 				93F50A401F227C9700B5BEBA /* RemoteProfile.swift */,
@@ -1023,6 +1059,8 @@
 				74E2295D1F1E777B0085F7F2 /* RemoteSharingButton.swift */,
 				7430C9C81F192F260051B8E6 /* RemoteSourcePostAttribution.h */,
 				7430C9C91F192F260051B8E6 /* RemoteSourcePostAttribution.m */,
+				9311A67E1F22625A00704AC9 /* RemoteTaxonomyPaging.h */,
+				9311A67F1F22625A00704AC9 /* RemoteTaxonomyPaging.m */,
 				930999591F16616A00F006A1 /* RemoteTheme.h */,
 				9309995A1F16616A00F006A1 /* RemoteTheme.m */,
 				93BD27671EE736A8002BB00B /* RemoteUser.h */,
@@ -1289,6 +1327,11 @@
 				740B23B81F17EC7300067A2A /* PostServiceRemoteREST.h in Headers */,
 				74BA04F31F06DC0A00ED5CD8 /* CommentServiceRemoteREST.h in Headers */,
 				7430C9CA1F192F260051B8E6 /* RemoteSourcePostAttribution.h in Headers */,
+				9311A6851F22625A00704AC9 /* RemoteTaxonomyPaging.h in Headers */,
+				9311A68A1F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.h in Headers */,
+				9311A6881F22625A00704AC9 /* TaxonomyServiceRemoteREST.h in Headers */,
+				93188D1E1F2262BF0028ED4D /* RemotePostTag.h in Headers */,
+				9311A6871F22625A00704AC9 /* TaxonomyServiceRemote.h in Headers */,
 				9309994D1F1657C600F006A1 /* ThemeServiceRemote.h in Headers */,
 				740B23C41F17EE8000067A2A /* RemotePost.h in Headers */,
 				740B23C21F17EE8000067A2A /* RemotePostCategory.h in Headers */,
@@ -1638,6 +1681,7 @@
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
 				74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */,
 				74E229501F1E741B0085F7F2 /* RemotePublicizeConnection.swift in Sources */,
+				9311A6891F22625A00704AC9 /* TaxonomyServiceRemoteREST.m in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				7433BC011EFC4505002D9E92 /* PlanServiceRemote.swift in Sources */,
 				74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */,
@@ -1645,6 +1689,7 @@
 				74B5F0E31EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m in Sources */,
 				74E2295C1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift in Sources */,
 				7430C9D71F1933210051B8E6 /* RemoteReaderCrossPostMeta.swift in Sources */,
+				9311A68B1F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.m in Sources */,
 				93BD277E1EE73944002BB00B /* NSDate+WordPressJSON.m in Sources */,
 				9368C7B61EC630270092CE8E /* StatsStreak.m in Sources */,
 				93BD276A1EE736A8002BB00B /* RemoteUser.m in Sources */,
@@ -1668,6 +1713,7 @@
 				74D67F061F1528470010C5ED /* PeopleServiceRemote.swift in Sources */,
 				740B23C31F17EE8000067A2A /* RemotePostCategory.m in Sources */,
 				74B5F0E71EF8699C00B411E7 /* RemotePostType.m in Sources */,
+				93188D1F1F2262BF0028ED4D /* RemotePostTag.m in Sources */,
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
 				74D67F081F15BEB70010C5ED /* RemotePerson.swift in Sources */,
 				74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */,
@@ -1691,6 +1737,7 @@
 				74A44DD11F13C64B006CD8F4 /* RemoteNotificationSettings.swift in Sources */,
 				74DA56331F06EAF000FE9BF4 /* MediaServiceRemoteREST.m in Sources */,
 				74DA563B1F06EB3000FE9BF4 /* RemoteMedia.m in Sources */,
+				9311A6861F22625A00704AC9 /* RemoteTaxonomyPaging.m in Sources */,
 				93BD27821EE73944002BB00B /* WordPressOrgXMLRPCValidator.swift in Sources */,
 				748710A81F06B542008095AB /* RemotePlan.swift in Sources */,
 				740B23C51F17EE8000067A2A /* RemotePost.m in Sources */,
@@ -1722,6 +1769,7 @@
 				74E2294B1F1E73340085F7F2 /* SharingServiceRemoteTests.m in Sources */,
 				93AC8EDE1ED32FD000900F5A /* StatsItemTests.m in Sources */,
 				740B23D31F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift in Sources */,
+				93188D221F2264E60028ED4D /* TaxonomyServiceRemoteRESTTests.m in Sources */,
 				74FC6F3B1F191BB400112505 /* NotificationSyncServiceRemoteTests.swift in Sources */,
 				74FA25F71F1FDA200044BC54 /* MediaServiceRemoteRESTTests.swift in Sources */,
 				7433BC051EFC4556002D9E92 /* PlanServiceRemoteTests.swift in Sources */,
@@ -1847,6 +1895,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1985,6 +2034,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2076,6 +2126,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
