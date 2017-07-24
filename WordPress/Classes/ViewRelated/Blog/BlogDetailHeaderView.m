@@ -121,9 +121,11 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
     [_stackView addArrangedSubview:imageView];
 
+    NSLayoutConstraint *heightConstraint = [imageView.heightAnchor constraintEqualToConstant:BlogDetailHeaderViewBlavatarSize];
+    heightConstraint.priority = 999;
     [NSLayoutConstraint activateConstraints:@[
                                               [imageView.widthAnchor constraintEqualToConstant:BlogDetailHeaderViewBlavatarSize],
-                                              [imageView.heightAnchor constraintEqualToConstant:BlogDetailHeaderViewBlavatarSize]
+                                              heightConstraint
                                               ]];
     _blavatarImageView = imageView;
 }
