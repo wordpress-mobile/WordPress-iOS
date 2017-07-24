@@ -8,11 +8,11 @@ public enum UsersServiceRemoteError: Int, Error {
 /// UsersServiceRemoteXMLRPC handles Users related XML-RPC calls.
 /// https://codex.wordpress.org/XML-RPC_WordPress_API/Users
 ///
-open class UsersServiceRemoteXMLRPC: ServiceRemoteWordPressXMLRPC {
+public class UsersServiceRemoteXMLRPC: ServiceRemoteWordPressXMLRPC {
 
     /// Fetch the blog user's profile.
     ///
-    func fetchProfile(_ success: @escaping ((RemoteProfile) -> Void), failure: @escaping ((NSError?) -> Void)) {
+    public func fetchProfile(_ success: @escaping ((RemoteProfile) -> Void), failure: @escaping ((NSError?) -> Void)) {
         let params = defaultXMLRPCArguments() as [AnyObject]
         api.callMethod("wp.getProfile", parameters: params, success: { (responseObj, response) in
             guard let dict = responseObj as? NSDictionary else {
