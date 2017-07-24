@@ -55,8 +55,6 @@ class CalypsoProcessorTests: XCTestCase {
         let input = "<pre>First\n\nSecond</pre><pre>Third\nFourth</pre><pre>Fifth\n\nSixth\n</pre>"
         let output = processor.process(text: input)
 
-        NSLog("Input: \(input)")
-        NSLog("Output: \(output)")
         XCTAssertEqual(output, input)
     }
 
@@ -66,8 +64,6 @@ class CalypsoProcessorTests: XCTestCase {
         let input = "<ol>\n<li>hello\nbye</li>\n<li><ol><li>WAT\nWAT</li></ol></li></ol>"
         let output = processor.process(text: input)
 
-        NSLog("Input: \(input)")
-        NSLog("Output: \(output)")
         XCTAssertEqual(output, input)
     }
 
@@ -75,6 +71,20 @@ class CalypsoProcessorTests: XCTestCase {
     ///
     func testUnorderedListsWithNestedEntitiesAreLeftUntouched() {
         let input = "<ul>\n<li>hello\nbye</li>\n<li><ul><li>WAT\nWAT</li></ul></li></ul>"
+        let output = processor.process(text: input)
+
+        XCTAssertEqual(output, input)
+    }
+
+    /// Verifies that Pre + UL + OL tags escaping algorithm is case insensitive, and it's 
+    /// contents are left untouched, even when in uppercase.
+    ///
+    func testSantizationIsCaseInsensitiveAndEscapedUppercaseTagsAreLeftUntouched() {
+        let input = "here<UL>\n<LI>hello\nbye</LI>\n" +
+            "<LI><UL><LI>WAT\nWAT</LI></UL></LI></UL>there" +
+            "<PRE>\n</PRE>testing" +
+            "<OL><LI>ORDERED\n</LI></OL>"
+
         let output = processor.process(text: input)
 
         NSLog("Input: \(input)")
