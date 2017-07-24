@@ -2,20 +2,21 @@ import Foundation
 import UIKit
 import WordPressShared
 
-class MediaSizeSliderCell: WPTableViewCell {
-    // MARK: - Default values
-    struct Default {
-        static let value = 1500
-        static let minValue = 300
-        static let maxValue = 3000
-        static let step = 100
+// MARK: - View Model
 
-        static var model: Model {
-            get {
-                return Model(value: value, minValue: minValue, maxValue: maxValue, step: step)
-            }
-        }
-    }
+protocol MediaSizeModel {
+    var value: Int {get set}
+    var minValue: Int {get set}
+    var maxValue: Int {get set}
+    var step: Int {get set}
+    var valueText: String {get}
+    var accessibleText: String {get}
+    var sliderValue: Float {get}
+    var sliderMinimumValue:Float {get}
+    var sliderMaximumValue: Float {get}
+}
+
+class MediaSizeSliderCell: WPTableViewCell {
 
     static let height: Float = 108.0
 
@@ -68,7 +69,7 @@ class MediaSizeSliderCell: WPTableViewCell {
     var onChange: ((Int) -> Void)?
 
     // MARK: - Private properties
-    fileprivate var model: Model = Default.model {
+    fileprivate var model: MediaSizeModel = ImageSizeModel.default {
         didSet {
             updateSubviews()
         }
@@ -105,47 +106,53 @@ class MediaSizeSliderCell: WPTableViewCell {
         onChange?(model.value)
     }
 
-    // MARK: - View Model
-    struct Model {
-        var value: Int {
-            didSet {
-                if step > 1 {
-                    value = value
-                        .round(UInt(step))
-                        .clamp(min: minValue, max: maxValue)
-                }
+}
+
+struct ImageSizeModel: MediaSizeModel {
+    var value: Int {
+        didSet {
+            if step > 1 {
+                value = value
+                    .round(UInt(step))
+                    .clamp(min: minValue, max: maxValue)
             }
         }
-        var minValue: Int
-        var maxValue: Int
-        var step: Int
+    }
+    var minValue: Int
+    var maxValue: Int
+    var step: Int
 
-        var valueText: String {
-            if value == maxValue {
-                return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
-            }
-            let format = NSLocalizedString("%dx%dpx", comment: "Max image size in pixels (e.g. 300x300px)")
-            return String(format: format, value, value)
+    var valueText: String {
+        if value == maxValue {
+            return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
         }
+        let format = NSLocalizedString("%dx%dpx", comment: "Max image size in pixels (e.g. 300x300px)")
+        return String(format: format, value, value)
+    }
 
-        var accessibleText: String {
-            if value == maxValue {
-                return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
-            }
-            let format = NSLocalizedString("%d pixels", comment: "Sepoken image size in pixels (e.g. 300 pixels)")
-            return String(format: format, value)
+    var accessibleText: String {
+        if value == maxValue {
+            return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
         }
+        let format = NSLocalizedString("%d pixels", comment: "Sepoken image size in pixels (e.g. 300 pixels)")
+        return String(format: format, value)
+    }
 
-        var sliderValue: Float {
-            return Float(value)
-        }
+    var sliderValue: Float {
+        return Float(value)
+    }
 
-        var sliderMinimumValue: Float {
-            return Float(minValue)
-        }
+    var sliderMinimumValue: Float {
+        return Float(minValue)
+    }
 
-        var sliderMaximumValue: Float {
-            return Float(maxValue)
+    var sliderMaximumValue: Float {
+        return Float(maxValue)
+    }
+
+    static var `default`: ImageSizeModel {
+        get {
+            return ImageSizeModel(value: 1500, minValue: 300, maxValue: 3000, step: 100)
         }
     }
 }
