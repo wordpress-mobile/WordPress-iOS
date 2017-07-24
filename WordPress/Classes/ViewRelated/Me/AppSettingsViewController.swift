@@ -37,7 +37,7 @@ class AppSettingsViewController: UITableViewController {
         ImmuTable.registerRows([
             DestructiveButtonRow.self,
             TextRow.self,
-            MediaSizingRow.self,
+            ImageSizingRow.self,
             SwitchRow.self,
             NavigationItemRow.self
             ], tableView: self.tableView)
@@ -62,7 +62,7 @@ class AppSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
-        let mediaSizingRow = MediaSizingRow(
+        let imageSizingRow = ImageSizingRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: mediaSizeChanged())
@@ -132,7 +132,7 @@ class AppSettingsViewController: UITableViewController {
             ImmuTableSection(
                 headerText: mediaHeader,
                 rows: [
-                    mediaSizingRow,
+                    imageSizingRow,
                     mediaRemoveLocation,
                     mediaCacheRow,
                     mediaClearCacheRow
@@ -323,7 +323,7 @@ class AppSettingsViewController: UITableViewController {
     }
 }
 
-fileprivate struct MediaSizingRow: ImmuTableRow {
+fileprivate struct ImageSizingRow: ImmuTableRow {
     typealias CellType = MediaSizeSliderCell
 
     static let cell: ImmuTableCell = {
