@@ -18,6 +18,14 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         }
     }
 
+    override var loginFields: LoginFields {
+        didSet {
+            // Clear the password (if any) from LoginFields.
+            loginFields.password = ""
+        }
+    }
+
+
     // MARK: - Lifecycle Methods
 
 
@@ -55,6 +63,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
     }
+
 
     // MARK: Setup and Configuration
 
