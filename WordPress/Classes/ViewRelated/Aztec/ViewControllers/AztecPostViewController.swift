@@ -2003,9 +2003,9 @@ private extension AztecPostViewController {
     func displayUnknownHtmlEditor(for attachment: HTMLAttachment) {
         let targetVC = UnknownEditorViewController(attachment: attachment)
         targetVC.onDidSave = { [weak self] html in
-            self?.richTextView.edit(attachment, block: { (htmlAttachment) in
+            self?.richTextView.edit(attachment) { htmlAttachment in
                 htmlAttachment.rawHTML = html
-            })
+            }
             self?.dismiss(animated: true, completion: nil)
         }
 
@@ -2226,6 +2226,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     }
 }
 
+
 // MARK: - Media Support
 //
 extension AztecPostViewController {
@@ -2273,9 +2274,9 @@ extension AztecPostViewController {
 
     fileprivate func insertDeviceVideo(phAsset: PHAsset) {
         let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
-        richTextView.edit(attachment, block: { attachment in
-            attachment.progress = 0
-        })
+        attachment.progress = 0
+        richTextView.refresh(attachment)
+
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
             guard let strongSelf = self else {
@@ -2626,18 +2627,15 @@ extension AztecPostViewController {
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let imageSize = CGSize(width:128, height:128)
-        let placeholderImage: UIImage
+
         switch attachment {
         case _ as ImageAttachment:
-            placeholderImage = Gridicon.iconOfType(.image, withSize: imageSize)
+            return Gridicon.iconOfType(.image, withSize: imageSize)
         case _ as VideoAttachment:
-            placeholderImage = Gridicon.iconOfType(.video, withSize: imageSize)
+            return Gridicon.iconOfType(.video, withSize: imageSize)
         default:
-            placeholderImage = Gridicon.iconOfType(.attachment, withSize: imageSize)
-
+            return Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
-
-        return placeholderImage
     }
 }
 
@@ -2647,11 +2645,11 @@ extension AztecPostViewController {
 extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
     func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment) {
-        richTextView.edit(changedAttachment, block: { attachment in
+        richTextView.edit(changedAttachment) { attachment in
             attachment.alignment = changedAttachment.alignment
             attachment.size = changedAttachment.size
             attachment.url = changedAttachment.url
-        })
+        }
     }
 }
 
@@ -2852,6 +2850,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     }
 }
+
 
 // MARK: - State Restoration
 //
