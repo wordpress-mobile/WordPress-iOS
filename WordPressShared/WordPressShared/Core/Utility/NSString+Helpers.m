@@ -3,7 +3,7 @@
 #import "WPSharedLoggingPrivate.h"
 #import "NSString+XMLExtensions.h"
 
-
+static const NSUInteger PostDerivedSummaryLength = 150;
 static NSString *const Ellipsis =  @"\u2026";
 
 @implementation NSString (Helpers)
@@ -110,6 +110,14 @@ static NSString *const Ellipsis =  @"\u2026";
                                            options:NSMatchingReportCompletion
                                              range:range
                                       withTemplate:@""];
+}
+
++ (NSString *)summaryFromContent:(NSString *)string
+{
+    string = [NSString makePlainText:string];
+    string = [NSString stripShortcodesFromString:string];
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+    return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
 }
 
 // Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding

@@ -3,8 +3,7 @@
 #import "Blog.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "PhotonImageURLHelper.h"
-#import <WordPressShared/WPImageSource.h>
+@import WordPressShared;
 
 @implementation MediaService (Legacy)
 

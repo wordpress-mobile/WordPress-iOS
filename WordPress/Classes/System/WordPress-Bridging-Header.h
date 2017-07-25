@@ -57,7 +57,6 @@
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "PageSettingsViewController.h"
-#import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
 #import "PostCardTableViewCell.h"
 #import "PostCategory.h"
@@ -77,13 +76,8 @@
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostService.h"
-#import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
-#import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicService.h"
-#import "RemoteReaderPost.h"
-#import "RemoteReaderSite.h"
-#import "RemoteReaderTopic.h"
 #import "RotationAwareNavigationViewController.h"
 
 #import "SettingsSelectionViewController.h"
@@ -109,7 +103,6 @@
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
-#import "WordPressComServiceRemote.h"
 #import "WordPressXMLRPCAPIFacade.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
@@ -142,7 +135,6 @@
 #import "WPWalkthroughTextField.h"
 #import "WPURLRequest.h"
 #import "WPUserAgent.h"
-#import "WordPressComServiceRemote.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 
 // Pods

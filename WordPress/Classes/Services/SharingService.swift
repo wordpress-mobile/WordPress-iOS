@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
+import WordPressKit
 
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
