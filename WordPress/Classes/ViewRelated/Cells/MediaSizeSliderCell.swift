@@ -69,7 +69,7 @@ class MediaSizeSliderCell: WPTableViewCell {
     var onChange: ((Int) -> Void)?
 
     // MARK: - Private properties
-    fileprivate var model: MediaSizeModel = ImageSizeModel.default {
+    var model: MediaSizeModel = ImageSizeModel.default {
         didSet {
             updateSubviews()
         }
