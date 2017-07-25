@@ -12,19 +12,21 @@ static NSString * const RemotePostTypePublicKey = @"public";
 
 @implementation BlogServiceRemoteXMLRPC
 
-- (void)checkMultiAuthorWithSuccess:(void(^)(BOOL isMultiAuthor))success
-                            failure:(void (^)(NSError *error))failure
+- (void)getAuthorsWithSuccess:(UsersHandler)success
+                      failure:(void (^)(NSError *))failure
 {
     NSDictionary *filter = @{@"who":@"authors"};
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:filter];
     [self.api callMethod:@"wp.getUsers"
               parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *response) {
+                     NSArray <RemoteUser *> *users = [[responseObject allObjects] wp_map:^id(NSDictionary *xmlrpcUser) {
+                         return [self remoteUserFromXMLRPCDictionary:xmlrpcUser];
+                     }];
                      if (success) {
-                         NSArray *response = (NSArray *)responseObject;
-                         BOOL isMultiAuthor = [response count] > 1;
-                         success(isMultiAuthor);
+                         success(users);
                      }
+
                  } failure:^(NSError *error, NSHTTPURLResponse *response) {
                      if (failure) {
                          failure(error);
@@ -145,6 +147,15 @@ static NSString * const RemotePostTypePublicKey = @"public";
             failure(error);
         }
     }];
+}
+
+- (RemoteUser *)remoteUserFromXMLRPCDictionary:(NSDictionary *)xmlrpcUser
+{
+    RemoteUser *user = [RemoteUser new];
+    user.userID = [xmlrpcUser numberForKey:@"user_id"];
+    user.username = [xmlrpcUser stringForKey:@"username"];
+    user.displayName = [xmlrpcUser stringForKey:@"display_name"];
+    return user;
 }
 
 - (RemotePostType *)remotePostTypeFromXMLRPCDictionary:(NSDictionary *)json

@@ -1,12 +1,8 @@
 #import "PostTagService.h"
 #import "Blog.h"
-#import "RemotePostTag.h"
 #import "PostTag.h"
 #import "ContextManager.h"
-#import "TaxonomyServiceRemote.h"
-#import "TaxonomyServiceRemoteREST.h"
-#import "TaxonomyServiceRemoteXMLRPC.h"
-#import "RemoteTaxonomyPaging.h"
+@import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN
 

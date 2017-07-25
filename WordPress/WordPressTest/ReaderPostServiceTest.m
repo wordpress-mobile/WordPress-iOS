@@ -4,12 +4,10 @@
 
 #import "WPAccount.h"
 #import "ReaderTopicService.h"
-#import "ReaderTopicServiceRemote.h"
-#import "RemoteReaderTopic.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
-#import "RemoteReaderPost.h"
 #import "TestContextManager.h"
+@import WordPressKit;
 
 @interface ReaderPostService()
 

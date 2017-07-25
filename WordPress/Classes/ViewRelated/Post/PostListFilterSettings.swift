@@ -121,13 +121,13 @@ class PostListFilterSettings: NSObject {
 
     func canFilterByAuthor() -> Bool {
         if postType as String == PostServiceTypePost {
-            return blog.isHostedAtWPcom && blog.isMultiAuthor && blog.account?.userID != nil
+            return blog.isMultiAuthor && blog.userID != nil
         }
         return false
     }
 
     func authorIDFilter() -> NSNumber? {
-        return currentPostAuthorFilter() == .mine ? blog.account?.userID : nil
+        return currentPostAuthorFilter() == .mine ? blog.userID : nil
     }
 
     func shouldShowOnlyMyPosts() -> Bool {
