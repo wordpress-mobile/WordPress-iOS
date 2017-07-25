@@ -39,7 +39,7 @@
                               @"readonly": @YES,
                               },
                       @"jetpack_client_id": @{
-                              @"value": @"1",
+                              @"value": @"3",
                               @"desc": @"stub",
                               @"readonly": @YES,
                               },
@@ -70,7 +70,7 @@
 }
 
 - (void)testJetpackSiteId {
-    XCTAssertEqualObjects(_blog.jetpack.siteID, @1);
+    XCTAssertEqualObjects(_blog.jetpack.siteID, @3);
 }
 
 - (void)testJetpackUsername {
@@ -172,8 +172,8 @@
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
 
     Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
-    dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
-    dotcomBlog.url = @"http://dotcom1.wordpress.com/";
+    dotcomBlog.xmlrpc = @"https://dotcom1.wordpress.com/xmlrpc.php";
+    dotcomBlog.url = @"https://dotcom1.wordpress.com/";
     dotcomBlog.dotComID = @1;
 
     Blog *jetpackLegacyBlog = [blogService createBlog];
