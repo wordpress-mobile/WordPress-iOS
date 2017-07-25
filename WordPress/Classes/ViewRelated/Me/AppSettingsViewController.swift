@@ -65,7 +65,12 @@ class AppSettingsViewController: UITableViewController {
         let imageSizingRow = ImageSizingRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
-            onChange: mediaSizeChanged())
+            onChange: imageSizeChanged())
+
+        let videoSizingRow = VideoSizingRow(
+            title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
+            value: MediaSettings().maxVideoSizeSetting,
+            onChange: videoSizeChanged())
 
         let mediaRemoveLocation = SwitchRow(
             title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
@@ -133,6 +138,7 @@ class AppSettingsViewController: UITableViewController {
                 headerText: mediaHeader,
                 rows: [
                     imageSizingRow,
+                    videoSizingRow,
                     mediaRemoveLocation,
                     mediaCacheRow,
                     mediaClearCacheRow
@@ -247,10 +253,16 @@ class AppSettingsViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func mediaSizeChanged() -> (Int) -> Void {
+    func imageSizeChanged() -> (Int) -> Void {
         return { value in
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
+        }
+    }
+
+    func videoSizeChanged() -> (MediaSettings.VideoResolution) -> Void {
+        return { value in
+            MediaSettings().maxVideoSizeSetting = value
         }
     }
 
@@ -349,6 +361,81 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
         (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
     }
 }
+
+fileprivate struct VideoSizingRow: ImmuTableRow {
+    typealias CellType = MediaSizeSliderCell
+
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "MediaSizeSliderCell", bundle: Bundle(for: CellType.self))
+        return ImmuTableCell.nib(nib, CellType.self)
+    }()
+    static let customHeight: Float? = CellType.height
+
+    let title: String
+    let value: MediaSettings.VideoResolution
+    let onChange: (MediaSettings.VideoResolution) -> Void
+
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! CellType
+        cell.model = VideoSizeModel.default
+        cell.title = title
+        cell.value = value.intValue
+        cell.onChange = { (value) in
+            self.onChange(MediaSettings.VideoResolution.videoResolution(from: value))
+        }
+        cell.selectionStyle = .none
+
+        cell.minValue = MediaSettings.VideoResolution.size640x480.intValue
+        cell.maxValue = MediaSettings.VideoResolution.sizeOriginal.intValue
+    }
+}
+
+struct VideoSizeModel: MediaSizeModel {
+    var value: Int {
+        didSet {
+            if step > 1 {
+                value = value
+                    .round(UInt(step))
+                    .clamp(min: minValue, max: maxValue)
+            }
+        }
+    }
+    var minValue: Int
+    var maxValue: Int
+    var step: Int
+
+    var valueText: String {
+        return MediaSettings.VideoResolution.videoResolution(from: value).description
+    }
+
+    var accessibleText: String {
+        return MediaSettings.VideoResolution.videoResolution(from: value).description
+    }
+
+    var sliderValue: Float {
+        return Float(value)
+    }
+
+    var sliderMinimumValue: Float {
+        return Float(minValue)
+    }
+
+    var sliderMaximumValue: Float {
+        return Float(maxValue)
+    }
+
+    static var `default`: VideoSizeModel {
+        get {
+            return VideoSizeModel(value: MediaSettings.VideoResolution.sizeOriginal.intValue,
+                                  minValue: MediaSettings.VideoResolution.size640x480.intValue,
+                                  maxValue: MediaSettings.VideoResolution.sizeOriginal.intValue,
+                                  step: 1)
+        }
+    }
+}
+
 
 fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
     static let height: CGFloat = 38.0
