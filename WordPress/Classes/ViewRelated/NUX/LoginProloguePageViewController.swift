@@ -35,7 +35,6 @@ class LoginProloguePageViewController: UIPageViewController {
         newControl.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.pagerPadding).isActive = true
         newControl.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         newControl.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        newControl.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         newControl.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.pagerHeight).isActive = true
 
 
