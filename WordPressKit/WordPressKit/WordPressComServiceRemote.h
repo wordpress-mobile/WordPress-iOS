@@ -1,4 +1,5 @@
-@import WordPressKit;
+@import Foundation;
+#import "ServiceRemoteWordPressComREST.h"
 
 typedef NS_ENUM(NSUInteger, WordPressComServiceBlogVisibility) {
     WordPressComServiceBlogVisibilityPublic = 0,
@@ -29,6 +30,8 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
                           andLocale:(NSString *)locale
+                        andClientID:(NSString *)clientID
+                    andClientSecret:(NSString *)clientSecret
                             success:(WordPressComServiceSuccessBlock)success
                             failure:(WordPressComServiceFailureBlock)failure;
 
@@ -37,13 +40,14 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
  *
  *  @param      blogUrl     The url of the blog to validate.  Cannot be nil.
  *  @param      blogTitle   The title of the blog.  Can be nil.
- *  @param      password    The language ID of the blog.  Cannot be nil.
  *  @param      success     The block to execute on success.  Can be nil.
  *  @param      failure     The block to execute on failure.  Can be nil.
  */
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
                     andBlogTitle:(NSString *)blogTitle
                    andLanguageId:(NSString *)languageId
+                     andClientID:(NSString *)clientID
+                 andClientSecret:(NSString *)clientSecret
                          success:(WordPressComServiceSuccessBlock)success
                          failure:(WordPressComServiceFailureBlock)failure;
 
@@ -52,7 +56,6 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
  *
  *  @param      blogUrl     The url of the blog to validate.  Cannot be nil.
  *  @param      blogTitle   The title of the blog.  Can be nil.
- *  @param      password    The language ID of the blog.  Cannot be nil.
  *  @param      visibility  The visibility of the new blog.
  *  @param      success     The block to execute on success.  Can be nil.
  *  @param      failure     The block to execute on failure.  Can be nil.
@@ -61,6 +64,8 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
                   andBlogTitle:(NSString *)blogTitle
                  andLanguageId:(NSString *)languageId
              andBlogVisibility:(WordPressComServiceBlogVisibility)visibility
+                   andClientID:(NSString *)clientID
+               andClientSecret:(NSString *)clientSecret
                        success:(WordPressComServiceSuccessBlock)success
                        failure:(WordPressComServiceFailureBlock)failure;
 
