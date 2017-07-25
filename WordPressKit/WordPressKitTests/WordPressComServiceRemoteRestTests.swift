@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPress
+import WordPressKit
 import OHHTTPStubs
 
 class WordPressComServiceRemoteRestTests: XCTestCase {
@@ -54,6 +54,8 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
                                             andUsername: "fakeUsername",
                                             andPassword: "fakePassword",
                                             andLocale: "en",
+                                            andClientID: "moo",
+                                            andClientSecret: "cow",
                                             success: { (responseObject) in
                                                 expect.fulfill()
                                                 XCTFail("This call should fail")

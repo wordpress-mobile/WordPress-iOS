@@ -43,6 +43,7 @@ FOUNDATION_EXPORT const unsigned char WordPressKitVersionString[];
 #import "TaxonomyServiceRemoteREST.h"
 #import "TaxonomyServiceRemoteXMLRPC.h"
 #import "ThemeServiceRemote.h"
+#import "WordPressComServiceRemote.h"
 
 #import "RemoteBlog.h"
 #import "RemoteBlogOptionsHelper.h"
