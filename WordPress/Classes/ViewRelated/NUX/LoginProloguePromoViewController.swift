@@ -12,6 +12,9 @@ class LoginProloguePromoViewController: UIViewController {
         static let stackSpacing: CGFloat = 36.0
         static let stackHeightMultiplier: CGFloat = 0.87
         static let stackWidthMultiplier: CGFloat = 0.8
+        static let labelMinHeight: CGFloat = 21.0
+        static let labelMaxWidth: CGFloat = 600.0
+        static let animationWidthHeightRatio: CGFloat = 0.6667
     }
 
     enum PromoType: String {
@@ -95,14 +98,14 @@ class LoginProloguePromoViewController: UIViewController {
         stackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.stackWidthMultiplier).isActive = true
         stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.stackHeightMultiplier).isActive = true
 
-        headingLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 21.0).isActive = true
-        headingLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 600.0).isActive = true
+        headingLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.labelMinHeight).isActive = true
+        headingLabel.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.labelMaxWidth).isActive = true
         headingLabel.translatesAutoresizingMaskIntoConstraints = false
         headingLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
         headingLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
 
         animationHolder.translatesAutoresizingMaskIntoConstraints = false
-        animationHolder.widthAnchor.constraint(greaterThanOrEqualTo: animationHolder.heightAnchor, multiplier: 0.6667)
+        animationHolder.widthAnchor.constraint(greaterThanOrEqualTo: animationHolder.heightAnchor, multiplier: Constants.animationWidthHeightRatio)
         animationHolder.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
         animationHolder.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: .vertical)
 
