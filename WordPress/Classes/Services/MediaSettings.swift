@@ -53,7 +53,7 @@ class MediaSettings: NSObject {
             }
         }
 
-        var intValue:Int {
+        var intValue: Int {
             switch (self) {
             case(.size640x480):
                 return 1
