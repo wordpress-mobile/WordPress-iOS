@@ -24,8 +24,32 @@ class LoginProloguePromoViewController: UIViewController {
         case notifications
         case jetpack
 
-        func animationKey() -> String {
-            return self.rawValue
+        var animationKey: String {
+            return rawValue
+        }
+
+        var headlineText: String {
+            switch self {
+            case .post:
+                return NSLocalizedString("Publish from the park. Blog from the bus. Comment from the café. WordPress goes where you do.", comment: "shown in promotional screens during first launch")
+            case .stats:
+                return NSLocalizedString("Watch readers from around the world read and interact with your site — in real time.", comment: "shown in promotional screens during first launch")
+            case .reader:
+                return NSLocalizedString("Catch up with your favorite sites and join the conversation anywhere, any time.", comment: "shown in promotional screens during first launch")
+            case .notifications:
+                return NSLocalizedString("Your notifications travel with you — see comments and likes as they happen.", comment: "shown in promotional screens during first launch")
+            case .jetpack:
+                return NSLocalizedString("Manage your Jetpack-powered site on the go — you‘ve got WordPress in your pocket.", comment: "shown in promotional screens during first launch")
+            }
+        }
+
+        var headlineColor: UIColor {
+            switch self {
+            case .post, .reader, .jetpack:
+                return UIColor(hexString: "204E80")
+            default:
+                return UIColor.white
+            }
         }
     }
 
@@ -34,7 +58,7 @@ class LoginProloguePromoViewController: UIViewController {
         stackView = UIStackView()
         headingLabel = UILabel()
         animationHolder = UIView()
-        guard let animation = Lottie.LOTAnimationView(name: type.animationKey()) else {
+        guard let animation = Lottie.LOTAnimationView(name: type.animationKey) else {
             fatalError("animation could not be created for promo screen \(promoType)")
         }
         animationView = animation
@@ -54,8 +78,8 @@ class LoginProloguePromoViewController: UIViewController {
         view.backgroundColor = UIColor.clear
 
         headingLabel.font = WPStyleGuide.mediumWeightFont(forStyle: .title3)
-        headingLabel.textColor = headlineColor()
-        headingLabel.text = headlineText()
+        headingLabel.textColor = type.headlineColor
+        headingLabel.text = type.headlineText
         headingLabel.textAlignment = .center
         headingLabel.numberOfLines = 0
         headingLabel.sizeToFit()
@@ -85,62 +109,38 @@ class LoginProloguePromoViewController: UIViewController {
 
         stackView.axis = .vertical
         stackView.spacing = Constants.stackSpacing
-        if self.traitCollection.horizontalSizeClass == .regular {
-            stackView.alignment = .center
-        } else {
-            stackView.alignment = .fill
-        }
+        stackView.alignment = .center
         stackView.distribution = .fill
-
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        stackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.stackWidthMultiplier).isActive = true
-        stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.stackHeightMultiplier).isActive = true
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Constants.stackWidthMultiplier),
+            stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.stackHeightMultiplier)
+        ])
 
-        headingLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.labelMinHeight).isActive = true
-        headingLabel.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.labelMaxWidth).isActive = true
-        headingLabel.translatesAutoresizingMaskIntoConstraints = false
         headingLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
         headingLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        headingLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            headingLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.labelMinHeight),
+            headingLabel.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.labelMaxWidth)
+        ])
 
-        animationHolder.translatesAutoresizingMaskIntoConstraints = false
-        animationHolder.widthAnchor.constraint(greaterThanOrEqualTo: animationHolder.heightAnchor, multiplier: Constants.animationWidthHeightRatio)
         animationHolder.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
         animationHolder.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: .vertical)
+        animationHolder.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            animationHolder.widthAnchor.constraint(greaterThanOrEqualTo: animationHolder.heightAnchor, multiplier: Constants.animationWidthHeightRatio)
+        ])
 
         animationView.contentMode = .scaleAspectFit
         animationView.translatesAutoresizingMaskIntoConstraints = false
-        animationView.leadingAnchor.constraint(equalTo: animationHolder.leadingAnchor).isActive = true
-        animationView.trailingAnchor.constraint(equalTo: animationHolder.trailingAnchor).isActive = true
-        animationView.topAnchor.constraint(equalTo: animationHolder.topAnchor).isActive = true
-        animationView.bottomAnchor.constraint(equalTo: animationHolder.bottomAnchor).isActive = true
-    }
-
-
-    // MARK: promo settings
-
-    private func headlineColor() -> UIColor {
-        switch type {
-        case .post, .reader, .jetpack:
-            return UIColor(hexString: "204E80")
-        default:
-            return UIColor.white
-        }
-    }
-
-    private func headlineText() -> String {
-        switch type {
-        case .post:
-            return NSLocalizedString("Publish from the park. Blog from the bus. Comment from the café. WordPress goes where you do.", comment: "shown in promotional screens during first launch")
-        case .stats:
-            return NSLocalizedString("Watch readers from around the world read and interact with your site — in real time.", comment: "shown in promotional screens during first launch")
-        case .reader:
-            return NSLocalizedString("Catch up with your favorite sites and join the conversation anywhere, any time.", comment: "shown in promotional screens during first launch")
-        case .notifications:
-            return NSLocalizedString("Your notifications travel with you — see comments and likes as they happen.", comment: "shown in promotional screens during first launch")
-        case .jetpack:
-            return NSLocalizedString("Manage your Jetpack-powered site on the go — you‘ve got WordPress in your pocket.", comment: "shown in promotional screens during first launch")
-        }
+        NSLayoutConstraint.activate([
+            animationView.leadingAnchor.constraint(equalTo: animationHolder.leadingAnchor),
+            animationView.trailingAnchor.constraint(equalTo: animationHolder.trailingAnchor),
+            animationView.topAnchor.constraint(equalTo: animationHolder.topAnchor),
+            animationView.bottomAnchor.constraint(equalTo: animationHolder.bottomAnchor)
+        ])
     }
 }
