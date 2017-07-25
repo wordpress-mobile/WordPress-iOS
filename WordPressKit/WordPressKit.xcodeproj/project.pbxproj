@@ -323,6 +323,10 @@
 		93F50A441F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F50A431F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift */; };
 		93F50A471F227F3600B5BEBA /* xmlrpc-response-getprofile.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */; };
 		93F50A481F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */; };
+		93F50A371F226B9300B5BEBA /* WordPressComServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 93F50A351F226B9300B5BEBA /* WordPressComServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		93F50A381F226B9300B5BEBA /* WordPressComServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 93F50A361F226B9300B5BEBA /* WordPressComServiceRemote.m */; };
+		93F50A3A1F226BB600B5BEBA /* WordPressComServiceRemoteRestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F50A391F226BB600B5BEBA /* WordPressComServiceRemoteRestTests.swift */; };
+		93F50A3C1F226C0100B5BEBA /* WordPressComRestApiFailThrottled.json in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A3B1F226C0100B5BEBA /* WordPressComRestApiFailThrottled.json */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
 		E6C1E8491EF21FC100D139D9 /* is-passwordless-account-no-account-found.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E8471EF21FC100D139D9 /* is-passwordless-account-no-account-found.json */; };
 		E6C1E84A1EF21FC100D139D9 /* is-passwordless-account-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E8481EF21FC100D139D9 /* is-passwordless-account-success.json */; };
@@ -664,6 +668,10 @@
 		93F50A431F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersServiceRemoteXMLRPCTests.swift; sourceTree = "<group>"; };
 		93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getprofile.xml"; sourceTree = "<group>"; };
 		93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-valid-but-unexpected-dictionary.xml"; sourceTree = "<group>"; };
+		93F50A351F226B9300B5BEBA /* WordPressComServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComServiceRemote.h; sourceTree = "<group>"; };
+		93F50A361F226B9300B5BEBA /* WordPressComServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComServiceRemote.m; sourceTree = "<group>"; };
+		93F50A391F226BB600B5BEBA /* WordPressComServiceRemoteRestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressComServiceRemoteRestTests.swift; sourceTree = "<group>"; };
+		93F50A3B1F226C0100B5BEBA /* WordPressComRestApiFailThrottled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WordPressComRestApiFailThrottled.json; sourceTree = "<group>"; };
 		9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1003,6 +1011,8 @@
 				9309994B1F1657C600F006A1 /* ThemeServiceRemote.h */,
 				9309994C1F1657C600F006A1 /* ThemeServiceRemote.m */,
 				93F50A3E1F227C8900B5BEBA /* UsersServiceRemoteXMLRPC.swift */,
+				93F50A351F226B9300B5BEBA /* WordPressComServiceRemote.h */,
+				93F50A361F226B9300B5BEBA /* WordPressComServiceRemote.m */,
 				9368C7A11EC62F800092CE8E /* WPStatsServiceRemote.h */,
 				9368C7A21EC62F800092CE8E /* WPStatsServiceRemote.m */,
 			);
@@ -1108,6 +1118,7 @@
 			children = (
 				93BD27401EE73311002BB00B /* AccountServiceRemoteRESTTests.swift */,
 				7403A2E51EF06F7000DED7DC /* AccountSettingsRemoteTests.swift */,
+				93F50A391F226BB600B5BEBA /* WordPressComServiceRemoteRestTests.swift */,
 			);
 			name = Accounts;
 			sourceTree = "<group>";
@@ -1210,6 +1221,7 @@
 				74B335DF1F06F6290053A184 /* WordPressComRestApiFailInvalidInput.json */,
 				74B335DD1F06F5A50053A184 /* WordPressComRestApiFailInvalidJSON.json */,
 				74B335E11F06F6730053A184 /* WordPressComRestApiFailRequestInvalidToken.json */,
+				93F50A3B1F226C0100B5BEBA /* WordPressComRestApiFailThrottled.json */,
 				74B335E71F06F7200053A184 /* WordPressComRestApiFailUnauthorized.json */,
 				74B335E51F06F6E90053A184 /* WordPressComRestApiMedia.json */,
 				74B335E31F06F6B30053A184 /* WordPressComRestApiMultipleErrors.json */,
@@ -1337,6 +1349,7 @@
 				740B23C21F17EE8000067A2A /* RemotePostCategory.h in Headers */,
 				9309995B1F16616A00F006A1 /* RemoteTheme.h in Headers */,
 				93F08F111EEF0E9B000C2DF6 /* Logging.h in Headers */,
+				93F50A371F226B9300B5BEBA /* WordPressComServiceRemote.h in Headers */,
 				93C674EB1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h in Headers */,
 				9368C7B91EC630270092CE8E /* StatsSummary.h in Headers */,
 			);
@@ -1501,6 +1514,7 @@
 				93AC8ED31ED32FD000900F5A /* stats-v1.1-streak.json in Resources */,
 				7403A2F91EF06FEB00DED7DC /* me-settings-change-email-success.json in Resources */,
 				7433BC121EFC45C7002D9E92 /* site-plans-auth-failure.json in Resources */,
+				93F50A3C1F226C0100B5BEBA /* WordPressComRestApiFailThrottled.json in Resources */,
 				740B23ED1F17FB7E00067A2A /* xmlrpc-bad-username-password-error.xml in Resources */,
 				93BD275B1EE73442002BB00B /* is-available-username-failure.json in Resources */,
 				93BD27581EE73442002BB00B /* auth-send-login-email-success.json in Resources */,
@@ -1697,6 +1711,7 @@
 				9368C7BA1EC630270092CE8E /* StatsSummary.m in Sources */,
 				7430C9B61F1927C50051B8E6 /* RemoteReaderSiteInfo.m in Sources */,
 				74DA56351F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.m in Sources */,
+				93F50A381F226B9300B5BEBA /* WordPressComServiceRemote.m in Sources */,
 				7430C9B81F1927C50051B8E6 /* RemoteReaderTopic.m in Sources */,
 				7403A3021EF0726E00DED7DC /* AccountSettings.swift in Sources */,
 				9368C7C01EC630CE0092CE8E /* StatsStringUtilities.m in Sources */,
@@ -1762,6 +1777,7 @@
 				74D67F0A1F15C24C0010C5ED /* PeopleServiceRemoteTests.swift in Sources */,
 				74585B901F0D51F900E7E667 /* DomainsServiceRemoteRESTTests.swift in Sources */,
 				7430C9BD1F192C0F0051B8E6 /* ReaderPostServiceRemoteTests.m in Sources */,
+				93F50A3A1F226BB600B5BEBA /* WordPressComServiceRemoteRestTests.swift in Sources */,
 				93AC8EE01ED32FD000900F5A /* StatsStreakTests.m in Sources */,
 				74B335D81F06F1CA0053A184 /* MockWordPressComRestApi.swift in Sources */,
 				74B5F0DE1EF82A9600B411E7 /* BlogServiceRemoteRESTTests.m in Sources */,
