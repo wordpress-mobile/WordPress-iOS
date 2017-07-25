@@ -146,7 +146,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Separator View
     ///
     fileprivate(set) lazy var separatorView: UIView = {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 1))
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 1))
 
         v.backgroundColor = Colors.separator
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -354,6 +354,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
 
+    fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
+
+    fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
+
+    fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
 
     /// HTML Pre Processors
     ///
@@ -419,7 +424,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureMediaAppearance()
 
         if isOpenedDirectlyForPhotoPost {
-            presentMediaPicker(animated: false)
+            presentMediaPickerFullScreen(animated: false)
         }
     }
 
@@ -731,7 +736,7 @@ class AztecPostViewController: UIViewController, PostEditor {
                      UIKeyCommand(input:"U", modifierFlags: .command, action:#selector(toggleUnderline(_:)), discoverabilityTitle: NSLocalizedString("Underline", comment:"Discoverability title for underline formatting keyboard shortcut.")),
                      UIKeyCommand(input:"Q", modifierFlags:[.command,.alternate], action: #selector(toggleBlockquote), discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
                      UIKeyCommand(input:"K", modifierFlags:.command, action:#selector(toggleLink), discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
-                     UIKeyCommand(input:"M", modifierFlags:[.command,.alternate], action:#selector(presentMediaPicker(animated:)), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
+                     UIKeyCommand(input:"M", modifierFlags:[.command,.alternate], action:#selector(presentMediaPicker), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
                      UIKeyCommand(input:"U", modifierFlags:[.command, .alternate], action:#selector(toggleUnorderedList), discoverabilityTitle:NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
                      UIKeyCommand(input:"O", modifierFlags:[.command, .alternate], action:#selector(toggleOrderedList), discoverabilityTitle:NSLocalizedString("Numbered List", comment:"Discoverability title for numbered list keyboard shortcut.")),
                      UIKeyCommand(input:"H", modifierFlags:[.command, .shift], action:#selector(toggleEditingMode), discoverabilityTitle:NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
@@ -1186,8 +1191,7 @@ extension AztecPostViewController : UITextViewDelegate {
     }
 
     func textViewDidChangeSelection(_ textView: UITextView) {
-        updateFormatBar()
-        changeRichTextInputView(to: nil)
+        updateFormatBar()        
     }
 
     func textViewDidChange(_ textView: UITextView) {
@@ -1220,8 +1224,9 @@ extension AztecPostViewController : UITextViewDelegate {
         default:
             break
         }
-
-        textView.inputAccessoryView = formatBar
+        if mediaPickerInputViewController == nil {
+            textView.inputAccessoryView = formatBar
+        }
 
         return true
     }
@@ -1381,7 +1386,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         case .link:
             toggleLink()
         case .media:
-            presentMediaPicker()
+            presentMediaPicker(fromItem: barItem, animated:true)
         case .sourcecode:
             toggleEditingMode()
         case .p, .header1, .header2, .header3, .header4, .header5, .header6:
@@ -1614,17 +1619,114 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         insertAction.isEnabled = !urlFieldText.isEmpty
     }
 
-    func presentMediaPicker(animated: Bool = true) {
-        trackFormatBarAnalytics(stat: .editorTappedImage)
+    private var mediaInputToolbar: UIToolbar {
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
+        toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
+        toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
+        let gridButton = UIBarButtonItem(image: Gridicon.iconOfType(.grid), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen))
+        gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker")
+        toolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            gridButton,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(mediaAddInputDone))
+        ]
+        for item in toolbar.items! {
+            item.tintColor = WPStyleGuide.aztecFormatBarActiveColor
+            item.setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
+        }
+        return toolbar
+
+    }
+
+    // MARK: - Media Input toolbar button actions
+
+    /// Method to be called when the grid icon is pressed on the media input toolbar.
+    ///
+    /// - Parameter sender: the button that was pressed.
+    func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
+        presentMediaPickerFullScreen(animated: true)
+        restoreInputAssistantItems()
+    }
+
+    /// Method to be called when canceled is pressed.
+    ///
+    /// - Parameter sender: the button that was pressed.
+    func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
+
+        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
+            return
+        }
+        mediaPickerControllerDidCancel(mediaPicker)
+        restoreInputAssistantItems()
+    }
+
+    /// Method to be called when done is pressed on the media input toolbar.
+    ///
+    /// - Parameter sender: the button that was pressed.
+    func mediaAddInputDone(_ sender: UIBarButtonItem) {
+
+        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
+              let selectedAssets = mediaPicker.selectedAssets as? [Any]
+        else {
+            return
+        }
+        mediaPickerController(mediaPicker, didFinishPickingAssets: selectedAssets)
+        restoreInputAssistantItems()
+    }
+
+    func restoreInputAssistantItems() {
+
+        richTextView.inputAssistantItem.leadingBarButtonGroups = originalLeadingBarButtonGroup
+        richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
+        richTextView.autocorrectionType = .yes
+        richTextView.resignFirstResponder()
+        richTextView.becomeFirstResponder()
+    }
+
+    @IBAction func presentMediaPicker() {
+        presentMediaPicker(fromItem: formatBar.defaultItems[0][0], animated: true)
+    }
+
+    fileprivate func presentMediaPickerFullScreen(animated: Bool) {
 
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.showMostRecentFirst = true
         picker.filter = WPMediaType.videoOrImage
         picker.delegate = self
-        picker.modalPresentationStyle = .currentContext
+        picker.modalPresentationStyle = .currentContext        
+        // Disable the input media picker if we go full screen.
+        mediaPickerInputViewController = nil
+        present(picker, animated: true)
+    }
 
-        present(picker, animated: animated, completion: nil)
+    private func presentMediaPicker(fromItem item: FormatBarItem, animated: Bool = true) {
+        trackFormatBarAnalytics(stat: .editorTappedImage)
+        if !(FeatureFlag.newInputMediaPicker.enabled) {
+            presentMediaPickerFullScreen(animated: animated)
+            return
+        }
+        let picker = WPInputMediaPickerViewController()
+        mediaPickerInputViewController = picker
+        richTextView.inputAccessoryView = mediaInputToolbar
+
+        originalLeadingBarButtonGroup = richTextView.inputAssistantItem.leadingBarButtonGroups
+        originalTrailingBarButtonGroup = richTextView.inputAssistantItem.trailingBarButtonGroups
+
+        richTextView.inputAssistantItem.leadingBarButtonGroups = []
+        richTextView.inputAssistantItem.trailingBarButtonGroups = []
+
+        richTextView.autocorrectionType = .no
+
+        presentToolbarViewControllerAsInputView(picker)
+        picker.mediaPicker.viewControllerToUseToPresent = self
+        picker.dataSource = WPPHAssetDataSource.sharedInstance()
+        picker.mediaPicker.showMostRecentFirst = true
+        picker.mediaPicker.filter = WPMediaType.videoOrImage
+        picker.mediaPicker.allowMultipleSelection = true
+        picker.mediaPicker.mediaPickerDelegate = self
     }
 
     func toggleEditingMode() {
@@ -1643,14 +1745,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         trackFormatBarAnalytics(stat: .editorTappedHTML)
         formatBar.overflowToolbar(expand: true)
         mode.toggle()
-    }
-
-    fileprivate func dismissOptionsViewControllerIfNecessary() {
-        if let optionsViewController = optionsViewController,
-            presentedViewController == optionsViewController {
-            dismiss(animated: true, completion: nil)
-            self.optionsViewController = nil
-        }
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
@@ -1678,6 +1772,49 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     self?.optionsViewController = nil
                                                     self?.changeRichTextInputView(to: nil)
         })
+    }
+
+    func insertHorizontalRuler() {
+        trackFormatBarAnalytics(stat: .editorTappedHorizontalRule)
+        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
+    }
+
+    func insertMore() {
+        trackFormatBarAnalytics(stat: .editorTappedMore)
+        richTextView.replaceWithComment(at: richTextView.selectedRange, text: Constants.moreAttachmentText)
+    }
+
+    func headerLevelForSelectedText() -> Header.HeaderType {
+        var identifiers = [FormattingIdentifier]()
+        if (richTextView.selectedRange.length > 0) {
+            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
+        } else {
+            identifiers = richTextView.formatIdentifiersForTypingAttributes()
+        }
+        let mapping: [FormattingIdentifier: Header.HeaderType] = [
+            .header1: .h1,
+            .header2: .h2,
+            .header3: .h3,
+            .header4: .h4,
+            .header5: .h5,
+            .header6: .h6,
+        ]
+        for (key,value) in mapping {
+            if identifiers.contains(key) {
+                return value
+            }
+        }
+        return .none
+    }
+
+    // MARK: - Present Toolbar related VC
+
+    fileprivate func dismissOptionsViewControllerIfNecessary() {
+        if let optionsViewController = optionsViewController,
+            presentedViewController == optionsViewController {
+            dismiss(animated: true, completion: nil)
+            self.optionsViewController = nil
+        }
     }
 
     func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
@@ -1713,19 +1850,19 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         }
 
         if UIDevice.current.userInterfaceIdiom == .pad {
-            presentOptionsViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
+            presentToolbarViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
         } else {
-            presentOptionsViewControllerAsInputView(optionsViewController)
+            presentToolbarViewControllerAsInputView(optionsViewController)
             selectRow()
         }
     }
 
-    private func presentOptionsViewController(_ optionsViewController: OptionsTableViewController,
+    private func presentToolbarViewController(_ viewController: UIViewController,
                                               asPopoverFromBarItem barItem: FormatBarItem,
                                               completion: (() -> Void)? = nil) {
-        optionsViewController.modalPresentationStyle = .popover
-        optionsViewController.popoverPresentationController?.permittedArrowDirections = [.down]
-        optionsViewController.popoverPresentationController?.sourceView = view
+        viewController.modalPresentationStyle = .popover
+        viewController.popoverPresentationController?.permittedArrowDirections = [.down]
+        viewController.popoverPresentationController?.sourceView = view
 
         let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
 
@@ -1733,23 +1870,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         optionsViewController.popoverPresentationController?.backgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
         optionsViewController.popoverPresentationController?.delegate = self
 
-        present(optionsViewController, animated: true, completion: completion)
+        present(viewController, animated: true, completion: completion)
     }
 
-    private func presentOptionsViewControllerAsInputView(_ optionsViewController: OptionsTableViewController) {
-        self.addChildViewController(optionsViewController)
-        changeRichTextInputView(to: optionsViewController.view)
-        optionsViewController.didMove(toParentViewController: self)
-    }
-
-    func insertHorizontalRuler() {
-        trackFormatBarAnalytics(stat: .editorTappedHorizontalRule)
-        richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
-    }
-
-    func insertMore() {
-        trackFormatBarAnalytics(stat: .editorTappedMore)
-        richTextView.replaceWithComment(at: richTextView.selectedRange, text: Constants.moreAttachmentText)
+    private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
+        self.addChildViewController(viewController)
+        changeRichTextInputView(to: viewController.view)
+        viewController.didMove(toParentViewController: self)
     }
 
     func changeRichTextInputView(to: UIView?) {
@@ -1762,29 +1889,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         richTextView.becomeFirstResponder()
     }
 
-    func headerLevelForSelectedText() -> Header.HeaderType {
-        var identifiers = [FormattingIdentifier]()
-        if (richTextView.selectedRange.length > 0) {
-            identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
-        } else {
-            identifiers = richTextView.formatIdentifiersForTypingAttributes()
-        }
-        let mapping: [FormattingIdentifier: Header.HeaderType] = [
-            .header1: .h1,
-            .header2: .h2,
-            .header3: .h3,
-            .header4: .h4,
-            .header5: .h5,
-            .header6: .h6,
-        ]
-        for (key,value) in mapping {
-            if identifiers.contains(key) {
-                return value
-            }
-        }
-        return .none
-    }
-
     private func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
         var properties = [WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
 
@@ -1795,10 +1899,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         if let headingStyle = headingStyle {
             properties["heading_style"] = headingStyle
         }
-
         WPAppAnalytics.track(stat, withProperties: properties, with: post)
     }
-
 
     // MARK: - Toolbar creation
 
@@ -1823,7 +1925,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
-        toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0)
+        toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
         toolbar.formatter = self
 
         return toolbar
@@ -2699,13 +2801,21 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        dismiss(animated: true, completion: nil)
-        richTextView.becomeFirstResponder()
+        if picker != mediaPickerInputViewController?.mediaPicker {
+            dismiss(animated: true, completion: nil)
+        } else {
+            mediaPickerInputViewController = nil
+        }
+        changeRichTextInputView(to: nil)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
-        dismiss(animated: true, completion: nil)
-        richTextView.becomeFirstResponder()
+        if picker != mediaPickerInputViewController?.mediaPicker {
+            dismiss(animated: true, completion: nil)
+        } else {
+            mediaPickerInputViewController = nil
+        }
+        changeRichTextInputView(to: nil)
 
         if assets.isEmpty {
             return
@@ -2785,6 +2895,7 @@ extension AztecPostViewController {
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
+        static let toolbarHeight = CGFloat(44.0)
     }
 
     struct MoreSheetAlert {

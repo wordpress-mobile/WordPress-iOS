@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "Blog.h"
-#import "DateUtils.h"
 #import "PostContentProvider.h"
+@import WordPressShared;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,15 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
  BOOL flag if the feature image was changed.
  */
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
-
-/**
- Create a summary for the post based on the post's content.
-
- @param string The post's content string. This should be the formatted content string.
- @return A summary for the post.
- */
-+ (NSString *)summaryFromContent:(NSString *)string;
-
 
 //date conversion
 @property (nonatomic, strong, nullable) NSDate * dateCreated;
