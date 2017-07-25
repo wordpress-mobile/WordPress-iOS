@@ -24,7 +24,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 #pragma mark - Checking multi author for a blog
 
-- (void)testThatCheckMultiAuthorForBlogWorks
+- (void)testThatGetAuthorsWorks
 {
     RemoteBlog *blog = OCMStrictClassMock([RemoteBlog class]);
     OCMStub([blog blogID]).andReturn(@10);
@@ -40,9 +40,9 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              failure:[OCMArg isNotNil]]);
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:blog.blogID]);
-    
-    [service checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {}
-                                 failure:^(NSError *error) {}];
+
+    [service getAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {}
+                           failure:^(NSError *error) {}];
 }
 
 #pragma mark - Synchronizing site details for a blog
