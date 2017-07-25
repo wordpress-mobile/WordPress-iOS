@@ -12,7 +12,7 @@ protocol MediaSizeModel {
     var valueText: String {get}
     var accessibleText: String {get}
     var sliderValue: Float {get}
-    var sliderMinimumValue:Float {get}
+    var sliderMinimumValue: Float {get}
     var sliderMaximumValue: Float {get}
 }
 
