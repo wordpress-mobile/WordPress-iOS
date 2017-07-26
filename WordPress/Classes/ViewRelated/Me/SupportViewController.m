@@ -145,6 +145,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 {
     HelpshiftPresenter *presenter = [HelpshiftPresenter new];
     presenter.sourceTag = self.sourceTag;
+    presenter.optionsDictionary = self.helpshiftOptions;
 
     __weak __typeof(self) weakSelf = self;
     void (^completion)() = ^{
