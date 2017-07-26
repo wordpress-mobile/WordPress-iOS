@@ -21,6 +21,14 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         }
     }
 
+    override var loginFields: LoginFields {
+        didSet {
+            // Clear the username & password (if any) from LoginFields
+            loginFields.username = ""
+            loginFields.password = ""
+        }
+    }
+
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
     var blog: Blog?
