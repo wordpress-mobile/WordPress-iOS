@@ -27,14 +27,14 @@ class SiteIconPickerPresenter: NSObject {
     /// Media Picker View Controller
     ///
     fileprivate lazy var mediaPickerViewController: WPNavigationMediaPickerViewController = {
-        let pickerViewController = WPNavigationMediaPickerViewController()
-
-        pickerViewController.dataSource = self.mediaLibraryDataSource
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.image]
         options.allowMultipleSelection = false
-        pickerViewController.options = options        
+
+        let pickerViewController = WPNavigationMediaPickerViewController(options: options)
+
+        pickerViewController.dataSource = self.mediaLibraryDataSource
         pickerViewController.delegate = self
         pickerViewController.modalPresentationStyle = .formSheet
 
