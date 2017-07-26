@@ -13,6 +13,9 @@ import UIKit
     /// set the source of the presenter for tagging in Helpshift
     var sourceTag: SupportSourceTag?
 
+    /// any additional options to pass along to helpshift
+    var optionsDictionary: [AnyHashable: Any]?
+
     /// Presents a Helpshift window displaying a specific FAQ.
     ///
     /// - Parameters:
@@ -21,7 +24,7 @@ import UIKit
     ///   - completion: Optional block to be called when the window is presented.
     func presentHelpshiftWindowForFAQ(_ faqID: String, fromViewController viewController: UIViewController, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(false) {
-            HelpshiftSupport.showSingleFAQ(faqID, with: viewController, withOptions: self.optionsDictionary)
+            HelpshiftSupport.showSingleFAQ(faqID, with: viewController, withOptions: self.options())
             completion?()
         }
     }
@@ -35,7 +38,7 @@ import UIKit
     ///   - completion: Optional block to be called when the window is presented.
     func presentHelpshiftConversationWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(refreshUserDetails) {
-            HelpshiftSupport.showConversation(viewController, withOptions: self.optionsDictionary)
+            HelpshiftSupport.showConversation(viewController, withOptions: self.options())
             completion?()
         }
     }
@@ -49,7 +52,7 @@ import UIKit
     ///   - completion: Optional block to be called when the window is presented.
     func presentHelpshiftFAQWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(refreshUserDetails) {
-            HelpshiftSupport.showFAQs(viewController, withOptions: self.optionsDictionary)
+            HelpshiftSupport.showFAQs(viewController, withOptions: self.options())
             completion?()
         }
     }
@@ -87,15 +90,22 @@ import UIKit
         })
     }
 
-    fileprivate var optionsDictionary: [AnyHashable: Any] {
+    fileprivate func options() -> [AnyHashable: Any] {
         let tags: [String]
         if let sourceTag = sourceTag {
             tags = [String(sourceTag.rawValue)]
         } else {
             tags = []
         }
-        let options: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: HelpshiftUtils.helpshiftMetadata(withTags: tags),
+
+        var options: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: HelpshiftUtils.helpshiftMetadata(withTags: tags),
                 HelpshiftPresenter.HelpshiftShowsSearchOnNewConversationKey: true]
+
+        if let customOptions = optionsDictionary {
+            customOptions.forEach {
+                options[$0] = $1
+            }
+        }
         return options
     }
 }
