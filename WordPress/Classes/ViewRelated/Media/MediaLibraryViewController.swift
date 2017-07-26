@@ -335,12 +335,11 @@ class MediaLibraryViewController: UIViewController {
     // MARK: - Actions
 
     @objc fileprivate func addTapped() {
-        let picker = WPNavigationMediaPickerViewController()
-        picker.dataSource = WPPHAssetDataSource()
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
-        picker.options = options
+        let picker = WPNavigationMediaPickerViewController(options: options)
+        picker.dataSource = WPPHAssetDataSource()
         picker.delegate = self
 
         present(picker, animated: true, completion: nil)
@@ -377,7 +376,7 @@ class MediaLibraryViewController: UIViewController {
 
     private func deleteSelectedItems() {
         guard pickerViewController.selectedAssets.count > 0 else { return }
-        guard let assets = pickerViewController.selectedAssets.copy() as? [Media] else { return }
+        guard let assets = pickerViewController.selectedAssets as? [Media] else { return }
 
         let deletedItemsCount = assets.count
 
@@ -557,7 +556,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             // Check that our selected items haven't been deleted – we're notified
             // of changes to the data source before the collection view has
             // updated its selected assets.
-            guard let assets = (pickerViewController.selectedAssets.copy() as? [Media]) else { return }
+            guard let assets = (pickerViewController.selectedAssets as? [Media]) else { return }
             let existingAssets = assets.filter({ !$0.isDeleted })
 
             navigationItem.rightBarButtonItem?.isEnabled = (existingAssets.count > 0)
