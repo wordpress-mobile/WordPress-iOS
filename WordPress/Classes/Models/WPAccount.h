@@ -53,9 +53,4 @@
 - (void)addBlogs:(NSSet *)values;
 - (void)removeBlogs:(NSSet *)values;
 
-- (void)addJetpackBlogsObject:(Blog *)value;
-- (void)removeJetpackBlogsObject:(Blog *)value;
-- (void)addJetpackBlogs:(NSSet *)values;
-- (void)removeJetpackBlogs:(NSSet *)values;
-
 @end
