@@ -387,8 +387,8 @@ fileprivate struct VideoSizingRow: ImmuTableRow {
         }
         cell.selectionStyle = .none
 
-        cell.minValue = MediaSettings.VideoResolution.size640x480.intValue
-        cell.maxValue = MediaSettings.VideoResolution.sizeOriginal.intValue
+        cell.minValue = VideoSizeModel.default.minValue
+        cell.maxValue = VideoSizeModel.default.maxValue
     }
 }
 
