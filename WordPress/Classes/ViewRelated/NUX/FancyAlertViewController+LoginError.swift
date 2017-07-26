@@ -17,7 +17,7 @@ extension FancyAlertViewController {
         }
     }
 
-    static func siteAddressHelpController() -> FancyAlertViewController {
+    static func siteAddressHelpController(loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
@@ -28,7 +28,8 @@ extension FancyAlertViewController {
                 guard HelpshiftUtils.isHelpshiftEnabled() else { return }
 
                 let presenter = HelpshiftPresenter()
-                presenter.sourceTag = SupportSourceTag.generalLogin
+                presenter.sourceTag = sourceTag
+                presenter.optionsDictionary = optionsFromLoginFields(loginFields: loginFields)
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
                                                                                completion:nil)
@@ -82,7 +83,7 @@ extension FancyAlertViewController {
             if HelpshiftUtils.isHelpshiftEnabled() {
                 return alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
             } else {
-                return alertForGenericErrorMessage(message, sourceTag: sourceTag)
+                return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
             }
         }
 
@@ -98,7 +99,7 @@ extension FancyAlertViewController {
             return alertForBadURLMessage(message)
         }
 
-        return alertForGenericErrorMessage(message, sourceTag: sourceTag)
+        return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
     }
 
 
@@ -106,7 +107,7 @@ extension FancyAlertViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    private static func alertForGenericErrorMessage(_ message: String, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
@@ -116,6 +117,7 @@ extension FancyAlertViewController {
 
                 let supportController = SupportViewController()
                 supportController.sourceTag = sourceTag
+                supportController.helpshiftOptions = optionsFromLoginFields(loginFields: loginFields)
 
                 let navController = UINavigationController(rootViewController: supportController)
                 navController.navigationBar.isTranslucent = false
@@ -154,15 +156,12 @@ extension FancyAlertViewController {
 
                 guard HelpshiftUtils.isHelpshiftEnabled() else { return }
 
-                let metaData: [String: AnyObject] = [
-                    "Source": "Failed login" as AnyObject,
-                    "Username": loginFields.username as AnyObject,
-                    "SiteURL": loginFields.siteUrl as AnyObject,
-                    HelpshiftSupportTagsKey: [sourceTag.rawValue]  as AnyObject
-                ]
-
-                HelpshiftSupport.showConversation(viewController, withOptions: [HelpshiftSupportCustomMetadataKey: metaData, "showSearchOnNewConversation": "YES"])
-                WPAppAnalytics.track(.supportOpenedHelpshiftScreen)
+                let presenter = HelpshiftPresenter()
+                presenter.sourceTag = sourceTag
+                presenter.optionsDictionary = optionsFromLoginFields(loginFields: loginFields)
+                presenter.presentHelpshiftConversationWindowFromViewController(viewController,
+                                                                               refreshUserDetails: true,
+                                                                               completion:nil)
             }
         }
 
@@ -209,6 +208,16 @@ extension FancyAlertViewController {
                                                      titleAccessoryButton: nil,
                                                      dismissAction: nil)
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
+    }
+
+
+    private static func optionsFromLoginFields(loginFields: LoginFields) -> [String: AnyObject] {
+        let options: [String: AnyObject] = [
+            "Source": "Failed login" as AnyObject,
+            "Username": loginFields.username as AnyObject,
+            "SiteURL": loginFields.siteUrl as AnyObject
+        ]
+        return options
     }
 
 }
