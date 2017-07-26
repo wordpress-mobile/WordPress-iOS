@@ -91,7 +91,7 @@ NSString * const JetpackServiceErrorDomain = @"JetpackServiceErrorDomain";
 - (void)associateBlogIDs:(NSArray *)blogIDs withJetpackAccount:(WPAccount *)account
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"account = NULL AND jetpackAccount = NULL"];
+    request.predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
     NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:nil];
     NSSet *accountBlogIDs = [NSSet setWithArray:blogIDs];
     blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
