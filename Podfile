@@ -54,7 +54,7 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
   pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => 'issue/fix_crash_on_group_change'
+  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => 'release/0.19'
   pod 'WordPress-iOS-Editor', '1.9.3'
   pod 'WordPress-Aztec-iOS', '= 1.0.0-beta.8'
 
