@@ -99,7 +99,7 @@ NSString * const JetpackServiceErrorDomain = @"JetpackServiceErrorDomain";
         NSNumber *jetpackBlogID = blog.jetpack.siteID;
         return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];
     }]];
-    [account addJetpackBlogs:[NSSet setWithArray:blogs]];
+    [account addBlogs:[NSSet setWithArray:blogs]];
 }
 
 
