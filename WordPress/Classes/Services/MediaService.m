@@ -8,11 +8,11 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
-#import "PhotonImageURLHelper.h"
 #import <WordPressShared/WPImageSource.h>
 #import "MediaService+Legacy.h"
 #import <WordPressShared/WPAnalytics.h>
 @import WordPressKit;
+@import WordPressShared;
 
 @interface MediaService ()
 
