@@ -11,6 +11,7 @@ extern SupportSourceTag const SupportSourceTagAztecFeedback;
 
 @interface SupportViewController : UITableViewController
 @property (nonatomic, strong) SupportSourceTag sourceTag;
+@property (nonatomic, strong) NSDictionary *helpshiftOptions;
 
 - (void)showFromTabBar;
 
