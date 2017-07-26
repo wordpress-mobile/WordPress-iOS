@@ -8,10 +8,10 @@ workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
 def shared_with_all_pods
-  pod 'CocoaLumberjack', '~> 3.2.0'
-  pod 'FormatterKit/TimeIntervalFormatter', '~> 1.8.1'
+  pod 'CocoaLumberjack', '3.2.0'
+  pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'UIDeviceIdentifier', '~> 0.1'
+  pod 'UIDeviceIdentifier', '~> 0.4'
 end
 
 def shared_with_networking_pods
@@ -22,7 +22,7 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs'
   pod 'OHHTTPStubs/Swift'
-  pod 'OCMock', '~> 3.0'
+  pod 'OCMock', '~> 3.4'
 end
 
 target 'WordPress' do
@@ -35,18 +35,16 @@ target 'WordPress' do
   # Third party libraries
   # ---------------------
   pod '1PasswordExtension', '1.8.4'
-  pod 'HockeySDK', '~> 4.1.5', :configurations => ['Release-Internal', 'Release-Alpha']
-  pod 'MRProgress', '~>0.7.0'
+  pod 'HockeySDK', '4.1.6', :configurations => ['Release-Internal', 'Release-Alpha']
+  pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
-  pod 'SVProgressHUD', '~>2.1.2'
-  pod 'Crashlytics'
-  pod 'BuddyBuildSDK', '~> 1.0.15', :configurations => ['Release-Alpha']
-  pod 'FLAnimatedImage', '~> 1.0'
-  pod 'MGSwipeTableCell', '~> 1.5.6'
-  pod 'lottie-ios', '~> 1.5.1'
-  # Temporary until this fix is merged and released
-  # https://github.com/daltoniam/Starscream/pull/294
-  pod 'Starscream', :git => 'https://github.com/wordpress-mobile/Starscream', :branch => 'wordpress-ios'
+  pod 'SVProgressHUD', '2.1.2'
+  pod 'Crashlytics', '3.8.5'
+  pod 'BuddyBuildSDK', '1.0.16', :configurations => ['Release-Alpha']
+  pod 'FLAnimatedImage', '1.0.12'
+  pod 'MGSwipeTableCell', '1.5.6'
+  pod 'lottie-ios', '1.5.1'
+  pod 'Starscream', '2.1.0'
 
   # --------------------
   # WordPress components
@@ -56,7 +54,7 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :branch => 'release/0.19'
   pod 'WordPress-iOS-Editor', '1.9.3'
-  pod 'WordPress-Aztec-iOS', '= 1.0.0-beta.8'
+  pod 'WordPress-Aztec-iOS', '1.0.0-beta.8.1'
 
   target 'WordPressTest' do
     inherit! :search_paths

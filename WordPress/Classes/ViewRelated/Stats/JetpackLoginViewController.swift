@@ -534,7 +534,6 @@ extension JetpackLoginViewController : LoginFacadeDelegate {
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         let accountFacade = AccountServiceFacade()
         let account = accountFacade.createOrUpdateWordPressComAccount(withUsername: username, authToken: authToken)
-        accountFacade.setDefaultWordPressComAccount(account)
         BlogSyncFacade().syncBlogs(for: account, success: { [weak self] in
             accountFacade.updateUserDetails(for: account, success: { [weak self] in
                 guard let strongSelf = self else {

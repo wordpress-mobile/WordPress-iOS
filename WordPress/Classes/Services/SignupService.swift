@@ -114,6 +114,8 @@ open class SignupService: LocalCoreDataService {
         remote?.validateWPComBlog(withUrl: params.url,
                                         andBlogTitle: params.title,
                                         andLanguageId: languageId,
+                                        andClientID: ApiCredentials.client(),
+                                        andClientSecret: ApiCredentials.secret(),
                                         success: { (responseDictionary) in
                                             success()
                                         },
@@ -141,6 +143,8 @@ open class SignupService: LocalCoreDataService {
                                             andUsername: params.username,
                                             andPassword: params.password,
                                             andLocale: locale,
+                                            andClientID: ApiCredentials.client(),
+                                            andClientSecret: ApiCredentials.secret(),
                                             success: { (responseDictionary) in
                                                 // Note: User creation is deferred until we have a WPCom auth token.
                                                 success()
@@ -226,6 +230,8 @@ open class SignupService: LocalCoreDataService {
                                         andBlogTitle: params.title,
                                         andLanguageId: languageId,
                                         andBlogVisibility: .public,
+                                        andClientID: ApiCredentials.client(),
+                                        andClientSecret: ApiCredentials.secret(),
                                         success: {  (responseDictionary) in
 
                                             // The account was created so bump the stat, even if there are problems later on.

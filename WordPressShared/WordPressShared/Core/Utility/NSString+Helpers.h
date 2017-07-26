@@ -18,6 +18,14 @@
  */
 + (NSString *)stripShortcodesFromString:(NSString *)string;
 
+/**
+ Create a summary for the post based on the post's content.
+
+ @param string The post's content string. This should be the formatted content string.
+ @return A summary for the post.
+ */
++ (NSString *)summaryFromContent:(NSString *)string;
+
 - (NSString *)stringByUrlEncoding;
 - (NSString *)md5;
 - (NSMutableDictionary *)dictionaryFromQueryString;
