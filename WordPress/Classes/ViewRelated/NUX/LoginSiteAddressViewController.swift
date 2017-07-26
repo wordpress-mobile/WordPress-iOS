@@ -246,7 +246,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        let alert = FancyAlertViewController.siteAddressHelpController()
+        let alert = FancyAlertViewController.siteAddressHelpController(loginFields: loginFields, sourceTag: sourceTag)
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = self
         present(alert, animated: true, completion: nil)
