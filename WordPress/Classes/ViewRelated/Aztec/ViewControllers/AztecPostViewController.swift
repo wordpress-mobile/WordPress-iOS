@@ -1668,7 +1668,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func mediaAddInputDone(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
-              let selectedAssets = mediaPicker.selectedAssets as? [Any]
+              let selectedAssets = mediaPicker.selectedAssets as? [WPMediaAsset]
         else {
             return
         }
@@ -1696,7 +1696,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         options.filter = [.video, .image]
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
-        picker.options = options
+        picker.mediaPicker.options = options
 
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext        
@@ -1711,7 +1711,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             presentMediaPickerFullScreen(animated: animated)
             return
         }
-        let picker = WPInputMediaPickerViewController()
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [WPMediaType.image, WPMediaType.video]
+        options.allowMultipleSelection = true
+        let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
         richTextView.inputAccessoryView = mediaInputToolbar
 
@@ -1723,13 +1727,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         richTextView.autocorrectionType = .no
 
-        presentToolbarViewControllerAsInputView(picker)
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
-        picker.mediaPicker.showMostRecentFirst = true
-        picker.mediaPicker.filter = WPMediaType.videoOrImage
-        picker.mediaPicker.allowMultipleSelection = true
         picker.mediaPicker.mediaPickerDelegate = self
+
+        presentToolbarViewControllerAsInputView(picker)
     }
 
     func toggleEditingMode() {

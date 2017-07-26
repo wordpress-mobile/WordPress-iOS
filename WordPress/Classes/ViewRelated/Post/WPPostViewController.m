@@ -779,9 +779,8 @@ MediaProgressCoordinatorDelegate
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     WPMediaPickerOptions *options = [WPMediaPickerOptions new];
     options.showMostRecentFirst = YES;
-    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] init];
+    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
     picker.dataSource = self.mediaLibraryDataSource;
-    picker.options = options;
     picker.delegate = self;
     [self presentViewController:picker animated:animated completion:nil];
 }
