@@ -20,69 +20,69 @@ class MediaSettings: NSObject {
         case sizeOriginal = "AVAssetExportPresetPassthrough"
 
         var videoPreset: String {
-            switch (self) {
-            case(.size640x480):
+            switch self {
+            case .size640x480:
                 return AVAssetExportPreset640x480
-            case(.size960x540):
+            case .size960x540:
                 return AVAssetExportPreset960x540
-            case(.size1280x720):
+            case .size1280x720:
                 return AVAssetExportPreset1280x720
-            case(.size1920x1080):
+            case .size1920x1080:
                 return AVAssetExportPreset1920x1080
-            case(.size3840x2160):
+            case .size3840x2160:
                 return AVAssetExportPreset3840x2160
-            case(.sizeOriginal):
+            case .sizeOriginal:
                 return AVAssetExportPresetPassthrough
             }
         }
 
         var description: String {
-            switch (self) {
-            case(.size640x480):
-                return NSLocalizedString("VGA (640x480)", comment: "Indicates a video will be resized to 640x480 when uploaded.")
-            case(.size960x540):
-                return NSLocalizedString("Quarter HD (960x540)", comment: "Indicates a video will be resized to 960x540 when uploaded.")
-            case(.size1280x720):
-                return NSLocalizedString("HD (1280x720)", comment: "Indicates a video will be resized to HD 1280x720 when uploaded.")
-            case(.size1920x1080):
-                return NSLocalizedString("Full HD (1920x1080)", comment: "Indicates a video will be resized to Full HD 1920x1080 when uploaded.")
-            case(.size3840x2160):
-                return NSLocalizedString("4K(3840x2160)", comment: "Indicates a video will be resized to 4K 3840x2160 when uploaded.")
+            switch self {
+            case .size640x480:
+                return NSLocalizedString("480p", comment: "Indicates a video will be resized to 640x480 when uploaded.")
+            case .size960x540:
+                return NSLocalizedString("540p", comment: "Indicates a video will be resized to 960x540 when uploaded.")
+            case .size1280x720:
+                return NSLocalizedString("720p", comment: "Indicates a video will be resized to HD 1280x720 when uploaded.")
+            case .size1920x1080:
+                return NSLocalizedString("1080p", comment: "Indicates a video will be resized to Full HD 1920x1080 when uploaded.")
+            case .size3840x2160:
+                return NSLocalizedString("4K", comment: "Indicates a video will be resized to 4K 3840x2160 when uploaded.")
             case(.sizeOriginal):
                 return NSLocalizedString("Original", comment: "Indicates a video will use its original size when uploaded.")
             }
         }
 
         var intValue: Int {
-            switch (self) {
-            case(.size640x480):
+            switch self {
+            case .size640x480:
                 return 1
-            case(.size960x540):
+            case .size960x540:
                 return 2
-            case(.size1280x720):
+            case .size1280x720:
                 return 3
-            case(.size1920x1080):
+            case .size1920x1080:
                 return 4
-            case(.size3840x2160):
+            case .size3840x2160:
                 return 5
-            case(.sizeOriginal):
+            case .sizeOriginal:
                 return 6
             }
         }
 
         static func videoResolution(from value: Int) -> MediaSettings.VideoResolution {
-            switch (value) {
-            case(1):
+            switch value {
+            case 1:
                 return .size640x480
-            case(2):
+            case 2:
                 return .size960x540
-            case(3):
+            case 3:
                 return .size1280x720
-            case(4):
+            case 4:
                 return .size1920x1080
-            case(5):
+            case 5:
                 return .size3840x2160
-            case(6):
+            case 6:
                 return .sizeOriginal
             default:
                 return .sizeOriginal
