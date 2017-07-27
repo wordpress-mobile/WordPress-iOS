@@ -53,13 +53,13 @@ class MediaSettings: NSObject {
             case .size640x480:
                 return 1
             case .size1280x720:
-                return 3
+                return 2
             case .size1920x1080:
-                return 4
+                return 3
             case .size3840x2160:
-                return 5
+                return 4
             case .sizeOriginal:
-                return 6
+                return 5
             }
         }
 
@@ -67,13 +67,13 @@ class MediaSettings: NSObject {
             switch value {
             case 1:
                 return .size640x480
-            case 3:
+            case 2:
                 return .size1280x720
-            case 4:
+            case 3:
                 return .size1920x1080
-            case 5:
+            case 4:
                 return .size3840x2160
-            case 6:
+            case 5:
                 return .sizeOriginal
             default:
                 return .sizeOriginal
