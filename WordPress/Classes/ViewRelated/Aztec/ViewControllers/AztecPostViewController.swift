@@ -648,6 +648,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func rememberFirstResponder() {
         lastFirstResponder = view.findFirstResponder()
+        lastFirstResponder?.resignFirstResponder()
     }
 
     func restoreFirstResponder() {
