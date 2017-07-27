@@ -103,7 +103,6 @@
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
-#import "WordPressComServiceRemote.h"
 #import "WordPressXMLRPCAPIFacade.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
@@ -136,7 +135,6 @@
 #import "WPWalkthroughTextField.h"
 #import "WPURLRequest.h"
 #import "WPUserAgent.h"
-#import "WordPressComServiceRemote.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 
 // Pods

@@ -121,6 +121,6 @@ private extension CalypsoProcessor {
 private extension CalypsoProcessor {
     struct Constants {
         static let escapedSnippetKey = "<calypso-escaped>"
-        static let preformattedTextRegex = "<(pre|script)[^>]*>[\\s\\S]+?</\\1>"
+        static let preformattedTextRegex = "<(pre|script|ul|ol)[^>]*>[\\s\\S]+?</\\1>"
     }
 }
