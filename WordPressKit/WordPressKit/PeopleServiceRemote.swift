@@ -156,7 +156,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
                         failure: ((Error) -> ())? = nil) {
         let endpoint = "sites/\(siteID)/users/\(userID)"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
-        let parameters = ["roles": [newRole.description]]
+        let parameters = ["roles": [newRole.slug]]
 
         wordPressComRestApi.POST(path!,
                 parameters: parameters as [String : AnyObject]?,

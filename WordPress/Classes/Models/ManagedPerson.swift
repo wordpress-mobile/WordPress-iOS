@@ -13,7 +13,7 @@ class ManagedPerson: NSManagedObject {
         displayName = person.displayName
         firstName = person.firstName
         lastName = person.lastName
-        role = String(describing: person.role)
+        role = person.role.rawValue
         siteID = Int64(person.siteID)
         userID = Int64(person.ID)
         linkedUserID = Int64(person.linkedUserID)
