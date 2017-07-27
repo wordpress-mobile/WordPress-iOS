@@ -1,6 +1,7 @@
 #import "WordPressComServiceRemote.h"
-#import "ApiCredentials.h"
-#import "WordPress-Swift.h"
+#import <WordPressKit/WordPressKit-Swift.h>
+@import NSObject_SafeExpectations;
+@import WordPressShared;
 
 @implementation WordPressComServiceRemote
 
@@ -8,6 +9,8 @@
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
                           andLocale:(NSString *)locale
+                        andClientID:(NSString *)clientID
+                    andClientSecret:(NSString *)clientSecret
                             success:(WordPressComServiceSuccessBlock)success
                             failure:(WordPressComServiceFailureBlock)failure
 {
@@ -19,6 +22,8 @@
                           andUsername:username
                           andPassword:password
                             andLocale:locale
+                          andClientID:clientID
+                      andClientSecret:clientSecret
                              validate:NO
                               success:success
                               failure:failure];
@@ -28,6 +33,8 @@
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
                           andLocale:(NSString *)locale
+                        andClientID:(NSString *)clientID
+                    andClientSecret:(NSString *)clientSecret
                            validate:(BOOL)validate
                             success:(WordPressComServiceSuccessBlock)success
                             failure:(WordPressComServiceFailureBlock)failure
@@ -51,8 +58,8 @@
                              @"password": password,
                              @"validate": @(validate),
                              @"locale": locale,
-                             @"client_id": [ApiCredentials client],
-                             @"client_secret": [ApiCredentials secret]
+                             @"client_id": clientID,
+                             @"client_secret": clientSecret
                              };
     
     NSString *requestUrl = [self pathForEndpoint:@"users/new"
@@ -64,6 +71,8 @@
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
                     andBlogTitle:(NSString *)blogTitle
                    andLanguageId:(NSString *)languageId
+                     andClientID:(NSString *)clientID
+                 andClientSecret:(NSString *)clientSecret
                          success:(WordPressComServiceSuccessBlock)success
                          failure:(WordPressComServiceFailureBlock)failure
 {
@@ -71,6 +80,8 @@
                     andBlogTitle:blogTitle
                    andLanguageId:languageId
                andBlogVisibility:WordPressComServiceBlogVisibilityPublic
+                     andClientID:clientID
+                 andClientSecret:clientSecret
                         validate:YES
                          success:success
                          failure:failure];
@@ -80,6 +91,8 @@
                   andBlogTitle:(NSString *)blogTitle
                  andLanguageId:(NSString *)languageId
              andBlogVisibility:(WordPressComServiceBlogVisibility)visibility
+                   andClientID:(NSString *)clientID
+               andClientSecret:(NSString *)clientSecret
                        success:(WordPressComServiceSuccessBlock)success
                        failure:(WordPressComServiceFailureBlock)failure
 {
@@ -87,6 +100,8 @@
                     andBlogTitle:blogTitle
                    andLanguageId:languageId
                andBlogVisibility:visibility
+                     andClientID:clientID
+                 andClientSecret:clientSecret
                         validate:NO
                          success:success
                          failure:failure];
@@ -96,6 +111,8 @@
                   andBlogTitle:(NSString *)blogTitle
                  andLanguageId:(NSString *)languageId
              andBlogVisibility:(WordPressComServiceBlogVisibility)visibility
+                   andClientID:(NSString *)clientID
+               andClientSecret:(NSString *)clientSecret
                       validate:(BOOL)validate
                        success:(WordPressComServiceSuccessBlock)success
                        failure:(WordPressComServiceFailureBlock)failure
@@ -146,8 +163,8 @@
                              @"lang_id": languageId,
                              @"public": @(blogVisibility),
                              @"validate": @(validate),
-                             @"client_id": [ApiCredentials client],
-                             @"client_secret": [ApiCredentials secret]
+                             @"client_id": clientID,
+                             @"client_secret": clientSecret
                              };
     
     
