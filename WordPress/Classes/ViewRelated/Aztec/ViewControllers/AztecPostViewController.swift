@@ -2396,8 +2396,8 @@ extension AztecPostViewController {
         }
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
-            guard let strongSelf = self, let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: {() in
+            guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
             DispatchQueue.main.async {
@@ -2420,7 +2420,6 @@ extension AztecPostViewController {
                     if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
                         videoAttachment.videoPressID = videoPressGUID
                     }
-                    strongSelf.richTextView.refresh(videoAttachment)
                 }
             }
             }, failure: { [weak self](error) in
