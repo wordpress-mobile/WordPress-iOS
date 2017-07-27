@@ -21,7 +21,7 @@ class MediaSettings: NSObject {
         var videoPreset: String {
             switch self {
             case .size640x480:
-                return AVAssetExportPreset640x480            
+                return AVAssetExportPreset640x480
             case .size1280x720:
                 return AVAssetExportPreset1280x720
             case .size1920x1080:
