@@ -8,7 +8,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpOrgLogin
+            return .loginSiteAddress
         }
     }
 
