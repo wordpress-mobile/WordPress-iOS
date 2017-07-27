@@ -2411,8 +2411,7 @@ extension AztecPostViewController {
                     if let mediaID = media.mediaID?.intValue {
                         imageAttachment.imageID = mediaID
                     }
-                    imageAttachment.url = remoteURL
-                    strongSelf.richTextView.refresh(imageAttachment)
+                    imageAttachment.url = remoteURL                    
                 } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
                     videoAttachment.srcURL = URL(string: videoURLString)
                     if let videoPosterURLString = media.remoteThumbnailURL {
