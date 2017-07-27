@@ -13,6 +13,15 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 
 
+    override var loginFields: LoginFields {
+        didSet {
+            // Clear the site url and site info (if any) from LoginFields
+            loginFields.siteUrl = ""
+            loginFields.siteInfo = nil
+        }
+    }
+
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
