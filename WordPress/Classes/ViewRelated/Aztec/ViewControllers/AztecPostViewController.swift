@@ -1624,12 +1624,21 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
         toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
         toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-        let gridButton = UIBarButtonItem(image: Gridicon.iconOfType(.grid), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen))
-        gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker")
+        let gridButton = UIBarButtonItem(image: Gridicon.iconOfType(.imageMultiple), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen))
+        gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker.")
+
+        let wordPressButton = UIBarButtonItem(image: Gridicon.iconOfType(.mySites), style: .plain ,target: self, action: #selector(mediaAddShowWPMediaLibraryFullScreen))
+        wordPressButton.accessibilityLabel = NSLocalizedString("Open WordPress media library", comment: "Editor button to swich the media picker from quick mode to WordPress Library.")
+
+        let cameraButton = UIBarButtonItem(image: Gridicon.iconOfType(.camera), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen))
+        cameraButton.accessibilityLabel = NSLocalizedString("Open device camera", comment: "Editor button to swich the media picker from quick mode to camera capture.")
+
         toolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             gridButton,
+            cameraButton,
+            wordPressButton,
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(mediaAddInputDone))
         ]
@@ -1648,6 +1657,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     /// - Parameter sender: the button that was pressed.
     func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
         presentMediaPickerFullScreen(animated: true)
+        restoreInputAssistantItems()
+    }
+
+    func mediaAddShowWPMediaLibraryFullScreen(_ sender: UIBarButtonItem) {
+        presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
         restoreInputAssistantItems()
     }
 
@@ -1690,13 +1704,14 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         presentMediaPicker(fromItem: formatBar.defaultItems[0][0], animated: true)
     }
 
-    fileprivate func presentMediaPickerFullScreen(animated: Bool) {
+    fileprivate func presentMediaPickerFullScreen(animated: Bool, dataSourceType: MediaPickerDataSourceType = .device) {
 
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.video, .image]
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
+        mediaLibraryDataSource.dataSourceType = dataSourceType;
         picker.mediaPicker.options = options
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
@@ -1718,6 +1733,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         options.showMostRecentFirst = true
         options.filter = [WPMediaType.image, WPMediaType.video]
         options.allowMultipleSelection = true
+        options.allowCaptureOfMedia = false
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
         richTextView.inputAccessoryView = mediaInputToolbar
