@@ -1697,9 +1697,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
         picker.mediaPicker.options = options
-
         picker.delegate = self
-        picker.modalPresentationStyle = .currentContext        
+        picker.modalPresentationStyle = .currentContext
+        if let previousPicker = mediaPickerInputViewController?.mediaPicker {
+            picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
+        }
         // Disable the input media picker if we go full screen.
         mediaPickerInputViewController = nil
         present(picker, animated: true)
