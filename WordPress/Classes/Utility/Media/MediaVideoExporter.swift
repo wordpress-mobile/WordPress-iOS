@@ -60,7 +60,7 @@ class MediaVideoExporter: MediaExporter {
             guard asset.isExportable else {
                 throw VideoExportError.videoAssetWasDetectedAsNotExportable
             }
-            guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetHighestQuality) else {
+            guard let session = AVAssetExportSession(asset: asset, presetName: options.exportPreset) else {
                 throw VideoExportError.failedToInitializeVideoExportSession
             }
             exportVideo(with: session,
