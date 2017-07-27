@@ -17,7 +17,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpOrgLogin
+            return .loginUsernamePassword
         }
     }
 
