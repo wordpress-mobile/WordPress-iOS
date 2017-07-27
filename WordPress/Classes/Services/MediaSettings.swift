@@ -13,7 +13,6 @@ class MediaSettings: NSObject {
 
     enum VideoResolution: String {
         case size640x480 = "AVAssetExportPreset640x480"
-        case size960x540 = "AVAssetExportPreset960x540"
         case size1280x720 = "AVAssetExportPreset1280x720"
         case size1920x1080 = "AVAssetExportPreset1920x1080"
         case size3840x2160 = "AVAssetExportPreset3840x2160"
@@ -22,9 +21,7 @@ class MediaSettings: NSObject {
         var videoPreset: String {
             switch self {
             case .size640x480:
-                return AVAssetExportPreset640x480
-            case .size960x540:
-                return AVAssetExportPreset960x540
+                return AVAssetExportPreset640x480            
             case .size1280x720:
                 return AVAssetExportPreset1280x720
             case .size1920x1080:
@@ -40,8 +37,6 @@ class MediaSettings: NSObject {
             switch self {
             case .size640x480:
                 return NSLocalizedString("480p", comment: "Indicates a video will be resized to 640x480 when uploaded.")
-            case .size960x540:
-                return NSLocalizedString("540p", comment: "Indicates a video will be resized to 960x540 when uploaded.")
             case .size1280x720:
                 return NSLocalizedString("720p", comment: "Indicates a video will be resized to HD 1280x720 when uploaded.")
             case .size1920x1080:
@@ -57,8 +52,6 @@ class MediaSettings: NSObject {
             switch self {
             case .size640x480:
                 return 1
-            case .size960x540:
-                return 2
             case .size1280x720:
                 return 3
             case .size1920x1080:
@@ -74,8 +67,6 @@ class MediaSettings: NSObject {
             switch value {
             case 1:
                 return .size640x480
-            case 2:
-                return .size960x540
             case 3:
                 return .size1280x720
             case 4:
