@@ -1,1 +1,1 @@
-Shiny and new rich-text and HTML native editor, try it out and let us know what you think.
+No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!
