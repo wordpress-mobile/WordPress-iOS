@@ -29,7 +29,7 @@ extension FancyAlertViewController {
 
                 let presenter = HelpshiftPresenter()
                 presenter.sourceTag = sourceTag
-                presenter.optionsDictionary = optionsFromLoginFields(loginFields: loginFields)
+                presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
                                                                                completion:nil)
@@ -117,7 +117,7 @@ extension FancyAlertViewController {
 
                 let supportController = SupportViewController()
                 supportController.sourceTag = sourceTag
-                supportController.helpshiftOptions = optionsFromLoginFields(loginFields: loginFields)
+                supportController.helpshiftOptions = loginFields.helpshiftLoginOptions()
 
                 let navController = UINavigationController(rootViewController: supportController)
                 navController.navigationBar.isTranslucent = false
@@ -158,7 +158,7 @@ extension FancyAlertViewController {
 
                 let presenter = HelpshiftPresenter()
                 presenter.sourceTag = sourceTag
-                presenter.optionsDictionary = optionsFromLoginFields(loginFields: loginFields)
+                presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
                                                                                completion:nil)
@@ -209,15 +209,4 @@ extension FancyAlertViewController {
                                                      dismissAction: nil)
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
-
-
-    private static func optionsFromLoginFields(loginFields: LoginFields) -> [String: AnyObject] {
-        let options: [String: AnyObject] = [
-            "Source": "Failed login" as AnyObject,
-            "Username": loginFields.username as AnyObject,
-            "SiteURL": loginFields.siteUrl as AnyObject
-        ]
-        return options
-    }
-
 }
