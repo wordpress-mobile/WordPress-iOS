@@ -8,6 +8,12 @@ extern SupportSourceTag const SupportSourceTagJetpackLogin;
 extern SupportSourceTag const SupportSourceTagGeneralLogin;
 extern SupportSourceTag const SupportSourceTagInAppFeedback;
 extern SupportSourceTag const SupportSourceTagAztecFeedback;
+extern SupportSourceTag const SupportSourceTagLoginEmail;
+extern SupportSourceTag const SupportSourceTagLoginMagicLink;
+extern SupportSourceTag const SupportSourceTagLoginWPComPassword;
+extern SupportSourceTag const SupportSourceTagLogin2FA;
+extern SupportSourceTag const SupportSourceTagLoginSiteAddress;
+extern SupportSourceTag const SupportSourceTagLoginUsernamePassword;
 
 @interface SupportViewController : UITableViewController
 @property (nonatomic, strong) SupportSourceTag sourceTag;

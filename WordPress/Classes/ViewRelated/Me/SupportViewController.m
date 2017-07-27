@@ -24,6 +24,12 @@ SupportSourceTag const SupportSourceTagJetpackLogin = @"origin:jetpack-login-scr
 SupportSourceTag const SupportSourceTagGeneralLogin = @"origin:login-screen";
 SupportSourceTag const SupportSourceTagInAppFeedback = @"origin:in-app-feedback";
 SupportSourceTag const SupportSourceTagAztecFeedback = @"origin:aztec-feedback";
+SupportSourceTag const SupportSourceTagLoginEmail = @"origin:login-email";
+SupportSourceTag const SupportSourceTagLoginMagicLink = @"origin:login-magic-link";
+SupportSourceTag const SupportSourceTagLoginWPComPassword = @"origin:login-wpcom-password";
+SupportSourceTag const SupportSourceTagLogin2FA = @"origin:login-2fa";
+SupportSourceTag const SupportSourceTagLoginSiteAddress = @"origin:login-site-address";
+SupportSourceTag const SupportSourceTagLoginUsernamePassword = @"origin:login-username-password";
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
