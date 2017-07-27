@@ -122,7 +122,7 @@ struct PeopleService {
         })
 
         // Pre-emptively update the role
-        managedPerson.role = role.description
+        managedPerson.role = role.rawValue
 
         return User(managedPerson: managedPerson)
     }
