@@ -98,14 +98,16 @@ import UIKit
             tags = []
         }
 
-        var options: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: HelpshiftUtils.helpshiftMetadata(withTags: tags),
-                HelpshiftPresenter.HelpshiftShowsSearchOnNewConversationKey: true]
-
+        var metaData = HelpshiftUtils.helpshiftMetadata(withTags: tags) as [AnyHashable: Any]
         if let customOptions = optionsDictionary {
             customOptions.forEach {
-                options[$0] = $1
+                metaData[$0] = $1
             }
         }
+
+        let options: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: metaData,
+                HelpshiftPresenter.HelpshiftShowsSearchOnNewConversationKey: true]
+
         return options
     }
 }

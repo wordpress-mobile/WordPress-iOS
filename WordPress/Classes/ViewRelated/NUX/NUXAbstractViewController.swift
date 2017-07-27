@@ -242,8 +242,10 @@ extension NUXAbstractViewController : SigninErrorViewControllerDelegate {
     /// Displays the support vc.
     ///
     func displaySupportViewController(sourceTag: SupportSourceTag) {
+
         let controller = SupportViewController()
         controller.sourceTag = sourceTag
+        controller.helpshiftOptions = loginFields.helpshiftLoginOptions()
 
         let navController = UINavigationController(rootViewController: controller)
         navController.navigationBar.isTranslucent = false
