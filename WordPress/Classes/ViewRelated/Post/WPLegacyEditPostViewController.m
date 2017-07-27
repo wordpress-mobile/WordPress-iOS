@@ -361,15 +361,16 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)showMediaPicker
 {
-    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] init];
+    WPMediaPickerOptions *options = [WPMediaPickerOptions new];
+    options.allowCaptureOfMedia = YES;
+    options.showMostRecentFirst = YES;
+    options.filter = WPMediaTypeVideo | WPMediaTypeImage;
+    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
     picker.delegate = self;
     if (!self.mediaLibraryDataSource) {
         self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     }
     picker.dataSource = self.mediaLibraryDataSource;
-    picker.allowCaptureOfMedia = YES;
-    picker.showMostRecentFirst = YES;
-    picker.filter = WPMediaTypeVideoOrImage;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
