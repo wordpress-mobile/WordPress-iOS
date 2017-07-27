@@ -38,7 +38,7 @@ public protocol RemotePerson {
 
 // MARK: - Specifies all of the Roles a Person may have
 //
-public enum Role: String, Comparable, Equatable, CustomStringConvertible {
+public enum Role: String, Comparable, Equatable {
     case SuperAdmin     = "super-admin"
     case Admin          = "administrator"
     case Editor         = "editor"
@@ -193,11 +193,11 @@ public extension Role {
         
         self = parsedRole
     }
-    
-    var description: String {
+
+    var slug: String {
         return rawValue
     }
-    
+
     var remoteValue: String {
         // Note: Incoming Hack
         // ====
