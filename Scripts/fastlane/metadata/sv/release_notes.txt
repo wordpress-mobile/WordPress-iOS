@@ -1,1 +1,1 @@
-Sprillans ny egen inbyggd redigerare för formaterad text och HTML. Prova den och berätta vad du tycker.
+Inga nya smarta och snygga saker, bara små inkrementella ändringar som ger dig en snabbare och stabilare app. Det är inte bara guld som glittrar – programkod kan också skina!
