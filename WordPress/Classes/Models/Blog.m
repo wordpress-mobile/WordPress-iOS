@@ -524,14 +524,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [accountService isDefaultWordPressComAccount:self.account];
 }
 
-- (nullable NSNumber *)siteID
-{
-    if (self.account) {
-        return self.dotComID;
-    }
-    return nil;
-}
-
 - (NSNumber *)dotComID
 {
     [self willAccessValueForKey:@"blogID"];
