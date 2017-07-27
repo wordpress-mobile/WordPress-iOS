@@ -648,6 +648,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func rememberFirstResponder() {
         lastFirstResponder = view.findFirstResponder()
+        lastFirstResponder?.resignFirstResponder()
     }
 
     func restoreFirstResponder() {
@@ -1668,7 +1669,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     func mediaAddInputDone(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
-              let selectedAssets = mediaPicker.selectedAssets as? [Any]
+              let selectedAssets = mediaPicker.selectedAssets as? [WPMediaAsset]
         else {
             return
         }
@@ -1691,12 +1692,17 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     fileprivate func presentMediaPickerFullScreen(animated: Bool) {
 
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.video, .image]
         let picker = WPNavigationMediaPickerViewController()
         picker.dataSource = mediaLibraryDataSource
-        picker.showMostRecentFirst = true
-        picker.filter = WPMediaType.videoOrImage
+        picker.mediaPicker.options = options
         picker.delegate = self
-        picker.modalPresentationStyle = .currentContext        
+        picker.modalPresentationStyle = .currentContext
+        if let previousPicker = mediaPickerInputViewController?.mediaPicker {
+            picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
+        }
         // Disable the input media picker if we go full screen.
         mediaPickerInputViewController = nil
         present(picker, animated: true)
@@ -1708,7 +1714,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             presentMediaPickerFullScreen(animated: animated)
             return
         }
-        let picker = WPInputMediaPickerViewController()
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [WPMediaType.image, WPMediaType.video]
+        options.allowMultipleSelection = true
+        let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
         richTextView.inputAccessoryView = mediaInputToolbar
 
@@ -1720,13 +1730,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         richTextView.autocorrectionType = .no
 
-        presentToolbarViewControllerAsInputView(picker)
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
-        picker.mediaPicker.showMostRecentFirst = true
-        picker.mediaPicker.filter = WPMediaType.videoOrImage
-        picker.mediaPicker.allowMultipleSelection = true
         picker.mediaPicker.mediaPickerDelegate = self
+
+        presentToolbarViewControllerAsInputView(picker)
     }
 
     func toggleEditingMode() {

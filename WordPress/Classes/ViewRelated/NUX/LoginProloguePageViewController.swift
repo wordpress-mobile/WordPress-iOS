@@ -14,11 +14,12 @@ class LoginProloguePageViewController: UIPageViewController {
         dataSource = self
         delegate = self
 
-        for promoNum in 1...5 {
-            if let page = storyboard?.instantiateViewController(withIdentifier: "promo\(promoNum)") {
-                pages.append(page)
-            }
-        }
+        pages.append(LoginProloguePromoViewController(as: .post))
+        pages.append(LoginProloguePromoViewController(as: .stats))
+        pages.append(LoginProloguePromoViewController(as: .reader))
+        pages.append(LoginProloguePromoViewController(as: .notifications))
+        pages.append(LoginProloguePromoViewController(as: .jetpack))
+
         setViewControllers([pages[0]], direction: .forward, animated: false)
         view.backgroundColor = backgroundColor(for: 0)
 
@@ -34,7 +35,6 @@ class LoginProloguePageViewController: UIPageViewController {
         newControl.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.pagerPadding).isActive = true
         newControl.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         newControl.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        newControl.heightAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         newControl.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.pagerHeight).isActive = true
 
 

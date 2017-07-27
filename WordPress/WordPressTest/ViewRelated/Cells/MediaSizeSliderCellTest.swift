@@ -4,7 +4,7 @@ import XCTest
 class MediaSizeSliderCellTest: XCTestCase {
 
     func testRounding() {
-        var model = MediaSizeSliderCell.Default.model
+        var model = ImageSizeModel.default
         model.minValue = 100
         model.maxValue = 300
         model.step = 0

@@ -113,7 +113,7 @@ extension NSURL: ExportableAsset {
         let pixelHeight = fabs(size.height)
 
         guard
-            let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
+            let exportSession = AVAssetExportSession(asset: asset, presetName: MediaSettings().maxVideoSizeSetting.videoPreset)
         else {
 
             errorHandler(errorForCode(errorCode: .FailedToExport,

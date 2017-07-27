@@ -208,6 +208,7 @@
 {
     NSParameterAssert(changeRequestBlock);
     __block NSString * assetIdentifier = nil;
+    __weak __typeof__(self) weakSelf = self;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
         // Request creating an asset from the image.
         PHAssetChangeRequest *createAssetRequest = changeRequestBlock();
@@ -222,7 +223,7 @@
             }
             return;
         }
-        [self addMediaFromAssetIdentifier:assetIdentifier completionBlock:completionBlock];
+        [weakSelf addMediaFromAssetIdentifier:assetIdentifier completionBlock:completionBlock];
     }];
 }
 
@@ -312,21 +313,25 @@
 + (NSPredicate *)predicateForFilter:(WPMediaType)filter blog:(Blog *)blog
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"blog", blog];
-    NSPredicate *mediaPredicate = [NSPredicate predicateWithValue:YES];
+    NSMutableArray *mediaPredicates = [NSMutableArray new];
     NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
-    switch (filter) {
-        case WPMediaTypeImage: {
-            mediaPredicate = [NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeImage]];
-        } break;
-        case WPMediaTypeVideo: {
-            mediaPredicate = [NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeVideo]];
-        } break;
-        case WPMediaTypeVideoOrImage: {
-            mediaPredicate = [NSPredicate predicateWithFormat:@"(mediaTypeString == %@ || mediaTypeString == %@)", [Media stringFromMediaType:MediaTypeImage], [Media stringFromMediaType:MediaTypeVideo]];
-        } break;
-        default:
-            break;
-    };
+
+    if ((filter & WPMediaTypeAll) == WPMediaTypeAll) {
+        [mediaPredicates addObject:[NSPredicate predicateWithValue:YES]];
+    } else {
+        if (filter & WPMediaTypeImage) {
+            [mediaPredicates addObject:[NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeImage]]];
+        }
+        if ( filter & WPMediaTypeVideo) {
+            [mediaPredicates addObject:[NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeVideo]]];
+        }
+        if ( filter & WPMediaTypeAudio) {
+            [mediaPredicates addObject:[NSPredicate predicateWithFormat:@"mediaTypeString == %@", [Media stringFromMediaType:MediaTypeAudio]]];
+        }
+    }
+
+    NSCompoundPredicate *mediaPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:mediaPredicates];
+
     return [NSCompoundPredicate andPredicateWithSubpredicates:
             @[predicate, mediaPredicate, statusPredicate]];
 }
@@ -535,20 +540,16 @@
 
 - (NSInteger)numberOfAssetsOfType:(WPMediaType)mediaType
 {
-    NSSet *mediaTypes = [NSMutableSet set];
-    switch (mediaType) {
-        case WPMediaTypeImage: {
-            mediaTypes = [NSSet setWithArray:@[@(MediaTypeImage)]];
-        } break;
-        case WPMediaTypeVideo: {
-            mediaTypes = [NSSet setWithArray:@[@(MediaTypeVideo)]];
-        } break;
-        case WPMediaTypeVideoOrImage: {
-            mediaTypes = [NSSet setWithArray:@[@(MediaTypeImage), @(MediaTypeVideo)]];
-        } break;
-        default:
-            break;
-    };
+    NSMutableSet *mediaTypes = [NSMutableSet set];
+    if (mediaType & WPMediaTypeImage) {
+        [mediaTypes addObject:@(MediaTypeImage)];
+    }
+    if (mediaType & WPMediaTypeVideo) {
+        [mediaTypes addObject:@(MediaTypeVideo)];
+    }
+    if (mediaType & WPMediaTypeAudio) {
+        [mediaTypes addObject:@(MediaTypeAudio)];
+    }
 
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] newDerivedContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
