@@ -1623,7 +1623,11 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     private var mediaInputToolbar: UIToolbar {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
         toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
-        toolbar.tintColor = WPStyleGuide.aztecFormatBarActiveColor
+        toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
+
+        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.crossCircle), style: .plain ,target: self, action: #selector(mediaAddInputCancelled))
+        closeButton.accessibilityLabel = NSLocalizedString("Close media picker", comment: "Editor toolbar button to close the media picker.")
+
         let gridButton = UIBarButtonItem(image: Gridicon.iconOfType(.imageMultiple), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen))
         gridButton.accessibilityLabel = NSLocalizedString("Open full media picker", comment: "Editor button to swich the media picker from quick mode to full picker.")
 
@@ -1633,18 +1637,23 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let cameraButton = UIBarButtonItem(image: Gridicon.iconOfType(.camera), style: .plain ,target: self, action: #selector(mediaAddShowFullScreen))
         cameraButton.accessibilityLabel = NSLocalizedString("Open device camera", comment: "Editor button to swich the media picker from quick mode to camera capture.")
 
+        let insertButton = UIBarButtonItem(title: NSLocalizedString("Insert", comment: "Editor toolbar button to confirm media insertion."), style: .plain ,target: self, action: #selector(mediaAddInputDone))
+        insertButton.accessibilityLabel = NSLocalizedString("Insert", comment: "Editor toolbar button to confirm media insertion.")
+
         toolbar.items = [
-            UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(mediaAddInputCancelled)),
+            closeButton,
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             gridButton,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             cameraButton,
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             wordPressButton,
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(mediaAddInputDone))
+            insertButton
         ]
         for item in toolbar.items! {
-            item.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-            item.setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
+            item.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
+            item.setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.aztecFormatBarInactiveColor], for: .normal)
         }
         return toolbar
 
