@@ -358,8 +358,6 @@ extension LoginSelfHostedViewController {
         displayLoginMessage("")
 
         BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
-
             let context = ContextManager.sharedInstance().mainContext
             let service = BlogService(managedObjectContext: context)
             guard let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) else {
@@ -372,6 +370,8 @@ extension LoginSelfHostedViewController {
             }
 
             RecentSitesService().touch(blog: blog)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
+
             self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
                 self?.showEpilogue()
