@@ -34,5 +34,13 @@
     return self;
 }
 
+- (NSDictionary *)helpshiftLoginOptions
+{
+    return @{
+             @"Source": @"Login",
+             @"Username": self.username,
+             @"SiteURL": self.siteUrl
+             };
+}
 
 @end
