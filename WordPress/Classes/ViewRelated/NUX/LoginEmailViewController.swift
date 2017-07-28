@@ -21,7 +21,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpComLogin
+            return .loginEmail
         }
     }
 
