@@ -1805,7 +1805,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     func insertMore() {
         trackFormatBarAnalytics(stat: .editorTappedMore)
-        richTextView.replaceWithComment(at: richTextView.selectedRange, text: Constants.moreAttachmentText)
+        richTextView.replace(richTextView.selectedRange, withComment: Constants.moreAttachmentText)
     }
 
     func headerLevelForSelectedText() -> Header.HeaderType {
@@ -2027,7 +2027,9 @@ private extension AztecPostViewController {
     func displayUnknownHtmlEditor(for attachment: HTMLAttachment) {
         let targetVC = UnknownEditorViewController(attachment: attachment)
         targetVC.onDidSave = { [weak self] html in
-            self?.richTextView.update(attachment: attachment, html: html)
+            self?.richTextView.edit(attachment) { htmlAttachment in
+                htmlAttachment.rawHTML = html
+            }
             self?.dismiss(animated: true, completion: nil)
         }
 
@@ -2233,7 +2235,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
             } else {
                 attachment.progress = progress.fractionCompleted
             }
-            richTextView.refreshLayout(for: attachment)
+            richTextView.refresh(attachment)
         }
     }
 
@@ -2247,6 +2249,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         refreshNavigationBar()
     }
 }
+
 
 // MARK: - Media Support
 //
@@ -2273,7 +2276,8 @@ extension AztecPostViewController {
                 return
             }
             DispatchQueue.main.async {
-                strongSelf.richTextView.update(attachment: attachment, alignment: attachment.alignment, size: attachment.size, url: thumbnailURL)
+                attachment.url = thumbnailURL
+                strongSelf.richTextView.refresh(attachment)
             }
         }, completion: { [weak self](media, error) in
             guard let strongSelf = self else {
@@ -2295,7 +2299,8 @@ extension AztecPostViewController {
     fileprivate func insertDeviceVideo(phAsset: PHAsset) {
         let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
         attachment.progress = 0
-        richTextView.update(attachment: attachment)
+        richTextView.refresh(attachment)
+
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
             guard let strongSelf = self else {
@@ -2303,7 +2308,7 @@ extension AztecPostViewController {
             }
             DispatchQueue.main.async {
                 attachment.posterURL = thumbnailURL
-                strongSelf.richTextView.refreshLayout(for: attachment)
+                strongSelf.richTextView.refresh(attachment)
             }
         }, completion: { [weak self](media, error) in
             guard let strongSelf = self else {
@@ -2347,7 +2352,7 @@ extension AztecPostViewController {
                 , sourceURL: remoteURL, posterURL: posterURL, placeHolderImage: Assets.defaultMissingImage)
             if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
                 attachment.videoPressID = videoPressGUID
-                richTextView.update(attachment: attachment)
+                richTextView.refresh(attachment)
             }
             WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
         }
@@ -2384,7 +2389,8 @@ extension AztecPostViewController {
         mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
-                    self.richTextView.update(attachment: imageAttachment, alignment: imageAttachment.alignment, size: imageAttachment.size, url: thumbnailURL)
+                    imageAttachment.url = thumbnailURL
+                    self.richTextView.refresh(imageAttachment)
                 }
             }
         }, completion: { [weak self](media, error) in
@@ -2414,13 +2420,22 @@ extension AztecPostViewController {
         }
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: {[weak self]() in
-            guard let strongSelf = self, let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: {() in
+            guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
-                    strongSelf.richTextView.update(attachment: imageAttachment, alignment: imageAttachment.alignment, size: imageAttachment.size, url: remoteURL)
+                    if let width = media.width?.intValue {
+                        imageAttachment.width = width
+                    }
+                    if let height = media.height?.intValue {
+                        imageAttachment.height = height
+                    }
+                    if let mediaID = media.mediaID?.intValue {
+                        imageAttachment.imageID = mediaID
+                    }
+                    imageAttachment.url = remoteURL
                 } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
                     videoAttachment.srcURL = URL(string: videoURLString)
                     if let videoPosterURLString = media.remoteThumbnailURL {
@@ -2429,7 +2444,6 @@ extension AztecPostViewController {
                     if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
                         videoAttachment.videoPressID = videoPressGUID
                     }
-                    strongSelf.richTextView.update(attachment: videoAttachment)
                 }
             }
             }, failure: { [weak self](error) in
@@ -2462,7 +2476,7 @@ extension AztecPostViewController {
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
         attachment.overlayImage = Gridicon.iconOfType(.refresh)
-        richTextView.refreshLayout(for: attachment)
+        richTextView.refresh(attachment)
     }
 
     fileprivate func removeFailedMedia() {
@@ -2486,7 +2500,7 @@ extension AztecPostViewController {
                     if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
                         videoAttachment.posterURL = posterURL
                     }
-                    self.richTextView.refreshLayout(for: videoAttachment)
+                    self.richTextView.refresh(videoAttachment)
                 }, failure: { (error) in
                     DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
                 })
@@ -2509,7 +2523,7 @@ extension AztecPostViewController {
                         try uiImage.writeJPEGToURL(url)
                         DispatchQueue.main.async {
                             videoAttachment.posterURL = url
-                            self.richTextView.refreshLayout(for: videoAttachment)
+                            self.richTextView.refresh(videoAttachment)
                         }
                     } catch {
                         DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
@@ -2541,7 +2555,7 @@ extension AztecPostViewController {
                                                     attachment.overlayImage = nil
                                                 }
                                                 attachment.message = nil
-                                                self.richTextView.refreshLayout(for: attachment)
+                                                self.richTextView.refresh(attachment)
                                             }
         })
         if let imageAttachment = attachment as? ImageAttachment {
@@ -2583,7 +2597,7 @@ extension AztecPostViewController {
                                                         }
                                                         attachment.message = nil
                                                         attachment.progress = 0
-                                                        self.richTextView.refreshLayout(for: attachment)
+                                                        self.richTextView.refresh(attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
 
                                                         WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
@@ -2635,18 +2649,15 @@ extension AztecPostViewController {
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let imageSize = CGSize(width:128, height:128)
-        let placeholderImage: UIImage
+
         switch attachment {
         case _ as ImageAttachment:
-            placeholderImage = Gridicon.iconOfType(.image, withSize: imageSize)
+            return Gridicon.iconOfType(.image, withSize: imageSize)
         case _ as VideoAttachment:
-            placeholderImage = Gridicon.iconOfType(.video, withSize: imageSize)
+            return Gridicon.iconOfType(.video, withSize: imageSize)
         default:
-            placeholderImage = Gridicon.iconOfType(.attachment, withSize: imageSize)
-
+            return Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
-
-        return placeholderImage
     }
 }
 
@@ -2656,7 +2667,11 @@ extension AztecPostViewController {
 extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
 
     func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment) {
-        richTextView.update(attachment: changedAttachment, alignment: changedAttachment.alignment, size: changedAttachment.size, url: changedAttachment.url!)
+        richTextView.edit(changedAttachment) { attachment in
+            attachment.alignment = changedAttachment.alignment
+            attachment.size = changedAttachment.size
+            attachment.url = changedAttachment.url
+        }
     }
 }
 
@@ -2689,7 +2704,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             // if it's a new attachment tapped let's unmark the previous one
             if let selectedAttachment = currentSelectedAttachment {
                 selectedAttachment.message = nil
-                richTextView.refreshLayout(for: selectedAttachment)
+                richTextView.refresh(selectedAttachment)
             }
             // and mark the newly tapped attachment
             let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a media on the post/page editor.")
@@ -2697,7 +2712,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             if attachment is ImageAttachment {
                 attachment.overlayImage = Gridicon.iconOfType(.pencil)
             }
-            richTextView.refreshLayout(for: attachment)
+            richTextView.refresh(attachment)
             currentSelectedAttachment = attachment
         }
     }
@@ -2717,7 +2732,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
                 if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
                     videoAttachment.posterURL = posterURL
                 }
-                self.richTextView.refreshLayout(for: videoAttachment)
+                self.richTextView.refresh(videoAttachment)
                 self.displayVideoPlayer(for: videoURL)
             }, failure: { (error) in
                 DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
@@ -2749,11 +2764,11 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             if mediaAttachment is ImageAttachment {
                 mediaAttachment.overlayImage = nil
             }
-            richTextView.refreshLayout(for: mediaAttachment)
+            richTextView.refresh(mediaAttachment)
         }
     }
 
-    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) -> UIImage {
+    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) {
         var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -2793,8 +2808,6 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         if let receipt = receipt {
             activeMediaRequests.append(receipt)
         }
-
-        return placeholderImage(for: attachment)
     }
 
     func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL {
@@ -2814,7 +2827,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         mediaProgressCoordinator.cancelAndStopTrack(of:attachmentID)
     }
 
-    func textView(_ textView: TextView, placeholderForAttachment attachment: NSTextAttachment) -> UIImage {
+    func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
         return placeholderImage(for: attachment)
     }
 }
@@ -2859,6 +2872,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     }
 }
+
 
 // MARK: - State Restoration
 //
