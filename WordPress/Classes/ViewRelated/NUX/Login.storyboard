@@ -707,7 +707,7 @@
         <!--LoginWP Com View Controller-->
         <scene sceneID="brQ-1M-iPT">
             <objects>
-                <viewController storyboardIdentifier="SigninWPComViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lmD-c6-SLs" customClass="LoginWPComViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="wpcomPassword" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lmD-c6-SLs" customClass="LoginWPComViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dAs-4b-ACP"/>
                         <viewControllerLayoutGuide type="bottom" id="kOH-fr-1L0"/>
@@ -1334,88 +1334,6 @@
             </objects>
             <point key="canvasLocation" x="4920.8000000000002" y="887.40629685157433"/>
         </scene>
-        <!--Signin Error View Controller-->
-        <scene sceneID="zKv-KR-qqw">
-            <objects>
-                <viewController storyboardIdentifier="SigninErrorViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TLA-Qm-IoF" customClass="SigninErrorViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="TaY-iH-nUV"/>
-                        <viewControllerLayoutGuide type="bottom" id="4Zz-sQ-RPP"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="0fR-cZ-XSB">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Vx6-Eq-ho8">
-                                <rect key="frame" x="43" y="249.5" width="289" height="80.5"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-alert" translatesAutoresizingMaskIntoConstraints="NO" id="v7t-tc-0qh">
-                                        <rect key="frame" x="113.5" y="0.0" width="62" height="52"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="62" id="4hX-6S-Ug0"/>
-                                            <constraint firstAttribute="height" constant="52" id="toG-vl-LrL"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WGk-iP-Ea8">
-                                        <rect key="frame" x="100.5" y="60" width="88" height="20.5"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="289" id="srW-sl-8A7"/>
-                                </constraints>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JxF-Rn-MsR" customClass="WPNUXSecondaryButton">
-                                <rect key="frame" x="16" y="621" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="handleSecondaryButtonTapped:" destination="TLA-Qm-IoF" eventType="touchUpInside" id="usW-OP-FqJ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qa-33-ovF" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="316" y="617" width="43" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="sdW-W7-7yC"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="handlePrimaryButtonTapped:" destination="TLA-Qm-IoF" eventType="touchUpInside" id="IhP-yF-kQB"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="Vx6-Eq-ho8" firstAttribute="centerX" secondItem="0fR-cZ-XSB" secondAttribute="centerX" id="2hm-Dw-VkB"/>
-                            <constraint firstItem="Vx6-Eq-ho8" firstAttribute="centerY" secondItem="0fR-cZ-XSB" secondAttribute="centerY" constant="-44" id="3yu-aj-rss"/>
-                            <constraint firstItem="4Zz-sQ-RPP" firstAttribute="top" secondItem="JxF-Rn-MsR" secondAttribute="bottom" constant="16" id="4Gq-6P-mOp"/>
-                            <constraint firstItem="JxF-Rn-MsR" firstAttribute="leading" secondItem="0fR-cZ-XSB" secondAttribute="leading" constant="16" id="G0b-wk-FMG"/>
-                            <constraint firstItem="4Zz-sQ-RPP" firstAttribute="top" secondItem="1qa-33-ovF" secondAttribute="bottom" constant="16" id="OBS-pf-MQk"/>
-                            <constraint firstAttribute="trailing" secondItem="1qa-33-ovF" secondAttribute="trailing" constant="16" id="Pn4-gK-NFy"/>
-                        </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="UNR-EL-usp" appends="YES" id="6dE-8z-pgD"/>
-                        </connections>
-                    </view>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <connections>
-                        <outlet property="descriptionLabel" destination="WGk-iP-Ea8" id="lZc-4O-sll"/>
-                        <outlet property="icon" destination="v7t-tc-0qh" id="6A6-lC-f2N"/>
-                        <outlet property="primaryButton" destination="1qa-33-ovF" id="gqu-30-5dP"/>
-                        <outlet property="secondaryButton" destination="JxF-Rn-MsR" id="WsO-Gi-kiz"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="k2v-Vb-eUr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="UNR-EL-usp">
-                    <connections>
-                        <action selector="handleTapGesture:" destination="TLA-Qm-IoF" id="aCi-V9-0YM"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="1752" y="-397"/>
-        </scene>
         <!--Login Link Request View Controller-->
         <scene sceneID="lHx-fY-p45">
             <objects>
@@ -1786,7 +1704,6 @@
         <image name="beveled-blue-button-down" width="18" height="19"/>
         <image name="beveled-secondary-button" width="18" height="19"/>
         <image name="darkgrey-shadow" width="10" height="10"/>
-        <image name="icon-alert" width="62" height="52"/>
         <image name="icon-email-field" width="18" height="22"/>
         <image name="icon-password-field" width="18" height="22"/>
         <image name="icon-url-field" width="18" height="22"/>

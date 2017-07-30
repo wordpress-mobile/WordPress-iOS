@@ -3,7 +3,6 @@
 @objc
 enum FeatureFlag: Int {
     case exampleFeature
-    case newLogin
     case newMediaExports
     case newInputMediaPicker
 
@@ -11,8 +10,6 @@ enum FeatureFlag: Int {
     var enabled: Bool {
         switch self {
         case .exampleFeature:
-            return true
-        case .newLogin:
             return true
         case .newMediaExports:
             return build(.localDeveloper, .a8cBranchTest)
