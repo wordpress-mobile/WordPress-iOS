@@ -29,6 +29,14 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
         case showEpilogue
     }
 
+    /// The Helpshift tag to track the origin of user conversations
+    ///
+    var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
+
     // MARK: - Lifecycle Methods
 
 
@@ -155,29 +163,37 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
         return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
     }
 
-
-    /// Display the specified error in a modal.
-    ///
-    /// - Parameter error: An NSError instance
+    /// Displays a login error in an attractive dialog
     ///
     func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
         let presentingController = navigationController ?? self
-        let controller = SigninErrorViewController.controller()
-        controller.presentFromController(presentingController)
-        controller.displayError(error, loginFields: loginFields, delegate: self, sourceTag: sourceTag)
+        let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = self
+        presentingController.present(controller, animated: true, completion: nil)
     }
 
-    /// Displays an error message in an overlay
+    /// Displays a login error message in an attractive dialog
     ///
-    /// - Parameters:
-    ///     - message: The message to display
-    ///
-    func displayErrorMessage(_ message: String) {
+    func displayErrorAlert(_ message: String, sourceTag: SupportSourceTag) {
         let presentingController = navigationController ?? self
-        let controller = SigninErrorViewController.controller()
-        controller.delegate = self
-        controller.presentFromController(presentingController)
-        controller.displayGenericErrorMessage(message, sourceTag: sourceTag)
+        let controller = FancyAlertViewController.alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = self
+        presentingController.present(controller, animated: true, completion: nil)
+    }
+
+    /// Displays the support vc.
+    ///
+    func displaySupportViewController(sourceTag: SupportSourceTag) {
+        let controller = SupportViewController()
+        controller.sourceTag = sourceTag
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.navigationBar.isTranslucent = false
+        navController.modalPresentationStyle = .formSheet
+
+        navigationController?.present(navController, animated: true, completion: nil)
     }
 
     /// It is assumed that NUX view controllers are always presented modally.
@@ -227,64 +243,14 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
     func handleHelpButtonTapped(_ sender: UIButton) {
         displaySupportViewController(sourceTag: sourceTag)
     }
-
 }
 
-
-extension NUXAbstractViewController : SigninErrorViewControllerDelegate {
-
-    var sourceTag: SupportSourceTag {
-        get {
-            return .generalLogin
+extension NUXAbstractViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
         }
+
+        return nil
     }
-
-    /// Displays the support vc.
-    ///
-    func displaySupportViewController(sourceTag: SupportSourceTag) {
-        let controller = SupportViewController()
-        controller.sourceTag = sourceTag
-
-        let navController = UINavigationController(rootViewController: controller)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
-
-        navigationController?.present(navController, animated: true, completion: nil)
-    }
-
-
-    /// Displays the Helpshift conversation feature.
-    ///
-    func displayHelpshiftConversationView(sourceTag: SupportSourceTag) {
-        let metaData: [String: AnyObject] = [
-            "Source": "Failed login" as AnyObject,
-            "Username": loginFields.username as AnyObject,
-            "SiteURL": loginFields.siteUrl as AnyObject,
-            HelpshiftSupportTagsKey: [sourceTag.rawValue]  as AnyObject
-        ]
-        HelpshiftSupport.showConversation(self, withOptions: [HelpshiftSupportCustomMetadataKey: metaData, "showSearchOnNewConversation": "YES"])
-        WPAppAnalytics.track(.supportOpenedHelpshiftScreen)
-    }
-
-
-    /// Presents an instance of WPWebViewController set to the specified URl.
-    /// Accepts a username and password if authentication is needed.
-    ///
-    /// - Parameters:
-    ///     - url: The URL to view.
-    ///     - username: Optional. A username if authentication is needed.
-    ///     - password: Optional. A password if authentication is needed.
-    ///
-    func displayWebviewForURL(_ url: URL, username: String?, password: String?) {
-        let controller = WPWebViewController(url: url)
-
-        if let username = username,
-            let password = password {
-            controller?.username = username
-            controller?.password = password
-        }
-        let navController = UINavigationController(rootViewController: controller!)
-        navigationController?.present(navController, animated: true, completion: nil)
-    }
-
 }

@@ -295,7 +295,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     fileprivate func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            SigninHelpers.showSigninForJustWPComFromPresenter(self)
+            SigninHelpers.showLoginForJustWPComFromPresenter(self)
         }
     }
 

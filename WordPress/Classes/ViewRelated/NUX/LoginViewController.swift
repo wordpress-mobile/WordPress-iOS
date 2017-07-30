@@ -136,14 +136,6 @@ class LoginViewController: NUXAbstractViewController {
             destination.errorToPresent = source.errorToPresent
         }
     }
-
-    override func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
-        let presentingController = navigationController ?? self
-        let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
-        controller.modalPresentationStyle = .custom
-        controller.transitioningDelegate = self
-        presentingController.present(controller, animated: true, completion: nil)
-    }
 }
 
 extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
@@ -193,15 +185,5 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     func loginDismissal() {
         self.performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-}
-
-extension LoginViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        if presented is FancyAlertViewController {
-            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-        }
-
-        return nil
     }
 }
