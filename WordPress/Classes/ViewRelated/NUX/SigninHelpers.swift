@@ -11,36 +11,10 @@ import WordPressShared
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
 
-    // MARK: - Helpers for presenting the signin flow
-
-    // Convenience factory for the signin flow's first vc
-    class func createControllerForSigninFlow(showsEditor thenEditor: Bool) -> UIViewController {
-        let controller = SigninEmailViewController.controller()
-        controller.dismissBlock = {(cancelled) in
-            // Show the editor if requested, and we weren't cancelled.
-            if !cancelled && thenEditor {
-                WPTabBarController.sharedInstance().showPostTab()
-                return
-            }
-        }
-        return controller
-    }
-
-    /// Used to present the signin flow from the app delegate
-    class func showSigninFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
-        if Feature.enabled(.newLogin) {
-            showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor)
-            return
-        }
-        let controller = createControllerForSigninFlow(showsEditor: thenEditor)
-        let navController = NUXNavigationController(rootViewController: controller)
-        presenter.present(navController, animated: animated, completion: nil)
-
-        trackOpenedLogin()
-    }
+    // MARK: - Helpers for presenting the login flow
 
     /// Used to present the new login flow from the app delegate
-    fileprivate class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
         defer {
             trackOpenedLogin()
         }
@@ -51,25 +25,8 @@ import WordPressShared
         }
     }
 
-
-    /// Used to present the wpcom-only signin flow from the app delegate
-    class func showSigninForJustWPComFromPresenter(_ presenter: UIViewController) {
-        if Feature.enabled(.newLogin) {
-            showLoginForJustWPComFromPresenter(presenter)
-            return
-        }
-
-        let controller = SigninEmailViewController.controller()
-        controller.restrictToWPCom = true
-
-        let navController = NUXNavigationController(rootViewController: controller)
-        presenter.present(navController, animated: true, completion: nil)
-
-        trackOpenedLogin()
-    }
-
     /// Used to present the new wpcom-only login flow from the app delegate
-    fileprivate class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController) {
+    class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController) {
         defer {
             trackOpenedLogin()
         }
@@ -84,23 +41,8 @@ import WordPressShared
         presenter.present(navController, animated: true, completion: nil)
     }
 
-
-    /// Used to present the self-hosted signin flow from BlogListViewController
-    class func showSigninForSelfHostedSite(_ presenter: UIViewController) {
-        if Feature.enabled(.newLogin) {
-            showLoginForSelfHostedSite(presenter)
-            return
-        }
-
-        let controller = SigninSelfHostedViewController.controller(LoginFields())
-        let navController = NUXNavigationController(rootViewController: controller)
-        presenter.present(navController, animated: true, completion: nil)
-
-        trackOpenedLogin()
-    }
-
     /// Used to present the new self-hosted login flow from BlogListViewController
-    fileprivate class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
+    class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
         defer {
             trackOpenedLogin()
         }
@@ -123,8 +65,11 @@ import WordPressShared
             loginFields.username = account.username
         }
 
-        let controller = SigninWPComViewController.controller(loginFields)
-        controller.restrictToWPCom = true
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "wpcomPassword") as? NUXAbstractViewController else {
+            fatalError("unable to create wpcom password screen")
+        }
+
         controller.dismissBlock = onDismissed
         return NUXNavigationController(rootViewController: controller)
     }
@@ -166,21 +111,21 @@ import WordPressShared
             return false
         }
 
-        var controller: UIViewController
-        if let email = getEmailAddressForTokenAuth() {
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            if Feature.enabled(.newLogin),
-                let loginController = storyboard.instantiateViewController(withIdentifier: "loginLinkAuth") as? LoginLinkAuthViewController {
-                loginController.email = email
-                loginController.token = token
-                controller = loginController
-            } else {
-                controller = SigninLinkAuthViewController.controller(email, token: token)
-            }
-            WPAppAnalytics.track(.loginMagicLinkOpened)
-        } else {
-            controller = SigninEmailViewController.controller()
+        guard let email = getEmailAddressForTokenAuth() else {
+            DDLogInfo("App opened with authentication link but email wasn't found for token.")
+            return false
         }
+
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let loginController = storyboard.instantiateViewController(withIdentifier: "loginLinkAuth") as? LoginLinkAuthViewController else {
+            DDLogInfo("App opened with authentication link but couldn't create login screen.")
+            return false
+        }
+        loginController.email = email
+        loginController.token = token
+        let controller = loginController
+        WPAppAnalytics.track(.loginMagicLinkOpened)
+
         let navController = UINavigationController(rootViewController: controller)
 
         // The way the magic link flow works the `SigninLinkMailViewController`,

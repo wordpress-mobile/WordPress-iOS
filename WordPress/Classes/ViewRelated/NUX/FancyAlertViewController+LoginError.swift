@@ -55,7 +55,7 @@ extension FancyAlertViewController {
     // MARK: - Error Handling
 
 
-    /// Get an alert for the specified error message.
+    /// Get an alert for the specified error.
     /// The view is configured differently depending on the kind of error.
     ///
     /// - Parameters:
@@ -144,7 +144,7 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     /// - Parameter sourceTag: tag of the source of the error
     ///
-    private static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
