@@ -1633,10 +1633,12 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(mediaAddInputDone))
         ]
+
         for item in toolbar.items! {
             item.tintColor = WPStyleGuide.aztecFormatBarActiveColor
             item.setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
         }
+
         return toolbar
 
     }
