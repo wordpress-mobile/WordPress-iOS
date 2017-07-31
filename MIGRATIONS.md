@@ -5,6 +5,9 @@ data model as well as any custom migrations.
 
 ## WordPress 62
 
+- @koke 2017-07-21
+- `Blog` removed `jetpackAccount`
+- `WPAccount` removed `jetpackBlogs`
 - @koke 2017-07-19
 - `Blog` added `userID` Int64 property. Stores the current user ID.
 

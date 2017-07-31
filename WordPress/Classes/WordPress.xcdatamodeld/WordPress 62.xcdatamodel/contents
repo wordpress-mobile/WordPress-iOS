@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16F73" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="12141" systemVersion="16G29" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -21,7 +21,6 @@
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blogs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Blog" inverseName="account" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="defaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="accountForDefaultBlog" inverseEntity="Blog" syncable="YES"/>
-        <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AccountSettings" inverseName="account" inverseEntity="AccountSettings" syncable="YES"/>
     </entity>
     <entity name="AccountSettings" representedClassName=".ManagedAccountSettings" syncable="YES">
@@ -143,7 +142,6 @@
         </relationship>
         <relationship name="connections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PublicizeConnection" inverseName="blog" inverseEntity="PublicizeConnection" syncable="YES"/>
         <relationship name="domains" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Domain" inverseName="blog" inverseEntity="Domain" syncable="YES"/>
-        <relationship name="jetpackAccount" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="jetpackBlogs" inverseEntity="Account" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Media" inverseName="blog" inverseEntity="Media" indexed="YES">
             <userInfo/>
         </relationship>
@@ -624,10 +622,10 @@
     </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="675"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="660"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="585"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>

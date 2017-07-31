@@ -62,7 +62,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic isActivated;
 @dynamic visible;
 @dynamic account;
-@dynamic jetpackAccount;
 @dynamic isAdmin;
 @dynamic isMultiAuthor;
 @dynamic isHostedAtWPcom;
@@ -399,11 +398,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (NSString *)authToken
 {
-    if (self.jetpackAccount) {
-        return self.jetpackAccount.authToken;
-    } else {
-        return self.account.authToken;
-    }
+    return self.account.authToken;
 }
 
 - (NSString *)usernameForSite
@@ -529,23 +524,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [accountService isDefaultWordPressComAccount:self.account];
 }
 
-- (BOOL)jetpackAccountIsDefaultAccount
-{
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    return [accountService isDefaultWordPressComAccount:self.jetpackAccount];
-}
-
-- (nullable NSNumber *)siteID
-{
-    if (self.account) {
-        return self.dotComID;
-    }
-    else if (self.jetpackAccount && self.jetpack.siteID) {
-        return self.jetpack.siteID;
-    }
-    return nil;
-}
-
 - (NSNumber *)dotComID
 {
     [self willAccessValueForKey:@"blogID"];
@@ -604,8 +582,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     NSString *extra = @"";
     if (self.account) {
         extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@ plan: %@ (%@)", self.account ? self.account.username : @"NO", self.dotComID, self.planTitle, self.planID];
-    } else if (self.jetpackAccount) {
-        extra = [NSString stringWithFormat:@" jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", self.jetpack.version, self.jetpackAccount.username, self.jetpack.siteID];
     } else {
         extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
     }
@@ -630,8 +606,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 {
     if (self.account) {
         return self.account.wordPressComRestApi;
-    } else if ([self jetpackRESTSupported]) {
-        return self.jetpackAccount.wordPressComRestApi;
     }
     return nil;
 }
@@ -639,7 +613,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 - (BOOL)supportsRestApi {
     // We don't want to check for `restApi` as it can be `nil` when the token
     // is missing from the keychain.
-    return (self.account || [self jetpackRESTSupported]);
+    return self.account != nil;
 }
 
 #pragma mark - Jetpack
@@ -655,18 +629,13 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     _jetpack = [JetpackState new];
     _jetpack.siteID = [[self getOptionValue:@"jetpack_client_id"] numericValue];
     _jetpack.version = [self getOptionValue:@"jetpack_version"];
-    if (self.jetpackAccount.username) {
-        _jetpack.connectedUsername = self.jetpackAccount.username;
+    if (self.account.username) {
+        _jetpack.connectedUsername = self.account.username;
     } else {
         _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
     }
     _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
     return _jetpack;
-}
-
-- (BOOL)jetpackRESTSupported
-{
-    return self.jetpackAccount && self.dotComID;
 }
 
 - (BOOL)jetpackActiveModule:(NSString *)moduleName
