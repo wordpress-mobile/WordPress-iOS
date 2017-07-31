@@ -156,6 +156,7 @@ open class MediaExportService: LocalCoreDataService {
     fileprivate var exporterVideoOptions: MediaVideoExporter.Options {
         var options = MediaVideoExporter.Options()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
+        options.exportPreset = MediaSettings().maxVideoSizeSetting.videoPreset
         return options
     }
 
