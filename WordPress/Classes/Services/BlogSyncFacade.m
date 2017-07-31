@@ -72,7 +72,7 @@
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                 WPAccount *account = [accountService findAccountWithUsername:dotcomUsername];
                 if (account) {
-                    blog.jetpackAccount = account;
+                    blog.account = account;
                     [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:blog];
                 }
             }
