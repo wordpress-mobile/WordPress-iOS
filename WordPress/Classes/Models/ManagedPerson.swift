@@ -98,11 +98,16 @@ extension Viewer {
 
 extension Role {
     var color: UIColor {
-        guard let color = type(of: self).colorsMap[self] else {
-            fatalError()
+        switch self.slug {
+        case "super-admin":
+            return WPStyleGuide.People.superAdminColor
+        case "administrator":
+            return WPStyleGuide.People.adminColor
+        case "editor":
+            return WPStyleGuide.People.editorColor
+        default:
+            return WPStyleGuide.People.otherRoleColor
         }
-
-        return color
     }
 
     var localizedName: String {
@@ -120,18 +125,6 @@ extension Role {
 
     // MARK: - Private Properties
     //
-    fileprivate static let colorsMap = [
-        SuperAdmin: WPStyleGuide.People.superAdminColor,
-        Admin: WPStyleGuide.People.adminColor,
-        Editor: WPStyleGuide.People.editorColor,
-        Author: WPStyleGuide.People.authorColor,
-        Contributor: WPStyleGuide.People.contributorColor,
-        Subscriber: WPStyleGuide.People.contributorColor,
-        Follower: WPStyleGuide.People.contributorColor,
-        Viewer: WPStyleGuide.People.contributorColor,
-        Unsupported: WPStyleGuide.People.contributorColor
-    ]
-
     fileprivate static let localizedMap = [
         SuperAdmin: NSLocalizedString("Super Admin", comment: "User role badge"),
         Admin: NSLocalizedString("Admin", comment: "User role badge"),
