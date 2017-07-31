@@ -4,7 +4,7 @@ import WordPressShared
 extension WPStyleGuide {
     static let aztecFormatBarInactiveColor = UIColor(hexString: "7B9AB1")
 
-    static let aztecFormatBarActiveColor = WPStyleGuide.wordPressBlue()
+    static let aztecFormatBarActiveColor = UIColor(hexString: "11181D")
 
     static let aztecFormatBarDisabledColor = WPStyleGuide.greyLighten20()
 
