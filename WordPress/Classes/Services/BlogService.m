@@ -371,34 +371,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"username != NULL AND account != NULL"];
-    NSArray *blogsToMigrate = [self blogsWithPredicate:predicate];
-    for (Blog *blog in blogsToMigrate) {
-        DDLogInfo(@"Migrating %@ with wp.com account %@ to Jetpack XML-RPC", [blog hostURL], blog.account.username);
-        blog.jetpackAccount = blog.account;
-        blog.account = nil;
-    }
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    /*
-     We could remove Jetpack blogs directly when we don't have a username for them,
-     but triggering a sync seems safer.
-     */
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    if (defaultAccount) {
-        /*
-         If this fails, we call success anyway. If the network fails for this request
-         we still want to allow disabling REST. Next time the site list reloads, it'll
-         purge the old Jetpack sites anyway
-         */
-        [self syncBlogsForAccount:accountService.defaultWordPressComAccount success:success failure:success];
-    } else if (success) {
-        success();
-    }
-}
-
 - (void)syncPostTypesForBlog:(Blog *)blog
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
@@ -604,14 +576,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
-    WPAccount *jetpackAccount = blog.jetpackAccount;
+    WPAccount *account = blog.account;
 
     [self.managedObjectContext deleteObject:blog];
     [self.managedObjectContext processPendingChanges];
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    if (jetpackAccount) {
-        [accountService purgeAccount:jetpackAccount];
+    if (account) {
+        [accountService purgeAccountIfUnused:account];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -727,7 +699,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if (jetpackBlog) {
         DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
         jetpackBlog.account = account;
-        jetpackBlog.jetpackAccount = nil;
     }
 
     return jetpackBlog;

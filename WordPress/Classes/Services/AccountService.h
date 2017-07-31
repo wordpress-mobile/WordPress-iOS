@@ -143,12 +143,9 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 
 /**
- Removes an account if it won't be used anymore.
- 
- For self hosted accounts, the account will be removed if there are no associated blogs
- For WordPress.com accounts, the account will be removed if it's not the default account and there are no associated blogs
+ Removes an account if it's not the default account and there are no associated blogs
  */
-- (void)purgeAccount:(WPAccount *)account;
+- (void)purgeAccountIfUnused:(WPAccount *)account;
 
 ///--------------------
 /// @name Visible blogs
