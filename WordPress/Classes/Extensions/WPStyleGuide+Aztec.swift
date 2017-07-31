@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 extension WPStyleGuide {
-    static let aztecFormatBarInactiveColor = UIColor(hexString: "7B9AB1")
+    static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
 
     static let aztecFormatBarActiveColor: UIColor = UIColor(hexString: "11181D")
 
