@@ -60,8 +60,8 @@ target 'WordPress' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Specta', '1.0.5'
-    pod 'Expecta', '1.0.5'
+    pod 'Specta', '1.0.6'
+    pod 'Expecta', '1.0.6'
     pod 'Nimble', '~> 7.0.0'
   end
 
@@ -118,7 +118,7 @@ target 'WordPressShared' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Specta', '1.0.5'
-    pod 'Expecta', '1.0.5'
+    pod 'Specta', '1.0.6'
+    pod 'Expecta', '1.0.6'
   end
 end

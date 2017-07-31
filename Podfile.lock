@@ -29,7 +29,7 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.8.5):
     - Fabric (~> 1.6.3)
-  - Expecta (1.0.5)
+  - Expecta (1.0.6)
   - Fabric (1.6.12)
   - FLAnimatedImage (1.0.12)
   - FormatterKit/Resources (1.8.2)
@@ -89,7 +89,7 @@ PODS:
   - OHHTTPStubs/Swift (6.0.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - Specta (1.0.5)
+  - Specta (1.0.6)
   - Starscream (2.1.0)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - BuddyBuildSDK (= 1.0.16)
   - CocoaLumberjack (= 3.2.0)
   - Crashlytics (= 3.8.5)
-  - Expecta (= 1.0.5)
+  - Expecta (= 1.0.6)
   - FLAnimatedImage (= 1.0.12)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gridicons (= 0.10)
@@ -124,7 +124,7 @@ DEPENDENCIES:
   - OHHTTPStubs
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)
-  - Specta (= 1.0.5)
+  - Specta (= 1.0.6)
   - Starscream (= 2.1.0)
   - SVProgressHUD (= 2.1.2)
   - UIDeviceIdentifier (~> 0.4)
@@ -158,7 +158,7 @@ SPEC CHECKSUMS:
   BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
   CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
   Crashlytics: dfbae35ef22ca189240d230ad501feea4ee85d2d
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Fabric: f050464eac45a2ce5a8e6e6a07e977c0df32fe28
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
@@ -173,7 +173,7 @@ SPEC CHECKSUMS:
   OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
   OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
+  Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
   Starscream: 168fd64c345fb2dea71b0a869c482aeffcf866e4
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
@@ -183,6 +183,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 771abfe3a334119a909ebe403188498e4a2b01e8
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 3c482bcc50be90d8423ea021986d07d7d7076858
+PODFILE CHECKSUM: 53e0ccdc518389ba1b5a85c764639b2449329b0a
 
 COCOAPODS: 1.2.1
