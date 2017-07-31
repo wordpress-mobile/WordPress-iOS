@@ -14,7 +14,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpComLogin
+            return .login2FA
         }
     }
 
