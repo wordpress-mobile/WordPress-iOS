@@ -41,5 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
                            userIsDotCom:(BOOL)userIsDotCom
                shouldDisplayMultiFactor:(BOOL)shouldDisplayMultifactor;
 
+- (NSDictionary *)helpshiftLoginOptions;
+
 @end
 NS_ASSUME_NONNULL_END
