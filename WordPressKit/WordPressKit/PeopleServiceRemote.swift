@@ -151,12 +151,12 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     public func updateUserRole(_ siteID: Int,
                         userID: Int,
-                        newRole: Role,
+                        newRole: String,
                         success: ((RemotePerson) -> ())? = nil,
                         failure: ((Error) -> ())? = nil) {
         let endpoint = "sites/\(siteID)/users/\(userID)"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
-        let parameters = ["roles": [newRole.slug]]
+        let parameters = ["roles": [newRole]]
 
         wordPressComRestApi.POST(path!,
                 parameters: parameters as [String : AnyObject]?,
@@ -262,7 +262,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     /// - Returns: An array of Person.Role entities.
     ///
     public func getUserRoles(_ siteID: Int,
-                      success: @escaping (([Role]) -> Void),
+                      success: @escaping (([RemoteRole]) -> Void),
                       failure: ((Error) -> ())? = nil) {
         let endpoint = "sites/\(siteID)/roles"
         let path = self.path(forEndpoint: endpoint, with: .version_1_1)
@@ -292,7 +292,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     public func validateInvitation(_ siteID: Int,
                             usernameOrEmail: String,
-                            role: Role,
+                            role: String,
                             success: @escaping (() -> Void),
                             failure: @escaping ((Error) -> Void)) {
         let endpoint = "sites/\(siteID)/invites/validate"
@@ -300,7 +300,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 
         let parameters = [
             "invitees": usernameOrEmail,
-            "role": role.remoteValue
+            "role": role
         ]
 
         wordPressComRestApi.POST(path!, parameters: parameters as [String : AnyObject]?, success: { (responseObject, httpResponse) in
@@ -334,7 +334,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///
     public func sendInvitation(_ siteID: Int,
                         usernameOrEmail: String,
-                        role: Role,
+                        role: String,
                         message: String,
                         success: @escaping (() -> Void),
                         failure: @escaping ((Error) -> Void)) {
@@ -343,7 +343,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 
         let parameters = [
             "invitees": usernameOrEmail,
-            "role": role.remoteValue,
+            "role": role,
             "message": message
         ]
 
@@ -423,11 +423,7 @@ private extension PeopleServiceRemote {
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
         let roles = user["roles"] as? [String]
 
-        let role: Role
-
-        role = roles?.map({ role -> Role in
-            return Role(string: role)
-        }).sorted().first ?? Role.Unsupported
+        let role = roles?.first ?? ""
 
         return T(ID            : ID,
                  username      : username,
@@ -456,21 +452,21 @@ private extension PeopleServiceRemote {
     ///
     /// - Returns: Collection of the remote roles.
     ///
-    func rolesFromResponse(_ roles: [String: AnyObject]) throws -> [Role] {
+    func rolesFromResponse(_ roles: [String: AnyObject]) throws -> [RemoteRole] {
         guard let rawRoles = roles["roles"] as? [[String: AnyObject]] else {
             throw ResponseError.decodingFailure
         }
 
-        let parsed = try rawRoles.map { (rawRole) -> Role in
-            guard let name = rawRole["name"] as? String else {
+        let parsed = try rawRoles.map { (rawRole) -> RemoteRole in
+            guard let name = rawRole["name"] as? String,
+                let displayName = rawRole["display_name"] as? String else {
                 throw ResponseError.decodingFailure
             }
 
-            return Role(string: name)
+            return RemoteRole(slug: name, name: displayName)
         }
 
-        let filtered = parsed.filter { $0 != .Unsupported }
-        return filtered.sorted()
+        return parsed
     }
 
     /// Parses a remote Invitation Error into a PeopleServiceRemote.Error.

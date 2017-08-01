@@ -194,7 +194,7 @@ final class PersonViewController: UITableViewController {
             return
         }
 
-        roleViewController.mode = .dynamic(blog: blog)
+        roleViewController.blog = blog
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { [weak self] newRole in
             self?.updateUserRole(newRole)
@@ -367,7 +367,7 @@ private extension PersonViewController {
             return
         }
 
-        let updated = service.updateUser(user, role: newRole) { (error, reloadedPerson) in
+        let updated = service.updateUser(user, role: newRole.slug) { (error, reloadedPerson) in
             self.person = reloadedPerson
             self.retryUpdatingRole(newRole)
         }
@@ -491,11 +491,10 @@ private extension PersonViewController {
 
     func refreshRoleCell() {
         let enabled = isPromoteEnabled
-        roleCell.detailTextLabel?.text = person.role.localizedName
         roleCell.accessoryType = enabled ? .disclosureIndicator : .none
         roleCell.selectionStyle = enabled ? .gray : .none
         roleCell.isUserInteractionEnabled = enabled
-        roleCell.detailTextLabel?.text = person.role.localizedName
+        roleCell.detailTextLabel?.text = role?.name
     }
 
     func refreshRemoveCell() {
@@ -558,5 +557,12 @@ private extension PersonViewController {
 
     var viewer: Viewer? {
         return person as? Viewer
+    }
+
+    var role: Role? {
+        guard let service = RoleService(blog: blog, context: context) else {
+            return nil
+        }
+        return service.getRole(slug: person.role)
     }
 }
