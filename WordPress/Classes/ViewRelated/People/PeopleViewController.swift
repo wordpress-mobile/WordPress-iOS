@@ -115,7 +115,8 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
 
         let person = personAtIndexPath(indexPath)
-        let viewModel = PeopleCellViewModel(person: person)
+        let role = self.role(person: person)
+        let viewModel = PeopleCellViewModel(person: person, role: role)
 
         cell.bindViewModel(viewModel)
 
@@ -276,10 +277,51 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         case .Followers:
             service.loadFollowersPage(offset, success: success)
         case .Users:
-            service.loadUsersPage(offset, success: success)
+            loadUsersPage(offset, success: success)
         case .Viewers:
             service.loadViewersPage(offset, success: success)
         }
+    }
+
+    fileprivate func loadUsersPage(_ offset: Int = 0, success: @escaping ((_ retrieved: Int, _ shouldLoadMore: Bool) -> Void)) {
+        guard let blog = blogInContext,
+            let peopleService = PeopleService(blog: blog, context: context),
+            let roleService = RoleService(blog: blog, context: context) else {
+                return
+        }
+
+        var result: (retrieved: Int, shouldLoadMore: Bool)?
+
+        let group = DispatchGroup()
+        group.enter()
+        peopleService.loadUsersPage(offset, success: { (retrieved, shouldLoadMore) in
+            result = (retrieved, shouldLoadMore)
+            group.leave()
+        }, failure: { (error) in
+            group.leave()
+        })
+
+        group.enter()
+        roleService.fetchRoles(success: {_ in 
+            group.leave()
+        }, failure: { _ in
+            group.leave()
+        })
+
+        group.notify(queue: DispatchQueue.main) { 
+            if let result = result {
+                success(result.retrieved, result.shouldLoadMore)
+            }
+        }
+    }
+
+    fileprivate var blogInContext: Blog? {
+        guard let objectID = blog?.objectID,
+            let object = try? context.existingObject(with: objectID) else {
+            return nil
+        }
+
+        return object as? Blog
     }
 
 
@@ -305,6 +347,14 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     fileprivate func personAtIndexPath(_ indexPath: IndexPath) -> Person {
         let managedPerson = resultsController.object(at: indexPath) as! ManagedPerson
         return managedPerson.toUnmanaged()
+    }
+
+    fileprivate func role(person: Person) -> Role? {
+        guard let blog = blog,
+            let service = RoleService(blog: blog, context: context) else {
+            return nil
+        }
+        return service.getRole(slug: person.role)
     }
 
     fileprivate func displayModePicker() {

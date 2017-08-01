@@ -6,46 +6,13 @@ import WordPressShared
 ///
 class RoleViewController: UITableViewController {
 
-    /// RoleViewController operation modes
-    ///
-    enum Mode {
-        /// Dynamic Mode: The list of available roles will be downloaded from the blog's remote endpoint.
-        ///
-        case dynamic(blog: Blog)
-
-        /// Static Mode: The list of modes must be provided
-        ///
-        case `static`(roles: [Role])
-    }
-
-    /// Specifies the way RoleViewController behaves
-    ///
-    var mode: Mode? {
-        didSet {
-            guard let mode = mode else {
-                return
-            }
-
-            switch mode {
-            case .dynamic(let blog):
-                self.blog = blog
-            case .static(let list):
-                self.roles = list
-            }
-        }
-    }
-
     /// Optional Person Blog. When set, will be used to refresh the list of available roles.
     ///
-    fileprivate var blog: Blog?
-
-    /// Available Roles for the current blog.
-    ///
-    fileprivate var roles = [Role]()
+    var blog: Blog?
 
     /// Currently Selected Role
     ///
-    var selectedRole: Role!
+    var selectedRole: String!
 
     /// Closure to be executed whenever the selected role changes.
     ///
@@ -55,23 +22,18 @@ class RoleViewController: UITableViewController {
     ///
     fileprivate let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
-
+    fileprivate var roles: [Role] {
+        return blog?.roles.map(Array<Role>.init) ?? []
+    }
 
     // MARK: - View Lifecyle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        assert(mode != nil)
         title = NSLocalizedString("Role", comment: "User Roles Title")
         setupActivityIndicator()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        refreshAvailableRolesIfNeeded()
-    }
-
 
     // MARK: - Private Helpers
     fileprivate func setupActivityIndicator() {
@@ -79,25 +41,6 @@ class RoleViewController: UITableViewController {
         view.addSubview(activityIndicator)
         view.pinSubviewAtCenter(activityIndicator)
     }
-
-    fileprivate func refreshAvailableRolesIfNeeded() {
-        guard let blog = blog else {
-            return
-        }
-
-        activityIndicator.startAnimating()
-
-        let context = ContextManager.sharedInstance().mainContext
-        let service = PeopleService(blog: blog, context: context)
-        service?.loadAvailableRoles({ roles in
-            self.roles = roles
-            self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
-        }, failure: { error in
-            self.activityIndicator.stopAnimating()
-        })
-    }
-
 
     // MARK: - UITableView Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -112,8 +55,8 @@ class RoleViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: reusableIdentifier, for: indexPath)
         let roleForCurrentRow = roleAtIndexPath(indexPath)
 
-        cell.textLabel?.text = roleForCurrentRow.localizedName
-        cell.accessoryType = (roleForCurrentRow == selectedRole) ? .checkmark : .none
+        cell.textLabel?.text = roleForCurrentRow.name
+        cell.accessoryType = (roleForCurrentRow.slug == selectedRole) ? .checkmark : .none
 
         WPStyleGuide.configureTableViewCell(cell)
 
@@ -124,12 +67,12 @@ class RoleViewController: UITableViewController {
         tableView.deselectSelectedRowWithAnimationAfterDelay(true)
 
         let roleForSelectedRow = roleAtIndexPath(indexPath)
-        guard selectedRole != roleForSelectedRow else {
+        guard selectedRole != roleForSelectedRow.slug else {
             return
         }
 
         // Refresh Interface
-        selectedRole = roleForSelectedRow
+        selectedRole = roleForSelectedRow.slug
         tableView.reloadDataPreservingSelection()
 
         // Callback
