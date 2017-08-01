@@ -111,6 +111,7 @@
 		08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
+		1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */; };
 		171795831D1C65E8002F1EB2 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */; };
 		171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1719633F1D378D5100898E8B /* SearchWrapperView.swift */; };
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
@@ -1164,6 +1165,7 @@
 		08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaURLExporterTests.swift; sourceTree = "<group>"; };
 		1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeLabel.swift; sourceTree = "<group>"; };
 		1702BBDF1CF3034E00766A33 /* DomainsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsService.swift; sourceTree = "<group>"; };
+		1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Tint.swift"; sourceTree = "<group>"; };
 		171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		1719633F1D378D5100898E8B /* SearchWrapperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchWrapperView.swift; sourceTree = "<group>"; };
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
@@ -4100,6 +4102,7 @@
 				B5BE31C31CB825A100BDF770 /* NSURLCache+Helpers.swift */,
 				FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */,
 				FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */,
+				1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */,
 				B587797219B799D800E57C5A /* UIDevice+Helpers.swift */,
 				E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */,
 				FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */,
@@ -6093,6 +6096,7 @@
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				E105205B1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift in Sources */,
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
+				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
