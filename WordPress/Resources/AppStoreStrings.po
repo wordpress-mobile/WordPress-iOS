@@ -40,7 +40,7 @@ msgstr ""
 
 msgctxt "v8.2-whats-new"
 msgid ""
-"Several improvements to the new native aditor, have you already tried it?\n"
+"Several improvements to the new native editor, have you already tried it?\n"
 "Author filter on post list for Jetpack and self-hosted sites.\n"
 "New setting to choose the video upload size.\n"
 msgstr ""
