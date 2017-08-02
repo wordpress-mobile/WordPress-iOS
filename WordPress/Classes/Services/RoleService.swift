@@ -1,6 +1,8 @@
 import Foundation
 import WordPressKit
 
+/// Service providing access to user roles
+///
 struct RoleService {
     let blog: Blog
 
@@ -19,11 +21,15 @@ struct RoleService {
         self.context = context
     }
 
+    /// Returns a role from Core Data with the given slug.
+    ///
     func getRole(slug: String) -> Role? {
         let predicate = NSPredicate(format: "slug = %@ AND blog = %@", slug, blog)
         return context.firstObject(ofType: Role.self, matching: predicate)
     }
 
+    /// Forces a refresh of roles from the api and stores them in Core Data.
+    ///
     func fetchRoles(success: @escaping ([Role]) -> Void, failure: @escaping (Error) -> Void) {
         remote.getUserRoles(siteID,
                             success: { (remoteRoles) in
