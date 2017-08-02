@@ -48,6 +48,13 @@
 {
     DDLogMethod();
     [super didReceiveMemoryWarning];
+
+    // If we get a memory warning, let's pop or dismiss
+    if ([self.navigationController.viewControllers count] > 1 && self.navigationController.topViewController == self) {
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self dismissPreview];
+    }
 }
 
 - (void)viewDidLoad
