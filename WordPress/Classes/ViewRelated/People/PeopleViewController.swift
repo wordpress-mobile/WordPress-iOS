@@ -303,13 +303,13 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         })
 
         group.enter()
-        roleService.fetchRoles(success: {_ in 
+        roleService.fetchRoles(success: {_ in
             group.leave()
         }, failure: { _ in
             group.leave()
         })
 
-        group.notify(queue: DispatchQueue.main) { 
+        group.notify(queue: DispatchQueue.main) {
             if let result = result {
                 success(result.retrieved, result.shouldLoadMore)
             }
