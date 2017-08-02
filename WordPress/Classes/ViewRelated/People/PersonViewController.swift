@@ -194,7 +194,7 @@ final class PersonViewController: UITableViewController {
             return
         }
 
-        roleViewController.blog = blog
+        roleViewController.roles = blog.roles?.map({ $0.toUnmanaged() }) ?? []
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { [weak self] newRole in
             self?.updateUserRole(newRole)
@@ -355,7 +355,7 @@ private extension PersonViewController {
         WPError.showNetworkingAlertWithError(errorWithSource)
     }
 
-    func updateUserRole(_ newRole: Role) {
+    func updateUserRole(_ newRole: String) {
         guard let user = user else {
             DDLogError("Error: Only Users have Roles!")
             assertionFailure()
@@ -367,7 +367,7 @@ private extension PersonViewController {
             return
         }
 
-        let updated = service.updateUser(user, role: newRole.slug) { (error, reloadedPerson) in
+        let updated = service.updateUser(user, role: newRole) { (error, reloadedPerson) in
             self.person = reloadedPerson
             self.retryUpdatingRole(newRole)
         }
@@ -378,7 +378,7 @@ private extension PersonViewController {
         WPAnalytics.track(.personUpdated)
     }
 
-    func retryUpdatingRole(_ newRole: Role) {
+    func retryUpdatingRole(_ newRole: String) {
         let retryTitle          = NSLocalizedString("Retry", comment: "Retry updating User's Role")
         let cancelTitle         = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
         let title               = NSLocalizedString("Sorry!", comment: "Update User Failed Title")

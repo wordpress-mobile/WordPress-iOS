@@ -9,6 +9,12 @@ public class Role: NSManagedObject {
 }
 
 extension Role {
+    func toUnmanaged() -> RemoteRole {
+        return RemoteRole(slug: slug, name: name)
+    }
+}
+
+extension Role {
     var color: UIColor {
         switch slug {
         case .some("super-admin"):
