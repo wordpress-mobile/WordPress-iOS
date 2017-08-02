@@ -32,7 +32,7 @@ class InvitePersonViewController: UITableViewController {
 
     /// Invitation Role
     ///
-    fileprivate var role: Role? {
+    fileprivate var role: RemoteRole? {
         didSet {
             refreshRoleCell()
             validateInvitation()
@@ -52,8 +52,18 @@ class InvitePersonViewController: UITableViewController {
 
     /// Roles available for the current site
     ///
-    fileprivate var availableRoles: [Role] {
-        return blog?.roles.map({ Array($0) }) ?? []
+    fileprivate var availableRoles: [RemoteRole] {
+        let blogRoles = blog?.roles.map({ Array($0) }) ?? []
+        var roles = [RemoteRole]()
+        let inviteRole: RemoteRole
+        if blog.isPrivate() {
+            inviteRole = RemoteRole.viewer
+        } else {
+            inviteRole = RemoteRole.follower
+        }
+        roles.append(inviteRole)
+        roles += blogRoles.map({ $0.toUnmanaged() })
+        return roles
     }
 
     /// Last Section Index
@@ -172,10 +182,10 @@ class InvitePersonViewController: UITableViewController {
             return
         }
 
-        roleViewController.blog = blog
+        roleViewController.roles = availableRoles
         roleViewController.selectedRole = role?.slug
         roleViewController.onChange = { [unowned self] newRole in
-            self.role = newRole
+            self.role = self.availableRoles.first(where: { $0.slug == newRole })
         }
     }
 

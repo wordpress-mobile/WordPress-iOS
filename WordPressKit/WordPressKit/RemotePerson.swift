@@ -41,6 +41,16 @@ public protocol RemotePerson {
 public struct RemoteRole {
     public let slug: String
     public let name: String
+
+    public init(slug: String, name: String) {
+        self.slug = slug
+        self.name = name
+    }
+}
+
+extension RemoteRole {
+    public static let viewer = RemoteRole(slug: "follower", name: NSLocalizedString("Viewer", comment: "User role badge"))
+    public static let follower = RemoteRole(slug: "follower", name: NSLocalizedString("Follower", comment: "User role badge"))
 }
 
 // MARK: - Specifies all of the possible Person Types that might exist.
