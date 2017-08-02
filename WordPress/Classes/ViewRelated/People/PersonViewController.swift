@@ -559,10 +559,17 @@ private extension PersonViewController {
         return person as? Viewer
     }
 
-    var role: Role? {
-        guard let service = RoleService(blog: blog, context: context) else {
-            return nil
+    var role: RemoteRole? {
+        switch screenMode {
+        case .Follower:
+            return .follower
+        case .Viewer:
+            return .viewer
+        case .User:
+            guard let service = RoleService(blog: blog, context: context) else {
+                return nil
+            }
+            return service.getRole(slug: person.role)?.toUnmanaged()
         }
-        return service.getRole(slug: person.role)
     }
 }
