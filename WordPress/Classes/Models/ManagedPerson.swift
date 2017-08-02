@@ -73,7 +73,7 @@ extension Follower {
         firstName = managedPerson.firstName
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
-        role = "follower"
+        role = RemoteRole.follower.slug
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
@@ -88,7 +88,7 @@ extension Viewer {
         firstName = managedPerson.firstName
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
-        role = "viewer"
+        role = RemoteRole.viewer.slug
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
