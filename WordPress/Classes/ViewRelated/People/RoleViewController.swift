@@ -6,9 +6,9 @@ import WordPressShared
 ///
 class RoleViewController: UITableViewController {
 
-    /// Optional Person Blog. When set, will be used to refresh the list of available roles.
+    /// List of available roles.
     ///
-    var blog: Blog?
+    var roles: [RemoteRole] = []
 
     /// Currently Selected Role
     ///
@@ -16,15 +16,11 @@ class RoleViewController: UITableViewController {
 
     /// Closure to be executed whenever the selected role changes.
     ///
-    var onChange: ((Role) -> Void)?
+    var onChange: ((String) -> Void)?
 
     /// Activity Spinner, to be animated during Backend Interaction
     ///
     fileprivate let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-
-    fileprivate var roles: [Role] {
-        return blog?.roles.map(Array<Role>.init) ?? []
-    }
 
     // MARK: - View Lifecyle Methods
     override func viewDidLoad() {
@@ -76,13 +72,13 @@ class RoleViewController: UITableViewController {
         tableView.reloadDataPreservingSelection()
 
         // Callback
-        onChange?(roleForSelectedRow)
+        onChange?(roleForSelectedRow.slug)
         _ = navigationController?.popViewController(animated: true)
     }
 
 
     // MARK: - Private Methods
-    fileprivate func roleAtIndexPath(_ indexPath: IndexPath) -> Role {
+    fileprivate func roleAtIndexPath(_ indexPath: IndexPath) -> RemoteRole {
         return roles[indexPath.row]
     }
 
