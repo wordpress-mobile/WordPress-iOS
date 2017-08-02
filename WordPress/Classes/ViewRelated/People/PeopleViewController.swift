@@ -248,6 +248,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     fileprivate func refreshPeople() {
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
+            self?.tableView.reloadData()
             self?.nextRequestOffset = retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.refreshControl?.endRefreshing()
