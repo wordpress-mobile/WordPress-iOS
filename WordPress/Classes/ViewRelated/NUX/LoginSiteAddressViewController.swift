@@ -1,17 +1,23 @@
 import UIKit
 
-class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
-    @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
+class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
-    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpOrgLogin
+            return .loginSiteAddress
+        }
+    }
+
+
+    override var loginFields: LoginFields {
+        didSet {
+            // Clear the site url and site info (if any) from LoginFields
+            loginFields.siteUrl = ""
+            loginFields.siteInfo = nil
         }
     }
 
@@ -20,8 +26,6 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBarIcon()
-
         localizeControls()
     }
 
@@ -36,7 +40,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
         configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
 
-        WPAppAnalytics.track(.loginURLFormViewed)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
 
@@ -45,7 +49,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
-
+        WPAppAnalytics.track(.loginURLFormViewed)
     }
 
 
@@ -67,14 +71,14 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
-        instructionLabel.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
+        instructionLabel?.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
 
-        siteURLField.placeholder = NSLocalizedString("example.wordress.com", comment: "Site Address placeholder")
+        siteURLField.placeholder = NSLocalizedString("example.wordpress.com", comment: "Site Address placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Next Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
 
         let siteAddressHelpTitle = NSLocalizedString("Need help finding your site address?", comment: "A button title.")
         siteAddressHelpButton.setTitle(siteAddressHelpTitle, for: UIControlState())
@@ -93,10 +97,10 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
-        submitButton.showActivityIndicator(animating)
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
 
-        submitButton.isEnabled = (
+        submitButton?.isEnabled = (
             !animating && canSubmit()
         )
     }
@@ -106,7 +110,7 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         siteURLField.isEnabled = !loading
 
         configureSubmitButton(animating: loading)
@@ -221,13 +225,6 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
     }
 
 
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
-    }
-
-
     /// Whether the form can be submitted.
     ///
     func canSubmit() -> Bool {
@@ -248,9 +245,12 @@ class LoginSiteAddressViewController: NUXAbstractViewController, SigninKeyboardR
         validateForm()
     }
 
-
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        // TODO: Wire up when the new help screen is implemented.
+        let alert = FancyAlertViewController.siteAddressHelpController(loginFields: loginFields, sourceTag: sourceTag)
+        alert.modalPresentationStyle = .custom
+        alert.transitioningDelegate = self
+        present(alert, animated: true, completion: nil)
+        WPAnalytics.track(.loginURLHelpScreenViewed)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {

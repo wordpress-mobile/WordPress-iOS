@@ -1,16 +1,13 @@
 #import "MenusService.h"
 #import "BasePost.h"
 #import "Blog.h"
-#import "MenusServiceRemote.h"
 #import "Menu.h"
 #import "MenuItem.h"
 #import "MenuLocation.h"
-#import "RemoteMenu.h"
-#import "RemoteMenuItem.h"
-#import "RemoteMenuLocation.h"
 #import "ContextManager.h"
 #import "PostService.h"
 #import "WordPress-Swift.h"
+@import WordPressKit;
 
 NS_ASSUME_NONNULL_BEGIN
 

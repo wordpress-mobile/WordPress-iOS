@@ -1,7 +1,7 @@
 import UIKit
 import Foundation
 import CocoaLumberjack
-import WordPressComAnalytics
+import WordPressShared
 
 /// Note:
 /// This migration policy handles database migration from WPiOS 4.4 to 4.5.

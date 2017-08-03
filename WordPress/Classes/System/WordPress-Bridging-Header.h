@@ -45,15 +45,11 @@
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
-#import "MediaServiceRemoteREST.h"
 #import "MeHeaderView.h"
 
 #import "NavBarTitleDropdownButton.h"
-#import "NSString+Helpers.h"
 #import "NSAttributedString+Util.h"
-#import "NSBundle+VersionNumberHelper.h"
 #import "NSObject+Helpers.h"
-#import "NSString+Helpers.h"
 #import "NSURL+Util.h"
 
 #import "OnePasswordFacade.h"
@@ -71,9 +67,6 @@
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostServiceOptions.h"
-#import "PostServiceRemote.h"
-#import "PostServiceRemoteOptions.h"
-#import "PostServiceRemoteXMLRPC.h"
 #import "PostSettingsViewController.h"
 #import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"
@@ -88,8 +81,6 @@
 #import "ReaderSiteService.h"
 #import "ReaderSiteServiceRemote.h"
 #import "ReaderTopicService.h"
-#import "RemotePost.h"
-#import "RemoteMedia.h"
 #import "RemoteReaderPost.h"
 #import "RemoteReaderSite.h"
 #import "RemoteReaderTopic.h"
@@ -113,7 +104,6 @@
 
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
-#import "UIDevice+Helpers.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
 #import "UIView+Subviews.h"
@@ -158,7 +148,6 @@
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <FormatterKit/FormatterKit-umbrella.h>
-#import <WordPressComAnalytics/WPAnalytics.h>
 
 #ifdef BUDDYBUILD_ENABLED
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
@@ -172,3 +161,4 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPAnalytics.h>

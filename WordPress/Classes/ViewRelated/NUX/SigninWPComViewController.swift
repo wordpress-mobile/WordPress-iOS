@@ -1,5 +1,4 @@
 import UIKit
-import WordPressComAnalytics
 import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com

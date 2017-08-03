@@ -1,4 +1,4 @@
-#import "PostServiceRemoteOptions.h"
+@import WordPressKit;
 
 /**
  @class PostServiceSyncOptions
