@@ -295,7 +295,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     fileprivate func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            SigninHelpers.showSigninForJustWPComFromPresenter(self)
+            self.promptForLoginOrSignup()
         }
     }
 
@@ -416,6 +416,38 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
         return headerView
     }()
+
+    /// Shows an actionsheet with options to Log In or Create a WordPress site.
+    /// This is a temporary stop-gap measure to preserve for users only logged
+    /// into a self-hosted site the ability to create a WordPress.com account.
+    ///
+    fileprivate func promptForLoginOrSignup() {
+        let controller = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
+        controller.addActionWithTitle(NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form."),
+            style: .default,
+            handler: { (_) in
+                SigninHelpers.showSigninForJustWPComFromPresenter(self)
+        })
+        controller.addActionWithTitle(NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
+                                      style: .default,
+                                      handler: { (_) in
+                                        let controller = SignupViewController.controller()
+                                        let navController = NUXNavigationController(rootViewController: controller)
+                                        self.present(navController, animated: true, completion: nil)
+
+
+        })
+        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel"))
+        controller.modalPresentationStyle = .popover
+        present(controller, animated: true, completion: nil)
+
+        if let presentationController = controller.popoverPresentationController,
+            let cell = tableView.visibleCells.last {
+            presentationController.permittedArrowDirections = .any
+            presentationController.sourceView = cell
+            presentationController.sourceRect = cell.bounds
+        }
+    }
 }
 
 extension MeViewController: WPSplitViewControllerDetailProvider {
