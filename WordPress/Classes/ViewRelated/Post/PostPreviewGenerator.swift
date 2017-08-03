@@ -8,7 +8,7 @@ protocol PostPreviewGeneratorDelegate {
 
 class PostPreviewGenerator: NSObject {
     let post: AbstractPost
-    var delegate: PostPreviewGeneratorDelegate?
+    weak var delegate: PostPreviewGeneratorDelegate?
 
     init(post: AbstractPost) {
         self.post = post
