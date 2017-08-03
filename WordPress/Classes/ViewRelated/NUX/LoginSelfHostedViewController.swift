@@ -4,28 +4,28 @@ import WordPressShared
 /// Part two of the self-hosted sign in flow. A valid site address should be acquired
 /// before presenting this view controller.
 ///
-class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardResponder, SigninWPComSyncHandler, LoginViewController {
+class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var siteHeaderView: SiteInfoHeaderView!
     @IBOutlet var siteAddressStackView: UIStackView!
     @IBOutlet var siteAddressLabel: UILabel!
     @IBOutlet var usernameField: WPWalkthroughTextField!
     @IBOutlet var passwordField: WPWalkthroughTextField!
-    @IBOutlet var errorLabel: UILabel!
-    @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var forgotPasswordButton: WPNUXSecondaryButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
 
-    lazy var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
-        facade.delegate = self
-        return facade
-    }()
-
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpOrgLogin
+            return .loginUsernamePassword
+        }
+    }
+
+    override var loginFields: LoginFields {
+        didSet {
+            // Clear the username & password (if any) from LoginFields
+            loginFields.username = ""
+            loginFields.password = ""
         }
     }
 
@@ -67,7 +67,7 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
-
+        WPAppAnalytics.track(.loginUsernamePasswordFormViewed)
     }
 
 
@@ -100,12 +100,13 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
 
         let forgotPasswordTitle = NSLocalizedString("Lost your password?", comment: "Title of a button. ")
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: UIControlState())
         forgotPasswordButton.setTitle(forgotPasswordTitle, for: .highlighted)
+        forgotPasswordButton.titleLabel?.numberOfLines = 0
     }
 
 
@@ -131,16 +132,16 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     /// Configures the appearance and state of the forgot password button.
     ///
     func configureForgotPasswordButton() {
-        forgotPasswordButton.isEnabled = !submitButton.isAnimating
+        forgotPasswordButton.isEnabled = enableSubmit(animating: false)
     }
 
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
-        submitButton.showActivityIndicator(animating)
+    override func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
 
-        submitButton.isEnabled = (
+        submitButton?.isEnabled = (
             !animating &&
                 !loginFields.username.isEmpty &&
                 !loginFields.password.isEmpty
@@ -152,7 +153,7 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         usernameField.isEnabled = !loading
         passwordField.isEnabled = !loading
 
@@ -171,12 +172,6 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
         if SigninEditingState.signinEditingStateActive {
             usernameField.becomeFirstResponder()
         }
-    }
-
-
-    /// Noop. Required by wpcom sync handler.
-    ///
-    func configureStatusLabel(_ message: String) {
     }
 
 
@@ -231,7 +226,7 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     /// Noop.  Required by the SigninWPComSyncHandler protocol but the self-hosted
     /// controller's implementation does not use safari saved credentials.
     ///
-    func updateSafariCredentialsIfNeeded() {
+    override func updateSafariCredentialsIfNeeded() {
     }
 
 
@@ -239,28 +234,7 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
     /// proceeds with the submit action.
     ///
     func validateForm() {
-        view.endEditing(true)
-        displayError(message: "")
-
-        // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
-            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Title of an error message"),
-                              message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
-                              withSupportButton: false)
-
-            return
-        }
-
-        configureViewLoading(true)
-
-        loginFacade.login(with: loginFields)
-    }
-
-
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
+        validateFormAndLogin()
     }
 
 
@@ -355,6 +329,7 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         SigninHelpers.openForgotPasswordURL(loginFields)
+        WPAppAnalytics.track(.loginForgotPasswordClicked)
     }
 
 
@@ -372,9 +347,9 @@ class LoginSelfHostedViewController: NUXAbstractViewController, SigninKeyboardRe
 }
 
 
-extension LoginSelfHostedViewController: LoginFacadeDelegate {
+extension LoginSelfHostedViewController {
 
-    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    override func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
 
@@ -383,8 +358,6 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
         displayLoginMessage("")
 
         BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
-
             let context = ContextManager.sharedInstance().mainContext
             let service = BlogService(managedObjectContext: context)
             guard let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) else {
@@ -397,6 +370,8 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
             }
 
             RecentSitesService().touch(blog: blog)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
+
             self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
                 self?.showEpilogue()
@@ -410,7 +385,7 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
     }
 
 
-    func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error!) {
         displayLoginMessage("")
         configureViewLoading(false)
         let err = error as NSError
@@ -419,17 +394,6 @@ extension LoginSelfHostedViewController: LoginFacadeDelegate {
         } else {
             displayError(error as NSError, sourceTag: sourceTag)
         }
-    }
-
-
-    func needsMultifactorCode() {
-        configureViewLoading(false)
-
-        WPAppAnalytics.track(.twoFactorCodeRequested)
-        // Credentials were good but a 2fa code is needed.
-        loginFields.shouldDisplayMultifactor = true // technically not needed
-
-        performSegue(withIdentifier: .show2FA, sender: self)
     }
 }
 

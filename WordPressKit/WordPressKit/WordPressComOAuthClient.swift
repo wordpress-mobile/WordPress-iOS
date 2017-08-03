@@ -7,6 +7,7 @@ import CocoaLumberjack
     case unsupportedGrantType
     case invalidRequest
     case needsMultifactorCode
+    case invalidOneTimePassword
 }
 
 /// `WordPressComOAuthClient` encapsulates the pattern of authenticating against WordPress.com OAuth2 service.
@@ -172,7 +173,8 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
             "invalid_client": WordPressComOAuthError.invalidClient,
             "unsupported_grant_type": WordPressComOAuthError.unsupportedGrantType,
             "invalid_request": WordPressComOAuthError.invalidRequest,
-            "needs_2fa": WordPressComOAuthError.needsMultifactorCode
+            "needs_2fa": WordPressComOAuthError.needsMultifactorCode,
+            "invalid_otp" : WordPressComOAuthError.invalidOneTimePassword
         ]
 
         let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.unknown.rawValue

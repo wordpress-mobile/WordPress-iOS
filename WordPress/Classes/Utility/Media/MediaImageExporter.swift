@@ -1,11 +1,11 @@
 import Foundation
 import MobileCoreServices
 
-/// MediaLibrary export handling of UIImages.
+/// Media export handling of UIImages.
 ///
 class MediaImageExporter: MediaExporter {
 
-    var mediaDirectoryType: MediaLibrary.MediaDirectory = .uploads
+    var mediaDirectoryType: MediaDirectory = .uploads
 
     /// Export options.
     ///
@@ -166,9 +166,8 @@ class MediaImageExporter: MediaExporter {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
-            let url = try MediaLibrary.makeLocalMediaURL(withFilename: filename,
-                                                         fileExtension: URL.fileExtensionForUTType(type),
-                                                         type: mediaDirectoryType)
+            let url = try mediaFileManager.makeLocalMediaURL(withFilename: filename,
+                                                               fileExtension: URL.fileExtensionForUTType(type))
 
             // Check MediaSettings and configure the image writer as needed.
             var writer = ImageSourceWriter(url: url, sourceUTType: type as CFString)

@@ -4,7 +4,6 @@
 #import "PostCategoriesViewController.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
-#import "NSString+Helpers.h"
 #import "Media.h"
 #import "PostFeaturedImageCell.h"
 #import "PostGeolocationCell.h"
@@ -29,6 +28,7 @@
 
 @import Gridicons;
 @import WordPressShared;
+@import WordPressKit;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,

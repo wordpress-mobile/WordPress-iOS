@@ -7,7 +7,6 @@ import WordPressShared
 import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
-import WordPressComAnalytics
 import AVKit
 
 
@@ -44,7 +43,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
-
+        textView.linkTextAttributes = [NSUnderlineStyleAttributeName: NSNumber(value:NSUnderlineStyle.styleSingle.rawValue), NSForegroundColorAttributeName: Colors.aztecLinkColor]
+        textView.textAlignment = .natural
         return textView
     }()
 
@@ -59,6 +59,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
+        label.textAlignment = .natural
         return label
     }()
 
@@ -99,9 +100,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.font = Fonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        textView.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title]
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .natural
+        textView.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title, NSParagraphStyleAttributeName: titleParagraphStyle]
         textView.translatesAutoresizingMaskIntoConstraints = false
-
+        textView.textAlignment = .natural
         textView.isScrollEnabled = false
         textView.backgroundColor = .clear
 
@@ -119,6 +122,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText, attributes: attributes)
         titlePlaceholderLabel.sizeToFit()
         titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        titlePlaceholderLabel.textAlignment = .natural
 
         return titlePlaceholderLabel
     }()
@@ -521,7 +525,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let insets = titleTextField.textContainerInset
         NSLayoutConstraint.activate([
             titlePlaceholderLabel.leftAnchor.constraint(equalTo: titleTextField.leftAnchor, constant: insets.left + titleTextField.textContainer.lineFragmentPadding),
-            titlePlaceholderLabel.rightAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: -insets.right),
+            titlePlaceholderLabel.rightAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: -insets.right - titleTextField.textContainer.lineFragmentPadding),
             titlePlaceholderLabel.topAnchor.constraint(equalTo: titleTextField.topAnchor, constant: insets.top),
             titlePlaceholderLabel.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
             ])
@@ -549,7 +553,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         NSLayoutConstraint.activate([
             placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: Constants.placeholderPadding.left + defaultMargin),
-            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: Constants.placeholderPadding.right + defaultMargin),
+            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -(Constants.placeholderPadding.right + defaultMargin + richTextView.textContainer.lineFragmentPadding)),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
@@ -1201,6 +1205,7 @@ extension AztecPostViewController : UITextViewDelegate {
     }
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        textView.textAlignment = .natural
         switch textView {
         case titleTextField:
             formatBar.enabled = false
@@ -2801,6 +2806,7 @@ extension AztecPostViewController {
         static let mediaProgressOverlay = UIColor(white: 1, alpha: 0.6)
         static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
         static let mediaProgressBarTrack = WPStyleGuide.wordPressBlue()
+        static let aztecLinkColor = WPStyleGuide.mediumBlue()
     }
 
     struct Fonts {

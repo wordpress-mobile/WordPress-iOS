@@ -2,11 +2,8 @@ import UIKit
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
-class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardResponder, LoginViewController {
-    @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var errorLabel: UILabel!
+class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var emailTextField: WPWalkthroughTextField!
-    @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
@@ -24,7 +21,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpComLogin
+            return .loginEmail
         }
     }
 
@@ -34,8 +31,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupNavBarIcon()
 
         localizeControls()
         setupOnePasswordButtonIfNeeded()
@@ -55,8 +50,6 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         configureEmailField()
         configureSubmitButton()
         configureViewForEditingIfNeeded()
-
-        WPAppAnalytics.track(.loginEmailFormViewed)
     }
 
 
@@ -68,6 +61,8 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
+
+        WPAppAnalytics.track(.loginEmailFormViewed)
     }
 
 
@@ -89,22 +84,28 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// Hides the self-hosted login option.
     ///
     func configureForWPComOnlyIfNeeded() {
-        selfHostedSigninButton.isHidden = restrictToWPCom
+        if restrictToWPCom {
+            selfHostedSigninButton.isEnabled = false
+            selfHostedSigninButton.alpha = 0.0
+        } else {
+            selfHostedSigninButton.isEnabled = true
+            selfHostedSigninButton.alpha = 1.0
+        }
     }
 
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
-        instructionLabel.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email addresss screen.")
+        instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email addresss screen.")
 
         emailTextField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
         emailTextField.accessibilityIdentifier = "Email address"
 
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        submitButton.setTitle(submitButtonTitle, for: UIControlState())
-        submitButton.setTitle(submitButtonTitle, for: .highlighted)
-        submitButton.accessibilityIdentifier = "Next Button"
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
 
         let selfHostedTitle = NSLocalizedString("Log into your site by entering your site address instead.", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
@@ -134,7 +135,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     /// Configures whether appearance of the submit button.
     ///
     func configureSubmitButton() {
-        submitButton.isEnabled = canSubmit()
+        submitButton?.isEnabled = canSubmit()
     }
 
 
@@ -142,10 +143,10 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    override func configureViewLoading(_ loading: Bool) {
         emailTextField.isEnabled = !loading
-        submitButton.isEnabled = !loading
-        submitButton.showActivityIndicator(loading)
+        submitButton?.isEnabled = !loading
+        submitButton?.showActivityIndicator(loading)
     }
 
 
@@ -196,7 +197,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         loginFields.safariStoredUsernameHash = username.hash
         loginFields.safariStoredPasswordHash = password.hash
 
-        loginWithUsernamePassword(immediately: false)
+        loginWithUsernamePassword(immediately: true)
 
         WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
     }
@@ -210,8 +211,11 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
     func loginWithUsernamePassword(immediately: Bool = false) {
-        // TODO: Need to implement the `immediately` portion of this once one wpcom controllers are done.
-        performSegue(withIdentifier: .showWPComLogin, sender: self)
+        if (immediately) {
+            validateFormAndLogin()
+        } else {
+            performSegue(withIdentifier: .showWPComLogin, sender: self)
+        }
     }
 
 
@@ -235,7 +239,7 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
     ///
     func validateForm() {
         displayError(message: "")
-        guard loginFields.username.isValidEmail() else {
+        guard EmailFormatValidator.validate(string: loginFields.username) else {
             assertionFailure("Form should not be submitted unless there is a valid looking email entered.")
             return
         }
@@ -267,18 +271,18 @@ class LoginEmailViewController: NUXAbstractViewController, SigninKeyboardRespond
         })
     }
 
+    override func displayRemoteError(_ error: Error!) {
+        configureViewLoading(false)
 
-    /// Sets the text of the error label.
-    ///
-    func displayError(message: String) {
-        errorLabel.text = message
+        errorToPresent = error
+        performSegue(withIdentifier: .showWPComLogin, sender: self)
     }
 
 
     /// Whether the form can be submitted.
     ///
     func canSubmit() -> Bool {
-        return loginFields.username.isValidEmail()
+        return EmailFormatValidator.validate(string: loginFields.username)
     }
 
 
