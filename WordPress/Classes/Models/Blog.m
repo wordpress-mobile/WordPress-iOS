@@ -448,6 +448,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureMentions:
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeaturePluginManagement:
+            return [self supportsRestApi] && ![self isHostedAtWPcom];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
