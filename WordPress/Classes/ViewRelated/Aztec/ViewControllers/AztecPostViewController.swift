@@ -682,7 +682,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func getHTML() -> String {
-        var processedHTML = richTextView.getHTML()
+        var processedHTML = richTextView.getHTML(prettyPrint: true)
         for processor in htmlPostProcessors {
             processedHTML = processor.process(text: processedHTML)
         }
