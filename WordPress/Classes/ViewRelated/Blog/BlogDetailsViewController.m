@@ -921,7 +921,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPeople
 {
-    // TODO(@koke, 2015-11-02): add analytics
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPeople withBlog:self.blog];
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
@@ -933,7 +933,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPlans
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans withBlog:self.blog];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
