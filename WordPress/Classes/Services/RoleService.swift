@@ -42,8 +42,7 @@ private extension RoleService {
     func mergeRoles(_ remoteRoles: [RemoteRole]) -> [Role] {
         let existingRoles = blog.roles ?? []
         var rolesToKeep = [Role]()
-        var order = 0
-        for remoteRole in remoteRoles {
+        for (order, remoteRole) in remoteRoles.enumerated() {
             let role: Role
             if let existingRole = existingRoles.first(where: { $0.slug == remoteRole.slug }) {
                 role = existingRole
@@ -55,7 +54,6 @@ private extension RoleService {
             role.name = remoteRole.name
             role.order = order as NSNumber
             rolesToKeep.append(role)
-            order += 1
         }
         let rolesToDelete = existingRoles.subtracting(rolesToKeep)
         rolesToDelete.forEach(context.delete(_:))
