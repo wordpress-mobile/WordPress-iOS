@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WPAccount;
 @class WordPressComRestApi;
 @class WordPressOrgXMLRPCApi;
+@class Role;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -81,6 +82,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
+@property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;
 @property (nonatomic, strong, readwrite, nullable) NSString *currentThemeId;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPosts;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPages;
