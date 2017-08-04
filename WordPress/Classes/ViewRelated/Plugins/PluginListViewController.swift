@@ -1,3 +1,4 @@
+import Gridicons
 import UIKit
 import WordPressKit
 
@@ -12,6 +13,7 @@ struct PluginListRow: ImmuTableRow {
         cell.textLabel?.text = name
         cell.detailTextLabel?.text = version
         cell.selectionStyle = .none
+        cell.imageView?.image = Gridicon.iconOfType(.plugins)
     }
 }
 
