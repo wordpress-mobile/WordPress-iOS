@@ -97,7 +97,7 @@ struct PeopleService {
     ///
     /// - Returns: A new Person instance, with the new Role already assigned.
     ///
-    func updateUser(_ user: User, role: Role, failure: ((Error, User) -> Void)?) -> User {
+    func updateUser(_ user: User, role: String, failure: ((Error, User) -> Void)?) -> User {
         guard let managedPerson = managedPersonFromPerson(user) else {
             return user
         }
@@ -122,7 +122,7 @@ struct PeopleService {
         })
 
         // Pre-emptively update the role
-        managedPerson.role = role.description
+        managedPerson.role = role
 
         return User(managedPerson: managedPerson)
     }
@@ -211,21 +211,6 @@ struct PeopleService {
         context.delete(managedPerson)
     }
 
-    /// Retrieves the collection of Roles, available for a given site
-    ///
-    /// - Parameters:
-    ///     - success: Closure to be executed in case of success. The collection of Roles will be passed on.
-    ///     - failure: Closure to be executed in case of error
-    ///
-    func loadAvailableRoles(_ success: @escaping (([Role]) -> Void), failure: @escaping ((Error) -> Void)) {
-        remote.getUserRoles(siteID, success: { roles in
-            success(roles)
-
-        }, failure: { error in
-            failure(error)
-        })
-    }
-
     /// Validates Invitation Recipients.
     ///
     /// - Parameters:
@@ -235,7 +220,7 @@ struct PeopleService {
     ///     - failure: Closure to be executed on error.
     ///
     func validateInvitation(_ usernameOrEmail: String,
-                            role: Role,
+                            role: String,
                             success: @escaping (() -> Void),
                             failure: @escaping ((Error) -> Void)) {
         remote.validateInvitation(siteID,
@@ -256,7 +241,7 @@ struct PeopleService {
     ///     - failure: Closure to be executed on error.
     ///
     func sendInvitation(_ usernameOrEmail: String,
-                        role: Role,
+                        role: String,
                         message: String = "",
                         success: @escaping (() -> Void),
                         failure: @escaping ((Error) -> Void)) {
