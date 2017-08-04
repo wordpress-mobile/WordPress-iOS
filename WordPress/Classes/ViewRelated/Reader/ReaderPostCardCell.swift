@@ -435,7 +435,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func configureCommentActionButton() {
 
         // Show comments if logged in and comments are enabled, or if comments exist.
-        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // But only if it is from wpcom or jetpack (external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
         if contentProvider!.isWPCom() || contentProvider!.isJetpack() {
             if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().intValue > 0 {
