@@ -4,6 +4,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
     public enum ResponseError: Error {
         case decodingFailure
         case invalidInputError
+        case unauthorized
         case unknownError
     }
 
@@ -13,10 +14,13 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         let parameters = [String: AnyObject]()
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in
-            guard let response = responseObject as? [String: AnyObject],
-            let plugins = response["plugins"] as? [[String: AnyObject]],
+            guard let response = responseObject as? [String: AnyObject] else {
+                failure(ResponseError.decodingFailure)
+                return
+            }
+            guard let plugins = response["plugins"] as? [[String: AnyObject]],
                 let pluginStates = try? self.pluginStatesFromResponse(plugins) else {
-                    failure(ResponseError.decodingFailure)
+                    failure(self.errorFromResponse(response))
                     return
             }
             success(pluginStates)
@@ -49,5 +53,17 @@ fileprivate extension PluginServiceRemote {
                            version: version,
                            autoupdate: autoupdate)
 
+    }
+
+    func errorFromResponse(_ response: [String: AnyObject]) -> ResponseError {
+        guard let code = response["error"] as? String else {
+                return .decodingFailure
+        }
+        switch code {
+        case "unauthorized":
+            return .unauthorized
+        default:
+            return .unknownError
+        }
     }
 }
