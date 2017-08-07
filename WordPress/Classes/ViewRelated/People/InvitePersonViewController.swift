@@ -32,7 +32,7 @@ class InvitePersonViewController: UITableViewController {
 
     /// Invitation Role
     ///
-    fileprivate var role: Role = .Follower {
+    fileprivate var role: RemoteRole? {
         didSet {
             refreshRoleCell()
             validateInvitation()
@@ -52,8 +52,18 @@ class InvitePersonViewController: UITableViewController {
 
     /// Roles available for the current site
     ///
-    fileprivate var availableRoles: [Role] {
-        return (blog.siteVisibility == .private) ? Role.inviteRolesForPrivateSite : Role.inviteRoles
+    fileprivate var availableRoles: [RemoteRole] {
+        let blogRoles = blog?.roles.map({ Array($0) }) ?? []
+        var roles = [RemoteRole]()
+        let inviteRole: RemoteRole
+        if blog.isPrivate() {
+            inviteRole = RemoteRole.viewer
+        } else {
+            inviteRole = RemoteRole.follower
+        }
+        roles.append(inviteRole)
+        roles += blogRoles.map({ $0.toUnmanaged() })
+        return roles
     }
 
     /// Last Section Index
@@ -172,10 +182,10 @@ class InvitePersonViewController: UITableViewController {
             return
         }
 
-        roleViewController.mode = .static(roles: availableRoles)
-        roleViewController.selectedRole = role
+        roleViewController.roles = availableRoles
+        roleViewController.selectedRole = role?.slug
         roleViewController.onChange = { [unowned self] newRole in
-            self.role = newRole
+            self.role = self.availableRoles.first(where: { $0.slug == newRole })
         }
     }
 
@@ -228,11 +238,14 @@ extension InvitePersonViewController {
         // Thank you Apple . I love you too.
         //
         dismiss(animated: true) {
-            self.sendInvitation(self.blog, recipient: recipient, role: self.role, message: self.message ?? "")
+            guard let role = self.role else {
+                return
+            }
+            self.sendInvitation(self.blog, recipient: recipient, role: role.slug, message: self.message ?? "")
         }
     }
 
-    func sendInvitation(_ blog: Blog, recipient: String, role: Role, message: String) {
+    func sendInvitation(_ blog: Blog, recipient: String, role: String, message: String) {
         guard let service = PeopleService(blog: blog, context: context) else {
             return
         }
@@ -276,7 +289,11 @@ private extension InvitePersonViewController {
             return
         }
 
-        service.validateInvitation(usernameOrEmail, role: role, success: { [weak self] in
+        guard let role = role else {
+            return
+        }
+
+        service.validateInvitation(usernameOrEmail, role: role.slug, success: { [weak self] in
             guard self?.shouldHandleValidationResponse(usernameOrEmail) == true else {
                 return
             }
@@ -395,7 +412,7 @@ private extension InvitePersonViewController {
     }
 
     func refreshRoleCell() {
-        roleCell.detailTextLabel?.text = role.localizedName
+        roleCell.detailTextLabel?.text = role?.name
     }
 
     func refreshMessageTextView() {
