@@ -13,7 +13,7 @@ class ManagedPerson: NSManagedObject {
         displayName = person.displayName
         firstName = person.firstName
         lastName = person.lastName
-        role = String(describing: person.role)
+        role = person.role
         siteID = Int64(person.siteID)
         userID = Int64(person.ID)
         linkedUserID = Int64(person.linkedUserID)
@@ -43,7 +43,7 @@ extension Person {
                   firstName: managedPerson.firstName,
                   lastName: managedPerson.lastName,
                   displayName: managedPerson.displayName,
-                  role: Role(string: managedPerson.role),
+                  role: managedPerson.role,
                   siteID: Int(managedPerson.siteID),
                   linkedUserID: Int(managedPerson.linkedUserID),
                   avatarURL: managedPerson.avatarURL.flatMap { URL(string: $0) },
@@ -58,7 +58,7 @@ extension User {
         firstName = managedPerson.firstName
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
-        role = Role(string: managedPerson.role)
+        role = managedPerson.role
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
@@ -73,7 +73,7 @@ extension Follower {
         firstName = managedPerson.firstName
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
-        role = Role.Follower
+        role = RemoteRole.follower.slug
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
@@ -88,59 +88,10 @@ extension Viewer {
         firstName = managedPerson.firstName
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
-        role = Role.Viewer
+        role = RemoteRole.viewer.slug
         siteID = Int(managedPerson.siteID)
         linkedUserID = Int(managedPerson.linkedUserID)
         avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
         isSuperAdmin = managedPerson.isSuperAdmin
     }
-}
-
-extension Role {
-    var color: UIColor {
-        guard let color = type(of: self).colorsMap[self] else {
-            fatalError()
-        }
-
-        return color
-    }
-
-    var localizedName: String {
-        guard let localized = type(of: self).localizedMap[self] else {
-            fatalError()
-        }
-
-        return localized
-    }
-
-    // MARK: - Static Properties
-    //
-    static let inviteRoles: [Role] = [.Follower, .Admin, .Editor, .Author, .Contributor]
-    static let inviteRolesForPrivateSite: [Role] = [.Viewer, .Admin, .Editor, .Author, .Contributor]
-
-    // MARK: - Private Properties
-    //
-    fileprivate static let colorsMap = [
-        SuperAdmin: WPStyleGuide.People.superAdminColor,
-        Admin: WPStyleGuide.People.adminColor,
-        Editor: WPStyleGuide.People.editorColor,
-        Author: WPStyleGuide.People.authorColor,
-        Contributor: WPStyleGuide.People.contributorColor,
-        Subscriber: WPStyleGuide.People.contributorColor,
-        Follower: WPStyleGuide.People.contributorColor,
-        Viewer: WPStyleGuide.People.contributorColor,
-        Unsupported: WPStyleGuide.People.contributorColor
-    ]
-
-    fileprivate static let localizedMap = [
-        SuperAdmin: NSLocalizedString("Super Admin", comment: "User role badge"),
-        Admin: NSLocalizedString("Admin", comment: "User role badge"),
-        Editor: NSLocalizedString("Editor", comment: "User role badge"),
-        Author: NSLocalizedString("Author", comment: "User role badge"),
-        Contributor: NSLocalizedString("Contributor", comment: "User role badge"),
-        Subscriber: NSLocalizedString("Subscriber", comment: "User role badge"),
-        Follower: NSLocalizedString("Follower", comment: "User role badge"),
-        Viewer: NSLocalizedString("Viewer", comment: "User role badge"),
-        Unsupported: NSLocalizedString("Unsupported", comment: "User role badge")
-    ]
 }
