@@ -50,6 +50,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic media;
 @dynamic menus;
 @dynamic menuLocations;
+@dynamic roles;
 @dynamic currentThemeId;
 @dynamic lastPostsSync;
 @dynamic lastStatsSync;
