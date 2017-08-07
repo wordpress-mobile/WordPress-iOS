@@ -7,9 +7,9 @@ extension String {
 
     /// Replaces all matches of a given RegEx, with a template String.
     ///
-    func replaceMatches(of regex: String, with template: String) -> String {
+    func replaceMatches(of regex: String, with template: String, options: NSRegularExpression.Options) -> String {
         do {
-            let regex = try NSRegularExpression(pattern: regex, options: .caseInsensitive)
+            let regex = try NSRegularExpression(pattern: regex, options: options)
             let range = NSRange(location: 0, length: characters.count)
             return regex.stringByReplacingMatches(in: self,
                                                   options: [],
