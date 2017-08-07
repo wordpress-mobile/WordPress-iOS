@@ -2,11 +2,11 @@ import XCTest
 @testable import WordPress
 
 
-// MARK: - CalypsoProcessorTests
+// MARK: - CalypsoProcessorInTests
 //
-class CalypsoProcessorTests: XCTestCase {
+class CalypsoProcessorInTests: XCTestCase {
 
-    let processor = CalypsoProcessor()
+    let processor = CalypsoProcessorIn()
 
     /// Verifies that newlines get replaced with Line Break Elements
     ///
