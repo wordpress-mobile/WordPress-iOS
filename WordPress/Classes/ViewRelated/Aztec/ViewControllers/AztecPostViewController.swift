@@ -628,7 +628,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func registerHTMLProcessors() {
         htmlPreProcessors.append(VideoProcessor.videoPressPreProcessor)
         htmlPreProcessors.append(VideoProcessor.wordPressVideoPreProcessor)
-        htmlPreProcessors.append(CalypsoProcessor())
+        htmlPreProcessors.append(CalypsoProcessorIn())
 
         htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
         htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
