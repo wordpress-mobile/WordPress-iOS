@@ -928,7 +928,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPlugins
 {
-    // TODO: Add analytics (@koke 2017-08-04)
     PluginListViewController *controller = [[PluginListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
