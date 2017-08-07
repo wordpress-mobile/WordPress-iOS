@@ -2,9 +2,9 @@ import Foundation
 import Aztec
 
 
-// MARK: - CalypsoProcessor
+// MARK: - CalypsoProcessorIn
 //
-class CalypsoProcessor: Processor {
+class CalypsoProcessorIn: Processor {
 
     /// Converts a Calypso-Generated string into Valid HTML that can actually be edited by Aztec.
     ///
@@ -21,7 +21,7 @@ class CalypsoProcessor: Processor {
 
 // MARK: - Calypso Escaping Helpers
 //
-private extension CalypsoProcessor {
+private extension CalypsoProcessorIn {
 
     /// Escapes Preformatted HTML Elements, and returns a touple containing the 'Original Pre Snippets'
     /// and the actual escaped string.
@@ -62,7 +62,7 @@ private extension CalypsoProcessor {
 
 // MARK: - Tag Generation Helpers
 //
-private extension CalypsoProcessor {
+private extension CalypsoProcessorIn {
 
     /// Encapsulates all of the paragraphs (split by '\n\n') into the HTML P Element
     ///
@@ -87,7 +87,7 @@ private extension CalypsoProcessor {
 
 // MARK: - Regex Helpers
 //
-private extension CalypsoProcessor {
+private extension CalypsoProcessorIn {
 
     /// Returns the collection of Swift Ranges pointing towards all of the "<PRE | <SCRIPT" snippets
     ///
@@ -118,7 +118,7 @@ private extension CalypsoProcessor {
 
 // MARK: - Private Helpers
 //
-private extension CalypsoProcessor {
+private extension CalypsoProcessorIn {
     struct Constants {
         static let escapedSnippetKey = "<calypso-escaped>"
         static let preformattedTextRegex = "<(pre|script|ul|ol)[^>]*>[\\s\\S]+?</\\1>"
