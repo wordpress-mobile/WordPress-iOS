@@ -5,6 +5,13 @@ import Foundation
 //
 extension String {
 
+    func matches(regex: String, options: NSRegularExpression.Options = []) -> [NSTextCheckingResult] {
+        let regex = try! NSRegularExpression(pattern: regex, options: options)
+        let fullRange = NSRange(location: 0, length: characters.count)
+        
+        return regex.matches(in: self, options: [], range: fullRange)
+    }
+
     /// Replaces all matches of a given RegEx, with a template String.
     ///
     func stringByReplacingMatches(of regex: String, with template: String, options: NSRegularExpression.Options = []) -> String {
