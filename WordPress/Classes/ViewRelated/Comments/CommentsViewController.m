@@ -443,7 +443,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshInfiniteScroll];
 }
 
-- (void)syncContentEnded
+- (void)syncContentEnded:(WPContentSyncHelper *)syncHelper
 {
     [self refreshInfiniteScroll];
     [self refreshNoResultsView];
