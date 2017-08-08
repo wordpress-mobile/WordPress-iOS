@@ -27,7 +27,7 @@ extension String {
     ///
     /// - Returns: the new string.
     ///
-    func stringByReplacingMatches(of regex: String, with options: NSRegularExpression.Options = [], using block: (String) -> String) -> String {
+    func stringByReplacingMatches(of regex: String, with options: NSRegularExpression.Options = [], using block: (String, [String]) -> String) -> String {
 
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
@@ -38,7 +38,16 @@ extension String {
             let matchRange = range(from: match.range)
             let matchString = substring(with: matchRange)
 
-            newString.replaceSubrange(matchRange, with: block(matchString))
+            var submatchStrings = [String]()
+
+            for submatchIndex in 0 ..< match.numberOfRanges {
+                let submatchRange = self.range(from: match.rangeAt(submatchIndex))
+                let submatchString = self.substring(with: submatchRange)
+
+                submatchStrings.append(submatchString)
+            }
+
+            newString.replaceSubrange(matchRange, with: block(matchString, submatchStrings))
         }
 
         return newString
