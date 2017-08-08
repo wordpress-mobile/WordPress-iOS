@@ -30,6 +30,7 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 @dynamic demoUrl;
 @dynamic stylesheet;
 @dynamic order;
+@dynamic custom;
 @dynamic blog;
 
 #pragma mark - CoreData helpers
@@ -75,6 +76,16 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 - (BOOL)isPremium
 {
     return [self.premium boolValue];
+}
+
+- (BOOL)isCustom
+{
+    return [self.custom boolValue];
+}
+
+- (void)setIsCustom:(BOOL)isCustom
+{
+    self.custom = [NSNumber numberWithBool:isCustom];
 }
 
 @end

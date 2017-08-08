@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSString *demoUrl;
 @property (nonatomic, retain) NSString *stylesheet;
 @property (nonatomic, retain) NSNumber *order;
+@property (nonatomic, retain) NSNumber *custom;
 @property (nonatomic, retain) Blog *blog;
 
 /**
@@ -63,5 +64,7 @@
 
 - (BOOL)isCurrentTheme;
 - (BOOL)isPremium;
+- (BOOL)isCustom;
+- (void)setIsCustom:(BOOL)isCustom;
 
 @end
