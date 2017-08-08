@@ -23,6 +23,7 @@ class CalypsoProcessorIn: Processor {
 
 //      if ( text.indexOf( '\n' ) === -1 ) {
         guard output.contains("\n") else {
+            // return text;
             return output
         }
 
@@ -30,7 +31,7 @@ class CalypsoProcessorIn: Processor {
 //      if ( text.indexOf( '<object' ) !== -1 ) {
         if output.contains("<object") {
 //          text = text.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "<object[\\s\\S]+?<\\/object>", with: [], using: { match in
+            output = output.stringByReplacingMatches(of: "<object[\\s\\S]+?<\\/object>", using: { match in
 //              return a.replace( /\n+/g, '' );
                 return match.stringByReplacingMatches(of: "\n+", with: "")
             })
@@ -38,7 +39,7 @@ class CalypsoProcessorIn: Processor {
 
         // Remove line breaks from tags.
 //      text = text.replace( /<[^<>]+>/g, function( a ) {
-        output = output.stringByReplacingMatches(of: "<[^<>]+>", with: [], using: { match in
+        output = output.stringByReplacingMatches(of: "<[^<>]+>", using: { match in
 //          return a.replace( /[\n\t ]+/g, ' ' );
             return match.stringByReplacingMatches(of: "[\n\t ]+", with: " ")
         })
@@ -49,7 +50,7 @@ class CalypsoProcessorIn: Processor {
 //          preserve_linebreaks = true;
             preserve_linebreaks = true
 //          text = text.replace( /<(pre|script)[^>]*>[\s\S]*?<\/\1>/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "<(pre|script)[^>]*>[\\s\\S]*?<\\/\\1>", with: [], using: { match in
+            output = output.stringByReplacingMatches(of: "<(pre|script)[^>]*>[\\s\\S]*?<\\/\\1>", using: { match in
 //              return a.replace( /\n/g, '<wp-line-break>' );
                 return match.stringByReplacingMatches(of: "\n", with: "<wp-line-break>")
             })
