@@ -34,8 +34,8 @@ class CalypsoProcessorOut: Processor {
 
         //        // Protect script and style tags.
         //        if ( html.indexOf( '<script' ) !== -1 || html.indexOf( '<style' ) !== -1 ) {
-        if output.range(of: "<script") != nil && output.range(of: "<style") != nil {
-        //            html = html.replace( /<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function( match ) {
+        if output.contains("<script") || output.contains("<style") {
+            //            html = html.replace( /<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function( match ) {
             output = output.stringByReplacingMatches(of: "<(script|style)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) -> String in
                 //                preserve.push( match );
                 preserve.append(match)
@@ -47,7 +47,7 @@ class CalypsoProcessorOut: Processor {
 
         //        // Protect pre tags.
         //        if ( html.indexOf( '<pre' ) !== -1 ) {
-        if output.range(of: "<pre") != nil {
+        if output.contains("<pre") {
             //            preserve_linebreaks = true;
             preserveLinebreaks = true
 
@@ -66,7 +66,7 @@ class CalypsoProcessorOut: Processor {
 
         //        // Remove line breaks but keep <br> tags inside image captions.
         //        if ( html.indexOf( '[caption' ) !== -1 ) {
-        if output.range(of: "[caption") != nil {
+        if output.contains("[caption") {
             //            preserve_br = true;
             preserveBr = true
 
@@ -118,41 +118,58 @@ class CalypsoProcessorOut: Processor {
             return "\n"
         })
 
+        //                // Fix line breaks around <div>.
+        //                html = html.replace( /\s*<div/g, '\n<div' );
+        output = output.stringByReplacingMatches(of: "\\s*<div", with: "\n<div")
 
-//
-//                // Fix line breaks around <div>.
-//                html = html.replace( /\s*<div/g, '\n<div' );
-//                html = html.replace( /<\/div>\s*/g, '</div>\n' );
-//
-//                // Fix line breaks around caption shortcodes.
-//                html = html.replace( /\s*\[caption([^\[]+)\[\/caption\]\s*/gi, '\n\n[caption$1[/caption]\n\n' );
-//                html = html.replace( /caption\]\n\n+\[caption/g, 'caption]\n\n[caption' );
-//
-//                // Pad block elements tags with a line break.
-//                html = html.replace( new RegExp('\\s*<((?:' + blocklist2 + ')(?: [^>]*)?)\\s*>', 'g' ), '\n<$1>' );
-//                html = html.replace( new RegExp('\\s*</(' + blocklist2 + ')>\\s*', 'g' ), '</$1>\n' );
-//
-//                // Indent <li>, <dt> and <dd> tags.
-//                html = html.replace( /<((li|dt|dd)[^>]*)>/g, ' \t<$1>' );
-//
-//                // Fix line breaks around <select> and <option>.
-//                if ( html.indexOf( '<option' ) !== -1 ) {
-//                html = html.replace( /\s*<option/g, '\n<option' );
-//                html = html.replace( /\s*<\/select>/g, '\n</select>' );
-//                }
-//
-//                // Pad <hr> with two line breaks.
-//                if ( html.indexOf( '<hr' ) !== -1 ) {
-//                html = html.replace( /\s*<hr( [^>]*)?>\s*/g, '\n\n<hr$1>\n\n' );
-//                }
-//                
-//                // Remove line breaks in <object> tags.
-//                if ( html.indexOf( '<object' ) !== -1 ) {
-//                html = html.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
-//                return a.replace( /[\r\n]+/g, '' );
-//                });
-//                }
-//                
+        //                html = html.replace( /<\/div>\s*/g, '</div>\n' );
+        output = output.stringByReplacingMatches(of: "<\\/div>\\s*", with: "</div>\n")
+
+        //                // Fix line breaks around caption shortcodes.
+        //                html = html.replace( /\s*\[caption([^\[]+)\[\/caption\]\s*/gi, '\n\n[caption$1[/caption]\n\n' );
+        output = output.stringByReplacingMatches(of: "\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*", with: "\n\n[caption$1[/caption]\n\n")
+
+        //                html = html.replace( /caption\]\n\n+\[caption/g, 'caption]\n\n[caption' );
+        output = output.stringByReplacingMatches(of: "caption\\]\n\n+\\[caption", with: "caption]\n\n[caption")
+
+        //                // Pad block elements tags with a line break.
+        //                html = html.replace( new RegExp('\\s*<((?:' + blocklist2 + ')(?: [^>]*)?)\\s*>', 'g' ), '\n<$1>' );
+        output = output.stringByReplacingMatches(of: "\\s*<((?:" + blocklist2 + ")(?: [^>]*)?)\\s*>", with: "\n<$1>")
+
+        //                html = html.replace( new RegExp('\\s*</(' + blocklist2 + ')>\\s*', 'g' ), '</$1>\n' );
+        output = output.stringByReplacingMatches(of: "\\s*</(' + blocklist2 + ')>\\s*", with: "</$1>\n")
+
+        //                // Indent <li>, <dt> and <dd> tags.
+        //                html = html.replace( /<((li|dt|dd)[^>]*)>/g, ' \t<$1>' );
+        output = output.stringByReplacingMatches(of: "<((li|dt|dd)[^>]*)>", with: " \t<$1>")
+
+        //                // Fix line breaks around <select> and <option>.
+        //                if ( html.indexOf( '<option' ) !== -1 ) {
+        if output.contains("<option") {
+            //                html = html.replace( /\s*<option/g, '\n<option' );
+            output = output.stringByReplacingMatches(of: "\\s*<option", with: "\n<option")
+
+            //                html = html.replace( /\s*<\/select>/g, '\n</select>' );
+            output = output.stringByReplacingMatches(of: "\\s*<\\/select>", with: "\n</select>")
+        }
+
+        //                // Pad <hr> with two line breaks.
+        //                if ( html.indexOf( '<hr' ) !== -1 ) {
+        if output.contains("<hr") {
+            //                html = html.replace( /\s*<hr( [^>]*)?>\s*/g, '\n\n<hr$1>\n\n' );
+            output = output.stringByReplacingMatches(of: "\\s*<hr( [^>]*)?>\\s*", with: "\n\n<hr$1>\n\n")
+        }
+
+        //                // Remove line breaks in <object> tags.
+        //                if ( html.indexOf( '<object' ) !== -1 ) {
+        if output.contains("<object") {
+            //                html = html.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
+            output = output.stringByReplacingMatches(of: "<object[\\s\\S]+?<\\/object>", using: { (match, _) -> String in
+                //                return a.replace( /[\r\n]+/g, '' );
+                return match.stringByReplacingMatches(of: "[\r\n]+", with: "")
+            })
+        }
+
 //                // Unmark special paragraph closing tags.
 //                html = html.replace( /<\/p#>/g, '</p>\n' );
 //                
