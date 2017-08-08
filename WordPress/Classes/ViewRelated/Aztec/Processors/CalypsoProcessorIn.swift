@@ -30,22 +30,22 @@ class CalypsoProcessorIn: Processor {
 
         // Remove line breaks from <object>
         if output.contains("<object") {
-//        text = text.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
-//            return a.replace( /\n+/g, '' );
-//        });
+            output = output.stringByReplacingMatches(of: "<object[\\s\\S]+?<\\/object>", with: [], using: { match in
+                return match.stringByReplacingMatches(of: "\n+", with: "")
+            })
         }
 
         // Remove line breaks from tags.
-//    text = text.replace( /<[^<>]+>/g, function( a ) {
-//        return a.replace( /[\n\t ]+/g, ' ' );
-//    });
+        output = output.stringByReplacingMatches(of: "<[^<>]+>", with: [], using: { match in
+            return match.stringByReplacingMatches(of: "[\n\t ]+", with: " ")
+        })
 
         // Preserve line breaks in <pre> and <script> tags.
         if output.contains("<pre") || output.contains("<script") {
             preserve_linebreaks = true
-//        text = text.replace( /<(pre|script)[^>]*>[\s\S]*?<\/\1>/g, function( a ) {
-//            return a.replace( /\n/g, '<wp-line-break>' );
-//        });
+            output = output.stringByReplacingMatches(of: "<(pre|script)[^>]*>[\\s\\S]*?<\\/\\1>", with: [], using: { match in
+                return match.stringByReplacingMatches(of: "\n", with: "<wp-line-break>")
+            })
         }
 
         if output.contains("<figcaption") {
