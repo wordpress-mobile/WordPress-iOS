@@ -34,7 +34,7 @@ enum PluginListViewModel {
             return .Empty
         case .ready(let pluginStates):
             let rows = pluginStates.map({ pluginState in
-                return PluginListRow(name: pluginState.name, version: pluginState.version)
+                return PluginListRow(name: pluginState.name, state: pluginState.stateDescription)
             })
             return ImmuTable(sections: [
                 ImmuTableSection(rows: rows)
