@@ -36,7 +36,7 @@ class CalypsoProcessorOut: Processor {
         //        if ( html.indexOf( '<script' ) !== -1 || html.indexOf( '<style' ) !== -1 ) {
         if output.range(of: "<script") != nil && output.range(of: "<style") != nil {
         //            html = html.replace( /<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function( match ) {
-            output = output.stringByReplacingMatches(of: "<(script|style)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match) -> String in
+            output = output.stringByReplacingMatches(of: "<(script|style)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) -> String in
                 //                preserve.push( match );
                 preserve.append(match)
 
@@ -52,7 +52,7 @@ class CalypsoProcessorOut: Processor {
             preserveLinebreaks = true
 
             //            html = html.replace( /<pre[^>]*>[\s\S]+?<\/pre>/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "<pre[^>]*>[\\s\\S]+?<\\/pre>", using: { (match) -> String in
+            output = output.stringByReplacingMatches(of: "<pre[^>]*>[\\s\\S]+?<\\/pre>", using: { (match, _) -> String in
                 //                a = a.replace( /<br ?\/?>(\r\n|\n)?/g, '<wp-line-break>' );
                 var string = match.stringByReplacingMatches(of: "<br ?\\/?>(\r\n|\n)?", with: lineBreakMarker)
 
@@ -71,7 +71,7 @@ class CalypsoProcessorOut: Processor {
             preserveBr = true
 
             //            html = html.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", using: { (match) -> String in
+            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", using: { (match, _) -> String in
                 //                return a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' ).replace( /[\r\n\t]+/, '' );
                 let string = match.stringByReplacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$1>")
                 return string.stringByReplacingMatches(of: "[\r\n\t]+", with: "")
@@ -83,34 +83,42 @@ class CalypsoProcessorOut: Processor {
         output = output.stringByReplacingMatches(of: "\\s*</(\(blocklist1))>\\s*", with: "</$1>\n")
 
         //                html = html.replace( new RegExp( '\\s*<((?:' + blocklist1 + ')(?: [^>]*)?)>', 'g' ), '\n<$1>' );
+        output = output.stringByReplacingMatches(of: "\\s*<((?:" + blocklist1 + ")(?: [^>]*)?)>", with: "\n<$1>")
+
+        //                // Mark </p> if it has any attributes.
+        //                html = html.replace( /(<p [^>]+>.*?)<\/p>/g, '$1</p#>' );
+        output = output.stringByReplacingMatches(of: "(<p [^>]+>.*?)<\\/p>", with: "$1</p#>")
+
+        //                // Preserve the first <p> inside a <div>.
+        //                html = html.replace( /<div( [^>]*)?>\s*<p>/gi, '<div$1>\n\n' );
+        output = output.stringByReplacingMatches(of: "<div( [^>]*)?>\\s*<p>", with: "<div$1>\n\n")
+
+        //                // Remove paragraph tags.
+        //                html = html.replace( /\s*<p>/gi, '' );
+        output = output.stringByReplacingMatches(of: "\\s*<p>", with: "")
+
+        //                html = html.replace( /\s*<\/p>\s*/gi, '\n\n' );
+        output = output.stringByReplacingMatches(of: "\\s*<\\/p>\\s*", with: "\n\n")
+
+        //                // Normalize white space chars and remove multiple line breaks.
+        //                html = html.replace( /\n[\s\u00a0]+\n/g, '\n\n' );
+        output = output.stringByReplacingMatches(of: "\n[\\s\\u00a0]+\n", with: "\n\n")
+
+        //                // Replace <br> tags with line breaks.
+        //                html = html.replace( /(\s*)<br ?\/?>\s*/gi, function( match, space ) {
+        output = output.stringByReplacingMatches(of: "(\\s*)<br ?\\/?>\\s*", using: { (match, ranges) -> String in
+
+            //                if ( space && space.indexOf( '\n' ) !== -1 ) {
+            if ranges.count > 0 && ranges[0].contains("\n") {
+                //                return '\n\n';
+                return "\n\n"
+            }
+
+            //                return '\n';
+            return "\n"
+        })
 
 
-        return output
-
-//
-//
-//
-//                // Mark </p> if it has any attributes.
-//                html = html.replace( /(<p [^>]+>.*?)<\/p>/g, '$1</p#>' );
-//
-//                // Preserve the first <p> inside a <div>.
-//                html = html.replace( /<div( [^>]*)?>\s*<p>/gi, '<div$1>\n\n' );
-//
-//                // Remove paragraph tags.
-//                html = html.replace( /\s*<p>/gi, '' );
-//                html = html.replace( /\s*<\/p>\s*/gi, '\n\n' );
-//
-//                // Normalize white space chars and remove multiple line breaks.
-//                html = html.replace( /\n[\s\u00a0]+\n/g, '\n\n' );
-//
-//                // Replace <br> tags with line breaks.
-//                html = html.replace( /(\s*)<br ?\/?>\s*/gi, function( match, space ) {
-//                if ( space && space.indexOf( '\n' ) !== -1 ) {
-//                return '\n\n';
-//                }
-//
-//                return '\n';
-//                });
 //
 //                // Fix line breaks around <div>.
 //                html = html.replace( /\s*<div/g, '\n<div' );
@@ -171,6 +179,8 @@ class CalypsoProcessorOut: Processor {
 //                }
 //                
 //                return html;
+
+        return output
     }
 }
 
