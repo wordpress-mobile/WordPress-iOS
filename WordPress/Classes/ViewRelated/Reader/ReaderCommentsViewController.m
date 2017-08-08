@@ -56,6 +56,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
+@property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic, strong) NSCache *estimatedRowHeights;
 
 @end
@@ -454,7 +455,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (self.isLoadingPost || self.syncHelper.isSyncing) {
         return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
     }
-    
+    // If we couldn't fetch the comments lets let the user know
+    if (self.failedToFetchComments) {
+        return NSLocalizedString(@"There has been an unexpected error while loading the comments.", @"Message shown when comments for a post can not be loaded.");
+    }
     return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
 }
 
@@ -725,6 +729,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    self.failedToFetchComments = NO;
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
     [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
         if (success) {
@@ -736,6 +741,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    self.failedToFetchComments = NO;
     [self.activityFooter startAnimating];
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
@@ -757,6 +763,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self refreshTableViewAndNoResultsView];
 }
 
+- (void)syncContentFailed
+{
+    self.failedToFetchComments = YES;
+    [self.activityFooter stopAnimating];
+    [self refreshTableViewAndNoResultsView];
+}
 
 #pragma mark - Async Loading Helpers
 

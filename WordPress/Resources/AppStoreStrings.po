@@ -38,9 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v8.0-whats-new"
+msgctxt "v8.2-whats-new"
 msgid ""
-"Shiny and new rich-text and HTML native editor, try it out and let us know what you think."
+"Several improvements to the new native editor, have you already tried it?\n"
+"Author filter on post list for Jetpack and self-hosted sites.\n"
+"New setting to choose the video upload size.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

@@ -15,7 +15,6 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 
 @dynamic username;
 @dynamic blogs;
-@dynamic jetpackBlogs;
 @dynamic defaultBlog;
 @dynamic uuid;
 @dynamic dateCreated;

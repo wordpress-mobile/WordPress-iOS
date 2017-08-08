@@ -10,7 +10,7 @@ class LoginLinkMailViewController: LoginViewController {
 
     override var sourceTag: SupportSourceTag {
         get {
-            return .wpComLogin
+            return .loginMagicLink
         }
     }
 
