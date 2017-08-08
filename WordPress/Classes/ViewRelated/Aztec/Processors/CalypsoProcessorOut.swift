@@ -37,7 +37,7 @@ class CalypsoProcessorOut: Processor {
         //        if ( html.indexOf( '<script' ) !== -1 || html.indexOf( '<style' ) !== -1 ) {
         if output.contains("<script") || output.contains("<style") {
             //            html = html.replace( /<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function( match ) {
-            output = output.stringByReplacingMatches(of: "<(script|style)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) -> String in
+            output = output.replacingMatches(of: "<(script|style)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) -> String in
                 //                preserve.push( match );
                 preserve.append(match)
 
@@ -53,15 +53,15 @@ class CalypsoProcessorOut: Processor {
             preserveLinebreaks = true
 
             //            html = html.replace( /<pre[^>]*>[\s\S]+?<\/pre>/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "<pre[^>]*>[\\s\\S]+?<\\/pre>", using: { (match, _) -> String in
+            output = output.replacingMatches(of: "<pre[^>]*>[\\s\\S]+?<\\/pre>", using: { (match, _) -> String in
                 //                a = a.replace( /<br ?\/?>(\r\n|\n)?/g, '<wp-line-break>' );
-                var string = match.stringByReplacingMatches(of: "<br ?\\/?>(\r\n|\n)?", with: lineBreakMarker)
+                var string = match.replacingMatches(of: "<br ?\\/?>(\r\n|\n)?", with: lineBreakMarker)
 
                 //                a = a.replace( /<\/?p( [^>]*)?>(\r\n|\n)?/g, '<wp-line-break>' );
-                string = string.stringByReplacingMatches(of: "<\\/?p( [^>]*)?>(\r\n|\n)?", with: lineBreakMarker)
+                string = string.replacingMatches(of: "<\\/?p( [^>]*)?>(\r\n|\n)?", with: lineBreakMarker)
 
                 //                return a.replace( /\r?\n/g, '<wp-line-break>' );
-                return string.stringByReplacingMatches(of: "\r?\n", with: lineBreakMarker)
+                return string.replacingMatches(of: "\r?\n", with: lineBreakMarker)
             })
         }
 
@@ -72,42 +72,42 @@ class CalypsoProcessorOut: Processor {
             preserveBr = true
 
             //            html = html.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", using: { (match, _) -> String in
+            output = output.replacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", using: { (match, _) -> String in
                 //                return a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' ).replace( /[\r\n\t]+/, '' );
-                let string = match.stringByReplacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$1>")
-                return string.stringByReplacingMatches(of: "[\r\n\t]+", with: "")
+                let string = match.replacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$1>")
+                return string.replacingMatches(of: "[\r\n\t]+", with: "")
             })
         }
 
         //                // Normalize white space characters before and after block tags.
         //                html = html.replace( new RegExp( '\\s*</(' + blocklist1 + ')>\\s*', 'g' ), '</$1>\n' );
-        output = output.stringByReplacingMatches(of: "\\s*</(\(blocklist1))>\\s*", with: "</$1>\n")
+        output = output.replacingMatches(of: "\\s*</(\(blocklist1))>\\s*", with: "</$1>\n")
 
         //                html = html.replace( new RegExp( '\\s*<((?:' + blocklist1 + ')(?: [^>]*)?)>', 'g' ), '\n<$1>' );
-        output = output.stringByReplacingMatches(of: "\\s*<((?:" + blocklist1 + ")(?: [^>]*)?)>", with: "\n<$1>")
+        output = output.replacingMatches(of: "\\s*<((?:" + blocklist1 + ")(?: [^>]*)?)>", with: "\n<$1>")
 
         //                // Mark </p> if it has any attributes.
         //                html = html.replace( /(<p [^>]+>.*?)<\/p>/g, '$1</p#>' );
-        output = output.stringByReplacingMatches(of: "(<p [^>]+>.*?)<\\/p>", with: "$1</p#>")
+        output = output.replacingMatches(of: "(<p [^>]+>.*?)<\\/p>", with: "$1</p#>")
 
         //                // Preserve the first <p> inside a <div>.
         //                html = html.replace( /<div( [^>]*)?>\s*<p>/gi, '<div$1>\n\n' );
-        output = output.stringByReplacingMatches(of: "<div( [^>]*)?>\\s*<p>", with: "<div$1>\n\n", options: .caseInsensitive)
+        output = output.replacingMatches(of: "<div( [^>]*)?>\\s*<p>", with: "<div$1>\n\n", options: .caseInsensitive)
 
         //                // Remove paragraph tags.
         //                html = html.replace( /\s*<p>/gi, '' );
-        output = output.stringByReplacingMatches(of: "\\s*<p>", with: "", options: .caseInsensitive)
+        output = output.replacingMatches(of: "\\s*<p>", with: "", options: .caseInsensitive)
 
         //                html = html.replace( /\s*<\/p>\s*/gi, '\n\n' );
-        output = output.stringByReplacingMatches(of: "\\s*<\\/p>\\s*", with: "\n\n", options: .caseInsensitive)
+        output = output.replacingMatches(of: "\\s*<\\/p>\\s*", with: "\n\n", options: .caseInsensitive)
 
         //                // Normalize white space chars and remove multiple line breaks.
         //                html = html.replace( /\n[\s\u00a0]+\n/g, '\n\n' );
-        output = output.stringByReplacingMatches(of: "\n[\\s\\u00a0]+\n", with: "\n\n")
+        output = output.replacingMatches(of: "\n[\\s\\u00a0]+\n", with: "\n\n")
 
         //                // Replace <br> tags with line breaks.
         //                html = html.replace( /(\s*)<br ?\/?>\s*/gi, function( match, space ) {
-        output = output.stringByReplacingMatches(of: "(\\s*)<br ?\\/?>\\s*", options: .caseInsensitive, using: { (match, ranges) -> String in
+        output = output.replacingMatches(of: "(\\s*)<br ?\\/?>\\s*", options: .caseInsensitive, using: { (match, ranges) -> String in
 
             //                if ( space && space.indexOf( '\n' ) !== -1 ) {
             if ranges.count > 0 && ranges[0].contains("\n") {
@@ -121,88 +121,88 @@ class CalypsoProcessorOut: Processor {
 
         //                // Fix line breaks around <div>.
         //                html = html.replace( /\s*<div/g, '\n<div' );
-        output = output.stringByReplacingMatches(of: "\\s*<div", with: "\n<div")
+        output = output.replacingMatches(of: "\\s*<div", with: "\n<div")
 
         //                html = html.replace( /<\/div>\s*/g, '</div>\n' );
-        output = output.stringByReplacingMatches(of: "<\\/div>\\s*", with: "</div>\n")
+        output = output.replacingMatches(of: "<\\/div>\\s*", with: "</div>\n")
 
         //                // Fix line breaks around caption shortcodes.
         //                html = html.replace( /\s*\[caption([^\[]+)\[\/caption\]\s*/gi, '\n\n[caption$1[/caption]\n\n' );
-        output = output.stringByReplacingMatches(of: "\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*", with: "\n\n[caption$1[/caption]\n\n")
+        output = output.replacingMatches(of: "\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*", with: "\n\n[caption$1[/caption]\n\n")
 
         //                html = html.replace( /caption\]\n\n+\[caption/g, 'caption]\n\n[caption' );
-        output = output.stringByReplacingMatches(of: "caption\\]\n\n+\\[caption", with: "caption]\n\n[caption")
+        output = output.replacingMatches(of: "caption\\]\n\n+\\[caption", with: "caption]\n\n[caption")
 
         //                // Pad block elements tags with a line break.
         //                html = html.replace( new RegExp('\\s*<((?:' + blocklist2 + ')(?: [^>]*)?)\\s*>', 'g' ), '\n<$1>' );
-        output = output.stringByReplacingMatches(of: "\\s*<((?:" + blocklist2 + ")(?: [^>]*)?)\\s*>", with: "\n<$1>")
+        output = output.replacingMatches(of: "\\s*<((?:" + blocklist2 + ")(?: [^>]*)?)\\s*>", with: "\n<$1>")
 
         //                html = html.replace( new RegExp('\\s*</(' + blocklist2 + ')>\\s*', 'g' ), '</$1>\n' );
-        output = output.stringByReplacingMatches(of: "\\s*</(' + blocklist2 + ')>\\s*", with: "</$1>\n")
+        output = output.replacingMatches(of: "\\s*</(' + blocklist2 + ')>\\s*", with: "</$1>\n")
 
         //                // Indent <li>, <dt> and <dd> tags.
         //                html = html.replace( /<((li|dt|dd)[^>]*)>/g, ' \t<$1>' );
-        output = output.stringByReplacingMatches(of: "<((li|dt|dd)[^>]*)>", with: " \t<$1>")
+        output = output.replacingMatches(of: "<((li|dt|dd)[^>]*)>", with: " \t<$1>")
 
         //                // Fix line breaks around <select> and <option>.
         //                if ( html.indexOf( '<option' ) !== -1 ) {
         if output.contains("<option") {
             //                html = html.replace( /\s*<option/g, '\n<option' );
-            output = output.stringByReplacingMatches(of: "\\s*<option", with: "\n<option")
+            output = output.replacingMatches(of: "\\s*<option", with: "\n<option")
 
             //                html = html.replace( /\s*<\/select>/g, '\n</select>' );
-            output = output.stringByReplacingMatches(of: "\\s*<\\/select>", with: "\n</select>")
+            output = output.replacingMatches(of: "\\s*<\\/select>", with: "\n</select>")
         }
 
         //                // Pad <hr> with two line breaks.
         //                if ( html.indexOf( '<hr' ) !== -1 ) {
         if output.contains("<hr") {
             //                html = html.replace( /\s*<hr( [^>]*)?>\s*/g, '\n\n<hr$1>\n\n' );
-            output = output.stringByReplacingMatches(of: "\\s*<hr( [^>]*)?>\\s*", with: "\n\n<hr$1>\n\n")
+            output = output.replacingMatches(of: "\\s*<hr( [^>]*)?>\\s*", with: "\n\n<hr$1>\n\n")
         }
 
         //                // Remove line breaks in <object> tags.
         //                if ( html.indexOf( '<object' ) !== -1 ) {
         if output.contains("<object") {
             //                html = html.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "<object[\\s\\S]+?<\\/object>", using: { (match, _) -> String in
+            output = output.replacingMatches(of: "<object[\\s\\S]+?<\\/object>", using: { (match, _) -> String in
                 //                return a.replace( /[\r\n]+/g, '' );
-                return match.stringByReplacingMatches(of: "[\r\n]+", with: "")
+                return match.replacingMatches(of: "[\r\n]+", with: "")
             })
         }
 
         //                // Unmark special paragraph closing tags.
         //                html = html.replace( /<\/p#>/g, '</p>\n' );
-        output = output.stringByReplacingMatches(of: "<\\/p#>", with: "</p>\n")
+        output = output.replacingMatches(of: "<\\/p#>", with: "</p>\n")
 
         //                // Pad remaining <p> tags whit a line break.
         //                html = html.replace( /\s*(<p [^>]+>[\s\S]*?<\/p>)/g, '\n$1' );
-        output = output.stringByReplacingMatches(of: "\\s*(<p [^>]+>[\\s\\S]*?<\\/p>)", with: "\n$1")
+        output = output.replacingMatches(of: "\\s*(<p [^>]+>[\\s\\S]*?<\\/p>)", with: "\n$1")
 
         //                // Trim.
         //                html = html.replace( /^\s+/, '' );
-        output = output.stringByReplacingMatches(of: "^\\s+", with: "")
+        output = output.replacingMatches(of: "^\\s+", with: "")
 
         //                html = html.replace( /[\s\u00a0]+$/, '' );
-        output = output.stringByReplacingMatches(of: "[\\s\\u00a0]+$", with: "")
+        output = output.replacingMatches(of: "[\\s\\u00a0]+$", with: "")
 
         //                if ( preserve_linebreaks ) {
         if preserveLinebreaks {
             //                html = html.replace( /<wp-line-break>/g, '\n' );
-            output = output.stringByReplacingMatches(of: lineBreakMarker, with: "\n")
+            output = output.replacingMatches(of: lineBreakMarker, with: "\n")
         }
 
         //                if ( preserve_br ) {
         if preserveBr {
             //                html = html.replace( /<wp-temp-br([^>]*)>/g, '<br$1>' );
-            output = output.stringByReplacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$1>")
+            output = output.replacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$1>")
         }
 
         //                // Restore preserved tags.
         //                if ( preserve.length ) {
         if preserve.count > 0 {
             //                html = html.replace( /<wp-preserve>/g, function() {
-            output = output.stringByReplacingMatches(of: preserveMarker, using: { (_, _) -> String in
+            output = output.replacingMatches(of: preserveMarker, using: { (_, _) -> String in
                 return preserve.removeFirst()
             })
         }
