@@ -14,49 +14,81 @@ class CalypsoProcessorOut: Processor {
     /// Current as of 2017/08/08
     ///
     func process(text: String) -> String {
-//
-//        var preserveLinebreaks = false
-//        var preserveBr = false
-//        var preserve = []
-//        let blocklist = "blockquote|ul|ol|li|dl|dt|dd|table|thead|tbody|tfoot|tr|th|td|h[1-6]|fieldset|figure"
-//        let blocklist1 = blocklist + "|div|p"
-//        let blocklist2 = blocklist + "|pre"
 
-        return ""
+        // if ( ! html ) {
+        guard text.characters.count > 0 else {
+            // return '';
+            return ""
+        }
 
-//        if ( ! html ) {
-//            return '';
-//        }
+        let lineBreakMarker = "<wp-line-break>"
+
+        var preserveLinebreaks = false
+        var preserveBr = false
+        var preserve = [String]()
+        let blocklist = "blockquote|ul|ol|li|dl|dt|dd|table|thead|tbody|tfoot|tr|th|td|h[1-6]|fieldset|figure"
+        let blocklist1 = blocklist + "|div|p"
+        let blocklist2 = blocklist + "|pre"
+
+        var output = text
+
+        //        // Protect script and style tags.
+        //        if ( html.indexOf( '<script' ) !== -1 || html.indexOf( '<style' ) !== -1 ) {
+        if output.range(of: "<script") != nil && output.range(of: "<style") != nil {
+        //            html = html.replace( /<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function( match ) {
+            output = output.stringByReplacingMatches(of: "<(script|style)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match) -> String in
+                //                preserve.push( match );
+                preserve.append(match)
+
+                //                return '<wp-preserve>';
+                return "<wp-preserve>"
+            })
+        }
+
+        //        // Protect pre tags.
+        //        if ( html.indexOf( '<pre' ) !== -1 ) {
+        if output.range(of: "<pre") != nil {
+            //            preserve_linebreaks = true;
+            preserveLinebreaks = true
+
+            //            html = html.replace( /<pre[^>]*>[\s\S]+?<\/pre>/g, function( a ) {
+            output = output.stringByReplacingMatches(of: "<pre[^>]*>[\\s\\S]+?<\\/pre>", using: { (match) -> String in
+                //                a = a.replace( /<br ?\/?>(\r\n|\n)?/g, '<wp-line-break>' );
+                var string = match.stringByReplacingMatches(of: "<br ?\\/?>(\r\n|\n)?", with: lineBreakMarker)
+
+                //                a = a.replace( /<\/?p( [^>]*)?>(\r\n|\n)?/g, '<wp-line-break>' );
+                string = string.stringByReplacingMatches(of: "<\\/?p( [^>]*)?>(\r\n|\n)?", with: lineBreakMarker)
+
+                //                return a.replace( /\r?\n/g, '<wp-line-break>' );
+                return string.stringByReplacingMatches(of: "\r?\n", with: lineBreakMarker)
+            })
+        }
+
+        //        // Remove line breaks but keep <br> tags inside image captions.
+        //        if ( html.indexOf( '[caption' ) !== -1 ) {
+        if output.range(of: "[caption") != nil {
+            //            preserve_br = true;
+            preserveBr = true
+
+            //            html = html.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
+            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", using: { (match) -> String in
+                //                return a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' ).replace( /[\r\n\t]+/, '' );
+                let string = match.stringByReplacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$1>")
+                return string.stringByReplacingMatches(of: "[\r\n\t]+", with: "")
+            })
+        }
+
+        //                // Normalize white space characters before and after block tags.
+        //                html = html.replace( new RegExp( '\\s*</(' + blocklist1 + ')>\\s*', 'g' ), '</$1>\n' );
+        output = output.stringByReplacingMatches(of: "\\s*</(\(blocklist1))>\\s*", with: "</$1>\n")
+
+        //                html = html.replace( new RegExp( '\\s*<((?:' + blocklist1 + ')(?: [^>]*)?)>', 'g' ), '\n<$1>' );
+
+
+        return output
+
 //
-//        // Protect script and style tags.
-//        if ( html.indexOf( '<script' ) !== -1 || html.indexOf( '<style' ) !== -1 ) {
-//            html = html.replace( /<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function( match ) {
-//                preserve.push( match );
-//                return '<wp-preserve>';
-//            } );
-//        }
 //
-//        // Protect pre tags.
-//        if ( html.indexOf( '<pre' ) !== -1 ) {
-//            preserve_linebreaks = true;
-//            html = html.replace( /<pre[^>]*>[\s\S]+?<\/pre>/g, function( a ) {
-//                a = a.replace( /<br ?\/?>(\r\n|\n)?/g, '<wp-line-break>' );
-//                a = a.replace( /<\/?p( [^>]*)?>(\r\n|\n)?/g, '<wp-line-break>' );
-//                return a.replace( /\r?\n/g, '<wp-line-break>' );
-//            });
-//        }
-//
-//        // Remove line breaks but keep <br> tags inside image captions.
-//        if ( html.indexOf( '[caption' ) !== -1 ) {
-//            preserve_br = true;
-//            html = html.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
-//                return a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' ).replace( /[\r\n\t]+/, '' );
-//                });
-//                }
-//
-//                // Normalize white space characters before and after block tags.
-//                html = html.replace( new RegExp( '\\s*</(' + blocklist1 + ')>\\s*', 'g' ), '</$1>\n' );
-//                html = html.replace( new RegExp( '\\s*<((?:' + blocklist1 + ')(?: [^>]*)?)>', 'g' ), '\n<$1>' );
 //
 //                // Mark </p> if it has any attributes.
 //                html = html.replace( /(<p [^>]+>.*?)<\/p>/g, '$1</p#>' );
