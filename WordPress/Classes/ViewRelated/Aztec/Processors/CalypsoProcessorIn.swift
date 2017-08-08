@@ -11,10 +11,6 @@ class CalypsoProcessorIn: Processor {
     /// Ref. https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L309
     ///
     func process(text: String) -> String {
-// - Reventar el `/` inicial
-// - Duplicar los `\`
-// - Reventar el `/g` final
-
         var preserve_linebreaks = false
         var preserve_br = false
         let blocklist = "table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre" +
@@ -62,7 +58,7 @@ class CalypsoProcessorIn: Processor {
 //      if ( text.indexOf( '<figcaption' ) !== -1 ) {
         if output.contains("<figcaption") {
 //          text = text.replace( /\s*(<figcaption[^>]*>)/g, '$1' );
-            output = output.stringByReplacingMatches(of: "\\s*(<figcaption[^>]*>)", with: "$0")
+            output = output.stringByReplacingMatches(of: "\\s*(<figcaption[^>]*>)", with: "$1")
 //          text = text.replace( /<\/figcaption>\s*/g, '</figcaption>' );
             output = output.stringByReplacingMatches(of: "</figcaption>\\s*", with: "</figcaption>")
         }
@@ -77,7 +73,7 @@ class CalypsoProcessorIn: Processor {
             output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", with: [], using: { match in
 
 //              a = a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' );
-                var updated = match.stringByReplacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$0>")
+                var updated = match.stringByReplacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$1>")
 
 //              a = a.replace( /<[^<>]+>/g, function( b ) {
                 updated = updated.stringByReplacingMatches(of: "<[^<>]+>", with: [], using: { match in
@@ -98,17 +94,17 @@ class CalypsoProcessorIn: Processor {
 
         // Pad block tags with two line breaks.
 //    text = text.replace( new RegExp( '(<(?:' + blocklist + ')(?: [^>]*)?>)', 'gi' ), '\n\n$1' );
-        output = output.stringByReplacingMatches(of: "(<(?:" + blocklist + ")(?: [^>]*)?>)", with: "\n\n$0")
+        output = output.stringByReplacingMatches(of: "(<(?:" + blocklist + ")(?: [^>]*)?>)", with: "\n\n$1")
 //    text = text.replace( new RegExp( '(</(?:' + blocklist + ')>)', 'gi' ), '$1\n\n' );
-        output = output.stringByReplacingMatches(of: "(</(?:" + blocklist + ")>)", with: "$0\n\n")
+        output = output.stringByReplacingMatches(of: "(</(?:" + blocklist + ")>)", with: "$1\n\n")
 //    text = text.replace( /<hr( [^>]*)?>/gi, '<hr$1>\n\n' );
-        output = output.stringByReplacingMatches(of: "<hr( [^>]*)?>", with: "<hr$0>\n\n")
+        output = output.stringByReplacingMatches(of: "<hr( [^>]*)?>", with: "<hr$1>\n\n")
 
         // Remove white space chars around <option>.
 //    text = text.replace( /\s*<option/gi, '<option' );
         output = output.stringByReplacingMatches(of: "\\s*<option", with: "<option")
 //    text = text.replace( /<\/option>\s*/gi, '</option>' );
-        output = output.stringByReplacingMatches(of: "</option>\\s*", with: "</option>")
+        output = output.stringByReplacingMatches(of: "<\\/option>\\s*", with: "</option>")
 
         // Normalize multiple line breaks and white space chars.
 //    text = text.replace( /\n\s*\n+/g, '\n\n' );
@@ -116,31 +112,31 @@ class CalypsoProcessorIn: Processor {
 
         // Convert two line breaks to a paragraph.
 //    text = text.replace( /([\s\S]+?)\n\n/g, '<p>$1</p>\n' );
-        output = output.stringByReplacingMatches(of: "([\\s\\S]+?)\n\n", with: "<p>$0</p>\n")
+        output = output.stringByReplacingMatches(of: "([\\s\\S]+?)\n\n", with: "<p>$1</p>\n")
 
         // Remove empty paragraphs.
 //    text = text.replace( /<p>\s*?<\/p>/gi, '');
-        output = output.stringByReplacingMatches(of: "<p>\\s*?</p>", with: "")
+        output = output.stringByReplacingMatches(of: "<p>\\s*?<\\/p>", with: "")
 
         // Remove <p> tags that are around block tags.
 //    text = text.replace( new RegExp( '<p>\\s*(</?(?:' + blocklist + ')(?: [^>]*)?>)\\s*</p>', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
+        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1")
 //    text = text.replace( /<p>(<li.+?)<\/p>/gi, '$1');
-        output = output.stringByReplacingMatches(of: "<p>(<li.+?)<\\/p>", with: "$0")
+        output = output.stringByReplacingMatches(of: "<p>(<li.+?)<\\/p>", with: "$1")
 
         // Fix <p> in blockquotes.
 //    text = text.replace( /<p>\s*<blockquote([^>]*)>/gi, '<blockquote$1><p>');
-        output = output.stringByReplacingMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$0><p>")
+        output = output.stringByReplacingMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$1><p>")
 //    text = text.replace( /<\/blockquote>\s*<\/p>/gi, '</p></blockquote>');
         output = output.stringByReplacingMatches(of: "<\\/blockquote>\\s*<\\/p>", with: "</p></blockquote>")
 
         // Remove <p> tags that are wrapped around block tags.
 //    text = text.replace( new RegExp( '<p>\\s*(</?(?:' + blocklist + ')(?: [^>]*)?>)', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$0")
+        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$1")
 //    text = text.replace( new RegExp( '(</?(?:' + blocklist + ')(?: [^>]*)?>)\\s*</p>', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
+        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1")
 //    text = text.replace( /(<br[^>]*>)\s*\n/gi, '$1' );
-        output = output.stringByReplacingMatches(of: "(<br[^>]*>)\\s*\n", with: "$0")
+        output = output.stringByReplacingMatches(of: "(<br[^>]*>)\\s*\n", with: "$1")
 
         // Add <br> tags.
 //    text = text.replace( /\s*\n/g, '<br />\n');
@@ -148,13 +144,13 @@ class CalypsoProcessorIn: Processor {
 
         // Remove <br> tags that are around block tags.
 //    text = text.replace( new RegExp( '(</?(?:' + blocklist + ')[^>]*>)\\s*<br />', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")[^>]*>)\\s*<br />", with: "$0")
+        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")[^>]*>)\\s*<br />", with: "$1")
 //    text = text.replace( /<br \/>(\s*<\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)/gi, '$1' );
-        output = output.stringByReplacingMatches(of: "<br />(\\s*<\\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)", with: "$0")
+        output = output.stringByReplacingMatches(of: "<br \\/>(\\s*<\\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)", with: "$1")
 
         // Remove <p> and <br> around captions.
 //    text = text.replace( /(?:<p>|<br ?\/?>)*\s*\[caption([^\[]+)\[\/caption\]\s*(?:<\/p>|<br ?\/?>)*/gi, '[caption$1[/caption]' );
-        output = output.stringByReplacingMatches(of: "(?:<p>|<br ?\\/?>)*\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*(?:<\\/p>|<br ?\\/?>)*", with: "[caption$0[/caption]")
+        output = output.stringByReplacingMatches(of: "(?:<p>|<br ?\\/?>)*\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*(?:<\\/p>|<br ?\\/?>)*", with: "[caption$1[/caption]")
 
         // Make sure there is <p> when there is </p> inside block tags that can contain other blocks.
 //    text = text.replace( /(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\/p>/g, function( a, b, c ) {
@@ -178,9 +174,9 @@ class CalypsoProcessorIn: Processor {
         // Restore the <br> tags in captions.
         if preserve_br {
 //            text = text.replace( /<wp-temp-br([^>]*)>/g, '<br$1>' );
-            output = output.stringByReplacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$0>")
+            output = output.stringByReplacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$1>")
         }
         
-        return text
+        return output
     }
 }
