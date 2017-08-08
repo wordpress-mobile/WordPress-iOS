@@ -27,7 +27,7 @@ extension String {
     ///
     /// - Returns: the new string.
     ///
-    func stringByReplacingMatches(of regex: String, with options: NSRegularExpression.Options = [], using block: (String, [String]) -> String) -> String {
+    func stringByReplacingMatches(of regex: String, options: NSRegularExpression.Options = [], using block: (String, [String]) -> String) -> String {
 
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
