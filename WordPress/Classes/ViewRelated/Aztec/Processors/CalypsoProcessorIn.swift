@@ -71,13 +71,13 @@ class CalypsoProcessorIn: Processor {
             preserve_br = true
 
 //          text = text.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", with: [], using: { (match, _) in
+            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", using: { (match, _) in
 
 //              a = a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' );
                 var updated = match.stringByReplacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$1>")
 
 //              a = a.replace( /<[^<>]+>/g, function( b ) {
-                updated = updated.stringByReplacingMatches(of: "<[^<>]+>", with: [], using: { (match, _) in
+                updated = updated.stringByReplacingMatches(of: "<[^<>]+>", using: { (match, _) in
 //                  return b.replace( /[\n\t ]+/, ' ' );
                     return match.stringByReplacingMatches(of: "[\n\t ]+", with: " ")
                 })
@@ -155,7 +155,7 @@ class CalypsoProcessorIn: Processor {
 
         // Make sure there is <p> when there is </p> inside block tags that can contain other blocks.
 //    text = text.replace( /(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\/p>/g, function( a, b, c ) {
-        output = output.stringByReplacingMatches(of: "(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\\/p>", with: [], using: { (match, _) in
+        output = output.stringByReplacingMatches(of: "(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\\/p>", using: { (match, _) in
 //    text = text.replace( //g, function( a, b, c ) {
 //        if ( c.match( /<p( [^>]*)?>/ ) ) {
 //            return a;
