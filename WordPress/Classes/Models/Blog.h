@@ -35,6 +35,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
     /// Does the blog support theme browsing?
     BlogFeatureThemeBrowsing,
+    /// Does the blog support custom themes?
+    BlogFeatureCustomThemes,
     /// Does the blog support Menus management?
     BlogFeatureMenus,
     /// Does the blog support private visibility?
