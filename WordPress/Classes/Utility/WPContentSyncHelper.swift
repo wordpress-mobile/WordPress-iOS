@@ -56,7 +56,7 @@ class WPContentSyncHelper: NSObject {
         }, failure: {
             [weak self] (error: NSError) -> Void in
             if let weakSelf = self {
-                weakSelf.syncContentEnded()
+                weakSelf.syncContentEnded(error: true)
             }
         })
 
