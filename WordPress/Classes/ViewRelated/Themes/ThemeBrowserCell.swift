@@ -76,6 +76,8 @@ open class ThemeBrowserCell: UICollectionViewCell {
             refreshGUI()
         }
     }
+
+    open var showPriceInformation: Bool = false
     open weak var presenter: ThemePresenter?
 
     fileprivate var placeholderImage = UIImage(named: "theme-loading")
@@ -109,6 +111,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
         super.prepareForReuse()
         theme = nil
         presenter = nil
+        showPriceInformation = false
     }
 
     fileprivate func refreshGUI() {
@@ -138,7 +141,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 actionButton.setImage(inactiveEllipsisImage, for: UIControlState())
 
                 nameLabel.textColor = Styles.inactiveCellNameColor
-                if theme.isPremium() {
+                if theme.isPremium() && showPriceInformation {
                     infoLabel.textColor = Styles.inactiveCellPriceColor
                     infoLabel.text = theme.price
                 } else {
