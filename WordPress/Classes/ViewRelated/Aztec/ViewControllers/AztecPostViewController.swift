@@ -632,6 +632,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
         htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
+        htmlPostProcessors.append(CalypsoProcessorOut())
     }
 
     func startListeningToNotifications() {
