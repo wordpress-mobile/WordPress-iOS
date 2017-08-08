@@ -1237,14 +1237,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showMediaPicker
 {
-    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] init];
+    WPMediaPickerOptions *options = [WPMediaPickerOptions new];
+    options.showMostRecentFirst = YES;
+    options.allowMultipleSelection = NO;
+    options.filter = WPMediaTypeImage;
+    WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
     self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
                                                              initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
     picker.dataSource = self.mediaDataSource;
-    picker.filter = WPMediaTypeImage;
     picker.delegate = self;
-    picker.allowMultipleSelection = NO;
-    picker.showMostRecentFirst = YES;
     picker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:picker animated:YES completion:nil];
 }

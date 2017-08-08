@@ -234,7 +234,7 @@ extension PHAsset: ExportableAsset {
             options.isNetworkAccessAllowed = true
             PHImageManager.default().requestExportSession(forVideo: self,
                 options: options,
-                exportPreset: AVAssetExportPresetPassthrough) { (exportSession, info) -> Void in
+                exportPreset: MediaSettings().maxVideoSizeSetting.videoPreset) { (exportSession, info) -> Void in
                     guard let exportSession = exportSession
                     else {
                         if let error = info?[PHImageErrorKey] as? NSError {
