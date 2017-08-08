@@ -167,7 +167,9 @@ open class ThemeBrowserCell: UICollectionViewCell {
     }
 
     fileprivate func refreshScreenshotImage(_ imageUrl: String) {
-        let imageUrlForWidth = imageUrl + "?w=\(presenter!.screenshotWidth)"
+        // Themes not hosted on WP.com have an incorrect screenshotUrl and do not correctly support the w param
+        let imageUrlForWidth = imageUrl.hasPrefix("http") ? imageUrl + "?w=\(presenter!.screenshotWidth)" :
+                                                            String(format: "http:%@", imageUrl)
         let screenshotUrl = URL(string: imageUrlForWidth)
 
         imageView.backgroundColor = Styles.placeholderColor
