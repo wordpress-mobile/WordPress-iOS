@@ -5,6 +5,14 @@ import Foundation
 //
 extension String {
 
+    /// Find all matches of the specified regex.
+    ///
+    /// - Parameters:
+    ///     - regex: the regex to use.
+    ///     - options: the regex options.
+    ///
+    /// - Returns: the requested matches.
+    ///
     func matches(regex: String, options: NSRegularExpression.Options = []) -> [NSTextCheckingResult] {
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
@@ -14,12 +22,19 @@ extension String {
 
     /// Replaces all matches of a given RegEx, with a template String.
     ///
-    func stringByReplacingMatches(of regex: String, with template: String, options: NSRegularExpression.Options = []) -> String {
+    /// - Parameters:
+    ///     - regex: the regex to use.
+    ///     - template: the template string to use for the replacement.
+    ///     - options: the regex options.
+    ///
+    /// - Returns: a new string after replacing all matches with the specified template.
+    ///
+    func replacingMatches(of regex: String, with template: String, options: NSRegularExpression.Options = []) -> String {
 
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
 
-        return regex.stringByReplacingMatches(in: self,
+        return regex.replacingMatches(in: self,
                                               options: [],
                                               range: fullRange,
                                               withTemplate: template)
@@ -34,7 +49,7 @@ extension String {
     ///
     /// - Returns: the new string.
     ///
-    func stringByReplacingMatches(of regex: String, options: NSRegularExpression.Options = [], using block: (String, [String]) -> String) -> String {
+    func replacingMatches(of regex: String, options: NSRegularExpression.Options = [], using block: (String, [String]) -> String) -> String {
 
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
