@@ -6,133 +6,139 @@ import Aztec
 //
 class CalypsoProcessorOut: Processor {
 
-    /// Converts a Calypso-Generated string into Valid HTML that can actually be edited by Aztec.
+    /// Converts the standard-HTML output of Aztec into the hybrid-HTML that WordPress uses to store
+    /// posts.
     ///
-    /// Ref. https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L309
+    /// This method was a direct migration from:
+    /// https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L172
+    /// Current as of 2017/08/08
     ///
     func process(text: String) -> String {
-// - Reventar el `/` inicial
-// - Duplicar los `\`
-// - Reventar el `/g` final
-
-        var preserve_linebreaks = false
-        var preserve_br = false
-        let blocklist = "table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre" +
-            "|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section" +
-            "|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary"
-
-        // Normalize line breaks.
-        var output = text.replaceMatches(of: "\r\n|\r", with: "\n")
-
-        guard output.contains("\n") else {
-            return output
-        }
-
-        // Remove line breaks from <object>
-        if output.contains("<object") {
-//        text = text.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
-//            return a.replace( /\n+/g, '' );
-//        });
-        }
-
-        // Remove line breaks from tags.
-//    text = text.replace( /<[^<>]+>/g, function( a ) {
-//        return a.replace( /[\n\t ]+/g, ' ' );
-//    });
-
-        // Preserve line breaks in <pre> and <script> tags.
-        if output.contains("<pre") || output.contains("<script") {
-            preserve_linebreaks = true
-//        text = text.replace( /<(pre|script)[^>]*>[\s\S]*?<\/\1>/g, function( a ) {
-//            return a.replace( /\n/g, '<wp-line-break>' );
-//        });
-        }
-
-        if output.contains("<figcaption") {
-            output = output.replaceMatches(of: "\\s*(<figcaption[^>]*>)", with: "$0")
-            output = output.replaceMatches(of: "</figcaption>\\s*", with: "</figcaption>")
-        }
-
-        // Keep <br> tags inside captions.
-        if output.contains("[caption") {
-            preserve_br = true
-
-//        text = text.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
-//            a = a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' );
 //
-//            a = a.replace( /<[^<>]+>/g, function( b ) {
-//                return b.replace( /[\n\t ]+/, ' ' );
-//            });
-//
-//            return a.replace( /\s*\n\s*/g, '<wp-temp-br />' );
-//        });
-        }
+//        var preserveLinebreaks = false
+//        var preserveBr = false
+//        var preserve = []
+//        let blocklist = "blockquote|ul|ol|li|dl|dt|dd|table|thead|tbody|tfoot|tr|th|td|h[1-6]|fieldset|figure"
+//        let blocklist1 = blocklist + "|div|p"
+//        let blocklist2 = blocklist + "|pre"
 
-        output = output + "\n\n"
-        output = output.replaceMatches(of: "<br \\/>\\s*<br \\/>", with: "\n\n")
+        return ""
 
-        // Pad block tags with two line breaks.
-        output = output.replaceMatches(of: "(<(?:" + blocklist + ")(?: [^>]*)?>)", with: "\n\n$0")
-        output = output.replaceMatches(of: "(</(?:" + blocklist + ")>)", with: "$0\n\n")
-        output = output.replaceMatches(of: "<hr( [^>]*)?>", with: "<hr$0>\n\n")
-
-        // Remove white space chars around <option>.
-        output = output.replaceMatches(of: "\\s*<option", with: "<option")
-        output = output.replaceMatches(of: "</option>\\s*", with: "</option>")
-
-        // Normalize multiple line breaks and white space chars.
-        output = output.replaceMatches(of: "\n\\s*\n+", with: "\n\n")
-
-        // Convert two line breaks to a paragraph.
-        output = output.replaceMatches(of: "([\\s\\S]+?)\n\n", with: "<p>$0</p>\n")
-
-        // Remove empty paragraphs.
-        output = output.replaceMatches(of: "<p>\\s*?</p>", with: "")
-
-        // Remove <p> tags that are around block tags.
-        output = output.replaceMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
-        output = output.replaceMatches(of: "<p>(<li.+?)<\\/p>", with: "$0")
-
-        // Fix <p> in blockquotes.
-        output = output.replaceMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$0><p>")
-        output = output.replaceMatches(of: "<\\/blockquote>\\s*<\\/p>", with: "</p></blockquote>")
-
-        // Remove <p> tags that are wrapped around block tags.
-        output = output.replaceMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$0")
-        output = output.replaceMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
-
-        output = output.replaceMatches(of: "(<br[^>]*>)\\s*\n", with: "$0")
-
-        // Add <br> tags.
-        output = output.replaceMatches(of: "\\s*\n", with: "<br />\n")
-
-        // Remove <br> tags that are around block tags.
-        output = output.replaceMatches(of: "(</?(?:" + blocklist + ")[^>]*>)\\s*<br />", with: "$0")
-        output = output.replaceMatches(of: "<br />(\\s*<\\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)", with: "$0")
-
-        // Remove <p> and <br> around captions.
-        output = output.replaceMatches(of: "(?:<p>|<br ?\\/?>)*\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*(?:<\\/p>|<br ?\\/?>)*", with: "[caption$0[/caption]")
-
-//    // Make sure there is <p> when there is </p> inside block tags that can contain other blocks.
-//    text = text.replace( /(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\/p>/g, function( a, b, c ) {
-//        if ( c.match( /<p( [^>]*)?>/ ) ) {
-//            return a;
+//        if ( ! html ) {
+//            return '';
 //        }
-//        
-//        return b + '<p>' + c + '</p>';
-//    });
-
-        // Restore the line breaks in <pre> and <script> tags.
-        if preserve_linebreaks {
-            output = output.replacingOccurrences(of: "<wp-line-break>", with: "\n")
-        }
-        
-        // Restore the <br> tags in captions.
-        if preserve_br {
-            output = output.replaceMatches(of: "<wp-temp-br([^>]*)>", with: "<br$0>")
-        }
-        
-        return text
+//
+//        // Protect script and style tags.
+//        if ( html.indexOf( '<script' ) !== -1 || html.indexOf( '<style' ) !== -1 ) {
+//            html = html.replace( /<(script|style)[^>]*>[\s\S]*?<\/\1>/g, function( match ) {
+//                preserve.push( match );
+//                return '<wp-preserve>';
+//            } );
+//        }
+//
+//        // Protect pre tags.
+//        if ( html.indexOf( '<pre' ) !== -1 ) {
+//            preserve_linebreaks = true;
+//            html = html.replace( /<pre[^>]*>[\s\S]+?<\/pre>/g, function( a ) {
+//                a = a.replace( /<br ?\/?>(\r\n|\n)?/g, '<wp-line-break>' );
+//                a = a.replace( /<\/?p( [^>]*)?>(\r\n|\n)?/g, '<wp-line-break>' );
+//                return a.replace( /\r?\n/g, '<wp-line-break>' );
+//            });
+//        }
+//
+//        // Remove line breaks but keep <br> tags inside image captions.
+//        if ( html.indexOf( '[caption' ) !== -1 ) {
+//            preserve_br = true;
+//            html = html.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
+//                return a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' ).replace( /[\r\n\t]+/, '' );
+//                });
+//                }
+//
+//                // Normalize white space characters before and after block tags.
+//                html = html.replace( new RegExp( '\\s*</(' + blocklist1 + ')>\\s*', 'g' ), '</$1>\n' );
+//                html = html.replace( new RegExp( '\\s*<((?:' + blocklist1 + ')(?: [^>]*)?)>', 'g' ), '\n<$1>' );
+//
+//                // Mark </p> if it has any attributes.
+//                html = html.replace( /(<p [^>]+>.*?)<\/p>/g, '$1</p#>' );
+//
+//                // Preserve the first <p> inside a <div>.
+//                html = html.replace( /<div( [^>]*)?>\s*<p>/gi, '<div$1>\n\n' );
+//
+//                // Remove paragraph tags.
+//                html = html.replace( /\s*<p>/gi, '' );
+//                html = html.replace( /\s*<\/p>\s*/gi, '\n\n' );
+//
+//                // Normalize white space chars and remove multiple line breaks.
+//                html = html.replace( /\n[\s\u00a0]+\n/g, '\n\n' );
+//
+//                // Replace <br> tags with line breaks.
+//                html = html.replace( /(\s*)<br ?\/?>\s*/gi, function( match, space ) {
+//                if ( space && space.indexOf( '\n' ) !== -1 ) {
+//                return '\n\n';
+//                }
+//
+//                return '\n';
+//                });
+//
+//                // Fix line breaks around <div>.
+//                html = html.replace( /\s*<div/g, '\n<div' );
+//                html = html.replace( /<\/div>\s*/g, '</div>\n' );
+//
+//                // Fix line breaks around caption shortcodes.
+//                html = html.replace( /\s*\[caption([^\[]+)\[\/caption\]\s*/gi, '\n\n[caption$1[/caption]\n\n' );
+//                html = html.replace( /caption\]\n\n+\[caption/g, 'caption]\n\n[caption' );
+//
+//                // Pad block elements tags with a line break.
+//                html = html.replace( new RegExp('\\s*<((?:' + blocklist2 + ')(?: [^>]*)?)\\s*>', 'g' ), '\n<$1>' );
+//                html = html.replace( new RegExp('\\s*</(' + blocklist2 + ')>\\s*', 'g' ), '</$1>\n' );
+//
+//                // Indent <li>, <dt> and <dd> tags.
+//                html = html.replace( /<((li|dt|dd)[^>]*)>/g, ' \t<$1>' );
+//
+//                // Fix line breaks around <select> and <option>.
+//                if ( html.indexOf( '<option' ) !== -1 ) {
+//                html = html.replace( /\s*<option/g, '\n<option' );
+//                html = html.replace( /\s*<\/select>/g, '\n</select>' );
+//                }
+//
+//                // Pad <hr> with two line breaks.
+//                if ( html.indexOf( '<hr' ) !== -1 ) {
+//                html = html.replace( /\s*<hr( [^>]*)?>\s*/g, '\n\n<hr$1>\n\n' );
+//                }
+//                
+//                // Remove line breaks in <object> tags.
+//                if ( html.indexOf( '<object' ) !== -1 ) {
+//                html = html.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
+//                return a.replace( /[\r\n]+/g, '' );
+//                });
+//                }
+//                
+//                // Unmark special paragraph closing tags.
+//                html = html.replace( /<\/p#>/g, '</p>\n' );
+//                
+//                // Pad remaining <p> tags whit a line break.
+//                html = html.replace( /\s*(<p [^>]+>[\s\S]*?<\/p>)/g, '\n$1' );
+//                
+//                // Trim.
+//                html = html.replace( /^\s+/, '' );
+//                html = html.replace( /[\s\u00a0]+$/, '' );
+//                
+//                if ( preserve_linebreaks ) {
+//                html = html.replace( /<wp-line-break>/g, '\n' );
+//                }
+//                
+//                if ( preserve_br ) {
+//                html = html.replace( /<wp-temp-br([^>]*)>/g, '<br$1>' );
+//                }
+//                
+//                // Restore preserved tags.
+//                if ( preserve.length ) {
+//                html = html.replace( /<wp-preserve>/g, function() {
+//                return preserve.shift();
+//                } );
+//                }
+//                
+//                return html;
     }
 }
 
