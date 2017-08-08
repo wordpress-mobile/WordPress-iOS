@@ -22,7 +22,7 @@ class CalypsoProcessorIn: Processor {
             "|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary"
 
         // Normalize line breaks.
-        var output = text.replaceMatches(of: "\r\n|\r", with: "\n")
+        var output = text.stringByReplacingMatches(of: "\r\n|\r", with: "\n")
 
         guard output.contains("\n") else {
             return output
@@ -49,8 +49,8 @@ class CalypsoProcessorIn: Processor {
         }
 
         if output.contains("<figcaption") {
-            output = output.replaceMatches(of: "\\s*(<figcaption[^>]*>)", with: "$0")
-            output = output.replaceMatches(of: "</figcaption>\\s*", with: "</figcaption>")
+            output = output.stringByReplacingMatches(of: "\\s*(<figcaption[^>]*>)", with: "$0")
+            output = output.stringByReplacingMatches(of: "</figcaption>\\s*", with: "</figcaption>")
         }
 
         // Keep <br> tags inside captions.
@@ -69,49 +69,49 @@ class CalypsoProcessorIn: Processor {
         }
 
         output = output + "\n\n"
-        output = output.replaceMatches(of: "<br \\/>\\s*<br \\/>", with: "\n\n")
+        output = output.stringByReplacingMatches(of: "<br \\/>\\s*<br \\/>", with: "\n\n")
 
         // Pad block tags with two line breaks.
-        output = output.replaceMatches(of: "(<(?:" + blocklist + ")(?: [^>]*)?>)", with: "\n\n$0")
-        output = output.replaceMatches(of: "(</(?:" + blocklist + ")>)", with: "$0\n\n")
-        output = output.replaceMatches(of: "<hr( [^>]*)?>", with: "<hr$0>\n\n")
+        output = output.stringByReplacingMatches(of: "(<(?:" + blocklist + ")(?: [^>]*)?>)", with: "\n\n$0")
+        output = output.stringByReplacingMatches(of: "(</(?:" + blocklist + ")>)", with: "$0\n\n")
+        output = output.stringByReplacingMatches(of: "<hr( [^>]*)?>", with: "<hr$0>\n\n")
 
         // Remove white space chars around <option>.
-        output = output.replaceMatches(of: "\\s*<option", with: "<option")
-        output = output.replaceMatches(of: "</option>\\s*", with: "</option>")
+        output = output.stringByReplacingMatches(of: "\\s*<option", with: "<option")
+        output = output.stringByReplacingMatches(of: "</option>\\s*", with: "</option>")
 
         // Normalize multiple line breaks and white space chars.
-        output = output.replaceMatches(of: "\n\\s*\n+", with: "\n\n")
+        output = output.stringByReplacingMatches(of: "\n\\s*\n+", with: "\n\n")
 
         // Convert two line breaks to a paragraph.
-        output = output.replaceMatches(of: "([\\s\\S]+?)\n\n", with: "<p>$0</p>\n")
+        output = output.stringByReplacingMatches(of: "([\\s\\S]+?)\n\n", with: "<p>$0</p>\n")
 
         // Remove empty paragraphs.
-        output = output.replaceMatches(of: "<p>\\s*?</p>", with: "")
+        output = output.stringByReplacingMatches(of: "<p>\\s*?</p>", with: "")
 
         // Remove <p> tags that are around block tags.
-        output = output.replaceMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
-        output = output.replaceMatches(of: "<p>(<li.+?)<\\/p>", with: "$0")
+        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
+        output = output.stringByReplacingMatches(of: "<p>(<li.+?)<\\/p>", with: "$0")
 
         // Fix <p> in blockquotes.
-        output = output.replaceMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$0><p>")
-        output = output.replaceMatches(of: "<\\/blockquote>\\s*<\\/p>", with: "</p></blockquote>")
+        output = output.stringByReplacingMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$0><p>")
+        output = output.stringByReplacingMatches(of: "<\\/blockquote>\\s*<\\/p>", with: "</p></blockquote>")
 
         // Remove <p> tags that are wrapped around block tags.
-        output = output.replaceMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$0")
-        output = output.replaceMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
+        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$0")
+        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$0")
 
-        output = output.replaceMatches(of: "(<br[^>]*>)\\s*\n", with: "$0")
+        output = output.stringByReplacingMatches(of: "(<br[^>]*>)\\s*\n", with: "$0")
 
         // Add <br> tags.
-        output = output.replaceMatches(of: "\\s*\n", with: "<br />\n")
+        output = output.stringByReplacingMatches(of: "\\s*\n", with: "<br />\n")
 
         // Remove <br> tags that are around block tags.
-        output = output.replaceMatches(of: "(</?(?:" + blocklist + ")[^>]*>)\\s*<br />", with: "$0")
-        output = output.replaceMatches(of: "<br />(\\s*<\\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)", with: "$0")
+        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")[^>]*>)\\s*<br />", with: "$0")
+        output = output.stringByReplacingMatches(of: "<br />(\\s*<\\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)", with: "$0")
 
         // Remove <p> and <br> around captions.
-        output = output.replaceMatches(of: "(?:<p>|<br ?\\/?>)*\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*(?:<\\/p>|<br ?\\/?>)*", with: "[caption$0[/caption]")
+        output = output.stringByReplacingMatches(of: "(?:<p>|<br ?\\/?>)*\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*(?:<\\/p>|<br ?\\/?>)*", with: "[caption$0[/caption]")
 
 //    // Make sure there is <p> when there is </p> inside block tags that can contain other blocks.
 //    text = text.replace( /(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\/p>/g, function( a, b, c ) {
@@ -129,7 +129,7 @@ class CalypsoProcessorIn: Processor {
         
         // Restore the <br> tags in captions.
         if preserve_br {
-            output = output.replaceMatches(of: "<wp-temp-br([^>]*)>", with: "<br$0>")
+            output = output.stringByReplacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$0>")
         }
         
         return text
