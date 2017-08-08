@@ -52,6 +52,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         self.service = service
         super.init(style: .grouped)
         title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
+        noResultsView.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -76,4 +77,13 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         })
     }
 
+}
+
+// MARK: - WPNoResultsViewDelegate
+
+extension PluginListViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        let supportVC = SupportViewController()
+        supportVC.showFromTabBar()
+    }
 }
