@@ -11,31 +11,11 @@ extension String {
 
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
-        let matches = regex.matches(in: self, options: [], range: fullRange)
 
-        var output = self
-
-        for match in matches.reversed() {
-
-            var finalTemplate = template
-
-            for captureGroupIndex in 1...9 {
-                let captureGroupMarker = "$\(captureGroupIndex)"
-
-                if finalTemplate.contains(captureGroupMarker) {
-
-                    let captureGroupRange = self.range(from: match.rangeAt(captureGroupIndex))
-                    let captureGroupText = self.substring(with: captureGroupRange)
-
-                    finalTemplate = finalTemplate.stringByReplacingMatches(of: captureGroupMarker, with: captureGroupText)
-                }
-            }
-
-            let matchRange = range(from: match.range)
-            output = output.replacingCharacters(in: matchRange, with: finalTemplate)
-        }
-
-        return output
+        return regex.stringByReplacingMatches(in: self,
+                                              options: [],
+                                              range: fullRange,
+                                              withTemplate: template)
     }
 
     /// Replaces all matches of a given RegEx using a provided block.
