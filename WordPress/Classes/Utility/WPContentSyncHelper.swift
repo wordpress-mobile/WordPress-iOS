@@ -5,9 +5,9 @@ import CocoaLumberjack
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?)
-    @objc optional func syncContentEnded()
-    @objc optional func syncContentFailed()
-    @objc optional func hasNoMoreContent()
+    @objc optional func syncContentEnded(_ syncHelper: WPContentSyncHelper)
+    @objc optional func syncContentFailed(_ syncHelper: WPContentSyncHelper)
+    @objc optional func hasNoMoreContent(_ syncHelper: WPContentSyncHelper)
 }
 
 
@@ -22,7 +22,7 @@ class WPContentSyncHelper: NSObject {
                 return
             }
             if hasMoreContent == false {
-                delegate?.hasNoMoreContent?()
+                delegate?.hasNoMoreContent?(self)
             }
         }
     }
@@ -120,9 +120,9 @@ class WPContentSyncHelper: NSObject {
         isLoadingMore = false
 
         if error {
-            delegate?.syncContentFailed?()
+            delegate?.syncContentFailed?(self)
         } else {
-            delegate?.syncContentEnded?()
+            delegate?.syncContentEnded?(self)
         }
     }
 
