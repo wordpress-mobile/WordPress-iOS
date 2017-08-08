@@ -203,6 +203,8 @@ class CalypsoProcessorOut: Processor {
         if preserve.count > 0 {
             //                html = html.replace( /<wp-preserve>/g, function() {
             output = output.replacingMatches(of: preserveMarker, using: { (_, _) -> String in
+
+                // return preserve.shift();
                 return preserve.removeFirst()
             })
         }
