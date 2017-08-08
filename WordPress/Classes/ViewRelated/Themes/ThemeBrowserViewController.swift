@@ -86,16 +86,35 @@ public protocol ThemePresenter: class {
      *  @brief      The blog this VC will work with.
      *  @details    Must be set by the creator of this VC.
      */
-    open var blog: Blog!
+    open var blog: Blog! {
+        didSet {
+            if blog.supports(BlogFeature.customThemes) {
+                if let planID = blog.planID?.intValue,
+                    (planID == JetpackProfessionalPlanIds.yearly || planID == JetpackProfessionalPlanIds.monthly) {
+                    filterType = .all
+                } else {
+                    filterType = .free
+                }
+            }
+        }
+    }
 
     // MARK: - Properties
 
     @IBOutlet weak var collectionView: UICollectionView!
 
     /**
-     *  @brief      The FRC this VC will use to display filtered content.
+     *  @brief      The FRCs this VC will use to display filtered content.
      */
     fileprivate lazy var themesController: NSFetchedResultsController<NSFetchRequestResult> = {
+        return self.createThemesFetchedResultsController()
+    }()
+
+    fileprivate lazy var customThemesController: NSFetchedResultsController<NSFetchRequestResult> = {
+        return self.createThemesFetchedResultsController()
+    }()
+
+    fileprivate func createThemesFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Theme.entityName())
         fetchRequest.fetchBatchSize = 20
         let sort = NSSortDescriptor(key: "order", ascending: true)
@@ -107,10 +126,14 @@ public protocol ThemePresenter: class {
         frc.delegate = self
 
         return frc
-    }()
+    }
 
     fileprivate var themesCount: NSInteger {
         return themesController.fetchedObjects?.count ?? 0
+    }
+
+    fileprivate var customThemesCount: NSInteger {
+        return blog.supports(BlogFeature.customThemes) ? (customThemesController.fetchedObjects?.count ?? 0) : 0
     }
 
     fileprivate var searchController: UISearchController!
@@ -130,14 +153,7 @@ public protocol ThemePresenter: class {
         return !suspendedSearch.trim().isEmpty
     }
 
-    open var filterType: ThemeType = ThemeType.mayPurchase ? .all : .free {
-        didSet {
-            if filterType != oldValue {
-                fetchThemes()
-                reloadThemes()
-            }
-        }
-    }
+    open var filterType: ThemeType = ThemeType.mayPurchase ? .all : .free
 
     /**
      *  @brief      Collection view support
@@ -146,6 +162,7 @@ public protocol ThemePresenter: class {
     fileprivate enum Section {
         case search
         case info
+        case customThemes
         case themes
     }
     fileprivate var sections: [Section]!
@@ -155,9 +172,13 @@ public protocol ThemePresenter: class {
         updateResults()
     }
 
-    fileprivate func themeAtIndex(_ index: Int) -> Theme? {
-        let indexPath = IndexPath(row: index, section: 0)
-        return themesController.object(at: indexPath) as? Theme
+    fileprivate func themeAtIndexPath(_ indexPath: IndexPath) -> Theme? {
+        if sections[indexPath.section] == .themes {
+            return themesController.object(at: IndexPath(row: indexPath.row, section: 0)) as? Theme
+        } else if sections[indexPath.section] == .customThemes {
+            return customThemesController.object(at: IndexPath(row: indexPath.row, section: 0)) as? Theme
+        }
+        return nil
     }
 
     fileprivate lazy var noResultsView: WPNoResultsView = {
@@ -188,8 +209,10 @@ public protocol ThemePresenter: class {
      *  @brief      The themes service we'll use in this VC and its helpers
      */
     fileprivate let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-    fileprivate var syncHelper: WPContentSyncHelper!
-    fileprivate var syncingPage = 0
+    fileprivate var themesSyncHelper: WPContentSyncHelper!
+    fileprivate var themesSyncingPage = 0
+    fileprivate var customThemesSyncHelper: WPContentSyncHelper!
+    fileprivate var customThemesSyncingPage = 0
     fileprivate let syncPadding = 5
 
     // MARK: - Private Aliases
@@ -221,12 +244,17 @@ public protocol ThemePresenter: class {
         WPStyleGuide.configureColors(for: view, collectionView: collectionView)
 
         fetchThemes()
-        sections = themesCount == 0 ? [.search, .themes] : [.search, .info, .themes]
+        sections = (themesCount == 0 && customThemesCount == 0) ? [.search, .customThemes, .themes] :
+                                                                  [.search, .info, .customThemes, .themes]
 
         configureSearchController()
 
         updateActiveTheme()
-        setupSyncHelper()
+        setupThemesSyncHelper()
+        if blog.supports(BlogFeature.customThemes) {
+            setupCustomThemesSyncHelper()
+        }
+        syncContent()
     }
 
     fileprivate func configureSearchController() {
@@ -344,28 +372,63 @@ public protocol ThemePresenter: class {
         })
     }
 
-    fileprivate func setupSyncHelper() {
-        syncHelper = WPContentSyncHelper()
-        syncHelper.delegate = self
+    fileprivate func setupThemesSyncHelper() {
+        themesSyncHelper = WPContentSyncHelper()
+        themesSyncHelper.delegate = self
+    }
 
-        if syncHelper.syncContent() {
+    fileprivate func setupCustomThemesSyncHelper() {
+        customThemesSyncHelper = WPContentSyncHelper()
+        customThemesSyncHelper.delegate = self
+    }
+
+    fileprivate func syncContent() {
+        if themesSyncHelper.syncContent() &&
+            (!blog.supports(BlogFeature.customThemes) ||
+                customThemesSyncHelper.syncContent()) {
             updateResults()
         }
     }
 
-    fileprivate func syncMoreIfNeeded(_ themeIndex: NSInteger) {
-        let paddedCount = themeIndex + syncPadding
-        if paddedCount >= themesCount && syncHelper.hasMoreContent && syncHelper.syncMoreContent() {
+    fileprivate func syncMoreThemesIfNeeded(_ indexPath: IndexPath) {
+        let paddedCount = indexPath.row + syncPadding
+        if paddedCount >= themesCount && themesSyncHelper.hasMoreContent && themesSyncHelper.syncMoreContent() {
+            updateResults()
+        }
+    }
+
+    fileprivate func syncMoreCustomThemesIfNeeded(_ indexPath: IndexPath) {
+        let paddedCount = indexPath.row + syncPadding
+        if paddedCount >= customThemesCount && customThemesSyncHelper.hasMoreContent && customThemesSyncHelper.syncMoreContent() {
             updateResults()
         }
     }
 
     fileprivate func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(page > 0)
-
-        syncingPage = page
+        themesSyncingPage = page
         _ = themeService.getThemesFor(blog,
-            page: syncingPage,
+            page: themesSyncingPage,
+            sync: page == 1,
+            success: {(themes: [Theme]?, hasMore: Bool) in
+                if let success = success {
+                    success(hasMore)
+                }
+            },
+            failure: { (error) in
+                DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                if let failure = failure,
+                    let error = error {
+                    failure(error as NSError)
+                }
+            })
+    }
+
+    fileprivate func syncCustomThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+        assert(page > 0)
+        customThemesSyncingPage = page
+        _ = themeService.getCustomThemes(for: blog,
+            page: customThemesSyncingPage,
             sync: page == 1,
             success: {(themes: [Theme]?, hasMore: Bool) in
                 if let success = success {
@@ -396,7 +459,7 @@ public protocol ThemePresenter: class {
     }
 
     fileprivate func updateResults() {
-        if themesCount == 0 {
+        if themesCount == 0 && customThemesCount == 0 {
             showNoResults()
         } else {
             hideNoResults()
@@ -416,7 +479,10 @@ public protocol ThemePresenter: class {
         }
         noResultsView.titleText = title
         view.addSubview(noResultsView)
-        syncMoreIfNeeded(0)
+        syncMoreThemesIfNeeded(IndexPath(item: 0, section: 0))
+        if blog.supports(BlogFeature.customThemes) {
+            syncMoreCustomThemesIfNeeded(IndexPath(item: 0, section: 0))
+        }
     }
 
     fileprivate func hideNoResults() {
@@ -429,7 +495,7 @@ public protocol ThemePresenter: class {
         if searchController.isActive {
             collectionView?.reloadData()
         } else {
-            sections = [.search, .info, .themes]
+            sections = [.search, .info, .customThemes, .themes]
             collectionView?.collectionViewLayout.invalidateLayout()
         }
     }
@@ -437,22 +503,39 @@ public protocol ThemePresenter: class {
     // MARK: - WPContentSyncHelperDelegate
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        syncThemePage(1, success: success, failure: failure)
+        if (syncHelper == themesSyncHelper) {
+            syncThemePage(1, success: success, failure: failure)
+        } else if (syncHelper == customThemesSyncHelper) {
+            syncCustomThemePage(1, success: success, failure: failure)
+        }
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        let nextPage = syncingPage + 1
-        syncThemePage(nextPage, success: success, failure: failure)
+        if syncHelper == themesSyncHelper {
+            let nextPage = themesSyncingPage + 1
+            syncThemePage(nextPage, success: success, failure: failure)
+        } else if syncHelper == customThemesSyncHelper {
+            let nextPage = customThemesSyncingPage + 1
+            syncCustomThemePage(nextPage, success: success, failure: failure)
+        }
     }
 
-    func syncContentEnded() {
+    func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         updateResults()
-        let lastVisibleTheme = collectionView?.indexPathsForVisibleItems.last?.row ?? 0
-        syncMoreIfNeeded(lastVisibleTheme)
+        let lastVisibleTheme = collectionView?.indexPathsForVisibleItems.last ?? IndexPath(item: 0, section: 0)
+        if syncHelper == themesSyncHelper {
+            syncMoreThemesIfNeeded(lastVisibleTheme)
+        } else if syncHelper == customThemesSyncHelper {
+            syncMoreCustomThemesIfNeeded(lastVisibleTheme)
+        }
     }
 
-    func hasNoMoreContent() {
-        syncingPage = 0
+    func hasNoMoreContent(_ syncHelper: WPContentSyncHelper) {
+        if syncHelper == themesSyncHelper {
+            themesSyncingPage = 0
+        } else if syncHelper == customThemesSyncHelper {
+            customThemesSyncingPage = 0
+        }
         collectionView?.collectionViewLayout.invalidateLayout()
     }
 
@@ -462,6 +545,8 @@ public protocol ThemePresenter: class {
         switch sections[section] {
         case .search, .info:
             return 0
+        case .customThemes:
+            return customThemesCount
         case .themes:
             return themesCount
         }
@@ -472,9 +557,13 @@ public protocol ThemePresenter: class {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ThemeBrowserCell.reuseIdentifier, for: indexPath) as! ThemeBrowserCell
 
         cell.presenter = self
-        cell.theme = themeAtIndex(indexPath.row)
+        cell.theme = themeAtIndexPath(indexPath)
 
-        syncMoreIfNeeded(indexPath.row)
+        if sections[indexPath.section] == .themes {
+            syncMoreThemesIfNeeded(indexPath)
+        } else if sections[indexPath.section] == .customThemes {
+            syncMoreCustomThemesIfNeeded(indexPath)
+        }
 
         return cell
     }
@@ -508,7 +597,7 @@ public protocol ThemePresenter: class {
     // MARK: - UICollectionViewDelegate
 
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let theme = themeAtIndex(indexPath.row) {
+        if let theme = themeAtIndexPath(indexPath) {
             if theme.isCurrentTheme() {
                 presentCustomizeForTheme(theme)
             } else {
@@ -521,10 +610,10 @@ public protocol ThemePresenter: class {
 
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section: NSInteger) -> CGSize {
         switch sections[section] {
-        case .themes:
+        case .themes, .customThemes:
             return .zero
         case .search:
-                return CGSize(width: 0, height: searchController.searchBar.bounds.height)
+            return CGSize(width: 0, height: searchController.searchBar.bounds.height)
         case .info:
             let horizontallyCompact = traitCollection.horizontalSizeClass == .compact
             let height = Styles.headerHeight(horizontallyCompact, includingSearchBar: ThemeType.mayPurchase)
@@ -540,7 +629,7 @@ public protocol ThemePresenter: class {
     }
 
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-            guard sections[section] == .themes && syncHelper.isLoadingMore else {
+            guard sections[section] == .themes && themesSyncHelper.isLoadingMore else {
                 return CGSize.zero
             }
 
@@ -549,6 +638,11 @@ public protocol ThemePresenter: class {
 
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         switch sections[section] {
+        case .customThemes:
+            if !blog.supports(BlogFeature.customThemes) {
+                return .zero
+            }
+            return Styles.themeMargins
         case .themes:
             return Styles.themeMargins
         case .info, .search:
@@ -584,7 +678,7 @@ public protocol ThemePresenter: class {
     }
 
     open func didDismissSearchController(_ searchController: UISearchController) {
-        if sections[1] == .themes {
+        if sections[1] == .themes || sections[1] == .customThemes {
             setInfoSectionHidden(false)
         }
 
@@ -594,12 +688,12 @@ public protocol ThemePresenter: class {
     fileprivate func setInfoSectionHidden(_ hidden: Bool) {
         let hide = {
             self.collectionView?.deleteSections(IndexSet(integer: 1))
-            self.sections = [.search, .themes]
+            self.sections = [.search, .customThemes, .themes]
         }
 
         let show = {
             self.collectionView?.insertSections(IndexSet(integer: 1))
-            self.sections = [.search, .info, .themes]
+            self.sections = [.search, .info, .customThemes, .themes]
         }
 
         collectionView.performBatchUpdates({
@@ -624,7 +718,15 @@ public protocol ThemePresenter: class {
     }
 
     fileprivate func browsePredicate() -> NSPredicate? {
-        let blogPredicate = NSPredicate(format: "blog == %@", self.blog)
+        return browsePredicateThemesWithCustomValue(false)
+    }
+
+    fileprivate func customThemesBrowsePredicate() -> NSPredicate? {
+        return browsePredicateThemesWithCustomValue(true)
+    }
+
+    fileprivate func browsePredicateThemesWithCustomValue(_ custom: Bool) -> NSPredicate? {
+        let blogPredicate = NSPredicate(format: "blog == %@ AND custom == %d", self.blog, custom ? 1 : 0)
 
         let subpredicates = [blogPredicate, searchNamePredicate(), filterType.predicate].flatMap { $0 }
         switch subpredicates.count {
@@ -639,6 +741,10 @@ public protocol ThemePresenter: class {
         do {
             themesController.fetchRequest.predicate = browsePredicate()
             try themesController.performFetch()
+            if self.blog.supports(BlogFeature.customThemes) {
+                customThemesController.fetchRequest.predicate = customThemesBrowsePredicate()
+                try customThemesController.performFetch()
+            }
         } catch {
             DDLogError("Error fetching themes: \(error)")
         }
@@ -751,5 +857,12 @@ public protocol ThemePresenter: class {
         _ = navigationController?.popViewController(animated: true)
         activateTheme(presentingTheme)
         presentingTheme = nil
+    }
+}
+
+private extension ThemeBrowserViewController {
+    struct JetpackProfessionalPlanIds {
+        static let yearly = 2004
+        static let monthly = 2001
     }
 }
