@@ -91,21 +91,21 @@ class CalypsoProcessorIn: Processor {
         output = output + "\n\n"
 
 //      text = text.replace( /<br \/>\s*<br \/>/gi, '\n\n' );
-        output = output.stringByReplacingMatches(of: "<br \\/>\\s*<br \\/>", with: "\n\n")
+        output = output.stringByReplacingMatches(of: "<br \\/>\\s*<br \\/>", with: "\n\n", options: .caseInsensitive)
 
         // Pad block tags with two line breaks.
 //    text = text.replace( new RegExp( '(<(?:' + blocklist + ')(?: [^>]*)?>)', 'gi' ), '\n\n$1' );
-        output = output.stringByReplacingMatches(of: "(<(?:" + blocklist + ")(?: [^>]*)?>)", with: "\n\n$1")
+        output = output.stringByReplacingMatches(of: "(<(?:" + blocklist + ")(?: [^>]*)?>)", with: "\n\n$1", options: .caseInsensitive)
 //    text = text.replace( new RegExp( '(</(?:' + blocklist + ')>)', 'gi' ), '$1\n\n' );
-        output = output.stringByReplacingMatches(of: "(</(?:" + blocklist + ")>)", with: "$1\n\n")
+        output = output.stringByReplacingMatches(of: "(</(?:" + blocklist + ")>)", with: "$1\n\n", options: .caseInsensitive)
 //    text = text.replace( /<hr( [^>]*)?>/gi, '<hr$1>\n\n' );
-        output = output.stringByReplacingMatches(of: "<hr( [^>]*)?>", with: "<hr$1>\n\n")
+        output = output.stringByReplacingMatches(of: "<hr( [^>]*)?>", with: "<hr$1>\n\n", options: .caseInsensitive)
 
         // Remove white space chars around <option>.
 //    text = text.replace( /\s*<option/gi, '<option' );
-        output = output.stringByReplacingMatches(of: "\\s*<option", with: "<option")
+        output = output.stringByReplacingMatches(of: "\\s*<option", with: "<option", options: .caseInsensitive)
 //    text = text.replace( /<\/option>\s*/gi, '</option>' );
-        output = output.stringByReplacingMatches(of: "<\\/option>\\s*", with: "</option>")
+        output = output.stringByReplacingMatches(of: "<\\/option>\\s*", with: "</option>", options: .caseInsensitive)
 
         // Normalize multiple line breaks and white space chars.
 //    text = text.replace( /\n\s*\n+/g, '\n\n' );
@@ -117,27 +117,27 @@ class CalypsoProcessorIn: Processor {
 
         // Remove empty paragraphs.
 //    text = text.replace( /<p>\s*?<\/p>/gi, '');
-        output = output.stringByReplacingMatches(of: "<p>\\s*?<\\/p>", with: "")
+        output = output.stringByReplacingMatches(of: "<p>\\s*?<\\/p>", with: "", options: .caseInsensitive)
 
         // Remove <p> tags that are around block tags.
 //    text = text.replace( new RegExp( '<p>\\s*(</?(?:' + blocklist + ')(?: [^>]*)?>)\\s*</p>', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1")
+        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1", options: .caseInsensitive)
 //    text = text.replace( /<p>(<li.+?)<\/p>/gi, '$1');
-        output = output.stringByReplacingMatches(of: "<p>(<li.+?)<\\/p>", with: "$1")
+        output = output.stringByReplacingMatches(of: "<p>(<li.+?)<\\/p>", with: "$1", options: .caseInsensitive)
 
         // Fix <p> in blockquotes.
 //    text = text.replace( /<p>\s*<blockquote([^>]*)>/gi, '<blockquote$1><p>');
-        output = output.stringByReplacingMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$1><p>")
+        output = output.stringByReplacingMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$1><p>", options: .caseInsensitive)
 //    text = text.replace( /<\/blockquote>\s*<\/p>/gi, '</p></blockquote>');
-        output = output.stringByReplacingMatches(of: "<\\/blockquote>\\s*<\\/p>", with: "</p></blockquote>")
+        output = output.stringByReplacingMatches(of: "<\\/blockquote>\\s*<\\/p>", with: "</p></blockquote>", options: .caseInsensitive)
 
         // Remove <p> tags that are wrapped around block tags.
 //    text = text.replace( new RegExp( '<p>\\s*(</?(?:' + blocklist + ')(?: [^>]*)?>)', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$1")
+        output = output.stringByReplacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$1", options: .caseInsensitive)
 //    text = text.replace( new RegExp( '(</?(?:' + blocklist + ')(?: [^>]*)?>)\\s*</p>', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1")
+        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1", options: .caseInsensitive)
 //    text = text.replace( /(<br[^>]*>)\s*\n/gi, '$1' );
-        output = output.stringByReplacingMatches(of: "(<br[^>]*>)\\s*\n", with: "$1")
+        output = output.stringByReplacingMatches(of: "(<br[^>]*>)\\s*\n", with: "$1", options: .caseInsensitive)
 
         // Add <br> tags.
 //    text = text.replace( /\s*\n/g, '<br />\n');
@@ -145,13 +145,13 @@ class CalypsoProcessorIn: Processor {
 
         // Remove <br> tags that are around block tags.
 //    text = text.replace( new RegExp( '(</?(?:' + blocklist + ')[^>]*>)\\s*<br />', 'gi' ), '$1' );
-        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")[^>]*>)\\s*<br />", with: "$1")
+        output = output.stringByReplacingMatches(of: "(</?(?:" + blocklist + ")[^>]*>)\\s*<br />", with: "$1", options: .caseInsensitive)
 //    text = text.replace( /<br \/>(\s*<\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)/gi, '$1' );
-        output = output.stringByReplacingMatches(of: "<br \\/>(\\s*<\\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)", with: "$1")
+        output = output.stringByReplacingMatches(of: "<br \\/>(\\s*<\\/?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)", with: "$1", options: .caseInsensitive)
 
         // Remove <p> and <br> around captions.
 //    text = text.replace( /(?:<p>|<br ?\/?>)*\s*\[caption([^\[]+)\[\/caption\]\s*(?:<\/p>|<br ?\/?>)*/gi, '[caption$1[/caption]' );
-        output = output.stringByReplacingMatches(of: "(?:<p>|<br ?\\/?>)*\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*(?:<\\/p>|<br ?\\/?>)*", with: "[caption$1[/caption]")
+        output = output.stringByReplacingMatches(of: "(?:<p>|<br ?\\/?>)*\\s*\\[caption([^\\[]+)\\[\\/caption\\]\\s*(?:<\\/p>|<br ?\\/?>)*", with: "[caption$1[/caption]", options: .caseInsensitive)
 
         // Make sure there is <p> when there is </p> inside block tags that can contain other blocks.
 //    text = text.replace( /(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\/p>/g, function( a, b, c ) {
