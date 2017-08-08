@@ -2,6 +2,7 @@
 #import <WordPressKit/WordPressKit-Swift.h>
 
 static NSString* const ServiceRemoteWordPressComRESTApiVersionStringInvalid = @"invalid_api_version";
+static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_0 = @"v1";
 static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_1 = @"v1.1";
 static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_2 = @"v1.2";
 static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_3 = @"v1.3";
@@ -30,6 +31,10 @@ static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_3 = @"v1.
     NSString *result = nil;
     
     switch (apiVersion) {
+        case ServiceRemoteWordPressComRESTApiVersion_1_0:
+            result = ServiceRemoteWordPressComRESTApiVersionString_1_0;
+            break;
+
         case ServiceRemoteWordPressComRESTApiVersion_1_1:
             result = ServiceRemoteWordPressComRESTApiVersionString_1_1;
             break;
