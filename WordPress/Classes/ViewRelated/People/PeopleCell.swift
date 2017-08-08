@@ -20,6 +20,7 @@ class PeopleCell: WPTableViewCell {
         roleBadge.backgroundColor = viewModel.roleBackgroundColor
         roleBadge.textColor = viewModel.roleTextColor
         roleBadge.text = viewModel.roleText
+        roleBadge.isHidden = viewModel.roleHidden
         superAdminRoleBadge.text = viewModel.superAdminText
         superAdminRoleBadge.isHidden = viewModel.superAdminHidden
         superAdminRoleBadge.borderColor = viewModel.superAdminBorderColor

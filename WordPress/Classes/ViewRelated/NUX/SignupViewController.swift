@@ -51,6 +51,12 @@ import WordPressShared
 
     // MARK: - Lifecycle Methods
 
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
+        WPAppAnalytics.track(.createAccountInitiated)
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
