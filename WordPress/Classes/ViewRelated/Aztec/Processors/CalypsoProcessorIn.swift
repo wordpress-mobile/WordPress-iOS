@@ -31,7 +31,7 @@ class CalypsoProcessorIn: Processor {
 //      if ( text.indexOf( '<object' ) !== -1 ) {
         if output.contains("<object") {
 //          text = text.replace( /<object[\s\S]+?<\/object>/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "<object[\\s\\S]+?<\\/object>", using: { match in
+            output = output.stringByReplacingMatches(of: "<object[\\s\\S]+?<\\/object>", using: { (match, _) in
 //              return a.replace( /\n+/g, '' );
                 return match.stringByReplacingMatches(of: "\n+", with: "")
             })
@@ -39,7 +39,7 @@ class CalypsoProcessorIn: Processor {
 
         // Remove line breaks from tags.
 //      text = text.replace( /<[^<>]+>/g, function( a ) {
-        output = output.stringByReplacingMatches(of: "<[^<>]+>", using: { match in
+        output = output.stringByReplacingMatches(of: "<[^<>]+>", using: { (match, _) in
 //          return a.replace( /[\n\t ]+/g, ' ' );
             return match.stringByReplacingMatches(of: "[\n\t ]+", with: " ")
         })
@@ -50,7 +50,7 @@ class CalypsoProcessorIn: Processor {
 //          preserve_linebreaks = true;
             preserve_linebreaks = true
 //          text = text.replace( /<(pre|script)[^>]*>[\s\S]*?<\/\1>/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "<(pre|script)[^>]*>[\\s\\S]*?<\\/\\1>", using: { match in
+            output = output.stringByReplacingMatches(of: "<(pre|script)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) in
 //              return a.replace( /\n/g, '<wp-line-break>' );
                 return match.stringByReplacingMatches(of: "\n", with: "<wp-line-break>")
             })
@@ -71,13 +71,13 @@ class CalypsoProcessorIn: Processor {
             preserve_br = true
 
 //          text = text.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
-            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", with: [], using: { match in
+            output = output.stringByReplacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", with: [], using: { (match, _) in
 
 //              a = a.replace( /<br([^>]*)>/g, '<wp-temp-br$1>' );
                 var updated = match.stringByReplacingMatches(of: "<br([^>]*)>", with: "<wp-temp-br$1>")
 
 //              a = a.replace( /<[^<>]+>/g, function( b ) {
-                updated = updated.stringByReplacingMatches(of: "<[^<>]+>", with: [], using: { match in
+                updated = updated.stringByReplacingMatches(of: "<[^<>]+>", with: [], using: { (match, _) in
 //                  return b.replace( /[\n\t ]+/, ' ' );
                     return match.stringByReplacingMatches(of: "[\n\t ]+", with: " ")
                 })
@@ -155,7 +155,7 @@ class CalypsoProcessorIn: Processor {
 
         // Make sure there is <p> when there is </p> inside block tags that can contain other blocks.
 //    text = text.replace( /(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\/p>/g, function( a, b, c ) {
-        output = output.stringByReplacingMatches(of: "(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\\/p>", with: [], using: { match in
+        output = output.stringByReplacingMatches(of: "(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\\/p>", with: [], using: { (match, _) in
 //    text = text.replace( //g, function( a, b, c ) {
 //        if ( c.match( /<p( [^>]*)?>/ ) ) {
 //            return a;
