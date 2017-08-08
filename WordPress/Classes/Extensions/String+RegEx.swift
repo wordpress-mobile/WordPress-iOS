@@ -34,7 +34,7 @@ extension String {
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
 
-        return regex.replacingMatches(in: self,
+        return regex.stringByReplacingMatches(in: self,
                                               options: [],
                                               range: fullRange,
                                               withTemplate: template)
