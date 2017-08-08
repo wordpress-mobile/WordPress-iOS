@@ -7,6 +7,11 @@
 // Service dictionary keys
 static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
+static NSString* const ThemeRequestTierKey = @"tier";
+static NSString* const ThemeRequestTierAllValue = @"all";
+static NSString* const ThemeRequestNumberKey = @"number";
+static NSInteger const ThemeRequestNumberValue = 50;
+static NSString* const ThemeRequestPageKey = @"page";
 
 @implementation ThemeServiceRemote
 
@@ -107,6 +112,29 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     return progress;
 }
 
+- (NSProgress *)getThemesPage:(NSInteger)page
+                         path:(NSString *)path
+                      success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                      failure:(ThemeServiceRemoteFailureBlock)failure
+{
+    NSParameterAssert(page > 0);
+    NSParameterAssert([path isKindOfClass:[NSString class]]);
+
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
+
+    NSDictionary *parameters = @{ThemeRequestTierKey: ThemeRequestTierAllValue,
+                                 ThemeRequestNumberKey: @(ThemeRequestNumberValue),
+                                 ThemeRequestPageKey: @(page),
+                                 };
+
+    return [self getThemesWithRequestUrl:requestUrl
+                                    page:page
+                              parameters:parameters
+                                 success:success
+                                 failure:failure];
+}
+
 - (NSProgress *)getThemesForBlogId:(NSNumber *)blogId
                                page:(NSInteger)page
                             success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
@@ -115,58 +143,85 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     NSParameterAssert(page > 0);
 
-    NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
-    
-    NSProgress *progress = [self getThemesPage:page
-                                            path:path
-                                         success:success
-                                         failure:failure];
-    
+    NSProgress *progress = [self getThemesForBlogId:blogId
+                                               page:page
+                                         apiVersion:ServiceRemoteWordPressComRESTApiVersion_1_2
+                                             params:@{ThemeRequestTierKey: ThemeRequestTierAllValue}
+                                            success:success
+                                            failure:failure];
+
     return progress;
 }
 
-- (NSProgress *)getThemesPage:(NSInteger)page
-                          path:(NSString *)path
-                       success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                       failure:(ThemeServiceRemoteFailureBlock)failure
+- (NSProgress *)getCustomThemesForBlogId:(NSNumber *)blogId
+                                    page:(NSInteger)page
+                                 success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                                 failure:(ThemeServiceRemoteFailureBlock)failure
 {
-    NSParameterAssert(page > 0);
-    NSParameterAssert([path isKindOfClass:[NSString class]]);
-    
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
-    
-    static NSString* const ThemeRequestTierKey = @"tier";
-    static NSString* const ThemeRequestTierAllValue = @"all";
-    static NSString* const ThemeRequestNumberKey = @"number";
-    static NSInteger const ThemeRequestNumberValue = 50;
-    static NSString* const ThemeRequestPageKey = @"page";
 
-    NSDictionary *parameters = @{ThemeRequestTierKey: ThemeRequestTierAllValue,
-                                 ThemeRequestNumberKey: @(ThemeRequestNumberValue),
-                                 ThemeRequestPageKey: @(page),
-                                 };
-    
-    NSProgress *progress = [self.wordPressComRestApi GET:requestUrl
-                                parameters:parameters
-                                   success:^(NSDictionary *response, NSHTTPURLResponse *httpResponse) {
-                                       if (success) {
-                                           NSArray<RemoteTheme *> *themes = [self themesFromMultipleThemesRequestResponse:response];
-                                           NSInteger themesLoaded = (page - 1) * ThemeRequestNumberValue;
-                                           for (RemoteTheme *theme in themes){
-                                               theme.order = ++themesLoaded;
-                                           }
-                                           NSInteger themesCount = [[response numberForKey:ThemeServiceRemoteThemeCountKey] integerValue];
-                                           BOOL hasMore = themesLoaded < themesCount;
-                                           success(themes, hasMore);
-                                       }
-                                   } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-                                       if (failure) {
-                                           failure(error);
-                                       }
-                                   }];
+    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+    NSParameterAssert(page > 0);
+
+    NSProgress *progress = [self getThemesForBlogId:blogId
+                                               page:page
+                                         apiVersion:ServiceRemoteWordPressComRESTApiVersion_1_0
+                                             params:@{}
+                                            success:success
+                                            failure:failure];
 
     return progress;
+}
+
+- (NSProgress *)getThemesForBlogId:(NSNumber *)blogId
+                              page:(NSInteger)page
+                        apiVersion:(ServiceRemoteWordPressComRESTApiVersion) apiVersion
+                            params:(NSDictionary *)params
+                           success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                           failure:(ThemeServiceRemoteFailureBlock)failure
+{
+
+    NSParameterAssert(page > 0);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:apiVersion];
+
+    NSMutableDictionary *parameters = [params mutableCopy];
+    parameters[ThemeRequestNumberKey] = @(ThemeRequestNumberValue);
+    parameters[ThemeRequestPageKey] = @(page);
+
+    return [self getThemesWithRequestUrl:requestUrl
+                                    page:page
+                              parameters:parameters
+                                 success:success
+                                 failure:failure];
+}
+
+- (NSProgress *)getThemesWithRequestUrl:(NSString *)requestUrl
+                                   page:(NSInteger)page
+                             parameters:(NSDictionary *)parameters
+                                success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                                failure:(ThemeServiceRemoteFailureBlock)failure
+{
+
+    return [self.wordPressComRestApi GET:requestUrl
+                              parameters:parameters
+                                 success:^(NSDictionary *response, NSHTTPURLResponse *httpResponse) {
+                                     if (success) {
+                                         NSArray<RemoteTheme *> *themes = [self themesFromMultipleThemesRequestResponse:response];
+                                         NSInteger themesLoaded = (page - 1) * ThemeRequestNumberValue;
+                                         for (RemoteTheme *theme in themes){
+                                             theme.order = ++themesLoaded;
+                                         }
+                                         NSInteger themesCount = [[response numberForKey:ThemeServiceRemoteThemeCountKey] integerValue];
+                                         BOOL hasMore = themesLoaded < themesCount;
+                                         success(themes, hasMore);
+                                     }
+                                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                     if (failure) {
+                                         failure(error);
+                                     }
+                                 }];
 }
 
 #pragma mark - Activating themes
