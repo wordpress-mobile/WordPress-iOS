@@ -155,15 +155,16 @@ class CalypsoProcessorIn: Processor {
 
         // Make sure there is <p> when there is </p> inside block tags that can contain other blocks.
 //    text = text.replace( /(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\/p>/g, function( a, b, c ) {
-        output = output.stringByReplacingMatches(of: "(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\\/p>", using: { (match, _) in
-//    text = text.replace( //g, function( a, b, c ) {
+        output = output.stringByReplacingMatches(of: "(<(?:div|th|td|form|fieldset|dd)[^>]*>)(.*?)<\\/p>", using: { (match, submatches) in
+
 //        if ( c.match( /<p( [^>]*)?>/ ) ) {
+            guard submatches.count < 2 || submatches[1].matches(regex: "<p( [^>]*)?>").count == 0 else {
 //            return a;
-//        }
-//
+                return match
+            }
+
 //        return b + '<p>' + c + '</p>';
-//    });
-            return match
+            return submatches[0] + "<p>" + submatches[1] + "</p>"
         })
 
         // Restore the line breaks in <pre> and <script> tags.
