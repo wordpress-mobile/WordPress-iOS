@@ -22,6 +22,7 @@ class CalypsoProcessorOut: Processor {
         }
 
         let lineBreakMarker = "<wp-line-break>"
+        let preserveMarker = "<wp-preserve>"
 
         var preserveLinebreaks = false
         var preserveBr = false
@@ -41,7 +42,7 @@ class CalypsoProcessorOut: Processor {
                 preserve.append(match)
 
                 //                return '<wp-preserve>';
-                return "<wp-preserve>"
+                return preserveMarker
             })
         }
 
@@ -201,7 +202,7 @@ class CalypsoProcessorOut: Processor {
         //                if ( preserve.length ) {
         if preserve.count > 0 {
             //                html = html.replace( /<wp-preserve>/g, function() {
-            output = output.stringByReplacingMatches(of: "<wp-preserve>", using: { (_, _) -> String in
+            output = output.stringByReplacingMatches(of: preserveMarker, using: { (_, _) -> String in
                 return preserve.removeFirst()
             })
         }
