@@ -8,7 +8,9 @@ class CalypsoProcessorIn: Processor {
 
     /// Converts a Calypso-Generated string into Valid HTML that can actually be edited by Aztec.
     ///
-    /// Ref. https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L309
+    /// This method was a direct migration from:
+    /// https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L309
+    /// Current as of 2017/08/08
     ///
     func process(text: String) -> String {
         var preserveLinebreaks = false
