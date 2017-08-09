@@ -253,17 +253,28 @@ class AztecPostViewController: UIViewController, PostEditor {
         return button
     }()
 
-
     /// Active Editor's Mode
     ///
     fileprivate(set) var mode = EditionMode.richText {
+        willSet {
+            switch mode {
+            case .html:
+                richTextView.setHTML(getHTML())
+            case .richText:
+                htmlTextView.text = getHTML()
+            }
+        }
+
         didSet {
             switch mode {
             case .html:
-                switchToHTML()
+                htmlTextView.becomeFirstResponder()
             case .richText:
-                switchToRichText()
+                richTextView.becomeFirstResponder()
             }
+
+            refreshEditorVisibility()
+            refreshPlaceholderVisibility()
         }
     }
 
@@ -628,10 +639,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     func registerHTMLProcessors() {
         htmlPreProcessors.append(VideoProcessor.videoPressPreProcessor)
         htmlPreProcessors.append(VideoProcessor.wordPressVideoPreProcessor)
-        htmlPreProcessors.append(CalypsoProcessor())
+        htmlPreProcessors.append(CalypsoProcessorIn())
 
         htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
         htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
+        htmlPostProcessors.append(CalypsoProcessorOut())
     }
 
     func startListeningToNotifications() {
@@ -673,20 +685,38 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
-        var processedHTML = html
-        for processor in htmlPreProcessors {
-            processedHTML = processor.process(text: processedHTML)
+        switch(mode) {
+        case .html:
+            htmlTextView.text = html
+        case .richText:
+            var processedHTML = html
+
+            for processor in htmlPreProcessors {
+                processedHTML = processor.process(text: processedHTML)
+            }
+
+            richTextView.setHTML(processedHTML)
+
+            self.processVideoPressAttachments()
         }
-        richTextView.setHTML(processedHTML)
-        self.processVideoPressAttachments()
     }
 
     func getHTML() -> String {
-        var processedHTML = richTextView.getHTML()
-        for processor in htmlPostProcessors {
-            processedHTML = processor.process(text: processedHTML)
+
+        var html: String
+
+        switch (mode) {
+        case .html:
+            html = htmlTextView.text
+        case .richText:
+            html = richTextView.getHTML()
         }
-        return processedHTML
+
+        for processor in htmlPostProcessors {
+            html = processor.process(text: html)
+        }
+
+        return html
     }
 
     func reloadEditorContents() {
@@ -1328,26 +1358,6 @@ extension AztecPostViewController {
         }
     }
 
-    fileprivate func switchToHTML() {
-        stopEditing()
-
-        htmlTextView.text = getHTML()
-        htmlTextView.becomeFirstResponder()
-
-        refreshEditorVisibility()
-        refreshPlaceholderVisibility()
-    }
-
-    fileprivate func switchToRichText() {
-        stopEditing()
-
-        setHTML(htmlTextView.text)
-        richTextView.becomeFirstResponder()
-
-        refreshEditorVisibility()
-        refreshPlaceholderVisibility()
-    }
-
     func refreshEditorVisibility() {
         let isRichEnabled = mode == .richText
 
@@ -1754,6 +1764,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         trackFormatBarAnalytics(stat: .editorTappedHTML)
         formatBar.overflowToolbar(expand: true)
+
         mode.toggle()
     }
 
@@ -2157,12 +2168,7 @@ private extension AztecPostViewController {
 
     func mapUIContentToPostAndSave() {
         post.postTitle = titleTextField.text
-        // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
-        if richTextView.isHidden {
-            post.content = htmlTextView.text
-        } else {
-            post.content = getHTML()
-        }
+        post.content = getHTML()
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }

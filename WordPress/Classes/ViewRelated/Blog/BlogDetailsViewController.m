@@ -495,6 +495,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
+    if ([Feature enabled:FeatureFlagPluginManagement] && [self.blog supports:BlogFeaturePluginManagement]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
+                                                        image:[Gridicon iconOfType:GridiconTypePlugins]
+                                                     callback:^{
+                                                         [weakSelf showPlugins];
+                                                     }]];
+    }
+
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                      identifier:BlogDetailsSettingsCellIdentifier
                                                           image:[Gridicon iconOfType:GridiconTypeCog]
@@ -915,6 +923,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPeople withBlog:self.blog];
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
+}
+
+- (void)showPlugins
+{
+    PluginListViewController *controller = [[PluginListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 
