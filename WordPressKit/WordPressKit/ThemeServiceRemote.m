@@ -9,6 +9,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 static NSString* const ThemeRequestTierKey = @"tier";
 static NSString* const ThemeRequestTierAllValue = @"all";
+static NSString* const ThemeRequestTierFreeValue = @"free";
 static NSString* const ThemeRequestNumberKey = @"number";
 static NSInteger const ThemeRequestNumberValue = 50;
 static NSString* const ThemeRequestPageKey = @"page";
@@ -96,20 +97,26 @@ static NSString* const ThemeRequestPageKey = @"page";
     return progress;
 }
 
-- (NSProgress *)getThemesPage:(NSInteger)page
-                       success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                       failure:(ThemeServiceRemoteFailureBlock)failure
+- (NSProgress *)getWPThemesPage:(NSInteger)page
+                       freeOnly:(BOOL)freeOnly
+                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                        failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert(page > 0);
 
-    static NSString* const path = @"themes";
-    
-    NSProgress *progress = [self getThemesPage:page
-                                            path:path
-                                         success:success
-                                         failure:failure];
-    
-    return progress;
+    NSString *requestUrl = [self pathForEndpoint:@"themes"
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
+
+    NSDictionary *parameters = @{ThemeRequestTierKey: freeOnly ? ThemeRequestTierFreeValue : ThemeRequestTierAllValue,
+                                 ThemeRequestNumberKey: @(ThemeRequestNumberValue),
+                                 ThemeRequestPageKey: @(page),
+                                 };
+
+    return [self getThemesWithRequestUrl:requestUrl
+                                    page:page
+                              parameters:parameters
+                                 success:success
+                                 failure:failure];
 }
 
 - (NSProgress *)getThemesPage:(NSInteger)page
@@ -213,9 +220,10 @@ static NSString* const ThemeRequestPageKey = @"page";
                                          for (RemoteTheme *theme in themes){
                                              theme.order = ++themesLoaded;
                                          }
-                                         NSInteger themesCount = [[response numberForKey:ThemeServiceRemoteThemeCountKey] integerValue];
+                                         // v1 of the API does not return the found field
+                                         NSInteger themesCount = MAX(themes.count, [[response numberForKey:ThemeServiceRemoteThemeCountKey] integerValue]);
                                          BOOL hasMore = themesLoaded < themesCount;
-                                         success(themes, hasMore);
+                                         success(themes, hasMore, themesCount);
                                      }
                                  } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                                      if (failure) {
