@@ -6,7 +6,7 @@
 
 typedef void(^ThemeServiceRemoteSuccessBlock)();
 typedef void(^ThemeServiceRemoteThemeRequestSuccessBlock)(RemoteTheme *theme);
-typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray<RemoteTheme *> *themes, BOOL hasMore);
+typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)(NSArray *themeIdentifiers);
 typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
 
@@ -58,15 +58,17 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @details    Includes premium themes even if not purchased.  Don't call this method if the list
  *              you want to retrieve is for a specific blog.  Use getThemesForBlogId instead.
  *
+ *  @param      freeOnly    Only fetch free themes, if false all WP themes will be returned
  *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSProgress *)getThemesPage:(NSInteger)page
-                       success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                       failure:(ThemeServiceRemoteFailureBlock)failure;
+- (NSProgress *)getWPThemesPage:(NSInteger)page
+                       freeOnly:(BOOL)freeOnly
+                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                        failure:(ThemeServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Gets the list of available themes for a blog.

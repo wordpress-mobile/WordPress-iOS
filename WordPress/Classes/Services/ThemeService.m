@@ -11,6 +11,8 @@
  */
 const NSInteger ThemeOrderUnspecified = 0;
 const NSInteger ThemeOrderTrailing = 9999;
+const NSInteger JetpackProfessionalYearlyPlanId = 2004;
+const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 
 @implementation ThemeService
 
@@ -179,7 +181,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                              
                                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                                  if (success) {
-                                                                     success(themes, NO);
+                                                                     success(themes, NO, themes.count);
                                                                  }
                                                              }];
                                                          } failure:failure];
@@ -229,14 +231,15 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
     
-    NSProgress *progress = [remote getThemesPage:page
-                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
+    NSProgress *progress = [remote getWPThemesPage:page
+                                          freeOnly:false
+                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                                 NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                                        forBlog:nil];
 
                                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                     if (success) {
-                                                        success(themes, hasMore);
+                                                        success(themes, hasMore, totalThemeCount);
                                                     }
                                                 }];
                                             } failure:failure];
@@ -262,36 +265,39 @@ const NSInteger ThemeOrderTrailing = 9999;
     NSMutableSet *unsyncedThemes = sync ? [NSMutableSet setWithSet:blog.themes] : nil;
 
     if ([blog supports:BlogFeatureCustomThemes]) {
-        return [remote getThemesPage:page
-                             success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
-                                 NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                        forBlog:blog];
-                                 if (sync) {
-                                     // We don't want to touch custom themes here, only WP.com themes
-                                     NSMutableSet *unsyncedWPThemes = [unsyncedThemes mutableCopy];
-                                     for (Theme *theme in unsyncedThemes) {
-                                         if (theme.isCustom) {
-                                             [unsyncedWPThemes removeObject:theme];
-                                         }
-                                     }
-                                     [unsyncedWPThemes minusSet:[NSSet setWithArray:themes]];
-                                     for (Theme *deleteTheme in unsyncedWPThemes) {
-                                         if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
-                                             [self.managedObjectContext deleteObject:deleteTheme];
-                                         }
-                                     }
-                                 }
+        BOOL freeOnly = (blog.planID.integerValue != JetpackProfessionalYearlyPlanId
+                         && blog.planID.integerValue != JetpackProfessionalMonthlyPlanId);
+        return [remote getWPThemesPage:page
+                              freeOnly:freeOnly
+                               success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                   NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                          forBlog:blog];
+                                   if (sync) {
+                                       // We don't want to touch custom themes here, only WP.com themes
+                                       NSMutableSet *unsyncedWPThemes = [unsyncedThemes mutableCopy];
+                                       for (Theme *theme in unsyncedThemes) {
+                                           if (theme.isCustom) {
+                                               [unsyncedWPThemes removeObject:theme];
+                                           }
+                                       }
+                                       [unsyncedWPThemes minusSet:[NSSet setWithArray:themes]];
+                                       for (Theme *deleteTheme in unsyncedWPThemes) {
+                                           if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                               [self.managedObjectContext deleteObject:deleteTheme];
+                                           }
+                                       }
+                                   }
 
-                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                     if (success) {
-                                         success(themes, hasMore);
-                                     }
-                                 }];
-                             } failure:failure];
+                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                       if (success) {
+                                           success(themes, hasMore, totalThemeCount);
+                                       }
+                                   }];
+                               } failure:failure];
     } else {
         return [remote getThemesForBlogId:[blog dotComID]
                                      page:page
-                                  success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
+                                  success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                       NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                              forBlog:blog];
                                       if (sync) {
@@ -305,7 +311,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
                                       [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                           if (success) {
-                                              success(themes, hasMore);
+                                              success(themes, hasMore, totalThemeCount);
                                           }
                                       }];
                                   } failure:failure];
@@ -329,7 +335,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     return [remote getCustomThemesForBlogId:[blog dotComID]
                                        page:page
-                                    success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
+                                    success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                         NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                                forBlog:blog];
                                         for (Theme *customTheme in themes) {
@@ -354,7 +360,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
                                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                             if (success) {
-                                                success(themes, hasMore);
+                                                success(themes, hasMore, totalThemeCount);
                                             }
                                         }];
                                     } failure:failure];
