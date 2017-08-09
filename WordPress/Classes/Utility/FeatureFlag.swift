@@ -6,6 +6,7 @@ enum FeatureFlag: Int {
     case newLogin
     case newMediaExports
     case newInputMediaPicker
+    case pluginManagement
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -20,6 +21,8 @@ enum FeatureFlag: Int {
             if build(.a8cBranchTest, .localDeveloper) {
                 return true
             }
+        case .pluginManagement:
+            return build(.localDeveloper)
         }
         return false
     }
