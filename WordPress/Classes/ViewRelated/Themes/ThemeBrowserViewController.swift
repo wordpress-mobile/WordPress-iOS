@@ -80,24 +80,19 @@ public protocol ThemePresenter: class {
 }
 
 @objc open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate {
+
+    // MARK: - Constants
+
+    static let reuseIdentifierForThemesHeader = "ThemeBrowserSectionHeaderViewThemes"
+    static let reuseIdentifierForCustomThemesHeader = "ThemeBrowserSectionHeaderViewCustomThemes"
+
     // MARK: - Properties: must be set by parent
 
     /**
      *  @brief      The blog this VC will work with.
      *  @details    Must be set by the creator of this VC.
      */
-    open var blog: Blog! {
-        didSet {
-            if blog.supports(BlogFeature.customThemes) {
-                if let planID = blog.planID?.intValue,
-                    (planID == JetpackProfessionalPlanIds.yearly || planID == JetpackProfessionalPlanIds.monthly) {
-                    filterType = .all
-                } else {
-                    filterType = .free
-                }
-            }
-        }
-    }
+    open var blog: Blog!
 
     // MARK: - Properties
 
@@ -128,13 +123,45 @@ public protocol ThemePresenter: class {
         return frc
     }
 
-    fileprivate var themesCount: NSInteger {
+    fileprivate var themeCount: NSInteger {
         return themesController.fetchedObjects?.count ?? 0
     }
 
-    fileprivate var customThemesCount: NSInteger {
+    fileprivate var customThemeCount: NSInteger {
         return blog.supports(BlogFeature.customThemes) ? (customThemesController.fetchedObjects?.count ?? 0) : 0
     }
+
+    // Absolute count of available themes for the site, as it comes from the ThemeService
+
+    fileprivate var totalThemeCount: NSInteger = 0 {
+        didSet {
+            themesHeader?.themeCount = totalThemeCount
+        }
+    }
+
+    fileprivate var totalCustomThemeCount: NSInteger = 0 {
+        didSet {
+            customThemesHeader?.themeCount = totalCustomThemeCount
+        }
+    }
+
+    fileprivate var themesHeader: ThemeBrowserSectionHeaderView? {
+        didSet {
+            themesHeader?.descriptionLabel.text = NSLocalizedString("WordPress.com Themes",
+                                                                    comment: "Title for the WordPress.com themes section, should be the same as in Calypso").localizedUppercase
+            themesHeader?.themeCount = totalThemeCount > 0 ? totalThemeCount : themeCount
+        }
+    }
+
+    fileprivate var customThemesHeader: ThemeBrowserSectionHeaderView? {
+        didSet {
+            customThemesHeader?.descriptionLabel.text = NSLocalizedString("Uploaded themes",
+                                                                          comment: "Title for the user uploaded themes section, should be the same as in Calypso").localizedUppercase
+            customThemesHeader?.themeCount = totalCustomThemeCount > 0 ? totalCustomThemeCount : customThemeCount
+        }
+    }
+
+    fileprivate var hideSectionHeaders: Bool = false
 
     fileprivate var searchController: UISearchController!
 
@@ -244,8 +271,8 @@ public protocol ThemePresenter: class {
         WPStyleGuide.configureColors(for: view, collectionView: collectionView)
 
         fetchThemes()
-        sections = (themesCount == 0 && customThemesCount == 0) ? [.search, .customThemes, .themes] :
-                                                                  [.search, .info, .customThemes, .themes]
+        sections = (themeCount == 0 && customThemeCount == 0) ? [.search, .customThemes, .themes] :
+                                                                [.search, .info, .customThemes, .themes]
 
         configureSearchController()
 
@@ -270,6 +297,14 @@ public protocol ThemePresenter: class {
         collectionView.register(ThemeBrowserSearchHeaderView.self,
                                      forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
                                      withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier)
+
+        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
+                                    forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                    withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
+
+        collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
+                                forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
 
         WPStyleGuide.configureSearchBar(searchController.searchBar)
     }
@@ -392,14 +427,14 @@ public protocol ThemePresenter: class {
 
     fileprivate func syncMoreThemesIfNeeded(_ indexPath: IndexPath) {
         let paddedCount = indexPath.row + syncPadding
-        if paddedCount >= themesCount && themesSyncHelper.hasMoreContent && themesSyncHelper.syncMoreContent() {
+        if paddedCount >= themeCount && themesSyncHelper.hasMoreContent && themesSyncHelper.syncMoreContent() {
             updateResults()
         }
     }
 
     fileprivate func syncMoreCustomThemesIfNeeded(_ indexPath: IndexPath) {
         let paddedCount = indexPath.row + syncPadding
-        if paddedCount >= customThemesCount && customThemesSyncHelper.hasMoreContent && customThemesSyncHelper.syncMoreContent() {
+        if paddedCount >= customThemeCount && customThemesSyncHelper.hasMoreContent && customThemesSyncHelper.syncMoreContent() {
             updateResults()
         }
     }
@@ -410,10 +445,11 @@ public protocol ThemePresenter: class {
         _ = themeService.getThemesFor(blog,
             page: themesSyncingPage,
             sync: page == 1,
-            success: {(themes: [Theme]?, hasMore: Bool) in
+            success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success = success {
                     success(hasMore)
                 }
+                self?.totalThemeCount = themeCount
             },
             failure: { (error) in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
@@ -430,10 +466,11 @@ public protocol ThemePresenter: class {
         _ = themeService.getCustomThemes(for: blog,
             page: customThemesSyncingPage,
             sync: page == 1,
-            success: {(themes: [Theme]?, hasMore: Bool) in
+            success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success = success {
                     success(hasMore)
                 }
+                self?.totalCustomThemeCount = themeCount
             },
             failure: { (error) in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
@@ -459,7 +496,7 @@ public protocol ThemePresenter: class {
     }
 
     fileprivate func updateResults() {
-        if themesCount == 0 && customThemesCount == 0 {
+        if themeCount == 0 && customThemeCount == 0 {
             showNoResults()
         } else {
             hideNoResults()
@@ -546,9 +583,9 @@ public protocol ThemePresenter: class {
         case .search, .info:
             return 0
         case .customThemes:
-            return customThemesCount
+            return customThemeCount
         case .themes:
-            return themesCount
+            return themeCount
         }
     }
 
@@ -577,10 +614,20 @@ public protocol ThemePresenter: class {
                 searchHeader.searchBar = searchController.searchBar
 
                 return searchHeader
-            } else {
+            } else if sections[indexPath.section] == .info {
                 let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, for: indexPath) as! ThemeBrowserHeaderView
                 header.presenter = self
                 return header
+            } else {
+                // We don't want the collectionView to reuse the section headers
+                // since we need to keep a reference to them to update the counts
+                if sections[indexPath.section] == .customThemes {
+                    customThemesHeader = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader, for: indexPath) as! ThemeBrowserSectionHeaderView)
+                    return customThemesHeader!
+                } else {
+                    themesHeader = (collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader, for: indexPath) as! ThemeBrowserSectionHeaderView)
+                    return themesHeader!
+                }
             }
         case UICollectionElementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ThemeBrowserFooterView", for: indexPath)
@@ -611,6 +658,10 @@ public protocol ThemePresenter: class {
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section: NSInteger) -> CGSize {
         switch sections[section] {
         case .themes, .customThemes:
+            if !hideSectionHeaders
+                && blog.supports(BlogFeature.customThemes) {
+                return CGSize(width: 0, height: ThemeBrowserSectionHeaderView.height)
+            }
             return .zero
         case .search:
             return CGSize(width: 0, height: searchController.searchBar.bounds.height)
@@ -666,6 +717,7 @@ public protocol ThemePresenter: class {
             collectionView?.collectionViewLayout.invalidateLayout()
             setInfoSectionHidden(true)
         }
+        hideSectionHeaders = true
     }
 
     open func didPresentSearchController(_ searchController: UISearchController) {
@@ -681,7 +733,7 @@ public protocol ThemePresenter: class {
         if sections[1] == .themes || sections[1] == .customThemes {
             setInfoSectionHidden(false)
         }
-
+        hideSectionHeaders = false
         collectionView.scrollIndicatorInsets.top = topLayoutGuide.length
     }
 
@@ -857,12 +909,5 @@ public protocol ThemePresenter: class {
         _ = navigationController?.popViewController(animated: true)
         activateTheme(presentingTheme)
         presentingTheme = nil
-    }
-}
-
-private extension ThemeBrowserViewController {
-    struct JetpackProfessionalPlanIds {
-        static let yearly = 2004
-        static let monthly = 2001
     }
 }
