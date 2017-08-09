@@ -334,16 +334,16 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 
     return [remote getCustomThemesForBlogId:[blog dotComID]
                                     success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
-                                        NSArray *unfilteredThemes = [self themesFromRemoteThemes:remoteThemes
-                                                                                         forBlog:blog];
-                                        NSMutableArray *themes = [NSMutableArray array];
+                                        NSMutableArray *validRemoteThemes = [NSMutableArray array];
                                         // We need to filter out themes with an id ending in -wpcom to match Calypso
-                                        for (Theme *customTheme in unfilteredThemes) {
-                                            if (![customTheme.themeId hasSuffix:@"-wpcom"]) {
-                                                customTheme.isCustom = YES;
-                                                [themes addObject:customTheme];
+                                        for (RemoteTheme *remoteTheme in remoteThemes) {
+                                            if (![remoteTheme.themeId hasSuffix:@"-wpcom"]) {
+                                                [validRemoteThemes addObject:remoteTheme];
                                             }
                                         }
+
+                                        NSArray *themes = [self customThemesFromRemoteThemes:validRemoteThemes
+                                                                                     forBlog:blog];
                                         if (sync) {
                                             // We don't want to touch WP.com themes here, only custom themes
                                             NSMutableSet *unsyncedThemes = [NSMutableSet setWithSet:blog.themes];
@@ -456,7 +456,6 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
     return theme;
 }
 
-
 /**
  *  @brief      Updates our local themes matching the specified remote themes.
  *  @details    If the local themes do not exist, they are created.
@@ -471,19 +470,44 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 - (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
                                      forBlog:(nullable Blog *)blog
 {
+    return [self themesFromRemoteThemes:remoteThemes custom:NO forBlog:blog];
+}
+
+/**
+ *  @brief      Updates our local themes matching the specified remote themes.
+ *  @details    If the local themes do not exist, they are created.
+ *
+ *  @param      remoteThemes    An array with the remote custom themes containing the data to update
+ *                              locally.  Cannot be nil.
+ *  @param      blog            Blog being updated. May be nil for account.
+ *  @param      ordered         Whether to update displayed order
+ *
+ *  @returns    An array with the updated and matching local themes.
+ */
+- (NSArray<Theme *> *)customThemesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                           forBlog:(nullable Blog *)blog
+{
+    return [self themesFromRemoteThemes:remoteThemes custom:YES forBlog:blog];
+}
+
+- (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                      custom:(BOOL)custom
+                                     forBlog:(nullable Blog *)blog
+{
     NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
-    
+
     NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:remoteThemes.count];
-    
+
     [remoteThemes enumerateObjectsUsingBlock:^(RemoteTheme *remoteTheme, NSUInteger idx, BOOL *stop) {
         NSAssert([remoteTheme isKindOfClass:[RemoteTheme class]],
                  @"Expected a remote theme.");
-        
+
         Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                           forBlog:blog];
+        theme.isCustom = custom;
         [themes addObject:theme];
     }];
-    
+
     return [NSArray arrayWithArray:themes];
 }
 
