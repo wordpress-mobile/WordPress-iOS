@@ -334,10 +334,15 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 
     return [remote getCustomThemesForBlogId:[blog dotComID]
                                     success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
-                                        NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                               forBlog:blog];
-                                        for (Theme *customTheme in themes) {
-                                            customTheme.isCustom = YES;
+                                        NSArray *unfilteredThemes = [self themesFromRemoteThemes:remoteThemes
+                                                                                         forBlog:blog];
+                                        NSMutableArray *themes = [NSMutableArray array];
+                                        // We need to filter out themes with an id ending in -wpcom to match Calypso
+                                        for (Theme *customTheme in unfilteredThemes) {
+                                            if (![customTheme.themeId hasSuffix:@"-wpcom"]) {
+                                                customTheme.isCustom = YES;
+                                                [themes addObject:customTheme];
+                                            }
                                         }
                                         if (sync) {
                                             // We don't want to touch WP.com themes here, only custom themes
@@ -358,7 +363,7 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 
                                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                             if (success) {
-                                                success(themes, hasMore, totalThemeCount);
+                                                success(themes, hasMore, themes.count);
                                             }
                                         }];
                                     } failure:failure];
