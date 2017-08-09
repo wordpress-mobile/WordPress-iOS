@@ -120,7 +120,6 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                          failure:(ThemeServiceFailureBlock)failure;
 
 - (NSProgress *)getCustomThemesForBlog:(Blog *)blog
-                                  page:(NSInteger)page
                                   sync:(BOOL)sync
                                success:(ThemeServiceThemesRequestSuccessBlock)success
                                failure:(ThemeServiceFailureBlock)failure;

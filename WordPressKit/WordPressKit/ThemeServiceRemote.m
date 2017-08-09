@@ -161,16 +161,14 @@ static NSString* const ThemeRequestPageKey = @"page";
 }
 
 - (NSProgress *)getCustomThemesForBlogId:(NSNumber *)blogId
-                                    page:(NSInteger)page
                                  success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                                  failure:(ThemeServiceRemoteFailureBlock)failure
 {
 
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    NSParameterAssert(page > 0);
 
     NSProgress *progress = [self getThemesForBlogId:blogId
-                                               page:page
+                                               page:1
                                          apiVersion:ServiceRemoteWordPressComRESTApiVersion_1_0
                                              params:@{}
                                             success:success

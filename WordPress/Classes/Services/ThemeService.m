@@ -319,7 +319,6 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 }
 
 - (NSProgress *)getCustomThemesForBlog:(Blog *)blog
-                                  page:(NSInteger)page
                                   sync:(BOOL)sync
                                success:(ThemeServiceThemesRequestSuccessBlock)success
                                failure:(ThemeServiceFailureBlock)failure {
@@ -334,7 +333,6 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
 
     return [remote getCustomThemesForBlogId:[blog dotComID]
-                                       page:page
                                     success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                         NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                                forBlog:blog];

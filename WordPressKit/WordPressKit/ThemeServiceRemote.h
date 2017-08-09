@@ -95,14 +95,12 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @details    To be used with Jetpack sites, it returns the list of themes uploaded to the site.
  *
  *  @param      blogId      The ID of the blog to get the themes for.  Cannot be nil.
- *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
 - (NSProgress *)getCustomThemesForBlogId:(NSNumber *)blogId
-                                    page:(NSInteger)page
                                  success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                                  failure:(ThemeServiceRemoteFailureBlock)failure;
 
