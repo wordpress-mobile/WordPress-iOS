@@ -239,7 +239,6 @@ public protocol ThemePresenter: class {
     fileprivate var themesSyncHelper: WPContentSyncHelper!
     fileprivate var themesSyncingPage = 0
     fileprivate var customThemesSyncHelper: WPContentSyncHelper!
-    fileprivate var customThemesSyncingPage = 0
     fileprivate let syncPadding = 5
 
     // MARK: - Private Aliases
@@ -432,13 +431,6 @@ public protocol ThemePresenter: class {
         }
     }
 
-    fileprivate func syncMoreCustomThemesIfNeeded(_ indexPath: IndexPath) {
-        let paddedCount = indexPath.row + syncPadding
-        if paddedCount >= customThemeCount && customThemesSyncHelper.hasMoreContent && customThemesSyncHelper.syncMoreContent() {
-            updateResults()
-        }
-    }
-
     fileprivate func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(page > 0)
         themesSyncingPage = page
@@ -460,12 +452,9 @@ public protocol ThemePresenter: class {
             })
     }
 
-    fileprivate func syncCustomThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        assert(page > 0)
-        customThemesSyncingPage = page
+    fileprivate func syncCustomThemes(success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         _ = themeService.getCustomThemes(for: blog,
-            page: customThemesSyncingPage,
-            sync: page == 1,
+            sync: true,
             success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success = success {
                     success(hasMore)
@@ -517,9 +506,6 @@ public protocol ThemePresenter: class {
         noResultsView.titleText = title
         view.addSubview(noResultsView)
         syncMoreThemesIfNeeded(IndexPath(item: 0, section: 0))
-        if blog.supports(BlogFeature.customThemes) {
-            syncMoreCustomThemesIfNeeded(IndexPath(item: 0, section: 0))
-        }
     }
 
     fileprivate func hideNoResults() {
@@ -543,7 +529,7 @@ public protocol ThemePresenter: class {
         if (syncHelper == themesSyncHelper) {
             syncThemePage(1, success: success, failure: failure)
         } else if (syncHelper == customThemesSyncHelper) {
-            syncCustomThemePage(1, success: success, failure: failure)
+            syncCustomThemes(success: success, failure: failure)
         }
     }
 
@@ -551,9 +537,6 @@ public protocol ThemePresenter: class {
         if syncHelper == themesSyncHelper {
             let nextPage = themesSyncingPage + 1
             syncThemePage(nextPage, success: success, failure: failure)
-        } else if syncHelper == customThemesSyncHelper {
-            let nextPage = customThemesSyncingPage + 1
-            syncCustomThemePage(nextPage, success: success, failure: failure)
         }
     }
 
@@ -562,16 +545,12 @@ public protocol ThemePresenter: class {
         let lastVisibleTheme = collectionView?.indexPathsForVisibleItems.last ?? IndexPath(item: 0, section: 0)
         if syncHelper == themesSyncHelper {
             syncMoreThemesIfNeeded(lastVisibleTheme)
-        } else if syncHelper == customThemesSyncHelper {
-            syncMoreCustomThemesIfNeeded(lastVisibleTheme)
         }
     }
 
     func hasNoMoreContent(_ syncHelper: WPContentSyncHelper) {
         if syncHelper == themesSyncHelper {
             themesSyncingPage = 0
-        } else if syncHelper == customThemesSyncHelper {
-            customThemesSyncingPage = 0
         }
         collectionView?.collectionViewLayout.invalidateLayout()
     }
@@ -598,8 +577,6 @@ public protocol ThemePresenter: class {
 
         if sections[indexPath.section] == .themes {
             syncMoreThemesIfNeeded(indexPath)
-        } else if sections[indexPath.section] == .customThemes {
-            syncMoreCustomThemesIfNeeded(indexPath)
         }
 
         return cell
