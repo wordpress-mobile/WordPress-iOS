@@ -134,9 +134,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         forgotPasswordButton?.titleLabel?.numberOfLines = 0
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
-
 
     // MARK: - Instance Methods
 

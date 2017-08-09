@@ -89,10 +89,6 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     // MARK: - Setup and Configuration
 
 
-    /// let the storyboard's style stay
-    override func setupStyles() {}
-
-
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {
