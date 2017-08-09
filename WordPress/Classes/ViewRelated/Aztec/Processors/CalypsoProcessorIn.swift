@@ -180,7 +180,7 @@ class CalypsoProcessorIn: Processor {
 //            text = text.replace( /<wp-temp-br([^>]*)>/g, '<br$1>' );
             output = output.replacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$1>")
         }
-        
+
         return output
     }
 }
