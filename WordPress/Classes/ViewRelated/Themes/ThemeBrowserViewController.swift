@@ -713,11 +713,11 @@ public protocol ThemePresenter: class {
     // MARK: - UISearchControllerDelegate
 
     open func willPresentSearchController(_ searchController: UISearchController) {
+        hideSectionHeaders = true
         if sections[1] == .info {
             collectionView?.collectionViewLayout.invalidateLayout()
             setInfoSectionHidden(true)
         }
-        hideSectionHeaders = true
     }
 
     open func didPresentSearchController(_ searchController: UISearchController) {
@@ -725,6 +725,7 @@ public protocol ThemePresenter: class {
     }
 
     open func willDismissSearchController(_ searchController: UISearchController) {
+        hideSectionHeaders = false
         searchName = ""
         searchController.searchBar.text = ""
     }
@@ -733,7 +734,6 @@ public protocol ThemePresenter: class {
         if sections[1] == .themes || sections[1] == .customThemes {
             setInfoSectionHidden(false)
         }
-        hideSectionHeaders = false
         collectionView.scrollIndicatorInsets.top = topLayoutGuide.length
     }
 
