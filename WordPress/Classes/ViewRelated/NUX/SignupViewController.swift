@@ -61,6 +61,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupStyles()
         localizeControls()
         configureTermsButtonText()
         setupOnePasswordButtonIfNeeded()
@@ -215,6 +216,10 @@ import WordPressShared
 
     // MARK: - Instance Methods
 
+    /// Sets up the view's colors and style
+    open func setupStyles() {
+        WPStyleGuide.configureColorsForSigninView(view)
+    }
 
     /// Whether the view layout should be adjusted for smaller screens
     ///
