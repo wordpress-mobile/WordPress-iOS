@@ -213,4 +213,3 @@ class CalypsoProcessorOut: Processor {
         return output
     }
 }
-

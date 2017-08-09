@@ -16,7 +16,7 @@ extension String {
     func matches(regex: String, options: NSRegularExpression.Options = []) -> [NSTextCheckingResult] {
         let regex = try! NSRegularExpression(pattern: regex, options: options)
         let fullRange = NSRange(location: 0, length: characters.count)
-        
+
         return regex.matches(in: self, options: [], range: fullRange)
     }
 

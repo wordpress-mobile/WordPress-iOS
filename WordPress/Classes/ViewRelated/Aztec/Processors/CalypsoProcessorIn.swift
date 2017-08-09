@@ -172,7 +172,7 @@ class CalypsoProcessorIn: Processor {
 //            text = text.replace( /<wp-line-break>/g, '\n' );
             output = output.replacingOccurrences(of: "<wp-line-break>", with: "\n")
         }
-        
+
         // Restore the <br> tags in captions.
         if preserve_br {
 //            text = text.replace( /<wp-temp-br([^>]*)>/g, '<br$1>' );
