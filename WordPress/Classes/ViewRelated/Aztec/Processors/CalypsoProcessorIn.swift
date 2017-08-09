@@ -11,8 +11,8 @@ class CalypsoProcessorIn: Processor {
     /// Ref. https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L309
     ///
     func process(text: String) -> String {
-        var preserve_linebreaks = false
-        var preserve_br = false
+        var preserveLinebreaks = false
+        var preserveBR = false
         let blocklist = "table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre" +
             "|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section" +
             "|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary"
@@ -48,7 +48,7 @@ class CalypsoProcessorIn: Processor {
 //      if ( text.indexOf( '<pre' ) !== -1 || text.indexOf( '<script' ) !== -1 ) {
         if output.contains("<pre") || output.contains("<script") {
 //          preserve_linebreaks = true;
-            preserve_linebreaks = true
+            preserveLinebreaks = true
 //          text = text.replace( /<(pre|script)[^>]*>[\s\S]*?<\/\1>/g, function( a ) {
             output = output.replacingMatches(of: "<(pre|script)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) in
 //              return a.replace( /\n/g, '<wp-line-break>' );
@@ -67,8 +67,8 @@ class CalypsoProcessorIn: Processor {
         // Keep <br> tags inside captions.
 //      if ( text.indexOf( '[caption' ) !== -1 ) {
         if output.contains("[caption") {
-//          preserve_br = true;
-            preserve_br = true
+//          preserveBR = true;
+            preserveBR = true
 
 //          text = text.replace( /\[caption[\s\S]+?\[\/caption\]/g, function( a ) {
             output = output.replacingMatches(of: "\\[caption[\\s\\S]+?\\[\\/caption\\]", using: { (match, _) in
@@ -168,13 +168,13 @@ class CalypsoProcessorIn: Processor {
         })
 
         // Restore the line breaks in <pre> and <script> tags.
-        if preserve_linebreaks {
+        if preserveLinebreaks {
 //            text = text.replace( /<wp-line-break>/g, '\n' );
             output = output.replacingOccurrences(of: "<wp-line-break>", with: "\n")
         }
 
         // Restore the <br> tags in captions.
-        if preserve_br {
+        if preserveBR {
 //            text = text.replace( /<wp-temp-br([^>]*)>/g, '<br$1>' );
             output = output.replacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$1>")
         }
