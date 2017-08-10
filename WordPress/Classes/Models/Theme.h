@@ -65,5 +65,6 @@
 
 - (BOOL)isCurrentTheme;
 - (BOOL)isPremium;
+- (BOOL)hasDetailsURL;
 
 @end

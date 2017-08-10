@@ -82,4 +82,9 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
     return [self.premium boolValue];
 }
 
+- (BOOL)hasDetailsURL
+{
+    return self.detailsUrl.length > 0;
+}
+
 @end
