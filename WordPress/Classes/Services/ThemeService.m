@@ -425,6 +425,7 @@ const NSInteger ThemeOrderTrailing = 9999;
         theme.authorUrl = remoteTheme.authorUrl;
     }
     theme.demoUrl = remoteTheme.demoUrl;
+    theme.themeUrl = remoteTheme.themeUrl;
     theme.details = remoteTheme.desc;
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
