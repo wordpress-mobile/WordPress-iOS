@@ -668,7 +668,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             })
     }
 
-    func syncContentEnded() {
+    func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl?.endRefreshing()
         postListFooterView.showSpinner(false)
 

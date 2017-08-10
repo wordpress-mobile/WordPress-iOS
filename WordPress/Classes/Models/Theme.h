@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSString *demoUrl;
 @property (nonatomic, retain) NSString *stylesheet;
 @property (nonatomic, retain) NSNumber *order;
+@property (nonatomic, assign) BOOL custom;
 @property (nonatomic, retain) Blog *blog;
 
 /**
