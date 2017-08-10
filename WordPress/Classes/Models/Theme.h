@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString *price;
 @property (nonatomic, retain) NSNumber *purchased;
 @property (nonatomic, retain) NSString *demoUrl;
+@property (nonatomic, retain) NSString *themeUrl;
 @property (nonatomic, retain) NSString *stylesheet;
 @property (nonatomic, retain) NSNumber *order;
 @property (nonatomic, assign) BOOL custom;
