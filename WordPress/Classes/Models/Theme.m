@@ -28,6 +28,7 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 @dynamic price;
 @dynamic purchased;
 @dynamic demoUrl;
+@dynamic themeUrl;
 @dynamic stylesheet;
 @dynamic order;
 @dynamic custom;
@@ -51,6 +52,9 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 
 - (NSString *)detailsUrl
 {
+    if (self.custom) {
+        return self.themeUrl;
+    }
     NSString *homeUrl = self.blog.homeURL.hostname;
 
     return [NSString stringWithFormat:ThemeUrlDetails, homeUrl, self.themeId];
