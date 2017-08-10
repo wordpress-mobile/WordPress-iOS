@@ -276,7 +276,7 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
                                        // We don't want to touch custom themes here, only WP.com themes
                                        NSMutableSet *unsyncedWPThemes = [unsyncedThemes mutableCopy];
                                        for (Theme *theme in unsyncedThemes) {
-                                           if (theme.isCustom) {
+                                           if (theme.custom) {
                                                [unsyncedWPThemes removeObject:theme];
                                            }
                                        }
@@ -349,7 +349,7 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
                                             NSMutableSet *unsyncedThemes = [NSMutableSet setWithSet:blog.themes];
                                             NSMutableSet *unsyncedCustomThemes = [unsyncedThemes mutableCopy];
                                             for (Theme *theme in unsyncedThemes) {
-                                                if (!theme.isCustom) {
+                                                if (!theme.custom) {
                                                     [unsyncedCustomThemes removeObject:theme];
                                                 }
                                             }
@@ -504,7 +504,7 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 
         Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                           forBlog:blog];
-        theme.isCustom = custom;
+        theme.custom = custom;
         [themes addObject:theme];
     }];
 

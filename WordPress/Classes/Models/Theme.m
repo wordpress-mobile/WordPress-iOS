@@ -78,14 +78,4 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
     return [self.premium boolValue];
 }
 
-- (BOOL)isCustom
-{
-    return [self.custom boolValue];
-}
-
-- (void)setIsCustom:(BOOL)isCustom
-{
-    self.custom = [NSNumber numberWithBool:isCustom];
-}
-
 @end
