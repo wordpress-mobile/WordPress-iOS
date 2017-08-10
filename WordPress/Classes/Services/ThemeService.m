@@ -11,8 +11,6 @@
  */
 const NSInteger ThemeOrderUnspecified = 0;
 const NSInteger ThemeOrderTrailing = 9999;
-const NSInteger JetpackProfessionalYearlyPlanId = 2004;
-const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
 
 @implementation ThemeService
 
@@ -265,10 +263,8 @@ const NSInteger JetpackProfessionalMonthlyPlanId = 2001;
     NSMutableSet *unsyncedThemes = sync ? [NSMutableSet setWithSet:blog.themes] : nil;
 
     if ([blog supports:BlogFeatureCustomThemes]) {
-        BOOL freeOnly = (blog.planID.integerValue != JetpackProfessionalYearlyPlanId
-                         && blog.planID.integerValue != JetpackProfessionalMonthlyPlanId);
         return [remote getWPThemesPage:page
-                              freeOnly:freeOnly
+                              freeOnly:![blog supports:BlogFeaturePremiumThemes]
                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                    NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                           forBlog:blog];
