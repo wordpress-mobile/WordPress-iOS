@@ -255,13 +255,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Editor's Mode
     ///
-    fileprivate(set) var mode = EditionMode.richText {
+    fileprivate(set) var mode = EditMode.richText {
         willSet {
             switch mode {
             case .html:
-                richTextView.setHTML(getHTML())
+                setHTML(getHTML(), for: .richText)
             case .richText:
-                htmlTextView.text = getHTML()
+                setHTML(getHTML(), for: .html)
             }
         }
 
@@ -685,6 +685,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
+        setHTML(html, for: mode)
+    }
+
+    private func setHTML(_ html: String, for mode: EditMode) {
         switch(mode) {
         case .html:
             htmlTextView.text = html
@@ -709,11 +713,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         case .html:
             html = htmlTextView.text
         case .richText:
-            html = richTextView.getHTML()
-        }
+            html = richTextView.getHTML(prettyPrint: false)
 
-        for processor in htmlPostProcessors {
-            html = processor.process(text: html)
+            for processor in htmlPostProcessors {
+                html = processor.process(text: html)
+            }
         }
 
         return html
@@ -1344,7 +1348,7 @@ extension AztecPostViewController: Aztec.TextViewFormattingDelegate {
 // MARK: - HTML Mode Switch methods
 //
 extension AztecPostViewController {
-    enum EditionMode {
+    enum EditMode {
         case richText
         case html
 
@@ -1475,8 +1479,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     case .ordered:
                                                         self?.toggleOrderedList()
                                                     }
-
-                                                    self?.optionsViewController = nil
         })
     }
 
@@ -1855,11 +1857,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         optionsViewController.cellSelectedBackgroundColor = WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
         optionsViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         optionsViewController.onSelect = { [weak self] selected in
-            if self?.presentedViewController != nil {
-                self?.dismiss(animated: true, completion: nil)
-            }
-
             onSelect?(selected)
+            self?.dismissOptionsViewController()
         }
 
         let selectRow = {
@@ -1899,6 +1898,19 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         changeRichTextInputView(to: viewController.view)
         viewController.didMove(toParentViewController: self)
     }
+
+    private func dismissOptionsViewController() {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            dismiss(animated: true, completion: nil)
+        default:
+            optionsViewController?.removeFromParentViewController()
+            changeRichTextInputView(to: nil)
+        }
+
+        optionsViewController = nil
+    }
+
 
     func changeRichTextInputView(to: UIView?) {
         guard richTextView.inputView != to else {
@@ -2210,9 +2222,9 @@ private extension AztecPostViewController {
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func configureMediaAppearance() {
-        MediaAttachment.appearance.progressBackgroundColor = Colors.mediaProgressBarBackground
-        MediaAttachment.appearance.progressColor = Colors.mediaProgressBarTrack
-        MediaAttachment.appearance.overlayColor = Colors.mediaProgressOverlay
+        MediaAttachment.defaultAppearance.progressBackgroundColor = Colors.mediaProgressBarBackground
+        MediaAttachment.defaultAppearance.progressColor = Colors.mediaProgressBarTrack
+        MediaAttachment.defaultAppearance.overlayColor = Colors.mediaProgressOverlay
     }
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
@@ -2264,12 +2276,12 @@ extension AztecPostViewController {
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
-            guard let strongSelf = self else {
+            guard let `self` = self else {
                 return
             }
             DispatchQueue.main.async {
-                attachment.url = thumbnailURL
-                strongSelf.richTextView.refresh(attachment)
+                attachment.updateURL(thumbnailURL)
+                self.richTextView.refresh(attachment)
             }
         }, completion: { [weak self](media, error) in
             guard let strongSelf = self else {
@@ -2381,7 +2393,7 @@ extension AztecPostViewController {
         mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
-                    imageAttachment.url = thumbnailURL
+                    imageAttachment.updateURL(thumbnailURL)
                     self.richTextView.refresh(imageAttachment)
                 }
             }
@@ -2427,7 +2439,7 @@ extension AztecPostViewController {
                     if let mediaID = media.mediaID?.intValue {
                         imageAttachment.imageID = mediaID
                     }
-                    imageAttachment.url = remoteURL
+                    imageAttachment.updateURL(remoteURL, refreshAsset: false)
                 } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
                     videoAttachment.srcURL = URL(string: videoURLString)
                     if let videoPosterURLString = media.remoteThumbnailURL {
@@ -2662,7 +2674,7 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
         richTextView.edit(changedAttachment) { attachment in
             attachment.alignment = changedAttachment.alignment
             attachment.size = changedAttachment.size
-            attachment.url = changedAttachment.url
+            attachment.updateURL(changedAttachment.url)
         }
     }
 }
