@@ -263,6 +263,33 @@ static NSString* const ThemeRequestPageKey = @"page";
     return progress;
 }
 
+- (NSProgress *)installThemeId:(NSString*)themeId
+                     forBlogId:(NSNumber *)blogId
+                       success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
+                       failure:(ThemeServiceRemoteFailureBlock)failure
+{
+    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
+    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+
+    NSString* const path = [NSString stringWithFormat:@"sites/%@/themes/%@/install", blogId, themeId];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    NSProgress *progress = [self.wordPressComRestApi POST:requestUrl
+                                               parameters:nil
+                                                  success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
+                                                      if (success) {
+                                                          RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
+                                                          success(theme);
+                                                      }
+                                                  } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                                      if (failure) {
+                                                          failure(error);
+                                                      }
+                                                  }];
+    return progress;
+}
+
 #pragma mark - Parsing responses
 
 /**

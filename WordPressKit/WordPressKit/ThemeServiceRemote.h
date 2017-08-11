@@ -121,4 +121,20 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
                          success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure;
 
+
+/**
+ *  @brief      Installs the specified theme on the specified Jatpack blog.
+ *
+ *  @param      themeId     The ID of the theme to install.  Cannot be nil.
+ *  @param      blogId      The ID of the target blog.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ *
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
+ */
+- (NSProgress *)installThemeId:(NSString*)themeId
+                     forBlogId:(NSNumber *)blogId
+                       success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
+                       failure:(ThemeServiceRemoteFailureBlock)failure;
+
 @end
