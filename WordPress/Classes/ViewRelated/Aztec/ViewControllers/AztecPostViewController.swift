@@ -255,13 +255,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Editor's Mode
     ///
-    fileprivate(set) var mode = EditionMode.richText {
+    fileprivate(set) var mode = EditMode.richText {
         willSet {
             switch mode {
             case .html:
-                richTextView.setHTML(getHTML())
+                setHTML(getHTML(), for: .richText)
             case .richText:
-                htmlTextView.text = getHTML()
+                setHTML(getHTML(), for: .html)
             }
         }
 
@@ -685,6 +685,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
+        setHTML(html, for: mode)
+    }
+
+    private func setHTML(_ html: String, for mode: EditMode) {
         switch(mode) {
         case .html:
             htmlTextView.text = html
@@ -709,11 +713,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         case .html:
             html = htmlTextView.text
         case .richText:
-            html = richTextView.getHTML()
-        }
+            html = richTextView.getHTML(prettyPrint: false)
 
-        for processor in htmlPostProcessors {
-            html = processor.process(text: html)
+            for processor in htmlPostProcessors {
+                html = processor.process(text: html)
+            }
         }
 
         return html
@@ -1344,7 +1348,7 @@ extension AztecPostViewController: Aztec.TextViewFormattingDelegate {
 // MARK: - HTML Mode Switch methods
 //
 extension AztecPostViewController {
-    enum EditionMode {
+    enum EditMode {
         case richText
         case html
 
