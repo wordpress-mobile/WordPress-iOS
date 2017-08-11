@@ -1,1 +1,3 @@
-Yenilik anlamında çok bir şey yok, sadece daha ayakları yere basan ve hızlı bir uygulama haline getirdik. Her zaman altın tozu dökülmüyor - bazen sadece kod!
+Yerleşik düzenleyicide bir kaç iyileştirme yapıldı, denediniz mi?
+Jetpack ve kendi kurduğunuz siteler için yazı listesinde yazar filtresi.
+Video yükleme boyutunu seçmek için yeni ayar.
