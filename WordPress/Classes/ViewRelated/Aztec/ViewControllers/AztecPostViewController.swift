@@ -1479,8 +1479,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     case .ordered:
                                                         self?.toggleOrderedList()
                                                     }
-
-                                                    self?.optionsViewController = nil
         })
     }
 
@@ -1859,11 +1857,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         optionsViewController.cellSelectedBackgroundColor = WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
         optionsViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         optionsViewController.onSelect = { [weak self] selected in
-            if self?.presentedViewController != nil {
-                self?.dismiss(animated: true, completion: nil)
-            }
-
             onSelect?(selected)
+            self?.dismissOptionsViewController()
         }
 
         let selectRow = {
@@ -1903,6 +1898,19 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         changeRichTextInputView(to: viewController.view)
         viewController.didMove(toParentViewController: self)
     }
+
+    private func dismissOptionsViewController() {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            dismiss(animated: true, completion: nil)
+        default:
+            optionsViewController?.removeFromParentViewController()
+            changeRichTextInputView(to: nil)
+        }
+
+        optionsViewController = nil
+    }
+
 
     func changeRichTextInputView(to: UIView?) {
         guard richTextView.inputView != to else {
