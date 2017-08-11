@@ -1,1 +1,3 @@
-Pas de grandes nouvelles mais juste quelques améliorations pour rendre l’app plus stable et rapide.
+Plusieurs améliorations au nouvel éditeur natif, l’avez-vous déjà essayé ?
+Filtre d’auteur sur la liste des articles pour Jetpack et les sites auto-hébergés.
+Nouveau réglage pour choisir la taille d’envoi des vidéos.
