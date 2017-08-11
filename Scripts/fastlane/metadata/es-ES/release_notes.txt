@@ -1,1 +1,3 @@
-Sin campanas ni fuegos artificiales,  solo mejoras incrementales para ofrecerte una aplicación más rápida y estable. No es oro todo lo que brilla - ¡a veces es código!
+Muchas mejoras en el nuevo editor nativo, ¿las has probado ya?
+Flitrado de autores en la lista de entradas para sitios de Jetpack y autoalojados.
+Nuevo ajuste para elegir el tamaño de subida del vídeo.

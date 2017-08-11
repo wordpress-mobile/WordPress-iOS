@@ -1,1 +1,3 @@
-Inga nya smarta och snygga saker, bara små inkrementella ändringar som ger dig en snabbare och stabilare app. Det är inte bara guld som glittrar – programkod kan också skina!
+En rad förbättringar i den nya, inbyggda redigeraren. Har du hunnit prova än?
+Författarfilter på inläggslista för Jetpack och egen-installerade webbplatser.
+Nya inställningar att välja på för storlek på videouppladdningar.
