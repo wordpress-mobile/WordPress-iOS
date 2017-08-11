@@ -93,7 +93,7 @@ PODS:
   - Starscream (2.1.0)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.9.2)
+  - WordPress-Aztec-iOS (1.0.0-beta.10)
   - WordPress-iOS-Editor (1.9.3):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -128,7 +128,7 @@ DEPENDENCIES:
   - Starscream (= 2.1.0)
   - SVProgressHUD (= 2.1.2)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `release/1.0.0-beta.10`)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.10)
   - WordPress-iOS-Editor (= 1.9.3)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.19)
@@ -138,9 +138,6 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.0
-  WordPress-Aztec-iOS:
-    :branch: release/1.0.0-beta.10
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -149,9 +146,6 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.0
-  WordPress-Aztec-iOS:
-    :commit: 81011b6924d4ef0845ed80453ec30da5c46309a7
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -183,12 +177,12 @@ SPEC CHECKSUMS:
   Starscream: 168fd64c345fb2dea71b0a869c482aeffcf866e4
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 10dfe6a07a0b356bd66ea2ba650cf1a7e7b8da43
+  WordPress-Aztec-iOS: 17a73f2b5b21b2dc102e392344f9d40b5f6b8676
   WordPress-iOS-Editor: ed02135d783ecb9aa4ee5e2462935432d464d461
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 771abfe3a334119a909ebe403188498e4a2b01e8
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 1597d14d286de580cfb4b3f0b09d36b95048c5b1
+PODFILE CHECKSUM: d2e571c6d68a818319e6a06b2897e986b9c723e6
 
 COCOAPODS: 1.2.1
