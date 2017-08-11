@@ -51,8 +51,8 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
-                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
         passwordField?.becomeFirstResponder()
         WPAppAnalytics.track(.loginPasswordFormViewed)
@@ -133,9 +133,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
         forgotPasswordButton?.titleLabel?.numberOfLines = 0
     }
-
-    // let the storyboard's style stay
-    override func setupStyles() {}
 
 
     // MARK: - Instance Methods
