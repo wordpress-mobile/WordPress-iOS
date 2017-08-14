@@ -269,10 +269,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                             }];
 
     dispatch_group_enter(syncGroup);
-    [remote checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {
-        [self updateMultiAuthor:isMultiAuthor forBlog:blogObjectID];
+    [remote getAuthorsWithSuccess:^(NSArray<RemoteUser *> *users) {
+        [self updateMultiAuthor:users forBlog:blogObjectID];
         dispatch_group_leave(syncGroup);
-
     } failure:^(NSError *error) {
         DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
         dispatch_group_leave(syncGroup);
@@ -370,34 +369,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     blog.password = password;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
-- (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"username != NULL AND account != NULL"];
-    NSArray *blogsToMigrate = [self blogsWithPredicate:predicate];
-    for (Blog *blog in blogsToMigrate) {
-        DDLogInfo(@"Migrating %@ with wp.com account %@ to Jetpack XML-RPC", [blog hostURL], blog.account.username);
-        blog.jetpackAccount = blog.account;
-        blog.account = nil;
-    }
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    /*
-     We could remove Jetpack blogs directly when we don't have a username for them,
-     but triggering a sync seems safer.
-     */
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    if (defaultAccount) {
-        /*
-         If this fails, we call success anyway. If the network fails for this request
-         we still want to allow disabling REST. Next time the site list reloads, it'll
-         purge the old Jetpack sites anyway
-         */
-        [self syncBlogsForAccount:accountService.defaultWordPressComAccount success:success failure:success];
-    } else if (success) {
-        success();
-    }
 }
 
 - (void)syncPostTypesForBlog:(Blog *)blog
@@ -532,6 +503,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 /// @name Blog creation
 ///--------------------
 
+- (Blog *)findBlogWithDotComID:(NSNumber *)dotComID
+                     inAccount:(WPAccount *)account
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dotComID = %@", dotComID];
+    return [[account.blogs filteredSetUsingPredicate:predicate] anyObject];
+}
+
 - (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
                    inAccount:(WPAccount *)account
 {
@@ -598,14 +576,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
-    WPAccount *jetpackAccount = blog.jetpackAccount;
+    WPAccount *account = blog.account;
 
     [self.managedObjectContext deleteObject:blog];
     [self.managedObjectContext processPendingChanges];
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    if (jetpackAccount) {
-        [accountService purgeAccount:jetpackAccount];
+    if (account) {
+        [accountService purgeAccountIfUnused:account];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -617,8 +595,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
 {
     // Nuke dead blogs
-    NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
-    NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+    NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"blogID"]];
+    NSSet *localSet = [account.blogs valueForKey:@"dotComID"];
     NSMutableSet *toDelete = [localSet mutableCopy];
     [toDelete minusSet:remoteSet];
 
@@ -645,7 +623,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (void)updateBlogWithRemoteBlog:(RemoteBlog *)remoteBlog account:(WPAccount *)account
 {
-    Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+    Blog *blog = [self findBlogWithDotComID:remoteBlog.blogID inAccount:account];
 
     if (!blog && remoteBlog.jetpack) {
         blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
@@ -704,15 +682,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (Blog *)migrateRemoteJetpackBlog:(RemoteBlog *)remoteBlog
                         forAccount:(WPAccount *)account
 {
+    NSURL *xmlrpcURL = [NSURL URLWithString:remoteBlog.xmlrpc];
+    NSURLComponents *components = [NSURLComponents componentsWithURL:xmlrpcURL resolvingAgainstBaseURL:NO];
+    if ([components.scheme isEqualToString:@"https"]) {
+        components.scheme = @"http";
+    } else {
+        components.scheme = @"https";
+    }
+    NSURL *alternateXmlrpcURL = components.URL;
     NSArray *blogsWithNoAccount = [self blogsWithNoAccount];
     Blog *jetpackBlog = [[blogsWithNoAccount wp_filter:^BOOL(Blog *blogToTest) {
-        return [blogToTest.xmlrpc isEqualToString:remoteBlog.xmlrpc] && [blogToTest.dotComID isEqual:remoteBlog.blogID];
+        return [blogToTest.xmlrpc caseInsensitiveCompare:xmlrpcURL.absoluteString] == NSOrderedSame
+        || [blogToTest.xmlrpc caseInsensitiveCompare:alternateXmlrpcURL.absoluteString] == NSOrderedSame;
     }] firstObject];
 
     if (jetpackBlog) {
         DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
         jetpackBlog.account = account;
-        jetpackBlog.jetpackAccount = nil;
     }
 
     return jetpackBlog;
@@ -820,7 +806,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 #pragma mark - Completion handlers
 
-- (void)updateMultiAuthor:(BOOL)isMultiAuthor forBlog:(NSManagedObjectID *)blogObjectID
+- (void)updateMultiAuthor:(NSArray<RemoteUser *> *)users forBlog:(NSManagedObjectID *)blogObjectID
 {
     [self.managedObjectContext performBlock:^{
         NSError *error;
@@ -831,7 +817,30 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         if (!blog) {
             return;
         }
-        blog.isMultiAuthor = isMultiAuthor;
+        blog.isMultiAuthor = users.count > 1;
+        /// Search for a matching user ID
+        /// - wp.com hosted: blog.account.userID
+        /// - Jetpack: user.linkedUserID == blog.account.userID
+        /// - self hosted: user.username == blog.username
+        if (blog.account) {
+            if ([blog isHostedAtWPcom]) {
+                blog.userID = blog.account.userID;
+            } else {
+                for (RemoteUser *user in users) {
+                    if ([user.linkedUserID isEqual:blog.account.userID]) {
+                        blog.userID = user.userID;
+                        break;
+                    }
+                }
+            }
+        } else if (blog.username != nil) {
+            for (RemoteUser *user in users) {
+                if ([user.username isEqualToString:blog.username]) {
+                    blog.userID = user.userID;
+                    break;
+                }
+            }
+        }
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 }

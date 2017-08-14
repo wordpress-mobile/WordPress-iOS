@@ -20,7 +20,6 @@
 @property (nonatomic, strong)   NSString    *displayName;
 @property (nonatomic, strong)   NSNumber    *emailVerified;
 @property (nonatomic, strong)   NSSet<Blog *>       *blogs;
-@property (nonatomic, strong)   NSSet<Blog *>       *jetpackBlogs;
 @property (nonatomic, readonly) NSArray<Blog *>     *visibleBlogs;
 @property (nonatomic, strong)   Blog        *defaultBlog;
 @property (nonatomic, strong)   ManagedAccountSettings *managedSettings;
@@ -53,10 +52,5 @@
 - (void)removeBlogsObject:(Blog *)value;
 - (void)addBlogs:(NSSet *)values;
 - (void)removeBlogs:(NSSet *)values;
-
-- (void)addJetpackBlogsObject:(Blog *)value;
-- (void)removeJetpackBlogsObject:(Blog *)value;
-- (void)addJetpackBlogs:(NSSet *)values;
-- (void)removeJetpackBlogs:(NSSet *)values;
 
 @end

@@ -1,1 +1,3 @@
-Nenhum novo recurso brilhante, apenas melhorias para trazer a você um app mais rápido e mais estável. Nem tudo que reluz é ouro — às vezes é código!
+Várias melhorias no novo editor nativo, você já testou?
+Filtro de autor na lista de posts de sites com Jetpack e com hospedagem própria.
+Nova configuração para escolher o tamanho do upload do vídeo.

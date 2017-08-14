@@ -39,6 +39,10 @@ open class WordPressOrgXMLRPCValidator: NSObject {
 
     open static let UserInfoHasJetpackKey = "UserInfoHasJetpackKey"
 
+    // The documentation for NSURLErrorHTTPTooManyRedirects says that 16
+    // is the default threshold for allowable redirects.
+    private let redirectLimit = 16
+
     override public init() {
         super.init()
     }
@@ -147,8 +151,16 @@ open class WordPressOrgXMLRPCValidator: NSObject {
     }
 
     fileprivate func validateXMLRPCURL(_ url: URL,
+                                       redirectCount: Int = 0,
                                    success: @escaping (_ xmlrpcURL: URL) -> (),
                                    failure: @escaping (_ error: NSError) -> ()) {
+        guard redirectCount < redirectLimit else {
+            let error = NSError(domain: URLError.errorDomain,
+                                code: URLError.httpTooManyRedirects.rawValue,
+                                userInfo: nil)
+            failure(error)
+            return
+        }
         let api = WordPressOrgXMLRPCApi(endpoint: url)
         api.callMethod("system.listMethods", parameters: nil, success: { (responseObject, httpResponse) in
                 guard let methods = responseObject as? [String], methods.contains("wp.getUsersBlogs") else {
@@ -167,6 +179,17 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                         let responseString = String(data: data, encoding: String.Encoding.utf8), responseString.range(of: "<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">") != nil
                             || responseString.range(of: "dm404Container") != nil {
                         failure(WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.convertToNSError())
+                        return
+                    }
+                    // If it's a redirect to the same host
+                    // and the response is a '405 Method Not Allowed'
+                    if let responseUrl = httpResponse?.url,
+                        responseUrl.host == url.host
+                        && httpResponse?.statusCode == 405 {
+                        // Then it's likely a good redirect, but the POST
+                        // turned into a GET.
+                        // Let's retry the request at the new URL.
+                        self.validateXMLRPCURL(responseUrl, redirectCount: redirectCount + 1, success: success, failure: failure)
                         return
                     }
                 }
