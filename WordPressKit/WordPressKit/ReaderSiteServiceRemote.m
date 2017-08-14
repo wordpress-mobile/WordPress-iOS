@@ -6,6 +6,10 @@
 @import NSObject_SafeExpectations;
 @import WordPressShared;
 
+static NSString* const ReaderSiteServiceRemoteURLKey = @"url";
+static NSString* const ReaderSiteServiceRemoteSourceKey = @"source";
+static NSString* const ReaderSiteServiceRemoteSourceValue = @"ios";
+
 NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteErrorDomain";
 
 @implementation ReaderSiteServiceRemote
@@ -42,8 +46,10 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/new", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    
-    [self.wordPressComRestApi POST:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+
+    NSDictionary *params = @{ReaderSiteServiceRemoteSourceKey: ReaderSiteServiceRemoteSourceValue};
+
+    [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             success();
         }
@@ -73,11 +79,12 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"read/following/mine/new?url=%@", siteURL];
+    NSString *path = @"read/following/mine/new";
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSDictionary *params = @{@"url": siteURL};
+    NSDictionary *params = @{ReaderSiteServiceRemoteURLKey: siteURL,
+                             ReaderSiteServiceRemoteSourceKey: ReaderSiteServiceRemoteSourceValue};
     [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
@@ -101,11 +108,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"read/following/mine/delete?url=%@", siteURL];
+    NSString *path = @"read/following/mine/delete";
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSDictionary *params = @{@"url": siteURL};
+    NSDictionary *params = @{ReaderSiteServiceRemoteURLKey: siteURL};
     
     [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *dict = (NSDictionary *)responseObject;
