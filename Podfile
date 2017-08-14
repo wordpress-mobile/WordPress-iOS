@@ -42,7 +42,7 @@ target 'WordPress' do
   pod 'Crashlytics', '3.8.5'
   pod 'BuddyBuildSDK', '1.0.16', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '1.0.12'
-  pod 'MGSwipeTableCell', '1.5.6'
+  pod 'MGSwipeTableCell', '1.6.0'
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '2.1.0'
 
