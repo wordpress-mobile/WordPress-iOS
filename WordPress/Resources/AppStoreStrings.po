@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-07-04 10:24-0000\n"
+"PO-Revision-Date: 2017-08-14 12:50-0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,11 +38,10 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v8.2-whats-new"
+msgctxt "v8.3-whats-new"
 msgid ""
-"Several improvements to the new native editor, have you already tried it?\n"
-"Author filter on post list for Jetpack and self-hosted sites.\n"
-"New setting to choose the video upload size.\n"
+"Jetpack sites: Added support for custom roles.\n"
+"Several minor improvements and bug fixes.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
