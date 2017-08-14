@@ -39,7 +39,7 @@
                               @"readonly": @YES,
                               },
                       @"jetpack_client_id": @{
-                              @"value": @"1",
+                              @"value": @"3",
                               @"desc": @"stub",
                               @"readonly": @YES,
                               },
@@ -70,7 +70,7 @@
 }
 
 - (void)testJetpackSiteId {
-    XCTAssertEqualObjects(_blog.jetpack.siteID, @1);
+    XCTAssertEqualObjects(_blog.jetpack.siteID, @3);
 }
 
 - (void)testJetpackUsername {
@@ -172,8 +172,8 @@
     WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
 
     Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
-    dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
-    dotcomBlog.url = @"http://dotcom1.wordpress.com/";
+    dotcomBlog.xmlrpc = @"https://dotcom1.wordpress.com/xmlrpc.php";
+    dotcomBlog.url = @"https://dotcom1.wordpress.com/";
     dotcomBlog.dotComID = @1;
 
     Blog *jetpackLegacyBlog = [blogService createBlog];
@@ -191,7 +191,6 @@
                                           @"readonly": @YES,
                                           },
                                   };
-    jetpackLegacyBlog.jetpackAccount = wpComAccount;
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -204,8 +203,6 @@
     XCTAssertEqual(1, wpComAccount.blogs.count);
     Blog *testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 1"]] anyObject];
     XCTAssertNotNil(testBlog);
-    XCTAssertEqual(1, wpComAccount.jetpackBlogs.count);
-    XCTAssertEqual(wpComAccount.jetpackBlogs.anyObject, jetpackLegacyBlog);
 
     XCTestExpectation *syncExpectation = [self expectationWithDescription:@"Blogs sync"];
     [blogService syncBlogsForAccount:wpComAccount success:^{
@@ -219,7 +216,6 @@
     XCTAssertEqual(1, [accountService numberOfAccounts]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
-    XCTAssertEqual(0, wpComAccount.jetpackBlogs.count);
     // test.blog + wp.com + jetpack (wpcc)
     XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
 
@@ -229,6 +225,58 @@
     testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 2"]] anyObject];
     XCTAssertNotNil(testBlog);
     XCTAssertEqualObjects(testBlog.xmlrpc, @"http://jetpack.example.com/xmlrpc.php");
+}
+
+- (void)testSyncBlogsMigratesJetpackSSL
+{
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [request.URL.path hasSuffix:@"me/sites"];
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        NSString* fixture = OHPathForFile(@"me-sites-with-jetpack.json", self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
+    }];
+
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
+
+    Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
+    dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
+    dotcomBlog.url = @"http://dotcom1.wordpress.com/";
+    dotcomBlog.dotComID = @1;
+
+    Blog *jetpackBlog = [blogService createBlog];
+    jetpackBlog.username = @"jetpack";
+    jetpackBlog.xmlrpc = @"https://jetpack.example.com/xmlrpc.php";
+    jetpackBlog.url = @"https://jetpack.example.com/";
+
+    // Wait on the merge to be completed
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+
+    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    // test.blog + wp.com + jetpack (legacy)
+    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
+    // dotcom1.wordpress.com
+    XCTAssertEqual(1, wpComAccount.blogs.count);
+
+    XCTestExpectation *syncExpectation = [self expectationWithDescription:@"Blogs sync"];
+    [blogService syncBlogsForAccount:wpComAccount success:^{
+        [syncExpectation fulfill];
+    } failure:^(NSError *error) {
+        XCTFail(@"Sync blogs shouldn't fail");
+    }];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
+
+    // test.blog + wp.com
+    XCTAssertEqual(1, [accountService numberOfAccounts]);
+    // dotcom1.wordpress.com + jetpack.example.com
+    XCTAssertEqual(2, wpComAccount.blogs.count);
+    // test.blog + wp.com + jetpack (wpcc)
+    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
 }
 
 @end
