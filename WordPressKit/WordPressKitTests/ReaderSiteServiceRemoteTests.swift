@@ -38,6 +38,8 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         readerSiteServiceRemote.followSite(withID: 1, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
+        let parameters: NSDictionary = mockRemoteApi.parametersPassedIn as! NSDictionary
+        XCTAssertEqual(parameters["source"] as! String?, "ios", "incorrect source parameter")
     }
 
     func testFollowSiteWithID() {
@@ -73,10 +75,13 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
     func testFollowSiteAtURLPath() {
 
         let url = "http://www.wordpress.com"
-        let expectedPath = "v1.1/read/following/mine/new?url=\(url)"
+        let expectedPath = "v1.1/read/following/mine/new"
         readerSiteServiceRemote.followSite(atURL: url, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
+        let parameters: NSDictionary = mockRemoteApi.parametersPassedIn as! NSDictionary
+        XCTAssertEqual(parameters["url"] as! String?, url, "incorrect url parameter")
+        XCTAssertEqual(parameters["source"] as! String?, "ios", "incorrect source parameter")
     }
 
     func testFollowSiteAtURL() {
@@ -106,10 +111,12 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
     func testUnfollowSiteAtURLPath() {
 
         let url = "http://www.wordpress.com"
-        let expectedPath = "v1.1/read/following/mine/delete?url=\(url)"
+        let expectedPath = "v1.1/read/following/mine/delete"
         readerSiteServiceRemote.unfollowSite(atURL: url, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
+        let parameters: NSDictionary = mockRemoteApi.parametersPassedIn as! NSDictionary
+        XCTAssertEqual(parameters["url"] as! String?, url, "incorrect url parameter")
     }
 
     func testUnfollowSiteAtURL() {
