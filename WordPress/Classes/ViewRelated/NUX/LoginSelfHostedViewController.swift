@@ -64,8 +64,8 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
-                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
         WPAppAnalytics.track(.loginUsernamePasswordFormViewed)
     }
@@ -87,10 +87,6 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
 
     // MARK: - Setup and Configuration
-
-
-    /// let the storyboard's style stay
-    override func setupStyles() {}
 
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
@@ -115,7 +111,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
                                                             target: self,
-                                                            selector: #selector(SigninSelfHostedViewController.handleOnePasswordButtonTapped(_:)))
+                                                            selector: #selector(handleOnePasswordButtonTapped(_:)))
     }
 
 

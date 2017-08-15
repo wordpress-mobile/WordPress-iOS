@@ -54,9 +54,6 @@ class LoginLinkMailViewController: LoginViewController {
         usePasswordButton?.titleLabel?.numberOfLines = 0
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
-
 
     // MARK: - Actions
 
