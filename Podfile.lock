@@ -40,7 +40,7 @@ PODS:
     - HockeySDK/DefaultLib (= 4.1.6)
   - HockeySDK/DefaultLib (4.1.6)
   - lottie-ios (1.5.1)
-  - MGSwipeTableCell (1.5.6)
+  - MGSwipeTableCell (1.6.0)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
     - MRProgress/Blur (= 0.8.3)
@@ -93,7 +93,7 @@ PODS:
   - Starscream (2.1.0)
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.9.2)
+  - WordPress-Aztec-iOS (1.0.0-beta.10)
   - WordPress-iOS-Editor (1.9.3):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - Gridicons (= 0.10)
   - HockeySDK (= 4.1.6)
   - lottie-ios (= 1.5.1)
-  - MGSwipeTableCell (= 1.5.6)
+  - MGSwipeTableCell (= 1.6.0)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
@@ -128,7 +128,7 @@ DEPENDENCIES:
   - Starscream (= 2.1.0)
   - SVProgressHUD (= 2.1.2)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.9.2)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.10)
   - WordPress-iOS-Editor (= 1.9.3)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.19)
@@ -165,7 +165,7 @@ SPEC CHECKSUMS:
   Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
   HockeySDK: 95db557d54489a570dcdefae0d02f98eecc279a3
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
-  MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
+  MGSwipeTableCell: 6e1994f1eb31c76e76f70a8bc39de3c42cf5cd38
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
@@ -177,12 +177,12 @@ SPEC CHECKSUMS:
   Starscream: 168fd64c345fb2dea71b0a869c482aeffcf866e4
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 8046272c420f9287fa7cb76b99fca45fbb7f64da
+  WordPress-Aztec-iOS: 17a73f2b5b21b2dc102e392344f9d40b5f6b8676
   WordPress-iOS-Editor: ed02135d783ecb9aa4ee5e2462935432d464d461
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 771abfe3a334119a909ebe403188498e4a2b01e8
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 6952e6d78595e74fb8a5efa807e17fbfa20188ff
+PODFILE CHECKSUM: c57be7a211c74d9e5122cdb8035b94737b1c76aa
 
 COCOAPODS: 1.2.1
