@@ -123,7 +123,7 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
 
 
 /**
- *  @brief      Installs the specified theme on the specified Jatpack blog.
+ *  @brief      Installs the specified theme on the specified Jetpack blog.
  *
  *  @param      themeId     The ID of the theme to install.  Cannot be nil.
  *  @param      blogId      The ID of the target blog.  Cannot be nil.
