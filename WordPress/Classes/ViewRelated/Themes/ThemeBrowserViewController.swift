@@ -625,7 +625,7 @@ public protocol ThemePresenter: class {
             if theme.isCurrentTheme() {
                 presentCustomizeForTheme(theme)
             } else {
-                presentViewForTheme(theme)
+                theme.custom ? presentDetailsForTheme(theme) : presentViewForTheme(theme)
             }
         }
     }
