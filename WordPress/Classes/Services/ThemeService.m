@@ -4,6 +4,7 @@
 #import "Theme.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 @import WordPressKit;
 
 /**
@@ -335,7 +336,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                         NSMutableArray *validRemoteThemes = [NSMutableArray array];
                                         // We need to filter out themes with an id ending in -wpcom to match Calypso
                                         for (RemoteTheme *remoteTheme in remoteThemes) {
-                                            if (![remoteTheme.themeId hasSuffix:WPComThemesIDSuffix]) {
+                                            if (![ThemeIdHelper themeIdHasWPComSuffix:remoteTheme.themeId]) {
                                                 [validRemoteThemes addObject:remoteTheme];
                                             }
                                         }
@@ -388,11 +389,11 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     if ([blog supports:BlogFeatureCustomThemes] &&
         !theme.custom) {
-        NSString *themeIdWithWPSuffix = [NSString stringWithFormat:@"%@%@", theme.themeId, WPComThemesIDSuffix];
-        return [remote installThemeId:themeIdWithWPSuffix
+        NSString *themeIdWithWPComSuffix = [ThemeIdHelper themeIdWithWPComSuffix:theme.themeId];
+        return [remote installThemeId:themeIdWithWPComSuffix
                             forBlogId:[blog dotComID]
                               success:^(RemoteTheme *remoteTheme) {
-                                  [self activateThemeId:themeIdWithWPSuffix
+                                  [self activateThemeId:themeIdWithWPComSuffix
                                                 forBlog:blog
                                                 success:^(Theme *_){
                                                     [self themeActivatedSuccessfully:theme
@@ -404,7 +405,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                   // There's no way to know from the WP.com theme list if the theme was already
                                   // installed, BUT trying to install an already installed theme returns an error,
                                   // so regardless we are trying to activate. Calypso does this same thing.
-                                  [self activateThemeId:themeIdWithWPSuffix
+                                  [self activateThemeId:themeIdWithWPComSuffix
                                                 forBlog:blog
                                                 success:^(Theme *_){
                                                     [self themeActivatedSuccessfully:theme
@@ -454,11 +455,8 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 - (RemoteTheme *)removeWPComSuffixIfNeeded:(RemoteTheme *)remoteTheme
                                    forBlog:(Blog *)blog {
-    if ([blog supports:BlogFeatureCustomThemes] && [remoteTheme.themeId hasSuffix:WPComThemesIDSuffix]) {
-        // When a WP.com theme is used on a JP site, its themeId is modified to themeId-wpcom,
-        // we need to remove this to be able to match it on the theme list
-        remoteTheme.themeId = [remoteTheme.themeId substringWithRange:NSMakeRange(0, remoteTheme.themeId.length-WPComThemesIDSuffix.length)];
-    }
+    remoteTheme.themeId = [ThemeIdHelper themeIdWithWPComSuffixRemoved:remoteTheme.themeId
+                                                               forBlog:blog];
     return remoteTheme;
 }
 
