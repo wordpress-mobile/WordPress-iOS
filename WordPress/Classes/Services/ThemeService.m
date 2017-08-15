@@ -395,7 +395,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                               success:^(RemoteTheme *remoteTheme) {
                                   [self activateThemeId:themeIdWithWPComSuffix
                                                 forBlog:blog
-                                                success:^(Theme *_){
+                                                success:^(){
                                                     [self themeActivatedSuccessfully:theme
                                                                              forBlog:blog
                                                                              success:success];
@@ -407,7 +407,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                   // so regardless we are trying to activate. Calypso does this same thing.
                                   [self activateThemeId:themeIdWithWPComSuffix
                                                 forBlog:blog
-                                                success:^(Theme *_){
+                                                success:^(){
                                                     [self themeActivatedSuccessfully:theme
                                                                              forBlog:blog
                                                                              success:success];
@@ -416,7 +416,7 @@ const NSInteger ThemeOrderTrailing = 9999;
     } else {
         return [self activateThemeId:theme.themeId
                              forBlog:blog
-                             success:^(Theme *_){
+                             success:^(){
                                  [self themeActivatedSuccessfully:theme
                                                           forBlog:blog
                                                           success:success];
@@ -426,7 +426,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 - (NSProgress *)activateThemeId:(NSString *)themeId
                         forBlog:(Blog *)blog
-                        success:(ThemeServiceThemeRequestSuccessBlock)success
+                        success:(ThemeServiceSuccessBlock)success
                         failure:(ThemeServiceFailureBlock)failure
 {
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
@@ -434,10 +434,8 @@ const NSInteger ThemeOrderTrailing = 9999;
     return [remote activateThemeId:themeId
                          forBlogId:[blog dotComID]
                            success:^(RemoteTheme *remoteTheme) {
-                               Theme *theme = [self themeFromRemoteTheme:remoteTheme
-                                                                 forBlog:blog];
                                if (success) {
-                                   success(theme);
+                                   success();
                                }
                            } failure:failure];
 }
