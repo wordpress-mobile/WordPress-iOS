@@ -442,7 +442,8 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 - (void)themeActivatedSuccessfully:(Theme *)theme
                            forBlog:(Blog *)blog
-                           success:(ThemeServiceThemeRequestSuccessBlock)success {
+                           success:(ThemeServiceThemeRequestSuccessBlock)success
+{
     blog.currentThemeId = theme.themeId;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
         if (success) {
@@ -452,10 +453,57 @@ const NSInteger ThemeOrderTrailing = 9999;
 }
 
 - (RemoteTheme *)removeWPComSuffixIfNeeded:(RemoteTheme *)remoteTheme
-                                   forBlog:(Blog *)blog {
+                                   forBlog:(Blog *)blog
+{
     remoteTheme.themeId = [ThemeIdHelper themeIdWithWPComSuffixRemoved:remoteTheme.themeId
                                                                forBlog:blog];
     return remoteTheme;
+}
+
+#pragma mark - Remote queries: Installing themes
+
+/**
+ *  @brief      Installs the specified theme for the specified blog.
+ *
+ *  @param      themeId     The theme to install.  Cannot be nil.
+ *  @param      blogId      The target blog.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ *
+ *  @returns    The progress object.
+ */
+- (NSProgress *)installTheme:(Theme *)theme
+                     forBlog:(Blog *)blog
+                     success:(ThemeServiceSuccessBlock)success
+                     failure:(ThemeServiceFailureBlock)failure
+{
+    NSParameterAssert([theme isKindOfClass:[Theme class]]);
+    NSParameterAssert([theme.themeId isKindOfClass:[NSString class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSAssert([self blogSupportsThemeServices:blog],
+             @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
+
+    if (blog.wordPressComRestApi == nil) {
+        return nil;
+    }
+
+    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
+
+    NSString *themeIdWithWPComSuffix = [ThemeIdHelper themeIdWithWPComSuffix:theme.themeId];
+    return [remote installThemeId:themeIdWithWPComSuffix
+                        forBlogId:[blog dotComID]
+                          success:^(RemoteTheme *remoteTheme) {
+                              if (success) {
+                                  success();
+                              }
+                          } failure:^(NSError *error) {
+                              // Since installing a previously installed theme will fail, but there is no
+                              // way of knowing if it failed because of that or if the theme was previously installed,
+                              // I'm going to go ahead and call success. Calypso does this same thing. I'm sorry.
+                              if (success) {
+                                  success();
+                              }
+                          }];
 }
 
 #pragma mark - Parsing the dictionary replies
