@@ -45,9 +45,21 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 
 - (NSString *)customizeUrl
 {
-    NSString *path = [NSString stringWithFormat:ThemeAdminUrlCustomize, self.stylesheet];
+    NSString *themePath = [self themePathForCustomization];
+    NSString *path = [NSString stringWithFormat:ThemeAdminUrlCustomize, themePath];
     
     return [self.blog adminUrlWithPath:path];
+}
+
+- (NSString *)themePathForCustomization {
+    if ([self.blog supports:BlogFeatureCustomThemes]) {
+        if (self.custom) {
+            return self.themeId;
+        } else {
+            return [NSString stringWithFormat:@"%@%@", self.themeId, WPComThemesIDSuffix];
+        }
+    }
+    return self.stylesheet;
 }
 
 - (NSString *)detailsUrl
