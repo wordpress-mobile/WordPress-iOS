@@ -1,1 +1,3 @@
-No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!
+Several improvements to the new native editor, have you already tried it?
+Author filter on post list for Jetpack and self-hosted sites.
+New setting to choose the video upload size.

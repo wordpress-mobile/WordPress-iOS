@@ -73,9 +73,6 @@ class LoginLinkRequestViewController: LoginViewController {
         sendLinkButton?.isEnabled = !animating
     }
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
-
 
     // MARK: - Instance Methods
 

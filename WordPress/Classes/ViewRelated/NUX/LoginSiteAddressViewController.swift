@@ -62,12 +62,6 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     // MARK: Setup and Configuration
 
 
-    /// Let the storyboard's style stay
-    /// TODO: Nuke this and the super implementation once the old signin controllers
-    /// go away. 2017.06.13 - Aerych
-    override func setupStyles() {}
-
-
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     func localizeControls() {

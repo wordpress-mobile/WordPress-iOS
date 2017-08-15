@@ -753,7 +753,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     } failure:failure];
 }
 
-- (void)syncContentEnded
+- (void)syncContentEnded:(WPContentSyncHelper *)syncHelper
 {
     [self.activityFooter stopAnimating];
     if ([self.tableViewHandler isScrolling]) {
@@ -763,7 +763,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self refreshTableViewAndNoResultsView];
 }
 
-- (void)syncContentFailed
+- (void)syncContentFailed:(WPContentSyncHelper *)syncHelper
 {
     self.failedToFetchComments = YES;
     [self.activityFooter stopAnimating];
