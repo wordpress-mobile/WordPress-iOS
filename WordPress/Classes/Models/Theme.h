@@ -1,5 +1,7 @@
 #import <CoreData/CoreData.h>
 
+static NSString* const WPComThemesIDSuffix = @"-wpcom";
+
 @class Blog;
 
 @interface Theme : NSManagedObject
