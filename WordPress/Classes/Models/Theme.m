@@ -56,7 +56,7 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
         if (self.custom) {
             return self.themeId;
         } else {
-            return [NSString stringWithFormat:@"%@%@", self.themeId, WPComThemesIDSuffix];
+            return [ThemeIdHelper themeIdWithWPComSuffix:self.themeId];
         }
     }
     return self.stylesheet;
