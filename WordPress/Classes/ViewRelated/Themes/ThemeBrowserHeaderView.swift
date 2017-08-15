@@ -30,22 +30,18 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     fileprivate var theme: Theme? {
         didSet {
             currentThemeName.text = theme?.name
-            if let theme = theme, theme.custom {
-                supportButton.isHidden = true
-                supportIcon.isHidden = true
-                if theme.hasDetailsURL() {
-                    detailsButton.isHidden = false
-                    detailsIcon.isHidden = false
-                } else {
-                    detailsButton.isHidden = true
-                    detailsIcon.isHidden = true
-                }
-            } else {
-                supportButton.isHidden = false
-                supportIcon.isHidden = false
-                detailsButton.isHidden = false
-                detailsIcon.isHidden = false
+            var customTheme = false
+            var hasDetailsURL = false
+
+            if let theme = theme {
+                customTheme = theme.custom
+                hasDetailsURL = theme.hasDetailsURL()
             }
+
+            supportButton.isHidden = customTheme
+            supportIcon.isHidden = customTheme
+            detailsButton.isHidden = customTheme && !hasDetailsURL
+            detailsIcon.isHidden = customTheme && !hasDetailsURL
         }
     }
     fileprivate var filterType: ThemeType = .all {
