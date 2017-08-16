@@ -331,6 +331,7 @@
 		8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F38E1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift */; };
 		8298F3921EEF3BA7008EB7F0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */; };
 		82B85DF91EDDB807004FD510 /* SiteIconPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */; };
+		82FFBF4D1F434BDA00F4573F /* ThemeIdHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF4C1F434BDA00F4573F /* ThemeIdHelper.swift */; };
 		83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
 		83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = 83418AA911C9FA6E00ACF00C /* Comment.m */; };
 		834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 834CAE7B122D528A003DDF49 /* UIImage+Resize.m */; };
@@ -1487,6 +1488,7 @@
 		820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 64.xcdatamodel"; sourceTree = "<group>"; };
 		820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeBrowserSectionHeaderView.xib; sourceTree = "<group>"; };
 		820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSectionHeaderView.swift; sourceTree = "<group>"; };
+		820ADD751F3CCD70002D7F93 /* WordPress 65.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 65.xcdatamodel"; sourceTree = "<group>"; };
 		821EB18D1EDF391800E4CD8C /* WordPress 60.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 60.xcdatamodel"; sourceTree = "<group>"; };
 		82270C8E1E3FBF72005F697D /* WordPress 56.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 56.xcdatamodel"; sourceTree = "<group>"; };
 		822876F01E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReachabilityUtils+OnlineActions.swift"; sourceTree = "<group>"; };
@@ -1498,6 +1500,7 @@
 		8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteIconPickerPresenter.swift; sourceTree = "<group>"; };
 		82FA39771EB132090058A2D0 /* WordPress 59.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 59.xcdatamodel"; sourceTree = "<group>"; };
+		82FFBF4C1F434BDA00F4573F /* ThemeIdHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeIdHelper.swift; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
 		833AF25A114575A50016DE8F /* PostAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAnnotation.m; sourceTree = "<group>"; };
@@ -2952,6 +2955,7 @@
 				319D6E7A19E447500013871C /* Suggestion.m */,
 				5DA5BF3318E32DCF005F11F9 /* Theme.h */,
 				5DA5BF3418E32DCF005F11F9 /* Theme.m */,
+				82FFBF4C1F434BDA00F4573F /* ThemeIdHelper.swift */,
 				E105E9CD1726955600C0D9E7 /* WPAccount.h */,
 				E105E9CE1726955600C0D9E7 /* WPAccount.m */,
 				E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */,
@@ -6495,6 +6499,7 @@
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				B5FF3BE71CAD881100C1D597 /* ImageCropOverlayView.swift in Sources */,
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
+				82FFBF4D1F434BDA00F4573F /* ThemeIdHelper.swift in Sources */,
 				E6311C431ECA017E00122529 /* UserProfile.swift in Sources */,
 				B5CABB171C0E382C0050AB9F /* PickerTableViewCell.swift in Sources */,
 				E13ACCD41EE5672100CCE985 /* PostEditor.swift in Sources */,
@@ -8435,6 +8440,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				820ADD751F3CCD70002D7F93 /* WordPress 65.xcdatamodel */,
 				820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */,
 				E1D28E911F2F6C9600A5DAFD /* WordPress 63.xcdatamodel */,
 				E136F3981F1F6FF800AD2DD3 /* WordPress 62.xcdatamodel */,
@@ -8500,7 +8506,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */;
+			currentVersion = 820ADD751F3CCD70002D7F93 /* WordPress 65.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
