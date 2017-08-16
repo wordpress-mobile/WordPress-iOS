@@ -23,8 +23,8 @@
 @property (nonatomic, retain) NSString *themeUrl;
 @property (nonatomic, retain) NSString *stylesheet;
 @property (nonatomic, retain) NSNumber *order;
-// Indicates if the theme is a custom (uploaded) theme, used only for Jetpack sites' themes
-// custom = YES for uploaded themes, custom = NO for WordPress.com themes
+/// Indicates if the theme is a custom (uploaded) theme, used only for Jetpack sites' themes
+/// custom = YES for uploaded themes, custom = NO for WordPress.com themes
 @property (nonatomic, assign) BOOL custom;
 @property (nonatomic, retain) Blog *blog;
 
