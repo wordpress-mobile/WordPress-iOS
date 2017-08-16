@@ -12,8 +12,25 @@ public enum ThemeAction {
     case tryCustomize
     case view
 
-    static let actives = [customize, details, support]
-    static let inactives = [tryCustomize, activate, view, details, support]
+    static func activeActionsForTheme(_ theme: Theme) ->[ThemeAction] {
+        if theme.custom {
+            if theme.hasDetailsURL() {
+                return [customize, details]
+            }
+            return [customize]
+        }
+        return [customize, details, support]
+    }
+
+    static func inactiveActionsForTheme(_ theme: Theme) ->[ThemeAction] {
+        if theme.custom {
+            if theme.hasDetailsURL() {
+                return [tryCustomize, activate, details]
+            }
+            return [tryCustomize, activate]
+        }
+        return [tryCustomize, activate, view, details, support]
+    }
 
     var title: String {
         switch self {
@@ -199,7 +216,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let themeActions = theme.isCurrentTheme() ? ThemeAction.actives : ThemeAction.inactives
+        let themeActions = theme.isCurrentTheme() ? ThemeAction.activeActionsForTheme(theme) : ThemeAction.inactiveActionsForTheme(theme)
         themeActions.forEach { themeAction in
             alertController.addActionWithTitle(themeAction.title,
                 style: .default,
