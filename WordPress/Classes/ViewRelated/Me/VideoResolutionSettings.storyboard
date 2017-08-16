@@ -12,7 +12,7 @@
         <!--Video Resolution Table View Controller-->
         <scene sceneID="D9s-kJ-3BR">
             <objects>
-                <tableViewController id="J9o-Bu-maQ" customClass="VideoResolutionTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController clearsSelectionOnViewWillAppear="NO" id="J9o-Bu-maQ" customClass="VideoResolutionTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="JWp-I2-ME9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
