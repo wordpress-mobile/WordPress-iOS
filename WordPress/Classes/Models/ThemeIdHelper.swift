@@ -1,6 +1,7 @@
 import Foundation
 
-@objc (ThemeIdHelper)
+/// Helper class for adding and removing the '-wpcom' suffix from themeIds
+///
 class ThemeIdHelper: NSObject {
     private static let WPComThemesIDSuffix = "-wpcom"
 
