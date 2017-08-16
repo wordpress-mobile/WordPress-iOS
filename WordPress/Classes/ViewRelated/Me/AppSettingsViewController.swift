@@ -264,6 +264,13 @@ class AppSettingsViewController: UITableViewController {
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
         }
     }
+    
+    func pushVideoResolutionSettings() -> ImmuTableAction {
+        return { [weak self] row in
+            let controller = VideoResolutionTableViewController()
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
 
     func videoSizeChanged() -> (MediaSettings.VideoResolution) -> Void {
         return { value in
