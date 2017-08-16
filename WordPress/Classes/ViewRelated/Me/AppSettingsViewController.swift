@@ -267,7 +267,8 @@ class AppSettingsViewController: UITableViewController {
     
     func pushVideoResolutionSettings() -> ImmuTableAction {
         return { [weak self] row in
-            let controller = VideoResolutionTableViewController()
+            let storyboard = UIStoryboard(name: "VideoResolutionSettings", bundle: nil)
+            let controller = storyboard.instantiateInitialViewController()!
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
