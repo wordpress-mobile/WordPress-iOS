@@ -831,7 +831,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             identifiers = richTextView.formatIdentifiersForTypingAttributes()
         }
 
-        toolbar.selectItemsMatchingIdentifiers(identifiers)
+        toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
     }
 }
 
@@ -1254,7 +1254,7 @@ extension AztecPostViewController : UITextViewDelegate {
             formatBar.enabled = false
 
             // Disable the bar, except for the source code button
-            let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode })
+            let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
             htmlButton?.isEnabled = true
         default:
             break
@@ -1383,36 +1383,37 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         dismissOptionsViewControllerIfNecessary()
     }
 
-    func handleActionForIdentifier(_ identifier: FormattingIdentifier, barItem: FormatBarItem) {
+    func handleActionForIdentifier(_ identifier: String, barItem: FormatBarItem) {
+        if let formattingIdentifier = FormattingIdentifier(rawValue: identifier) {
+            switch formattingIdentifier {
+            case .bold:
+                toggleBold()
+            case .italic:
+                toggleItalic()
+            case .underline:
+                toggleUnderline()
+            case .strikethrough:
+                toggleStrikethrough()
+            case .blockquote:
+                toggleBlockquote()
+            case .unorderedlist, .orderedlist:
+                toggleList(fromItem: barItem)
+            case .link:
+                toggleLink()
+            case .media:
+                toggleMediaPicker(fromItem: barItem)
+            case .sourcecode:
+                toggleEditingMode()
+            case .p, .header1, .header2, .header3, .header4, .header5, .header6:
+                toggleHeader(fromItem: barItem)
+            case .horizontalruler:
+                insertHorizontalRuler()
+            case .more:
+                insertMore()
+            }
 
-        switch identifier {
-        case .bold:
-            toggleBold()
-        case .italic:
-            toggleItalic()
-        case .underline:
-            toggleUnderline()
-        case .strikethrough:
-            toggleStrikethrough()
-        case .blockquote:
-            toggleBlockquote()
-        case .unorderedlist, .orderedlist:
-            toggleList(fromItem: barItem)
-        case .link:
-            toggleLink()
-        case .media:
-            presentMediaPicker(fromItem: barItem, animated:true)
-        case .sourcecode:
-            toggleEditingMode()
-        case .p, .header1, .header2, .header3, .header4, .header5, .header6:
-            toggleHeader(fromItem: barItem)
-        case .horizontalruler:
-            insertHorizontalRuler()
-        case .more:
-            insertMore()
+            updateFormatBar()
         }
-
-        updateFormatBar()
     }
 
     /// Called when the overflow items in the format bar are either shown or hidden
@@ -1722,6 +1723,14 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         present(picker, animated: true)
     }
 
+    private func toggleMediaPicker(fromItem item: FormatBarItem) {
+        if let picker = mediaPickerInputViewController {
+            mediaPickerControllerDidCancel(picker.mediaPicker)
+        } else {
+            presentMediaPicker(fromItem: item, animated: true)
+        }
+    }
+
     private func presentMediaPicker(fromItem item: FormatBarItem, animated: Bool = true) {
         trackFormatBarAnalytics(stat: .editorTappedImage)
         if !(FeatureFlag.newInputMediaPicker.enabled) {
@@ -1938,9 +1947,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     // MARK: - Toolbar creation
 
     func makeToolbarButton(identifier: FormattingIdentifier) -> FormatBarItem {
-        let button = FormatBarItem(image: identifier.iconImage, identifier: identifier)
-        button.accessibilityLabel = identifier.accessibilityLabel
-        button.accessibilityIdentifier = identifier.accessibilityIdentifier
+        return makeToolbarButton(identifier: identifier.rawValue, provider: identifier)
+    }
+
+    func makeToolbarButton(identifier: String, provider: FormatBarItemProvider) -> FormatBarItem {
+        let button = FormatBarItem(image: provider.iconImage, identifier: identifier)
+        button.accessibilityLabel = provider.accessibilityLabel
+        button.accessibilityIdentifier = provider.accessibilityIdentifier
         return button
     }
 
@@ -1967,19 +1980,19 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     var scrollableItemsForToolbar: [FormatBarItem] {
         let headerButton = makeToolbarButton(identifier: .p)
 
-        var alternativeIcons = [FormattingIdentifier: UIImage]()
+        var alternativeIcons = [String: UIImage]()
         let headings = Constants.headers.suffix(from: 1) // Remove paragraph style
         for heading in headings {
-            alternativeIcons[heading.formattingIdentifier] = heading.iconImage
+            alternativeIcons[heading.formattingIdentifier.rawValue] = heading.iconImage
         }
 
         headerButton.alternativeIcons = alternativeIcons
 
 
         let listButton = makeToolbarButton(identifier: .unorderedlist)
-        var listIcons = [FormattingIdentifier: UIImage]()
+        var listIcons = [String: UIImage]()
         for list in Constants.lists {
-            listIcons[list.formattingIdentifier] = list.iconImage
+            listIcons[list.formattingIdentifier.rawValue] = list.iconImage
         }
 
         listButton.alternativeIcons = listIcons
@@ -2873,7 +2886,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
                 continue
             }
         }
-
     }
 }
 

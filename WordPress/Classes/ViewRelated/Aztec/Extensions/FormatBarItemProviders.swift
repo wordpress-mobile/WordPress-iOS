@@ -2,13 +2,16 @@ import Foundation
 import Gridicons
 import Aztec
 
+protocol FormatBarItemProvider {
+    var iconImage: UIImage { get }
+    var accessibilityIdentifier: String { get }
+    var accessibilityLabel: String { get }
+}
 
 // MARK: - FormattingIdentifier
 //
-extension FormattingIdentifier {
-
+extension FormattingIdentifier: FormatBarItemProvider {
     var iconImage: UIImage {
-
         switch(self) {
         case .media:
             return Gridicon.iconOfType(.addOutline)
@@ -137,3 +140,4 @@ extension FormattingIdentifier {
         }
     }
 }
+
