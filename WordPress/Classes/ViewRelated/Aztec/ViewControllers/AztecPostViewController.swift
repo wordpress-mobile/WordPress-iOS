@@ -1423,7 +1423,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             case .deviceLibrary:
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
             case .camera:
-                break
+                mediaPickerInputViewController?.showCapture()
             case .mediaLibrary:
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             }
@@ -1741,8 +1741,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         if let previousPicker = mediaPickerInputViewController?.mediaPicker {
             picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
         }
-        // Disable the input media picker if we go full screen.
-        mediaPickerInputViewController = nil
+
         present(picker, animated: true)
     }
 
