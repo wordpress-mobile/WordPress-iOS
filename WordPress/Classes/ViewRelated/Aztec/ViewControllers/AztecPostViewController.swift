@@ -1414,6 +1414,16 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
             updateFormatBar()
         }
+        else if let mediaIdentifier = FormatBarMediaIdentifier(rawValue: identifier) {
+            switch mediaIdentifier {
+            case .deviceLibrary:
+                presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
+            case .camera:
+                break
+            case .mediaLibrary:
+                presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
+            }
+        }
     }
 
     /// Called when the overflow items in the format bar are either shown or hidden
@@ -1705,12 +1715,13 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         presentMediaPicker(fromItem: formatBar.defaultItems[0][0], animated: true)
     }
 
-    fileprivate func presentMediaPickerFullScreen(animated: Bool) {
+    fileprivate func presentMediaPickerFullScreen(animated: Bool, dataSourceType: MediaPickerDataSourceType = .device) {
 
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.video, .image]
         let picker = WPNavigationMediaPickerViewController()
+        mediaLibraryDataSource.dataSourceType = dataSourceType
         picker.dataSource = mediaLibraryDataSource
         picker.mediaPicker.options = options
         picker.delegate = self
@@ -1741,9 +1752,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         options.showMostRecentFirst = true
         options.filter = [WPMediaType.image, WPMediaType.video]
         options.allowMultipleSelection = true
+        options.allowCaptureOfMedia = false
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
-        richTextView.inputAccessoryView = mediaInputToolbar
+        updateToolbar(formatBar, forMode: .media)
 
         originalLeadingBarButtonGroup = richTextView.inputAssistantItem.leadingBarButtonGroups
         originalTrailingBarButtonGroup = richTextView.inputAssistantItem.trailingBarButtonGroups
@@ -1946,7 +1958,33 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     // MARK: - Toolbar creation
 
+    // Used to determine which icons to show on the format bar
+    fileprivate enum FormatBarMode {
+        case text
+        case media
+    }
+
+    fileprivate func updateToolbar(_ toolbar: Aztec.FormatBar, forMode mode: FormatBarMode) {
+        let mediaItem = makeToolbarButton(identifier: FormattingIdentifier.media)
+
+        switch mode {
+        case .text:
+            let scrollableItems = scrollableItemsForToolbar
+            let overflowItems = overflowItemsForToolbar
+
+            toolbar.defaultItems = [[mediaItem], scrollableItems]
+            toolbar.overflowItems = overflowItems
+        case .media:
+            toolbar.defaultItems = [[mediaItem], mediaItemsForToolbar]
+            toolbar.overflowItems = []
+        }
+    }
+
     func makeToolbarButton(identifier: FormattingIdentifier) -> FormatBarItem {
+        return makeToolbarButton(identifier: identifier.rawValue, provider: identifier)
+    }
+
+    func makeToolbarButton(identifier: FormatBarMediaIdentifier) -> FormatBarItem {
         return makeToolbarButton(identifier: identifier.rawValue, provider: identifier)
     }
 
@@ -1958,13 +1996,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     func createToolbar() -> Aztec.FormatBar {
-        let mediaItem = makeToolbarButton(identifier: .media)
-        let scrollableItems = scrollableItemsForToolbar
-        let overflowItems = overflowItemsForToolbar
-
         let toolbar = Aztec.FormatBar()
-        toolbar.defaultItems = [[mediaItem], scrollableItems]
-        toolbar.overflowItems = overflowItems
+        updateToolbar(toolbar, forMode: .text)
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
@@ -1975,6 +2008,14 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         toolbar.formatter = self
 
         return toolbar
+    }
+
+    var mediaItemsForToolbar: [FormatBarItem] {
+        return [
+            makeToolbarButton(identifier: .deviceLibrary),
+            makeToolbarButton(identifier: .camera),
+            makeToolbarButton(identifier: .mediaLibrary)
+        ]
     }
 
     var scrollableItemsForToolbar: [FormatBarItem] {
@@ -2861,6 +2902,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             mediaPickerInputViewController = nil
         }
         changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
@@ -2870,6 +2912,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             mediaPickerInputViewController = nil
         }
         changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
 
         if assets.isEmpty {
             return
