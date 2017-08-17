@@ -94,6 +94,8 @@ extension LoginProloguePageViewController: UIPageViewControllerDelegate {
         if !completed {
             pageControl?.currentPage = index
             animateBackground(for: index, duration: 0.2)
+        } else {
+            WPAppAnalytics.track(WPAnalyticsStat.loginProloguePaged)
         }
     }
 
