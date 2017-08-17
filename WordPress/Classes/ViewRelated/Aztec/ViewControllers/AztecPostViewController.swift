@@ -304,9 +304,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Media Library Data Source
     ///
-    fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
-        return WPAndDeviceMediaLibraryDataSource(post: self.post)
+    fileprivate lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
+        return MediaLibraryPickerDataSource(post: self.post)
     }()
+
+    /// Device Photo Library Data Source
+    ///
+    fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
 
     /// Media Progress Coordinator
@@ -1038,7 +1042,7 @@ private extension AztecPostViewController {
                 return
             }
             self.recreatePostRevision(in: blog)
-            self.mediaLibraryDataSource = WPAndDeviceMediaLibraryDataSource(post: self.post)
+            self.mediaLibraryDataSource = MediaLibraryPickerDataSource(post: self.post)
         }
 
         let dismissHandler: BlogSelectorDismissHandler = {
@@ -1421,7 +1425,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
             case .camera:
                 break
             case .mediaLibrary:
-                presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
+                presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             }
         }
     }
@@ -1720,9 +1724,17 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.video, .image]
+        options.allowCaptureOfMedia = false
+
         let picker = WPNavigationMediaPickerViewController()
-        mediaLibraryDataSource.dataSourceType = dataSourceType
-        picker.dataSource = mediaLibraryDataSource
+
+        switch dataSourceType {
+        case .device:
+            picker.dataSource = devicePhotoLibraryDataSource
+        case .mediaLibrary:
+            picker.dataSource = mediaLibraryDataSource
+        }
+
         picker.mediaPicker.options = options
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
@@ -1735,8 +1747,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     private func toggleMediaPicker(fromItem item: FormatBarItem) {
-        if let picker = mediaPickerInputViewController {
-            mediaPickerControllerDidCancel(picker.mediaPicker)
+        if mediaPickerInputViewController != nil {
+            mediaPickerInputViewController = nil
+            changeRichTextInputView(to: nil)
+            updateToolbar(formatBar, forMode: .text)
         } else {
             presentMediaPicker(fromItem: item, animated: true)
         }
@@ -2901,8 +2915,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         } else {
             mediaPickerInputViewController = nil
         }
-        changeRichTextInputView(to: nil)
-        updateToolbar(formatBar, forMode: .text)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
@@ -2910,9 +2922,10 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             dismiss(animated: true, completion: nil)
         } else {
             mediaPickerInputViewController = nil
+            changeRichTextInputView(to: nil)
+            updateToolbar(formatBar, forMode: .text)
         }
-        changeRichTextInputView(to: nil)
-        updateToolbar(formatBar, forMode: .text)
+
 
         if assets.isEmpty {
             return
