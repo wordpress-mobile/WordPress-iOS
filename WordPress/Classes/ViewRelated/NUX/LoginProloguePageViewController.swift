@@ -51,6 +51,7 @@ class LoginProloguePageViewController: UIPageViewController {
 
         let direction: UIPageViewControllerNavigationDirection = sender.currentPage > currentIndex ? .forward : .reverse
         setViewControllers([pages[sender.currentPage]], direction: direction, animated: true)
+        WPAppAnalytics.track(WPAnalyticsStat.loginProloguePaged)
     }
 
     fileprivate func animateBackground(for index: Int, duration: TimeInterval = 0.5) {
