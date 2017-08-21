@@ -6,7 +6,6 @@ enum FeatureFlag: Int {
     case newMediaExports
     case newInputMediaPicker
     case pluginManagement
-    case jetpackThemesBrowsing
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -20,8 +19,6 @@ enum FeatureFlag: Int {
                 return true
             }
         case .pluginManagement:
-            return build(.localDeveloper)
-        case .jetpackThemesBrowsing:
             return build(.localDeveloper)
         }
         return false
