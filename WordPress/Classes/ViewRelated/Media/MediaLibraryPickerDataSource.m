@@ -114,6 +114,12 @@
     return self.mediaGroup;
 }
 
+- (void)loadGroupDataWithSuccess:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
+{
+    [self loadDataWithSuccess:successBlock
+                      failure:failureBlock];
+}
+
 - (void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
     // let's check if we already have fetched results before

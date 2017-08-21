@@ -131,7 +131,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `feature/format-bar-media-changes`)
   - WordPress-iOS-Editor (= 1.9.3)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, branch `feature/expose-show-capture`)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, branch `develop`)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -145,7 +145,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
   WPMediaPicker:
-    :branch: feature/expose-show-capture
+    :branch: develop
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
@@ -159,7 +159,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
   WPMediaPicker:
-    :commit: 91f6aa7de2b92f341a884b1e3d3bba1437ffea14
+    :commit: c9215c1c2c0136a8c2c6ef2ef6828fd37a4cfcab
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
