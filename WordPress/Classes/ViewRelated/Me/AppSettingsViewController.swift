@@ -70,7 +70,7 @@ class AppSettingsViewController: UITableViewController {
         let videoSizingRow = NavigationItemRow(
             title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
             action: pushVideoResolutionSettings())
-        
+
         let mediaRemoveLocation = SwitchRow(
             title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
             value: Bool(MediaSettings().removeLocationSetting),
@@ -266,24 +266,24 @@ class AppSettingsViewController: UITableViewController {
                           MediaSettings.VideoResolution.size1920x1080,
                           MediaSettings.VideoResolution.size3840x2160,
                           MediaSettings.VideoResolution.sizeOriginal]
-            
+
             let titles = values.map({ (settings: MediaSettings.VideoResolution) -> String in
                 settings.description
             })
-            
+
             let currentVideoResolution = MediaSettings().maxVideoSizeSetting
-            
+
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentVideoResolution,
                                                   SettingsSelectionTitleKey: NSLocalizedString("Resolution", comment: "The largest resolution allowed for uploading"),
                                                   SettingsSelectionTitlesKey: titles,
                                                   SettingsSelectionValuesKey: values] as [String : Any]
-            
+
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
-            
+
             viewController?.onItemSelected = { (resolution: Any!) -> () in
                 MediaSettings().maxVideoSizeSetting = resolution as! MediaSettings.VideoResolution
             }
-            
+
             self?.navigationController?.pushViewController(viewController!, animated: true)
         }
     }
