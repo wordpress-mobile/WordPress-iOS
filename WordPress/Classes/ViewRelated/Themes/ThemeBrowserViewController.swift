@@ -625,7 +625,7 @@ public protocol ThemePresenter: class {
             if theme.isCurrentTheme() {
                 presentCustomizeForTheme(theme)
             } else {
-                presentViewForTheme(theme)
+                theme.custom ? presentDetailsForTheme(theme) : presentViewForTheme(theme)
             }
         }
     }
@@ -828,6 +828,14 @@ public protocol ThemePresenter: class {
         })
     }
 
+    open func installThemeAndPresentCustomizer(_ theme: Theme) {
+        _ = themeService.installTheme(theme,
+            for: blog,
+            success: { [weak self] in
+                self?.presentUrlForTheme(theme, url: theme.customizeUrl(), activeButton: false)
+            }, failure: nil)
+    }
+
     open func presentCustomizeForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
@@ -835,7 +843,12 @@ public protocol ThemePresenter: class {
 
     open func presentPreviewForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesPreviewedSite, with: self.blog)
-        presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
+        // In order to Try & Customize a theme we first need to install it (Jetpack sites)
+        if let theme = theme, self.blog.supports(.customThemes) && !theme.custom {
+            installThemeAndPresentCustomizer(theme)
+        } else {
+            presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
+        }
     }
 
     open func presentDetailsForTheme(_ theme: Theme?) {
