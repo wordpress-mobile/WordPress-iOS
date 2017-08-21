@@ -71,12 +71,6 @@ class AppSettingsViewController: UITableViewController {
             title: "Max Video Resolution",
             action: pushVideoResolutionSettings())
         
-
-        let videoSizingRow2 = VideoSizingRow(
-            title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
-            value: MediaSettings().maxVideoSizeSetting,
-            onChange: videoSizeChanged())
-
         let mediaRemoveLocation = SwitchRow(
             title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
             value: Bool(MediaSettings().removeLocationSetting),
@@ -294,13 +288,7 @@ class AppSettingsViewController: UITableViewController {
             self?.navigationController?.pushViewController(viewController!, animated: true)
         }
     }
-
-    func videoSizeChanged() -> (MediaSettings.VideoResolution) -> Void {
-        return { value in
-            MediaSettings().maxVideoSizeSetting = value
-        }
-    }
-
+    
     func mediaRemoveLocationChanged() -> (Bool) -> Void {
         return { value in
             MediaSettings().removeLocationSetting = value
