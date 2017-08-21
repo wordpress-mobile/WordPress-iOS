@@ -286,7 +286,8 @@ class AppSettingsViewController: UITableViewController {
                                                   SettingsSelectionHintsKey: titles] as [String : Any]
             
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
-            viewController?.onItemSelected = { [weak self] (resolution: Any!) -> () in
+            
+            viewController?.onItemSelected = { (resolution: Any!) -> () in
                 MediaSettings().maxVideoSizeSetting = resolution as! MediaSettings.VideoResolution
             }
             
