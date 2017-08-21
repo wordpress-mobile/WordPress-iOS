@@ -2000,21 +2000,37 @@ extension AztecPostViewController {
     }
 
     fileprivate func updateToolbar(_ toolbar: Aztec.FormatBar, forMode mode: FormatBarMode) {
+        if let leadingItem = toolbar.leadingItem {
+            rotateMediaToolbarItem(leadingItem, forMode: mode)
+        }
+
         switch mode {
         case .text:
-            let scrollableItems = scrollableItemsForToolbar
-            let overflowItems = overflowItemsForToolbar
-
-            toolbar.leadingItem = makeToolbarButton(identifier: .media)
             toolbar.trailingItem = nil
-            toolbar.defaultItems = scrollableItems
-            toolbar.overflowItems = overflowItems
+            toolbar.defaultItems = scrollableItemsForToolbar
+            toolbar.overflowItems = overflowItemsForToolbar
         case .media:
-            toolbar.leadingItem = makeToolbarButton(identifier: .media)
             toolbar.trailingItem = makeInsertToolbarItem()
             toolbar.defaultItems = mediaItemsForToolbar
             toolbar.overflowItems = []
         }
+    }
+
+    private func rotateMediaToolbarItem(_ item: UIButton, forMode mode: FormatBarMode) {
+        let transform: CGAffineTransform
+        switch mode {
+        case .text:
+            transform = .identity
+        case .media:
+            transform = CGAffineTransform(rotationAngle: Constants.Animations.formatBarMediaButtonRotationAngle)
+        }
+
+        let animator = UIViewPropertyAnimator(duration: Constants.Animations.formatBarMediaButtonRotationDuration,
+                                              curve: .easeInOut) {
+                                                item.transform = transform
+        }
+
+        animator.startAnimation()
     }
 
     func makeInsertToolbarItem() -> UIButton {
@@ -2044,6 +2060,7 @@ extension AztecPostViewController {
 
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
+        toolbar.leadingItem = makeToolbarButton(identifier: .media)
         updateToolbar(toolbar, forMode: .text)
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
@@ -3077,6 +3094,11 @@ extension AztecPostViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight = CGFloat(44.0)
+
+        struct Animations {
+            static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
+            static let formatBarMediaButtonRotationAngle: CGFloat = .pi / 4.0
+        }
     }
 
     struct MoreSheetAlert {
