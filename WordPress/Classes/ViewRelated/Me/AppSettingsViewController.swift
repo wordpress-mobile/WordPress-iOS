@@ -276,8 +276,7 @@ class AppSettingsViewController: UITableViewController {
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentVideoResolution,
                                                   SettingsSelectionTitleKey: NSLocalizedString("Resolution", comment: "The largest resolution allowed for uploading"),
                                                   SettingsSelectionTitlesKey: titles,
-                                                  SettingsSelectionValuesKey: values,
-                                                  SettingsSelectionHintsKey: titles] as [String : Any]
+                                                  SettingsSelectionValuesKey: values] as [String : Any]
             
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
             
