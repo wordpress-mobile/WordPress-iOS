@@ -302,6 +302,7 @@ class AppSettingsViewController: UITableViewController {
     func mediaRemoveLocationChanged() -> (Bool) -> Void {
         return { value in
             MediaSettings().removeLocationSetting = value
+            WPAnalytics.track(.appSettingsMediaRemoveLocationChanged, withProperties: ["enabled": value as AnyObject])
         }
     }
 
