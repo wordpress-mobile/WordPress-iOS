@@ -69,6 +69,7 @@ class AppSettingsViewController: UITableViewController {
 
         let videoSizingRow = NavigationItemRow(
             title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
+            detail: MediaSettings().maxVideoSizeSetting.description,
             action: pushVideoResolutionSettings())
 
         let mediaRemoveLocation = SwitchRow(
