@@ -1755,6 +1755,7 @@ extension AztecPostViewController {
             picker.dataSource = mediaLibraryDataSource
         }
 
+        picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
@@ -3026,8 +3027,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             trailingItem.isEnabled = false
 
         } else {
-            let title = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
-            trailingItem.setTitle(String(format: title, NSNumber(value: assetCount)), for: .normal)
+            trailingItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
             trailingItem.isEnabled = true
         }
     }
@@ -3094,6 +3094,7 @@ extension AztecPostViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight = CGFloat(44.0)
+        static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
