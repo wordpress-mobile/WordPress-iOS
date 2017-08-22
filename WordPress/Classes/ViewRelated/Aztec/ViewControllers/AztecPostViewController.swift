@@ -2999,13 +2999,12 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
-        } else {
-            mediaPickerInputViewController = nil
-            changeRichTextInputView(to: nil)
-            updateToolbar(formatBar, forMode: .text)
-            restoreInputAssistantItems()
         }
 
+        mediaPickerInputViewController = nil
+        changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
+        restoreInputAssistantItems()
 
         if assets.isEmpty {
             return
