@@ -574,7 +574,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
 
-        if let navigationBar = navigationController?.navigationBar {
+
+        if let navigationBar = navigationController?.navigationBar, navigationBar.subviews.contains(mediaProgressView) {
             NSLayoutConstraint.activate([
                 mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
                 mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
