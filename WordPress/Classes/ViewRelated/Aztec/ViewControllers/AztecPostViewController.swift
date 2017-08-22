@@ -326,6 +326,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         progressView.progressTintColor = Colors.progressTint
         progressView.trackTintColor = Colors.progressTrack
         progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.isHidden = true
         return progressView
     }()
 
@@ -476,17 +477,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         dismissOptionsViewControllerIfNecessary()
     }
 
-    override func didMove(toParentViewController parent: UIViewController?) {
+    override func willMove(toParentViewController parent: UIViewController?) {
+        super.willMove(toParentViewController: parent)
+
         guard let navigationController = parent as? UINavigationController else {
             return
         }
 
-        guard !navigationController.navigationBar.subviews.contains(mediaProgressView) else {
-            return
-        }
-
-        navigationController.navigationBar.addSubview(mediaProgressView)
-        view.setNeedsUpdateConstraints()
+        configureMediaProgressView(in: navigationController.navigationBar)
     }
 
 
@@ -633,9 +631,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
         view.addSubview(betaButton)
+    }
 
-        mediaProgressView.isHidden = true
-        navigationController?.navigationBar.addSubview(mediaProgressView)
+    func configureMediaProgressView(in navigationBar: UINavigationBar) {
+        navigationBar.addSubview(mediaProgressView)
     }
 
     func registerAttachmentImageProviders() {
