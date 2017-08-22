@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatAppReviewsSawPrompt,
     WPAnalyticsStatAppReviewsSentFeedback,
     WPAnalyticsStatAppSettingsImageOptimizationChanged,
+    WPAnalyticsStatAppSettingsMediaRemoveLocationChanged,
     WPAnalyticsStatAppSettingsVideoOptimizationChanged,
     WPAnalyticsStatAppUpgraded,
     WPAnalyticsStatApplicationClosed,
