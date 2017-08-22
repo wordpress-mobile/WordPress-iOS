@@ -625,7 +625,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func configureMediaProgressView(in navigationBar: UINavigationBar) {
-        assert(mediaProgressView.superview == nil)
+        guard mediaProgressView.superview == nil else {
+            return
+        }
+
         navigationBar.addSubview(mediaProgressView)
 
         NSLayoutConstraint.activate([
