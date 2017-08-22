@@ -476,6 +476,19 @@ class AztecPostViewController: UIViewController, PostEditor {
         dismissOptionsViewControllerIfNecessary()
     }
 
+    override func didMove(toParentViewController parent: UIViewController?) {
+        guard let navigationController = parent as? UINavigationController else {
+            return
+        }
+
+        guard !navigationController.navigationBar.subviews.contains(mediaProgressView) else {
+            return
+        }
+
+        navigationController.navigationBar.addSubview(mediaProgressView)
+        view.setNeedsUpdateConstraints()
+    }
+
 
     // MARK: - Title and Title placeholder position methods
 
