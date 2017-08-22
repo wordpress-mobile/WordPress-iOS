@@ -2019,10 +2019,19 @@ extension AztecPostViewController {
 
     private func rotateMediaToolbarItem(_ item: UIButton, forMode mode: FormatBarMode) {
         let transform: CGAffineTransform
+        let accessibilityIdentifier: String
+        let accessibilityLabel: String
+
         switch mode {
         case .text:
+            accessibilityIdentifier = FormattingIdentifier.media.accessibilityIdentifier
+            accessibilityLabel = FormattingIdentifier.media.accessibilityLabel
+
             transform = .identity
         case .media:
+            accessibilityIdentifier = "format_toolbar_close_media"
+            accessibilityLabel = NSLocalizedString("Close Media Picker", comment: "Accessibility label for button that closes the media picker on formatting toolbar")
+
             transform = CGAffineTransform(rotationAngle: Constants.Animations.formatBarMediaButtonRotationAngle)
         }
 
@@ -2030,6 +2039,13 @@ extension AztecPostViewController {
                                               curve: .easeInOut) {
                                                 item.transform = transform
         }
+
+        animator.addCompletion({ position in
+            if position == .end {
+                item.accessibilityIdentifier = accessibilityIdentifier
+                item.accessibilityLabel = accessibilityLabel
+            }
+        })
 
         animator.startAnimation()
     }
