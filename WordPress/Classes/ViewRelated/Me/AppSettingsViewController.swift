@@ -256,6 +256,11 @@ class AppSettingsViewController: UITableViewController {
         return { value in
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
+
+            var properties = [String: AnyObject]()
+            properties["enabled"] = (value != Int.max) as AnyObject
+            properties["value"] = value as Int as AnyObject
+            WPAnalytics.track(.appSettingsImageOptimizationChanged, withProperties: properties)
         }
     }
 
@@ -281,7 +286,13 @@ class AppSettingsViewController: UITableViewController {
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
             viewController?.onItemSelected = { (resolution: Any!) -> () in
-                MediaSettings().maxVideoSizeSetting = resolution as! MediaSettings.VideoResolution
+                let newResolution = resolution as! MediaSettings.VideoResolution
+                MediaSettings().maxVideoSizeSetting = newResolution
+
+                var properties = [String: AnyObject]()
+                properties["enabled"] = (value != MediaSettings.VideoResolution.sizeOriginal) as AnyObject
+                properties["value"] = newResolution as AnyObject
+                WPAnalytics.track(.appSettingsVideoOptimizationChanged, withProperties: properties)
             }
 
             self?.navigationController?.pushViewController(viewController!, animated: true)
