@@ -166,7 +166,9 @@
 
 -(void)unregisterChangeObserver:(id<NSObject>)blockKey
 {
-    [self.observers removeObjectForKey:blockKey];
+    if (blockKey) {
+        [self.observers removeObjectForKey:blockKey];
+    }
 }
 
 - (void)addImage:(UIImage *)image
