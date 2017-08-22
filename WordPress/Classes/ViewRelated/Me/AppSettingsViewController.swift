@@ -290,7 +290,7 @@ class AppSettingsViewController: UITableViewController {
                 MediaSettings().maxVideoSizeSetting = newResolution
 
                 var properties = [String: AnyObject]()
-                properties["enabled"] = (value != MediaSettings.VideoResolution.sizeOriginal) as AnyObject
+                properties["enabled"] = (newResolution != MediaSettings.VideoResolution.sizeOriginal) as AnyObject
                 properties["value"] = newResolution as AnyObject
                 WPAnalytics.track(.appSettingsVideoOptimizationChanged, withProperties: properties)
             }
