@@ -36,12 +36,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.preProcessors =
+        textView.inputProcessor =
             PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
                                VideoShortcodeProcessor.wordPressVideoPreProcessor,
                                CalypsoProcessorIn()])
 
-        textView.postProcessors =
+        textView.outputProcessor =
             PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
                                VideoShortcodeProcessor.wordPressVideoPostProcessor,
                                CalypsoProcessorOut()])
