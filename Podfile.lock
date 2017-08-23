@@ -128,10 +128,10 @@ DEPENDENCIES:
   - Starscream (= 2.1.0)
   - SVProgressHUD (= 2.1.2)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `feature/format-bar-left-right-items`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `97a9d115122bc221d7e3c35aa073d115c18386d1`)
   - WordPress-iOS-Editor (= 1.9.3)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, branch `develop`)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `c9215c1c2c0136a8c2c6ef2ef6828fd37a4cfcab`)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -139,13 +139,13 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.0
   WordPress-Aztec-iOS:
-    :branch: feature/format-bar-left-right-items
+    :commit: 97a9d115122bc221d7e3c35aa073d115c18386d1
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
   WPMediaPicker:
-    :branch: develop
+    :commit: c9215c1c2c0136a8c2c6ef2ef6828fd37a4cfcab
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
@@ -153,7 +153,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.0
   WordPress-Aztec-iOS:
-    :commit: dc6781d9040fa785eecc0d2ade86c76b1855569f
+    :commit: 97a9d115122bc221d7e3c35aa073d115c18386d1
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -195,6 +195,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 771abfe3a334119a909ebe403188498e4a2b01e8
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: be3b3980a7f2c5c785bb84fd3eb3c9347bbff0b6
+PODFILE CHECKSUM: 942fa7842723b161f4105469609d6c5559e8f6fd
 
 COCOAPODS: 1.2.1
