@@ -7,6 +7,7 @@
 @property (nonatomic, strong) NSString *authorUrl;
 @property (nonatomic, strong) NSString *desc;
 @property (nonatomic, strong) NSString *demoUrl;
+@property (nonatomic, strong) NSString *themeUrl;
 @property (nonatomic, strong) NSString *downloadUrl;
 @property (nonatomic, strong) NSDate *launchDate;
 @property (nonatomic, strong) NSString *name;

@@ -807,7 +807,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
 
         refreshInsets(forKeyboardFrame: keyboardFrame)
-        dismissOptionsViewControllerIfNecessary()
     }
 
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
@@ -1890,11 +1889,11 @@ extension AztecPostViewController {
     // MARK: - Present Toolbar related VC
 
     fileprivate func dismissOptionsViewControllerIfNecessary() {
-        if let optionsViewController = optionsViewController,
-            presentedViewController == optionsViewController {
-            dismiss(animated: true, completion: nil)
-            self.optionsViewController = nil
+        guard optionsViewController != nil else {
+            return
         }
+
+        dismissOptionsViewController()
     }
 
     func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],

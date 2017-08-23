@@ -22,6 +22,10 @@
 		<string>404040</string>
 		<key>Text color</key>
 		<string>fafafa</string>
+		<key>Secondary text color</key>
+		<string>CCCCCC</string>
+		<key>Placeholder text color</key>
+		<string>8C8C8C</string>
 		<key>Contact us button color</key>
 		<string>3396ff</string>
 		<key>Cell selection color</key>
@@ -90,6 +94,8 @@
 	<dict>
 		<key>Chat send button color</key>
 		<string>3396ff</string>
+		<key>Timestamp text color</key>
+		<string>B6B6B6</string>
 		<key>FAQ yes button color</key>
 		<string>3396ff</string>
 		<key>FAQ no button color</key>
@@ -98,6 +104,12 @@
 		<string>3396ff</string>
 		<key>Screenshot attach button color</key>
 		<string>cca300</string>
+		<key>Typing indicator color</key>
+		<string></string>
+		<key>User message text color</key>
+		<string>ffffff</string>
+		<key>Agent message text color</key>
+		<string>222222</string>
 	</dict>
 	<key>Message Retry Badge</key>
 	<dict>
@@ -113,7 +125,7 @@
 		<key>Background color</key>
 		<string>373737</string>
 		<key>Text color</key>
-		<string>9f9f9f</string>
+		<string>FFFFFF</string>
 		<key>Rating star color</key>
 		<string></string>
 		<key>Start new conversation button color</key>
