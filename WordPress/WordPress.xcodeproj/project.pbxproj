@@ -1682,7 +1682,6 @@
 		93E9050519E6F3D8005513C9 /* TestContextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestContextManager.h; sourceTree = "<group>"; };
 		93E9050619E6F3D8005513C9 /* TestContextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestContextManager.m; sourceTree = "<group>"; };
 		93EF094B19ED4F1100C89770 /* ContextManager-Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ContextManager-Internals.h"; sourceTree = "<group>"; };
-		93F2E5351E9E596A0050D489 /* Helpshift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpshift.h; sourceTree = "<group>"; };
 		93F2E5361E9E596A0050D489 /* HsLocalization.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HsLocalization.bundle; sourceTree = "<group>"; };
 		93F2E5371E9E596A0050D489 /* HSThemes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = HSThemes; sourceTree = "<group>"; };
 		93F2E5381E9E596A0050D489 /* HsUIResourceBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HsUIResourceBundle.bundle; sourceTree = "<group>"; };
@@ -3689,7 +3688,6 @@
 		93F2E5331E9E586B0050D489 /* Helpshift */ = {
 			isa = PBXGroup;
 			children = (
-				93F2E5351E9E596A0050D489 /* Helpshift.h */,
 				93F2E5451E9E5ADD0050D489 /* HelpshiftAll.h */,
 				93F2E5461E9E5ADD0050D489 /* HelpshiftCampaigns.h */,
 				93F2E5471E9E5ADD0050D489 /* HelpshiftCore.h */,
