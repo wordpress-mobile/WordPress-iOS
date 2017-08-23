@@ -2438,7 +2438,7 @@ extension AztecPostViewController {
         }
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: {() in
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: { _ in
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
@@ -2464,7 +2464,7 @@ extension AztecPostViewController {
                     }
                 }
             }
-            }, failure: { [weak self](error) in
+            }, failure: { [weak self] error in
                 guard let strongSelf = self else {
                     return
                 }
@@ -2472,7 +2472,7 @@ extension AztecPostViewController {
                 WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: strongSelf.post.blog)
 
                 DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
                 }
         })
         if let progress = uploadProgress {
