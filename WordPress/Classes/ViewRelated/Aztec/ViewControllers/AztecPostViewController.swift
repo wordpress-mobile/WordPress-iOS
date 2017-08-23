@@ -2104,11 +2104,15 @@ extension AztecPostViewController {
     }
 
     var mediaItemsForToolbar: [FormatBarItem] {
-        return [
-            makeToolbarButton(identifier: .deviceLibrary),
-            makeToolbarButton(identifier: .camera),
-            makeToolbarButton(identifier: .mediaLibrary)
-        ]
+        let deviceButton = makeToolbarButton(identifier: .deviceLibrary)
+        let cameraButton = makeToolbarButton(identifier: .camera)
+        let mediaLibraryButton = makeToolbarButton(identifier: .mediaLibrary)
+
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            return [ deviceButton, cameraButton, mediaLibraryButton ]
+        } else {
+            return [ deviceButton, mediaLibraryButton ]
+        }
     }
 
     var scrollableItemsForToolbar: [FormatBarItem] {
