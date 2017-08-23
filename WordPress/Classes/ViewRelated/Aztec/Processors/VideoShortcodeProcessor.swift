@@ -1,7 +1,7 @@
 import Foundation
 import Aztec
 
-public struct VideoProcessor {
+public struct VideoShortcodeProcessor {
 
     static public var videoPressScheme = "videopress"
     static public var videoPressHTMLAttribute = "data-wpvideopress"
