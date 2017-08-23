@@ -12,30 +12,30 @@ class VideoProcessorTests: XCTestCase {
     }
 
     func testVideoPressPreProcessor() {
-        let shortcodeProcessor = VideoProcessor.videoPressPreProcessor
+        let shortcodeProcessor = VideoShortcodeProcessor.videoPressPreProcessor
         let sampleText = "Before Text[wpvideo OcobLTqC w=640 h=400 autoplay=true html5only=true] After Text"
-        let parsedText = shortcodeProcessor.process(text: sampleText)
+        let parsedText = shortcodeProcessor.process(sampleText)
         XCTAssertEqual(parsedText, "Before Text<video src=\"videopress://OcobLTqC\" data-wpvideopress=\"OcobLTqC\" poster=\"videopress://OcobLTqC\" width=640 height=400 /> After Text")
     }
 
     func testWordPressPreProcessor() {
-        let shortcodeProcessor = VideoProcessor.wordPressVideoPreProcessor
+        let shortcodeProcessor = VideoShortcodeProcessor.wordPressVideoPreProcessor
         let sampleText = "[video src=\"video-source.mp4\"]"
-        let parsedText = shortcodeProcessor.process(text: sampleText)
+        let parsedText = shortcodeProcessor.process(sampleText)
         XCTAssertEqual(parsedText, "<video src=\"video-source.mp4\" />")
     }
 
     func testVideoPressPostProcessor() {
-        let shortcodeProcessor = VideoProcessor.videoPressPostProcessor
+        let shortcodeProcessor = VideoShortcodeProcessor.videoPressPostProcessor
         let sampleText = "Before Text<video src=\"videopress://OcobLTqC\" data-wpvideopress=\"OcobLTqC\" width=640 height=400 /> After Text<video src=\"video-source.mp4\" />"
-        let parsedText = shortcodeProcessor.process(text: sampleText)
+        let parsedText = shortcodeProcessor.process(sampleText)
         XCTAssertEqual(parsedText, "Before Text[wpvideo OcobLTqC w=640 h=400 ] After Text<video src=\"video-source.mp4\" />")
     }
 
     func testWordPressPostProcessor() {
-        let shortcodeProcessor = VideoProcessor.wordPressVideoPostProcessor
+        let shortcodeProcessor = VideoShortcodeProcessor.wordPressVideoPostProcessor
         let sampleText = "<video src=\"video-source.mp4\" />"
-        let parsedText = shortcodeProcessor.process(text: sampleText)
+        let parsedText = shortcodeProcessor.process(sampleText)
         XCTAssertEqual(parsedText, "[video src=\"video-source.mp4\" ]")
     }
 
