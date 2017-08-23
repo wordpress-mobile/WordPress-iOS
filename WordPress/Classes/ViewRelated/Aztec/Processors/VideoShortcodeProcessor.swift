@@ -25,11 +25,10 @@ public struct VideoShortcodeProcessor {
             if let height = shortcode.attributes.named["h"] {
                 html += "height=\(height) "
             }
-            
+
             html += "/>"
-            
+
             return html
-            
         })
         return videoPressProcessor
     }
