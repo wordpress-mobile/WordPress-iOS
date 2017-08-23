@@ -13,7 +13,7 @@ class CalypsoProcessorOut: Processor {
     /// https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L172
     /// Current as of 2017/08/08
     ///
-    func process(text: String) -> String {
+    func process(_ text: String) -> String {
 
         guard text.characters.count > 0 else {
             return ""
