@@ -2,13 +2,16 @@ import Foundation
 import Gridicons
 import Aztec
 
+protocol FormatBarItemProvider {
+    var iconImage: UIImage { get }
+    var accessibilityIdentifier: String { get }
+    var accessibilityLabel: String { get }
+}
 
 // MARK: - FormattingIdentifier
 //
-extension FormattingIdentifier {
-
+extension FormattingIdentifier: FormatBarItemProvider {
     var iconImage: UIImage {
-
         switch(self) {
         case .media:
             return Gridicon.iconOfType(.addOutline)
@@ -134,6 +137,47 @@ extension FormattingIdentifier {
             return NSLocalizedString("Header 5", comment: "Accessibility label for selecting h5 paragraph style button on the formatting toolbar.")
         case .header6:
             return NSLocalizedString("Header 6", comment: "Accessibility label for selecting h6 paragraph style button on the formatting toolbar.")
+        }
+    }
+}
+
+enum FormatBarMediaIdentifier: String {
+    case deviceLibrary
+    case camera
+    case mediaLibrary
+}
+
+extension FormatBarMediaIdentifier: FormatBarItemProvider {
+    var iconImage: UIImage {
+        switch (self) {
+        case .deviceLibrary:
+            return Gridicon.iconOfType(.imageMultiple)
+        case .camera:
+            return Gridicon.iconOfType(.camera)
+        case .mediaLibrary:
+            return Gridicon.iconOfType(.mySites)
+        }
+    }
+
+    var accessibilityIdentifier: String {
+        switch (self) {
+        case .deviceLibrary:
+            return "format_toolbar_media_photo_library"
+        case .camera:
+            return "format_toolbar_media_camera"
+        case .mediaLibrary:
+            return "format_toolbar_media_wordpress_media_library"
+        }
+    }
+
+    var accessibilityLabel: String {
+        switch (self) {
+        case .deviceLibrary:
+            return NSLocalizedString("Photo Library", comment: "Accessibility label for selecting an image or video from the device's photo library on formatting toolbar.")
+        case .camera:
+            return NSLocalizedString("Camera", comment: "Accessibility label for taking an image or video with the camera on formatting toolbar.")
+        case .mediaLibrary:
+            return NSLocalizedString("WordPress Media Library", comment: "Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar.")
         }
     }
 }
