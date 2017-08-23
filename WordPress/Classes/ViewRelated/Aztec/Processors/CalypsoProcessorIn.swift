@@ -12,7 +12,7 @@ class CalypsoProcessorIn: Processor {
     /// https://github.com/WordPress/WordPress/blob/4e4df0e/wp-admin/js/editor.js#L309
     /// Current as of 2017/08/08
     ///
-    func process(text: String) -> String {
+    func process(_ text: String) -> String {
         var preserveLinebreaks = false
         var preserveBR = false
         let blocklist = "table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre" +
