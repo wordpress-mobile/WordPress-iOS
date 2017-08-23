@@ -35,6 +35,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureForWPComOnlyIfNeeded()
+        addGoogleButton()
     }
 
 
@@ -114,6 +115,33 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         WPStyleGuide.configureOnePasswordButtonForTextfield(emailTextField,
                                                             target: self,
                                                             selector: #selector(handleOnePasswordButtonTapped(_:)))
+    }
+
+    /// Add the signing with Google button to the view
+    func addGoogleButton() {
+        guard Feature.enabled(.googleLogin) else {
+            return
+        }
+
+        let button = UIButton(type: .custom)
+
+        self.view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let tempIcon = UIImage(named: "onepassword-wp-button")
+        let iconAttachment = NSTextAttachment()
+        iconAttachment.image = tempIcon
+        let attachedString = NSAttributedString(attachment: iconAttachment)
+        let buttonString = NSMutableAttributedString(string: "Or you can ", attributes:[NSForegroundColorAttributeName: UIColor.red])
+        buttonString.append(attachedString)
+        buttonString.append(NSAttributedString(string: " Login with Google"))
+
+        button.setAttributedTitle(buttonString, for: .normal)
+        let tempBG = UIImage(named: "beveled-blue-button")
+        button.setBackgroundImage(tempBG, for: .normal)
+        button.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 300.0).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
+        button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor).isActive = true
     }
 
 
