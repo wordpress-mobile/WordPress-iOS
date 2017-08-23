@@ -330,6 +330,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         progressView.progressTintColor = Colors.progressTint
         progressView.trackTintColor = Colors.progressTrack
         progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.isHidden = true
         return progressView
     }()
 
@@ -480,6 +481,16 @@ class AztecPostViewController: UIViewController, PostEditor {
         dismissOptionsViewControllerIfNecessary()
     }
 
+    override func willMove(toParentViewController parent: UIViewController?) {
+        super.willMove(toParentViewController: parent)
+
+        guard let navigationController = parent as? UINavigationController else {
+            return
+        }
+
+        configureMediaProgressView(in: navigationController.navigationBar)
+    }
+
 
     // MARK: - Title and Title placeholder position methods
 
@@ -577,14 +588,6 @@ class AztecPostViewController: UIViewController, PostEditor {
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
-
-        if let navigationBar = navigationController?.navigationBar {
-            NSLayoutConstraint.activate([
-                mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
-                mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
-                mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
-                ])
-        }
     }
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
@@ -623,9 +626,20 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
         view.addSubview(betaButton)
+    }
 
-        mediaProgressView.isHidden = true
-        navigationController?.navigationBar.addSubview(mediaProgressView)
+    func configureMediaProgressView(in navigationBar: UINavigationBar) {
+        guard mediaProgressView.superview == nil else {
+            return
+        }
+
+        navigationBar.addSubview(mediaProgressView)
+
+        NSLayoutConstraint.activate([
+            mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
+            mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
+            mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
+            ])
     }
 
     func registerAttachmentImageProviders() {
@@ -2574,7 +2588,7 @@ extension AztecPostViewController {
         }
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: {() in
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: { _ in
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
@@ -2600,7 +2614,7 @@ extension AztecPostViewController {
                     }
                 }
             }
-            }, failure: { [weak self](error) in
+            }, failure: { [weak self] error in
                 guard let strongSelf = self else {
                     return
                 }
@@ -2608,7 +2622,7 @@ extension AztecPostViewController {
                 WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: strongSelf.post.blog)
 
                 DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
                 }
         })
         if let progress = uploadProgress {
