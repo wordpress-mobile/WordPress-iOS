@@ -637,12 +637,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func registerHTMLProcessors() {
-        htmlPreProcessors.append(VideoProcessor.videoPressPreProcessor)
-        htmlPreProcessors.append(VideoProcessor.wordPressVideoPreProcessor)
+        htmlPreProcessors.append(VideoShortcodeProcessor.videoPressPreProcessor)
+        htmlPreProcessors.append(VideoShortcodeProcessor.wordPressVideoPreProcessor)
         htmlPreProcessors.append(CalypsoProcessorIn())
 
-        htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
-        htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
+        htmlPostProcessors.append(VideoShortcodeProcessor.videoPressPostProcessor)
+        htmlPostProcessors.append(VideoShortcodeProcessor.wordPressVideoPostProcessor)
         htmlPostProcessors.append(CalypsoProcessorOut())
     }
 
@@ -2494,7 +2494,7 @@ extension AztecPostViewController {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
             if let videoAttachment = attachment as? VideoAttachment,
                let videoSrcURL = videoAttachment.srcURL,
-               videoSrcURL.scheme == VideoProcessor.videoPressScheme,
+               videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
                let videoPressID = videoSrcURL.host {
                 // It's videoPress video so let's fetch the information for the video
                 let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
