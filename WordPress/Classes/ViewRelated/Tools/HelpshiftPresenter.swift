@@ -24,7 +24,7 @@ import UIKit
     ///   - completion: Optional block to be called when the window is presented.
     func presentHelpshiftWindowForFAQ(_ faqID: String, fromViewController viewController: UIViewController, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(false) {
-            HelpshiftSupport.showSingleFAQ(faqID, with: viewController, withOptions: self.options())
+            HelpshiftSupport.showSingleFAQ(faqID, with: viewController, with: self.helpshiftConfig())
             completion?()
         }
     }
@@ -38,7 +38,7 @@ import UIKit
     ///   - completion: Optional block to be called when the window is presented.
     func presentHelpshiftConversationWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(refreshUserDetails) {
-            HelpshiftSupport.showConversation(viewController, withOptions: self.options())
+            HelpshiftSupport.showConversation(viewController, with: self.helpshiftConfig())
             completion?()
         }
     }
@@ -52,7 +52,7 @@ import UIKit
     ///   - completion: Optional block to be called when the window is presented.
     func presentHelpshiftFAQWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(refreshUserDetails) {
-            HelpshiftSupport.showFAQs(viewController, withOptions: self.options())
+            HelpshiftSupport.showFAQs(viewController, with: self.helpshiftConfig())
             completion?()
         }
     }
@@ -90,7 +90,7 @@ import UIKit
         })
     }
 
-    fileprivate func options() -> [AnyHashable: Any] {
+    fileprivate func helpshiftConfig() -> HelpshiftAPIConfig {
         let tags: [String]
         if let sourceTag = sourceTag {
             tags = [String(sourceTag.rawValue)]
@@ -105,9 +105,12 @@ import UIKit
             }
         }
 
-        let options: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: metaData,
+        let config: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: metaData,
                 HelpshiftPresenter.HelpshiftShowsSearchOnNewConversationKey: true]
 
-        return options
+        let builder = HelpshiftAPIConfigBuilder()
+        builder.extraConfig = config
+
+        return builder.build()
     }
 }
