@@ -168,6 +168,23 @@
     [self.mediaLibraryDataSource unregisterChangeObserver:keys[1]];
 }
 
+- (void)loadGroupDataWithSuccess:(WPMediaSuccessBlock)successBlock
+                         failure:(WPMediaFailureBlock)failureBlock
+{
+    [self.currentDataSource loadGroupDataWithSuccess:successBlock failure:^(NSError *error) {
+        if ([error.domain isEqualToString:WPMediaPickerErrorDomain] && error.code == WPMediaErrorCodePermissionsFailed) {
+            if (self.currentDataSource == self.deviceLibraryDataSource) {
+                self.currentDataSource = self.mediaLibraryDataSource;
+                [self loadGroupDataWithSuccess:successBlock failure:failureBlock];
+                return;
+            }
+        }
+        if (failureBlock) {
+            failureBlock(error);
+        }
+    }];
+}
+
 - (void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock
                     failure:(WPMediaFailureBlock)failureBlock
 {
