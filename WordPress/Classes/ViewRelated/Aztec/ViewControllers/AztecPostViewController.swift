@@ -304,9 +304,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Media Library Data Source
     ///
-    fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
-        return WPAndDeviceMediaLibraryDataSource(post: self.post)
+    fileprivate lazy var mediaLibraryDataSource: MediaLibraryPickerDataSource = {
+        return MediaLibraryPickerDataSource(post: self.post)
     }()
+
+    /// Device Photo Library Data Source
+    ///
+    fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
 
     /// Media Progress Coordinator
@@ -830,7 +834,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             identifiers = richTextView.formatIdentifiersForTypingAttributes()
         }
 
-        toolbar.selectItemsMatchingIdentifiers(identifiers)
+        toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
     }
 }
 
@@ -1037,7 +1041,7 @@ private extension AztecPostViewController {
                 return
             }
             self.recreatePostRevision(in: blog)
-            self.mediaLibraryDataSource = WPAndDeviceMediaLibraryDataSource(post: self.post)
+            self.mediaLibraryDataSource = MediaLibraryPickerDataSource(post: self.post)
         }
 
         let dismissHandler: BlogSelectorDismissHandler = {
@@ -1253,7 +1257,7 @@ extension AztecPostViewController : UITextViewDelegate {
             formatBar.enabled = false
 
             // Disable the bar, except for the source code button
-            let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode })
+            let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
             htmlButton?.isEnabled = true
         default:
             break
@@ -1382,38 +1386,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         dismissOptionsViewControllerIfNecessary()
     }
 
-    func handleActionForIdentifier(_ identifier: FormattingIdentifier, barItem: FormatBarItem) {
-
-        switch identifier {
-        case .bold:
-            toggleBold()
-        case .italic:
-            toggleItalic()
-        case .underline:
-            toggleUnderline()
-        case .strikethrough:
-            toggleStrikethrough()
-        case .blockquote:
-            toggleBlockquote()
-        case .unorderedlist, .orderedlist:
-            toggleList(fromItem: barItem)
-        case .link:
-            toggleLink()
-        case .media:
-            presentMediaPicker(fromItem: barItem, animated:true)
-        case .sourcecode:
-            toggleEditingMode()
-        case .p, .header1, .header2, .header3, .header4, .header5, .header6:
-            toggleHeader(fromItem: barItem)
-        case .horizontalruler:
-            insertHorizontalRuler()
-        case .more:
-            insertMore()
-        }
-
-        updateFormatBar()
-    }
-
     /// Called when the overflow items in the format bar are either shown or hidden
     /// as a result of the user tapping the toggle button.
     ///
@@ -1421,7 +1393,67 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         let action = overflowState == .visible ? "made_visible" : "made_hidden"
         trackFormatBarAnalytics(stat: .editorTappedMoreItems, action: action)
     }
+}
 
+// MARK: FormatBar Actions
+//
+extension AztecPostViewController {
+    func handleAction(for barItem: FormatBarItem) {
+        guard let identifier = barItem.identifier else { return }
+
+        if let formattingIdentifier = FormattingIdentifier(rawValue: identifier) {
+            switch formattingIdentifier {
+            case .bold:
+                toggleBold()
+            case .italic:
+                toggleItalic()
+            case .underline:
+                toggleUnderline()
+            case .strikethrough:
+                toggleStrikethrough()
+            case .blockquote:
+                toggleBlockquote()
+            case .unorderedlist, .orderedlist:
+                toggleList(fromItem: barItem)
+            case .link:
+                toggleLink()
+            case .media:
+                break
+            case .sourcecode:
+                toggleEditingMode()
+            case .p, .header1, .header2, .header3, .header4, .header5, .header6:
+                toggleHeader(fromItem: barItem)
+            case .horizontalruler:
+                insertHorizontalRuler()
+            case .more:
+                insertMore()
+            }
+
+            updateFormatBar()
+        }
+        else if let mediaIdentifier = FormatBarMediaIdentifier(rawValue: identifier) {
+            switch mediaIdentifier {
+            case .deviceLibrary:
+                presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
+            case .camera:
+                mediaPickerInputViewController?.showCapture()
+            case .mediaLibrary:
+                presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
+            }
+        }
+    }
+
+    func handleFormatBarLeadingItem(_ item: UIButton) {
+        toggleMediaPicker(fromButton: item)
+    }
+
+    func handleFormatBarTrailingItem(_ item: UIButton) {
+        guard let mediaPicker = mediaPickerInputViewController else {
+            return
+        }
+
+        mediaPickerController(mediaPicker.mediaPicker, didFinishPickingAssets: mediaPicker.mediaPicker.selectedAssets)
+    }
 
     func toggleBold() {
         trackFormatBarAnalytics(stat: .editorTappedBold)
@@ -1700,28 +1732,51 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
     }
 
     @IBAction func presentMediaPicker() {
-        presentMediaPicker(fromItem: formatBar.defaultItems[0][0], animated: true)
+        if let item = formatBar.leadingItem {
+            presentMediaPicker(fromButton: item, animated: true)
+        }
     }
 
-    fileprivate func presentMediaPickerFullScreen(animated: Bool) {
+    fileprivate func presentMediaPickerFullScreen(animated: Bool, dataSourceType: MediaPickerDataSourceType = .device) {
 
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.video, .image]
+        options.allowCaptureOfMedia = false
+
         let picker = WPNavigationMediaPickerViewController()
-        picker.dataSource = mediaLibraryDataSource
+
+        switch dataSourceType {
+        case .device:
+            picker.dataSource = devicePhotoLibraryDataSource
+        case .mediaLibrary:
+            picker.startOnGroupSelector = false
+            picker.dataSource = mediaLibraryDataSource
+        }
+
+        picker.selectionActionTitle = Constants.mediaPickerInsertText
         picker.mediaPicker.options = options
         picker.delegate = self
         picker.modalPresentationStyle = .currentContext
         if let previousPicker = mediaPickerInputViewController?.mediaPicker {
             picker.mediaPicker.selectedAssets = previousPicker.selectedAssets
         }
-        // Disable the input media picker if we go full screen.
-        mediaPickerInputViewController = nil
+
         present(picker, animated: true)
     }
 
-    private func presentMediaPicker(fromItem item: FormatBarItem, animated: Bool = true) {
+    private func toggleMediaPicker(fromButton button: UIButton) {
+        if mediaPickerInputViewController != nil {
+            mediaPickerInputViewController = nil
+            changeRichTextInputView(to: nil)
+            updateToolbar(formatBar, forMode: .text)
+            restoreInputAssistantItems()
+        } else {
+            presentMediaPicker(fromButton: button, animated: true)
+        }
+    }
+
+    private func presentMediaPicker(fromButton button: UIButton, animated: Bool = true) {
         trackFormatBarAnalytics(stat: .editorTappedImage)
         if !(FeatureFlag.newInputMediaPicker.enabled) {
             presentMediaPickerFullScreen(animated: animated)
@@ -1731,9 +1786,10 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         options.showMostRecentFirst = true
         options.filter = [WPMediaType.image, WPMediaType.video]
         options.allowMultipleSelection = true
+        options.allowCaptureOfMedia = false
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
-        richTextView.inputAccessoryView = mediaInputToolbar
+        updateToolbar(formatBar, forMode: .media)
 
         originalLeadingBarButtonGroup = richTextView.inputAssistantItem.leadingBarButtonGroups
         originalTrailingBarButtonGroup = richTextView.inputAssistantItem.trailingBarButtonGroups
@@ -1746,6 +1802,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
         picker.mediaPicker.mediaPickerDelegate = self
+        picker.scrollVertically = true
 
         presentToolbarViewControllerAsInputView(picker)
     }
@@ -1921,7 +1978,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         richTextView.becomeFirstResponder()
     }
 
-    private func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
+    fileprivate func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
         var properties = [WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
 
         if let action = action {
@@ -1936,21 +1993,91 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
     // MARK: - Toolbar creation
 
+    // Used to determine which icons to show on the format bar
+    fileprivate enum FormatBarMode {
+        case text
+        case media
+    }
+
+    fileprivate func updateToolbar(_ toolbar: Aztec.FormatBar, forMode mode: FormatBarMode) {
+        if let leadingItem = toolbar.leadingItem {
+            rotateMediaToolbarItem(leadingItem, forMode: mode)
+        }
+
+        switch mode {
+        case .text:
+            toolbar.trailingItem = nil
+            toolbar.defaultItems = scrollableItemsForToolbar
+            toolbar.overflowItems = overflowItemsForToolbar
+        case .media:
+            toolbar.trailingItem = makeInsertToolbarItem()
+            toolbar.defaultItems = mediaItemsForToolbar
+            toolbar.overflowItems = []
+        }
+    }
+
+    private func rotateMediaToolbarItem(_ item: UIButton, forMode mode: FormatBarMode) {
+        let transform: CGAffineTransform
+        let accessibilityIdentifier: String
+        let accessibilityLabel: String
+
+        switch mode {
+        case .text:
+            accessibilityIdentifier = FormattingIdentifier.media.accessibilityIdentifier
+            accessibilityLabel = FormattingIdentifier.media.accessibilityLabel
+
+            transform = .identity
+        case .media:
+            accessibilityIdentifier = "format_toolbar_close_media"
+            accessibilityLabel = NSLocalizedString("Close Media Picker", comment: "Accessibility label for button that closes the media picker on formatting toolbar")
+
+            transform = CGAffineTransform(rotationAngle: Constants.Animations.formatBarMediaButtonRotationAngle)
+        }
+
+        let animator = UIViewPropertyAnimator(duration: Constants.Animations.formatBarMediaButtonRotationDuration,
+                                              curve: .easeInOut) {
+                                                item.transform = transform
+        }
+
+        animator.addCompletion({ position in
+            if position == .end {
+                item.accessibilityIdentifier = accessibilityIdentifier
+                item.accessibilityLabel = accessibilityLabel
+            }
+        })
+
+        animator.startAnimation()
+    }
+
+    func makeInsertToolbarItem() -> UIButton {
+        let insertItem = UIButton(type: .custom)
+        insertItem.titleLabel?.font = Fonts.mediaPickerInsert
+        insertItem.tintColor = WPStyleGuide.wordPressBlue()
+        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+        insertItem.isEnabled = false
+
+        return insertItem
+    }
+
     func makeToolbarButton(identifier: FormattingIdentifier) -> FormatBarItem {
-        let button = FormatBarItem(image: identifier.iconImage, identifier: identifier)
-        button.accessibilityLabel = identifier.accessibilityLabel
-        button.accessibilityIdentifier = identifier.accessibilityIdentifier
+        return makeToolbarButton(identifier: identifier.rawValue, provider: identifier)
+    }
+
+    func makeToolbarButton(identifier: FormatBarMediaIdentifier) -> FormatBarItem {
+        return makeToolbarButton(identifier: identifier.rawValue, provider: identifier)
+    }
+
+    func makeToolbarButton(identifier: String, provider: FormatBarItemProvider) -> FormatBarItem {
+        let button = FormatBarItem(image: provider.iconImage, identifier: identifier)
+        button.accessibilityLabel = provider.accessibilityLabel
+        button.accessibilityIdentifier = provider.accessibilityIdentifier
         return button
     }
 
     func createToolbar() -> Aztec.FormatBar {
-        let mediaItem = makeToolbarButton(identifier: .media)
-        let scrollableItems = scrollableItemsForToolbar
-        let overflowItems = overflowItemsForToolbar
-
         let toolbar = Aztec.FormatBar()
-        toolbar.defaultItems = [[mediaItem], scrollableItems]
-        toolbar.overflowItems = overflowItems
+        toolbar.leadingItem = makeToolbarButton(identifier: .media)
+        updateToolbar(toolbar, forMode: .text)
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
@@ -1960,25 +2087,49 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
         toolbar.formatter = self
 
+        toolbar.barItemHandler = { [weak self] item in
+            self?.handleAction(for: item)
+        }
+
+        toolbar.leadingItemHandler = { [weak self] item in
+            self?.handleFormatBarLeadingItem(item)
+        }
+
+        toolbar.trailingItemHandler = { [weak self] item in
+            self?.handleFormatBarTrailingItem(item)
+        }
+
         return toolbar
+    }
+
+    var mediaItemsForToolbar: [FormatBarItem] {
+        let deviceButton = makeToolbarButton(identifier: .deviceLibrary)
+        let cameraButton = makeToolbarButton(identifier: .camera)
+        let mediaLibraryButton = makeToolbarButton(identifier: .mediaLibrary)
+
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            return [ deviceButton, cameraButton, mediaLibraryButton ]
+        } else {
+            return [ deviceButton, mediaLibraryButton ]
+        }
     }
 
     var scrollableItemsForToolbar: [FormatBarItem] {
         let headerButton = makeToolbarButton(identifier: .p)
 
-        var alternativeIcons = [FormattingIdentifier: UIImage]()
+        var alternativeIcons = [String: UIImage]()
         let headings = Constants.headers.suffix(from: 1) // Remove paragraph style
         for heading in headings {
-            alternativeIcons[heading.formattingIdentifier] = heading.iconImage
+            alternativeIcons[heading.formattingIdentifier.rawValue] = heading.iconImage
         }
 
         headerButton.alternativeIcons = alternativeIcons
 
 
         let listButton = makeToolbarButton(identifier: .unorderedlist)
-        var listIcons = [FormattingIdentifier: UIImage]()
+        var listIcons = [String: UIImage]()
         for list in Constants.lists {
-            listIcons[list.formattingIdentifier] = list.iconImage
+            listIcons[list.formattingIdentifier.rawValue] = list.iconImage
         }
 
         listButton.alternativeIcons = listIcons
@@ -2846,16 +2997,17 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         } else {
             mediaPickerInputViewController = nil
         }
-        changeRichTextInputView(to: nil)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
-        } else {
-            mediaPickerInputViewController = nil
         }
+
+        mediaPickerInputViewController = nil
         changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
+        restoreInputAssistantItems()
 
         if assets.isEmpty {
             return
@@ -2872,7 +3024,30 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
                 continue
             }
         }
+    }
 
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
+        updateFormatBarInsertAssetCount()
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
+        updateFormatBarInsertAssetCount()
+    }
+
+    private func updateFormatBarInsertAssetCount() {
+        guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count,
+              let trailingItem = formatBar.trailingItem else {
+            return
+        }
+
+        if assetCount == 0 {
+            trailingItem.setTitle(nil, for: .normal)
+            trailingItem.isEnabled = false
+
+        } else {
+            trailingItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
+            trailingItem.isEnabled = true
+        }
     }
 }
 
@@ -2937,6 +3112,12 @@ extension AztecPostViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight = CGFloat(44.0)
+        static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+
+        struct Animations {
+            static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
+            static let formatBarMediaButtonRotationAngle: CGFloat = .pi / 4.0
+        }
     }
 
     struct MoreSheetAlert {
@@ -2966,6 +3147,7 @@ extension AztecPostViewController {
         static let semiBold                 = WPFontManager.systemSemiBoldFont(ofSize: 16)
         static let title                    = WPFontManager.notoBoldFont(ofSize: 24.0)
         static let blogPicker               = Fonts.semiBold
+        static let mediaPickerInsert        = WPFontManager.systemMediumFont(ofSize: 15.0)
     }
 
     struct Restoration {
