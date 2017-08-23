@@ -36,6 +36,16 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
 
+        textView.preProcessors =
+            PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
+                               VideoShortcodeProcessor.wordPressVideoPreProcessor,
+                               CalypsoProcessorIn()])
+
+        textView.postProcessors =
+            PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
+                               VideoShortcodeProcessor.wordPressVideoPostProcessor,
+                               CalypsoProcessorOut()])
+
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
@@ -371,15 +381,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
 
-    /// HTML Pre Processors
-    ///
-    fileprivate var htmlPreProcessors = [Processor]()
-
-
-    /// HTML Post Processors
-    ///
-    fileprivate var htmlPostProcessors = [Processor]()
-
 
     // MARK: - Initializers
 
@@ -416,7 +417,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        registerHTMLProcessors()
         createRevisionOfPost()
 
         // Setup
@@ -636,16 +636,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    func registerHTMLProcessors() {
-        htmlPreProcessors.append(VideoShortcodeProcessor.videoPressPreProcessor)
-        htmlPreProcessors.append(VideoShortcodeProcessor.wordPressVideoPreProcessor)
-        htmlPreProcessors.append(CalypsoProcessorIn())
-
-        htmlPostProcessors.append(VideoShortcodeProcessor.videoPressPostProcessor)
-        htmlPostProcessors.append(VideoShortcodeProcessor.wordPressVideoPostProcessor)
-        htmlPostProcessors.append(CalypsoProcessorOut())
-    }
-
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -693,13 +683,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         case .html:
             htmlTextView.text = html
         case .richText:
-            var processedHTML = html
-
-            for processor in htmlPreProcessors {
-                processedHTML = processor.process(text: processedHTML)
-            }
-
-            richTextView.setHTML(processedHTML)
+            richTextView.setHTML(html)
 
             self.processVideoPressAttachments()
         }
@@ -707,17 +691,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func getHTML() -> String {
 
-        var html: String
+        let html: String
 
         switch (mode) {
         case .html:
             html = htmlTextView.text
         case .richText:
             html = richTextView.getHTML(prettyPrint: false)
-
-            for processor in htmlPostProcessors {
-                html = processor.process(text: html)
-            }
         }
 
         return html
