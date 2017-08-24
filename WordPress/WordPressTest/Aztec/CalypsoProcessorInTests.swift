@@ -13,7 +13,7 @@ class CalypsoProcessorInTests: XCTestCase {
     func testNewlinesAreConvertedIntoBreakElements() {
         let input = "\nNewline \n Another \n New \n Line \n Here"
         let expected = "<p>\nNewline<br />\n Another<br />\n New<br />\n Line<br />\n Here</p>\n"
-        let output = processor.process(text: input)
+        let output = processor.process(input)
 
         XCTAssertEqual(output, expected)
     }
@@ -23,7 +23,7 @@ class CalypsoProcessorInTests: XCTestCase {
     func testParagraphsAreConvertedIntoParagraphElements() {
         let input = "First paragraph\n Newline \n\nSecond Paragraph\n Newline \n Another line \n\n Third Paragraph"
         let expected = "<p>First paragraph<br />\n Newline </p>\n<p>Second Paragraph<br />\n Newline<br />\n Another line </p>\n<p> Third Paragraph</p>\n"
-        let output = processor.process(text: input)
+        let output = processor.process(input)
 
         XCTAssertEqual(output, expected)
     }
@@ -33,7 +33,7 @@ class CalypsoProcessorInTests: XCTestCase {
     func testPreformattedTextIsEffectivelyPreserved() {
         let input = "<pre class='123'>Something\nHere\n\nAnd\nHere</pre>"
         let expected = "<pre class=\'123\'>Something\nHere\n\nAnd\nHere</pre>\n"
-        let output = processor.process(text: input)
+        let output = processor.process(input)
 
         XCTAssertEqual(output, expected)
     }
@@ -44,7 +44,7 @@ class CalypsoProcessorInTests: XCTestCase {
         let pre = "<pre class='123'>Something\nHere\n\nAnd\nHere</pre>"
         let input = pre + " LALALA \n LALA \n\n LA"
         let expected = pre + "\n<p> LALALA<br />\n LALA </p>\n<p> LA</p>\n"
-        let output = processor.process(text: input)
+        let output = processor.process(input)
 
         XCTAssertEqual(output, expected)
     }
@@ -54,7 +54,7 @@ class CalypsoProcessorInTests: XCTestCase {
     func testMultiplePreformattedElementsAreLeftUntouched() {
         let input = "<pre>First\n\nSecond</pre><pre>Third\nFourth</pre><pre>Fifth\n\nSixth\n</pre>"
         let expected = "<pre>First\n\nSecond</pre>\n<pre>Third\nFourth</pre>\n<pre>Fifth\n\nSixth\n</pre>\n"
-        let output = processor.process(text: input)
+        let output = processor.process(input)
 
         XCTAssertEqual(output, expected)
     }
@@ -64,7 +64,7 @@ class CalypsoProcessorInTests: XCTestCase {
     func testOrderedListsWithNestedEntitiesAreLeftUntouched() {
         let input = "<ol>\n<li>hello\nbye</li>\n<li><ol><li>WAT\nWAT</li></ol></li></ol>"
         let expected = "<ol>\n<li>hello<br />\nbye</li>\n<li>\n<ol>\n<li>WAT<br />\nWAT</li>\n</ol>\n</li>\n</ol>\n"
-        let output = processor.process(text: input)
+        let output = processor.process(input)
 
         XCTAssertEqual(output, expected)
     }
@@ -74,7 +74,7 @@ class CalypsoProcessorInTests: XCTestCase {
     func testUnorderedListsWithNestedEntitiesAreLeftUntouched() {
         let input = "<ul>\n<li>hello\nbye</li>\n<li><ul><li>WAT\nWAT</li></ul></li></ul>"
         let expected = "<ul>\n<li>hello<br />\nbye</li>\n<li>\n<ul>\n<li>WAT<br />\nWAT</li>\n</ul>\n</li>\n</ul>\n"
-        let output = processor.process(text: input)
+        let output = processor.process(input)
 
         XCTAssertEqual(output, expected)
     }
@@ -93,7 +93,7 @@ class CalypsoProcessorInTests: XCTestCase {
             "<PRE>\n</PRE>\n<p>testing</p>\n" +
             "<OL>\n<LI>ORDERED\n</LI>\n</OL>\n"
 
-        let output = processor.process(text: input)
+        let output = processor.process(input)
         XCTAssertEqual(output, expected)
     }
 }
