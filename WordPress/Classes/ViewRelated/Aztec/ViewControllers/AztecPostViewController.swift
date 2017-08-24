@@ -375,6 +375,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         return context
     }()
 
+    /// Current keyboard rect used to help size the inline media picker
+    ///
+    fileprivate var currentKeyboardFrame: CGRect = .zero
+
 
     /// Options
     ///
@@ -789,6 +793,7 @@ class AztecPostViewController: UIViewController, PostEditor {
                 return
         }
 
+        currentKeyboardFrame = keyboardFrame
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -800,6 +805,7 @@ class AztecPostViewController: UIViewController, PostEditor {
                 return
         }
 
+        currentKeyboardFrame = .zero
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1798,6 +1804,14 @@ extension AztecPostViewController {
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
         picker.mediaPicker.mediaPickerDelegate = self
         picker.scrollVertically = true
+
+        if currentKeyboardFrame != .zero {
+            // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
+            // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
+            // set the picker's frame to the current keyboard's frame.
+            picker.view.autoresizingMask = []
+            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: (currentKeyboardFrame.height - Constants.toolbarHeight))
+        }
 
         presentToolbarViewControllerAsInputView(picker)
     }
