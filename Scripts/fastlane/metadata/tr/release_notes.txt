@@ -1,3 +1,0 @@
-Yerleşik düzenleyicide bir kaç iyileştirme yapıldı, denediniz mi?
-Jetpack ve kendi kurduğunuz siteler için yazı listesinde yazar filtresi.
-Video yükleme boyutunu seçmek için yeni ayar.
