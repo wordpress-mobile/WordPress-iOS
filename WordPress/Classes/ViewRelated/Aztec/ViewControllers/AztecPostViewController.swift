@@ -1745,6 +1745,7 @@ extension AztecPostViewController {
             picker.dataSource = devicePhotoLibraryDataSource
         case .mediaLibrary:
             picker.startOnGroupSelector = false
+            picker.showGroupSelector = false
             picker.dataSource = mediaLibraryDataSource
         }
 
