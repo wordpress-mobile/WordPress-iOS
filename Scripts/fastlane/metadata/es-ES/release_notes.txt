@@ -1,3 +1,2 @@
-Muchas mejoras en el nuevo editor nativo, ¿las has probado ya?
-Flitrado de autores en la lista de entradas para sitios de Jetpack y autoalojados.
-Nuevo ajuste para elegir el tamaño de subida del vídeo.
+Sitios Jetpack: Añadida compatibilidad con perfiles personalizados.
+Varias mejoras menores y soluciones a fallos.
