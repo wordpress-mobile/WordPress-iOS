@@ -1,3 +1,2 @@
-Several improvements to the new native editor, have you already tried it?
-Author filter on post list for Jetpack and self-hosted sites.
-New setting to choose the video upload size.
+Jetpack sites: Added support for custom roles.
+Several minor improvements and bug fixes.
