@@ -1,4 +1,2 @@
-Meerdere verbeteringen voor de nieuwe native editor, heb je deze al geprobeerd?
-Auteurfilter op berichtenlijst voor Jetpack en zelf-gehoste sites.
-Nieuwe instelling om de video upload-grootte te kiezen.
-
+Jetpack-sites: ondersteuning voor aangepaste rollen toegevoegd.
+Verschillende kleine verbeteringen en bugfixes.
