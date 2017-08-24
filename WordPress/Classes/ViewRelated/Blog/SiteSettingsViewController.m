@@ -54,6 +54,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
+    SiteSettingsSectionJetpackSettings,
     SiteSettingsSectionAdvanced,
 };
 
@@ -76,6 +77,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 #pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Jetpack Settings Section
+@property (nonatomic, strong) SettingTableViewCell *jetpackSecurityCell;
 #pragma mark - Device Section
 @property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 #pragma mark - Advanced Section
@@ -149,10 +152,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
-    }
-
-    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
+        if ([self.blog supports:BlogFeatureJetpackSettings]) {
+            [sections addObject:@(SiteSettingsSectionJetpackSettings)];
+        }
     }
 
     if ([self.blog supports:BlogFeatureSiteManagement]) {
@@ -199,6 +202,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion:
+        {
+            return 1;
+        }
+        case SiteSettingsSectionJetpackSettings:
         {
             return 1;
         }
@@ -299,6 +306,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                                                  editable:YES
                                                           reuseIdentifier:nil];
     return _discussionSettingsCell;
+}
+
+- (SettingTableViewCell *)jetpackSecurityCell
+{
+    if (_jetpackSecurityCell)  {
+        return _jetpackSecurityCell;
+    }
+    _jetpackSecurityCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Security", @"Label for selecting the Blog Jetpack Security Settings section")
+                                                                 editable:YES
+                                                          reuseIdentifier:nil];
+    return _jetpackSecurityCell;
 }
 
 - (void)configureDefaultCategoryCell
@@ -498,6 +516,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionDiscussion:
             return self.discussionSettingsCell;
 
+        case SiteSettingsSectionJetpackSettings:
+            return self.jetpackSecurityCell;
+
         case SiteSettingsSectionAdvanced:
             return [self tableView:tableView cellForAdvancedSettingsAtRow:indexPath.row];
     }
@@ -533,6 +554,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            break;
+
+        case SiteSettingsSectionJetpackSettings:
+            headingTitle = NSLocalizedString(@"Jetpack", @"Title for the Jetpack section in site settings screen");
             break;
 
         case SiteSettingsSectionAdvanced:
@@ -807,6 +832,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             [self showDiscussionSettingsForBlog:self.blog];
             break;
 
+        case SiteSettingsSectionJetpackSettings:
+            [self showJetpackSettingsForBlog:self.blog];
+            break;
+
         case SiteSettingsSectionAdvanced:
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
             break;
@@ -971,6 +1000,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     NSParameterAssert(blog);
     
     DiscussionSettingsViewController *settings = [[DiscussionSettingsViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:settings animated:YES];
+}
+
+#pragma mark - Jetpack Settings
+
+- (void)showJetpackSettingsForBlog:(Blog *)blog
+{
+
+    NSParameterAssert(blog);
+
+    JetpackSettingsViewController *settings = [[JetpackSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:settings animated:YES];
 }
 
