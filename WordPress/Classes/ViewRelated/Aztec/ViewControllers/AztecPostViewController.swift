@@ -36,6 +36,16 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
 
+        textView.inputProcessor =
+            PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
+                               VideoShortcodeProcessor.wordPressVideoPreProcessor,
+                               CalypsoProcessorIn()])
+
+        textView.outputProcessor =
+            PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
+                               VideoShortcodeProcessor.wordPressVideoPostProcessor,
+                               CalypsoProcessorOut()])
+
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
@@ -330,6 +340,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         progressView.progressTintColor = Colors.progressTint
         progressView.trackTintColor = Colors.progressTrack
         progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.isHidden = true
         return progressView
     }()
 
@@ -379,15 +390,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
 
-    /// HTML Pre Processors
-    ///
-    fileprivate var htmlPreProcessors = [Processor]()
-
-
-    /// HTML Post Processors
-    ///
-    fileprivate var htmlPostProcessors = [Processor]()
-
 
     // MARK: - Initializers
 
@@ -424,7 +426,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        registerHTMLProcessors()
         createRevisionOfPost()
 
         // Setup
@@ -482,6 +483,16 @@ class AztecPostViewController: UIViewController, PostEditor {
         })
 
         dismissOptionsViewControllerIfNecessary()
+    }
+
+    override func willMove(toParentViewController parent: UIViewController?) {
+        super.willMove(toParentViewController: parent)
+
+        guard let navigationController = parent as? UINavigationController else {
+            return
+        }
+
+        configureMediaProgressView(in: navigationController.navigationBar)
     }
 
 
@@ -581,14 +592,6 @@ class AztecPostViewController: UIViewController, PostEditor {
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
-
-        if let navigationBar = navigationController?.navigationBar {
-            NSLayoutConstraint.activate([
-                mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
-                mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
-                mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
-                ])
-        }
     }
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
@@ -627,9 +630,20 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
         view.addSubview(betaButton)
+    }
 
-        mediaProgressView.isHidden = true
-        navigationController?.navigationBar.addSubview(mediaProgressView)
+    func configureMediaProgressView(in navigationBar: UINavigationBar) {
+        guard mediaProgressView.superview == nil else {
+            return
+        }
+
+        navigationBar.addSubview(mediaProgressView)
+
+        NSLayoutConstraint.activate([
+            mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
+            mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
+            mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
+            ])
     }
 
     func registerAttachmentImageProviders() {
@@ -642,16 +656,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         for provider in providers {
             richTextView.registerAttachmentImageProvider(provider)
         }
-    }
-
-    func registerHTMLProcessors() {
-        htmlPreProcessors.append(VideoProcessor.videoPressPreProcessor)
-        htmlPreProcessors.append(VideoProcessor.wordPressVideoPreProcessor)
-        htmlPreProcessors.append(CalypsoProcessorIn())
-
-        htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
-        htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
-        htmlPostProcessors.append(CalypsoProcessorOut())
     }
 
     func startListeningToNotifications() {
@@ -701,13 +705,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         case .html:
             htmlTextView.text = html
         case .richText:
-            var processedHTML = html
-
-            for processor in htmlPreProcessors {
-                processedHTML = processor.process(text: processedHTML)
-            }
-
-            richTextView.setHTML(processedHTML)
+            richTextView.setHTML(html)
 
             self.processVideoPressAttachments()
         }
@@ -715,17 +713,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func getHTML() -> String {
 
-        var html: String
+        let html: String
 
         switch (mode) {
         case .html:
             html = htmlTextView.text
         case .richText:
             html = richTextView.getHTML(prettyPrint: false)
-
-            for processor in htmlPostProcessors {
-                html = processor.process(text: html)
-            }
         }
 
         return html
@@ -2588,7 +2582,7 @@ extension AztecPostViewController {
         }
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: {() in
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: { _ in
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
@@ -2614,7 +2608,7 @@ extension AztecPostViewController {
                     }
                 }
             }
-            }, failure: { [weak self](error) in
+            }, failure: { [weak self] error in
                 guard let strongSelf = self else {
                     return
                 }
@@ -2622,7 +2616,7 @@ extension AztecPostViewController {
                 WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: strongSelf.post.blog)
 
                 DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
                 }
         })
         if let progress = uploadProgress {
@@ -2659,7 +2653,7 @@ extension AztecPostViewController {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
             if let videoAttachment = attachment as? VideoAttachment,
                let videoSrcURL = videoAttachment.srcURL,
-               videoSrcURL.scheme == VideoProcessor.videoPressScheme,
+               videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
                let videoPressID = videoSrcURL.host {
                 // It's videoPress video so let's fetch the information for the video
                 let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
