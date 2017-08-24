@@ -114,13 +114,7 @@
     return self.mediaGroup;
 }
 
-- (void)loadGroupDataWithSuccess:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
-{
-    [self loadDataWithSuccess:successBlock
-                      failure:failureBlock];
-}
-
-- (void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
+- (void)loadDataWithOptions:(WPMediaLoadOptions)options success:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
     // let's check if we already have fetched results before
     if (self.fetchController.fetchedObjects == nil) {
@@ -246,7 +240,7 @@
     PHAsset *asset = [result firstObject];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [mediaService createMediaWithPHAsset:asset forPostObjectID:objectID thumbnailCallback:nil completion:^(Media *media, NSError *error) {
-        [self loadDataWithSuccess:^{
+        [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
             if (completionBlock) {
@@ -268,7 +262,7 @@
                      forPostObjectID:objectID
                    thumbnailCallback:nil
                           completion:^(Media *media, NSError *error) {
-        [self loadDataWithSuccess:^{
+        [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
             if (completionBlock) {
@@ -546,7 +540,7 @@
     return @"org.wordpress.medialibrary";
 }
 
-- (NSInteger)numberOfAssetsOfType:(WPMediaType)mediaType
+- (NSInteger)numberOfAssetsOfType:(WPMediaType)mediaType completionHandler:(WPMediaCountBlock)completionHandler
 {
     NSMutableSet *mediaTypes = [NSMutableSet set];
     if (mediaType & WPMediaTypeImage) {
@@ -570,9 +564,11 @@
     __weak __typeof__(self) weakSelf = self;
     [mediaService getMediaLibraryServerCountForBlog:self.blog forMediaTypes:mediaTypes success:^(NSInteger count) {
         weakSelf.itemsCount = count;
+        completionHandler(count, nil);
     } failure:^(NSError * _Nonnull error) {
         DDLogError(@"%@", [error localizedDescription]);
         weakSelf.itemsCount = count;
+        completionHandler(count, error);
     }];
 
     return self.itemsCount;
