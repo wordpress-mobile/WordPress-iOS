@@ -1,55 +1,43 @@
 extension UIButton {
     private struct Constants {
         static let labelMinHeight: CGFloat = 22.0
+        static let googleIconOffset: CGFloat = -1.0
     }
 
     class func googleLoginButton() -> UIButton {
         let label = UILabel()
-
-        let baseString = "Or you can {G} Login with Google."
-        let buttonString = processGoogleString(baseString)
-
-
-        label.attributedText = buttonString
         label.isUserInteractionEnabled = false
         label.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
 
+        let baseString = "Or you can {G} Log in with Google."
+        setGoogleString(baseString, for: label)
 
         let button = UIButton()
-
         setupLoginButtonLayout(button, label: label)
 
         return button
     }
 
-    class func processGoogleString(_ baseString: String) -> NSAttributedString {
-        let parts = baseString.components(separatedBy: "{G}")
+    class func setGoogleString(_ baseString: String, for label: UILabel) {
+        let labelParts = baseString.components(separatedBy: "{G}")
 
-        let firstPart = parts[0]
+        let firstPart = labelParts[0]
         // don't want to crash when a translation lacks "{G}"
-        let lastPart = parts.indices.contains(1) ? parts[1] : ""
+        let lastPart = labelParts.indices.contains(1) ? labelParts[1] : ""
 
-        let tempIcon = UIImage(named: "google")
-        let iconAttachment = NSTextAttachment()
-        iconAttachment.image = tempIcon
-        let attachedString = NSAttributedString(attachment: iconAttachment)
+        let labelString = NSMutableAttributedString(string: firstPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.darkGrey()])
 
-        let buttonString = NSMutableAttributedString(string: firstPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.darkGrey()])
-        buttonString.append(attachedString)
-        buttonString.append(NSAttributedString(string: lastPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.wordPressBlue()]))
+        if let googleIcon = UIImage(named: "google") {
+            let googleAttachment = NSTextAttachment()
+            googleAttachment.image = googleIcon
+            googleAttachment.bounds = CGRect(x: 0.0, y: label.font.descender + Constants.googleIconOffset, width: googleIcon.size.width, height: googleIcon.size.height)
+            let iconString = NSAttributedString(attachment: googleAttachment)
+            labelString.append(iconString)
+        }
 
-        return buttonString
-    }
+        labelString.append(NSAttributedString(string: lastPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.wordPressBlue()]))
 
-    class func loginTextButton(text: NSAttributedString) -> UIButton {
-        let label = UILabel()
-        label.attributedText = text
-        label.isUserInteractionEnabled = false
-        let button = UIButton()
-
-        setupLoginButtonLayout(button, label: label)
-
-        return button
+        label.attributedText = labelString
     }
 
     private class func setupLoginButtonLayout(_ button: UIButton, label: UILabel) {
@@ -63,10 +51,11 @@ extension UIButton {
             button.leftAnchor.constraint(equalTo: label.leftAnchor),
             button.rightAnchor.constraint(equalTo: label.rightAnchor),
             button.heightAnchor.constraint(equalTo: label.heightAnchor)
-            ])
+        ])
+
         label.addConstraints([
             label.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.labelMinHeight)
-            ])
+        ])
     }
 }
 
