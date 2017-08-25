@@ -1562,6 +1562,10 @@ extension AztecPostViewController {
 
 
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
+        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
+        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
+        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
 
         let isInsertingNewLink = (url == nil)
         var urlToUse = url
@@ -1572,7 +1576,7 @@ extension AztecPostViewController {
             }
         }
 
-        let insertButtonTitle = isInsertingNewLink ? LinkEditionAlert.insertTitle : LinkEditionAlert.updateTitle
+        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
 
         let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
 
@@ -1621,7 +1625,7 @@ extension AztecPostViewController {
 
         // Action: Remove
         if !isInsertingNewLink {
-            alertController.addDestructiveActionWithTitle(LinkEditionAlert.removeTitle) { [weak self] action in
+            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
                 self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
                 self?.richTextView.becomeFirstResponder()
                 self?.richTextView.removeLink(inRange: range)
@@ -1629,7 +1633,7 @@ extension AztecPostViewController {
         }
 
         // Action: Cancel
-        alertController.addCancelActionWithTitle(LinkEditionAlert.cancelTitle) { [weak self] _ in
+        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
             self?.richTextView.becomeFirstResponder()
         }
 
@@ -3175,12 +3179,5 @@ extension AztecPostViewController {
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
-    }
-
-    struct LinkEditionAlert {
-        static let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
-        static let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
-        static let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
-        static let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
     }
 }
