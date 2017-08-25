@@ -10,7 +10,7 @@ extension UIButton {
         label.isUserInteractionEnabled = false
         label.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
 
-        let baseString = "Or you can {G} Log in with Google."
+        let baseString =  NSLocalizedString("Or you can {G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
         setGoogleString(baseString, for: label)
 
         let button = UIButton()
