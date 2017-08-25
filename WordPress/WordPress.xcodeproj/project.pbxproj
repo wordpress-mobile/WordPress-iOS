@@ -193,6 +193,7 @@
 		438A809E1EA5DC31005D4651 /* LoginWPComViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */; };
 		43A85B311E9E815B00FA990B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43A85B301E9E815B00FA990B /* Login.storyboard */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
+		43AD9F9C1F4F756C00565CE6 /* LoginTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AD9F9B1F4F756C00565CE6 /* LoginTextButton.swift */; };
 		43CC1EC01ED898E30097E334 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CC1EBF1ED898E30097E334 /* LoginTextField.swift */; };
 		43CE48B31F103C1F00768B87 /* FancyAlertViewController+LoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE48B21F103C1F00768B87 /* FancyAlertViewController+LoginError.swift */; };
 		43D2436D1EAFCE3C00D0C77B /* LoginSegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */; };
@@ -1275,6 +1276,7 @@
 		438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWPComViewController.swift; sourceTree = "<group>"; };
 		43A85B301E9E815B00FA990B /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
+		43AD9F9B1F4F756C00565CE6 /* LoginTextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextButton.swift; sourceTree = "<group>"; };
 		43CC1EBF1ED898E30097E334 /* LoginTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
 		43CE48B21F103C1F00768B87 /* FancyAlertViewController+LoginError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+LoginError.swift"; sourceTree = "<group>"; };
 		43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSegueHandler.swift; sourceTree = "<group>"; };
@@ -5002,6 +5004,7 @@
 				A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */,
 				A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */,
 				E6B84DD41F01BDAA00B1B686 /* SiteInfoHeaderView.swift */,
+				43AD9F9B1F4F756C00565CE6 /* LoginTextButton.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -5997,6 +6000,7 @@
 				E12E6E331C21BA170033C5D0 /* FeatureFlag.swift in Sources */,
 				E1B9128F1BB05B1D003C25B9 /* PeopleCell.swift in Sources */,
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
+				43AD9F9C1F4F756C00565CE6 /* LoginTextButton.swift in Sources */,
 				B5015C581D4FDBB300C9449E /* NotificationActionsService.swift in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
