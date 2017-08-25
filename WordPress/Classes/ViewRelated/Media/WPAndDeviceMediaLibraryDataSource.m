@@ -172,18 +172,26 @@
                     success:(WPMediaSuccessBlock)successBlock
                     failure:(WPMediaFailureBlock)failureBlock
 {
-    [self.currentDataSource loadDataWithOptions:options success:successBlock failure:^(NSError *error) {
-        if ([error.domain isEqualToString:WPMediaPickerErrorDomain] && error.code == WPMediaErrorCodePermissionsFailed) {
-            if (self.currentDataSource == self.deviceLibraryDataSource) {                
-                self.currentDataSource = self.mediaLibraryDataSource;
-                [self loadDataWithOptions:options success:successBlock failure:failureBlock];
-                return;
+    if (options == WPMediaLoadOptionsGroups || options == WPMediaLoadOptionsGroupsAndAssets) {
+        [self.deviceLibraryDataSource loadDataWithOptions:options success:^{
+            [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];
+        } failure:^(NSError *error) {
+            [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];
+        }];
+    } else {
+        [self.currentDataSource loadDataWithOptions:options success:successBlock failure:^(NSError *error) {
+            if ([error.domain isEqualToString:WPMediaPickerErrorDomain] && error.code == WPMediaErrorCodePermissionsFailed) {
+                if (self.currentDataSource == self.deviceLibraryDataSource) {                
+                    self.currentDataSource = self.mediaLibraryDataSource;
+                    [self loadDataWithOptions:options success:successBlock failure:failureBlock];
+                    return;
+                }
             }
-        }
-        if (failureBlock) {
-            failureBlock(error);
-        }
-    }];
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        }];
+    }
 }
 
 - (void)addImage:(UIImage *)image metadata:(NSDictionary *)metadata completionBlock:(WPMediaAddedBlock)completionBlock
