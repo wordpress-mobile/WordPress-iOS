@@ -488,7 +488,7 @@ extension MediaLibraryViewController: UISearchBarDelegate {
 // MARK: - WPMediaPickerViewControllerDelegate
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         // We're only interested in the upload picker
         guard picker != pickerViewController else { return }
 
