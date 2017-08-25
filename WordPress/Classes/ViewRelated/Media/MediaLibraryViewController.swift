@@ -348,7 +348,7 @@ class MediaLibraryViewController: UIViewController {
     @objc private func editTapped() {
         isEditing = !isEditing
 
-        let options = pickerViewController.options
+        let options = pickerViewController.options.copy() as! WPMediaPickerOptions
         options.allowMultipleSelection = isEditing
         pickerViewController.options = options
 
