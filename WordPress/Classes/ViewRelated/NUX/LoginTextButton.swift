@@ -2,6 +2,7 @@ extension UIButton {
     private struct Constants {
         static let labelMinHeight: CGFloat = 30.0
         static let googleIconOffset: CGFloat = -1.0
+        static let verticalPadding: CGFloat = 5.0
     }
 
     class func googleLoginButton() -> UIButton {
@@ -22,7 +23,7 @@ extension UIButton {
         let labelParts = baseString.components(separatedBy: "{G}")
 
         let firstPart = labelParts[0]
-        // don't want to crash when a translation lacks "{G}"
+        // 👇 don't want to crash when a translation lacks "{G}"
         let lastPart = labelParts.indices.contains(1) ? labelParts[1] : ""
 
         let labelString = NSMutableAttributedString(string: firstPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.darkGrey()])
@@ -47,10 +48,10 @@ extension UIButton {
         button.addSubview(label)
 
         button.addConstraints([
-            button.topAnchor.constraint(equalTo: label.topAnchor),
+            button.topAnchor.constraint(equalTo: label.topAnchor, constant: Constants.verticalPadding * -1.0),
             button.leftAnchor.constraint(equalTo: label.leftAnchor),
             button.rightAnchor.constraint(equalTo: label.rightAnchor),
-            button.heightAnchor.constraint(equalTo: label.heightAnchor)
+            button.bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: Constants.verticalPadding)
         ])
 
         label.addConstraints([
