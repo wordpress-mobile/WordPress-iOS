@@ -37,7 +37,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         return asset.isKind(of: PHAsset.self)
     }
 
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         // Export the UIImage Asset
         guard let asset = assets.first as? PHAsset else {
             onCompletion?(nil)

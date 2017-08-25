@@ -124,7 +124,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
     ///
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if assets.isEmpty {
             return
         }
