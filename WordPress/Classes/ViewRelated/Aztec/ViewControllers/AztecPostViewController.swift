@@ -3035,6 +3035,11 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
     }
 
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, selectionChanged assets: [Any]) {
+        updateFormatBarInsertAssetCount()
+    }
+
     func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
         updateFormatBarInsertAssetCount()
     }
