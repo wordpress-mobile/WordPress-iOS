@@ -123,25 +123,17 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             return
         }
 
-        let button = UIButton(type: .custom)
+        let button = UIButton.googleLoginButton()
+        view.addSubview(button)
+        button.addTarget(self, action: #selector(googleLoginTapped(_:)), for: .touchUpInside)
 
-        self.view.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let tempIcon = UIImage(named: "onepassword-wp-button")
-        let iconAttachment = NSTextAttachment()
-        iconAttachment.image = tempIcon
-        let attachedString = NSAttributedString(attachment: iconAttachment)
-        let buttonString = NSMutableAttributedString(string: "Or you can ", attributes:[NSForegroundColorAttributeName: UIColor.red])
-        buttonString.append(attachedString)
-        buttonString.append(NSAttributedString(string: " Login with Google"))
-
-        button.setAttributedTitle(buttonString, for: .normal)
-        let tempBG = UIImage(named: "beveled-blue-button")
-        button.setBackgroundImage(tempBG, for: .normal)
         button.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor).isActive = true
         button.widthAnchor.constraint(equalToConstant: 300.0).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
         button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor).isActive = true
+    }
+
+    func googleLoginTapped(_ sender: Any) {
+        NSLog("yarp")
     }
 
 
