@@ -27,7 +27,7 @@ extension UIButton {
 
         let labelString = NSMutableAttributedString(string: firstPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.darkGrey()])
 
-        if let googleIcon = UIImage(named: "google") {
+        if let googleIcon = UIImage(named: "google"), lastPart != "" {
             let googleAttachment = NSTextAttachment()
             googleAttachment.image = googleIcon
             googleAttachment.bounds = CGRect(x: 0.0, y: label.font.descender + Constants.googleIconOffset, width: googleIcon.size.width, height: googleIcon.size.height)
