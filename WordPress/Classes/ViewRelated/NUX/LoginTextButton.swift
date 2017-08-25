@@ -1,6 +1,6 @@
 extension UIButton {
     private struct Constants {
-        static let labelMinHeight: CGFloat = 22.0
+        static let labelMinHeight: CGFloat = 30.0
         static let googleIconOffset: CGFloat = -1.0
     }
 
