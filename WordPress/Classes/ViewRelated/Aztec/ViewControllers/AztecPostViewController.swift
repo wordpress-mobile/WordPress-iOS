@@ -1452,7 +1452,7 @@ extension AztecPostViewController {
             return
         }
 
-        mediaPickerController(mediaPicker.mediaPicker, didFinishPickingAssets: mediaPicker.mediaPicker.selectedAssets)
+        mediaPickerController(mediaPicker.mediaPicker, didFinishPicking: mediaPicker.mediaPicker.selectedAssets)
     }
 
     func toggleBold() {
@@ -1718,7 +1718,7 @@ extension AztecPostViewController {
         else {
             return
         }
-        mediaPickerController(mediaPicker, didFinishPickingAssets: selectedAssets)
+        mediaPickerController(mediaPicker, didFinishPicking: selectedAssets)
         restoreInputAssistantItems()
     }
 
@@ -3008,7 +3008,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
     }
 
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
         }
@@ -3036,7 +3036,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
 
-    func mediaPickerController(_ picker: WPMediaPickerViewController, selectionChanged assets: [Any]) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, selectionChanged assets: [WPMediaAsset]) {
         updateFormatBarInsertAssetCount()
     }
 
