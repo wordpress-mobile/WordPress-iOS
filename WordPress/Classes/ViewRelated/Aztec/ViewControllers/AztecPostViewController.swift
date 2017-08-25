@@ -375,6 +375,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         return context
     }()
 
+    /// Current keyboard rect used to help size the inline media picker
+    ///
+    fileprivate var currentKeyboardFrame: CGRect = .zero
+
 
     /// Options
     ///
@@ -789,6 +793,7 @@ class AztecPostViewController: UIViewController, PostEditor {
                 return
         }
 
+        currentKeyboardFrame = keyboardFrame
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -800,6 +805,7 @@ class AztecPostViewController: UIViewController, PostEditor {
                 return
         }
 
+        currentKeyboardFrame = .zero
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -887,23 +893,29 @@ extension AztecPostViewController {
     }
 
     func showPostHasChangesAlert() {
-        let alertController = UIAlertController(title: UnsavedChangesAlert.title, message: nil, preferredStyle: .actionSheet)
+        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+        let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let saveTitle = NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
+        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
         // Button: Keep editing
-        alertController.addCancelActionWithTitle(UnsavedChangesAlert.cancelTitle)
+        alertController.addCancelActionWithTitle(cancelTitle)
 
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
             if !post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
-                alertController.addDefaultActionWithTitle(UnsavedChangesAlert.saveTitle) { _ in
+                alertController.addDefaultActionWithTitle(saveTitle) { _ in
                     self.post.status = .draft
                     self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
-                alertController.addDefaultActionWithTitle(UnsavedChangesAlert.updateTitle) { _ in
+                alertController.addDefaultActionWithTitle(updateTitle) { _ in
                     self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
@@ -911,7 +923,7 @@ extension AztecPostViewController {
         }
 
         // Button: Discard
-        alertController.addDestructiveActionWithTitle(UnsavedChangesAlert.discardTitle) { _ in
+        alertController.addDestructiveActionWithTitle(discardTitle) { _ in
             self.discardChangesAndUpdateGUI()
         }
 
@@ -1776,6 +1788,14 @@ extension AztecPostViewController {
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
         picker.mediaPicker.mediaPickerDelegate = self
         picker.scrollVertically = true
+
+        if currentKeyboardFrame != .zero {
+            // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
+            // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
+            // set the picker's frame to the current keyboard's frame.
+            picker.view.autoresizingMask = []
+            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: (currentKeyboardFrame.height - Constants.toolbarHeight))
+        }
 
         presentToolbarViewControllerAsInputView(picker)
     }
@@ -3155,14 +3175,6 @@ extension AztecPostViewController {
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
-    }
-
-    struct UnsavedChangesAlert {
-        static let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-        static let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        static let saveTitle = NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        static let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
-        static let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
     }
 
     struct LinkEditionAlert {
