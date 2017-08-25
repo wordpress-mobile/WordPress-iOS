@@ -1562,30 +1562,28 @@ extension AztecPostViewController {
 
 
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
+        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
+        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
+        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
 
         let isInsertingNewLink = (url == nil)
         var urlToUse = url
 
         if isInsertingNewLink {
-            let pasteboard = UIPasteboard.general
-            if let pastedURL = pasteboard.value(forPasteboardType:String(kUTTypeURL)) as? URL {
+            if let pastedURL = UIPasteboard.general.value(forPasteboardType: String(kUTTypeURL)) as? URL {
                 urlToUse = pastedURL
             }
         }
 
+        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
 
-        let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
-        let removeButtonTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
-        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel button")
+        let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
 
-        let alertController = UIAlertController(title: insertButtonTitle,
-                                                message: nil,
-                                                preferredStyle: UIAlertControllerStyle.alert)
-
-        alertController.addTextField(configurationHandler: { [weak self]textField in
-            textField.clearButtonMode = UITextFieldViewMode.always
+        // TextField: URL
+        alertController.addTextField(configurationHandler: { [weak self] textField in
+            textField.clearButtonMode = .always
             textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
-
             textField.text = urlToUse?.absoluteString
 
             textField.addTarget(self,
@@ -1593,65 +1591,53 @@ extension AztecPostViewController {
                 for: UIControlEvents.editingChanged)
             })
 
+        // TextField: Link Name
         alertController.addTextField(configurationHandler: { textField in
-            textField.clearButtonMode = UITextFieldViewMode.always
+            textField.clearButtonMode = .always
             textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
             textField.isSecureTextEntry = false
-            textField.autocapitalizationType = UITextAutocapitalizationType.sentences
-            textField.autocorrectionType = UITextAutocorrectionType.default
-            textField.spellCheckingType = UITextSpellCheckingType.default
-
+            textField.autocapitalizationType = .sentences
+            textField.autocorrectionType = .default
+            textField.spellCheckingType = .default
             textField.text = title
         })
 
-        let insertAction = UIAlertAction(title: insertButtonTitle,
-                                         style: UIAlertActionStyle.default,
-                                         handler: { [weak self] action in
 
-                                            self?.richTextView.becomeFirstResponder()
-                                            let linkURLString = alertController.textFields?.first?.text
-                                            var linkTitle = alertController.textFields?.last?.text
+        // Action: Insert
+        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
+            self?.richTextView.becomeFirstResponder()
+            let linkURLString = alertController.textFields?.first?.text
+            var linkTitle = alertController.textFields?.last?.text
 
-                                            if  linkTitle == nil  || linkTitle!.isEmpty {
-                                                linkTitle = linkURLString
-                                            }
+            if linkTitle == nil || linkTitle!.isEmpty {
+                linkTitle = linkURLString
+            }
 
-                                            guard
-                                                let urlString = linkURLString,
-                                                let url = URL(string: urlString),
-                                                let title = linkTitle
-                                                else {
-                                                    return
-                                            }
-                                            self?.richTextView.setLink(url, title: title, inRange: range)
-            })
+            guard let urlString = linkURLString, let url = URL(string: urlString), let title = linkTitle else {
+                return
+            }
 
-        let removeAction = UIAlertAction(title: removeButtonTitle,
-                                         style: UIAlertActionStyle.destructive,
-                                         handler: { [weak self] action in
-                                            self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
-                                            self?.richTextView.becomeFirstResponder()
-                                            self?.richTextView.removeLink(inRange: range)
-            })
-
-        let cancelAction = UIAlertAction(title: cancelButtonTitle,
-                                         style: UIAlertActionStyle.cancel,
-                                         handler: { [weak self]action in
-                                            self?.richTextView.becomeFirstResponder()
-            })
-
-        alertController.addAction(insertAction)
-        if !isInsertingNewLink {
-            alertController.addAction(removeAction)
+            self?.richTextView.setLink(url, title: title, inRange: range)
         }
-        alertController.addAction(cancelAction)
 
         // Disabled until url is entered into field
-        if let text = alertController.textFields?.first?.text {
-            insertAction.isEnabled = !text.isEmpty
+        insertAction.isEnabled = urlToUse?.absoluteString.isEmpty == false
+
+        // Action: Remove
+        if !isInsertingNewLink {
+            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+                self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
+                self?.richTextView.becomeFirstResponder()
+                self?.richTextView.removeLink(inRange: range)
+            }
         }
 
-        self.present(alertController, animated: true, completion: nil)
+        // Action: Cancel
+        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
+            self?.richTextView.becomeFirstResponder()
+        }
+
+        present(alertController, animated: true, completion: nil)
     }
 
     func alertTextFieldDidChange(_ textField: UITextField) {
