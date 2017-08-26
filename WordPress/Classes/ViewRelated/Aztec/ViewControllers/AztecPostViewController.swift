@@ -2776,8 +2776,14 @@ extension AztecPostViewController {
 
     func displayDetails(forAttachment attachment: ImageAttachment) {
         let controller = AztecAttachmentViewController()
-        controller.delegate = self
         controller.attachment = attachment
+        controller.onUpdate = { [weak self] (alignment, size) in
+            self?.richTextView.edit(attachment) { updated in
+                updated.alignment = alignment
+                updated.size = size
+            }
+        }
+
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
@@ -2808,20 +2814,6 @@ extension AztecPostViewController {
             return Gridicon.iconOfType(.video, withSize: imageSize)
         default:
             return Gridicon.iconOfType(.attachment, withSize: imageSize)
-        }
-    }
-}
-
-
-// AztecAttachmentViewController Delegate Conformance
-//
-extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
-
-    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment) {
-        richTextView.edit(changedAttachment) { attachment in
-            attachment.alignment = changedAttachment.alignment
-            attachment.size = changedAttachment.size
-            attachment.updateURL(changedAttachment.url)
         }
     }
 }
