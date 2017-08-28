@@ -1,7 +1,7 @@
 import Foundation
 import Aztec
 
-public struct VideoProcessor {
+public struct VideoShortcodeProcessor {
 
     static public var videoPressScheme = "videopress"
     static public var videoPressHTMLAttribute = "data-wpvideopress"
@@ -10,21 +10,25 @@ public struct VideoProcessor {
     ///
     static public var videoPressPreProcessor: Processor {
         let videoPressProcessor = ShortcodeProcessor(tag:"wpvideo", replacer: { (shortcode) in
-        var html = "<video "
-        if let src = shortcode.attributes.unamed.first {
+            var html = "<video "
+
+            let src = shortcode.attributes.unamed.first ?? ""
+
             html += "src=\"\(videoPressScheme)://\(src)\" "
             html += "data-wpvideopress=\"\(src)\" "
             html += "poster=\"\(videoPressScheme)://\(src)\" "
-        }
-        if let width = shortcode.attributes.named["w"] {
-            html += "width=\(width) "
-        }
-        if let height = shortcode.attributes.named["h"] {
-            html += "height=\(height) "
-        }
 
-        html += "/>"
-        return html
+            if let width = shortcode.attributes.named["w"] {
+                html += "width=\(width) "
+            }
+
+            if let height = shortcode.attributes.named["h"] {
+                html += "height=\(height) "
+            }
+
+            html += "/>"
+
+            return html
         })
         return videoPressProcessor
     }

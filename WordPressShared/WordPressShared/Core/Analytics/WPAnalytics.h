@@ -87,6 +87,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatLoginMagicLinkRequested,
     WPAnalyticsStatLoginMagicLinkSucceeded,
     WPAnalyticsStatLoginPasswordFormViewed,
+    WPAnalyticsStatLoginProloguePaged,
     WPAnalyticsStatLoginPrologueViewed,
     WPAnalyticsStatLoginTwoFactorFormViewed,
     WPAnalyticsStatLoginURLFormViewed,
