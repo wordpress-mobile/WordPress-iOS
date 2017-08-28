@@ -20,6 +20,13 @@ extension TextList.Style {
         }
     }
 
+    var accessibilityIdentifier: String {
+        switch self {
+        case .ordered: return NSLocalizedString("Toggles an Ordered List", comment: "Accessibility Identifier for the Aztec Ordered List Style.")
+        case .unordered: return NSLocalizedString("Toggles an Unordered List", comment: "Accessibility Identifier for the Aztec Unordered List Style")
+        }
+    }
+
     var iconImage: UIImage? {
         return formattingIdentifier.iconImage
     }
