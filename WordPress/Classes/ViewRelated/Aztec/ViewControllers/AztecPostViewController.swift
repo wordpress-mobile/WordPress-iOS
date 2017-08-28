@@ -893,26 +893,29 @@ extension AztecPostViewController {
     }
 
     func showPostHasChangesAlert() {
-        let alertController = UIAlertController(
-            title: NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post."),
-            message: nil,
-            preferredStyle: .actionSheet)
+        let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+        let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let saveTitle = NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
+        let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
 
         // Button: Keep editing
-        alertController.addCancelActionWithTitle(NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post."))
+        alertController.addCancelActionWithTitle(cancelTitle)
 
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
             if !post.hasRemote() {
                 // The post is a local draft or an autosaved draft: Discard or Save
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+                alertController.addDefaultActionWithTitle(saveTitle) { _ in
                     self.post.status = .draft
                     self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
             } else if post.status == .draft {
                 // The post was already a draft
-                alertController.addDefaultActionWithTitle(NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")) { _ in
+                alertController.addDefaultActionWithTitle(updateTitle) { _ in
                     self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
                     self.publishTapped(dismissWhenDone: true)
                 }
@@ -920,7 +923,7 @@ extension AztecPostViewController {
         }
 
         // Button: Discard
-        alertController.addDestructiveActionWithTitle(NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")) { _ in
+        alertController.addDestructiveActionWithTitle(discardTitle) { _ in
             self.discardChangesAndUpdateGUI()
         }
 
@@ -1559,30 +1562,28 @@ extension AztecPostViewController {
 
 
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
+        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
+        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
+        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
 
         let isInsertingNewLink = (url == nil)
         var urlToUse = url
 
         if isInsertingNewLink {
-            let pasteboard = UIPasteboard.general
-            if let pastedURL = pasteboard.value(forPasteboardType:String(kUTTypeURL)) as? URL {
+            if let pastedURL = UIPasteboard.general.value(forPasteboardType: String(kUTTypeURL)) as? URL {
                 urlToUse = pastedURL
             }
         }
 
+        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
 
-        let insertButtonTitle = isInsertingNewLink ? NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor") : NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
-        let removeButtonTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
-        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel button")
+        let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
 
-        let alertController = UIAlertController(title: insertButtonTitle,
-                                                message: nil,
-                                                preferredStyle: UIAlertControllerStyle.alert)
-
-        alertController.addTextField(configurationHandler: { [weak self]textField in
-            textField.clearButtonMode = UITextFieldViewMode.always
+        // TextField: URL
+        alertController.addTextField(configurationHandler: { [weak self] textField in
+            textField.clearButtonMode = .always
             textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
-
             textField.text = urlToUse?.absoluteString
 
             textField.addTarget(self,
@@ -1590,65 +1591,53 @@ extension AztecPostViewController {
                 for: UIControlEvents.editingChanged)
             })
 
+        // TextField: Link Name
         alertController.addTextField(configurationHandler: { textField in
-            textField.clearButtonMode = UITextFieldViewMode.always
+            textField.clearButtonMode = .always
             textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
             textField.isSecureTextEntry = false
-            textField.autocapitalizationType = UITextAutocapitalizationType.sentences
-            textField.autocorrectionType = UITextAutocorrectionType.default
-            textField.spellCheckingType = UITextSpellCheckingType.default
-
+            textField.autocapitalizationType = .sentences
+            textField.autocorrectionType = .default
+            textField.spellCheckingType = .default
             textField.text = title
         })
 
-        let insertAction = UIAlertAction(title: insertButtonTitle,
-                                         style: UIAlertActionStyle.default,
-                                         handler: { [weak self] action in
 
-                                            self?.richTextView.becomeFirstResponder()
-                                            let linkURLString = alertController.textFields?.first?.text
-                                            var linkTitle = alertController.textFields?.last?.text
+        // Action: Insert
+        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
+            self?.richTextView.becomeFirstResponder()
+            let linkURLString = alertController.textFields?.first?.text
+            var linkTitle = alertController.textFields?.last?.text
 
-                                            if  linkTitle == nil  || linkTitle!.isEmpty {
-                                                linkTitle = linkURLString
-                                            }
+            if linkTitle == nil || linkTitle!.isEmpty {
+                linkTitle = linkURLString
+            }
 
-                                            guard
-                                                let urlString = linkURLString,
-                                                let url = URL(string: urlString),
-                                                let title = linkTitle
-                                                else {
-                                                    return
-                                            }
-                                            self?.richTextView.setLink(url, title: title, inRange: range)
-            })
+            guard let urlString = linkURLString, let url = URL(string: urlString), let title = linkTitle else {
+                return
+            }
 
-        let removeAction = UIAlertAction(title: removeButtonTitle,
-                                         style: UIAlertActionStyle.destructive,
-                                         handler: { [weak self] action in
-                                            self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
-                                            self?.richTextView.becomeFirstResponder()
-                                            self?.richTextView.removeLink(inRange: range)
-            })
-
-        let cancelAction = UIAlertAction(title: cancelButtonTitle,
-                                         style: UIAlertActionStyle.cancel,
-                                         handler: { [weak self]action in
-                                            self?.richTextView.becomeFirstResponder()
-            })
-
-        alertController.addAction(insertAction)
-        if !isInsertingNewLink {
-            alertController.addAction(removeAction)
+            self?.richTextView.setLink(url, title: title, inRange: range)
         }
-        alertController.addAction(cancelAction)
 
         // Disabled until url is entered into field
-        if let text = alertController.textFields?.first?.text {
-            insertAction.isEnabled = !text.isEmpty
+        insertAction.isEnabled = urlToUse?.absoluteString.isEmpty == false
+
+        // Action: Remove
+        if !isInsertingNewLink {
+            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+                self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
+                self?.richTextView.becomeFirstResponder()
+                self?.richTextView.removeLink(inRange: range)
+            }
         }
 
-        self.present(alertController, animated: true, completion: nil)
+        // Action: Cancel
+        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
+            self?.richTextView.becomeFirstResponder()
+        }
+
+        present(alertController, animated: true, completion: nil)
     }
 
     func alertTextFieldDidChange(_ textField: UITextField) {
@@ -2788,8 +2777,14 @@ extension AztecPostViewController {
 
     func displayDetails(forAttachment attachment: ImageAttachment) {
         let controller = AztecAttachmentViewController()
-        controller.delegate = self
         controller.attachment = attachment
+        controller.onUpdate = { [weak self] (alignment, size) in
+            self?.richTextView.edit(attachment) { updated in
+                updated.alignment = alignment
+                updated.size = size
+            }
+        }
+
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
@@ -2820,20 +2815,6 @@ extension AztecPostViewController {
             return Gridicon.iconOfType(.video, withSize: imageSize)
         default:
             return Gridicon.iconOfType(.attachment, withSize: imageSize)
-        }
-    }
-}
-
-
-// AztecAttachmentViewController Delegate Conformance
-//
-extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
-
-    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment) {
-        richTextView.edit(changedAttachment) { attachment in
-            attachment.alignment = changedAttachment.alignment
-            attachment.size = changedAttachment.size
-            attachment.updateURL(changedAttachment.url)
         }
     }
 }
