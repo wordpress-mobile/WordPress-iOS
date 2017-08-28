@@ -1,7 +1,7 @@
 import Foundation
 import WPMediaPicker
 import WordPressShared
-
+import Photos
 
 // Encapsulates all of the interactions required to capture a new Gravatar image, and resize it.
 //
@@ -16,7 +16,9 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
 
     fileprivate lazy var mediaPickerAssetDataSource: WPPHAssetDataSource? = {
         let collectionsFetchResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumSelfPortraits, options: nil)
-        guard let assetCollection = collectionsFetchResult.firstObject else { return nil }
+        guard let assetCollection = collectionsFetchResult.firstObject else {
+            return nil
+        }
 
         let dataSource = WPPHAssetDataSource()
         dataSource.setSelectedGroup(PHAssetCollectionForWPMediaGroup(collection: assetCollection, mediaType: .image))
@@ -88,9 +90,11 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         options.filter = [.image]
         options.preferFrontCamera = true
         options.allowMultipleSelection = false
+
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
         pickerViewController.delegate = self
-        pickerViewController.dataSource = mediaPickerAssetDataSource
+        pickerViewController.dataSource = mediaPickerAssetDataSource        
+        pickerViewController.startOnGroupSelector = false;
         return pickerViewController
     }
 
