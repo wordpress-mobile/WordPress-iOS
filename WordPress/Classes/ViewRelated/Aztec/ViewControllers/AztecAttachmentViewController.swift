@@ -3,11 +3,6 @@ import UIKit
 import WordPressShared
 import Aztec
 
-protocol AztecAttachmentViewControllerDelegate: class {
-
-    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment)
-
-}
 
 class AztecAttachmentViewController: UITableViewController {
 
@@ -23,9 +18,10 @@ class AztecAttachmentViewController: UITableViewController {
     var alignment = ImageAttachment.Alignment.none
     var size = ImageAttachment.Size.full
 
+    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size) -> Void)?
+
     fileprivate var handler: ImmuTableViewHandler!
 
-    weak var delegate: AztecAttachmentViewControllerDelegate?
 
     // MARK: - Initialization
 
@@ -167,11 +163,7 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        if let attachment = self.attachment {
-            attachment.alignment = alignment
-            attachment.size = size
-            delegate?.aztecAttachmentViewController(self, changedAttachment: attachment)
-        }
+        onUpdate?(alignment, size)
         dismiss(animated: true, completion: nil)
     }
 
