@@ -5,7 +5,7 @@ import UIKit
 struct OptionsTableViewOption: Equatable {
     let image: UIImage?
     let title: NSAttributedString
-    let accessibilityIdentifier: String?
+    let accessibilityLabel: String?
 
     // MARK: - Equatable
 
@@ -110,7 +110,7 @@ extension OptionsTableViewController {
         reuseCell.imageView?.image = option.image
 
         reuseCell.deselectedTintColor = cellDeselectedTintColor
-        reuseCell.accessibilityValue = option.accessibilityIdentifier
+        reuseCell.accessibilityLabel = option.accessibilityLabel
 
         let isSelected = indexPath.row == tableView.indexPathForSelectedRow?.row
         reuseCell.isSelected = isSelected
