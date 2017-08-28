@@ -43,7 +43,7 @@ import WordPressShared
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
     class func controller() -> SignupViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let storyboard = UIStoryboard(name: "Login", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as! SignupViewController
         return controller
     }
