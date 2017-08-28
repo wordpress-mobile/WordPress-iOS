@@ -93,8 +93,8 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
         pickerViewController.delegate = self
-        pickerViewController.dataSource = mediaPickerAssetDataSource        
-        pickerViewController.startOnGroupSelector = false;
+        pickerViewController.dataSource = mediaPickerAssetDataSource
+        pickerViewController.startOnGroupSelector = false
         return pickerViewController
     }
 
