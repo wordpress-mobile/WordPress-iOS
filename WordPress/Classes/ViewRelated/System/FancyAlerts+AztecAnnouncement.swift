@@ -37,7 +37,6 @@ extension FancyAlertViewController {
             static let tryIt = NSLocalizedString("Try It", comment: "Title of the primary button on alert prompting users to try the new Aztec editor")
             static let notNow = NSLocalizedString("Not Now", comment: "Title of the cancel button on alert prompting users to try the new Aztec editor")
             static let whatsNew = NSLocalizedString("What's new?", comment: "Title of more info button on alert prompting users to try the new Aztec editor")
-            static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
         }
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
@@ -97,11 +96,6 @@ extension FancyAlertViewController {
             WPWebViewController.presentWhatsNewWebView(from: controller)
         })
 
-        let titleAccessoryButton = Button(Strings.beta, { controller in
-            WPAppAnalytics.track(.editorAztecBetaLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
-        })
-
         let image = UIImage(named: "wp-illustration-hand-write")
 
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
@@ -111,7 +105,7 @@ extension FancyAlertViewController {
                                                      defaultButton: defaultButton,
                                                      cancelButton: cancelButton,
                                                      moreInfoButton: moreInfoButton,
-                                                     titleAccessoryButton: titleAccessoryButton,
+                                                     titleAccessoryButton: nil,
                                                      dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
@@ -120,21 +114,15 @@ extension FancyAlertViewController {
     // Shown to users of the app who already have Aztec enabled
     static func existingTesterAztecAnnouncementController() -> FancyAlertViewController {
         struct Strings {
-            static let titleText = NSLocalizedString("New Editor in Public Beta!", comment: "Title of alert prompting users to try the new Aztec editor")
+            static let titleText = NSLocalizedString("New Editor!", comment: "Title of alert prompting users to try the new Aztec editor")
             static let bodyText = NSLocalizedString("The WordPress app's beautiful new editor is now in public beta. It looks like you already have it enabled, so you're all set!", comment: "Body text of alert informing existing testers that the new Aztec editor is now in public beta")
             static let whatsNew = NSLocalizedString("What's new?", comment: "Title of more info button on alert prompting users to try the new Aztec editor")
-            static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
         }
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
         let moreInfoButton = Button(Strings.whatsNew, { controller in
             WPAppAnalytics.track(.editorAztecPromoLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
-        })
-
-        let titleAccessoryButton = Button(Strings.beta, { controller in
-            WPAppAnalytics.track(.editorAztecBetaLink)
             WPWebViewController.presentWhatsNewWebView(from: controller)
         })
 
@@ -146,7 +134,7 @@ extension FancyAlertViewController {
                                                      dividerPosition: .bottom,
                                                      defaultButton: nil,
                                                      cancelButton: nil,
-                                                     moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
+                                                     moreInfoButton: moreInfoButton, titleAccessoryButton: nil, dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
@@ -156,7 +144,6 @@ extension FancyAlertViewController {
             static let titleText = NSLocalizedString("New Editor Enabled!", comment: "Title of alert informing users that the new Aztec editor has been enabled")
             static let bodyText = NSLocalizedString("Thanks for trying it out! You can switch editor modes at any time in", comment: "Body text of alert informing users that the new Aztec editor has been enabled")
             static let appSettings = NSLocalizedString("Me > App Settings", comment: "Text for button telling user where to find the App Settings section of the app")
-            static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
         }
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
@@ -167,18 +154,13 @@ extension FancyAlertViewController {
             })
         })
 
-        let titleAccessoryButton = Button(Strings.beta, { controller in
-            WPAppAnalytics.track(.editorAztecBetaLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
-        })
-
         let image = UIImage(named: "wp-illustration-thank-you")
 
         return FancyAlertViewController.Config(titleText: Strings.titleText,
                                                bodyText: Strings.bodyText,
                                                headerImage: image,
                                                dividerPosition: .bottom,
-                                               defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton,
+                                               defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: nil,
                                                dismissAction: {
                                                 WPTabBarController.sharedInstance().showPostTab(animated: true, toMedia: false)
         })
