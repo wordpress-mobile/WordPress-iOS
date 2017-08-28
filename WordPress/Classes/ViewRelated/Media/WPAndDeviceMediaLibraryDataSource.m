@@ -58,7 +58,7 @@
     // If we're showing the media library first, ensure that we have
     // the groups loaded for the device library so that the user can switch.
     if (self.dataSourceType == MediaPickerDataSourceTypeMediaLibrary) {
-        [_deviceLibraryDataSource loadDataWithSuccess:nil failure:nil];
+        [_deviceLibraryDataSource loadDataWithOptions:WPMediaLoadOptionsGroups success:nil failure:nil];
     }
 }
 
@@ -168,38 +168,30 @@
     [self.mediaLibraryDataSource unregisterChangeObserver:keys[1]];
 }
 
-- (void)loadGroupDataWithSuccess:(WPMediaSuccessBlock)successBlock
-                         failure:(WPMediaFailureBlock)failureBlock
-{
-    [self.currentDataSource loadGroupDataWithSuccess:successBlock failure:^(NSError *error) {
-        if ([error.domain isEqualToString:WPMediaPickerErrorDomain] && error.code == WPMediaErrorCodePermissionsFailed) {
-            if (self.currentDataSource == self.deviceLibraryDataSource) {
-                self.currentDataSource = self.mediaLibraryDataSource;
-                [self loadGroupDataWithSuccess:successBlock failure:failureBlock];
-                return;
-            }
-        }
-        if (failureBlock) {
-            failureBlock(error);
-        }
-    }];
-}
-
-- (void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock
+- (void)loadDataWithOptions:(WPMediaLoadOptions)options
+                    success:(WPMediaSuccessBlock)successBlock
                     failure:(WPMediaFailureBlock)failureBlock
 {
-    [self.currentDataSource loadDataWithSuccess:successBlock failure:^(NSError *error) {
-        if ([error.domain isEqualToString:WPMediaPickerErrorDomain] && error.code == WPMediaErrorCodePermissionsFailed) {
-            if (self.currentDataSource == self.deviceLibraryDataSource) {                
-                self.currentDataSource = self.mediaLibraryDataSource;
-                [self loadDataWithSuccess:successBlock failure:failureBlock];
-                return;
+    if (options == WPMediaLoadOptionsGroups || options == WPMediaLoadOptionsGroupsAndAssets) {
+        [self.deviceLibraryDataSource loadDataWithOptions:options success:^{
+            [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];
+        } failure:^(NSError *error) {
+            [self.mediaLibraryDataSource loadDataWithOptions:options success:successBlock failure:failureBlock];
+        }];
+    } else {
+        [self.currentDataSource loadDataWithOptions:options success:successBlock failure:^(NSError *error) {
+            if ([error.domain isEqualToString:WPMediaPickerErrorDomain] && error.code == WPMediaErrorCodePermissionsFailed) {
+                if (self.currentDataSource == self.deviceLibraryDataSource) {                
+                    self.currentDataSource = self.mediaLibraryDataSource;
+                    [self loadDataWithOptions:options success:successBlock failure:failureBlock];
+                    return;
+                }
             }
-        }
-        if (failureBlock) {
-            failureBlock(error);
-        }
-    }];
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        }];
+    }
 }
 
 - (void)addImage:(UIImage *)image metadata:(NSDictionary *)metadata completionBlock:(WPMediaAddedBlock)completionBlock
