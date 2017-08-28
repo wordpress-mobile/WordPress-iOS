@@ -1455,7 +1455,7 @@ extension AztecPostViewController {
             return
         }
 
-        mediaPickerController(mediaPicker.mediaPicker, didFinishPickingAssets: mediaPicker.mediaPicker.selectedAssets)
+        mediaPickerController(mediaPicker.mediaPicker, didFinishPicking: mediaPicker.mediaPicker.selectedAssets)
     }
 
     func toggleBold() {
@@ -1702,12 +1702,12 @@ extension AztecPostViewController {
     /// - Parameter sender: the button that was pressed.
     func mediaAddInputDone(_ sender: UIBarButtonItem) {
 
-        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
-              let selectedAssets = mediaPicker.selectedAssets as? [WPMediaAsset]
+        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker
         else {
             return
         }
-        mediaPickerController(mediaPicker, didFinishPickingAssets: selectedAssets)
+        let selectedAssets = mediaPicker.selectedAssets
+        mediaPickerController(mediaPicker, didFinishPicking: selectedAssets)
         restoreInputAssistantItems()
     }
 
@@ -1740,6 +1740,7 @@ extension AztecPostViewController {
             picker.dataSource = devicePhotoLibraryDataSource
         case .mediaLibrary:
             picker.startOnGroupSelector = false
+            picker.showGroupSelector = false
             picker.dataSource = mediaLibraryDataSource
         }
 
@@ -2988,7 +2989,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
     }
 
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
         }
@@ -3013,6 +3014,11 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
                 continue
             }
         }
+    }
+
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, selectionChanged assets: [WPMediaAsset]) {
+        updateFormatBarInsertAssetCount()
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
