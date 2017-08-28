@@ -1496,7 +1496,7 @@ extension AztecPostViewController {
             let title = NSAttributedString(string: listType.description, attributes: [:])
             return OptionsTableViewOption(image: listType.iconImage,
                                           title: title,
-                                          accessibilityIdentifier: listType.accessibilityIdentifier)
+                                          accessibilityLabel: listType.accessibilityLabel)
         }
 
         var index: Int? = nil
@@ -1840,7 +1840,7 @@ extension AztecPostViewController {
 
             return OptionsTableViewOption(image: headerType.iconImage,
                                           title: title,
-                                          accessibilityIdentifier: headerType.accessibilityIdentifier)
+                                          accessibilityLabel: headerType.accessibilityLabel)
         }
 
         let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
