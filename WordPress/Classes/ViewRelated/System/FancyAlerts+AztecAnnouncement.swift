@@ -115,7 +115,7 @@ extension FancyAlertViewController {
     static func existingTesterAztecAnnouncementController() -> FancyAlertViewController {
         struct Strings {
             static let titleText = NSLocalizedString("New Editor!", comment: "Title of alert prompting users to try the new Aztec editor")
-            static let bodyText = NSLocalizedString("The WordPress app's beautiful new editor is now in public beta. It looks like you already have it enabled, so you're all set!", comment: "Body text of alert informing existing testers that the new Aztec editor is now in public beta")
+            static let bodyText = NSLocalizedString("The WordPress app's beautiful new editor is now in public beta. It looks like you already have it enabled, so you're all set!", comment: "Body text of alert informing existing testers that the new Aztec editor is now public")
             static let whatsNew = NSLocalizedString("What's new?", comment: "Title of more info button on alert prompting users to try the new Aztec editor")
         }
 
