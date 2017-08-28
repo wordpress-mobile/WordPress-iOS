@@ -117,6 +117,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
         textView.backgroundColor = .clear
+        textView.spellCheckingType = .default
 
         return textView
     }()
