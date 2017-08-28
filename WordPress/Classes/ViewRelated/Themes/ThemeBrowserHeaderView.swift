@@ -18,7 +18,9 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet weak var currentThemeName: UILabel!
     @IBOutlet weak var customizeButton: UIButton!
     @IBOutlet weak var detailsButton: UIButton!
+    @IBOutlet weak var detailsIcon: UIImageView!
     @IBOutlet weak var supportButton: UIButton!
+    @IBOutlet weak var supportIcon: UIImageView!
     @IBOutlet var filterBarBorders: [UIView]!
     @IBOutlet weak var filterBar: UIView!
     @IBOutlet weak var filterTypeButton: UIButton!
@@ -28,6 +30,18 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     fileprivate var theme: Theme? {
         didSet {
             currentThemeName.text = theme?.name
+            var customTheme = false
+            var hasDetailsURL = false
+
+            if let theme = theme {
+                customTheme = theme.custom
+                hasDetailsURL = theme.hasDetailsURL()
+            }
+
+            supportButton.isHidden = customTheme
+            supportIcon.isHidden = customTheme
+            detailsButton.isHidden = customTheme && !hasDetailsURL
+            detailsIcon.isHidden = customTheme && !hasDetailsURL
         }
     }
     fileprivate var filterType: ThemeType = .all {
