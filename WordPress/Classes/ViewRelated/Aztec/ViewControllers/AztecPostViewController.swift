@@ -866,7 +866,7 @@ extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
         trackPostSave(stat: postEditorStateContext.publishActionAnalyticsStat)
 
-        publishTapped(dismissWhenDone: true)
+        publishTapped(dismissWhenDone: postEditorStateContext.publishActionDismissesEditor)
     }
 
     @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
