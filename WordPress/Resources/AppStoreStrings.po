@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-08-14 12:50-0000\n"
+"PO-Revision-Date: 2017-08-28 15:10-0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,9 +38,9 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v8.3-whats-new"
+msgctxt "v8.4-whats-new"
 msgid ""
-"Jetpack sites: Added support for custom roles.\n"
+"Jetpack sites: Added support for browsing and activating themes.\n"
 "Several minor improvements and bug fixes.\n"
 msgstr ""
 

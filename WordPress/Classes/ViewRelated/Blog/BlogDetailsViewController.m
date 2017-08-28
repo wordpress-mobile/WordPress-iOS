@@ -456,9 +456,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    BOOL enableThemesBrowsing = self.blog.isHostedAtWPcom
-                                || ([self.blog supports:BlogFeatureThemeBrowsing] && [Feature enabled:FeatureFlagJetpackThemesBrowsing]);
-    if (enableThemesBrowsing && [self.blog supports:BlogFeatureThemeBrowsing]) {
+    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
                                                         image:[Gridicon iconOfType:GridiconTypeThemes]
                                                      callback:^{

@@ -34,6 +34,11 @@ static NSString * const FontTypeOTF = @"otf";
     return [UIFont systemFontOfSize:size weight:UIFontWeightRegular];
 }
 
++ (UIFont *)systemMediumFontOfSize:(CGFloat)size
+{
+    return [UIFont systemFontOfSize:size weight:UIFontWeightMedium];
+}
+
 #pragma mark - Noto Fonts
 
 static NSString* const NotoBoldFontName = @"NotoSerif-Bold";
