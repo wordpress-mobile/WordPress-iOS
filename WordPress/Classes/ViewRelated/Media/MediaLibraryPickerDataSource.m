@@ -503,7 +503,7 @@
 
 - (NSString *)name
 {
-    return NSLocalizedString(@"Media Library", @"Name for the WordPress Media Library");
+    return NSLocalizedString(@"WordPress Media", @"Name for the WordPress Media Library");
 }
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
