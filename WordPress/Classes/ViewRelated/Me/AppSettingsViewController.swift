@@ -109,7 +109,7 @@ class AppSettingsViewController: UITableViewController {
         editorRows.append(visualEditor)
 
         let nativeEditor = CheckmarkRow(
-            title: NSLocalizedString("Beta", comment: "Option to enable the beta native editor (Aztec)"),
+            title: NSLocalizedString("Visual 2.0", comment: "Option to enable the beta native editor (Aztec)"),
             checked: (editor == .aztec),
             action: visualEditorChanged(editor: .aztec)
         )
@@ -453,7 +453,7 @@ fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
 
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
-        label.text = NSLocalizedString("Editor beta release notes & bug reporting", comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
+        label.text = NSLocalizedString("Editor release notes & bug reporting", comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
         label.textColor = WPStyleGuide.greyDarken10()
         stackView.addArrangedSubview(label)
 
