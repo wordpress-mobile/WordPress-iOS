@@ -15,13 +15,10 @@ enum FeatureFlag: Int {
         case .newMediaExports:
             return build(.localDeveloper, .a8cBranchTest)
         case .newInputMediaPicker:
-            if build(.a8cBranchTest, .localDeveloper) {
-                return true
-            }
+            return build(.a8cPrereleaseTesting, .a8cBranchTest, .localDeveloper)
         case .pluginManagement:
             return build(.localDeveloper)
         }
-        return false
     }
 }
 
