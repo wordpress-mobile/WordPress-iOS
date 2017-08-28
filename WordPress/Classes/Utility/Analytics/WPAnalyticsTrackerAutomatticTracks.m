@@ -446,6 +446,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatLoginAutoFillCredentialsUpdated:
             eventName = @"login_autofill_credentials_updated";
             break;
+        case WPAnalyticsStatLoginProloguePaged:
+            eventName = @"login_prologue_paged";
+            break;
         case WPAnalyticsStatLoginPrologueViewed:
             eventName = @"login_prologue_viewed";
             break;
