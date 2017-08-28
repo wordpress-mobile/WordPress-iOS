@@ -288,7 +288,7 @@ public class PostEditorStateContext {
         return editorState.action.publishActionAnalyticsStat
     }
 
-    /// Indicates if the editor should be dismissed whenever the Publish Action is executed
+    /// Indicates if the editor should be dismissed when the publish button is tapped
     ///
     var publishActionDismissesEditor: Bool {
         return editorState.action != .update
