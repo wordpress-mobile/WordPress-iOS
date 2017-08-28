@@ -1713,11 +1713,11 @@ extension AztecPostViewController {
     /// - Parameter sender: the button that was pressed.
     func mediaAddInputDone(_ sender: UIBarButtonItem) {
 
-        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker,
-              let selectedAssets = mediaPicker.selectedAssets as? [WPMediaAsset]
+        guard let mediaPicker = mediaPickerInputViewController?.mediaPicker
         else {
             return
         }
+        let selectedAssets = mediaPicker.selectedAssets
         mediaPickerController(mediaPicker, didFinishPicking: selectedAssets)
         restoreInputAssistantItems()
     }
