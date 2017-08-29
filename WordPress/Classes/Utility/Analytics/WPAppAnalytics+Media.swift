@@ -8,11 +8,11 @@ public extension WPAppAnalytics {
         case FullScreenPicker
         case None
 
-        public var description : String {
+        public var description: String {
             switch self {
             case .InlinePicker: return "inline_picker"
-            case .FullScreenPicker: return "full_screen_picker";
-            case .None: return "not_identified";
+            case .FullScreenPicker: return "full_screen_picker"
+            case .None: return "not_identified"
             }
         }
     }
