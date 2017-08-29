@@ -1,5 +1,22 @@
 /// Utility extension to track specific data for passing to on to WPAppAnalytics.
 public extension WPAppAnalytics {
+
+    /// Used to identify where the seleeted media came from
+    ///
+    public enum SelectedMediaOrigin: CustomStringConvertible {
+        case InlinePicker
+        case FullScreenPicker
+        case None
+
+        public var description : String {
+            switch self {
+            case .InlinePicker: return "inline_picker"
+            case .FullScreenPicker: return "full_screen_picker";
+            case .None: return "not_identified";
+            }
+        }
+    }
+
     /**
      Get a dictionary of tracking properties for a Media object.
      - parameter media: the Media object
