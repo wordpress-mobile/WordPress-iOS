@@ -252,6 +252,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAppReviewsSentFeedback:
             eventName = @"app_reviews_feedback_sent";
             break;
+        case WPAnalyticsStatAppSettingsImageOptimizationChanged:
+            eventName = @"app_settings_image_optimization_changed";
+            break;
+        case WPAnalyticsStatAppSettingsMediaRemoveLocationChanged:
+            eventName = @"app_settings_media_remove_location_changed";
+            break;
+        case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
+            eventName = @"app_settings_video_optimization_changed";
+            break;
         case WPAnalyticsStatCreateAccountInitiated:
             eventName = @"account_create_initiated";
             break;
