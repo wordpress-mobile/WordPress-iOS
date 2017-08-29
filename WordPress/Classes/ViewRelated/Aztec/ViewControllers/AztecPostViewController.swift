@@ -1438,10 +1438,13 @@ extension AztecPostViewController {
         else if let mediaIdentifier = FormatBarMediaIdentifier(rawValue: identifier) {
             switch mediaIdentifier {
             case .deviceLibrary:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedDevicePhotos)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
             case .camera:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedCamera)
                 mediaPickerInputViewController?.showCapture()
             case .mediaLibrary:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             }
         }
@@ -1765,6 +1768,7 @@ extension AztecPostViewController {
             changeRichTextInputView(to: nil)
             updateToolbar(formatBar, forMode: .text)
             restoreInputAssistantItems()
+            trackFormatBarAnalytics(stat: .editorMediaPickerTappedDismiss)
         } else {
             presentMediaPicker(fromButton: button, animated: true)
         }
