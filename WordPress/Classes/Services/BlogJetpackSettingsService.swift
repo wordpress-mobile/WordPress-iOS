@@ -28,7 +28,6 @@ struct BlogJetpackSettingsService {
                     return
             }
 
-            var successfulFetches = 0
             var fetchError: Error? = nil
             var remoteJetpackSettings: RemoteBlogJetpackSettings? = nil
             var remoteJetpackMonitorSettings: RemoteBlogJetpackMonitorSettings? = nil
@@ -40,7 +39,6 @@ struct BlogJetpackSettingsService {
             remote.getJetpackSettingsForSite(blogDotComId,
                                              success: { (remoteSettings) in
                                                 remoteJetpackSettings = remoteSettings
-                                                successfulFetches += 1
                                                 syncGroup.leave()
                                              }, failure: { (error) in
                                                 fetchError = error
@@ -51,7 +49,6 @@ struct BlogJetpackSettingsService {
             remote.getJetpackMonitorSettingsForSite(blogDotComId,
                                                     success: { (remoteMonitorSettings) in
                                                         remoteJetpackMonitorSettings = remoteMonitorSettings
-                                                        successfulFetches += 1
                                                         syncGroup.leave()
                                                     }, failure: { (error) in
                                                         fetchError = error
@@ -61,22 +58,18 @@ struct BlogJetpackSettingsService {
             syncGroup.notify(queue: DispatchQueue.main, execute: {
                 guard let remoteJetpackSettings = remoteJetpackSettings,
                     let remoteJetpackMonitorSettings = remoteJetpackMonitorSettings else {
-                        failure(nil)
+                        failure(fetchError)
                         return
                 }
-                if successfulFetches == 2 {
-                    self.context.perform {
-                        self.updateJetpackSettings(blogSettings, remoteSettings: remoteJetpackSettings)
-                        self.updateJetpackMonitorSettings(blogSettings, remoteSettings: remoteJetpackMonitorSettings)
-                    }
-                    do {
-                        try self.context.save()
-                        success()
-                    } catch let error as NSError {
-                        failure(error)
-                    }
-                } else {
-                    failure(fetchError)
+                self.context.perform {
+                    self.updateJetpackSettings(blogSettings, remoteSettings: remoteJetpackSettings)
+                    self.updateJetpackMonitorSettings(blogSettings, remoteSettings: remoteJetpackMonitorSettings)
+                }
+                do {
+                    try self.context.save()
+                    success()
+                } catch let error as NSError {
+                    failure(error)
                 }
             })
         }
