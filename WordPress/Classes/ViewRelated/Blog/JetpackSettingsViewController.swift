@@ -5,7 +5,7 @@ import WordPressShared
 
 /// The purpose of this class is to render and modify the Jetpack Settings associated to a site.
 ///
-open class JetpackSettingsViewController: UITableViewController {
+open class JetpackSecuritySettingsViewController: UITableViewController {
 
     // MARK: - Initializer
 
@@ -104,7 +104,7 @@ open class JetpackSettingsViewController: UITableViewController {
             let footer = UITableViewHeaderFooterView.init(frame: CGRect(x: 0.0,
                                                                         y: 0.0,
                                                                         width: tableView.frame.width,
-                                                                        height: JetpackSettingsViewController.footerHeight))
+                                                                        height: JetpackSecuritySettingsViewController.footerHeight))
             footer.textLabel?.text = sections[section].footerText
             footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
             WPStyleGuide.configureTableViewSectionFooter(footer)
@@ -120,7 +120,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == Section.Index.WordPressComLogin.rawValue {
-            return JetpackSettingsViewController.footerHeight
+            return JetpackSecuritySettingsViewController.footerHeight
         }
         return 0.0
     }
@@ -308,7 +308,7 @@ open class JetpackSettingsViewController: UITableViewController {
     // MARK: - Handle Tap on Footer
 
     func handleLearnMoreTap(_ sender: UITapGestureRecognizer) {
-        guard let url =  URL(string: JetpackSettingsViewController.learnMoreUrl) else {
+        guard let url =  URL(string: JetpackSecuritySettingsViewController.learnMoreUrl) else {
             return
         }
         guard let webViewController = WPWebViewController(url: url) else {
