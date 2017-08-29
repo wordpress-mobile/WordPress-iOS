@@ -11,7 +11,7 @@ public protocol RemotePerson {
     var firstName: String? { get }
     var lastName: String? { get }
     var displayName: String { get }
-    var role: Role { get }
+    var role: String { get }
     var siteID: Int { get }
     var linkedUserID: Int { get }
     var avatarURL: URL? { get }
@@ -29,7 +29,7 @@ public protocol RemotePerson {
          firstName: String?,
          lastName: String?,
          displayName: String,
-         role: Role,
+         role: String,
          siteID: Int,
          linkedUserID: Int,
          avatarURL: URL?,
@@ -38,16 +38,19 @@ public protocol RemotePerson {
 
 // MARK: - Specifies all of the Roles a Person may have
 //
-public enum Role: String, Comparable, Equatable, CustomStringConvertible {
-    case SuperAdmin     = "super-admin"
-    case Admin          = "administrator"
-    case Editor         = "editor"
-    case Author         = "author"
-    case Contributor    = "contributor"
-    case Subscriber     = "subscriber"
-    case Follower       = "follower"
-    case Viewer         = "viewer"
-    case Unsupported    = "unsupported"
+public struct RemoteRole {
+    public let slug: String
+    public let name: String
+
+    public init(slug: String, name: String) {
+        self.slug = slug
+        self.name = name
+    }
+}
+
+extension RemoteRole {
+    public static let viewer = RemoteRole(slug: "follower", name: NSLocalizedString("Viewer", comment: "User role badge"))
+    public static let follower = RemoteRole(slug: "follower", name: NSLocalizedString("Follower", comment: "User role badge"))
 }
 
 // MARK: - Specifies all of the possible Person Types that might exist.
@@ -66,7 +69,7 @@ public struct User: RemotePerson {
     public let firstName: String?
     public let lastName: String?
     public let displayName: String
-    public let role: Role
+    public let role: String
     public let siteID: Int
     public let linkedUserID: Int
     public let avatarURL: URL?
@@ -78,7 +81,7 @@ public struct User: RemotePerson {
          firstName: String?,
          lastName: String?,
          displayName: String,
-         role: Role,
+         role: String,
          siteID: Int,
          linkedUserID: Int,
          avatarURL: URL?,
@@ -104,7 +107,7 @@ public struct Follower: RemotePerson {
     public let firstName: String?
     public let lastName: String?
     public let displayName: String
-    public let role: Role
+    public let role: String
     public let siteID: Int
     public let linkedUserID: Int
     public let avatarURL: URL?
@@ -116,7 +119,7 @@ public struct Follower: RemotePerson {
                 firstName: String?,
                 lastName: String?,
                 displayName: String,
-                role: Role,
+                role: String,
                 siteID: Int,
                 linkedUserID: Int,
                 avatarURL: URL?,
@@ -142,7 +145,7 @@ public struct Viewer: RemotePerson {
     public let firstName: String?
     public let lastName: String?
     public let displayName: String
-    public let role: Role
+    public let role: String
     public let siteID: Int
     public let linkedUserID: Int
     public let avatarURL: URL?
@@ -154,7 +157,7 @@ public struct Viewer: RemotePerson {
                 firstName: String?,
                 lastName: String?,
                 displayName: String,
-                role: Role,
+                role: String,
                 siteID: Int,
                 linkedUserID: Int,
                 avatarURL: URL?,
@@ -184,36 +187,6 @@ public extension RemotePerson {
     }
 }
 
-public extension Role {
-    init(string: String) {
-        guard let parsedRole = Role(rawValue: string) else {
-            self = .Unsupported
-            return
-        }
-        
-        self = parsedRole
-    }
-    
-    var description: String {
-        return rawValue
-    }
-    
-    var remoteValue: String {
-        // Note: Incoming Hack
-        // ====
-        //
-        // Apologies about this. When a site is Private, the *Viewer* doesn't really exist, but instead,
-        // it's treated, backend side, as a follower.
-        //
-        switch self {
-        case .Viewer:
-            return Role.Follower.rawValue
-        default:
-            return rawValue
-        }
-    }
-}
-
 // MARK: - Operator Overloading
 //
 public func ==<T: RemotePerson>(lhs: T, rhs: T) -> Bool {
@@ -228,12 +201,4 @@ public func ==<T: RemotePerson>(lhs: T, rhs: T) -> Bool {
         && lhs.avatarURL == rhs.avatarURL
         && lhs.isSuperAdmin == rhs.isSuperAdmin
         && type(of: lhs) == type(of: rhs)
-}
-
-public func ==(lhs: Role, rhs: Role) -> Bool {
-    return lhs.rawValue == rhs.rawValue
-}
-
-public func <(lhs: Role, rhs: Role) -> Bool {
-    return lhs.rawValue < rhs.rawValue
 }

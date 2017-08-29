@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WPAccount;
 @class WordPressComRestApi;
 @class WordPressOrgXMLRPCApi;
+@class Role;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -34,6 +35,10 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
     /// Does the blog support theme browsing?
     BlogFeatureThemeBrowsing,
+    /// Does the blog support custom themes?
+    BlogFeatureCustomThemes,
+    /// Does the blog support premium themes?
+    BlogFeaturePremiumThemes,
     /// Does the blog support Menus management?
     BlogFeatureMenus,
     /// Does the blog support private visibility?
@@ -46,6 +51,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureSiteManagement,
     /// Does the blog support different paid plans?
     BlogFeaturePlans,
+    /// Does the blog support plugins?
+    BlogFeaturePluginManagement,
     /// Does the blog support custom domains?
     BlogFeatureDomains,
     /// Does the blog support frame-nonce to authenticate previews?
@@ -81,6 +88,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
+@property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;
 @property (nonatomic, strong, readwrite, nullable) NSString *currentThemeId;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPosts;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPages;

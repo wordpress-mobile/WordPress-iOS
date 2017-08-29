@@ -3,16 +3,15 @@
 @objc
 enum FeatureFlag: Int {
     case exampleFeature
-    case newLogin
     case newMediaExports
     case newInputMediaPicker
+    case pluginManagement
+    case jetpackThemesBrowsing
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
         switch self {
         case .exampleFeature:
-            return true
-        case .newLogin:
             return true
         case .newMediaExports:
             return build(.localDeveloper, .a8cBranchTest)
@@ -20,6 +19,10 @@ enum FeatureFlag: Int {
             if build(.a8cBranchTest, .localDeveloper) {
                 return true
             }
+        case .pluginManagement:
+            return build(.localDeveloper)
+        case .jetpackThemesBrowsing:
+            return build(.localDeveloper)
         }
         return false
     }

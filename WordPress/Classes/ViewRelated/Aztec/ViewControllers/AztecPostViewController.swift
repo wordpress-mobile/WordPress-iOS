@@ -245,7 +245,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureBetaButton(button)
 
-        button.setTitle(NSLocalizedString("Beta", comment: "Title for Beta tag button for the new Aztec editor"), for: .normal)
+        button.setTitle(NSLocalizedString("Feedback", comment: "Title for Feedback button for the new Aztec editor"), for: .normal)
         button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
         button.isEnabled = true
         button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
@@ -253,17 +253,28 @@ class AztecPostViewController: UIViewController, PostEditor {
         return button
     }()
 
-
     /// Active Editor's Mode
     ///
-    fileprivate(set) var mode = EditionMode.richText {
+    fileprivate(set) var mode = EditMode.richText {
+        willSet {
+            switch mode {
+            case .html:
+                setHTML(getHTML(), for: .richText)
+            case .richText:
+                setHTML(getHTML(), for: .html)
+            }
+        }
+
         didSet {
             switch mode {
             case .html:
-                switchToHTML()
+                htmlTextView.becomeFirstResponder()
             case .richText:
-                switchToRichText()
+                richTextView.becomeFirstResponder()
             }
+
+            refreshEditorVisibility()
+            refreshPlaceholderVisibility()
         }
     }
 
@@ -315,6 +326,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         progressView.progressTintColor = Colors.progressTint
         progressView.trackTintColor = Colors.progressTrack
         progressView.translatesAutoresizingMaskIntoConstraints = false
+        progressView.isHidden = true
         return progressView
     }()
 
@@ -465,6 +477,16 @@ class AztecPostViewController: UIViewController, PostEditor {
         dismissOptionsViewControllerIfNecessary()
     }
 
+    override func willMove(toParentViewController parent: UIViewController?) {
+        super.willMove(toParentViewController: parent)
+
+        guard let navigationController = parent as? UINavigationController else {
+            return
+        }
+
+        configureMediaProgressView(in: navigationController.navigationBar)
+    }
+
 
     // MARK: - Title and Title placeholder position methods
 
@@ -562,14 +584,6 @@ class AztecPostViewController: UIViewController, PostEditor {
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
-
-        if let navigationBar = navigationController?.navigationBar {
-            NSLayoutConstraint.activate([
-                mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
-                mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
-                mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
-                ])
-        }
     }
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
@@ -608,9 +622,20 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
         view.addSubview(betaButton)
+    }
 
-        mediaProgressView.isHidden = true
-        navigationController?.navigationBar.addSubview(mediaProgressView)
+    func configureMediaProgressView(in navigationBar: UINavigationBar) {
+        guard mediaProgressView.superview == nil else {
+            return
+        }
+
+        navigationBar.addSubview(mediaProgressView)
+
+        NSLayoutConstraint.activate([
+            mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
+            mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
+            mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
+            ])
     }
 
     func registerAttachmentImageProviders() {
@@ -628,10 +653,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     func registerHTMLProcessors() {
         htmlPreProcessors.append(VideoProcessor.videoPressPreProcessor)
         htmlPreProcessors.append(VideoProcessor.wordPressVideoPreProcessor)
-        htmlPreProcessors.append(CalypsoProcessor())
+        htmlPreProcessors.append(CalypsoProcessorIn())
 
         htmlPostProcessors.append(VideoProcessor.videoPressPostProcessor)
         htmlPostProcessors.append(VideoProcessor.wordPressVideoPostProcessor)
+        htmlPostProcessors.append(CalypsoProcessorOut())
     }
 
     func startListeningToNotifications() {
@@ -673,20 +699,42 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func setHTML(_ html: String) {
-        var processedHTML = html
-        for processor in htmlPreProcessors {
-            processedHTML = processor.process(text: processedHTML)
+        setHTML(html, for: mode)
+    }
+
+    private func setHTML(_ html: String, for mode: EditMode) {
+        switch(mode) {
+        case .html:
+            htmlTextView.text = html
+        case .richText:
+            var processedHTML = html
+
+            for processor in htmlPreProcessors {
+                processedHTML = processor.process(text: processedHTML)
+            }
+
+            richTextView.setHTML(processedHTML)
+
+            self.processVideoPressAttachments()
         }
-        richTextView.setHTML(processedHTML)
-        self.processVideoPressAttachments()
     }
 
     func getHTML() -> String {
-        var processedHTML = richTextView.getHTML()
-        for processor in htmlPostProcessors {
-            processedHTML = processor.process(text: processedHTML)
+
+        var html: String
+
+        switch (mode) {
+        case .html:
+            html = htmlTextView.text
+        case .richText:
+            html = richTextView.getHTML(prettyPrint: false)
+
+            for processor in htmlPostProcessors {
+                html = processor.process(text: html)
+            }
         }
-        return processedHTML
+
+        return html
     }
 
     func reloadEditorContents() {
@@ -1314,7 +1362,7 @@ extension AztecPostViewController: Aztec.TextViewFormattingDelegate {
 // MARK: - HTML Mode Switch methods
 //
 extension AztecPostViewController {
-    enum EditionMode {
+    enum EditMode {
         case richText
         case html
 
@@ -1326,26 +1374,6 @@ extension AztecPostViewController {
                 self = .richText
             }
         }
-    }
-
-    fileprivate func switchToHTML() {
-        stopEditing()
-
-        htmlTextView.text = getHTML()
-        htmlTextView.becomeFirstResponder()
-
-        refreshEditorVisibility()
-        refreshPlaceholderVisibility()
-    }
-
-    fileprivate func switchToRichText() {
-        stopEditing()
-
-        setHTML(htmlTextView.text)
-        richTextView.becomeFirstResponder()
-
-        refreshEditorVisibility()
-        refreshPlaceholderVisibility()
     }
 
     func refreshEditorVisibility() {
@@ -1465,8 +1493,6 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
                                                     case .ordered:
                                                         self?.toggleOrderedList()
                                                     }
-
-                                                    self?.optionsViewController = nil
         })
     }
 
@@ -1754,6 +1780,7 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
 
         trackFormatBarAnalytics(stat: .editorTappedHTML)
         formatBar.overflowToolbar(expand: true)
+
         mode.toggle()
     }
 
@@ -1844,11 +1871,8 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         optionsViewController.cellSelectedBackgroundColor = WPStyleGuide.aztecFormatPickerSelectedCellBackgroundColor
         optionsViewController.view.tintColor = WPStyleGuide.aztecFormatBarActiveColor
         optionsViewController.onSelect = { [weak self] selected in
-            if self?.presentedViewController != nil {
-                self?.dismiss(animated: true, completion: nil)
-            }
-
             onSelect?(selected)
+            self?.dismissOptionsViewController()
         }
 
         let selectRow = {
@@ -1888,6 +1912,19 @@ extension AztecPostViewController : Aztec.FormatBarDelegate {
         changeRichTextInputView(to: viewController.view)
         viewController.didMove(toParentViewController: self)
     }
+
+    private func dismissOptionsViewController() {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            dismiss(animated: true, completion: nil)
+        default:
+            optionsViewController?.removeFromParentViewController()
+            changeRichTextInputView(to: nil)
+        }
+
+        optionsViewController = nil
+    }
+
 
     func changeRichTextInputView(to: UIView?) {
         guard richTextView.inputView != to else {
@@ -2157,12 +2194,7 @@ private extension AztecPostViewController {
 
     func mapUIContentToPostAndSave() {
         post.postTitle = titleTextField.text
-        // TODO: This may not be super performant; Instrument and improve if needed and remove this TODO
-        if richTextView.isHidden {
-            post.content = htmlTextView.text
-        } else {
-            post.content = getHTML()
-        }
+        post.content = getHTML()
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
@@ -2204,9 +2236,9 @@ private extension AztecPostViewController {
 extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 
     func configureMediaAppearance() {
-        MediaAttachment.appearance.progressBackgroundColor = Colors.mediaProgressBarBackground
-        MediaAttachment.appearance.progressColor = Colors.mediaProgressBarTrack
-        MediaAttachment.appearance.overlayColor = Colors.mediaProgressOverlay
+        MediaAttachment.defaultAppearance.progressBackgroundColor = Colors.mediaProgressBarBackground
+        MediaAttachment.defaultAppearance.progressColor = Colors.mediaProgressBarTrack
+        MediaAttachment.defaultAppearance.overlayColor = Colors.mediaProgressOverlay
     }
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
@@ -2258,12 +2290,12 @@ extension AztecPostViewController {
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
-            guard let strongSelf = self else {
+            guard let `self` = self else {
                 return
             }
             DispatchQueue.main.async {
-                attachment.url = thumbnailURL
-                strongSelf.richTextView.refresh(attachment)
+                attachment.updateURL(thumbnailURL)
+                self.richTextView.refresh(attachment)
             }
         }, completion: { [weak self](media, error) in
             guard let strongSelf = self else {
@@ -2375,7 +2407,7 @@ extension AztecPostViewController {
         mediaService.createMedia(with: image, withMediaID:"CopyPasteImage" , forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
-                    imageAttachment.url = thumbnailURL
+                    imageAttachment.updateURL(thumbnailURL)
                     self.richTextView.refresh(imageAttachment)
                 }
             }
@@ -2406,7 +2438,7 @@ extension AztecPostViewController {
         }
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: {() in
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: { _ in
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }
@@ -2421,7 +2453,7 @@ extension AztecPostViewController {
                     if let mediaID = media.mediaID?.intValue {
                         imageAttachment.imageID = mediaID
                     }
-                    imageAttachment.url = remoteURL
+                    imageAttachment.updateURL(remoteURL, refreshAsset: false)
                 } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
                     videoAttachment.srcURL = URL(string: videoURLString)
                     if let videoPosterURLString = media.remoteThumbnailURL {
@@ -2432,7 +2464,7 @@ extension AztecPostViewController {
                     }
                 }
             }
-            }, failure: { [weak self](error) in
+            }, failure: { [weak self] error in
                 guard let strongSelf = self else {
                     return
                 }
@@ -2440,7 +2472,7 @@ extension AztecPostViewController {
                 WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: strongSelf.post.blog)
 
                 DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError, onAttachment: attachment)
+                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
                 }
         })
         if let progress = uploadProgress {
@@ -2656,7 +2688,7 @@ extension AztecPostViewController: AztecAttachmentViewControllerDelegate {
         richTextView.edit(changedAttachment) { attachment in
             attachment.alignment = changedAttachment.alignment
             attachment.size = changedAttachment.size
-            attachment.url = changedAttachment.url
+            attachment.updateURL(changedAttachment.url)
         }
     }
 }

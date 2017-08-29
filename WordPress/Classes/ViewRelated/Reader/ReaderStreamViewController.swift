@@ -1496,7 +1496,7 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
     }
 
 
-    public func syncContentEnded() {
+    func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         if tableViewHandler.isScrolling {
             cleanupAndRefreshAfterScrolling = true
             return
@@ -1505,7 +1505,7 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
     }
 
 
-    public func syncContentFailed() {
+    func syncContentFailed(_ syncHelper: WPContentSyncHelper) {
         cleanupAfterSync(refresh: false)
     }
 }

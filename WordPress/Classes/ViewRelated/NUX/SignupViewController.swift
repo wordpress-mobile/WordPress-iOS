@@ -43,7 +43,7 @@ import WordPressShared
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
     class func controller() -> SignupViewController {
-        let storyboard = UIStoryboard(name: "Signin", bundle: Bundle.main)
+        let storyboard = UIStoryboard(name: "Login", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as! SignupViewController
         return controller
     }
@@ -61,6 +61,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupStyles()
         localizeControls()
         configureTermsButtonText()
         setupOnePasswordButtonIfNeeded()
@@ -83,8 +84,8 @@ import WordPressShared
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(keyboardWillShowAction: #selector(SignupViewController.handleKeyboardWillShow(_:)),
-                                  keyboardWillHideAction: #selector(SignupViewController.handleKeyboardWillHide(_:)))
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -215,6 +216,10 @@ import WordPressShared
 
     // MARK: - Instance Methods
 
+    /// Sets up the view's colors and style
+    open func setupStyles() {
+        WPStyleGuide.configureColorsForSigninView(view)
+    }
 
     /// Whether the view layout should be adjusted for smaller screens
     ///
@@ -275,23 +280,23 @@ import WordPressShared
 
         // Is everything filled out?
         if !SigninHelpers.validateFieldsPopulatedForCreateAccount(loginFields) {
-            displayErrorMessage(NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."))
+            displayErrorAlert(NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."), sourceTag: sourceTag)
             return
         }
 
         if !SigninHelpers.validateFieldsForSigninContainNoSpaces(loginFields) {
-            displayErrorMessage(NSLocalizedString("Email, Username, and Site Address cannot contain spaces.", comment: "No spaces error message."))
+            displayErrorAlert(NSLocalizedString("Email, Username, and Site Address cannot contain spaces.", comment: "No spaces error message."), sourceTag: sourceTag)
             return
         }
 
         if !SigninHelpers.validateUsernameMaxLength(loginFields.username) {
-            displayErrorMessage(NSLocalizedString("Username must be less than fifty characters.", comment: "Prompts that the username entered was too long."))
+            displayErrorAlert(NSLocalizedString("Username must be less than fifty characters.", comment: "Prompts that the username entered was too long."), sourceTag: sourceTag)
             usernameField.becomeFirstResponder()
             return
         }
 
         if !loginFields.emailAddress.isValidEmail() {
-            displayErrorMessage(NSLocalizedString("Please enter a valid email address", comment: "A short prompt asking the user to properly fill out all login fields."))
+            displayErrorAlert(NSLocalizedString("Please enter a valid email address", comment: "A short prompt asking the user to properly fill out all login fields."), sourceTag: sourceTag)
             emailField.becomeFirstResponder()
             return
         }

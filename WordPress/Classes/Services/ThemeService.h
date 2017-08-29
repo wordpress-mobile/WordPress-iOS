@@ -6,7 +6,7 @@
 
 typedef void(^ThemeServiceSuccessBlock)();
 typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
-typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore);
+typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
 @interface ThemeService : LocalCoreDataService
@@ -118,6 +118,11 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                             sync:(BOOL)sync
                          success:(ThemeServiceThemesRequestSuccessBlock)success
                          failure:(ThemeServiceFailureBlock)failure;
+
+- (NSProgress *)getCustomThemesForBlog:(Blog *)blog
+                                  sync:(BOOL)sync
+                               success:(ThemeServiceThemesRequestSuccessBlock)success
+                               failure:(ThemeServiceFailureBlock)failure;
 
 #pragma mark - Remote queries: Activating themes
 

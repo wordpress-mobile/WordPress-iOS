@@ -179,7 +179,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                              
                                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                                  if (success) {
-                                                                     success(themes, NO);
+                                                                     success(themes, NO, themes.count);
                                                                  }
                                                              }];
                                                          } failure:failure];
@@ -229,14 +229,15 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
     
-    NSProgress *progress = [remote getThemesPage:page
-                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
+    NSProgress *progress = [remote getWPThemesPage:page
+                                          freeOnly:false
+                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                                 NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                                        forBlog:nil];
 
                                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                     if (success) {
-                                                        success(themes, hasMore);
+                                                        success(themes, hasMore, totalThemeCount);
                                                     }
                                                 }];
                                             } failure:failure];
@@ -260,29 +261,108 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     NSMutableSet *unsyncedThemes = sync ? [NSMutableSet setWithSet:blog.themes] : nil;
-    
-    NSProgress *progress = [remote getThemesForBlogId:[blog dotComID]
-                                                   page:page
-                                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
-                                                    NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                           forBlog:blog];
-                                                    if (sync) {
-                                                        [unsyncedThemes minusSet:[NSSet setWithArray:themes]];
-                                                        for (Theme *deleteTheme in unsyncedThemes) {
-                                                            if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
-                                                                [self.managedObjectContext deleteObject:deleteTheme];
-                                                            }
-                                                        }
-                                                    }
-                                                    
-                                                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                        if (success) {
-                                                            success(themes, hasMore);
-                                                        }
-                                                    }];
-                                                } failure:failure];
-    
-    return progress;
+
+    if ([blog supports:BlogFeatureCustomThemes]) {
+        return [remote getWPThemesPage:page
+                              freeOnly:![blog supports:BlogFeaturePremiumThemes]
+                               success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                   NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                          forBlog:blog];
+                                   if (sync) {
+                                       // We don't want to touch custom themes here, only WP.com themes
+                                       NSMutableSet *unsyncedWPThemes = [unsyncedThemes mutableCopy];
+                                       for (Theme *theme in unsyncedThemes) {
+                                           if (theme.custom) {
+                                               [unsyncedWPThemes removeObject:theme];
+                                           }
+                                       }
+                                       [unsyncedWPThemes minusSet:[NSSet setWithArray:themes]];
+                                       for (Theme *deleteTheme in unsyncedWPThemes) {
+                                           if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                               [self.managedObjectContext deleteObject:deleteTheme];
+                                           }
+                                       }
+                                   }
+
+                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                       if (success) {
+                                           success(themes, hasMore, totalThemeCount);
+                                       }
+                                   }];
+                               } failure:failure];
+    } else {
+        return [remote getThemesForBlogId:[blog dotComID]
+                                     page:page
+                                  success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                      NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                             forBlog:blog];
+                                      if (sync) {
+                                          [unsyncedThemes minusSet:[NSSet setWithArray:themes]];
+                                          for (Theme *deleteTheme in unsyncedThemes) {
+                                              if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                                  [self.managedObjectContext deleteObject:deleteTheme];
+                                              }
+                                          }
+                                      }
+
+                                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                          if (success) {
+                                              success(themes, hasMore, totalThemeCount);
+                                          }
+                                      }];
+                                  } failure:failure];
+    }
+}
+
+- (NSProgress *)getCustomThemesForBlog:(Blog *)blog
+                                  sync:(BOOL)sync
+                               success:(ThemeServiceThemesRequestSuccessBlock)success
+                               failure:(ThemeServiceFailureBlock)failure {
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSAssert([self blogSupportsThemeServices:blog],
+             @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
+
+    if (blog.wordPressComRestApi == nil) {
+        return nil;
+    }
+
+    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
+
+    return [remote getCustomThemesForBlogId:[blog dotComID]
+                                    success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                        NSMutableArray *validRemoteThemes = [NSMutableArray array];
+                                        // We need to filter out themes with an id ending in -wpcom to match Calypso
+                                        for (RemoteTheme *remoteTheme in remoteThemes) {
+                                            if (![remoteTheme.themeId hasSuffix:@"-wpcom"]) {
+                                                [validRemoteThemes addObject:remoteTheme];
+                                            }
+                                        }
+
+                                        NSArray *themes = [self customThemesFromRemoteThemes:validRemoteThemes
+                                                                                     forBlog:blog];
+                                        if (sync) {
+                                            // We don't want to touch WP.com themes here, only custom themes
+                                            NSMutableSet *unsyncedThemes = [NSMutableSet setWithSet:blog.themes];
+                                            NSMutableSet *unsyncedCustomThemes = [unsyncedThemes mutableCopy];
+                                            for (Theme *theme in unsyncedThemes) {
+                                                if (!theme.custom) {
+                                                    [unsyncedCustomThemes removeObject:theme];
+                                                }
+                                            }
+                                            [unsyncedCustomThemes minusSet:[NSSet setWithArray:themes]];
+                                            for (Theme *deleteTheme in unsyncedCustomThemes) {
+                                                if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                                    [self.managedObjectContext deleteObject:deleteTheme];
+                                                }
+                                            }
+                                        }
+
+                                        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                            if (success) {
+                                                success(themes, hasMore, themes.count);
+                                            }
+                                        }];
+                                    } failure:failure];
 }
 
 #pragma mark - Remote queries: Activating themes
@@ -372,7 +452,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     return theme;
 }
 
-
 /**
  *  @brief      Updates our local themes matching the specified remote themes.
  *  @details    If the local themes do not exist, they are created.
@@ -387,19 +466,44 @@ const NSInteger ThemeOrderTrailing = 9999;
 - (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
                                      forBlog:(nullable Blog *)blog
 {
+    return [self themesFromRemoteThemes:remoteThemes custom:NO forBlog:blog];
+}
+
+/**
+ *  @brief      Updates our local themes matching the specified remote themes.
+ *  @details    If the local themes do not exist, they are created.
+ *
+ *  @param      remoteThemes    An array with the remote custom themes containing the data to update
+ *                              locally.  Cannot be nil.
+ *  @param      blog            Blog being updated. May be nil for account.
+ *  @param      ordered         Whether to update displayed order
+ *
+ *  @returns    An array with the updated and matching local themes.
+ */
+- (NSArray<Theme *> *)customThemesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                           forBlog:(nullable Blog *)blog
+{
+    return [self themesFromRemoteThemes:remoteThemes custom:YES forBlog:blog];
+}
+
+- (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                      custom:(BOOL)custom
+                                     forBlog:(nullable Blog *)blog
+{
     NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
-    
+
     NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:remoteThemes.count];
-    
+
     [remoteThemes enumerateObjectsUsingBlock:^(RemoteTheme *remoteTheme, NSUInteger idx, BOOL *stop) {
         NSAssert([remoteTheme isKindOfClass:[RemoteTheme class]],
                  @"Expected a remote theme.");
-        
+
         Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                           forBlog:blog];
+        theme.custom = custom;
         [themes addObject:theme];
     }];
-    
+
     return [NSArray arrayWithArray:themes];
 }
 

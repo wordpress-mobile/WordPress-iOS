@@ -408,7 +408,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Update user role success")
 
         stubRemoteResponse(siteUserEndpoint, filename: updateRoleSuccessMockFilename, contentType: .ApplicationJSON)
-        let change = Role.Admin
+        let change = "administrator"
         remote.updateUserRole(siteID, userID: userID, newRole: change, success: { updatedPerson in
             XCTAssertEqual(updatedPerson.role, change, "The returned user's role should be the same as the updated role.")
             expect.fulfill()
@@ -424,7 +424,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Update role with unknown user failure")
 
         stubRemoteResponse(siteUnknownUserEndpoint, filename: updateRoleUnknownUserFailureMockFilename, contentType: .ApplicationJSON, status: 404)
-        let change = Role.Admin
+        let change = "administrator"
         remote.updateUserRole(siteID, userID: invalidUserID, newRole: change, success: { updatedPerson in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
@@ -439,7 +439,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Update role with unknown site failure")
 
         stubRemoteResponse(unknownSiteUserEndpoint, filename: updateRoleUnknownSiteFailureMockFilename, contentType: .ApplicationJSON, status: 403)
-        let change = Role.Admin
+        let change = "administrator"
         remote.updateUserRole(invalidSiteID, userID: userID, newRole: change, success: { updatedPerson in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
@@ -454,7 +454,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Update role with server error failure")
 
         stubRemoteResponse(siteUserEndpoint, data: Data(), contentType: .NoContentType, status: 500)
-        let change = Role.Admin
+        let change = "administrator"
         remote.updateUserRole(siteID, userID: userID, newRole: change, success: { updatedPerson in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
@@ -472,7 +472,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Update role with invalid json response failure")
 
         stubRemoteResponse(siteUserEndpoint, filename: updateRoleBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
-        let change = Role.Admin
+        let change = "administrator"
         remote.updateUserRole(siteID, userID: userID, newRole: change, success: { updatedPerson in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
@@ -489,7 +489,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Send invite failure")
 
         stubRemoteResponse(newInviteEndpoint, filename: sendFailureMockFilename, contentType: .ApplicationJSON)
-        remote.sendInvitation(siteID, usernameOrEmail: invalidUsername, role: .Follower, message: "", success: {
+        remote.sendInvitation(siteID, usernameOrEmail: invalidUsername, role: "follower", message: "", success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -503,7 +503,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Send invite success")
 
         stubRemoteResponse(newInviteEndpoint, filename: sendSuccessMockFilename, contentType: .ApplicationJSON)
-        remote.sendInvitation(siteID, usernameOrEmail: validUsername, role: .Follower, message: "", success: {
+        remote.sendInvitation(siteID, usernameOrEmail: validUsername, role: "follower", message: "", success: {
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -517,7 +517,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Validate invite failure")
 
         stubRemoteResponse(validateInviteEndpoint, filename: validationFailureMockFilename, contentType: .ApplicationJSON)
-        remote.validateInvitation(siteID, usernameOrEmail: invalidUsername, role: .Follower, success: {
+        remote.validateInvitation(siteID, usernameOrEmail: invalidUsername, role: "follower", success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -531,7 +531,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Validate invite success")
 
         stubRemoteResponse(validateInviteEndpoint, filename: validationSuccessMockFilename, contentType: .ApplicationJSON)
-        remote.validateInvitation(siteID, usernameOrEmail: validUsername, role: .Follower, success: {
+        remote.validateInvitation(siteID, usernameOrEmail: validUsername, role: "follower", success: {
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
