@@ -81,6 +81,14 @@ print <<-EOF
 EOF
 end
 
+def print_googlelogin(googlelogin)
+print <<-EOF
++ (NSString *)googleLoginClientId {
+    return @"#{googlelogin}";
+}
+EOF
+end
+
 def print_helpshift_api_key(helpshift_api_key)
 print <<-EOF
 + (NSString *)helpshiftAPIKey {
@@ -113,7 +121,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, googlelogin, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -124,6 +132,7 @@ EOF
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
+  print_googlelogin(googlelogin)
   print_helpshift_api_key(helpshift_api_key)
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
@@ -149,6 +158,7 @@ pocket = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
+googlelogin = nil
 helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
@@ -168,6 +178,8 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
+    elsif k == "GOOGLE_LOGIN_CLIENT_ID"
+      googlelogin = v.chomp
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = v.chomp
     elsif k == "HELPSHIFT_DOMAIN_NAME"
@@ -205,6 +217,10 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Google Plus API key not found"
   end
 
+if googlelogin.nil?
+    $stderr.puts "warning: Google Login API key not found"
+end
+
   if helpshift_api_key.nil? || helpshift_domain_name.nil? || helpshift_app_id.nil?
     $stderr.puts "warning: Helpshift keys not found"
   end
@@ -216,4 +232,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, googlelogin, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
