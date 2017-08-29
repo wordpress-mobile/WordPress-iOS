@@ -14,7 +14,7 @@ struct BlogJetpackSettingsService {
     ///
     func syncJetpackSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
 
-        if !blog.supports(.jetpackSettings) {
+        guard blog.supports(.jetpackSettings) else {
             success()
             return
         }
