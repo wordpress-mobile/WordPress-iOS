@@ -663,12 +663,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(resignInputPicker), name: .UIApplicationWillResignActive, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         nc.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        nc.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -1758,10 +1760,7 @@ extension AztecPostViewController {
 
     private func toggleMediaPicker(fromButton button: UIButton) {
         if mediaPickerInputViewController != nil {
-            mediaPickerInputViewController = nil
-            changeRichTextInputView(to: nil)
-            updateToolbar(formatBar, forMode: .text)
-            restoreInputAssistantItems()
+            closeMediaPickerInputViewController()
         } else {
             presentMediaPicker(fromButton: button, animated: true)
         }
@@ -2818,6 +2817,20 @@ extension AztecPostViewController {
             return Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
     }
+
+    func resignInputPicker(_ notification: Foundation.Notification) {
+        closeMediaPickerInputViewController()
+    }
+
+    func closeMediaPickerInputViewController() {
+        guard mediaPickerInputViewController != nil else {
+            return;
+        }
+        mediaPickerInputViewController = nil
+        changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
+        restoreInputAssistantItems()
+    }
 }
 
 
@@ -2995,10 +3008,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             dismiss(animated: true, completion: nil)
         }
 
-        mediaPickerInputViewController = nil
-        changeRichTextInputView(to: nil)
-        updateToolbar(formatBar, forMode: .text)
-        restoreInputAssistantItems()
+        closeMediaPickerInputViewController()
 
         if assets.isEmpty {
             return
