@@ -104,7 +104,7 @@ struct BlogJetpackSettingsService {
 
     func updateSSOEnabledForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.sSOEnabledKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoEnabledKey,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -112,7 +112,7 @@ struct BlogJetpackSettingsService {
 
     func updateSSOMatchAccountsByEmailForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.sSOMatchAccountsByEmailKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoMatchAccountsByEmailKey,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -120,7 +120,7 @@ struct BlogJetpackSettingsService {
 
     func updateSSORequireTwoStepAuthenticationForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.sSORequireTwoStepAuthenticationKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoRequireTwoStepAuthenticationKey,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -185,9 +185,9 @@ private extension BlogJetpackSettingsService {
         settings.jetpackMonitorEnabled = remoteSettings.monitorEnabled
         settings.jetpackBlockMaliciousLoginAttempts = remoteSettings.blockMaliciousLoginAttempts
         settings.jetpackLoginWhiteListedIPAddresses = remoteSettings.loginWhiteListedIPAddresses
-        settings.jetpackSSOEnabled = remoteSettings.sSOEnabled
-        settings.jetpackSSOMatchAccountsByEmail = remoteSettings.sSOMatchAccountsByEmail
-        settings.jetpackSSORequireTwoStepAuthentication = remoteSettings.sSORequireTwoStepAuthentication
+        settings.jetpackSSOEnabled = remoteSettings.ssoEnabled
+        settings.jetpackSSOMatchAccountsByEmail = remoteSettings.ssoMatchAccountsByEmail
+        settings.jetpackSSORequireTwoStepAuthentication = remoteSettings.ssoRequireTwoStepAuthentication
     }
 
     func updateJetpackMonitorSettings(_ settings: BlogSettings, remoteSettings: RemoteBlogJetpackMonitorSettings) {

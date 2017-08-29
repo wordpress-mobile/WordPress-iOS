@@ -18,14 +18,14 @@ public struct RemoteBlogJetpackSettings {
 
     /// Indicates whether WordPress.com SSO is enabled for the Jetpack site
     ///
-    public let sSOEnabled: Bool
+    public let ssoEnabled: Bool
 
     /// Indicates whether SSO will try to match accounts by email address
     ///
-    public let sSOMatchAccountsByEmail: Bool
+    public let ssoMatchAccountsByEmail: Bool
 
     /// Indicates whether to force or not two-step authentication when users log in via WordPress.com
     ///
-    public let sSORequireTwoStepAuthentication: Bool
+    public let ssoRequireTwoStepAuthentication: Bool
 
 }
