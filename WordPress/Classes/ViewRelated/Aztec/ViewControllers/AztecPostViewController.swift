@@ -387,6 +387,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
+    fileprivate var mediaPickerOrigin: WPAppAnalytics.SelectedMediaOrigin = .None
+
     fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
@@ -3006,6 +3008,9 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
+            mediaPickerOrigin = .FullScreenPicker
+        } else {
+            mediaPickerOrigin = .InlinePicker
         }
 
         mediaPickerInputViewController = nil
