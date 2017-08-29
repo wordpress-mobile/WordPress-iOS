@@ -2824,7 +2824,7 @@ extension AztecPostViewController {
 
     func closeMediaPickerInputViewController() {
         guard mediaPickerInputViewController != nil else {
-            return;
+            return
         }
         mediaPickerInputViewController = nil
         changeRichTextInputView(to: nil)
