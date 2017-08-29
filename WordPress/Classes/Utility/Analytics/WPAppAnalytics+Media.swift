@@ -17,6 +17,19 @@ public extension WPAppAnalytics {
         }
     }
 
+    /// Get a dictionary of tracking properties for a Media object with the selected media origin.
+    ///
+    /// - Parameters:
+    ///     - media: The Media object.
+    ///     - mediaOrigin: The Media's origin.
+    /// - Returns: Dictionary
+    ///
+    public class func properties(for media: Media, mediaOrigin: SelectedMediaOrigin) -> Dictionary<String, Any> {
+        var properties = WPAppAnalytics.properties(for: media)
+        properties[MediaOrigin] = mediaOrigin.description
+        return properties
+    }
+
     /**
      Get a dictionary of tracking properties for a Media object.
      - parameter media: the Media object
@@ -49,4 +62,6 @@ public extension WPAppAnalytics {
         static let durationSeconds = "duration_secs"
         static let bytes = "bytes"
     }
+
+    fileprivate static let MediaOrigin = "media_origin"
 }
