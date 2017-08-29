@@ -456,7 +456,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
+    BOOL enableThemesBrowsing = self.blog.isHostedAtWPcom
+                                || ([self.blog supports:BlogFeatureThemeBrowsing] && [Feature enabled:FeatureFlagJetpackThemesBrowsing]);
+    if (enableThemesBrowsing && [self.blog supports:BlogFeatureThemeBrowsing]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
                                                         image:[Gridicon iconOfType:GridiconTypeThemes]
                                                      callback:^{
@@ -492,6 +494,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                         image:[Gridicon iconOfType:GridiconTypeUser]
                                                      callback:^{
                                                          [weakSelf showPeople];
+                                                     }]];
+    }
+
+    if ([Feature enabled:FeatureFlagPluginManagement] && [self.blog supports:BlogFeaturePluginManagement]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
+                                                        image:[Gridicon iconOfType:GridiconTypePlugins]
+                                                     callback:^{
+                                                         [weakSelf showPlugins];
                                                      }]];
     }
 
@@ -913,14 +923,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPeople
 {
-    // TODO(@koke, 2015-11-02): add analytics
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPeople withBlog:self.blog];
     PeopleViewController *controller = [PeopleViewController controllerWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
+}
+
+- (void)showPlugins
+{
+    PluginListViewController *controller = [[PluginListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPlans
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPlans withBlog:self.blog];
     PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }

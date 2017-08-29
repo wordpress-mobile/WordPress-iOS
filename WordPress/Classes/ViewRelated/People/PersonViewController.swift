@@ -194,7 +194,7 @@ final class PersonViewController: UITableViewController {
             return
         }
 
-        roleViewController.mode = .dynamic(blog: blog)
+        roleViewController.roles = blog.roles?.map({ $0.toUnmanaged() }) ?? []
         roleViewController.selectedRole = person.role
         roleViewController.onChange = { [weak self] newRole in
             self?.updateUserRole(newRole)
@@ -355,7 +355,7 @@ private extension PersonViewController {
         WPError.showNetworkingAlertWithError(errorWithSource)
     }
 
-    func updateUserRole(_ newRole: Role) {
+    func updateUserRole(_ newRole: String) {
         guard let user = user else {
             DDLogError("Error: Only Users have Roles!")
             assertionFailure()
@@ -378,7 +378,7 @@ private extension PersonViewController {
         WPAnalytics.track(.personUpdated)
     }
 
-    func retryUpdatingRole(_ newRole: Role) {
+    func retryUpdatingRole(_ newRole: String) {
         let retryTitle          = NSLocalizedString("Retry", comment: "Retry updating User's Role")
         let cancelTitle         = NSLocalizedString("Cancel", comment: "Cancel updating User's Role")
         let title               = NSLocalizedString("Sorry!", comment: "Update User Failed Title")
@@ -491,11 +491,10 @@ private extension PersonViewController {
 
     func refreshRoleCell() {
         let enabled = isPromoteEnabled
-        roleCell.detailTextLabel?.text = person.role.localizedName
         roleCell.accessoryType = enabled ? .disclosureIndicator : .none
         roleCell.selectionStyle = enabled ? .gray : .none
         roleCell.isUserInteractionEnabled = enabled
-        roleCell.detailTextLabel?.text = person.role.localizedName
+        roleCell.detailTextLabel?.text = role?.name
     }
 
     func refreshRemoveCell() {
@@ -558,5 +557,19 @@ private extension PersonViewController {
 
     var viewer: Viewer? {
         return person as? Viewer
+    }
+
+    var role: RemoteRole? {
+        switch screenMode {
+        case .Follower:
+            return .follower
+        case .Viewer:
+            return .viewer
+        case .User:
+            guard let service = RoleService(blog: blog, context: context) else {
+                return nil
+            }
+            return service.getRole(slug: person.role)?.toUnmanaged()
+        }
     }
 }

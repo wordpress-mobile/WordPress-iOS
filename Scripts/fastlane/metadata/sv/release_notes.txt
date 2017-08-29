@@ -1,3 +1,2 @@
-En rad förbättringar i den nya, inbyggda redigeraren. Har du hunnit prova än?
-Författarfilter på inläggslista för Jetpack och egen-installerade webbplatser.
-Nya inställningar att välja på för storlek på videouppladdningar.
+Webbplatser med Jetpack: Stöd för anpassade roller tillagt.
+Ett flertal mindre förbättringar och felrättningar.
