@@ -1493,8 +1493,11 @@ extension AztecPostViewController {
     }
 
     func toggleList(fromItem item: FormatBarItem) {
-        let listOptions = Constants.lists.map { (listType) -> OptionsTableViewOption in
-            return OptionsTableViewOption(image: listType.iconImage, title: NSAttributedString(string: listType.description, attributes: [:]))
+        let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
+            let title = NSAttributedString(string: listType.description, attributes: [:])
+            return OptionsTableViewOption(image: listType.iconImage,
+                                          title: title,
+                                          accessibilityLabel: listType.accessibilityLabel)
         }
 
         var index: Int? = nil
@@ -1828,11 +1831,17 @@ extension AztecPostViewController {
     func toggleHeader(fromItem item: FormatBarItem) {
         trackFormatBarAnalytics(stat: .editorTappedHeader)
 
-        let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
+        let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
+            let attributes = [
+                NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize),
+                NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
+            ]
+
+            let title = NSAttributedString(string: headerType.description, attributes: attributes)
+
             return OptionsTableViewOption(image: headerType.iconImage,
-                                          title: NSAttributedString(string: headerType.description,
-                                                                    attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize),
-                                                                                NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]))
+                                          title: title,
+                                          accessibilityLabel: headerType.accessibilityLabel)
         }
 
         let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
