@@ -30,7 +30,7 @@ extension Header.HeaderType {
         }
     }
 
-    var accessibilityIdentifier: String {
+    var accessibilityLabel: String {
         switch self {
         case .none: return NSLocalizedString("Switches to the default Font Size", comment: "Accessibility Identifier for the Default Font Aztec Style.")
         case .h1: return NSLocalizedString("Switches to the Heading 1 font size", comment: "Accessibility Identifier for the H1 Aztec Style")
