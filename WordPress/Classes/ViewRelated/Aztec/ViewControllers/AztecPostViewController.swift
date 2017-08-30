@@ -800,8 +800,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             else {
                 return
         }
-
-        currentKeyboardFrame = keyboardFrame
+        // Convert the keyboard frame from window base coordinate
+        currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1811,7 +1811,15 @@ extension AztecPostViewController {
             // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
             // set the picker's frame to the current keyboard's frame.
             picker.view.autoresizingMask = []
-            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: (currentKeyboardFrame.height - Constants.toolbarHeight))
+
+            var keyboardHeight: CGFloat
+            if (isExternalKeyboardConnected) {
+                keyboardHeight = (currentKeyboardFrame.maxY - view.frame.height)
+            } else {
+                keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
+            }
+
+            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: keyboardHeight)
         }
 
         presentToolbarViewControllerAsInputView(picker)
@@ -2379,6 +2387,13 @@ private extension AztecPostViewController {
 
     var isSingleSiteMode: Bool {
         return currentBlogCount <= 1 || post.hasRemote()
+    }
+
+    var isExternalKeyboardConnected: Bool {
+        // When the soft keyboard is visible, the keyboard's frame is within the dimensions of the screen. When
+        // an external keyboard is present, the keyboard's frame is located offscreen. Test to see if that 
+        // is true and return the result.
+        return (currentKeyboardFrame.origin.y + currentKeyboardFrame.size.height) > view.frame.size.height
     }
 }
 
