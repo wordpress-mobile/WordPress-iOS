@@ -1,18 +1,18 @@
 /// Utility extension to track specific data for passing to on to WPAppAnalytics.
 public extension WPAppAnalytics {
 
-    /// Used to identify where the seleeted media came from
+    /// Used to identify where the selected media came from
     ///
     public enum SelectedMediaOrigin: CustomStringConvertible {
-        case InlinePicker
-        case FullScreenPicker
-        case None
+        case inlinePicker
+        case fullScreenPicker
+        case none
 
         public var description: String {
             switch self {
-            case .InlinePicker: return "inline_picker"
-            case .FullScreenPicker: return "full_screen_picker"
-            case .None: return "not_identified"
+            case .inlinePicker: return "inline_picker"
+            case .fullScreenPicker: return "full_screen_picker"
+            case .none: return "not_identified"
             }
         }
     }
@@ -26,7 +26,7 @@ public extension WPAppAnalytics {
     ///
     public class func properties(for media: Media, mediaOrigin: SelectedMediaOrigin) -> Dictionary<String, Any> {
         var properties = WPAppAnalytics.properties(for: media)
-        properties[MediaOrigin] = mediaOrigin.description
+        properties[MediaOriginKey] = String(describing: mediaOrigin)
         return properties
     }
 
@@ -63,5 +63,5 @@ public extension WPAppAnalytics {
         static let bytes = "bytes"
     }
 
-    fileprivate static let MediaOrigin = "media_origin"
+    fileprivate static let MediaOriginKey = "media_origin"
 }
