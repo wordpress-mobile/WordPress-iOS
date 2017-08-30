@@ -383,7 +383,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Origin of selected media, used for analytics
     ///
-    fileprivate var selectedMediaOrigin: WPAppAnalytics.SelectedMediaOrigin = .None
+    fileprivate var selectedMediaOrigin: WPAppAnalytics.SelectedMediaOrigin = .none
 
 
     /// Options
@@ -3011,9 +3011,9 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
-            selectedMediaOrigin = .FullScreenPicker
+            selectedMediaOrigin = .fullScreenPicker
         } else {
-            selectedMediaOrigin = .InlinePicker
+            selectedMediaOrigin = .inlinePicker
         }
 
         mediaPickerInputViewController = nil
