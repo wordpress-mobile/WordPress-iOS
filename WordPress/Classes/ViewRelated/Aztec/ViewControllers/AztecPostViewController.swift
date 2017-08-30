@@ -668,12 +668,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: .UIApplicationWillResignActive, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         nc.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        nc.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -1769,10 +1771,7 @@ extension AztecPostViewController {
 
     private func toggleMediaPicker(fromButton button: UIButton) {
         if mediaPickerInputViewController != nil {
-            mediaPickerInputViewController = nil
-            changeRichTextInputView(to: nil)
-            updateToolbar(formatBar, forMode: .text)
-            restoreInputAssistantItems()
+            closeMediaPickerInputViewController()
             trackFormatBarAnalytics(stat: .editorMediaPickerTappedDismiss)
         } else {
             presentMediaPicker(fromButton: button, animated: true)
@@ -2836,6 +2835,27 @@ extension AztecPostViewController {
             return Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
     }
+
+    // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
+    // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
+    // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
+    // iPads only...not the 12.9"
+    // See http://www.openradar.me/radar?id=4972612522344448 for more details.
+    func applicationWillResignActive(_ notification: Foundation.Notification) {
+        if UIDevice.isPad() {
+            closeMediaPickerInputViewController()
+        }
+    }
+
+    func closeMediaPickerInputViewController() {
+        guard mediaPickerInputViewController != nil else {
+            return
+        }
+        mediaPickerInputViewController = nil
+        changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
+        restoreInputAssistantItems()
+    }
 }
 
 
@@ -3016,10 +3036,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             selectedMediaOrigin = .inlinePicker
         }
 
-        mediaPickerInputViewController = nil
-        changeRichTextInputView(to: nil)
-        updateToolbar(formatBar, forMode: .text)
-        restoreInputAssistantItems()
+        closeMediaPickerInputViewController()
 
         if assets.isEmpty {
             return
