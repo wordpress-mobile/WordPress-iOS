@@ -54,7 +54,7 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.20'
   pod 'WordPress-iOS-Editor', '1.9.4'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.11'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :branch => 'feature/format-bar-animation'
 
   target 'WordPressTest' do
     inherit! :search_paths
