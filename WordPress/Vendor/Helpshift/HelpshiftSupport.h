@@ -412,8 +412,10 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * Available in SDK version 5.0.0 or later
  *
  */
-
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (void) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
+#pragma clang diagnostic pop
 
 /** Clears Breadcrumbs list.
  *
