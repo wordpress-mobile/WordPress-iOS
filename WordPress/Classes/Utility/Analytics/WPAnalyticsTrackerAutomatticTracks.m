@@ -371,6 +371,22 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"image" };
             break;
+        case WPAnalyticsStatEditorMediaPickerTappedDismiss:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"cancel" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedDevicePhotos:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"device_photos" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedCamera:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"camera" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedMediaLibrary:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"media_library" };
+            break;
         case WPAnalyticsStatEditorTappedItalic:
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"italic" };
