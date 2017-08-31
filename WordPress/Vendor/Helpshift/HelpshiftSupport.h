@@ -1,6 +1,6 @@
 /*
  *    HelpshiftSupport.h
- *    SDK Version 6.0.0
+ *    SDK Version 6.1.0
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -18,8 +18,20 @@ typedef enum HelpshiftSupportAlertToRateAppAction
     HelpshiftSupportAlertToRateAppActionFail
 } HelpshiftSupportAlertToRateAppAction;
 
+/**
+ * Block which accepts zero arguments and returns an instance of Dictionary.
+ */
 typedef NSDictionary * (^HelpshiftSupportMetadataBlock)(void);
+
+
+/**
+ * Block which accepts zero arguments and returns an instance of HelpshiftSupportMetadata.
+ */
 typedef HelpshiftSupportMetaData * (^HelpshiftSupportMetadataObjectBlock)(void);
+
+/**
+ *  The block passed by the caller to get notified with user action when presented the prompty to rate the app.
+ */
 typedef void (^HelpshiftSupportAppRatingAlertViewCompletionBlock)(HelpshiftSupportAlertToRateAppAction);
 
 // A Reserved key (HelpshiftSupportCustomMetadataKey) constant to be used in options dictionary of showFAQs, showConversation, showFAQSection, showSingleFAQ to
@@ -90,10 +102,11 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
 
 /** Returns an instance of Helpshift
  *
- * When calling any Helpshift instance method you must use sharedInstance. For example to call showSupport: you must call it like [[Helpshift sharedInstance] showSupport:self];
+ * When using HelphisftSupport, use below method to get the singleton instance of this class.
  *
  * Available in SDK version 5.0.0 or later
  */
+
 + (HelpshiftSupport *) sharedInstance;
 
 /** To pause and restart the display of inapp notification
@@ -105,6 +118,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *
  * Available in SDK version 5.0.0 or later
  */
+
 + (void) pauseDisplayOfInAppNotification:(BOOL)pauseInApp;
 
 /** Change the SDK language. By default, the device's prefered language is used.
@@ -115,9 +129,24 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * @return BOOL indicating wether the specified language was applied. In case the language code is incorrect or
  * the corresponding localization file was not found, bool value of false is returned and the default language is used.
  *
- * Available in SDK version 5.0.0 or later
+ * @available Available in SDK version 5.0.0 or later.
+ * @deprecated Deprecated in SDK version 6.1.0.
  */
-+ (BOOL) setSDKLanguage:(NSString *)languageCode;
+
++ (BOOL) setSDKLanguage:(NSString *)languageCode __deprecated_msg("Use setLanguage: instead");
+
+/** Change the SDK language. By default, the device's prefered language is used.
+ * The call will fail in the following cases :
+ * 1. If a Helpshift session is already active at the time of invocation
+ * 2. Language code is incorrect
+ * 3. Corresponding localization file is not found
+ *
+ * @param languageCode the string representing the language code. For example, use 'fr' for French.
+ *
+ * @available Available in SDK version 6.1.0 or later
+ */
+
++ (void) setLanguage:(NSString *)languageCode;
 
 /** Show the helpshift conversation screen (with Optional Arguments)
  *
@@ -130,7 +159,8 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *
  * Available in SDK version 5.0.0 or later
  */
-+ (void) showConversation:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated ;
+
++ (void) showConversation:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated;
 
 /** Show the helpshift conversation screen (with Optional Arguments)
  *
@@ -143,6 +173,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *
  * @available Available in SDK version 5.7.0 or later
  */
+
 + (void) showConversation:(UIViewController *)viewController withConfig:(HelpshiftAPIConfig *)configObject;
 
 /** Show the support screen with only the faqs (with Optional Arguments)
@@ -157,7 +188,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * Available in SDK version 5.0.0 or later
  */
 
-+ (void) showFAQs:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated ;
++ (void) showFAQs:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated;
 
 /** Show the support screen with only the faqs (with Optional Arguments)
  *
@@ -185,7 +216,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * Available in SDK version 5.0.0 or later
  */
 
-+ (void) showFAQSection:(NSString *)faqSectionPublishID withController:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated ;
++ (void) showFAQSection:(NSString *)faqSectionPublishID withController:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated;
 
 /** Show the helpshift screen with faqs from a particular section
  *
@@ -211,7 +242,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * Available in SDK version 5.0.0 or later
  */
 
-+ (void) showSingleFAQ:(NSString *)faqPublishID withController:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated ;
++ (void) showSingleFAQ:(NSString *)faqPublishID withController:(UIViewController *)viewController withOptions:(NSDictionary *)optionsDictionary __deprecated;
 
 /** Show the helpshift screen with a single faq
  *
@@ -230,6 +261,9 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *
  * To manually show an alert for app rating, you need automated reviews disabled in admin.
  * Also, if there is an ongoing conversation, the review alert will not show up.
+ *
+ * @param url Application's link in iTunes store.
+ * @param completionBlock Completion action block with action taken by the user in response to app rating prompt.
  *
  * Available in SDK version 5.0.0 or later
  */
@@ -265,13 +299,13 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  Available in SDK version 5.0.0 or later
  */
 
-+ (void) setMetadataBlock:(HelpshiftSupportMetadataBlock)metadataBlock __deprecated ;
++ (void) setMetadataBlock:(HelpshiftSupportMetadataBlock)metadataBlock __deprecated;
 
 /** Provide a block which returns a HelpshiftSupportMetadataObject for custom meta data to be attached along with new conversations
  *
  * If you want to attach custom data along with any new conversation, use this api to provide a block which accepts zero arguments and returns an HelpshiftSupportMetadataObject containing the meta data dictionary. Everytime an issue is reported, the SDK will call this block and attach the returned HelpshiftSupportMetadataObject along with the reported issue. Ideally this metaDataBlock should be provided before the user can file an issue.
  *
- *  @param HelpshiftSupportMetadataObjectBlock a block variable which accepts zero arguments and returns an HelpshiftSupportMetadataObject.
+ *  @param metadataBlock a block variable which accepts zero arguments and returns an HelpshiftSupportMetadataObject.
  *
  *  @available Available in SDK version 5.7.0 or later
  */
@@ -280,32 +314,58 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
 
 /** Get a boolean value that indicates if there is any active converation in the SDK currently.
  *
- *  Returns YES if there an active conversation going on otherwise returns NO.
+ *  @return Returns YES if there an active conversation going on otherwise returns NO.
+ *
  *  @available Available in SDK version 5.10.0 or later
+ *
+ *  @deprecated Deprecated in SDK version 6.1.0
  */
 
-+ (BOOL) isConversationActive;
++ (BOOL) isConversationActive __deprecated_msg("Use checkIfConversationActive instead");
+
+/**
+ * Check if there is any active conversation going on in the SDK. This is an asynchronous call whose result will be
+ * provided in the callback defined in HelpshiftSupportDelegate:
+ * @code
+ * -(void) didCheckIfConversationActive:(BOOL)isActive;
+ * @endcode
+ *
+ * @available Available in SDK version 6.1.0 or later
+ */
+
++ (void) checkIfConversationActive;
 
 /** Get the notification count for replies to new conversations.
  *
  *
  * If you want to show your user notifications for replies on any ongoing conversation, you can get the notification count asynchronously by implementing the HelpshiftSupportDelegate in your respective .h and .m files.
- * Use the following method to set the delegate, where self is the object implementing the delegate.
- * [[Helpshift sharedInstance] setDelegate:self];
- * Now you can call the method
- * [[Helpshift sharedInstance] getNotificationCountFromRemote:YES];
- * This will return a notification count in the
- * - (void) didReceiveNotificationCount:(NSInteger)count
- * count delegate method.
- * If you want to retrieve the current notification count synchronously, you can call the same method with the parameter set to false, i.e
- * NSInteger count = [[Helpshift sharedInstance] getNotificationCountFromRemote:NO]
  *
  * @param isRemote Whether the notification count is to be returned asynchronously via delegate mechanism or synchronously as a return val for this api
  *
- * Available in SDK version 5.0.0 or later
+ * @available Available in SDK version 5.0.0 or later
+ * @depricated Deprecated in SDK version 6.1.0
  */
 
-+ (NSInteger) getNotificationCountFromRemote:(BOOL)isRemote;
++ (NSInteger) getNotificationCountFromRemote:(BOOL)isRemote __deprecated_msg("Use requestUnreadMessagesCount instead.");
+
+/** Get the notification count for replies to new conversations.
+ *
+ *
+ * If you want to show your user notifications for replies on any ongoing conversation, you can get the notification count asynchronously by implementing the HelpshiftSupportDelegate in your respective .h and .m files.
+ * Now you can call the method
+ * @code
+ * [[HelpshiftSupport sharedInstance] requestUnreadMessagesCount:YES];
+ * @endcode
+ * This will return a notification count in the
+ * - (void) didReceiveUnreadMessagesCount:(NSInteger)count
+ * count delegate method.
+ *
+ * @param isRemote get the count from network or from the local DB
+ *
+ * @available Available in SDK version 6.1.0 or later
+ */
+
++ (void) requestUnreadMessagesCount:(BOOL)isRemote;
 
 /** Forward the push notification for the Helpshift lib to handle
  *
@@ -316,13 +376,15 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  @param notification The dictionary containing the notification information
  *  @param viewController ViewController on which the helpshift support screen will show up.
  *
- * Example usage
+ *  @code
+ *  Example usage
  *  - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
  *  {
  *      if ([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
- *          [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:self.viewController];
+ *          [HelpshiftSupport handleRemoteNotification:userInfo withController:self.viewController];
  *      }
  *  }
+ *  @endcode
  *
  *  Available in SDK version 5.0.0 or later
  *
@@ -338,20 +400,20 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * @param notification The UILocalNotification object containing the notification information
  * @param viewController ViewController on which the helpshift support screen will show up.
  *
+ * @code
  * Example usage
  *  - (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
  *  {
  *      if ([[notification.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"])
- *      [[Helpshift sharedInstance] handleLocalNotification:notification withController:self.viewController];
+ *      [HelpshiftSupport handleLocalNotification:notification withController:self.viewController];
  *  }
+ * @endcode
  *
  * Available in SDK version 5.0.0 or later
  *
  */
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 + (void) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
-#pragma clang diagnostic pop
 
 /** Clears Breadcrumbs list.
  *
@@ -392,7 +454,8 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  This is a wrapper over NSLog. Use this API as a replacement over NSLog for the logs that need to be added as meta data while filing an issue.
  *  This API internally calls NSLog.
  *
- * @param logText the string to be logged.
+ * @param format The format string to be logged.
+ * @param ...    Variable arguments list.
  *
  * Available in SDK version 5.9.0 or later
  */
@@ -412,8 +475,9 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  @param configOptions  Config option that applies to Dynamic form itself (NOTE: this is not automatically applied to the flows). Currently the only config option applicable her is 'presentFullScreenOniPad' which can be 'yes' or 'no'
  *
  *  @return Returns YES if the data provided was valid to create a dynamic form, otherwise returns NO.
+ *  @deprecated Depricated in 6.1.0.
  */
-+ (BOOL) showDynamicFormOnViewController:(UIViewController *)viewController withTitle:(NSString *)title andFlows:(NSArray *)flows withConfigOptions:(NSDictionary *)configOptions __deprecated ;
++ (BOOL) showDynamicFormOnViewController:(UIViewController *)viewController withTitle:(NSString *)title andFlows:(NSArray *)flows withConfigOptions:(NSDictionary *)configOptions __deprecated;
 
 /**
  *  Use this method to create a list of custom 'flows' and present them in tabular form to the user.
@@ -477,8 +541,25 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  @param flows A list of 'HsFlow' objects.
  *
  *  @return Returns a UINavigationController if the data provided was valid to create a dynamic form, otherwise returns nil.
+ *
+ *  @deprecated Deprecated in SDK version 6.1.0
  */
-+ (UINavigationController *) dynamicFormWithTitle:(NSString *)title andFlows:(NSArray *)flows;
++ (UINavigationController *) dynamicFormWithTitle:(NSString *)title andFlows:(NSArray *)flows __deprecated_msg("Use requestDynamicFormWithTitle:andFlows: instead");
+
+/**
+ *  Requests a Dynamic Form navigation controller to be returned in
+ *  @code
+ *  [HelpshiftSupportDelegate didCreateDynamicForm:]
+ *  @endcode
+ *  delegate callback. This is a variant of showDynamicFormOnViewController:
+ *  Use this variant if you want to embed dynamic form in a UITabBarController
+ *
+ *  @param title The title of the form.
+ *  @param flows A list of 'HsFlow' objects.
+ *
+ *  @available Available in SDK version 6.1.0 or later
+ */
++ (void) requestDynamicFormWithTitle:(NSString *)title andFlows:(NSArray *)flows;
 
 /**
  *  Create a flow object which launches the conversation view when tapped. Refer to showConversation: for more details.
@@ -489,7 +570,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  @return a flow object to be used for creating a dynamic form.
  */
 + (id) flowToShowConversationWithDisplayText:(NSString *)displayText
-    andConfigOptions:(NSDictionary *)configOptions __deprecated ;
+    andConfigOptions:(NSDictionary *)configOptions __deprecated;
 
 /**
  *  Create a flow object which launches the conversation view when tapped. Refer to showConversation: for more details.
@@ -511,7 +592,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  @return a flow object to be used for creating a dynamic form.
  */
 + (id) flowToShowFAQsWithDisplayText:(NSString *)displayText
-    andConfigOptions:(NSDictionary *)configOptions __deprecated ;
+    andConfigOptions:(NSDictionary *)configOptions __deprecated;
 
 /**
  *  Create a flow object which shows all the FAQs when tapped. Refer to showFAQs: for more details.
@@ -535,14 +616,14 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  */
 + (id) flowToShowFAQSectionForPublishId:(NSString *)sectionPublishId
     withDisplayText:(NSString *)displayText
-    andConfigOptions:(NSDictionary *)configOptions __deprecated ;
+    andConfigOptions:(NSDictionary *)configOptions __deprecated;
 
 /**
  *  Create a flow object which launches a FAQ section when tapped. Refer to showFAQSection: for more details.
  *
  *  @param sectionPublishId The Publish-Id of the FAQ section.
  *  @param displayText      Text to be displayed in the row.
- *  @param displayText      The config API object to be passed to showFAQSection: method.
+ *  @param configObject     The config API object to be passed to showFAQSection: method.
  *
  *  @return a flow object to be used for creating a dynamic form.
  */
@@ -561,14 +642,14 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  */
 + (id) flowToShowSingleFAQForPublishId:(NSString *)FAQPublishId
     withDisplayText:(NSString *)displayText
-    andConfigOptions:(NSDictionary *)configOptions __deprecated ;
+    andConfigOptions:(NSDictionary *)configOptions __deprecated;
 
 /**
  *  Create a flow object which launches a single FAQ when tapped. Refer to showSingleFAQ: for more details.
  *
  *  @param FAQPublishId     The Publish-Id of the FAQ.
  *  @param displayText      Text to be displayed in the row.
- *  @param configOptions    The config options to be passed to showSingleFAQ: method.
+ *  @param configObject     The config options to be passed to showSingleFAQ: method.
  *
  *  @return a flow object to be used for creating a dynamic form.
  */
@@ -612,15 +693,29 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
 
 @end
 
+
+/**
+ *  A delegate which defines the session callbacks which are available in the SDK
+ */
+
 @protocol HelpshiftSupportDelegate <NSObject>
 
 /** Delegate method call that should be implemented if you are calling getNotificationCountFromRemote:YES
  * @param count Returns the number of unread messages for the ongoing conversation
  *
  * Available in SDK version 5.0.0 or later
+ * @deprecated Deprecated in SDK version 6.1.0.
  */
 
-- (void) didReceiveNotificationCount:(NSInteger)count;
+- (void) didReceiveNotificationCount:(NSInteger)count __deprecated;
+
+/** Delegate method call that should be implemented if you are calling requestUnreadMessagesCount:
+ * @param count Returns the number of unread messages for the ongoing conversation
+ *
+ * Available in SDK version 6.1.0 or later
+ */
+
+- (void) didReceiveUnreadMessagesCount:(NSInteger)count;
 
 @optional
 /** Optional delegate method that is called when the a Helpshift session begins.
@@ -662,6 +757,18 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  */
 - (void) conversationEnded;
 
+/**
+ *  Optional delegate method that gets called in response to invocation of
+ * @code
+ * [HelpshiftSupport checkIfConversationActive]
+ * @endcode
+ *
+ * @param isActive BOOL that indicates a conversation is active or not
+ *
+ * @available Available in SDK version 6.1.0 or later
+ */
+- (void) didCheckIfConversationActive:(BOOL)isActive;
+
 /** Optional delegate method that is called when user reply on current open conversation via any Helpshift API Ex:- showFaq:, showConversation:, etc
  * @param newMessage Return reply message on open conversation.
  * Available in SDK version 5.0.0 or later
@@ -680,7 +787,8 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  @return If the app chooses to display the attachment file itself, return true
  *          If the app does not wish to handle the attachment, return false. In this case, the SDK will display the attachment
  *  @param fileLocation Returns the location on the downloaded attachment file.
- *         parentViewController Returns SDK's top view controller that the app can use to present its view.
+ *
+ *  @param parentViewController Returns SDK's top view controller that the app can use to present its view.
  *
  * Available in SDK version 5.0.0 or later
  */
@@ -694,5 +802,17 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  *  Available in SDK version 5.1.0 or later.
  */
 - (NSDictionary *) configForFAQViaSearch;
+
+/**
+ * Optional delegate method that gets called in response to invocation
+ * @code
+ * [HelpshiftSupport requestDynamicFormWithTitle:andFlows:]
+ * @endcode
+ *
+ * @param form The dynamic form that was requested. Can be nil in case of invalid title or flow
+ *
+ * @available Availalbe in SDK version 6.1.0 or later
+ */
+- (void) didCreateDynamicForm:(UINavigationController *)form;
 
 @end

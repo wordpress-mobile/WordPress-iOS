@@ -1,6 +1,6 @@
 /*
  *    HelpshiftCampaigns.h
- *    SDK Version 6.0.0
+ *    SDK Version 6.1.0
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -12,6 +12,9 @@
 #import "HelpshiftCore.h"
 #import "HelpshiftInbox.h"
 
+/**
+ *  Campaigns API provider
+ */
 @interface HelpshiftCampaigns : NSObject <HsApiProvider>{
     BOOL isInitialized;
 }
@@ -109,7 +112,7 @@
 /**
  *  Show the campaign detail screen.
  *
- *  @param campaignId        Campaign id which is received in the push packet
+ *  @param messageId        Campaign id which is received in the push packet
  *  @param viewController    viewController on which Detail UI will be shown
  *  @param configObject      API config object which can customize and change the behaviour of the Helpshift SDK. Currently supported flags are :
  *  presentFullScreenOniPad : Show the Inbox UI in fullscreen mode on iPad.
