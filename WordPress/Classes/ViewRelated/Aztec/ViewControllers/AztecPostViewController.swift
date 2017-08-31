@@ -367,6 +367,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate var currentKeyboardFrame: CGRect = .zero
 
 
+    /// Origin of selected media, used for analytics
+    ///
+    fileprivate var selectedMediaOrigin: WPAppAnalytics.SelectedMediaOrigin = .none
+
+
     /// Options
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
@@ -672,12 +677,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: .UIApplicationWillResignActive, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         nc.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        nc.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -1447,10 +1454,13 @@ extension AztecPostViewController {
         else if let mediaIdentifier = FormatBarMediaIdentifier(rawValue: identifier) {
             switch mediaIdentifier {
             case .deviceLibrary:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedDevicePhotos)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
             case .camera:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedCamera)
                 mediaPickerInputViewController?.showCapture()
             case .mediaLibrary:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             }
         }
@@ -1770,10 +1780,8 @@ extension AztecPostViewController {
 
     private func toggleMediaPicker(fromButton button: UIButton) {
         if mediaPickerInputViewController != nil {
-            mediaPickerInputViewController = nil
-            changeRichTextInputView(to: nil)
-            updateToolbar(formatBar, forMode: .text)
-            restoreInputAssistantItems()
+            closeMediaPickerInputViewController()
+            trackFormatBarAnalytics(stat: .editorMediaPickerTappedDismiss)
         } else {
             presentMediaPicker(fromButton: button, animated: true)
         }
@@ -2461,7 +2469,7 @@ extension AztecPostViewController {
                 return
             }
 
-            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
@@ -2492,7 +2500,7 @@ extension AztecPostViewController {
                 return
             }
 
-            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
@@ -2513,7 +2521,7 @@ extension AztecPostViewController {
         }
         if media.mediaType == .image {
             let _ = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
-            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         } else if media.mediaType == .video {
             var posterURL: URL?
             if let posterURLString = media.remoteThumbnailURL {
@@ -2525,7 +2533,7 @@ extension AztecPostViewController {
                 attachment.videoPressID = videoPressGUID
                 richTextView.refresh(attachment)
             }
-            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         }
         self.mediaProgressCoordinator.finishOneItem()
     }
@@ -2539,12 +2547,12 @@ extension AztecPostViewController {
         var attachment: MediaAttachment?
         if media.mediaType == .image {
             attachment = self.richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL:tempMediaURL, placeHolderImage: Assets.defaultMissingImage)
-            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
             let remoteURL = URL(string: remoteURLStr) {
             attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
-            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         }
         if let attachment = attachment {
             upload(media: media, mediaID: attachment.identifier)
@@ -2576,9 +2584,9 @@ extension AztecPostViewController {
             }
 
             if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
             } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
             }
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
@@ -2836,6 +2844,27 @@ extension AztecPostViewController {
             return Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
     }
+
+    // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
+    // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
+    // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
+    // iPads only...not the 12.9"
+    // See http://www.openradar.me/radar?id=4972612522344448 for more details.
+    func applicationWillResignActive(_ notification: Foundation.Notification) {
+        if UIDevice.isPad() {
+            closeMediaPickerInputViewController()
+        }
+    }
+
+    func closeMediaPickerInputViewController() {
+        guard mediaPickerInputViewController != nil else {
+            return
+        }
+        mediaPickerInputViewController = nil
+        changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
+        restoreInputAssistantItems()
+    }
 }
 
 
@@ -3011,12 +3040,12 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
+            selectedMediaOrigin = .fullScreenPicker
+        } else {
+            selectedMediaOrigin = .inlinePicker
         }
 
-        mediaPickerInputViewController = nil
-        changeRichTextInputView(to: nil)
-        updateToolbar(formatBar, forMode: .text)
-        restoreInputAssistantItems()
+        closeMediaPickerInputViewController()
 
         if assets.isEmpty {
             return
