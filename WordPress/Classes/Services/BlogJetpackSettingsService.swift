@@ -74,7 +74,7 @@ struct BlogJetpackSettingsService {
 
     func updateJetpackMonitorEnabledForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.monitorEnabledKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.monitorEnabled,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -82,7 +82,7 @@ struct BlogJetpackSettingsService {
 
     func updateBlockMaliciousLoginAttemptsForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.blockMaliciousLoginAttemptsKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.blockMaliciousLoginAttempts,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -91,7 +91,7 @@ struct BlogJetpackSettingsService {
     func updateWhiteListedIPAddressesForBlog(_ blog: Blog, value: Set<String>, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         let joinedIPs = value.joined(separator: ", ")
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.whiteListedIPAddressesKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.whiteListedIPAddresses,
                                     value: joinedIPs as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -99,7 +99,7 @@ struct BlogJetpackSettingsService {
 
     func updateSSOEnabledForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoEnabledKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoEnabled,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -107,7 +107,7 @@ struct BlogJetpackSettingsService {
 
     func updateSSOMatchAccountsByEmailForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoMatchAccountsByEmailKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoMatchAccountsByEmail,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)
@@ -115,7 +115,7 @@ struct BlogJetpackSettingsService {
 
     func updateSSORequireTwoStepAuthenticationForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoRequireTwoStepAuthenticationKey,
+                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoRequireTwoStepAuthentication,
                                     value: value as AnyObject,
                                     success: success,
                                     failure: failure)

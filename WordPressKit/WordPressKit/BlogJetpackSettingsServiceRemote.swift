@@ -109,12 +109,12 @@ private extension BlogJetpackSettingsServiceRemote {
 
     func remoteJetpackSettingsFromDictionary(_ dictionary: [String: AnyObject]) throws -> RemoteBlogJetpackSettings {
 
-        guard let monitorEnabled = dictionary[Keys.monitorEnabledKey] as? Bool,
-            let blockMaliciousLoginAttempts = dictionary[Keys.blockMaliciousLoginAttemptsKey] as? Bool,
-            let whitelistedIPs = dictionary[Keys.whiteListedIPAddressesKey]?[Keys.whiteListedIPsLocalKey] as? Array<String>,
-            let ssoEnabled = dictionary[Keys.ssoEnabledKey] as? Bool,
-            let ssoMatchAccountsByEmail = dictionary[Keys.ssoMatchAccountsByEmailKey] as? Bool,
-            let ssoRequireTwoStepAuthentication = dictionary[Keys.ssoRequireTwoStepAuthenticationKey] as? Bool else {
+        guard let monitorEnabled = dictionary[Keys.monitorEnabled] as? Bool,
+            let blockMaliciousLoginAttempts = dictionary[Keys.blockMaliciousLoginAttempts] as? Bool,
+            let whitelistedIPs = dictionary[Keys.whiteListedIPAddresses]?[Keys.whiteListedIPsLocal] as? Array<String>,
+            let ssoEnabled = dictionary[Keys.ssoEnabled] as? Bool,
+            let ssoMatchAccountsByEmail = dictionary[Keys.ssoMatchAccountsByEmail] as? Bool,
+            let ssoRequireTwoStepAuthentication = dictionary[Keys.ssoRequireTwoStepAuthentication] as? Bool else {
                 throw ResponseError.decodingFailure
         }
 
@@ -128,8 +128,8 @@ private extension BlogJetpackSettingsServiceRemote {
 
     func remoteJetpackMonitorSettingsFromDictionary(_ dictionary: [String: AnyObject]) throws -> RemoteBlogJetpackMonitorSettings {
 
-        guard let monitorEmailNotifications = dictionary[Keys.monitorEmailNotificationsKey] as? Bool,
-            let monitorPushNotifications = dictionary[Keys.monitorPushNotificationsKey] as? Bool else {
+        guard let monitorEmailNotifications = dictionary[Keys.monitorEmailNotifications] as? Bool,
+            let monitorPushNotifications = dictionary[Keys.monitorPushNotifications] as? Bool else {
                 throw ResponseError.decodingFailure
         }
         
@@ -139,19 +139,19 @@ private extension BlogJetpackSettingsServiceRemote {
 
     func dictionaryFromJetpackSettings(_ settings: RemoteBlogJetpackSettings) -> [String: AnyObject] {
 
-        return [Keys.monitorEnabledKey: settings.monitorEnabled as AnyObject,
-                Keys.blockMaliciousLoginAttemptsKey: settings.blockMaliciousLoginAttempts as AnyObject,
-                Keys.whiteListedIPAddressesKey: settings.loginWhiteListedIPAddresses as AnyObject,
-                Keys.ssoEnabledKey: settings.ssoEnabled as AnyObject,
-                Keys.ssoMatchAccountsByEmailKey: settings.ssoEnabled as AnyObject,
-                Keys.ssoRequireTwoStepAuthenticationKey: settings.ssoEnabled as AnyObject]
+        return [Keys.monitorEnabled: settings.monitorEnabled as AnyObject,
+                Keys.blockMaliciousLoginAttempts: settings.blockMaliciousLoginAttempts as AnyObject,
+                Keys.whiteListedIPAddresses: settings.loginWhiteListedIPAddresses as AnyObject,
+                Keys.ssoEnabled: settings.ssoEnabled as AnyObject,
+                Keys.ssoMatchAccountsByEmail: settings.ssoEnabled as AnyObject,
+                Keys.ssoRequireTwoStepAuthentication: settings.ssoEnabled as AnyObject]
 
     }
 
     func dictionaryFromJetpackMonitorSettings(_ settings: RemoteBlogJetpackMonitorSettings) -> [String: AnyObject] {
 
-        return [Keys.monitorEmailNotificationsKey: settings.monitorEmailNotifications as AnyObject,
-                Keys.monitorPushNotificationsKey: settings.monitorPushNotifications as AnyObject]
+        return [Keys.monitorEmailNotifications: settings.monitorEmailNotifications as AnyObject,
+                Keys.monitorPushNotifications: settings.monitorPushNotifications as AnyObject]
     }
 }
 
@@ -161,17 +161,17 @@ public extension BlogJetpackSettingsServiceRemote {
     public enum Keys {
 
         // RemoteBlogJetpackSettings keys
-        public static let monitorEnabledKey = "monitor"
-        public static let blockMaliciousLoginAttemptsKey  = "protect"
-        public static let whiteListedIPAddressesKey = "jetpack_protect_global_whitelist"
-        public static let whiteListedIPsLocalKey = "local"
-        public static let ssoEnabledKey = "sso"
-        public static let ssoMatchAccountsByEmailKey = "jetpack_sso_match_by_email"
-        public static let ssoRequireTwoStepAuthenticationKey = "jetpack_sso_require_two_step"
+        public static let monitorEnabled = "monitor"
+        public static let blockMaliciousLoginAttempts  = "protect"
+        public static let whiteListedIPAddresses = "jetpack_protect_global_whitelist"
+        public static let whiteListedIPsLocal = "local"
+        public static let ssoEnabled = "sso"
+        public static let ssoMatchAccountsByEmail = "jetpack_sso_match_by_email"
+        public static let ssoRequireTwoStepAuthentication = "jetpack_sso_require_two_step"
 
         // RemoteBlogJetpackMonitorSettings keys
-        static let monitorEmailNotificationsKey = "email_notifications"
-        static let monitorPushNotificationsKey = "wp_note_notifications"
+        static let monitorEmailNotifications = "email_notifications"
+        static let monitorPushNotifications = "wp_note_notifications"
 
     }
 }
