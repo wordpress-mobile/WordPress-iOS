@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSArray<StatsSummary *> *statsData;
 @property (nonatomic, assign) StatsSummaryType currentSummaryType;
 @property (nonatomic, strong) NSDate *selectedDate;
+@property CGFloat dateFontSize;
 
 @end
 
@@ -72,6 +73,14 @@ static NSInteger const RecommendedYAxisTicks = 2;
         [self setVisits:self.visits forSummaryType:self.currentSummaryType withSelectedDate:self.selectedDate];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
     }];
+}
+
+- (void)viewWillLayoutSubviews
+{
+	[super viewWillLayoutSubviews];
+	
+	// precalculate the date font size to assign to each instance of WPStatsGraphBarCell
+	self.dateFontSize = [self calculateDateFontSize];
 }
 
 #pragma mark - UICollectionViewDelegate methods
@@ -131,6 +140,7 @@ static NSInteger const RecommendedYAxisTicks = 2;
     
     [cell setCategoryBars:barData];
     cell.barName = [self.statsData[(NSUInteger)indexPath.row] label];
+	cell.barNameFontSize = self.dateFontSize;
     [cell finishedSettingProperties];
     
     return cell;
@@ -207,6 +217,50 @@ static NSInteger const RecommendedYAxisTicks = 2;
 }
 
 #pragma mark - Private methods
+
+- (CGFloat)calculateDateFontSize
+{
+	// step through each of the dates
+	// and calculate what font size each would actually be displayed at
+	// then return the smallest font size out of all of them
+	CGFloat smallestFontSize = [[WPStyleGuide axisLabelFont] pointSize];
+	
+	for (StatsSummary *summary in self.statsData) {
+		NSInteger index = (NSInteger)[self.statsData indexOfObject:summary];
+		NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+		
+		WPStatsGraphBarCell *cell = [self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
+		CGFloat currentFontSize = [self fontSizeForString:cell.barName inRect:cell.frame];
+		
+		if (index == 0) {
+			smallestFontSize = currentFontSize;
+		} else if (currentFontSize < smallestFontSize) {
+			smallestFontSize = currentFontSize;
+		}
+	}
+	
+	return smallestFontSize;
+}
+
+- (CGFloat)fontSizeForString: (NSString *)string inRect: (CGRect)rect
+{
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(rect), 17.0f)];
+	label.text = string;
+	label.textAlignment = NSTextAlignmentCenter;
+	label.adjustsFontSizeToFitWidth = YES;
+	label.minimumScaleFactor = 0.5;
+	label.font = [WPStyleGuide axisLabelFont];
+	
+	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:label.attributedText];
+	[text setAttributes:@{NSFontAttributeName:label.font} range:NSMakeRange(0, text.length)];
+	
+	NSStringDrawingContext *context = [NSStringDrawingContext new];
+	context.minimumScaleFactor = label.minimumScaleFactor;
+	[text boundingRectWithSize:label.frame.size options:NSStringDrawingUsesLineFragmentOrigin context:context];
+	CGFloat adjustedFontSize = label.font.pointSize * context.actualScaleFactor;
+	
+	return adjustedFontSize;
+}
 
 - (void)truncateDataIfNecessary
 {
