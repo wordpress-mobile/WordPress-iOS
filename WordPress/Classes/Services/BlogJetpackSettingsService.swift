@@ -17,10 +17,9 @@ struct BlogJetpackSettingsService {
             success()
             return
         }
-        guard let blogInContext = self.context.object(with: blog.objectID) as? Blog,
-            let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
-            let blogDotComId = blogInContext.dotComID as? Int,
-            let blogSettings = blogInContext.settings else {
+        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+            let blogDotComId = blog.dotComID as? Int,
+            let blogSettings = blog.settings else {
                 success()
                 return
         }
@@ -123,16 +122,16 @@ struct BlogJetpackSettingsService {
     }
 
     func updateJetpackMonitorSettinsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let blogInContext = self.context.object(with: blog.objectID) as? Blog,
-            let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
-            let blogDotComId = blogInContext.dotComID as? Int else {
+        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+            let blogDotComId = blog.dotComID as? Int,
+            let blogSettings = blog.settings else {
                 failure(nil)
                 return
         }
 
         remote.updateJetpackMonitorSettingsForSite(blogDotComId,
-                                                   settings: self.jetpackMonitorsSettingsRemote(blogInContext.settings!),
-                                                   success: { () in
+                                                   settings: self.jetpackMonitorsSettingsRemote(blogSettings),
+                                                   success: {
                                                        do {
                                                            try self.context.save()
                                                            success()
@@ -149,9 +148,8 @@ struct BlogJetpackSettingsService {
 private extension BlogJetpackSettingsService {
 
     func updateJetpackSettingForBlog(_ blog: Blog, key: String, value: AnyObject, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let blogInContext = self.context.object(with: blog.objectID) as? Blog,
-            let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
-            let blogDotComId = blogInContext.dotComID as? Int else {
+        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+            let blogDotComId = blog.dotComID as? Int else {
                 failure(nil)
                 return
         }
@@ -159,7 +157,7 @@ private extension BlogJetpackSettingsService {
         remote.updateJetpackSetting(blogDotComId,
                                     key: key,
                                     value: value,
-                                    success: { () in
+                                    success: {
                                         do {
                                             try self.context.save()
                                             success()
