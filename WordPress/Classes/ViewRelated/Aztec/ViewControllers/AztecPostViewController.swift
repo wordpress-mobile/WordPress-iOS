@@ -390,6 +390,17 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
 
+    /// Media Picker
+    ///
+    fileprivate lazy var insertToolbarItem: UIButton = {
+        let insertItem = UIButton(type: .custom)
+        insertItem.titleLabel?.font = Fonts.mediaPickerInsert
+        insertItem.tintColor = WPStyleGuide.wordPressBlue()
+        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+
+        return insertItem
+    }()
+
     fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
     fileprivate var originalLeadingBarButtonGroup = [UIBarButtonItemGroup]()
@@ -1268,7 +1279,7 @@ extension AztecPostViewController : UITextViewDelegate {
             formatBar.enabled = false
 
             // Disable the bar, except for the source code button
-            let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
+            let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
             htmlButton?.isEnabled = true
         default:
             break
@@ -2020,15 +2031,15 @@ extension AztecPostViewController {
             rotateMediaToolbarItem(leadingItem, forMode: mode)
         }
 
+        toolbar.trailingItem = nil
+
         switch mode {
         case .text:
-            toolbar.trailingItem = nil
-            toolbar.defaultItems = scrollableItemsForToolbar
-            toolbar.overflowItems = overflowItemsForToolbar
+            toolbar.setDefaultItems(scrollableItemsForToolbar,
+                                    overflowItems: overflowItemsForToolbar)
         case .media:
-            toolbar.trailingItem = makeInsertToolbarItem()
-            toolbar.defaultItems = mediaItemsForToolbar
-            toolbar.overflowItems = []
+            toolbar.setDefaultItems(mediaItemsForToolbar,
+                                    overflowItems: [])
         }
     }
 
@@ -2065,16 +2076,6 @@ extension AztecPostViewController {
         animator.startAnimation()
     }
 
-    func makeInsertToolbarItem() -> UIButton {
-        let insertItem = UIButton(type: .custom)
-        insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = WPStyleGuide.wordPressBlue()
-        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
-        insertItem.isEnabled = false
-
-        return insertItem
-    }
-
     func makeToolbarButton(identifier: FormattingIdentifier) -> FormatBarItem {
         return makeToolbarButton(identifier: identifier.rawValue, provider: identifier)
     }
@@ -2092,14 +2093,17 @@ extension AztecPostViewController {
 
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
-        toolbar.leadingItem = makeToolbarButton(identifier: .media)
-        updateToolbar(toolbar, forMode: .text)
+
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
+
+        toolbar.leadingItem = makeToolbarButton(identifier: .media)
+        updateToolbar(toolbar, forMode: .text)
+
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
         toolbar.formatter = self
 
@@ -3069,18 +3073,18 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     private func updateFormatBarInsertAssetCount() {
-        guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count,
-              let trailingItem = formatBar.trailingItem else {
+        guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count else {
             return
         }
 
         if assetCount == 0 {
-            trailingItem.setTitle(nil, for: .normal)
-            trailingItem.isEnabled = false
-
+            formatBar.trailingItem = nil
         } else {
-            trailingItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
-            trailingItem.isEnabled = true
+            insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
+
+            if formatBar.trailingItem != insertToolbarItem {
+                formatBar.trailingItem = insertToolbarItem
+            }
         }
     }
 }
