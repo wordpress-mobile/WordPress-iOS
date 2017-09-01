@@ -314,7 +314,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func refreshSettings() {
         service.syncJetpackSettingsForBlog(blog,
                                            success: { [weak self] in
-                                               self?.tableView.reloadData()
+                                               self?.reloadViewModel()
                                                DDLogInfo("Reloaded Jetpack Settings")
                                            },
                                            failure: { (error: Error?) in
