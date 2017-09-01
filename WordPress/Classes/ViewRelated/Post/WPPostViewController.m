@@ -90,7 +90,9 @@ MediaProgressCoordinatorDelegate
 @property (nonatomic, strong) MediaProgressCoordinator * mediaProgressCoordinator;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
-@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
+@property (nonatomic, strong) WPPHAssetDataSource *deviceLibraryDataSource;
+@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
+@property (nonatomic, strong) WPMediaCapturePresenter *capturePresenter;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -283,7 +285,7 @@ MediaProgressCoordinatorDelegate
     self.delegate = self;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
-        [self showMediaPickerAnimated:NO];
+        [self showMediaPickerForDeviceLibraryAnimated:NO];
     } else if (!self.isOpenedDirectlyForEditing) {
         [self refreshNavigationBarButtons:NO];
     }
@@ -664,6 +666,24 @@ MediaProgressCoordinatorDelegate
     return [PostSettingsViewController class];
 }
 
+- (void)presentMediaCapture
+{
+    self.capturePresenter = [[WPMediaCapturePresenter alloc] initWithPresentingViewController:self];
+    self.capturePresenter.mediaType = WPMediaTypeImage | WPMediaTypeVideo;
+
+    __weak __typeof(self) weakSelf = self;
+    self.capturePresenter.completionBlock = ^(NSDictionary * _Nullable mediaInfo) {
+        if (mediaInfo) {
+            [weakSelf processMediaCaptured:mediaInfo];
+        } else {
+            [weakSelf.editorView.focusedField focus];
+        }
+        weakSelf.capturePresenter = nil;
+    };
+
+    [self.capturePresenter presentCapture];
+}
+
 - (void)showCancelMediaUploadPrompt
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Cancel media uploads", "Dialog box title for when the user is cancelling an upload.")
@@ -774,14 +794,71 @@ MediaProgressCoordinatorDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaPickerAnimated:(BOOL)animated
+- (WPPHAssetDataSource *)deviceLibraryDataSource
 {
-    self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
+    if (!_deviceLibraryDataSource) {
+        _deviceLibraryDataSource = [WPPHAssetDataSource new];
+    }
+
+    return _deviceLibraryDataSource;
+}
+
+- (void)processMediaCaptured:(NSDictionary *)info
+{
+    WPMediaAddedBlock completionBlock = ^(id<WPMediaAsset> media, NSError *error) {
+        if (error || !media) {
+            NSLog(@"Adding media failed: %@", [error localizedDescription]);
+            return;
+        }
+        [self.editorView.focusedField focus];
+        [self addMediaAssets:@[media]];
+    };
+
+    if ([info[UIImagePickerControllerMediaType] isEqual:(NSString *)kUTTypeImage]) {
+        UIImage *image = (UIImage *)info[UIImagePickerControllerOriginalImage];
+        [self.deviceLibraryDataSource addImage:image
+                         metadata:info[UIImagePickerControllerMediaMetadata]
+                  completionBlock:completionBlock];
+    } else if ([info[UIImagePickerControllerMediaType] isEqual:(NSString *)kUTTypeMovie]) {
+        [self.deviceLibraryDataSource addVideoFromURL:info[UIImagePickerControllerMediaURL] completionBlock:completionBlock];
+    }
+}
+
+- (void)showMediaPickerForDeviceLibraryAnimated:(BOOL)animated
+{
     WPMediaPickerOptions *options = [WPMediaPickerOptions new];
     options.showMostRecentFirst = YES;
+    options.allowCaptureOfMedia = NO;
+
+    [self showMediaPickerWithDataSource:self.deviceLibraryDataSource
+                                options:options
+                      showGroupSelector:YES
+                               animated:animated];
+}
+
+- (void)showMediaPickerForWordPressLibraryAnimated:(BOOL)animated
+{
+    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:self.post];
+    WPMediaPickerOptions *options = [WPMediaPickerOptions new];
+    options.showMostRecentFirst = YES;
+    options.allowCaptureOfMedia = NO;
+
+    [self showMediaPickerWithDataSource:self.mediaLibraryDataSource
+                                options:options
+                      showGroupSelector:NO
+                               animated:animated];
+}
+
+- (void)showMediaPickerWithDataSource:(id<WPMediaCollectionDataSource>)dataSource
+                              options:(WPMediaPickerOptions *)options
+                    showGroupSelector:(BOOL)showGroupSelector
+                             animated:(BOOL)animated
+{
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
-    picker.dataSource = self.mediaLibraryDataSource;
+    picker.dataSource = dataSource;
     picker.delegate = self;
+    picker.showGroupSelector = showGroupSelector;
+
     [self presentViewController:picker animated:animated completion:nil];
 }
 
@@ -1925,7 +2002,33 @@ MediaProgressCoordinatorDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaPickerAnimated:YES];
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil
+                                                                        message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    __weak __typeof(self) weakSelf = self;
+    if ([WPMediaCapturePresenter isCaptureAvailable]) {
+        [controller addDefaultActionWithTitle:NSLocalizedString(@"Take Photo or Video", @"Button title used in hybrid editor for taking an image or video with the device's camera.")
+                                      handler:^(UIAlertAction *action){
+                                          [weakSelf presentMediaCapture];
+                                      }];
+    }
+
+    [controller addDefaultActionWithTitle:NSLocalizedString(@"Photo Library", @"Button title used in hybrid editor for selecting an image or video from the device's photo library.")
+                                  handler:^(UIAlertAction *action){
+                                      [weakSelf showMediaPickerForDeviceLibraryAnimated:YES];
+                                  }];
+
+    [controller addDefaultActionWithTitle:NSLocalizedString(@"WordPress Media", @"Button title used in hybrid editor for selecting an image or video from the user's WordPress media library.")
+                                  handler:^(UIAlertAction *action){
+                                      [weakSelf showMediaPickerForWordPressLibraryAnimated:YES];
+                                  }];
+
+    [controller addCancelActionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                 handler:^(UIAlertAction *action){
+        [self.toolbarView toolBarItemWithTag:kWPEditorViewControllerElementTagInsertImageBarButton
+                                 setSelected:NO];
+    }];
+
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
