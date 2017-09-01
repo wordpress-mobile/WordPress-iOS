@@ -8,7 +8,7 @@ workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
 def shared_with_all_pods
-  pod 'CocoaLumberjack', '3.2.0'
+  pod 'CocoaLumberjack', '3.2.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'UIDeviceIdentifier', '~> 0.4'
@@ -54,7 +54,7 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.20'
   pod 'WordPress-iOS-Editor', '1.9.4'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.11'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '76e94b6bd8358a4ec4d60a568e4dd02895315a61'
 
   target 'WordPressTest' do
     inherit! :search_paths
