@@ -53,6 +53,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePlans,
     /// Does the blog support plugins?
     BlogFeaturePluginManagement,
+    /// Does the blog support Jetpack settings
+    BlogFeatureJetpackSettings,
     /// Does the blog support custom domains?
     BlogFeatureDomains,
     /// Does the blog support frame-nonce to authenticate previews?
