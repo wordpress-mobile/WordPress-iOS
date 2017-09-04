@@ -19,19 +19,27 @@ public final class WordPressComOAuthClient: NSObject {
 
     public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
+    public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint"
     public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
-
-    fileprivate let sessionManager: AFHTTPSessionManager = {
-        let baseURL = URL(string: WordPressComOAuthClient.WordPressComOAuthBaseUrl)
-        let sessionConfiguration = URLSessionConfiguration.ephemeral
-        let sessionManager = AFHTTPSessionManager(baseURL: baseURL, sessionConfiguration: sessionConfiguration)
-        sessionManager.responseSerializer = WordPressComOAuthResponseSerializer()
-        sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
-        return sessionManager
-    }()
 
     fileprivate let clientID: String
     fileprivate let secret: String
+
+    fileprivate let oauth2SessionManager: AFHTTPSessionManager = {
+        return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComOAuthBaseUrl)
+    }()
+
+    fileprivate let socialSessionManager: AFHTTPSessionManager = {
+        return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComSocialLoginUrl)
+    }()
+
+    fileprivate class func sessionManager(url: String) -> AFHTTPSessionManager {
+        let baseURL = URL(string: url)
+        let sessionManager = AFHTTPSessionManager(baseURL: baseURL, sessionConfiguration: .ephemeral)
+        sessionManager.responseSerializer = WordPressComOAuthResponseSerializer()
+        sessionManager.requestSerializer.setValue("application/json", forHTTPHeaderField: "Accept")
+        return sessionManager
+    }
 
     /// Creates a WordPresComOAuthClient initialized with the clientID and secret constants defined in the
     /// ApiCredentials singleton
@@ -79,7 +87,7 @@ public final class WordPressComOAuthClient: NSObject {
             parameters["wpcom_otp"] = multifactorCode as AnyObject?
         }
 
-        sessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
+        oauth2SessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
             DDLogVerbose("Received OAuth2 response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
             guard let responseDictionary = responseObject as? [String: AnyObject],
                 let authToken = responseDictionary["access_token"] as? String else {
@@ -115,8 +123,44 @@ public final class WordPressComOAuthClient: NSObject {
             "wpcom_resend_otp": true
         ] as [String : Any]
 
-        sessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
+        oauth2SessionManager.post("token", parameters: parameters, progress: nil, success: { (task, responseObject) in
             success()
+            }, failure: { (task, error) in
+                failure(error as NSError)
+            }
+        )
+    }
+
+    /// Authenticate on WordPress.com with a social service's ID token.
+    /// Only google is supported at this time.
+    ///
+    /// - Parameters:
+    ///     - token: A social ID token obtained from a supported social service.
+    ///     - success: block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
+    ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
+    ///
+    public func authenticateWithIDToken(_ token: String,
+                                        success: @escaping (_ authToken: String?) -> (),
+                                        failure: @escaping (_ error: NSError) -> () ) {
+        let parameters = [
+            "client_id": clientID,
+            "client_secret": secret,
+            "service": "google",
+            "get_bearer_token": true,
+            "id_token" : token,
+        ] as [String : Any]
+
+        // Passes an empty string for the
+        socialSessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
+            DDLogVerbose("Received Social Login Oauth response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
+            guard let responseDictionary = responseObject as? [String: AnyObject],
+            let data = responseDictionary["data"] as? [String: AnyObject],
+            let authToken = data["bearer_token"] as? String else {
+                    success(nil)
+                    return
+            }
+            success(authToken)
+
             }, failure: { (task, error) in
                 failure(error as NSError)
             }
