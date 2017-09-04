@@ -297,7 +297,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
 
-            postEditorStateContext = nil
+            postEditorStateContext = createEditorStateContext(for: post)
             refreshInterface()
         }
     }
@@ -358,22 +358,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate lazy var postEditorStateContext: PostEditorStateContext! = {
-        var originalPostStatus: BasePost.Status? = nil
-
-        if let originalPost = self.post.original,
-            let postStatus = originalPost.status,
-            originalPost.hasRemote() {
-            originalPostStatus = postStatus
-        }
-
-
-        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
-        // to showing Publish Now instead of Submit for Review.
-        let userCanPublish = self.post.blog.capabilities != nil ? self.post.blog.isPublishingPostsAllowed() : true
-        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: userCanPublish, publishDate: self.post.dateCreated, delegate: self)
-
-        return context
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext = { [unowned self] in
+        return self.createEditorStateContext(for: self.post)
     }()
 
     /// Current keyboard rect used to help size the inline media picker
@@ -546,6 +532,29 @@ class AztecPostViewController: UIViewController, PostEditor {
         contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
         referenceView.contentInset = contentInset
         referenceView.setContentOffset(CGPoint(x:0, y: -contentInset.top), animated: false)
+    }
+
+
+    // MARK: - Construction Helpers
+
+    /// Returns a new Editor Context for a given Post instance.
+    ///
+    private func createEditorStateContext(for post: AbstractPost) -> PostEditorStateContext {
+        var originalPostStatus: BasePost.Status? = nil
+
+        if let originalPost = post.original, let postStatus = originalPost.status, originalPost.hasRemote() {
+            originalPostStatus = postStatus
+        }
+
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
+        // to showing Publish Now instead of Submit for Review.
+        //
+        let userCanPublish = post.blog.capabilities != nil ? post.blog.isPublishingPostsAllowed() : true
+
+        return PostEditorStateContext(originalPostStatus: originalPostStatus,
+                                      userCanPublish: userCanPublish,
+                                      publishDate: post.dateCreated,
+                                      delegate: self)
     }
 
 
@@ -2955,7 +2964,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
     }
 
-    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) {
+    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
         var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
