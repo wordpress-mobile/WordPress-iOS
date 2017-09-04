@@ -33,4 +33,15 @@
     [client requestOneTimeCodeWithUsername:username password:password success:success failure:failure];
 }
 
+
+- (void)authenticateWithGoogleIDToken:(NSString *)IDToken
+                              success:(void (^)(NSString *authToken))success
+                              failure:(void (^)(NSError *error))failure
+{
+    WordPressComOAuthClient *client = [WordPressComOAuthClient clientWithClientID:ApiCredentials.client secret:ApiCredentials.secret];
+    [client authenticateWithIDToken:IDToken success:success failure:failure];
+}
+
+
+
 @end
