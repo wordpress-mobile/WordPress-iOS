@@ -172,4 +172,40 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var sharingDisabledReblogs: Bool
 
+
+
+    // MARK: - Jetpack Settings
+
+    /// Indicates whether the Jetpack site's monitor is on or off
+    ///
+    @NSManaged var jetpackMonitorEnabled: Bool
+
+    /// Indicates whether the Jetpack site's monitor notifications should be sent by email
+    ///
+    @NSManaged var jetpackMonitorEmailNotifications: Bool
+
+    /// Indicates whether the Jetpack site's monitor notifications should be sent by push notifications
+    ///
+    @NSManaged var jetpackMonitorPushNotifications: Bool
+
+    /// Indicates whether Jetpack will block malicious login attemps
+    ///
+    @NSManaged var jetpackBlockMaliciousLoginAttempts: Bool
+
+    /// List of IP addresses that will never be blocked for logins by Jetpack
+    ///
+    @NSManaged var jetpackLoginWhiteListedIPAddresses: Set<String>?
+
+    /// Indicates whether WordPress.com SSO is enabled for the Jetpack site
+    ///
+    @NSManaged var jetpackSSOEnabled: Bool
+
+    /// Indicates whether SSO will try to match accounts by email address
+    ///
+    @NSManaged var jetpackSSOMatchAccountsByEmail: Bool
+
+    /// Indicates whether to force or not two-step authentication when users log in via WordPress.com
+    ///
+    @NSManaged var jetpackSSORequireTwoStepAuthentication: Bool
+
 }
