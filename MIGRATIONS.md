@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 66
+- @elibud 2017-08-17
+- `BlogSettings` added the following Jetpack security settings properties: 
+    `jetpackMonitorEnabled`, `jetpackMonitorEmailNotifications`, `jetpackMonitorPushNotifications`, 
+    `jetpackBlockMaliciousLoginAttempts`, `jetpackSSOEnabled`, `jetpackSSOMatchAccountsByEmail`, 
+    `jetpackSSORequireTwoStepAuthentication` boolean, default `NO` and
+    `jetpackLoginWhiteListedIPAddresses` string set property.
+
 ## WordPress 65
 - @elibud 2017-08-02
 - `Theme` added `themeUrl` string property.
