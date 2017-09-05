@@ -52,13 +52,30 @@
     }
 }
 
-
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields
 {
     [self.wordpressComOAuthClientFacade requestOneTimeCodeWithUsername:loginFields.username password:loginFields.password success:^{
         [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
     } failure:^(NSError *error) {
         DDLogError(@"Failed to request one time code");
+    }];
+}
+
+- (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken
+{
+    if ([self.delegate respondsToSelector:@selector(displayLoginMessage:)]) {
+        [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+    }
+
+    [self.wordpressComOAuthClientFacade authenticateWithGoogleIDToken:googleIDToken success:^(NSString *authToken) {
+        if ([self.delegate respondsToSelector:@selector(finishedLoginWithGoogleIDToken:authToken:)]) {
+            [self.delegate finishedLoginWithGoogleIDToken:googleIDToken authToken:authToken];
+        }
+    } failure:^(NSError *error) {
+        [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
+        if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
+            [self.delegate displayRemoteError:error];
+        }
     }];
 }
 
