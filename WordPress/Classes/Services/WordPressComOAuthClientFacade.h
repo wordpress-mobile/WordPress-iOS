@@ -15,6 +15,10 @@
                                success:(void (^)(void))success
                                failure:(void (^)(NSError *error))failure;
 
+- (void)authenticateWithGoogleIDToken:(NSString *)IDToken
+                              success:(void (^)(NSString *authToken))success
+                              failure:(void (^)(NSError *error))failure;
+
 @end
 
 @interface WordPressComOAuthClientFacade : NSObject <WordPressComOAuthClientFacade>

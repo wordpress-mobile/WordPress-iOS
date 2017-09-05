@@ -113,5 +113,14 @@
  */
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode;
 
+
+/**
+ *  Called when finished logging in to a WordPress.com site via a Google token.
+ *
+ *  @param googleIDToken            the token used
+ *  @param authToken                authToken to be used to access the site
+ */
+- (void)finishedLoginWithGoogleIDToken:(NSString *)googleIDToken authToken:(NSString *)authToken;
+
 @end
 
