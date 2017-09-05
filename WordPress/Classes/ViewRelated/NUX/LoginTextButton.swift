@@ -26,7 +26,7 @@ extension UIButton {
         // 👇 don't want to crash when a translation lacks "{G}"
         let lastPart = labelParts.indices.contains(1) ? labelParts[1] : ""
 
-        let labelString = NSMutableAttributedString(string: firstPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.darkGrey()])
+        let labelString = NSMutableAttributedString(string: firstPart, attributes:[NSForegroundColorAttributeName: WPStyleGuide.greyDarken30()])
 
         if let googleIcon = UIImage(named: "google"), lastPart != "" {
             let googleAttachment = NSTextAttachment()
