@@ -25,6 +25,10 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         }
     }
 
+    private struct Constants {
+        static let googleButtonOffset: CGFloat = 5.0
+    }
+
 
     // MARK: Lifecycle Methods
 
@@ -35,6 +39,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         localizeControls()
         setupOnePasswordButtonIfNeeded()
         configureForWPComOnlyIfNeeded()
+        addGoogleButton()
     }
 
 
@@ -114,6 +119,28 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         WPStyleGuide.configureOnePasswordButtonForTextfield(emailTextField,
                                                             target: self,
                                                             selector: #selector(handleOnePasswordButtonTapped(_:)))
+    }
+
+    /// Add the log in with Google button to the view
+    func addGoogleButton() {
+        guard Feature.enabled(.googleLogin) else {
+            return
+        }
+
+        let button = UIButton.googleLoginButton()
+        view.addSubview(button)
+        button.addTarget(self, action: #selector(googleLoginTapped), for: .touchUpInside)
+
+        view.addConstraints([
+            button.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: Constants.googleButtonOffset),
+            button.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor)
+        ])
+    }
+
+    func googleLoginTapped() {
+        NSLog("Google log in button tapped")
     }
 
 
