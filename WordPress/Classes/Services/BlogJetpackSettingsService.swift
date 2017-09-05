@@ -70,55 +70,28 @@ struct BlogJetpackSettingsService {
         })
     }
 
-    // Jetpack settings have to be updated one by one because the API does not allow us to do it in any other way.
+    func updateJetpackSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+            let blogDotComId = blog.dotComID as? Int,
+            let blogSettings = blog.settings else {
+                failure(nil)
+                return
+        }
 
-    func updateJetpackMonitorEnabledForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.monitorEnabled,
-                                    value: value as AnyObject,
-                                    success: success,
-                                    failure: failure)
-    }
+        remote.updateJetpackSettingsForSite(blogDotComId,
+                                            settings: jetpackSettingsRemote(blogSettings),
+                                            success: {
+                                                do {
+                                                    try self.context.save()
+                                                    success()
+                                                } catch let error as NSError {
+                                                    failure(error)
+                                                }
+                                            },
+                                            failure: { (error) in
+                                                failure(error)
+                                            })
 
-    func updateBlockMaliciousLoginAttemptsForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.blockMaliciousLoginAttempts,
-                                    value: value as AnyObject,
-                                    success: success,
-                                    failure: failure)
-    }
-
-    func updateWhiteListedIPAddressesForBlog(_ blog: Blog, value: Set<String>, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        let joinedIPs = value.joined(separator: ", ")
-        updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.whiteListedIPAddresses,
-                                    value: joinedIPs as AnyObject,
-                                    success: success,
-                                    failure: failure)
-    }
-
-    func updateSSOEnabledForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoEnabled,
-                                    value: value as AnyObject,
-                                    success: success,
-                                    failure: failure)
-    }
-
-    func updateSSOMatchAccountsByEmailForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoMatchAccountsByEmail,
-                                    value: value as AnyObject,
-                                    success: success,
-                                    failure: failure)
-    }
-
-    func updateSSORequireTwoStepAuthenticationForBlog(_ blog: Blog, value: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        updateJetpackSettingForBlog(blog,
-                                    key: BlogJetpackSettingsServiceRemote.Keys.ssoRequireTwoStepAuthentication,
-                                    value: value as AnyObject,
-                                    success: success,
-                                    failure: failure)
     }
 
     func updateJetpackMonitorSettinsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
@@ -130,7 +103,7 @@ struct BlogJetpackSettingsService {
         }
 
         remote.updateJetpackMonitorSettingsForSite(blogDotComId,
-                                                   settings: self.jetpackMonitorsSettingsRemote(blogSettings),
+                                                   settings: jetpackMonitorsSettingsRemote(blogSettings),
                                                    success: {
                                                        do {
                                                            try self.context.save()
@@ -147,29 +120,6 @@ struct BlogJetpackSettingsService {
 
 private extension BlogJetpackSettingsService {
 
-    func updateJetpackSettingForBlog(_ blog: Blog, key: String, value: AnyObject, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
-            let blogDotComId = blog.dotComID as? Int else {
-                failure(nil)
-                return
-        }
-
-        remote.updateJetpackSetting(blogDotComId,
-                                    key: key,
-                                    value: value,
-                                    success: {
-                                        do {
-                                            try self.context.save()
-                                            success()
-                                        } catch let error as NSError {
-                                            failure(error)
-                                        }
-                                    },
-                                    failure: { (error) in
-                                        failure(error)
-                                    })
-    }
-
     func updateJetpackSettings(_ settings: BlogSettings, remoteSettings: RemoteBlogJetpackSettings) {
         settings.jetpackMonitorEnabled = remoteSettings.monitorEnabled
         settings.jetpackBlockMaliciousLoginAttempts = remoteSettings.blockMaliciousLoginAttempts
@@ -182,6 +132,15 @@ private extension BlogJetpackSettingsService {
     func updateJetpackMonitorSettings(_ settings: BlogSettings, remoteSettings: RemoteBlogJetpackMonitorSettings) {
         settings.jetpackMonitorEmailNotifications = remoteSettings.monitorEmailNotifications
         settings.jetpackMonitorPushNotifications = remoteSettings.monitorPushNotifications
+    }
+
+    func jetpackSettingsRemote(_ settings: BlogSettings) -> RemoteBlogJetpackSettings {
+        return RemoteBlogJetpackSettings(monitorEnabled: settings.jetpackMonitorEnabled,
+                                         blockMaliciousLoginAttempts: settings.jetpackBlockMaliciousLoginAttempts,
+                                         loginWhiteListedIPAddresses: settings.jetpackLoginWhiteListedIPAddresses != nil ? settings.jetpackLoginWhiteListedIPAddresses! : Set<String>(),
+                                         ssoEnabled: settings.jetpackSSOEnabled,
+                                         ssoMatchAccountsByEmail: settings.jetpackSSOMatchAccountsByEmail,
+                                         ssoRequireTwoStepAuthentication: settings.jetpackSSORequireTwoStepAuthentication)
     }
 
     func jetpackMonitorsSettingsRemote(_ settings: BlogSettings) -> RemoteBlogJetpackMonitorSettings {

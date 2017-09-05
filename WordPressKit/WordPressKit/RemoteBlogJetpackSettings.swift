@@ -28,4 +28,17 @@ public struct RemoteBlogJetpackSettings {
     ///
     public let ssoRequireTwoStepAuthentication: Bool
 
+    public init(monitorEnabled: Bool,
+                blockMaliciousLoginAttempts: Bool,
+                loginWhiteListedIPAddresses: Set<String>,
+                ssoEnabled: Bool,
+                ssoMatchAccountsByEmail: Bool,
+                ssoRequireTwoStepAuthentication: Bool) {
+        self.monitorEnabled = monitorEnabled
+        self.blockMaliciousLoginAttempts = blockMaliciousLoginAttempts
+        self.loginWhiteListedIPAddresses = loginWhiteListedIPAddresses
+        self.ssoEnabled = ssoEnabled
+        self.ssoMatchAccountsByEmail = ssoMatchAccountsByEmail
+        self.ssoRequireTwoStepAuthentication = ssoRequireTwoStepAuthentication
+    }
 }

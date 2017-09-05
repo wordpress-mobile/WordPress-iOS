@@ -176,14 +176,13 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func jetpackMonitorEnabledValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackMonitorEnabled = newValue
-            self.service.updateJetpackMonitorEnabledForBlog(self.blog,
-                                                            value: newValue,
-                                                            success: { [weak self] in
-                                                                self?.reloadViewModel()
-                                                            },
-                                                            failure: { [weak self] (_) in
-                                                                self?.refreshSettingsAfterSavingError()
-                                                            })
+            self.service.updateJetpackSettingsForBlog(self.blog,
+                                                      success: { [weak self] in
+                                                          self?.reloadViewModel()
+                                                      },
+                                                      failure: { [weak self] (_) in
+                                                          self?.refreshSettingsAfterSavingError()
+                                                      })
         }
     }
 
@@ -212,14 +211,13 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func blockMaliciousLoginAttemptsValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackBlockMaliciousLoginAttempts = newValue
-            self.service.updateBlockMaliciousLoginAttemptsForBlog(self.blog,
-                                                                  value: newValue,
-                                                                  success: { [weak self] in
-                                                                      self?.reloadViewModel()
-                                                                  },
-                                                                  failure: { [weak self] (_) in
-                                                                      self?.refreshSettingsAfterSavingError()
-                                                                  })
+            self.service.updateJetpackSettingsForBlog(self.blog,
+                                                      success: {[weak self] in
+                                                          self?.reloadViewModel()
+                                                      },
+                                                      failure: { [weak self] (_) in
+                                                          self?.refreshSettingsAfterSavingError()
+                                                      })
         }
     }
 
@@ -242,12 +240,15 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
                 guard let blog = self?.blog else {
                     return
                 }
-                self?.service.updateWhiteListedIPAddressesForBlog(blog,
-                                                                  value: updated,
-                                                                  success: {},
-                                                                  failure: { [weak self] (_) in
-                                                                      self?.refreshSettingsAfterSavingError()
-                                                                  })
+                self?.service.updateJetpackSettingsForBlog(blog,
+                                                           success: { [weak self] in
+                                                               // viewWillAppear will trigger a refresh, maybe before
+                                                               // the new IPs are saved, so lets refresh again here
+                                                               self?.refreshSettings()
+                                                           },
+                                                           failure: { [weak self] (_) in
+                                                               self?.refreshSettingsAfterSavingError()
+                                                           })
             }
             self.navigationController?.pushViewController(settingsViewController, animated: true)
         }
@@ -256,38 +257,35 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func ssoEnabledChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackSSOEnabled = newValue
-            self.service.updateSSOEnabledForBlog(self.blog,
-                                                 value: newValue,
-                                                 success: { [weak self] in
-                                                     self?.reloadViewModel()
-                                                 },
-                                                 failure: { [weak self] (_) in
-                                                     self?.refreshSettingsAfterSavingError()
-                                                 })
+            self.service.updateJetpackSettingsForBlog(self.blog,
+                                                      success: { [weak self] in
+                                                          self?.reloadViewModel()
+                                                      },
+                                                      failure: { [weak self] (_) in
+                                                          self?.refreshSettingsAfterSavingError()
+                                                      })
         }
     }
 
     fileprivate func matchAccountsUsingEmailChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackSSOMatchAccountsByEmail = newValue
-            self.service.updateSSOMatchAccountsByEmailForBlog(self.blog,
-                                                              value: newValue,
-                                                              success: {},
-                                                              failure: { [weak self] (_) in
-                                                                  self?.refreshSettingsAfterSavingError()
-                                                              })
+            self.service.updateJetpackSettingsForBlog(self.blog,
+                                                      success: {},
+                                                      failure: { [weak self] (_) in
+                                                          self?.refreshSettingsAfterSavingError()
+                                                      })
         }
     }
 
     fileprivate func requireTwoStepAuthenticationChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackSSORequireTwoStepAuthentication = newValue
-            self.service.updateSSORequireTwoStepAuthenticationForBlog(self.blog,
-                                                                      value: newValue,
-                                                                      success: {},
-                                                                      failure: { [weak self] (_) in
-                                                                          self?.refreshSettingsAfterSavingError()
-                                                                      })
+            self.service.updateJetpackSettingsForBlog(self.blog,
+                                                      success: {},
+                                                      failure: { [weak self] (_) in
+                                                          self?.refreshSettingsAfterSavingError()
+                                                      })
         }
     }
 
