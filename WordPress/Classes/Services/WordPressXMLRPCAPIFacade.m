@@ -51,15 +51,22 @@ NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
 - (void)getBlogOptionsWithEndpoint:(NSURL *)xmlrpc
                          username:(NSString *)username
                          password:(NSString *)password
-                          success:(void (^)(id options))success
+                          success:(void (^)(NSDictionary *options))success
                           failure:(void (^)(NSError *error))failure;
 {
     
     WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlrpc userAgent:[WPUserAgent wordPressUserAgent]];
     [api checkCredentials:username password:password success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                if (failure) {
+                    NSError *error = [NSError errorWithDomain:WordPressOrgXMLRPCApiErrorDomain code:WordPressOrgXMLRPCApiErrorResponseSerializationFailed userInfo:nil];
+                    failure(error);
+                }
+                return;
+            }
             if (success) {
-                success(responseObject);
+                success((NSDictionary *)responseObject);
             }
         });
 
