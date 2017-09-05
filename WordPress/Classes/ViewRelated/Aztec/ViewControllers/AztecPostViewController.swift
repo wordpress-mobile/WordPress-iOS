@@ -2406,7 +2406,7 @@ private extension AztecPostViewController {
         } else {
             // On iOS 10, when the soft keyboard is visible, the keyboard's frame is within the dimensions of the screen.
             // However, when an external keyboard is present, the keyboard's frame is located offscreen. Test to see if
-            // that is true and return the result.
+            // that is true and adjust the keyboard height as necessary.
             if ((currentKeyboardFrame.origin.y + currentKeyboardFrame.height) > view.frame.height) {
                 keyboardHeight = (currentKeyboardFrame.maxY - view.frame.height)
             } else {
@@ -2415,9 +2415,7 @@ private extension AztecPostViewController {
         }
 
         // Sanity check
-        if keyboardHeight < keyboardHeightDefault {
-            keyboardHeight = keyboardHeightDefault
-        }
+        keyboardHeight = max(keyboardHeight, keyboardHeightDefault)
 
         return keyboardHeight
     }
