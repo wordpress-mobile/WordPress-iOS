@@ -184,6 +184,7 @@
 		435035991EDCAB99004ECF47 /* post.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035941EDCAB99004ECF47 /* post.json */; };
 		4350359A1EDCAB99004ECF47 /* reader.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035951EDCAB99004ECF47 /* reader.json */; };
 		4350359B1EDCAB99004ECF47 /* stats.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035961EDCAB99004ECF47 /* stats.json */; };
+		435A544E1F58AE260055DC71 /* GoogleKeys.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 435A544D1F58AE260055DC71 /* GoogleKeys.xcconfig */; };
 		436269641ECD0726008692C7 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436269631ECD0726008692C7 /* LoginButton.swift */; };
 		436605E21ECE568800EE8882 /* LoginNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436605E11ECE568800EE8882 /* LoginNavigationController.swift */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
@@ -1255,6 +1256,7 @@
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
 		39920FAF221D95AE0FEB8771 /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
 		430693731DD25F31009398A2 /* PostPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostPost.storyboard; sourceTree = "<group>"; };
+		4325EABB1F5A144E000E430D /* WordPress-debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "WordPress-debug.xcconfig"; sourceTree = "<group>"; };
 		433432511E9ED18900915988 /* LoginEpilogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueViewController.swift; sourceTree = "<group>"; };
 		433432531E9EE0B100915988 /* EpilogueSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueSegue.swift; sourceTree = "<group>"; };
 		4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueUserInfoCell.swift; sourceTree = "<group>"; };
@@ -1267,6 +1269,7 @@
 		435035941EDCAB99004ECF47 /* post.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post.json; sourceTree = "<group>"; };
 		435035951EDCAB99004ECF47 /* reader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reader.json; sourceTree = "<group>"; };
 		435035961EDCAB99004ECF47 /* stats.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stats.json; sourceTree = "<group>"; };
+		435A544D1F58AE260055DC71 /* GoogleKeys.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = GoogleKeys.xcconfig; sourceTree = "<group>"; };
 		436269631ECD0726008692C7 /* LoginButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		436605E11ECE568800EE8882 /* LoginNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginNavigationController.swift; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
@@ -2830,6 +2833,7 @@
 				930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */,
 				E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */,
 				8546B44C1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist */,
+				4325EABB1F5A144E000E430D /* WordPress-debug.xcconfig */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -4899,6 +4903,7 @@
 		E1B34C091CCDFFCE00889709 /* Credentials */ = {
 			isa = PBXGroup;
 			children = (
+				435A544D1F58AE260055DC71 /* GoogleKeys.xcconfig */,
 				FFC245D91D8C2033007F7518 /* wpcom_app_credentials.txt */,
 				E1B34C0A1CCDFFCE00889709 /* gencredentials.rb */,
 				E1B34C0B1CCDFFCE00889709 /* ApiCredentials.h */,
@@ -5507,6 +5512,7 @@
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				435035981EDCAB99004ECF47 /* notifications.json in Resources */,
 				B57273621B66CCEF000D1C4F /* AlertView.xib in Resources */,
+				435A544E1F58AE260055DC71 /* GoogleKeys.xcconfig in Resources */,
 				5DBFC8A91A9BE07B00E00DE4 /* Posts.storyboard in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */,
@@ -6908,7 +6914,7 @@
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABD73173AAA0E12A20FE10EE /* Pods-WordPress.debug.xcconfig */;
+			baseConfigurationReference = 4325EABB1F5A144E000E430D /* WordPress-debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;

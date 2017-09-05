@@ -26,11 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>org.wordpress</string>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wordpress-oauth-v2</string>
-				<string>${WPCOM_SCHEME}</string>
+				<string>${GOOGLE_LOGIN_SCHEMA_ID}</string>
 			</array>
 		</dict>
 	</array>
