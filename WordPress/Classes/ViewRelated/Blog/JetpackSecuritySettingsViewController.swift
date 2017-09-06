@@ -176,10 +176,9 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func jetpackMonitorEnabledValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackMonitorEnabled = newValue
+            self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
-                                                      success: { [weak self] in
-                                                          self?.reloadViewModel()
-                                                      },
+                                                      success: {},
                                                       failure: { [weak self] (_) in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
@@ -211,10 +210,9 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func blockMaliciousLoginAttemptsValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackBlockMaliciousLoginAttempts = newValue
+            self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
-                                                      success: {[weak self] in
-                                                          self?.reloadViewModel()
-                                                      },
+                                                      success: {},
                                                       failure: { [weak self] (_) in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
@@ -257,10 +255,9 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func ssoEnabledChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackSSOEnabled = newValue
+            self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
-                                                      success: { [weak self] in
-                                                          self?.reloadViewModel()
-                                                      },
+                                                      success: {},
                                                       failure: { [weak self] (_) in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
