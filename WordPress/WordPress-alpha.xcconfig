@@ -1,0 +1,2 @@
+#include "Credentials/GoogleKeys.xcconfig"
+#include "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release-alpha.xcconfig"

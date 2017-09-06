@@ -1255,6 +1255,9 @@
 		37DAB051AC4A30DFDF189F3F /* Pods-WordPressShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
 		39920FAF221D95AE0FEB8771 /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
+		430424741F5FB2C1009CA5B7 /* WordPress-release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "WordPress-release.xcconfig"; sourceTree = "<group>"; };
+		430424751F5FB2E2009CA5B7 /* WordPress-internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "WordPress-internal.xcconfig"; sourceTree = "<group>"; };
+		430424761F5FB308009CA5B7 /* WordPress-alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "WordPress-alpha.xcconfig"; sourceTree = "<group>"; };
 		430693731DD25F31009398A2 /* PostPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostPost.storyboard; sourceTree = "<group>"; };
 		4325EABB1F5A144E000E430D /* WordPress-debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "WordPress-debug.xcconfig"; sourceTree = "<group>"; };
 		433432511E9ED18900915988 /* LoginEpilogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueViewController.swift; sourceTree = "<group>"; };
@@ -2834,6 +2837,9 @@
 				E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */,
 				8546B44C1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist */,
 				4325EABB1F5A144E000E430D /* WordPress-debug.xcconfig */,
+				430424741F5FB2C1009CA5B7 /* WordPress-release.xcconfig */,
+				430424751F5FB2E2009CA5B7 /* WordPress-internal.xcconfig */,
+				430424761F5FB308009CA5B7 /* WordPress-alpha.xcconfig */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -6985,7 +6991,7 @@
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9173B1CDAD1D6AA7A8FDA5C6 /* Pods-WordPress.release.xcconfig */;
+			baseConfigurationReference = 430424741F5FB2C1009CA5B7 /* WordPress-release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -7269,7 +7275,7 @@
 		};
 		8546B4441BEAD39700193C07 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29AC9FF7AC6B00689946AC68 /* Pods-WordPress.release-alpha.xcconfig */;
+			baseConfigurationReference = 430424761F5FB308009CA5B7 /* WordPress-alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -7698,7 +7704,7 @@
 		};
 		93DEAA9E182D567A004E34D1 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 75DC53D9A82F40657A8FB12C /* Pods-WordPress.release-internal.xcconfig */;
+			baseConfigurationReference = 430424751F5FB2E2009CA5B7 /* WordPress-internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				APPLICATION_EXTENSION_API_ONLY = NO;
