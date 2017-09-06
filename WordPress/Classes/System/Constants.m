@@ -80,3 +80,10 @@ NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
 /// Scheme Constants
 ///
 NSString *const WPComScheme                                         = WPCOM_SCHEME;
+
+
+/// Google Contants
+///
+#ifdef GOOGLE_LOGIN_CLIENT_ID
+NSString *const GoogleClientID                                      = GOOGLE_LOGIN_CLIENT_ID;
+#endif

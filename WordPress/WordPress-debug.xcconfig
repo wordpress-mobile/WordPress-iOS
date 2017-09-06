@@ -1,2 +1,3 @@
 #include "Credentials/GoogleKeys.xcconfig"
 #include "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.debug.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = '$(inherited) GOOGLE_LOGIN_CLIENT_ID=\@\"$(GOOGLE_LOGIN_CLIENT_ID)\"'

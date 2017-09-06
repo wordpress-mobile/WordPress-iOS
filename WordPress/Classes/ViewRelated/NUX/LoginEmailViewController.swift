@@ -143,7 +143,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     func googleLoginTapped() {
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
+        GIDSignIn.sharedInstance().clientID = GoogleClientID
 
         GIDSignIn.sharedInstance().signIn()
     }

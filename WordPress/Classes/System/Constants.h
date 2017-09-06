@@ -68,3 +68,7 @@ extern NSInteger const WPOnePasswordGeneratedMaxLength;
 /// Scheme Constants
 ///
 extern NSString *const WPComScheme;
+
+/// Google Contants
+///
+extern NSString *const GoogleClientID;
