@@ -137,7 +137,7 @@ private extension BlogJetpackSettingsService {
     func jetpackSettingsRemote(_ settings: BlogSettings) -> RemoteBlogJetpackSettings {
         return RemoteBlogJetpackSettings(monitorEnabled: settings.jetpackMonitorEnabled,
                                          blockMaliciousLoginAttempts: settings.jetpackBlockMaliciousLoginAttempts,
-                                         loginWhiteListedIPAddresses: settings.jetpackLoginWhiteListedIPAddresses != nil ? settings.jetpackLoginWhiteListedIPAddresses! : Set<String>(),
+                                         loginWhiteListedIPAddresses: settings.jetpackLoginWhiteListedIPAddresses ?? Set<String>(),
                                          ssoEnabled: settings.jetpackSSOEnabled,
                                          ssoMatchAccountsByEmail: settings.jetpackSSOMatchAccountsByEmail,
                                          ssoRequireTwoStepAuthentication: settings.jetpackSSORequireTwoStepAuthentication)
