@@ -94,7 +94,7 @@ struct BlogJetpackSettingsService {
 
     }
 
-    func updateJetpackMonitorSettinsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+    func updateJetpackMonitorSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings else {

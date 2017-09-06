@@ -188,22 +188,22 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
     fileprivate func sendNotificationsByEmailValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackMonitorEmailNotifications = newValue
-            self.service.updateJetpackMonitorSettinsForBlog(self.blog,
-                                                            success: {},
-                                                            failure: { [weak self] (_) in
-                                                                self?.refreshSettingsAfterSavingError()
-                                                            })
+            self.service.updateJetpackMonitorSettingsForBlog(self.blog,
+                                                             success: {},
+                                                             failure: { [weak self] (_) in
+                                                                 self?.refreshSettingsAfterSavingError()
+                                                             })
         }
     }
 
     fileprivate func sendPushNotificationsValueChanged() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.settings.jetpackMonitorPushNotifications = newValue
-            self.service.updateJetpackMonitorSettinsForBlog(self.blog,
-                                                            success: {},
-                                                            failure: { [weak self] (_) in
-                                                                self?.refreshSettingsAfterSavingError()
-                                                            })
+            self.service.updateJetpackMonitorSettingsForBlog(self.blog,
+                                                             success: {},
+                                                             failure: { [weak self] (_) in
+                                                                 self?.refreshSettingsAfterSavingError()
+                                                             })
         }
     }
 
