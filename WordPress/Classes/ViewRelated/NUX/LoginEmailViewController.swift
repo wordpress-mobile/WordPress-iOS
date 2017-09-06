@@ -371,10 +371,13 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
 extension LoginEmailViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        let alert = UIAlertController(title: "Login Success", message: "You successfully logged in with Google", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok, Great. Thanks.", style: .default, handler: { [weak self] (action) in
+        // TODO: implement wpcom login via Google code
+
+        let alert = UIAlertController(title: "Login Success", message: "Google login succeeded. Actual wpcom account login yet to be implemented.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok. Thanks.", style: .default, handler: { [weak self] (action) in
             self?.dismiss(animated: true){}
         }))
+        present(alert, animated: true)
     }
 }
 
