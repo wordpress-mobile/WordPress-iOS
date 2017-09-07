@@ -93,6 +93,7 @@ MediaProgressCoordinatorDelegate
 @property (nonatomic, strong) WPPHAssetDataSource *deviceLibraryDataSource;
 @property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
 @property (nonatomic, strong) WPMediaCapturePresenter *capturePresenter;
+@property (nonatomic, strong) UIAlertController *mediaSourceAlertController;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -354,6 +355,16 @@ MediaProgressCoordinatorDelegate
     self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.mediaProgressView setFrame:frame];
 
+}
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    if (self.mediaSourceAlertController && self.mediaSourceAlertController == self.presentedViewController) {
+        self.mediaSourceAlertController = nil;
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - UIViewControllerRestoration
@@ -2008,25 +2019,49 @@ MediaProgressCoordinatorDelegate
     if ([WPMediaCapturePresenter isCaptureAvailable]) {
         [controller addDefaultActionWithTitle:NSLocalizedString(@"Take Photo or Video", @"Button title used in hybrid editor for taking an image or video with the device's camera.")
                                       handler:^(UIAlertAction *action){
+                                          weakSelf.mediaSourceAlertController = nil;
                                           [weakSelf presentMediaCapture];
                                       }];
     }
 
     [controller addDefaultActionWithTitle:NSLocalizedString(@"Photo Library", @"Button title used in hybrid editor for selecting an image or video from the device's photo library.")
                                   handler:^(UIAlertAction *action){
+                                      weakSelf.mediaSourceAlertController = nil;
                                       [weakSelf showMediaPickerForDeviceLibraryAnimated:YES];
                                   }];
 
     [controller addDefaultActionWithTitle:NSLocalizedString(@"WordPress Media", @"Button title used in hybrid editor for selecting an image or video from the user's WordPress media library.")
                                   handler:^(UIAlertAction *action){
+                                      weakSelf.mediaSourceAlertController = nil;
                                       [weakSelf showMediaPickerForWordPressLibraryAnimated:YES];
                                   }];
 
     [controller addCancelActionWithTitle:NSLocalizedString(@"Cancel", nil)
                                  handler:^(UIAlertAction *action){
-        [self.toolbarView toolBarItemWithTag:kWPEditorViewControllerElementTagInsertImageBarButton
+                                     weakSelf.mediaSourceAlertController = nil;
+        [weakSelf.toolbarView toolBarItemWithTag:kWPEditorViewControllerElementTagInsertImageBarButton
                                  setSelected:NO];
     }];
+
+    // Configure popover position
+    UIBarButtonItem *mediaButton = [self.toolbarView toolBarItemWithTag:kWPEditorViewControllerElementTagInsertImageBarButton];
+    CGRect frame = [mediaButton.customView convertRect:mediaButton.customView.bounds toCoordinateSpace:UIScreen.mainScreen.coordinateSpace];
+    CGRect convertedFrame = [self.view convertRect:frame fromCoordinateSpace:UIScreen.mainScreen.coordinateSpace];
+
+    // We were seeing an issue in landscape orientation where the popover arrow wasn't pointing to the correct
+    // location on iPad, despite the sourceRect being correct. We'll manually have to adjust the sourceRect
+    // position to account for the offset. It's off by roughly 3/4 of the button's width.
+    // @frosty 2017-09-07
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        convertedFrame.origin.x = frame.origin.x + (frame.size.width * 0.75);
+    }
+
+    controller.popoverPresentationController.sourceView = self.view;
+    controller.popoverPresentationController.sourceRect = convertedFrame;
+
+    controller.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+
+    self.mediaSourceAlertController = controller;
 
     [self presentViewController:controller animated:YES completion:nil];
 }
