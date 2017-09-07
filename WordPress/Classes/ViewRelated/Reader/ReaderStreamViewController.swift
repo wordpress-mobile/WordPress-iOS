@@ -741,6 +741,20 @@ import WordPressShared
         }
     }
 
+    /// Shares a post from another view controller with the share controller.
+    ///
+    /// - Parameters:
+    ///     - postID: Object ID for the post.
+    ///     - anchorBarButtonItem: The button item to present the sharing controller from.
+    ///     - viewController: The view controller to present the sharing controller in.
+    ///
+    fileprivate func sharePost(_ postID: NSManagedObjectID, inViewController viewController: UIViewController, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem) {
+        if let post = self.postWithObjectID(postID) {
+            let sharingController = PostSharingController()
+
+            sharingController.shareReaderPost(post, fromBarButtonItem: anchorBarButtonItem, inViewController: viewController)
+        }
+    }
 
     /// Retrieves a post for the specified object ID from the display context.
     ///
@@ -801,6 +815,8 @@ import WordPressShared
 
         let controller = WPWebViewController(url: siteURL)
         controller?.addsWPComReferrer = true
+        controller?.linkOptionsDelegate = self
+        controller?.linkOptionsParams = ["objectID": post.objectID]
         let navController = UINavigationController(rootViewController: controller!)
         present(navController, animated: true, completion: nil)
     }
@@ -1580,6 +1596,19 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
     public func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
         return imageRequestAuthToken
     }
+}
+
+// MARK: - LinkOptionsDelegate
+
+extension ReaderStreamViewController : LinkOptionsDelegate {
+
+    public func linkOptionsTapped(on viewController: UIViewController!, optionsButton: UIBarButtonItem!, params optionsParams: [AnyHashable : Any]!) {
+
+        if let postID = optionsParams["objectID"] as? NSManagedObjectID {
+            sharePost(postID, inViewController: viewController, fromBarButtonItem: optionsButton)
+        }
+    }
+
 }
 
 

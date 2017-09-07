@@ -94,6 +94,16 @@ import SVProgressHUD
             inViewController: viewController)
     }
 
+    func shareReaderPost(_ post: ReaderPost, fromBarButtonItem anchorBarButtonItem: UIBarButtonItem, inViewController viewController: UIViewController) {
+
+        sharePost(
+            post.titleForDisplay(),
+            summary: post.contentPreviewForDisplay(),
+            link: post.permaLink,
+            fromBarButtonItem: anchorBarButtonItem,
+            inViewController: viewController)
+    }
+
     func shareURL(url: NSURL, fromRect rect: CGRect, inView view: UIView, inViewController viewController: UIViewController) {
         let controller = shareController("", summary: "", link: url.absoluteString)
 
