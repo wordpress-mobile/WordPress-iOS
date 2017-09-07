@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-
+@protocol LinkOptionsDelegate;
 
 #pragma mark - WPWebViewController
 
@@ -47,6 +47,16 @@
 @property (nonatomic, assign) BOOL addsWPComReferrer;
 
 /**
+ * @brief Optional, delegate to handle taps on the link options/right navigation button.
+ */
+@property (nonatomic, weak) id<LinkOptionsDelegate> linkOptionsDelegate;
+
+/**
+ * @brief Optional, dictionary to pass back to the delegate when the right navigation button is tapped.
+ */
+@property (nonatomic, strong) NSDictionary *linkOptionsParams;
+
+/**
  *	@brief		Dismiss modal presentation
  */
 - (IBAction)dismiss;
@@ -70,5 +80,23 @@
  */
 + (instancetype)webViewControllerWithURL:(NSURL *)url
                            optionsButton:(UIBarButtonItem *)button;
+
+@end
+
+/**
+ * @brief Delegate to handle taps on the top right navigation button.
+ */
+@protocol LinkOptionsDelegate
+
+/**
+ *	@brief      Method to be invoked when the user taps on the link options/right navigation button.
+ *
+ *	@param      viewController ViewController where the button resides.
+ *  @param      optionsButton Right navigation button item tapped
+ *  @param      optionsParams A dictionary containing previously set linkOptionsParams.
+ */
+- (void)linkOptionsTappedOnViewController:(UIViewController *)viewController
+                            optionsButton:(UIBarButtonItem *)optionsButton
+                                   params:(NSDictionary *)optionsParams;
 
 @end
