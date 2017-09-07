@@ -312,6 +312,13 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (IBAction)showLinkOptions
 {
+    if (self.linkOptionsDelegate) {
+        [self.linkOptionsDelegate linkOptionsTappedOnViewController:self
+                                                      optionsButton:self.optionsButton
+                                                             params:self.linkOptionsParams];
+        return;
+    }
+
     NSString *permaLink             = [self documentPermalink];
     NSString *title                 = [self documentTitle];
     NSMutableArray *activityItems   = [NSMutableArray array];
