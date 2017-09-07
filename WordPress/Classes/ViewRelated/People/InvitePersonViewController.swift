@@ -53,7 +53,7 @@ class InvitePersonViewController: UITableViewController {
     /// Roles available for the current site
     ///
     fileprivate var availableRoles: [RemoteRole] {
-        let blogRoles = blog?.roles.map({ Array($0) }) ?? []
+        let blogRoles = blog?.sortedRoles ?? []
         var roles = [RemoteRole]()
         let inviteRole: RemoteRole
         if blog.isPrivate() {
@@ -61,8 +61,8 @@ class InvitePersonViewController: UITableViewController {
         } else {
             inviteRole = RemoteRole.follower
         }
-        roles.append(inviteRole)
         roles += blogRoles.map({ $0.toUnmanaged() })
+        roles.append(inviteRole)
         return roles
     }
 
@@ -387,11 +387,11 @@ private extension InvitePersonViewController {
     }
 
     func setupDefaultRole() {
-        guard let firstRole = availableRoles.first else {
+        guard let lastRole = availableRoles.last else {
             return
         }
 
-        role = firstRole
+        role = lastRole
     }
 }
 
