@@ -274,6 +274,11 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [[self.connections allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
+- (NSArray<Role *> *)sortedRoles
+{
+    return [self.roles sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
+}
+
 - (NSString *)defaultPostFormatText
 {
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
