@@ -1,4 +1,5 @@
 import UIKit
+import GoogleSignIn
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
@@ -140,7 +141,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     func googleLoginTapped() {
-        NSLog("Google log in button tapped")
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
+
+        GIDSignIn.sharedInstance().signIn()
     }
 
 
@@ -362,4 +367,19 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         keyboardWillHide(notification)
     }
 
+}
+
+extension LoginEmailViewController: GIDSignInDelegate {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        // TODO: implement wpcom login via Google code
+
+        let alert = UIAlertController(title: "Login Success", message: "Google login succeeded. Actual wpcom account login yet to be implemented.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok. Thanks.", style: .default, handler: { [weak self] (action) in
+            self?.dismiss(animated: true){}
+        }))
+        present(alert, animated: true)
+    }
+}
+
+extension LoginEmailViewController: GIDSignInUIDelegate {
 }
