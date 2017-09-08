@@ -1,2 +1,4 @@
 swift:
     config_file: .swiftlint.yml
+ruby:
+  enabled: false
