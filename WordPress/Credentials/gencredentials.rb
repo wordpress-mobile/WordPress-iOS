@@ -81,6 +81,20 @@ print <<-EOF
 EOF
 end
 
+def print_google_login(debug_and_release_id, alpha_id, internal_id)
+print <<-EOF
++ (NSString *)googleLoginClientId {
+    #ifdef ALPHA_BUILD
+    return @"#{alpha_id}";
+    #elif defined INTERNAL_BUILD
+    return @"#{internal_id}";
+    #else
+    return @"#{debug_and_release_id}";
+    #endif
+}
+EOF
+end
+
 def print_helpshift_api_key(helpshift_api_key)
 print <<-EOF
 + (NSString *)helpshiftAPIKey {
@@ -113,7 +127,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_alpha, google_id_internal, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -124,6 +138,7 @@ EOF
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
+  print_google_login(google_id, google_id_alpha, google_id_internal)
   print_helpshift_api_key(helpshift_api_key)
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
@@ -149,6 +164,9 @@ pocket = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
+google_id = nil
+google_id_alpha = nil
+google_id_internal = nil
 helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
@@ -168,6 +186,12 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
+    elsif k == "GOOGLE_LOGIN_CLIENT_ID"
+      google_id = v.chomp
+    elsif k == "GOOGLE_LOGIN_CLIENT_ALPHA_ID"
+      google_id_alpha = v.chomp
+    elsif k == "GOOGLE_LOGIN_CLIENT_INTERNAL_ID"
+      google_id_internal = v.chomp
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = v.chomp
     elsif k == "HELPSHIFT_DOMAIN_NAME"
@@ -205,6 +229,10 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Google Plus API key not found"
   end
 
+  if google_login.nil?
+    $stderr.puts "warning: Google Login Client ID not found"
+  end
+
   if helpshift_api_key.nil? || helpshift_domain_name.nil? || helpshift_app_id.nil?
     $stderr.puts "warning: Helpshift keys not found"
   end
@@ -216,4 +244,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_internal, google_id_alpha, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
