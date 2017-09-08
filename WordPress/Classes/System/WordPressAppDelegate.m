@@ -194,6 +194,12 @@ int ddLogLevel = DDLogLevelInfo;
         returnValue = YES;
     }
 
+    if ([[GIDSignIn sharedInstance] handleURL:url
+                            sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                   annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
+        returnValue = YES;
+    }
+
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
             
