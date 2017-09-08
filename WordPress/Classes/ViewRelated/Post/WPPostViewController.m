@@ -2013,6 +2013,11 @@ MediaProgressCoordinatorDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
+    if (self.mediaSourceAlertController && self.presentedViewController == self.mediaSourceAlertController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil
                                                                         message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     __weak __typeof(self) weakSelf = self;
