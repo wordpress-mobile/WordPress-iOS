@@ -89,6 +89,7 @@ class NotificationDetailsViewController: UIViewController {
             }
 
             refreshInterface()
+            markAsReadIfNeeded()
         }
     }
 
