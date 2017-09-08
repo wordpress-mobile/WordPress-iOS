@@ -820,8 +820,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             else {
                 return
         }
-
-        currentKeyboardFrame = keyboardFrame
+        // Convert the keyboard frame from window base coordinate
+        currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1831,7 +1831,7 @@ extension AztecPostViewController {
             // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
             // set the picker's frame to the current keyboard's frame.
             picker.view.autoresizingMask = []
-            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: (currentKeyboardFrame.height - Constants.toolbarHeight))
+            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: mediaKeyboardHeight)
         }
 
         presentToolbarViewControllerAsInputView(picker)
@@ -2392,6 +2392,41 @@ private extension AztecPostViewController {
 
     var isSingleSiteMode: Bool {
         return currentBlogCount <= 1 || post.hasRemote()
+    }
+
+    /// Height to use for the inline media picker based on iOS version and screen orientation.
+    ///
+    var mediaKeyboardHeight: CGFloat {
+        var keyboardHeight: CGFloat
+
+        // Let's assume a sensible default for the keyboard height based on orientation
+        let keyboardFrameRatioDefault = UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation) ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
+        let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
+
+        if #available(iOS 11, *) {
+            // On iOS 11, we need to make an assumption the hardware keyboard is attached based on
+            // the height of the current keyboard frame being less than our sensible default. If it is
+            // "attached", let's just use our default.
+            if currentKeyboardFrame.height < keyboardHeightDefault {
+                keyboardHeight = keyboardHeightDefault
+            } else {
+                keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
+            }
+        } else {
+            // On iOS 10, when the soft keyboard is visible, the keyboard's frame is within the dimensions of the screen.
+            // However, when an external keyboard is present, the keyboard's frame is located offscreen. Test to see if
+            // that is true and adjust the keyboard height as necessary.
+            if ((currentKeyboardFrame.origin.y + currentKeyboardFrame.height) > view.frame.height) {
+                keyboardHeight = (currentKeyboardFrame.maxY - view.frame.height)
+            } else {
+                keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
+            }
+        }
+
+        // Sanity check
+        keyboardHeight = max(keyboardHeight, keyboardHeightDefault)
+
+        return keyboardHeight
     }
 }
 
@@ -3153,13 +3188,15 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
-        static let uploadingButtonSize = CGSize(width: 150, height: 30)
+        static let uploadingButtonSize      = CGSize(width: 150, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
-        static let toolbarHeight = CGFloat(44.0)
+        static let toolbarHeight            = CGFloat(44.0)
         static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+        static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
+        static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
