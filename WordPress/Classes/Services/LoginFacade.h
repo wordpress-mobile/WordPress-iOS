@@ -43,6 +43,8 @@
  */
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
 
+- (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken;
+
 /**
  *  A delegate with a few methods that indicate various aspects of the login process
  */
