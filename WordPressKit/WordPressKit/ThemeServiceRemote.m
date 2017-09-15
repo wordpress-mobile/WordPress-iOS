@@ -1,6 +1,7 @@
 #import "ThemeServiceRemote.h"
 
 #import "RemoteTheme.h"
+#import "Logging.h"
 #import <WordPressKit/WordPressKit-Swift.h>
 @import NSObject_SafeExpectations;
 
@@ -249,12 +250,14 @@ static NSString* const ThemeRequestPageKey = @"page";
     NSProgress *progress = [self.wordPressComRestApi POST:requestUrl
                                  parameters:parameters
                                     success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
+                                        DDLogError(@"SUCCESS Activating Theme RequestUrl: %@  HTTPResponse %@ PARAMS %@", requestUrl, parameters, httpResponse.description);
                                         if (success) {
                                             RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
                                             theme.active = YES;
                                             success(theme);
                                         }
                                     } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                        DDLogError(@"ERROR Activating Theme RequestUrl: %@ PARAMS %@ HTTPResponse %@", requestUrl, parameters, httpResponse.description);
                                         if (failure) {
                                             failure(error);
                                         }
@@ -275,14 +278,17 @@ static NSString* const ThemeRequestPageKey = @"page";
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
+    self.wordPressComRestApi.appendsPreferredLanguageLocale = false;
     NSProgress *progress = [self.wordPressComRestApi POST:requestUrl
                                                parameters:nil
                                                   success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
+                                                      DDLogError(@"SUCCESS Installing Theme RequestUrl: %@  HTTPResponse %@", requestUrl, httpResponse.description);
                                                       if (success) {
                                                           RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
                                                           success(theme);
                                                       }
                                                   } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                                      DDLogError(@"ERROR Installing Theme RequestUrl: %@  HTTPResponse %@", requestUrl, httpResponse.description);
                                                       if (failure) {
                                                           failure(error);
                                                       }
