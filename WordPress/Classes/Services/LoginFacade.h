@@ -2,6 +2,7 @@
 
 
 @class LoginFields;
+@class SocialLogin2FANonceInfo;
 @protocol WordPressComOAuthClientFacade;
 @protocol WordPressXMLRPCAPIFacade;
 @protocol LoginFacadeDelegate;
@@ -42,6 +43,7 @@
  *  @param loginFields the fields representing the site we need a 2fa code for.
  */
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
+
 
 - (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken;
 
@@ -87,6 +89,14 @@
  *  This is called when the initial login failed because we need a 2fa code.
  */
 - (void)needsMultifactorCode;
+
+/**
+ *  This is called when the initial login failed because we need a 2fa code for a social login.
+ *
+ *  @param userID the WPCom userID of the user logging in.
+ *  @param nonceInfo an object containing information about available 2fa nonce options.
+ */
+- (void)needsMultifactorCodeForUserID:(NSInteger)userID andNonceInfo:(SocialLogin2FANonceInfo *)nonceInfo;
 
 /**
  *  This is called when there's been an error and we want to inform the user.
