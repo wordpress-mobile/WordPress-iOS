@@ -40,7 +40,6 @@
     }
 }
 
-
 - (void)loginWithLoginFields:(LoginFields *)loginFields
 {
     NSAssert(self.delegate != nil, @"Must set delegate to use service");
@@ -70,6 +69,10 @@
     [self.wordpressComOAuthClientFacade authenticateWithGoogleIDToken:googleIDToken success:^(NSString *authToken) {
         if ([self.delegate respondsToSelector:@selector(finishedLoginWithGoogleIDToken:authToken:)]) {
             [self.delegate finishedLoginWithGoogleIDToken:googleIDToken authToken:authToken];
+        }
+    } needsMultiFactor:^(NSInteger userID, SocialLogin2FANonceInfo *nonceInfo){
+        if ([self.delegate respondsToSelector:@selector(needsMultifactorCodeForUserID:andNonceInfo:)]) {
+            [self.delegate needsMultifactorCodeForUserID:userID andNonceInfo:nonceInfo];
         }
     } failure:^(NSError *error) {
         [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];

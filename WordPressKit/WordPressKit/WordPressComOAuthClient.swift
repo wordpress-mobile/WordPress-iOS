@@ -19,8 +19,9 @@ public final class WordPressComOAuthClient: NSObject {
 
     public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
-    public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint"
+    public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php"
     public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
+    public static let WordPressComSocialLoginEndpointVersion = 1.0
 
     fileprivate let clientID: String
     fileprivate let secret: String
@@ -140,32 +141,141 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
     public func authenticateWithIDToken(_ token: String,
-                                        success: @escaping (_ authToken: String?) -> (),
-                                        failure: @escaping (_ error: NSError) -> () ) {
+                                        success: @escaping (_ authToken: String?) -> Void,
+                                        needsMultifactor: @escaping (_ userID: Int, _ nonceInfo: SocialLogin2FANonceInfo) -> Void,
+                                        failure: @escaping (_ error: NSError) -> Void ) {
         let parameters = [
+            "acton": "social-login-endpoint",
             "client_id": clientID,
             "client_secret": secret,
             "service": "google",
             "get_bearer_token": true,
             "id_token" : token,
+            "version": WordPressComOAuthClient.WordPressComSocialLoginEndpointVersion,
         ] as [String : Any]
 
         // Passes an empty string for the
         socialSessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
             DDLogVerbose("Received Social Login Oauth response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
+
+            let defaultError = NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,
+                                       code: WordPressComOAuthError.unknown.rawValue,
+                                       userInfo: nil)
+
+            // Make sure we received expected data.
             guard let responseDictionary = responseObject as? [String: AnyObject],
-            let data = responseDictionary["data"] as? [String: AnyObject],
-            let authToken = data["bearer_token"] as? String else {
-                    success(nil)
+                let data = responseDictionary["data"] as? [String: AnyObject] else {
+                    failure(defaultError)
                     return
             }
-            success(authToken)
+
+            // Check for a bearer token. If one is found then we're authed.
+            if let authToken = data["bearer_token"] as? String {
+                success(authToken)
+                return
+            }
+
+            // If there is no bearer token, check for 2fa enabled.
+            guard let userID = data["user_id"] as? Int,
+                let _ = data["two_step_nonce_backup"] else {
+                failure(defaultError)
+                return
+            }
+
+            let nonceInfo = self.extractNonceInfo(data: data)
+            needsMultifactor(userID, nonceInfo)
 
             }, failure: { (task, error) in
                 failure(error as NSError)
             }
         )
     }
+
+    /// A helper method to get an instance of SocialLogin2FANonceInfo and populate 
+    /// it with the supplied data.
+    ///
+    /// - Parameters:
+    ///     - data: The dictionary to use to populate the instance.
+    ///
+    /// - Return: SocialLogin2FANonceInfo
+    ///
+    private func extractNonceInfo(data:[String: AnyObject]) -> SocialLogin2FANonceInfo {
+        let nonceInfo = SocialLogin2FANonceInfo()
+
+        if let nonceAuthenticator = data["two_step_nonce_authenticator"] as? String {
+            nonceInfo.nonceAuthenticator = nonceAuthenticator
+        }
+
+        if let nonce = data["two_step_nonce_sms"] as? String {
+            nonceInfo.nonceSMS = nonce
+        }
+
+        if let nonce = data["two_step_nonce_backup"] as? String {
+            nonceInfo.nonceBackup = nonce
+        }
+
+        if let notification = data["two_step_notification_sent"] as? String {
+            nonceInfo.notificationSent = notification
+        }
+
+        if let authTypes = data["two_step_supported_auth_types"] as? [String] {
+            nonceInfo.supportedAuthTypes = authTypes
+        }
+
+        if let phone = data["phone_number"] as? String {
+            nonceInfo.phoneNumber = phone
+        }
+
+        return nonceInfo
+    }
+
+    /// Completes a social login that has 2fa enabled.
+    ///
+    /// - Parameters:
+    ///     - userID: The wpcom user id.
+    ///     - authType: The type of 2fa authentication being used. (sms|backup|authenticator)
+    ///     - twoStepCode: The user's 2fa code.
+    ///     - twoStepNonce: The nonce returned from a social login attempt.
+    ///     - success: block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
+    ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
+    ///
+    public func authenticateSocialLoginUser(_ userID: Int,
+                                            authType: String,
+                                            twoStepCode: String,
+                                            twoStepNonce: String,
+                                            success: @escaping (_ authToken: String?) -> Void,
+                                            failure: @escaping (_ error: NSError) -> Void ) {
+        let parameters = [
+            "acton": "two-step-authentication-endpoint",
+            "user_id" : userID,
+            "auth_type" : authType,
+            "two_step_code": twoStepCode,
+            "two_step_nonce": twoStepNonce,
+            "get_bearer_token": true,
+            "client_id": clientID,
+            "client_secret": secret,
+            "version": WordPressComOAuthClient.WordPressComSocialLoginEndpointVersion,
+            ] as [String : Any]
+
+        socialSessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
+            DDLogVerbose("Received Social Login Oauth response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
+            guard let responseDictionary = responseObject as? [String: AnyObject],
+                let data = responseDictionary["data"] as? [String: AnyObject],
+                let authToken = data["bearer_token"] as? String else {
+                    failure(NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,
+                                               code: WordPressComOAuthError.unknown.rawValue,
+                                               userInfo: nil))
+                    return
+            }
+
+            success(authToken)
+
+        }, failure: { (task, error) in
+            failure(error as NSError)
+        }
+        )
+    }
+
 
     fileprivate func cleanedUpResponseForLogging(_ response: AnyObject) -> AnyObject {
         guard var responseDictionary = response as? [String: AnyObject],
