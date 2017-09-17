@@ -81,4 +81,28 @@
                          wpcomScheme:(NSString *)scheme
                              success:(void (^)())success
                              failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Connect to the specified social service via its OpenID Connect (JWT) token.
+ *
+ *  @param      service     The name of the social service.
+ *  @param      token       The OpenID Connect (JWT) ID token identifying the user on the social service.
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)connectToSocialService:(NSString *)service
+                serviceIDToken:(NSString *)token
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Disconnect fromm the specified social service.
+ *
+ *  @param      service     The name of the social service.
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)disconnectFromSocialService:(NSString *)service
+                            success:(void (^)())success
+                            failure:(void (^)(NSError *error))failure;
 @end
