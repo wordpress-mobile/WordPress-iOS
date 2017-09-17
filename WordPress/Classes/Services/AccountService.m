@@ -197,6 +197,25 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 }
 
 
+- (void)connectToSocialService:(NSString *)service
+                serviceIDToken:(NSString *)token
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure
+{
+    id<AccountServiceRemote> remote = [self remoteForAccount:[self defaultWordPressComAccount]];
+    [remote connectToSocialService:service serviceIDToken:token success:success failure:failure];
+}
+
+
+- (void)disconnectFromSocialService:(NSString *)service
+                            success:(void (^)())success
+                            failure:(void (^)(NSError *error))failure
+{
+    id<AccountServiceRemote> remote = [self remoteForAccount:[self defaultWordPressComAccount]];
+    [remote disconnectFromSocialService:service success:success failure:failure];
+}
+
+
 ///-----------------------
 /// @name Account creation
 ///-----------------------
