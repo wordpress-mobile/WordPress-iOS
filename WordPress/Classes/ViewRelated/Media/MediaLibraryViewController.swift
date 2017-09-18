@@ -576,7 +576,9 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func makeAndUploadMediaWith(_ asset: PHAsset) {
-        let assetID = asset.identifier()
+        guard let assetID = asset.identifier() else {
+            return
+        }
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
