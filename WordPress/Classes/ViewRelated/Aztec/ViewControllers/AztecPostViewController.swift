@@ -117,6 +117,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
         textView.backgroundColor = .clear
+        textView.spellCheckingType = .default
 
         return textView
     }()
@@ -296,7 +297,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
 
-            postEditorStateContext = nil
+            postEditorStateContext = createEditorStateContext(for: post)
             refreshInterface()
         }
     }
@@ -357,22 +358,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate lazy var postEditorStateContext: PostEditorStateContext! = {
-        var originalPostStatus: BasePost.Status? = nil
-
-        if let originalPost = self.post.original,
-            let postStatus = originalPost.status,
-            originalPost.hasRemote() {
-            originalPostStatus = postStatus
-        }
-
-
-        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
-        // to showing Publish Now instead of Submit for Review.
-        let userCanPublish = self.post.blog.capabilities != nil ? self.post.blog.isPublishingPostsAllowed() : true
-        let context = PostEditorStateContext(originalPostStatus: originalPostStatus, userCanPublish: userCanPublish, publishDate: self.post.dateCreated, delegate: self)
-
-        return context
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext = { [unowned self] in
+        return self.createEditorStateContext(for: self.post)
     }()
 
     /// Current keyboard rect used to help size the inline media picker
@@ -380,9 +367,25 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate var currentKeyboardFrame: CGRect = .zero
 
 
+    /// Origin of selected media, used for analytics
+    ///
+    fileprivate var selectedMediaOrigin: WPAppAnalytics.SelectedMediaOrigin = .none
+
+
     /// Options
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
+
+    /// Media Picker
+    ///
+    fileprivate lazy var insertToolbarItem: UIButton = {
+        let insertItem = UIButton(type: .custom)
+        insertItem.titleLabel?.font = Fonts.mediaPickerInsert
+        insertItem.tintColor = WPStyleGuide.wordPressBlue()
+        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+
+        return insertItem
+    }()
 
     fileprivate var mediaPickerInputViewController: WPInputMediaPickerViewController?
 
@@ -532,6 +535,29 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
 
+    // MARK: - Construction Helpers
+
+    /// Returns a new Editor Context for a given Post instance.
+    ///
+    private func createEditorStateContext(for post: AbstractPost) -> PostEditorStateContext {
+        var originalPostStatus: BasePost.Status? = nil
+
+        if let originalPost = post.original, let postStatus = originalPost.status, originalPost.hasRemote() {
+            originalPostStatus = postStatus
+        }
+
+        // Self-hosted non-Jetpack blogs have no capabilities, so we'll default
+        // to showing Publish Now instead of Submit for Review.
+        //
+        let userCanPublish = post.blog.capabilities != nil ? post.blog.isPublishingPostsAllowed() : true
+
+        return PostEditorStateContext(originalPostStatus: originalPostStatus,
+                                      userCanPublish: userCanPublish,
+                                      publishDate: post.dateCreated,
+                                      delegate: self)
+    }
+
+
     // MARK: - Configuration Methods
 
     override func updateViewConstraints() {
@@ -662,12 +688,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: .UIApplicationWillResignActive, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         nc.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        nc.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -792,8 +820,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             else {
                 return
         }
-
-        currentKeyboardFrame = keyboardFrame
+        // Convert the keyboard frame from window base coordinate
+        currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1260,7 +1288,7 @@ extension AztecPostViewController : UITextViewDelegate {
             formatBar.enabled = false
 
             // Disable the bar, except for the source code button
-            let htmlButton = formatBar.overflowItems.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
+            let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
             htmlButton?.isEnabled = true
         default:
             break
@@ -1437,10 +1465,13 @@ extension AztecPostViewController {
         else if let mediaIdentifier = FormatBarMediaIdentifier(rawValue: identifier) {
             switch mediaIdentifier {
             case .deviceLibrary:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedDevicePhotos)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .device)
             case .camera:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedCamera)
                 mediaPickerInputViewController?.showCapture()
             case .mediaLibrary:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             }
         }
@@ -1492,8 +1523,11 @@ extension AztecPostViewController {
     }
 
     func toggleList(fromItem item: FormatBarItem) {
-        let listOptions = Constants.lists.map { (listType) -> OptionsTableViewOption in
-            return OptionsTableViewOption(image: listType.iconImage, title: NSAttributedString(string: listType.description, attributes: [:]))
+        let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
+            let title = NSAttributedString(string: listType.description, attributes: [:])
+            return OptionsTableViewOption(image: listType.iconImage,
+                                          title: title,
+                                          accessibilityLabel: listType.accessibilityLabel)
         }
 
         var index: Int? = nil
@@ -1757,10 +1791,8 @@ extension AztecPostViewController {
 
     private func toggleMediaPicker(fromButton button: UIButton) {
         if mediaPickerInputViewController != nil {
-            mediaPickerInputViewController = nil
-            changeRichTextInputView(to: nil)
-            updateToolbar(formatBar, forMode: .text)
-            restoreInputAssistantItems()
+            closeMediaPickerInputViewController()
+            trackFormatBarAnalytics(stat: .editorMediaPickerTappedDismiss)
         } else {
             presentMediaPicker(fromButton: button, animated: true)
         }
@@ -1799,7 +1831,7 @@ extension AztecPostViewController {
             // is set to UIViewAutoresizingFlexibleHeight (even though the docs claim it should). Need to manually
             // set the picker's frame to the current keyboard's frame.
             picker.view.autoresizingMask = []
-            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: (currentKeyboardFrame.height - Constants.toolbarHeight))
+            picker.view.frame = CGRect(x: 0, y: 0, width: currentKeyboardFrame.width, height: mediaKeyboardHeight)
         }
 
         presentToolbarViewControllerAsInputView(picker)
@@ -1827,11 +1859,17 @@ extension AztecPostViewController {
     func toggleHeader(fromItem item: FormatBarItem) {
         trackFormatBarAnalytics(stat: .editorTappedHeader)
 
-        let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
+        let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
+            let attributes = [
+                NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize),
+                NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
+            ]
+
+            let title = NSAttributedString(string: headerType.description, attributes: attributes)
+
             return OptionsTableViewOption(image: headerType.iconImage,
-                                          title: NSAttributedString(string: headerType.description,
-                                                                    attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize),
-                                                                                NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]))
+                                          title: title,
+                                          accessibilityLabel: headerType.accessibilityLabel)
         }
 
         let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
@@ -2002,15 +2040,15 @@ extension AztecPostViewController {
             rotateMediaToolbarItem(leadingItem, forMode: mode)
         }
 
+        toolbar.trailingItem = nil
+
         switch mode {
         case .text:
-            toolbar.trailingItem = nil
-            toolbar.defaultItems = scrollableItemsForToolbar
-            toolbar.overflowItems = overflowItemsForToolbar
+            toolbar.setDefaultItems(scrollableItemsForToolbar,
+                                    overflowItems: overflowItemsForToolbar)
         case .media:
-            toolbar.trailingItem = makeInsertToolbarItem()
-            toolbar.defaultItems = mediaItemsForToolbar
-            toolbar.overflowItems = []
+            toolbar.setDefaultItems(mediaItemsForToolbar,
+                                    overflowItems: [])
         }
     }
 
@@ -2047,16 +2085,6 @@ extension AztecPostViewController {
         animator.startAnimation()
     }
 
-    func makeInsertToolbarItem() -> UIButton {
-        let insertItem = UIButton(type: .custom)
-        insertItem.titleLabel?.font = Fonts.mediaPickerInsert
-        insertItem.tintColor = WPStyleGuide.wordPressBlue()
-        insertItem.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
-        insertItem.isEnabled = false
-
-        return insertItem
-    }
-
     func makeToolbarButton(identifier: FormattingIdentifier) -> FormatBarItem {
         return makeToolbarButton(identifier: identifier.rawValue, provider: identifier)
     }
@@ -2074,14 +2102,17 @@ extension AztecPostViewController {
 
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
-        toolbar.leadingItem = makeToolbarButton(identifier: .media)
-        updateToolbar(toolbar, forMode: .text)
+
         toolbar.tintColor = WPStyleGuide.aztecFormatBarInactiveColor
         toolbar.highlightedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.selectedTintColor = WPStyleGuide.aztecFormatBarActiveColor
         toolbar.disabledTintColor = WPStyleGuide.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = WPStyleGuide.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
+
+        toolbar.leadingItem = makeToolbarButton(identifier: .media)
+        updateToolbar(toolbar, forMode: .text)
+
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
         toolbar.formatter = self
 
@@ -2362,6 +2393,41 @@ private extension AztecPostViewController {
     var isSingleSiteMode: Bool {
         return currentBlogCount <= 1 || post.hasRemote()
     }
+
+    /// Height to use for the inline media picker based on iOS version and screen orientation.
+    ///
+    var mediaKeyboardHeight: CGFloat {
+        var keyboardHeight: CGFloat
+
+        // Let's assume a sensible default for the keyboard height based on orientation
+        let keyboardFrameRatioDefault = UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation) ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
+        let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
+
+        if #available(iOS 11, *) {
+            // On iOS 11, we need to make an assumption the hardware keyboard is attached based on
+            // the height of the current keyboard frame being less than our sensible default. If it is
+            // "attached", let's just use our default.
+            if currentKeyboardFrame.height < keyboardHeightDefault {
+                keyboardHeight = keyboardHeightDefault
+            } else {
+                keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
+            }
+        } else {
+            // On iOS 10, when the soft keyboard is visible, the keyboard's frame is within the dimensions of the screen.
+            // However, when an external keyboard is present, the keyboard's frame is located offscreen. Test to see if
+            // that is true and adjust the keyboard height as necessary.
+            if ((currentKeyboardFrame.origin.y + currentKeyboardFrame.height) > view.frame.height) {
+                keyboardHeight = (currentKeyboardFrame.maxY - view.frame.height)
+            } else {
+                keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
+            }
+        }
+
+        // Sanity check
+        keyboardHeight = max(keyboardHeight, keyboardHeightDefault)
+
+        return keyboardHeight
+    }
 }
 
 
@@ -2442,7 +2508,7 @@ extension AztecPostViewController {
                 return
             }
 
-            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
@@ -2473,7 +2539,7 @@ extension AztecPostViewController {
                 return
             }
 
-            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
         })
@@ -2494,7 +2560,7 @@ extension AztecPostViewController {
         }
         if media.mediaType == .image {
             let _ = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
-            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         } else if media.mediaType == .video {
             var posterURL: URL?
             if let posterURLString = media.remoteThumbnailURL {
@@ -2506,7 +2572,7 @@ extension AztecPostViewController {
                 attachment.videoPressID = videoPressGUID
                 richTextView.refresh(attachment)
             }
-            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         }
         self.mediaProgressCoordinator.finishOneItem()
     }
@@ -2520,12 +2586,12 @@ extension AztecPostViewController {
         var attachment: MediaAttachment?
         if media.mediaType == .image {
             attachment = self.richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL:tempMediaURL, placeHolderImage: Assets.defaultMissingImage)
-            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
             let remoteURL = URL(string: remoteURLStr) {
             attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
-            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media), with: post)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         }
         if let attachment = attachment {
             upload(media: media, mediaID: attachment.identifier)
@@ -2557,9 +2623,9 @@ extension AztecPostViewController {
             }
 
             if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
             } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media), with: strongSelf.post.blog)
+                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
             }
 
             strongSelf.upload(media: media, mediaID: attachment.identifier)
@@ -2817,6 +2883,27 @@ extension AztecPostViewController {
             return Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
     }
+
+    // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
+    // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
+    // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
+    // iPads only...not the 12.9"
+    // See http://www.openradar.me/radar?id=4972612522344448 for more details.
+    func applicationWillResignActive(_ notification: Foundation.Notification) {
+        if UIDevice.isPad() {
+            closeMediaPickerInputViewController()
+        }
+    }
+
+    func closeMediaPickerInputViewController() {
+        guard mediaPickerInputViewController != nil else {
+            return
+        }
+        mediaPickerInputViewController = nil
+        changeRichTextInputView(to: nil)
+        updateToolbar(formatBar, forMode: .text)
+        restoreInputAssistantItems()
+    }
 }
 
 
@@ -2912,7 +2999,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
     }
 
-    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping (Void) -> Void) {
+    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
         var requestURL = url
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
@@ -2992,12 +3079,12 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
+            selectedMediaOrigin = .fullScreenPicker
+        } else {
+            selectedMediaOrigin = .inlinePicker
         }
 
-        mediaPickerInputViewController = nil
-        changeRichTextInputView(to: nil)
-        updateToolbar(formatBar, forMode: .text)
-        restoreInputAssistantItems()
+        closeMediaPickerInputViewController()
 
         if assets.isEmpty {
             return
@@ -3030,18 +3117,18 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     private func updateFormatBarInsertAssetCount() {
-        guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count,
-              let trailingItem = formatBar.trailingItem else {
+        guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count else {
             return
         }
 
         if assetCount == 0 {
-            trailingItem.setTitle(nil, for: .normal)
-            trailingItem.isEnabled = false
-
+            formatBar.trailingItem = nil
         } else {
-            trailingItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
-            trailingItem.isEnabled = true
+            insertToolbarItem.setTitle(String(format: Constants.mediaPickerInsertText, NSNumber(value: assetCount)), for: .normal)
+
+            if formatBar.trailingItem != insertToolbarItem {
+                formatBar.trailingItem = insertToolbarItem
+            }
         }
     }
 }
@@ -3101,13 +3188,15 @@ extension AztecPostViewController {
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
-        static let uploadingButtonSize = CGSize(width: 150, height: 30)
+        static let uploadingButtonSize      = CGSize(width: 150, height: 30)
         static let moreAttachmentText       = "more"
         static let placeholderPadding       = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
-        static let toolbarHeight = CGFloat(44.0)
+        static let toolbarHeight            = CGFloat(44.0)
         static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
+        static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
+        static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
