@@ -3,15 +3,17 @@ import WordPressShared
 
 
 struct NavigationItemRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
+    let detail: String?
     let icon: UIImage?
     let action: ImmuTableAction?
     let accessoryType: UITableViewCellAccessoryType
 
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(title: String, detail: String? = nil,icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
         self.title = title
+        self.detail = detail
         self.icon = icon
         self.accessoryType = accessoryType
         self.action = action
@@ -19,6 +21,7 @@ struct NavigationItemRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
+        cell.detailTextLabel?.text = detail
         cell.accessoryType = accessoryType
         cell.imageView?.image = icon
 

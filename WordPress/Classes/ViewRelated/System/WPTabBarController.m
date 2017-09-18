@@ -247,7 +247,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
     _newPostViewController.tabBarItem.accessibilityIdentifier = @"New Post";
     _newPostViewController.tabBarItem.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+    _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 99999.0);
 
     return _newPostViewController;
 }
@@ -300,7 +300,14 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (UIEdgeInsets)tabBarIconImageInsets
 {
-    CGFloat offset = [WPDeviceIdentification isiPad] ? WPTabBarIconOffsetiPad : WPTabBarIconOffsetiPhone;
+    CGFloat offset = 0;
+    if ([WPDeviceIdentification isiPad]) {
+        if ([[UIDevice currentDevice] systemMajorVersion] < 11) {
+            offset = WPTabBarIconOffsetiPad;
+        }
+    } else {
+        offset = WPTabBarIconOffsetiPhone;
+    }
 
     return UIEdgeInsetsMake(offset, 0, -offset, 0);
 }
