@@ -11,7 +11,7 @@ extern NSString *const XMLRPCOriginalErrorKey;
 - (void)getBlogOptionsWithEndpoint:(NSURL *)xmlrpc
                          username:(NSString *)username
                          password:(NSString *)password
-                          success:(void (^)(id options))success
+                          success:(void (^)(NSDictionary *options))success
                           failure:(void (^)(NSError *error))failure;
 
 @end
