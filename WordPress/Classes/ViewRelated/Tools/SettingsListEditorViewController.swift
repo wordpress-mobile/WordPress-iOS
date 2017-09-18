@@ -110,6 +110,7 @@ open class SettingsListEditorViewController: UITableViewController {
 
         // Empty State
         if isEmpty() {
+            addItemPressed(nil)
             return
         }
 
