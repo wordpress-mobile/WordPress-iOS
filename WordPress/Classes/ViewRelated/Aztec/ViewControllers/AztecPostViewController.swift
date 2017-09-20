@@ -1777,6 +1777,7 @@ extension AztecPostViewController {
         options.filter = [WPMediaType.image, WPMediaType.video]
         options.allowMultipleSelection = true
         options.allowCaptureOfMedia = false
+        options.scrollVertically = true
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
         updateToolbar(formatBar, forMode: .media)
@@ -1791,8 +1792,7 @@ extension AztecPostViewController {
 
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
-        picker.mediaPicker.mediaPickerDelegate = self
-        picker.scrollVertically = true
+        picker.mediaPicker.mediaPickerDelegate = self        
 
         if currentKeyboardFrame != .zero {
             // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
