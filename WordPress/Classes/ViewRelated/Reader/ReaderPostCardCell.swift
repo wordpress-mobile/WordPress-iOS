@@ -233,6 +233,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies the default styles to the cell's subviews
     */
     fileprivate func applyStyles() {
+        backgroundColor = WPStyleGuide.greyLighten30()
         contentView.backgroundColor = WPStyleGuide.greyLighten30()
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
