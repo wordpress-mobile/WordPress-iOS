@@ -1792,7 +1792,7 @@ extension AztecPostViewController {
 
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
-        picker.mediaPicker.mediaPickerDelegate = self        
+        picker.mediaPicker.mediaPickerDelegate = self
 
         if currentKeyboardFrame != .zero {
             // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
