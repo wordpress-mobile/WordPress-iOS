@@ -1830,7 +1830,7 @@ extension AztecPostViewController {
         let headerOptions = Constants.headers.map { (headerType) -> OptionsTableViewOption in
             return OptionsTableViewOption(image: headerType.iconImage,
                                           title: NSAttributedString(string: headerType.description,
-                                                                    attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize),
+                                                                    attributes:[NSFontAttributeName: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
                                                                                 NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]))
         }
 
