@@ -32,6 +32,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
     [self setProgress:nil];
     self.progressView.hidden = YES;
     self.progressView.hidesWhenStopped=YES;
