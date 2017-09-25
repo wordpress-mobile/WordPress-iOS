@@ -94,7 +94,7 @@ PODS:
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.10)
-  - WordPress-iOS-Editor (1.9.4):
+  - WordPress-iOS-Editor (1.9.5):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
   - WordPressComKit (0.0.6):
@@ -129,7 +129,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.1.2)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `76e94b6bd8358a4ec4d60a568e4dd02895315a61`)
-  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`, commit `bae6a3b983fb919739b6f0104375dc7976499262`)
+  - WordPress-iOS-Editor (= 1.9.5)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `79166a055b7256fb86168e904b68d8d106e7b625`)
   - wpxmlrpc (= 0.8.3)
@@ -141,9 +141,6 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 76e94b6bd8358a4ec4d60a568e4dd02895315a61
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-iOS-Editor:
-    :commit: bae6a3b983fb919739b6f0104375dc7976499262
-    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -158,9 +155,6 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: 76e94b6bd8358a4ec4d60a568e4dd02895315a61
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-iOS-Editor:
-    :commit: bae6a3b983fb919739b6f0104375dc7976499262
-    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -196,7 +190,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: c47f4c93a01944a603ddcde02811cfb3227d0a1b
-  WordPress-iOS-Editor: 3792b28f6b139150b37363e450d3c8769137eaca
+  WordPress-iOS-Editor: be1de639b28b894789366b8380f26df30a8bb571
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 09ce293dbe3b77897c3db342435384946f9c9ff8
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
