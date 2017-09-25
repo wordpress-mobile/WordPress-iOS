@@ -1800,10 +1800,7 @@ extension AztecPostViewController {
 
     private func presentMediaPicker(fromButton button: UIButton, animated: Bool = true) {
         trackFormatBarAnalytics(stat: .editorTappedImage)
-        if !(FeatureFlag.newInputMediaPicker.enabled) {
-            presentMediaPickerFullScreen(animated: animated)
-            return
-        }
+
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [WPMediaType.image, WPMediaType.video]
