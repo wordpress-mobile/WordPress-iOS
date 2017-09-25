@@ -5,7 +5,6 @@ enum FeatureFlag: Int {
     case exampleFeature
     case newMediaExports
     case pluginManagement
-    case jetpackThemesBrowsing
     case googleLogin
     case jetpackDisconnect
 
@@ -18,8 +17,6 @@ enum FeatureFlag: Int {
             return build(.localDeveloper, .a8cBranchTest)
         case .pluginManagement:
             return build(.localDeveloper)
-        case .jetpackThemesBrowsing:
-            return build(.a8cPrereleaseTesting, .a8cBranchTest, .localDeveloper)
         case .googleLogin:
             return build(.localDeveloper)
         case .jetpackDisconnect:
