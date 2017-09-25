@@ -90,7 +90,10 @@ MediaProgressCoordinatorDelegate
 @property (nonatomic, strong) MediaProgressCoordinator * mediaProgressCoordinator;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
-@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
+@property (nonatomic, strong) WPPHAssetDataSource *deviceLibraryDataSource;
+@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
+@property (nonatomic, strong) WPMediaCapturePresenter *capturePresenter;
+@property (nonatomic, strong) UIAlertController *mediaSourceAlertController;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -283,7 +286,7 @@ MediaProgressCoordinatorDelegate
     self.delegate = self;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
-        [self showMediaPickerAnimated:NO];
+        [self showMediaPickerForDeviceLibraryAnimated:NO];
     } else if (!self.isOpenedDirectlyForEditing) {
         [self refreshNavigationBarButtons:NO];
     }
@@ -352,6 +355,16 @@ MediaProgressCoordinatorDelegate
     self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.mediaProgressView setFrame:frame];
 
+}
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    if (self.mediaSourceAlertController && self.mediaSourceAlertController == self.presentedViewController) {
+        self.mediaSourceAlertController = nil;
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - UIViewControllerRestoration
@@ -664,6 +677,24 @@ MediaProgressCoordinatorDelegate
     return [PostSettingsViewController class];
 }
 
+- (void)presentMediaCapture
+{
+    self.capturePresenter = [[WPMediaCapturePresenter alloc] initWithPresentingViewController:self];
+    self.capturePresenter.mediaType = WPMediaTypeImage | WPMediaTypeVideo;
+
+    __weak __typeof(self) weakSelf = self;
+    self.capturePresenter.completionBlock = ^(NSDictionary * _Nullable mediaInfo) {
+        if (mediaInfo) {
+            [weakSelf processMediaCaptured:mediaInfo];
+        } else {
+            [weakSelf.editorView.focusedField focus];
+        }
+        weakSelf.capturePresenter = nil;
+    };
+
+    [self.capturePresenter presentCapture];
+}
+
 - (void)showCancelMediaUploadPrompt
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Cancel media uploads", "Dialog box title for when the user is cancelling an upload.")
@@ -774,14 +805,71 @@ MediaProgressCoordinatorDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaPickerAnimated:(BOOL)animated
+- (WPPHAssetDataSource *)deviceLibraryDataSource
 {
-    self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
+    if (!_deviceLibraryDataSource) {
+        _deviceLibraryDataSource = [WPPHAssetDataSource new];
+    }
+
+    return _deviceLibraryDataSource;
+}
+
+- (void)processMediaCaptured:(NSDictionary *)info
+{
+    WPMediaAddedBlock completionBlock = ^(id<WPMediaAsset> media, NSError *error) {
+        if (error || !media) {
+            NSLog(@"Adding media failed: %@", [error localizedDescription]);
+            return;
+        }
+        [self.editorView.focusedField focus];
+        [self addMediaAssets:@[media]];
+    };
+
+    if ([info[UIImagePickerControllerMediaType] isEqual:(NSString *)kUTTypeImage]) {
+        UIImage *image = (UIImage *)info[UIImagePickerControllerOriginalImage];
+        [self.deviceLibraryDataSource addImage:image
+                         metadata:info[UIImagePickerControllerMediaMetadata]
+                  completionBlock:completionBlock];
+    } else if ([info[UIImagePickerControllerMediaType] isEqual:(NSString *)kUTTypeMovie]) {
+        [self.deviceLibraryDataSource addVideoFromURL:info[UIImagePickerControllerMediaURL] completionBlock:completionBlock];
+    }
+}
+
+- (void)showMediaPickerForDeviceLibraryAnimated:(BOOL)animated
+{
     WPMediaPickerOptions *options = [WPMediaPickerOptions new];
     options.showMostRecentFirst = YES;
+    options.allowCaptureOfMedia = NO;
+
+    [self showMediaPickerWithDataSource:self.deviceLibraryDataSource
+                                options:options
+                      showGroupSelector:YES
+                               animated:animated];
+}
+
+- (void)showMediaPickerForWordPressLibraryAnimated:(BOOL)animated
+{
+    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:self.post];
+    WPMediaPickerOptions *options = [WPMediaPickerOptions new];
+    options.showMostRecentFirst = YES;
+    options.allowCaptureOfMedia = NO;
+
+    [self showMediaPickerWithDataSource:self.mediaLibraryDataSource
+                                options:options
+                      showGroupSelector:NO
+                               animated:animated];
+}
+
+- (void)showMediaPickerWithDataSource:(id<WPMediaCollectionDataSource>)dataSource
+                              options:(WPMediaPickerOptions *)options
+                    showGroupSelector:(BOOL)showGroupSelector
+                             animated:(BOOL)animated
+{
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
-    picker.dataSource = self.mediaLibraryDataSource;
+    picker.dataSource = dataSource;
     picker.delegate = self;
+    picker.showGroupSelector = showGroupSelector;
+
     [self presentViewController:picker animated:animated completion:nil];
 }
 
@@ -1925,7 +2013,62 @@ MediaProgressCoordinatorDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaPickerAnimated:YES];
+    if (self.mediaSourceAlertController && self.presentedViewController == self.mediaSourceAlertController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+
+    UIAlertController *controller = [UIAlertController alertControllerWithTitle:nil
+                                                                        message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    __weak __typeof(self) weakSelf = self;
+    if ([WPMediaCapturePresenter isCaptureAvailable]) {
+        [controller addDefaultActionWithTitle:NSLocalizedString(@"Take Photo or Video", @"Button title used in hybrid editor for taking an image or video with the device's camera.")
+                                      handler:^(UIAlertAction *action){
+                                          weakSelf.mediaSourceAlertController = nil;
+                                          [weakSelf presentMediaCapture];
+                                      }];
+    }
+
+    [controller addDefaultActionWithTitle:NSLocalizedString(@"Photo Library", @"Button title used in hybrid editor for selecting an image or video from the device's photo library.")
+                                  handler:^(UIAlertAction *action){
+                                      weakSelf.mediaSourceAlertController = nil;
+                                      [weakSelf showMediaPickerForDeviceLibraryAnimated:YES];
+                                  }];
+
+    [controller addDefaultActionWithTitle:NSLocalizedString(@"WordPress Media", @"Button title used in hybrid editor for selecting an image or video from the user's WordPress media library.")
+                                  handler:^(UIAlertAction *action){
+                                      weakSelf.mediaSourceAlertController = nil;
+                                      [weakSelf showMediaPickerForWordPressLibraryAnimated:YES];
+                                  }];
+
+    [controller addCancelActionWithTitle:NSLocalizedString(@"Cancel", nil)
+                                 handler:^(UIAlertAction *action){
+                                     weakSelf.mediaSourceAlertController = nil;
+        [weakSelf.toolbarView toolBarItemWithTag:kWPEditorViewControllerElementTagInsertImageBarButton
+                                 setSelected:NO];
+    }];
+
+    // Configure popover position
+    UIBarButtonItem *mediaButton = [self.toolbarView toolBarItemWithTag:kWPEditorViewControllerElementTagInsertImageBarButton];
+    CGRect frame = [mediaButton.customView convertRect:mediaButton.customView.bounds toCoordinateSpace:UIScreen.mainScreen.coordinateSpace];
+    CGRect convertedFrame = [self.view convertRect:frame fromCoordinateSpace:UIScreen.mainScreen.coordinateSpace];
+
+    // We were seeing an issue in landscape orientation where the popover arrow wasn't pointing to the correct
+    // location on iPad, despite the sourceRect being correct. We'll manually have to adjust the sourceRect
+    // position to account for the offset. It's off by roughly 3/4 of the button's width.
+    // @frosty 2017-09-07
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        convertedFrame.origin.x = frame.origin.x + (frame.size.width * 0.75);
+    }
+
+    controller.popoverPresentationController.sourceView = self.view;
+    controller.popoverPresentationController.sourceRect = convertedFrame;
+
+    controller.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+
+    self.mediaSourceAlertController = controller;
+
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController

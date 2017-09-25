@@ -313,19 +313,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (IBAction)showLinkOptions
 {
     NSString *permaLink             = [self documentPermalink];
-    NSString *title                 = [self documentTitle];
     NSMutableArray *activityItems   = [NSMutableArray array];
     
-    if (title) {
-        [activityItems addObject:title];
-    }
-
     [activityItems addObject:[NSURL URLWithString:permaLink]];
     
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
-    if (title) {
-        [activityViewController setValue:title forKey:@"subject"];
-    }
     activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         if (!completed) {
             return;

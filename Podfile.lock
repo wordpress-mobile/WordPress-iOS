@@ -21,11 +21,11 @@ PODS:
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
   - BuddyBuildSDK (1.0.16)
-  - CocoaLumberjack (3.2.0):
-    - CocoaLumberjack/Default (= 3.2.0)
-    - CocoaLumberjack/Extensions (= 3.2.0)
-  - CocoaLumberjack/Default (3.2.0)
-  - CocoaLumberjack/Extensions (3.2.0):
+  - CocoaLumberjack (3.2.1):
+    - CocoaLumberjack/Default (= 3.2.1)
+    - CocoaLumberjack/Extensions (= 3.2.1)
+  - CocoaLumberjack/Default (3.2.1)
+  - CocoaLumberjack/Extensions (3.2.1):
     - CocoaLumberjack/Default
   - Crashlytics (3.8.5):
     - Fabric (~> 1.6.3)
@@ -94,7 +94,7 @@ PODS:
   - SVProgressHUD (2.1.2)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.11.1)
-  - WordPress-iOS-Editor (1.9.4):
+  - WordPress-iOS-Editor (1.9.5):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
   - WordPressComKit (0.0.6):
@@ -107,7 +107,7 @@ DEPENDENCIES:
   - AFNetworking (= 3.1.0)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
   - BuddyBuildSDK (= 1.0.16)
-  - CocoaLumberjack (= 3.2.0)
+  - CocoaLumberjack (= 3.2.1)
   - Crashlytics (= 3.8.5)
   - Expecta (= 1.0.6)
   - FLAnimatedImage (= 1.0.12)
@@ -129,7 +129,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.1.2)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.11.1)
-  - WordPress-iOS-Editor (= 1.9.4)
+  - WordPress-iOS-Editor (= 1.9.5)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.22)
   - wpxmlrpc (= 0.8.3)
@@ -156,7 +156,7 @@ SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   Automattic-Tracks-iOS: edc4365d31602490af88dbed181b0b666cbdcf75
   BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
-  CocoaLumberjack: 9b4aed7073d242f29cc2f62068d995faf67f703a
+  CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
   Crashlytics: dfbae35ef22ca189240d230ad501feea4ee85d2d
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Fabric: 2fb5676bc811af011a04513451f463dac6803206
@@ -178,11 +178,11 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 9f964a1530de9a7e10775ba136b6ebf9c7e31dca
-  WordPress-iOS-Editor: 3792b28f6b139150b37363e450d3c8769137eaca
+  WordPress-iOS-Editor: be1de639b28b894789366b8380f26df30a8bb571
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 6be379b2f082af41c3ad62d5d3cab7ccc242a644
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 96a73fe83a49d9f82ec3fed7a39ef048f4200234
+PODFILE CHECKSUM: dcb9c6e17c333e93367e4f109305c9ca25c4d1f3
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1
