@@ -1,2 +1,1 @@
-Sites Jetpack : ajout du support des rôles personnalisés. 
-Plusieurs améliorations mineures et corrections de bogue.
+Vous ne remarquerez peut-être aucun changement notable sur cette version à part une app plus rapide et plus stable. Vous aurez la preuve en l’utilisant !
