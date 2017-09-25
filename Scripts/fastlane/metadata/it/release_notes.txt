@@ -1,2 +1,1 @@
-Siti Jetpack: Aggiunto supporto per ruoli personalizzati.
-Diverse migliorie e correzioni.
+Ovviamente potresti non notare nulla di diverso su questa versione, ma sarà un'applicazione più stabile e veloce. L'unico modo per provarla è utilizzarla.
