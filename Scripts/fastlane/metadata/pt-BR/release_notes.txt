@@ -1,2 +1,1 @@
-Sites Jetpack: adicionado suporte a funções personalizadas.
-Várias pequenas melhorias e correções de erros.
+Você pode não perceber nada evidentemente diferente nesta versão, mas espere um app mais rápido e mais estável. A prova está na utilização!

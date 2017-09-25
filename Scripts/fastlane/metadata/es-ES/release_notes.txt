@@ -1,2 +1,1 @@
-Sitios Jetpack: Añadida compatibilidad con perfiles personalizados.
-Varias mejoras menores y soluciones a fallos.
+Es posible que no notes las cosas muy diferentes en esta versión, pero es una aplicación más rápida y estable. ¡La prueba está en el uso!
