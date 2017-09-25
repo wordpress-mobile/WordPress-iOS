@@ -75,7 +75,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(path!,
                                  parameters: parameters,
                                  success: {
-                                    _, _ in
+                                    _ in
                                     success()
                                  }, failure: {
                                     error, _ in
@@ -94,7 +94,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(path!,
                                  parameters: parameters,
                                  success: {
-                                    _, _ in
+                                    _ in
                                     success()
                                  }, failure: {
                                     error, _ in
@@ -111,7 +111,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(path!,
                                  parameters: nil,
                                  success: {
-                                     _, _ in
+                                     _ in
                                      success()
                                  }, failure: {
                                      error, _ in
