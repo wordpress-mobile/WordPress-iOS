@@ -38,13 +38,13 @@ target 'WordPress' do
   pod 'HockeySDK', '4.1.6', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
-  pod 'SVProgressHUD', '2.1.2'
-  pod 'Crashlytics', '3.8.5'
+  pod 'SVProgressHUD', '2.2.1'
+  pod 'Crashlytics', '3.8.6'
   pod 'BuddyBuildSDK', '1.0.16', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '1.0.12'
-  pod 'MGSwipeTableCell', '1.6.0'
+  pod 'MGSwipeTableCell', '1.6.1'
   pod 'lottie-ios', '1.5.1'
-  pod 'Starscream', '2.1.0'
+  pod 'Starscream', '2.1.1'
 
   # --------------------
   # WordPress components
