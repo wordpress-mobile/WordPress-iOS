@@ -152,6 +152,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
                 return
             }
             DDLogError(error.localizedDescription)
+            WPAppAnalytics.track(.loginFailedToGuessXMLRPC, error: error)
             WPAppAnalytics.track(.loginFailed, error: error)
             strongSelf.configureViewLoading(false)
 
