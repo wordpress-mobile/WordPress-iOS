@@ -5,10 +5,6 @@ import UIKit
 /// or a conversation) from anywhere in the app.
 ///
 @objc class HelpshiftPresenter: NSObject {
-    // Passed into options when displaying a Helpshift window, so that users are presented
-    // a list of possibly related FAQs with matching terms before posting a new conversation.
-    fileprivate static let HelpshiftShowsSearchOnNewConversationKey = "showSearchOnNewConversation"
-
 
     /// set the source of the presenter for tagging in Helpshift
     var sourceTag: SupportSourceTag?
@@ -105,11 +101,11 @@ import UIKit
             }
         }
 
-        let config: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: metaData,
-                HelpshiftPresenter.HelpshiftShowsSearchOnNewConversationKey: true]
+        let config: [AnyHashable: Any] = [HelpshiftSupportCustomMetadataKey: metaData]
 
         let builder = HelpshiftAPIConfigBuilder()
         builder.extraConfig = config
+        builder.showSearchOnNewConversation = true
 
         return builder.build()
     }
