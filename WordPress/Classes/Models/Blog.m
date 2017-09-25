@@ -274,6 +274,11 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [[self.connections allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
+- (NSArray<Role *> *)sortedRoles
+{
+    return [self.roles sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
+}
+
 - (NSString *)defaultPostFormatText
 {
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
@@ -452,6 +457,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePluginManagement:
             return [self supportsRestApi] && ![self isHostedAtWPcom];
+        case BlogFeatureJetpackSettings:
+            return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:

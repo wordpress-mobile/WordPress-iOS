@@ -14,4 +14,9 @@ extension UIDevice {
         let systemVersion = UIDevice.current.systemVersion as NSString
         return systemVersion.doubleValue >= 8.0
     }
+
+    public var systemMajorVersion: Int {
+        let versionString = UIDevice.current.systemVersion as NSString
+        return versionString.integerValue
+    }
 }
