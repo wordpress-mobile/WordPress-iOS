@@ -144,6 +144,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
+        GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
 
         GIDSignIn.sharedInstance().signIn()
     }
