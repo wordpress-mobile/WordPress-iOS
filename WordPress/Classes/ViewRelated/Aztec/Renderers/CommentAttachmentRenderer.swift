@@ -39,6 +39,13 @@ extension CommentAttachmentRenderer: TextViewAttachmentImageProvider {
     func textView(_ textView: TextView, imageFor attachment: NSTextAttachment, with size: CGSize) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
 
+        // Either this is a comment attachment, or the logic is broken.
+        let commentAttachment = attachment as! CommentAttachment
+
+        guard !isGutenbergComment(commentAttachment) else {
+            return nil
+        }
+
         let message = messageAttributedString()
         let targetRect = boundingRect(for: message, size: size)
 
@@ -52,6 +59,13 @@ extension CommentAttachmentRenderer: TextViewAttachmentImageProvider {
 
     func textView(_ textView: TextView, boundsFor attachment: NSTextAttachment, with lineFragment: CGRect) -> CGRect {
         let message = messageAttributedString()
+
+        // Either this is a comment attachment, or the logic is broken.
+        let commentAttachment = attachment as! CommentAttachment
+
+        guard !isGutenbergComment(commentAttachment) else {
+            return .zero
+        }
 
         let size = CGSize(width: lineFragment.size.width, height: lineFragment.size.height)
         var rect = boundingRect(for: message, size: size)
@@ -80,5 +94,27 @@ private extension CommentAttachmentRenderer {
         ]
 
         return NSAttributedString(string: defaultText, attributes: attributes)
+    }
+
+    func isGutenbergComment(_ comment: CommentAttachment) -> Bool {
+
+        let openingGutenbergTag = "wp:core/"
+        let closingGutenbergTag = "/wp:core/"
+
+        let text = comment.text.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        return verify(text, startsWith: openingGutenbergTag) || verify(text, startsWith: closingGutenbergTag)
+    }
+
+    func verify(_ text: String, startsWith string: String) -> Bool {
+
+        guard let endIndex = text.index(text.startIndex, offsetBy: string.characters.count, limitedBy: text.endIndex) else {
+            return false
+        }
+
+        let testRange = text.startIndex ..< endIndex
+        let testString = text.substring(with: testRange)
+
+        return testString == string
     }
 }

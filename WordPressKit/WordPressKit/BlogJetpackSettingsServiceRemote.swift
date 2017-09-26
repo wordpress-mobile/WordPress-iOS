@@ -75,7 +75,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(path!,
                                  parameters: parameters,
                                  success: {
-                                    _, _ in
+                                    _ in
                                     success()
                                  }, failure: {
                                     error, _ in
@@ -94,11 +94,28 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(path!,
                                  parameters: parameters,
                                  success: {
-                                    _, _ in
+                                    _ in
                                     success()
                                  }, failure: {
                                     error, _ in
                                     failure(error)
+                                })
+    }
+
+    /// Disconnects Jetpack from a site
+    ///
+    public func disconnectJetpackFromSite(_ siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let endpoint = "jetpack-blogs/\(siteID)/mine/delete"
+        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+
+        wordPressComRestApi.POST(path!,
+                                 parameters: nil,
+                                 success: {
+                                     _ in
+                                     success()
+                                 }, failure: {
+                                     error, _ in
+                                     failure(error)
                                  })
     }
 
