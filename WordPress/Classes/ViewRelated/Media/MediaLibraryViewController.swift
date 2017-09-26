@@ -3,10 +3,11 @@ import Gridicons
 import SVProgressHUD
 import WordPressShared
 import WPMediaPicker
+import MobileCoreServices
 
 /// Displays the user's media library in a grid
 ///
-class MediaLibraryViewController: UIViewController {
+class MediaLibraryViewController: UIViewController, UIDocumentPickerDelegate {
     fileprivate static let restorationIdentifier = "MediaLibraryViewController"
 
     let blog: Blog
@@ -239,6 +240,12 @@ class MediaLibraryViewController: UIViewController {
         }
     }
 
+    fileprivate func showPreparingProgressHUD(){
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Preparing...\nTap to cancel", comment: "Text displayed in HUD while preparing to upload media items."))
+    }
+    
     // MARK: - Update view state
 
     fileprivate func updateViewState(for assetCount: Int) {
@@ -335,16 +342,47 @@ class MediaLibraryViewController: UIViewController {
     // MARK: - Actions
 
     @objc fileprivate func addTapped() {
+        if #available(iOS 11, *) {
+            self.showOptionsMenu()
+        }
+        else {
+            self.showMediaPicker()
+        }
+    }
+
+    private func showMediaPicker() {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = WPPHAssetDataSource()
         picker.delegate = self
-
+        
         present(picker, animated: true, completion: nil)
     }
-
+    
+    private func showOptionsMenu() {
+        let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        menuAlert.addAction(UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            self.showMediaPicker()
+        })
+        
+        menuAlert.addAction(UIAlertAction(title: "Other Apps", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            self.showDocumentPicker()
+        })
+        
+        menuAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { (_) in })
+        
+        // iPad support
+        menuAlert.popoverPresentationController?.sourceView = self.view
+        menuAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        
+        self.present(menuAlert, animated: true, completion: nil)
+    }
+    
     @objc private func editTapped() {
         isEditing = !isEditing
 
@@ -407,6 +445,56 @@ class MediaLibraryViewController: UIViewController {
         didSet {
             updateNavigationItemButtons(for: pickerDataSource.totalAssetCount)
         }
+    }
+
+    // MARK: - Document Picker
+    
+    private func showDocumentPicker() {
+        let docTypes = [String(kUTTypeImage), String(kUTTypeAudiovisualContent)]
+        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
+        docPicker.delegate = self
+        self.present(docPicker, animated: true, completion: nil)
+    }
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        showPreparingProgressHUD()
+        mediaProgressCoordinator.track(numberOfItems: urls.count)
+        // Wait until all assets are uploaded before we update the collection view
+        pickerDataSource.isPaused = true
+        
+        for documentURL in urls {
+            let mediaID = documentURL.lastPathComponent
+            let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            service.createMedia(url: documentURL,
+                                forPost: self.blog.objectID,
+                                thumbnailCallback: nil,
+                                completion: { [weak self] media, error in
+                                    guard let media = media else {
+                                        if let error = error as NSError? {
+                                            self?.mediaProgressCoordinator.attach(error: error, toMediaID: mediaID)
+                                        }
+                                        return
+                                    }
+                                    
+                                    var uploadProgress: Progress? = nil
+                                    service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
+                                        self?.unpauseDataSource()
+                                        self?.trackUploadFor(media)
+                                        }, failure: { error in
+                                            self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                                            
+                                            self?.unpauseDataSource()
+                                    })
+                                    
+                                    if let progress = uploadProgress {
+                                        self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+                                    }
+            })
+        }
+    }
+    
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Media Library Change Observer
@@ -501,11 +589,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         guard let assets = assets as? [PHAsset],
             assets.count > 0 else { return }
-
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Preparing...\nTap to cancel", comment: "Text displayed in HUD while preparing to upload media items."))
-
+        
+        showPreparingProgressHUD()
         mediaProgressCoordinator.track(numberOfItems: assets.count)
 
         // Wait until all assets are uploaded before we update the collection view
