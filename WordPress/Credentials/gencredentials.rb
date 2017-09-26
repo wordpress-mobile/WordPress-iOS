@@ -183,35 +183,36 @@ helpshift_app_id = nil
 debugging_key = nil
 File.open(path) do |f|
   f.each_line do |l|
-    (k,v) = l.split("=")
+    (k,value) = l.split("=")
+    value.strip!
     if k == "WPCOM_APP_ID"
-      client = v.chomp
+      client = value
     elsif k == "WPCOM_APP_SECRET"
-      secret = v.chomp
+      secret = value
     elsif k == "POCKET_CONSUMER_KEY"
-      pocket = v.chomp
+      pocket = value
     elsif k == "CRASHLYTICS_API_KEY"
-      crashlytics = v.chomp
+      crashlytics = value
     elsif k == "HOCKEYAPP_APP_ID"
-      hockeyapp = v.chomp
+      hockeyapp = value
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
-      googleplus = v.chomp
+      googleplus = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
-      google_id = v.chomp
+      google_id = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ALPHA_ID"
-      google_id_alpha = v.chomp
+      google_id_alpha = value
     elsif k == "GOOGLE_LOGIN_CLIENT_INTERNAL_ID"
-      google_id_internal = v.chomp
+      google_id_internal = value
     elsif k == "GOOGLE_LOGIN_SERVER_ID"
-      google_login_server = v.chomp
+      google_login_server = value
     elsif k == "HELPSHIFT_API_KEY"
-      helpshift_api_key = v.chomp
+      helpshift_api_key = value
     elsif k == "HELPSHIFT_DOMAIN_NAME"
-      helpshift_domain_name = v.chomp
+      helpshift_domain_name = value
     elsif k == "HELPSHIFT_APP_ID"
-      helpshift_app_id = v.chomp
+      helpshift_app_id = value
     elsif k == "DEBUGGING_KEY"
-      debugging_key = v.chomp
+      debugging_key = value
     end
   end
 end
