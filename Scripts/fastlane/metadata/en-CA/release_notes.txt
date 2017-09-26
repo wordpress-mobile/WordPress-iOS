@@ -1,2 +1,1 @@
-Jetpack sites: Added support for custom roles.
-Several minor improvements and bug fixes.
+You may not notice anything obviously different about this release, but expect a faster, more stable app. The proof is in the using!

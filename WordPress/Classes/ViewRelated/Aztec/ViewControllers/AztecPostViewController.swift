@@ -1800,15 +1800,14 @@ extension AztecPostViewController {
 
     private func presentMediaPicker(fromButton button: UIButton, animated: Bool = true) {
         trackFormatBarAnalytics(stat: .editorTappedImage)
-        if !(FeatureFlag.newInputMediaPicker.enabled) {
-            presentMediaPickerFullScreen(animated: animated)
-            return
-        }
+
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [WPMediaType.image, WPMediaType.video]
         options.allowMultipleSelection = true
         options.allowCaptureOfMedia = false
+        options.scrollVertically = true
+
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
         updateToolbar(formatBar, forMode: .media)
@@ -1824,7 +1823,6 @@ extension AztecPostViewController {
         picker.mediaPicker.viewControllerToUseToPresent = self
         picker.dataSource = WPPHAssetDataSource.sharedInstance()
         picker.mediaPicker.mediaPickerDelegate = self
-        picker.scrollVertically = true
 
         if currentKeyboardFrame != .zero {
             // iOS is not adjusting the media picker's height to match the default keyboard's height when autoresizingMask
@@ -1861,7 +1859,7 @@ extension AztecPostViewController {
 
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
             let attributes = [
-                NSFontAttributeName: UIFont.systemFont(ofSize: headerType.fontSize),
+                NSFontAttributeName: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
                 NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
             ]
 
