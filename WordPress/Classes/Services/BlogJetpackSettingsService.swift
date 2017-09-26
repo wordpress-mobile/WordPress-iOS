@@ -116,6 +116,23 @@ struct BlogJetpackSettingsService {
                                                        failure(error)
                                                    })
     }
+
+    func disconnectJetpackFromBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+            let blogDotComId = blog.dotComID as? Int else {
+                failure(nil)
+                return
+        }
+
+        remote.disconnectJetpackFromSite(blogDotComId,
+                                         success: {
+                                            success()
+                                         },
+                                         failure: { (error) in
+                                            failure(error)
+                                         })
+    }
+
 }
 
 private extension BlogJetpackSettingsService {
