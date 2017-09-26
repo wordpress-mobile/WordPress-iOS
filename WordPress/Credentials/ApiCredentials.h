@@ -8,6 +8,7 @@
 + (NSString *)hockeyappAppId;
 + (NSString *)googlePlusClientId;
 + (NSString *)googleLoginClientId;
++ (NSString *)googleLoginServerClientId;
 + (NSString *)helpshiftAPIKey;
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;
