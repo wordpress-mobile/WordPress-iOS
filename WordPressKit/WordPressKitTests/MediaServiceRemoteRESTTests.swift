@@ -90,6 +90,19 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
 
+    func testUpdateMediaAlt() {
+        let alt = "This is an alternative title"
+        let response = ["alt": alt]
+        let media = mockRemoteMedia()
+        media.imageAltTag = alt
+        var remoteMedia: RemoteMedia? = nil
+        mediaServiceRemote.update(media, success: {
+            remoteMedia = $0
+        }, failure: nil)
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+        XCTAssertEqual(remoteMedia?.imageAltTag, alt)
+    }
+    
     func testUpdateMedia() {
 
         let response = ["ID": 1]
@@ -189,6 +202,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let title = "title"
         let caption = "caption"
         let description = "description"
+        let alt = "alt"
         let height = 321
         let width = 432
 
@@ -202,6 +216,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
                                                       "title": title,
                                                       "caption": caption,
                                                       "description": description,
+                                                      "alt": alt,
                                                       "height": height,
                                                       "width": width]
 
@@ -216,6 +231,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(remoteMedia.title, title)
         XCTAssertEqual(remoteMedia.caption, caption)
         XCTAssertEqual(remoteMedia.descriptionText, description)
+        XCTAssertEqual(remoteMedia.imageAltTag, alt)
         XCTAssertEqual(remoteMedia.height.intValue, height)
         XCTAssertEqual(remoteMedia.width.intValue, width)
     }
