@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *caption;
 @property (nonatomic, strong) NSString *descriptionText;
+@property (nonatomic, strong) NSString *imageAltTag;
 @property (nonatomic, strong) NSNumber *height;
 @property (nonatomic, strong) NSNumber *width;
 @property (nonatomic, strong) NSString *shortcode;
