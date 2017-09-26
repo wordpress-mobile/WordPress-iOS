@@ -81,6 +81,14 @@ print <<-EOF
 EOF
 end
 
+def print_google_login_server(google_login_server)
+print <<-EOF
++ (NSString *)googleLoginServerClientId {
+    return @"#{google_login_server}";
+}
+EOF
+end
+
 def print_google_login(debug_and_release_id, alpha_id, internal_id)
 print <<-EOF
 + (NSString *)googleLoginClientId {
@@ -127,7 +135,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_alpha, google_id_internal, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_alpha, google_id_internal, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -139,6 +147,7 @@ EOF
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
   print_google_login(google_id, google_id_alpha, google_id_internal)
+  print_google_login_server(google_login_server)
   print_helpshift_api_key(helpshift_api_key)
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
@@ -167,6 +176,7 @@ googleplus = nil
 google_id = nil
 google_id_alpha = nil
 google_id_internal = nil
+google_login_server = nil
 helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
@@ -192,6 +202,8 @@ File.open(path) do |f|
       google_id_alpha = v.chomp
     elsif k == "GOOGLE_LOGIN_CLIENT_INTERNAL_ID"
       google_id_internal = v.chomp
+    elsif k == "GOOGLE_LOGIN_SERVER_ID"
+      google_login_server = v.chomp
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = v.chomp
     elsif k == "HELPSHIFT_DOMAIN_NAME"
@@ -244,4 +256,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_internal, google_id_alpha, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_internal, google_id_alpha, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
