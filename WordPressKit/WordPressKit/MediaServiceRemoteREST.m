@@ -308,6 +308,10 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     if (remoteMedia.descriptionText != nil) {
         parameters[@"description"] = remoteMedia.descriptionText;
     }
+    
+    if (remoteMedia.imageAltTag != nil) {
+        parameters[@"alt"] = remoteMedia.imageAltTag;
+    }
 
     return [NSDictionary dictionaryWithDictionary:parameters];
 }
