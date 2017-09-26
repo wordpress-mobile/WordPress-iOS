@@ -364,17 +364,17 @@ class MediaLibraryViewController: UIViewController, UIDocumentPickerDelegate {
     private func showOptionsMenu() {
         let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        menuAlert.addAction(UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default) {
+        menuAlert.addAction(UIAlertAction(title: NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library."), style: UIAlertActionStyle.default) {
             UIAlertAction in
             self.showMediaPicker()
         })
         
-        menuAlert.addAction(UIAlertAction(title: "Other Apps", style: UIAlertActionStyle.default) {
+        menuAlert.addAction(UIAlertAction(title: NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications."), style: UIAlertActionStyle.default) {
             UIAlertAction in
             self.showDocumentPicker()
         })
         
-        menuAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { (_) in })
+        menuAlert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button"), style: .cancel) { (_) in })
         
         // iPad support
         menuAlert.popoverPresentationController?.sourceView = self.view
