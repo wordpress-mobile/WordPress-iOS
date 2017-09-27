@@ -42,7 +42,7 @@ target 'WordPress' do
   pod 'Crashlytics', '3.8.5'
   pod 'BuddyBuildSDK', '1.0.16', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '1.0.12'
-  pod 'MGSwipeTableCell', '1.5.6'
+  pod 'MGSwipeTableCell', '1.6.0'
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '2.1.0'
 
@@ -52,9 +52,9 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
   pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.19'
-  pod 'WordPress-iOS-Editor', '1.9.3'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.10'
+  pod 'WPMediaPicker', '0.22'
+  pod 'WordPress-iOS-Editor', '1.9.4'
+  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.11.1'
 
   target 'WordPressTest' do
     inherit! :search_paths
