@@ -94,13 +94,13 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let alt = "This is an alternative title"
         let response = ["alt": alt]
         let media = mockRemoteMedia()
-        media.imageAltTag = alt
+        media.alt = alt
         var remoteMedia: RemoteMedia? = nil
         mediaServiceRemote.update(media, success: {
             remoteMedia = $0
         }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
-        XCTAssertEqual(remoteMedia?.imageAltTag, alt)
+        XCTAssertEqual(remoteMedia?.alt, alt)
     }
     
     func testUpdateMedia() {
@@ -231,7 +231,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(remoteMedia.title, title)
         XCTAssertEqual(remoteMedia.caption, caption)
         XCTAssertEqual(remoteMedia.descriptionText, description)
-        XCTAssertEqual(remoteMedia.imageAltTag, alt)
+        XCTAssertEqual(remoteMedia.alt, alt)
         XCTAssertEqual(remoteMedia.height.intValue, height)
         XCTAssertEqual(remoteMedia.width.intValue, width)
     }
