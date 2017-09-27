@@ -35,10 +35,30 @@ PODS:
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
+  - GoogleSignIn (4.0.2):
+    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
+    - GTMOAuth2 (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GoogleToolboxForMac/Defines (2.1.1)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.1):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.1)
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - Gridicons (0.10)
-  - HockeySDK (4.1.6):
-    - HockeySDK/DefaultLib (= 4.1.6)
-  - HockeySDK/DefaultLib (4.1.6)
+  - GTMOAuth2 (1.1.5):
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.1.11):
+    - GTMSessionFetcher/Full (= 1.1.11)
+  - GTMSessionFetcher/Core (1.1.11)
+  - GTMSessionFetcher/Full (1.1.11):
+    - GTMSessionFetcher/Core (= 1.1.11)
+  - HockeySDK (5.0.0):
+    - HockeySDK/DefaultLib (= 5.0.0)
+  - HockeySDK/DefaultLib (5.0.0)
   - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.6.1)
   - MRProgress (0.8.3):
@@ -112,8 +132,9 @@ DEPENDENCIES:
   - Expecta (= 1.0.6)
   - FLAnimatedImage (= 1.0.12)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+  - GoogleSignIn (= 4.0.2)
   - Gridicons (= 0.10)
-  - HockeySDK (= 4.1.6)
+  - HockeySDK (= 5.0.0)
   - lottie-ios (= 1.5.1)
   - MGSwipeTableCell (= 1.6.1)
   - MRProgress (= 0.8.3)
@@ -162,8 +183,12 @@ SPEC CHECKSUMS:
   Fabric: 2fb5676bc811af011a04513451f463dac6803206
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
+  GoogleSignIn: d7ad83f13480e1f30453471d00d19b5293ac46af
+  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
-  HockeySDK: 95db557d54489a570dcdefae0d02f98eecc279a3
+  GTMOAuth2: be83fd28d63ae3087e7d351b1f39c1a7e24ab6e7
+  GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
+  HockeySDK: 82bf8dcbe1af3c87c24dc98924fcf2e2ba5be8c4
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 19a1d65dcc1ceaea42eb44bb2adae32101904514
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -183,6 +208,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 6be379b2f082af41c3ad62d5d3cab7ccc242a644
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 65548e8c0b110beaccca125185c061af6f0041f1
+PODFILE CHECKSUM: 5c40cd06860b84b63fa451c67e0a39e842191d8a
 
 COCOAPODS: 1.3.1
