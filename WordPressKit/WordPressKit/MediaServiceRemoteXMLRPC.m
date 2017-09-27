@@ -243,7 +243,7 @@
 
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
-    remoteMedia.imageAltTag = [xmlRPC stringForKey:@"alt"];
+    remoteMedia.alt = [xmlRPC stringForKey:@"alt"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
 
