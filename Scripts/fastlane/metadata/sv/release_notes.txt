@@ -1,2 +1,1 @@
-Webbplatser med Jetpack: Stöd för anpassade roller tillagt.
-Ett flertal mindre förbättringar och felrättningar.
+På direkten märker du inte några större skillnader med denna version, men din app bör fungera lite snabbare och vara lite stabilare. Det märker du när du använder den!

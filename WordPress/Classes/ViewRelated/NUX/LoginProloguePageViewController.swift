@@ -39,7 +39,19 @@ class LoginProloguePageViewController: UIPageViewController {
 
 
         newControl.numberOfPages = pages.count
+        newControl.addTarget(self, action: #selector(handlePageControlValueChanged(sender:)), for: UIControlEvents.valueChanged)
         pageControl = newControl
+    }
+
+    func handlePageControlValueChanged(sender: UIPageControl) {
+        guard let currentPage = viewControllers?.first,
+            let currentIndex = pages.index(of: currentPage) else {
+            return
+        }
+
+        let direction: UIPageViewControllerNavigationDirection = sender.currentPage > currentIndex ? .forward : .reverse
+        setViewControllers([pages[sender.currentPage]], direction: direction, animated: true)
+        WPAppAnalytics.track(.loginProloguePaged)
     }
 
     fileprivate func animateBackground(for index: Int, duration: TimeInterval = 0.5) {
@@ -94,6 +106,8 @@ extension LoginProloguePageViewController: UIPageViewControllerDelegate {
         if !completed {
             pageControl?.currentPage = index
             animateBackground(for: index, duration: 0.2)
+        } else {
+            WPAppAnalytics.track(.loginProloguePaged)
         }
     }
 

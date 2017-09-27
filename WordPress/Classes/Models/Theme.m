@@ -28,6 +28,7 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 @dynamic price;
 @dynamic purchased;
 @dynamic demoUrl;
+@dynamic themeUrl;
 @dynamic stylesheet;
 @dynamic order;
 @dynamic custom;
@@ -44,13 +45,28 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 
 - (NSString *)customizeUrl
 {
-    NSString *path = [NSString stringWithFormat:ThemeAdminUrlCustomize, self.stylesheet];
+    NSString *themePath = [self themePathForCustomization];
+    NSString *path = [NSString stringWithFormat:ThemeAdminUrlCustomize, themePath];
     
     return [self.blog adminUrlWithPath:path];
 }
 
+- (NSString *)themePathForCustomization {
+    if ([self.blog supports:BlogFeatureCustomThemes]) {
+        if (self.custom) {
+            return self.themeId;
+        } else {
+            return [ThemeIdHelper themeIdWithWPComSuffix:self.themeId];
+        }
+    }
+    return self.stylesheet;
+}
+
 - (NSString *)detailsUrl
 {
+    if (self.custom) {
+        return self.themeUrl;
+    }
     NSString *homeUrl = self.blog.homeURL.hostname;
 
     return [NSString stringWithFormat:ThemeUrlDetails, homeUrl, self.themeId];
@@ -76,6 +92,11 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 - (BOOL)isPremium
 {
     return [self.premium boolValue];
+}
+
+- (BOOL)hasDetailsURL
+{
+    return self.detailsUrl.length > 0;
 }
 
 @end

@@ -348,7 +348,7 @@ class MediaLibraryViewController: UIViewController {
     @objc private func editTapped() {
         isEditing = !isEditing
 
-        let options = pickerViewController.options
+        let options = pickerViewController.options.copy() as! WPMediaPickerOptions
         options.allowMultipleSelection = isEditing
         pickerViewController.options = options
 
@@ -488,7 +488,7 @@ extension MediaLibraryViewController: UISearchBarDelegate {
 // MARK: - WPMediaPickerViewControllerDelegate
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
-    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPickingAssets assets: [Any]) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         // We're only interested in the upload picker
         guard picker != pickerViewController else { return }
 
@@ -576,7 +576,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func makeAndUploadMediaWith(_ asset: PHAsset) {
-        let assetID = asset.identifier() ?? String(mediaProgressCoordinator.mediaUploading.count)
+        let assetID = asset.identifier()
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,

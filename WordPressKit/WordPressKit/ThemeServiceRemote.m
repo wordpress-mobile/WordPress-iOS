@@ -263,6 +263,33 @@ static NSString* const ThemeRequestPageKey = @"page";
     return progress;
 }
 
+- (NSProgress *)installThemeId:(NSString*)themeId
+                     forBlogId:(NSNumber *)blogId
+                       success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
+                       failure:(ThemeServiceRemoteFailureBlock)failure
+{
+    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
+    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+
+    NSString* const path = [NSString stringWithFormat:@"sites/%@/themes/%@/install", blogId, themeId];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    NSProgress *progress = [self.wordPressComRestApi POST:requestUrl
+                                               parameters:nil
+                                                  success:^(NSDictionary *themeDictionary, NSHTTPURLResponse *httpResponse) {
+                                                      if (success) {
+                                                          RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
+                                                          success(theme);
+                                                      }
+                                                  } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                                      if (failure) {
+                                                          failure(error);
+                                                      }
+                                                  }];
+    return progress;
+}
+
 #pragma mark - Parsing responses
 
 /**
@@ -312,6 +339,7 @@ static NSString* const ThemeRequestPageKey = @"page";
     static NSString* const ThemeAuthorURLKey = @"author_uri";
     static NSString* const ThemeCostPath = @"cost.number";
     static NSString* const ThemeDemoURLKey = @"demo_uri";
+    static NSString* const ThemeURL = @"theme_uri";
     static NSString* const ThemeDescriptionKey = @"description";
     static NSString* const ThemeDownloadURLKey = @"download_uri";
     static NSString* const ThemeIdKey = @"id";
@@ -335,6 +363,7 @@ static NSString* const ThemeRequestPageKey = @"page";
     theme.author = [dictionary stringForKey:ThemeAuthorKey];
     theme.authorUrl = [dictionary stringForKey:ThemeAuthorURLKey];
     theme.demoUrl = [dictionary stringForKey:ThemeDemoURLKey];
+    theme.themeUrl = [dictionary stringForKey:ThemeURL];
     theme.desc = [dictionary stringForKey:ThemeDescriptionKey];
     theme.downloadUrl = [dictionary stringForKey:ThemeDownloadURLKey];
     theme.name = [dictionary stringForKey:ThemeNameKey];
