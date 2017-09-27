@@ -165,16 +165,16 @@ class AppSettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if shouldShowEditorFooterForSection(section) {
-            let footer = UITableViewHeaderFooterView.init(frame: CGRect(x: 0.0,
-                                                                        y: 0.0,
-                                                                        width: tableView.frame.width,
-                                                                        height: AppSettingsViewController.aztecEditorFooterHeight))
+            let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
+                                                                   y: 0.0,
+                                                                   width: tableView.frame.width,
+                                                                   height: AppSettingsViewController.aztecEditorFooterHeight))
             footer.textLabel?.text = NSLocalizedString("Editor release notes & bug reporting",
                                                        comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
             footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
             footer.textLabel?.isUserInteractionEnabled = true
 
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleEditorFooterTap(_:)))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(handleEditorFooterTap(_:)))
             footer.addGestureRecognizer(tap)
             return footer
         }
@@ -194,7 +194,7 @@ class AppSettingsViewController: UITableViewController {
         return section == Sections.editor.rawValue && EditorSettings().editor == .aztec
     }
 
-    func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
+    @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
         WPAppAnalytics.track(.editorAztecBetaLink)
         WPWebViewController.presentWhatsNewWebView(from: self)
     }
