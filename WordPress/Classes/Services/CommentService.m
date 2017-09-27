@@ -378,7 +378,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     NSString *content = string;
     content = [RichContentFormatter removeTrailingBreakTags:content];
-    content = [RichContentFormatter formatContentString:content isPrivateStie:isPrivateSite];
+    content = [RichContentFormatter formatContentString:content isPrivateSite:isPrivateSite];
     return content;
 }
 

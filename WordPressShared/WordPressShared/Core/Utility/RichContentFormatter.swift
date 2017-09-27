@@ -40,7 +40,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func formatContentString(_ string: String, isPrivateStie isPrivate: Bool) -> String {
+    public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
         guard string.characters.count > 0 else {
             return string
         }
