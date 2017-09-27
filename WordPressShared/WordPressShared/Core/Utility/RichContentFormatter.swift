@@ -209,11 +209,7 @@ import Foundation
             return string
         }
 
-        guard let window = UIApplication.shared.keyWindow else {
-            return string
-        }
-
-        let imageSize = window.frame.size
+        let imageSize = UIScreen.main.bounds.size
         let scale = UIScreen.main.scale
         let scaledSize = imageSize.applying(CGAffineTransform(scaleX: scale, y: scale))
 
