@@ -1,2 +1,1 @@
-Jetpack-sites: ondersteuning voor aangepaste rollen toegevoegd.
-Verschillende kleine verbeteringen en bugfixes.
+Misschien merk je geen verschil aan deze release, maar je kunt rekenen op een snellere, stabielere app. Proberen is meemaken!

@@ -113,6 +113,7 @@
     
     void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){        
         [WPAppAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC error:error];
+        [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
         [self.delegate displayRemoteError:error];
     };
     
