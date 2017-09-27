@@ -107,6 +107,7 @@
                 <outlet property="blogLabel" destination="Lsp-ya-PNI" id="MU2-IP-ioj"/>
                 <outlet property="btnFollow" destination="7h0-qK-qQQ" id="mrP-k7-mXx"/>
                 <outlet property="gravatarImageView" destination="LYp-ge-5Fb" id="zlq-p2-dIB"/>
+                <outlet property="innerStackView" destination="ilL-3r-WNn" id="oHd-Sx-qs8"/>
                 <outlet property="nameLabel" destination="bBR-jy-KRp" id="qrk-bR-zkq"/>
             </connections>
             <point key="canvasLocation" x="15" y="115"/>
