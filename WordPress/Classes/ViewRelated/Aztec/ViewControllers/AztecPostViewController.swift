@@ -2576,6 +2576,7 @@ extension AztecPostViewController {
             // If we drop in here, let's just insert a link the the remote media
             let linkTitle = media.title?.nonEmptyString() ?? remoteURLStr
             richTextView.setLink(remoteURL, title: linkTitle, inRange: richTextView.selectedRange)
+            WPAppAnalytics.track(.editorAddedOtherMediaViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         }
         self.mediaProgressCoordinator.finishOneItem()
     }
