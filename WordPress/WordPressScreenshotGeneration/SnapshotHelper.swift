@@ -1,5 +1,5 @@
 //
-//  SnapshotHelper.swift
+//  SnapshotHelperXcode8.swift
 //  Example
 //
 //  Created by Felix Krause on 10/8/15.
@@ -10,7 +10,7 @@
 // IMPORTANT: When modifying this file, make sure to 
 //            increment the version number at the very
 //            bottom of the file to notify users about
-//            the new SnapshotHelper.swift
+//            the new SnapshotHelperXcode8.swift
 // -----------------------------------------------------
 
 import Foundation
@@ -129,8 +129,8 @@ open class Snapshot: NSObject {
 
     class func pathPrefix() -> URL? {
         let homeDir: URL
-        //on OSX config is stored in /Users/<username>/Library
-        //and on iOS/tvOS/WatchOS it's in simulator's home dir
+        // on OSX config is stored in /Users/<username>/Library
+        // and on iOS/tvOS/WatchOS it's in simulator's home dir
         #if os(OSX)
             guard let user = ProcessInfo().environment["USER"] else {
                 print("Couldn't find Snapshot configuration files - can't detect current user ")
@@ -170,4 +170,4 @@ extension XCUIElement {
 
 // Please don't remove the lines below
 // They are used to detect outdated configuration files
-// SnapshotHelperVersion [1.4]
+// SnapshotHelperXcode8Version [1.4]
