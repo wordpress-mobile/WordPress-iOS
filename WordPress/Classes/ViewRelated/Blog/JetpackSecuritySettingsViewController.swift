@@ -161,8 +161,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
             footer.textLabel?.text = NSLocalizedString("Learn more...",
                                                        comment: "Jetpack Settings: WordPress.com Login WordPress login footer text")
             footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-            WPStyleGuide.configureTableViewSectionFooter(footer)
-            footer.isUserInteractionEnabled = true
+            footer.textLabel?.isUserInteractionEnabled = true
 
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleLearnMoreTap(_:)))
             footer.addGestureRecognizer(tap)
