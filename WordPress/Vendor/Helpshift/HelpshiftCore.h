@@ -19,10 +19,12 @@
 - (void) _registerDeviceToken:(NSData *)deviceToken;
 - (BOOL) _handleRemoteNotification:(NSDictionary *)notification withController:(UIViewController *)viewController;
 - (BOOL) _handleRemoteNotification:(NSDictionary *)notification isAppLaunch:(BOOL)isAppLaunch withController:(UIViewController *)viewController;
+#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (BOOL) _handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
 #pragma clang diagnostic pop
 - (void) _handleInteractiveRemoteNotification:(NSDictionary *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
+#pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void) _handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
 #pragma clang diagnostic pop
