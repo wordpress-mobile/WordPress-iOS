@@ -19,6 +19,8 @@ class MediaLibraryViewController: UIViewController {
     fileprivate var noResultsView: WPNoResultsView? = nil
 
     fileprivate var selectedAsset: Media? = nil
+    
+    fileprivate var createMediaCompletionHander: ((Media?, Error?, String) -> Void)? = nil
 
     private let defaultSearchBarHeight: CGFloat = 44.0
     lazy fileprivate var searchBarContainer: UIView = {
@@ -487,7 +489,32 @@ class MediaLibraryViewController: UIViewController {
         docPicker.delegate = self
         present(docPicker, animated: true, completion: nil)
     }
+  
+    // MARK: - Upload Media
     
+    fileprivate func uploadMedia(_ media:Media?, error: Error?, mediaID: String) {
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        guard let media = media else {
+            if let error = error as NSError? {
+                self.mediaProgressCoordinator.attach(error: error, toMediaID: mediaID)
+            }
+            return
+        }
+        
+        var uploadProgress: Progress? = nil
+        service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
+            self?.unpauseDataSource()
+            self?.trackUploadFor(media)
+            }, failure: { error in
+                self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                self.unpauseDataSource()
+        })
+        
+        if let progress = uploadProgress {
+            self.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+        }
+    }
 }
 
 // MARK: - UIDocumentPickerDelegate
@@ -500,36 +527,21 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
         pickerDataSource.isPaused = true
         
         for documentURL in urls {
-            let mediaID = documentURL.lastPathComponent
-            let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            service.createMedia(url: documentURL,
-                                forBlog: blog.objectID,
-                                thumbnailCallback: nil,
-                                completion: { [weak self] media, error in
-                                    guard let media = media else {
-                                        if let error = error as NSError? {
-                                            self?.mediaProgressCoordinator.attach(error: error, toMediaID: mediaID)
-                                        }
-                                        return
-                                    }
-                                    
-                                    var uploadProgress: Progress? = nil
-                                    service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
-                                        self?.unpauseDataSource()
-                                        self?.trackUploadFor(media)
-                                        }, failure: { error in
-                                            self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
-                                            
-                                            self?.unpauseDataSource()
-                                    })
-                                    
-                                    if let progress = uploadProgress {
-                                        self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
-                                    }
-            })
+            makeAndUploadMediaWithURL(documentURL)
         }
     }
-    
+
+    private func makeAndUploadMediaWithURL(_ url: URL) {
+        createMediaCompletionHander = uploadMedia
+        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.createMedia(url: url,
+                            forBlog: blog.objectID,
+                            thumbnailCallback: nil,
+                            completion: { [weak self] media, error in
+                                self?.createMediaCompletionHander!(media, error, url.lastPathComponent)
+        })
+    }
+
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
@@ -664,33 +676,14 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func makeAndUploadMediaWith(_ asset: PHAsset) {
-        let assetID = asset.identifier()
-
+        createMediaCompletionHander = uploadMedia
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
                             forBlogObjectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
-                                guard let media = media else {
-                                    if let error = error as NSError? {
-                                        self?.mediaProgressCoordinator.attach(error: error, toMediaID: assetID)
-                                    }
-                                    return
-                                }
+                                self?.createMediaCompletionHander!(media, error, asset.identifier())
 
-                                var uploadProgress: Progress? = nil
-                                service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
-                                    self?.unpauseDataSource()
-                                    self?.trackUploadFor(media)
-                                }, failure: { error in
-                                    self?.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: assetID)
-
-                                    self?.unpauseDataSource()
-                                })
-
-                                if let progress = uploadProgress {
-                                    self?.mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: assetID)
-                                }
         })
     }
 
