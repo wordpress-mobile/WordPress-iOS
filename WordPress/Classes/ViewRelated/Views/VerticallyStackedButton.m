@@ -1,6 +1,9 @@
 #import "VerticallyStackedButton.h"
+#import <WordPressShared/WPFontManager.h>
+
 
 static const CGFloat ImageLabelSeparation = 2.f;
+static const CGFloat LabelFontSize = 11.f;
 
 @implementation VerticallyStackedButton
 
@@ -19,7 +22,7 @@ static const CGFloat ImageLabelSeparation = 2.f;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    [self.titleLabel setFont:[WPStyleGuide labelFontNormal]];
+    [self.titleLabel setFont:[WPFontManager systemRegularFontOfSize:LabelFontSize]];
     
     CGSize imageSize    = self.imageView.image.size;
     CGSize maxTitleSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - imageSize.height);
