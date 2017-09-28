@@ -19,7 +19,8 @@ public final class WordPressComOAuthClient: NSObject {
 
     public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
-    public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php"
+    public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint&version=1.0"
+    public static let WordPressComSocialLogin2FAUrl = "https://wordpress.com/wp-login.php?action=two-step-authentication-endpoint&version=1.0"
     public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
     public static let WordPressComSocialLoginEndpointVersion = 1.0
 
@@ -32,6 +33,10 @@ public final class WordPressComOAuthClient: NSObject {
 
     fileprivate let socialSessionManager: AFHTTPSessionManager = {
         return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComSocialLoginUrl)
+    }()
+
+    fileprivate let social2FASessionManager: AFHTTPSessionManager = {
+        return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComSocialLogin2FAUrl)
     }()
 
     fileprivate class func sessionManager(url: String) -> AFHTTPSessionManager {
@@ -145,13 +150,11 @@ public final class WordPressComOAuthClient: NSObject {
                                         needsMultifactor: @escaping (_ userID: Int, _ nonceInfo: SocialLogin2FANonceInfo) -> Void,
                                         failure: @escaping (_ error: NSError) -> Void ) {
         let parameters = [
-            "acton": "social-login-endpoint",
             "client_id": clientID,
             "client_secret": secret,
             "service": "google",
             "get_bearer_token": true,
             "id_token" : token,
-            "version": WordPressComOAuthClient.WordPressComSocialLoginEndpointVersion,
         ] as [String : Any]
 
         // Passes an empty string for the
@@ -246,7 +249,6 @@ public final class WordPressComOAuthClient: NSObject {
                                             success: @escaping (_ authToken: String?) -> Void,
                                             failure: @escaping (_ error: NSError) -> Void ) {
         let parameters = [
-            "acton": "two-step-authentication-endpoint",
             "user_id" : userID,
             "auth_type" : authType,
             "two_step_code": twoStepCode,
@@ -254,10 +256,9 @@ public final class WordPressComOAuthClient: NSObject {
             "get_bearer_token": true,
             "client_id": clientID,
             "client_secret": secret,
-            "version": WordPressComOAuthClient.WordPressComSocialLoginEndpointVersion,
             ] as [String : Any]
 
-        socialSessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
+        social2FASessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
             DDLogVerbose("Received Social Login Oauth response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
             guard let responseDictionary = responseObject as? [String: AnyObject],
                 let data = responseDictionary["data"] as? [String: AnyObject],
