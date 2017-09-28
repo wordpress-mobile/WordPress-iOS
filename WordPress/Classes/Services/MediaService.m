@@ -38,6 +38,20 @@
      ];
 }
 
+- (void)createMediaWithURL:(NSURL *)url
+           forBlogObjectID:(NSManagedObjectID *)blogObjectID
+         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSString *mediaName = [[url pathComponents] lastObject];
+    [self exportMediaWith:url
+                 objectID:blogObjectID
+                mediaName:mediaName
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
+
 - (void)createMediaWithImage:(UIImage *)image
                  withMediaID:(NSString *)mediaID
              forPostObjectID:(NSManagedObjectID *)postObjectID
