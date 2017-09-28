@@ -888,6 +888,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
+    // which results in 30pt tall headers on iOS 11
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
+}
 
 #pragma mark - UIScrollView Delegate Methods
 
