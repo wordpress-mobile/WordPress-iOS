@@ -38,7 +38,7 @@ class PushAuthenticationManager {
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
-    func isPushAuthenticationNotification(_ userInfo: NSDictionary?) -> Bool {
+    func isAuthenticationNotification(_ userInfo: NSDictionary?) -> Bool {
         let noteType = userInfo?["type"] as? String
         return noteType == Settings.pushAuthenticationNoteType
     }
@@ -51,8 +51,8 @@ class PushAuthenticationManager {
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-    func handlePushAuthenticationNotification(_ userInfo: NSDictionary?) {
-        guard isNotificationExpired(userInfo) == false else {
+    func handleAuthenticationNotification(_ userInfo: NSDictionary?) {
+        guard isAuthenticationNotificationExpired(userInfo) == false else {
             showLoginExpiredAlert()
             WPAnalytics.track(.pushAuthenticationExpired)
             return
@@ -103,7 +103,7 @@ private extension PushAuthenticationManager {
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-    func isNotificationExpired(_ userInfo: NSDictionary?) -> Bool {
+    func isAuthenticationNotificationExpired(_ userInfo: NSDictionary?) -> Bool {
         guard let rawExpiration = userInfo?["expires"] as? TimeInterval else {
             return false
         }
