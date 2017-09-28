@@ -47,9 +47,8 @@ class PushAuthenticationManager {
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-        // Expired: Display a message!
-        if isNotificationExpired(userInfo) {
     func handlePushAuthenticationNotification(_ userInfo: NSDictionary?) {
+        guard isNotificationExpired(userInfo) == false else {
             showLoginExpiredAlert()
             WPAnalytics.track(.pushAuthenticationExpired)
             return
@@ -100,9 +99,8 @@ private extension PushAuthenticationManager {
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-        let rawExpiration = userInfo?["expires"] as? TimeInterval
-        if rawExpiration == nil {
     func isNotificationExpired(_ userInfo: NSDictionary?) -> Bool {
+        guard let rawExpiration = userInfo?["expires"] as? TimeInterval else {
             return false
         }
 
