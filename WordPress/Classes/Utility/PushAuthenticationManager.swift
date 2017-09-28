@@ -8,13 +8,18 @@ import WordPressShared
 /// authorizing access by means of a mobile device that's already authenticated.
 /// By doing so, WordPress.com backend will send a Push Notification, which is meant to be handled by this specific class.
 ///
-    // MARK: - Public Methods
-    //
-    open var alertControllerProxy = UIAlertControllerProxy()
-    open let pushAuthenticationService: PushAuthenticationService
 class PushAuthenticationManager {
 
-    override convenience init() {
+    /// AlertController Proxy
+    ///
+    var alertControllerProxy = UIAlertControllerProxy()
+
+    /// PushAuth Service
+    ///
+    fileprivate let pushAuthenticationService: PushAuthenticationService
+
+
+    convenience init() {
         let context = ContextManager.sharedInstance().mainContext
         let service = PushAuthenticationService(managedObjectContext: context)
         self.init(pushAuthenticationService: service)
@@ -22,7 +27,6 @@ class PushAuthenticationManager {
 
     public init(pushAuthenticationService: PushAuthenticationService) {
         self.pushAuthenticationService = pushAuthenticationService
-        super.init()
     }
 
 
@@ -87,7 +91,7 @@ private extension PushAuthenticationManager {
             return
         }
 
-        self.pushAuthenticationService.authorizeLogin(token) { success in
+        pushAuthenticationService.authorizeLogin(token) { success in
             if !success {
                 self.authorizeLogin(token, retryCount: (retryCount + 1))
             }
@@ -136,9 +140,9 @@ private extension PushAuthenticationManager {
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
 
         alertControllerProxy.show(withTitle: title,
-                                           message: message,
-                                           cancelButtonTitle: cancelButtonTitle,
-                                           otherButtonTitles: [acceptButtonTitle]) { (theAlertController, buttonIndex) in
+                                  message: message,
+                                  cancelButtonTitle: cancelButtonTitle,
+                                  otherButtonTitles: [acceptButtonTitle]) { (theAlertController, buttonIndex) in
             let approved = theAlertController?.actions[buttonIndex].style != .cancel
             completion(approved)
         }
