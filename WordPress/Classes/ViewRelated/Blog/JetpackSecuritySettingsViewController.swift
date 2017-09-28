@@ -42,6 +42,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
         title = NSLocalizedString("Security", comment: "Title for the Jetpack Security Settings Screen")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
         reloadViewModel()
     }
 
@@ -154,17 +155,16 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
 
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == JetpackSecuritySettingsViewController.wordPressLoginSection {
-            let footer = UITableViewHeaderFooterView.init(frame: CGRect(x: 0.0,
-                                                                        y: 0.0,
-                                                                        width: tableView.frame.width,
-                                                                        height: JetpackSecuritySettingsViewController.footerHeight))
+            let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
+                                                                   y: 0.0,
+                                                                   width: tableView.frame.width,
+                                                                   height: JetpackSecuritySettingsViewController.footerHeight))
             footer.textLabel?.text = NSLocalizedString("Learn more...",
                                                        comment: "Jetpack Settings: WordPress.com Login WordPress login footer text")
             footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-            WPStyleGuide.configureTableViewSectionFooter(footer)
-            footer.isUserInteractionEnabled = true
+            footer.textLabel?.isUserInteractionEnabled = true
 
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleLearnMoreTap(_:)))
+            let tap = UITapGestureRecognizer(target: self, action: #selector(handleLearnMoreTap(_:)))
             footer.addGestureRecognizer(tap)
             return footer
         }
@@ -288,7 +288,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
 
     // MARK: - Footer handler
 
-    func handleLearnMoreTap(_ sender: UITapGestureRecognizer) {
+    @objc fileprivate func handleLearnMoreTap(_ sender: UITapGestureRecognizer) {
         guard let url =  URL(string: JetpackSecuritySettingsViewController.learnMoreUrl) else {
             return
         }
