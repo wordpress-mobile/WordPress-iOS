@@ -64,7 +64,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        WPStyleGuide.configureFollow(btnFollow)
+        WPStyleGuide.Notifications.configureFollowButton(btnFollow)
         btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
@@ -73,9 +73,10 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         nameLabel.textColor = WPStyleGuide.Notifications.blockTextColor
 
         blogLabel.font = WPStyleGuide.Notifications.blockRegularFont
-        blogLabel.textColor = WPStyleGuide.Notifications.blockSubtitleColor
+        blogLabel.textColor = WPStyleGuide.allTAllShadeGrey()
         blogLabel.adjustsFontSizeToFitWidth = false
     }
+
 
     // MARK: - IBActions
     @IBAction func followWasPressed(_ sender: AnyObject) {
