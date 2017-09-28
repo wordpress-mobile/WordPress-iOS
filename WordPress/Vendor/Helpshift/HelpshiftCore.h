@@ -261,8 +261,10 @@ typedef enum HsEnableContactUs
  *
  *  @return BOOL value indicating whether Helpshift handled this push notification.
  */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (BOOL) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
-
+#pragma clang diagnostic pop
 /**
  *  Pass along an interactive notification to the Helpshift SDK
  *
@@ -283,8 +285,10 @@ typedef enum HsEnableContactUs
  *
  *  @return BOOL value indicating whether Helpshift handled this push notification.
  */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (BOOL) handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
-
+#pragma clang diagnostic pop
 /**
  *  If an app is woken up in the background in response to a background session being completed, call this API from the
  *  Application's delegate method. Helpshift SDK extensively uses background NSURLSessions for data syncing.
