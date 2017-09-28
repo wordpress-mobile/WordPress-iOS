@@ -57,12 +57,12 @@ class MediaItemViewController: UITableViewController {
         let altRow = editableRowIfSupported(title: NSLocalizedString("Alt Text",comment: "Label for the alt for a media asset (image)"),
                                             value: mediaMetadata.alt,
                                             action: editAlt())
-        
+
         var mediaInfoRows = [titleRow, captionRow, descRow]
         if media.mediaType == .image {
             mediaInfoRows.append(altRow)
         }
-        
+
         viewModel = ImmuTable(sections: [
             ImmuTableSection(rows: [ headerRow ]),
             ImmuTableSection(headerText: nil, rows: mediaInfoRows, footerText: nil),
@@ -340,7 +340,7 @@ class MediaItemViewController: UITableViewController {
             })
         }
     }
-    
+
     private func editAlt() -> ((ImmuTableRow) -> ()) {
         return { [weak self] row in
             let editableRow = row as! EditableTextRow
