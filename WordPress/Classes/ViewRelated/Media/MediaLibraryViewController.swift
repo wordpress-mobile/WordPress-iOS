@@ -7,7 +7,7 @@ import MobileCoreServices
 
 /// Displays the user's media library in a grid
 ///
-class MediaLibraryViewController: UIViewController, UIDocumentPickerDelegate {
+class MediaLibraryViewController: UIViewController {
     fileprivate static let restorationIdentifier = "MediaLibraryViewController"
 
     let blog: Blog
@@ -343,10 +343,10 @@ class MediaLibraryViewController: UIViewController, UIDocumentPickerDelegate {
 
     @objc fileprivate func addTapped() {
         if #available(iOS 11, *) {
-            self.showOptionsMenu()
+            showOptionsMenu()
         }
         else {
-            self.showMediaPicker()
+            showMediaPicker()
         }
     }
 
@@ -364,23 +364,21 @@ class MediaLibraryViewController: UIViewController, UIDocumentPickerDelegate {
     private func showOptionsMenu() {
         let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        menuAlert.addAction(UIAlertAction(title: NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library."), style: UIAlertActionStyle.default) {
-            UIAlertAction in
+        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")) { _ in
             self.showMediaPicker()
-        })
-        
-        menuAlert.addAction(UIAlertAction(title: NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications."), style: UIAlertActionStyle.default) {
-            UIAlertAction in
+        }
+
+        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")) { _ in
             self.showDocumentPicker()
-        })
-        
-        menuAlert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button"), style: .cancel) { (_) in })
+        }
+
+        menuAlert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
         
         // iPad support
-        menuAlert.popoverPresentationController?.sourceView = self.view
+        menuAlert.popoverPresentationController?.sourceView = view
         menuAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         
-        self.present(menuAlert, animated: true, completion: nil)
+        present(menuAlert, animated: true, completion: nil)
     }
     
     @objc private func editTapped() {
@@ -447,15 +445,54 @@ class MediaLibraryViewController: UIViewController, UIDocumentPickerDelegate {
         }
     }
 
+    // MARK: - Media Library Change Observer
+
+    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
+    private func registerChangeObserver() {
+        assert(mediaLibraryChangeObserverKey == nil)
+        mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+            guard let strongSelf = self else { return }
+
+            strongSelf.updateViewState(for: strongSelf.pickerDataSource.numberOfAssets())
+
+            if strongSelf.pickerDataSource.totalAssetCount > 0 {
+                strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
+            } else {
+                strongSelf.isEditing = false
+            }
+
+            // If we're presenting an item and it's been deleted, pop the
+            // detail view off the stack
+            if let navigationController = strongSelf.navigationController,
+                navigationController.topViewController != strongSelf,
+                let asset = strongSelf.selectedAsset,
+                asset.isDeleted {
+                _ = strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
+            }
+        })
+    }
+
+    private func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            pickerDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
+        }
+    }
+    
     // MARK: - Document Picker
     
     private func showDocumentPicker() {
         let docTypes = [String(kUTTypeImage), String(kUTTypeAudiovisualContent)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
-        self.present(docPicker, animated: true, completion: nil)
+        present(docPicker, animated: true, completion: nil)
     }
     
+}
+
+// MARK: - UIDocumentPickerDelegate
+
+extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         showPreparingProgressHUD()
         mediaProgressCoordinator.track(numberOfItems: urls.count)
@@ -495,40 +532,6 @@ class MediaLibraryViewController: UIViewController, UIDocumentPickerDelegate {
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         dismiss(animated: true, completion: nil)
-    }
-
-    // MARK: - Media Library Change Observer
-
-    private var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
-
-    private func registerChangeObserver() {
-        assert(mediaLibraryChangeObserverKey == nil)
-        mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-            guard let strongSelf = self else { return }
-
-            strongSelf.updateViewState(for: strongSelf.pickerDataSource.numberOfAssets())
-
-            if strongSelf.pickerDataSource.totalAssetCount > 0 {
-                strongSelf.updateNavigationItemButtonsForCurrentAssetSelection()
-            } else {
-                strongSelf.isEditing = false
-            }
-
-            // If we're presenting an item and it's been deleted, pop the
-            // detail view off the stack
-            if let navigationController = strongSelf.navigationController,
-                navigationController.topViewController != strongSelf,
-                let asset = strongSelf.selectedAsset,
-                asset.isDeleted {
-                _ = strongSelf.navigationController?.popToViewController(strongSelf, animated: true)
-            }
-        })
-    }
-
-    private func unregisterChangeObserver() {
-        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
-            pickerDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
-        }
     }
 }
 
