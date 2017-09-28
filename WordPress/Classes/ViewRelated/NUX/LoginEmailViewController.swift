@@ -394,7 +394,7 @@ extension LoginEmailViewController: GIDSignInDelegate {
                 let email = user.profile.email else {
             // The Google SignIn for may have been canceled.
             //TODO: Add analytis
-            return;
+            return
         }
 
         // Store the email address.
