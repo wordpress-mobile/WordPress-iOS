@@ -73,7 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIColor *)buttonActionColor;
 + (UIColor *)nuxFormText;
 + (UIColor *)nuxFormPlaceholderText;
-+ (void)configureFollowButton:(nullable UIButton *)followButton;
 
 // Deprecated Colors
 + (UIColor *)baseLighterBlue;
