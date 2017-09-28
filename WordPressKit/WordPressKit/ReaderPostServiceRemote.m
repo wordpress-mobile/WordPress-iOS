@@ -754,7 +754,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     NSString *content = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyContent]];
     BOOL isPrivateSite = [self siteIsPrivateFromPostDictionary:dict];
 
-    return [RichContentFormatter formatContentString:content isPrivateStie:isPrivateSite];
+    return [RichContentFormatter formatContentString:content isPrivateSite:isPrivateSite];
 }
 
 /**
