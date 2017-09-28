@@ -34,12 +34,9 @@ class PushAuthenticationManager {
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
-        if let unwrappedNoteType = userInfo?["type"] as? String {
-            return unwrappedNoteType == pushAuthenticationNoteType
-        }
-
-        return false
     func isPushAuthenticationNotification(_ userInfo: NSDictionary?) -> Bool {
+        let noteType = userInfo?["type"] as? String
+        return noteType == Settings.pushAuthenticationNoteType
     }
 
     /// Will display a popup requesting for permission to verify a WordPress.com login attempt.
@@ -58,7 +55,6 @@ class PushAuthenticationManager {
             return
         }
 
-        // Verify: Ask for approval
         guard let token = userInfo?["push_auth_token"] as? String,
             let message = userInfo?.value(forKeyPath: "aps.alert") as? String else {
             return
@@ -66,13 +62,14 @@ class PushAuthenticationManager {
 
         showLoginVerificationAlert(message) { approved in
             if approved {
-                self.authorizeLogin(token, retryCount: self.initialRetryCount)
+                self.authorizeLogin(token, retryCount: Settings.initialRetryCount)
                 WPAnalytics.track(.pushAuthenticationApproved)
             } else {
                 WPAnalytics.track(.pushAuthenticationIgnored)
             }
         }
     }
+}
 
 
 // MARK: - Private Helpers
@@ -85,8 +82,8 @@ private extension PushAuthenticationManager {
     ///     - token: The login request token received in the Push Notification itself.
     ///     - retryCount: The number of retries that have taken place.
     ///
-        if retryCount == maximumRetryCount {
     func authorizeLogin(_ token: String, retryCount: Int) {
+        guard retryCount < Settings.maximumRetryCount else {
             WPAnalytics.track(.pushAuthenticationFailed)
             return
         }
@@ -109,8 +106,8 @@ private extension PushAuthenticationManager {
             return false
         }
 
-        let parsedExpiration = Date(timeIntervalSince1970: TimeInterval(rawExpiration!))
-        return parsedExpiration.timeIntervalSinceNow < minimumRemainingExpirationTime
+        let parsedExpiration = Date(timeIntervalSince1970: rawExpiration)
+        return parsedExpiration.timeIntervalSinceNow < Settings.minimumRemainingExpirationTime
     }
 
 
@@ -155,9 +152,10 @@ private extension PushAuthenticationManager {
 //
 private extension PushAuthenticationManager {
 
-    // MARK: - Private Internal Constants
-    fileprivate let initialRetryCount                   = 0
-    fileprivate let maximumRetryCount                   = 3
-    fileprivate let minimumRemainingExpirationTime      = TimeInterval(5)
-    fileprivate let pushAuthenticationNoteType          = "push_auth"
+    struct Settings {
+        static let initialRetryCount = 0
+        static let maximumRetryCount = 3
+        static let minimumRemainingExpirationTime = TimeInterval(5)
+        static let pushAuthenticationNoteType = "push_auth"
+    }
 }
