@@ -503,7 +503,7 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
             let mediaID = documentURL.lastPathComponent
             let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             service.createMedia(url: documentURL,
-                                forPost: self.blog.objectID,
+                                forBlog: blog.objectID,
                                 thumbnailCallback: nil,
                                 completion: { [weak self] media, error in
                                     guard let media = media else {
