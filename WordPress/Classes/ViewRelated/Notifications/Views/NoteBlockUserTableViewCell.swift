@@ -11,10 +11,14 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
 
     var isFollowEnabled: Bool {
         set {
-            btnFollow.isHidden = !newValue
+            if newValue {
+                innerStackView.addArrangedSubview(btnFollow)
+            } else {
+                btnFollow.removeFromSuperview()
+            }
         }
         get {
-            return !btnFollow.isHidden
+            return btnFollow.superview != nil
         }
     }
     var isFollowOn: Bool {
@@ -87,8 +91,9 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     fileprivate var gravatarURL: URL?
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate weak var nameLabel: UILabel!
-    @IBOutlet fileprivate weak var blogLabel: UILabel!
-    @IBOutlet fileprivate weak var btnFollow: UIButton!
-    @IBOutlet fileprivate weak var gravatarImageView: CircularImageView!
+    @IBOutlet fileprivate var nameLabel: UILabel!
+    @IBOutlet fileprivate var blogLabel: UILabel!
+    @IBOutlet fileprivate var btnFollow: UIButton!
+    @IBOutlet fileprivate var gravatarImageView: CircularImageView!
+    @IBOutlet fileprivate var innerStackView: UIStackView!
 }
