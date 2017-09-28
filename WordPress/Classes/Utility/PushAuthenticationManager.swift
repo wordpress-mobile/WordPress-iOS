@@ -154,7 +154,7 @@ private extension PushAuthenticationManager {
 //
 private extension PushAuthenticationManager {
 
-    struct Settings {
+    enum Settings {
         static let initialRetryCount = 0
         static let maximumRetryCount = 3
         static let minimumRemainingExpirationTime = TimeInterval(5)
