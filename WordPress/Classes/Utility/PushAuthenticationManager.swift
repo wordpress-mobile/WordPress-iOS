@@ -8,11 +8,11 @@ import WordPressShared
 /// authorizing access by means of a mobile device that's already authenticated.
 /// By doing so, WordPress.com backend will send a Push Notification, which is meant to be handled by this specific class.
 ///
-@objc open class PushAuthenticationManager: NSObject {
     // MARK: - Public Methods
     //
     open var alertControllerProxy = UIAlertControllerProxy()
     open let pushAuthenticationService: PushAuthenticationService
+class PushAuthenticationManager {
 
     override convenience init() {
         let context = ContextManager.sharedInstance().mainContext
@@ -34,12 +34,12 @@ import WordPressShared
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
-    open func isPushAuthenticationNotification(_ userInfo: NSDictionary?) -> Bool {
         if let unwrappedNoteType = userInfo?["type"] as? String {
             return unwrappedNoteType == pushAuthenticationNoteType
         }
 
         return false
+    func isPushAuthenticationNotification(_ userInfo: NSDictionary?) -> Bool {
     }
 
     /// Will display a popup requesting for permission to verify a WordPress.com login attempt.
@@ -50,9 +50,9 @@ import WordPressShared
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-    open func handlePushAuthenticationNotification(_ userInfo: NSDictionary?) {
         // Expired: Display a message!
         if isNotificationExpired(userInfo) {
+    func handlePushAuthenticationNotification(_ userInfo: NSDictionary?) {
             showLoginExpiredAlert()
             WPAnalytics.track(.pushAuthenticationExpired)
             return
@@ -75,9 +75,9 @@ import WordPressShared
     }
 
 
-
-    // MARK: - Private Helpers
-    //
+// MARK: - Private Helpers
+//
+private extension PushAuthenticationManager {
 
     /// Authorizes a WordPress.com login attempt.
     ///
@@ -85,8 +85,8 @@ import WordPressShared
     ///     - token: The login request token received in the Push Notification itself.
     ///     - retryCount: The number of retries that have taken place.
     ///
-    fileprivate func authorizeLogin(_ token: String, retryCount: Int) {
         if retryCount == maximumRetryCount {
+    func authorizeLogin(_ token: String, retryCount: Int) {
             WPAnalytics.track(.pushAuthenticationFailed)
             return
         }
@@ -103,9 +103,9 @@ import WordPressShared
     ///
     /// - Parameter userInfo: Is the Notification's payload.
     ///
-    fileprivate func isNotificationExpired(_ userInfo: NSDictionary?) -> Bool {
         let rawExpiration = userInfo?["expires"] as? TimeInterval
         if rawExpiration == nil {
+    func isNotificationExpired(_ userInfo: NSDictionary?) -> Bool {
             return false
         }
 
@@ -116,7 +116,7 @@ import WordPressShared
 
     /// Displays an AlertView indicating that a Login Request has expired.
     ///
-    fileprivate func showLoginExpiredAlert() {
+    func showLoginExpiredAlert() {
         let title               = NSLocalizedString("Login Request Expired", comment: "Login Request Expired")
         let message             = NSLocalizedString("The login request has expired. Log in to WordPress.com to try again.",
                                                     comment: "WordPress.com Push Authentication Expired message")
@@ -135,7 +135,7 @@ import WordPressShared
     ///     - message: The message to be displayed.
     ///     - completion: A closure that receives a parameter, indicating whether the login attempt was confirmed or not.
     ///
-    fileprivate func showLoginVerificationAlert(_ message: String, completion: @escaping ((_ approved: Bool) -> ())) {
+    func showLoginVerificationAlert(_ message: String, completion: @escaping ((_ approved: Bool) -> ())) {
         let title               = NSLocalizedString("Verify Log In", comment: "Push Authentication Alert Title")
         let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
@@ -148,7 +148,12 @@ import WordPressShared
             completion(approved)
         }
     }
+}
 
+
+// MARK: - Private Internal Constants
+//
+private extension PushAuthenticationManager {
 
     // MARK: - Private Internal Constants
     fileprivate let initialRetryCount                   = 0
