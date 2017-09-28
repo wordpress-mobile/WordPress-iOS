@@ -233,8 +233,9 @@ final public class PushNotificationsManager: NSObject {
 
         let rootViewController = sharedApplication.keyWindow?.rootViewController
         let payload = userInfo as! [AnyHashable: Any]
-
-        HelpshiftCore.handleRemoteNotification(payload, with: rootViewController)
+        DispatchQueue.main.async {
+            HelpshiftCore.handleRemoteNotification(payload, with: rootViewController)
+        }
         WPAnalytics.track(.supportReceivedResponseFromSupport)
 
         completionHandler?(.newData)
