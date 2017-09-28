@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 extension WPStyleGuide {
     public struct Notifications {
@@ -63,7 +64,7 @@ extension WPStyleGuide {
         public static let headerTitleColor          = blockTextColor
         public static let headerTitleBoldFont       = blockBoldFont
 
-        public static let headerDetailsColor        = blockSubtitleColor
+        public static let headerDetailsColor        = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
         public static let headerDetailsRegularFont  = blockRegularFont
 
         public static let headerTitleRegularStyle   = [ NSFontAttributeName: headerTitleRegularFont,
@@ -103,7 +104,6 @@ extension WPStyleGuide {
         public static let blockQuotedColor          = UIColor(red: 0x7E/255.0, green: 0x9E/255.0, blue: 0xB5/255.0, alpha: 0xFF/255.0)
         public static let blockBackgroundColor      = UIColor.white
         public static let blockLinkColor            = WPStyleGuide.baseLighterBlue()
-        public static let blockSubtitleColor        = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
         public static let blockSeparatorColor       = WPStyleGuide.readGrey()
 
         public static let blockApprovedBgColor      = UIColor.clear
@@ -195,6 +195,41 @@ extension WPStyleGuide {
         public static func configureSegmentedControl(_ segmentedControl: UISegmentedControl) {
             let style = [ NSFontAttributeName: WPFontManager.systemRegularFont(ofSize: 12) ]
             segmentedControl.setTitleTextAttributes(style, for: UIControlState())
+        }
+
+        // User Cell Helpers
+        public static func configureFollowButton(_ button: UIButton) {
+            // General
+            button.contentHorizontalAlignment = .left
+            button.backgroundColor = .clear
+            button.titleLabel?.font = WPStyleGuide.subtitleFont()
+
+            // Color(s)
+            let normalColor = WPStyleGuide.mediumBlue()
+            let highlightedColor = WPStyleGuide.lightBlue()
+            let selectedColor = WPStyleGuide.validGreen()
+
+            button.setTitleColor(normalColor, for: .normal)
+            button.setTitleColor(selectedColor, for: .selected)
+            button.setTitleColor(highlightedColor, for: .highlighted)
+
+            // Image(s)
+            let side = WPStyleGuide.fontSizeForTextStyle(.subheadline)
+            let size = CGSize(width: side, height: side)
+            let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
+            let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
+
+            button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
+            button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
+            button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
+
+            // Strings
+            let normalText = NSLocalizedString("Follow", comment: "Prompt to follow a blog.")
+            let selectedText = NSLocalizedString("Following", comment: "User is following the blog.")
+
+            button.setTitle(normalText, for: .normal)
+            button.setTitle(selectedText, for: .selected)
+            button.setTitle(selectedText, for: .highlighted)
         }
 
 
