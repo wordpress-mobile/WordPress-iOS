@@ -166,7 +166,7 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Badge: Reset
-        if userInfo.string(forKey: Constants.notificationTypeKey) == Constants.notificationBadgeResetValue {
+        guard let type = userInfo.string(forKey: Constants.notificationTypeKey), type != Constants.notificationBadgeResetValue else {
             return
         }
 
