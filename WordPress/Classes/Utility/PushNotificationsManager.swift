@@ -368,34 +368,30 @@ final public class PushNotificationsManager: NSObject {
         let event: WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
         WPAnalytics.track(event, withProperties: properties)
     }
+}
 
 
+// MARK: - Nested Types
+//
+private extension PushNotificationsManager {
 
-    /// Parses the NSData sent by Apple's Push Service, and extracts the Device Token
-    ///
-    fileprivate func parseTokenFromAppleData(_ tokenData: Data) -> String {
-        return tokenData.hexString
+    enum Constants {
+        static let deviceTokenKey = "apnsDeviceToken"
+        static let deviceIdKey = "notification_device_id"
+        static let notificationBadgePath = "aps.badge"
+        static let notificationIdentifierKey = "note_id"
+        static let notificationTypeKey = "type"
+        static let notificationOriginKey = "origin"
+        static let notificationBadgeResetValue = "badge-reset"
     }
 
+    enum Helpshift {
+        static let originValue = "helpshift"
+    }
 
-
-
-    // MARK: - Private Constants: Device Keys
-    fileprivate let deviceTokenKey              = "apnsDeviceToken"
-    fileprivate let deviceIdKey                 = "notification_device_id"
-
-    // MARK: - Private Constants: Notification Keys
-    fileprivate let notificationBadgePath       = "aps.badge"
-    fileprivate let notificationIdentifierKey   = "note_id"
-    fileprivate let notificationTypeKey         = "type"
-    fileprivate let notificationOriginKey       = "origin"
-    fileprivate let notificationBadgeResetValue = "badge-reset"
-
-    // MARK: - Private Constants: Helpshift
-    fileprivate let helpshiftOriginValue        = "helpshift"
-
-    // MARK: - Private Constants: Tracking
-    fileprivate let trackingIdentifierKey       = "push_notification_note_id"
-    fileprivate let trackingTypeKey             = "push_notification_type"
-    fileprivate let trackingTokenKey            = "push_notification_token"
+    enum Tracking {
+        static let identifierKey = "push_notification_note_id"
+        static let typeKey = "push_notification_type"
+        static let tokenKey = "push_notification_token"
+    }
 }
