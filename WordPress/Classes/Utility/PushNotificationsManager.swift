@@ -208,12 +208,12 @@ final public class PushNotificationsManager: NSObject {
             }
         }
     }
+}
 
 
-
-
-    // MARK: - Private Methods: Handlers
-
+// MARK: - Handlers: Should be private, but... are open due to Unit Testing requirements!
+//
+extension PushNotificationsManager {
 
     /// Handles a Helpshift Remote Notification
     ///
@@ -339,12 +339,12 @@ final public class PushNotificationsManager: NSObject {
 
         return true
     }
+}
 
 
-
-
-    // MARK: - Private Methods: Helpers
-
+// MARK: - Private Methods
+//
+private extension PushNotificationsManager {
 
     /// Tracks a Notification Event
     ///
