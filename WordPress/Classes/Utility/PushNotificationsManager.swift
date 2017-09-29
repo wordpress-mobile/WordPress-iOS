@@ -14,7 +14,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Returns the shared PushNotificationsManager instance.
     ///
-    static let sharedInstance = PushNotificationsManager()
+    static let shared = PushNotificationsManager()
 
 
     /// Stores the Apple's Push Notifications Token
