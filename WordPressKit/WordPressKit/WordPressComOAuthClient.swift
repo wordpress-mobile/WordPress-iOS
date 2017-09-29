@@ -168,25 +168,25 @@ public final class WordPressComOAuthClient: NSObject {
 
             // Make sure we received expected data.
             guard let responseDictionary = responseObject as? [String: AnyObject],
-                let data = responseDictionary["data"] as? [String: AnyObject] else {
+                let responseData = responseDictionary["data"] as? [String: AnyObject] else {
                     failure(defaultError)
                     return
             }
 
             // Check for a bearer token. If one is found then we're authed.
-            if let authToken = data["bearer_token"] as? String {
+            if let authToken = responseData["bearer_token"] as? String {
                 success(authToken)
                 return
             }
 
             // If there is no bearer token, check for 2fa enabled.
-            guard let userID = data["user_id"] as? Int,
-                let _ = data["two_step_nonce_backup"] else {
+            guard let userID = responseData["user_id"] as? Int,
+                let _ = responseData["two_step_nonce_backup"] else {
                 failure(defaultError)
                 return
             }
 
-            let nonceInfo = self.extractNonceInfo(data: data)
+            let nonceInfo = self.extractNonceInfo(data: responseData)
             needsMultifactor(userID, nonceInfo)
 
             }, failure: { (task, error) in
@@ -263,8 +263,8 @@ public final class WordPressComOAuthClient: NSObject {
         social2FASessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
             DDLogVerbose("Received Social Login Oauth response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
             guard let responseDictionary = responseObject as? [String: AnyObject],
-                let data = responseDictionary["data"] as? [String: AnyObject],
-                let authToken = data["bearer_token"] as? String else {
+                let responseData = responseDictionary["data"] as? [String: AnyObject],
+                let authToken = responseData["bearer_token"] as? String else {
                     failure(NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,
                                                code: WordPressComOAuthError.unknown.rawValue,
                                                userInfo: nil))
