@@ -143,6 +143,7 @@ public final class WordPressComOAuthClient: NSObject {
     /// - Parameters:
     ///     - token: A social ID token obtained from a supported social service.
     ///     - success: block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
+    ///     - needsMultifactor: block to be called if a 2fa token is needed to complete the auth process.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
     public func authenticateWithIDToken(_ token: String,
@@ -157,7 +158,7 @@ public final class WordPressComOAuthClient: NSObject {
             "id_token" : token,
         ] as [String : Any]
 
-        // Passes an empty string for the
+        // Passes an empty string for the path. The session manager was composed with the full endpoint path.
         socialSessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
             DDLogVerbose("Received Social Login Oauth response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
 
@@ -258,6 +259,7 @@ public final class WordPressComOAuthClient: NSObject {
             "client_secret": secret,
             ] as [String : Any]
 
+        // Passes an empty string for the path. The session manager was composed with the full endpoint path.
         social2FASessionManager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
             DDLogVerbose("Received Social Login Oauth response: \(self.cleanedUpResponseForLogging(responseObject as AnyObject? ?? "nil" as AnyObject))")
             guard let responseDictionary = responseObject as? [String: AnyObject],
