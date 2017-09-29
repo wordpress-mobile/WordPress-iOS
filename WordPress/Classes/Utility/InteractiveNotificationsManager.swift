@@ -107,10 +107,12 @@ final class InteractiveNotificationsManager: NSObject {
 
         return true
     }
+}
 
 
-    // MARK: - Private Helpers
-
+// MARK: - Private Helpers
+//
+private extension InteractiveNotificationsManager {
 
     /// Likes a comment and marks the associated notification as read
     ///
@@ -170,11 +172,6 @@ final class InteractiveNotificationsManager: NSObject {
     }
 
 
-
-
-    // MARK: - Private: UNNotification Helpers
-
-
     /// Returns a collection of *UNNotificationCategory* instances, for each one of the
     /// supported NoteCategoryDefinition enum case's.
     ///
@@ -184,8 +181,13 @@ final class InteractiveNotificationsManager: NSObject {
         let categories: [UNNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
         return Set(categories)
     }
+}
 
 
+
+// MARK: - Nested Types
+//
+private extension InteractiveNotificationsManager {
 
     /// Describes information about Custom Actions that WPiOS can perform, as a response to
     /// a Push Notification event.
@@ -208,7 +210,6 @@ final class InteractiveNotificationsManager: NSObject {
                 return [.commentReply, .commentLike]
             }
         }
-
 
         var identifier: String {
             return rawValue
@@ -293,6 +294,8 @@ final class InteractiveNotificationsManager: NSObject {
 }
 
 
+// MARK: - UNUserNotificationCenterDelegate Conformance
+//
 extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
