@@ -547,7 +547,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[UINavigationBar appearance] setShadowImage:[WPStyleGuide navigationBarShadowImage]];
     [[UINavigationBar appearance] setBarStyle:[WPStyleGuide navigationBarBarStyle]];
 
-    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
 
