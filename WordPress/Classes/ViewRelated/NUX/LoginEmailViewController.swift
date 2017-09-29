@@ -9,7 +9,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
-    var googleLoginButon: UIButton?
+    var googleLoginButton: UIButton?
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
@@ -140,7 +140,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             button.trailingAnchor.constraint(equalTo:instructionLabel.trailingAnchor),
             button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor)
         ])
-        googleLoginButon = button
+        googleLoginButton = button
     }
 
     func googleLoginTapped() {
@@ -175,7 +175,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///
     override func configureViewLoading(_ loading: Bool) {
         emailTextField.isEnabled = !loading
-        googleLoginButon?.isEnabled = !loading
+        googleLoginButton?.isEnabled = !loading
 
         submitButton?.isEnabled = !loading
         submitButton?.showActivityIndicator(loading)
