@@ -184,12 +184,12 @@ final public class PushNotificationsManager: NSObject {
         DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
         // Badge: Update
-        if let badgeCountNumber = userInfo.number(forKeyPath: notificationBadgePath)?.intValue {
+        if let badgeCountNumber = userInfo.number(forKeyPath: Constants.notificationBadgePath)?.intValue {
             sharedApplication.applicationIconBadgeNumber = badgeCountNumber
         }
 
         // Badge: Reset
-        if let type = userInfo.string(forKey: notificationTypeKey), type == notificationBadgeResetValue {
+        if userInfo.string(forKey: Constants.notificationTypeKey) == Constants.notificationBadgeResetValue {
             return
         }
 
@@ -227,7 +227,7 @@ final public class PushNotificationsManager: NSObject {
     /// - Returns: True when handled. False otherwise
     ///
     func handleHelpshiftNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        guard let origin = userInfo.string(forKey: notificationOriginKey), origin == helpshiftOriginValue else {
+        guard let origin = userInfo.string(forKey: Constants.notificationOriginKey), origin == Helpshift.originValue else {
             return false
         }
 
@@ -292,7 +292,7 @@ final public class PushNotificationsManager: NSObject {
             return false
         }
 
-        guard let notificationId = userInfo.number(forKey: notificationIdentifierKey)?.stringValue else {
+        guard let notificationId = userInfo.number(forKey: Constants.notificationIdentifierKey)?.stringValue else {
             return false
         }
 
@@ -315,7 +315,7 @@ final public class PushNotificationsManager: NSObject {
     /// - Returns: True when handled. False otherwise
     ///
     func handleBackgroundNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        guard userInfo.number(forKey: notificationIdentifierKey)?.stringValue != nil else {
+        guard userInfo.number(forKey: Constants.notificationIdentifierKey)?.stringValue != nil else {
             return false
         }
 
@@ -350,19 +350,19 @@ final public class PushNotificationsManager: NSObject {
     ///
     /// - Parameter userInfo: The Notification's Payload
     ///
-    fileprivate func trackNotificationWithUserInfo(_ userInfo: NSDictionary) {
+    func trackNotification(with userInfo: NSDictionary) {
         var properties = [String: String]()
 
-        if let noteId = userInfo.number(forKey: notificationIdentifierKey) {
-            properties[trackingIdentifierKey] = noteId.stringValue
+        if let noteId = userInfo.number(forKey: Constants.notificationIdentifierKey) {
+            properties[Tracking.identifierKey] = noteId.stringValue
         }
 
-        if let type = userInfo.string(forKey: notificationTypeKey) {
-            properties[trackingTypeKey] = type
+        if let type = userInfo.string(forKey: Constants.notificationTypeKey) {
+            properties[Tracking.typeKey] = type
         }
 
         if let theToken = deviceToken {
-            properties[trackingTokenKey] = theToken
+            properties[Tracking.tokenKey] = theToken
         }
 
         let event: WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
