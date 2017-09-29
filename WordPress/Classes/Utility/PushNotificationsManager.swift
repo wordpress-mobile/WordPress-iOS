@@ -9,8 +9,6 @@ import CocoaLumberjack
 /// including iOS "Actionable" Notifications.
 ///
 final public class PushNotificationsManager: NSObject {
-    // MARK: - Public Properties
-
 
     /// Returns the shared PushNotificationsManager instance.
     ///
@@ -24,8 +22,8 @@ final public class PushNotificationsManager: NSObject {
             return UserDefaults.standard.string(forKey: deviceTokenKey) ?? String()
         }
         set {
-            standardUserDefaults.set(newValue, forKey: deviceTokenKey)
-            standardUserDefaults.synchronize()
+            UserDefaults.standard.set(newValue, forKey: Constants.deviceTokenKey)
+            UserDefaults.standard.synchronize()
         }
     }
 
@@ -34,11 +32,11 @@ final public class PushNotificationsManager: NSObject {
     ///
     var deviceId: String? {
         get {
-            return standardUserDefaults.string(forKey: deviceIdKey) ?? String()
+            return UserDefaults.standard.string(forKey: Constants.deviceIdKey) ?? String()
         }
         set {
-            standardUserDefaults.set(newValue, forKey: deviceIdKey)
-            standardUserDefaults.synchronize()
+            UserDefaults.standard.set(newValue, forKey: Constants.deviceIdKey)
+            UserDefaults.standard.synchronize()
         }
     }
 
@@ -55,23 +53,6 @@ final public class PushNotificationsManager: NSObject {
     var applicationState: UIApplicationState {
         return sharedApplication.applicationState
     }
-
-
-
-
-    // MARK: - Private Properties
-
-
-    /// Returns the Standard User Defaults.
-    ///
-    fileprivate var standardUserDefaults: UserDefaults {
-        return UserDefaults.standard
-    }
-
-
-
-
-    // MARK: - Public Methods: Registration
 
 
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
