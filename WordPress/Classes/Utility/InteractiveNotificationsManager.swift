@@ -2,12 +2,11 @@ import Foundation
 import CocoaLumberjack
 import UserNotifications
 
+
 /// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
 /// UNNotificationAction instantiation, along with the required handlers.
 ///
-final public class InteractiveNotificationsManager: NSObject {
-    // MARK: - Public Properties
-
+final class InteractiveNotificationsManager: NSObject {
 
     /// Returns the shared InteractiveNotificationsManager instance.
     ///
@@ -38,14 +37,12 @@ final public class InteractiveNotificationsManager: NSObject {
        return NotificationSyncMediator()
     }
 
-    // MARK: - Public Methods
-
 
     /// Registers the device for User Notifications.
     ///
     /// This method should be called once during the app initialization process.
     ///
-    public func registerForUserNotifications() {
+    func registerForUserNotifications() {
         if sharedApplication.isRunningSimulator() || build(.a8cBranchTest) {
             return
         }
@@ -60,7 +57,7 @@ final public class InteractiveNotificationsManager: NSObject {
     /// The first time this method is called it will ask the user for permission to show notifications.
     /// Because of this, this should be called only when we know we will need to show notifications (for instance, after login).
     ///
-    public func requestAuthorization() {
+    func requestAuthorization() {
         if sharedApplication.isRunningSimulator() || build(.a8cBranchTest) {
             return
         }
@@ -78,7 +75,7 @@ final public class InteractiveNotificationsManager: NSObject {
     /// - Returns: True on success
     ///
     @discardableResult
-    public func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
         guard AccountHelper.isDotcomAvailable(),
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
@@ -121,7 +118,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///     - commentID: The comment identifier
     ///     - siteID: The site identifier
     ///
-    fileprivate func likeCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
+    func likeCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Liked comment from push notification")
@@ -137,7 +134,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///     - commentID: The comment identifier
     ///     - siteID: The site identifier
     ///
-    fileprivate func approveCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
+    func approveCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber) {
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Successfully moderated comment from push notification")
@@ -151,7 +148,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///
     /// - Parameter noteID: The Notification's Identifier
     ///
-    fileprivate func showDetailsWithNoteID(_ noteId: NSNumber) {
+    func showDetailsWithNoteID(_ noteId: NSNumber) {
         WPTabBarController.sharedInstance().showNotificationsTabForNote(withID: noteId.stringValue)
     }
 
@@ -163,7 +160,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///     - siteID: The site identifier
     ///     - content: The text for the comment reply
     ///
-    fileprivate func replyToCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber, content: String) {
+    func replyToCommentWithCommentID(_ commentID: NSNumber, noteID: NSNumber, siteID: NSNumber, content: String) {
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Successfully replied comment from push notification")
@@ -183,7 +180,7 @@ final public class InteractiveNotificationsManager: NSObject {
     ///
     /// - Returns: A set of *UNNotificationCategory* instances.
     ///
-    private func supportedNotificationCategories() -> Set<UNNotificationCategory> {
+    func supportedNotificationCategories() -> Set<UNNotificationCategory> {
         let categories: [UNNotificationCategory] = NoteCategoryDefinition.allDefinitions.map({ $0.notificationCategory() })
         return Set(categories)
     }
@@ -298,7 +295,7 @@ final public class InteractiveNotificationsManager: NSObject {
 
 extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
 
-    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,
                                        withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo as NSDictionary
