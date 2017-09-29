@@ -19,7 +19,7 @@ final public class PushNotificationsManager: NSObject {
     ///
     var deviceToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: deviceTokenKey) ?? String()
+            return UserDefaults.standard.string(forKey: Constants.deviceTokenKey) ?? String()
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Constants.deviceTokenKey)
@@ -79,6 +79,7 @@ final public class PushNotificationsManager: NSObject {
     }
 
 
+    // MARK: - Token Setup
 
     /// Registers the Device Token agains WordPress.com backend, if there's a default account.
     ///
@@ -95,7 +96,7 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Token Cleanup
-        let newToken = parseTokenFromAppleData(tokenData)
+        let newToken = tokenData.hexString
 
         if deviceToken != newToken {
             DDLogInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
@@ -117,7 +118,6 @@ final public class PushNotificationsManager: NSObject {
     }
 
 
-
     /// Perform cleanup when the registration for iOS notifications failed
     ///
     /// - Parameter error: Details the reason of failure
@@ -126,7 +126,6 @@ final public class PushNotificationsManager: NSObject {
         DDLogError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
-
 
 
     /// Unregister the device from WordPress.com notifications
@@ -149,10 +148,7 @@ final public class PushNotificationsManager: NSObject {
     }
 
 
-
-
-    // MARK: - Public Methods: Handlers
-
+    // MARK: - Handling Notifications
 
     /// Handles a Remote Notification
     ///
@@ -175,7 +171,7 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Analytics
-        trackNotificationWithUserInfo(userInfo)
+        trackNotification(with: userInfo)
 
         // Handling!
         let handlers = [ handleHelpshiftNotification,
