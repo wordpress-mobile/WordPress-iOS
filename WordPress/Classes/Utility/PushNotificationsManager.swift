@@ -14,7 +14,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Returns the shared PushNotificationsManager instance.
     ///
-    static let sharedInstance = PushNotificationsManager()
+    static let shared = PushNotificationsManager()
 
 
     /// Stores the Apple's Push Notifications Token
@@ -262,12 +262,12 @@ final public class PushNotificationsManager: NSObject {
         // notifications when in BG mode. Still, we don't wanna relay that BG notification!
         //
         let authenticationManager = PushAuthenticationManager()
-        guard authenticationManager.isPushAuthenticationNotification(userInfo) else {
+        guard authenticationManager.isAuthenticationNotification(userInfo) else {
             return false
         }
 
         if applicationState != .background {
-            authenticationManager.handlePushAuthenticationNotification(userInfo)
+            authenticationManager.handleAuthenticationNotification(userInfo)
         }
 
         completionHandler?(.newData)
