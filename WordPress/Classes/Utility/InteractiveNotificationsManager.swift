@@ -10,7 +10,7 @@ final class InteractiveNotificationsManager: NSObject {
 
     /// Returns the shared InteractiveNotificationsManager instance.
     ///
-    static let sharedInstance = InteractiveNotificationsManager()
+    static let shared = InteractiveNotificationsManager()
 
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
@@ -319,7 +319,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         //  -   Nuke `PushNotificationsManager`
         //
         //
-        PushNotificationsManager.sharedInstance.handleNotification(userInfo) { _ in
+        PushNotificationsManager.shared.handleNotification(userInfo) { _ in
             completionHandler()
         }
     }
