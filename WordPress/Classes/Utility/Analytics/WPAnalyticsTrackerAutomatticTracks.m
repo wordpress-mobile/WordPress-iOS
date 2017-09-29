@@ -295,6 +295,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_video_added";
             eventProperties = @{ @"via" : @"media_library" };
             break;
+        case WPAnalyticsStatEditorAddedOtherMediaViaWPMediaLibrary:
+            eventName = @"editor_other_media_added";
+            eventProperties = @{ @"via" : @"media_library" };
+            break;
         case WPAnalyticsStatEditorAztecBetaLink:
             eventName = @"editor_aztec_beta_link";
             break;
