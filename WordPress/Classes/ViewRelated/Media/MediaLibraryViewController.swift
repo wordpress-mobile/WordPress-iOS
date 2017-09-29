@@ -137,9 +137,7 @@ class MediaLibraryViewController: UIViewController {
      or the resetting wasn't permanent.
      */
     fileprivate func resetNavigationColors() {
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: .normal)
-        UINavigationBar.appearance().tintColor = UIColor.white
-        self.navigationController?.navigationBar.tintColor = UIColor.white
+        WPStyleGuide.configureNavigationBarAppearance()
     }
 
     override func viewDidAppear(_ animated: Bool) {
