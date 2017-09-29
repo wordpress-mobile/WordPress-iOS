@@ -93,11 +93,11 @@ final class InteractiveNotificationsManager: NSObject {
         }
 
         switch action {
-        case .CommentApprove:
+        case .commentApprove:
             approveCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
-        case .CommentLike:
+        case .commentLike:
             likeCommentWithCommentID(commentID, noteID: noteID, siteID: siteID)
-        case .CommentReply:
+        case .commentReply:
             if let responseText = responseText {
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
@@ -190,22 +190,22 @@ final class InteractiveNotificationsManager: NSObject {
     /// Describes information about Custom Actions that WPiOS can perform, as a response to
     /// a Push Notification event.
     ///
-    fileprivate enum NoteCategoryDefinition: String {
-        case CommentApprove         = "approve-comment"
-        case CommentLike            = "like-comment"
-        case CommentReply           = "replyto-comment"
-        case CommentReplyWithLike   = "replyto-like-comment"
+    enum NoteCategoryDefinition: String {
+        case commentApprove         = "approve-comment"
+        case commentLike            = "like-comment"
+        case commentReply           = "replyto-comment"
+        case commentReplyWithLike   = "replyto-like-comment"
 
         var actions: [NoteActionDefinition] {
             switch self {
-            case .CommentApprove:
-                return [.CommentApprove]
-            case .CommentLike:
-                return [.CommentLike]
-            case .CommentReply:
-                return [.CommentReply]
-            case .CommentReplyWithLike:
-                return [.CommentReply, .CommentLike]
+            case .commentApprove:
+                return [.commentApprove]
+            case .commentLike:
+                return [.commentLike]
+            case .commentReply:
+                return [.commentReply]
+            case .commentReplyWithLike:
+                return [.commentReply, .commentLike]
             }
         }
 
@@ -222,25 +222,25 @@ final class InteractiveNotificationsManager: NSObject {
                 options: [])
         }
 
-        static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike]
     }
 
 
 
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
     ///
-    fileprivate enum NoteActionDefinition: String {
-        case CommentApprove = "COMMENT_MODERATE_APPROVE"
-        case CommentLike    = "COMMENT_LIKE"
-        case CommentReply   = "COMMENT_REPLY"
+    enum NoteActionDefinition: String {
+        case commentApprove = "COMMENT_MODERATE_APPROVE"
+        case commentLike    = "COMMENT_LIKE"
+        case commentReply   = "COMMENT_REPLY"
 
         var description: String {
             switch self {
-            case .CommentApprove:
+            case .commentApprove:
                 return NSLocalizedString("Approve", comment: "Approve comment (verb)")
-            case .CommentLike:
+            case .commentLike:
                 return NSLocalizedString("Like", comment: "Like (verb)")
-            case .CommentReply:
+            case .commentReply:
                 return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
             }
         }
@@ -277,7 +277,7 @@ final class InteractiveNotificationsManager: NSObject {
 
         func notificationAction() -> UNNotificationAction {
             switch self {
-            case .CommentReply:
+            case .commentReply:
                 return UNTextInputNotificationAction(identifier: identifier,
                                                      title: description,
                                                      options: notificationActionOptions,
@@ -288,7 +288,7 @@ final class InteractiveNotificationsManager: NSObject {
             }
         }
 
-        static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
+        static var allDefinitions = [commentApprove, commentLike, commentReply]
     }
 }
 
