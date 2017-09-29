@@ -61,7 +61,7 @@ import UIKit
     fileprivate func prepareToDisplayHelpshiftWindow(_ refreshUserDetails: Bool, completion: @escaping () -> Void) {
         UserDefaults.standard.set(true, forKey: UserDefaultsHelpshiftWasUsed)
 
-        PushNotificationsManager.sharedInstance.registerForRemoteNotifications()
+        PushNotificationsManager.shared.registerForRemoteNotifications()
         InteractiveNotificationsManager.shared.requestAuthorization()
 
         let context = ContextManager.sharedInstance().mainContext
