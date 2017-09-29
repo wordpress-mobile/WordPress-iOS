@@ -114,6 +114,8 @@ class MediaLibraryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        resetNavigationColors()
+
         registerForKeyboardNotifications()
         registerForHUDNotifications()
 
@@ -127,6 +129,17 @@ class MediaLibraryViewController: UIViewController {
                 searchBar.text = searchQuery
             }
         }
+    }
+
+    /*
+     This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
+     either by uploading media or cancelling. Doing this in the UIDocumentPickerDelegate methods either did nothing
+     or the resetting wasn't permanent.
+     */
+    fileprivate func resetNavigationColors() {
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.white], for: .normal)
+        UINavigationBar.appearance().tintColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.white
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -487,6 +500,10 @@ class MediaLibraryViewController: UIViewController {
         let docTypes = [String(kUTTypeImage), String(kUTTypeAudiovisualContent)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
+
+        UINavigationBar.appearance().tintColor = WPStyleGuide.mediumBlue()
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.mediumBlue()], for: .normal)
+
         present(docPicker, animated: true, completion: nil)
     }
 
