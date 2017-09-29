@@ -57,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIBarButtonItemStyle)barButtonStyleForBordered;
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
++ (void)configureNavigationBarAppearance;
 
 // View and TableView Helpers
 + (void)configureColorsForView:(nullable UIView *)view andTableView:(nullable UITableView *)tableView;
