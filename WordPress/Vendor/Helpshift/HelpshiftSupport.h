@@ -1,6 +1,6 @@
 /*
  *    HelpshiftSupport.h
- *    SDK Version 6.1.0
+ *    SDK Version 6.2.0
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -265,9 +265,11 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * @param url Application's link in iTunes store.
  * @param completionBlock Completion action block with action taken by the user in response to app rating prompt.
  *
- * Available in SDK version 5.0.0 or later
+ * @available Available in SDK version 5.0.0 or later
+ *
+ * @deprecated Deprecated in SDK version 6.2.0
  */
-+ (void) showAlertToRateAppWithURL:(NSString *)url withCompletionBlock:(HelpshiftSupportAppRatingAlertViewCompletionBlock)completionBlock;
++ (void) showAlertToRateAppWithURL:(NSString *)url withCompletionBlock:(HelpshiftSupportAppRatingAlertViewCompletionBlock)completionBlock __deprecated_msg("This API is non operational and deprecated");
 
 /** Set an user identifier for your users.
  *
@@ -354,7 +356,7 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  * If you want to show your user notifications for replies on any ongoing conversation, you can get the notification count asynchronously by implementing the HelpshiftSupportDelegate in your respective .h and .m files.
  * Now you can call the method
  * @code
- * [[HelpshiftSupport sharedInstance] requestUnreadMessagesCount:YES];
+ * [HelpshiftSupport requestUnreadMessagesCount:YES];
  * @endcode
  * This will return a notification count in the
  * - (void) didReceiveUnreadMessagesCount:(NSInteger)count
@@ -416,7 +418,6 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (void) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
 #pragma clang diagnostic pop
-
 /** Clears Breadcrumbs list.
  *
  * Breadcrumbs list stores upto 100 latest actions. You'll receive those in every Issue.
@@ -702,15 +703,6 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
 
 @protocol HelpshiftSupportDelegate <NSObject>
 
-/** Delegate method call that should be implemented if you are calling getNotificationCountFromRemote:YES
- * @param count Returns the number of unread messages for the ongoing conversation
- *
- * Available in SDK version 5.0.0 or later
- * @deprecated Deprecated in SDK version 6.1.0.
- */
-
-- (void) didReceiveNotificationCount:(NSInteger)count __deprecated;
-
 /** Delegate method call that should be implemented if you are calling requestUnreadMessagesCount:
  * @param count Returns the number of unread messages for the ongoing conversation
  *
@@ -720,6 +712,15 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
 - (void) didReceiveUnreadMessagesCount:(NSInteger)count;
 
 @optional
+/** Optional delegate method call that should be implemented if you are calling getNotificationCountFromRemote:YES
+ * @param count Returns the number of unread messages for the ongoing conversation
+ *
+ * Available in SDK version 5.0.0 or later
+ * @deprecated Deprecated in SDK version 6.1.0.
+ */
+
+- (void) didReceiveNotificationCount:(NSInteger)count __deprecated;
+
 /** Optional delegate method that is called when the a Helpshift session begins.
  *
  *
