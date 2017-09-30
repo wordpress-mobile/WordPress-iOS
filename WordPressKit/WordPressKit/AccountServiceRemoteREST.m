@@ -233,47 +233,6 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
            }];
 }
 
-- (void)connectToSocialService:(NSString *)service
-                serviceIDToken:(NSString *)token
-                       success:(void (^)())success
-                       failure:(void (^)(NSError *error))failure
-{
-    NSString *path = [self pathForEndpoint:@"me/social-login/connect" withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    NSDictionary *params = @{
-                             @"service":service,
-                             @"id_token":token
-                             };
-    [self.wordPressComRestApi POST:path parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)disconnectFromSocialService:(NSString *)service
-                            success:(void (^)())success
-                            failure:(void (^)(NSError *error))failure
-{
-    NSString *path = [self pathForEndpoint:@"me/social-login/disconnect" withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    NSDictionary *params = @{
-                             @"service":service
-                             };
-    [self.wordPressComRestApi POST:path parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-
 #pragma mark - Private Methods
 
 - (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary
