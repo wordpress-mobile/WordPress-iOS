@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-import WordPress
+@testable import WordPress
 import WordPressShared
 
 class PushAuthenticationManagerTests: XCTestCase {
@@ -56,69 +56,69 @@ class PushAuthenticationManagerTests: XCTestCase {
     }
 
     func testIsPushAuthenticationNotificationReturnsTrueWhenPassedTheCorrectPushAuthenticationNoteType() {
-        let result = pushAuthenticationManager!.isPushAuthenticationNotification(["type": "push_auth"])
+        let result = pushAuthenticationManager!.isAuthenticationNotification(["type": "push_auth"])
 
         XCTAssertTrue(result, "Should be true when the type is 'push_auth'")
     }
 
     func testIsPushAuthenticationNotificationReturnsFalseWhenPassedIncorrectPushAuthenticationNoteType() {
-        let result = pushAuthenticationManager!.isPushAuthenticationNotification(["type": "not_push"])
+        let result = pushAuthenticationManager!.isAuthenticationNotification(["type": "not_push"])
 
         XCTAssertFalse(result, "Should be false when the type is not 'push_auth'")
     }
 
-    func expiredPushNotificationDictionary() -> NSDictionary {
+    var expiredAuthenticationDictionary: NSDictionary {
        return ["expires": TimeInterval(3)]
     }
 
-    func validPushAuthenticationDictionary() -> NSMutableDictionary {
+    var validAuthenticationDictionary: NSMutableDictionary {
         return ["push_auth_token": "token", "aps": [ "alert": "an alert"]]
     }
 
     func testHandlePushAuthenticationNotificationShowsTheLoginExpiredAlertIfNotificationHasExpired() {
-        pushAuthenticationManager!.handlePushAuthenticationNotification(expiredPushNotificationDictionary())
+        pushAuthenticationManager!.handleAuthenticationNotification(expiredAuthenticationDictionary)
 
         XCTAssertTrue(mockAlertControllerProxy.showWithTitleCalled, "Should show the login expired alert if the notification has expired")
         XCTAssertEqual(mockAlertControllerProxy.titlePassedIn, NSLocalizedString("Login Request Expired", comment: ""), "")
     }
 
     func testHandlePushAuthenticationNotificationDoesNotShowTheLoginExpiredAlertIfNotificationHasNotExpired() {
-        pushAuthenticationManager!.handlePushAuthenticationNotification([:])
+        pushAuthenticationManager!.handleAuthenticationNotification([:])
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login expired alert if the notification hasn't expired")
     }
 
     func testHandlePushAuthenticationNotificationWithBlankTokenDoesNotShowLoginVerificationAlert() {
-        let pushNotificationDictionary = validPushAuthenticationDictionary()
+        let pushNotificationDictionary = validAuthenticationDictionary
         pushNotificationDictionary.removeObject(forKey: "push_auth_token")
 
-        pushAuthenticationManager!.handlePushAuthenticationNotification(pushNotificationDictionary)
+        pushAuthenticationManager!.handleAuthenticationNotification(pushNotificationDictionary)
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login verification")
     }
 
     func testHandlePushAuthenticationNotificationWithBlankMessageDoesNotShowLoginVerificationAlert() {
-        pushAuthenticationManager!.handlePushAuthenticationNotification(["push_auth_token": "token"])
+        pushAuthenticationManager!.handleAuthenticationNotification(["push_auth_token": "token"])
 
         XCTAssertFalse(mockAlertControllerProxy.showWithTitleCalled, "Should not show the login verification")
     }
 
     func testHandlePushAuthenticationNotificationWithValidDataShouldShowLoginVerification() {
-        pushAuthenticationManager!.handlePushAuthenticationNotification(validPushAuthenticationDictionary())
+        pushAuthenticationManager!.handleAuthenticationNotification(validAuthenticationDictionary)
 
         XCTAssertTrue(mockAlertControllerProxy.showWithTitleCalled, "Should show the login verification")
         XCTAssertEqual(mockAlertControllerProxy.titlePassedIn, NSLocalizedString("Verify Log In", comment: ""), "")
     }
 
     func testHandlePushAuthenticationNotificationShouldAttemptToAuthorizeTheLoginIfTheUserIndicatesTheyWantTo() {
-        pushAuthenticationManager!.handlePushAuthenticationNotification(validPushAuthenticationDictionary())
+        pushAuthenticationManager!.handleAuthenticationNotification(validAuthenticationDictionary)
         mockAlertControllerProxy.tapBlockPassedIn?(approvalAlertController, 1)
 
         XCTAssertTrue(mockPushAuthenticationService.authorizedLoginCalled, "Should have attempted to authorize the login")
     }
 
     func testHandlePushAuthenticationNotificationWhenAttemptingToLoginShouldAttemptToRetryTheLoginIfItFailed() {
-        pushAuthenticationManager!.handlePushAuthenticationNotification(validPushAuthenticationDictionary())
+        pushAuthenticationManager!.handleAuthenticationNotification(validAuthenticationDictionary)
         mockAlertControllerProxy.tapBlockPassedIn?(approvalAlertController, 1)
         mockPushAuthenticationService.completionBlockPassedIn?(false)
 
@@ -126,7 +126,7 @@ class PushAuthenticationManagerTests: XCTestCase {
     }
 
     func testHandlePushAuthenticationNotificationShouldNotAttemptToAuthorizeTheLoginIfTheUserIndicatesTheyDontWantTo() {
-        pushAuthenticationManager!.handlePushAuthenticationNotification(validPushAuthenticationDictionary())
+        pushAuthenticationManager!.handleAuthenticationNotification(validAuthenticationDictionary)
         mockAlertControllerProxy.tapBlockPassedIn?(approvalAlertController, 0)
 
         XCTAssertFalse(mockPushAuthenticationService.authorizedLoginCalled, "Should not have attempted to authorize the login")
