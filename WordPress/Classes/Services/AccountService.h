@@ -93,31 +93,6 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 
-/**
- Connect an account a social service via an ID token.
-
- @param service The name of the social service.
- @param token The service's OpenID Connect (JWT) ID token for the user.
- @param success
- @param failure
- */
-- (void)connectToSocialService:(NSString *)service
-                serviceIDToken:(NSString *)token
-                       success:(void (^)())success
-                       failure:(void (^)(NSError *error))failure;
-
-
-/**
- Disconnect an account a social service via an ID token.
-
- @param service The name of the social service.
- @param success
- @param failure
- */
-- (void)disconnectFromSocialService:(NSString *)service
-                            success:(void (^)())success
-                            failure:(void (^)(NSError *error))failure;
-
 ///-----------------------
 /// @name Account creation
 ///-----------------------

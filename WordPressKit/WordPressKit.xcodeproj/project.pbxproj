@@ -339,6 +339,7 @@
 		E632D7781F6E047400297F6D /* SocialLogin2FANonceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E632D7771F6E047400297F6D /* SocialLogin2FANonceInfo.swift */; };
 		E6C1E8491EF21FC100D139D9 /* is-passwordless-account-no-account-found.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E8471EF21FC100D139D9 /* is-passwordless-account-no-account-found.json */; };
 		E6C1E84A1EF21FC100D139D9 /* is-passwordless-account-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E6C1E8481EF21FC100D139D9 /* is-passwordless-account-success.json */; };
+		E6D0EE621F7EF9CE0064D3FC /* AccountServiceRemoteREST+SocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D0EE611F7EF9CE0064D3FC /* AccountServiceRemoteREST+SocialService.swift */; };
 		F8B82B9E92C9637430D7D032 /* Pods_WordPressKitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -697,6 +698,7 @@
 		E632D7771F6E047400297F6D /* SocialLogin2FANonceInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocialLogin2FANonceInfo.swift; sourceTree = "<group>"; };
 		E6C1E8471EF21FC100D139D9 /* is-passwordless-account-no-account-found.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-passwordless-account-no-account-found.json"; sourceTree = "<group>"; };
 		E6C1E8481EF21FC100D139D9 /* is-passwordless-account-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "is-passwordless-account-success.json"; sourceTree = "<group>"; };
+		E6D0EE611F7EF9CE0064D3FC /* AccountServiceRemoteREST+SocialService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountServiceRemoteREST+SocialService.swift"; sourceTree = "<group>"; };
 		EF1D8EBEFA46779A06F52788 /* Pods-WordPressKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -972,6 +974,7 @@
 				93BD27381EE73282002BB00B /* AccountServiceRemote.h */,
 				93BD27391EE73282002BB00B /* AccountServiceRemoteREST.h */,
 				93BD273A1EE73282002BB00B /* AccountServiceRemoteREST.m */,
+				E6D0EE611F7EF9CE0064D3FC /* AccountServiceRemoteREST+SocialService.swift */,
 				7403A2E31EF06ED500DED7DC /* AccountSettingsRemote.swift */,
 				82FFBF551F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift */,
 				74B5F0DB1EF829B800B411E7 /* BlogServiceRemote.h */,
@@ -1770,6 +1773,7 @@
 				93BD276A1EE736A8002BB00B /* RemoteUser.m in Sources */,
 				742362D71F10250600BD0A7F /* MenusServiceRemote.m in Sources */,
 				9368C7BA1EC630270092CE8E /* StatsSummary.m in Sources */,
+				E6D0EE621F7EF9CE0064D3FC /* AccountServiceRemoteREST+SocialService.swift in Sources */,
 				7430C9B61F1927C50051B8E6 /* RemoteReaderSiteInfo.m in Sources */,
 				74DA56351F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.m in Sources */,
 				93F50A381F226B9300B5BEBA /* WordPressComServiceRemote.m in Sources */,
