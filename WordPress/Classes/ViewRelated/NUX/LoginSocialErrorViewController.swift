@@ -5,6 +5,21 @@ class LoginSocialErrorViewController: UITableViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
 
+    fileprivate enum Sections: Int {
+        case titleAndDescription = 0
+        case buttons = 1
+
+        static var count: Int {
+            return buttons.rawValue + 1
+        }
+    }
+
+    fileprivate enum Buttons: Int {
+        case tryEmail = 0
+        case tryAddress = 1
+        case signup = 2
+    }
+
     init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
@@ -26,30 +41,39 @@ class LoginSocialErrorViewController: UITableViewController {
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == Sections.buttons.rawValue else {
+            return
+        }
+
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+
+        let controller: NUXAbstractViewController?
+
+        switch indexPath.row {
+        case Buttons.tryEmail.rawValue:
+            controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? NUXAbstractViewController
+        case Buttons.tryAddress.rawValue:
+            controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController
+        case Buttons.signup.rawValue:
+            fallthrough
+        default:
+            controller = nil
+        }
+
+        if let controller = controller {
+            navigationController?.setViewControllers([controller], animated: true)
+        }
+    }
 }
 
 
 // MARK: UITableViewDelegate methods
 
 extension LoginSocialErrorViewController {
-    fileprivate enum Sections: Int {
-        case titleAndDescription = 0
-        case buttons = 1
-
-        static var count: Int {
-            return buttons.rawValue + 1
-        }
-    }
-
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case Sections.titleAndDescription.rawValue:
-            return 300.0
-        case Sections.buttons.rawValue:
-            fallthrough
-        default:
-            return 50.0
-        }
+        return 45.0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -113,13 +137,13 @@ extension LoginSocialErrorViewController
         let buttonText: String
         let buttonIcon: UIImage
         switch index {
-        case 0:
+        case Buttons.tryEmail.rawValue:
             buttonText = NSLocalizedString("Try with another email", comment: "When social login fails, this button offers to let the user try again with a differen email address")
             buttonIcon = Gridicon.iconOfType(.undo)
-        case 1:
+        case Buttons.tryAddress.rawValue:
             buttonText = NSLocalizedString("Try with the site address", comment: "When social login fails, this button offers to let them try tp login using a URL")
             buttonIcon = Gridicon.iconOfType(.domains)
-        case 2:
+        case Buttons.signup.rawValue:
             fallthrough
         default:
             buttonText = NSLocalizedString("Sign up", comment: "When social login fails, this button offers to let them signup for a new WordPress.com account")
