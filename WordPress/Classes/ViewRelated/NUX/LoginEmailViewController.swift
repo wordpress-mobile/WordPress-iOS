@@ -13,6 +13,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
+    fileprivate var awaitingGoogle = false
     override var restrictToWPCom: Bool {
         didSet {
             if isViewLoaded {
@@ -144,6 +145,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     func googleLoginTapped() {
+        awaitingGoogle = true
+
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
@@ -304,10 +307,15 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     override func displayRemoteError(_ error: Error!) {
-        configureViewLoading(false)
+        if awaitingGoogle {
+            let socialErrorVC = LoginSocialErrorViewController(title: NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com"), description: error.localizedDescription)
+            navigationController?.setViewControllers([socialErrorVC], animated: true)
+        } else {
+            configureViewLoading(false)
 
-        errorToPresent = error
-        performSegue(withIdentifier: .showWPComLogin, sender: self)
+            errorToPresent = error
+            performSegue(withIdentifier: .showWPComLogin, sender: self)
+        }
     }
 
 
