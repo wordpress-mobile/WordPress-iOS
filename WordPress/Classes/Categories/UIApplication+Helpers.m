@@ -1,7 +1,7 @@
 #import "UIApplication+Helpers.h"
 
 
-
+/*
 @implementation UIApplication (Helpers)
 
 - (BOOL)isRunningSimulator
@@ -20,3 +20,4 @@
 }
 
 @end
+*/
