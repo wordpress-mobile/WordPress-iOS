@@ -375,6 +375,7 @@ class MediaLibraryViewController: UIViewController {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
+        options.allowCaptureOfMedia = false
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = WPPHAssetDataSource()
         picker.delegate = self
