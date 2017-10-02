@@ -32,6 +32,8 @@
 
 - (void)testRegisterForRemoteNotificationsCallsSharedApplicationRegisterForRemoteNotifications
 {
+    [Device overrideDeviceType:DeviceTypePhysical];
+    
     // Note:
     // PushNotifications registration methods don't crash the sim, anymore, as per iOS 9.
     // We'll override the check just for evil unit testing purposes.
@@ -39,7 +41,7 @@
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMExpect([mockApplication registerForRemoteNotifications]);
     
-    [OCMStub([mockApplication isRunningSimulator]) andReturnValue:OCMOCK_VALUE(false)];
+    //[OCMStub([mockApplication isRunningSimulator]) andReturnValue:OCMOCK_VALUE(false)];
     
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
@@ -47,6 +49,8 @@
     
     [mockManager registerForRemoteNotifications];
     OCMVerify(mockApplication);
+    
+    [Device clearDeviceTypeOverride];
 }
 
 - (void)testHandleNotificationUpdatesApplicationBadgeNumber
