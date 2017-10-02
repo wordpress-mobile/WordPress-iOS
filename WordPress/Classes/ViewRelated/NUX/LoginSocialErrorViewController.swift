@@ -47,22 +47,20 @@ class LoginSocialErrorViewController: UITableViewController {
             return
         }
 
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-
-        let controller: NUXAbstractViewController?
-
+        let controllerKey: String
         switch indexPath.row {
         case Buttons.tryEmail.rawValue:
-            controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? NUXAbstractViewController
+            controllerKey = "emailEntry"
         case Buttons.tryAddress.rawValue:
-            controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController
+            controllerKey = "siteAddress"
         case Buttons.signup.rawValue:
             fallthrough
         default:
-            controller = nil
+            controllerKey = "SignupViewController"
         }
 
-        if let controller = controller {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: controllerKey) as? NUXAbstractViewController {
             navigationController?.setViewControllers([controller], animated: true)
         }
     }
