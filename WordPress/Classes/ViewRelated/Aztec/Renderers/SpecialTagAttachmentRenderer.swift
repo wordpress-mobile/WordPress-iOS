@@ -3,9 +3,9 @@ import UIKit
 import Aztec
 
 
-// MARK: - WordPressAttachmentRenderer. This render aims rendering WordPress specific tags.
+// MARK: - SpecialTagAttachmentRenderer. This render aims rendering WordPress specific tags.
 //
-final class WordPressAttachmentRenderer {
+final class SpecialTagAttachmentRenderer {
 
     /// Text Color
     ///
@@ -15,7 +15,7 @@ final class WordPressAttachmentRenderer {
 
 // MARK: - TextViewCommentsDelegate Methods
 //
-extension WordPressAttachmentRenderer: TextViewAttachmentImageProvider {
+extension SpecialTagAttachmentRenderer: TextViewAttachmentImageProvider {
 
     func textView(_ textView: TextView, shouldRender attachment: NSTextAttachment) -> Bool {
         guard let commentAttachment = attachment as? CommentAttachment else {
@@ -73,7 +73,7 @@ extension WordPressAttachmentRenderer: TextViewAttachmentImageProvider {
 
 // MARK: - Constants
 //
-extension WordPressAttachmentRenderer {
+extension SpecialTagAttachmentRenderer {
 
     struct Constants {
         static let defaultDashCount = CGFloat(8.0)

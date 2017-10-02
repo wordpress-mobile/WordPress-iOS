@@ -683,7 +683,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func registerAttachmentImageProviders() {
         let providers: [TextViewAttachmentImageProvider] = [
-            WordPressAttachmentRenderer(),
+            SpecialTagAttachmentRenderer(),
             CommentAttachmentRenderer(font: Fonts.regular),
             HTMLAttachmentRenderer(font: Fonts.regular)
         ]

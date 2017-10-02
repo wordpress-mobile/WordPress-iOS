@@ -473,7 +473,7 @@
 		B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */; };
 		B50C0C501EF429E900372C65 /* CommentAttachmentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C4D1EF429E900372C65 /* CommentAttachmentRenderer.swift */; };
 		B50C0C511EF429E900372C65 /* HTMLAttachmentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C4E1EF429E900372C65 /* HTMLAttachmentRenderer.swift */; };
-		B50C0C521EF429E900372C65 /* WordPressAttachmentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C4F1EF429E900372C65 /* WordPressAttachmentRenderer.swift */; };
+		B50C0C521EF429E900372C65 /* SpecialTagAttachmentRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C4F1EF429E900372C65 /* SpecialTagAttachmentRenderer.swift */; };
 		B50C0C561EF42A0000372C65 /* ShortcodeProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C541EF42A0000372C65 /* ShortcodeProcessor.swift */; };
 		B50C0C571EF42A0000372C65 /* VideoShortcodeProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C551EF42A0000372C65 /* VideoShortcodeProcessor.swift */; };
 		B50C0C5A1EF42A2600372C65 /* MediaProgressCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C591EF42A2600372C65 /* MediaProgressCoordinator.swift */; };
@@ -1750,7 +1750,7 @@
 		B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ShareExtension.swift"; sourceTree = SOURCE_ROOT; };
 		B50C0C4D1EF429E900372C65 /* CommentAttachmentRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentAttachmentRenderer.swift; sourceTree = "<group>"; };
 		B50C0C4E1EF429E900372C65 /* HTMLAttachmentRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLAttachmentRenderer.swift; sourceTree = "<group>"; };
-		B50C0C4F1EF429E900372C65 /* WordPressAttachmentRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressAttachmentRenderer.swift; sourceTree = "<group>"; };
+		B50C0C4F1EF429E900372C65 /* SpecialTagAttachmentRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialTagAttachmentRenderer.swift; sourceTree = "<group>"; };
 		B50C0C541EF42A0000372C65 /* ShortcodeProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcodeProcessor.swift; sourceTree = "<group>"; };
 		B50C0C551EF42A0000372C65 /* VideoShortcodeProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoShortcodeProcessor.swift; sourceTree = "<group>"; };
 		B50C0C591EF42A2600372C65 /* MediaProgressCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaProgressCoordinator.swift; sourceTree = "<group>"; };
@@ -3854,7 +3854,7 @@
 			children = (
 				B50C0C4D1EF429E900372C65 /* CommentAttachmentRenderer.swift */,
 				B50C0C4E1EF429E900372C65 /* HTMLAttachmentRenderer.swift */,
-				B50C0C4F1EF429E900372C65 /* WordPressAttachmentRenderer.swift */,
+				B50C0C4F1EF429E900372C65 /* SpecialTagAttachmentRenderer.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -6461,7 +6461,7 @@
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
 				85D239B21AE5A5FC0074768D /* WordPressComOAuthClientFacade.m in Sources */,
 				85D239B31AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m in Sources */,
-				B50C0C521EF429E900372C65 /* WordPressAttachmentRenderer.swift in Sources */,
+				B50C0C521EF429E900372C65 /* SpecialTagAttachmentRenderer.swift in Sources */,
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
 				43D2436D1EAFCE3C00D0C77B /* LoginSegueHandler.swift in Sources */,
 				08216FD41CDBF96000304BA7 /* MenuItemTypeSelectionView.m in Sources */,
