@@ -344,7 +344,7 @@ class MediaItemViewController: UITableViewController {
     private func editAlt() -> ((ImmuTableRow) -> ()) {
         return { [weak self] row in
             let editableRow = row as! EditableTextRow
-            self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Alt", comment: "Hint for image description on image settings."),
+            self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings."),
                                          onValueChanged: { value in
                                             self?.mediaMetadata.alt  = value
                                             self?.reloadViewModel()
