@@ -376,7 +376,7 @@ extension LoginEmailViewController: GIDSignInDelegate {
 
         let alert = UIAlertController(title: "Login Success", message: "Google login succeeded. Actual wpcom account login yet to be implemented.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok. Thanks.", style: .default, handler: { [weak self] (action) in
-            self?.dismiss(animated: true){}
+            self?.dismiss(animated: true) {}
         }))
         present(alert, animated: true)
     }
