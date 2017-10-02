@@ -3,7 +3,7 @@ import UIKit
 import Aztec
 
 
-// MARK: - WordPressAttachmentRenderer: This render is expected to only work with `<!--more-->` comments!
+// MARK: - WordPressAttachmentRenderer. This render aims rendering WordPress specific tags.
 //
 final class WordPressAttachmentRenderer {
 
@@ -18,8 +18,11 @@ final class WordPressAttachmentRenderer {
 extension WordPressAttachmentRenderer: TextViewAttachmentImageProvider {
 
     func textView(_ textView: TextView, shouldRender attachment: NSTextAttachment) -> Bool {
-        let commentAttachment = attachment as? CommentAttachment
-        return commentAttachment?.text == Constants.defaultCommentText
+        guard let commentAttachment = attachment as? CommentAttachment else {
+            return false
+        }
+
+        return Tags.supported.contains(commentAttachment.text)
     }
 
     func textView(_ textView: TextView, imageFor attachment: NSTextAttachment, with size: CGSize) -> UIImage? {
@@ -76,6 +79,9 @@ extension WordPressAttachmentRenderer {
         static let defaultDashCount = CGFloat(8.0)
         static let defaultDashWidth = CGFloat(2.0)
         static let defaultHeight = CGFloat(44.0)
-        static let defaultCommentText = "more"
+    }
+
+    struct Tags {
+        static let supported = ["more", "nextpage"]
     }
 }
