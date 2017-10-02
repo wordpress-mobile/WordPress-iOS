@@ -27,11 +27,3 @@ class EditorSettingsTests: XCTestCase {
         }
     }
 }
-
-class BuildUtilities {
-    static func withCurrent(_ value: Build.BuildConfiguration, block: () -> Void) {
-        Build.overrideConfiguration(value)
-        block()
-        Build.clearConfigurationOverride()
-    }
-}
