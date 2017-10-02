@@ -82,8 +82,7 @@ extension LoginSocialErrorViewController {
 
 // MARK: UITableViewDataSource methods
 
-extension LoginSocialErrorViewController
-{
+extension LoginSocialErrorViewController {
     private struct Constants {
         static let buttonCount = 3
     }
