@@ -3,9 +3,9 @@ import UIKit
 import Aztec
 
 
-// MARK: - MoreAttachmentRenderer: This render is expected to only work with `<!--more-->` comments!
+// MARK: - WordPressAttachmentRenderer: This render is expected to only work with `<!--more-->` comments!
 //
-final class MoreAttachmentRenderer {
+final class WordPressAttachmentRenderer {
 
     /// Text Color
     ///
@@ -15,7 +15,7 @@ final class MoreAttachmentRenderer {
 
 // MARK: - TextViewCommentsDelegate Methods
 //
-extension MoreAttachmentRenderer: TextViewAttachmentImageProvider {
+extension WordPressAttachmentRenderer: TextViewAttachmentImageProvider {
 
     func textView(_ textView: TextView, shouldRender attachment: NSTextAttachment) -> Bool {
         let commentAttachment = attachment as? CommentAttachment
@@ -70,7 +70,7 @@ extension MoreAttachmentRenderer: TextViewAttachmentImageProvider {
 
 // MARK: - Constants
 //
-extension MoreAttachmentRenderer {
+extension WordPressAttachmentRenderer {
 
     struct Constants {
         static let defaultDashCount = CGFloat(8.0)
