@@ -363,7 +363,7 @@ class MediaLibraryViewController: UIViewController {
     // MARK: - Actions
 
     @objc fileprivate func addTapped() {
-        if #available(iOS 11, *) {
+        if #available(iOS 11, *), FeatureFlag.iCloudFilesSupport.enabled {
             showOptionsMenu()
         }
         else {
@@ -375,7 +375,8 @@ class MediaLibraryViewController: UIViewController {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
-        options.allowCaptureOfMedia = false
+        // NOTE: once iCloudFilesSupport is permanently enabled, this needs to be false.
+        options.allowCaptureOfMedia = !(FeatureFlag.iCloudFilesSupport.enabled)
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = WPPHAssetDataSource()
         picker.delegate = self
