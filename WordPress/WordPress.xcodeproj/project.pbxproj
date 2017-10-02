@@ -3608,8 +3608,7 @@
 				E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */,
 				E1AFA8C21E8E34230004A323 /* WordPressShare.js */,
 			);
-			name = WordPressShareExtension;
-			path = WordPressShare;
+			path = WordPressShareExtension;
 			sourceTree = "<group>";
 		};
 		937D9A0D19F837ED007B9D5F /* 22-23 */ = {
