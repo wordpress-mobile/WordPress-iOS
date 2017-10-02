@@ -21,6 +21,7 @@ class MediaLibraryViewController: UIViewController {
     fileprivate var selectedAsset: Media? = nil
 
     fileprivate var createMediaCompletionHander: ((Media?, Error?, String) -> Void)? = nil
+    fileprivate var capturePresenter: WPMediaCapturePresenter?
 
     private let defaultSearchBarHeight: CGFloat = 44.0
     lazy fileprivate var searchBarContainer: UIView = {
@@ -253,6 +254,13 @@ class MediaLibraryViewController: UIViewController {
         }
     }
 
+    fileprivate func prepareMediaProgressForNumberOfAssets(_ count: Int) {
+        showPreparingProgressHUD()
+        mediaProgressCoordinator.track(numberOfItems: count)
+        // Wait until all assets are uploaded before we update the collection view
+        pickerDataSource.isPaused = true
+    }
+
     fileprivate func showPreparingProgressHUD() {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
@@ -381,6 +389,10 @@ class MediaLibraryViewController: UIViewController {
             self.showMediaPicker()
         }
 
+        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Take Photo or Video", comment: "Menu option for taking an image or video with the device's camera.")) { _ in
+            self.presentMediaCapture()
+        }
+
         menuAlert.addDefaultActionWithTitle(NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")) { _ in
             self.showDocumentPicker()
         }
@@ -495,7 +507,7 @@ class MediaLibraryViewController: UIViewController {
     // MARK: - Document Picker
 
     private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeAudiovisualContent)]
+        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
 
@@ -530,16 +542,68 @@ class MediaLibraryViewController: UIViewController {
             mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
         }
     }
+
+    // MARK: - Upload Media from Camera
+
+    private func presentMediaCapture() {
+        capturePresenter = WPMediaCapturePresenter(presenting: self)
+        capturePresenter!.completionBlock = { [weak self] mediaInfo in
+            if let mediaInfo = mediaInfo as NSDictionary? {
+                self?.processMediaCaptured(mediaInfo)
+            }
+            self?.capturePresenter = nil
+        }
+
+        capturePresenter!.presentCapture()
+    }
+
+    private func processMediaCaptured(_ mediaInfo: NSDictionary) {
+
+        let completionBlock: WPMediaAddedBlock = { [weak self] media, error in
+            if error != nil || media == nil {
+                print("Adding media failed: ", error?.localizedDescription ?? "no media")
+                return
+            }
+            self?.addMediaAssets([media!])
+        }
+
+        guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
+
+        switch mediaType {
+        case String(kUTTypeImage):
+            if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
+                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable : Any] {
+                WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
+            }
+        case String(kUTTypeMovie):
+            if let mediaURL = mediaInfo[UIImagePickerControllerMediaURL] as? URL {
+                WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
+            }
+        default:
+            break
+        }
+    }
+
+    private func addMediaAssets(_ assets: NSArray) {
+
+        if assets.count == 0 { return }
+
+        prepareMediaProgressForNumberOfAssets(assets.count)
+
+        for asset in assets {
+            if let asset = asset as? PHAsset {
+                makeAndUploadMediaWith(asset)
+            }
+        }
+    }
 }
 
 // MARK: - UIDocumentPickerDelegate
 
 extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        showPreparingProgressHUD()
-        mediaProgressCoordinator.track(numberOfItems: urls.count)
-        // Wait until all assets are uploaded before we update the collection view
-        pickerDataSource.isPaused = true
+
+        prepareMediaProgressForNumberOfAssets(urls.count)
 
         for documentURL in urls {
             makeAndUploadMediaWithURL(documentURL)
@@ -620,11 +684,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         guard let assets = assets as? [PHAsset],
             assets.count > 0 else { return }
 
-        showPreparingProgressHUD()
-        mediaProgressCoordinator.track(numberOfItems: assets.count)
-
-        // Wait until all assets are uploaded before we update the collection view
-        pickerDataSource.isPaused = true
+        prepareMediaProgressForNumberOfAssets(assets.count)
 
         for asset in assets {
             makeAndUploadMediaWith(asset)
