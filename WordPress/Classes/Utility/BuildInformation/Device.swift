@@ -2,13 +2,12 @@
 ///
 @objc
 class Device: NSObject {
-    
     @objc
     enum DeviceType: Int {
         case simulator
         case physical
     }
-    
+
     @objc
     static func `is`(_ type: DeviceType) -> Bool {
         return type == deviceType()
@@ -28,12 +27,12 @@ class Device: NSObject {
 
     /// For testing purposes only
     private static var overriddenDeviceType: DeviceType? = nil
-    
+
     @objc
     static func overrideDeviceType(_ deviceType: DeviceType) {
         overriddenDeviceType = deviceType
     }
-    
+
     @objc
     static func clearDeviceTypeOverride() {
         overriddenDeviceType = nil
