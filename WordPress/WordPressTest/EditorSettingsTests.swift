@@ -13,7 +13,7 @@ class EditorSettingsTests: XCTestCase {
     func testNativeEditorEnabledAvailableButDisabledByDefault() {
         Build.withCurrent(.localDeveloper) {
             let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
-            
+
             XCTAssertFalse(editorSettings.nativeEditorEnabled)
         }
     }
