@@ -111,20 +111,21 @@ private extension PostPreviewGenerator {
                 return
         }
 
-        let request: URLRequest
+        let authenticator: WebViewAuthenticator
         if blog.supports(.oAuth2Login) {
             guard let token = blog.authToken?.nonEmptyString() else {
                 showFakePreview()
                 return
             }
-            request = WPURLRequest.requestForAuthentication(with: loginURL, redirectURL: url, username: username, password: nil, bearerToken: token, userAgent: nil)
+            authenticator = WebViewAuthenticator(dotComUsername: username, authToken: token)
         } else {
             guard let password = blog.password?.nonEmptyString() else {
                 showFakePreview()
                 return
             }
-            request = WPURLRequest.requestForAuthentication(with: loginURL, redirectURL: url, username: username, password: password, bearerToken: nil, userAgent: nil)
+            authenticator = WebViewAuthenticator(selfHostedUsername: username, password: password, loginURL: loginURL)
         }
+        let request = authenticator.request(url: url)
         delegate?.preview(self, attemptRequest: request)
     }
 }
