@@ -20,7 +20,6 @@ class MediaLibraryViewController: UIViewController {
 
     fileprivate var selectedAsset: Media? = nil
 
-    fileprivate var createMediaCompletionHander: ((Media?, Error?, String) -> Void)? = nil
     fileprivate var capturePresenter: WPMediaCapturePresenter?
 
     private let defaultSearchBarHeight: CGFloat = 44.0
@@ -375,8 +374,13 @@ class MediaLibraryViewController: UIViewController {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
-        // NOTE: once iCloudFilesSupport is permanently enabled, this needs to be false.
-        options.allowCaptureOfMedia = !(FeatureFlag.iCloudFilesSupport.enabled)
+
+        // If iOS11, media capture is available via showOptionsMenu()
+        if #available(iOS 11, *) {
+            // NOTE: once iCloudFilesSupport is permanently enabled, this needs to be false.
+            options.allowCaptureOfMedia = !(FeatureFlag.iCloudFilesSupport.enabled)
+        }
+
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = WPPHAssetDataSource()
         picker.delegate = self
@@ -513,6 +517,9 @@ class MediaLibraryViewController: UIViewController {
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
 
+        // The app's appearance settings override the doc picker color scheme.
+        // Setting the nav colors here so the doc picker has the correct appearance.
+        // The app colors are restored later with resetNavigationColors().
         UINavigationBar.appearance().tintColor = WPStyleGuide.mediumBlue()
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.mediumBlue()], for: .normal)
 
@@ -588,7 +595,7 @@ class MediaLibraryViewController: UIViewController {
 
     private func addMediaAssets(_ assets: NSArray) {
 
-        if assets.count == 0 { return }
+        guard assets.count > 0 else { return }
 
         prepareMediaProgressForNumberOfAssets(assets.count)
 
@@ -613,13 +620,12 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
     }
 
     private func makeAndUploadMediaWithURL(_ url: URL) {
-        createMediaCompletionHander = uploadMedia
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(url: url,
                             forBlog: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
-                                self?.createMediaCompletionHander!(media, error, url.lastPathComponent)
+                                self?.uploadMedia(media, error: error, mediaID: url.lastPathComponent)
         })
     }
 
@@ -753,14 +759,12 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func makeAndUploadMediaWith(_ asset: PHAsset) {
-        createMediaCompletionHander = uploadMedia
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
                             forBlogObjectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
-                                self?.createMediaCompletionHander!(media, error, asset.identifier())
-
+                                self?.uploadMedia(media, error: error, mediaID: asset.identifier())
         })
     }
 
