@@ -19,10 +19,10 @@ final public class PushNotificationsManager: NSObject {
     ///
     var deviceToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: Constants.deviceTokenKey) ?? String()
+            return UserDefaults.standard.string(forKey: Device.tokenKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Constants.deviceTokenKey)
+            UserDefaults.standard.set(newValue, forKey: Device.tokenKey)
             UserDefaults.standard.synchronize()
         }
     }
@@ -32,10 +32,10 @@ final public class PushNotificationsManager: NSObject {
     ///
     var deviceId: String? {
         get {
-            return UserDefaults.standard.string(forKey: Constants.deviceIdKey) ?? String()
+            return UserDefaults.standard.string(forKey: Device.idKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Constants.deviceIdKey)
+            UserDefaults.standard.set(newValue, forKey: Device.idKey)
             UserDefaults.standard.synchronize()
         }
     }
@@ -161,12 +161,12 @@ final public class PushNotificationsManager: NSObject {
         DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
         // Badge: Update
-        if let badgeCountNumber = userInfo.number(forKeyPath: Constants.notificationBadgePath)?.intValue {
+        if let badgeCountNumber = userInfo.number(forKeyPath: Notification.badgePath)?.intValue {
             sharedApplication.applicationIconBadgeNumber = badgeCountNumber
         }
 
         // Badge: Reset
-        guard let type = userInfo.string(forKey: Constants.notificationTypeKey), type != Constants.notificationBadgeResetValue else {
+        guard let type = userInfo.string(forKey: Notification.typeKey), type != Notification.badgeResetValue else {
             return
         }
 
@@ -204,7 +204,7 @@ extension PushNotificationsManager {
     /// - Returns: True when handled. False otherwise
     ///
     func handleHelpshiftNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        guard let origin = userInfo.string(forKey: Constants.notificationOriginKey), origin == Helpshift.originValue else {
+        guard let origin = userInfo.string(forKey: Notification.originKey), origin == Helpshift.originValue else {
             return false
         }
 
@@ -269,7 +269,7 @@ extension PushNotificationsManager {
             return false
         }
 
-        guard let notificationId = userInfo.number(forKey: Constants.notificationIdentifierKey)?.stringValue else {
+        guard let notificationId = userInfo.number(forKey: Notification.identifierKey)?.stringValue else {
             return false
         }
 
@@ -292,7 +292,7 @@ extension PushNotificationsManager {
     /// - Returns: True when handled. False otherwise
     ///
     func handleBackgroundNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        guard userInfo.number(forKey: Constants.notificationIdentifierKey)?.stringValue != nil else {
+        guard userInfo.number(forKey: Notification.identifierKey)?.stringValue != nil else {
             return false
         }
 
@@ -330,11 +330,11 @@ private extension PushNotificationsManager {
     func trackNotification(with userInfo: NSDictionary) {
         var properties = [String: String]()
 
-        if let noteId = userInfo.number(forKey: Constants.notificationIdentifierKey) {
+        if let noteId = userInfo.number(forKey: Notification.identifierKey) {
             properties[Tracking.identifierKey] = noteId.stringValue
         }
 
-        if let type = userInfo.string(forKey: Constants.notificationTypeKey) {
+        if let type = userInfo.string(forKey: Notification.typeKey) {
             properties[Tracking.typeKey] = type
         }
 
@@ -352,18 +352,21 @@ private extension PushNotificationsManager {
 //
 private extension PushNotificationsManager {
 
-    enum Constants {
-        static let deviceTokenKey = "apnsDeviceToken"
-        static let deviceIdKey = "notification_device_id"
-        static let notificationBadgePath = "aps.badge"
-        static let notificationIdentifierKey = "note_id"
-        static let notificationTypeKey = "type"
-        static let notificationOriginKey = "origin"
-        static let notificationBadgeResetValue = "badge-reset"
+    enum Device {
+        static let tokenKey = "apnsDeviceToken"
+        static let idKey = "notification_device_id"
     }
 
     enum Helpshift {
         static let originValue = "helpshift"
+    }
+
+    enum Notification {
+        static let badgePath = "aps.badge"
+        static let identifierKey = "note_id"
+        static let typeKey = "type"
+        static let originKey = "origin"
+        static let badgeResetValue = "badge-reset"
     }
 
     enum Tracking {
