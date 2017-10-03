@@ -233,7 +233,6 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
            }];
 }
 
-
 #pragma mark - Private Methods
 
 - (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary
