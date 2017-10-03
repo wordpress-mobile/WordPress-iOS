@@ -81,4 +81,5 @@
                          wpcomScheme:(NSString *)scheme
                              success:(void (^)())success
                              failure:(void (^)(NSError *error))failure;
+
 @end
