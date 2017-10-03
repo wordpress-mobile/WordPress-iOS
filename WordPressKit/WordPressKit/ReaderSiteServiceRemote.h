@@ -30,7 +30,7 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)followSiteWithID:(NSUInteger)siteID
-                 success:(void(^)())success
+                 success:(void(^)(void))success
                  failure:(void(^)(NSError *error))failure;
 
 /**
@@ -41,7 +41,7 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)unfollowSiteWithID:(NSUInteger)siteID
-                   success:(void(^)())success
+                   success:(void(^)(void))success
                    failure:(void(^)(NSError *error))failure;
 
 /**
@@ -52,7 +52,7 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)followSiteAtURL:(NSString *)siteURL
-                success:(void(^)())success
+                success:(void(^)(void))success
                 failure:(void(^)(NSError *error))failure;
 
 /**
@@ -63,7 +63,7 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)unfollowSiteAtURL:(NSString *)siteURL
-                  success:(void(^)())success
+                  success:(void(^)(void))success
                   failure:(void(^)(NSError *error))failure;
 
 /**
@@ -85,7 +85,7 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)checkSiteExistsAtURL:(NSURL *)siteURL
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void(^)(NSError *error))failure;
 
 /**
@@ -120,7 +120,7 @@ extern NSString * const ReaderSiteServiceRemoteErrorDomain;
  */
 - (void)flagSiteWithID:(NSUInteger)siteID
              asBlocked:(BOOL)blocked
-               success:(void(^)())success
+               success:(void(^)(void))success
                failure:(void(^)(NSError *error))failure;
 
 @end
