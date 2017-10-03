@@ -78,8 +78,8 @@
 	<dict>
 		<key>Background color</key>
 		<string>000000</string>
-		<key>Button text color (iOS 6)</key>
-		<string>fafafa</string>
+		<key>Bar Style (iOS 11 and above)</key>
+		<string>Black</string>
 	</dict>
 	<key>Table Section Header</key>
 	<dict>
