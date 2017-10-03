@@ -54,6 +54,9 @@
             </BuildableReference>
             <SkippedTests>
                <Test
+                  Identifier = "PushNotificationsManagerTests/testHelpshiftNotificationIsProperlyHandled">
+               </Test>
+               <Test
                   Identifier = "RemoteTestCase">
                </Test>
             </SkippedTests>
