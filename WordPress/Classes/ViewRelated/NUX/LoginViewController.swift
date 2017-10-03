@@ -104,6 +104,11 @@ class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewCo
     /// Sets the text of the error label.
     ///
     func displayError(message: String) {
+        guard message.count > 0 else {
+            errorLabel?.isHidden = true
+            return
+        }
+        errorLabel?.isHidden = false
         errorLabel?.text = message
     }
 

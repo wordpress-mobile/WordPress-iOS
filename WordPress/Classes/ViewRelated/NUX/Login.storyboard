@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ck1-vY-O11">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13526" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ck1-vY-O11">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13524"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -119,7 +119,7 @@
             <objects>
                 <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
-                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -148,50 +148,61 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAn-ug-oE6">
                                         <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKR-9c-zZQ">
-                                                <rect key="frame" x="20" y="194" width="351" height="38"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="252" width="391" height="44"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="JdU-yW-tzf">
+                                                <rect key="frame" x="0.0" y="194" width="391" height="102"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKR-9c-zZQ">
+                                                        <rect key="frame" x="20" y="0.0" width="351" height="38"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="58" width="391" height="44"/>
+                                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="c8B-Ol-kY2"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-username-field"/>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="handleSubmitForm" destination="fwZ-QE-5et" eventType="primaryActionTriggered" id="8l9-uh-Gyz"/>
+                                                            <action selector="handleTextFieldDidChange:" destination="fwZ-QE-5et" eventType="editingChanged" id="LoF-5Q-Yw5"/>
+                                                            <action selector="handleTextFieldEditingDidBegin:" destination="fwZ-QE-5et" eventType="editingDidBegin" id="Ff8-SJ-F9U"/>
+                                                            <outlet property="delegate" destination="fwZ-QE-5et" id="Urv-t1-Fui"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqt-eq-gac">
+                                                        <rect key="frame" x="20" y="102" width="351" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" placeholder="YES" id="0GR-cF-ntU"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" red="0.85098039215686272" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="c8B-Ol-kY2"/>
+                                                    <constraint firstAttribute="trailing" secondItem="DKR-9c-zZQ" secondAttribute="trailing" constant="20" id="Arc-2j-NIk"/>
+                                                    <constraint firstItem="DKR-9c-zZQ" firstAttribute="leading" secondItem="JdU-yW-tzf" secondAttribute="leading" constant="20" id="EhG-eK-xfB"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Qqt-eq-gac" secondAttribute="trailing" constant="20" id="G1N-hC-wjG"/>
+                                                    <constraint firstItem="XXO-aV-keK" firstAttribute="leading" secondItem="JdU-yW-tzf" secondAttribute="leading" id="Nn2-cS-qMf"/>
+                                                    <constraint firstItem="Qqt-eq-gac" firstAttribute="leading" secondItem="JdU-yW-tzf" secondAttribute="leading" constant="20" id="Yi1-cS-eg0"/>
+                                                    <constraint firstAttribute="trailing" secondItem="XXO-aV-keK" secondAttribute="trailing" id="wb9-QT-CMv"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-username-field"/>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="handleSubmitForm" destination="fwZ-QE-5et" eventType="primaryActionTriggered" id="8l9-uh-Gyz"/>
-                                                    <action selector="handleTextFieldDidChange:" destination="fwZ-QE-5et" eventType="editingChanged" id="LoF-5Q-Yw5"/>
-                                                    <action selector="handleTextFieldEditingDidBegin:" destination="fwZ-QE-5et" eventType="editingDidBegin" id="Ff8-SJ-F9U"/>
-                                                    <outlet property="delegate" destination="fwZ-QE-5et" id="Urv-t1-Fui"/>
-                                                </connections>
-                                            </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqt-eq-gac">
-                                                <rect key="frame" x="20" y="316" width="351" height="0.0"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                <color key="textColor" red="0.85098039215686272" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="DKR-9c-zZQ" firstAttribute="leading" secondItem="KAn-ug-oE6" secondAttribute="leading" constant="20" id="7wu-3l-qUr"/>
-                                            <constraint firstItem="XXO-aV-keK" firstAttribute="top" secondItem="DKR-9c-zZQ" secondAttribute="bottom" constant="20" id="9oX-ka-j3I"/>
-                                            <constraint firstItem="DKR-9c-zZQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="KAn-ug-oE6" secondAttribute="top" constant="20" id="JJl-Bt-GIK"/>
-                                            <constraint firstItem="XXO-aV-keK" firstAttribute="leading" secondItem="KAn-ug-oE6" secondAttribute="leading" id="KvU-q6-a4w"/>
-                                            <constraint firstAttribute="trailing" secondItem="XXO-aV-keK" secondAttribute="trailing" id="MIQ-Zc-xTt"/>
-                                            <constraint firstItem="Qqt-eq-gac" firstAttribute="top" secondItem="XXO-aV-keK" secondAttribute="bottom" constant="20" id="RI6-Oc-Mzl"/>
-                                            <constraint firstItem="Qqt-eq-gac" firstAttribute="leading" secondItem="KAn-ug-oE6" secondAttribute="leading" constant="20" id="YNt-g8-nUN"/>
-                                            <constraint firstAttribute="trailing" secondItem="Qqt-eq-gac" secondAttribute="trailing" constant="20" id="bSc-Qd-t4P"/>
-                                            <constraint firstAttribute="trailing" secondItem="DKR-9c-zZQ" secondAttribute="trailing" constant="20" id="jye-BF-2wg"/>
-                                            <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="KAn-ug-oE6" secondAttribute="centerY" priority="900" id="wqM-E8-vHO"/>
+                                            <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="KAn-ug-oE6" secondAttribute="centerY" id="02j-fV-HrF"/>
+                                            <constraint firstItem="JdU-yW-tzf" firstAttribute="width" secondItem="KAn-ug-oE6" secondAttribute="width" id="TL8-5B-Fpy"/>
+                                            <constraint firstItem="JdU-yW-tzf" firstAttribute="height" relation="lessThanOrEqual" secondItem="KAn-ug-oE6" secondAttribute="height" id="m0i-QV-gVF"/>
+                                            <constraint firstAttribute="trailing" secondItem="JdU-yW-tzf" secondAttribute="trailing" id="qo0-v2-sqg"/>
+                                            <constraint firstItem="JdU-yW-tzf" firstAttribute="leading" secondItem="KAn-ug-oE6" secondAttribute="leading" id="yAg-ul-Rff"/>
                                         </constraints>
                                     </view>
                                     <stackView contentMode="scaleToFill" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-CG-3Tg">
@@ -273,6 +284,7 @@
                         <outlet property="bottomContentConstraint" destination="h6K-00-qtf" id="qRz-TA-WAC"/>
                         <outlet property="emailTextField" destination="XXO-aV-keK" id="GZQ-cn-hKd"/>
                         <outlet property="errorLabel" destination="Qqt-eq-gac" id="4mV-5J-TJ2"/>
+                        <outlet property="inputStack" destination="JdU-yW-tzf" id="99m-CN-GKR"/>
                         <outlet property="instructionLabel" destination="DKR-9c-zZQ" id="2Rj-ad-hnL"/>
                         <outlet property="selfHostedSigninButton" destination="5Hn-ZK-h9k" id="hZn-AT-eQt"/>
                         <outlet property="submitButton" destination="OZC-xf-OAn" id="k1c-SJ-qiK"/>
@@ -1447,7 +1459,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="L3o-Cy-vXw">
-                                <rect key="frame" x="36" y="143.5" width="303" height="340.5"/>
+                                <rect key="frame" x="36" y="176" width="303" height="275"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login-magic-link" translatesAutoresizingMaskIntoConstraints="NO" id="upR-OL-iQF">
                                         <rect key="frame" x="71.5" y="0.0" width="160" height="160"/>
@@ -1457,7 +1469,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
-                                        <rect key="frame" x="0.0" y="190" width="303" height="86.5"/>
+                                        <rect key="frame" x="-36" y="190" width="0.0" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="0nV-Yg-je4"/>
                                             <constraint firstAttribute="width" constant="320" id="2JY-7V-RVK"/>
@@ -1477,7 +1489,7 @@
                                         </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="114" y="306.5" width="75" height="34"/>
+                                        <rect key="frame" x="114" y="241" width="75" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tyz-kt-Arb"/>
                                         </constraints>
@@ -1712,8 +1724,8 @@
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7lv-19-h36"/>
-        <segue reference="qLI-qX-rkG"/>
-        <segue reference="Jfl-Zm-PRR"/>
+        <segue reference="gAE-di-Wyf"/>
+        <segue reference="kRR-qz-Hu2"/>
+        <segue reference="ySQ-EM-6JI"/>
     </inferredMetricsTieBreakers>
 </document>
