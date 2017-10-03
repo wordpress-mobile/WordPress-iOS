@@ -893,6 +893,7 @@
 		E6C448571CB091AA00458157 /* SigninKeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C448561CB091AA00458157 /* SigninKeyboardResponder.swift */; };
 		E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */; };
 		E6D0088E1EF0880C009E5FA3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D0088D1EF0880C009E5FA3 /* LoginViewController.swift */; };
+		E6D0EE601F7EF9830064D3FC /* AccountService+SocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D0EE5F1F7EF9830064D3FC /* AccountService+SocialService.swift */; };
 		E6D170371EF9D8D10046D433 /* SiteInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D170361EF9D8D10046D433 /* SiteInfo.swift */; };
 		E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */; };
 		E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */; };
@@ -2322,6 +2323,7 @@
 		E6C448561CB091AA00458157 /* SigninKeyboardResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SigninKeyboardResponder.swift; sourceTree = "<group>"; };
 		E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingButtonsViewController.swift; sourceTree = "<group>"; };
 		E6D0088D1EF0880C009E5FA3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E6D0EE5F1F7EF9830064D3FC /* AccountService+SocialService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountService+SocialService.swift"; sourceTree = "<group>"; };
 		E6D170361EF9D8D10046D433 /* SiteInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteInfo.swift; sourceTree = "<group>"; };
 		E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderSiteStreamHeader.xib; sourceTree = "<group>"; };
 		E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderTagStreamHeader.xib; sourceTree = "<group>"; };
@@ -3693,6 +3695,7 @@
 				B5EFB1C31B31B99D007608A3 /* Facades */,
 				93C1147D18EC5DD500DAC95C /* AccountService.h */,
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
+				E6D0EE5F1F7EF9830064D3FC /* AccountService+SocialService.swift */,
 				E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */,
 				822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
@@ -6169,6 +6172,7 @@
 				85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */,
 				E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
+				E6D0EE601F7EF9830064D3FC /* AccountService+SocialService.swift in Sources */,
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
 				1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */,
