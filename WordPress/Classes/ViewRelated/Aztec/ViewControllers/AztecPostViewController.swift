@@ -358,7 +358,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate lazy var postEditorStateContext: PostEditorStateContext = { [unowned self] in
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext = {
         return self.createEditorStateContext(for: self.post)
     }()
 
