@@ -1,7 +1,7 @@
 @objc
 class Build: NSObject {
     @objc
-    enum BuildConfiguration: Int {        
+    enum BuildConfiguration: Int {
         /// Development build, usually run from Xcode
         case localDeveloper
         /// Continuous integration builds for Automattic employees to test branches & PRs
@@ -71,4 +71,3 @@ class Build: NSObject {
     }
     #endif
 }
-

@@ -22,7 +22,7 @@ class EditorSettingsTests: XCTestCase {
         Build.withCurrent(.appStore) {
             let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
             editorSettings.nativeEditorEnabled = true
-            
+
             XCTAssertTrue(editorSettings.nativeEditorEnabled)
         }
     }
