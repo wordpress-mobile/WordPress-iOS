@@ -17,12 +17,27 @@ class WebViewAuthenticator: NSObject {
         self.credentials = credentials
     }
 
-    convenience init(dotComUsername username: Username, authToken: Token) {
-        self.init(credentials: .dotCom(username, authToken))
+    convenience init?(account: WPAccount) {
+        guard let username = account.username,
+            let token = account.authToken else {
+                return nil;
+        }
+        self.init(credentials: .dotCom(username, token))
     }
 
-    convenience init(selfHostedUsername username: Username, password: Password, loginURL: URL) {
-        self.init(credentials: .siteLogin(loginURL, username, password))
+    convenience init?(blog: Blog) {
+        if let account = blog.account,
+            blog.supports(.oAuth2Login) {
+            self.init(account: account)
+        } else if let username = blog.usernameForSite,
+            let password = blog.password,
+            let loginURL = URL(string: blog.loginUrl())
+        {
+            self.init(credentials: .siteLogin(loginURL, username, password))
+        } else {
+            DDLogError("Can't authenticate blog \(String(describing: blog.displayURL)) yet")
+            return nil
+        }
     }
 
     func authenticatedRequest(url: URL) -> URLRequest? {
@@ -37,12 +52,26 @@ class WebViewAuthenticator: NSObject {
         return request
     }
 
-    func request(url: URL) -> URLRequest {
-        return authenticatedRequest(url: url) ?? unauthenticatedRequest(url: url)
+    func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
+        cookieJar.hasCookie(url: url, username: username) { [weak self] (hasCookie) in
+            guard let authenticator = self else {
+                return
+            }
+
+            let request = authenticator.request(url: url, authenticated: !hasCookie)
+            completion(request)
+        }
     }
 }
 
 private extension WebViewAuthenticator {
+    func request(url: URL, authenticated: Bool) -> URLRequest {
+        guard authenticated else {
+            return unauthenticatedRequest(url: url)
+        }
+        return authenticatedRequest(url: url) ?? unauthenticatedRequest(url: url)
+    }
+
     func unauthenticatedRequest(url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")

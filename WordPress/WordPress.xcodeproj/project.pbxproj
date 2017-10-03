@@ -714,6 +714,7 @@
 		E15644F11CE0E56600D96E64 /* FeatureItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644F01CE0E56600D96E64 /* FeatureItemCell.swift */; };
 		E15644F31CE0E5A500D96E64 /* PlanDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15644F21CE0E5A500D96E64 /* PlanDetailViewModel.swift */; };
 		E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */; };
+		E161B7EC1F839345000FDF0B /* CookieJar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E161B7EB1F839345000FDF0B /* CookieJar.swift */; };
 		E16273E11B2ACEB600088AF7 /* BlogToBlog32to33.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */; };
 		E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */; };
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -2073,6 +2074,7 @@
 		E15644F01CE0E56600D96E64 /* FeatureItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureItemCell.swift; sourceTree = "<group>"; };
 		E15644F21CE0E5A500D96E64 /* PlanDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewModel.swift; sourceTree = "<group>"; };
 		E157D5DF1C690A6C00F04FB9 /* ImmuTableTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImmuTableTestUtils.swift; sourceTree = "<group>"; };
+		E161B7EB1F839345000FDF0B /* CookieJar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookieJar.swift; sourceTree = "<group>"; };
 		E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogToBlog32to33.swift; sourceTree = "<group>"; };
 		E16273E21B2AD89A00088AF7 /* MIGRATIONS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = MIGRATIONS.md; path = ../MIGRATIONS.md; sourceTree = "<group>"; };
 		E163AF9E1ED45B100035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3955,6 +3957,7 @@
 				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
 				E1BB85971F82459800797050 /* WebViewAuthenticator.swift */,
 				B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */,
+				E161B7EB1F839345000FDF0B /* CookieJar.swift */,
 				B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */,
 				B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */,
 			);
@@ -6036,6 +6039,7 @@
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
 				591AA5011CEF9BF20074934F /* Post.swift in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
+				E161B7EC1F839345000FDF0B /* CookieJar.swift in Sources */,
 				B5F67AC71DB7D81300482C62 /* NotificationSyncMediator.swift in Sources */,
 				177CBE501DA3A3AC009F951E /* CollectionType+Helpers.swift in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
