@@ -12,6 +12,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate var handler: ImmuTableViewHandler!
+    fileprivate static let aztecEditorFooterHeight = CGFloat(34.0)
 
     // MARK: - Initialization
 
@@ -30,9 +31,6 @@ class AppSettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.register(AppSettingsEditorFooterView.self,
-                           forHeaderFooterViewReuseIdentifier: AppSettingsEditorFooterView.reuseIdentifier)
 
         ImmuTable.registerRows([
             DestructiveButtonRow.self,
@@ -167,17 +165,18 @@ class AppSettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if shouldShowEditorFooterForSection(section) {
-            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier) as! AppSettingsEditorFooterView
+            let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
+                                                                   y: 0.0,
+                                                                   width: tableView.frame.width,
+                                                                   height: AppSettingsViewController.aztecEditorFooterHeight))
+            footer.textLabel?.text = NSLocalizedString("Editor release notes & bug reporting",
+                                                       comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
+            footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
+            footer.textLabel?.isUserInteractionEnabled = true
 
-            view.tapBlock = { [weak self] in
-                WPAppAnalytics.track(.editorAztecBetaLink)
-
-                if let controller = self {
-                    WPWebViewController.presentWhatsNewWebView(from: controller)
-                }
-            }
-
-            return view
+            let tap = UITapGestureRecognizer(target: self, action: #selector(handleEditorFooterTap(_:)))
+            footer.addGestureRecognizer(tap)
+            return footer
         }
 
         return nil
@@ -185,7 +184,7 @@ class AppSettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if shouldShowEditorFooterForSection(section) {
-            return AppSettingsEditorFooterView.height
+            return AppSettingsViewController.aztecEditorFooterHeight
         }
 
         return UITableViewAutomaticDimension
@@ -193,6 +192,11 @@ class AppSettingsViewController: UITableViewController {
 
     private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
         return section == Sections.editor.rawValue && EditorSettings().editor == .aztec
+    }
+
+    @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
+        WPAppAnalytics.track(.editorAztecBetaLink)
+        WPWebViewController.presentWhatsNewWebView(from: self)
     }
 
     // MARK: - Media cache methods
@@ -394,50 +398,5 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
         cell.selectionStyle = .none
 
         (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
-    }
-}
-
-fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
-    static let height: CGFloat = 38.0
-    static let reuseIdentifier = "AppSettingsEditorFooterView"
-    var tapBlock: (() -> Void)? = nil
-
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        stackView.axis = .horizontal
-
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
-        label.text = NSLocalizedString("Editor release notes & bug reporting", comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
-        label.textColor = WPStyleGuide.greyDarken10()
-        stackView.addArrangedSubview(label)
-
-        let button = UIButton(type: .custom)
-        button.setImage(Gridicon.iconOfType(.infoOutline), for: .normal)
-        button.tintColor = WPStyleGuide.greyDarken10()
-        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
-
-        contentView.addSubview(stackView)
-        stackView.addArrangedSubview(button)
-
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
-            ])
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    @IBAction private func footerButtonTapped() {
-        tapBlock?()
     }
 }

@@ -134,7 +134,7 @@ int ddLogLevel = DDLogLevelInfo;
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
-    [[InteractiveNotificationsManager sharedInstance] registerForUserNotifications];
+    [[InteractiveNotificationsManager shared] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupStoreKit];
     [self setupBuddyBuild];
@@ -191,6 +191,12 @@ int ddLogLevel = DDLogLevelInfo;
     BOOL returnValue = NO;
 
     if ([self.hockey handleOpenURL:url options:options]) {
+        returnValue = YES;
+    }
+
+    if ([[GIDSignIn sharedInstance] handleURL:url
+                            sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                   annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
         returnValue = YES;
     }
 
@@ -409,7 +415,7 @@ int ddLogLevel = DDLogLevelInfo;
     // Push notifications
     // This is silent (the user is prompted) so we can do it on launch.
     // We'll ask for user notification permission after signin.
-    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
+    [[PushNotificationsManager shared] registerForRemoteNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -428,26 +434,26 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [[PushNotificationsManager sharedInstance] registerDeviceToken:deviceToken];
+    [[PushNotificationsManager shared] registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [[PushNotificationsManager sharedInstance] registrationDidFail:error];
+    [[PushNotificationsManager shared] registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     DDLogMethod();
 
-    [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:nil];
+    [[PushNotificationsManager shared] handleNotification:userInfo completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogMethod();
 
-    [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:completionHandler];
+    [[PushNotificationsManager shared] handleNotification:userInfo completionHandler:completionHandler];
 }
 
 #pragma mark - Background Refresh
@@ -540,6 +546,7 @@ int ddLogLevel = DDLogLevelInfo;
 
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UITabBar appearance] setUnselectedItemTintColor:[WPStyleGuide greyLighten10]];
 
     [[UINavigationBar appearance] setBackgroundImage:[WPStyleGuide navigationBarBackgroundImage] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[WPStyleGuide navigationBarShadowImage]];
@@ -749,7 +756,7 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [[PushNotificationsManager sharedInstance] deviceToken]);
+    DDLogInfo(@"APN token: %@", [[PushNotificationsManager shared] deviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
     NSString *verificationTag = @"";
     if (account.verificationStatus) {
