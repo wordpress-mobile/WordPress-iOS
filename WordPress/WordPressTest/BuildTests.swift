@@ -2,7 +2,7 @@ import Nimble
 import XCTest
 @testable import WordPress
 
-class BuildConfigurationTests: XCTestCase {
+class BuildTests: XCTestCase {
 
     func testBuild() {
         Build.withCurrent(.localDeveloper) {
