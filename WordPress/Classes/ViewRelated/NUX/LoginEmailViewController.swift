@@ -9,6 +9,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     var onePasswordButton: UIButton!
+    var googleLoginButton: UIButton?
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
@@ -124,7 +125,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Add the log in with Google button to the view
     func addGoogleButton() {
-        guard Feature.enabled(.googleLogin) else {
+        guard Feature.enabled(.googleLogin),
+            let instructionLabel = instructionLabel else {
             return
         }
 
@@ -134,10 +136,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
         view.addConstraints([
             button.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: Constants.googleButtonOffset),
-            button.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo:instructionLabel.trailingAnchor),
             button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor)
         ])
+        googleLoginButton = button
     }
 
     func googleLoginTapped() {
@@ -172,6 +175,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///
     override func configureViewLoading(_ loading: Bool) {
         emailTextField.isEnabled = !loading
+        googleLoginButton?.isEnabled = !loading
+
         submitButton?.isEnabled = !loading
         submitButton?.showActivityIndicator(loading)
     }
@@ -370,15 +375,37 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
 }
 
+// LoginFacadeDelegate methods for Google Google Sign In
+extension LoginEmailViewController {
+    func finishedLogin(withGoogleIDToken googleIDToken: String!, authToken: String!) {
+        let username = loginFields.username
+        syncWPCom(username, authToken: authToken, requiredMultifactor: false)
+    }
+
+    func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
+        // TODO: to be implemented.
+    }
+}
+
 extension LoginEmailViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        // TODO: implement wpcom login via Google code
+        // TODO: finish implementing wpcom login via Google code
+        guard let token = user.authentication.idToken,
+                let email = user.profile.email else {
+            // The Google SignIn for may have been canceled.
+            //TODO: Add analytis
+            return
+        }
 
-        let alert = UIAlertController(title: "Login Success", message: "Google login succeeded. Actual wpcom account login yet to be implemented.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok. Thanks.", style: .default, handler: { [weak self] (action) in
-            self?.dismiss(animated: true) {}
-        }))
-        present(alert, animated: true)
+        // Store the email address.
+        loginFields.emailAddress = email
+        loginFields.username = email
+
+        configureViewLoading(true)
+
+        loginFacade.loginToWordPressDotCom(withGoogleIDToken: token)
+
+        //TODO: Add analytis
     }
 }
 
