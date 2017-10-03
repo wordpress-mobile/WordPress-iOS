@@ -104,29 +104,13 @@ private extension PostPreviewGenerator {
     }
 
     func attemptCookieAuthenticatedRequest(url: URL) {
-        let blog = post.blog
-        guard let loginURL = URL(string: blog.loginUrl()),
-            let username = blog.usernameForSite?.nonEmptyString() else {
-                showFakePreview()
-                return
+        guard let authenticator = WebViewAuthenticator(blog: post.blog) else {
+            showFakePreview()
+            return
         }
-
-        let authenticator: WebViewAuthenticator
-        if blog.supports(.oAuth2Login) {
-            guard let token = blog.authToken?.nonEmptyString() else {
-                showFakePreview()
-                return
-            }
-            authenticator = WebViewAuthenticator(dotComUsername: username, authToken: token)
-        } else {
-            guard let password = blog.password?.nonEmptyString() else {
-                showFakePreview()
-                return
-            }
-            authenticator = WebViewAuthenticator(selfHostedUsername: username, password: password, loginURL: loginURL)
-        }
-        let request = authenticator.request(url: url)
-        delegate?.preview(self, attemptRequest: request)
+        authenticator.request(url: url, cookieJar: HTTPCookieStorage.shared, completion: { [weak delegate] request in
+            delegate?.preview(self, attemptRequest: request)
+        })
     }
 }
 

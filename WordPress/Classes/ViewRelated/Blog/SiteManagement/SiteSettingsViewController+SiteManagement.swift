@@ -136,10 +136,7 @@ public extension SiteSettingsViewController {
         let purchasesUrl = "https://wordpress.com/purchases"
 
         let controller = WPWebViewController()
-        controller.authToken = blog.authToken
-        controller.username = blog.usernameForSite
-        controller.password = blog.password
-        controller.wpLoginURL = URL(string: blog.loginUrl())
+        controller.authenticate(with: blog)
         controller.secureInteraction = true
         controller.url = URL(string: purchasesUrl)
         controller.loadViewIfNeeded()
