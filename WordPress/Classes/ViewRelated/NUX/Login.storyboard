@@ -201,6 +201,7 @@
                                             <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="KAn-ug-oE6" secondAttribute="centerY" id="02j-fV-HrF"/>
                                             <constraint firstItem="JdU-yW-tzf" firstAttribute="width" secondItem="KAn-ug-oE6" secondAttribute="width" id="TL8-5B-Fpy"/>
                                             <constraint firstItem="JdU-yW-tzf" firstAttribute="height" relation="lessThanOrEqual" secondItem="KAn-ug-oE6" secondAttribute="height" id="m0i-QV-gVF"/>
+                                            <constraint firstItem="JdU-yW-tzf" firstAttribute="top" relation="greaterThanOrEqual" secondItem="KAn-ug-oE6" secondAttribute="top" constant="20" id="pjg-E0-opm"/>
                                             <constraint firstAttribute="trailing" secondItem="JdU-yW-tzf" secondAttribute="trailing" id="qo0-v2-sqg"/>
                                             <constraint firstItem="JdU-yW-tzf" firstAttribute="leading" secondItem="KAn-ug-oE6" secondAttribute="leading" id="yAg-ul-Rff"/>
                                         </constraints>
