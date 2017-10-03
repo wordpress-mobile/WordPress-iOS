@@ -140,7 +140,7 @@ NS_ASSUME_NONNULL_BEGIN
         return;
     }
 
-    void(^completeMenuDeletion)() = ^() {
+    void(^completeMenuDeletion)(void) = ^() {
         [self.managedObjectContext performBlock:^{
             [self.managedObjectContext deleteObject:menu];
             [self.managedObjectContext processPendingChanges];
@@ -230,7 +230,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateMenu:(Menu *)menu
            forBlog:(Blog *)blog
-           success:(nullable void(^)())success
+           success:(nullable void(^)(void))success
            failure:(nullable MenusServiceFailureBlock)failure
 {
     NSMutableArray *locationNames = nil;

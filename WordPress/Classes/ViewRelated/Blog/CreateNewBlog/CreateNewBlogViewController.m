@@ -513,7 +513,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
 
             __weak __typeof(self) weakSelf = self;
 
-            void (^completion)() = ^{
+            void (^completion)(void) = ^{
                 [WPAnalytics refreshMetadata];
                 [weakSelf setAuthenticating:NO];
                 [weakSelf dismissViewControllerAnimated:YES completion:^{

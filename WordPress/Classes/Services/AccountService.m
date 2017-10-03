@@ -71,7 +71,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     NSManagedObjectID *accountID = account.objectID;
-    void (^notifyAccountChange)() = ^{
+    void (^notifyAccountChange)(void) = ^{
         NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
@@ -178,7 +178,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 }
 
 
-- (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     id<AccountServiceRemote> remote = [self remoteForAnonymous];
     [remote requestWPComAuthLinkForEmail:email
@@ -267,7 +267,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [results firstObject];
 }
 
-- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     NSAssert(account, @"Account can not be nil");
     NSAssert(account.username, @"account.username can not be nil");

@@ -206,7 +206,7 @@
 
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
     Blog *blog = media.blog;
@@ -283,7 +283,7 @@
 #pragma mark - Updating media
 
 - (void)updateMedia:(Media *)media
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
@@ -327,7 +327,7 @@
 }
 
 - (void)updateMedia:(NSArray<Media *> *)mediaObjects
-     overallSuccess:(void (^)())overallSuccess
+     overallSuccess:(void (^)(void))overallSuccess
             failure:(void (^)(NSError *error))failure
 {
     if (mediaObjects.count == 0) {
@@ -419,14 +419,14 @@
 #pragma mark - Deleting media
 
 - (void)deleteMedia:(nonnull Media *)media
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
     NSManagedObjectID *mediaObjectID = media.objectID;
 
-    void (^successBlock)() = ^() {
+    void (^successBlock)(void) = ^() {
         [self.managedObjectContext performBlock:^{
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             [self.managedObjectContext deleteObject:mediaInContext];
@@ -446,8 +446,8 @@
 
 - (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
            progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-            success:(nullable void (^)())success
-            failure:(nullable void (^)())failure
+            success:(nullable void (^)(void))success
+            failure:(nullable void (^)(void))failure
 {
     if (mediaObjects.count == 0) {
         if (success) {
@@ -540,7 +540,7 @@
 }
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog
-                        success:(void (^)())success
+                        success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
