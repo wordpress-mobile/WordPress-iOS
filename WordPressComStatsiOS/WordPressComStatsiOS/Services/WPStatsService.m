@@ -68,7 +68,7 @@ NSString *const TodayCacheKey = @"Today";
        authorsCompletionHandler:(StatsGroupCompletion)authorsCompletion
    searchTermsCompletionHandler:(StatsGroupCompletion)searchTermsCompletion
                   progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations)) progressBlock
-     andOverallCompletionHandler:(void (^)())completionHandler
+     andOverallCompletionHandler:(void (^)(void))completionHandler
 {
     if (!completionHandler) {
         return;
@@ -174,7 +174,7 @@ NSString *const TodayCacheKey = @"Today";
                                     publicizeCompletionHandler:(StatsGroupCompletion)publicizeCompletion
                                        streakCompletionHandler:(StatsStreakCompletion)streakCompletion
                                                  progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations)) progressBlock
-                                   andOverallCompletionHandler:(void (^)())overallCompletionHandler
+                                   andOverallCompletionHandler:(void (^)(void))overallCompletionHandler
 {
     NSMutableDictionary *cacheDictionary = [self.ephemory objectForKey:BatchInsightsCacheKey];
     id allTimeData = cacheDictionary[@(StatsSectionInsightsAllTime)];
