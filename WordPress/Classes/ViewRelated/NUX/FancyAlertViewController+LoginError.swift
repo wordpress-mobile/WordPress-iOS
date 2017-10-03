@@ -12,13 +12,13 @@ extension FancyAlertViewController {
     typealias ButtonConfig = FancyAlertViewController.Config.ButtonConfig
 
     private static func defaultButton() -> ButtonConfig {
-        return ButtonConfig(Strings.OK) { controller in
+        return ButtonConfig(Strings.OK) { controller, _ in
             controller.dismiss(animated: true, completion: nil)
         }
     }
 
     static func siteAddressHelpController(loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let delegate = UIApplication.shared.delegate,
@@ -108,7 +108,7 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     ///
     private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
@@ -147,7 +147,7 @@ extension FancyAlertViewController {
     /// - Parameter sourceTag: tag of the source of the error
     ///
     static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
@@ -183,7 +183,7 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     ///
     private static func alertForBadURLMessage(_ message: String) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
