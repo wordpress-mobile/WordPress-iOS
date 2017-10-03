@@ -990,6 +990,11 @@ extension AztecPostViewController {
             })
             return
         }
+
+        if neeedsVerificationBeforePosting() {
+            showVerificationPrompt()
+        }
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
         postEditorStateContext.updated(isBeingPublished: true)

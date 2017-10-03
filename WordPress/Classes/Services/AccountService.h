@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WPAccount, Blog;
+@class WPAccount, AbstractPost;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
@@ -83,7 +83,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 
 /**
- Requets a one-time authentication link sent to an existing account associated with the
+ Requests a one-time authentication link sent to an existing account associated with the
  specified email address.
 
  @param email
@@ -91,6 +91,19 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param failure
  */
 - (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+
+/**
+ Requests a verification email to be sent to the email address associated with the specified account.
+
+ @param account
+ @param success
+ @param failure
+ */
+- (void)requestVerificationEmail:(WPAccount *)account
+                         success:(void (^)())success
+                         failure:(void (^)(NSError *error))failure;
+
+
 
 
 ///-----------------------
