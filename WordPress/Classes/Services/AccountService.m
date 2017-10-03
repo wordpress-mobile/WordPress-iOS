@@ -196,6 +196,20 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
                                  }];
 }
 
+- (void)requestVerificationEmail:(void (^)())success failure:(void (^)(NSError * _Nonnull))failure
+{
+    id<AccountServiceRemote> remote = [self remoteForAccount:[self defaultWordPressComAccount]];
+    [remote requestVerificationEmailWithSucccess:^{
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 
 ///-----------------------
 /// @name Account creation

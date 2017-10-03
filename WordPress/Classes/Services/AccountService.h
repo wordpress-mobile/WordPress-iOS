@@ -93,16 +93,13 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
- Requests a verification email to be sent to the email address associated with the specified account.
+ Requests a verification email to be sent to the email address associated with the current account.
 
- @param account
  @param success
  @param failure
  */
-- (void)requestVerificationEmail:(WPAccount *)account
-                         success:(void (^)())success
+- (void)requestVerificationEmail:(void (^)())success
                          failure:(void (^)(NSError *error))failure;
-
 
 
 
