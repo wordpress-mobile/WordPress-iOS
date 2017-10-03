@@ -233,6 +233,23 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
            }];
 }
 
+- (void)requestVerificationEmailWithSucccess:(void (^)())success
+                                     failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [self pathForEndpoint:@"me/send-verification-email"
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi POST:path parameters:nil success:^(id _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
+        if (success) {
+            success();
+        }
+    } failure:^(NSError * _Nonnull error, NSHTTPURLResponse * _Nullable response) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 #pragma mark - Private Methods
 
 - (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary

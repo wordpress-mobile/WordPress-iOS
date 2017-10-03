@@ -33,7 +33,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 
  @param post
  */
-- (BOOL)needsVerificationBeforePublishing:(AbstractPost *)post
+- (BOOL)needsVerificationBeforePublishing:(AbstractPost *)post;
 
 /**
  Sync a specific post from the API
