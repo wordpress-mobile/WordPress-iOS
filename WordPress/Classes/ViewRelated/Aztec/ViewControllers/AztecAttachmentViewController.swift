@@ -11,14 +11,16 @@ class AztecAttachmentViewController: UITableViewController {
             if let attachment = attachment {
                 alignment = attachment.alignment
                 size = attachment.size
+                alt = attachment.extraAttributes["alt"] ?? ""
             }
         }
     }
 
     var alignment = ImageAttachment.Alignment.none
     var size = ImageAttachment.Size.full
+    var alt = ""
 
-    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size) -> Void)?
+    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String) -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -77,12 +79,18 @@ class AztecAttachmentViewController: UITableViewController {
             value: size.localizedString,
             action: displaySizeSelector)
 
+        let altRow = EditableTextRow(
+            title: NSLocalizedString("Alt Text", comment: "Image alt attribute."),
+            value: alt,
+            action: displayAltTextfield)
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: displaySettingsHeader,
                 rows: [
                     alignmentRow,
                     sizeRow,
+                    altRow
                 ],
                 footerText: nil)
             ])
@@ -90,6 +98,27 @@ class AztecAttachmentViewController: UITableViewController {
 
 
     // MARK: - Actions
+    
+    private func displayAltTextfield(row: ImmuTableRow) {
+        let editableRow = row as! EditableTextRow
+        self.pushSettingsController(for: editableRow,
+                                    hint: NSLocalizedString("Image Description", comment: "Hint for image description on image settings."),
+                                    onValueChanged: { value in
+                                        self.alt = value
+                                        self.tableView.reloadData()
+        })
+    }
+    
+    private func pushSettingsController(for row: EditableTextRow, hint: String? = nil, onValueChanged: @escaping SettingsTextChanged) {
+        let title = row.title
+        let value = row.value
+        let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
+        
+        controller.title = title
+        controller.onValueChanged = onValueChanged
+        
+        navigationController?.pushViewController(controller, animated: true)
+    }
 
     func displayAlignmentSelector(row: ImmuTableRow) {
 
@@ -163,7 +192,7 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        onUpdate?(alignment, size)
+        onUpdate?(alignment, size, alt)
         dismiss(animated: true, completion: nil)
     }
 
