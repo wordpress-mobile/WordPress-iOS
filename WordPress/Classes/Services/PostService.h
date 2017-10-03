@@ -29,6 +29,13 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 - (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
 
 /**
+ Checks whether a user needs to verify their email before publishing a post.
+
+ @param post
+ */
+- (BOOL)needsVerificationBeforePublishing:(AbstractPost *)post
+
+/**
  Sync a specific post from the API
 
  @param postID The ID of the post to sync
