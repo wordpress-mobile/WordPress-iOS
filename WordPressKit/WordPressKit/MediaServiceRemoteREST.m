@@ -280,6 +280,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     remoteMedia.title = [jsonMedia stringForKey:@"title"];
     remoteMedia.caption = [jsonMedia stringForKey:@"caption"];
     remoteMedia.descriptionText = [jsonMedia stringForKey:@"description"];
+    remoteMedia.alt = [jsonMedia stringForKey:@"alt"];
     remoteMedia.height = [jsonMedia numberForKey:@"height"];
     remoteMedia.width = [jsonMedia numberForKey:@"width"];
     remoteMedia.exif = [jsonMedia dictionaryForKey:@"exif"];
@@ -306,6 +307,10 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
     if (remoteMedia.descriptionText != nil) {
         parameters[@"description"] = remoteMedia.descriptionText;
+    }
+    
+    if (remoteMedia.alt != nil) {
+        parameters[@"alt"] = remoteMedia.alt;
     }
 
     return [NSDictionary dictionaryWithDictionary:parameters];

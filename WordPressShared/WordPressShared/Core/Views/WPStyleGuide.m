@@ -400,7 +400,11 @@
 	if (![footer isKindOfClass:[UITableViewHeaderFooterView class]]) {
 		return;
 	}
-	footer.textLabel.textColor = [self greyDarken10];
+    if (footer.textLabel.userInteractionEnabled) {
+        footer.textLabel.textColor = [self wordPressBlue];
+    } else {
+        footer.textLabel.textColor = [self greyDarken10];
+    }
 }
 
 // TODO: Move to fetaure category

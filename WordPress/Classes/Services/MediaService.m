@@ -792,6 +792,7 @@
     media.title = remoteMedia.title;
     media.caption = remoteMedia.caption;
     media.desc = remoteMedia.descriptionText;
+    media.alt = remoteMedia.alt;
     media.height = remoteMedia.height;
     media.width = remoteMedia.width;
     media.shortcode = remoteMedia.shortcode;
@@ -812,6 +813,7 @@
     remoteMedia.title = media.title;
     remoteMedia.caption = media.caption;
     remoteMedia.descriptionText = media.desc;
+    remoteMedia.alt = media.alt;
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;

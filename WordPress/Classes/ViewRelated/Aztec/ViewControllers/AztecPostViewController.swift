@@ -358,7 +358,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Maintainer of state for editor - like for post button
     ///
-    fileprivate lazy var postEditorStateContext: PostEditorStateContext = { [unowned self] in
+    fileprivate lazy var postEditorStateContext: PostEditorStateContext = {
         return self.createEditorStateContext(for: self.post)
     }()
 
@@ -1764,7 +1764,7 @@ extension AztecPostViewController {
 
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
-        options.filter = [.video, .image]
+        options.filter = [.all]
         options.allowCaptureOfMedia = false
 
         let picker = WPNavigationMediaPickerViewController()
@@ -2556,10 +2556,11 @@ extension AztecPostViewController {
         guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
             return
         }
-        if media.mediaType == .image {
+        switch media.mediaType {
+        case .image:
             let _ = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
-        } else if media.mediaType == .video {
+        case .video:
             var posterURL: URL?
             if let posterURLString = media.remoteThumbnailURL {
                 posterURL = URL(string: posterURLString)
@@ -2571,6 +2572,11 @@ extension AztecPostViewController {
                 richTextView.refresh(attachment)
             }
             WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
+        default:
+            // If we drop in here, let's just insert a link the the remote media
+            let linkTitle = media.title?.nonEmptyString() ?? remoteURLStr
+            richTextView.setLink(remoteURL, title: linkTitle, inRange: richTextView.selectedRange)
+            WPAppAnalytics.track(.editorAddedOtherMediaViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         }
         self.mediaProgressCoordinator.finishOneItem()
     }
