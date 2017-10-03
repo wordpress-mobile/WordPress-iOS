@@ -3,7 +3,7 @@
 
 @class Blog, AbstractPost;
 
-typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)();
+typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)(void);
 
 extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking;
 extern NSString * const WPAppAnalyticsKeyBlogID;
