@@ -82,4 +82,13 @@
                              success:(void (^)(void))success
                              failure:(void (^)(NSError *error))failure;
 
+ /**
+  * @brief      Request to (re-)send the verification email for the current user.
+  *
+  *  @param      success     The block that will be executed on success.  Can be nil.
+  *  @param      failure     The block that will be executed on failure.  Can be nil.
+  */
+- (void)requestVerificationEmailWithSucccess:(void (^)())success
+                                     failure:(void (^)(NSError *error))failure;
+
 @end
