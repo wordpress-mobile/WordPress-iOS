@@ -73,7 +73,7 @@
  */
 - (void)uploadMedia:(nonnull Media *)media
            progress:(NSProgress * __nullable __autoreleasing * __nullable) progress
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 
@@ -87,7 +87,7 @@
  @failure a block that will be invoked when there is upload error.
  */
 - (void)updateMedia:(nonnull Media *)media
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
@@ -99,7 +99,7 @@
  @param success
  */
 - (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
-     overallSuccess:(nullable void (^)())overallSuccess
+     overallSuccess:(nullable void (^)(void))overallSuccess
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
@@ -110,7 +110,7 @@
  @param failure a block that will be invoked when there is an error.
  */
 - (void)deleteMedia:(nonnull Media *)media
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
@@ -123,8 +123,8 @@
  */
 - (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
            progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-            success:(nullable void (^)())success
-            failure:(nullable void (^)())failure;
+            success:(nullable void (^)(void))success
+            failure:(nullable void (^)(void))failure;
 
 /**
  *  Obtains the  video url and poster image url for the video with the videoPressID
@@ -146,7 +146,7 @@
  * @param failure a block that will be invoked when the sync fails
  */
 - (void)syncMediaLibraryForBlog:(nonnull Blog *)blog
-                        success:(nullable void (^)())success
+                        success:(nullable void (^)(void))success
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**

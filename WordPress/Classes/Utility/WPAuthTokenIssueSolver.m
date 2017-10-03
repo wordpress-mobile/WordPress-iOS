@@ -104,7 +104,9 @@
 
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteButtonTitle
                                                            style:UIAlertActionStyleDestructive
-                                                         handler:okBlock];
+                                                         handler:^(UIAlertAction *action){
+                                                             okBlock();
+                                                         }];
     [alertController addAction:cancelAction];
     [alertController addAction:deleteAction];
     [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController
