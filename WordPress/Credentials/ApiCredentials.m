@@ -29,6 +29,14 @@
     return @"";
 }
 
++ (NSString *)googleLoginClientId {
+    return @"";
+}
+
++ (NSString *)googleLoginServerClientId {
+    return @"";
+}
+
 + (NSString *)helpshiftAPIKey {
     return  @"";
 }
@@ -38,6 +46,10 @@
 }
 
 + (NSString *)helpshiftAppId {
+    return @"";
+}
+
++ (NSString *)debuggingKey {
     return @"";
 }
 
