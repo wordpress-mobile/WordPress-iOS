@@ -147,6 +147,7 @@ extension LoginSocialErrorViewController {
             buttonIcon = Gridicon.iconOfType(.mySites)
         }
         cell.textLabel?.text = buttonText
+        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
         cell.imageView?.image = buttonIcon.imageWithTintColor(WPStyleGuide.grey())
         return cell
     }
