@@ -30,7 +30,7 @@ class WebViewAuthenticator: NSObject {
     convenience init?(account: WPAccount) {
         guard let username = account.username,
             let token = account.authToken else {
-                return nil;
+                return nil
         }
         self.init(credentials: .dotCom(username: username, authToken: token))
     }
@@ -40,8 +40,7 @@ class WebViewAuthenticator: NSObject {
             self.init(account: account)
         } else if let username = blog.usernameForSite,
             let password = blog.password,
-            let loginURL = URL(string: blog.loginUrl())
-        {
+            let loginURL = URL(string: blog.loginUrl()) {
             self.init(credentials: .siteLogin(loginURL: loginURL, username: username, password: password))
         } else {
             DDLogError("Can't authenticate blog \(String(describing: blog.displayURL)) yet")
@@ -146,7 +145,7 @@ private extension WebViewAuthenticator {
     }
 
     func redirectUrl(url: String) -> String? {
-        guard case .dotCom(_,_) = credentials else {
+        guard case .dotCom = credentials else {
             return url
         }
         guard let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
@@ -166,7 +165,7 @@ private extension WebViewAuthenticator {
 
     var password: String? {
         switch credentials {
-        case .dotCom(_, _):
+        case .dotCom:
             return nil
         case .siteLogin(_, _, let password):
             return password
@@ -180,14 +179,14 @@ private extension WebViewAuthenticator {
         switch credentials {
         case .dotCom(_, let authToken):
             return authToken
-        case .siteLogin(_, _, _):
+        case .siteLogin:
             return nil
         }
     }
 
     var loginURL: URL {
         switch credentials {
-        case .dotCom(_, _):
+        case .dotCom:
             return WebViewAuthenticator.wordPressComLoginUrl
         case .siteLogin(let url, _, _):
             return url

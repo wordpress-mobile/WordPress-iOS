@@ -45,4 +45,3 @@ private extension HTTPCookie {
             && (!isSecure || (url.scheme == "https"))
     }
 }
-
