@@ -1,13 +1,9 @@
 import Foundation
 
 class WebViewAuthenticator: NSObject {
-    typealias Username = String
-    typealias Password = String
-    typealias Token = String
-
     enum Credentials {
-        case dotCom(Username, Token)
-        case siteLogin(URL, Username, Password)
+        case dotCom(username: String, authToken: String)
+        case siteLogin(loginURL: URL, username: String, password: String)
     }
 
     let credentials: Credentials
@@ -22,7 +18,7 @@ class WebViewAuthenticator: NSObject {
             let token = account.authToken else {
                 return nil;
         }
-        self.init(credentials: .dotCom(username, token))
+        self.init(credentials: .dotCom(username: username, authToken: token))
     }
 
     convenience init?(blog: Blog) {
@@ -32,7 +28,7 @@ class WebViewAuthenticator: NSObject {
             let password = blog.password,
             let loginURL = URL(string: blog.loginUrl())
         {
-            self.init(credentials: .siteLogin(loginURL, username, password))
+            self.init(credentials: .siteLogin(loginURL: loginURL, username: username, password: password))
         } else {
             DDLogError("Can't authenticate blog \(String(describing: blog.displayURL)) yet")
             return nil
