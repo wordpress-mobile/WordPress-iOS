@@ -3001,15 +3001,18 @@ extension AztecPostViewController {
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let imageSize = CGSize(width: 128, height: 128)
-
+        let icon: UIImage
         switch attachment {
         case _ as ImageAttachment:
-            return Gridicon.iconOfType(.image, withSize: imageSize)
+            icon = Gridicon.iconOfType(.image, withSize: imageSize)
         case _ as VideoAttachment:
-            return Gridicon.iconOfType(.video, withSize: imageSize)
+            icon = Gridicon.iconOfType(.video, withSize: imageSize)
         default:
-            return Gridicon.iconOfType(.attachment, withSize: imageSize)
+            icon = Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
+        
+        icon.addAccessibilityForAttachment(attachment)
+        return icon
     }
 
     // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
@@ -3255,6 +3258,17 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem
             }
+        }
+    }
+}
+
+// MARK - Accessibilty Helpers
+//
+extension UIImage {
+    func addAccessibilityForAttachment(_ attachment: NSTextAttachment) {
+        if let attachment = attachment as? ImageAttachment,
+            let accessibilityLabel = attachment.extraAttributes["alt"]  {
+            self.accessibilityLabel = accessibilityLabel
         }
     }
 }
