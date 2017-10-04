@@ -119,7 +119,7 @@ PODS:
     - NSObject-SafeExpectations (~> 0.0.2)
   - WordPressComKit (0.0.6):
     - Alamofire (= 4.0.1)
-  - WPMediaPicker (0.22)
+  - WPMediaPicker (0.23)
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
@@ -152,7 +152,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (= 1.0.0-beta.11.1)
   - WordPress-iOS-Editor (= 1.9.5)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `aced322262596e5bf19fd19bda2923dfc94fdb80`)
+  - WPMediaPicker (= 0.23)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -162,9 +162,6 @@ EXTERNAL SOURCES:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
-  WPMediaPicker:
-    :commit: aced322262596e5bf19fd19bda2923dfc94fdb80
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -173,9 +170,6 @@ CHECKOUT OPTIONS:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
-  WPMediaPicker:
-    :commit: aced322262596e5bf19fd19bda2923dfc94fdb80
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
@@ -211,9 +205,9 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 9f964a1530de9a7e10775ba136b6ebf9c7e31dca
   WordPress-iOS-Editor: be1de639b28b894789366b8380f26df30a8bb571
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
-  WPMediaPicker: 6be379b2f082af41c3ad62d5d3cab7ccc242a644
+  WPMediaPicker: 51dff88157706419e000169b37c3abe0d3017b5f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: a25d74905f7b989b6527a4e0ef1ec582bedaac2d
+PODFILE CHECKSUM: c2933c963d4e2c9fcb61c03670de50c00e26e176
 
 COCOAPODS: 1.3.1
