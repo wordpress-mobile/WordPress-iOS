@@ -34,10 +34,8 @@ class LoginSocialErrorViewController: UITableViewController {
         super.init(coder: aDecoder)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        tableView.estimatedRowHeight = 100.0
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
     }
@@ -70,12 +68,17 @@ class LoginSocialErrorViewController: UITableViewController {
 // MARK: UITableViewDelegate methods
 
 extension LoginSocialErrorViewController {
+    private struct RowHeightConstants {
+        static let estimate: CGFloat = 45.0
+        static let automatic: CGFloat = UITableViewAutomaticDimension
+    }
+
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 45.0
+        return RowHeightConstants.estimate
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return RowHeightConstants.automatic
     }
 }
 
