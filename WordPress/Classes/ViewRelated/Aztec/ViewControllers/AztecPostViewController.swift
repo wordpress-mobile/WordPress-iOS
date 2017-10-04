@@ -992,7 +992,11 @@ extension AztecPostViewController {
         }
 
         if neeedsVerificationBeforePosting() {
-            showVerificationPrompt()
+            displayVerificationPrompt(then:  {
+                self.post.status = .draft
+                self.publishTapped(dismissWhenDone: dismissWhenDone)
+            })
+            return
         }
 
         SVProgressHUD.setDefaultMaskType(.clear)
@@ -1198,6 +1202,14 @@ private extension AztecPostViewController {
         alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
         present(alertController, animated: true, completion: nil)
         return
+    }
+
+    func displayVerificationPrompt(then: @escaping () -> ()) {
+        let fancyAlert = FancyAlertViewController.verificationPromptController(completion: then)
+
+        fancyAlert.modalPresentationStyle = .custom
+        fancyAlert.transitioningDelegate = self
+        present(fancyAlert, animated: true)
     }
 }
 
@@ -2225,6 +2237,18 @@ extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
+// MARK: - UIViewControllerTransitioningDelegate
+//
+extension AztecPostViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
+    }
+}
+
 
 // MARK: - Unknown HTML
 //
@@ -2380,6 +2404,22 @@ private extension AztecPostViewController {
         post.content = getHTML()
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
+    }
+
+    func neeedsVerificationBeforePosting() -> Bool {
+        guard postEditorStateContext.action == .publish else {
+            return false
+        }
+
+        let acccountService = AccountService(managedObjectContext: mainContext)
+
+        guard let wpAccount = acccountService.defaultWordPressComAccount(),
+                  wpAccount == post.blog.account else {
+                    // we don't show the prompt for non-WPCom accounts.
+                return false
+        }
+
+        return !wpAccount.emailVerified.boolValue
     }
 
     func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
