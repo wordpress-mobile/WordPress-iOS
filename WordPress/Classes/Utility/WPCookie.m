@@ -34,4 +34,10 @@ static NSString * const WPCookieName = @"wordpress_logged_in";
     return NO;
 }
 
++ (void)removeAllCookies
+{
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] removeCookiesSinceDate:[NSDate dateWithTimeIntervalSinceReferenceDate:0]];
+}
+
+
 @end
