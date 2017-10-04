@@ -101,15 +101,16 @@ class AztecAttachmentViewController: UITableViewController {
     
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
-        self.pushSettingsController(for: editableRow,
-                                    hint: NSLocalizedString("Image Description", comment: "Hint for image description on image settings."),
-                                    onValueChanged: { value in
-                                        self.alt = value
-                                        self.tableView.reloadData()
+        let hint = NSLocalizedString("Image Description", comment: "Hint for image description on image settings.")
+        self.pushSettingsController(for: editableRow, hint: hint, onValueChanged: { value in
+            self.alt = value
+            self.tableView.reloadData()
         })
     }
     
-    private func pushSettingsController(for row: EditableTextRow, hint: String? = nil, onValueChanged: @escaping SettingsTextChanged) {
+    private func pushSettingsController(for row: EditableTextRow,
+                                        hint: String? = nil,
+                                        onValueChanged: @escaping SettingsTextChanged) {
         let title = row.title
         let value = row.value
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
