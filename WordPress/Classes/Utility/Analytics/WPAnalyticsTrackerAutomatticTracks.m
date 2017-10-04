@@ -4,7 +4,10 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-@import AutomatticTracks;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
+#import "TracksService.h"
+#pragma clang diagnostic pop
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
