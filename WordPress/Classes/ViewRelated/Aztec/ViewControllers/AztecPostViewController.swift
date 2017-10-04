@@ -992,7 +992,7 @@ extension AztecPostViewController {
         }
 
         if neeedsVerificationBeforePosting() {
-            displayVerificationPrompt(then:  {
+            displayVerificationPrompt(then: {
                 self.post.status = .draft
                 self.publishTapped(dismissWhenDone: dismissWhenDone)
             })
