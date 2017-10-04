@@ -144,6 +144,10 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     func googleLoginTapped() {
+        // For paranoia, make sure a Google account is not already signed in / cached.
+        GIDSignIn.sharedInstance().disconnect()
+
+        // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
@@ -380,6 +384,8 @@ extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String!, authToken: String!) {
         let username = loginFields.username
         syncWPCom(username, authToken: authToken, requiredMultifactor: false)
+        // Disconnect now that we're done with Google.
+        GIDSignIn.sharedInstance().disconnect()
     }
 
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
