@@ -193,7 +193,12 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        onUpdate?(alignment, size, alt)
+        if let alt = alt, alt != "" {
+            onUpdate?(alignment, size, alt)
+        } else {
+            onUpdate?(alignment, size, nil)
+        }
+        
         dismiss(animated: true, completion: nil)
     }
 
