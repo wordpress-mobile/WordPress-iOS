@@ -190,20 +190,26 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (void)loadWebViewRequest
 {
     if (self.authenticator == nil) {
-        [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
+        [self loadRequest:request];
         return;
     }
     id<CookieJar> cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     [self.authenticator requestWithUrl:self.url
                              cookieJar:cookieJar
                             completion:^(NSURLRequest * _Nonnull request) {
-                                if (self.addsWPComReferrer) {
-                                    NSMutableURLRequest *mReq = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
-                                    [mReq setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
-                                    request = mReq;
-                                }
-                                [self.webView loadRequest:request];
+                                [self loadRequest:request];
                             }];
+}
+
+- (void)loadRequest:(NSURLRequest *)request
+{
+    NSMutableURLRequest *mutableRequest = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
+    if (self.addsWPComReferrer) {
+        [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
+    }
+    [mutableRequest setValue:[WPUserAgent wordPressUserAgent] forHTTPHeaderField:@"User-Agent"];
+    [self.webView loadRequest:mutableRequest];
 }
 
 - (void)refreshInterface

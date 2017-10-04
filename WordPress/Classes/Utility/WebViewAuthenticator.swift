@@ -7,7 +7,6 @@ class WebViewAuthenticator: NSObject {
     }
 
     let credentials: Credentials
-    var userAgent: String?
 
     init(credentials: Credentials) {
         self.credentials = credentials
@@ -38,7 +37,6 @@ class WebViewAuthenticator: NSObject {
     func authenticatedRequest(url: URL) -> URLRequest? {
         var request = URLRequest(url: loginURL)
         request.httpMethod = "POST"
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = body(url: url)
         if let authToken = authToken {
@@ -86,9 +84,7 @@ private extension WebViewAuthenticator {
     }
 
     func unauthenticatedRequest(url: URL) -> URLRequest {
-        var request = URLRequest(url: url)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        return request
+        return URLRequest(url: url)
     }
 
     func body(url: URL) -> Data? {
