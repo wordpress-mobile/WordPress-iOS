@@ -53,7 +53,7 @@ class WebViewAuthenticator: NSObject {
     }
 
     func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
-        cookieJar.hasCookie(url: url, username: username) { [weak self] (hasCookie) in
+        cookieJar.hasCookie(url: loginURL, username: username) { [weak self] (hasCookie) in
             guard let authenticator = self else {
                 return
             }
