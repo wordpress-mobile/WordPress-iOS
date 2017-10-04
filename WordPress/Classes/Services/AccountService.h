@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WPAccount, AbstractPost;
+@class WPAccount;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
