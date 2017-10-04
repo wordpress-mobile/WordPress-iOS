@@ -1597,10 +1597,6 @@ UIDocumentPickerDelegate
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    if ([postService needsVerificationBeforePublishing:self.post]) {
-        [self showVerificationPrompt];
-        return;
-    }
     [postService uploadPost:self.post
                     success:^(AbstractPost *post) {
                         DDLogInfo(@"post uploaded: %@", postTitle);
