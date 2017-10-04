@@ -112,6 +112,9 @@ private extension WebViewAuthenticator {
     }
 
     func redirectUrl(url: String) -> String? {
+        guard case .dotCom(_,_) = credentials else {
+            return url
+        }
         guard let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             return nil
         }
