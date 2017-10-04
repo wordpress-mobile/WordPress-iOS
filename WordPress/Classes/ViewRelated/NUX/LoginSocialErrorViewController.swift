@@ -133,7 +133,7 @@ extension LoginSocialErrorViewController {
     }
 
     private func buttonCell(index: Int) -> UITableViewCell {
-        let cell = UITableViewCell(frame: .zero)
+        let cell = UITableViewCell()
         let buttonText: String
         let buttonIcon: UIImage
         switch index {
