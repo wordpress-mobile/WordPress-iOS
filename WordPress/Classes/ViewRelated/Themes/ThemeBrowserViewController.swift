@@ -795,7 +795,7 @@ public protocol ThemePresenter: class {
         _ = themeService.activate(theme,
             for: blog,
             success: { [weak self] (theme: Theme?) in
-                WPAppAnalytics.track(.themesChangedTheme, withProperties: ["themeId": theme?.themeId ?? ""], with: self?.blog)
+                WPAppAnalytics.track(.themesChangedTheme, withProperties: ["theme_id": theme?.themeId ?? ""], with: self?.blog)
 
                 self?.collectionView?.reloadData()
 

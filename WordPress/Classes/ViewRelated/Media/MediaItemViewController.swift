@@ -45,14 +45,30 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func updateViewModel() {
+        let titleRow = editableRowIfSupported(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"),
+                                              value: mediaMetadata.title,
+                                              action: editTitle())
+        let captionRow = editableRowIfSupported(title: NSLocalizedString("Caption", comment: "Noun. Label for the caption for a media asset (image / video)"),
+                                                value: mediaMetadata.caption,
+                                                action: editCaption())
+        let descRow = editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"),
+                                             value: mediaMetadata.desc,
+                                             action: editDescription())
+        let altRow = editableRowIfSupported(title: NSLocalizedString("Alt Text",comment: "Label for the alt for a media asset (image)"),
+                                            value: mediaMetadata.alt,
+                                            action: editAlt())
+
+        var mediaInfoRows = [titleRow, captionRow, descRow]
+        if media.mediaType == .image {
+            mediaInfoRows.append(altRow)
+        }
+
         viewModel = ImmuTable(sections: [
             ImmuTableSection(rows: [ headerRow ]),
-            ImmuTableSection(headerText: nil, rows: [
-                editableRowIfSupported(title: NSLocalizedString("Title", comment: "Noun. Label for the title of a media asset (image / video)"), value: mediaMetadata.title, action: editTitle()),
-                editableRowIfSupported(title: NSLocalizedString("Caption", comment: "Noun. Label for the caption for a media asset (image / video)"), value: mediaMetadata.caption, action: editCaption()),
-                editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"), value: mediaMetadata.desc, action: editDescription())
-                ], footerText: nil),
-            ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"), rows: metadataRows, footerText: nil)
+            ImmuTableSection(headerText: nil, rows: mediaInfoRows, footerText: nil),
+            ImmuTableSection(headerText: NSLocalizedString("Metadata", comment: "Title of section containing image / video metadata such as size and file type"),
+                             rows: metadataRows,
+                             footerText: nil)
             ])
     }
 
@@ -322,6 +338,17 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
+    private func editAlt() -> ((ImmuTableRow) -> ()) {
+        return { [weak self] row in
+            let editableRow = row as! EditableTextRow
+            self?.pushSettingsController(for: editableRow, hint: NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings."),
+                                         onValueChanged: { value in
+                                            self?.mediaMetadata.alt  = value
+                                            self?.reloadViewModel()
+            })
+        }
+    }
+
     private func pushSettingsController(for row: EditableTextRow, hint: String? = nil, onValueChanged: @escaping SettingsTextChanged) {
         let title = row.title
         let value = row.value
@@ -433,11 +460,13 @@ private struct MediaMetadata {
     var title: String
     var caption: String
     var desc: String
+    var alt: String
 
     init(media: Media) {
         title = media.title ?? ""
         caption = media.caption ?? ""
         desc = media.desc ?? ""
+        alt = media.alt ?? ""
     }
 
     /// - returns: True if this metadata's fields match those
@@ -446,6 +475,7 @@ private struct MediaMetadata {
         return title == media.title
             && caption == media.caption
             && desc == media.desc
+            && alt == media.alt
     }
 
     /// Update the metadata fields of the specified Media object
@@ -454,5 +484,6 @@ private struct MediaMetadata {
         media.title = title
         media.caption = caption
         media.desc = desc
+        media.alt = alt
     }
 }
