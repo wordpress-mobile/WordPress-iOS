@@ -8,6 +8,7 @@ class LoginSocialErrorCell: UITableViewCell {
     private struct Constants {
         static let labelSpacing: CGFloat = 15.0
         static let labelVerticalMargin: CGFloat = 20.0
+        static let descriptionMinHeight: CGFloat = 14.0
     }
 
     init(title: String, description: String) {
@@ -47,7 +48,7 @@ class LoginSocialErrorCell: UITableViewCell {
         descriptionLabel.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
         descriptionLabel.numberOfLines = 0
-        descriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 14.0).isActive = true
+        descriptionLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.descriptionMinHeight).isActive = true
 
         contentView.addConstraints([
             contentView.topAnchor.constraint(equalTo: labelStack.topAnchor, constant: Constants.labelVerticalMargin * -1.0),
