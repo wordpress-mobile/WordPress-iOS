@@ -35,26 +35,27 @@ class MockAttachmentDelegate: TextViewAttachmentDelegate {
 
 class PostAttachmentTests: XCTestCase {
 
+    private let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
+    private let delegate = MockAttachmentDelegate()
+    
     override func setUp() {
         super.setUp()
+        richTextView.textAttachmentDelegate = delegate
     }
 
     override func tearDown() {
+        richTextView.textAttachmentDelegate = nil
         super.tearDown()
     }
 
     func testIfAltValueWasAddedToImageAttachment() {
-        let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
-        let delegate = MockAttachmentDelegate()
-        richTextView.textAttachmentDelegate = delegate
-        richTextView.attributedText = NSAttributedString(string: "Image: ")
+        richTextView.attributedText = NSAttributedString(string: "Image with alt: ")
         let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange,
                                                        sourceURL: URL(string: "someExampleImage.jpg")!,
                                                        placeHolderImage: UIImage())
         attachment.extraAttributes["alt"] = "alt"
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>Image: <img src=\"someExampleImage.jpg\" alt=\"alt\"></p>")
-    }
-    
+        XCTAssert(html == "<p>Image with alt: <img src=\"someExampleImage.jpg\" alt=\"alt\"></p>")
+    }    
 }
 
