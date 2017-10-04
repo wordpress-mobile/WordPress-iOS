@@ -62,6 +62,24 @@ class WebViewAuthenticator: NSObject {
             completion(request)
         }
     }
+
+    func interceptRedirect(request: URLRequest) -> URLRequest? {
+        guard let url = request.url,
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            components.scheme == "https",
+            components.host == "wordpress.com",
+            let encodedRedirect = components
+                .queryItems?
+                .first(where: { $0.name == WebViewAuthenticator.redirectParameter })?
+                .value,
+            let redirect = encodedRedirect.removingPercentEncoding,
+            let redirectUrl = URL(string: redirect)
+            else {
+                return nil
+        }
+
+        return URLRequest(url: redirectUrl)
+    }
 }
 
 private extension WebViewAuthenticator {
@@ -80,7 +98,7 @@ private extension WebViewAuthenticator {
 
     func body(url: URL) -> Data? {
         guard let encodedUsername = username.urlFormEncoded,
-            let encodedUrl = url.absoluteString.urlFormEncoded else {
+            let encodedUrl = redirectUrl(url: url.absoluteString)?.urlFormEncoded else {
             return nil
         }
         let encodedPassword = password?.urlFormEncoded
@@ -92,6 +110,13 @@ private extension WebViewAuthenticator {
         parameters += "&redirect_to=\(encodedUrl)"
 
         return parameters.data(using: .utf8)
+    }
+
+    func redirectUrl(url: String) -> String? {
+        guard let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            return nil
+        }
+        return "https://wordpress.com/?\(WebViewAuthenticator.redirectParameter)=\(encodedUrl)"
     }
 
     var username: String {
@@ -134,6 +159,7 @@ private extension WebViewAuthenticator {
     }
 
     static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
+    static let redirectParameter = "wpios_redirect"
 }
 
 private extension String {

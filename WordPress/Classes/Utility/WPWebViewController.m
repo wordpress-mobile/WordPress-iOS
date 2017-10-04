@@ -336,6 +336,13 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 {
     DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
 
+    NSURLRequest *redirectRequest = [self.authenticator interceptRedirectWithRequest:request];
+    if (redirectRequest != NULL) {
+        DDLogInfo(@"Found redirect to %@", redirectRequest);
+        [self.webView loadRequest:redirectRequest];
+        return NO;
+    }
+
     // To handle WhatsApp and Telegraph shares
     // Even though the documentation says that canOpenURL will only return YES for
     // URLs configured on the plist under LSApplicationQueriesSchemes if we don't filter
