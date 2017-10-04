@@ -10,7 +10,7 @@ extension AccountService {
     ///     - token The service's OpenID Connect (JWT) ID token for the user.
     ///     - success
     ///     - failure
-    func connectToSocialService(_ service: SocialServiceName, serviceIDToken token:String, success:@escaping (() -> Void), failure:@escaping ((NSError) -> Void)) {
+    func connectToSocialService(_ service: SocialServiceName, serviceIDToken token: String, success:@escaping (() -> Void), failure:@escaping ((NSError) -> Void)) {
         guard let api = defaultWordPressComAccount()?.wordPressComRestApi,
             let remote = AccountServiceRemoteREST(wordPressComRestApi: api) else {
                 fatalError("Failed to initialize a valid remote via the default WordPress.com account.")
