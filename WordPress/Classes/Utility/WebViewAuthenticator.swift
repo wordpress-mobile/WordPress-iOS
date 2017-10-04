@@ -26,8 +26,7 @@ class WebViewAuthenticator: NSObject {
     }
 
     convenience init?(blog: Blog) {
-        if let account = blog.account,
-            blog.supports(.oAuth2Login) {
+        if let account = blog.account {
             self.init(account: account)
         } else if let username = blog.usernameForSite,
             let password = blog.password,
