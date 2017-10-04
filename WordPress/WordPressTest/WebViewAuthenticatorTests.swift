@@ -77,7 +77,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         XCTAssertEqual(request.url, dotComLoginURL)
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/x-www-form-urlencoded")
         XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer \(dotComToken)")
-        XCTAssertEqual(request.httpBodyString, "log=\(dotComUser)&redirect_to=https%3A%2F%2Fexample.wordpress.com%2Fsome-page%2F")
+        XCTAssertEqual(request.httpBodyString, "log=\(dotComUser)&redirect_to=https%3A%2F%2Fwordpress.com%2F%3Fwpios_redirect%3Dhttps%3A%2F%2Fexample.wordpress.com%2Fsome-page%2F")
     }
 
     func testUnauthenticatedDotComRequestWithCookie() {
@@ -85,7 +85,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         let authenticator = dotComAuthenticator
 
         let cookieJar = MockCookieJar({ (url, username) in
-            return true
+            return url.host == "wordpress.com"
         })
         var authenticatedRequest: URLRequest? = nil
         authenticator.request(url: url, cookieJar: cookieJar) {
