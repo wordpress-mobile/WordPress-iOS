@@ -22,6 +22,15 @@
 
 @implementation MediaService
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
+    self = [super initWithManagedObjectContext:context];
+    if (self) {
+        _concurrentThumbnailGeneration = NO;
+    }
+    return self;
+}
+
 #pragma mark - Creating media
 
 - (void)createMediaWithURL:(NSURL *)url
@@ -678,6 +687,9 @@
 {
     if (!_thumbnailService) {
         _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        if (self.concurrentThumbnailGeneration) {
+            _thumbnailService.exportQueue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
+        }
     }
     return _thumbnailService;
 }
