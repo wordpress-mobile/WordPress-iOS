@@ -9,6 +9,11 @@
 @interface MediaService : LocalCoreDataService
 
 /**
+ This property determines if multiple thumbnail generation will be done in parallel.
+ By default this value is NO.
+ */
+@property (nonatomic, assign) BOOL concurrentThumbnailGeneration;
+/**
  Create a media object using the url provided as the source of media.
 
  @param url a file url pointing to a file with the media data
