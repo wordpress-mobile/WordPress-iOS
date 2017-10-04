@@ -14,9 +14,9 @@ class LoginSocialErrorCell: UITableViewCell {
     init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
-        titleLabel = UILabel(frame: .zero)
-        descriptionLabel = UILabel(frame: .zero)
-        labelStack = UIStackView(frame: .zero)
+        titleLabel = UILabel()
+        descriptionLabel = UILabel()
+        labelStack = UIStackView()
 
         super.init(style: .default, reuseIdentifier: "LoginSocialErrorCell")
 
@@ -26,9 +26,9 @@ class LoginSocialErrorCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         errorTitle = aDecoder.value(forKey: "errorTitle") as? String ?? ""
         errorDescription = aDecoder.value(forKey: "errorDescription") as? String ?? ""
-        titleLabel = UILabel(frame: .zero)
-        descriptionLabel = UILabel(frame: .zero)
-        labelStack = UIStackView(frame: .zero)
+        titleLabel = UILabel()
+        descriptionLabel = UILabel()
+        labelStack = UIStackView()
 
         super.init(coder: aDecoder)
 
