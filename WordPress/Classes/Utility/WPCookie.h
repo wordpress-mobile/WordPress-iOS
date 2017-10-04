@@ -23,4 +23,11 @@
  */
 + (BOOL)hasCookieForURL:(NSURL *)url andUsername:(NSString *)username;
 
+/**
+ Removes all cookies from NSHTTPCookieStorage
+
+ This was added as a helper for debugging.
+ */
++ (void)removeAllCookies;
+
 @end
