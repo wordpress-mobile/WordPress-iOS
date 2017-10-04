@@ -11,16 +11,16 @@ class AztecAttachmentViewController: UITableViewController {
             if let attachment = attachment {
                 alignment = attachment.alignment
                 size = attachment.size
-                alt = attachment.extraAttributes["alt"] ?? ""
+                alt = attachment.extraAttributes["alt"]
             }
         }
     }
 
     var alignment = ImageAttachment.Alignment.none
     var size = ImageAttachment.Size.full
-    var alt = ""
+    var alt: String?
 
-    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String) -> Void)?
+    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String?) -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -81,7 +81,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         let altRow = EditableTextRow(
             title: NSLocalizedString("Alt Text", comment: "Image alt attribute."),
-            value: alt,
+            value: alt ?? "",
             action: displayAltTextfield)
 
         return ImmuTable(sections: [
