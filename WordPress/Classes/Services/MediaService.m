@@ -22,6 +22,15 @@
 
 @implementation MediaService
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
+    self = [super initWithManagedObjectContext:context];
+    if (self) {
+        _concurrentThumbnailGeneration = NO;
+    }
+    return self;
+}
+
 #pragma mark - Creating media
 
 - (void)createMediaWithURL:(NSURL *)url
@@ -32,6 +41,20 @@
     NSString *mediaName = [[url pathComponents] lastObject];
     [self exportMediaWith:url
                  objectID:postObjectID
+                mediaName:mediaName
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
+
+- (void)createMediaWithURL:(NSURL *)url
+           forBlogObjectID:(NSManagedObjectID *)blogObjectID
+         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSString *mediaName = [[url pathComponents] lastObject];
+    [self exportMediaWith:url
+                 objectID:blogObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -678,6 +701,9 @@
 {
     if (!_thumbnailService) {
         _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        if (self.concurrentThumbnailGeneration) {
+            _thumbnailService.exportQueue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
+        }
     }
     return _thumbnailService;
 }

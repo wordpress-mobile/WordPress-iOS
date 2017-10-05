@@ -10,6 +10,7 @@
 {
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+    mediaService.concurrentThumbnailGeneration = YES;
     [mediaService thumbnailImageForMedia:self
                            preferredSize:size
                               completion:completionHandler];
