@@ -1,11 +1,18 @@
 import Foundation
 import Gridicons
 
+@objc
+protocol LoginSocialErrorViewControllerDelegate {
+    func retryWithEmail()
+    func retryWithAddress()
+    func retryAsSignup()
+}
 
 /// ViewController for presenting recovery options when social login fails
 class LoginSocialErrorViewController: UITableViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
+    var delegate: LoginSocialErrorViewControllerDelegate?
 
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
@@ -48,25 +55,20 @@ class LoginSocialErrorViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == Sections.buttons.rawValue else {
+        guard indexPath.section == Sections.buttons.rawValue,
+            let delegate = delegate else {
             return
         }
 
-        let controllerKey: String
         switch indexPath.row {
         case Buttons.tryEmail.rawValue:
-            controllerKey = "emailEntry"
+            delegate.retryWithEmail()
         case Buttons.tryAddress.rawValue:
-            controllerKey = "siteAddress"
+            delegate.retryWithAddress()
         case Buttons.signup.rawValue:
             fallthrough
         default:
-            controllerKey = "SignupViewController"
-        }
-
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        if let controller = storyboard.instantiateViewController(withIdentifier: controllerKey) as? NUXAbstractViewController {
-            navigationController?.setViewControllers([controller], animated: true)
+            delegate.retryAsSignup()
         }
     }
 }

@@ -313,7 +313,9 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             awaitingGoogle = false
 
             let socialErrorVC = LoginSocialErrorViewController(title: NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com"), description: error.localizedDescription)
-            navigationController?.setViewControllers([socialErrorVC], animated: true)
+            let socialErrorNav = LoginNavigationController(rootViewController: socialErrorVC)
+            socialErrorVC.delegate = self
+            present(socialErrorNav, animated: true) {}
         } else {
             errorToPresent = error
             performSegue(withIdentifier: .showWPComLogin, sender: self)
@@ -416,6 +418,28 @@ extension LoginEmailViewController: GIDSignInDelegate {
         loginFacade.loginToWordPressDotCom(withGoogleIDToken: token)
 
         //TODO: Add analytis
+    }
+}
+
+extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
+    private func cleanupAfterSocialErrors() {
+        loginFields.username = ""
+        dismiss(animated: true) {}
+    }
+
+    func retryWithEmail() {
+        cleanupAfterSocialErrors()
+    }
+    func retryWithAddress() {
+        cleanupAfterSocialErrors()
+        loginToSelfHostedSite()
+    }
+    func retryAsSignup() {
+        cleanupAfterSocialErrors()
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 
