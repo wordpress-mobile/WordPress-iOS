@@ -96,8 +96,7 @@ class WebViewAuthenticator: NSObject {
                 .first(where: { $0.name == WebViewAuthenticator.redirectParameter })?
                 .value,
             let redirect = encodedRedirect.removingPercentEncoding,
-            let redirectUrl = URL(string: redirect)
-            else {
+            let redirectUrl = URL(string: redirect) else {
                 return nil
         }
 
