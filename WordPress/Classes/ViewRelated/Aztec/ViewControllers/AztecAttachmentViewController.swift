@@ -98,7 +98,7 @@ class AztecAttachmentViewController: UITableViewController {
 
 
     // MARK: - Actions
-    
+
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Description", comment: "Hint for image description on image settings.")
@@ -107,17 +107,17 @@ class AztecAttachmentViewController: UITableViewController {
             self.tableView.reloadData()
         })
     }
-    
+
     private func pushSettingsController(for row: EditableTextRow,
                                         hint: String? = nil,
                                         onValueChanged: @escaping SettingsTextChanged) {
         let title = row.title
         let value = row.value
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
-        
+
         controller.title = title
         controller.onValueChanged = onValueChanged
-        
+
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -198,10 +198,9 @@ class AztecAttachmentViewController: UITableViewController {
         } else {
             onUpdate?(alignment, size, nil)
         }
-        
+
         dismiss(animated: true, completion: nil)
     }
-
 }
 
 extension ImageAttachment.Alignment {
