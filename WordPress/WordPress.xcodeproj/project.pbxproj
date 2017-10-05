@@ -869,6 +869,7 @@
 		E6805D301DCD399600168E4F /* WPRichTextEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6805D2D1DCD399600168E4F /* WPRichTextEmbed.swift */; };
 		E6805D311DCD399600168E4F /* WPRichTextImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6805D2E1DCD399600168E4F /* WPRichTextImage.swift */; };
 		E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6805D2F1DCD399600168E4F /* WPRichTextMediaAttachment.swift */; };
+		E68191491F856B910055E197 /* LoginFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68191481F856B910055E197 /* LoginFields.swift */; };
 		E68580F61E0D91470090EE63 /* WPHorizontalRuleAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E68580F51E0D91470090EE63 /* WPHorizontalRuleAttachment.swift */; };
 		E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */; };
 		E69B125E1CE23A8E00594C73 /* SignupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69B125D1CE23A8E00594C73 /* SignupService.swift */; };
@@ -2295,6 +2296,7 @@
 		E6805D2D1DCD399600168E4F /* WPRichTextEmbed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WPRichTextEmbed.swift; path = WPRichText/WPRichTextEmbed.swift; sourceTree = "<group>"; };
 		E6805D2E1DCD399600168E4F /* WPRichTextImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WPRichTextImage.swift; path = WPRichText/WPRichTextImage.swift; sourceTree = "<group>"; };
 		E6805D2F1DCD399600168E4F /* WPRichTextMediaAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WPRichTextMediaAttachment.swift; path = WPRichText/WPRichTextMediaAttachment.swift; sourceTree = "<group>"; };
+		E68191481F856B910055E197 /* LoginFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFields.swift; sourceTree = "<group>"; };
 		E68580F51E0D91470090EE63 /* WPHorizontalRuleAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPHorizontalRuleAttachment.swift; sourceTree = "<group>"; };
 		E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderStreamViewController+Helper.swift"; sourceTree = "<group>"; };
 		E69B125D1CE23A8E00594C73 /* SignupService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupService.swift; sourceTree = "<group>"; };
@@ -5053,6 +5055,7 @@
 			isa = PBXGroup;
 			children = (
 				E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */,
+				E68191481F856B910055E197 /* LoginFields.swift */,
 				85D239B71AE5A6620074768D /* LoginFields.h */,
 				85D239B81AE5A6620074768D /* LoginFields.m */,
 				E6417BAB1CA07F7F0084050A /* SigninHelpers.swift */,
@@ -6431,6 +6434,7 @@
 				FF8A04E01D9BFE7400523BC4 /* FLAnimatedImageView+Cache.swift in Sources */,
 				B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */,
 				08216FAB1CDBF95100304BA7 /* MenuItemEditingViewController.m in Sources */,
+				E68191491F856B910055E197 /* LoginFields.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
 				438A809A1EA56DA0005D4651 /* LoginLinkMailViewController.swift in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,

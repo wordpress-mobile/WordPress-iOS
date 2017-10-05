@@ -256,7 +256,7 @@ import WordPressShared
     class func validateFieldsPopulatedForSignin(_ loginFields: LoginFields) -> Bool {
         return !loginFields.username.isEmpty &&
             !loginFields.password.isEmpty &&
-            ( loginFields.userIsDotCom || !loginFields.siteUrl.isEmpty )
+            ( loginFields.meta.userIsDotCom || !loginFields.siteAddress.isEmpty )
     }
 
 
@@ -267,7 +267,7 @@ import WordPressShared
     /// - Returns: True if the siteUrl contains a valid URL. False otherwise.
     ///
     class func validateSiteForSignin(_ loginFields: LoginFields) -> Bool {
-        guard let url = URL(string: NSURL.idnEncodedURL(loginFields.siteUrl)) else {
+        guard let url = URL(string: NSURL.idnEncodedURL(loginFields.siteAddress)) else {
             return false
         }
 
@@ -303,7 +303,7 @@ import WordPressShared
         return !loginFields.emailAddress.isEmpty &&
             !loginFields.username.isEmpty &&
             !loginFields.password.isEmpty &&
-            !loginFields.siteUrl.isEmpty
+            !loginFields.siteAddress.isEmpty
     }
 
 
@@ -318,7 +318,7 @@ import WordPressShared
         let space = " "
         return !loginFields.emailAddress.contains(space) &&
             !loginFields.username.contains(space) &&
-            !loginFields.siteUrl.contains(space)
+            !loginFields.siteAddress.contains(space)
     }
 
 
@@ -371,7 +371,7 @@ import WordPressShared
     /// - Parameter loginFields: A LoginFields instance.
     ///
     class func openForgotPasswordURL(_ loginFields: LoginFields) {
-        let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(string: loginFields.siteUrl)
+        let baseURL = loginFields.meta.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(string: loginFields.siteAddress)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
         UIApplication.shared.open(forgotPasswordURL)
     }
@@ -387,7 +387,7 @@ import WordPressShared
     ///
     class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
 
-        let loginURL = loginFields.userIsDotCom ? "wordpress.com" : loginFields.siteUrl
+        let loginURL = loginFields.meta.userIsDotCom ? "wordpress.com" : loginFields.siteAddress
 
 
         let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
@@ -435,18 +435,18 @@ import WordPressShared
     ///
     class func updateSafariCredentialsIfNeeded(_ loginFields: LoginFields) {
         // Paranioa. Don't try and update credentials for self-hosted.
-        if !loginFields.userIsDotCom {
+        if !loginFields.meta.userIsDotCom {
             return
         }
 
         // If the user changed screen names, don't try and update/create a new shared web credential.
         // We'll let Safari handle creating newly saved usernames/passwords.
-        if loginFields.safariStoredUsernameHash != loginFields.username.hash {
+        if loginFields.storedCredentials?.storedUserameHash != loginFields.username.hash {
             return
         }
 
         // If the user didn't change the password from previousl filled password no update is needed.
-        if loginFields.safariStoredPasswordHash == loginFields.password.hash {
+        if loginFields.storedCredentials?.storedPasswordHash == loginFields.password.hash {
             return
         }
 
