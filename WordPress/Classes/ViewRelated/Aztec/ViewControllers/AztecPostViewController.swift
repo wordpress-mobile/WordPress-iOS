@@ -472,6 +472,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         configureDismissButton()
         startListeningToNotifications()
+        verificationPromptHelper?.updateVerificationStatus()
     }
 
     override func viewDidAppear(_ animated: Bool) {
