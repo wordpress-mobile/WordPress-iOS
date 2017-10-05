@@ -584,7 +584,6 @@ UIDocumentPickerDelegate
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         if (error || !media || !media.absoluteLocalURL) {
             [self.editorView removeImage:mediaID];
-            [self.editorView removeImage:mediaID];
             [self.editorView removeVideo:mediaID];
             [self stopTrackingProgressOfMediaWithId:mediaID];
             [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
