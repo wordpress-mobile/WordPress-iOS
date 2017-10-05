@@ -71,7 +71,7 @@ class LoginFieldsMeta: NSObject {
     var passwordless = false
 
     /// Should point to the site's xmlrpc.php for a self-hosted log in.  Should be the value returned via XML-RPC discovery.
-    var xmlrpcURL:NSURL?
+    var xmlrpcURL: NSURL?
 
     /// Meta data about a site. This information is fetched and then displayed on the login epilogue.
     var siteInfo: SiteInfo?
