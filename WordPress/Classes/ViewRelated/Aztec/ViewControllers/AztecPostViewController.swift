@@ -402,6 +402,12 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
 
+    /// Verification Prompt Helper
+    ///
+    fileprivate lazy var verificationPromptHelper: AztecVerificationPromptHelper? = {
+        return AztecVerificationPromptHelper(managedObjectContext: self.mainContext, for: self.post)
+    }()
+
 
     // MARK: - Initializers
 
@@ -991,11 +997,11 @@ extension AztecPostViewController {
             return
         }
 
-        if neeedsVerificationBeforePosting() {
-            displayVerificationPrompt(then: {
-                self.post.status = .draft
-                self.publishTapped(dismissWhenDone: dismissWhenDone)
-            })
+        if let verificationHelper = verificationPromptHelper, verificationHelper.neeedsVerification(before: postEditorStateContext.action) {
+            verificationHelper.displayVerificationPrompt(from: self) { [weak self] in
+                self?.post.status = .draft
+                self?.publishTapped(dismissWhenDone: dismissWhenDone)
+            }
             return
         }
 
@@ -1204,13 +1210,6 @@ private extension AztecPostViewController {
         return
     }
 
-    func displayVerificationPrompt(then: @escaping () -> ()) {
-        let fancyAlert = FancyAlertViewController.verificationPromptController(completion: then)
-
-        fancyAlert.modalPresentationStyle = .custom
-        fancyAlert.transitioningDelegate = self
-        present(fancyAlert, animated: true)
-    }
 }
 
 
@@ -2237,19 +2236,6 @@ extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
     }
 }
 
-// MARK: - UIViewControllerTransitioningDelegate
-//
-extension AztecPostViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        if presented is FancyAlertViewController {
-            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-        }
-
-        return nil
-    }
-}
-
-
 // MARK: - Unknown HTML
 //
 private extension AztecPostViewController {
@@ -2404,22 +2390,6 @@ private extension AztecPostViewController {
         post.content = getHTML()
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
-    }
-
-    func neeedsVerificationBeforePosting() -> Bool {
-        guard postEditorStateContext.action == .publish else {
-            return false
-        }
-
-        let acccountService = AccountService(managedObjectContext: mainContext)
-
-        guard let wpAccount = acccountService.defaultWordPressComAccount(),
-                  wpAccount == post.blog.account else {
-                    // we don't show the prompt for non-WPCom accounts.
-                return false
-        }
-
-        return !wpAccount.emailVerified.boolValue
     }
 
     func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
