@@ -3264,7 +3264,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 }
 
-// MARK - Accessibilty Helpers
+// MARK: - Accessibilty Helpers
 //
 extension UIImage {
     func addAccessibilityForAttachment(_ attachment: NSTextAttachment) {
