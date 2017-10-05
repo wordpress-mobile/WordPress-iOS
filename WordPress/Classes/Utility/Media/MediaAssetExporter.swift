@@ -93,6 +93,7 @@ class MediaAssetExporter: MediaExporter {
             options.deliveryMode = .highQualityFormat
             options.resizeMode = .exact
             options.isNetworkAccessAllowed = true
+            options.isSynchronous = true
 
             // Configure the targetSize for PHImageManager to resize to.
             let targetSize: CGSize

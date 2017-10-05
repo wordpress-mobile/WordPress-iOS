@@ -56,7 +56,9 @@ class MediaLibraryViewController: UIViewController {
     // MARK: - Initializers
 
     init(blog: Blog) {
-        WPMediaCollectionViewCell.appearance().placeholderTintColor = WPStyleGuide.darkGrey()
+        WPMediaCollectionViewCell.appearance().placeholderTintColor = WPStyleGuide.greyLighten30()
+        WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = WPStyleGuide.darkGrey()
+        WPMediaCollectionViewCell.appearance().loadingBackgroundColor = WPStyleGuide.lightGrey()
 
         self.blog = blog
         self.pickerViewController = WPMediaPickerViewController()
