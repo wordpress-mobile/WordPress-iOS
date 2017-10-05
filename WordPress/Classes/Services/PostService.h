@@ -11,10 +11,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSString * PostServiceType;
 typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> * _Nullable posts);
 typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
 
+typedef NSString * PostServiceType NS_TYPED_ENUM;
 extern PostServiceType const PostServiceTypePost;
 extern PostServiceType const PostServiceTypePage;
 extern PostServiceType const PostServiceTypeAny;
