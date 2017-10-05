@@ -51,7 +51,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         super.viewWillAppear(animated)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = false
+        loginFields.meta.userIsDotCom = false
 
         configureTextFields()
         configureSubmitButton(animating: false)
@@ -174,7 +174,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     /// Configure the site header.
     ///
     func configureHeader() {
-        if let siteInfo = loginFields.siteInfo {
+        if let siteInfo = loginFields.meta.siteInfo {
             configureBlogDetailHeaderView(siteInfo: siteInfo)
         } else {
             configureSiteAddressHeader()
@@ -201,7 +201,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         siteAddressStackView.isHidden = false
         siteHeaderView.isHidden = true
 
-        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteUrl)
+        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
     }
 
 

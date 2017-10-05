@@ -40,7 +40,6 @@
 #import "JetpackService.h"
 
 #import "LoginFacade.h"
-#import "LoginFields.h"
 
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"
