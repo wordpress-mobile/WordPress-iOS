@@ -62,7 +62,6 @@ class LoginViewController: NUXAbstractViewController {
         helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
         helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
         helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
-        helpButton.centerYAnchor.constraint(equalTo: customView.centerYAnchor).isActive = true
 
         helpBadge = WPNUXHelpBadgeLabel()
         helpBadge.translatesAutoresizingMaskIntoConstraints = false
