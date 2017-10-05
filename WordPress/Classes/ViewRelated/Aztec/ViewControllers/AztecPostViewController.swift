@@ -464,6 +464,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        resetNavigationColors()
         configureDismissButton()
         startListeningToNotifications()
     }
@@ -645,6 +646,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
+    }
+
+    /*
+     This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
+     either by uploading media or cancelling. Doing this in the UIDocumentPickerDelegate methods either did nothing
+     or the resetting wasn't permanent.
+     */
+    fileprivate func resetNavigationColors() {
+        WPStyleGuide.configureNavigationBarAppearance()
     }
 
     func configureDismissButton() {
@@ -1482,6 +1492,11 @@ extension AztecPostViewController {
             case .mediaLibrary:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
+            case .otherApplications:
+                print("SGH - other apps tapped.")
+                // SGH TODO: fix this
+//                trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApplications)
+                showDocumentPicker()
             }
         }
     }
@@ -1929,6 +1944,20 @@ extension AztecPostViewController {
         return .none
     }
 
+    private func showDocumentPicker() {
+        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
+        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
+        docPicker.delegate = self
+
+        // The app's appearance settings override the doc picker color scheme.
+        // Setting the nav colors here so the doc picker has the correct appearance.
+        // The app colors are restored later with resetNavigationColors().
+        UINavigationBar.appearance().tintColor = WPStyleGuide.mediumBlue()
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.mediumBlue()], for: .normal)
+
+        present(docPicker, animated: true, completion: nil)
+    }
+
     // MARK: - Present Toolbar related VC
 
     fileprivate func dismissOptionsViewControllerIfNecessary() {
@@ -2139,15 +2168,19 @@ extension AztecPostViewController {
     }
 
     var mediaItemsForToolbar: [FormatBarItem] {
-        let deviceButton = makeToolbarButton(identifier: .deviceLibrary)
-        let cameraButton = makeToolbarButton(identifier: .camera)
-        let mediaLibraryButton = makeToolbarButton(identifier: .mediaLibrary)
+        var toolbarButtons = [makeToolbarButton(identifier: .deviceLibrary)]
 
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            return [ deviceButton, cameraButton, mediaLibraryButton ]
-        } else {
-            return [ deviceButton, mediaLibraryButton ]
+            toolbarButtons.append(makeToolbarButton(identifier: .camera))
         }
+
+        toolbarButtons.append(makeToolbarButton(identifier: .mediaLibrary))
+
+        if #available(iOS 11, *), FeatureFlag.iCloudFilesSupport.enabled {
+            toolbarButtons.append(makeToolbarButton(identifier: .otherApplications))
+        }
+
+        return toolbarButtons
     }
 
     var scrollableItemsForToolbar: [FormatBarItem] {
@@ -2479,6 +2512,64 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 // MARK: - Media Support
 //
 extension AztecPostViewController {
+
+    fileprivate func insertExternalMediaWithURL(_ url: URL) {
+        WPImageViewController.isUrlSupported(url) ?
+            insertExternalImageWithURL(url) :
+            insertExternalVideoWithURL(url)
+    }
+
+    private func insertExternalImageWithURL(_ url: URL) {
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(url: url, forPost: post.objectID,
+                                 thumbnailCallback: { [weak self](thumbnailURL) in
+                                    guard let strongSelf = self else { return }
+                                    DispatchQueue.main.async {
+                                        attachment.updateURL(thumbnailURL)
+                                        strongSelf.richTextView.refresh(attachment)
+                                    }},
+                                 completion: { [weak self](media, error) in
+                                    guard let strongSelf = self else { return }
+                                    guard let media = media, error == nil else {
+                                        DispatchQueue.main.async {
+                                            strongSelf.handleError(error as NSError?, onAttachment: attachment)
+                                        }
+                                        return
+                                    }
+                                    // SGH TODO: fix this
+                                    //                                    WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
+
+                                    strongSelf.upload(media: media, mediaID: attachment.identifier)
+        })
+    }
+
+    private func insertExternalVideoWithURL(_ url: URL) {
+        let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+
+        let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+        mediaService.createMedia(url: url, forPost: post.objectID,
+                                 thumbnailCallback: { [weak self] (thumbnailURL) in
+                                    guard let strongSelf = self else { return }
+                                    DispatchQueue.main.async {
+                                        attachment.posterURL = thumbnailURL
+                                        strongSelf.richTextView.refresh(attachment)
+                                    }},
+                                 completion: { [weak self] (media, error) in
+                                    guard let strongSelf = self else { return }
+                                    guard let media = media, error == nil else {
+                                        DispatchQueue.main.async {
+                                            strongSelf.handleError(error as NSError?, onAttachment: attachment)
+                                        }
+                                        return
+                                    }
+                                    // SGH TODO: fix this
+                                    //                                    WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
+
+                                    strongSelf.upload(media: media, mediaID: attachment.identifier)
+        })
+    }
 
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
         switch phAsset.mediaType {
@@ -3179,6 +3270,18 @@ extension AztecPostViewController: UIViewControllerRestoration {
     }
 }
 
+// MARK: - UIDocumentPickerDelegate
+
+extension AztecPostViewController: UIDocumentPickerDelegate {
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        mediaProgressCoordinator.track(numberOfItems: urls.count)
+        for documentURL in urls {
+            insertExternalMediaWithURL(documentURL)
+        }
+
+    }
+}
 
 // MARK: - Constants
 //
