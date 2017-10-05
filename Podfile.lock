@@ -125,7 +125,7 @@ PODS:
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.4)
   - AFNetworking (= 3.1.0)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.0`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.1`)
   - BuddyBuildSDK (= 1.0.16)
   - CocoaLumberjack (= 3.2.1)
   - Crashlytics (= 3.8.6)
@@ -158,7 +158,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.0
+    :tag: 0.2.1
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -166,7 +166,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.0
+    :tag: 0.2.1
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -208,6 +208,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 51dff88157706419e000169b37c3abe0d3017b5f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: df54099d6ffae869fba9e848e817ceebd698747d
+PODFILE CHECKSUM: 5ee93d60c9fd2c282fbd8d72b7be0e3039ca065c
 
 COCOAPODS: 1.3.1
