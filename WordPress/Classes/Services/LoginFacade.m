@@ -6,6 +6,8 @@
 #import "WPError.h"
 #import "BlogService.h"
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
+
 @import WordPressShared;
 
 @implementation LoginFacade
@@ -33,7 +35,7 @@
 {
     NSAssert(self.delegate != nil, @"Must set delegate to use service");
     
-    if (loginFields.userIsDotCom || loginFields.siteUrl.isWordPressComPath) {
+    if (loginFields.meta.userIsDotCom || loginFields.siteAddress.isWordPressComPath) {
         [self signInToWordpressDotCom:loginFields];
     } else {
         [self signInToSelfHosted:loginFields];
@@ -44,7 +46,7 @@
 {
     NSAssert(self.delegate != nil, @"Must set delegate to use service");
 
-    if (loginFields.userIsDotCom || loginFields.siteUrl.isWordPressComPath) {
+    if (loginFields.meta.userIsDotCom || loginFields.siteAddress.isWordPressComPath) {
         [self signInToWordpressDotCom:loginFields];
     } else {
         [self loginToSelfHosted:loginFields];
@@ -90,7 +92,7 @@
 
     [self.wordpressComOAuthClientFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:^(NSString *authToken) {
         if ([self.delegate respondsToSelector:@selector(finishedLoginWithUsername:authToken:requiredMultifactorCode:)]) {
-            [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.shouldDisplayMultifactor];
+            [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.meta.requiredMultifactor];
         }
     } needsMultiFactor:^{
         if ([self.delegate respondsToSelector:@selector(needsMultifactorCode)]) {
@@ -107,7 +109,7 @@
 - (void)signInToSelfHosted:(LoginFields *)loginFields
 {
     void (^guessXMLRPCURLSuccess)(NSURL *) = ^(NSURL *xmlRPCURL) {
-        loginFields.xmlRPCURL = xmlRPCURL;
+        loginFields.meta.xmlrpcURL = xmlRPCURL;
         [self loginToSelfHosted:loginFields];
     };
     
@@ -119,13 +121,13 @@
     
     [self.delegate displayLoginMessage:NSLocalizedString(@"Authenticating", nil)];
     
-    NSString *siteUrl = [NSURL IDNEncodedURL:loginFields.siteUrl];
+    NSString *siteUrl = [NSURL IDNEncodedURL:loginFields.siteAddress];
     [self.wordpressXMLRPCAPIFacade guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
 - (void)loginToSelfHosted:(LoginFields *)loginFields
 {
-    NSURL *xmlRPCURL = loginFields.xmlRPCURL;
+    NSURL *xmlRPCURL = loginFields.meta.xmlrpcURL;
     [self.wordpressXMLRPCAPIFacade getBlogOptionsWithEndpoint:xmlRPCURL username:loginFields.username password:loginFields.password success:^(id options) {
         if ([options objectForKey:@"wordpress.com"] != nil) {
             [self signInToWordpressDotCom:loginFields];
