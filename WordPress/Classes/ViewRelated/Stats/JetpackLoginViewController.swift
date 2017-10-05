@@ -410,7 +410,7 @@ class JetpackLoginViewController: UIViewController {
     fileprivate func signIn() {
         isAuthenticating = true
         hideKeyboard()
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
         loginFields.username = usernameTextField.nonNilTrimmedText()
         loginFields.password = passwordTextField.nonNilTrimmedText()
         loginFields.multifactorCode = verificationCodeTextField.nonNilTrimmedText()
@@ -419,7 +419,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func sendSMSCode() {
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
         loginFields.username = usernameTextField.nonNilTrimmedText()
         loginFields.password = passwordTextField.nonNilTrimmedText()
         loginFacade.requestOneTimeCode(with: loginFields)

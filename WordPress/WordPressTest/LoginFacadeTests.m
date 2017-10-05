@@ -3,7 +3,6 @@
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
 #import "LoginFacade.h"
-#import "LoginFields.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
 
@@ -24,8 +23,12 @@ beforeEach(^{
     loginFacade.wordpressComOAuthClientFacade = mockOAuthFacade;
     loginFacade.wordpressXMLRPCAPIFacade = mockXMLRPCAPIFacade;
     loginFacade.delegate = mockLoginFacadeDelegate;
-    
-    loginFields = [LoginFields loginFieldsWithUsername:@"username" password:@"password" siteUrl:@"www.mysite.com" multifactorCode:@"123456" userIsDotCom:YES shouldDisplayMultiFactor:NO];
+
+    loginFields = [LoginFields new];
+    loginFields.username = @"username";
+    loginFields.password = @"password";
+    loginFields.siteAddress = @"www.mysite.com";
+    loginFields.multifactorCode = @"123456";
 });
 
 describe(@"signInWithLoginFields", ^{
@@ -33,7 +36,7 @@ describe(@"signInWithLoginFields", ^{
     context(@"for a .com user", ^{
         
         beforeEach(^{
-            loginFields.userIsDotCom = YES;
+            loginFields.meta.userIsDotCom = YES;
         });
         
         it(@"should display a message about 'Connecting to WordPress.com'", ^{
@@ -61,7 +64,7 @@ describe(@"signInWithLoginFields", ^{
                 
                 successStub(authToken);
             }];
-            [[mockLoginFacadeDelegate expect] finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.shouldDisplayMultifactor];
+            [[mockLoginFacadeDelegate expect] finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.meta.requiredMultifactor];
             
             [loginFacade signInWithLoginFields:loginFields];
             
@@ -103,7 +106,7 @@ describe(@"signInWithLoginFields", ^{
     context(@"for a self hosted user", ^{
         
         beforeEach(^{
-            loginFields.userIsDotCom = NO;
+            loginFields.meta.userIsDotCom = NO;
         });
         
         it(@"should display a message about 'Authenticating'", ^{
@@ -117,7 +120,7 @@ describe(@"signInWithLoginFields", ^{
         context(@"the guessing of the xmlrpc url for the site", ^{
             
             it(@"should occur", ^{
-                [[mockXMLRPCAPIFacade expect] guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY];
+                [[mockXMLRPCAPIFacade expect] guessXMLRPCURLForSite:loginFields.siteAddress success:OCMOCK_ANY failure:OCMOCK_ANY];
                 
                 [loginFacade signInWithLoginFields:loginFields];
                 
@@ -131,7 +134,7 @@ describe(@"signInWithLoginFields", ^{
                 beforeEach(^{
                     xmlrpc = [NSURL URLWithString:@"http://www.selfhosted.com/xmlrpc.php"];
                     // Intercept success callback and execute it when appropriate
-                    [OCMStub([mockXMLRPCAPIFacade guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                    [OCMStub([mockXMLRPCAPIFacade guessXMLRPCURLForSite:loginFields.siteAddress success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                         void (^ __unsafe_unretained successStub)(NSURL *);
                         [invocation getArgument:&successStub atIndex:3];
                         
@@ -215,7 +218,7 @@ describe(@"signInWithLoginFields", ^{
                     error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"Error" }];
                     
                     // Intercept failure callback and execute it when appropriate
-                    [OCMStub([mockXMLRPCAPIFacade guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                    [OCMStub([mockXMLRPCAPIFacade guessXMLRPCURLForSite:loginFields.siteAddress success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                         void (^ __unsafe_unretained failureStub)(NSError *);
                         [invocation getArgument:&failureStub atIndex:4];
                         
