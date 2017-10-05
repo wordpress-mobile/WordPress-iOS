@@ -3012,7 +3012,7 @@ extension AztecPostViewController {
         default:
             icon = Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
-        
+
         icon.addAccessibilityForAttachment(attachment)
         return icon
     }
@@ -3269,7 +3269,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 extension UIImage {
     func addAccessibilityForAttachment(_ attachment: NSTextAttachment) {
         if let attachment = attachment as? ImageAttachment,
-            let accessibilityLabel = attachment.extraAttributes["alt"]  {
+            let accessibilityLabel = attachment.extraAttributes["alt"] {
             self.accessibilityLabel = accessibilityLabel
         }
     }
