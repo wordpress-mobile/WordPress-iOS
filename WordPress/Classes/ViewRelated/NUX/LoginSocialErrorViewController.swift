@@ -1,6 +1,8 @@
 import Foundation
 import Gridicons
 
+
+/// ViewController for presenting recovery options when social login fails
 class LoginSocialErrorViewController: UITableViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
@@ -20,6 +22,11 @@ class LoginSocialErrorViewController: UITableViewController {
         case signup = 2
     }
 
+    /// Create and instance of LoginSocialErrorViewController
+    ///
+    /// - Parameters:
+    ///   - title: The title that will be shown on the error VC
+    ///   - description: A brief explination of what failed during social login
     init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
