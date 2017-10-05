@@ -9,6 +9,11 @@
 @interface MediaService : LocalCoreDataService
 
 /**
+ This property determines if multiple thumbnail generation will be done in parallel.
+ By default this value is NO.
+ */
+@property (nonatomic, assign) BOOL concurrentThumbnailGeneration;
+/**
  Create a media object using the url provided as the source of media.
 
  @param url a file url pointing to a file with the media data
@@ -20,6 +25,19 @@
            forPostObjectID:(nonnull NSManagedObjectID *)postObjectID
          thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
                 completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion NS_SWIFT_NAME(createMedia(url:forPost:thumbnailCallback:completion:));
+
+/**
+ Create a media object using the url provided as the source of media.
+ 
+ @param url a file url pointing to a file with the media data
+ @param blogObjectID the blog object ID to associate the media
+ @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
+ @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
+ */
+- (void)createMediaWithURL:(nonnull NSURL *)url
+           forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
+         thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
+                completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion NS_SWIFT_NAME(createMedia(url:forBlog:thumbnailCallback:completion:));
 
 /**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
