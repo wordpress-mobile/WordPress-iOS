@@ -311,6 +311,15 @@
     return spacerButton;
 }
 
++ (void)configureNavigationBarAppearance
+{
+    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
+}
 
 #pragma mark - View and TableView Styles
 
