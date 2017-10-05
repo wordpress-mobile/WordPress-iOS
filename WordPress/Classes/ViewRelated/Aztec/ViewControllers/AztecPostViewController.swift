@@ -55,6 +55,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.backgroundColor = Colors.aztecBackground
         textView.linkTextAttributes = [NSUnderlineStyleAttributeName: NSNumber(value:NSUnderlineStyle.styleSingle.rawValue), NSForegroundColorAttributeName: Colors.aztecLinkColor]
         textView.textAlignment = .natural
+
+        if #available(iOS 11, *) {
+            textView.smartDashesType = .no
+        }
+
         return textView
     }()
 
@@ -94,6 +99,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.accessibilityIdentifier = "HTMLContentView"
         textView.autocorrectionType = .no
         textView.autocapitalizationType = .none
+
+        if #available(iOS 11, *) {
+            textView.smartDashesType = .no
+        }
 
         return textView
 
@@ -674,7 +683,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func registerAttachmentImageProviders() {
         let providers: [TextViewAttachmentImageProvider] = [
-            MoreAttachmentRenderer(),
+            SpecialTagAttachmentRenderer(),
             CommentAttachmentRenderer(font: Fonts.regular),
             HTMLAttachmentRenderer(font: Fonts.regular)
         ]

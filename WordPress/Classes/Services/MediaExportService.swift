@@ -8,6 +8,12 @@ import CocoaLumberjack
 ///
 open class MediaExportService: LocalCoreDataService {
 
+    private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaExportService", autoreleaseFrequency: .workItem)
+
+    public lazy var exportQueue: DispatchQueue = {
+        return MediaExportService.defaultExportQueue
+    }()
+
     /// Constant for the ideal compression quality used when images are added to the Media Library.
     ///
     /// - Note: This value may or may not be honored, depending on the export implementation and underlying data.
@@ -30,7 +36,7 @@ open class MediaExportService: LocalCoreDataService {
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     public func exportMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        DispatchQueue.global(qos: .default).async {
+        exportQueue.async {
 
             let exporter = MediaAssetExporter()
             exporter.imageOptions = self.exporterImageOptions
@@ -47,7 +53,7 @@ open class MediaExportService: LocalCoreDataService {
                 }
             }, onError: { (error) in
                 self.handleExportError(error, errorHandler: onError)
-            })
+            })            
         }
     }
 
@@ -59,7 +65,7 @@ open class MediaExportService: LocalCoreDataService {
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     public func exportMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        DispatchQueue.global(qos: .default).async {
+        exportQueue.async {
 
             let exporter = MediaImageExporter()
             exporter.options = self.exporterImageOptions
@@ -87,7 +93,7 @@ open class MediaExportService: LocalCoreDataService {
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     public func exportMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        DispatchQueue.global(qos: .default).async {
+        exportQueue.async {
 
             let exporter = MediaURLExporter()
             exporter.imageOptions = self.exporterImageOptions
