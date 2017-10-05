@@ -1,5 +1,4 @@
 #import "LoginFacade.h"
-#import "LoginFields.h"
 #import "NSURL+IDN.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"

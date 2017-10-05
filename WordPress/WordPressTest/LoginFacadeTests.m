@@ -3,7 +3,6 @@
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
 #import "LoginFacade.h"
-#import "LoginFields.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
 
