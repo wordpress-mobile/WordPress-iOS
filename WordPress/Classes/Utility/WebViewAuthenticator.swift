@@ -128,29 +128,36 @@ private extension WebViewAuthenticator {
     }
 
     func body(url: URL) -> Data? {
-        guard let encodedUsername = username.urlFormEncoded,
-            let encodedUrl = redirectUrl(url: url.absoluteString)?.urlFormEncoded else {
-            return nil
+        guard let redirectedUrl = redirectUrl(url: url.absoluteString) else {
+                return nil
         }
-        let encodedPassword = password?.urlFormEncoded
-
-        var parameters = "log=\(encodedUsername)"
-        if let encodedPassword = encodedPassword {
-            parameters += "&pwd=\(encodedPassword)"
+        var parameters = [URLQueryItem]()
+        parameters.append(URLQueryItem(name: "log", value: username))
+        if let password = password {
+            parameters.append(URLQueryItem(name: "pwd", value: password))
         }
-        parameters += "&redirect_to=\(encodedUrl)"
+        parameters.append(URLQueryItem(name: "redirect_to", value: redirectedUrl))
+        var components = URLComponents()
+        components.queryItems = parameters
 
-        return parameters.data(using: .utf8)
+        return components.percentEncodedQuery?.data(using: .utf8)
     }
 
     func redirectUrl(url: String) -> String? {
         guard case .dotCom = credentials else {
             return url
         }
-        guard let encodedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+        return self.url(string: "https://wordpress.com/", parameters: [WebViewAuthenticator.redirectParameter: url])?.absoluteString
+    }
+
+    func url(string: String, parameters: [String: String]) -> URL? {
+        guard var components = URLComponents(string: string) else {
             return nil
         }
-        return "https://wordpress.com/?\(WebViewAuthenticator.redirectParameter)=\(encodedUrl)"
+        components.queryItems = parameters.map({ (key, value) in
+            return URLQueryItem(name: key, value: value)
+        })
+        return components.url
     }
 
     var username: String {
@@ -194,12 +201,4 @@ private extension WebViewAuthenticator {
 
     static let wordPressComLoginUrl = URL(string: "https://wordpress.com/wp-login.php")!
     static let redirectParameter = "wpios_redirect"
-}
-
-private extension String {
-    var urlFormEncoded: String? {
-        // https://url.spec.whatwg.org/#urlencoded-serializing
-        let urlAllowedForm: CharacterSet = CharacterSet(charactersIn: "*-._").union(.alphanumerics)
-        return addingPercentEncoding(withAllowedCharacters: urlAllowedForm)
-    }
 }
