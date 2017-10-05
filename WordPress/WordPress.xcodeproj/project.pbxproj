@@ -371,7 +371,6 @@
 		85D239B21AE5A5FC0074768D /* WordPressComOAuthClientFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */; };
 		85D239B31AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */; };
 		85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239B51AE5A6170074768D /* ReachabilityFacade.m */; };
-		85D239BB1AE5A6620074768D /* LoginFields.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239B81AE5A6620074768D /* LoginFields.m */; };
 		85D239C01AE5A7020074768D /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BE1AE5A7020074768D /* LoginFacadeTests.m */; };
 		85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */; };
 		85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */; };
@@ -1584,8 +1583,6 @@
 		85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressXMLRPCAPIFacade.m; sourceTree = "<group>"; };
 		85D239B41AE5A6170074768D /* ReachabilityFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityFacade.h; sourceTree = "<group>"; };
 		85D239B51AE5A6170074768D /* ReachabilityFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityFacade.m; sourceTree = "<group>"; };
-		85D239B71AE5A6620074768D /* LoginFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginFields.h; sourceTree = "<group>"; };
-		85D239B81AE5A6620074768D /* LoginFields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFields.m; sourceTree = "<group>"; };
 		85D239BE1AE5A7020074768D /* LoginFacadeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
 		85DA8C4218F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WPAnalyticsTrackerWPCom.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerWPCom.m; sourceTree = "<group>"; };
@@ -5056,8 +5053,6 @@
 			children = (
 				E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */,
 				E68191481F856B910055E197 /* LoginFields.swift */,
-				85D239B71AE5A6620074768D /* LoginFields.h */,
-				85D239B81AE5A6620074768D /* LoginFields.m */,
 				E6417BAB1CA07F7F0084050A /* SigninHelpers.swift */,
 				E606467F1CB3133000A3073F /* SigninEditingState.swift */,
 			);
@@ -6442,7 +6437,6 @@
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
 				177076211EA206C000705A4A /* PlayIconView.swift in Sources */,
 				E1468DE71E794A4D0044D80F /* LanguageSelectorViewController.swift in Sources */,
-				85D239BB1AE5A6620074768D /* LoginFields.m in Sources */,
 				E14694071F3459E2004052C8 /* PluginListViewController.swift in Sources */,
 				E1C3C8531CE467A900D5DB36 /* EmailTypoChecker.swift in Sources */,
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,
