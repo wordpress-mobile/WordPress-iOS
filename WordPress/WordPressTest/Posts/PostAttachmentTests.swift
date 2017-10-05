@@ -1,11 +1,3 @@
-//
-//  PostAttachmentTests.swift
-//  WordPressTest
-//
-//  Created by Evangelos Sismanidis on 04.10.17.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
-
 import XCTest
 import Aztec
 
