@@ -45,7 +45,7 @@
  Trashes a comment
  */
 - (void)trashComment:(RemoteComment *)comment
-             success:(void (^)())success
+             success:(void (^)(void))success
              failure:(void (^)(NSError *error))failure;
 
 @end

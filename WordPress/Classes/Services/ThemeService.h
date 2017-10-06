@@ -4,7 +4,7 @@
 @class Theme;
 @class WPAccount;
 
-typedef void(^ThemeServiceSuccessBlock)();
+typedef void(^ThemeServiceSuccessBlock)(void);
 typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
 typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);

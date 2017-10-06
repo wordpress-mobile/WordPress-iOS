@@ -155,7 +155,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 }
 
 - (void)deletePost:(RemotePost *)post
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post.postID longLongValue] > 0);

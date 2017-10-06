@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Event handler if the checked state changes.
  */
-@property (nonatomic, copy, nullable) void(^onChecked)();
+@property (nonatomic, copy, nullable) void(^onChecked)(void);
 
 /**
  Ideal layout height of the view.
