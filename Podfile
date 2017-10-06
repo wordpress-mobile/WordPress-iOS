@@ -50,7 +50,7 @@ target 'WordPress' do
   # --------------------
   # WordPress components
   # --------------------
-  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.0'
+  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.1'
   pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.23'
@@ -61,7 +61,7 @@ target 'WordPress' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Specta', '1.0.6'
+    pod 'Specta', '1.0.7'
     pod 'Expecta', '1.0.6'
     pod 'Nimble', '~> 7.0.0'
   end
@@ -119,7 +119,7 @@ target 'WordPressShared' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Specta', '1.0.6'
+    pod 'Specta', '1.0.7'
     pod 'Expecta', '1.0.6'
   end
 end

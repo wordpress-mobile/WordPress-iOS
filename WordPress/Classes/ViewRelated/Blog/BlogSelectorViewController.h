@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^BlogSelectorSuccessHandler)(NSManagedObjectID *selectedObjectID);
 typedef void (^BlogSelectorSuccessDotComHandler)(NSNumber *dotComId);
-typedef void (^BlogSelectorDismissHandler)();
+typedef void (^BlogSelectorDismissHandler)(void);
 
 @interface BlogSelectorViewController : UITableViewController
 

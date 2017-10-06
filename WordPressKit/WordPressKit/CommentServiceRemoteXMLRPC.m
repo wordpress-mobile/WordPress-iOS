@@ -146,7 +146,7 @@
 }
 
 - (void)trashComment:(RemoteComment *)comment
-             success:(void (^)())success
+             success:(void (^)(void))success
              failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(comment.commentID != nil);

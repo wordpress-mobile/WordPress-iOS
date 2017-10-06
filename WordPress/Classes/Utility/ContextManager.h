@@ -73,7 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param a derived NSManagedObjectContext constructed with `newDerivedContext` above
  @param a completion block that will be executed on the main queue
  */
-- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
+- (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
 
 /**
  Save a given context synchronously.
@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param a NSManagedObject context instance
  @param a completion block that will be executed on the main queue
  */
-- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
+- (void)saveContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)(void))completionBlock;
 
 /**
  Get a permanent NSManagedObjectID for the specified NSManagedObject

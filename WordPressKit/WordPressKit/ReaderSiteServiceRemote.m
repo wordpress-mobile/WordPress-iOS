@@ -41,7 +41,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)followSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)followSiteWithID:(NSUInteger)siteID success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/new", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -60,7 +60,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)unfollowSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteWithID:(NSUInteger)siteID success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/mine/delete", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -77,7 +77,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)followSiteAtURL:(NSString *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = @"read/following/mine/new";
     NSString *requestUrl = [self pathForEndpoint:path
@@ -106,7 +106,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = @"read/following/mine/delete";
     NSString *requestUrl = [self pathForEndpoint:path
@@ -187,7 +187,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     // Just ping the URL and make sure we don't get back a 40x error.
     AFHTTPSessionManager *mgr = [[AFHTTPSessionManager alloc] init];
@@ -248,7 +248,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)flagSiteWithID:(NSUInteger)siteID asBlocked:(BOOL)blocked success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)flagSiteWithID:(NSUInteger)siteID asBlocked:(BOOL)blocked success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path;
     if (blocked) {
