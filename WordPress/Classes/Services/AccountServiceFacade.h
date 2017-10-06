@@ -25,7 +25,7 @@
  *  @param account a valid WordPress.com account.
  */
 - (void)updateUserDetailsForAccount:(WPAccount *)account
-                            success:(void (^)())success
+                            success:(void (^)(void))success
                             failure:(void (^)(NSError *error))failure;
 
 /**

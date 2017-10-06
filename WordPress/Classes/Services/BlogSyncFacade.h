@@ -16,7 +16,7 @@
  *  @param failure a block that's called when this fails.
  */
 - (void)syncBlogsForAccount:(WPAccount *)account
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -31,7 +31,7 @@
 - (void)syncBlogWithUsername:(NSString *)username
                     password:(NSString *)password
                       xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
-                finishedSync:(void(^)())finishedSync;
+                finishedSync:(void(^)(void))finishedSync;
 
 @end
 

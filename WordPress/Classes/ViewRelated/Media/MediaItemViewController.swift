@@ -201,10 +201,7 @@ class MediaItemViewController: UITableViewController {
             let url = URL(string: remoteURL) else { return }
 
         let controller = WPWebViewController()
-        controller.authToken = media.blog.authToken
-        controller.username = media.blog.usernameForSite
-        controller.password = media.blog.password
-        controller.wpLoginURL = URL(string: media.blog.loginUrl())
+        controller.authenticate(with: media.blog)
         controller.url = url
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil

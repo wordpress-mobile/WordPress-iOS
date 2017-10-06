@@ -24,7 +24,7 @@ extern NSString * const MenusRemoteKeyLocationDefaultState;
 @class RemoteMenuItem;
 @class RemoteMenuLocation;
 
-typedef void(^MenusServiceRemoteSuccessBlock)();
+typedef void(^MenusServiceRemoteSuccessBlock)(void);
 typedef void(^MenusServiceRemoteMenuRequestSuccessBlock)(RemoteMenu *menu);
 typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray<RemoteMenu *> * _Nullable menus,  NSArray<RemoteMenuLocation *> * _Nullable locations);
 typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
