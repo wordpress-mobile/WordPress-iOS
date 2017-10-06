@@ -88,7 +88,7 @@
   *  @param      success     The block that will be executed on success.  Can be nil.
   *  @param      failure     The block that will be executed on failure.  Can be nil.
   */
-- (void)requestVerificationEmailWithSucccess:(void (^)())success
+- (void)requestVerificationEmailWithSucccess:(void (^)(void))success
                                      failure:(void (^)(NSError *error))failure;
 
 @end
