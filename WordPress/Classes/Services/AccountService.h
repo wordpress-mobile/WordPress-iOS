@@ -90,7 +90,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param success
  @param failure
  */
-- (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 
 ///-----------------------
@@ -134,7 +134,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
  @param account WPAccount to be updated
  */
-- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Initializes the WordPress iOS Extensions with the WordPress.com Default Account.

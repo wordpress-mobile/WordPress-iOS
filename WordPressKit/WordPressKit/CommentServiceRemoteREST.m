@@ -140,7 +140,7 @@
 }
 
 - (void)trashComment:(RemoteComment *)comment
-             success:(void (^)())success
+             success:(void (^)(void))success
              failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", self.siteID, comment.commentID];
@@ -191,7 +191,7 @@
 
 - (void)updateCommentWithID:(NSNumber *)commentID
                     content:(NSString *)content
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, commentID];
@@ -271,7 +271,7 @@
 
 - (void)moderateCommentWithID:(NSNumber *)commentID
                        status:(NSString *)status
-                      success:(void (^)())success
+                      success:(void (^)(void))success
                       failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, commentID];
@@ -297,7 +297,7 @@
 }
 
 - (void)trashCommentWithID:(NSNumber *)commentID
-                   success:(void (^)())success
+                   success:(void (^)(void))success
                    failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", self.siteID, commentID];
@@ -318,7 +318,7 @@
 }
 
 - (void)likeCommentWithID:(NSNumber *)commentID
-                  success:(void (^)())success
+                  success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/new", self.siteID, commentID];
@@ -339,7 +339,7 @@
 }
 
 - (void)unlikeCommentWithID:(NSNumber *)commentID
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/mine/delete", self.siteID, commentID];

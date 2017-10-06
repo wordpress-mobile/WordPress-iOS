@@ -10,10 +10,7 @@ open class ThemeWebViewController: WPWebViewController {
     open var theme: Theme? {
         didSet {
             if let blog = theme?.blog {
-                authToken = blog.authToken
-                username = blog.usernameForSite
-                password = blog.password
-                wpLoginURL = URL(string: blog.loginUrl())
+                authenticate(with: blog)
             }
         }
     }
