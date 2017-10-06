@@ -6,12 +6,14 @@ public extension WPAppAnalytics {
     public enum SelectedMediaOrigin: CustomStringConvertible {
         case inlinePicker
         case fullScreenPicker
+        case documentPicker
         case none
 
         public var description: String {
             switch self {
             case .inlinePicker: return "inline_picker"
             case .fullScreenPicker: return "full_screen_picker"
+            case .documentPicker: return "document_picker"
             case .none: return "not_identified"
             }
         }
