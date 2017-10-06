@@ -1493,9 +1493,7 @@ extension AztecPostViewController {
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             case .otherApplications:
-                print("SGH - other apps tapped.")
-                // SGH TODO: fix this
-//                trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApplications)
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
                 showDocumentPicker()
             }
         }
@@ -2530,10 +2528,11 @@ extension AztecPostViewController {
                                         }
                                         return
                                     }
-                                    // SGH TODO: fix this
-                                    //                                    WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
+                                    guard let `self` = self else { return }
 
-                                    self?.upload(media: media, mediaID: attachment.identifier)
+                                    WPAppAnalytics.track(.editorAddedPhotoViaOtherApps, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
+
+                                    self.upload(media: media, mediaID: attachment.identifier)
         })
     }
 
@@ -2554,10 +2553,11 @@ extension AztecPostViewController {
                                         }
                                         return
                                     }
-                                    // SGH TODO: fix this
-                                    //                                    WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
+                                    guard let `self` = self else { return }
 
-                                    self?.upload(media: media, mediaID: attachment.identifier)
+                                    WPAppAnalytics.track(.editorAddedVideoViaOtherApps, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
+
+                                    self.upload(media: media, mediaID: attachment.identifier)
         })
     }
 
@@ -3265,11 +3265,11 @@ extension AztecPostViewController: UIViewControllerRestoration {
 extension AztecPostViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        selectedMediaOrigin = .documentPicker
         mediaProgressCoordinator.track(numberOfItems: urls.count)
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
         }
-
     }
 }
 
