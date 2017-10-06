@@ -31,7 +31,7 @@
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)updateBlogsVisibility:(NSDictionary *)blogs
-                      success:(void (^)())success
+                      success:(void (^)(void))success
                       failure:(void (^)(NSError *error))failure;
 
 /**
@@ -79,7 +79,7 @@
                             clientID:(NSString *)clientID
                         clientSecret:(NSString *)clientSecret
                          wpcomScheme:(NSString *)scheme
-                             success:(void (^)())success
+                             success:(void (^)(void))success
                              failure:(void (^)(NSError *error))failure;
 
 @end

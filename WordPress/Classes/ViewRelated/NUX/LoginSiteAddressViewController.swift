@@ -16,8 +16,8 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     override var loginFields: LoginFields {
         didSet {
             // Clear the site url and site info (if any) from LoginFields
-            loginFields.siteUrl = ""
-            loginFields.siteInfo = nil
+            loginFields.siteAddress = ""
+            loginFields.meta.siteInfo = nil
         }
     }
 
@@ -34,7 +34,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         super.viewWillAppear(animated)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = false
+        loginFields.meta.userIsDotCom = false
 
         configureTextFields()
         configureSubmitButton(animating: false)
@@ -85,7 +85,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     ///
     func configureTextFields() {
         siteURLField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        siteURLField.text = loginFields.siteUrl
+        siteURLField.text = loginFields.siteAddress
     }
 
 
@@ -141,9 +141,9 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
         configureViewLoading(true)
 
         let facade = WordPressXMLRPCAPIFacade()
-        facade.guessXMLRPCURL(forSite: loginFields.siteUrl, success: { [weak self] (url) in
+        facade.guessXMLRPCURL(forSite: loginFields.siteAddress, success: { [weak self] (url) in
             if let url = url {
-                self?.loginFields.xmlRPCURL = url
+                self?.loginFields.meta.xmlrpcURL = url as NSURL
             }
             self?.fetchSiteInfo()
 
@@ -180,12 +180,12 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
 
     func fetchSiteInfo() {
-        let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteUrl) as NSString
+        let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteAddress) as NSString
         if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
 
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             service.fetchSiteInfo(forAddress: siteAddress, success: { [weak self] (siteInfo) in
-                self?.loginFields.siteInfo = siteInfo
+                self?.loginFields.meta.siteInfo = siteInfo
                 self?.showSelfHostedUsernamePassword()
             }, failure: { [weak self] (error) in
                 self?.showSelfHostedUsernamePassword()
@@ -249,7 +249,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
-        loginFields.siteUrl = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
+        loginFields.siteAddress = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
         configureSubmitButton(animating: false)
     }
 

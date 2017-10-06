@@ -108,7 +108,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)syncBlogsForAccount:(WPAccount *)account
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     DDLogMethod();
@@ -167,7 +167,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)syncBlog:(Blog *)blog
-         success:(void (^)())success
+         success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
@@ -184,7 +184,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }
 }
 
-- (void)syncBlogAndAllMetadata:(Blog *)blog completionHandler:(void (^)())completionHandler
+- (void)syncBlogAndAllMetadata:(Blog *)blog completionHandler:(void (^)(void))completionHandler
 {
     // Create a dispatch group. We'll use this to monitor completion of the various
     // remote calls and to execute the completionHandler.
@@ -287,7 +287,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)syncSettingsForBlog:(Blog *)blog
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogID = [blog objectID];
@@ -329,7 +329,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)updateSettingsForBlog:(Blog *)blog
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogID = [blog objectID];
@@ -337,7 +337,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
 
-        void(^saveOnSuccess)() = ^() {
+        void(^saveOnSuccess)(void) = ^() {
             [self.managedObjectContext performBlock:^{
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                     if (success) {
@@ -372,7 +372,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)syncPostTypesForBlog:(Blog *)blog
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
@@ -411,7 +411,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)syncPostFormatsForBlog:(Blog *)blog
-                       success:(void (^)())success
+                       success:(void (^)(void))success
                        failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
@@ -592,7 +592,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 #pragma mark - Private methods
 
-- (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
+- (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)(void))completion
 {
     // Nuke dead blogs
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"blogID"]];

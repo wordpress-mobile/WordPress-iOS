@@ -14,7 +14,7 @@
     return [accountService createOrUpdateAccountWithUsername:username authToken:authToken];
 }
 
-- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *))failure
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
