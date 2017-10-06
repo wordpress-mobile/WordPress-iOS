@@ -923,8 +923,7 @@ UIDocumentPickerDelegate
 
 - (void)showDocumentPickerAnimated:(BOOL)animated
 {
-    NSArray *docTypes = @[[NSString stringWithFormat:@"%@", kUTTypeImage],
-                          [NSString stringWithFormat:@"%@", kUTTypeMovie]];
+    NSArray *docTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
     UIDocumentPickerViewController *docPicker = [[UIDocumentPickerViewController alloc]
                                                  initWithDocumentTypes:docTypes inMode:UIDocumentPickerModeImport];
     docPicker.delegate = self;
@@ -2079,13 +2078,14 @@ UIDocumentPickerDelegate
                                       [weakSelf showMediaPickerForWordPressLibraryAnimated:YES];
                                   }];
 
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 11.0 &&
-        [Feature enabled:FeatureFlagICloudFilesSupport]) {
-        [controller addDefaultActionWithTitle:NSLocalizedString(@"Other Apps", @"Button title used in hybrid editor for selecting media from other applications.")
-                                      handler:^(UIAlertAction *action){
-                                          weakSelf.mediaSourceAlertController = nil;
-                                          [weakSelf showDocumentPickerAnimated:YES];
-                                      }];
+    if (@available(iOS 11, *)) {
+        if ([Feature enabled:FeatureFlagICloudFilesSupport]) {
+            [controller addDefaultActionWithTitle:NSLocalizedString(@"Other Apps", @"Button title used in hybrid editor for selecting media from other applications.")
+                                          handler:^(UIAlertAction *action){
+                                              weakSelf.mediaSourceAlertController = nil;
+                                              [weakSelf showDocumentPickerAnimated:YES];
+                                          }];
+        }
     }
 
     [controller addCancelActionWithTitle:NSLocalizedString(@"Cancel", nil)
