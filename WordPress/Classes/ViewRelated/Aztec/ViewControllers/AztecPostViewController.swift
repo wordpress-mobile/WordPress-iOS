@@ -2522,17 +2522,7 @@ extension AztecPostViewController {
                                         self?.richTextView.refresh(attachment)
                                     }},
                                  completion: { [weak self](media, error) in
-                                    guard let media = media, error == nil else {
-                                        DispatchQueue.main.async {
-                                            self?.handleError(error as NSError?, onAttachment: attachment)
-                                        }
-                                        return
-                                    }
-                                    guard let `self` = self else { return }
-
-                                    WPAppAnalytics.track(.editorAddedPhotoViaOtherApps, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
-
-                                    self.upload(media: media, mediaID: attachment.identifier)
+                                    self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaOtherApps)
         })
     }
 
@@ -2547,17 +2537,7 @@ extension AztecPostViewController {
                                         self?.richTextView.refresh(attachment)
                                     }},
                                  completion: { [weak self] (media, error) in
-                                    guard let media = media, error == nil else {
-                                        DispatchQueue.main.async {
-                                            self?.handleError(error as NSError?, onAttachment: attachment)
-                                        }
-                                        return
-                                    }
-                                    guard let `self` = self else { return }
-
-                                    WPAppAnalytics.track(.editorAddedVideoViaOtherApps, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
-
-                                    self.upload(media: media, mediaID: attachment.identifier)
+                                    self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedVideoViaOtherApps)
         })
     }
 
@@ -2574,62 +2554,40 @@ extension AztecPostViewController {
 
     fileprivate func insertDeviceImage(phAsset: PHAsset) {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage:
-                Assets.defaultMissingImage)
+            Assets.defaultMissingImage)
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
-            guard let `self` = self else {
-                return
-            }
-            DispatchQueue.main.async {
-                attachment.updateURL(thumbnailURL)
-                self.richTextView.refresh(attachment)
-            }
-        }, completion: { [weak self](media, error) in
-            guard let strongSelf = self else {
-                return
-            }
-            guard let media = media, error == nil else {
-                DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
-                }
-                return
-            }
-
-            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
-
-            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        mediaService.createMedia(with: phAsset,
+                                 forPost: post.objectID,
+                                 thumbnailCallback: { [weak self](thumbnailURL) in
+                                    guard let `self` = self else {
+                                        return
+                                    }
+                                    DispatchQueue.main.async {
+                                        attachment.updateURL(thumbnailURL)
+                                        self.richTextView.refresh(attachment)
+                                    }},
+                                 completion: { [weak self](media, error) in
+                                    self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaLocalLibrary)
         })
     }
 
     fileprivate func insertDeviceVideo(phAsset: PHAsset) {
         let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
-        attachment.progress = 0
-        richTextView.refresh(attachment)
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
-            guard let strongSelf = self else {
-                return
-            }
-            DispatchQueue.main.async {
-                attachment.posterURL = thumbnailURL
-                strongSelf.richTextView.refresh(attachment)
-            }
-        }, completion: { [weak self](media, error) in
-            guard let strongSelf = self else {
-                return
-            }
-            guard let media = media, error == nil else {
-                DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
-                }
-                return
-            }
-
-            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
-
-            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        mediaService.createMedia(with: phAsset,
+                                 forPost: post.objectID,
+                                 thumbnailCallback: { [weak self](thumbnailURL) in
+                                    guard let strongSelf = self else {
+                                        return
+                                    }
+                                    DispatchQueue.main.async {
+                                        attachment.posterURL = thumbnailURL
+                                        strongSelf.richTextView.refresh(attachment)
+                                    }},
+                                 completion: { [weak self](media, error) in
+                                    self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedVideoViaLocalLibrary)
         })
     }
 
@@ -2639,6 +2597,20 @@ extension AztecPostViewController {
         } else {
             insertLocalSiteMediaLibrary(media: media)
         }
+    }
+
+    private func handleNewMedia(_ media: Media?, error: Error?, attachment: MediaAttachment, statType: WPAnalyticsStat) {
+
+        guard let media = media, error == nil else {
+            DispatchQueue.main.async {
+                self.handleError(error as NSError?, onAttachment: attachment)
+            }
+            return
+        }
+
+        WPAppAnalytics.track(statType, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
+
+        self.upload(media: media, mediaID: attachment.identifier)
     }
 
     fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
