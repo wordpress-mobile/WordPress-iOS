@@ -2512,7 +2512,7 @@ extension AztecPostViewController {
     }
 
     private func insertExternalImageWithURL(_ url: URL) {
-        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        guard let attachment = attachmentWithPlaceholder(isImage: true) as? ImageAttachment else { return }
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(url: url, forPost: post.objectID,
@@ -2527,7 +2527,7 @@ extension AztecPostViewController {
     }
 
     private func insertExternalVideoWithURL(_ url: URL) {
-        let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        guard let attachment = attachmentWithPlaceholder(isImage: false) as? VideoAttachment else { return }
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(url: url, forPost: post.objectID,
@@ -2553,8 +2553,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceImage(phAsset: PHAsset) {
-        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage:
-            Assets.defaultMissingImage)
+        guard let attachment = attachmentWithPlaceholder(isImage: true) as? ImageAttachment else { return }
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
@@ -2573,7 +2572,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceVideo(phAsset: PHAsset) {
-        let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        guard let attachment = attachmentWithPlaceholder(isImage: false) as? VideoAttachment else { return }
 
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
@@ -2611,6 +2610,14 @@ extension AztecPostViewController {
         WPAppAnalytics.track(statType, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
 
         self.upload(media: media, mediaID: attachment.identifier)
+    }
+
+    private func attachmentWithPlaceholder(isImage: Bool) -> Any {
+        if isImage {
+            return richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        }
+
+        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
     }
 
     fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
