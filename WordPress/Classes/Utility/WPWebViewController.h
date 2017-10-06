@@ -18,11 +18,6 @@
 @property (nonatomic, strong) UIBarButtonItem          *optionsButton;
 
 /**
- *	@brief		Optionally scrolls the endpoint to the bottom of the screen, automatically.
- */
-@property (nonatomic, assign) BOOL      shouldScrollToBottom;
-
-/**
  *	@brief		Optionally suppresses navigation and sharing
  */
 @property (nonatomic, assign) BOOL      secureInteraction;
