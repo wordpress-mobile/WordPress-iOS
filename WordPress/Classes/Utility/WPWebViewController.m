@@ -216,19 +216,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
 }
 
-- (void)scrollToBottomIfNeeded
-{
-    if (!self.shouldScrollToBottom) {
-        return;
-    }
-    
-    self.shouldScrollToBottom = NO;
-    
-    UIScrollView *scrollView    = self.webView.scrollView;
-    CGPoint bottomOffset        = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
-    [scrollView setContentOffset:bottomOffset animated:YES];
-}
-
 - (void)showBottomToolbarIfNeeded
 {
     if (self.secureInteraction) {
@@ -427,7 +414,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [self.progressView finishedLoading];
     [self refreshInterface];
     [self showBottomToolbarIfNeeded];
-    [self scrollToBottomIfNeeded];
 }
 
 @end
