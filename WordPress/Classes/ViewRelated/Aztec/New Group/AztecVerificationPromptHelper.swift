@@ -15,6 +15,9 @@ internal class AztecVerificationPromptHelper: NSObject {
     private let wpComAccount: WPAccount
 
     private weak var displayedAlert: FancyAlertViewController?
+    private var completionBlock: AztecVerificationPromptCompletion?
+
+    typealias AztecVerificationPromptCompletion = (Bool) -> ()
 
     init?(managedObjectContext: NSManagedObjectContext, for account: WPAccount?) {
         self.managedObjectContext = managedObjectContext
@@ -42,33 +45,46 @@ internal class AztecVerificationPromptHelper: NSObject {
             return false
         }
 
-
-        return !wpAccount.emailVerified.boolValue
         return !wpComAccount.emailVerified.boolValue
     }
 
+    /// - parameter presentingViewController: UIViewController that the prompt should be presented from.
+    /// - parameter then: Completion callback to be called after the user dismisses the prompt.
+    /// **Note**: The callback fires only when the user tapped "OK" or we silently verified the account in background. It isn't fired when user attempts to resend the verification email.
     func displayVerificationPrompt(from presentingViewController: UIViewController,
-                                   then: @escaping () -> ()) {
+                                   then: AztecVerificationPromptCompletion?) {
 
-
-        let fancyAlert = FancyAlertViewController.verificationPromptController(completion: then)
+        let fancyAlert = FancyAlertViewController.verificationPromptController { [weak self] in
+            then?(self?.wpComAccount.emailVerified.boolValue ?? false)
+        }
     
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = self
         presentingViewController.present(fancyAlert, animated: true)
 
+        updateVerificationStatus()
+        // Silently kick off the request to make sure the user still actually needs to be verified.
+        // If in the meantime user has been verified, we'll dismiss the prompt,
+        // call the completion block and let caller handle the new situation.
+
         displayedAlert = fancyAlert
+        completionBlock = then
     }
 
     func updateVerificationStatus() {
-
         accountService.updateUserDetails(for: wpComAccount,
                                          success: { [weak self] in
 
-                                            guard let updatedAccount = self?.accountService.defaultWordPressComAccount(),
-                                                     updatedAccount.emailVerified.boolValue else { return }
+                                            // Let's make sure the alert is still on the screen and
+                                            // the verification status has changed, before we call the callback.
+                                            guard let displayedAlert = self?.displayedAlert,
+                                                  let updatedAccount = self?.accountService.defaultWordPressComAccount(),
+                                                  updatedAccount.emailVerified.boolValue else {
+                                                        return
+                                            }
 
-                                            self?.displayedAlert?.dismiss(animated: true, completion: nil)
+                                            displayedAlert.dismiss(animated: true, completion: nil)
+                                            self?.completionBlock?(updatedAccount.emailVerified.boolValue)
             }, failure: nil)
     }
 
