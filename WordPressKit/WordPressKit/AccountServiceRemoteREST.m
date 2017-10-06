@@ -233,8 +233,8 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
            }];
 }
 
-- (void)requestVerificationEmailWithSucccess:(void (^)())success
-                                     failure:(void (^)(NSError *error))failure
+- (void)requestVerificationEmailWithSucccess:(void (^)(void))success
+                                    failure:(void (^)(NSError *))failure
 {
     NSString *path = [self pathForEndpoint:@"me/send-verification-email"
                                withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
