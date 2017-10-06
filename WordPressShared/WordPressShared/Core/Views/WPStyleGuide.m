@@ -321,6 +321,15 @@
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
 }
 
+// The app's appearance settings override the doc picker color scheme.
+// This method sets the nav colors so the doc picker has the correct appearance.
+// The app colors can be restored with configureNavigationBarAppearance().
++ (void)configureDocumentPickerNavBarAppearance
+{
+    [[UINavigationBar appearance] setTintColor:[WPStyleGuide mediumBlue]];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide mediumBlue]} forState:UIControlStateNormal];
+}
+
 #pragma mark - View and TableView Styles
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView
