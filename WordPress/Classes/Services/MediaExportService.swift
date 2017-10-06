@@ -53,7 +53,7 @@ open class MediaExportService: LocalCoreDataService {
                 }
             }, onError: { (error) in
                 self.handleExportError(error, errorHandler: onError)
-            })            
+            })
         }
     }
 

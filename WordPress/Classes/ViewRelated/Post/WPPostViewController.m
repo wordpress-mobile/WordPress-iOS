@@ -568,26 +568,26 @@ UIDocumentPickerDelegate
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
 }
 
-- (void)createMediaThumbnailCallback:(NSURL *)thumbnailURL mediaID:(NSString *)mediaID isImage:(BOOL)isImage
+- (void)handleThumbnailURL:(NSURL *)thumbnailURL mediaID:(NSString *)mediaID isImage:(BOOL)isImage
 {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         if (isImage) {
             [self.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaID];
         } else {
             [self.editorView insertInProgressVideoWithID:mediaID usingPosterImage:thumbnailURL.path];
         }
-    }];
+    });
 }
 
-- (void)completeCreateMedia:(Media *)media error:(NSError *)error mediaID:(NSString *)mediaID
+- (void)handleNewMedia:(Media *)media error:(NSError *)error mediaID:(NSString *)mediaID
 {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         if (error || !media || !media.absoluteLocalURL) {
             [self.editorView removeImage:mediaID];
             [self.editorView removeVideo:mediaID];
             [self stopTrackingProgressOfMediaWithId:mediaID];
             [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                          @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                                          @"The title for an alert that says to the user the media (image or video) they selected couldn't be used on the post.")
                                 message:error.localizedDescription];
             return;
         }
@@ -601,7 +601,7 @@ UIDocumentPickerDelegate
                          withPost:self.post];
         }
         [self uploadMedia:media trackingId:mediaID];
-    }];
+    });
 }
 
 #pragma mark - Actions
@@ -1914,20 +1914,20 @@ UIDocumentPickerDelegate
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
-    bool isImage = (asset.mediaType == PHAssetMediaTypeImage);
+    BOOL isImage = (asset.mediaType == PHAssetMediaTypeImage);
     NSString *mediaUniqueID = [self uniqueIdForMedia];
     [mediaService createMediaWithPHAsset:asset
                          forPostObjectID:self.post.objectID
                        thumbnailCallback:^(NSURL *thumbnailURL) {
                            __typeof__(self) strongSelf = weakSelf;
                            if (strongSelf) {
-                               [strongSelf createMediaThumbnailCallback:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
+                               [strongSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
                            }
                        }
                               completion:^(Media *media, NSError *error){
                                   __typeof__(self) strongSelf = weakSelf;
                                   if (strongSelf) {
-                                      [strongSelf completeCreateMedia:media error:error mediaID:mediaUniqueID];
+                                      [strongSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
                                   }
                               }];
 }
@@ -2161,9 +2161,9 @@ UIDocumentPickerDelegate
                          if (!strongSelf) {
                              return;
                          }
-                         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                         dispatch_async(dispatch_get_main_queue(), ^{
                              [strongSelf.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaUniqueID];
-                         }];
+                         });
                      }
                             completion:^(Media *media, NSError *error) {
                                 __typeof__(self) strongSelf = weakSelf;
@@ -2385,13 +2385,13 @@ UIDocumentPickerDelegate
                    thumbnailCallback:^(NSURL *thumbnailURL) {
                        __typeof__(self) strongSelf = weakSelf;
                        if (strongSelf) {
-                           [strongSelf createMediaThumbnailCallback:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
+                           [strongSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
                        }
                    }
                           completion:^(Media *media, NSError *error){
                               __typeof__(self) strongSelf = weakSelf;
                               if (strongSelf) {
-                                  [strongSelf completeCreateMedia:media error:error mediaID:mediaUniqueID];
+                                  [strongSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
                               }
                           }];
 }
