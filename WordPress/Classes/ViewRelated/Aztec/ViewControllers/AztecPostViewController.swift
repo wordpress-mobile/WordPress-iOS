@@ -488,7 +488,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        let safeInsets = self.view.layoutMargins
+        var safeInsets = self.view.layoutMargins
+        safeInsets.top = richTextView.textContainerInset.top
         richTextView.textContainerInset = safeInsets
         htmlTextView.textContainerInset = safeInsets
     }
