@@ -1948,13 +1948,7 @@ extension AztecPostViewController {
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
-
-        // The app's appearance settings override the doc picker color scheme.
-        // Setting the nav colors here so the doc picker has the correct appearance.
-        // The app colors are restored later with resetNavigationColors().
-        UINavigationBar.appearance().tintColor = WPStyleGuide.mediumBlue()
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.mediumBlue()], for: .normal)
-
+        WPStyleGuide.configureDocumentPickerNavBarAppearance()
         present(docPicker, animated: true, completion: nil)
     }
 
@@ -2525,23 +2519,21 @@ extension AztecPostViewController {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(url: url, forPost: post.objectID,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
-                                    guard let strongSelf = self else { return }
                                     DispatchQueue.main.async {
                                         attachment.updateURL(thumbnailURL)
-                                        strongSelf.richTextView.refresh(attachment)
+                                        self?.richTextView.refresh(attachment)
                                     }},
                                  completion: { [weak self](media, error) in
-                                    guard let strongSelf = self else { return }
                                     guard let media = media, error == nil else {
                                         DispatchQueue.main.async {
-                                            strongSelf.handleError(error as NSError?, onAttachment: attachment)
+                                            self?.handleError(error as NSError?, onAttachment: attachment)
                                         }
                                         return
                                     }
                                     // SGH TODO: fix this
                                     //                                    WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
 
-                                    strongSelf.upload(media: media, mediaID: attachment.identifier)
+                                    self?.upload(media: media, mediaID: attachment.identifier)
         })
     }
 
@@ -2551,23 +2543,21 @@ extension AztecPostViewController {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(url: url, forPost: post.objectID,
                                  thumbnailCallback: { [weak self] (thumbnailURL) in
-                                    guard let strongSelf = self else { return }
                                     DispatchQueue.main.async {
                                         attachment.posterURL = thumbnailURL
-                                        strongSelf.richTextView.refresh(attachment)
+                                        self?.richTextView.refresh(attachment)
                                     }},
                                  completion: { [weak self] (media, error) in
-                                    guard let strongSelf = self else { return }
                                     guard let media = media, error == nil else {
                                         DispatchQueue.main.async {
-                                            strongSelf.handleError(error as NSError?, onAttachment: attachment)
+                                            self?.handleError(error as NSError?, onAttachment: attachment)
                                         }
                                         return
                                     }
                                     // SGH TODO: fix this
                                     //                                    WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
 
-                                    strongSelf.upload(media: media, mediaID: attachment.identifier)
+                                    self?.upload(media: media, mediaID: attachment.identifier)
         })
     }
 
