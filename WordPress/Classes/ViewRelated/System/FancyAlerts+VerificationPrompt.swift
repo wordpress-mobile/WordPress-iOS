@@ -1,11 +1,3 @@
-//
-//  FancyAlerts+VerificationPrompt.swift
-//  WordPress
-//
-//  Created by Jan Klausa on 03.10.17.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
-
 import UIKit
 
 extension FancyAlertViewController {
