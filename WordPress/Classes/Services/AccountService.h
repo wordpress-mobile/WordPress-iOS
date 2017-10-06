@@ -98,7 +98,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param success
  @param failure
  */
-- (void)requestVerificationEmail:(void (^)())success
+- (void)requestVerificationEmail:(void (^)(void))success
                          failure:(void (^)(NSError *error))failure;
 
 
@@ -145,7 +145,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param account WPAccount to be updated
  */
 - (void)updateUserDetailsForAccount:(WPAccount *)account
-                            success:(nullable void (^)())success
+                            success:(nullable void (^)(void))success
                             failure:(nullable void (^)(NSError *error))failure;
 
 /**
