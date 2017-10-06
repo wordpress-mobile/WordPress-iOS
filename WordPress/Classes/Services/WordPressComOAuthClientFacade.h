@@ -8,7 +8,7 @@
                         password:(NSString *)password
                  multifactorCode:(NSString *)multifactorCode
                          success:(void (^)(NSString *authToken))success
-                needsMultiFactor:(void (^)())needsMultifactor
+                needsMultiFactor:(void (^)(void))needsMultifactor
                          failure:(void (^)(NSError *error))failure;
 
 - (void)requestOneTimeCodeWithUsername:(NSString *)username

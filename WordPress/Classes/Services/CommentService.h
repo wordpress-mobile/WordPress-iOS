@@ -38,27 +38,27 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 // Upload comment
 - (void)uploadComment:(Comment *)comment
-              success:(void (^)())success
+              success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure;
 
 // Approve comment
 - (void)approveComment:(Comment *)comment
-               success:(void (^)())success
+               success:(void (^)(void))success
                failure:(void (^)(NSError *error))failure;
 
 // Unapprove comment
 - (void)unapproveComment:(Comment *)comment
-                 success:(void (^)())success
+                 success:(void (^)(void))success
                  failure:(void (^)(NSError *error))failure;
 
 // Spam comment
 - (void)spamComment:(Comment *)comment
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure;
 
 // Trash comment
 - (void)deleteComment:(Comment *)comment
-              success:(void (^)())success
+              success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure;
 
 // Sync a list of comments sorted by hierarchy
@@ -84,61 +84,61 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (void)updateCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     content:(NSString *)content
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 // Replies
 - (void)replyToPost:(ReaderPost *)post
             content:(NSString *)content
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure;
 
 - (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
                                   post:(ReaderPost *)post
                                  content:(NSString *)content
-                                 success:(void (^)())success
+                                 success:(void (^)(void))success
                                  failure:(void (^)(NSError *error))failure;
 
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure;
 
 // Like comment
 - (void)likeCommentWithID:(NSNumber *)commentID
                    siteID:(NSNumber *)siteID
-                  success:(void (^)())success
+                  success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure;
 
 // Unlike comment
 - (void)unlikeCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 // Approve comment
 - (void)approveCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure;
 
 // Unapprove comment
 - (void)unapproveCommentWithID:(NSNumber *)commentID
                         siteID:(NSNumber *)siteID
-                       success:(void (^)())success
+                       success:(void (^)(void))success
                        failure:(void (^)(NSError *error))failure;
 
 // Spam comment
 - (void)spamCommentWithID:(NSNumber *)commentID
                    siteID:(NSNumber *)siteID
-                  success:(void (^)())success
+                  success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure;
 
 // Delete comment
 - (void)deleteCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -150,7 +150,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
  */
 - (void)toggleLikeStatusForComment:(Comment *)comment
                             siteID:(NSNumber *)siteID
-                           success:(void (^)())success
+                           success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure;
 
 @end

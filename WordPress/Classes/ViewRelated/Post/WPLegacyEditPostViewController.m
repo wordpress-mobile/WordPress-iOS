@@ -265,7 +265,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)showBlogSelector
 {
-    void (^dismissHandler)() = ^(void) {
+    void (^dismissHandler)(void) = ^(void) {
         self.dismissingBlogPicker = YES;
         [self dismissViewControllerAnimated:YES completion:nil];
         self.dismissingBlogPicker = NO;
@@ -643,7 +643,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
     __block NSString *postOriginalStatus = self.post.original.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
 
-    void (^stopEditingAndDismiss)() = ^{
+    void (^stopEditingAndDismiss)(void) = ^{
         __typeof__(self) strongSelf = weakSelf;
         if (!strongSelf) {
             return;

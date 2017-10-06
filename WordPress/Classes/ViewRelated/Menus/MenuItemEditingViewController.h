@@ -12,17 +12,17 @@ extern NSString * const MenuItemEditingTypeSelectionChangedNotification;
 /**
  Completion handler to call when the user has selected to save changes.
  */
-@property (nonatomic, copy, nullable) void(^onSelectedToSave)();
+@property (nonatomic, copy, nullable) void(^onSelectedToSave)(void);
 
 /**
  Completion handler to call when the user has selected to delete the item.
  */
-@property (nonatomic, copy, nullable) void(^onSelectedToTrash)();
+@property (nonatomic, copy, nullable) void(^onSelectedToTrash)(void);
 
 /**
  Completion handler to call when the user has selected to cancel changes to the item.
  */
-@property (nonatomic, copy, nullable) void(^onSelectedToCancel)();
+@property (nonatomic, copy, nullable) void(^onSelectedToCancel)(void);
 
 + (MenuItemEditingViewController *)itemEditingViewControllerWithItem:(MenuItem *)item blog:(Blog *)blog;
 
