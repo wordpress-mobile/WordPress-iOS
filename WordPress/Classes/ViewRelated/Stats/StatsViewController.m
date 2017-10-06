@@ -158,8 +158,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
 {
-    WPWebViewController *webVC = [WPWebViewController authenticatedWebViewController:url];
-    [self.navigationController pushViewController:webVC animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController new];
+    webViewController.url = url;
+    [webViewController authenticateWithDefaultAccount];
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 
