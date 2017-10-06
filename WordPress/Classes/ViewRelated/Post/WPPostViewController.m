@@ -1910,19 +1910,14 @@ UIDocumentPickerDelegate
     __weak __typeof__(self) weakSelf = self;
     BOOL isImage = (asset.mediaType == PHAssetMediaTypeImage);
     NSString *mediaUniqueID = [self uniqueIdForMedia];
+
     [mediaService createMediaWithPHAsset:asset
                          forPostObjectID:self.post.objectID
                        thumbnailCallback:^(NSURL *thumbnailURL) {
-                           __typeof__(self) strongSelf = weakSelf;
-                           if (strongSelf) {
-                               [strongSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
-                           }
+                           [weakSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
                        }
                               completion:^(Media *media, NSError *error){
-                                  __typeof__(self) strongSelf = weakSelf;
-                                  if (strongSelf) {
-                                      [strongSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
-                                  }
+                                  [weakSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
                               }];
 }
 
@@ -2370,23 +2365,17 @@ UIDocumentPickerDelegate
 - (void)addExternalMediaWithURL:(NSURL *)url
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    
     NSString *mediaUniqueID = [url lastPathComponent];
     BOOL isImage = [WPImageViewController isUrlSupported:url];
     __weak __typeof__(self) weakSelf = self;
+
     [mediaService createMediaWithURL:url
                      forPostObjectID:self.post.objectID
                    thumbnailCallback:^(NSURL *thumbnailURL) {
-                       __typeof__(self) strongSelf = weakSelf;
-                       if (strongSelf) {
-                           [strongSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
-                       }
+                       [weakSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
                    }
                           completion:^(Media *media, NSError *error){
-                              __typeof__(self) strongSelf = weakSelf;
-                              if (strongSelf) {
-                                  [strongSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
-                              }
+                              [weakSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
                           }];
 }
 
