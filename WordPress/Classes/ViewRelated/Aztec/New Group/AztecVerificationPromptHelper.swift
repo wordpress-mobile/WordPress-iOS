@@ -90,10 +90,10 @@ internal class AztecVerificationPromptHelper: NSObject {
 //
 extension AztecVerificationPromptHelper: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        if presented is FancyAlertViewController {
-            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        guard presented is FancyAlertViewController else {
+            return nil
         }
 
-        return nil
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
