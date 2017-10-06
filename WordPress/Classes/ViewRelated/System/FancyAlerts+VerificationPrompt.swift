@@ -23,11 +23,9 @@ extension FancyAlertViewController {
             }, failure: { error in
                 submitButton?.showActivityIndicator(false)
 
-                let localError: VerificationFailureError
-
-                switch (error as NSError).domain {
-                case WordPressComRestApiErrorDomain: localError = .alreadyVerified
-                default: localError = .unknown
+                var localError = VerificationFailureError.unknown
+                if  (error as NSError).domain == WordPressComRestApiErrorDomain {
+                    localError = .alreadyVerified
                 }
                 // if we hit a bad edge-case where the user hits a "resend email" button, but they've already verified
                 // their account, we want to show them a nice message explaining what happened.
