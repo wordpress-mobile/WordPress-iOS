@@ -206,12 +206,11 @@ extension WPWebViewController {
         let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
         bugButton.accessibilityLabel = NSLocalizedString("Report a bug", comment: "Button allowing the user to report a bug with the beta Aztec editor")
 
-        var webViewController: WPWebViewController
+        let webViewController = WPWebViewController()
+        webViewController.url = AztecAnnouncementWhatsNewURL
 
         if HelpshiftUtils.isHelpshiftEnabled() {
-            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL, optionsButton: bugButton)
-        } else {
-            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL)
+            webViewController.optionsButton = bugButton
         }
 
         let navigationController = UINavigationController(rootViewController: webViewController)

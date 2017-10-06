@@ -422,7 +422,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
+    WPWebViewController *webViewController = [WPWebViewController new];
+    webViewController.url = url;
+    [webViewController authenticateWithDefaultAccount];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }

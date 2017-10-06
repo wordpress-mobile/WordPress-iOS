@@ -799,9 +799,10 @@ import WordPressShared
                 return
         }
 
-        let controller = WPWebViewController(url: siteURL)
-        controller?.addsWPComReferrer = true
-        let navController = UINavigationController(rootViewController: controller!)
+        let controller = WPWebViewController()
+        controller.url = siteURL
+        controller.addsWPComReferrer = true
+        let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
 
@@ -826,9 +827,10 @@ import WordPressShared
         }
 
         let linkURL = URL(string: sourceAttribution.blogURL)
-        let controller = WPWebViewController(url: linkURL)
-        controller?.addsWPComReferrer = true
-        let navController = UINavigationController(rootViewController: controller!)
+        let controller = WPWebViewController()
+        controller.url = linkURL
+        controller.addsWPComReferrer = true
+        let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
 

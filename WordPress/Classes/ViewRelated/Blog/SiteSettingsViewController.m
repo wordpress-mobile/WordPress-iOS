@@ -835,7 +835,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
         NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
-        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
+        WPWebViewController *webViewController = [WPWebViewController new];
+        webViewController.url = targetURL;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navController animated:YES completion:nil];
     }
@@ -1001,7 +1002,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     }
 
     NSURL *targetURL = [NSURL URLWithString:path];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
+    WPWebViewController *webViewController = [WPWebViewController new];
+    webViewController.url = targetURL;
     [webViewController authenticateWithBlog:self.blog];
     webViewController.shouldScrollToBottom = YES;
     
