@@ -57,7 +57,7 @@ internal class AztecVerificationPromptHelper: NSObject {
         let fancyAlert = FancyAlertViewController.verificationPromptController { [weak self] in
             then?(self?.wpComAccount.emailVerified.boolValue ?? false)
         }
-    
+
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = self
         presentingViewController.present(fancyAlert, animated: true)
