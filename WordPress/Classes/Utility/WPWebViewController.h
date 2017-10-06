@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
-
+@class Blog;
+@class WPAccount;
 
 #pragma mark - WPWebViewController
 
@@ -10,26 +11,6 @@
  *	@brief		Represents the Endpoint URL to render
  */
 @property (nonatomic, strong) NSURL     *url;
-
-/**
- *	@brief		Login URL that should be used to authenticate the user.
- */
-@property (nonatomic, strong) NSURL     *wpLoginURL;
-
-/**
- *	@brief		Username. Optional, will be used in case the endpoint requires authentication.
- */
-@property (nonatomic, strong) NSString  *username;
-
-/**
- *	@brief		Password. Optional, will be used in case the endpoint requires authentication.
- */
-@property (nonatomic, strong) NSString  *password;
-
-/**
- *	@brief		Bearer Token. Optional, will be used in case the endpoint requires authentication.
- */
-@property (nonatomic, strong) NSString  *authToken;
 
 /**
  *	@brief		Optionally scrolls the endpoint to the bottom of the screen, automatically.
@@ -45,6 +26,16 @@
  *  @brief  When true adds a custom referrer to NSURLRequest.
  */
 @property (nonatomic, assign) BOOL addsWPComReferrer;
+
+/**
+ *  @brief Use the provided blog to authenticate the web view.
+ */
+- (void)authenticateWithBlog:(Blog *)blog;
+
+/**
+ *  @brief Use the provided account to authenticate the web view.
+ */
+- (void)authenticateWithAccount:(WPAccount *)account;
 
 /**
  *	@brief		Dismiss modal presentation
