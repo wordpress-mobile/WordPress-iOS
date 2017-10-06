@@ -999,10 +999,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    webViewController.authToken = self.blog.authToken;
-    webViewController.username = self.blog.usernameForSite;
-    webViewController.password = self.blog.password;
-    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
+    [webViewController authenticateWithBlog:self.blog];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
