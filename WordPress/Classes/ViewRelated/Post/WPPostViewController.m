@@ -927,13 +927,7 @@ UIDocumentPickerDelegate
     UIDocumentPickerViewController *docPicker = [[UIDocumentPickerViewController alloc]
                                                  initWithDocumentTypes:docTypes inMode:UIDocumentPickerModeImport];
     docPicker.delegate = self;
-    
-    // The app's appearance settings override the doc picker color scheme.
-    // Setting the nav colors here so the doc picker has the correct appearance.
-    // The app colors are restored later with resetNavigationColors().
-    [[UINavigationBar appearance] setTintColor:[WPStyleGuide mediumBlue]];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide mediumBlue]} forState:UIControlStateNormal];
-    
+    [WPStyleGuide configureDocumentPickerNavBarAppearance];
     [self presentViewController:docPicker animated:YES completion:nil];
 }
 
