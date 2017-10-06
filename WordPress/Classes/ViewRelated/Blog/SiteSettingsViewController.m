@@ -971,44 +971,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         } else {
             message = [error localizedDescription];
         }
-        if (error.code == 405) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                message:message
-                      withSupportButton:YES
-                         okPressedBlock:^(UIAlertController *alertView) {
-                [self openSiteAdminFromAlert:alertView];
-            }];
-
-        } else {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message];
-        }
+        [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message];
     }
-}
-
-- (void)openSiteAdminFromAlert:(UIAlertController *)alertView
-{
-    NSString *path = nil;
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSString *msg = [alertView message];
-    NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
-
-    if (rng.location == NSNotFound) {
-        path = [self getURLToValidate];
-        path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-        path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-    } else {
-        path = [msg substringWithRange:rng];
-    }
-
-    NSURL *targetURL = [NSURL URLWithString:path];
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = targetURL;
-    [webViewController authenticateWithBlog:self.blog];
-    webViewController.shouldScrollToBottom = YES;
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Saving methods
