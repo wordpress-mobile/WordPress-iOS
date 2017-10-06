@@ -9,7 +9,7 @@ protocol LoginSocialErrorViewControllerDelegate {
 }
 
 /// ViewController for presenting recovery options when social login fails
-class LoginSocialErrorViewController: UITableViewController {
+class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHelpViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
     var delegate: LoginSocialErrorViewControllerDelegate?
@@ -52,6 +52,8 @@ class LoginSocialErrorViewController: UITableViewController {
         super.viewDidLoad()
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
+        addHelpButtonToNavController()
+        addWordPressLogoToNavController()
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
