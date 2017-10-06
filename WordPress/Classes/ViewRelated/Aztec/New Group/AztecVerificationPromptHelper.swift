@@ -2,7 +2,6 @@ import UIKit
 
 internal class AztecVerificationPromptHelper: NSObject {
 
-    private let managedObjectContext: NSManagedObjectContext
     private let accountService: AccountService
     private let wpComAccount: WPAccount
 
@@ -11,19 +10,22 @@ internal class AztecVerificationPromptHelper: NSObject {
 
     typealias AztecVerificationPromptCompletion = (Bool) -> ()
 
-    init?(managedObjectContext: NSManagedObjectContext, for account: WPAccount?) {
-        self.managedObjectContext = managedObjectContext
-        self.accountService = AccountService(managedObjectContext: managedObjectContext)
-
-        guard let wpComAccount = self.accountService.defaultWordPressComAccount(),
-                  wpComAccount == account,
-                  !(wpComAccount.emailVerified.boolValue) else {
-                    // if the post the user is trying to compose isn't on a WP.com account,
-                    // or they're already verified, then the verification prompt is irrelevant.
+    init?(account: WPAccount?) {
+        guard let passedAccount = account,
+              let managedObjectContext = account?.managedObjectContext else {
                 return nil
         }
 
-        self.wpComAccount = wpComAccount
+        self.accountService = AccountService(managedObjectContext: managedObjectContext)
+
+        guard accountService.isDefaultWordPressComAccount(passedAccount),
+              !passedAccount.emailVerified.boolValue else {
+                // if the post the user is trying to compose isn't on a WP.com account,
+                // or they're already verified, then the verification prompt is irrelevant.
+                return nil
+        }
+
+        self.wpComAccount = passedAccount
 
         super.init()
 

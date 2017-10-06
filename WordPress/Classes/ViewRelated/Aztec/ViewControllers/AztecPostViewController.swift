@@ -404,10 +404,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Verification Prompt Helper
     ///
+    /// - Returns: `nil` when there's no need for showing the verification prompt.
     fileprivate lazy var verificationPromptHelper: AztecVerificationPromptHelper? = {
-        return AztecVerificationPromptHelper(managedObjectContext: self.mainContext,
-                                             for: self.post.blog.account)
-        // returns `nil` when there's no need for showing the verification prompt.
+        return AztecVerificationPromptHelper(account: self.post.blog.account)
     }()
 
 
