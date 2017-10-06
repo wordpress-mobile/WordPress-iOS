@@ -1,11 +1,3 @@
-//
-//  AztecVerificationPromptHelper.swift
-//  WordPress
-//
-//  Created by Jan Klausa on 05.10.17.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
-
 import UIKit
 
 internal class AztecVerificationPromptHelper: NSObject {
