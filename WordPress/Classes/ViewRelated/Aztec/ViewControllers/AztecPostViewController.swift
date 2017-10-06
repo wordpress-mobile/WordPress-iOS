@@ -855,8 +855,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
         htmlTextView.scrollIndicatorInsets = scrollInsets
         htmlTextView.contentInset = contentInsets
