@@ -32,6 +32,10 @@ internal class AztecVerificationPromptHelper: NSObject {
         }
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     func neeedsVerification(before action: PostEditorAction) -> Bool {
         guard action == .publish else {
             return false
@@ -78,10 +82,6 @@ internal class AztecVerificationPromptHelper: NSObject {
                                             displayedAlert.dismiss(animated: true, completion: nil)
                                             self?.completionBlock?(updatedAccount.emailVerified.boolValue)
             }, failure: nil)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 
 }
