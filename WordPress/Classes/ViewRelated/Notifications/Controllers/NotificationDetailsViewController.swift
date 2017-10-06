@@ -925,7 +925,9 @@ private extension NotificationDetailsViewController {
     }
 
     func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WPWebViewController.authenticatedWebViewController(url)
+        let webViewController = WPWebViewController()
+        webViewController.url = url
+        webViewController.authenticateWithDefaultAccount()
         let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true, completion: nil)
     }

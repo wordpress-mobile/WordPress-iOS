@@ -131,9 +131,10 @@ open class ReaderPostMenu {
                 return
         }
 
-        let controller = WPWebViewController(url: siteURL)
-        controller?.addsWPComReferrer = true
-        let navController = UINavigationController(rootViewController: controller!)
+        let controller = WPWebViewController()
+        controller.url = siteURL
+        controller.addsWPComReferrer = true
+        let navController = UINavigationController(rootViewController: controller)
         viewController.present(navController, animated: true, completion: nil)
     }
 }

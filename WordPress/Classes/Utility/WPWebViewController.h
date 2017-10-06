@@ -13,6 +13,11 @@
 @property (nonatomic, strong) NSURL     *url;
 
 /**
+ *  @brief      A custom options button to show instead of the share button. Must be set before presented.
+ */
+@property (nonatomic, strong) UIBarButtonItem          *optionsButton;
+
+/**
  *	@brief		Optionally scrolls the endpoint to the bottom of the screen, automatically.
  */
 @property (nonatomic, assign) BOOL      shouldScrollToBottom;
@@ -38,28 +43,13 @@
 - (void)authenticateWithAccount:(WPAccount *)account;
 
 /**
+ *  @brief Use the default account to authenticate the web view.
+ */
+- (void)authenticateWithDefaultAccount;
+
+/**
  *	@brief		Dismiss modal presentation
  */
 - (IBAction)dismiss;
-
-/**
- *	@brief      Helper method to initialize a WebViewController Instance
- *
- *	@param		url         The URL that needs to be rendered
- *  @returns                A WPWebViewController instance ready to be pushed.
- */
-+ (instancetype)webViewControllerWithURL:(NSURL *)url;
-
-/**
- *	@brief      Helper method to initialize a WebViewController Instance with a 
- *              custom options button
- *
- *	@param		url         The URL that needs to be rendered
- *  @param      button      A custom options button to display instead of the
- *                          default share button.
- *  @returns                A WPWebViewController instance ready to be pushed.
- */
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-                           optionsButton:(UIBarButtonItem *)button;
 
 @end

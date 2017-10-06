@@ -19,6 +19,7 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
 
 static CGFloat const WPWebViewToolbarShownConstant          = 0.0;
 static CGFloat const WPWebViewToolbarHiddenConstant         = -44.0;
+static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
 
 static NSString *const WPComReferrerURL = @"https://wordpress.com";
 
@@ -32,7 +33,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet WebProgressView          *progressView;
 @property (nonatomic, strong) UIBarButtonItem          *dismissButton;
-@property (nonatomic, strong) UIBarButtonItem          *optionsButton;
 
 @property (nonatomic,   weak) IBOutlet UIToolbar                *toolbar;
 @property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
@@ -283,6 +283,16 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.authenticator = [[WebViewAuthenticator alloc] initWithAccount:account];
 }
 
+- (void)authenticateWithDefaultAccount
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [service defaultWordPressComAccount];
+    if (account != NULL) {
+        [self authenticateWithAccount:account];
+    }
+}
+
 #pragma mark - IBAction Methods
 
 - (IBAction)dismiss
@@ -418,29 +428,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     [self refreshInterface];
     [self showBottomToolbarIfNeeded];
     [self scrollToBottomIfNeeded];
-}
-
-
-#pragma mark - Static Helpers
-
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-{
-    NSParameterAssert(url);
-    
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    return webViewController;
-}
-
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-                           optionsButton:(UIBarButtonItem *)button
-{
-    NSParameterAssert(url);
-
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    webViewController.optionsButton = button;
-    return webViewController;
 }
 
 @end
