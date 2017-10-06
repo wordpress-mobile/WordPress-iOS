@@ -1,1 +1,3 @@
-Vous ne remarquerez peut-être aucun changement notable sur cette version à part une app plus rapide et plus stable. Vous aurez la preuve en l’utilisant !
+Sélecteur de média sur une seule ligne dans le nouvel éditeur.
+Sites Jetpack : Ajout du support pour naviguer dans les thèmes et les activer.
+Sites Jetpack : gérer vos réglage de sécurité dans l’app.
