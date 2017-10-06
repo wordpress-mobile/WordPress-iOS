@@ -10,6 +10,11 @@ import UIKit
 
 extension FancyAlertViewController {
 
+    private enum VerificationFailureError: Error {
+        case alreadyVerified
+        case unknown
+    }
+
     public static func verificationPromptController(completion: (() -> Void)?) -> FancyAlertViewController {
         let resendEmailButton = FancyAlertViewController.Config.ButtonConfig(Strings.resendEmail) { controller, button in
 
@@ -25,7 +30,18 @@ extension FancyAlertViewController {
                 controller.setViewConfiguration(successfullySentVerificationEmailConfig(), animated: true)
             }, failure: { error in
                 submitButton?.showActivityIndicator(false)
-                controller.setViewConfiguration(failureSendingVerificationEmailConfig(), animated: true)
+
+                let localError: VerificationFailureError
+
+                switch (error as NSError).domain {
+                case WordPressComRestApiErrorDomain: localError = .alreadyVerified
+                default: localError = .unknown
+                }
+                // if we hit a bad edge-case where the user hits a "resend email" button, but they've already verified
+                // their account, we want to show them a nice message explaining what happened.
+                // if it was a generic failure (probably bad network), show a different message.
+
+                controller.setViewConfiguration(failureSendingVerificationEmailConfig(with: localError), animated: true)
             })
         }
 
@@ -63,13 +79,20 @@ extension FancyAlertViewController {
                                                dismissAction: nil)
     }
 
-    private static func failureSendingVerificationEmailConfig() -> FancyAlertViewController.Config {
+    private static func failureSendingVerificationEmailConfig(with error: VerificationFailureError) -> FancyAlertViewController.Config {
         let okButton = FancyAlertViewController.Config.ButtonConfig(Strings.ok) { controller, _ in
             controller.dismiss(animated: true, completion: nil)
         }
 
+        let bodyText: String
+
+        switch error {
+            case .alreadyVerified: bodyText = Strings.emailSendingFailedAlreadyVerified
+            case .unknown: bodyText = Strings.emailSendingFailedGeneric
+        }
+
         return FancyAlertViewController.Config(titleText: Strings.titleText,
-                                               bodyText: Strings.emailSendingFailed,
+                                               bodyText: bodyText,
                                                headerImage: #imageLiteral(resourceName: "wp-illustration-hand-write"),
                                                dividerPosition: .bottom,
                                                defaultButton: okButton,
@@ -79,7 +102,7 @@ extension FancyAlertViewController {
                                                dismissAction: nil)
     }
 
-    private struct Strings {
+    private enum Strings {
         static let titleText = NSLocalizedString("Confirm your email first",
                                                  comment: "Title of alert prompting users to verify their accounts while attempting to publish")
 
@@ -95,9 +118,11 @@ extension FancyAlertViewController {
         static let emailSentSuccesfully = NSLocalizedString("Verification email sent, check your inbox.",
                                                  comment: "Message shown when a verification email was re-sent succesfully")
 
-        static let emailSendingFailed = NSLocalizedString("Error sending verification email. Are you already verified?",
-                                                          comment: "Message shown when there was an error trying to re-send email verification")
+        static let emailSendingFailedAlreadyVerified = NSLocalizedString("Error sending verification email. Are you already verified?",
+                                                                         comment: "Message shown when there was an error trying to re-send email verification and we suspect the user has already verified in the meantime")
+
+        static let emailSendingFailedGeneric = NSLocalizedString("Error sending verification email. Check your connection and try again.",
+                                                                 comment: "Generic message shown when there was an error trying to re-send email verification.")
+
     }
-
-
 }

@@ -12,22 +12,23 @@ internal class AztecVerificationPromptHelper: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
     private let accountService: AccountService
-    private let wpAccount: WPAccount
+    private let wpComAccount: WPAccount
 
     private weak var displayedAlert: FancyAlertViewController?
 
-    init?(managedObjectContext: NSManagedObjectContext, for post: AbstractPost) {
+    init?(managedObjectContext: NSManagedObjectContext, for account: WPAccount?) {
         self.managedObjectContext = managedObjectContext
         self.accountService = AccountService(managedObjectContext: managedObjectContext)
 
-        guard let wpAccount = self.accountService.defaultWordPressComAccount(),
-            wpAccount == post.blog.account else {
-                // if the post the user is trying to compose isn't on a WP.com account,
-                // then the verification prompt is irrelevant.
+        guard let wpComAccount = self.accountService.defaultWordPressComAccount(),
+                  wpComAccount == account,
+                  !(wpComAccount.emailVerified.boolValue) else {
+                    // if the post the user is trying to compose isn't on a WP.com account,
+                    // or they're already verified, then the verification prompt is irrelevant.
                 return nil
         }
 
-        self.wpAccount = wpAccount
+        self.wpComAccount = wpComAccount
 
         super.init()
 
@@ -43,12 +44,15 @@ internal class AztecVerificationPromptHelper: NSObject {
 
 
         return !wpAccount.emailVerified.boolValue
+        return !wpComAccount.emailVerified.boolValue
     }
 
     func displayVerificationPrompt(from presentingViewController: UIViewController,
                                    then: @escaping () -> ()) {
-        let fancyAlert = FancyAlertViewController.verificationPromptController(completion: then)
 
+
+        let fancyAlert = FancyAlertViewController.verificationPromptController(completion: then)
+    
         fancyAlert.modalPresentationStyle = .custom
         fancyAlert.transitioningDelegate = self
         presentingViewController.present(fancyAlert, animated: true)
@@ -57,10 +61,12 @@ internal class AztecVerificationPromptHelper: NSObject {
     }
 
     func updateVerificationStatus() {
-        accountService.updateUserDetails(for: wpAccount,
+
+        accountService.updateUserDetails(for: wpComAccount,
                                          success: { [weak self] in
+
                                             guard let updatedAccount = self?.accountService.defaultWordPressComAccount(),
-                                                updatedAccount.emailVerified.boolValue else { return }
+                                                     updatedAccount.emailVerified.boolValue else { return }
 
                                             self?.displayedAlert?.dismiss(animated: true, completion: nil)
             }, failure: nil)
