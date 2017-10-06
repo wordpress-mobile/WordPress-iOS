@@ -74,7 +74,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
             	return
             }
 
-            let keyFirstPart = key.substring(to: index)
+            let keyFirstPart = String(key[..<index])
 
             guard let value = value as? [String],
                 let firstValue = value.first else {
@@ -82,7 +82,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
                     return
             }
 
-            var originalLanguage = key.substring(from: index)
+            var originalLanguage = String(key[index...])
             originalLanguage.remove(at: originalLanguage.startIndex)
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
             

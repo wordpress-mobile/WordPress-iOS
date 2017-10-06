@@ -1,1 +1,3 @@
-Você pode não perceber nada evidentemente diferente nesta versão, mas espere um app mais rápido e mais estável. A prova está na utilização!
+Seletor de mídia em linha no novo editor.
+Sites Jetpack: adicionado suporte à navegação e ativação de temas.
+Sites Jetpack: gerencie suas configurações de segurança pelo aplicativo.
