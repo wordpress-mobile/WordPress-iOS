@@ -2517,10 +2517,8 @@ extension AztecPostViewController {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(url: url, forPost: post.objectID,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
-                                    DispatchQueue.main.async {
-                                        attachment.updateURL(thumbnailURL)
-                                        self?.richTextView.refresh(attachment)
-                                    }},
+                                    self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+            },
                                  completion: { [weak self](media, error) in
                                     self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaOtherApps)
         })
@@ -2532,10 +2530,8 @@ extension AztecPostViewController {
         let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(url: url, forPost: post.objectID,
                                  thumbnailCallback: { [weak self] (thumbnailURL) in
-                                    DispatchQueue.main.async {
-                                        attachment.posterURL = thumbnailURL
-                                        self?.richTextView.refresh(attachment)
-                                    }},
+                                    self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+            },
                                  completion: { [weak self] (media, error) in
                                     self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedVideoViaOtherApps)
         })
@@ -2559,13 +2555,8 @@ extension AztecPostViewController {
         mediaService.createMedia(with: phAsset,
                                  forPost: post.objectID,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
-                                    guard let `self` = self else {
-                                        return
-                                    }
-                                    DispatchQueue.main.async {
-                                        attachment.updateURL(thumbnailURL)
-                                        self.richTextView.refresh(attachment)
-                                    }},
+                                    self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+            },
                                  completion: { [weak self](media, error) in
                                     self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaLocalLibrary)
         })
@@ -2578,13 +2569,8 @@ extension AztecPostViewController {
         mediaService.createMedia(with: phAsset,
                                  forPost: post.objectID,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
-                                    guard let strongSelf = self else {
-                                        return
-                                    }
-                                    DispatchQueue.main.async {
-                                        attachment.posterURL = thumbnailURL
-                                        strongSelf.richTextView.refresh(attachment)
-                                    }},
+                                    self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+            },
                                  completion: { [weak self](media, error) in
                                     self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedVideoViaLocalLibrary)
         })
@@ -2595,6 +2581,27 @@ extension AztecPostViewController {
             insertRemoteSiteMediaLibrary(media: media)
         } else {
             insertLocalSiteMediaLibrary(media: media)
+        }
+    }
+
+    private func attachmentWithPlaceholder(isImage: Bool) -> Any {
+        if isImage {
+            return richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        }
+
+        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+    }
+
+    private func handleThumbnailURL(_ thumbnailURL: URL, attachment: Any) {
+        DispatchQueue.main.async {
+            if let attachment = attachment as? ImageAttachment {
+                attachment.updateURL(thumbnailURL)
+                self.richTextView.refresh(attachment)
+            }
+            else if let attachment = attachment as? VideoAttachment {
+                attachment.posterURL = thumbnailURL
+                self.richTextView.refresh(attachment)
+            }
         }
     }
 
@@ -2610,14 +2617,6 @@ extension AztecPostViewController {
         WPAppAnalytics.track(statType, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
 
         self.upload(media: media, mediaID: attachment.identifier)
-    }
-
-    private func attachmentWithPlaceholder(isImage: Bool) -> Any {
-        if isImage {
-            return richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
-        }
-
-        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string:"placeholder://")!, posterURL: URL(string:"placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
     }
 
     fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
