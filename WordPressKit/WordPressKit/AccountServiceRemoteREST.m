@@ -67,7 +67,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 }
 
 - (void)updateBlogsVisibility:(NSDictionary *)blogs
-                      success:(void (^)())success
+                      success:(void (^)(void))success
                       failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([blogs isKindOfClass:[NSDictionary class]]);
@@ -204,7 +204,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                             clientID:(NSString *)clientID
                         clientSecret:(NSString *)clientSecret
                          wpcomScheme:(NSString *)scheme
-                             success:(void (^)())success failure:(void (^)(NSError *error))failure
+                             success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     NSAssert([email length] > 0, @"Needs an email address.");
 

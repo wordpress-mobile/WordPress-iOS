@@ -1,1 +1,1 @@
-Ovviamente potresti non notare nulla di diverso su questa versione, ma sarà un'applicazione più stabile e veloce. L'unico modo per provarla è utilizzarla.
+Selettore inline media nel nuovo editor. Siti Jetpack: aggiunto il supporto per la navigazione e l'attivazione di temi. Siti Jetpack: gestisci le tue impostazioni di sicurezza nell’app.

@@ -17,8 +17,7 @@ extension WPWebViewController {
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         if let defaultAccount = service.defaultWordPressComAccount() {
-            webViewController?.username  = defaultAccount.username
-            webViewController?.authToken = defaultAccount.authToken
+            webViewController?.authenticate(with: defaultAccount)
         }
 
         return webViewController!

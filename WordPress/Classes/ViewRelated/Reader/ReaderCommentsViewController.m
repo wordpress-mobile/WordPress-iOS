@@ -665,7 +665,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
 
-    void (^successBlock)() = ^void() {
+    void (^successBlock)(void) = ^void() {
         [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
         NSMutableDictionary *properties = [NSMutableDictionary dictionary];
