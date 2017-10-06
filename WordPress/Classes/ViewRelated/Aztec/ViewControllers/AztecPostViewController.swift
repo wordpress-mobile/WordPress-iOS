@@ -1004,7 +1004,7 @@ extension AztecPostViewController {
             verificationHelper.displayVerificationPrompt(from: self) { [weak self] verifiedInBackground in
                 // User could've been plausibly silently verified in the background.
                 // If so, proceed to publishing the post as normal, otherwise save it as a draft.
-                if (!verifiedInBackground) {
+                if !verifiedInBackground {
                     self?.post.status = .draft
                 }
 
