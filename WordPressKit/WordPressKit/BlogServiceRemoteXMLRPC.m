@@ -139,7 +139,7 @@ static NSString * const RemotePostTypePublicKey = @"public";
             return;
         }
         if (success) {
-            success(responseObject);
+            success();
         }
     } failure:^(NSError *error, NSHTTPURLResponse *response) {
         DDLogError(@"Error updating blog options: %@", error);

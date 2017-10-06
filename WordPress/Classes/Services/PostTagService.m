@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PostTagService
 
 - (void)syncTagsForBlog:(Blog *)blog
-                success:(nullable void (^)())success
+                success:(nullable void (^)(void))success
                 failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];

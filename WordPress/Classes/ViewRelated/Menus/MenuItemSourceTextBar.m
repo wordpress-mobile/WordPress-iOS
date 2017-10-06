@@ -237,7 +237,7 @@
 {
     if (self.cancelLabel.hidden != hidden) {
 
-        void(^toggleButton)() = ^() {
+        void(^toggleButton)(void) = ^() {
             self.cancelLabel.hidden = hidden;
             self.cancelLabel.alpha = hidden ? 0.0 : 1.0;
         };

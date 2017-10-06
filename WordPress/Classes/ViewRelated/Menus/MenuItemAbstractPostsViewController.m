@@ -198,7 +198,7 @@
     self.defersFooterViewMessageUpdates = NO;
 
     [self showLoadingSourcesIndicator];
-    void(^stopLoading)() = ^() {
+    void(^stopLoading)(void) = ^() {
         [self hideLoadingSourcesIndicator];
     };
 
