@@ -224,7 +224,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 // Upload comment
 - (void)uploadComment:(Comment *)comment
-              success:(void (^)())success
+              success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure
 {
     id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
@@ -257,7 +257,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 // Approve
 - (void)approveComment:(Comment *)comment
-               success:(void (^)())success
+               success:(void (^)(void))success
                failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
@@ -268,7 +268,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 // Unapprove
 - (void)unapproveComment:(Comment *)comment
-                 success:(void (^)())success
+                 success:(void (^)(void))success
                  failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
@@ -279,7 +279,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 // Spam
 - (void)spamComment:(Comment *)comment
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *commentID = comment.objectID;
@@ -297,7 +297,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 // Delete comment
 - (void)deleteComment:(Comment *)comment
-              success:(void (^)())success
+              success:(void (^)(void))success
               failure:(void (^)(NSError *error))failure
 {
     NSNumber *commentID = comment.commentID;
@@ -386,7 +386,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)updateCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
                     content:(NSString *)content
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -399,7 +399,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Replies
 - (void)replyToPost:(ReaderPost *)post
             content:(NSString *)content
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
     // Create and optimistically save a comment, based on the current wpcom acct
@@ -448,7 +448,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)replyToHierarchicalCommentWithID:(NSNumber *)commentID
                                   post:(ReaderPost *)post
                                  content:(NSString *)content
-                                 success:(void (^)())success
+                                 success:(void (^)(void))success
                                  failure:(void (^)(NSError *error))failure
 {
     // Create and optimistically save a comment, based on the current wpcom acct
@@ -499,7 +499,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (void)replyToCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
                      content:(NSString *)content
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -517,7 +517,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Likes
 - (void)likeCommentWithID:(NSNumber *)commentID
                    siteID:(NSNumber *)siteID
-                  success:(void (^)())success
+                  success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -528,7 +528,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)unlikeCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -540,7 +540,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Moderation
 - (void)approveCommentWithID:(NSNumber *)commentID
                       siteID:(NSNumber *)siteID
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -552,7 +552,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)unapproveCommentWithID:(NSNumber *)commentID
                         siteID:(NSNumber *)siteID
-                       success:(void (^)())success
+                       success:(void (^)(void))success
                        failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -564,7 +564,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)spamCommentWithID:(NSNumber *)commentID
                    siteID:(NSNumber *)siteID
-                  success:(void (^)())success
+                  success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -577,7 +577,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Trash
 - (void)deleteCommentWithID:(NSNumber *)commentID
                      siteID:(NSNumber *)siteID
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
@@ -588,7 +588,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)toggleLikeStatusForComment:(Comment *)comment
                             siteID:(NSNumber *)siteID
-                           success:(void (^)())success
+                           success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
 {
     // toggle the like status and change the like count and save it
@@ -650,7 +650,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 // Generic moderation
 - (void)moderateComment:(Comment *)comment
              withStatus:(NSString *)status
-                success:(void (^)())success
+                success:(void (^)(void))success
                 failure:(void (^)(NSError *error))failure
 {
     NSString *prevStatus = comment.status;

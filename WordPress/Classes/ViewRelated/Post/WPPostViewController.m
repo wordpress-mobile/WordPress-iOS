@@ -639,7 +639,7 @@ UIDocumentPickerDelegate
 
 - (void)showBlogSelector
 {
-    void (^dismissHandler)() = ^(void) {
+    void (^dismissHandler)(void) = ^(void) {
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     void (^successHandler)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
@@ -1554,7 +1554,7 @@ UIDocumentPickerDelegate
     __block NSString *postTitle = self.post.postTitle;
     __block PostEditorSaveAction currentSaveAction = self.currentSaveAction;
 
-    void (^stopEditingAndDismiss)() = ^{
+    void (^stopEditingAndDismiss)(void) = ^{
         __typeof__(self) strongSelf = weakSelf;
         if (!strongSelf) {
             return;

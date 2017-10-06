@@ -2,9 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
-#import "WPURLRequest.h"
 #import "WPUserAgent.h"
-#import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
 #import "WPStyleGuide+WebView.h"
@@ -52,6 +50,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
+
+@property (nonatomic, strong) WebViewAuthenticator *authenticator;
 
 @end
 
@@ -189,28 +189,27 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)loadWebViewRequest
 {
-    if (![ReachabilityUtils isInternetReachable]) {
-        [self showNoInternetAlertView];
+    if (self.authenticator == nil) {
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
+        [self loadRequest:request];
         return;
     }
-
-    BOOL hasCookies = [WPCookie hasCookieForURL:self.url andUsername:self.username];
-    if (self.url.isWordPressDotComUrl && !self.needsLogin && self.hasCredentials && !hasCookies) {
-        DDLogWarn(@"WordPress.com URL: We have login credentials but no cookie, let's try login first");
-        [self retryWithLogin];
-        return;
-    }
-    
-    NSURLRequest *request = [self newRequestForWebsite];
-    NSAssert(request, @"We should have a valid request here!");
-    
-    [self.webView loadRequest:request];
+    id<CookieJar> cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    [self.authenticator requestWithUrl:self.url
+                             cookieJar:cookieJar
+                            completion:^(NSURLRequest * _Nonnull request) {
+                                [self loadRequest:request];
+                            }];
 }
 
-- (void)retryWithLogin
+- (void)loadRequest:(NSURLRequest *)request
 {
-    self.needsLogin = YES;
-    [self loadWebViewRequest];
+    NSMutableURLRequest *mutableRequest = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
+    if (self.addsWPComReferrer) {
+        [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
+    }
+    [mutableRequest setValue:[WPUserAgent wordPressUserAgent] forHTTPHeaderField:@"User-Agent"];
+    [self.webView loadRequest:mutableRequest];
 }
 
 - (void)refreshInterface
@@ -238,14 +237,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     UIScrollView *scrollView    = self.webView.scrollView;
     CGPoint bottomOffset        = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
     [scrollView setContentOffset:bottomOffset animated:YES];
-}
-
-- (void)showNoInternetAlertView
-{
-    __typeof(self) __weak weakSelf = self;
-    [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
-        [weakSelf loadWebViewRequest];
-    }];
 }
 
 - (void)showBottomToolbarIfNeeded
@@ -292,6 +283,15 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 }
 
+- (void)authenticateWithBlog:(Blog *)blog
+{
+    self.authenticator = [[WebViewAuthenticator alloc] initWithBlog:blog];
+}
+
+- (void)authenticateWithAccount:(WPAccount *)account
+{
+    self.authenticator = [[WebViewAuthenticator alloc] initWithAccount:account];
+}
 
 #pragma mark - IBAction Methods
 
@@ -339,17 +339,14 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
-    
-    // WP Login: Send the credentials, if needed
-    NSRange loginRange  = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
-    BOOL isLoginURL     = loginRange.location != NSNotFound;
-    
-    if (isLoginURL && !self.needsLogin && self.hasCredentials) {
-        DDLogInfo(@"WP is asking for credentials, let's login first");
-        [self retryWithLogin];
+
+    NSURLRequest *redirectRequest = [self.authenticator interceptRedirectWithRequest:request];
+    if (redirectRequest != NULL) {
+        DDLogInfo(@"Found redirect to %@", redirectRequest);
+        [self.webView loadRequest:redirectRequest];
         return NO;
     }
-    
+
     // To handle WhatsApp and Telegraph shares
     // Even though the documentation says that canOpenURL will only return YES for
     // URLs configured on the plist under LSApplicationQueriesSchemes if we don't filter
@@ -451,57 +448,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
            self.progressView.alpha = WPWebViewAnimationAlphaHidden;
        }];
     }];
-}
-
-
-#pragma mark - Authentication Helpers
-
-- (BOOL)hasCredentials
-{
-    return self.username && (self.password || self.authToken);
-}
-
-
-#pragma mark - Requests Helpers
-
-- (NSURLRequest *)newRequestForWebsite
-{
-    NSString *userAgent = [WPUserAgent wordPressUserAgent];
-    NSURLRequest *request;
-    if (!self.needsLogin) {
-        request = [WPURLRequest requestWithURL:self.url userAgent:userAgent];
-    } else {
-        NSURL *loginURL = self.wpLoginURL ?: [self authUrlFromUrl:self.url];
-        request = [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                                    redirectURL:self.url
-                                                       username:self.username
-                                                       password:self.password
-                                                    bearerToken:self.authToken
-                                                      userAgent:userAgent];
-    }
-
-    if (self.addsWPComReferrer) {
-        NSMutableURLRequest *mReq = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
-        [mReq setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
-        request = mReq;
-    }
-
-    return request;
-}
-
-- (NSURL *)authUrlFromUrl:(NSURL *)url
-{
-    // Note:
-    // WordPress CDN doesn't really deal with Auth. We'll replace `.files.wordpress.com` with `.wordpress`.
-    // Don't worry, we'll redirect the user to the pristine URL afterwards. Issue #4983
-    //
-    NSURLComponents *components = [NSURLComponents new];
-    components.scheme           = url.scheme;
-    components.host             = [url.host stringByReplacingOccurrencesOfString:@".files.wordpress.com"
-                                                                      withString:@".wordpress.com"];
-    components.path             = @"/wp-login.php";
-
-    return components.URL;
 }
 
 
