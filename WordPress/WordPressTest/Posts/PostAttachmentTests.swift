@@ -43,16 +43,20 @@ class PostAttachmentTests: XCTestCase {
     }
 
     func testIfAltValueWasAddedToImageAttachment() {
-        richTextView.attributedText = NSAttributedString(string: "Image with alt: ")
+        let prefixString = "Image with alt: "
+        let imageName = "someExampleImage.jpg"
+        let altValue = "additional alt"
+
+        richTextView.attributedText = NSAttributedString(string: prefixString)
         let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange,
-                                                       sourceURL: URL(string: "someExampleImage.jpg")!,
+                                                       sourceURL: URL(string: imageName)!,
                                                        placeHolderImage: UIImage())
 
         let expect = expectation(description: "Alt Value has been updated")
 
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
-        controller.alt = "alt"
+        controller.alt = altValue
         controller.onUpdate = { [weak self] (_, _, alt) in
             self?.richTextView.edit(attachment) { updated in
                 if let alt = alt {
@@ -66,20 +70,24 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>Image with alt: <img src=\"someExampleImage.jpg\" alt=\"alt\"></p>")
+        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\" alt=\"\(altValue)\"></p>")
     }
 
     func testIfAltValueWasLeftEmptyForImageAttachment() {
-        richTextView.attributedText = NSAttributedString(string: "Image with alt: ")
+        let prefixString = "Image without alt: "
+        let imageName = "someExampleImage.jpg"
+        let altValue = ""
+
+        richTextView.attributedText = NSAttributedString(string: prefixString)
         let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange,
-                                                       sourceURL: URL(string: "someExampleImage.jpg")!,
+                                                       sourceURL: URL(string: imageName)!,
                                                        placeHolderImage: UIImage())
 
         let expect = expectation(description: "AztecAttachmentViewController did finish updating")
 
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
-        controller.alt = ""
+        controller.alt = altValue
         controller.onUpdate = { [weak self] (_, _, alt) in
             self?.richTextView.edit(attachment) { updated in
                 if let alt = alt {
@@ -93,6 +101,6 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>Image with alt: <img src=\"someExampleImage.jpg\"></p>")
+        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\"></p>")
     }
 }
