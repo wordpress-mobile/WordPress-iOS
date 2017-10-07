@@ -108,19 +108,6 @@ class AztecAttachmentViewController: UITableViewController {
         })
     }
 
-    private func pushSettingsController(for row: EditableTextRow,
-                                        hint: String? = nil,
-                                        onValueChanged: @escaping SettingsTextChanged) {
-        let title = row.title
-        let value = row.value
-        let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
-
-        controller.title = title
-        controller.onValueChanged = onValueChanged
-
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
     func displayAlignmentSelector(row: ImmuTableRow) {
 
         let values: [ImageAttachment.Alignment] = [.left, .center, .right, .none]
@@ -193,13 +180,22 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        if let alt = alt, alt != "" {
-            onUpdate?(alignment, size, alt)
-        } else {
-            onUpdate?(alignment, size, nil)
-        }
-
+        let checkedAlt = alt == "" ? nil : alt
+        onUpdate?(alignment, size, checkedAlt)
         dismiss(animated: true, completion: nil)
+    }
+
+    private func pushSettingsController(for row: EditableTextRow,
+                                        hint: String? = nil,
+                                        onValueChanged: @escaping SettingsTextChanged) {
+        let title = row.title
+        let value = row.value
+        let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
+
+        controller.title = title
+        controller.onValueChanged = onValueChanged
+
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 
