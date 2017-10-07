@@ -2975,9 +2975,7 @@ extension AztecPostViewController {
             self?.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
-                if let alt = alt {
-                    updated.extraAttributes["alt"] = alt
-                }
+                updated.extraAttributes["alt"] = alt
             }
         }
 
