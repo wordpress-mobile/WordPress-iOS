@@ -15,7 +15,7 @@ extension AccountService {
             let remote = AccountServiceRemoteREST(wordPressComRestApi: api) else {
                 fatalError("Failed to initialize a valid remote via the default WordPress.com account.")
         }
-        remote.connectToSocialService(service, serviceIDToken: token, success: success, failure: failure)
+        remote.connectToSocialService(service, serviceIDToken: token, oAuthClientID: ApiCredentials.client(), oAuthClientSecret: ApiCredentials.secret(), success: success, failure: failure)
     }
 
     /// Disconnect an account a social service via an ID token.
