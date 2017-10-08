@@ -103,11 +103,13 @@ class LoginViewController: NUXAbstractViewController {
     }
 
     /// Validates what is entered in the various form fields and, if valid,
-    /// proceeds with login.
+    /// proceeds with login. Empties loginFields.meta.socialService as
+    /// social signin does not require form validation.
     ///
     func validateFormAndLogin() {
         view.endEditing(true)
         displayError(message: "")
+        loginFields.meta.socialService = ""
 
         // Is everything filled out?
         if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
