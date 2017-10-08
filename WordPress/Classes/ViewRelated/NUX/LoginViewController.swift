@@ -103,13 +103,11 @@ class LoginViewController: NUXAbstractViewController {
     }
 
     /// Validates what is entered in the various form fields and, if valid,
-    /// proceeds with login. Empties loginFields.meta.socialService as
-    /// social signin does not require form validation.
+    /// proceeds with login.
     ///
     func validateFormAndLogin() {
         view.endEditing(true)
         displayError(message: "")
-        loginFields.meta.socialService = nil
 
         // Is everything filled out?
         if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
@@ -158,6 +156,17 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+        guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
+            let token = loginFields.meta.socialServiceIDToken else {
+                return
+        }
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        accountService.connectToSocialService(service, serviceIDToken: token, success: {
+            // noop
+        }, failure: { error in
+            DDLogError(error.description)
+        })
     }
 
     func displayRemoteError(_ error: Error!) {
