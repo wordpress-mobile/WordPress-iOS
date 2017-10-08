@@ -81,5 +81,5 @@ class LoginFieldsMeta: NSObject {
     var requiredMultifactor = false // A 2fa prompt was needed.
 
     /// Identifies a social login and the service used.
-    var socialService = ""
+    var socialService: SocialServiceName?
 }
