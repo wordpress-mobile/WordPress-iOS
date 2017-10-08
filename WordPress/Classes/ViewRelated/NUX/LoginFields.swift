@@ -79,4 +79,7 @@ class LoginFieldsMeta: NSObject {
     /// Flags whether a 2fa challenge had to be satisfied before a log in could be complete.
     /// Included in analytics after a successful login.
     var requiredMultifactor = false // A 2fa prompt was needed.
+
+    /// Identifies a social login and the service used.
+    var socialService = ""
 }
