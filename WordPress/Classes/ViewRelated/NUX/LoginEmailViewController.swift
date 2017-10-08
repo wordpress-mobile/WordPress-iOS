@@ -273,9 +273,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
 
     /// Validates what is entered in the various form fields and, if valid,
-    /// proceeds with the submit action.
+    /// proceeds with the submit action. Empties loginFields.meta.socialService as
+    /// social signin does not require form validation.
     ///
     func validateForm() {
+        loginFields.meta.socialService = nil
         displayError(message: "")
         guard EmailFormatValidator.validate(string: loginFields.username) else {
             assertionFailure("Form should not be submitted unless there is a valid looking email entered.")
@@ -417,9 +419,10 @@ extension LoginEmailViewController: GIDSignInDelegate {
             return
         }
 
-        // Store the email address.
+        // Store the email address and token.
         loginFields.emailAddress = email
         loginFields.username = email
+        loginFields.meta.socialServiceIDToken = token
 
         configureViewLoading(true)
 
