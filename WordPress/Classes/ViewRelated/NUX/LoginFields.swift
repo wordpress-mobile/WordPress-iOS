@@ -82,4 +82,6 @@ class LoginFieldsMeta: NSObject {
 
     /// Identifies a social login and the service used.
     var socialService: SocialServiceName?
+
+    var socialServiceIDToken: String?
 }
