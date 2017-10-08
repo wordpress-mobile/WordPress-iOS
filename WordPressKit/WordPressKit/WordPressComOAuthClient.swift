@@ -151,6 +151,7 @@ public final class WordPressComOAuthClient: NSObject {
     public func authenticateWithIDToken(_ token: String,
                                         success: @escaping (_ authToken: String?) -> Void,
                                         needsMultifactor: @escaping (_ userID: Int, _ nonceInfo: SocialLogin2FANonceInfo) -> Void,
+                                        existingUserNeedsConnection: @escaping (_ email: String) -> Void,
                                         failure: @escaping (_ error: NSError) -> Void ) {
         let parameters = [
             "client_id": clientID,
@@ -192,7 +193,22 @@ public final class WordPressComOAuthClient: NSObject {
             needsMultifactor(userID, nonceInfo)
 
             }, failure: { (task, error) in
-                failure(error as NSError)
+                let err = error as NSError
+
+                // Inspect the error and handle the case of an existing user.
+                if err.code == WordPressComOAuthError.socialLoginExistingUserUnconnected.rawValue &&
+                    err.domain == WordPressComOAuthClient.WordPressComOAuthErrorDomain {
+                    // Get the responseObject from the userInfo dict.
+                    // Extract the email address for the callback.
+                    if let responseDict = err.userInfo[WordPressComOAuthClient.WordPressComOAuthErrorResponseObjectKey] as? [String: AnyObject],
+                        let data = responseDict["data"] as? [String: AnyObject],
+                        let email = data["email"] as? String {
+
+                        existingUserNeedsConnection(email)
+                        return
+                    }
+                }
+                failure(err)
             }
         )
     }
