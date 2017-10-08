@@ -147,6 +147,9 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         // For paranoia, make sure a Google account is not already signed in / cached.
         GIDSignIn.sharedInstance().disconnect()
 
+        // Flag this as a social sign in.
+        loginFields.meta.socialService = SocialServiceName.google.rawValue
+
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -389,7 +392,11 @@ extension LoginEmailViewController {
 
 
     func existingUserNeedsConnection(_ email: String!) {
+        // Disconnect now that we're done with Google.
+        GIDSignIn.sharedInstance().disconnect()
+
         loginFields.username = email
+        loginFields.emailAddress = email
 
         performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.showWPComLogin, sender: self)
     }
