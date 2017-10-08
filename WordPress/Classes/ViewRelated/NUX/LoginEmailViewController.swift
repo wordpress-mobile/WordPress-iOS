@@ -387,6 +387,14 @@ extension LoginEmailViewController {
         GIDSignIn.sharedInstance().disconnect()
     }
 
+
+    func existingUserNeedsConnection(_ email: String!) {
+        loginFields.username = email
+
+        performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.showWPComLogin, sender: self)
+    }
+
+
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
         // TODO: to be implemented.
     }
