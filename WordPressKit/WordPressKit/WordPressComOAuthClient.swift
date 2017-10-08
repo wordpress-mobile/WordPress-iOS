@@ -8,6 +8,7 @@ import CocoaLumberjack
     case invalidRequest
     case needsMultifactorCode
     case invalidOneTimePassword
+    case socialLoginExistingUserUnconnected
 }
 
 /// `WordPressComOAuthClient` encapsulates the pattern of authenticating against WordPress.com OAuth2 service.
@@ -17,6 +18,7 @@ import CocoaLumberjack
 ///
 public final class WordPressComOAuthClient: NSObject {
 
+    public static let WordPressComOAuthErrorResponseObjectKey = "WordPressComOAuthErrorResponseObjectKey"
     public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
     public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint&version=1.0"
@@ -308,37 +310,85 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         super.init(coder: aDecoder)
     }
 
+
+    /// Possible 400 errors:
+    ///     - invalid_client: client_id is missing or wrong, it shouldn't happen
+    ///     - unsupported_grant_type: client_id doesn't support password grants
+    ///     - invalid_request: A required field is missing/malformed
+    ///     - invalid_request: Authentication failed
+    ///     - needs_2fa: Multifactor Authentication code is required
+    ///     - user_exists: Returned by the social login endpoint if a wpcom user is found, but not connected to a social service.
+    ///
+    let errorsMap = [
+        "invalid_client": WordPressComOAuthError.invalidClient,
+        "unsupported_grant_type": WordPressComOAuthError.unsupportedGrantType,
+        "invalid_request": WordPressComOAuthError.invalidRequest,
+        "needs_2fa": WordPressComOAuthError.needsMultifactorCode,
+        "invalid_otp": WordPressComOAuthError.invalidOneTimePassword,
+        "user_exists": WordPressComOAuthError.socialLoginExistingUserUnconnected,
+    ]
+
+
+    /// Overridden to provide custom error handling. Some HTTP requests include
+    /// a response body even in a failure scenario. Since AFNetworking does not
+    /// pass a responseObject (if any) to a failure block this method ensures
+    /// it is available via an error's userInfo dictionary.
+    ///
+    /// - Parameters:
+    ///   - response: The URL response.
+    ///   - data: Data returned from the request.
+    ///   - error: A pointer to an error (if any).
+    /// - Returns: The response object or nil.
     override func responseObject(for response: URLResponse?, data: Data?, error: NSErrorPointer) -> Any? {
         let responseObject = super.responseObject(for: response, data: data, error: error)
 
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 400,
-            let responseDictionary = responseObject as? [String: AnyObject],
-            let errorCode = responseDictionary["error"] as? String,
-            let errorDescription = responseDictionary["error_description"] as? String
-            else {
-                return responseObject as AnyObject?
+        guard let httpResponse = response as? HTTPURLResponse else {
+            return responseObject
         }
 
-        /// Possible errors:
-        ///     - invalid_client: client_id is missing or wrong, it shouldn't happen
-        ///     - unsupported_grant_type: client_id doesn't support password grants
-        ///     - invalid_request: A required field is missing/malformed
-        ///     - invalid_request: Authentication failed
-        ///     - needs_2fa: Multifactor Authentication code is required
-        ///
-        let errorsMap = [
-            "invalid_client": WordPressComOAuthError.invalidClient,
-            "unsupported_grant_type": WordPressComOAuthError.unsupportedGrantType,
-            "invalid_request": WordPressComOAuthError.invalidRequest,
-            "needs_2fa": WordPressComOAuthError.needsMultifactorCode,
-            "invalid_otp" : WordPressComOAuthError.invalidOneTimePassword
-        ]
+        // Handle known 400 errors.
+        if httpResponse.statusCode == 400 {
+            // REST API Error format
+            if let responseDictionary = responseObject as? [String: AnyObject],
+                let errorCode = responseDictionary["error"] as? String,
+                let errorDescription = responseDictionary["error_description"] as? String {
 
-        let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.unknown.rawValue
+                error?.pointee = errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject)
+            }
 
-        error?.pointee = NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,
-                       code: mappedCode,
-                       userInfo: [NSLocalizedDescriptionKey: errorDescription])
+        } else if httpResponse.statusCode == 409 {
+            // Social login user-exists error
+            if let responseDict = responseObject as? [String: AnyObject],
+                let data = responseDict["data"] as? [String: AnyObject],
+                let errors = data["errors"] as? NSArray,
+                let err = errors[0] as? [String: AnyObject],
+                let errorCode = err["code"] as? String,
+                let errorDescription = err["message"] as? String {
+
+                error?.pointee = errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject)
+            }
+        }
+
         return responseObject as AnyObject?
+    }
+
+
+    /// Creates an NSError from the supplied arguements. The response object is
+    /// added to the error's userInfo dictionary.
+    ///
+    /// - Parameters:
+    ///   - errorCode: A string representing the error code. This is not the same as an HTTP status code.
+    ///   - errorDescription: A description of the error.
+    ///   - responseObject: The responseObject (if any) that was passed with the error.
+    /// - Returns: An NSError.
+    func errorFor(errorCode: String, errorDescription: String, responseObject: Any?) -> NSError {
+        var userInfo:[String: AnyObject] = [NSLocalizedDescriptionKey: errorDescription as AnyObject]
+        if let responseObject = responseObject {
+            userInfo[WordPressComOAuthClient.WordPressComOAuthErrorResponseObjectKey] = responseObject as AnyObject
+        }
+        let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.unknown.rawValue
+        return NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,
+                       code: mappedCode,
+                       userInfo: userInfo)
     }
 }
