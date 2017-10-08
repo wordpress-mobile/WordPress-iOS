@@ -109,7 +109,7 @@ class LoginViewController: NUXAbstractViewController {
     func validateFormAndLogin() {
         view.endEditing(true)
         displayError(message: "")
-        loginFields.meta.socialService = ""
+        loginFields.meta.socialService = nil
 
         // Is everything filled out?
         if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {

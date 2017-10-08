@@ -148,7 +148,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         GIDSignIn.sharedInstance().disconnect()
 
         // Flag this as a social sign in.
-        loginFields.meta.socialService = SocialServiceName.google.rawValue
+        loginFields.meta.socialService = SocialServiceName.google
 
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
