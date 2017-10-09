@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,7 +27,7 @@
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="240" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zK2-Ta-Z1W" userLabel="Title">
-                            <rect key="frame" x="34" y="8" width="652" height="50"/>
+                            <rect key="frame" x="34" y="0.0" width="652" height="66"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -36,12 +37,12 @@
                     </subviews>
                     <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="leading" secondItem="imt-VI-wdh" secondAttribute="trailing" constant="4" id="02h-M1-8M2"/>
-                        <constraint firstAttribute="trailingMargin" secondItem="zK2-Ta-Z1W" secondAttribute="trailing" id="1cv-aI-Zh9"/>
-                        <constraint firstAttribute="bottomMargin" secondItem="zK2-Ta-Z1W" secondAttribute="bottom" id="1hv-8f-wsN"/>
+                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="leading" secondItem="imt-VI-wdh" secondAttribute="trailing" constant="4" id="5gJ-xQ-IIv"/>
                         <constraint firstItem="imt-VI-wdh" firstAttribute="centerY" secondItem="AjL-Ni-9e0" secondAttribute="centerY" id="7ht-6A-0hZ"/>
-                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="top" secondItem="AjL-Ni-9e0" secondAttribute="topMargin" id="KGZ-UU-uhR"/>
+                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="top" secondItem="AjL-Ni-9e0" secondAttribute="top" id="84n-R2-3hp"/>
                         <constraint firstItem="imt-VI-wdh" firstAttribute="leading" secondItem="AjL-Ni-9e0" secondAttribute="leadingMargin" id="X3z-pE-0Uc"/>
+                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="trailing" secondItem="AjL-Ni-9e0" secondAttribute="trailingMargin" id="seF-xR-8yi"/>
+                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="centerY" secondItem="imt-VI-wdh" secondAttribute="centerY" id="ttr-ae-OMz"/>
                     </constraints>
                 </view>
             </subviews>
