@@ -77,9 +77,6 @@ class CalypsoProcessorOut: Processor {
         output = output.replacingMatches(of: "\\s*<p>", with: "", options: .caseInsensitive)
         output = output.replacingMatches(of: "\\s*<\\/p>\\s*", with: "\n\n", options: .caseInsensitive)
 
-        // Normalize white space chars and remove multiple line breaks.
-        output = output.replacingMatches(of: "\n[\\s\\u00a0]+\n", with: "\n\n")
-
         // Replace <br> tags with line breaks.
         output = output.replacingMatches(of: "(\\s*)<br ?\\/?>\\s*", options: .caseInsensitive, using: { (match, ranges) -> String in
             if ranges.count > 0 && ranges[0].contains("\n") {
@@ -147,7 +144,6 @@ class CalypsoProcessorOut: Processor {
             })
         }
 
-        //                return html;
         return output
     }
 }
