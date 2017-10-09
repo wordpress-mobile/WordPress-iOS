@@ -108,6 +108,8 @@ class WebKitViewController: UIViewController {
             navigationItem.titleView = titleView
         }
 
+        navigationItem.rightBarButtonItem = customOptionsButton
+
         // Modal styling
         // Proceed only if this Modal, and it's the only view in the stack.
         // We're not changing the NavigationBar style, if we're sharing it with someone else!
@@ -123,6 +125,7 @@ class WebKitViewController: UIViewController {
         titleView.titleLabel.textColor = WPStyleGuide.darkGrey()
         titleView.subtitleLabel.textColor = WPStyleGuide.grey()
         closeButton.tintColor = WPStyleGuide.greyLighten10()
+        customOptionsButton?.tintColor = WPStyleGuide.greyLighten10()
     }
 
     func configureToolbar() {
@@ -138,11 +141,10 @@ class WebKitViewController: UIViewController {
                                         target: self,
                                         action: #selector(WebKitViewController.goForward))
 
-        shareButton = customOptionsButton
-            ?? UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
-                               style: .plain,
-                               target: self,
-                               action: #selector(WebKitViewController.share))
+        shareButton = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+                                      style: .plain,
+                                      target: self,
+                                      action: #selector(WebKitViewController.share))
 
         safariButton = UIBarButtonItem(image: Gridicon.iconOfType(.globe),
                                        style: .plain,
