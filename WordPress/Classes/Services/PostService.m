@@ -231,10 +231,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)deletePost:(AbstractPost *)post
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure
 {
-    void (^privateBlock)() = ^void() {
+    void (^privateBlock)(void) = ^void() {
         NSNumber *postID = post.postID;
         if ([postID longLongValue] > 0) {
             RemotePost *remotePost = [self remotePostWithPost:post];
@@ -253,7 +253,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)trashPost:(AbstractPost *)post
-          success:(void (^)())success
+          success:(void (^)(void))success
           failure:(void (^)(NSError *error))failure
 {
     if ([post.status isEqualToString:PostStatusTrash]) {
@@ -261,7 +261,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         return;
     }
     
-    void(^privateBodyBlock)() = ^void() {
+    void(^privateBodyBlock)(void) = ^void() {
         post.restorableStatus = post.status;
         
         NSNumber *postID = post.postID;
@@ -291,7 +291,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)trashRemotePostWithPost:(AbstractPost*)post
-                        success:(void (^)())success
+                        success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
@@ -335,10 +335,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)restorePost:(AbstractPost *)post
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
-    void (^privateBodyBlock)() = ^void() {
+    void (^privateBodyBlock)(void) = ^void() {
         post.status = post.restorableStatus;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         
@@ -363,7 +363,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)restoreRemotePostWithPost:(AbstractPost*)post
-                          success:(void (^)())success
+                          success:(void (^)(void))success
                           failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;

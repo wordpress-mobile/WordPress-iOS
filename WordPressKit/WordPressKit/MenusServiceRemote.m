@@ -46,7 +46,7 @@ NSString * const MenusRemoteKeyClasses = @"classes";
     [self.wordPressComRestApi POST:requestURL
         parameters:@{MenusRemoteKeyName: menuName}
            success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
-               void(^responseFailure)() = ^() {
+               void(^responseFailure)(void) = ^() {
                    NSString *message = NSLocalizedString(@"An error occurred creating the Menu.", @"An error description explaining that a Menu could not be created.");
                    [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
                };
@@ -101,7 +101,7 @@ NSString * const MenusRemoteKeyClasses = @"classes";
     [self.wordPressComRestApi POST:requestURL
         parameters:params
            success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
-               void(^responseFailure)() = ^() {
+               void(^responseFailure)(void) = ^() {
                    NSString *message = NSLocalizedString(@"An error occurred updating the Menu.", @"An error description explaining that a Menu could not be updated.");
                    [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
                };
@@ -138,7 +138,7 @@ NSString * const MenusRemoteKeyClasses = @"classes";
     [self.wordPressComRestApi POST:requestURL
         parameters:nil
            success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
-               void(^responseFailure)() = ^() {
+               void(^responseFailure)(void) = ^() {
                    NSString *message = NSLocalizedString(@"An error occurred deleting the Menu.", @"An error description explaining that a Menu could not be deleted.");
                    [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
                };

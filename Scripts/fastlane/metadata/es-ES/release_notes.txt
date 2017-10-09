@@ -1,1 +1,3 @@
-Es posible que no notes las cosas muy diferentes en esta versión, pero es una aplicación más rápida y estable. ¡La prueba está en el uso!
+Selector de medios incrustado en el nuevo editor.
+Sitios Jetpack: Añadida compatibilidad con la navegación y activación de temas.
+Sitios Jetpack: Gestiona tus ajustes de seguridad desde la aplicación.
