@@ -314,7 +314,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 
     NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
     for (NSString *type in types) {
-        if (NSNotFound != [absoluteURL rangeOfString:type].location) {
+        if (NSNotFound != [[absoluteURL lowercaseString] rangeOfString:type].location) {
             return YES;
         }
     }
