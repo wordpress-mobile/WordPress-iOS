@@ -2022,9 +2022,8 @@ extension AztecPostViewController {
             return
         }
 
-        richTextView.resignFirstResponder()
         richTextView.inputView = to
-        richTextView.becomeFirstResponder()
+        richTextView.reloadInputView()
     }
 
     fileprivate func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
