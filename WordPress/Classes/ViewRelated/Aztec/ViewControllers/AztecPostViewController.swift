@@ -2023,7 +2023,7 @@ extension AztecPostViewController {
         }
 
         richTextView.inputView = to
-        richTextView.reloadInputView()
+        richTextView.reloadInputViews()
     }
 
     fileprivate func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
