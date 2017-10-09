@@ -144,7 +144,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
             ])
     }
 
-    // MARKK: Learn More footer
+    // MARK: Learn More footer
 
     open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == JetpackSecuritySettingsViewController.wordPressLoginSection {
