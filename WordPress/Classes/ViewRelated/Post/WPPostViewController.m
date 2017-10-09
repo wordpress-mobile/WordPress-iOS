@@ -75,7 +75,8 @@ UITextFieldDelegate,
 UITextViewDelegate,
 UIViewControllerRestoration,
 EditImageDetailsViewControllerDelegate,
-MediaProgressCoordinatorDelegate
+MediaProgressCoordinatorDelegate,
+UIDocumentPickerDelegate
 >
 
 #pragma mark - Misc properties
@@ -319,6 +320,17 @@ MediaProgressCoordinatorDelegate
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
+
+    [self resetNavigationColors];
+}
+
+/*
+ This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
+ either by uploading media or cancelling. Doing this in the UIDocumentPickerDelegate methods either did nothing
+ or the resetting wasn't permanent.
+ */
+- (void)resetNavigationColors {
+    [WPStyleGuide configureNavigationBarAppearance];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -547,13 +559,49 @@ MediaProgressCoordinatorDelegate
     return post;
 }
 
-#pragma mark - Media upload configuration
+#pragma mark - Media upload
 
 - (void)configureMediaUpload
 {
     self.mediaProgressCoordinator = [MediaProgressCoordinator new];
     self.mediaProgressCoordinator.delegate = self;
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+}
+
+- (void)handleThumbnailURL:(NSURL *)thumbnailURL mediaID:(NSString *)mediaID isImage:(BOOL)isImage
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (isImage) {
+            [self.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaID];
+        } else {
+            [self.editorView insertInProgressVideoWithID:mediaID usingPosterImage:thumbnailURL.path];
+        }
+    });
+}
+
+- (void)handleNewMedia:(Media *)media error:(NSError *)error mediaID:(NSString *)mediaID
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (error || !media || !media.absoluteLocalURL) {
+            [self.editorView removeImage:mediaID];
+            [self.editorView removeVideo:mediaID];
+            [self stopTrackingProgressOfMediaWithId:mediaID];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                          @"The title for an alert that says to the user the media (image or video) they selected couldn't be used on the post.")
+                                message:error.localizedDescription];
+            return;
+        }
+        if (media.mediaType == MediaTypeImage) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
+                   withProperties:[WPAppAnalytics propertiesFor:media]
+                         withPost:self.post];
+        } else if (media.mediaType == MediaTypeVideo) {
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
+                   withProperties:[WPAppAnalytics propertiesFor:media]
+                         withPost:self.post];
+        }
+        [self uploadMedia:media trackingId:mediaID];
+    });
 }
 
 #pragma mark - Actions
@@ -871,6 +919,16 @@ MediaProgressCoordinatorDelegate
     picker.showGroupSelector = showGroupSelector;
 
     [self presentViewController:picker animated:animated completion:nil];
+}
+
+- (void)showDocumentPickerAnimated:(BOOL)animated
+{
+    NSArray *docTypes = @[(NSString *)kUTTypeImage, (NSString *)kUTTypeMovie];
+    UIDocumentPickerViewController *docPicker = [[UIDocumentPickerViewController alloc]
+                                                 initWithDocumentTypes:docTypes inMode:UIDocumentPickerModeImport];
+    docPicker.delegate = self;
+    [WPStyleGuide configureDocumentPickerNavBarAppearance];
+    [self presentViewController:docPicker animated:YES completion:nil];
 }
 
 #pragma mark - Editing
@@ -1850,48 +1908,16 @@ MediaProgressCoordinatorDelegate
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
+    BOOL isImage = (asset.mediaType == PHAssetMediaTypeImage);
     NSString *mediaUniqueID = [self uniqueIdForMedia];
+
     [mediaService createMediaWithPHAsset:asset
                          forPostObjectID:self.post.objectID
                        thumbnailCallback:^(NSURL *thumbnailURL) {
-                           __typeof__(self) strongSelf = weakSelf;
-                           if (!strongSelf) {
-                               return;
-                           }
-                           [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                               if (asset.mediaType == PHAssetMediaTypeImage) {
-                                   [strongSelf.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaUniqueID];
-                               } else if (asset.mediaType == PHAssetMediaTypeVideo) {
-                                   [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:thumbnailURL.path];
-                               }
-                           }];
+                           [weakSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
                        }
                               completion:^(Media *media, NSError *error){
-                                  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                                      __typeof__(self) strongSelf = weakSelf;
-                                      if (!strongSelf) {
-                                          return;
-                                      }
-                                      if (error || !media || !media.absoluteLocalURL) {
-                                          [strongSelf.editorView removeImage:mediaUniqueID];
-                                          [strongSelf.editorView removeVideo:mediaUniqueID];
-                                          [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
-                                          [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                                                        @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
-                                                              message:error.localizedDescription];
-                                          return;
-                                      }
-                                      if (media.mediaType == MediaTypeImage) {
-                                          [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary
-                                                 withProperties:[WPAppAnalytics propertiesFor:media]
-                                                       withPost:self.post];
-                                      } else if (media.mediaType == MediaTypeVideo) {
-                                          [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary
-                                                 withProperties:[WPAppAnalytics propertiesFor:media]
-                                                       withPost:self.post];
-                                      }
-                                      [strongSelf uploadMedia:media trackingId:mediaUniqueID];                                      
-                                  }];
+                                  [weakSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
                               }];
 }
 
@@ -2041,6 +2067,16 @@ MediaProgressCoordinatorDelegate
                                       [weakSelf showMediaPickerForWordPressLibraryAnimated:YES];
                                   }];
 
+    if (@available(iOS 11, *)) {
+        if ([Feature enabled:FeatureFlagICloudFilesSupport]) {
+            [controller addDefaultActionWithTitle:NSLocalizedString(@"Other Apps", @"Button title used in hybrid editor for selecting media from other applications.")
+                                          handler:^(UIAlertAction *action){
+                                              weakSelf.mediaSourceAlertController = nil;
+                                              [weakSelf showDocumentPickerAnimated:YES];
+                                          }];
+        }
+    }
+
     [controller addCancelActionWithTitle:NSLocalizedString(@"Cancel", nil)
                                  handler:^(UIAlertAction *action){
                                      weakSelf.mediaSourceAlertController = nil;
@@ -2114,9 +2150,9 @@ MediaProgressCoordinatorDelegate
                          if (!strongSelf) {
                              return;
                          }
-                         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                         dispatch_async(dispatch_get_main_queue(), ^{
                              [strongSelf.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaUniqueID];
-                         }];
+                         });
                      }
                             completion:^(Media *media, NSError *error) {
                                 __typeof__(self) strongSelf = weakSelf;
@@ -2310,6 +2346,37 @@ MediaProgressCoordinatorDelegate
     }
     
     return NO;
+}
+
+#pragma mark - UIDocumentPickerDelegate
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls
+{
+    if (urls.count == 0) { return; }
+    
+    [self.editorView.contentField focus];
+    [self prepareMediaProgressForNumberOfAssets:urls.count];
+    
+    for (NSURL *url in urls) {
+        [self addExternalMediaWithURL:url];
+    }
+}
+
+- (void)addExternalMediaWithURL:(NSURL *)url
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSString *mediaUniqueID = [url lastPathComponent];
+    BOOL isImage = [WPImageViewController isUrlSupported:url];
+    __weak __typeof__(self) weakSelf = self;
+
+    [mediaService createMediaWithURL:url
+                     forPostObjectID:self.post.objectID
+                   thumbnailCallback:^(NSURL *thumbnailURL) {
+                       [weakSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
+                   }
+                          completion:^(Media *media, NSError *error){
+                              [weakSelf handleNewMedia:media error:error mediaID:mediaUniqueID];
+                          }];
 }
 
 #pragma mark - KVO
