@@ -192,8 +192,7 @@ extension FancyAlertViewController {
                     let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3")
                     else { return }
 
-                let webController = WPWebViewController()
-                webController.url = url
+                let webController = WebViewControllerFactory.controller(url: url)
                 let navController = UINavigationController(rootViewController: webController)
                 viewController.present(navController, animated: true, completion: nil)
             }

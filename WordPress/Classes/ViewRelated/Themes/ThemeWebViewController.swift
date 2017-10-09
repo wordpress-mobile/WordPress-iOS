@@ -10,7 +10,7 @@ open class ThemeWebViewController: WPWebViewController {
     open var theme: Theme? {
         didSet {
             if let blog = theme?.blog {
-                authenticate(with: blog)
+                authenticator = WebViewAuthenticator(blog: blog)
             }
         }
     }

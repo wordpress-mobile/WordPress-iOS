@@ -9,7 +9,6 @@
 #import "UIView+Subviews.h"
 #import "WPImageViewController.h"
 #import "WPTableViewHandler.h"
-#import "WPWebViewController.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
@@ -958,10 +957,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)cell:(ReaderCommentCell *)cell didTapAuthor:(Comment *)comment
 {
     NSURL *url = [comment authorURL];
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    [webViewController authenticateWithDefaultAccount];
-    webViewController.addsWPComReferrer = YES;
+    WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:url];
+    [configuration authenticateWithDefaultAccount];
+    [configuration setAddsWPComReferrer:YES];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -1075,10 +1074,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         linkURL = [components URLRelativeToURL:[NSURL URLWithString:self.post.blogURL]];
     }
 
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = linkURL;
-    [webViewController authenticateWithDefaultAccount];
-    webViewController.addsWPComReferrer = YES;
+    WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:linkURL];
+    [configuration authenticateWithDefaultAccount];
+    [configuration setAddsWPComReferrer:YES];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }

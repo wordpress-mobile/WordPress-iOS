@@ -2,7 +2,7 @@ import UIKit
 import Gridicons
 import WordPressShared
 
-let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")
+let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")!
 
 
 extension FancyAlertViewController {
@@ -93,7 +93,7 @@ extension FancyAlertViewController {
 
         let moreInfoButton = Button(Strings.whatsNew, { controller in
             WPAppAnalytics.track(.editorAztecPromoLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
+            FancyAlertViewController.presentWhatsNewWebView(from: controller)
         })
 
         let image = UIImage(named: "wp-illustration-hand-write")
@@ -123,7 +123,7 @@ extension FancyAlertViewController {
 
         let moreInfoButton = Button(Strings.whatsNew, { controller in
             WPAppAnalytics.track(.editorAztecPromoLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
+            FancyAlertViewController.presentWhatsNewWebView(from: controller)
         })
 
         let image = UIImage(named: "wp-illustration-hand-write")
@@ -200,18 +200,17 @@ extension UserDefaults {
 
 // MARK: - What's New Web View
 
-extension WPWebViewController {
+extension FancyAlertViewController {
     static func presentWhatsNewWebView(from viewController: UIViewController) {
         // Replace the web view's options button with our own bug reporting button
         let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
         bugButton.accessibilityLabel = NSLocalizedString("Report a bug", comment: "Button allowing the user to report a bug with the beta Aztec editor")
 
-        let webViewController = WPWebViewController()
-        webViewController.url = AztecAnnouncementWhatsNewURL
-
+        let configuration = WebViewControllerConfiguration(url: AztecAnnouncementWhatsNewURL)
         if HelpshiftUtils.isHelpshiftEnabled() {
-            webViewController.optionsButton = bugButton
+            configuration.optionsButton = bugButton
         }
+        let webViewController = WebViewControllerFactory.controller(configuration: configuration)
 
         let navigationController = UINavigationController(rootViewController: webViewController)
 

@@ -141,8 +141,7 @@ open class AboutViewController: UITableViewController {
         guard let url = URL(string: urlString) else {
             return
         }
-        let webViewController = WPWebViewController()
-        webViewController.url = url
+        let webViewController = WebViewControllerFactory.controller(url: url)
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
         } else {

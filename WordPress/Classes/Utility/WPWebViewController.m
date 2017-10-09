@@ -43,8 +43,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
 
-@property (nonatomic, strong) WebViewAuthenticator *authenticator;
-
 @end
 
 
@@ -257,26 +255,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     // Prevent double load in viewDidLoad Method
     if (self.isViewLoaded) {
         [self loadWebViewRequest];
-    }
-}
-
-- (void)authenticateWithBlog:(Blog *)blog
-{
-    self.authenticator = [[WebViewAuthenticator alloc] initWithBlog:blog];
-}
-
-- (void)authenticateWithAccount:(WPAccount *)account
-{
-    self.authenticator = [[WebViewAuthenticator alloc] initWithAccount:account];
-}
-
-- (void)authenticateWithDefaultAccount
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [service defaultWordPressComAccount];
-    if (account != NULL) {
-        [self authenticateWithAccount:account];
     }
 }
 
