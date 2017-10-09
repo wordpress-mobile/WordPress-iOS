@@ -17,15 +17,19 @@ class WebKitViewController: UIViewController {
 
     let url: URL
     let authenticator: WebViewAuthenticator?
+    let navigationDelegate: WebNavigationDelegate?
     var secureInteraction = false
     var addsWPComReferrer = false
+    var customTitle: String?
 
     init(configuration: WebViewControllerConfiguration) {
         url = configuration.url
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
         addsWPComReferrer = configuration.addsWPComReferrer
+        customTitle = configuration.customTitle
         authenticator = configuration.authenticator
+        navigationDelegate = configuration.navigationDelegate
 
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
@@ -45,9 +49,11 @@ class WebKitViewController: UIViewController {
     override func loadView() {
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
-            webView,
-            toolbar
+            webView
             ])
+        if !secureInteraction {
+            stackView.addArrangedSubview(toolbar)
+        }
         stackView.axis = .vertical
         view = stackView
     }
@@ -62,6 +68,7 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: [.new], context: nil)
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
         webView.customUserAgent = WPUserAgent.wordPress()
+        webView.navigationDelegate = self
 
         loadWebViewRequest()
     }
@@ -88,10 +95,18 @@ class WebKitViewController: UIViewController {
     func configureNavigation() {
         let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
         closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
-        navigationItem.leftBarButtonItem = closeButton
+
+        // Only show a close button if this is presented modally
+        if (navigationController?.viewControllers.count == 1 && presentingViewController != nil) {
+            navigationItem.leftBarButtonItem = closeButton
+        }
 
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        navigationItem.titleView = titleView
+        if let title = customTitle {
+            self.title = title
+        } else {
+            navigationItem.titleView = titleView
+        }
 
         // Modal styling
         // Proceed only if this Modal, and it's the only view in the stack.
@@ -111,10 +126,6 @@ class WebKitViewController: UIViewController {
     }
 
     func configureToolbar() {
-        guard !secureInteraction else {
-            return
-        }
-
         toolbar.barTintColor = UIColor.white
 
         backButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
@@ -210,5 +221,25 @@ class WebKitViewController: UIViewController {
         default:
             assertionFailure("Observed change to web view that we are not handling")
         }
+    }
+}
+
+extension WebKitViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let request = authenticator?.interceptRedirect(request: navigationAction.request) {
+            decisionHandler(.cancel)
+            load(request: request)
+            return
+        }
+
+        if let delegate = navigationDelegate {
+            let policy = delegate.shouldNavigate(request: navigationAction.request)
+            if let redirect = policy.redirectRequest {
+                load(request: redirect)
+            }
+            decisionHandler(policy.action)
+            return
+        }
+        decisionHandler(.allow)
     }
 }

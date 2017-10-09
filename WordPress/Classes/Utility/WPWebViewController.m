@@ -32,7 +32,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet WebProgressView          *progressView;
-@property (nonatomic, strong) UIBarButtonItem          *dismissButton;
+@property (nonatomic, strong) UIBarButtonItem                   *dismissButton;
 
 @property (nonatomic,   weak) IBOutlet UIToolbar                *toolbar;
 @property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
@@ -40,8 +40,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic,   weak) IBOutlet NSLayoutConstraint       *toolbarBottomConstraint;
 
 @property (nonatomic, strong) NavigationTitleView               *titleView;
+@property (nonatomic, copy)   NSString                          *customTitle;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
+
+@property (nonatomic, weak) id<WebNavigationDelegate> navigationDelegate;
 
 @end
 
@@ -66,6 +69,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         _optionsButton = configuration.optionsButton;
         _secureInteraction = configuration.secureInteraction;
         _addsWPComReferrer = configuration.addsWPComReferrer;
+        _customTitle = configuration.customTitle;
         _authenticator = configuration.authenticator;
     }
     return self;
@@ -87,7 +91,12 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.titleView                          = [NavigationTitleView new];
     self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
     self.titleView.subtitleLabel.text       = self.url.host;
-    self.navigationItem.titleView           = self.titleView;
+
+    if (self.customTitle != nil) {
+        self.title = self.customTitle;
+    } else {
+        self.navigationItem.titleView = self.titleView;
+    }
     
     // Buttons
     if (!self.optionsButton) {
@@ -335,6 +344,14 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
                                            options:nil
                                  completionHandler:nil];
         return NO;
+    }
+
+    if (self.navigationDelegate != nil) {
+        WebNavigationPolicy *policy = [self.navigationDelegate shouldNavigateWithRequest:request];
+        if (policy.redirectRequest != NULL) {
+            [self.webView loadRequest:policy.redirectRequest];
+        }
+        return policy.action == WKNavigationResponsePolicyAllow;
     }
 
     //  Note:
