@@ -123,6 +123,10 @@ typedef enum HelpshiftInboxMessageActionType
 
 @end
 
+/**
+ * Data provider class for Campaigns Inbox
+ */
+
 @interface HelpshiftInbox : NSObject
 
 @property (weak, nonatomic) id<HelpshiftInboxDelegate> delegate;

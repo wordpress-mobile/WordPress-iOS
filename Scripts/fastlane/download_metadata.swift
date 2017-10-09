@@ -3,7 +3,7 @@
 import Foundation
 
 let glotPressSubtitleKey = "app_store_subtitle"
-let glotPressWhatsNewKey = "standard-whats-new-1"
+let glotPressWhatsNewKey = "v8.5-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
 let baseFolder = "./metadata"
@@ -74,7 +74,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
             	return
             }
 
-            let keyFirstPart = key.substring(to: index)
+            let keyFirstPart = String(key[..<index])
 
             guard let value = value as? [String],
                 let firstValue = value.first else {
@@ -82,7 +82,7 @@ func downloadTranslation(languageCode: String, folderName: String) {
                     return
             }
 
-            var originalLanguage = key.substring(from: index)
+            var originalLanguage = String(key[index...])
             originalLanguage.remove(at: originalLanguage.startIndex)
             let translation = languageCode == "en-us" ? originalLanguage : firstValue
             
