@@ -108,7 +108,12 @@ class WebKitViewController: UIViewController {
             navigationItem.titleView = titleView
         }
 
-        navigationItem.rightBarButtonItem = customOptionsButton
+        let refreshButton = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
+        if let customOptionsButton = customOptionsButton {
+            navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
+        } else {
+            navigationItem.rightBarButtonItem = refreshButton
+        }
 
         // Modal styling
         // Proceed only if this Modal, and it's the only view in the stack.
@@ -125,6 +130,7 @@ class WebKitViewController: UIViewController {
         titleView.titleLabel.textColor = WPStyleGuide.darkGrey()
         titleView.subtitleLabel.textColor = WPStyleGuide.grey()
         closeButton.tintColor = WPStyleGuide.greyLighten10()
+        refreshButton.tintColor = WPStyleGuide.greyLighten10()
         customOptionsButton?.tintColor = WPStyleGuide.greyLighten10()
     }
 
@@ -185,6 +191,10 @@ class WebKitViewController: UIViewController {
         }
         present(activityViewController, animated: true, completion: nil)
 
+    }
+
+    func refresh() {
+        webView.reload()
     }
 
     func goBack() {
