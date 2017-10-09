@@ -6,13 +6,13 @@ class WebViewControllerFactory: NSObject {
     }
 
     static func controller(configuration: WebViewControllerConfiguration) -> UIViewController {
-        let controller = WPWebViewController()
-        controller.url = configuration.url
-        controller.optionsButton = configuration.optionsButton
-        controller.secureInteraction = configuration.secureInteraction
-        controller.addsWPComReferrer = configuration.secureInteraction
-        controller.authenticator = configuration.authenticator
-        return controller
+        if #available(iOS 11, *) {
+            let controller = WebKitViewController(configuration: configuration)
+            return controller
+        } else {
+            let controller = WPWebViewController(configuration: configuration)
+            return controller
+        }
     }
 
     static func controller(url: URL) -> UIViewController {
