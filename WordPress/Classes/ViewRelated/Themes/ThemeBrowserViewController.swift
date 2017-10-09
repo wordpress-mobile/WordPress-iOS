@@ -98,6 +98,10 @@ public protocol ThemePresenter: class {
 
     @IBOutlet weak var collectionView: UICollectionView!
 
+    fileprivate lazy var customizerNavigationDelegate: ThemeWebNavigationDelegate = {
+        return ThemeWebNavigationDelegate()
+    }()
+
     /**
      *  @brief      The FRCs this VC will use to display filtered content.
      */
@@ -867,17 +871,18 @@ public protocol ThemePresenter: class {
     }
 
     open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true) {
-        guard let theme = theme, let url = url, !url.isEmpty else {
+        guard let theme = theme, let url = url.flatMap(URL.init(string:)) else {
             return
         }
 
         suspendedSearch = searchName
         presentingTheme = theme
-        let webViewController = ThemeWebViewController(theme: theme, url: url)
-
-        webViewController.secureInteraction = true
-        webViewController.navigationItem.titleView = nil
-        webViewController.title = theme.name
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticate(blog: theme.blog)
+        configuration.secureInteraction = true
+        configuration.customTitle = theme.name
+        configuration.navigationDelegate = customizerNavigationDelegate
+        let webViewController = WebViewControllerFactory.controller(configuration: configuration)
         var buttons: [UIBarButtonItem]?
         if activeButton && !theme.isCurrentTheme() {
            let activate = UIBarButtonItem(title: ThemeAction.activate.title, style: .plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
