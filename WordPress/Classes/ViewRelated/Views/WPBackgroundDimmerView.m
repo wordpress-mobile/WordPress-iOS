@@ -4,7 +4,7 @@
 /**
  *  @brief      A block that contains an animatable (as in UIView animations) set of instructions.
  */
-typedef void(^AnimatableTransitionBlock)();
+typedef void(^AnimatableTransitionBlock)(void);
 
 /**
  *  @brief      The alpha value for when this view is visible.

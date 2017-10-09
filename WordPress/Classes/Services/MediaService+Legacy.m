@@ -54,7 +54,7 @@
     NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
 
-    void(^trackResizedPhotoError)() = nil;
+    void(^trackResizedPhotoError)(void) = nil;
     if (mediaType == MediaTypeImage && maxImageSize > 0) {
         // Only tracking resized photo if the user selected a max size that's not the -1 value for "Original"
         NSDictionary *properties = @{@"resize_width": @(maxImageSize)};
