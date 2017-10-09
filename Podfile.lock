@@ -89,7 +89,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.0.1)
+  - Nimble (7.0.2)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.4)
@@ -110,7 +110,7 @@ PODS:
     - OHHTTPStubs/Default
   - Reachability (3.2)
   - Specta (1.0.7)
-  - Starscream (2.1.1)
+  - Starscream (3.0.2)
   - SVProgressHUD (2.2.1)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.11.1)
@@ -138,7 +138,7 @@ DEPENDENCIES:
   - lottie-ios (= 1.5.1)
   - MGSwipeTableCell (= 1.6.1)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 7.0.0)
+  - Nimble (~> 7.0.2)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (~> 3.4)
@@ -146,7 +146,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)
   - Specta (= 1.0.7)
-  - Starscream (= 2.1.1)
+  - Starscream (= 3.0.2)
   - SVProgressHUD (= 2.2.1)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.11.1)
@@ -192,14 +192,14 @@ SPEC CHECKSUMS:
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 19a1d65dcc1ceaea42eb44bb2adae32101904514
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
+  Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
   OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
-  Starscream: 142bd8ef24592d985daee9fa48c936070b85b15f
+  Starscream: b512c62f6706421221b5ceb2ba01a9f58aca5bea
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 9f964a1530de9a7e10775ba136b6ebf9c7e31dca
@@ -208,6 +208,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 51dff88157706419e000169b37c3abe0d3017b5f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 5ee93d60c9fd2c282fbd8d72b7be0e3039ca065c
+PODFILE CHECKSUM: 2d90baa0286b074b38d3f5fd7c860a6832ff9ee0
 
 COCOAPODS: 1.3.1
