@@ -200,9 +200,7 @@ class MediaItemViewController: UITableViewController {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
 
-        let controller = WPWebViewController()
-        controller.authenticate(with: media.blog)
-        controller.url = url
+        let controller = WebViewControllerFactory.controller(url: url, blog: media.blog)
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil
         controller.title = media.title ?? ""

@@ -196,7 +196,7 @@ class AppSettingsViewController: UITableViewController {
 
     @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
         WPAppAnalytics.track(.editorAztecBetaLink)
-        WPWebViewController.presentWhatsNewWebView(from: self)
+        FancyAlertViewController.presentWhatsNewWebView(from: self)
     }
 
     // MARK: - Media cache methods

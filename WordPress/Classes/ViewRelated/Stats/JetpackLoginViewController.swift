@@ -451,10 +451,8 @@ class JetpackLoginViewController: UIViewController {
         guard let url =  URL(string: url) else {
             return
         }
-        let webViewController = WPWebViewController()
-        webViewController.url = url
-        webViewController.authenticate(with: blog)
-
+        let webViewController = WebViewControllerFactory.controller(url: url, blog: blog)
+        
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
         } else {
