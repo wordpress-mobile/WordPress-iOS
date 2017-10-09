@@ -225,7 +225,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
     
     [service deletePost:post
-                success:^(RemotePost *posts) {}
+                success:^() {}
                 failure:^(NSError *error) {}];
 }
 
@@ -235,7 +235,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service deletePost:nil
-                                success:^(RemotePost *posts) {}
+                                success:^() {}
                                 failure:^(NSError *error) {}]);
 }
 

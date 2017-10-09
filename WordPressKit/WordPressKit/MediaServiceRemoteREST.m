@@ -191,7 +191,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 }
 
 - (void)deleteMedia:(RemoteMedia *)media
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([media isKindOfClass:[RemoteMedia class]]);

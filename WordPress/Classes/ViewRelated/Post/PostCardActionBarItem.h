@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-typedef void(^PostCardActionBarItemCallback)();
+typedef void(^PostCardActionBarItemCallback)(void);
 
 @interface PostCardActionBarItem : NSObject
 

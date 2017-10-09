@@ -52,7 +52,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
-@property (nonatomic, copy) void (^callback)();
+@property (nonatomic, copy) void (^callback)(void);
 
 @end
 
@@ -60,7 +60,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                         image:(UIImage * __nonnull)image
-                     callback:(void(^)())callback
+                     callback:(void(^)(void))callback
 {
     return [self initWithTitle:title
                     identifier:BlogDetailsCellIdentifier
@@ -71,7 +71,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                    identifier:(NSString * __nonnull)identifier 
                         image:(UIImage * __nonnull)image
-                     callback:(void(^)())callback
+                     callback:(void(^)(void))callback
 {
     self = [super init];
     if (self) {
