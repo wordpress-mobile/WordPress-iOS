@@ -38,8 +38,7 @@ enum PlanListViewModel {
             // Currently unused as we've removed the terms and conditions footer until we re-add purchasing at a later date
             let _ = { [weak presenter] in
                 let url = URL(string: WPAutomatticTermsOfServiceURL)!
-                let webViewController = WPWebViewController()
-                webViewController.url = url
+                let webViewController = WebViewControllerFactory.controller(url: url)
                 let navController = UINavigationController(rootViewController: webViewController)
                 presenter?.present(navController, animated: true, completion: nil)
             }

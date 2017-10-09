@@ -1,5 +1,4 @@
 #import "CommentViewController.h"
-#import "WPWebViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
@@ -422,9 +421,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    [webViewController authenticateWithDefaultAccount];
+    UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }

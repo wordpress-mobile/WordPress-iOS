@@ -2,13 +2,14 @@
 
 @class Blog;
 @class WPAccount;
+@class WebViewAuthenticator;
 
 #pragma mark - WPWebViewController
 
 @interface WPWebViewController : UIViewController<UIWebViewDelegate>
 
 /**
- *	@brief		Represents the Endpoint URL to render
+ *    @brief        Represents the Endpoint URL to render
  */
 @property (nonatomic, strong) NSURL     *url;
 
@@ -18,7 +19,7 @@
 @property (nonatomic, strong) UIBarButtonItem          *optionsButton;
 
 /**
- *	@brief		Optionally suppresses navigation and sharing
+ *    @brief        Optionally suppresses navigation and sharing
  */
 @property (nonatomic, assign) BOOL      secureInteraction;
 
@@ -27,20 +28,7 @@
  */
 @property (nonatomic, assign) BOOL addsWPComReferrer;
 
-/**
- *  @brief Use the provided blog to authenticate the web view.
- */
-- (void)authenticateWithBlog:(Blog *)blog;
-
-/**
- *  @brief Use the provided account to authenticate the web view.
- */
-- (void)authenticateWithAccount:(WPAccount *)account;
-
-/**
- *  @brief Use the default account to authenticate the web view.
- */
-- (void)authenticateWithDefaultAccount;
+@property (nonatomic, strong) WebViewAuthenticator *authenticator;
 
 /**
  *	@brief		Dismiss modal presentation

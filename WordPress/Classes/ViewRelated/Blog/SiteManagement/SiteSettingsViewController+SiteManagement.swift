@@ -133,12 +133,12 @@ public extension SiteSettingsViewController {
     /// Brings up web interface showing site purchases for cancellation
     ///
     fileprivate func showPurchases() {
-        let purchasesUrl = "https://wordpress.com/purchases"
+        let url = URL(string: "https://wordpress.com/purchases")!
 
-        let controller = WPWebViewController()
-        controller.authenticate(with: blog)
-        controller.secureInteraction = true
-        controller.url = URL(string: purchasesUrl)
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.secureInteraction = true
+        configuration.authenticate(blog: blog)
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil
         controller.title = NSLocalizedString("Purchases", comment: "Title of screen showing site purchases")

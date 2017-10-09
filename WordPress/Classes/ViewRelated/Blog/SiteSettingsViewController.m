@@ -835,8 +835,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
         NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
-        WPWebViewController *webViewController = [WPWebViewController new];
-        webViewController.url = targetURL;
+        UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navController animated:YES completion:nil];
     }
