@@ -718,6 +718,7 @@
 		E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */; };
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */; };
+		E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E21F8B61030004DD9F /* WebKitViewController.swift */; };
 		E1703A5C1C28006B00C57FA0 /* UITableViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1703A5B1C28006B00C57FA0 /* UITableViewController+Helpers.swift */; };
 		E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E1718E9F1CAD0800006F9E2D /* HockeyManager.m */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
@@ -2085,6 +2086,7 @@
 		E16AB93114D978240047A2E5 /* WordPressTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WordPressTest-Info.plist"; sourceTree = "<group>"; };
 		E16AB93814D978240047A2E5 /* WordPressTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressTest-Prefix.pch"; sourceTree = "<group>"; };
 		E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerConfiguration.swift; sourceTree = "<group>"; };
+		E16FB7E21F8B61030004DD9F /* WebKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitViewController.swift; sourceTree = "<group>"; };
 		E1703A5B1C28006B00C57FA0 /* UITableViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Helpers.swift"; sourceTree = "<group>"; };
 		E1718E9E1CAD0800006F9E2D /* HockeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HockeyManager.h; sourceTree = "<group>"; };
 		E1718E9F1CAD0800006F9E2D /* HockeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HockeyManager.m; sourceTree = "<group>"; };
@@ -3942,16 +3944,17 @@
 		B526DC241B1E473B002A8C5F /* WebViewController */ = {
 			isa = PBXGroup;
 			children = (
-				E1222B621F877FD700D23173 /* WebProgressView.swift */,
-				5D6C4B011B603D1F005E3C43 /* WPWebViewController.xib */,
-				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
-				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
-				E1222B661F878E4700D23173 /* WebViewControllerFactory.swift */,
-				E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */,
-				E1BB85971F82459800797050 /* WebViewAuthenticator.swift */,
 				E161B7EB1F839345000FDF0B /* CookieJar.swift */,
+				E16FB7E21F8B61030004DD9F /* WebKitViewController.swift */,
+				E1222B621F877FD700D23173 /* WebProgressView.swift */,
+				E1BB85971F82459800797050 /* WebViewAuthenticator.swift */,
+				E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */,
+				E1222B661F878E4700D23173 /* WebViewControllerFactory.swift */,
 				B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */,
 				B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */,
+				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
+				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
+				5D6C4B011B603D1F005E3C43 /* WPWebViewController.xib */,
 			);
 			name = WebViewController;
 			sourceTree = "<group>";
@@ -6226,6 +6229,7 @@
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				E105205B1F2B1CF400A948F6 /* BlogToBlogMigration_61_62.swift in Sources */,
+				E16FB7E31F8B61040004DD9F /* WebKitViewController.swift in Sources */,
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
 				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,

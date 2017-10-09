@@ -58,6 +58,19 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
 }
 
+- (instancetype)initWithConfiguration:(WebViewControllerConfiguration *)configuration
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        _url = configuration.url;
+        _optionsButton = configuration.optionsButton;
+        _secureInteraction = configuration.secureInteraction;
+        _addsWPComReferrer = configuration.addsWPComReferrer;
+        _authenticator = configuration.authenticator;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
