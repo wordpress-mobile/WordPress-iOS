@@ -5,7 +5,9 @@ class WebViewControllerConfiguration: NSObject {
     var optionsButton: UIBarButtonItem?
     var secureInteraction: Bool = false
     var addsWPComReferrer: Bool = false
+    var customTitle: String?
     var authenticator: WebViewAuthenticator?
+    weak var navigationDelegate: WebNavigationDelegate?
 
     init(url: URL) {
         self.url = url
