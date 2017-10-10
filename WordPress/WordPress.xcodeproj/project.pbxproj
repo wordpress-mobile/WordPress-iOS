@@ -3032,8 +3032,7 @@
 			children = (
 				40F88F631F86C26600AE3FAF /* AztecVerificationPromptHelper.swift */,
 			);
-			name = Helpers;
-			path = "New Group";
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		435035911EDCAB99004ECF47 /* Animations */ = {
