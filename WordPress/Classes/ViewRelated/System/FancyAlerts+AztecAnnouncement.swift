@@ -49,7 +49,7 @@ extension FancyAlertViewController {
             WPAnalytics.track(.editorToggledOn)
         }
 
-        let addConfetti: (FancyAlertButtonHandler) = { controller in
+        let addConfetti: ((FancyAlertViewController) -> Void) = { controller in
             guard let imageView = controller.headerImageView, let imageViewHolder = imageView.superview else { return }
 
             let confettiView = ConfettiView.aztecAnnouncementConfettiView()
@@ -60,7 +60,7 @@ extension FancyAlertViewController {
             confettiView.start(duration: Constants.confettiDuration)
         }
 
-        let defaultButton = Button(Strings.tryIt, { controller in
+        let defaultButton = Button(Strings.tryIt, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoPositive)
 
             enableEditor()
@@ -86,12 +86,12 @@ extension FancyAlertViewController {
             })
         })
 
-        let cancelButton = Button(Strings.notNow, { controller in
+        let cancelButton = Button(Strings.notNow, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoNegative)
             controller.dismiss(animated: true, completion: nil)
         })
 
-        let moreInfoButton = Button(Strings.whatsNew, { controller in
+        let moreInfoButton = Button(Strings.whatsNew, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoLink)
             WPWebViewController.presentWhatsNewWebView(from: controller)
         })
@@ -121,7 +121,7 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.whatsNew, { controller in
+        let moreInfoButton = Button(Strings.whatsNew, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoLink)
             WPWebViewController.presentWhatsNewWebView(from: controller)
         })
@@ -148,7 +148,7 @@ extension FancyAlertViewController {
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.appSettings, { controller in
+        let moreInfoButton = Button(Strings.appSettings, { controller, _ in
             controller.presentingViewController?.dismiss(animated: true, completion: {
                 WPTabBarController.sharedInstance().switchMeTabToAppSettings()
             })

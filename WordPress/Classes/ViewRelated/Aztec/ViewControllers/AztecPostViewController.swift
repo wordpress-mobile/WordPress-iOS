@@ -402,6 +402,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
 
+    /// Verification Prompt Helper
+    ///
+    /// - Returns: `nil` when there's no need for showing the verification prompt.
+    fileprivate lazy var verificationPromptHelper: AztecVerificationPromptHelper? = {
+        return AztecVerificationPromptHelper(account: self.post.blog.account)
+    }()
+
 
     // MARK: - Initializers
 
@@ -466,6 +473,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         configureDismissButton()
         startListeningToNotifications()
+        verificationPromptHelper?.updateVerificationStatus()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -990,6 +998,21 @@ extension AztecPostViewController {
             })
             return
         }
+
+        // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
+        if let verificationHelper = verificationPromptHelper, verificationHelper.neeedsVerification(before: postEditorStateContext.action) {
+            verificationHelper.displayVerificationPrompt(from: self) { [weak self] verifiedInBackground in
+                // User could've been plausibly silently verified in the background.
+                // If so, proceed to publishing the post as normal, otherwise save it as a draft.
+                if !verifiedInBackground {
+                    self?.post.status = .draft
+                }
+
+                self?.publishTapped(dismissWhenDone: dismissWhenDone)
+            }
+            return
+        }
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
         postEditorStateContext.updated(isBeingPublished: true)
@@ -1194,6 +1217,7 @@ private extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
         return
     }
+
 }
 
 
@@ -2219,7 +2243,6 @@ extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
         }
     }
 }
-
 
 // MARK: - Unknown HTML
 //
