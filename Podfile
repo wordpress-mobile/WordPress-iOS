@@ -45,7 +45,7 @@ target 'WordPress' do
   pod 'MGSwipeTableCell', '1.6.1'
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '3.0.2'
-  pod 'GoogleSignIn', '4.0.2'
+  pod 'GoogleSignIn', '4.1.0'
 
   # --------------------
   # WordPress components
