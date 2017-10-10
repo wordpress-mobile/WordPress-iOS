@@ -192,15 +192,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         return cancelItem
     }()
 
-
-    /// NavigationBar's Blog Picker Button
-    ///
-    fileprivate lazy var blogPickerBarButtonItem: UIBarButtonItem = {
-        let pickerItem = UIBarButtonItem(customView: self.blogPickerButton)
-        pickerItem.accessibilityLabel = NSLocalizedString("Switch Blog", comment: "Action button to switch the blog to which you'll be posting")
-        return pickerItem
-    }()
-
     /// Media Uploading Status Button
     ///
     fileprivate lazy var mediaUploadingBarButtonItem: UIBarButtonItem = {
@@ -649,8 +640,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
 
-        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
-        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
+        navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem]
+        navigationItem.rightBarButtonItems = [separatorButtonItem, moreBarButtonItem, publishButton]
+        navigationItem.titleView = blogPickerButton
     }
 
     func configureDismissButton() {
@@ -734,8 +726,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     func refreshNavigationBar() {
         if postEditorStateContext.isUploadingMedia {
             navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, mediaUploadingBarButtonItem]
+            navigationItem.titleView = nil
         } else {
-            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
+            navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem]
+            navigationItem.titleView = blogPickerButton
         }
     }
 
@@ -795,14 +789,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func resizeBlogPickerButton() {
-        // Ensure the BlogPicker gets it's maximum possible size
-        blogPickerButton.sizeToFit()
-
-        // Cap the size, according to the current traits
-        var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
-        blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
-
-        blogPickerButton.frame.size = blogPickerSize
+//        // Ensure the BlogPicker gets it's maximum possible size
+//        blogPickerButton.sizeToFit()
+//
+//        // Cap the size, according to the current traits
+//        var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
+//        blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
+//
+//        blogPickerButton.frame.size = blogPickerSize
     }
 
 
@@ -3203,7 +3197,7 @@ extension AztecPostViewController {
 
     struct Constants {
         static let defaultMargin            = CGFloat(20)
-        static let separatorButtonWidth     = CGFloat(-12)
+        static let separatorButtonWidth     = CGFloat(1)
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
