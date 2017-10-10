@@ -8,7 +8,7 @@
 
 + (instancetype)buttonWithFrame:(CGRect)frame buttonStyle:(WPBlogSelectorButtonStyle)buttonStyle
 {
-    WPBlogSelectorButton *button = [WPBlogSelectorButton buttonWithType:UIButtonTypeCustom];
+    WPBlogSelectorButton *button = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
     button.buttonStyle = buttonStyle;
     button.frame = frame;
     button.titleLabel.textColor = [UIColor whiteColor];
@@ -23,7 +23,7 @@
             button.titleLabel.textAlignment = NSTextAlignmentLeft;
             button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 4, 0, 0)];
+            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
             break;
         case WPBlogSelectorButtonTypeStacked:
         default:
