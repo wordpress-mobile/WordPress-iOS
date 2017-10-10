@@ -79,8 +79,14 @@ class CalypsoProcessorIn: Processor {
         output = output.replacingMatches(of: "\\s*<option", with: "<option", options: .caseInsensitive)
         output = output.replacingMatches(of: "<\\/option>\\s*", with: "</option>", options: .caseInsensitive)
 
+        // Normalize multiple line breaks and white space chars.
+        output = output.replacingMatches(of: "\n\\s*\n+", with: "\n\n")
+
         // Convert two line breaks to a paragraph.
-        output = output.replacingMatches(of: "([\\s\\S]*?)\n\n", with: "<p>$1</p>\n")
+        output = output.replacingMatches(of: "([\\s\\S]+?)\n\n", with: "<p>$1</p>\n")
+
+        // Remove empty paragraphs.
+        output = output.replacingMatches(of: "<p>\\s*?<\\/p>", with: "", options: .caseInsensitive)
 
         // Remove <p> tags that are around block tags.
         output = output.replacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1", options: .caseInsensitive)
@@ -89,6 +95,11 @@ class CalypsoProcessorIn: Processor {
         // Fix <p> in blockquotes.
         output = output.replacingMatches(of: "<p>\\s*<blockquote([^>]*)>", with: "<blockquote$1><p>", options: .caseInsensitive)
         output = output.replacingMatches(of: "<\\/blockquote>\\s*<\\/p>", with: "</p></blockquote>", options: .caseInsensitive)
+
+        // Remove <p> tags that are wrapped around block tags.
+        output = output.replacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)", with: "$1", options: .caseInsensitive)
+        output = output.replacingMatches(of: "(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1", options: .caseInsensitive)
+        output = output.replacingMatches(of: "(<br[^>]*>)\\s*\n", with: "$1", options: .caseInsensitive)
 
         // Add <br> tags.
         output = output.replacingMatches(of: "\\s*\n", with: "<br />\n")
