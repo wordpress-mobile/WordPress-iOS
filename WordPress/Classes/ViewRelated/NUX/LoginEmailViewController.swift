@@ -31,6 +31,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     private struct Constants {
         static let googleButtonOffset: CGFloat = 10.0
+        static let googleButtonAnimationDuration: TimeInterval = 0.33
     }
 
 
@@ -388,13 +389,26 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
+
+        adjustGoogleButtonVisibility(true)
     }
 
 
     func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
+
+        adjustGoogleButtonVisibility(false)
     }
 
+    func adjustGoogleButtonVisibility(_ visible: Bool) {
+        let errorLength = errorLabel?.text?.count ?? 0
+        let baseAlpha: CGFloat = errorLength > 0 ? 0.0 : 1.0
+        let newAlpha: CGFloat = visible ? baseAlpha : 1.0
+
+        UIView.animate(withDuration: Constants.googleButtonAnimationDuration) { [weak self] in
+            self?.googleLoginButton?.alpha = newAlpha
+        }
+    }
 }
 
 // LoginFacadeDelegate methods for Google Google Sign In
