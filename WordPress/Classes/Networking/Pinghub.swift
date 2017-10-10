@@ -136,7 +136,7 @@ public class PinghubClient {
         }
     }
 
-    internal static let endpoint = URL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
+    internal static let endpoint = URL(string: "https://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
 }
 
 
