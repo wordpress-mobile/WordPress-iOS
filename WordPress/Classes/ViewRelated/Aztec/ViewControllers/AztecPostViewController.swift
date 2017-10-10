@@ -490,7 +490,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         super.viewWillTransition(to: size, with: coordinator)
 
         coordinator.animate(alongsideTransition: { _ in
-            self.resizeBlogPickerButton()
             self.updateTitleHeight()
         })
 
@@ -717,8 +716,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func refreshInterface() {
         reloadBlogPickerButton()
-        reloadEditorContents()
-        resizeBlogPickerButton()
+        reloadEditorContents()        
         reloadPublishButton()
         refreshNavigationBar()
     }
@@ -787,18 +785,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         publishButton.title = postEditorStateContext.publishButtonText
         publishButton.isEnabled = postEditorStateContext.isPublishButtonEnabled
     }
-
-    func resizeBlogPickerButton() {
-//        // Ensure the BlogPicker gets it's maximum possible size
-//        blogPickerButton.sizeToFit()
-//
-//        // Cap the size, according to the current traits
-//        var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
-//        blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
-//
-//        blogPickerButton.frame.size = blogPickerSize
-    }
-
 
     // MARK: - Keyboard Handling
 

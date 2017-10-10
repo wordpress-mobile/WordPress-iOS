@@ -1,15 +1,20 @@
 #import "WPBlogSelectorButton.h"
 
+@interface WPBlogSelectorButton()
+    @property (nonatomic, strong) UIImage *selectorImage;
+@end
+
 @implementation WPBlogSelectorButton
 
 + (instancetype)buttonWithFrame:(CGRect)frame buttonStyle:(WPBlogSelectorButtonStyle)buttonStyle
 {
-    WPBlogSelectorButton *button = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
+    WPBlogSelectorButton *button = [WPBlogSelectorButton buttonWithType:UIButtonTypeCustom];
     button.buttonStyle = buttonStyle;
     button.frame = frame;
     button.titleLabel.textColor = [UIColor whiteColor];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
-    [button setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
+    button.selectorImage = [UIImage imageNamed:@"icon-nav-chevron"];
+    [button setImage:button.selectorImage forState:UIControlStateNormal];
     [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
     
     switch (button.buttonStyle) {
@@ -38,12 +43,18 @@
     [super layoutSubviews];
     self.titleLabel.frame = [self titleRectForContentRect:self.bounds];
     self.imageView.frame = [self imageRectForContentRect:self.bounds];
+    self.imageView.hidden = NO;
 }
 
 - (CGRect)imageRectForContentRect:(CGRect)contentRect
 {
     CGRect frame = [super imageRectForContentRect:contentRect];
-    frame.origin.x = CGRectGetMaxX([self titleRectForContentRect:contentRect]) + self.imageEdgeInsets.left;
+    CGRect titleContentRect = [self titleRectForContentRect:contentRect];
+    frame.origin.x = CGRectGetMaxX(titleContentRect) + self.imageEdgeInsets.left;
+    CGSize imageSize = self.selectorImage.size;
+    frame.origin.y = CGRectGetMidY(titleContentRect) - (imageSize.height / 2);
+    frame.size.height = imageSize.height;
+    frame.size.width = imageSize.width;
     return frame;
 }
 
@@ -60,7 +71,7 @@
             frame.origin.x = CGRectGetMidX(contentRect) - CGRectGetWidth(frame) / 2.0;
             break;
     }
-    
+
     return frame;
 }
 
@@ -71,10 +82,11 @@
         UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
         UIImage *blankFillerImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        [self setImage:blankFillerImage forState:UIControlStateNormal];
+        self.selectorImage = blankFillerImage;
     } else {
-        [self setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
+        self.selectorImage = [UIImage imageNamed:@"icon-nav-chevron"];
     }
+    [self setImage:self.selectorImage forState:UIControlStateNormal];
 }
 
 @end

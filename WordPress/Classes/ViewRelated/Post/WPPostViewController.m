@@ -81,7 +81,7 @@ UIDocumentPickerDelegate
 
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
-@property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
+@property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL isOpenedDirectlyForEditing;
 @property (nonatomic) CGRect keyboardRect;
@@ -97,7 +97,7 @@ UIDocumentPickerDelegate
 @property (nonatomic, strong) UIAlertController *mediaSourceAlertController;
 
 #pragma mark - Bar Button Items
-@property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
+@property (nonatomic, strong) UIButton *activeTitleButton;
 @property (nonatomic, strong) UIBarButtonItem *negativeSeparator;
 @property (nonatomic, strong) UIBarButtonItem *cancelXButton;
 @property (nonatomic, strong) UIBarButtonItem *cancelChevronButton;
@@ -1132,12 +1132,12 @@ UIDocumentPickerDelegate
 {
     [self refreshNavigationBarLeftButtons:editingChanged];
     [self refreshNavigationBarRightButtons:editingChanged];
+    self.navigationItem.titleView = self.activeTitleButton;
     [self refreshMediaProgress];
 }
 
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
-    UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
     NSArray* leftBarButtons;
 
     if ([self isModal]) {
@@ -1145,7 +1145,7 @@ UIDocumentPickerDelegate
     } else {
         self.currentCancelButton = self.cancelChevronButton;
     }
-    leftBarButtons = @[self.negativeSeparator, self.currentCancelButton, secondaryleftHandButton];
+    leftBarButtons = @[self.negativeSeparator, self.currentCancelButton];
     
     if (![leftBarButtons isEqualToArray:self.navigationItem.leftBarButtonItems]) {
         [self.navigationItem setLeftBarButtonItems:nil];
@@ -1277,12 +1277,12 @@ UIDocumentPickerDelegate
     return _saveBarButtonItem;
 }
 
-- (UIBarButtonItem *)secondaryLeftUIBarButtonItem
+- (UIButton *)activeTitleButton
 {
-    UIBarButtonItem *aUIButtonBarItem;
+    UIButton *aButton;
     
     if ([self isMediaUploading]) {
-        aUIButtonBarItem = self.uploadStatusButton;
+        aButton = self.uploadStatusButton;
     } else {
         WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
         NSString *blogName = self.post.blog.settings.name;
@@ -1304,11 +1304,11 @@ UIDocumentPickerDelegate
         } else {
             blogButton.buttonMode = WPBlogSelectorButtonMultipleSite;
         }
-        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
+        aButton = blogButton;
     }
     
-    _secondaryLeftUIBarButtonItem = aUIButtonBarItem;
-    return _secondaryLeftUIBarButtonItem;
+    _activeTitleButton = aButton;
+    return _activeTitleButton;
 }
 
 - (UIButton *)blogPickerButton
@@ -1330,13 +1330,13 @@ UIDocumentPickerDelegate
     return _blogPickerButton;
 }
 
-- (UIBarButtonItem *)uploadStatusButton
+- (UIButton *)uploadStatusButton
 {
     if (!_uploadStatusButton) {
         UIButton *button = [[WPUploadStatusButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CompactTitleButtonWidth , RegularTitleButtonHeight)];
         [button setTitle:NSLocalizedString(@"Media Uploading", @"Message to indicate progress of uploading media to server") forState: UIControlStateNormal];
         [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
-        _uploadStatusButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+        _uploadStatusButton = button;
     }
     
     return _uploadStatusButton;
