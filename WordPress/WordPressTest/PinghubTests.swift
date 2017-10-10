@@ -120,7 +120,7 @@ class MockSocket: Socket {
     }
 
     var onConnect: (() -> Void)?
-    var onDisconnect: ((NSError?) -> Void)?
+    var onDisconnect: ((Error?) -> Void)?
     var onText: ((String) -> Void)?
     var onData: ((Data) -> Void)?
 }
