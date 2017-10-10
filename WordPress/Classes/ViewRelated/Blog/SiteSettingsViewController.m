@@ -970,7 +970,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         } else {
             message = [error localizedDescription];
         }
-        [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message];
+        [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"Error title when updating the account password fails") message:message];
     }
 }
 
