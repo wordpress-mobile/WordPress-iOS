@@ -96,11 +96,6 @@ class WebKitViewController: UIViewController {
         let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
         closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
 
-        // Only show a close button if this is presented modally
-        if (navigationController?.viewControllers.count == 1 && presentingViewController != nil) {
-            navigationItem.leftBarButtonItem = closeButton
-        }
-
         titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
         if let title = customTitle {
             self.title = title
@@ -118,9 +113,11 @@ class WebKitViewController: UIViewController {
         // Modal styling
         // Proceed only if this Modal, and it's the only view in the stack.
         // We're not changing the NavigationBar style, if we're sharing it with someone else!
-        guard presentingViewController != nil && navigationController?.viewControllers.count == 1 else {
+        guard isModal() else {
             return
         }
+
+        navigationItem.leftBarButtonItem = closeButton
 
         let navigationBar = navigationController?.navigationBar
         navigationBar?.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
