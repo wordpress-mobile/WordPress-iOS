@@ -1,6 +1,6 @@
 import UIKit
 
-internal class AztecVerificationPromptHelper: NSObject {
+class AztecVerificationPromptHelper: NSObject {
 
     private let accountService: AccountService
     private let wpComAccount: WPAccount
@@ -16,7 +16,7 @@ internal class AztecVerificationPromptHelper: NSObject {
                 return nil
         }
 
-        self.accountService = AccountService(managedObjectContext: managedObjectContext)
+        accountService = AccountService(managedObjectContext: managedObjectContext)
 
         guard accountService.isDefaultWordPressComAccount(passedAccount),
               !passedAccount.emailVerified.boolValue else {
@@ -25,13 +25,14 @@ internal class AztecVerificationPromptHelper: NSObject {
                 return nil
         }
 
-        self.wpComAccount = passedAccount
+        wpComAccount = passedAccount
 
         super.init()
 
-        NotificationCenter.default.addObserver(forName: .UIApplicationDidBecomeActive, object: nil, queue: nil) { [weak self] _ in
-            self?.updateVerificationStatus()
-        }
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateVerificationStatus),
+                                               name: .UIApplicationDidBecomeActive,
+                                               object: nil)
     }
 
     deinit {
