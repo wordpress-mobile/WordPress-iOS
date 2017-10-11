@@ -6,6 +6,6 @@
 
 + (void)showAlertNoInternetConnection;
 
-+ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)())retryBlock;
++ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock;
 
 @end

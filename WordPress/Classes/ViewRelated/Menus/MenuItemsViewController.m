@@ -725,7 +725,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
     }
 }
 
-- (void)orderingAnimationWithBlock:(void(^)())block
+- (void)orderingAnimationWithBlock:(void(^)(void))block
 {
     [UIView animateWithDuration:0.10 animations:^{
         block();

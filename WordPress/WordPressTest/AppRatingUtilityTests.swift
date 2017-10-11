@@ -237,7 +237,7 @@ class AppRatingUtilityTests: XCTestCase {
     }
 
     func testAppReviewPromptRemoteDisableForGlobalPromptWhenRemoteCheckIndicatesEverythingIsDisabled() {
-        self.utility.register(section:"notifications", significantEventCount: 1)
+        self.utility.register(section: "notifications", significantEventCount: 1)
         self.utility.systemWideSignificantEventCountRequiredForPrompt = 2
         self.utility.setVersion("4.7")
         self.utility.incrementSignificantEvent(section: "notifications")

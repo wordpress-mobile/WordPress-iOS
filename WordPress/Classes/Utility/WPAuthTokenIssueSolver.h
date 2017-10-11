@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-typedef void(^WPAuthTokenissueSolverCompletionBlock)();
+typedef void(^WPAuthTokenissueSolverCompletionBlock)(void);
 
 /**
  *  @class      WPAuthTokenIssueSolver

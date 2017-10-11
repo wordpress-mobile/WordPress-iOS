@@ -205,7 +205,7 @@
     }
 }
 
-- (void)addAssetWithChangeRequest:(PHAssetChangeRequest *(^)())changeRequestBlock
+- (void)addAssetWithChangeRequest:(PHAssetChangeRequest *(^)(void))changeRequestBlock
                   completionBlock:(WPMediaAddedBlock)completionBlock
 {
     NSParameterAssert(changeRequestBlock);

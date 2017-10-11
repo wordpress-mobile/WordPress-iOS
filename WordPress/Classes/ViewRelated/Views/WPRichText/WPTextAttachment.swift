@@ -10,7 +10,7 @@ open class WPTextAttachment: NSTextAttachment {
     fileprivate(set) open var src: String
     open var maxSize = CGSize.zero
 
-    internal(set) open var attributes: [String : String]?
+    internal(set) open var attributes: [String: String]?
     internal(set) open var html: String?
     internal(set) open var width = CGFloat(0)
     internal(set) open var height = CGFloat(0)
@@ -50,7 +50,7 @@ open class WPTextAttachment: NSTextAttachment {
         self.src = aDecoder.decodeObject(forKey: srcKey) as! String
         self.maxSize = aDecoder.decodeCGSize(forKey: maxSizeKey)
 
-        self.attributes = aDecoder.decodeObject(forKey: attributesKey) as? [String : String]
+        self.attributes = aDecoder.decodeObject(forKey: attributesKey) as? [String: String]
         self.html = aDecoder.decodeObject(forKey: htmlKey) as? String
         self.width = CGFloat(aDecoder.decodeDouble(forKey: widthKey))
         self.height = CGFloat(aDecoder.decodeDouble(forKey: heightKey))

@@ -2,9 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
-#import "WPURLRequest.h"
 #import "WPUserAgent.h"
-#import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
 #import "WPStyleGuide+WebView.h"
@@ -19,16 +17,9 @@
 static NSInteger const WPWebViewErrorAjaxCancelled          = -999;
 static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
 
-static CGFloat const WPWebViewProgressInitial               = 0.1;
-static CGFloat const WPWebViewProgressFinal                 = 1.0;
-
 static CGFloat const WPWebViewToolbarShownConstant          = 0.0;
 static CGFloat const WPWebViewToolbarHiddenConstant         = -44.0;
-
 static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
-static CGFloat const WPWebViewAnimationLongDuration         = 0.4;
-static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0;
-static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 static NSString *const WPComReferrerURL = @"https://wordpress.com";
 
@@ -40,9 +31,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @interface WPWebViewController () <UIWebViewDelegate>
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
-@property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
-@property (nonatomic, strong) UIBarButtonItem          *dismissButton;
-@property (nonatomic, strong) UIBarButtonItem          *optionsButton;
+@property (nonatomic,   weak) IBOutlet WebProgressView          *progressView;
+@property (nonatomic, strong) UIBarButtonItem                   *dismissButton;
 
 @property (nonatomic,   weak) IBOutlet UIToolbar                *toolbar;
 @property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
@@ -50,8 +40,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic,   weak) IBOutlet NSLayoutConstraint       *toolbarBottomConstraint;
 
 @property (nonatomic, strong) NavigationTitleView               *titleView;
+@property (nonatomic, copy)   NSString                          *customTitle;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
+
+@property (nonatomic, weak) id<WebNavigationDelegate> navigationDelegate;
 
 @end
 
@@ -66,6 +59,20 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (_webView.isLoading) {
         [_webView stopLoading];
     }
+}
+
+- (instancetype)initWithConfiguration:(WebViewControllerConfiguration *)configuration
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        _url = configuration.url;
+        _optionsButton = configuration.optionsButton;
+        _secureInteraction = configuration.secureInteraction;
+        _addsWPComReferrer = configuration.addsWPComReferrer;
+        _customTitle = configuration.customTitle;
+        _authenticator = configuration.authenticator;
+    }
+    return self;
 }
 
 - (void)viewDidLoad
@@ -84,7 +91,12 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.titleView                          = [NavigationTitleView new];
     self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
     self.titleView.subtitleLabel.text       = self.url.host;
-    self.navigationItem.titleView           = self.titleView;
+
+    if (self.customTitle != nil) {
+        self.title = self.customTitle;
+    } else {
+        self.navigationItem.titleView = self.titleView;
+    }
     
     // Buttons
     if (!self.optionsButton) {
@@ -142,9 +154,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     self.dismissButton.tintColor            = [WPStyleGuide greyLighten10];
     self.optionsButton.tintColor            = [WPStyleGuide greyLighten10];
-    
-    self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
-    
+
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }
 
@@ -189,28 +199,27 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)loadWebViewRequest
 {
-    if (![ReachabilityUtils isInternetReachable]) {
-        [self showNoInternetAlertView];
+    if (self.authenticator == nil) {
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
+        [self loadRequest:request];
         return;
     }
-
-    BOOL hasCookies = [WPCookie hasCookieForURL:self.url andUsername:self.username];
-    if (self.url.isWordPressDotComUrl && !self.needsLogin && self.hasCredentials && !hasCookies) {
-        DDLogWarn(@"WordPress.com URL: We have login credentials but no cookie, let's try login first");
-        [self retryWithLogin];
-        return;
-    }
-    
-    NSURLRequest *request = [self newRequestForWebsite];
-    NSAssert(request, @"We should have a valid request here!");
-    
-    [self.webView loadRequest:request];
+    id<CookieJar> cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    [self.authenticator requestWithUrl:self.url
+                             cookieJar:cookieJar
+                            completion:^(NSURLRequest * _Nonnull request) {
+                                [self loadRequest:request];
+                            }];
 }
 
-- (void)retryWithLogin
+- (void)loadRequest:(NSURLRequest *)request
 {
-    self.needsLogin = YES;
-    [self loadWebViewRequest];
+    NSMutableURLRequest *mutableRequest = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
+    if (self.addsWPComReferrer) {
+        [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
+    }
+    [mutableRequest setValue:[WPUserAgent wordPressUserAgent] forHTTPHeaderField:@"User-Agent"];
+    [self.webView loadRequest:mutableRequest];
 }
 
 - (void)refreshInterface
@@ -225,27 +234,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     self.titleView.titleLabel.text      = [self documentTitle];
     self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
-}
-
-- (void)scrollToBottomIfNeeded
-{
-    if (!self.shouldScrollToBottom) {
-        return;
-    }
-    
-    self.shouldScrollToBottom = NO;
-    
-    UIScrollView *scrollView    = self.webView.scrollView;
-    CGPoint bottomOffset        = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
-    [scrollView setContentOffset:bottomOffset animated:YES];
-}
-
-- (void)showNoInternetAlertView
-{
-    __typeof(self) __weak weakSelf = self;
-    [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
-        [weakSelf loadWebViewRequest];
-    }];
 }
 
 - (void)showBottomToolbarIfNeeded
@@ -291,7 +279,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [self loadWebViewRequest];
     }
 }
-
 
 #pragma mark - IBAction Methods
 
@@ -339,17 +326,14 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
-    
-    // WP Login: Send the credentials, if needed
-    NSRange loginRange  = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
-    BOOL isLoginURL     = loginRange.location != NSNotFound;
-    
-    if (isLoginURL && !self.needsLogin && self.hasCredentials) {
-        DDLogInfo(@"WP is asking for credentials, let's login first");
-        [self retryWithLogin];
+
+    NSURLRequest *redirectRequest = [self.authenticator interceptRedirectWithRequest:request];
+    if (redirectRequest != NULL) {
+        DDLogInfo(@"Found redirect to %@", redirectRequest);
+        [self.webView loadRequest:redirectRequest];
         return NO;
     }
-    
+
     // To handle WhatsApp and Telegraph shares
     // Even though the documentation says that canOpenURL will only return YES for
     // URLs configured on the plist under LSApplicationQueriesSchemes if we don't filter
@@ -360,6 +344,14 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
                                            options:nil
                                  completionHandler:nil];
         return NO;
+    }
+
+    if (self.navigationDelegate != nil) {
+        WebNavigationPolicy *policy = [self.navigationDelegate shouldNavigateWithRequest:request];
+        if (policy.redirectRequest != NULL) {
+            [self.webView loadRequest:policy.redirectRequest];
+        }
+        return policy.action == WKNavigationResponsePolicyAllow;
     }
 
     //  Note:
@@ -383,7 +375,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         return;
     }
     
-    [self startProgress];
+    [self.progressView startedLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -398,7 +390,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     // Refresh the Interface
     self.loading = NO;
     
-    [self finishProgress];
+    [self.progressView finishedLoading];
     [self refreshInterface];
 
     // Don't show Ajax Cancelled or Frame Load Interrupted errors
@@ -427,104 +419,9 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     self.loading = NO;
     
-    [self finishProgress];
+    [self.progressView finishedLoading];
     [self refreshInterface];
     [self showBottomToolbarIfNeeded];
-    [self scrollToBottomIfNeeded];
-}
-
-
-#pragma mark - Progress Bar Helpers
-
-- (void)startProgress
-{
-    self.progressView.alpha     = WPWebViewAnimationAlphaVisible;
-    self.progressView.progress  = WPWebViewProgressInitial;
-}
-
-- (void)finishProgress
-{
-    [UIView animateWithDuration:WPWebViewAnimationLongDuration animations:^{
-        self.progressView.progress = WPWebViewProgressFinal;
-    } completion:^(BOOL finished) {
-       [UIView animateWithDuration:WPWebViewAnimationShortDuration animations:^{
-           self.progressView.alpha = WPWebViewAnimationAlphaHidden;
-       }];
-    }];
-}
-
-
-#pragma mark - Authentication Helpers
-
-- (BOOL)hasCredentials
-{
-    return self.username && (self.password || self.authToken);
-}
-
-
-#pragma mark - Requests Helpers
-
-- (NSURLRequest *)newRequestForWebsite
-{
-    NSString *userAgent = [WPUserAgent wordPressUserAgent];
-    NSURLRequest *request;
-    if (!self.needsLogin) {
-        request = [WPURLRequest requestWithURL:self.url userAgent:userAgent];
-    } else {
-        NSURL *loginURL = self.wpLoginURL ?: [self authUrlFromUrl:self.url];
-        request = [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                                    redirectURL:self.url
-                                                       username:self.username
-                                                       password:self.password
-                                                    bearerToken:self.authToken
-                                                      userAgent:userAgent];
-    }
-
-    if (self.addsWPComReferrer) {
-        NSMutableURLRequest *mReq = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
-        [mReq setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
-        request = mReq;
-    }
-
-    return request;
-}
-
-- (NSURL *)authUrlFromUrl:(NSURL *)url
-{
-    // Note:
-    // WordPress CDN doesn't really deal with Auth. We'll replace `.files.wordpress.com` with `.wordpress`.
-    // Don't worry, we'll redirect the user to the pristine URL afterwards. Issue #4983
-    //
-    NSURLComponents *components = [NSURLComponents new];
-    components.scheme           = url.scheme;
-    components.host             = [url.host stringByReplacingOccurrencesOfString:@".files.wordpress.com"
-                                                                      withString:@".wordpress.com"];
-    components.path             = @"/wp-login.php";
-
-    return components.URL;
-}
-
-
-#pragma mark - Static Helpers
-
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-{
-    NSParameterAssert(url);
-    
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    return webViewController;
-}
-
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-                           optionsButton:(UIBarButtonItem *)button
-{
-    NSParameterAssert(url);
-
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    webViewController.optionsButton = button;
-    return webViewController;
 }
 
 @end

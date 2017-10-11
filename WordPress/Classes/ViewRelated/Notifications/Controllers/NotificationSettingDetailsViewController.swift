@@ -266,12 +266,12 @@ class NotificationSettingDetailsViewController: UITableViewController {
         let service = NotificationSettingsService(managedObjectContext: context)
 
         service.updateSettings(settings!,
-            stream              : stream!,
-            newValues           : newValues,
-            success             : {
+            stream: stream!,
+            newValues: newValues,
+            success: {
                 WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": true])
             },
-            failure             : { (error: Error?) in
+            failure: { (error: Error?) in
                 WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": false])
                 self.handleUpdateError()
             })
