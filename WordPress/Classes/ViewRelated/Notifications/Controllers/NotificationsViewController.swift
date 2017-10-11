@@ -1357,7 +1357,7 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
             presenter.sourceTag = SupportSourceTag.inAppFeedback
             presenter.presentHelpshiftConversationWindowFromViewController(self,
                                                                            refreshUserDetails: true,
-                                                                           completion:nil)
+                                                                           completion: nil)
         } else {
             if let contact = URL(string: NotificationsViewController.contactURL) {
                 UIApplication.shared.open(contact)

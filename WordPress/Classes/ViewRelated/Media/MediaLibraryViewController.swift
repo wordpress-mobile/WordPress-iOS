@@ -579,7 +579,7 @@ class MediaLibraryViewController: UIViewController {
         switch mediaType {
         case String(kUTTypeImage):
             if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable : Any] {
+                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
                 WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
             }
         case String(kUTTypeMovie):

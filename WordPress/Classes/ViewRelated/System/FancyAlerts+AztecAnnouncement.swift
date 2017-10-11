@@ -229,7 +229,7 @@ extension FancyAlertViewController {
         presenter.sourceTag = SupportSourceTag.aztecFeedback
         presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                        refreshUserDetails: true,
-                                                                       completion:nil)
+                                                                       completion: nil)
     }
 }
 

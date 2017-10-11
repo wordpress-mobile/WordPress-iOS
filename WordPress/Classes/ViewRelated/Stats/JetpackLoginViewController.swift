@@ -483,7 +483,7 @@ class JetpackLoginViewController: UIViewController {
 
 // MARK: - UITextViewDelegate methods
 
-extension JetpackLoginViewController : UITextFieldDelegate {
+extension JetpackLoginViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         activeField = textField
     }
@@ -510,7 +510,7 @@ extension JetpackLoginViewController : UITextFieldDelegate {
 
 // MARK: - LoginFacadeDelegate methods
 
-extension JetpackLoginViewController : LoginFacadeDelegate {
+extension JetpackLoginViewController: LoginFacadeDelegate {
     func displayRemoteError(_ error: Error!) {
         isAuthenticating = false
         handleSignInError(error)
