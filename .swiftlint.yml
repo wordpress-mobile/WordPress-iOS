@@ -12,7 +12,7 @@ whitelist_rules:
   - colon
 
   # There should be no space before and one after any comma.
-  # - comma
+  - comma
 
   # Repeated `let` statements in conditional binding cascade should be avoided.
   # - conditional_binding_cascade
