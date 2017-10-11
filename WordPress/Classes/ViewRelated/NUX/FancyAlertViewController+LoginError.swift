@@ -2,7 +2,7 @@ import UIKit
 import wpxmlrpc
 
 extension FancyAlertViewController {
-    struct Strings {
+    private struct Strings {
         static let titleText = NSLocalizedString("What's my site address?", comment: "Title of alert helping users understand their site address")
         static let bodyText = NSLocalizedString("Your site address appears in the bar at the the top of the screen when you visit your site in Safari.", comment: "Body text of alert helping users understand their site address")
         static let OK = NSLocalizedString("OK", comment: "Ok button for dismissing alert helping users understand their site address")
@@ -12,13 +12,13 @@ extension FancyAlertViewController {
     typealias ButtonConfig = FancyAlertViewController.Config.ButtonConfig
 
     private static func defaultButton() -> ButtonConfig {
-        return ButtonConfig(Strings.OK) { controller in
+        return ButtonConfig(Strings.OK) { controller, _ in
             controller.dismiss(animated: true, completion: nil)
         }
     }
 
     static func siteAddressHelpController(loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let delegate = UIApplication.shared.delegate,
@@ -108,7 +108,7 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     ///
     private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
@@ -147,7 +147,7 @@ extension FancyAlertViewController {
     /// - Parameter sourceTag: tag of the source of the error
     ///
     static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
@@ -183,16 +183,16 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     ///
     private static func alertForBadURLMessage(_ message: String) -> FancyAlertViewController {
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller in
+        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
                     let window = appDelegate.window,
                     let viewController = window?.topmostPresentedViewController,
-                    let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3"),
-                    let webController = WPWebViewController(url: url)
+                    let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3")
                     else { return }
 
+                let webController = WebViewControllerFactory.controller(url: url)
                 let navController = UINavigationController(rootViewController: webController)
                 viewController.present(navController, animated: true, completion: nil)
             }

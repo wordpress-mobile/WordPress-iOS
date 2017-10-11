@@ -1,1 +1,3 @@
-Misschien merk je geen verschil aan deze release, maar je kunt rekenen op een snellere, stabielere app. Proberen is meemaken!
+Inline media-kiezer in de nieuwe editor.
+Jetpack-sites: support voor het bladeren door en activeren van thema's.
+Jetpack-sites: beheer je beveiligingsinstellingen in de app.

@@ -55,6 +55,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.backgroundColor = Colors.aztecBackground
         textView.linkTextAttributes = [NSUnderlineStyleAttributeName: NSNumber(value:NSUnderlineStyle.styleSingle.rawValue), NSForegroundColorAttributeName: Colors.aztecLinkColor]
         textView.textAlignment = .natural
+
+        if #available(iOS 11, *) {
+            textView.smartDashesType = .no
+        }
+
         return textView
     }()
 
@@ -94,6 +99,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.accessibilityIdentifier = "HTMLContentView"
         textView.autocorrectionType = .no
         textView.autocapitalizationType = .none
+
+        if #available(iOS 11, *) {
+            textView.smartDashesType = .no
+        }
 
         return textView
 
@@ -393,6 +402,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var originalTrailingBarButtonGroup = [UIBarButtonItemGroup]()
 
+    /// Verification Prompt Helper
+    ///
+    /// - Returns: `nil` when there's no need for showing the verification prompt.
+    fileprivate lazy var verificationPromptHelper: AztecVerificationPromptHelper? = {
+        return AztecVerificationPromptHelper(account: self.post.blog.account)
+    }()
+
 
     // MARK: - Initializers
 
@@ -457,6 +473,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         configureDismissButton()
         startListeningToNotifications()
+        verificationPromptHelper?.updateVerificationStatus()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -474,6 +491,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         stopListeningToNotifications()
         rememberFirstResponder()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        var safeInsets = self.view.layoutMargins
+        safeInsets.top = richTextView.textContainerInset.top
+        richTextView.textContainerInset = safeInsets
+        htmlTextView.textContainerInset = safeInsets
     }
 
 
@@ -514,16 +540,17 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func updateTitleHeight() {
         let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+        let layoutMargins = view.layoutMargins
+        let insets = titleTextField.textContainerInset
 
         var titleWidth = titleTextField.bounds.width
         if titleWidth <= 0 {
             // Use the title text field's width if available, otherwise calculate it.
             // View's frame minus left and right margins as well as margin between title and beta button
-            titleWidth = view.frame.width - (3 * Constants.defaultMargin) - betaButton.frame.width
+            titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right) - betaButton.frame.width
         }
 
         let sizeThatShouldFitTheContent = titleTextField.sizeThatFits(CGSize(width:titleWidth, height: CGFloat.greatestFiniteMagnitude))
-        let insets = titleTextField.textContainerInset
         titleHeightConstraint.constant = max(sizeThatShouldFitTheContent.height, titleTextField.font!.lineHeight + insets.top + insets.bottom)
 
         textPlaceholderTopConstraint.constant = referenceView.textContainerInset.top + referenceView.contentInset.top
@@ -564,23 +591,22 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         super.updateViewConstraints()
 
-        let defaultMargin = Constants.defaultMargin
-
         titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
         titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
         textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
         updateTitleHeight()
+        let layoutGuide = view.layoutMarginsGuide
 
         NSLayoutConstraint.activate([
-            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: defaultMargin),
+            titleTextField.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
             titleTopConstraint,
             titleHeightConstraint
             ])
 
         NSLayoutConstraint.activate([
             betaButton.centerYAnchor.constraint(equalTo: titlePlaceholderLabel.centerYAnchor),
-            betaButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -defaultMargin),
-            titleTextField.trailingAnchor.constraint(equalTo: betaButton.leadingAnchor, constant: -defaultMargin)
+            betaButton.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: betaButton.leadingAnchor, constant: -titleTextField.textContainerInset.right)
             ])
 
         let insets = titleTextField.textContainerInset
@@ -592,17 +618,17 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            separatorView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: defaultMargin),
-            separatorView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -defaultMargin),
+            separatorView.leftAnchor.constraint(equalTo: layoutGuide.leftAnchor),
+            separatorView.rightAnchor.constraint(equalTo: layoutGuide.rightAnchor),
             separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
-            richTextView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            richTextView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            richTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            richTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
-            richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -defaultMargin)
+            richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
 
         NSLayoutConstraint.activate([
@@ -613,8 +639,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: Constants.placeholderPadding.left + defaultMargin),
-            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -(Constants.placeholderPadding.right + defaultMargin + richTextView.textContainer.lineFragmentPadding)),
+            placeholderLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: Constants.placeholderPadding.left),
+            placeholderLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -(Constants.placeholderPadding.right + richTextView.textContainer.lineFragmentPadding)),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
@@ -626,9 +652,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.keyboardDismissMode = .interactive
         textView.textColor = UIColor.darkText
         textView.translatesAutoresizingMaskIntoConstraints = false
-
-        textView.textContainerInset.left = Constants.defaultMargin
-        textView.textContainerInset.right = Constants.defaultMargin
     }
 
     func configureNavigationBar() {
@@ -674,7 +697,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func registerAttachmentImageProviders() {
         let providers: [TextViewAttachmentImageProvider] = [
-            MoreAttachmentRenderer(),
+            SpecialTagAttachmentRenderer(),
             CommentAttachmentRenderer(font: Fonts.regular),
             HTMLAttachmentRenderer(font: Fonts.regular)
         ]
@@ -840,8 +863,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
-        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - keyboardFrame.minY, right: 0)
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
         htmlTextView.scrollIndicatorInsets = scrollInsets
         htmlTextView.contentInset = contentInsets
@@ -975,6 +998,21 @@ extension AztecPostViewController {
             })
             return
         }
+
+        // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
+        if let verificationHelper = verificationPromptHelper, verificationHelper.neeedsVerification(before: postEditorStateContext.action) {
+            verificationHelper.displayVerificationPrompt(from: self) { [weak self] verifiedInBackground in
+                // User could've been plausibly silently verified in the background.
+                // If so, proceed to publishing the post as normal, otherwise save it as a draft.
+                if !verifiedInBackground {
+                    self?.post.status = .draft
+                }
+
+                self?.publishTapped(dismissWhenDone: dismissWhenDone)
+            }
+            return
+        }
+
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
         postEditorStateContext.updated(isBeingPublished: true)
@@ -1027,7 +1065,7 @@ extension AztecPostViewController {
     @IBAction func betaButtonTapped() {
         WPAppAnalytics.track(.editorAztecBetaLink)
 
-        WPWebViewController.presentWhatsNewWebView(from: self)
+        FancyAlertViewController.presentWhatsNewWebView(from: self)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
@@ -1179,6 +1217,7 @@ private extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
         return
     }
+
 }
 
 
@@ -2007,9 +2046,8 @@ extension AztecPostViewController {
             return
         }
 
-        richTextView.resignFirstResponder()
         richTextView.inputView = to
-        richTextView.becomeFirstResponder()
+        richTextView.reloadInputViews()
     }
 
     fileprivate func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil) {
@@ -2204,7 +2242,6 @@ extension AztecPostViewController: UIPopoverPresentationControllerDelegate {
         }
     }
 }
-
 
 // MARK: - Unknown HTML
 //
@@ -3075,8 +3112,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             dismiss(animated: true, completion: nil)
-        } else {
-            mediaPickerInputViewController = nil
         }
     }
 

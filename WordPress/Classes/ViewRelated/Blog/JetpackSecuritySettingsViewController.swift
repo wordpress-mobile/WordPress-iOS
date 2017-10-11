@@ -144,7 +144,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
             ])
     }
 
-    // MARKK: Learn More footer
+    // MARK: Learn More footer
 
     open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == JetpackSecuritySettingsViewController.wordPressLoginSection {
@@ -292,9 +292,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
         guard let url =  URL(string: JetpackSecuritySettingsViewController.learnMoreUrl) else {
             return
         }
-        guard let webViewController = WPWebViewController(url: url) else {
-            return
-        }
+        let webViewController = WebViewControllerFactory.controller(url: url)
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)

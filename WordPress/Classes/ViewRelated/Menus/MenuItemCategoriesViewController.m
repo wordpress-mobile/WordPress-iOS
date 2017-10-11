@@ -52,7 +52,7 @@ static NSString * const CategorySortKey = @"categoryName";
     if (self.displayCategories.count == 0) {
         [self showLoadingSourcesIndicator];
     }
-    void(^stopLoading)() = ^() {
+    void(^stopLoading)(void) = ^() {
         [self hideLoadingSourcesIndicator];
     };
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[self managedObjectContext]];
