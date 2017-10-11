@@ -6,7 +6,7 @@ included:
 whitelist_rules:
   # Closing brace with closing parenthesis should not have any whitespaces in
   # the middle.
-  # - closing_brace
+  - closing_brace
 
   # Colons should be next to the identifier when specifying a type.
   - colon
