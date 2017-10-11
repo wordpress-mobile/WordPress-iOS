@@ -22,7 +22,7 @@
  *
  *  @param retryBlock a block that will get called if the user indicates they want to retry the network request.
  */
-- (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)())retryBlock;
+- (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock;
 
 @end
 

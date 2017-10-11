@@ -11,10 +11,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NSString * PostServiceType;
 typedef void(^PostServiceSyncSuccess)(NSArray<AbstractPost *> * _Nullable posts);
 typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
 
+typedef NSString * PostServiceType NS_TYPED_ENUM;
 extern PostServiceType const PostServiceTypePost;
 extern PostServiceType const PostServiceTypePage;
 extern PostServiceType const PostServiceTypeAny;
@@ -99,7 +99,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  @param failure A failure block
  */
 - (void)deletePost:(AbstractPost *)post
-           success:(nullable void (^)())success
+           success:(nullable void (^)(void))success
            failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
@@ -111,7 +111,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  @param failure A failure block
  */
 - (void)trashPost:(AbstractPost *)post
-          success:(nullable nullable void (^)())success
+          success:(nullable nullable void (^)(void))success
           failure:(void (^)(NSError * _Nullable error))failure;
 
 /**
@@ -122,7 +122,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  @param failure A failure block
  */
 - (void)restorePost:(AbstractPost *)post
-           success:(nullable void (^)())success
+           success:(nullable void (^)(void))success
            failure:(void (^)(NSError * _Nullable error))failure;
 
 @end

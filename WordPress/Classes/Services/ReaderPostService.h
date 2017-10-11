@@ -91,7 +91,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)toggleLikedForPost:(ReaderPost *)post
-                   success:(void (^)())success
+                   success:(void (^)(void))success
                    failure:(void (^)(NSError *error))failure;
 
 /**
@@ -102,7 +102,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)toggleFollowingForPost:(ReaderPost *)post
-                       success:(void (^)())success
+                       success:(void (^)(void))success
                        failure:(void (^)(NSError *error))failure;
 
 /**
@@ -150,7 +150,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
 - (void)setFollowing:(BOOL)following
   forWPComSiteWithID:(NSNumber *)siteID
               andURL:(NSString *)siteURL
-             success:(void (^)())success
+             success:(void (^)(void))success
              failure:(void (^)(NSError *error))failure;
 
 /**

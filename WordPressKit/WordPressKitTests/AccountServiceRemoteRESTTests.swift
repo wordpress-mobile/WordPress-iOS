@@ -16,6 +16,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     let emailEndpoint    = "/is-available/email"
     let usernameEndpoint = "/is-available/username"
     let linkEndpoint     = "auth/send-login-email"
+    let verifyEmailEndpoint = "/me/send-verification-email"
 
     let getAccountDetailsSuccessMockFilename        = "me-success.json"
     let getAccountDetailsAuthFailureMockFilename    = "me-auth-failure.json"
@@ -37,6 +38,8 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     let requestLinkNoSuchUserFailureMockFilename    = "auth-send-login-email-no-user-failure.json"
     let requestLinkInvalidClientFailureMockFilename = "auth-send-login-email-invalid-client-failure.json"
     let requestLinkInvalidSecretFailureMockFilename = "auth-send-login-email-invalid-secret-failure.json"
+    let requestVerificationEmailSuccessMockFilename = "auth-send-verification-email-success.json"
+    let requestVerificationAlreadyVerifiedFailureMockFilename = "auth-send-verification-email-already-verified-failure.json"
 
     // MARK: - Properties
 
@@ -520,6 +523,43 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(linkEndpoint, data: Data(), contentType: .NoContentType, status: 500)
         remote.requestWPComAuthLink(forEmail: email, clientID: "client123", clientSecret: "shhh", wpcomScheme: "wordpress", success: {
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        }, failure: { error in
+            guard let error = error as NSError? else {
+                XCTFail("The returned error could not be cast as NSError")
+                expect.fulfill()
+                return
+            }
+            XCTAssertEqual(error.domain, String(reflecting: WordPressComRestApiError.self), "The error domain should be WordPressComRestApiError")
+            XCTAssertEqual(error.code, WordPressComRestApiError.unknown.rawValue, "The error code should be 7 - unknown")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // MARK: - Request WPCom Email Verification Tests
+
+    func testRequestVerificationEmailSuceeds() {
+        let expect = expectation(description: "Request WPCom email verification succeeds")
+
+        stubRemoteResponse(verifyEmailEndpoint, filename: requestVerificationEmailSuccessMockFilename, contentType: .ApplicationJSON)
+        remote.requestVerificationEmail(succcess: {
+            expect.fulfill()
+        }, failure: { _ in
+            XCTFail("This callback shouldn't get called")
+            expect.fulfill()
+        })
+
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testRequestVerificationEmailWhenAlreadyVerifiedFails() {
+        let expect = expectation(description: "Request WPCom email verification fails because email was already verified")
+
+        stubRemoteResponse(verifyEmailEndpoint, filename: requestVerificationAlreadyVerifiedFailureMockFilename, contentType: .ApplicationJSON, status: 400)
+        remote.requestVerificationEmail(succcess: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in

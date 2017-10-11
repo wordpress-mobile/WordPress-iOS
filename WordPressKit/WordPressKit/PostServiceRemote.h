@@ -70,7 +70,7 @@
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)deletePost:(RemotePost *)post
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure;
 
 /**
