@@ -1,5 +1,8 @@
 #import "WPProgressTableViewCell.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
 #import "MRProgress.h"
+#pragma clang diagnostic pop
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 

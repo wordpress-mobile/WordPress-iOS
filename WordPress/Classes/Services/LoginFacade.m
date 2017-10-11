@@ -1,11 +1,12 @@
 #import "LoginFacade.h"
-#import "LoginFields.h"
 #import "NSURL+IDN.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
 #import "WPError.h"
 #import "BlogService.h"
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
+
 @import WordPressShared;
 
 @implementation LoginFacade
@@ -33,25 +34,23 @@
 {
     NSAssert(self.delegate != nil, @"Must set delegate to use service");
     
-    if (loginFields.userIsDotCom || loginFields.siteUrl.isWordPressComPath) {
+    if (loginFields.meta.userIsDotCom || loginFields.siteAddress.isWordPressComPath) {
         [self signInToWordpressDotCom:loginFields];
     } else {
         [self signInToSelfHosted:loginFields];
     }
 }
 
-
 - (void)loginWithLoginFields:(LoginFields *)loginFields
 {
     NSAssert(self.delegate != nil, @"Must set delegate to use service");
 
-    if (loginFields.userIsDotCom || loginFields.siteUrl.isWordPressComPath) {
+    if (loginFields.meta.userIsDotCom || loginFields.siteAddress.isWordPressComPath) {
         [self signInToWordpressDotCom:loginFields];
     } else {
         [self loginToSelfHosted:loginFields];
     }
 }
-
 
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields
 {
@@ -59,6 +58,28 @@
         [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
     } failure:^(NSError *error) {
         DDLogError(@"Failed to request one time code");
+    }];
+}
+
+- (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken
+{
+    if ([self.delegate respondsToSelector:@selector(displayLoginMessage:)]) {
+        [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+    }
+
+    [self.wordpressComOAuthClientFacade authenticateWithGoogleIDToken:googleIDToken success:^(NSString *authToken) {
+        if ([self.delegate respondsToSelector:@selector(finishedLoginWithGoogleIDToken:authToken:)]) {
+            [self.delegate finishedLoginWithGoogleIDToken:googleIDToken authToken:authToken];
+        }
+    } needsMultiFactor:^(NSInteger userID, SocialLogin2FANonceInfo *nonceInfo){
+        if ([self.delegate respondsToSelector:@selector(needsMultifactorCodeForUserID:andNonceInfo:)]) {
+            [self.delegate needsMultifactorCodeForUserID:userID andNonceInfo:nonceInfo];
+        }
+    } failure:^(NSError *error) {
+        [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
+        if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
+            [self.delegate displayRemoteError:error];
+        }
     }];
 }
 
@@ -70,7 +91,7 @@
 
     [self.wordpressComOAuthClientFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:^(NSString *authToken) {
         if ([self.delegate respondsToSelector:@selector(finishedLoginWithUsername:authToken:requiredMultifactorCode:)]) {
-            [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.shouldDisplayMultifactor];
+            [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.meta.requiredMultifactor];
         }
     } needsMultiFactor:^{
         if ([self.delegate respondsToSelector:@selector(needsMultifactorCode)]) {
@@ -87,7 +108,7 @@
 - (void)signInToSelfHosted:(LoginFields *)loginFields
 {
     void (^guessXMLRPCURLSuccess)(NSURL *) = ^(NSURL *xmlRPCURL) {
-        loginFields.xmlRPCURL = xmlRPCURL;
+        loginFields.meta.xmlrpcURL = xmlRPCURL;
         [self loginToSelfHosted:loginFields];
     };
     
@@ -99,13 +120,13 @@
     
     [self.delegate displayLoginMessage:NSLocalizedString(@"Authenticating", nil)];
     
-    NSString *siteUrl = [NSURL IDNEncodedURL:loginFields.siteUrl];
+    NSString *siteUrl = [NSURL IDNEncodedURL:loginFields.siteAddress];
     [self.wordpressXMLRPCAPIFacade guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
 - (void)loginToSelfHosted:(LoginFields *)loginFields
 {
-    NSURL *xmlRPCURL = loginFields.xmlRPCURL;
+    NSURL *xmlRPCURL = loginFields.meta.xmlrpcURL;
     [self.wordpressXMLRPCAPIFacade getBlogOptionsWithEndpoint:xmlRPCURL username:loginFields.username password:loginFields.password success:^(id options) {
         if ([options objectForKey:@"wordpress.com"] != nil) {
             [self signInToWordpressDotCom:loginFields];

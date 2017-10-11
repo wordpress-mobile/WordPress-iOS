@@ -170,7 +170,7 @@
 }
 
 - (void)deleteMedia:(RemoteMedia *)media
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([media.mediaID longLongValue] > 0);
