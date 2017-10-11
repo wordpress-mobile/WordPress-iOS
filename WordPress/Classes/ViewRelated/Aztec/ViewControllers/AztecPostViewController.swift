@@ -1065,7 +1065,7 @@ extension AztecPostViewController {
     @IBAction func betaButtonTapped() {
         WPAppAnalytics.track(.editorAztecBetaLink)
 
-        WPWebViewController.presentWhatsNewWebView(from: self)
+        FancyAlertViewController.presentWhatsNewWebView(from: self)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
