@@ -7,6 +7,7 @@ enum FeatureFlag: Int {
     case pluginManagement
     case googleLogin
     case jetpackDisconnect
+    case iCloudFilesSupport
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -21,6 +22,8 @@ enum FeatureFlag: Int {
             return build(.localDeveloper)
         case .jetpackDisconnect:
             return build(.localDeveloper)
+        case .iCloudFilesSupport:
+            return build(.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting)
         }
     }
 }

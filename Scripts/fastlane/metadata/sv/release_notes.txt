@@ -1,1 +1,3 @@
-På direkten märker du inte några större skillnader med denna version, men din app bör fungera lite snabbare och vara lite stabilare. Det märker du när du använder den!
+Inline-mediaväljare i den nya redigeraren.
+Jetpack-webbplatser: Stöd tillagt för sökning och aktivering av teman.
+Jetpack-webbplatser: Hantera dina säkerhetsinställningar i appen.

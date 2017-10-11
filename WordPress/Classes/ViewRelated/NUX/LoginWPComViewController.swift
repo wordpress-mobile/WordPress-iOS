@@ -40,7 +40,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         super.viewWillAppear(animated)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
 
         configureTextFields()
         configureSubmitButton(animating: false)
