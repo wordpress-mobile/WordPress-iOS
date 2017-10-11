@@ -30,7 +30,7 @@ class MockWordPressComRestApi: WordPressComRestApi {
     }
 
     override func multipartPOST(_ URLString: String,
-                                parameters: [String : AnyObject]?,
+                                parameters: [String: AnyObject]?,
                                 fileParts: [FilePart],
                                 success: @escaping SuccessResponseBlock,
                                 failure: @escaping FailureReponseBlock) -> Progress? {
