@@ -205,8 +205,8 @@ extension WPStyleGuide {
             button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
             // Color(s)
-            let normalColor = WPStyleGuide.mediumBlue()
-            let highlightedColor = WPStyleGuide.lightBlue()
+            let normalColor = WPStyleGuide.greyDarken20()
+            let highlightedColor = WPStyleGuide.greyDarken10()
             let selectedColor = WPStyleGuide.validGreen()
 
             button.setTitleColor(normalColor, for: .normal)
