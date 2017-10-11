@@ -108,8 +108,10 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
 
         customView.addSubview(helpButton)
         helpButton.translatesAutoresizingMaskIntoConstraints = false
+        helpButton.leadingAnchor.constraint(equalTo: customView.leadingAnchor).isActive = true
         helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
-        helpButton.centerYAnchor.constraint(equalTo: customView.centerYAnchor).isActive = true
+        helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
+        helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
 
         helpBadge = WPNUXHelpBadgeLabel()
         helpBadge.translatesAutoresizingMaskIntoConstraints = false
@@ -241,10 +243,10 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler {
 
 extension NUXAbstractViewController: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        if presented is FancyAlertViewController {
-            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        guard presented is FancyAlertViewController else {
+            return nil
         }
 
-        return nil
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

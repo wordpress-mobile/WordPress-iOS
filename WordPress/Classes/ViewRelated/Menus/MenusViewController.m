@@ -497,7 +497,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 {
     MenuItemEditingViewController *controller = [MenuItemEditingViewController itemEditingViewControllerWithItem:item
                                                                                                             blog:self.blog];
-    void(^dismiss)() = ^() {
+    void(^dismiss)(void) = ^() {
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     controller.onSelectedToSave = ^() {
@@ -756,8 +756,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     return NSLocalizedString(@"Unsaved Changes", @"Menus alert title for alerting the user to unsaved changes.");
 }
 
-- (void)promptForDiscardingChangesBeforeSelectingADifferentLocation:(void(^)())confirmationBlock
-                                                       cancellation:(void(^)())cancellationBlock
+- (void)promptForDiscardingChangesBeforeSelectingADifferentLocation:(void(^)(void))confirmationBlock
+                                                       cancellation:(void(^)(void))cancellationBlock
 {
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Selecting a different menu location will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu location.");
@@ -782,8 +782,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)promptForDiscardingChangesBeforeSelectingADifferentMenu:(void(^)())confirmationBlock
-                                                   cancellation:(void(^)())cancellationBlock
+- (void)promptForDiscardingChangesBeforeSelectingADifferentMenu:(void(^)(void))confirmationBlock
+                                                   cancellation:(void(^)(void))cancellationBlock
 {
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to select a different menu.");
@@ -808,8 +808,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)promptForDiscardingChangesBeforeCreatingNewMenu:(void(^)())confirmationBlock
-                                           cancellation:(void(^)())cancellationBlock
+- (void)promptForDiscardingChangesBeforeCreatingNewMenu:(void(^)(void))confirmationBlock
+                                           cancellation:(void(^)(void))cancellationBlock
 {
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?", @"Menus alert message for alerting the user to unsaved changes while trying to create a new menu.");
@@ -834,8 +834,8 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)promptForDiscardingChangesByTheLeftBarButtonItem:(void(^)())confirmationBlock
-                                            cancellation:(void(^)())cancellationBlock
+- (void)promptForDiscardingChangesByTheLeftBarButtonItem:(void(^)(void))confirmationBlock
+                                            cancellation:(void(^)(void))cancellationBlock
 {
     NSString *title = [self discardChangesAlertTitle];
     NSString *message = NSLocalizedString(@"Are you sure you want to cancel and discard changes?", @"Menus alert message for alerting the user to unsaved changes while trying back out of Menus.");

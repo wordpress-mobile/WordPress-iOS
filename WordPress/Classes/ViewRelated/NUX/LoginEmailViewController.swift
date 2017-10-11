@@ -13,6 +13,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
+    fileprivate var awaitingGoogle = false
     override var restrictToWPCom: Bool {
         didSet {
             if isViewLoaded {
@@ -52,7 +53,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         navigationController?.setNavigationBarHidden(false, animated: false)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
 
         configureEmailField()
         configureSubmitButton()
@@ -137,13 +138,16 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         view.addConstraints([
             button.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: Constants.googleButtonOffset),
             button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo:instructionLabel.trailingAnchor),
+            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
             button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor)
         ])
         googleLoginButton = button
     }
 
     func googleLoginTapped() {
+        awaitingGoogle = true
+        GIDSignIn.sharedInstance().disconnect()
+
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
@@ -226,8 +230,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         loginFields.password = password
 
         // Persist credentials as autofilled credentials so we can update them later if needed.
-        loginFields.safariStoredUsernameHash = username.hash
-        loginFields.safariStoredPasswordHash = password.hash
+        loginFields.setStoredCredentials(usernameHash: username.hash, passwordHash: password.hash)
 
         loginWithUsernamePassword(immediately: true)
 
@@ -281,7 +284,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         service.isPasswordlessAccount(loginFields.username,
                                       success: { [weak self] (passwordless: Bool) in
                                         self?.configureViewLoading(false)
-                                        self?.loginFields.passwordless = passwordless
+                                        self?.loginFields.meta.passwordless = passwordless
                                         self?.requestLink()
             },
                                       failure: { [weak self] (error: Error) in
@@ -306,8 +309,17 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     override func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
-        errorToPresent = error
-        performSegue(withIdentifier: .showWPComLogin, sender: self)
+        if awaitingGoogle {
+            awaitingGoogle = false
+
+            let socialErrorVC = LoginSocialErrorViewController(title: NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com"), description: error.localizedDescription)
+            let socialErrorNav = LoginNavigationController(rootViewController: socialErrorVC)
+            socialErrorVC.delegate = self
+            present(socialErrorNav, animated: true) {}
+        } else {
+            errorToPresent = error
+            performSegue(withIdentifier: .showWPComLogin, sender: self)
+        }
     }
 
 
@@ -380,6 +392,8 @@ extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String!, authToken: String!) {
         let username = loginFields.username
         syncWPCom(username, authToken: authToken, requiredMultifactor: false)
+        // Disconnect now that we're done with Google.
+        GIDSignIn.sharedInstance().disconnect()
     }
 
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
@@ -406,6 +420,28 @@ extension LoginEmailViewController: GIDSignInDelegate {
         loginFacade.loginToWordPressDotCom(withGoogleIDToken: token)
 
         //TODO: Add analytis
+    }
+}
+
+extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
+    private func cleanupAfterSocialErrors() {
+        loginFields.username = ""
+        dismiss(animated: true) {}
+    }
+
+    func retryWithEmail() {
+        cleanupAfterSocialErrors()
+    }
+    func retryWithAddress() {
+        cleanupAfterSocialErrors()
+        loginToSelfHostedSite()
+    }
+    func retryAsSignup() {
+        cleanupAfterSocialErrors()
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 

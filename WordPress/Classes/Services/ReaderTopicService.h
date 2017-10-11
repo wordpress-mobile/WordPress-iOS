@@ -24,7 +24,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Get a list of ReaderSiteTopics of the sites the user follows.
@@ -32,7 +32,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchFollowedSitesWithSuccess:(void(^)())success
+- (void)fetchFollowedSitesWithSuccess:(void(^)(void))success
                               failure:(void(^)(NSError *error))failure;
 
 /**
@@ -95,7 +95,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 
-- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Unfollows the specified topic
@@ -104,7 +104,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Follow the tag with the specified name
@@ -113,7 +113,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)followTagNamed:(NSString *)tagName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)followTagNamed:(NSString *)tagName withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Follow the tag with the specified slug
@@ -122,7 +122,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Toggle the following status of the tag for the specified tag topic
@@ -131,7 +131,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful change.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)toggleFollowingForTag:(ReaderTagTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)toggleFollowingForTag:(ReaderTagTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Toggle the following status of the site for the specified site topic
@@ -140,7 +140,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful change.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)toggleFollowingForSite:(ReaderSiteTopic *)topic success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)toggleFollowingForSite:(ReaderSiteTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Mark a site topic as unfollowed in core data only. Should be called after unfollowing
@@ -209,6 +209,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @end
 
 @interface ReaderTopicService (Tests)
-- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)())success;
+- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)(void))success;
 - (NSString *)formatTitle:(NSString *)str;
 @end

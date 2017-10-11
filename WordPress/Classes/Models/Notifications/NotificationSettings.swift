@@ -89,7 +89,7 @@ open class NotificationSettings {
     ///
     open class Stream {
         open var kind: Kind
-        open var preferences: [String : Bool]?
+        open var preferences: [String: Bool]?
 
 
         /// Designated Initializer
@@ -98,7 +98,7 @@ open class NotificationSettings {
         ///     - kind: The Kind of stream we're currently dealing with
         ///     - preferences: Raw remote preferences, retrieved from the backend
         ///
-        public init(kind: String, preferences: [String : Bool]?) {
+        public init(kind: String, preferences: [String: Bool]?) {
             self.kind           = Kind(rawValue: kind) ?? .Email
             self.preferences    = preferences
         }

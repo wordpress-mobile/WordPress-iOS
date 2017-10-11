@@ -31,7 +31,7 @@
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)updateBlogsVisibility:(NSDictionary *)blogs
-                      success:(void (^)())success
+                      success:(void (^)(void))success
                       failure:(void (^)(NSError *error))failure;
 
 /**
@@ -79,7 +79,16 @@
                             clientID:(NSString *)clientID
                         clientSecret:(NSString *)clientSecret
                          wpcomScheme:(NSString *)scheme
-                             success:(void (^)())success
+                             success:(void (^)(void))success
                              failure:(void (^)(NSError *error))failure;
+
+ /**
+  * @brief      Request to (re-)send the verification email for the current user.
+  *
+  *  @param      success     The block that will be executed on success.  Can be nil.
+  *  @param      failure     The block that will be executed on failure.  Can be nil.
+  */
+- (void)requestVerificationEmailWithSucccess:(void (^)(void))success
+                                     failure:(void (^)(NSError *error))failure;
 
 @end

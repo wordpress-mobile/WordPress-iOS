@@ -62,18 +62,18 @@ open class ShortcodeProcessor: RegexProcessor {
                 return nil
             }
             var attributes = HTMLAttributes(named: [:], unamed: [])
-            if let attributesText = match.captureGroup(in:CaptureGroups.arguments.rawValue, text: text) {
+            if let attributesText = match.captureGroup(in: CaptureGroups.arguments.rawValue, text: text) {
                 attributes = HTMLAttributesParser.makeAttributes(in: attributesText)
             }
 
             var type: Shortcode.TagType = .single
-            if match.captureGroup(in:CaptureGroups.selfClosingElement.rawValue, text: text) != nil {
+            if match.captureGroup(in: CaptureGroups.selfClosingElement.rawValue, text: text) != nil {
                 type = .selfClosing
-            } else if match.captureGroup(in:CaptureGroups.closingTag.rawValue, text: text) != nil {
+            } else if match.captureGroup(in: CaptureGroups.closingTag.rawValue, text: text) != nil {
                 type = .closed
             }
 
-            let content: String? = match.captureGroup(in:CaptureGroups.content.rawValue, text: text)
+            let content: String? = match.captureGroup(in: CaptureGroups.content.rawValue, text: text)
 
             let shortcode = Shortcode(tag: tag, attributes: attributes, type: type, content: content)
             return replacer(shortcode)
