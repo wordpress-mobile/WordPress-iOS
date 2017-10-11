@@ -9,6 +9,11 @@
 @interface MediaService : LocalCoreDataService
 
 /**
+ This property determines if multiple thumbnail generation will be done in parallel.
+ By default this value is NO.
+ */
+@property (nonatomic, assign) BOOL concurrentThumbnailGeneration;
+/**
  Create a media object using the url provided as the source of media.
 
  @param url a file url pointing to a file with the media data
@@ -20,6 +25,19 @@
            forPostObjectID:(nonnull NSManagedObjectID *)postObjectID
          thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
                 completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion NS_SWIFT_NAME(createMedia(url:forPost:thumbnailCallback:completion:));
+
+/**
+ Create a media object using the url provided as the source of media.
+ 
+ @param url a file url pointing to a file with the media data
+ @param blogObjectID the blog object ID to associate the media
+ @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
+ @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
+ */
+- (void)createMediaWithURL:(nonnull NSURL *)url
+           forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
+         thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
+                completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion NS_SWIFT_NAME(createMedia(url:forBlog:thumbnailCallback:completion:));
 
 /**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
@@ -73,7 +91,7 @@
  */
 - (void)uploadMedia:(nonnull Media *)media
            progress:(NSProgress * __nullable __autoreleasing * __nullable) progress
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 
@@ -87,7 +105,7 @@
  @failure a block that will be invoked when there is upload error.
  */
 - (void)updateMedia:(nonnull Media *)media
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
@@ -99,7 +117,7 @@
  @param success
  */
 - (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
-     overallSuccess:(nullable void (^)())overallSuccess
+     overallSuccess:(nullable void (^)(void))overallSuccess
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
@@ -110,7 +128,7 @@
  @param failure a block that will be invoked when there is an error.
  */
 - (void)deleteMedia:(nonnull Media *)media
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
@@ -123,8 +141,8 @@
  */
 - (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
            progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-            success:(nullable void (^)())success
-            failure:(nullable void (^)())failure;
+            success:(nullable void (^)(void))success
+            failure:(nullable void (^)(void))failure;
 
 /**
  *  Obtains the  video url and poster image url for the video with the videoPressID
@@ -146,7 +164,7 @@
  * @param failure a block that will be invoked when the sync fails
  */
 - (void)syncMediaLibraryForBlog:(nonnull Blog *)blog
-                        success:(nullable void (^)())success
+                        success:(nullable void (^)(void))success
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**

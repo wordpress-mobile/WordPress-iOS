@@ -1,6 +1,6 @@
 /*
  *    HelpshiftCore.h
- *    SDK Version 6.1.0
+ *    SDK Version 6.2.0
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -23,12 +23,12 @@
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (BOOL) _handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
 #pragma clang diagnostic pop
-- (void) _handleInteractiveRemoteNotification:(NSDictionary *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
+- (void) _handleInteractiveRemoteNotification:(NSDictionary *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)(void))completionHandler;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-- (void) _handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
+- (void) _handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)(void))completionHandler;
 #pragma clang diagnostic pop
-- (void) _handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler;
+- (void) _handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler;
 - (BOOL) _setSDKLanguage:(NSString *)langCode;
 
 @end
@@ -265,7 +265,6 @@ typedef enum HsEnableContactUs
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (BOOL) handleLocalNotification:(UILocalNotification *)notification withController:(UIViewController *)viewController;
 #pragma clang diagnostic pop
-
 /**
  *  Pass along an interactive notification to the Helpshift SDK
  *
@@ -275,7 +274,7 @@ typedef enum HsEnableContactUs
  *
  *  @return BOOL value indicating whether Helpshift handled this push notification.
  */
-+ (BOOL) handleInteractiveRemoteNotification:(NSDictionary *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
++ (BOOL) handleInteractiveRemoteNotification:(NSDictionary *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)(void))completionHandler;
 
 /**
  *  Pass along an interactive local notification to the Helpshift SDK
@@ -288,9 +287,8 @@ typedef enum HsEnableContactUs
  */
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-+ (BOOL) handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)())completionHandler;
++ (BOOL) handleInteractiveLocalNotification:(UILocalNotification *)notification forAction:(NSString *)actionIdentifier completionHandler:(void (^)(void))completionHandler;
 #pragma clang diagnostic pop
-
 /**
  *  If an app is woken up in the background in response to a background session being completed, call this API from the
  *  Application's delegate method. Helpshift SDK extensively uses background NSURLSessions for data syncing.
@@ -300,7 +298,7 @@ typedef enum HsEnableContactUs
  *
  *  @return BOOL value indicating whether Helpshift handled this push notification.
  */
-+ (BOOL) handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)())completionHandler;
++ (BOOL) handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler;
 
 /** Change the SDK language. By default, the device's prefered language is used.
  *  If a Helpshift session is already active at the time of invocation, this call will fail and will return false.
