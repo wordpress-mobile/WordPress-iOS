@@ -632,7 +632,7 @@ public protocol ThemePresenter: class {
 
     // MARK: - UICollectionViewDelegateFlowLayout
 
-    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section: NSInteger) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: NSInteger) -> CGSize {
         switch sections[section] {
         case .themes, .customThemes:
             if !hideSectionHeaders

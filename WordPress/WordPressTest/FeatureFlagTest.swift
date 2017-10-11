@@ -18,7 +18,7 @@ class FeatureFlagTest: XCTestCase {
             expect(build(.a8cBranchTest)).to(beFalse())
             expect(build(.a8cPrereleaseTesting)).to(beFalse())
             expect(build(.appStore)).to(beTrue())
-            expect(build(.a8cPrereleaseTesting,.appStore)).to(beTrue())
+            expect(build(.a8cPrereleaseTesting, .appStore)).to(beTrue())
         }
     }
 

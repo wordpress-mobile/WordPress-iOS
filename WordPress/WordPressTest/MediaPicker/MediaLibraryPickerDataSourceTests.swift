@@ -36,7 +36,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         }
         let size = media.pixelSize()
         XCTAssertTrue(size.width == 1024, "Width should be 1024")
-        XCTAssertTrue(size.height == 680 , "Height should be 680")
+        XCTAssertTrue(size.height == 680, "Height should be 680")
     }
 
     func testImageFetchUsingSizeZero() {
@@ -58,7 +58,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             }
             let size = image.size
             XCTAssertTrue(size.width == 1024, "Width should be 1024")
-            XCTAssertTrue(size.height == 680 , "Height should be 680")
+            XCTAssertTrue(size.height == 680, "Height should be 680")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
     }
@@ -83,7 +83,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             }
             let size = image.size
             XCTAssertTrue(size.width == requestedSize.width, "Width should match requested size")
-            XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
+            XCTAssertTrue(size.height == requestedSize.height, "Height should match requested size")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
     }
@@ -108,7 +108,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             }
             let size = image.size
             XCTAssertTrue(size.width == requestedSize.width, "Width should match requested siz")
-            XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
+            XCTAssertTrue(size.height == requestedSize.height, "Height should match requested size")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
     }
