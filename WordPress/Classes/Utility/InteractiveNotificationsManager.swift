@@ -12,13 +12,6 @@ final class InteractiveNotificationsManager: NSObject {
     ///
     static let shared = InteractiveNotificationsManager()
 
-
-    /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
-    ///
-    var sharedApplication: UIApplication {
-        return UIApplication.shared
-    }
-
     /// Returns the Core Data main context.
     ///
     var context: NSManagedObjectContext {
@@ -43,10 +36,6 @@ final class InteractiveNotificationsManager: NSObject {
     /// This method should be called once during the app initialization process.
     ///
     func registerForUserNotifications() {
-        if Device.is(.simulator) || Build.is(.a8cBranchTest) {
-            return
-        }
-
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.delegate = self
         notificationCenter.setNotificationCategories(supportedNotificationCategories())
@@ -58,10 +47,6 @@ final class InteractiveNotificationsManager: NSObject {
     /// Because of this, this should be called only when we know we will need to show notifications (for instance, after login).
     ///
     func requestAuthorization() {
-        if Device.is(.simulator) || Build.is(.a8cBranchTest) {
-            return
-        }
-
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { _ in })
     }
