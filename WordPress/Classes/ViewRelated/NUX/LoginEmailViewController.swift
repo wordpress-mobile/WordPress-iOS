@@ -32,6 +32,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     private struct Constants {
         static let googleButtonOffset: CGFloat = 10.0
         static let googleButtonAnimationDuration: TimeInterval = 0.33
+        static let keyboardThreshold: CGFloat = 100.0
     }
 
 
@@ -402,8 +403,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     func adjustGoogleButtonVisibility(_ visible: Bool) {
         let errorLength = errorLabel?.text?.count ?? 0
+        let keyboardTallEnough = SigninEditingState.signinLastKeyboardHeightDelta > Constants.keyboardThreshold
+        let keyboardVisible = visible && keyboardTallEnough
+
         let baseAlpha: CGFloat = errorLength > 0 ? 0.0 : 1.0
-        let newAlpha: CGFloat = visible ? baseAlpha : 1.0
+        let newAlpha: CGFloat = keyboardVisible ? baseAlpha : 1.0
 
         UIView.animate(withDuration: Constants.googleButtonAnimationDuration) { [weak self] in
             self?.googleLoginButton?.alpha = newAlpha
