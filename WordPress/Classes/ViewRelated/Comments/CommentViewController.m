@@ -1,5 +1,4 @@
 #import "CommentViewController.h"
-#import "WPWebViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
@@ -422,7 +421,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
+    UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -628,7 +627,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     __typeof(self) __weak weakSelf = self;
     
-    void (^successBlock)() = ^void() {
+    void (^successBlock)(void) = ^void() {
         [SVProgressHUD showDismissibleSuccessWithStatus:successMessage];
     };
     

@@ -33,7 +33,7 @@
  *  @param failure a block to be executed when the request fails.
  */
 - (void)deleteMedia:(RemoteMedia *)media
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure;
 
 /**

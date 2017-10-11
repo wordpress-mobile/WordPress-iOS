@@ -53,7 +53,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         navigationController?.setNavigationBarHidden(false, animated: false)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
 
         configureEmailField()
         configureSubmitButton()
@@ -146,6 +146,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     func googleLoginTapped() {
         awaitingGoogle = true
+        GIDSignIn.sharedInstance().disconnect()
 
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -229,8 +230,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         loginFields.password = password
 
         // Persist credentials as autofilled credentials so we can update them later if needed.
-        loginFields.safariStoredUsernameHash = username.hash
-        loginFields.safariStoredPasswordHash = password.hash
+        loginFields.setStoredCredentials(usernameHash: username.hash, passwordHash: password.hash)
 
         loginWithUsernamePassword(immediately: true)
 
@@ -284,7 +284,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         service.isPasswordlessAccount(loginFields.username,
                                       success: { [weak self] (passwordless: Bool) in
                                         self?.configureViewLoading(false)
-                                        self?.loginFields.passwordless = passwordless
+                                        self?.loginFields.meta.passwordless = passwordless
                                         self?.requestLink()
             },
                                       failure: { [weak self] (error: Error) in
@@ -392,6 +392,8 @@ extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String!, authToken: String!) {
         let username = loginFields.username
         syncWPCom(username, authToken: authToken, requiredMultifactor: false)
+        // Disconnect now that we're done with Google.
+        GIDSignIn.sharedInstance().disconnect()
     }
 
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {

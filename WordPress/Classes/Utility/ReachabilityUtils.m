@@ -3,9 +3,9 @@
 #import "WordPress-Swift.h"
 
 @interface ReachabilityAlert : NSObject
-@property (nonatomic, copy) void (^retryBlock)();
+@property (nonatomic, copy) void (^retryBlock)(void);
 
-- (instancetype)initWithRetryBlock:(void (^)())retryBlock;
+- (instancetype)initWithRetryBlock:(void (^)(void))retryBlock;
 
 - (void)show;
 @end
@@ -14,7 +14,7 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 
 @implementation ReachabilityAlert
 
-- (instancetype)initWithRetryBlock:(void (^)())retryBlock
+- (instancetype)initWithRetryBlock:(void (^)(void))retryBlock
 {
     self = [super init];
     if (self) {
@@ -70,7 +70,7 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     [alert show];
 }
 
-+ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)())retryBlock
++ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock
 {
     ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:retryBlock];
     [alert show];

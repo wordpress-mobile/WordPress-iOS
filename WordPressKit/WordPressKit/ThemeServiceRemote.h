@@ -4,7 +4,7 @@
 @class Blog;
 @class RemoteTheme;
 
-typedef void(^ThemeServiceRemoteSuccessBlock)();
+typedef void(^ThemeServiceRemoteSuccessBlock)(void);
 typedef void(^ThemeServiceRemoteThemeRequestSuccessBlock)(RemoteTheme *theme);
 typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)(NSArray *themeIdentifiers);

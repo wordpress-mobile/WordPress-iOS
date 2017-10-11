@@ -66,7 +66,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     self.isSyncing = YES;
     [self showLoadingSourcesIndicatorIfEmpty];
 
-    void(^stopLoading)() = ^() {
+    void(^stopLoading)(void) = ^() {
         self.isSyncing = NO;
         [self hideLoadingSourcesIndicator];
     };
@@ -143,7 +143,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     self.isSyncing = YES;
     self.isSyncingAdditionalTags = YES;
     [self showLoadingSourcesIndicator];
-    void(^stopLoading)() = ^() {
+    void(^stopLoading)(void) = ^() {
         self.isSyncing = NO;
         self.isSyncingAdditionalTags = NO;
         [self hideLoadingSourcesIndicator];
@@ -206,7 +206,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     self.defersFooterViewMessageUpdates = NO;
 
     [self showLoadingSourcesIndicator];
-    void(^stopLoading)() = ^() {
+    void(^stopLoading)(void) = ^() {
         [self hideLoadingSourcesIndicator];
     };
 

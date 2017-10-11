@@ -13,7 +13,7 @@
     [ReachabilityUtils showAlertNoInternetConnection];
 }
 
-- (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)())retryBlock
+- (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock
 {
     [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:retryBlock];
 }
