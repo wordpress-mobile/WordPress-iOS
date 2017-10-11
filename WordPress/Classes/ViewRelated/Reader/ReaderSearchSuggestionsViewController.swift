@@ -158,7 +158,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
 }
 
 
-extension ReaderSearchSuggestionsViewController : WPTableViewHandlerDelegate {
+extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
