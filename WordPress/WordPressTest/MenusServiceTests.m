@@ -113,7 +113,7 @@
     XCTAssertNoThrow(service = [[MenusService alloc] initWithManagedObjectContext:context]);
     XCTAssertNoThrow([service createOrUpdateMenu:menu
                                             forBlog:blog
-                                         success:^(NSNumber *menuID) {}
+                                         success:^(void) {}
                                          failure:^(NSError *error) {}]);
 }
 

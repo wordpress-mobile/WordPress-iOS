@@ -40,7 +40,6 @@
 #import "JetpackService.h"
 
 #import "LoginFacade.h"
-#import "LoginFields.h"
 
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"
@@ -126,6 +125,7 @@
 #import "WPScrollableViewController.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
+#import "WPStyleGuide+WebView.h"
 #import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
@@ -133,7 +133,6 @@
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
 #import "WPWalkthroughTextField.h"
-#import "WPURLRequest.h"
 #import "WPUserAgent.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 

@@ -182,7 +182,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 #pragma mark - Update Methods
 
-- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     [self.managedObjectContext performBlock:^{
 
@@ -216,7 +216,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         // Define success block.
         NSNumber *postID = readerPost.postID;
         NSNumber *siteID = readerPost.siteID;
-        void (^successBlock)() = ^void() {
+        void (^successBlock)(void) = ^void() {
             if (postID && siteID) {
                 NSDictionary *properties = @{
                                               WPAppAnalyticsKeyPostID: postID,
@@ -265,14 +265,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (void)setFollowing:(BOOL)following
   forWPComSiteWithID:(NSNumber *)siteID
               andURL:(NSString *)siteURL
-             success:(void (^)())success
+             success:(void (^)(void))success
              failure:(void (^)(NSError *error))failure
 {
     // Optimistically Update
     [self setFollowing:following forPostsFromSiteWithID:siteID andURL:siteURL];
 
     // Define success block
-    void (^successBlock)() = ^void() {
+    void (^successBlock)(void) = ^void() {
         if (success) {
             success();
         }
@@ -296,7 +296,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 }
 
-- (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     // Get a the post in our own context
     NSError *error;
@@ -330,7 +330,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     BOOL shouldRefreshFollowedPosts = post.topic != [topicService topicForFollowedSites];
 
     // Define success block
-    void (^successBlock)() = ^void() {
+    void (^successBlock)(void) = ^void() {
         if (shouldRefreshFollowedPosts) {
             [self refreshPostsForFollowedTopic];
         }

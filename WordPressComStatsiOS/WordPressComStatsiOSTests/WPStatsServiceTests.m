@@ -367,7 +367,7 @@
       authorsCompletionHandler:(StatsRemoteItemsCompletion)authorsCompletion
   searchTermsCompletionHandler:(StatsRemoteItemsCompletion)searchTermsCompletion
                  progressBlock:(void (^)(NSUInteger, NSUInteger))progressBlock
-   andOverallCompletionHandler:(void (^)())completionHandler
+   andOverallCompletionHandler:(void (^)(void))completionHandler
 {
     if (visitsCompletion) {
         visitsCompletion([StatsVisits new], nil);

@@ -60,7 +60,7 @@
  */
 - (void)likePost:(NSUInteger)postID
          forSite:(NSUInteger)siteID
-         success:(void (^)())success
+         success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure;
 
 /**
@@ -73,7 +73,7 @@
  */
 - (void)unlikePost:(NSUInteger)postID
            forSite:(NSUInteger)siteID
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure;
 
 /**

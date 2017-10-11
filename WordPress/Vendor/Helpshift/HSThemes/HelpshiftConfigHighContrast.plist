@@ -78,6 +78,8 @@
 	<dict>
 		<key>Background color</key>
 		<string></string>
+		<key>Bar Style (iOS 11 and above)</key>
+		<string>Default</string>
 	</dict>
 	<key>Table Section Header</key>
 	<dict>
