@@ -3,6 +3,7 @@
 @objc
 enum FeatureFlag: Int {
     case exampleFeature
+    case iCloudFilesSupport
     case newMediaExports
     case pluginManagement
     case googleLogin
@@ -13,6 +14,8 @@ enum FeatureFlag: Int {
         switch self {
         case .exampleFeature:
             return true
+        case .iCloudFilesSupport:
+            return Build.is([.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting])
         case .newMediaExports:
             return Build.is([.localDeveloper, .a8cBranchTest])
         case .pluginManagement:
