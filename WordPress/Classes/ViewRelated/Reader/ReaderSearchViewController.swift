@@ -290,7 +290,7 @@ import Gridicons
 }
 
 
-extension ReaderSearchViewController : UIGestureRecognizerDelegate {
+extension ReaderSearchViewController: UIGestureRecognizerDelegate {
 
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let suggestionsView = suggestionsController?.view else {
@@ -309,7 +309,7 @@ extension ReaderSearchViewController : UIGestureRecognizerDelegate {
 }
 
 
-extension ReaderSearchViewController : UISearchBarDelegate {
+extension ReaderSearchViewController: UISearchBarDelegate {
 
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         // update the autocomplete suggestions
@@ -343,7 +343,7 @@ extension ReaderSearchViewController : UISearchBarDelegate {
 }
 
 
-extension ReaderSearchViewController : ReaderSearchSuggestionsDelegate {
+extension ReaderSearchViewController: ReaderSearchSuggestionsDelegate {
 
     func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String) {
         searchBar.text = selectedItem

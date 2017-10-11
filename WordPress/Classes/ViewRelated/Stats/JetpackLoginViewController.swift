@@ -451,11 +451,7 @@ class JetpackLoginViewController: UIViewController {
         guard let url =  URL(string: url) else {
             return
         }
-        guard let webViewController = WPWebViewController(url: url) else {
-            return
-        }
-
-        webViewController.authenticate(with: blog)
+        let webViewController = WebViewControllerFactory.controller(url: url, blog: blog)
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
@@ -487,7 +483,7 @@ class JetpackLoginViewController: UIViewController {
 
 // MARK: - UITextViewDelegate methods
 
-extension JetpackLoginViewController : UITextFieldDelegate {
+extension JetpackLoginViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         activeField = textField
     }
@@ -514,7 +510,7 @@ extension JetpackLoginViewController : UITextFieldDelegate {
 
 // MARK: - LoginFacadeDelegate methods
 
-extension JetpackLoginViewController : LoginFacadeDelegate {
+extension JetpackLoginViewController: LoginFacadeDelegate {
     func displayRemoteError(_ error: Error!) {
         isAuthenticating = false
         handleSignInError(error)

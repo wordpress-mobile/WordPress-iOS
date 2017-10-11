@@ -354,7 +354,7 @@ extension PHAsset: ExportableAsset {
                     }
                     return
             }
-            completionBlock(image.properties as [String : AnyObject])
+            completionBlock(image.properties as [String: AnyObject])
         }
     }
 

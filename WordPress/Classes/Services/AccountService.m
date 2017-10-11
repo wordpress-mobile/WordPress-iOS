@@ -196,6 +196,20 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
                                  }];
 }
 
+- (void)requestVerificationEmail:(void (^)(void))success failure:(void (^)(NSError * _Nonnull))failure
+{
+    id<AccountServiceRemote> remote = [self remoteForAccount:[self defaultWordPressComAccount]];
+    [remote requestVerificationEmailWithSucccess:^{
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 
 ///-----------------------
 /// @name Account creation
@@ -267,7 +281,9 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [results firstObject];
 }
 
-- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)updateUserDetailsForAccount:(WPAccount *)account
+                           success:(nullable void (^)(void))success
+                           failure:(nullable void (^)(NSError * _Nonnull))failure
 {
     NSAssert(account, @"Account can not be nil");
     NSAssert(account.username, @"account.username can not be nil");

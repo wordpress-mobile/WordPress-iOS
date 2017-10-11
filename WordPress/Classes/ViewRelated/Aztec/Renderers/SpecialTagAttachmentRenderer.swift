@@ -50,7 +50,7 @@ extension SpecialTagAttachmentRenderer: TextViewAttachmentImageProvider {
         path.move(to: CGPoint(x: 0, y: centerY))
         path.addLine(to: CGPoint(x: ((size.width - textRect.width) * 0.5) - Constants.defaultDashWidth, y: centerY))
 
-        path.move(to: CGPoint(x:((size.width + textRect.width) * 0.5) + Constants.defaultDashWidth, y: centerY))
+        path.move(to: CGPoint(x: ((size.width + textRect.width) * 0.5) + Constants.defaultDashWidth, y: centerY))
         path.addLine(to: CGPoint(x: size.width, y: centerY))
 
         textColor.setStroke()

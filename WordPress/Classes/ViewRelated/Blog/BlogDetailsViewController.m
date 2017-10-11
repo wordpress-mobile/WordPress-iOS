@@ -12,7 +12,6 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
@@ -998,8 +997,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    [webViewController authenticateWithBlog:self.blog];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
