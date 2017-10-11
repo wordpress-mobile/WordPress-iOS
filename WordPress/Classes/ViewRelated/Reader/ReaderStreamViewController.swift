@@ -1461,7 +1461,7 @@ import WordPressShared
 
 // MARK: - ReaderStreamHeaderDelegate
 
-extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
+extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
     public func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
         if let topic = readerTopic as? ReaderTagTopic {
@@ -1479,7 +1479,7 @@ extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
 
 // MARK: - WPContentSyncHelperDelegate
 
-extension ReaderStreamViewController : WPContentSyncHelperDelegate {
+extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         displayLoadingViewIfNeeded()
@@ -1513,7 +1513,7 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
 
 // MARK: - ReaderPostCellDelegate
 
-extension ReaderStreamViewController : ReaderPostCellDelegate {
+extension ReaderStreamViewController: ReaderPostCellDelegate {
 
 
     public func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
@@ -1585,7 +1585,7 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
 
 // MARK: - WPTableViewHandlerDelegate
 
-extension ReaderStreamViewController : WPTableViewHandlerDelegate {
+extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     // MARK: Scrolling Related
 
@@ -1794,7 +1794,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 }
 
 
-extension ReaderStreamViewController : WPNoResultsViewDelegate {
+extension ReaderStreamViewController: WPNoResultsViewDelegate {
     public func didTap(_ noResultsView: WPNoResultsView!) {
         showManageSites()
     }

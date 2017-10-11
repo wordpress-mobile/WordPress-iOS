@@ -84,7 +84,7 @@ class SiteIconPickerPresenter: NSObject {
                 if !modified, let media = self?.originalMedia {
                     self?.onCompletion?(media, nil)
                 } else {
-                    let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+                    let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
                     guard let blogId = self?.blog.objectID else {
                         self?.onCompletion?(nil, nil)
                         return
@@ -144,7 +144,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         case let media as Media:
             showLoadingMessage()
             originalMedia = media
-            let mediaService = MediaService(managedObjectContext:ContextManager.sharedInstance().mainContext)
+            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             mediaService.thumbnailImage(for: media,
                                         preferredSize: CGSize.zero,
                                         completion: { [weak self] (image, error) in
