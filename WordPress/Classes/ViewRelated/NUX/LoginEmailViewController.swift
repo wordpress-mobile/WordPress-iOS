@@ -137,7 +137,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         view.addConstraints([
             button.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: Constants.googleButtonOffset),
             button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo:instructionLabel.trailingAnchor),
+            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
             button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor)
         ])
         googleLoginButton = button

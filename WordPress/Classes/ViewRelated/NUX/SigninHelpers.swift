@@ -139,7 +139,7 @@ import WordPressShared
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
-        if let presenter = rootViewController.presentedViewController, presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of:LoginNavigationController.self) {
+        if let presenter = rootViewController.presentedViewController, presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of: LoginNavigationController.self) {
             rootViewController.dismiss(animated: false, completion: {
                 rootViewController.present(navController, animated: false, completion: nil)
             })
