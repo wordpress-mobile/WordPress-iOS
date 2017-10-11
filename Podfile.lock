@@ -69,7 +69,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.0.1)
+  - Nimble (7.0.2)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.4)
@@ -167,7 +167,7 @@ SPEC CHECKSUMS:
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: 19a1d65dcc1ceaea42eb44bb2adae32101904514
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 657d000e11df8aebe27cdaf9d244de7f30ed87f7
+  Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
