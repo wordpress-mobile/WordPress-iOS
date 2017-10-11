@@ -32,7 +32,7 @@ extension FancyAlertViewController {
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
-                                                                               completion:nil)
+                                                                               completion: nil)
             }
         }
 
@@ -161,7 +161,7 @@ extension FancyAlertViewController {
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
-                                                                               completion:nil)
+                                                                               completion: nil)
             }
         }
 

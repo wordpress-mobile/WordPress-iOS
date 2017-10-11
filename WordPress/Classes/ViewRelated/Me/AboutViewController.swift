@@ -195,32 +195,32 @@ open class AboutViewController: UITableViewController {
 
         return [
             [
-                Row(title:   NSLocalizedString("Version", comment: "Displays the version of the App"),
+                Row(title: NSLocalizedString("Version", comment: "Displays the version of the App"),
                     details: Bundle.main.shortVersionString(),
                     handler: nil),
 
-                Row(title:   NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
+                Row(title: NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
                     details: nil,
                     handler: { self.displayWebView(WPAutomatticTermsOfServiceURL) }),
 
-                Row(title:   NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
+                Row(title: NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
                     details: nil,
                     handler: { self.displayWebView(WPAutomatticPrivacyURL) }),
             ],
             [
-                Row(title:   NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
+                Row(title: NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
                     details: WPTwitterWordPressHandle,
                     handler: { self.displayTwitterAccount() }),
 
-                Row(title:   NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
+                Row(title: NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
                     details: appsBlogHostname,
                     handler: { self.displayWebView(WPAutomatticAppsBlogURL) }),
 
-                Row(title:   NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store"),
+                Row(title: NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store"),
                     details: nil,
                     handler: { self.displayRatingPrompt() }),
 
-                Row(title:   NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
+                Row(title: NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
             ]
