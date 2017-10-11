@@ -13,6 +13,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
+    fileprivate var awaitingGoogle = false
     override var restrictToWPCom: Bool {
         didSet {
             if isViewLoaded {
@@ -144,10 +145,9 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     func googleLoginTapped() {
-        // For paranoia, make sure a Google account is not already signed in / cached.
+        awaitingGoogle = true
         GIDSignIn.sharedInstance().disconnect()
 
-        // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
@@ -309,8 +309,17 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     override func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
-        errorToPresent = error
-        performSegue(withIdentifier: .showWPComLogin, sender: self)
+        if awaitingGoogle {
+            awaitingGoogle = false
+
+            let socialErrorVC = LoginSocialErrorViewController(title: NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com"), description: error.localizedDescription)
+            let socialErrorNav = LoginNavigationController(rootViewController: socialErrorVC)
+            socialErrorVC.delegate = self
+            present(socialErrorNav, animated: true) {}
+        } else {
+            errorToPresent = error
+            performSegue(withIdentifier: .showWPComLogin, sender: self)
+        }
     }
 
 
@@ -411,6 +420,28 @@ extension LoginEmailViewController: GIDSignInDelegate {
         loginFacade.loginToWordPressDotCom(withGoogleIDToken: token)
 
         //TODO: Add analytis
+    }
+}
+
+extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
+    private func cleanupAfterSocialErrors() {
+        loginFields.username = ""
+        dismiss(animated: true) {}
+    }
+
+    func retryWithEmail() {
+        cleanupAfterSocialErrors()
+    }
+    func retryWithAddress() {
+        cleanupAfterSocialErrors()
+        loginToSelfHostedSite()
+    }
+    func retryAsSignup() {
+        cleanupAfterSocialErrors()
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 
