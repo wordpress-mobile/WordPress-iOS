@@ -222,6 +222,8 @@ extension WPStyleGuide {
             button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
             button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
             button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
+            button.imageEdgeInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 0)
+            button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
 
             // Strings
             let normalText = NSLocalizedString("Follow", comment: "Prompt to follow a blog.")
