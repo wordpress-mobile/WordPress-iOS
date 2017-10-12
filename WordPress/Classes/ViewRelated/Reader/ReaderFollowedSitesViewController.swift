@@ -270,7 +270,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 }
 
 
-extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate {
+extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -367,7 +367,7 @@ extension ReaderFollowedSitesViewController : WPTableViewHandlerDelegate {
 }
 
 
-extension ReaderFollowedSitesViewController : UISearchBarDelegate {
+extension ReaderFollowedSitesViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let site =  searchBar.text?.trim(), !site.isEmpty {
             followSite(site)

@@ -799,9 +799,10 @@ import WordPressShared
                 return
         }
 
-        let controller = WPWebViewController(url: siteURL)
-        controller?.addsWPComReferrer = true
-        let navController = UINavigationController(rootViewController: controller!)
+        let configuration = WebViewControllerConfiguration(url: siteURL)
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
 
@@ -825,10 +826,13 @@ import WordPressShared
             return
         }
 
-        let linkURL = URL(string: sourceAttribution.blogURL)
-        let controller = WPWebViewController(url: linkURL)
-        controller?.addsWPComReferrer = true
-        let navController = UINavigationController(rootViewController: controller!)
+        guard let linkURL = URL(string: sourceAttribution.blogURL) else {
+            return
+        }
+        let configuration = WebViewControllerConfiguration(url: linkURL)
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
 
@@ -1461,7 +1465,7 @@ import WordPressShared
 
 // MARK: - ReaderStreamHeaderDelegate
 
-extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
+extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
     public func handleFollowActionForHeader(_ header: ReaderStreamHeader) {
         if let topic = readerTopic as? ReaderTagTopic {
@@ -1479,7 +1483,7 @@ extension ReaderStreamViewController : ReaderStreamHeaderDelegate {
 
 // MARK: - WPContentSyncHelperDelegate
 
-extension ReaderStreamViewController : WPContentSyncHelperDelegate {
+extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         displayLoadingViewIfNeeded()
@@ -1513,7 +1517,7 @@ extension ReaderStreamViewController : WPContentSyncHelperDelegate {
 
 // MARK: - ReaderPostCellDelegate
 
-extension ReaderStreamViewController : ReaderPostCellDelegate {
+extension ReaderStreamViewController: ReaderPostCellDelegate {
 
 
     public func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
@@ -1585,7 +1589,7 @@ extension ReaderStreamViewController : ReaderPostCellDelegate {
 
 // MARK: - WPTableViewHandlerDelegate
 
-extension ReaderStreamViewController : WPTableViewHandlerDelegate {
+extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     // MARK: Scrolling Related
 
@@ -1794,7 +1798,7 @@ extension ReaderStreamViewController : WPTableViewHandlerDelegate {
 }
 
 
-extension ReaderStreamViewController : WPNoResultsViewDelegate {
+extension ReaderStreamViewController: WPNoResultsViewDelegate {
     public func didTap(_ noResultsView: WPNoResultsView!) {
         showManageSites()
     }

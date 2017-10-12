@@ -12,7 +12,6 @@
 #import "TodayExtensionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
-#import "WPWebViewController.h"
 
 @import WordPressComStatsiOS;
 
@@ -158,8 +157,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
 {
-    WPWebViewController *webVC = [WPWebViewController authenticatedWebViewController:url];
-    [self.navigationController pushViewController:webVC animated:YES];
+    UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 
