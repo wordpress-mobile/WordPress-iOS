@@ -37,7 +37,7 @@ extension FileManager {
                                          includingPropertiesForKeys: prefetchedProperties,
                                          options: DirectoryEnumerationOptions(),
                                          errorHandler: errorHandler) else {
-                                            throw NSError(domain:"", code:0, userInfo:nil)
+                                            throw NSError(domain: "", code: 0, userInfo: nil)
         }
 
         // Start the traversal:

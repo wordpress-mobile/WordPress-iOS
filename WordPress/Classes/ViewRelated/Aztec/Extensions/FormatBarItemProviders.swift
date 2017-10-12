@@ -122,9 +122,9 @@ extension FormattingIdentifier: FormatBarItemProvider {
         case .horizontalruler:
             return NSLocalizedString("Insert Horizontal Ruler", comment: "Accessibility label for insert horizontal ruler button on formatting toolbar.")
         case .sourcecode:
-            return NSLocalizedString("HTML", comment:"Accessibility label for HTML button on formatting toolbar.")
+            return NSLocalizedString("HTML", comment: "Accessibility label for HTML button on formatting toolbar.")
         case .more:
-            return NSLocalizedString("More", comment:"Accessibility label for the More button on formatting toolbar.")
+            return NSLocalizedString("More", comment: "Accessibility label for the More button on formatting toolbar.")
         case .header1:
             return NSLocalizedString("Header 1", comment: "Accessibility label for selecting h1 paragraph style button on the formatting toolbar.")
         case .header2:

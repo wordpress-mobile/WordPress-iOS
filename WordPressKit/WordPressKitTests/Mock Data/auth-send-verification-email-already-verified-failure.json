@@ -1,0 +1,4 @@
+{
+    "error": "invalid_request",
+    "message": "The email address associated with this account is already verified"
+}
