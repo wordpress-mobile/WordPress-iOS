@@ -50,10 +50,10 @@ class AztecAttachmentViewController: UITableViewController {
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target:self, action: #selector(AztecAttachmentViewController.handleCancelButtonTapped))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(AztecAttachmentViewController.handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
 
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target:self, action: #selector(AztecAttachmentViewController.handleDoneButtonTapped))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(AztecAttachmentViewController.handleDoneButtonTapped))
         navigationItem.rightBarButtonItem = doneButton
     }
 
@@ -103,7 +103,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         let dict: [String: Any] = [
             SettingsSelectionDefaultValueKey: alignment,
-            SettingsSelectionTitleKey: NSLocalizedString("Alignment", comment:"Title of the screen for choosing an image's alignment."),
+            SettingsSelectionTitleKey: NSLocalizedString("Alignment", comment: "Title of the screen for choosing an image's alignment."),
             SettingsSelectionTitlesKey: titles,
             SettingsSelectionValuesKey: values,
             SettingsSelectionCurrentValueKey: currentValue
