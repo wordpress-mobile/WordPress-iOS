@@ -58,10 +58,6 @@ final public class PushNotificationsManager: NSObject {
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
     func registerForRemoteNotifications() {
-        if WordPress.Device.is(.simulator) || Build.is(.a8cBranchTest) {
-            return
-        }
-
         sharedApplication.registerForRemoteNotifications()
     }
 
