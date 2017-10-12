@@ -110,7 +110,7 @@ PODS:
     - OHHTTPStubs/Default
   - Reachability (3.2)
   - Specta (1.0.7)
-  - Starscream (2.1.1)
+  - Starscream (3.0.2)
   - SVProgressHUD (2.2.1)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.12)
@@ -138,7 +138,7 @@ DEPENDENCIES:
   - lottie-ios (= 1.5.1)
   - MGSwipeTableCell (= 1.6.1)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 7.0.0)
+  - Nimble (~> 7.0.2)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (~> 3.4)
@@ -146,7 +146,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - Reachability (= 3.2)
   - Specta (= 1.0.7)
-  - Starscream (= 2.1.1)
+  - Starscream (= 3.0.2)
   - SVProgressHUD (= 2.2.1)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.12)
@@ -199,7 +199,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
-  Starscream: 142bd8ef24592d985daee9fa48c936070b85b15f
+  Starscream: b512c62f6706421221b5ceb2ba01a9f58aca5bea
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: d472d3af74219e0bd4e01d49500d1e32c3a8cbf4
@@ -208,6 +208,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 51dff88157706419e000169b37c3abe0d3017b5f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 973818f8b72e7edc83724c63027be2c4e312ac01
+PODFILE CHECKSUM: 012ea8ca42aae3ad50e55c8b1c25787943ff77ca
 
 COCOAPODS: 1.3.1

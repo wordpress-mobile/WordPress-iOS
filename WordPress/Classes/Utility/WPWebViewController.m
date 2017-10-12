@@ -17,16 +17,9 @@
 static NSInteger const WPWebViewErrorAjaxCancelled          = -999;
 static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
 
-static CGFloat const WPWebViewProgressInitial               = 0.1;
-static CGFloat const WPWebViewProgressFinal                 = 1.0;
-
 static CGFloat const WPWebViewToolbarShownConstant          = 0.0;
 static CGFloat const WPWebViewToolbarHiddenConstant         = -44.0;
-
 static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
-static CGFloat const WPWebViewAnimationLongDuration         = 0.4;
-static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0;
-static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 static NSString *const WPComReferrerURL = @"https://wordpress.com";
 
@@ -38,9 +31,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @interface WPWebViewController () <UIWebViewDelegate>
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
-@property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
-@property (nonatomic, strong) UIBarButtonItem          *dismissButton;
-@property (nonatomic, strong) UIBarButtonItem          *optionsButton;
+@property (nonatomic,   weak) IBOutlet WebProgressView          *progressView;
+@property (nonatomic, strong) UIBarButtonItem                   *dismissButton;
 
 @property (nonatomic,   weak) IBOutlet UIToolbar                *toolbar;
 @property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
@@ -48,10 +40,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic,   weak) IBOutlet NSLayoutConstraint       *toolbarBottomConstraint;
 
 @property (nonatomic, strong) NavigationTitleView               *titleView;
+@property (nonatomic, copy)   NSString                          *customTitle;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
 
-@property (nonatomic, strong) WebViewAuthenticator *authenticator;
+@property (nonatomic, weak) id<WebNavigationDelegate> navigationDelegate;
 
 @end
 
@@ -66,6 +59,20 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (_webView.isLoading) {
         [_webView stopLoading];
     }
+}
+
+- (instancetype)initWithConfiguration:(WebViewControllerConfiguration *)configuration
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        _url = configuration.url;
+        _optionsButton = configuration.optionsButton;
+        _secureInteraction = configuration.secureInteraction;
+        _addsWPComReferrer = configuration.addsWPComReferrer;
+        _customTitle = configuration.customTitle;
+        _authenticator = configuration.authenticator;
+    }
+    return self;
 }
 
 - (void)viewDidLoad
@@ -84,7 +91,12 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.titleView                          = [NavigationTitleView new];
     self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
     self.titleView.subtitleLabel.text       = self.url.host;
-    self.navigationItem.titleView           = self.titleView;
+
+    if (self.customTitle != nil) {
+        self.title = self.customTitle;
+    } else {
+        self.navigationItem.titleView = self.titleView;
+    }
     
     // Buttons
     if (!self.optionsButton) {
@@ -142,9 +154,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     self.dismissButton.tintColor            = [WPStyleGuide greyLighten10];
     self.optionsButton.tintColor            = [WPStyleGuide greyLighten10];
-    
-    self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
-    
+
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }
 
@@ -226,19 +236,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
 }
 
-- (void)scrollToBottomIfNeeded
-{
-    if (!self.shouldScrollToBottom) {
-        return;
-    }
-    
-    self.shouldScrollToBottom = NO;
-    
-    UIScrollView *scrollView    = self.webView.scrollView;
-    CGPoint bottomOffset        = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
-    [scrollView setContentOffset:bottomOffset animated:YES];
-}
-
 - (void)showBottomToolbarIfNeeded
 {
     if (self.secureInteraction) {
@@ -281,16 +278,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (self.isViewLoaded) {
         [self loadWebViewRequest];
     }
-}
-
-- (void)authenticateWithBlog:(Blog *)blog
-{
-    self.authenticator = [[WebViewAuthenticator alloc] initWithBlog:blog];
-}
-
-- (void)authenticateWithAccount:(WPAccount *)account
-{
-    self.authenticator = [[WebViewAuthenticator alloc] initWithAccount:account];
 }
 
 #pragma mark - IBAction Methods
@@ -359,6 +346,14 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         return NO;
     }
 
+    if (self.navigationDelegate != nil) {
+        WebNavigationPolicy *policy = [self.navigationDelegate shouldNavigateWithRequest:request];
+        if (policy.redirectRequest != NULL) {
+            [self.webView loadRequest:policy.redirectRequest];
+        }
+        return policy.action == WKNavigationResponsePolicyAllow;
+    }
+
     //  Note:
     //  UIWebView callbacks will get hit for every frame that gets loaded. As a workaround, we'll consider
     //  we're in a "loading" state just for the Top Level request.
@@ -380,7 +375,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         return;
     }
     
-    [self startProgress];
+    [self.progressView startedLoading];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -395,7 +390,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     // Refresh the Interface
     self.loading = NO;
     
-    [self finishProgress];
+    [self.progressView finishedLoading];
     [self refreshInterface];
 
     // Don't show Ajax Cancelled or Frame Load Interrupted errors
@@ -424,53 +419,9 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     self.loading = NO;
     
-    [self finishProgress];
+    [self.progressView finishedLoading];
     [self refreshInterface];
     [self showBottomToolbarIfNeeded];
-    [self scrollToBottomIfNeeded];
-}
-
-
-#pragma mark - Progress Bar Helpers
-
-- (void)startProgress
-{
-    self.progressView.alpha     = WPWebViewAnimationAlphaVisible;
-    self.progressView.progress  = WPWebViewProgressInitial;
-}
-
-- (void)finishProgress
-{
-    [UIView animateWithDuration:WPWebViewAnimationLongDuration animations:^{
-        self.progressView.progress = WPWebViewProgressFinal;
-    } completion:^(BOOL finished) {
-       [UIView animateWithDuration:WPWebViewAnimationShortDuration animations:^{
-           self.progressView.alpha = WPWebViewAnimationAlphaHidden;
-       }];
-    }];
-}
-
-
-#pragma mark - Static Helpers
-
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-{
-    NSParameterAssert(url);
-    
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    return webViewController;
-}
-
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-                           optionsButton:(UIBarButtonItem *)button
-{
-    NSParameterAssert(url);
-
-    WPWebViewController *webViewController = [WPWebViewController new];
-    webViewController.url = url;
-    webViewController.optionsButton = button;
-    return webViewController;
 }
 
 @end
