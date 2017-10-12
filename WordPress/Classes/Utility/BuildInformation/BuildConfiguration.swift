@@ -1,13 +1,13 @@
 enum BuildConfiguration {
     /// Development build, usually run from Xcode
     case localDeveloper
-    
+
     /// Continuous integration builds for Automattic employees to test branches & PRs
     case a8cBranchTest
-    
+
     /// Beta released internally for Automattic employees
     case a8cPrereleaseTesting
-    
+
     /// Production build released in the app store
     case appStore
 
@@ -22,14 +22,14 @@ enum BuildConfiguration {
             return .appStore
         #endif
     }
-    
+
     static func ~=(a: BuildConfiguration, b: Set<BuildConfiguration>) -> Bool {
         return b.contains(a)
     }
-    
+
     #if DEBUG
     private static var testingOverride: BuildConfiguration?
-    
+
     func test(_ closure: () -> ()) {
         BuildConfiguration.testingOverride = self
         closure()
