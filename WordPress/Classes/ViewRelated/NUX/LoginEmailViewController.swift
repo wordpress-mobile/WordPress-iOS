@@ -8,6 +8,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
+    @IBOutlet var inputStack: UIStackView?
     var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
 
@@ -29,7 +30,9 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     private struct Constants {
-        static let googleButtonOffset: CGFloat = 5.0
+        static let googleButtonOffset: CGFloat = 10.0
+        static let googleButtonAnimationDuration: TimeInterval = 0.33
+        static let keyboardThreshold: CGFloat = 100.0
     }
 
 
@@ -127,20 +130,29 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Add the log in with Google button to the view
     func addGoogleButton() {
         guard Feature.enabled(.googleLogin),
-            let instructionLabel = instructionLabel else {
+            let instructionLabel = instructionLabel,
+            let stackView = inputStack else {
             return
         }
 
         let button = UIButton.googleLoginButton()
-        view.addSubview(button)
+        let buttonWrapper = UIView()
+        buttonWrapper.addSubview(button)
+        stackView.addArrangedSubview(buttonWrapper)
         button.addTarget(self, action: #selector(googleLoginTapped), for: .touchUpInside)
 
-        view.addConstraints([
-            button.topAnchor.constraint(equalTo: self.emailTextField.bottomAnchor, constant: Constants.googleButtonOffset),
-            button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
-            button.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor)
-        ])
+        buttonWrapper.addConstraints([
+            buttonWrapper.topAnchor.constraint(equalTo: button.topAnchor, constant: Constants.googleButtonOffset),
+            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: Constants.googleButtonOffset * -1.0),
+            buttonWrapper.leadingAnchor.constraint(equalTo: button.leadingAnchor),
+            buttonWrapper.trailingAnchor.constraint(equalTo: button.trailingAnchor)
+            ])
+
+        stackView.addConstraints([
+            buttonWrapper.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
+            buttonWrapper.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
+            ])
+
         googleLoginButton = button
     }
 
@@ -378,13 +390,29 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
+
+        adjustGoogleButtonVisibility(true)
     }
 
 
     func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
+
+        adjustGoogleButtonVisibility(false)
     }
 
+    func adjustGoogleButtonVisibility(_ visible: Bool) {
+        let errorLength = errorLabel?.text?.count ?? 0
+        let keyboardTallEnough = SigninEditingState.signinLastKeyboardHeightDelta > Constants.keyboardThreshold
+        let keyboardVisible = visible && keyboardTallEnough
+
+        let baseAlpha: CGFloat = errorLength > 0 ? 0.0 : 1.0
+        let newAlpha: CGFloat = keyboardVisible ? baseAlpha : 1.0
+
+        UIView.animate(withDuration: Constants.googleButtonAnimationDuration) { [weak self] in
+            self?.googleLoginButton?.alpha = newAlpha
+        }
+    }
 }
 
 // LoginFacadeDelegate methods for Google Google Sign In
