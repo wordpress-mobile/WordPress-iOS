@@ -209,7 +209,7 @@ class WebKitViewController: UIViewController {
         UIApplication.shared.open(url)
     }
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let object = object as? WKWebView,
             object == webView,
             let keyPath = keyPath else {
