@@ -170,7 +170,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        separator.width = Constants.separatorButtonWidth
         return separator
     }()
 
@@ -3208,8 +3207,7 @@ extension AztecPostViewController {
     }
 
     struct Constants {
-        static let defaultMargin            = CGFloat(20)
-        static let separatorButtonWidth     = CGFloat(-12)
+        static let defaultMargin            = CGFloat(20)        
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
