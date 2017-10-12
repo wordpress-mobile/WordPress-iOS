@@ -1097,10 +1097,12 @@ MediaProgressCoordinatorDelegate
 
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
 {
+    UIBarButtonItem *fixedSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     if ([self isEditing]) {
         if (editingChanged) {
             [self.navigationItem setRightBarButtonItems:@[self.moreBarButtonItem,
-                                                          self.saveBarButtonItem] animated:YES];
+                                                          self.saveBarButtonItem,
+                                                          fixedSeparator] animated:YES];
         } else {
             self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
@@ -1108,7 +1110,8 @@ MediaProgressCoordinatorDelegate
         self.saveBarButtonItem.enabled = [self.post canSave];
 	} else {
         NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.moreBarButtonItem,
-                                                                                  self.editBarButtonItem]];
+                                                                                  self.editBarButtonItem,
+                                                                                  fixedSeparator]];
 
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:NO];
 	}
@@ -1261,14 +1264,18 @@ MediaProgressCoordinatorDelegate
         [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
     }
-    
-    // Update the width to the appropriate size for the horizontal size class
-    CGFloat titleButtonWidth = CompactTitleButtonWidth;
-    if (![self hasHorizontallyCompactView]) {
-        titleButtonWidth = RegularTitleButtonWidth;
+
+    if (@available(iOS 11, *)) {
+        _blogPickerButton.translatesAutoresizingMaskIntoConstraints = NO;
+    } else {
+        // Update the width to the appropriate size for the horizontal size class
+        CGFloat titleButtonWidth = CompactTitleButtonWidth;
+        if (![self hasHorizontallyCompactView]) {
+            titleButtonWidth = RegularTitleButtonWidth;
+        }
+        _blogPickerButton.frame = CGRectMake(_blogPickerButton.frame.origin.x, _blogPickerButton.frame.origin.y, titleButtonWidth, RegularTitleButtonHeight);
     }
-    _blogPickerButton.frame = CGRectMake(_blogPickerButton.frame.origin.x, _blogPickerButton.frame.origin.y, titleButtonWidth, RegularTitleButtonHeight);
-    
+    [_blogPickerButton setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis: UILayoutConstraintAxisHorizontal];
     return _blogPickerButton;
 }
 
@@ -1279,6 +1286,10 @@ MediaProgressCoordinatorDelegate
         [button setTitle:NSLocalizedString(@"Media Uploading", @"Message to indicate progress of uploading media to server") forState: UIControlStateNormal];
         [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+        if (@available(iOS 11, *)) {
+            button.translatesAutoresizingMaskIntoConstraints = NO;
+        }
+        [button setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis: UILayoutConstraintAxisHorizontal];
     }
     
     return _uploadStatusButton;

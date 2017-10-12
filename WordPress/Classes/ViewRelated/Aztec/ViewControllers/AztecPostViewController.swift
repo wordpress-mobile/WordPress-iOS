@@ -170,7 +170,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var separatorButtonItem: UIBarButtonItem = {
         let separator = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        separator.width = Constants.separatorButtonWidth
         return separator
     }()
 
@@ -202,10 +201,32 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     /// Publish Button
-    fileprivate(set) lazy var publishButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: self.postEditorStateContext.publishButtonText, style: WPStyleGuide.barButtonStyleForDone(), target: self, action: #selector(publishButtonTapped(sender:)))
+    fileprivate(set) lazy var publishButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.addTarget(self, action: #selector(publishButtonTapped(sender:)), for: .touchUpInside)
+        button.setTitle(self.postEditorStateContext.publishButtonText, for: .normal)
+        button.sizeToFit()
         button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
+        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        return button
+    }()
 
+    /// Publish Button
+    fileprivate(set) lazy var publishBarButtonItem: UIBarButtonItem = {
+        let button = UIBarButtonItem(customView: self.publishButton)
+
+        return button
+    }()
+
+
+    fileprivate lazy var moreButton: UIButton = {
+        let image = Gridicon.iconOfType(.ellipsis)
+        let button = UIButton(type: .system)
+        button.setImage(image, for: .normal)
+        button.frame = CGRect(origin: .zero, size: image.size)
+        button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
+        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
         return button
     }()
 
@@ -213,9 +234,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// NavigationBar's More Button
     ///
     fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
-        let image = Gridicon.iconOfType(.ellipsis)
-        let moreItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(moreWasPressed))
-        moreItem.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        let moreItem = UIBarButtonItem(customView: self.moreButton)
         return moreItem
     }()
 
@@ -226,7 +245,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-
+        cancelButton.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
         return cancelButton
     }()
 
@@ -236,6 +255,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var blogPickerButton: WPBlogSelectorButton = {
         let button = WPBlogSelectorButton(frame: .zero, buttonStyle: .typeSingleLine)
         button.addTarget(self, action: #selector(blogPickerWasPressed), for: .touchUpInside)
+        if #available(iOS 11, *) {
+            button.translatesAutoresizingMaskIntoConstraints = false
+        }
+        button.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
         return button
     }()
 
@@ -245,6 +268,10 @@ class AztecPostViewController: UIViewController, PostEditor {
         let button = WPUploadStatusButton(frame: CGRect(origin: .zero, size: Constants.uploadingButtonSize))
         button.setTitle(NSLocalizedString("Media Uploading", comment: "Message to indicate progress of uploading media to server"), for: .normal)
         button.addTarget(self, action: #selector(displayCancelMediaUploads), for: .touchUpInside)
+        if #available(iOS 11, *) {
+            button.translatesAutoresizingMaskIntoConstraints = false
+        }
+        button.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
         return button
     }()
 
@@ -635,7 +662,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.isTranslucent = false
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
-        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishButton]
+        navigationItem.rightBarButtonItems = [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
     }
 
     func configureDismissButton() {
@@ -775,18 +802,21 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func reloadPublishButton() {
-        publishButton.title = postEditorStateContext.publishButtonText
+        publishButton.setTitle(postEditorStateContext.publishButtonText, for: .normal)
         publishButton.isEnabled = postEditorStateContext.isPublishButtonEnabled
     }
 
     func resizeBlogPickerButton() {
+        // On iOS 11 no resize is needed because the StackView on the navigation bar will do the work
+        if #available(iOS 11, *) {
+            return
+        }
+        // On iOS 10 and before we still need to manually resize the button.
         // Ensure the BlogPicker gets it's maximum possible size
         blogPickerButton.sizeToFit()
-
         // Cap the size, according to the current traits
         var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
         blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
-
         blogPickerButton.frame.size = blogPickerSize
     }
 
@@ -3179,7 +3209,6 @@ extension AztecPostViewController {
 
     struct Constants {
         static let defaultMargin            = CGFloat(20)
-        static let separatorButtonWidth     = CGFloat(-12)
         static let cancelButtonPadding      = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         static let blogPickerCompactSize    = CGSize(width: 125, height: 30)
         static let blogPickerRegularSize    = CGSize(width: 300, height: 30)
