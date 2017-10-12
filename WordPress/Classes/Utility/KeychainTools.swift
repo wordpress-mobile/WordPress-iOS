@@ -23,7 +23,7 @@ final class KeychainTools: NSObject {
     /// - Attention: This is only enabled in debug builds.
     ///
     static func processKeychainDebugArguments() {
-        guard Build.is(.localDeveloper) else {
+        guard BuildConfiguration.current == .localDeveloper else {
             return
         }
 
