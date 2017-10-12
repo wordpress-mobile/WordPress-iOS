@@ -221,20 +221,20 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate lazy var moreButton: UIButton = {
         let image = Gridicon.iconOfType(.ellipsis)
-        let moreItem = UIButton(type: .system)
-        moreItem.setImage(image, for: .normal)
-        var frame = CGRect(origin: .zero, size: image.size)
-        moreItem.frame = frame
-        moreItem.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
-        moreItem.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
-        moreItem.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
-        return moreItem
+        let button = UIButton(type: .system)
+        button.setImage(image, for: .normal)
+        button.frame = CGRect(origin: .zero, size: image.size)
+        button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
+        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        return button
     }()
+
+
     /// NavigationBar's More Button
     ///
     fileprivate lazy var moreBarButtonItem: UIBarButtonItem = {
         let moreItem = UIBarButtonItem(customView: self.moreButton)
-
         return moreItem
     }()
 
@@ -807,16 +807,17 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func resizeBlogPickerButton() {
-        // Ensure the BlogPicker gets it's maximum possible size
+        // On iOS 11 no resize is needed because the StackView on the navigation bar will do the work
         if #available(iOS 11, *) {
             return
-        } else {
-            blogPickerButton.sizeToFit()
-            // Cap the size, according to the current traits
-            var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
-            blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
-            blogPickerButton.frame.size = blogPickerSize
         }
+        // On iOS 10 and before we still need to manually resize the button.
+        // Ensure the BlogPicker gets it's maximum possible size
+        blogPickerButton.sizeToFit()
+        // Cap the size, according to the current traits
+        var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
+        blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
+        blogPickerButton.frame.size = blogPickerSize
     }
 
 
