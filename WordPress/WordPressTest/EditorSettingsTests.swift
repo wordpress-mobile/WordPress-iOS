@@ -11,7 +11,7 @@ class EditorSettingsTests: XCTestCase {
     }
 
     func testNativeEditorEnabledAvailableButDisabledByDefault() {
-        Build.withCurrent(.localDeveloper) {
+        BuildConfiguration.localDeveloper.test {
             let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
 
             XCTAssertFalse(editorSettings.nativeEditorEnabled)
@@ -19,7 +19,7 @@ class EditorSettingsTests: XCTestCase {
     }
 
     func testNativeEditorEnabledFromOverride() {
-        Build.withCurrent(.appStore) {
+        BuildConfiguration.appStore.test {
             let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
             editorSettings.nativeEditorEnabled = true
 

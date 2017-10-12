@@ -15,15 +15,15 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .iCloudFilesSupport:
-            return Build.is([.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting])
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .newMediaExports:
-            return Build.is([.localDeveloper, .a8cBranchTest])
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .pluginManagement:
-            return Build.is(.localDeveloper)
+            return BuildConfiguration.current == .localDeveloper
         case .googleLogin:
-            return Build.is(.localDeveloper)
+            return BuildConfiguration.current == .localDeveloper
         case .jetpackDisconnect:
-            return Build.is(.localDeveloper)
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
