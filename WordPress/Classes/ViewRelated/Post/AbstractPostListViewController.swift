@@ -128,6 +128,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         configureSearchController()
         configureSearchHelper()
         configureAuthorFilter()
+        configureSearchBackingView()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.reloadData()
@@ -306,6 +307,25 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             tableView.scrollIndicatorInsets.top = 0
         } else {
             tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        }
+    }
+
+    fileprivate func configureSearchBackingView() {
+        // This mask view is required to cover the area between the top of the search
+        // bar and the top of the screen on an iPhone X.
+        if #available(iOS 11.0, *) {
+            let backingView = UIView()
+            view.addSubview(backingView)
+
+            backingView.backgroundColor = searchController.searchBar.barTintColor
+            backingView.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                backingView.topAnchor.constraint(equalTo: view.topAnchor),
+                backingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+                ])
         }
     }
 
