@@ -1,0 +1,282 @@
+{
+    "@context": "https://www.w3.org/ns/activitystreams",
+    "summary": "Activity log",
+    "type": "OrderedCollection",
+    "totalItems": 8,
+    "page": 1,
+    "totalPages": 1,
+    "itemsPerPage": 20,
+    "id": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20",
+    "first": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20&page=1",
+    "last": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20&page=1",
+    "current": {
+        "type": "OrderedCollectionPage",
+        "id": "https://public-api.wordpress.com/wpcom/v2/sites/activity002.mystagingwebsite.com/activity?number=20&page=1",
+        "totalItems": 8,
+        "orderedItems": [
+                         {
+                         "summary": "activity002 added user elibud to site.",
+                         "name": "user__registered",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Announce",
+                         "published": "2017-10-10T15:51:37+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "user",
+                         "status": "success",
+                         "activity_id": "AV8G_AvDjEqjFGbxhaGf",
+                         "object": {
+                         "type": "Person",
+                         "name": "elibud",
+                         "external_user_id": 11,
+                         "wpcom_user_id": 0
+                         }
+                         },
+                         {
+                         "summary": "activity002 removed Elisa from site and reassigned their content to .",
+                         "name": "user__deleted",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Move",
+                         "published": "2017-10-10T15:50:03+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "user",
+                         "status": "error",
+                         "activity_id": "AV8G-qN3jEqjFGbxhY-1",
+                         "object": {
+                         "type": "Tombstone",
+                         "name": "Elisa",
+                         "external_user_id": 10,
+                         "wpcom_user_id": 0,
+                         "formerType": "Person"
+                         },
+                         "target": {
+                         "type": "Person",
+                         "name": null,
+                         "external_user_id": null,
+                         "wpcom_user_id": null
+                         }
+                         },
+                         {
+                         "summary": "activity002 modified user Elisa",
+                         "name": "user__updated",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Update",
+                         "published": "2017-10-10T15:50:03+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "user",
+                         "status": null,
+                         "activity_id": "AV8G-qN3jEqjFGbxhY-0",
+                         "object": {
+                         "type": "Person",
+                         "name": "Elisa",
+                         "external_user_id": 10,
+                         "wpcom_user_id": 0
+                         }
+                         },
+                         {
+                         "summary": "activity002 logged in successfully",
+                         "name": "user__login",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Join",
+                         "published": "2017-10-10T15:50:03+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "lock",
+                         "status": null,
+                         "activity_id": "AV8G-qN3jEqjFGbxhY-z",
+                         "object": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367
+                         }
+                         },
+                         {
+                         "summary": "activity002 logged out",
+                         "name": "user__logout",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Leave",
+                         "published": "2017-10-10T15:50:03+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "lock",
+                         "status": null,
+                         "activity_id": "AV8G-qN3jEqjFGbxhY-y",
+                         "object": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367
+                         }
+                         },
+                         {
+                         "summary": "activity002 added user  to site.",
+                         "name": "user__registered",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Announce",
+                         "published": "2017-10-10T15:50:03+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "user",
+                         "status": "success",
+                         "activity_id": "AV8G-qN3jEqjFGbxhY-x",
+                         "object": {
+                         "type": "Person",
+                         "name": null,
+                         "external_user_id": 10,
+                         "wpcom_user_id": 0
+                         }
+                         },
+                         {
+                         "summary": "activity002 logged in successfully",
+                         "name": "user__login",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Join",
+                         "published": "2017-10-10T15:50:03+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "lock",
+                         "status": null,
+                         "activity_id": "AV8G-pRtjEqjFGbxhY8C",
+                         "object": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367
+                         }
+                         },
+                         {
+                         "summary": "activity002 logged in successfully",
+                         "name": "user__login",
+                         "actor": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367,
+                         "icon": {
+                         "type": "Image",
+                         "url": "https://secure.gravatar.com/avatar/a78c747ecc4e8d1936e8d33080ae1803?s=96&d=mm&r=g",
+                         "width": 96,
+                         "height": 96
+                         },
+                         "role": "administrator"
+                         },
+                         "type": "Join",
+                         "published": "2017-10-05T21:55:55+00:00",
+                         "generator": {
+                         "jetpack_version": 5.4,
+                         "blog_id": 135188029
+                         },
+                         "gridicon": "lock",
+                         "status": null,
+                         "activity_id": "AV7uicvDjEqjFGbxlwGR",
+                         "object": {
+                         "type": "Person",
+                         "name": "activity002",
+                         "external_user_id": 1,
+                         "wpcom_user_id": 60261367
+                         }
+                         }
+                         ]
+    }
+}
