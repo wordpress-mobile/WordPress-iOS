@@ -39,7 +39,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
                                 success: {
                                     response, _ in
                                     do {
-                                        let (activities, totalItems) = try mapActivitiesResponse(response)
+                                        let (activities, totalItems) = try self.mapActivitiesResponse(response)
                                         let hasMore = totalItems > pageNumber * (count + 1)
                                         success(activities, hasMore)
                                     } catch {
