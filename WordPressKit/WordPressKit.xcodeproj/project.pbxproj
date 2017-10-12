@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40F88F601F85723500AE3FAF /* auth-send-verification-email-already-verified-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 40F88F5F1F85723400AE3FAF /* auth-send-verification-email-already-verified-failure.json */; };
+		40F88F621F85799A00AE3FAF /* auth-send-verification-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 40F88F611F85799A00AE3FAF /* auth-send-verification-email-success.json */; };
 		7403A2E41EF06ED500DED7DC /* AccountSettingsRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403A2E31EF06ED500DED7DC /* AccountSettingsRemote.swift */; };
 		7403A2E61EF06F7000DED7DC /* AccountSettingsRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403A2E51EF06F7000DED7DC /* AccountSettingsRemoteTests.swift */; };
 		7403A2F41EF06FEB00DED7DC /* me-settings-auth-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 7403A2E71EF06FEB00DED7DC /* me-settings-auth-failure.json */; };
@@ -355,6 +357,8 @@
 
 /* Begin PBXFileReference section */
 		374CA122F886DCBD6C042B3E /* Pods-WordPressKitTests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		40F88F5F1F85723400AE3FAF /* auth-send-verification-email-already-verified-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-verification-email-already-verified-failure.json"; sourceTree = "<group>"; };
+		40F88F611F85799A00AE3FAF /* auth-send-verification-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-verification-email-success.json"; sourceTree = "<group>"; };
 		5B78E5816A82E3614ACCD7A7 /* Pods-WordPressKitTests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-internal.xcconfig"; sourceTree = "<group>"; };
 		64D3C3AD47D5D2C05759A075 /* Pods-WordPressKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release.xcconfig"; sourceTree = "<group>"; };
 		7403A2E31EF06ED500DED7DC /* AccountSettingsRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsRemote.swift; sourceTree = "<group>"; };
@@ -1154,6 +1158,8 @@
 		93BD27421EE73384002BB00B /* Mock Data */ = {
 			isa = PBXGroup;
 			children = (
+				40F88F611F85799A00AE3FAF /* auth-send-verification-email-success.json */,
+				40F88F5F1F85723400AE3FAF /* auth-send-verification-email-already-verified-failure.json */,
 				93BD27431EE73442002BB00B /* auth-send-login-email-invalid-client-failure.json */,
 				93BD27441EE73442002BB00B /* auth-send-login-email-invalid-secret-failure.json */,
 				93BD27451EE73442002BB00B /* auth-send-login-email-no-user-failure.json */,
@@ -1490,6 +1496,7 @@
 			files = (
 				93AC8EC61ED32FD000900F5A /* stats-v1.1-alltime.json in Resources */,
 				7403A2FC1EF06FEB00DED7DC /* me-settings-change-lastname-success.json in Resources */,
+				40F88F601F85723500AE3FAF /* auth-send-verification-email-already-verified-failure.json in Resources */,
 				74D67F211F15C3240010C5ED /* people-validate-invitation-success.json in Resources */,
 				7403A2F71EF06FEB00DED7DC /* me-settings-change-display-name-bad-json-failure.json in Resources */,
 				74B335E41F06F6B30053A184 /* WordPressComRestApiMultipleErrors.json in Resources */,
@@ -1604,6 +1611,7 @@
 				93AC8ECC1ED32FD000900F5A /* stats-v1.1-followers-wpcom-day.json in Resources */,
 				740B23EA1F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml in Resources */,
 				74C473B31EF3204B009918F2 /* site-delete-auth-failure.json in Resources */,
+				40F88F621F85799A00AE3FAF /* auth-send-verification-email-success.json in Resources */,
 				740B23E81F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml in Resources */,
 				74585B951F0D53B800E7E667 /* domain-service-all-domain-types.json in Resources */,
 				74D67F371F15C3740010C5ED /* site-users-delete-success.json in Resources */,

@@ -9,7 +9,7 @@ public struct VideoShortcodeProcessor {
     /// More info here: https://en.support.wordpress.com/videopress/
     ///
     static public var videoPressPreProcessor: Processor {
-        let videoPressProcessor = ShortcodeProcessor(tag:"wpvideo", replacer: { (shortcode) in
+        let videoPressProcessor = ShortcodeProcessor(tag: "wpvideo", replacer: { (shortcode) in
             var html = "<video "
 
             let src = shortcode.attributes.unamed.first ?? ""
@@ -37,7 +37,7 @@ public struct VideoShortcodeProcessor {
     /// More info here: https://en.support.wordpress.com/videopress/
     ///
     static public var videoPressPostProcessor: Processor {
-        let postWordPressVideoProcessor = HTMLProcessor(tag:"video", replacer: { (shortcode) in
+        let postWordPressVideoProcessor = HTMLProcessor(tag: "video", replacer: { (shortcode) in
             guard let videoPressID = shortcode.attributes.named[videoPressHTMLAttribute] else {
                 return nil
             }
@@ -58,7 +58,7 @@ public struct VideoShortcodeProcessor {
     /// More info here: https://codex.wordpress.org/Video_Shortcode
     ///
     static public var wordPressVideoPreProcessor: Processor {
-        let wordPressVideoProcessor = ShortcodeProcessor(tag:"video", replacer: { (shortcode) in
+        let wordPressVideoProcessor = ShortcodeProcessor(tag: "video", replacer: { (shortcode) in
             var html = "<video "
             if let src = shortcode.attributes.named["src"] {
                 html += "src=\"\(src)\" "
@@ -76,7 +76,7 @@ public struct VideoShortcodeProcessor {
     /// More info here: https://codex.wordpress.org/Video_Shortcode
     ///
     static public var wordPressVideoPostProcessor: Processor {
-        let postWordPressVideoProcessor = HTMLProcessor(tag:"video", replacer: { (shortcode) in
+        let postWordPressVideoProcessor = HTMLProcessor(tag: "video", replacer: { (shortcode) in
             var html = "[video "
             if let src = shortcode.attributes.named["src"] {
                 html += "src=\"\(src)\" "
