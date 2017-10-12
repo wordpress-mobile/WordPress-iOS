@@ -156,6 +156,12 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     @objc fileprivate func keyboardDidShow(_ notification: Foundation.Notification) {
+        if #available(iOS 11.0, *) {
+            // The following adjustments don't appear to be necessary on iOS 11.
+            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+            return
+        }
+
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = tableView.frame.maxY - keyboardFrame.origin.y
 
@@ -166,6 +172,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     @objc fileprivate func keyboardDidHide(_ notification: Foundation.Notification) {
+        if #available(iOS 11.0, *) {
+            // The following adjustments don't appear to be necessary on iOS 11.
+            return
+        }
+
         tableView.contentInset.top = topLayoutGuide.length
         tableView.contentInset.bottom = 0
         tableView.scrollIndicatorInsets.top = searchController.isActive ? searchBarHeight : topLayoutGuide.length
@@ -291,7 +302,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     fileprivate func configureInitialScrollInsets() {
-        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        if #available(iOS 11.0, *) {
+            tableView.scrollIndicatorInsets.top = 0
+        } else {
+            tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        }
     }
 
     func configureSearchHelper() {
@@ -1037,7 +1052,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         searchController.searchBar.text = nil
         searchHelper.searchCanceled()
 
-        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        configureInitialScrollInsets()
     }
 
     func updateSearchResults(for searchController: UISearchController) {
