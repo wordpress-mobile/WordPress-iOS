@@ -11,7 +11,7 @@ extension Tracks {
 
     public func trackExtensionStatsLaunched(_ siteID: Int) {
         let properties = ["site_id": siteID]
-        trackExtensionEvent(.StatsLaunched, properties: properties as [String : AnyObject]?)
+        trackExtensionEvent(.StatsLaunched, properties: properties as [String: AnyObject]?)
     }
 
     public func trackExtensionConfigureLaunched() {

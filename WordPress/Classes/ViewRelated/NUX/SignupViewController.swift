@@ -449,9 +449,9 @@ import WordPressShared
 
 
     @IBAction func handleTermsOfServiceButtonTapped(_ sender: UIButton) {
-        let url = URL(string: WPAutomatticTermsOfServiceURL)
-        let controller = WPWebViewController(url: url)
-        let navController = RotationAwareNavigationViewController(rootViewController: controller!)
+        let url = URL(string: WPAutomatticTermsOfServiceURL)!
+        let controller = WebViewControllerFactory.controller(url: url)
+        let navController = RotationAwareNavigationViewController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
 
