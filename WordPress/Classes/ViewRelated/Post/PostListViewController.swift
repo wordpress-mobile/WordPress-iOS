@@ -144,10 +144,20 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.configureSearchController()
 
         searchWrapperView.addSubview(searchController.searchBar)
-        tableView.tableHeaderView = headerStackView
 
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+
+        updateTableHeaderSize()
     }
+
+    fileprivate func updateTableHeaderSize() {
+        searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
+        headerStackView.frame.size.height = headerStackView.subviews.reduce(0, { $0 + $1.frame.size.height })
+
+        // Resetting the tableHeaderView is necessary to get the new height to take effect
+        tableView.tableHeaderView = headerStackView
+    }
+
 
     fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
         if isSearching() {
