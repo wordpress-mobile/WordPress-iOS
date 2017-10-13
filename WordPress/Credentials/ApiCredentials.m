@@ -1,7 +1,7 @@
 #import "ApiCredentials.h"
 
-#define WPCOM_API_CLIENT_ID @""
-#define WPCOM_API_CLIENT_SECRET @""
+#define WPCOM_API_CLIENT_ID @"55461"
+#define WPCOM_API_CLIENT_SECRET @"vq0sXhkNojad6JHUnH3SsouG0eWJye5m6W4VJxgaj3eXAxZAWA6zJ5QeaPFG6XNx"
 
 @implementation ApiCredentials
 
