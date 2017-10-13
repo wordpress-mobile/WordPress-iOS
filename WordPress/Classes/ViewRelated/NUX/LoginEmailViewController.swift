@@ -160,6 +160,10 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         awaitingGoogle = true
         GIDSignIn.sharedInstance().disconnect()
 
+        // Flag this as a social sign in.
+        loginFields.meta.socialService = SocialServiceName.google
+
+        // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
@@ -282,9 +286,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
 
     /// Validates what is entered in the various form fields and, if valid,
-    /// proceeds with the submit action.
+    /// proceeds with the submit action. Empties loginFields.meta.socialService as
+    /// social signin does not require form validation.
     ///
     func validateForm() {
+        loginFields.meta.socialService = nil
         displayError(message: "")
         guard EmailFormatValidator.validate(string: loginFields.username) else {
             assertionFailure("Form should not be submitted unless there is a valid looking email entered.")
@@ -424,6 +430,18 @@ extension LoginEmailViewController {
         GIDSignIn.sharedInstance().disconnect()
     }
 
+
+    func existingUserNeedsConnection(_ email: String!) {
+        // Disconnect now that we're done with Google.
+        GIDSignIn.sharedInstance().disconnect()
+
+        loginFields.username = email
+        loginFields.emailAddress = email
+
+        performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.showWPComLogin, sender: self)
+    }
+
+
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
         // TODO: to be implemented.
     }
@@ -439,9 +457,10 @@ extension LoginEmailViewController: GIDSignInDelegate {
             return
         }
 
-        // Store the email address.
+        // Store the email address and token.
         loginFields.emailAddress = email
         loginFields.username = email
+        loginFields.meta.socialServiceIDToken = token
 
         configureViewLoading(true)
 
