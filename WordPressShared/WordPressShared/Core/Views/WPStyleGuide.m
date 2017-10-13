@@ -326,6 +326,7 @@
 // The app colors can be restored with configureNavigationBarAppearance().
 + (void)configureDocumentPickerNavBarAppearance
 {
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTintColor:[WPStyleGuide mediumBlue]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide mediumBlue]} forState:UIControlStateNormal];
 }

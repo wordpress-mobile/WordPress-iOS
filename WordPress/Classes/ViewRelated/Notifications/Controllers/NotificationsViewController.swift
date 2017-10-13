@@ -1117,8 +1117,8 @@ extension NotificationsViewController: WPNoResultsViewDelegate {
                 fatalError()
             }
 
-            let webViewController = WPWebViewController(url: targetURL)
-            let navController = UINavigationController(rootViewController: webViewController!)
+            let webViewController = WebViewControllerFactory.controller(url: targetURL)
+            let navController = UINavigationController(rootViewController: webViewController)
             present(navController, animated: true, completion: nil)
 
             let properties = [Stats.sourceKey: Stats.sourceValue]
