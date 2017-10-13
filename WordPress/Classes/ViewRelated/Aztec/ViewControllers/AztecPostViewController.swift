@@ -498,6 +498,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        resetNavigationColors()
         configureDismissButton()
         startListeningToNotifications()
         verificationPromptHelper?.updateVerificationStatus()
@@ -686,6 +687,14 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
+    }
+
+    /// This is to restore the navigation bar colors after the UIDocumentPickerViewController has been dismissed,
+    /// either by uploading media or cancelling. Doing this in the UIDocumentPickerDelegate methods either did
+    /// nothing or the resetting wasn't permanent.
+    ///
+    fileprivate func resetNavigationColors() {
+        WPStyleGuide.configureNavigationBarAppearance()
     }
 
     func configureDismissButton() {
@@ -1542,6 +1551,9 @@ extension AztecPostViewController {
             case .mediaLibrary:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedMediaLibrary)
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
+            case .otherApplications:
+                trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
+                showDocumentPicker()
             }
         }
     }
@@ -1989,6 +2001,14 @@ extension AztecPostViewController {
         return .none
     }
 
+    private func showDocumentPicker() {
+        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
+        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
+        docPicker.delegate = self
+        WPStyleGuide.configureDocumentPickerNavBarAppearance()
+        present(docPicker, animated: true, completion: nil)
+    }
+
     // MARK: - Present Toolbar related VC
 
     fileprivate func dismissOptionsViewControllerIfNecessary() {
@@ -2198,15 +2218,19 @@ extension AztecPostViewController {
     }
 
     var mediaItemsForToolbar: [FormatBarItem] {
-        let deviceButton = makeToolbarButton(identifier: .deviceLibrary)
-        let cameraButton = makeToolbarButton(identifier: .camera)
-        let mediaLibraryButton = makeToolbarButton(identifier: .mediaLibrary)
+        var toolbarButtons = [makeToolbarButton(identifier: .deviceLibrary)]
 
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            return [ deviceButton, cameraButton, mediaLibraryButton ]
-        } else {
-            return [ deviceButton, mediaLibraryButton ]
+            toolbarButtons.append(makeToolbarButton(identifier: .camera))
         }
+
+        toolbarButtons.append(makeToolbarButton(identifier: .mediaLibrary))
+
+        if #available(iOS 11, *), FeatureFlag.iCloudFilesSupport.enabled {
+            toolbarButtons.append(makeToolbarButton(identifier: .otherApplications))
+        }
+
+        return toolbarButtons
     }
 
     var scrollableItemsForToolbar: [FormatBarItem] {
@@ -2538,6 +2562,38 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
 //
 extension AztecPostViewController {
 
+    fileprivate func insertExternalMediaWithURL(_ url: URL) {
+        do {
+            var newAttachment: MediaAttachment?
+            var newStatType: WPAnalyticsStat?
+            let expected = try MediaURLExporter.expectedExport(with: url)
+
+            switch expected {
+            case .image:
+                newAttachment = imageAttachmentWithPlaceholder()
+                newStatType = .editorAddedPhotoViaOtherApps
+            case .video:
+                newAttachment = videoAttachmentWithPlaceholder()
+                newStatType = .editorAddedVideoViaOtherApps
+            default: break
+            }
+
+            guard let attachment = newAttachment, let statType = newStatType else { return }
+
+            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            mediaService.createMedia(url: url, forPost: post.objectID,
+                                     thumbnailCallback: { [weak self](thumbnailURL) in
+                                        self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+                },
+                                     completion: { [weak self](media, error) in
+                                        self?.handleNewMedia(media, error: error, attachment: attachment, statType: statType)
+            })
+        } catch {
+            print(MediaURLExporter().exporterErrorWith(error: error))
+            return
+        }
+    }
+
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
         switch phAsset.mediaType {
         case .image:
@@ -2550,63 +2606,28 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceImage(phAsset: PHAsset) {
-        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, placeHolderImage:
-                Assets.defaultMissingImage)
-
+        let attachment = imageAttachmentWithPlaceholder()
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
-            guard let `self` = self else {
-                return
-            }
-            DispatchQueue.main.async {
-                attachment.updateURL(thumbnailURL)
-                self.richTextView.refresh(attachment)
-            }
-        }, completion: { [weak self](media, error) in
-            guard let strongSelf = self else {
-                return
-            }
-            guard let media = media, error == nil else {
-                DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
-                }
-                return
-            }
-
-            WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
-
-            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        mediaService.createMedia(with: phAsset,
+                                 forPost: post.objectID,
+                                 thumbnailCallback: { [weak self](thumbnailURL) in
+                                    self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+            },
+                                 completion: { [weak self](media, error) in
+                                    self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaLocalLibrary)
         })
     }
 
     fileprivate func insertDeviceVideo(phAsset: PHAsset) {
-        let attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, posterURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
-        attachment.progress = 0
-        richTextView.refresh(attachment)
-
+        let attachment = videoAttachmentWithPlaceholder()
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset, forPost: post.objectID, thumbnailCallback: { [weak self](thumbnailURL) in
-            guard let strongSelf = self else {
-                return
-            }
-            DispatchQueue.main.async {
-                attachment.posterURL = thumbnailURL
-                strongSelf.richTextView.refresh(attachment)
-            }
-        }, completion: { [weak self](media, error) in
-            guard let strongSelf = self else {
-                return
-            }
-            guard let media = media, error == nil else {
-                DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError?, onAttachment: attachment)
-                }
-                return
-            }
-
-            WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
-
-            strongSelf.upload(media: media, mediaID: attachment.identifier)
+        mediaService.createMedia(with: phAsset,
+                                 forPost: post.objectID,
+                                 thumbnailCallback: { [weak self](thumbnailURL) in
+                                    self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+            },
+                                 completion: { [weak self](media, error) in
+                                    self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedVideoViaLocalLibrary)
         })
     }
 
@@ -2616,6 +2637,41 @@ extension AztecPostViewController {
         } else {
             insertLocalSiteMediaLibrary(media: media)
         }
+    }
+
+    private func imageAttachmentWithPlaceholder() -> ImageAttachment {
+        return richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+    }
+
+    private func videoAttachmentWithPlaceholder() -> VideoAttachment {
+        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, posterURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+    }
+
+    private func handleThumbnailURL(_ thumbnailURL: URL, attachment: Any) {
+        DispatchQueue.main.async {
+            if let attachment = attachment as? ImageAttachment {
+                attachment.updateURL(thumbnailURL)
+                self.richTextView.refresh(attachment)
+            }
+            else if let attachment = attachment as? VideoAttachment {
+                attachment.posterURL = thumbnailURL
+                self.richTextView.refresh(attachment)
+            }
+        }
+    }
+
+    private func handleNewMedia(_ media: Media?, error: Error?, attachment: MediaAttachment, statType: WPAnalyticsStat) {
+
+        guard let media = media, error == nil else {
+            DispatchQueue.main.async {
+                self.handleError(error as NSError?, onAttachment: attachment)
+            }
+            return
+        }
+
+        WPAppAnalytics.track(statType, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post.blog)
+
+        upload(media: media, mediaID: attachment.identifier)
     }
 
     fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
@@ -3235,6 +3291,18 @@ extension AztecPostViewController: UIViewControllerRestoration {
     }
 }
 
+// MARK: - UIDocumentPickerDelegate
+
+extension AztecPostViewController: UIDocumentPickerDelegate {
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        selectedMediaOrigin = .documentPicker
+        mediaProgressCoordinator.track(numberOfItems: urls.count)
+        for documentURL in urls {
+            insertExternalMediaWithURL(documentURL)
+        }
+    }
+}
 
 // MARK: - Constants
 //
