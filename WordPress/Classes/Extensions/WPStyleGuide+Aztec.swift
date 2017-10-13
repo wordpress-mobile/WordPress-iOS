@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 
 extension WPStyleGuide {
@@ -25,19 +26,11 @@ extension WPStyleGuide {
     }
 
     static func configureBetaButton(_ button: UIButton) {
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 11.0)
-        button.layer.borderWidth = 1.0
-        button.layer.cornerRadius = 3.0
+        let helpImage = Gridicon.iconOfType(.helpOutline)
+        button.setImage(helpImage, for: .normal)
+        button.tintColor = WPStyleGuide.greyLighten10()
 
-        button.tintColor = WPStyleGuide.darkGrey()
-        button.setTitleColor(WPStyleGuide.darkGrey(), for: .disabled)
-        button.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
-
-        let verticalInset = CGFloat(6.0)
-        let horizontalInset = CGFloat(8.0)
-        button.contentEdgeInsets = UIEdgeInsets(top: verticalInset,
-                                                left: horizontalInset,
-                                                bottom: verticalInset,
-                                                right: horizontalInset)
+        let edgeInsets = UIEdgeInsets(top: 6.0, left: 8.0, bottom: 6.0, right: 8.0)
+        button.contentEdgeInsets = edgeInsets
     }
 }
