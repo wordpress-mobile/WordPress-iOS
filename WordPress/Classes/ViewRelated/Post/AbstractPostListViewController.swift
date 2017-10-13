@@ -158,11 +158,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc fileprivate func keyboardDidShow(_ notification: Foundation.Notification) {
         if #available(iOS 11.0, *) {
-            // The following adjustments don't appear to be necessary on iOS 11.
-            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
             return
         }
 
+        // The following adjustments don't appear to be necessary on iOS 11.
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = tableView.frame.maxY - keyboardFrame.origin.y
 
@@ -174,10 +173,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc fileprivate func keyboardDidHide(_ notification: Foundation.Notification) {
         if #available(iOS 11.0, *) {
-            // The following adjustments don't appear to be necessary on iOS 11.
             return
         }
 
+        // The following adjustments don't appear to be necessary on iOS 11.
         tableView.contentInset.top = topLayoutGuide.length
         tableView.contentInset.bottom = 0
         tableView.scrollIndicatorInsets.top = searchController.isActive ? searchBarHeight : topLayoutGuide.length
@@ -305,6 +304,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     fileprivate func configureInitialScrollInsets() {
         if #available(iOS 11.0, *) {
             tableView.scrollIndicatorInsets.top = 0
+            tableView.contentInset.top = 0
         } else {
             tableView.scrollIndicatorInsets.top = topLayoutGuide.length
         }
@@ -1066,6 +1066,15 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     func willPresentSearchController(_ searchController: UISearchController) {
         WPAnalytics.track(.postListSearchOpened, withProperties: propertiesForAnalytics())
+    }
+
+    func didPresentSearchController(_ searchController: UISearchController) {
+        if #available(iOS 11.0, *) {
+            let searchBarY = searchController.searchBar.frame.origin.y
+            let inset = topLayoutGuide.length - searchBarY
+            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height - inset
+            tableView.contentInset.top = -searchBarY
+        }
     }
 
     func willDismissSearchController(_ searchController: UISearchController) {
