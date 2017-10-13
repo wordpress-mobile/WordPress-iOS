@@ -292,7 +292,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureBetaButton(button)
 
-        button.setTitle(NSLocalizedString("Feedback", comment: "Title for Feedback button for the new Aztec editor"), for: .normal)
         button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
         button.isEnabled = true
         button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
