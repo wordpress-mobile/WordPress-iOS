@@ -26,22 +26,15 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    [self getBlogsWithRequestURL:requestUrl success:success failure:failure];
+}
 
-    NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
-    NSDictionary *parameters = @{
-                                 @"locale": locale
-                                 };
-    [self.wordPressComRestApi GET:requestUrl
-       parameters:parameters
-                    success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-              if (success) {
-                  success([self remoteBlogsFromJSONArray:responseObject[@"sites"]]);
-              }
-          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+- (void)getVisibleBlogsWithSuccess:(void (^)(NSArray *))success
+                           failure:(void (^)(NSError *))failure
+{
+    NSString *requestUrl = [self pathForEndpoint:@"me/sites?site_visibility=visible"
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    [self getBlogsWithRequestURL:requestUrl success:success failure:failure];
 }
 
 - (void)getAccountDetailsWithSuccess:(void (^)(RemoteUser *remoteUser))success
@@ -251,6 +244,28 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 }
 
 #pragma mark - Private Methods
+
+- (void)getBlogsWithRequestURL:(NSString *)requestUrl
+                       success:(void (^)(NSArray *))success
+                       failure:(void (^)(NSError *))failure
+{
+    NSAssert([requestUrl length] > 0, @"Must provide request URL");
+    NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
+    NSDictionary *parameters = @{
+                                 @"locale": locale
+                                 };
+    [self.wordPressComRestApi GET:requestUrl
+                       parameters:parameters
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                              if (success) {
+                                  success([self remoteBlogsFromJSONArray:responseObject[@"sites"]]);
+                              }
+                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
+}
 
 - (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary
 {
