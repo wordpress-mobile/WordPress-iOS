@@ -520,13 +520,7 @@ class MediaLibraryViewController: UIViewController {
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
-
-        // The app's appearance settings override the doc picker color scheme.
-        // Setting the nav colors here so the doc picker has the correct appearance.
-        // The app colors are restored later with resetNavigationColors().
-        UINavigationBar.appearance().tintColor = WPStyleGuide.mediumBlue()
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.mediumBlue()], for: .normal)
-
+        WPStyleGuide.configureDocumentPickerNavBarAppearance()
         present(docPicker, animated: true, completion: nil)
     }
 
@@ -585,7 +579,7 @@ class MediaLibraryViewController: UIViewController {
         switch mediaType {
         case String(kUTTypeImage):
             if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable : Any] {
+                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
                 WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
             }
         case String(kUTTypeMovie):

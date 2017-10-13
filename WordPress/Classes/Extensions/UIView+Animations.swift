@@ -33,12 +33,12 @@ extension UIView {
         }
 
         UIView.animate(withDuration: duration,
-                                   delay:                   delay,
-                                   usingSpringWithDamping:  damping,
-                                   initialSpringVelocity:   velocity,
-                                   options:                 UIViewAnimationOptions(),
-                                   animations:              animations,
-                                   completion:              completion)
+                                   delay: delay,
+                                   usingSpringWithDamping: damping,
+                                   initialSpringVelocity: velocity,
+                                   options: UIViewAnimationOptions(),
+                                   animations: animations,
+                                   completion: completion)
     }
 
     /// Applies a spring animation, from size 0 to final size
@@ -59,12 +59,12 @@ extension UIView {
         }
 
         UIView.animate(withDuration: duration,
-            delay:                  delay,
+            delay: delay,
             usingSpringWithDamping: damping,
-            initialSpringVelocity:  velocity,
-            options:                UIViewAnimationOptions(),
-            animations:             animations,
-            completion:             completion
+            initialSpringVelocity: velocity,
+            options: UIViewAnimationOptions(),
+            animations: animations,
+            completion: completion
         )
     }
 

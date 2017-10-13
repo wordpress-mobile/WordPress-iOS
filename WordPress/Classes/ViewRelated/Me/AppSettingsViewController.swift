@@ -196,7 +196,7 @@ class AppSettingsViewController: UITableViewController {
 
     @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
         WPAppAnalytics.track(.editorAztecBetaLink)
-        WPWebViewController.presentWhatsNewWebView(from: self)
+        FancyAlertViewController.presentWhatsNewWebView(from: self)
     }
 
     // MARK: - Media cache methods
@@ -286,7 +286,7 @@ class AppSettingsViewController: UITableViewController {
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentVideoResolution,
                                                   SettingsSelectionTitleKey: NSLocalizedString("Resolution", comment: "The largest resolution allowed for uploading"),
                                                   SettingsSelectionTitlesKey: titles,
-                                                  SettingsSelectionValuesKey: values] as [String : Any]
+                                                  SettingsSelectionValuesKey: values] as [String: Any]
 
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 

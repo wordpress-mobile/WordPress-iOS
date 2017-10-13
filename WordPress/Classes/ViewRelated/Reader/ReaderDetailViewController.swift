@@ -259,7 +259,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if (object! as! NSObject == post!) && (keyPath! == DetailConstants.LikeCountKeyPath) {
             // Note: The intent here is to update the action buttons, specifically the
             // like button, *after* both likeCount and isLiked has changed. The order
@@ -804,8 +804,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 url = URL(string: url.absoluteString, relativeTo: postURL)!
             }
         }
-        let controller = WPWebViewController.authenticatedWebViewController(url)
-        controller.addsWPComReferrer = true
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
@@ -1024,7 +1026,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
 
-extension ReaderDetailViewController : ReaderCardDiscoverAttributionViewDelegate {
+extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         didTapDiscoverAttribution()
     }
@@ -1079,7 +1081,7 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
 
 // MARK: - UIScrollView Delegate Methods
 
-extension ReaderDetailViewController : UIScrollViewDelegate {
+extension ReaderDetailViewController: UIScrollViewDelegate {
 
     public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if UIDevice.isPad() || footerView.isHidden || !isLoaded {

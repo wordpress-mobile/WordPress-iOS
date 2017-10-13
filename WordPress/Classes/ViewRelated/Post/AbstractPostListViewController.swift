@@ -993,7 +993,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                     SettingsSelectionTitleKey: NSLocalizedString("Filters", comment: "Title of the list of post status filters."),
                     SettingsSelectionTitlesKey: titles,
                     SettingsSelectionValuesKey: availableFilters,
-                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String : Any]
+                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String: Any]
 
         let controller = SettingsSelectionViewController(style: .plain, andDictionary: dict as [AnyHashable: Any])
         controller?.onItemSelected = { [weak self] (selectedValue: Any!) -> () in
