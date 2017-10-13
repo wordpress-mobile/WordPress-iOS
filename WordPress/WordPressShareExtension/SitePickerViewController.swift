@@ -1,8 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
-import WordPressComKit
-
+import WordPressKit
 
 /// This class presents a list of Sites, and allows the user to select one from the list. Works
 /// absolutely detached from the Core Data Model, since it was designed for Extension usage.
@@ -42,7 +41,7 @@ class SitePickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let site = sites[indexPath.row]
-        onChange?(site.ID, (site.name?.characters.count)! > 0 ? site.name : site.URL.host)
+        onChange?(site.blogID.intValue, (site.name?.characters.count)! > 0 ? site.name : URL(string: site.url)?.host)
         _ = navigationController?.popViewController(animated: true)
     }
 
@@ -79,25 +78,30 @@ class SitePickerViewController: UITableViewController {
             return
         }
 
-        RequestRouter.bearerToken = oauth2Token as String
-
-        let service = SiteService()
-
-        showLoadingView()
-
-        service.fetchSites { [weak self] sites, error in
+        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil)
+        let remote = AccountServiceRemoteREST.init(wordPressComRestApi: api)
+        remote?.getVisibleBlogs(success: { [weak self] blogs in
             DispatchQueue.main.async {
-                self?.sites = sites ?? [Site]()
+                self?.sites = (blogs as? [RemoteBlog]) ?? [RemoteBlog]()
                 self?.tableView.reloadData()
                 self?.showEmptySitesIfNeeded()
             }
-        }
+        }, failure: { [weak self] error in
+            print("Error retrieving blogs: \(String(describing: error))")
+            DispatchQueue.main.async {
+                self?.sites = [RemoteBlog]()
+                self?.tableView.reloadData()
+                self?.showEmptySitesIfNeeded()
+            }
+        })
+
+        showLoadingView()
     }
 
-    fileprivate func configureCell(_ cell: UITableViewCell, site: Site) {
+    fileprivate func configureCell(_ cell: UITableViewCell, site: RemoteBlog) {
         // Site's Details
         cell.textLabel?.text = site.name
-        cell.detailTextLabel?.text = site.URL.host
+        cell.detailTextLabel?.text = URL(string: site.url)?.host
 
         // Site's Blavatar
         cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
@@ -124,7 +128,6 @@ class SitePickerViewController: UITableViewController {
         noResultsView.isHidden = hasSites
     }
 
-
     // MARK: Typealiases
     typealias PickerHandler = (_ siteId: Int, _ description: String?) -> Void
 
@@ -132,7 +135,7 @@ class SitePickerViewController: UITableViewController {
     var onChange: PickerHandler?
 
     // MARK: - Private Properties
-    fileprivate var sites           = [Site]()
+    fileprivate var sites           = [RemoteBlog]()
     fileprivate var noResultsView   = WPNoResultsView()
 
     // MARK: - Private Constants
