@@ -1,5 +1,4 @@
 #import "SupportViewController.h"
-#import "WPWebViewController.h"
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
