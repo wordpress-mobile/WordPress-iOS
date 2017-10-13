@@ -804,8 +804,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 url = URL(string: url.absoluteString, relativeTo: postURL)!
             }
         }
-        let controller = WPWebViewController.authenticatedWebViewController(url)
-        controller.addsWPComReferrer = true
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
