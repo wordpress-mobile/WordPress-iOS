@@ -6,13 +6,22 @@
 @protocol AccountServiceRemote <NSObject>
 
 /**
- *  @brief      Gets an account's posts.
+ *  @brief      Gets all blogs for an account.
  *
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)getBlogsWithSuccess:(void (^)(NSArray *blogs))success
                     failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Gets only visible blogs for an account.
+ *
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)getVisibleBlogsWithSuccess:(void (^)(NSArray *))success
+                           failure:(void (^)(NSError *))failure;
 
 /**
  *  @brief      Gets an account's details.
