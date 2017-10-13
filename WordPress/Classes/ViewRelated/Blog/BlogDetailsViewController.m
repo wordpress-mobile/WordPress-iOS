@@ -437,7 +437,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  }]];
     
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Portfolio", @"Noun. Title. Links to the user's portfolio projects.")
-                                                    image:[Gridicon iconOfType:GridiconTypeImage]
+                                                    image:[Gridicon iconOfType:GridiconTypeFolder]
                                                  callback:^{
                                                      [weakSelf showPortfolioList];
                                                  }]];
@@ -927,8 +927,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPortfolioList
 {
-    // TODO: Add trackign style: [WPAppAnalytics track:WPAnalyticsStatOpenedPortfolio withBlog:self.blog];
-    PortfolioListViewController *controller = [PortfolioListViewController controllerWithBlog:self.blog];
+    // TODO: Add tracking style: [WPAppAnalytics track:WPAnalyticsStatOpenedPortfolio withBlog:self.blog];
+    PortfolioListViewController *controller = [[PortfolioListViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 
