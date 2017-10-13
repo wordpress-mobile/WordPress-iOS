@@ -137,12 +137,15 @@ open class AboutViewController: UITableViewController {
 
 
     // MARK: - Private Helpers
-    fileprivate func displayWebView(_ url: String) {
-        let webViewController = WPWebViewController(url: URL(string: url)!)
+    fileprivate func displayWebView(_ urlString: String) {
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        let webViewController = WebViewControllerFactory.controller(url: url)
         if presentingViewController != nil {
-            navigationController?.pushViewController(webViewController!, animated: true)
+            navigationController?.pushViewController(webViewController, animated: true)
         } else {
-            let navController = UINavigationController(rootViewController: webViewController!)
+            let navController = UINavigationController(rootViewController: webViewController)
             present(navController, animated: true, completion: nil)
         }
     }
