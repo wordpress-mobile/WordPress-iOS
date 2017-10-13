@@ -142,6 +142,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 {
     self.tableView.cellLayoutMarginsFollowReadableWidth = YES;
     self.tableView.accessibilityIdentifier  = @"Comments Table";
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // Register the cells
@@ -228,6 +229,17 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
+    // which results in 30pt tall headers on iOS 11
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
+}
 
 #pragma mark - Comment Actions
 
