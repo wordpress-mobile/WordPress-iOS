@@ -17,6 +17,9 @@
 /**
  *  @brief      Gets only visible blogs for an account.
  *
+ *  @discussion This method is designed for use in extensions in order to provide a simple
+ *              way to retrieve a quick list of availible sites.
+ *
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
