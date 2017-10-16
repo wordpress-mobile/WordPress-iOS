@@ -788,7 +788,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     private func setHTML(_ html: String, for mode: EditMode) {
-        switch(mode) {
+        switch mode {
         case .html:
             htmlTextView.text = html
         case .richText:
@@ -802,7 +802,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let html: String
 
-        switch (mode) {
+        switch mode {
         case .html:
             html = htmlTextView.text
         case .richText:
@@ -1640,7 +1640,7 @@ extension AztecPostViewController {
 
     func listTypeForSelectedText() -> TextList.Style? {
         var identifiers = [FormattingIdentifier]()
-        if (richTextView.selectedRange.length > 0) {
+        if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
             identifiers = richTextView.formatIdentifiersForTypingAttributes()
@@ -1980,7 +1980,7 @@ extension AztecPostViewController {
 
     func headerLevelForSelectedText() -> Header.HeaderType {
         var identifiers = [FormattingIdentifier]()
-        if (richTextView.selectedRange.length > 0) {
+        if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
             identifiers = richTextView.formatIdentifiersForTypingAttributes()
@@ -2505,7 +2505,7 @@ private extension AztecPostViewController {
             // On iOS 10, when the soft keyboard is visible, the keyboard's frame is within the dimensions of the screen.
             // However, when an external keyboard is present, the keyboard's frame is located offscreen. Test to see if
             // that is true and adjust the keyboard height as necessary.
-            if ((currentKeyboardFrame.origin.y + currentKeyboardFrame.height) > view.frame.height) {
+            if (currentKeyboardFrame.origin.y + currentKeyboardFrame.height) > view.frame.height {
                 keyboardHeight = (currentKeyboardFrame.maxY - view.frame.height)
             } else {
                 keyboardHeight = (currentKeyboardFrame.height - Constants.toolbarHeight)
@@ -2895,7 +2895,7 @@ extension AztecPostViewController {
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
-                                                if (attachment is ImageAttachment) {
+                                                if attachment is ImageAttachment {
                                                     attachment.overlayImage = nil
                                                 }
                                                 attachment.message = nil
@@ -2936,7 +2936,7 @@ extension AztecPostViewController {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        if (attachment is ImageAttachment) {
+                                                        if attachment is ImageAttachment {
                                                             attachment.overlayImage = nil
                                                         }
                                                         attachment.message = nil
