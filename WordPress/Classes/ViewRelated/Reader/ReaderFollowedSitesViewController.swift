@@ -133,7 +133,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
 
-        if (isSyncing) {
+        if isSyncing {
             view.addSubview(loadingView)
             loadingView.centerInSuperview()
         } else {

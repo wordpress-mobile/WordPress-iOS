@@ -522,7 +522,7 @@ extension SignupViewController: UITextFieldDelegate {
         }
 
         // Disallow punctuation in username and site names
-        if (textField == usernameField || textField == siteURLField) {
+        if textField == usernameField || textField == siteURLField {
             if (string as NSString).rangeOfCharacter(from: nonAlphanumericCharacterSet).location != NSNotFound {
                 return false
             }
