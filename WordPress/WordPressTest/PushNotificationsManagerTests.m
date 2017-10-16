@@ -39,8 +39,6 @@
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMExpect([mockApplication registerForRemoteNotifications]);
     
-    [OCMStub([mockApplication isRunningSimulator]) andReturnValue:OCMOCK_VALUE(false)];
-    
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
     [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
