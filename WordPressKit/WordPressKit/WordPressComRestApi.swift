@@ -85,6 +85,17 @@ open class WordPressComRestApi: NSObject {
         self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier)
     }
     
+    /// Creates a new API object to connect to the WordPress Rest API.
+    ///
+    /// - Parameters:
+    ///   - oAuthToken: the oAuth token to be used for authentication.
+    ///   - userAgent: the user agent to identify the client doing the connection.
+    ///   - backgroundUploads: If this value is true the API object will use a background session to execute uploads requests when using the `multipartPOST` function. The default value is false.
+    ///   - backgroundSessionIdentifier: The session identifier to use for the background session. This must be unique in the system.
+    ///
+    /// - Discussion: When backgroundUploads are activated any request done by the multipartPOST method will use background session. This background session is shared for all multipart requests and the identifier
+    /// used must be unique in the system, Apple recomends to use invert DNS base on your bundle ID. Keep in mind these requests will continue even after the app is killed by the system and the system will retried them
+    /// until they are done.
     public init(oAuthToken: String? = nil, userAgent: String? = nil, backgroundUploads: Bool = false, backgroundSessionIdentifier: String = WordPressComRestApi.defaultBackgroundSessionIdentifier) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
