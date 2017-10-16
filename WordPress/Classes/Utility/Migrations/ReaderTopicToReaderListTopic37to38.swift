@@ -22,7 +22,7 @@ class ReaderTopicToReaderListTopic37to38: NSEntityMigrationPolicy {
 
         // Entity Specific
         newTopic.setValue(sInstance.value(forKey: "slug"), forKey: "slug")
-        newTopic.setValue(sInstance.value(forKey: "topicID"),forKey: "listID")
+        newTopic.setValue(sInstance.value(forKey: "topicID"), forKey: "listID")
 
         // Associate the source and destination instances
         manager.associate(sourceInstance: sInstance, withDestinationInstance: newTopic, for: mapping)
