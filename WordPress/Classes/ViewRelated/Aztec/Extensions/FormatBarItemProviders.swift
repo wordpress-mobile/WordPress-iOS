@@ -145,6 +145,7 @@ enum FormatBarMediaIdentifier: String {
     case deviceLibrary
     case camera
     case mediaLibrary
+    case otherApplications
 }
 
 extension FormatBarMediaIdentifier: FormatBarItemProvider {
@@ -156,6 +157,8 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
             return Gridicon.iconOfType(.camera)
         case .mediaLibrary:
             return Gridicon.iconOfType(.mySites)
+        case .otherApplications:
+            return Gridicon.iconOfType(.ellipsis)
         }
     }
 
@@ -167,6 +170,8 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
             return "format_toolbar_media_camera"
         case .mediaLibrary:
             return "format_toolbar_media_wordpress_media_library"
+        case .otherApplications:
+            return "format_toolbar_media_other_applications"
         }
     }
 
@@ -178,6 +183,8 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
             return NSLocalizedString("Camera", comment: "Accessibility label for taking an image or video with the camera on formatting toolbar.")
         case .mediaLibrary:
             return NSLocalizedString("WordPress Media Library", comment: "Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar.")
+        case .otherApplications:
+            return NSLocalizedString("Other Apps", comment: "Accessibility label for selecting an image or video from other applications on formatting toolbar.")
         }
     }
 }

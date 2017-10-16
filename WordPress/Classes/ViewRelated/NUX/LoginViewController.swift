@@ -104,6 +104,11 @@ class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewCo
     /// Sets the text of the error label.
     ///
     func displayError(message: String) {
+        guard message.count > 0 else {
+            errorLabel?.isHidden = true
+            return
+        }
+        errorLabel?.isHidden = false
         errorLabel?.text = message
     }
 
@@ -178,6 +183,17 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+        guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
+            let token = loginFields.meta.socialServiceIDToken else {
+                return
+        }
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        accountService.connectToSocialService(service, serviceIDToken: token, success: {
+            // noop
+        }, failure: { error in
+            DDLogError(error.description)
+        })
     }
 
     func displayRemoteError(_ error: Error!) {
