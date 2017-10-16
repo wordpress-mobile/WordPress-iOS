@@ -31,7 +31,7 @@ open class NSMutableAttributedStringTests: XCTestCase {
         let regularEffectiveStyle = attributedMessage.attributes(at: regularExpectedRange.location, effectiveRange: &regularEffectiveRange) as! [String: NSObject]
 
         XCTAssertEqual(regularEffectiveStyle, regularStyle, "Invalid Style Detected")
-        XCTAssert(regularExpectedRange.location == regularEffectiveRange.location , "Invalid effective range")
+        XCTAssert(regularExpectedRange.location == regularEffectiveRange.location, "Invalid effective range")
 
         // Verify the bold style
         let boldExpectedRange = rawMessage.range(of: "**contains bold substrings**")
@@ -40,6 +40,6 @@ open class NSMutableAttributedStringTests: XCTestCase {
         let boldEffectiveStyle = attributedMessage.attributes(at: boldExpectedRange.location, effectiveRange: &boldEffectiveRange) as! [String: NSObject]
 
         XCTAssertEqual(boldEffectiveStyle, boldStyle, "Invalid Style Detected")
-        XCTAssert(boldExpectedRange.location == boldEffectiveRange.location , "Invalid effective range")
+        XCTAssert(boldExpectedRange.location == boldEffectiveRange.location, "Invalid effective range")
     }
 }
