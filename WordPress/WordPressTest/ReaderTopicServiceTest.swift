@@ -27,17 +27,17 @@ class ReaderTopicSwiftTest: XCTestCase {
     func seedTopics() {
         let context = ContextManager.sharedInstance().mainContext
 
-        let topic1 = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(),into: context) as! ReaderListTopic
+        let topic1 = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
         topic1.path = "/list/topic1"
         topic1.title = "topic1"
         topic1.type = ReaderListTopic.TopicType
 
-        let topic2 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(),into: context) as! ReaderTagTopic
+        let topic2 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: context) as! ReaderTagTopic
         topic2.path = "/tags/topic2"
         topic2.title = "topic2"
         topic2.type = ReaderTagTopic.TopicType
 
-        let topic3 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(),into: context) as! ReaderTagTopic
+        let topic3 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: context) as! ReaderTagTopic
         topic3.path = "/list/topic3"
         topic3.title = "topic3"
         topic3.type = ReaderTagTopic.TopicType
@@ -58,19 +58,19 @@ class ReaderTopicSwiftTest: XCTestCase {
     func seedPostsForTopic(_ topic: ReaderAbstractTopic) {
         let context = ContextManager.sharedInstance().mainContext
 
-        let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(),into: context) as! ReaderPost
+        let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
         post1.postID = NSNumber(value: 1)
         post1.postTitle = "post1"
         post1.content = "post1"
         post1.topic = topic
 
-        let post2 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(),into: context) as! ReaderPost
+        let post2 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
         post2.postID = NSNumber(value: 2)
         post2.postTitle = "post2"
         post2.content = "post2"
         post2.topic = topic
 
-        let post3 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(),into: context) as! ReaderPost
+        let post3 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
         post3.postID = NSNumber(value: 3)
         post3.postTitle = "post3"
         post3.content = "post3"
