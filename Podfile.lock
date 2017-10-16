@@ -114,7 +114,7 @@ PODS:
   - SVProgressHUD (2.2.1)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.12)
-  - WordPress-iOS-Editor (1.9.5):
+  - WordPress-iOS-Editor (1.9.6):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
   - WordPressComKit (0.0.6):
@@ -150,7 +150,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.1)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.12)
-  - WordPress-iOS-Editor (= 1.9.5)
+  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`, branch `release/1.9.6`)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.23)
   - wpxmlrpc (= 0.8.3)
@@ -159,6 +159,9 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
+  WordPress-iOS-Editor:
+    :branch: release/1.9.6
+    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -167,6 +170,9 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
+  WordPress-iOS-Editor:
+    :commit: 029267bf3baf99659f96dfccd3e74aeb091d3fae
+    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.6
@@ -203,11 +209,11 @@ SPEC CHECKSUMS:
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: d472d3af74219e0bd4e01d49500d1e32c3a8cbf4
-  WordPress-iOS-Editor: be1de639b28b894789366b8380f26df30a8bb571
+  WordPress-iOS-Editor: 589d1762e01f5599e42f6dff680a78778d150892
   WordPressComKit: 119ae1d20bfb090769274732b51e7bd186a96f7e
   WPMediaPicker: 51dff88157706419e000169b37c3abe0d3017b5f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 973818f8b72e7edc83724c63027be2c4e312ac01
+PODFILE CHECKSUM: 605c33f6041a950257fd419222cec10915b93f5c
 
 COCOAPODS: 1.3.1
