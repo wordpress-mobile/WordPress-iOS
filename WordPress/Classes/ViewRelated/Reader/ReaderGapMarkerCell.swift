@@ -52,7 +52,7 @@ open class ReaderGapMarkerCell: UITableViewCell {
         super.setHighlighted(highlighted, animated: animated)
         button.isHighlighted = highlighted
         button.backgroundColor = highlighted ? WPStyleGuide.gapMarkerButtonBackgroundColorHighlighted() : WPStyleGuide.gapMarkerButtonBackgroundColor()
-        if (highlighted) {
+        if highlighted {
             // Redraw the backgrounds when highlighted
             drawTearBackground()
             tearMaskView.backgroundColor = WPStyleGuide.greyLighten30()

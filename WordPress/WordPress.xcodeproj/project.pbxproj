@@ -18,6 +18,17 @@
 			name = OCLint;
 			productName = OCLint;
 		};
+		FFA8E22A1F94E3DE0002170F /* SwiftLint */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FFA8E22F1F94E3DE0002170F /* Build configuration list for PBXAggregateTarget "SwiftLint" */;
+			buildPhases = (
+				FFA8E2301F94E3EF0002170F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = SwiftLint;
+			productName = SwiftLint;
+		};
 		FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = FFC3F6F51B0DBF1000EFC359 /* Build configuration list for PBXAggregateTarget "UpdatePlistPreprocessor" */;
@@ -5481,6 +5492,10 @@
 						LastSwiftMigration = 0800;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
+					FFA8E22A1F94E3DE0002170F = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+					};
 					FFC3F6F41B0DBF0900EFC359 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = PZYM8XX95Q;
@@ -5545,6 +5560,7 @@
 				8511CFB51C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				A2795807198819DE0031C6A3 /* OCLint */,
 				FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */,
+				FFA8E22A1F94E3DE0002170F /* SwiftLint */,
 			);
 		};
 /* End PBXProject section */
@@ -6039,6 +6055,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nrake lint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		FFC3F6FA1B0DBF1E00EFC359 /* Update Plist Preprocessor file */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8482,6 +8511,38 @@
 			};
 			name = "Release-Alpha";
 		};
+		FFA8E22B1F94E3DE0002170F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FFA8E22C1F94E3DE0002170F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		FFA8E22D1F94E3DE0002170F /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-Internal";
+		};
+		FFA8E22E1F94E3DE0002170F /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-Alpha";
+		};
 		FFC3F6F61B0DBF1000EFC359 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8593,6 +8654,17 @@
 				FF2716971CAAC87B0006E2D4 /* Release */,
 				FF2716981CAAC87B0006E2D4 /* Release-Internal */,
 				FF2716991CAAC87B0006E2D4 /* Release-Alpha */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFA8E22F1F94E3DE0002170F /* Build configuration list for PBXAggregateTarget "SwiftLint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFA8E22B1F94E3DE0002170F /* Debug */,
+				FFA8E22C1F94E3DE0002170F /* Release */,
+				FFA8E22D1F94E3DE0002170F /* Release-Internal */,
+				FFA8E22E1F94E3DE0002170F /* Release-Alpha */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
