@@ -32,6 +32,12 @@ open class WordPressComRestApi: NSObject {
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
     open static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
+    
+    open static let defaultBackgroundSessionIdentifier = "org.wordpress.wpcomrestapi"
+    
+    open let backgroundSessionIdentifier: String
+    
+    fileprivate let backgroundUploads: Bool
 
     fileprivate static let localeKey = "locale"
 
@@ -44,18 +50,23 @@ open class WordPressComRestApi: NSObject {
     open var appendsPreferredLanguageLocale = true
 
     fileprivate lazy var sessionManager: AFHTTPSessionManager = {
-        let sessionManager = self.createSessionManager()
+        let sessionConfiguration = URLSessionConfiguration.default
+        let sessionManager = self.makeSessionManager(configuration: sessionConfiguration)
         return sessionManager
     }()
 
     fileprivate lazy var uploadSessionManager: AFHTTPSessionManager = {
-        let sessionManager = self.createBackgroundSessionManager()
-        return sessionManager
+        if self.backgroundUploads {
+            let sessionConfiguration = URLSessionConfiguration.background(withIdentifier: self.backgroundSessionIdentifier)
+            let sessionManager = self.makeSessionManager(configuration: sessionConfiguration)
+            return sessionManager
+        }
+        
+        return self.sessionManager
     }()
 
-    fileprivate func createSessionManager() -> AFHTTPSessionManager {
+    fileprivate func makeSessionManager(configuration sessionConfiguration: URLSessionConfiguration) -> AFHTTPSessionManager {
         let baseURL = URL(string: WordPressComRestApi.apiBaseURLString)
-        let sessionConfiguration = URLSessionConfiguration.default
         var additionalHeaders: [String : AnyObject] = [:]
         if let oAuthToken = self.oAuthToken {
             additionalHeaders["Authorization"] = "Bearer \(oAuthToken)" as AnyObject?
@@ -69,32 +80,22 @@ open class WordPressComRestApi: NSObject {
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         return sessionManager
     }
-
-    fileprivate func createBackgroundSessionManager() -> AFHTTPSessionManager {
-        let baseURL = URL(string: WordPressComRestApi.apiBaseURLString)
-        let sessionConfiguration = URLSessionConfiguration.background(withIdentifier: "org.wordpress.wpcomrestapi")
-        var additionalHeaders: [String : AnyObject] = [:]
-        if let oAuthToken = self.oAuthToken {
-            additionalHeaders["Authorization"] = "Bearer \(oAuthToken)" as AnyObject?
-        }
-        if let userAgent = self.userAgent {
-            additionalHeaders["User-Agent"] = userAgent as AnyObject?
-        }
-        sessionConfiguration.httpAdditionalHeaders = additionalHeaders
-        let sessionManager = AFHTTPSessionManager(baseURL: baseURL, sessionConfiguration: sessionConfiguration)
-        sessionManager.responseSerializer = WordPressComRestAPIResponseSerializer()
-        sessionManager.requestSerializer = AFJSONRequestSerializer()
-        return sessionManager
+    
+    convenience public init(oAuthToken: String? = nil, userAgent: String? = nil) {
+        self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier)
     }
-
-    public init(oAuthToken: String? = nil, userAgent: String? = nil) {
+    
+    public init(oAuthToken: String? = nil, userAgent: String? = nil, backgroundUploads: Bool = false, backgroundSessionIdentifier: String = WordPressComRestApi.defaultBackgroundSessionIdentifier) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
+        self.backgroundUploads = backgroundUploads
+        self.backgroundSessionIdentifier = backgroundSessionIdentifier
         super.init()
     }
 
     deinit {
         sessionManager.invalidateSessionCancelingTasks(false)
+        uploadSessionManager.invalidateSessionCancelingTasks(false)
     }
 
     /**
@@ -102,6 +103,7 @@ open class WordPressComRestApi: NSObject {
      */
     open func invalidateAndCancelTasks() {
         sessionManager.invalidateSessionCancelingTasks(true)
+        uploadSessionManager.invalidateSessionCancelingTasks(true)
     }
 
     // MARK: - Network requests
