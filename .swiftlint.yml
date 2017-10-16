@@ -12,13 +12,13 @@ whitelist_rules:
   - colon
 
   # There should be no space before and one after any comma.
-  # - comma
+  - comma
 
   # Repeated `let` statements in conditional binding cascade should be avoided.
   # - conditional_binding_cascade
 
   # if,for,while,do statements shouldn't wrap their conditionals in parentheses.
-  # - control_statement
+  - control_statement
 
   # Create custom rules by providing a regex string. Optionally specify what
   # syntax kinds to match against, the severity level, and what message to
