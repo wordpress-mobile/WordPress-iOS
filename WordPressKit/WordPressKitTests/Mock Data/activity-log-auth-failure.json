@@ -1,0 +1,4 @@
+{
+    "error": "authorization_required",
+    "message": "Only Administrators can query information about the current site.."
+}

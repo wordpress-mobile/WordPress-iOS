@@ -13,7 +13,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
     public func getJetpackSettingsForSite(_ siteID: Int, success: @escaping (RemoteBlogJetpackSettings) -> Void, failure: @escaping (Error) -> Void) {
         
         let endpoint = "jetpack-blogs/\(siteID)/rest-api"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = ["path": "/jetpack/v4/settings"]
 
         wordPressComRestApi.GET(path!,
@@ -37,7 +37,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
     public func getJetpackMonitorSettingsForSite(_ siteID: Int, success: @escaping (RemoteBlogJetpackMonitorSettings) -> Void, failure: @escaping (Error) -> Void) {
 
         let endpoint = "jetpack-blogs/\(siteID)"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
         wordPressComRestApi.GET(path!,
                                 parameters: nil,
@@ -67,7 +67,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         }
 
         let endpoint = "jetpack-blogs/\(siteID)/rest-api"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = ["path": "/jetpack/v4/settings",
                           "body": jSONBody,
                           "json": true] as [String : AnyObject]
@@ -88,7 +88,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
     public func updateJetpackMonitorSettingsForSite(_ siteID: Int, settings: RemoteBlogJetpackMonitorSettings, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
 
         let endpoint = "jetpack-blogs/\(siteID)"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = dictionaryFromJetpackMonitorSettings(settings)
 
         wordPressComRestApi.POST(path!,
@@ -106,7 +106,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
     ///
     public func disconnectJetpackFromSite(_ siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "jetpack-blogs/\(siteID)/mine/delete"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
         wordPressComRestApi.POST(path!,
                                  parameters: nil,
