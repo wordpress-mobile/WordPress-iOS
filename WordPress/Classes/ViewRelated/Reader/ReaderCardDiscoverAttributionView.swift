@@ -142,12 +142,12 @@ private enum ReaderCardDiscoverAttribution: Int {
                 comment: "Used to attribute a post back to its original author and blog.  The '%@' characters are placholders for the author's name, and the author's blog repsectively.")
             str = String(format: pattern, authorName!, blogName!)
 
-        } else if (authorName != nil) {
+        } else if authorName != nil {
             let pattern = NSLocalizedString("Originally posted by %@",
                 comment: "Used to attribute a post back to its original author.  The '%@' characters are a placholder for the author's name.")
             str = String(format: pattern, authorName!)
 
-        } else if (blogName != nil) {
+        } else if blogName != nil {
             let pattern = NSLocalizedString("Originally posted on %@",
                 comment: "Used to attribute a post back to its original blog.  The '%@' characters are a placholder for the blog name.")
             str = String(format: pattern, blogName!)

@@ -52,7 +52,7 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
         super.viewDidLoad()
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
-        addHelpButtonToNavController()
+        _ = addHelpButtonToNavController()
         addWordPressLogoToNavController()
     }
 

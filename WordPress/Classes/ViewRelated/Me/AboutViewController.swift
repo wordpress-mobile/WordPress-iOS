@@ -102,7 +102,7 @@ open class AboutViewController: UITableViewController {
 
         cell!.textLabel?.text       = row.title
         cell!.detailTextLabel?.text = row.details ?? String()
-        if (row.handler != nil) {
+        if row.handler != nil {
             WPStyleGuide.configureTableViewActionCell(cell)
         } else {
             WPStyleGuide.configureTableViewCell(cell)
