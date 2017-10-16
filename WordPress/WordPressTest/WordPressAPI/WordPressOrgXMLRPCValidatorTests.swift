@@ -70,7 +70,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let incorrectSchemes = ["hppt://mywordpresssite.com/test", "ftp://mywordpresssite.com/test", "git://mywordpresssite.com/test"]
         for incorrectScheme in incorrectSchemes {
             let expectation = self.expectationWithDescription("Call should fail with error when invoking with urls with incorrect schemes")
-            validator.guessXMLRPCURLForSite(incorrectScheme , success: { (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(incorrectScheme, success: { (xmlrpcURL) in
                 expectation.fulfill()
                 XCTFail("This call should fail")
                 }, failure: { (error) in
@@ -97,7 +97,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let validator = WordPressOrgXMLRPCValidator()
         for url in validSchemes {
             let expectation = self.expectationWithDescription("Callback should be successful")
-            validator.guessXMLRPCURLForSite(url , success: { (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(url, success: { (xmlrpcURL) in
                 expectation.fulfill()
                 XCTAssertEqual(xmlrpcURL.host, "mywordpresssite.com", "Resolved host doens't match original url: \(url)")
                 XCTAssertEqual(xmlrpcURL.lastPathComponent, "xmlrpc.php", "Resolved last path component doens't match original url: \(url)")
@@ -126,7 +126,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
         let validator = WordPressOrgXMLRPCValidator()
         for url in urls {
             let expectation = self.expectationWithDescription("Callback should be successful")
-            validator.guessXMLRPCURLForSite(url , success: { (xmlrpcURL) in
+            validator.guessXMLRPCURLForSite(url, success: { (xmlrpcURL) in
                 expectation.fulfill()
                 XCTAssertEqual(xmlrpcURL.host, "mywordpresssite.com", "Resolved host doens't match original url: \(url)")
                 XCTAssertEqual(xmlrpcURL.lastPathComponent, "xmlrpc.php", "Resolved last path component doens't match original url: \(url)")
@@ -158,7 +158,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(originalURL , success: { (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(originalURL, success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, redirectedURL, "Resolved host doens't match the redirected url: \(redirectedURL)")
             }, failure: { (error) in
@@ -185,7 +185,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(originalURL , success: { (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(originalURL, success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, originalURL, "Resolved host doens't match the original url: \(originalURL)")
             }, failure: { (error) in
@@ -227,7 +227,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(htmlURL , success: { (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(htmlURL, success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, xmlRPCURL, "Resolved host doens't match the xml rpc url: \(xmlRPCURL)")
             }, failure: { (error) in
@@ -269,7 +269,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(htmlURL , success: { (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(htmlURL, success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTAssertEqual(xmlrpcURL.absoluteString, xmlRPCURL, "Resolved host doens't match the xml rpc url: \(xmlRPCURL)")
             }, failure: { (error) in
@@ -315,7 +315,7 @@ public class WordPressOrgXMLRPCValidatorTests: XCTestCase {
 
         let validator = WordPressOrgXMLRPCValidator()
         let expectation = self.expectationWithDescription("Call should be successful")
-        validator.guessXMLRPCURLForSite(originalURL , success: { (xmlrpcURL) in
+        validator.guessXMLRPCURLForSite(originalURL, success: { (xmlrpcURL) in
             expectation.fulfill()
             XCTFail("Call that has a plugin redirect should fail")
             }, failure: { (error) in

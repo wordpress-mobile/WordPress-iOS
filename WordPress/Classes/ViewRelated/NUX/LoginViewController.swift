@@ -183,6 +183,17 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+        guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
+            let token = loginFields.meta.socialServiceIDToken else {
+                return
+        }
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        accountService.connectToSocialService(service, serviceIDToken: token, success: {
+            // noop
+        }, failure: { error in
+            DDLogError(error.description)
+        })
     }
 
     func displayRemoteError(_ error: Error!) {
