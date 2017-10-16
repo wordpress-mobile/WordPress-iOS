@@ -225,7 +225,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
         rightBarButtonItem.width = rightBarButtonView.frame.size.width
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)        
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
         navigationItem.titleView = filterButton
         updateFilterTitle()
     }
