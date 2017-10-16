@@ -8,7 +8,7 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
 
     public func getDomainsForSite(_ siteID: Int, success: @escaping ([RemoteDomain]) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/domains"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
         wordPressComRestApi.GET(path!, parameters: nil,
             success: {
