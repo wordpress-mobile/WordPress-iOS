@@ -120,6 +120,12 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     func localizeControls() {
+        if let service = loginFields.meta.socialService, service == SocialServiceName.google {
+            instructionLabel?.text = NSLocalizedString("To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once.", comment: "")
+        } else {
+            instructionLabel?.text = NSLocalizedString("Enter the password for your WordPress.com account.", comment: "Instructional text shown when requesting the user's password for login.")
+        }
+
         passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
         passwordField?.accessibilityIdentifier = "Password"
 
