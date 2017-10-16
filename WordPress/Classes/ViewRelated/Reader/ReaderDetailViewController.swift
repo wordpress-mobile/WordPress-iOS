@@ -822,11 +822,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     func setBarsHidden(_ hidden: Bool, animated: Bool = true) {
-        if (navigationController?.isNavigationBarHidden == hidden) {
+        if navigationController?.isNavigationBarHidden == hidden {
             return
         }
 
-        if (hidden) {
+        if hidden {
             // Hides the navbar and footer view
             navigationController?.setNavigationBarHidden(true, animated: animated)
             currentPreferredStatusBarStyle = .default

@@ -28,7 +28,7 @@ class LoginEpilogueTableView: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section == 0) {
+        if section == 0 {
             return 1
         } else {
             let count = blogDataSource.tableView(tableView, numberOfRowsInSection: section-1)
@@ -38,7 +38,7 @@ class LoginEpilogueTableView: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if (indexPath.section == 0) {
+        if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "userInfo") as? LoginEpilogueUserInfoCell else {
                 fatalError("Failed to get a user info cell")
             }
@@ -56,7 +56,7 @@ class LoginEpilogueTableView: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionTitle: String
-        if (section == 0) {
+        if section == 0 {
             sectionTitle = NSLocalizedString("Logged In As", comment: "Header for user info, shown after loggin in").localizedUppercase
         } else {
             switch blogCount {
@@ -78,7 +78,7 @@ class LoginEpilogueTableView: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 0) {
+        if indexPath.section == 0 {
             return 140.0
         } else {
             return 52.0

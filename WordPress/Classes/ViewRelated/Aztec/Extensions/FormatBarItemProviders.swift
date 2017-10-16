@@ -12,7 +12,7 @@ protocol FormatBarItemProvider {
 //
 extension FormattingIdentifier: FormatBarItemProvider {
     var iconImage: UIImage {
-        switch(self) {
+        switch self {
         case .media:
             return Gridicon.iconOfType(.addOutline)
         case .p:
@@ -55,7 +55,7 @@ extension FormattingIdentifier: FormatBarItemProvider {
     }
 
     var accessibilityIdentifier: String {
-        switch(self) {
+        switch self {
         case .media:
             return "format_toolbar_insert_media"
         case .p:
@@ -98,7 +98,7 @@ extension FormattingIdentifier: FormatBarItemProvider {
     }
 
     var accessibilityLabel: String {
-        switch(self) {
+        switch self {
         case .media:
             return NSLocalizedString("Insert media", comment: "Accessibility label for insert media button on formatting toolbar.")
         case .p:
@@ -150,7 +150,7 @@ enum FormatBarMediaIdentifier: String {
 
 extension FormatBarMediaIdentifier: FormatBarItemProvider {
     var iconImage: UIImage {
-        switch (self) {
+        switch self {
         case .deviceLibrary:
             return Gridicon.iconOfType(.imageMultiple)
         case .camera:
@@ -163,7 +163,7 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
     }
 
     var accessibilityIdentifier: String {
-        switch (self) {
+        switch self {
         case .deviceLibrary:
             return "format_toolbar_media_photo_library"
         case .camera:
@@ -176,7 +176,7 @@ extension FormatBarMediaIdentifier: FormatBarItemProvider {
     }
 
     var accessibilityLabel: String {
-        switch (self) {
+        switch self {
         case .deviceLibrary:
             return NSLocalizedString("Photo Library", comment: "Accessibility label for selecting an image or video from the device's photo library on formatting toolbar.")
         case .camera:
