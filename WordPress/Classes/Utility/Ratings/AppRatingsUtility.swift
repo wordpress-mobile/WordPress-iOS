@@ -55,7 +55,7 @@ class AppRatingUtility: NSObject {
         let trackingVersion = defaults.string(forKey: Key.currentVersion) ?? version
         defaults.set(version, forKey: Key.currentVersion)
 
-        if (trackingVersion == version) {
+        if trackingVersion == version {
             incrementUseCount()
         } else {
             let shouldSkipRating = shouldSkipRatingForCurrentVersion()

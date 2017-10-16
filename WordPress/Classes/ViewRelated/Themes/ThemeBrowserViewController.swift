@@ -530,9 +530,9 @@ public protocol ThemePresenter: class {
     // MARK: - WPContentSyncHelperDelegate
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        if (syncHelper == themesSyncHelper) {
+        if syncHelper == themesSyncHelper {
             syncThemePage(1, success: success, failure: failure)
-        } else if (syncHelper == customThemesSyncHelper) {
+        } else if syncHelper == customThemesSyncHelper {
             syncCustomThemes(success: success, failure: failure)
         }
     }
