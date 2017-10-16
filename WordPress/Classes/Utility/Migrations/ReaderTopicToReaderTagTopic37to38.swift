@@ -24,7 +24,7 @@ class ReaderTopicToReaderTagTopic37to38: NSEntityMigrationPolicy {
         // Entity Specific
         newTopic.setValue(sInstance.value(forKey: "isRecommended"), forKey: "isRecommended")
         newTopic.setValue(sInstance.value(forKey: "slug"), forKey: "slug")
-        newTopic.setValue(sInstance.value(forKey: "topicID"),forKey: "tagID")
+        newTopic.setValue(sInstance.value(forKey: "topicID"), forKey: "tagID")
 
         // Associate the source and destination instances
         manager.associate(sourceInstance: sInstance, withDestinationInstance: newTopic, for: mapping)
