@@ -212,53 +212,15 @@ open class WordPressComRestApi: NSObject {
                               fileParts: [FilePart],
                               success: @escaping SuccessResponseBlock,
                               failure: @escaping FailureReponseBlock) -> Progress? {
-        let URLString = appendLocaleIfNeeded(URLString)
-        guard
-            let baseURL = URL(string: WordPressComRestApi.apiBaseURLString),
-            let requestURLString = URL(string: URLString, relativeTo: baseURL)?.absoluteString
-        else {
-            let error = NSError(domain: String(describing: WordPressComRestApiError.self),
-                                code: WordPressComRestApiError.requestSerializationFailed.rawValue,
-                                userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
-            failure(error, nil)
-            return nil
-        }
-        var serializationError: NSError?
-        var filePartError: NSError?
-        let uploadSessionManager = self.uploadSessionManager
-        let request = uploadSessionManager.requestSerializer.multipartFormRequest(
-            withMethod: "POST",
-            urlString: requestURLString,
-            parameters: parameters,
-            constructingBodyWith: { (formData: AFMultipartFormData ) in
-                do {
-                    for filePart in fileParts {
-                        let url = filePart.url
-                        try formData.appendPart(withFileURL: url, name: filePart.parameterName, fileName: filePart.filename, mimeType: filePart.mimeType)
-                    }
-                } catch let error as NSError {
-                    filePartError = error
-                }
-            },
-            error: &serializationError
-        )
-        if let error = filePartError {
-            failure(error, nil)
-            return nil
-        }
-        if let error = serializationError {
-            failure(error, nil)
-            return nil
-        }
+        
         let progress = Progress(totalUnitCount: 1)
         let progressUpdater = {(taskProgress: Progress) in
             // Sergio Estevao: Add an extra 1 unit to the progress to take in account the upload response and not only the uploading of data
             progress.totalUnitCount = taskProgress.totalUnitCount + 1
             progress.completedUnitCount = taskProgress.completedUnitCount
         }
-        let temporaryURL = self.temporaryFileURL(withExtension: "dat")
-        uploadSessionManager.requestSerializer.request(withMultipartForm: request as URLRequest, writingStreamContentsToFile: temporaryURL) { (error) in
-            let task = uploadSessionManager.uploadTask(with: request as URLRequest, fromFile: temporaryURL, progress: progressUpdater) { (response, result, error) in
+        serializeRequest(URLString, parameters: parameters, fileParts: fileParts, success:{ (request, temporaryURL) in
+            let task = self.uploadSessionManager.uploadTask(with: request as URLRequest, fromFile: temporaryURL, progress: progressUpdater) { (response, result, error) in
                 progress.completedUnitCount = progress.totalUnitCount
 
                 if let error = error {
@@ -279,12 +241,63 @@ open class WordPressComRestApi: NSObject {
                 let size = Int64(sizeString) {
                 progress.totalUnitCount = size
             }
-        }
+        }, failure: failure)
 
         return progress
     }
 
-    private func serializeRequest()
+    private func serializeRequest(_ URLString: String,
+                                  parameters: [String: AnyObject]?,
+                                  fileParts: [FilePart],
+                                  success: @escaping (_ request: URLRequest, _ requestFileURL: URL) -> (),
+                                  failure: @escaping FailureReponseBlock) {
+        let URLString = appendLocaleIfNeeded(URLString)
+        guard
+            let baseURL = URL(string: WordPressComRestApi.apiBaseURLString),
+            let requestURLString = URL(string: URLString, relativeTo: baseURL)?.absoluteString
+            else {
+                let error = NSError(domain: String(describing: WordPressComRestApiError.self),
+                                    code: WordPressComRestApiError.requestSerializationFailed.rawValue,
+                                    userInfo: [NSLocalizedDescriptionKey: NSLocalizedString("Failed to serialize request to the REST API.", comment: "Error message to show when wrong URL format is used to access the REST API")])
+                failure(error, nil)
+                return
+        }
+        var serializationError: NSError?
+        var filePartError: NSError?
+        let uploadSessionManager = self.uploadSessionManager
+        let request = uploadSessionManager.requestSerializer.multipartFormRequest(
+            withMethod: "POST",
+            urlString: requestURLString,
+            parameters: parameters,
+            constructingBodyWith: { (formData: AFMultipartFormData ) in
+                do {
+                    for filePart in fileParts {
+                        let url = filePart.url
+                        try formData.appendPart(withFileURL: url, name: filePart.parameterName, fileName: filePart.filename, mimeType: filePart.mimeType)
+                    }
+                } catch let error as NSError {
+                    filePartError = error
+                }
+        },
+            error: &serializationError
+        )
+        if let error = filePartError {
+            failure(error, nil)
+            return
+        }
+        if let error = serializationError {
+            failure(error, nil)
+            return
+        }
+        let temporaryURL = self.temporaryFileURL(withExtension: "dat")
+        uploadSessionManager.requestSerializer.request(withMultipartForm: request as URLRequest, writingStreamContentsToFile: temporaryURL) { (error) in
+            if let error = error {
+                failure(error as NSError, nil)
+                return
+            }
+            success(request as URLRequest, temporaryURL)
+        }
+    }
 
     open func hasCredentials() -> Bool {
         guard let authToken = oAuthToken else {
