@@ -1545,7 +1545,8 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
     };
     
     NSDictionary *parameters = @{@"startDate" : [self deviceLocalStringForDate:startDate],
-                                 @"endDate"   : [self deviceLocalStringForDate:endDate]};
+                                 @"endDate"   : [self deviceLocalStringForDate:endDate],
+                                 @"max"       : @3000};
     
     id failureHandler = ^(NSURLSessionDataTask *task, NSError *error) {
         if (completionHandler) {
