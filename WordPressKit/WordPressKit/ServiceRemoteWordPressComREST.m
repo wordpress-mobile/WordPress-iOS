@@ -1,6 +1,13 @@
 #import "ServiceRemoteWordPressComREST.h"
 #import <WordPressKit/WordPressKit-Swift.h>
 
+ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_Non = 0000;
+ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_0 = 1000;
+ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_1 = 1001;
+ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_2 = 1002;
+ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_3 = 1003;
+ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_2_0 = 2000;
+
 static NSString* const ServiceRemoteWordPressComRESTApiVersionStringInvalid = @"invalid_api_version";
 static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_0 = @"rest/v1";
 static NSString* const ServiceRemoteWordPressComRESTApiVersionString_1_1 = @"rest/v1.1";
