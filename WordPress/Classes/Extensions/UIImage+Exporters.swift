@@ -24,7 +24,7 @@ extension UIImage {
      - compressionQuality: defines the compression quality of the export. This is only relevant for type formats that support a quality parameter. Ex: jpeg
      - metadata: the image metadata to save to file.
      */
-    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9,  metadata: [String: AnyObject]? = nil) throws {
+    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9, metadata: [String: AnyObject]? = nil) throws {
         let properties: [String: AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality as AnyObject]
         var finalMetadata = metadata
         if metadata == nil {
