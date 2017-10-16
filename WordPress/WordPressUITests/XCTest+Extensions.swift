@@ -184,7 +184,7 @@ extension XCTestCase {
         passwordField.tap()
         passwordField.clearAndEnterText(text: password)
 
-        if (url != nil) {
+        if url != nil {
             urlField.tap()
             urlField.clearAndEnterText(text: url!)
         }
