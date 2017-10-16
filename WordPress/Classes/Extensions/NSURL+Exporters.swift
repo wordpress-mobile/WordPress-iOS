@@ -200,7 +200,7 @@ extension NSURL: ExportableAsset {
         get {
             if isImage {
                 return .image
-            } else if (isVideo) {
+            } else if isVideo {
                 return .video
             }
             return .document
