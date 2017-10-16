@@ -663,7 +663,7 @@ import WordPressShared
         guard let topic = readerTopic else {
             return false
         }
-        if (isLoggedIn) {
+        if isLoggedIn {
             return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
         }
         return false
