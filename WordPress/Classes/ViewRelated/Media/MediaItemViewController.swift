@@ -54,7 +54,7 @@ class MediaItemViewController: UITableViewController {
         let descRow = editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"),
                                              value: mediaMetadata.desc,
                                              action: editDescription())
-        let altRow = editableRowIfSupported(title: NSLocalizedString("Alt Text",comment: "Label for the alt for a media asset (image)"),
+        let altRow = editableRowIfSupported(title: NSLocalizedString("Alt Text", comment: "Label for the alt for a media asset (image)"),
                                             value: mediaMetadata.alt,
                                             action: editAlt())
 

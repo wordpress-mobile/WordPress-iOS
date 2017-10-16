@@ -326,6 +326,7 @@
 // The app colors can be restored with configureNavigationBarAppearance().
 + (void)configureDocumentPickerNavBarAppearance
 {
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTintColor:[WPStyleGuide mediumBlue]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide mediumBlue]} forState:UIControlStateNormal];
 }
@@ -414,20 +415,6 @@
     } else {
         footer.textLabel.textColor = [self greyDarken10];
     }
-}
-
-// TODO: Move to fetaure category
-+ (void)configureFollowButton:(UIButton *)followButton {
-    followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    followButton.backgroundColor = [UIColor clearColor];
-    followButton.titleLabel.font = [WPStyleGuide subtitleFont];
-    NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
-    NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
-    [followButton setTitle:followString forState:UIControlStateNormal];
-    [followButton setTitle:followedString forState:UIControlStateSelected];
-    [followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
-    [followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-    [followButton setTitleColor:[self allTAllShadeGrey] forState:UIControlStateNormal];
 }
 
 
