@@ -25,7 +25,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
                                    success: @escaping (_ activities: [RemoteActivity], _ hasMore: Bool) -> Void,
                                    failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/activity"
-        let path = self.path(forEndpoint: endpoint, with: .version_2_0)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let pageNumber = (offset / count + 1)
         let parameters: [String: AnyObject] = [
