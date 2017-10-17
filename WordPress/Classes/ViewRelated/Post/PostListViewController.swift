@@ -510,7 +510,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
-            if (post.status == .trash) {
+            if post.status == .trash {
 
                 let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
                 let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")

@@ -235,8 +235,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         navigationItem.backBarButtonItem = backButton
 
         let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
+        rightBarButtonItem.width = rightBarButtonView.frame.size.width
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
-
         navigationItem.titleView = filterButton
         updateFilterTitle()
     }
@@ -385,7 +385,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         // The result is the cells do not show the correct layouts relative to superview margins.
         // HACK: kurzee, 2016-07-12
         // Use a generic cell in this situation and reload the table view once its back in a window.
-        if (tableView.window == nil) {
+        if tableView.window == nil {
             reloadTableViewBeforeAppearing = true
             return tableView.dequeueReusableCell(withIdentifier: abstractPostWindowlessCellIdenfitier)
         }
@@ -1028,7 +1028,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                     SettingsSelectionTitleKey: NSLocalizedString("Filters", comment: "Title of the list of post status filters."),
                     SettingsSelectionTitlesKey: titles,
                     SettingsSelectionValuesKey: availableFilters,
-                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String : Any]
+                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String: Any]
 
         let controller = SettingsSelectionViewController(style: .plain, andDictionary: dict as [AnyHashable: Any])
         controller?.onItemSelected = { [weak self] (selectedValue: Any!) -> () in

@@ -126,7 +126,7 @@ extension PHAsset: ExportableAsset {
             self.requestMetadataWithCompletionBlock({ (metadata) -> () in
                 do {
                     var attributesToRemove = [String]()
-                    if (stripGeoLocation) {
+                    if stripGeoLocation {
                         attributesToRemove.append(kCGImagePropertyGPSDictionary as String)
                     }
                     var exportMetadata = self.removeAttributes(attributesToRemove, fromMetadata: metadata)
@@ -276,7 +276,7 @@ extension PHAsset: ExportableAsset {
             options.isSynchronous = synchronous
             options.isNetworkAccessAllowed = true
             var requestedSize = targetSize
-            if (requestedSize == CGSize.zero) {
+            if requestedSize == CGSize.zero {
                 requestedSize = PHImageManagerMaximumSize
             }
 
@@ -311,7 +311,7 @@ extension PHAsset: ExportableAsset {
         get {
             if self.mediaType == .image {
                 return .image
-            } else if (self.mediaType == .video) {
+            } else if self.mediaType == .video {
                 /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
                  because we have an exception on the server for mobile that allows video uploads event
                  if videopress is not enabled.
@@ -354,20 +354,20 @@ extension PHAsset: ExportableAsset {
                     }
                     return
             }
-            completionBlock(image.properties as [String : AnyObject])
+            completionBlock(image.properties as [String: AnyObject])
         }
     }
 
     func originalUTI() -> String? {
         let resources = PHAssetResource.assetResources(for: self)
         var types: [PHAssetResourceType.RawValue] = []
-        if (mediaType == PHAssetMediaType.image) {
+        if mediaType == PHAssetMediaType.image {
             types = [PHAssetResourceType.photo.rawValue]
-        } else if (mediaType == PHAssetMediaType.video) {
+        } else if mediaType == PHAssetMediaType.video {
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
-            if (types.contains(resource.type.rawValue) ) {
+            if types.contains(resource.type.rawValue) {
                 return resource.uniformTypeIdentifier
             }
         }
@@ -377,13 +377,13 @@ extension PHAsset: ExportableAsset {
     func originalFilename() -> String? {
         let resources = PHAssetResource.assetResources(for: self)
         var types: [PHAssetResourceType.RawValue] = []
-        if (mediaType == PHAssetMediaType.image) {
+        if mediaType == PHAssetMediaType.image {
             types = [PHAssetResourceType.photo.rawValue]
-        } else if (mediaType == PHAssetMediaType.video) {
+        } else if mediaType == PHAssetMediaType.video {
             types = [PHAssetResourceType.video.rawValue]
         }
         for resource in resources {
-            if (types.contains(resource.type.rawValue) ) {
+            if types.contains(resource.type.rawValue) {
                 return resource.originalFilename
             }
         }
