@@ -32,7 +32,7 @@ extension FancyAlertViewController {
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
-                                                                               completion:nil)
+                                                                               completion: nil)
             }
         }
 
@@ -161,7 +161,7 @@ extension FancyAlertViewController {
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
-                                                                               completion:nil)
+                                                                               completion: nil)
             }
         }
 
@@ -189,10 +189,10 @@ extension FancyAlertViewController {
                 guard let appDelegate = UIApplication.shared.delegate,
                     let window = appDelegate.window,
                     let viewController = window?.topmostPresentedViewController,
-                    let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3"),
-                    let webController = WPWebViewController(url: url)
+                    let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3")
                     else { return }
 
+                let webController = WebViewControllerFactory.controller(url: url)
                 let navController = UINavigationController(rootViewController: webController)
                 viewController.present(navController, animated: true, completion: nil)
             }

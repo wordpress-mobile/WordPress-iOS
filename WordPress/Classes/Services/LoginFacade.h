@@ -44,7 +44,11 @@
  */
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
 
-
+/**
+ * Social login via google.
+ *
+ * @param googleIDToken A Google id_token.
+ */
 - (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken;
 
 /**
@@ -133,6 +137,15 @@
  *  @param authToken                authToken to be used to access the site
  */
 - (void)finishedLoginWithGoogleIDToken:(NSString *)googleIDToken authToken:(NSString *)authToken;
+
+
+/**
+ * Lets the delegate know that a social login attempt found a matching user, but
+ * their account has not been connected to the social service previously.
+ *
+ * @param email The email address that was matched.
+ */
+- (void)existingUserNeedsConnection:(NSString *)email;
 
 @end
 

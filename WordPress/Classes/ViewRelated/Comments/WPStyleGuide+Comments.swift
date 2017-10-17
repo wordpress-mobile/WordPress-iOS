@@ -15,7 +15,7 @@ extension WPStyleGuide {
             return approved ? WPStyleGuide.readGrey() : WPStyleGuide.alertYellowDark()
         }
 
-        public static func detailsRegularStyle(isApproved approved: Bool) -> [String : AnyObject] {
+        public static func detailsRegularStyle(isApproved approved: Bool) -> [String: AnyObject] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertYellowDark()
 
             return  [   NSParagraphStyleAttributeName: titleParagraph,
@@ -23,7 +23,7 @@ extension WPStyleGuide {
                         NSForegroundColorAttributeName: color ]
         }
 
-        public static func detailsRegularRedStyle(isApproved approved: Bool) -> [String : AnyObject] {
+        public static func detailsRegularRedStyle(isApproved approved: Bool) -> [String: AnyObject] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
             return  [   NSParagraphStyleAttributeName: titleParagraph,
@@ -31,7 +31,7 @@ extension WPStyleGuide {
                         NSForegroundColorAttributeName: color ]
         }
 
-        public static func detailsItalicsStyle(isApproved approved: Bool) -> [String : AnyObject] {
+        public static func detailsItalicsStyle(isApproved approved: Bool) -> [String: AnyObject] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
             return  [   NSParagraphStyleAttributeName: titleParagraph,
@@ -39,7 +39,7 @@ extension WPStyleGuide {
                         NSForegroundColorAttributeName: color ]
         }
 
-        public static func detailsBoldStyle(isApproved approved: Bool) -> [String : AnyObject] {
+        public static func detailsBoldStyle(isApproved approved: Bool) -> [String: AnyObject] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
             return  [   NSParagraphStyleAttributeName: titleParagraph,
@@ -92,9 +92,9 @@ extension WPStyleGuide {
 
         private static var titleParagraph: NSMutableParagraphStyle {
             return NSMutableParagraphStyle(minLineHeight: titleLineSize,
-                                           maxLineHeight:  titleLineSize,
-                                           lineBreakMode:  .byTruncatingTail,
-                                           alignment:      .natural)
+                                           maxLineHeight: titleLineSize,
+                                           lineBreakMode: .byTruncatingTail,
+                                           alignment: .natural)
         }
     }
 }

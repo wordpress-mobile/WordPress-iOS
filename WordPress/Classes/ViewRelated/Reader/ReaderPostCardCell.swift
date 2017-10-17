@@ -590,7 +590,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate {
+extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
     }

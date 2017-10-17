@@ -137,7 +137,7 @@ class FlingableViewHandler: NSObject {
         let location = recognizer.location(in: referenceView)
         let center = view.center
         let offset = UIOffset(horizontal: location.x - center.x, vertical: location.y - center.y)
-        pushBehavior.setTargetOffsetFromCenter(offset , for: view)
+        pushBehavior.setTargetOffsetFromCenter(offset, for: view)
 
         // Check for the view leaving the screen
         pushBehavior.action = { [weak self] in

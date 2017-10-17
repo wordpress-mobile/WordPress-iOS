@@ -122,10 +122,10 @@ private extension PushAuthenticationManager {
         let acceptButtonTitle   = NSLocalizedString("OK", comment: "OK")
 
         alertControllerProxy.show(withTitle: title,
-            message:            message,
-            cancelButtonTitle:  acceptButtonTitle,
-            otherButtonTitles:  nil,
-            tap:           nil)
+            message: message,
+            cancelButtonTitle: acceptButtonTitle,
+            otherButtonTitles: nil,
+            tap: nil)
     }
 
     /// Displays an AlertView asking for WordPress.com Authentication Approval.

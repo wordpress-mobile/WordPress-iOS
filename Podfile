@@ -44,8 +44,8 @@ target 'WordPress' do
   pod 'FLAnimatedImage', '1.0.12'
   pod 'MGSwipeTableCell', '1.6.1'
   pod 'lottie-ios', '1.5.1'
-  pod 'Starscream', '2.1.1'
-  pod 'GoogleSignIn', '4.0.2'
+  pod 'Starscream', '3.0.2'
+  pod 'GoogleSignIn', '4.1.0'
 
   # --------------------
   # WordPress components
@@ -55,7 +55,7 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.23'
   pod 'WordPress-iOS-Editor', '1.9.5'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.11.1'
+  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.12'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -63,7 +63,7 @@ target 'WordPress' do
     shared_test_pods
     pod 'Specta', '1.0.7'
     pod 'Expecta', '1.0.6'
-    pod 'Nimble', '~> 7.0.0'
+    pod 'Nimble', '~> 7.0.2'
   end
 
   target 'WordPressShareExtension' do
