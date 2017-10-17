@@ -1,6 +1,6 @@
 import UIKit
 import Social
-import WordPressComKit
+import WordPressKit
 
 
 class ShareViewController: SLComposeServiceViewController {
@@ -66,7 +66,10 @@ class ShareViewController: SLComposeServiceViewController {
         "publish": NSLocalizedString("Publish", comment: "Publish post status")
     ]
 
-
+    fileprivate enum MediaSettings {
+        static let filename = "image.jpg"
+        static let mimeType = "image/jpeg"
+    }
 
     // MARK: - UIViewController Methods
 
@@ -76,9 +79,6 @@ class ShareViewController: SLComposeServiceViewController {
         // Tracker
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
-
-        // Initialization
-        setupBearerToken()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -207,19 +207,9 @@ private extension ShareViewController {
     }
 }
 
-
-
 /// ShareViewController Extension: Encapsulates private helpers
 ///
 private extension ShareViewController {
-    func setupBearerToken() {
-        guard let bearerToken = oauth2Token else {
-            return
-        }
-
-        RequestRouter.bearerToken = bearerToken
-    }
-
     func loadContent(extensionContext: NSExtensionContext) {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
@@ -251,19 +241,49 @@ private extension ShareViewController {
     }
 }
 
-
-
 /// ShareViewController Extension: Backend Interaction
 ///
 private extension ShareViewController {
     func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping () -> ()) {
-        let configuration = URLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
-        let service = PostService(configuration: configuration)
 
-        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
-            requestEqueued()
-        }, completion: { (post, error) in
-            print("Post \(String(describing: post)) Error \(String(describing: error))")
-        })
+        guard let attachedImageData = attachedImageData else { return }
+        guard let groupContainerURL =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else { return }
+
+        //TODO: Background session!
+        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil)
+        let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
+        let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
+        let fullPath = groupContainerURL.appendingPathComponent(fileName)
+
+        do {
+            try attachedImageData.write(to: fullPath, options: [.atomic])
+        } catch {
+            print("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            return
+        }
+
+        let remotePost: RemotePost = {
+            let post = RemotePost()
+            post.siteID = NSNumber(value: siteID)
+            post.status = status
+            post.title = subject
+            post.content = body
+            return post
+        }()
+
+        let remoteMedia: RemoteMedia = {
+            let media = RemoteMedia()
+            media.file = MediaSettings.filename
+            media.mimeType = MediaSettings.mimeType
+            media.localURL = fullPath
+            return media
+        }()
+
+        //TODO: Cleanup media files in shared container!
+        remote.createPost(remotePost, with: remoteMedia, success: {_ in
+            requestEqueued();
+        }) { error in
+            print("Error \(String(describing: error))")
+        }
     }
 }
