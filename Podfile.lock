@@ -150,7 +150,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.1)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.12)
-  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`, branch `release/1.9.6`)
+  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`, commit `6cfb190136bdf3f58ce852e1c4e4538a7f62f193`)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag `0.0.6`)
   - WPMediaPicker (= 0.23)
   - wpxmlrpc (= 0.8.3)
@@ -160,7 +160,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
   WordPress-iOS-Editor:
-    :branch: release/1.9.6
+    :commit: 6cfb190136bdf3f58ce852e1c4e4538a7f62f193
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -171,7 +171,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
   WordPress-iOS-Editor:
-    :commit: 029267bf3baf99659f96dfccd3e74aeb091d3fae
+    :commit: 6cfb190136bdf3f58ce852e1c4e4538a7f62f193
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
@@ -214,6 +214,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 51dff88157706419e000169b37c3abe0d3017b5f
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 605c33f6041a950257fd419222cec10915b93f5c
+PODFILE CHECKSUM: ef84ceb8f7b68672613a9d71daa04b1dc25e261f
 
 COCOAPODS: 1.3.1
