@@ -152,7 +152,11 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
-		2F45E0451F908AA70059294A /* PortfolioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F45E0441F908AA70059294A /* PortfolioListViewController.swift */; };
+		2F45E0451F908AA70059294A /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F45E0441F908AA70059294A /* PortfolioViewController.swift */; };
+		2F6F99561F947B94003ADEB3 /* PortfolioViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6F99551F947B94003ADEB3 /* PortfolioViewModel.swift */; };
+		2F6F995A1F95DE39003ADEB3 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6F99581F95DE39003ADEB3 /* ProjectTableViewCell.swift */; };
+		2F6F995B1F95DE39003ADEB3 /* ProjectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F6F99591F95DE39003ADEB3 /* ProjectTableViewCell.xib */; };
+		2F6F995D1F95E4AC003ADEB3 /* ProjectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6F995C1F95E4AC003ADEB3 /* ProjectCellViewModel.swift */; };
 		2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
@@ -1231,7 +1235,11 @@
 		292CECFF1027259000BD407D /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		296890770FE971DC00770264 /* Security.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2F45E0441F908AA70059294A /* PortfolioListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioListViewController.swift; sourceTree = "<group>"; };
+		2F45E0441F908AA70059294A /* PortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
+		2F6F99551F947B94003ADEB3 /* PortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewModel.swift; sourceTree = "<group>"; };
+		2F6F99581F95DE39003ADEB3 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
+		2F6F99591F95DE39003ADEB3 /* ProjectTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectTableViewCell.xib; sourceTree = "<group>"; };
+		2F6F995C1F95E4AC003ADEB3 /* ProjectCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCellViewModel.swift; sourceTree = "<group>"; };
 		2F970F970DF929B8006BD934 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate_old.html; path = Resources/HTML/defaultPostTemplate_old.html; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "xhtml1-transitional.dtd"; path = "Resources/HTML/xhtml1-transitional.dtd"; sourceTree = "<group>"; };
@@ -2917,12 +2925,24 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		2F45E0431F9081CE0059294A /* Portfolios */ = {
+		2F45E0431F9081CE0059294A /* Portfolio */ = {
 			isa = PBXGroup;
 			children = (
-				2F45E0441F908AA70059294A /* PortfolioListViewController.swift */,
+				2F6F99571F95DE14003ADEB3 /* Views */,
+				2F45E0441F908AA70059294A /* PortfolioViewController.swift */,
+				2F6F99551F947B94003ADEB3 /* PortfolioViewModel.swift */,
+				2F6F995C1F95E4AC003ADEB3 /* ProjectCellViewModel.swift */,
 			);
-			path = Portfolios;
+			path = Portfolio;
+			sourceTree = "<group>";
+		};
+		2F6F99571F95DE14003ADEB3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2F6F99581F95DE39003ADEB3 /* ProjectTableViewCell.swift */,
+				2F6F99591F95DE39003ADEB3 /* ProjectTableViewCell.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		2F706A870DFB229B00B43086 /* Models */ = {
@@ -3466,7 +3486,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
-				2F45E0431F9081CE0059294A /* Portfolios */,
+				2F45E0431F9081CE0059294A /* Portfolio */,
 				B50C0C441EF429D500372C65 /* Aztec */,
 				AC34397B0E11443300E5D79B /* Blog */,
 				8320B5CF11FCA3EA00607422 /* Cells */,
@@ -5608,6 +5628,7 @@
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				43FB3F431EC0DDAD00FC8A62 /* LoginEpilogueSectionHeader.xib in Resources */,
+				2F6F995B1F95DE39003ADEB3 /* ProjectTableViewCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
@@ -6335,6 +6356,7 @@
 				080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */,
 				08216FCF1CDBF96000304BA7 /* MenuItemSourceCell.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
+				2F6F995D1F95E4AC003ADEB3 /* ProjectCellViewModel.swift in Sources */,
 				593F26611CAB00CA00F14073 /* PostSharingController.swift in Sources */,
 				B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */,
 				B55F1AA81C10936600FD04D4 /* BlogSettings+Discussion.swift in Sources */,
@@ -6518,6 +6540,7 @@
 				B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */,
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,
+				2F6F99561F947B94003ADEB3 /* PortfolioViewModel.swift in Sources */,
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
 				85D239B21AE5A5FC0074768D /* WordPressComOAuthClientFacade.m in Sources */,
 				85D239B31AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m in Sources */,
@@ -6579,6 +6602,7 @@
 				E61084C01B9B47BA008050C5 /* ReaderListTopic.swift in Sources */,
 				E6374DC11C444D8B00F24720 /* PublicizeService.swift in Sources */,
 				931D26FE19EDA10D00114F17 /* ALIterativeMigrator.m in Sources */,
+				2F6F995A1F95DE39003ADEB3 /* ProjectTableViewCell.swift in Sources */,
 				E1F8E1231B0B411E0073E628 /* JetpackService.m in Sources */,
 				436605E21ECE568800EE8882 /* LoginNavigationController.swift in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
@@ -6648,7 +6672,7 @@
 				85D239B11AE5A5FC0074768D /* OnePasswordFacade.m in Sources */,
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
-				2F45E0451F908AA70059294A /* PortfolioListViewController.swift in Sources */,
+				2F45E0451F908AA70059294A /* PortfolioViewController.swift in Sources */,
 				B5FF3BE71CAD881100C1D597 /* ImageCropOverlayView.swift in Sources */,
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
 				82FFBF4D1F434BDA00F4573F /* ThemeIdHelper.swift in Sources */,

@@ -928,7 +928,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPortfolioList
 {
     // TODO: Add tracking style: [WPAppAnalytics track:WPAnalyticsStatOpenedPortfolio withBlog:self.blog];
-    PortfolioListViewController *controller = [[PortfolioListViewController alloc] initWithBlog:self.blog];
+    PortfolioViewController *controller = [[PortfolioViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 
