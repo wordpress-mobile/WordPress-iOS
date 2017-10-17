@@ -73,7 +73,7 @@ class FancyAlertViewController: UIViewController {
         static let resizeAnimationDelay: TimeInterval = 0.3
     }
 
-    // MARK - IBOutlets
+    // MARK: - IBOutlets
 
     /// Wraps the entire view to give it a background and rounded corners
     @IBOutlet private weak var wrapperView: UIView!

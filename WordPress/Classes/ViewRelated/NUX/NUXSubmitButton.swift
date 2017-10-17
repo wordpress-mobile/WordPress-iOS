@@ -88,7 +88,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
         var titleColorNormal = UIColor.white
         var titleColorHighlighted = WPStyleGuide.lightBlue()
         var titleColorDisabled = UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha)
-        if (isPrimary) {
+        if isPrimary {
             backgroundColor = UIColor.white
             titleColorNormal = WPStyleGuide.wordPressBlue()
             titleColorHighlighted = WPStyleGuide.darkBlue()

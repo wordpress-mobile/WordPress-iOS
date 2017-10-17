@@ -1,7 +1,58 @@
 import Foundation
 import Gridicons
 
-class LoginViewController: NUXAbstractViewController {
+protocol LoginWithLogoAndHelpViewController {
+    func addWordPressLogoToNavController()
+    func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel)
+}
+
+extension LoginWithLogoAndHelpViewController where Self: UIViewController {
+    func addWordPressLogoToNavController() {
+        let image = Gridicon.iconOfType(.mySites)
+        let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
+        navigationItem.titleView = imageView
+    }
+    func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel) {
+        let helpButtonMarginSpacerWidth = CGFloat(-8)
+        let helpBadgeSize = CGSize(width: 12, height: 10)
+        let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+
+        let customView = UIView(frame: helpButtonContainerFrame)
+
+        let helpButton = UIButton(type: .custom)
+        helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
+        helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
+        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
+
+        customView.addSubview(helpButton)
+        helpButton.translatesAutoresizingMaskIntoConstraints = false
+        helpButton.leadingAnchor.constraint(equalTo: customView.leadingAnchor).isActive = true
+        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
+        helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
+        helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
+
+        let helpBadge = WPNUXHelpBadgeLabel()
+        helpBadge.translatesAutoresizingMaskIntoConstraints = false
+        helpBadge.isHidden = true
+        customView.addSubview(helpBadge)
+        helpBadge.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
+        helpBadge.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
+        helpBadge.widthAnchor.constraint(equalToConstant: helpBadgeSize.width).isActive = true
+        helpBadge.heightAnchor.constraint(equalToConstant: helpBadgeSize.height).isActive = true
+
+        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        spacer.width = helpButtonMarginSpacerWidth
+
+        let barButton = UIBarButtonItem(customView: customView)
+        navigationItem.rightBarButtonItems = [spacer, barButton]
+
+        return (helpButton, helpBadge)
+    }
+}
+
+class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewController {
     @IBOutlet var instructionLabel: UILabel?
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
@@ -33,9 +84,7 @@ class LoginViewController: NUXAbstractViewController {
     /// Places the WordPress logo in the navbar
     ///
     func setupNavBarIcon() {
-        let image = Gridicon.iconOfType(.mySites)
-        let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
-        navigationItem.titleView = imageView
+        addWordPressLogoToNavController()
     }
 
     /// Configures instruction label font
@@ -47,41 +96,19 @@ class LoginViewController: NUXAbstractViewController {
     /// Sets up the help button and the helpshift conversation badge.
     ///
     override func setupHelpButtonAndBadge() {
-        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
-
-        let customView = UIView(frame: helpButtonContainerFrame)
-
-        helpButton = UIButton(type: .custom)
-        helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
-        helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
-        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
-
-        customView.addSubview(helpButton)
-        helpButton.translatesAutoresizingMaskIntoConstraints = false
-        helpButton.leadingAnchor.constraint(equalTo: customView.leadingAnchor).isActive = true
-        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
-        helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
-        helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
-
-        helpBadge = WPNUXHelpBadgeLabel()
-        helpBadge.translatesAutoresizingMaskIntoConstraints = false
-        helpBadge.isHidden = true
-        customView.addSubview(helpBadge)
-        helpBadge.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
-        helpBadge.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
-        helpBadge.widthAnchor.constraint(equalToConstant: helpBadgeSize.width).isActive = true
-        helpBadge.heightAnchor.constraint(equalToConstant: helpBadgeSize.height).isActive = true
-
-        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        spacer.width = helpButtonMarginSpacerWidth
-
-        let barButton = UIBarButtonItem(customView: customView)
-        navigationItem.rightBarButtonItems = [spacer, barButton]
+        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
+        helpButton = helpButtonResult
+        helpBadge = helpBadgeResult
     }
 
     /// Sets the text of the error label.
     ///
     func displayError(message: String) {
+        guard message.count > 0 else {
+            errorLabel?.isHidden = true
+            return
+        }
+        errorLabel?.isHidden = false
         errorLabel?.text = message
     }
 
@@ -156,6 +183,17 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+        guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
+            let token = loginFields.meta.socialServiceIDToken else {
+                return
+        }
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        accountService.connectToSocialService(service, serviceIDToken: token, success: {
+            // noop
+        }, failure: { error in
+            DDLogError(error.description)
+        })
     }
 
     func displayRemoteError(_ error: Error!) {

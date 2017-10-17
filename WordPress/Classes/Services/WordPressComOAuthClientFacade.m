@@ -36,10 +36,11 @@
 - (void)authenticateWithGoogleIDToken:(NSString *)token
                               success:(void (^)(NSString *authToken))success
                      needsMultiFactor:(void (^)(NSInteger userID, SocialLogin2FANonceInfo *nonceInfo))needsMultifactor
+          existingUserNeedsConnection:(void (^)(NSString *email))existingUserNeedsConnection
                               failure:(void (^)(NSError *error))failure
 {
     WordPressComOAuthClient *client = [WordPressComOAuthClient clientWithClientID:ApiCredentials.client secret:ApiCredentials.secret];
-    [client authenticateWithIDToken:token success:success needsMultifactor:needsMultifactor failure:failure];
+    [client authenticateWithIDToken:token success:success needsMultifactor:needsMultifactor existingUserNeedsConnection:existingUserNeedsConnection failure:failure];
 }
 
 - (void)authenticateSocialLoginUser:(NSInteger)userID
