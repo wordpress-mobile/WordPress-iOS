@@ -321,6 +321,7 @@
 		722F5726ACB4A276B0CF3C83 /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
+		7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		743368EF1F914DCE0055224D /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743368F01F914DCE0055224D /* WordPressKit.framework */; };
 		74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */; };
 		74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */; };
@@ -1492,6 +1493,7 @@
 		740BD8331A0D4C3600F04D18 /* WPUploadStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusButton.h; sourceTree = "<group>"; };
 		740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusButton.m; sourceTree = "<group>"; };
 		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
+		7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaFileManager.swift; sourceTree = "<group>"; };
 		743368F01F914DCE0055224D /* WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
 		74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
@@ -3370,6 +3372,17 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		7430C4471F97F0DA00E2673E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B50248C51C96FFE800AFBDED /* MainInterface.storyboard */,
+				B50248B11C96FF8400AFBDED /* ShareViewController.swift */,
+				B50248B01C96FF8400AFBDED /* PostStatusPickerViewController.swift */,
+				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		8298F38D1EEF2B15008EB7F0 /* Ratings */ = {
 			isa = PBXGroup;
 			children = (
@@ -3640,13 +3653,9 @@
 				B5FA22851C99F63B0016CA7C /* Extensions */,
 				B542DEBB1D119683004CA6AE /* Tools */,
 				B5FA22841C99F6340016CA7C /* Tracks */,
+				7430C4471F97F0DA00E2673E /* UI */,
 				B5BEA5661C7CEB4400C8035B /* Supporting Files */,
-				B50248C51C96FFE800AFBDED /* MainInterface.storyboard */,
 				B50248B81C96FFB000AFBDED /* WordPressShare-Bridging-Header.h */,
-				B50248B01C96FF8400AFBDED /* PostStatusPickerViewController.swift */,
-				B50248B11C96FF8400AFBDED /* ShareViewController.swift */,
-				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
-				E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */,
 				E1AFA8C21E8E34230004A323 /* WordPressShare.js */,
 			);
 			path = WordPressShareExtension;
@@ -4062,6 +4071,8 @@
 			isa = PBXGroup;
 			children = (
 				B542DEB91D11967E004CA6AE /* MediaView.swift */,
+				E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */,
+				7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -6742,6 +6753,7 @@
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
 				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
 				B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */,
+				7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */,
 				B542DEBC1D119E1F004CA6AE /* MediaView.swift in Sources */,
 				B5D7A0ED1CCFD1FF003C375D /* UIImage+Resize.m in Sources */,
 				B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */,
@@ -6948,8 +6960,8 @@
 				B50248C61C96FFE800AFBDED /* Base */,
 			);
 			name = MainInterface.storyboard;
-			path = WordPressShareExtension/Base.lproj;
-			sourceTree = SOURCE_ROOT;
+			path = Base.lproj;
+			sourceTree = "<group>";
 		};
 		E1B6A9CE1E54B6B2008FD47E /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
