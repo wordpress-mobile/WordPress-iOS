@@ -24,17 +24,13 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 - (void)getBlogsWithSuccess:(void (^)(NSArray *))success
                     failure:(void (^)(NSError *))failure
 {
-    NSString *requestUrl = [self pathForEndpoint:@"me/sites"
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    [self getBlogsWithRequestURL:requestUrl success:success failure:failure];
+    [self getBlogsWithParameters:nil success:success failure:failure];
 }
 
 - (void)getVisibleBlogsWithSuccess:(void (^)(NSArray *))success
                            failure:(void (^)(NSError *))failure
 {
-    NSString *requestUrl = [self pathForEndpoint:@"me/sites?site_visibility=visible"
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    [self getBlogsWithRequestURL:requestUrl success:success failure:failure];
+    [self getBlogsWithParameters:@{@"site_visibility": @"visible"} success:success failure:failure];
 }
 
 - (void)getAccountDetailsWithSuccess:(void (^)(RemoteUser *remoteUser))success
@@ -245,15 +241,12 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 
 #pragma mark - Private Methods
 
-- (void)getBlogsWithRequestURL:(NSString *)requestUrl
+- (void)getBlogsWithParameters:(NSDictionary *)parameters
                        success:(void (^)(NSArray *))success
                        failure:(void (^)(NSError *))failure
 {
-    NSAssert([requestUrl length] > 0, @"Must provide request URL");
-    NSString *locale = [[WordPressComLanguageDatabase new] deviceLanguageSlug];
-    NSDictionary *parameters = @{
-                                 @"locale": locale
-                                 };
+    NSString *requestUrl = [self pathForEndpoint:@"me/sites"
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     [self.wordPressComRestApi GET:requestUrl
                        parameters:parameters
                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {

@@ -13,7 +13,6 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     let authOptionsEndpoint     = "users/jimthetester/auth-options"
     let meEndpoint              = "me"
     let meSitesEndpoint         = "me/sites"
-    let meVisibleSitesEndpoint  = "me/sites?site_visibility=visible"
     let emailEndpoint           = "/is-available/email"
     let usernameEndpoint        = "/is-available/username"
     let linkEndpoint            = "auth/send-login-email"
@@ -226,7 +225,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     func testGetVisibleBlogsSucceeds() {
         let expect = expectation(description: "Get visible blogs success")
 
-        stubRemoteResponse(meVisibleSitesEndpoint, filename: getBlogsSuccessMockFilename, contentType: .ApplicationJSON)
+        stubRemoteResponse(meSitesEndpoint, filename: getBlogsSuccessMockFilename, contentType: .ApplicationJSON)
         remote.getVisibleBlogs(success: { blogs in
             XCTAssertEqual(blogs?.count, 3, "There should be 3 blogs here")
             expect.fulfill()
@@ -241,7 +240,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     func testGetVisibleBlogsWithEmptyResponseArraySucceeds() {
         let expect = expectation(description: "Get visible blogs with empty response array success")
 
-        stubRemoteResponse(meVisibleSitesEndpoint, filename: getBlogsEmptySuccessMockFilename, contentType: .ApplicationJSON)
+        stubRemoteResponse(meSitesEndpoint, filename: getBlogsEmptySuccessMockFilename, contentType: .ApplicationJSON)
         remote.getVisibleBlogs(success: { blogs in
             XCTAssertEqual(blogs?.count, 0, "There should be 0 blogs here")
             expect.fulfill()
@@ -256,7 +255,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     func testGetVisibleBlogsWithServerErrorFails() {
         let expect = expectation(description: "Get visible blogs server error failure")
 
-        stubRemoteResponse(meVisibleSitesEndpoint, data: Data(), contentType: .NoContentType, status: 500)
+        stubRemoteResponse(meSitesEndpoint, data: Data(), contentType: .NoContentType, status: 500)
         remote.getVisibleBlogs(success: { blogs in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
@@ -277,7 +276,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     func testGetVisibleBlogsWithBadAuthFails() {
         let expect = expectation(description: "Get visible blogs auth failure")
 
-        stubRemoteResponse(meVisibleSitesEndpoint, filename: getBlogsAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
+        stubRemoteResponse(meSitesEndpoint, filename: getBlogsAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
         remote.getVisibleBlogs(success: { blogs in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
@@ -298,7 +297,7 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
     func testGetVisibleBlogsWithBadJsonFails() {
         let expect = expectation(description: "Get visible blogs with invalid json response failure")
 
-        stubRemoteResponse(meVisibleSitesEndpoint, filename: getBlogsBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
+        stubRemoteResponse(meSitesEndpoint, filename: getBlogsBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
         remote.getVisibleBlogs(success: { blogs in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()

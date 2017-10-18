@@ -300,8 +300,9 @@ private extension ShareViewController {
 private extension ShareViewController {
     func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping () -> ()) {
 
-        guard let attachedImageData = attachedImageData else { return }
-        guard let mediaDirectory = ShareViewController.uploadDirectoryURL() else { return }
+        guard let attachedImageData = attachedImageData, let mediaDirectory = ShareViewController.uploadDirectoryURL() else {
+            return
+        }
 
         // Setting the API up for a background upload but we will wait for the upload to finish (for now).
         // This matches the prior approach when WordPressComKit was used here.
