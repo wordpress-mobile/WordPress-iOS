@@ -21,6 +21,12 @@ class LoginFields: NSObject {
     /// The two factor code entered by a user.
     var multifactorCode = "" // 2fa code
 
+    /// Nonce info in the event of a social login with 2fa
+    var nonceInfo: SocialLogin2FANonceInfo?
+
+    /// User ID for use with the nonce for social login
+    var nonceUserID: Int = 0
+
     /// Used by the SignupViewController. Signup currently asks for both a
     /// username and an email address.  This can be factored away when we revamp
     /// the signup flow.
