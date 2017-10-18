@@ -1,6 +1,6 @@
     import UIKit
     import WordPressKit
-    
+
     class PortfolioViewController: UITableViewController, UIViewControllerRestoration {
         fileprivate static let restorationIdentifier = "PortfolioViewController"
         fileprivate static let portfolioViewControllerRestorationKey = "PortfolioViewControllerRestorationKey"
@@ -14,7 +14,7 @@
         let mainContext = ContextManager.sharedInstance().mainContext
         let postService: PostService
         var postServiceRemote: PostServiceRemoteREST?
-        
+
         init(blog: Blog) {
             self.postService = PostService(managedObjectContext: mainContext)
             if
@@ -26,11 +26,11 @@
             // super.restorationIdentifier = PortfolioViewController.restorationIdentifier
             // restorationClass = PortfolioViewController.self
         }
-        
+
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         override func viewDidLoad() {
             //  super.tableViewController = UITableViewController(style: .plain)
             configureTableView()
@@ -44,31 +44,29 @@
                 } else {
                     self?.addNoResultsView()
                 }
-                
+
             }) { error in
                 DDLogError(String(describing: error))
             }
         }
-        
+
         private func addNoResultsView() {
             guard let noResultsView = WPNoResultsView(title: "No Available Projects",
                                                       message: nil,
                                                       accessoryView: UIImageView(image: UIImage(named: "theme-empty-results")),
                                                       buttonTitle: nil) else { return }
-            
+
             view.addSubview(noResultsView)
             noResultsView.centerInSuperview()
-            
             noResultsView.delegate = self
-            
             self.noResultsView = noResultsView
         }
-        
+
         func configureTableView() {
             tableView.accessibilityIdentifier = "PortfolioTable"
             tableView.isAccessibilityElement = true
             tableView.rowHeight = PortfolioViewController.projectCellEstimatedRowHeight
-            
+
             // Register the cells
             let pageCellNib = UINib(nibName: type(of: self).projectCellNibName, bundle: Bundle.main)
             tableView.register(pageCellNib, forCellReuseIdentifier: type(of: self).projectCellIdentifier)
@@ -87,7 +85,7 @@
                 let objectURL = URL(string: blogID),
                 let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
                 let restoredBlog = try? context.existingObject(with: objectID) as! Blog else {
-    
+
                     return nil
             }
 
