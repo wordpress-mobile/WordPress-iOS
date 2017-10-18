@@ -193,6 +193,14 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
             // noop
         }, failure: { error in
             DDLogError(error.description)
+            // We're opting to let this call fail silently.
+            // Our user has already successfully authenticated and can use the app --
+            // connecting the social service isn't critical.  There's little to
+            // be gained by displaying an error that can not currently be resolved
+            // in the app and doing so might tarnish an otherwise satisfying login
+            // experience.
+            // If/when we add support for manually connecting/disconnecting services
+            // we can revisit.
         })
     }
 
