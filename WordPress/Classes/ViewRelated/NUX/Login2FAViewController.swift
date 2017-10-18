@@ -1,6 +1,7 @@
 import UIKit
 import SVProgressHUD
 import WordPressShared
+import GoogleSignIn
 
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
@@ -86,6 +87,11 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
 
     func configureTextFields() {
         verificationCodeField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+
+        guard let _ = loginFields.nonceInfo else {
+            return
+        }
+        sendCodeButton.isHidden = true
     }
 
 
@@ -137,7 +143,24 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     /// proceeds with the submit action.
     ///
     func validateForm() {
+        if let nonce = loginFields.nonceInfo {
+            loginWithNonce(info: nonce)
+            return
+        }
         validateFormAndLogin()
+    }
+
+    private func loginWithNonce(info nonceInfo: SocialLogin2FANonceInfo) {
+        let code = loginFields.multifactorCode
+        let (authType, nonce) = nonceInfo.authTypeAndNonce(for: code)
+        loginFacade.loginToWordPressDotCom(withUser: loginFields.nonceUserID, authType: authType, twoStepCode: code, twoStepNonce: nonce)
+    }
+
+    func finishedLogin(withNonceAuthToken authToken: String!) {
+        let username = loginFields.username
+        syncWPCom(username, authToken: authToken, requiredMultifactor: true)
+        // Disconnect now that we're done with Google.
+        GIDSignIn.sharedInstance().disconnect()
     }
 
 
@@ -186,7 +209,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
                 return
         }
         let isNumeric = pasteString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
-        guard isNumeric && pasteString.characters.count == 6 else {
+        guard isNumeric && pasteString.count == 6 else {
             return
         }
         verificationCodeField.text = pasteString
@@ -217,6 +240,13 @@ extension Login2FAViewController {
         let err = error as NSError
         if err.domain == "WordPressComOAuthError" && err.code == WordPressComOAuthError.invalidOneTimePassword.rawValue {
             // Invalid verification code.
+            displayError(message: NSLocalizedString("Whoops, that's not a valid two-factor verification code. Double-check your code and try again!",
+                                                    comment: "Error message shown when an incorrect two factor code is provided."))
+        } else if err.domain == "WordPressComOAuthError" && err.code == WordPressComOAuthError.invalidTwoStepCode.rawValue {
+            // Invalid 2FA during social login
+            if let newNonce = (error as NSError).userInfo[WordPressComOAuthClient.WordPressComOAuthErrorNewNonceKey] as? String {
+                loginFields.nonceInfo?.updateNonce(with: newNonce)
+            }
             displayError(message: NSLocalizedString("Whoops, that's not a valid two-factor verification code. Double-check your code and try again!",
                                                     comment: "Error message shown when an incorrect two factor code is provided."))
         } else {
