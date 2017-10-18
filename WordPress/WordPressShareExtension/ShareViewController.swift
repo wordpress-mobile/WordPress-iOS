@@ -337,12 +337,12 @@ private extension ShareViewController {
         }()
 
         remote.createPost(remotePost, with: remoteMedia, success: {_ in
-            ShareViewController.purgeUploadDirectory();
+            ShareViewController.purgeUploadDirectory()
             // Even though we set this up as a background upload, let's wait for the createPost call to come back
-            requestEqueued();
+            requestEqueued()
         }) { error in
             print("Error creating post in share extension: \(String(describing: error))")
-            ShareViewController.purgeUploadDirectory();
+            ShareViewController.purgeUploadDirectory()
         }
     }
 }
