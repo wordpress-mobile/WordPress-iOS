@@ -1068,15 +1068,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPAnalytics.track(.postListSearchOpened, withProperties: propertiesForAnalytics())
     }
 
-    func didPresentSearchController(_ searchController: UISearchController) {
-        if #available(iOS 11.0, *) {
-            let searchBarY = searchController.searchBar.frame.origin.y
-            let inset = topLayoutGuide.length - searchBarY
-            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height - inset
-            tableView.contentInset.top = -searchBarY
-        }
-    }
-
     func willDismissSearchController(_ searchController: UISearchController) {
         searchController.searchBar.text = nil
         searchHelper.searchCanceled()
