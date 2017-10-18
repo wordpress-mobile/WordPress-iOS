@@ -176,7 +176,7 @@ private extension ShareViewController {
                                                            includingPropertiesForKeys: nil,
                                                            options: .skipsHiddenFiles)
         } catch {
-            print("Error retrieving contents of shared container media directory: \(error)")
+            NSLog("Error retrieving contents of shared container media directory: \(error)")
             return
         }
 
@@ -187,12 +187,12 @@ private extension ShareViewController {
                     try fileManager.removeItem(at: url)
                     removedCount += 1
                 } catch {
-                    print("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
+                    NSLog("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
                 }
             }
         }
         if removedCount > 0 {
-            print("Media: removed \(removedCount) file(s) during cleanup.")
+            NSLog("Media: removed \(removedCount) file(s) during cleanup.")
         }
     }
 
@@ -210,7 +210,7 @@ private extension ShareViewController {
             do {
                 try fileManager.createDirectory(at: mediaDirectory, withIntermediateDirectories: true, attributes: nil)
             } catch {
-                print("Error creating local media directory: \(error)")
+                NSLog("Error creating local media directory: \(error)")
             }
         }
         return mediaDirectory
@@ -315,7 +315,7 @@ private extension ShareViewController {
         do {
             try attachedImageData.write(to: fullPath, options: [.atomic])
         } catch {
-            print("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            NSLog("Error saving \(fullPath) to shared container: \(String(describing: error))")
             return
         }
 
@@ -341,7 +341,7 @@ private extension ShareViewController {
             // Even though we set this up as a background upload, let's wait for the createPost call to come back
             requestEqueued()
         }) { error in
-            print("Error creating post in share extension: \(String(describing: error))")
+            NSLog("Error creating post in share extension: \(String(describing: error))")
             ShareViewController.purgeUploadDirectory()
         }
     }
