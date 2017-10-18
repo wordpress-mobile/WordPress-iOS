@@ -7,6 +7,10 @@ class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
 
+    /// Directory name for media uploads
+    ///
+    fileprivate static let mediaDirectoryName = "Media"
+
     /// WordPress.com Username
     ///
     fileprivate lazy var wpcomUsername: String? = {
@@ -136,8 +140,6 @@ class ShareViewController: SLComposeServiceViewController {
         uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: encodedMedia) {
             self.tracks.trackExtensionPosted(self.postStatus)
             self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-
-// TODO: Handle retry?
         }
     }
 
@@ -160,8 +162,60 @@ class ShareViewController: SLComposeServiceViewController {
     }
 }
 
+/// ShareViewController Extension: Encapsulates all of the class functions
+///
+private extension ShareViewController {
+    /// Removes all files from the Media upload directory.
+    ///
+    class func purgeUploadDirectory() {
+        guard let mediaDirectory = uploadDirectoryURL() else { return }
+        let fileManager = FileManager.default
+        let contents: [URL]
+        do {
+            try contents = fileManager.contentsOfDirectory(at: mediaDirectory,
+                                                           includingPropertiesForKeys: nil,
+                                                           options: .skipsHiddenFiles)
+        } catch {
+            print("Error retrieving contents of shared container media directory: \(error)")
+            return
+        }
 
+        var removedCount = 0
+        for url in contents {
+            if fileManager.fileExists(atPath: url.path) {
+                do {
+                    try fileManager.removeItem(at: url)
+                    removedCount += 1
+                } catch {
+                    print("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
+                }
+            }
+        }
+        if removedCount > 0 {
+            print("Media: removed \(removedCount) file(s) during cleanup.")
+        }
+    }
 
+    /// URL for the Media upload directory in the shared container
+    ///
+    class func uploadDirectoryURL() -> URL? {
+        let fileManager = FileManager.default
+        guard let sharedContainerURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else { return nil }
+        let mediaDirectory = sharedContainerURL.appendingPathComponent(ShareViewController.mediaDirectoryName, isDirectory: true)
+
+        // Check whether or not the file path exists for the Media directory.
+        // If the filepath does not exist, or if the filepath does exist but it is not a directory, try creating the directory.
+        var isDirectory: ObjCBool = false
+        if fileManager.fileExists(atPath: mediaDirectory.path, isDirectory: &isDirectory) == false || isDirectory.boolValue == false {
+            do {
+                try fileManager.createDirectory(at: mediaDirectory, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("Error creating local media directory: \(error)")
+            }
+        }
+        return mediaDirectory
+    }
+}
 
 /// ShareViewController Extension: Encapsulates all of the Action Helpers.
 ///
@@ -247,13 +301,16 @@ private extension ShareViewController {
     func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping () -> ()) {
 
         guard let attachedImageData = attachedImageData else { return }
-        guard let groupContainerURL =  FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else { return }
+        guard let mediaDirectory = ShareViewController.uploadDirectoryURL() else { return }
 
-        //TODO: Background session!
-        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil)
+        // Setting the API up for a background upload but we will wait for the upload to finish (for now).
+        // This matches the prior approach when WordPressComKit was used here.
+        let identifier = WPAppGroupName + "." + UUID().uuidString
+        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil, backgroundUploads: true, backgroundSessionIdentifier: identifier, sharedContainerIdentifier: WPAppGroupName)
+
         let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
-        let fullPath = groupContainerURL.appendingPathComponent(fileName)
+        let fullPath = mediaDirectory.appendingPathComponent(fileName)
 
         do {
             try attachedImageData.write(to: fullPath, options: [.atomic])
@@ -279,11 +336,13 @@ private extension ShareViewController {
             return media
         }()
 
-        //TODO: Cleanup media files in shared container!
         remote.createPost(remotePost, with: remoteMedia, success: {_ in
+            ShareViewController.purgeUploadDirectory();
+            // Even though we set this up as a background upload, let's wait for the createPost call to come back
             requestEqueued();
         }) { error in
-            print("Error \(String(describing: error))")
+            print("Error creating post in share extension: \(String(describing: error))")
+            ShareViewController.purgeUploadDirectory();
         }
     }
 }
