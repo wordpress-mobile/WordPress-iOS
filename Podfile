@@ -54,7 +54,7 @@ target 'WordPress' do
   pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.23'
-  pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '6cfb190136bdf3f58ce852e1c4e4538a7f62f193'
+  pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => 'b71e878366691029c766c2bb6460efb8d0fc4559'
   pod 'WordPress-Aztec-iOS', '=1.0.0-beta.12'
 
   target 'WordPressTest' do
