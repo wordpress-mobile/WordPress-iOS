@@ -199,7 +199,7 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
             // be gained by displaying an error that can not currently be resolved
             // in the app and doing so might tarnish an otherwise satisfying login
             // experience.
-            // If / when we add support for manually connecting/disconnecting services
+            // If/when we add support for manually connecting/disconnecting services
             // we can revisit.
         })
     }
