@@ -87,7 +87,7 @@ class SitePickerViewController: UITableViewController {
                 self?.showEmptySitesIfNeeded()
             }
         }, failure: { [weak self] error in
-            print("Error retrieving blogs: \(String(describing: error))")
+            NSLog("Error retrieving blogs: \(String(describing: error))")
             DispatchQueue.main.async {
                 self?.sites = [RemoteBlog]()
                 self?.tableView.reloadData()
