@@ -80,7 +80,7 @@ class AztecAttachmentViewController: UITableViewController {
             action: displaySizeSelector)
 
         let altRow = EditableTextRow(
-            title: NSLocalizedString("Alt Text", comment: "Image alt attribute."),
+            title: NSLocalizedString("Alt Text", comment: "Image alt attribute option title."),
             value: alt ?? "",
             action: displayAltTextfield)
 
@@ -101,7 +101,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
-        let hint = NSLocalizedString("Image Description", comment: "Hint for image description on image settings.")
+        let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
         self.pushSettingsController(for: editableRow, hint: hint, onValueChanged: { value in
             self.alt = value
             self.tableView.reloadData()
