@@ -262,7 +262,6 @@
             }
 
             [self updateMedia:mediaInContext withRemoteMedia:media];
-            mediaInContext.remoteStatus = MediaRemoteStatusSync;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
                     success();
@@ -767,8 +766,7 @@
         @autoreleasepool {
             Media *local = [Media existingMediaWithMediaID:remote.mediaID inBlog:blog];
             if (!local) {
-                local = [Media makeMediaWithBlog:blog];
-                local.remoteStatus = MediaRemoteStatusSync;
+                local = [Media makeMediaWithBlog:blog];                
             }
             [self updateMedia:local withRemoteMedia:remote];
             [mediaToKeep addObject:local];
@@ -815,6 +813,8 @@
     media.length = remoteMedia.length;
     media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
     media.postID = remoteMedia.postID;
+
+    media.remoteStatus = MediaRemoteStatusSync;
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media
