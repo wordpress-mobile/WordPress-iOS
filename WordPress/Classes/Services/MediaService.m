@@ -170,16 +170,19 @@
     MediaExportService *exportService = [[MediaExportService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if ([exportable isKindOfClass:[PHAsset class]]) {
         [exportService exportMediaWithBlog:blog
+                                      post:post
                                      asset:(PHAsset *)exportable
                               onCompletion:completionWithMedia
                                    onError:completionWithError];
     } else if ([exportable isKindOfClass:[UIImage class]]) {
         [exportService exportMediaWithBlog:blog
+                                      post:post
                                      image:(UIImage *)exportable
                               onCompletion:completionWithMedia
                                    onError:completionWithError];
     } else if ([exportable isKindOfClass:[NSURL class]]) {
         [exportService exportMediaWithBlog:blog
+                                      post:post
                                        url:(NSURL *)exportable
                               onCompletion:completionWithMedia
                                    onError:completionWithError];
