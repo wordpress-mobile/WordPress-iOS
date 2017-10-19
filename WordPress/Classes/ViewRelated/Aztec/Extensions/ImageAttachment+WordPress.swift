@@ -17,7 +17,7 @@ extension ImageAttachment {
             }
         }
     }
-    
+
     var width: Int? {
         get {
             guard let stringInt = extraAttributes["width"] else {
