@@ -60,7 +60,7 @@ class PostAttachmentTests: XCTestCase {
         controller.onUpdate = { [weak self] (_, _, alt) in
             self?.richTextView.edit(attachment) { updated in
                 if let alt = alt {
-                    updated.extraAttributes["alt"] = alt
+                    updated.alt = alt
                 }
                 expect.fulfill()
             }
@@ -91,7 +91,7 @@ class PostAttachmentTests: XCTestCase {
         controller.onUpdate = { [weak self] (_, _, alt) in
             self?.richTextView.edit(attachment) { updated in
                 if let alt = alt {
-                    updated.extraAttributes["alt"] = alt
+                    updated.alt = alt
                 }
                 expect.fulfill()
             }

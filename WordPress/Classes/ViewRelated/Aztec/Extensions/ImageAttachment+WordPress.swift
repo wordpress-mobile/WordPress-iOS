@@ -5,6 +5,19 @@ import Aztec
 ///
 extension ImageAttachment {
 
+    var alt: String? {
+        get {
+            return extraAttributes["alt"]
+        }
+        set {
+            if let nonNilValue = newValue, newValue != "" {
+                extraAttributes["alt"] = nonNilValue
+            } else {
+                extraAttributes.removeValue(forKey: "alt")
+            }
+        }
+    }
+    
     var width: Int? {
         get {
             guard let stringInt = extraAttributes["width"] else {
