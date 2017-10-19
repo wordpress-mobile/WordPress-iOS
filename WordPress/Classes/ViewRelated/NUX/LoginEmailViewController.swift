@@ -476,7 +476,6 @@ extension LoginEmailViewController: GIDSignInDelegate {
 
 extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     private func cleanupAfterSocialErrors() {
-        loginFields.username = ""
         dismiss(animated: true) {}
     }
 
