@@ -3089,9 +3089,9 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
     }
 
-    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL {
+    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
         saveToMedia(attachment: imageAttachment)
-        return URL(string:"placeholder://")!
+        return nil
     }
 
     func cancelAllPendingMediaRequests() {
