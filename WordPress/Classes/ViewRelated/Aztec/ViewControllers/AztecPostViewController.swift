@@ -2682,7 +2682,7 @@ extension AztecPostViewController {
         switch media.mediaType {
         case .image:
             let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
-            attachment.extraAttributes["alt"] = media.alt
+            attachment.alt = media.alt
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         case .video:
             var posterURL: URL?
@@ -2975,7 +2975,7 @@ extension AztecPostViewController {
             self?.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
-                updated.extraAttributes["alt"] = alt
+                updated.alt = alt
             }
         }
 
@@ -3262,12 +3262,12 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 }
 
-// MARK: - Accessibilty Helpers
+// MARK: - Accessibility Helpers
 //
 extension UIImage {
     func addAccessibilityForAttachment(_ attachment: NSTextAttachment) {
         if let attachment = attachment as? ImageAttachment,
-            let accessibilityLabel = attachment.extraAttributes["alt"] {
+            let accessibilityLabel = attachment.alt {
             self.accessibilityLabel = accessibilityLabel
         }
     }
