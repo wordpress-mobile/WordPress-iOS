@@ -2681,7 +2681,8 @@ extension AztecPostViewController {
         }
         switch media.mediaType {
         case .image:
-            let _ = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
+            let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
+            attachment.alt = media.alt
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         case .video:
             var posterURL: URL?
@@ -2970,10 +2971,11 @@ extension AztecPostViewController {
     func displayDetails(forAttachment attachment: ImageAttachment) {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
-        controller.onUpdate = { [weak self] (alignment, size) in
+        controller.onUpdate = { [weak self] (alignment, size, alt) in
             self?.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
+                updated.alt = alt
             }
         }
 
@@ -2999,15 +3001,18 @@ extension AztecPostViewController {
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let imageSize = CGSize(width: 128, height: 128)
-
+        let icon: UIImage
         switch attachment {
         case _ as ImageAttachment:
-            return Gridicon.iconOfType(.image, withSize: imageSize)
+            icon = Gridicon.iconOfType(.image, withSize: imageSize)
         case _ as VideoAttachment:
-            return Gridicon.iconOfType(.video, withSize: imageSize)
+            icon = Gridicon.iconOfType(.video, withSize: imageSize)
         default:
-            return Gridicon.iconOfType(.attachment, withSize: imageSize)
+            icon = Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
+
+        icon.addAccessibilityForAttachment(attachment)
+        return icon
     }
 
     // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
@@ -3253,6 +3258,17 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem
             }
+        }
+    }
+}
+
+// MARK: - Accessibility Helpers
+//
+extension UIImage {
+    func addAccessibilityForAttachment(_ attachment: NSTextAttachment) {
+        if let attachment = attachment as? ImageAttachment,
+            let accessibilityLabel = attachment.alt {
+            self.accessibilityLabel = accessibilityLabel
         }
     }
 }
