@@ -13,6 +13,7 @@ public class SocialLogin2FANonceInfo: NSObject {
         static let lastUsedPlaceholder = "last_used_placeholder"
     }
 
+    /// These constants match the server-side authentication code
     private enum AuthTypeLengths {
         static let authenticator = 6
         static let sms = 7
