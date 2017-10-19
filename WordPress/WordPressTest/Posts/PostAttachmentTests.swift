@@ -29,24 +29,14 @@ class MockAttachmentDelegate: TextViewAttachmentDelegate {
 
 class PostAttachmentTests: XCTestCase {
 
-    private let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
-    private let delegate = MockAttachmentDelegate()
-
-    override func setUp() {
-        super.setUp()
-        richTextView.textAttachmentDelegate = delegate
-    }
-
-    override func tearDown() {
-        richTextView.textAttachmentDelegate = nil
-        super.tearDown()
-    }
-
     func testIfAltValueWasAddedToImageAttachment() {
         let prefixString = "Image with alt: "
         let imageName = "someExampleImage.jpg"
         let altValue = "additional alt"
 
+        let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
+        let delegate = MockAttachmentDelegate()
+        richTextView.textAttachmentDelegate = delegate
         richTextView.attributedText = NSAttributedString(string: prefixString)
         let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange,
                                                        sourceURL: URL(string: imageName)!,
@@ -57,8 +47,8 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { [weak self] (_, _, alt) in
-            self?.richTextView.edit(attachment) { updated in
+        controller.onUpdate = { (_, _, alt) in
+        richTextView.edit(attachment) { updated in
                 if let alt = alt {
                     updated.alt = alt
                 }
@@ -78,6 +68,9 @@ class PostAttachmentTests: XCTestCase {
         let imageName = "someExampleImage.jpg"
         let altValue = ""
 
+        let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
+        let delegate = MockAttachmentDelegate()
+        richTextView.textAttachmentDelegate = delegate
         richTextView.attributedText = NSAttributedString(string: prefixString)
         let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange,
                                                        sourceURL: URL(string: imageName)!,
@@ -88,8 +81,8 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { [weak self] (_, _, alt) in
-            self?.richTextView.edit(attachment) { updated in
+        controller.onUpdate = { (_, _, alt) in
+        richTextView.edit(attachment) { updated in
                 if let alt = alt {
                     updated.alt = alt
                 }
