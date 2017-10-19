@@ -30,7 +30,7 @@ extension WPStyleGuide {
         button.setImage(helpImage, for: .normal)
         button.tintColor = WPStyleGuide.greyLighten10()
 
-        let edgeInsets = UIEdgeInsets(top: 6.0, left: 8.0, bottom: 6.0, right: 8.0)
+        let edgeInsets = UIEdgeInsets(top: 2.0, left: 2.0, bottom: 2.0, right: 2.0)
         button.contentEdgeInsets = edgeInsets
     }
 }
