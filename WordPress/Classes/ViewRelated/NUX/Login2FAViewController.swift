@@ -29,6 +29,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
         localizeControls()
         configureTextFields()
         configureSubmitButton(animating: false)
+        configureSendCodeButton()
     }
 
 
@@ -84,14 +85,20 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
         sendCodeButton.titleLabel?.numberOfLines = 0
     }
 
-
+    /// configures the text fields
+    ///
     func configureTextFields() {
         verificationCodeField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+    }
 
+    /// Hides the send code button when appropriate
+    ///
+    func configureSendCodeButton() {
         guard let _ = loginFields.nonceInfo else {
             return
         }
-        sendCodeButton.isHidden = true
+        sendCodeButton.isEnabled = false
+        sendCodeButton.setTitle("", for: .normal)
     }
 
 
