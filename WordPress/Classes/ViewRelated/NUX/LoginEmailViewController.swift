@@ -135,7 +135,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             return
         }
 
-        let button = UIButton.googleLoginButton()
+        let button = WPStyleGuide.googleLoginButton()
         let buttonWrapper = UIView()
         buttonWrapper.addSubview(button)
         stackView.addArrangedSubview(buttonWrapper)
