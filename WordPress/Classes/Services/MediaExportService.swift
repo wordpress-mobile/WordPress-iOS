@@ -198,8 +198,7 @@ open class MediaExportService: LocalCoreDataService {
 
     /// Configure Media with the AssetExport.
     ///
-    fileprivate func configureMedia(_ media: Media, withExport export: MediaAssetExporter.AssetExport) {
-        media.remoteStatusNumber = NSNumber(value: MediaRemoteStatus.local.rawValue)
+    fileprivate func configureMedia(_ media: Media, withExport export: MediaAssetExporter.AssetExport) {        
         switch export {
         case .exportedImage(let imageExport):
             configureMedia(media, withExport: imageExport)
