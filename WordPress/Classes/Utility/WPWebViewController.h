@@ -2,23 +2,29 @@
 
 @class Blog;
 @class WPAccount;
+@class WebViewControllerConfiguration;
+@class WebViewAuthenticator;
+
+NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - WPWebViewController
 
 @interface WPWebViewController : UIViewController<UIWebViewDelegate>
 
-/**
- *	@brief		Represents the Endpoint URL to render
- */
-@property (nonatomic, strong) NSURL     *url;
+- (instancetype)initWithConfiguration:(WebViewControllerConfiguration *)configuration;
 
 /**
- *	@brief		Optionally scrolls the endpoint to the bottom of the screen, automatically.
+ *    @brief        Represents the Endpoint URL to render
  */
-@property (nonatomic, assign) BOOL      shouldScrollToBottom;
+@property (nonatomic, strong, nullable) NSURL     *url;
 
 /**
- *	@brief		Optionally suppresses navigation and sharing
+ *  @brief      A custom options button to show instead of the share button. Must be set before presented.
+ */
+@property (nonatomic, strong, nullable) UIBarButtonItem *optionsButton;
+
+/**
+ *    @brief        Optionally suppresses navigation and sharing
  */
 @property (nonatomic, assign) BOOL      secureInteraction;
 
@@ -27,39 +33,13 @@
  */
 @property (nonatomic, assign) BOOL addsWPComReferrer;
 
-/**
- *  @brief Use the provided blog to authenticate the web view.
- */
-- (void)authenticateWithBlog:(Blog *)blog;
-
-/**
- *  @brief Use the provided account to authenticate the web view.
- */
-- (void)authenticateWithAccount:(WPAccount *)account;
+@property (nonatomic, strong, nullable) WebViewAuthenticator *authenticator;
 
 /**
  *	@brief		Dismiss modal presentation
  */
 - (IBAction)dismiss;
 
-/**
- *	@brief      Helper method to initialize a WebViewController Instance
- *
- *	@param		url         The URL that needs to be rendered
- *  @returns                A WPWebViewController instance ready to be pushed.
- */
-+ (instancetype)webViewControllerWithURL:(NSURL *)url;
-
-/**
- *	@brief      Helper method to initialize a WebViewController Instance with a 
- *              custom options button
- *
- *	@param		url         The URL that needs to be rendered
- *  @param      button      A custom options button to display instead of the
- *                          default share button.
- *  @returns                A WPWebViewController instance ready to be pushed.
- */
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-                           optionsButton:(UIBarButtonItem *)button;
-
 @end
+
+NS_ASSUME_NONNULL_END

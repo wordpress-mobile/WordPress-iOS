@@ -24,7 +24,7 @@ extension UIImage {
      - compressionQuality: defines the compression quality of the export. This is only relevant for type formats that support a quality parameter. Ex: jpeg
      - metadata: the image metadata to save to file.
      */
-    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9,  metadata: [String: AnyObject]? = nil) throws {
+    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9, metadata: [String: AnyObject]? = nil) throws {
         let properties: [String: AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality as AnyObject]
         var finalMetadata = metadata
         if metadata == nil {
@@ -40,7 +40,7 @@ extension UIImage {
         }
         CGImageDestinationSetProperties(destination, properties as CFDictionary?)
         CGImageDestinationAddImage(destination, imageRef, finalMetadata as CFDictionary?)
-        if (!CGImageDestinationFinalize(destination)) {
+        if !CGImageDestinationFinalize(destination) {
             throw errorForCode(.failedToWrite,
                 failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
             )
@@ -84,7 +84,7 @@ extension UIImage: ExportableAsset {
                      successHandler: @escaping SuccessHandler,
                      errorHandler: @escaping ErrorHandler) {
         var finalImage = self
-        if (maximumResolution.width <= self.size.width || maximumResolution.height <= self.size.height) {
+        if maximumResolution.width <= self.size.width || maximumResolution.height <= self.size.height {
             finalImage = self.resizedImage(with: .scaleAspectFit, bounds: maximumResolution, interpolationQuality: .high)
         }
 

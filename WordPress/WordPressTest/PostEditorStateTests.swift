@@ -206,14 +206,14 @@ extension PostEditorStateTests {
     }
 
     func testPublishSecondaryExistingFutureDatedDrafts() {
-        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, publishDate:Date.distantFuture, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, publishDate: Date.distantFuture, delegate: self)
         context.updated(hasContent: true)
 
         XCTAssertFalse(context.isSecondaryPublishButtonShown, "should return false for existing future-dated drafts (no publish now)")
     }
 
     func testPublishSecondaryAlreadyScheduledPosts() {
-        context = PostEditorStateContext(originalPostStatus: .scheduled, userCanPublish: true, publishDate:Date.distantFuture, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: .scheduled, userCanPublish: true, publishDate: Date.distantFuture, delegate: self)
         context.updated(hasContent: true)
 
         XCTAssertFalse(context.isSecondaryPublishButtonShown, "should return false for existing scheduled drafts (no publish now)")
