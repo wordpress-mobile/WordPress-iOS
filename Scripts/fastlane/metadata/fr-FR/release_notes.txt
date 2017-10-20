@@ -1,3 +1,4 @@
-Sélecteur de média sur une seule ligne dans le nouvel éditeur.
-Sites Jetpack : Ajout du support pour naviguer dans les thèmes et les activer.
-Sites Jetpack : gérer vos réglage de sécurité dans l’app.
+Bibliothèque de médias : Autoriser l’insertion de liens aux documents depuis la bibliothèque de médias.
+Bibliothèque de médias : Champ Alt modifiable.
+Editeur Aztec : Support de la page suivante.
+
