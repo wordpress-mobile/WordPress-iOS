@@ -168,7 +168,6 @@
         } else if ([object isKindOfClass:[Blog class]]) {
             Blog *blog = (Blog *)object;
             media = [Media makeMediaWithBlog:blog];
-            media.remoteStatusNumber = @(MediaRemoteStatusLocal);
         }
 
         if (media) {
