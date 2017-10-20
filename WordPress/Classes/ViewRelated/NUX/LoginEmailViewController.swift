@@ -454,8 +454,8 @@ extension LoginEmailViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
         // TODO: finish implementing wpcom login via Google code
         guard let user = user,
-            let token = user.authentication.idToken,
-                let email = user.profile.email else {
+              let token = user.authentication.idToken,
+              let email = user.profile.email else {
             // The Google SignIn for may have been canceled.
             //TODO: Add analytis
             return
