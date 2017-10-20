@@ -87,11 +87,22 @@ extension WPStyleGuide {
 
         let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
         let button = UIButton()
+        button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.contentHorizontalAlignment = .left
         button.titleLabel?.font = font
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byWordWrapping
+
+        // Manually setting constraints to ensure that a multiline lable is fully
+        // visible. Some layout scenarios seem to cause the button height to size
+        // smaller than the text in the label.
+        // The constant in the anchors are to ensure there is always a
+        // consistent amount of space between the top and bottom of the label and
+        // the containing button.  Edge insets can also do this but do not
+        // solve the height issue.
+        button.titleLabel?.topAnchor.constraint(equalTo: button.topAnchor, constant: 10).isActive = true
+        button.titleLabel?.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -10).isActive = true
 
         let attrStrNormal = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.wordPressBlue())
         let attrStrHiglight = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.lightBlue())
