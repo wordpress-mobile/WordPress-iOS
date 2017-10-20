@@ -123,7 +123,7 @@ import WordPressShared
         super.viewWillAppear(animated)
 
         // We shouldn't show a selection if our split view is collapsed
-        if (splitViewControllerIsHorizontallyCompact) {
+        if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
 
             restorableSelectedIndexPath = defaultIndexPath
@@ -563,7 +563,7 @@ import WordPressShared
 }
 
 
-extension ReaderMenuViewController : ReaderMenuViewModelDelegate {
+extension ReaderMenuViewController: ReaderMenuViewModelDelegate {
 
     func menuDidReloadContent() {
         reloadTableViewPreservingSelection()
@@ -587,7 +587,7 @@ extension ReaderMenuViewController : ReaderMenuViewModelDelegate {
 
 }
 
-extension ReaderMenuViewController : WPSplitViewControllerDetailProvider {
+extension ReaderMenuViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         if restorableSelectedIndexPath == defaultIndexPath {
             let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)

@@ -75,6 +75,10 @@
         if ([self.delegate respondsToSelector:@selector(needsMultifactorCodeForUserID:andNonceInfo:)]) {
             [self.delegate needsMultifactorCodeForUserID:userID andNonceInfo:nonceInfo];
         }
+    } existingUserNeedsConnection: ^(NSString *email) {
+        if ([self.delegate respondsToSelector:@selector(existingUserNeedsConnection:)]) {
+            [self.delegate existingUserNeedsConnection: email];
+        }
     } failure:^(NSError *error) {
         [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
         if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {

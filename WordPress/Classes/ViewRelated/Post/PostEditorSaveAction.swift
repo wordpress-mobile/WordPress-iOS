@@ -16,9 +16,9 @@ extension WPPostViewController {
     var currentSaveAction: PostEditorSaveAction {
         if let status = post.status,
             let originalStatus = post.original?.status, status != originalStatus || !post.hasRemote() {
-            if (post.isScheduled()) {
+            if post.isScheduled() {
                 return .schedule
-            } else if (status == .publish) {
+            } else if status == .publish {
                 return .post
             } else {
                 return .save

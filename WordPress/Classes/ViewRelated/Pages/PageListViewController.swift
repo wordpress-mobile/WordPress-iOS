@@ -594,4 +594,13 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             return NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
         }
     }
+
+    // MARK: - UISearchControllerDelegate
+
+    func didPresentSearchController(_ searchController: UISearchController) {
+        if #available(iOS 11.0, *) {
+            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - topLayoutGuide.length
+            tableView.contentInset.top = 0
+        }
+    }
 }

@@ -377,23 +377,23 @@ open class DiscussionSettingsViewController: UITableViewController {
         let headerText = NSLocalizedString("Defaults for New Posts", comment: "Discussion Settings: Posts Section")
         let footerText = NSLocalizedString("You can override these settings for individual posts.", comment: "Discussion Settings: Footer Text")
         let rows = [
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
-                boolValue:  self.settings.commentsAllowed,
+            Row(style: .Switch,
+                title: NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
+                boolValue: self.settings.commentsAllowed,
                 handler: {  [weak self] in
                                 self?.pressedCommentsAllowed($0)
                             }),
 
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
-                boolValue:  self.settings.pingbackOutboundEnabled,
+            Row(style: .Switch,
+                title: NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
+                boolValue: self.settings.pingbackOutboundEnabled,
                 handler: {  [weak self] in
                                 self?.pressedPingbacksOutbound($0)
                             }),
 
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
-                boolValue:  self.settings.pingbackInboundEnabled,
+            Row(style: .Switch,
+                title: NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
+                boolValue: self.settings.pingbackInboundEnabled,
                 handler: {  [weak self] in
                                 self?.pressedPingbacksInbound($0)
                             })
@@ -405,58 +405,58 @@ open class DiscussionSettingsViewController: UITableViewController {
     fileprivate var commentsSection: Section {
         let headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
         let rows = [
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Require name and email", comment: "Settings: Comments Approval settings"),
-                boolValue:  self.settings.commentsRequireNameAndEmail,
+            Row(style: .Switch,
+                title: NSLocalizedString("Require name and email", comment: "Settings: Comments Approval settings"),
+                boolValue: self.settings.commentsRequireNameAndEmail,
                 handler: {  [weak self] in
                                 self?.pressedRequireNameAndEmail($0)
                             }),
 
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Require users to log in", comment: "Settings: Comments Approval settings"),
-                boolValue:  self.settings.commentsRequireRegistration,
+            Row(style: .Switch,
+                title: NSLocalizedString("Require users to log in", comment: "Settings: Comments Approval settings"),
+                boolValue: self.settings.commentsRequireRegistration,
                 handler: {  [weak self] in
                                 self?.pressedRequireRegistration($0)
                             }),
 
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Close Commenting", comment: "Settings: Close comments after X period"),
-                details:    self.detailsForCloseCommenting,
+            Row(style: .Value1,
+                title: NSLocalizedString("Close Commenting", comment: "Settings: Close comments after X period"),
+                details: self.detailsForCloseCommenting,
                 handler: {  [weak self] in
                                 self?.pressedCloseCommenting($0)
                             }),
 
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
-                details:    self.detailsForSortBy,
+            Row(style: .Value1,
+                title: NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
+                details: self.detailsForSortBy,
                 handler: {  [weak self] in
                                 self?.pressedSortBy($0)
                             }),
 
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
-                details:    self.detailsForThreading,
+            Row(style: .Value1,
+                title: NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
+                details: self.detailsForThreading,
                 handler: {  [weak self] in
                                 self?.pressedThreading($0)
                             }),
 
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
-                details:    self.detailsForPaging,
+            Row(style: .Value1,
+                title: NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
+                details: self.detailsForPaging,
                 handler: {  [weak self] in
                                 self?.pressedPaging($0)
                             }),
 
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
-                details:    self.detailsForAutomaticallyApprove,
+            Row(style: .Value1,
+                title: NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
+                details: self.detailsForAutomaticallyApprove,
                 handler: {  [weak self] in
                                 self?.pressedAutomaticallyApprove($0)
                             }),
 
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
-                details:    self.detailsForLinksInComments,
+            Row(style: .Value1,
+                title: NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
+                details: self.detailsForLinksInComments,
                 handler: {  [weak self] in
                                 self?.pressedLinksInComments($0)
                             }),
@@ -467,13 +467,13 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     fileprivate var otherSection: Section {
         let rows = [
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
-                handler:    self.pressedModeration),
+            Row(style: .Value1,
+                title: NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
+                handler: self.pressedModeration),
 
-            Row(style:      .Value1,
-                title:      NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"),
-                handler:    self.pressedBlacklist)
+            Row(style: .Value1,
+                title: NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"),
+                handler: self.pressedBlacklist)
         ]
 
         return Section(rows: rows)

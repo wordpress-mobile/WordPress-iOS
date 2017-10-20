@@ -22,7 +22,6 @@ class MediaLibraryViewController: UIViewController {
 
     fileprivate var capturePresenter: WPMediaCapturePresenter?
 
-    private let defaultSearchBarHeight: CGFloat = 44.0
     lazy fileprivate var searchBarContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -186,24 +185,50 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private func addSearchBarContainer() {
+        searchBarContainer.backgroundColor = searchBar.barTintColor
+
         stackView.insertArrangedSubview(searchBarContainer, at: 0)
 
         NSLayoutConstraint.activate([
             searchBarContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBarContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+            ])
 
-        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: defaultSearchBarHeight)
+        wrapSearchBarInPaddingView()
+
+        let height = searchBar.intrinsicContentSize.height
+        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: height)
         heightConstraint.priority = UILayoutPriorityDefaultLow
         heightConstraint.isActive = true
 
-        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: defaultSearchBarHeight)
+        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: height)
         expandedHeightConstraint.priority = UILayoutPriorityRequired
         expandedHeightConstraint.isActive = true
 
         searchBarContainer.layoutIfNeeded()
-        searchBarContainer.addSubview(searchBar)
         searchBar.sizeToFit()
+    }
+
+    private func wrapSearchBarInPaddingView() {
+        let paddingView = UIView()
+        paddingView.translatesAutoresizingMaskIntoConstraints = false
+        searchBarContainer.addSubview(paddingView)
+        paddingView.addSubview(searchBar)
+
+        var leading = searchBarContainer.leadingAnchor
+        var trailing = searchBarContainer.trailingAnchor
+
+        if #available(iOS 11.0, *) {
+            leading = searchBarContainer.safeAreaLayoutGuide.leadingAnchor
+            trailing = searchBarContainer.safeAreaLayoutGuide.trailingAnchor
+        }
+
+        NSLayoutConstraint.activate([
+            paddingView.leadingAnchor.constraint(equalTo: leading),
+            paddingView.trailingAnchor.constraint(equalTo: trailing),
+            paddingView.topAnchor.constraint(equalTo: searchBarContainer.topAnchor),
+            paddingView.bottomAnchor.constraint(equalTo: searchBarContainer.bottomAnchor),
+            ])
     }
 
     private func addNoResultsView() {
@@ -579,7 +604,7 @@ class MediaLibraryViewController: UIViewController {
         switch mediaType {
         case String(kUTTypeImage):
             if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable : Any] {
+                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
                 WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
             }
         case String(kUTTypeMovie):

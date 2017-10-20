@@ -11,7 +11,7 @@ struct NavigationItemRow: ImmuTableRow {
     let action: ImmuTableAction?
     let accessoryType: UITableViewCellAccessoryType
 
-    init(title: String, detail: String? = nil,icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
         self.title = title
         self.detail = detail
         self.icon = icon
