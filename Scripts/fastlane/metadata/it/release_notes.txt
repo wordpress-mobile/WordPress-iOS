@@ -1,1 +1,0 @@
-Selettore inline media nel nuovo editor. Siti Jetpack: aggiunto il supporto per la navigazione e l'attivazione di temi. Siti Jetpack: gestisci le tue impostazioni di sicurezza nell’app.
