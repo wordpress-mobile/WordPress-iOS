@@ -5,8 +5,22 @@
 
 @interface PostServiceRemoteREST : SiteServiceRemoteWordPressComREST <PostServiceRemote>
 
+/**
+ *  @brief      Create a post remotely for the specified blog with a single piece of
+ *              media.
+ *
+ *  @discussion This purpose of this method is to give app extensions the ability to create a post
+ *              with media in a single network operation.
+ *
+ *  @param  post            The post to create remotely.  Cannot be nil.
+ *  @param  media           The post to create remotely.  Can be nil.
+ *  @param  requestEqueued  The block that will be executed when the network request is queued.  Can be nil.
+ *  @param  success         The block that will be executed on success.  Can be nil.
+ *  @param  failure         The block that will be executed on failure.  Can be nil.
+ */
 - (void)createPost:(RemotePost *)post
          withMedia:(RemoteMedia *)media
+    requestEqueued:(void (^)(void))requestEqueued
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure;
 
