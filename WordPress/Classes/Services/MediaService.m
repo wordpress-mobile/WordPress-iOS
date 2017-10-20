@@ -176,20 +176,20 @@
     // Export based on the type of the exportable.
     MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if ([exportable isKindOfClass:[PHAsset class]]) {
-        [importService importWithAsset:(PHAsset *)exportable
-                                    to:media
-                          onCompletion:completionWithMedia
-                               onError:completionWithError];
+        [importService importAsset:(PHAsset *)exportable
+                           toMedia:media
+                      onCompletion:completionWithMedia
+                           onError:completionWithError];
     } else if ([exportable isKindOfClass:[UIImage class]]) {
-        [importService importWithImage:(UIImage *)exportable
-                                    to:media
-                          onCompletion:completionWithMedia
-                               onError:completionWithError];
+        [importService importImage:(UIImage *)exportable
+                           toMedia:media
+                      onCompletion:completionWithMedia
+                           onError:completionWithError];
     } else if ([exportable isKindOfClass:[NSURL class]]) {
-        [importService importWithUrl:(NSURL *)exportable
-                                  to:media
-                        onCompletion:completionWithMedia
-                             onError:completionWithError];
+        [importService importURL:(NSURL *)exportable
+                         toMedia:media
+                    onCompletion:completionWithMedia
+                         onError:completionWithError];
     } else {
         completionWithError(nil);
     }
