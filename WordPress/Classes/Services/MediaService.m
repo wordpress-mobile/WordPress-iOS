@@ -167,7 +167,7 @@
     };
 
     // Export based on the type of the exportable.
-    MediaExportService *exportService = [[MediaExportService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    MediaImportService *exportService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if ([exportable isKindOfClass:[PHAsset class]]) {
         [exportService exportMediaWithBlog:blog
                                       post:post
