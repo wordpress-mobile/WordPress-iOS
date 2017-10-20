@@ -94,7 +94,7 @@ open class MediaImportService: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func `import`(url: URL, to media: Media,onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    public func `import`(url: URL, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         exportQueue.async {
 
             let exporter = MediaURLExporter()
@@ -102,7 +102,7 @@ open class MediaImportService: LocalCoreDataService {
             exporter.videoOptions = self.exporterVideoOptions
 
             exporter.exportURL(fileURL: url, onCompletion: { (urlExport) in
-                self.managedObjectContext.perform {                    
+                self.managedObjectContext.perform {
                     self.configureMedia(media, withExport: urlExport)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         onCompletion(media)
