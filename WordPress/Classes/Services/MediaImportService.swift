@@ -1,14 +1,14 @@
 import Foundation
 import CocoaLumberjack
 
-/// Encapsulates exporting Media objects from assets such as PHAssets, images, videos, or files at URLs.
+/// Encapsulates importing assets such as PHAssets, images, videos, or files at URLs to Media objects.
 ///
 /// - Note: Methods with escaping closures will call back via the configured managedObjectContext
 ///   method and its corresponding thread.
 ///
 open class MediaImportService: LocalCoreDataService {
 
-    private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaExportService", autoreleaseFrequency: .workItem)
+    private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
     public lazy var exportQueue: DispatchQueue = {
         return MediaImportService.defaultExportQueue
@@ -30,13 +30,14 @@ open class MediaImportService: LocalCoreDataService {
 
     // MARK: - Instance methods
 
-    /// Creates a Media object with an absoluteLocalURL for a PHAsset's data, asynchronously.
-    /// - paramater blog: a blog object to where the media object will be added to.
-    /// - paramater post: an optional post object to where the media object will be attached to.
+    /// Imports media from a PHAsset to the Media object, asynchronously.
+    ///
+    /// - paramater asset: the PHAsset media where data will be read from.
+    /// - paramater media: the media object to where media will be imported to.
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func exportMediaWith(blog: Blog, post: AbstractPost?, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    public func `import`(asset: PHAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         exportQueue.async {
 
             let exporter = MediaAssetExporter()
@@ -45,12 +46,6 @@ open class MediaImportService: LocalCoreDataService {
 
             exporter.exportData(forAsset: asset, onCompletion: { (assetExport) in
                 self.managedObjectContext.perform {
-                    let media: Media
-                    if let post = post {
-                        media = Media.makeMedia(post: post)
-                    } else {
-                        media = Media.makeMedia(blog: blog)
-                    }
                     self.configureMedia(media, withExport: assetExport)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         onCompletion(media)
@@ -62,16 +57,16 @@ open class MediaImportService: LocalCoreDataService {
         }
     }
 
-    /// Creates a Media object with a UIImage, asynchronously.
+    /// Imports media from a UIImage to the Media object, asynchronously.
     ///
     /// The UIImage is expected to be a JPEG, PNG, or other 'normal' image.
     ///
-    /// - paramater blog: a blog object to where the media object will be added to.
-    /// - paramater post: an optional post object to where the media object will be attached to.
+    /// - paramater image: the UIImage where data will be read from.
+    /// - paramater media: the media object to where media will be imported to.
     /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func exportMediaWith(blog: Blog, post: AbstractPost?, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    public func `import`(image: UIImage, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         exportQueue.async {
 
             let exporter = MediaImageExporter()
@@ -79,12 +74,6 @@ open class MediaImportService: LocalCoreDataService {
 
             exporter.exportImage(image, fileName: nil, onCompletion: { (imageExport) in
                 self.managedObjectContext.perform {
-                    let media: Media
-                    if let post = post {
-                        media = Media.makeMedia(post: post)
-                    } else {
-                        media = Media.makeMedia(blog: blog)
-                    }
                     self.configureMedia(media, withExport: imageExport)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         onCompletion(media)
@@ -96,16 +85,16 @@ open class MediaImportService: LocalCoreDataService {
         }
     }
 
-    /// Creates a Media object with a file at a URL, asynchronously.
+    /// Imports media from a URL to the Media object, asynchronously.
     ///
     /// The file URL is expected to be a JPEG, PNG, GIF, other 'normal' image, or video.
     ///
-    /// - paramater blog: a blog object to where the media object will be added to.
-    /// - paramater post: an optional post object to where the media object will be attached to.
+    /// - paramater url: the URL from where data will be read from.
+    /// - paramater media: the media object to where media will be imported to.
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func exportMediaWith(blog: Blog, post: AbstractPost?, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    public func `import`(url: URL, to media: Media,onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         exportQueue.async {
 
             let exporter = MediaURLExporter()
@@ -113,13 +102,7 @@ open class MediaImportService: LocalCoreDataService {
             exporter.videoOptions = self.exporterVideoOptions
 
             exporter.exportURL(fileURL: url, onCompletion: { (urlExport) in
-                self.managedObjectContext.perform {
-                    let media: Media
-                    if let post = post {
-                        media = Media.makeMedia(post: post)
-                    } else {
-                        media = Media.makeMedia(blog: blog)
-                    }
+                self.managedObjectContext.perform {                    
                     self.configureMedia(media, withExport: urlExport)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         onCompletion(media)
@@ -135,12 +118,12 @@ open class MediaImportService: LocalCoreDataService {
 
     class func logExportError(_ error: MediaExportError) {
         // Write an error logging message to help track specific sources of export errors.
-        var errorLogMessage = "Error occurred exporting Media"
+        var errorLogMessage = "Error occurred importing to Media"
         switch error {
         case is MediaAssetExporter.AssetExportError:
-            errorLogMessage.append(" with asset error")
+            errorLogMessage.append(" with asset export error")
         case is MediaImageExporter.ImageExportError:
-            errorLogMessage.append(" with image error")
+            errorLogMessage.append(" with image export error")
         case is MediaURLExporter.URLExportError:
             errorLogMessage.append(" with URL export error")
         case is MediaThumbnailExporter.ThumbnailExportError:
