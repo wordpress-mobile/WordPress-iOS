@@ -91,7 +91,7 @@ extension WPStyleGuide {
         button.contentHorizontalAlignment = .left
         button.titleLabel?.font = font
         button.titleLabel?.numberOfLines = 0
-        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        button.titleLabel?.lineBreakMode = .byWordWrapping
 
         let attrStrNormal = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.wordPressBlue())
         let attrStrHiglight = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.lightBlue())
