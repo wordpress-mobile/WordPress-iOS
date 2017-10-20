@@ -121,6 +121,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
 - (void)createPost:(RemotePost *)post
          withMedia:(RemoteMedia *)media
+    requestEqueued:(void (^)(void))requestEqueued
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
@@ -150,6 +151,10 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
             failure(error);
         }
     }];
+
+    if (requestEqueued) {
+        requestEqueued();
+    }
 }
 
 - (void)updatePost:(RemotePost *)post

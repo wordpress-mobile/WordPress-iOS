@@ -245,8 +245,6 @@ private extension ShareViewController {
             return
         }
 
-        // Setting the API up for a background upload but we will wait for the upload to finish (for now).
-        // This matches the prior approach when WordPressComKit was used here.
         let identifier = WPAppGroupName + "." + UUID().uuidString
         let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil, backgroundUploads: true, backgroundSessionIdentifier: identifier, sharedContainerIdentifier: WPAppGroupName)
 
@@ -278,10 +276,10 @@ private extension ShareViewController {
             return media
         }()
 
-        remote.createPost(remotePost, with: remoteMedia, success: {_ in
-            ShareMediaFileManager.default.purgeUploadDirectory()
-            // Even though we set this up as a background upload, let's wait for the createPost call to come back
+        remote.createPost(remotePost, with: remoteMedia, requestEqueued: {
             requestEqueued()
+        }, success: {_ in
+            ShareMediaFileManager.default.purgeUploadDirectory()
         }) { error in
             NSLog("Error creating post in share extension: \(String(describing: error))")
             ShareMediaFileManager.default.purgeUploadDirectory()
