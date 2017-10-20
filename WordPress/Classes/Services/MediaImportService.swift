@@ -37,7 +37,8 @@ open class MediaImportService: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func `import`(asset: PHAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    @objc(importAsset:toMedia:onCompletion:onError:)
+    public func `import`(_ asset: PHAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         exportQueue.async {
 
             let exporter = MediaAssetExporter()
@@ -66,7 +67,8 @@ open class MediaImportService: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func `import`(image: UIImage, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    @objc(importImage:toMedia:onCompletion:onError:)
+    public func `import`(_ image: UIImage, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         exportQueue.async {
 
             let exporter = MediaImageExporter()
@@ -94,7 +96,8 @@ open class MediaImportService: LocalCoreDataService {
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func `import`(url: URL, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+    @objc(importURL:toMedia:onCompletion:onError:)
+    public func `import`(_ url: URL, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         exportQueue.async {
 
             let exporter = MediaURLExporter()
