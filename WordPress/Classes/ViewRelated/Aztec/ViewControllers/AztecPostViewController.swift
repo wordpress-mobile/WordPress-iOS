@@ -38,6 +38,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let paragraphStyle = ParagraphStyle.default
 
         // Paragraph style customizations will go here.
+        paragraphStyle.lineSpacing = 4
 
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
