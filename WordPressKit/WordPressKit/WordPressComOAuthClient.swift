@@ -10,6 +10,7 @@ import CocoaLumberjack
     case invalidOneTimePassword
     case socialLoginExistingUserUnconnected
     case invalidTwoStepCode
+    case unknownUser
 }
 
 /// `WordPressComOAuthClient` encapsulates the pattern of authenticating against WordPress.com OAuth2 service.
@@ -344,7 +345,8 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         "needs_2fa": WordPressComOAuthError.needsMultifactorCode,
         "invalid_otp": WordPressComOAuthError.invalidOneTimePassword,
         "user_exists": WordPressComOAuthError.socialLoginExistingUserUnconnected,
-        "invalid_two_step_code": WordPressComOAuthError.invalidTwoStepCode
+        "invalid_two_step_code": WordPressComOAuthError.invalidTwoStepCode,
+        "unknown_user": WordPressComOAuthError.unknownUser
     ]
 
 
@@ -365,44 +367,34 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
             return responseObject
         }
 
-        // Handle known 400 errors.
-        if httpResponse.statusCode == 400 {
-            // REST API Error format
-            if let responseDictionary = responseObject as? [String: AnyObject],
-                let errorCode = responseDictionary["error"] as? String,
-                let errorDescription = responseDictionary["error_description"] as? String {
-
-                error?.pointee = errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject)
-            }
-
-        } else if httpResponse.statusCode == 409 {
-            // Social login user-exists error
-            if let responseDict = responseObject as? [String: AnyObject],
-                let data = responseDict["data"] as? [String: AnyObject],
-                let errors = data["errors"] as? NSArray,
-                let err = errors[0] as? [String: AnyObject],
-                let errorCode = err["code"] as? String,
-                let errorDescription = err["message"] as? String {
-
-                error?.pointee = errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject)
-            }
-        } else if httpResponse.statusCode == 403 {
-            // Social 2FA token wasn't good
-            if let responseDict = responseObject as? [String: AnyObject],
-                let data = responseDict["data"] as? [String: AnyObject],
-                let newNonce = data["two_step_nonce"] as? String,
-                let errors = data["errors"] as? NSArray,
-                let err = errors[0] as? [String: AnyObject],
-                let errorCode = err["code"] as? String,
-                let errorDescription = err["message"] as? String {
-
-                error?.pointee = errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject, newNonce: newNonce)
-            }
+        if [400, 409, 403].contains(httpResponse.statusCode),
+            let responseDictionary = responseObject as? [String: AnyObject] {
+            error?.pointee = parseError(from: responseDictionary)
         }
 
         return responseObject as AnyObject?
     }
 
+    /// Create the NSError from the response dictionary
+    private func parseError(from responseDict: [String: AnyObject]) -> NSError {
+        var errorCode: String = ""
+        var errorDescription: String = ""
+        var newNonce: String? = nil
+
+        // there's either a data object, or an error.
+        if  let errorStr = responseDict["error"] as? String {
+            errorCode = errorStr
+            errorDescription = responseDict["error_description"] as? String ?? ""
+        } else if let data = responseDict["data"] as? [String: AnyObject],
+            let errors = data["errors"] as? NSArray,
+            let err = errors[0] as? [String: AnyObject] {
+            errorCode = err["code"] as? String ?? ""
+            errorDescription = err["message"] as? String ?? ""
+            newNonce = data["two_step_nonce"] as? String
+        }
+
+        return errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject, newNonce: newNonce)
+    }
 
     /// Creates an NSError from the supplied arguements. The response object is
     /// added to the error's userInfo dictionary.
