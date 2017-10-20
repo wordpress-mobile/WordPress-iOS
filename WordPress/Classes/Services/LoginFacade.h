@@ -52,6 +52,17 @@
 - (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken;
 
 /**
+ * Social login via a social account with 2FA using a nonce.
+ *
+ * @param googleIDToken A Google id_token.
+ */
+- (void)loginToWordPressDotComWithUser:(NSInteger)userID
+                              authType:(NSString *)authType
+                           twoStepCode:(NSString *)twoStepCode
+                          twoStepNonce:(NSString *)twoStepNonce;
+
+
+/**
  *  A delegate with a few methods that indicate various aspects of the login process
  */
 @property (nonatomic, weak) id<LoginFacadeDelegate> delegate;
@@ -137,6 +148,15 @@
  *  @param authToken                authToken to be used to access the site
  */
 - (void)finishedLoginWithGoogleIDToken:(NSString *)googleIDToken authToken:(NSString *)authToken;
+
+
+/**
+ *  Called when finished logging in to a WordPress.com site via a 2FA Nonce.
+ *
+ *  @param googleIDToken            the token used
+ *  @param authToken                authToken to be used to access the site
+ */
+- (void)finishedLoginWithNonceAuthToken:(NSString *)authToken;
 
 
 /**
