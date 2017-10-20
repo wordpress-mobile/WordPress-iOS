@@ -55,7 +55,7 @@ class AppRatingUtility: NSObject {
         let trackingVersion = defaults.string(forKey: Key.currentVersion) ?? version
         defaults.set(version, forKey: Key.currentVersion)
 
-        if (trackingVersion == version) {
+        if trackingVersion == version {
             incrementUseCount()
         } else {
             let shouldSkipRating = shouldSkipRatingForCurrentVersion()
@@ -234,7 +234,7 @@ class AppRatingUtility: NSObject {
     /// Records a prompt for a review
     ///
     func userWasPromptedToReview() {
-        defaults.set(Date(), forKey:Key.lastPromptToRateDate)
+        defaults.set(Date(), forKey: Key.lastPromptToRateDate)
     }
 
     /// Checks if the user has ever indicated that they like the app.
@@ -346,7 +346,7 @@ class AppRatingUtility: NSObject {
     // Overrides lastPromptToRateDate. For testing purposes only.
     //
     func _overrideLastPromptToRateDate(_ date: Date) {
-        defaults.set(date, forKey:Key.lastPromptToRateDate)
+        defaults.set(date, forKey: Key.lastPromptToRateDate)
     }
 
     // MARK: - Subtypes

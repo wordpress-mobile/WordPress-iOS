@@ -7,12 +7,12 @@ extension Tracks {
     // MARK: - Public Methods
     public func trackExtensionLaunched(_ wpcomAvailable: Bool) {
         let properties = ["is_configured_dotcom": wpcomAvailable]
-        trackExtensionEvent(.Launched, properties: properties as [String : AnyObject]?)
+        trackExtensionEvent(.Launched, properties: properties as [String: AnyObject]?)
     }
 
     public func trackExtensionPosted(_ status: String) {
         let properties = ["post_status": status]
-        trackExtensionEvent(.Posted, properties: properties as [String : AnyObject]?)
+        trackExtensionEvent(.Posted, properties: properties as [String: AnyObject]?)
     }
 
     public func trackExtensionCancelled() {

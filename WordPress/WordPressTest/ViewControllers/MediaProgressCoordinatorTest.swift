@@ -27,7 +27,7 @@ class MediaProgressCoordinatorTest: XCTestCase {
 
         for index in 1...totalItems {
             let progress = Progress.discreteProgress(totalUnitCount: 1)
-            mediaProgressCoordinator.track(progress: progress, ofObject:index , withMediaID: "/(index)")
+            mediaProgressCoordinator.track(progress: progress, ofObject: index, withMediaID: "/(index)")
             progress.completedUnitCount = 1
             XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.completedUnitCount == Int64(index))
         }
@@ -43,7 +43,7 @@ class MediaProgressCoordinatorTest: XCTestCase {
         XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.totalUnitCount == Int64(1), "There should 1 item")
 
         let progress = Progress.discreteProgress(totalUnitCount: 1)
-        mediaProgressCoordinator.track(progress: progress, ofObject:1 , withMediaID: "/(index)")
+        mediaProgressCoordinator.track(progress: progress, ofObject: 1, withMediaID: "/(index)")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
         // simulate a failed request
@@ -63,7 +63,7 @@ class MediaProgressCoordinatorTest: XCTestCase {
         XCTAssertTrue(mediaProgressCoordinator.mediaUploadingProgress!.totalUnitCount == Int64(1), "There should 1 item")
 
         let progress = Progress.discreteProgress(totalUnitCount: 1)
-        mediaProgressCoordinator.track(progress: progress, ofObject:1 , withMediaID: "/(index)")
+        mediaProgressCoordinator.track(progress: progress, ofObject: 1, withMediaID: "/(index)")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
 

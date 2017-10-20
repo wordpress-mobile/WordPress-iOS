@@ -136,7 +136,7 @@ import WordPressShared
             stat = .readerTagLoaded
 
         }
-        if (stat != nil) {
+        if stat != nil {
             WPAnalytics.track(stat!, withProperties: properties)
         }
     }
