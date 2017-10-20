@@ -332,6 +332,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         if awaitingGoogle {
             awaitingGoogle = false
             configureViewLoading(false)
+            GIDSignIn.sharedInstance().disconnect()
 
             let socialErrorVC = LoginSocialErrorViewController(title: NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com"), description: error.localizedDescription)
             let socialErrorNav = LoginNavigationController(rootViewController: socialErrorVC)
