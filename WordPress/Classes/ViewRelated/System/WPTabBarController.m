@@ -217,7 +217,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         _readerNavigationController.navigationBar.translucent = NO;
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-        _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _readerNavigationController.tabBarItem.image = readerTabBarImage;
         _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
         _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
