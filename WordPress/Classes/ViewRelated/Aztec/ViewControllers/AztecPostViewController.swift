@@ -194,6 +194,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let cancelItem = UIBarButtonItem(customView: self.closeButton)
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
+        cancelItem.accessibilityIdentifier = "Close"
         return cancelItem
     }()
 
@@ -681,7 +682,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
-
+        navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
     }
