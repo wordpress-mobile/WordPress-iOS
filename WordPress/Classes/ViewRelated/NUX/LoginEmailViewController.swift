@@ -443,7 +443,10 @@ extension LoginEmailViewController {
 
 
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
-        // TODO: to be implemented.
+        loginFields.nonceInfo = nonceInfo
+        loginFields.nonceUserID = userID
+
+        performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.show2FA, sender: self)
     }
 }
 
