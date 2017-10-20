@@ -33,34 +33,41 @@ class WordPressScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() {
         let app = XCUIApplication()
 
-        let usernameFieldExists = app.textFields["Email or username"].exists
+        let logInExists = app.buttons["Log In"].exists
 
         // Logout first if needed
-        if !usernameFieldExists {
+        if !logInExists {
             app.tabBars["Main Navigation"].buttons["meTabButton"].tap()
             app.tables.element(boundBy: 0).cells.element(boundBy: 5).tap() // Tap disconnect
             app.alerts.element(boundBy: 0).buttons.element(boundBy: 1).tap() // Tap disconnect
         }
 
-        // Login
-        let username = ""
+        app.buttons["Log In"].tap()
+
+        let email = ""
         let password = ""
 
-        let usernameEmailTextField =  app.textFields["Email or username"]
-        usernameEmailTextField.tap()
-        usernameEmailTextField.typeText(username)
+        // Login step 1: email
+        let emailTextField =  app.textFields["Email address"]
+        emailTextField.tap()
+        emailTextField.typeText(email)
         app.buttons["Next Button"].tap()
 
-        let passwordSecureTextField = app.secureTextFields["Password"]
-        passwordSecureTextField.tap()
-        passwordSecureTextField.typeText(password)
+        // Login step 2: ignore magic link
+        app.buttons["Use Password"].tap()
 
+        // Login step 3: password
+        let passwordTextField = app.secureTextFields["Password"]
+        passwordTextField.typeText(password)
         app.buttons["Log In Button"].tap()
 
+        // Login step 4: epilogue, continue
+        app.buttons["Continue"].tap()
+
         // Get Reader Screenshot
-        app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2, numberOfTouches: 2)
-        sleep(2)
-        //app.tables.staticTexts["Discover"].tap()
+        app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2,
+                                                                      numberOfTouches: 2)
+        sleep(1)
         app.tables.cells.element(boundBy: 1).tap() // tap Discover
         sleep(5)
         snapshot("1-Reader")
@@ -69,29 +76,26 @@ class WordPressScreenshotGeneration: XCTestCase {
         app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
         snapshot("2-Notifications")
 
-        // Get "Posts" screenshot
+        // Get Posts screenshot
         app.tabBars["Main Navigation"].buttons["mySitesTabButton"].tap()
         app.tables.cells.element(boundBy: 2).tap() // tap Blog Posts
         sleep(2)
         snapshot("3-BlogPosts")
 
-        // Get "Post" screenshot
-
+        // Get Editor screenshot
         // Tap on the first post to bring up the editor
         app.tables["PostsTable"].tap()
-
-        // Give the title field the focus
-        app.otherElements["ZSSRichTextEditor"].children(matching: .textView).element(boundBy: 0).tap()
+        // The title field gets focus automatically
+        sleep(2)
         snapshot("4-PostEditor")
 
-        app.navigationBars["WPPostView"].buttons["Cancel"].tap()
-
+        app.navigationBars["Azctec Editor Navigation Bar"].buttons["Close"].tap()
         // Dismiss Unsaved Changes Alert if it shows up
         if app.sheets.element(boundBy: 0).exists {
             app.sheets.element(boundBy: 0).buttons.element(boundBy: 0).tap()
         }
 
-        // Get "Stats" screenshot
+        // Get Stats screenshot
         // Tap the back button if on an iPhone screen
         if UIDevice.current.userInterfaceIdiom == .phone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
