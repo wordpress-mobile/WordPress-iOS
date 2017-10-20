@@ -6,12 +6,12 @@ import CocoaLumberjack
 /// - Note: Methods with escaping closures will call back via the configured managedObjectContext
 ///   method and its corresponding thread.
 ///
-open class MediaExportService: LocalCoreDataService {
+open class MediaImportService: LocalCoreDataService {
 
     private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaExportService", autoreleaseFrequency: .workItem)
 
     public lazy var exportQueue: DispatchQueue = {
-        return MediaExportService.defaultExportQueue
+        return MediaImportService.defaultExportQueue
     }()
 
     /// Constant for the ideal compression quality used when images are added to the Media Library.
@@ -157,7 +157,7 @@ open class MediaExportService: LocalCoreDataService {
     /// Handle the OnError callback and logging any errors encountered.
     ///
     fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
-        MediaExportService.logExportError(error)
+        MediaImportService.logExportError(error)
         // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
@@ -172,7 +172,7 @@ open class MediaExportService: LocalCoreDataService {
         var options = MediaImageExporter.Options()
         options.maximumImageSize = self.exporterMaximumImageSize()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
-        options.imageCompressionQuality = MediaExportService.preferredImageCompressionQuality
+        options.imageCompressionQuality = MediaImportService.preferredImageCompressionQuality
         return options
     }
 
