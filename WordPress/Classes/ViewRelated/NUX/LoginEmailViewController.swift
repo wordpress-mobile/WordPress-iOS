@@ -158,6 +158,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     func googleLoginTapped() {
         awaitingGoogle = true
+        configureViewLoading(true)
+
         GIDSignIn.sharedInstance().disconnect()
 
         // Flag this as a social sign in.
@@ -329,6 +331,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
         if awaitingGoogle {
             awaitingGoogle = false
+            configureViewLoading(false)
 
             let socialErrorVC = LoginSocialErrorViewController(title: NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com"), description: error.localizedDescription)
             let socialErrorNav = LoginNavigationController(rootViewController: socialErrorVC)
@@ -458,6 +461,7 @@ extension LoginEmailViewController: GIDSignInDelegate {
               let email = user.profile.email else {
             // The Google SignIn for may have been canceled.
             //TODO: Add analytis
+            configureViewLoading(false)
             return
         }
 
@@ -465,8 +469,6 @@ extension LoginEmailViewController: GIDSignInDelegate {
         loginFields.emailAddress = email
         loginFields.username = email
         loginFields.meta.socialServiceIDToken = token
-
-        configureViewLoading(true)
 
         loginFacade.loginToWordPressDotCom(withGoogleIDToken: token)
 
