@@ -141,9 +141,12 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         stackView.addArrangedSubview(buttonWrapper)
         button.addTarget(self, action: #selector(googleLoginTapped), for: .touchUpInside)
 
+        // Ensure height.
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: 40.0).isActive = true
+
         buttonWrapper.addConstraints([
             buttonWrapper.topAnchor.constraint(equalTo: button.topAnchor, constant: Constants.googleButtonOffset),
-            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: Constants.googleButtonOffset * -1.0),
+            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor),
             buttonWrapper.leadingAnchor.constraint(equalTo: button.leadingAnchor),
             buttonWrapper.trailingAnchor.constraint(equalTo: button.trailingAnchor)
             ])
