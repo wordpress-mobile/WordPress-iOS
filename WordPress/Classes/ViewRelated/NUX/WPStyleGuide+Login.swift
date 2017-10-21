@@ -3,9 +3,9 @@ import WordPressShared
 extension WPStyleGuide {
 
     private struct Constants {
-        static let labelMinHeight: CGFloat = 30.0
+        static let buttonMinHeight: CGFloat = 40.0
         static let googleIconOffset: CGFloat = -1.0
-        static let verticalPadding: CGFloat = 5.0
+        static let verticalLabelSpacing: CGFloat = 10.0
     }
 
     /// Common view style for signin view controllers.
@@ -94,15 +94,12 @@ extension WPStyleGuide {
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byWordWrapping
 
-        // Manually setting constraints to ensure that a multiline lable is fully
-        // visible. Some layout scenarios seem to cause the button height to size
-        // smaller than the text in the label.
-        // The constant in the anchors are to ensure there is always a
-        // consistent amount of space between the top and bottom of the label and
-        // the containing button.  Edge insets can also do this but do not
-        // solve the height issue.
-        button.titleLabel?.topAnchor.constraint(equalTo: button.topAnchor, constant: 10).isActive = true
-        button.titleLabel?.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -10).isActive = true
+        // These constraints work around some issues with multiline buttons and
+        // vertical layout.  Without them the button's height may not account
+        // for the titleLabel's height.
+        button.titleLabel?.topAnchor.constraint(equalTo: button.topAnchor, constant: Constants.verticalLabelSpacing).isActive = true
+        button.titleLabel?.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -Constants.verticalLabelSpacing).isActive = true
+        button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonMinHeight).isActive = true
 
         let attrStrNormal = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.wordPressBlue())
         let attrStrHiglight = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.lightBlue())
