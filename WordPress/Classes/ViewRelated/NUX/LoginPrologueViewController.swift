@@ -44,6 +44,7 @@ class LoginPrologueViewController: UIViewController {
     func localizeControls() {
         loginButton.setTitle(NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form."),
                              for: .normal)
+        loginButton.accessibilityIdentifier = "Log In"
 
         signupButton.setTitle(NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
                               for: .normal)
