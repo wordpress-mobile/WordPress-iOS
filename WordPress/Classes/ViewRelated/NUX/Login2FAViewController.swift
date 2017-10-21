@@ -168,6 +168,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
         syncWPCom(username, authToken: authToken, requiredMultifactor: true)
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
+        WPAppAnalytics.track(.loginSocialSuccess)
     }
 
 
