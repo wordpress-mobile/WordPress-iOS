@@ -72,6 +72,7 @@ class LoginEpilogueViewController: UIViewController {
         }
         continueButton?.setTitle(NSLocalizedString("Continue", comment: "A button title"),
                                  for: .normal)
+        continueButton?.accessibilityIdentifier = "Continue"
         connectButton?.setTitle(connectTitle, for: .normal)
 
     }
