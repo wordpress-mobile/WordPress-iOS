@@ -106,6 +106,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         // (not strictly needed when white, but left here for possible customization)
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
 
+        // This can't be set using UIAppearance, otherwise it overrides the titleTextAttributes
+        // set for unselected items.
+        [[self tabBar] setUnselectedItemTintColor:[WPStyleGuide greyLighten10]];
+
         [self setViewControllers:@[self.blogListSplitViewController,
                                    self.readerSplitViewController,
                                    self.newPostViewController,
@@ -193,7 +197,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
     UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
-    _blogListNavigationController.tabBarItem.image = [mySitesTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
@@ -217,7 +221,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         _readerNavigationController.navigationBar.translucent = NO;
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-        _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _readerNavigationController.tabBarItem.image = readerTabBarImage;
         _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
         _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
@@ -256,7 +260,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
         UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-        _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _meNavigationController.tabBarItem.image = meTabBarImage;
         _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
@@ -285,10 +289,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
-    self.notificationsTabBarImage = [[UIImage imageNamed:@"icon-tab-notifications"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
     self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"icon-tab-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications"];
+    _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
@@ -320,9 +324,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         self.newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
         self.newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 99999.0);
 
-        UIImage *newPostImage = [UIImage imageNamed:@"icon-tab-newpost"];
-        newPostImage = [newPostImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        self.newPostViewController.tabBarItem.image = newPostImage;
+        self.newPostViewController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-newpost"];
     }
 }
 
