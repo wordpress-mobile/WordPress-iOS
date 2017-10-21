@@ -446,15 +446,19 @@ extension LoginEmailViewController {
 
 
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
-        // TODO: to be implemented.
+        loginFields.nonceInfo = nonceInfo
+        loginFields.nonceUserID = userID
+
+        performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.show2FA, sender: self)
     }
 }
 
 extension LoginEmailViewController: GIDSignInDelegate {
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+    func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
         // TODO: finish implementing wpcom login via Google code
-        guard let token = user.authentication.idToken,
-                let email = user.profile.email else {
+        guard let user = user,
+              let token = user.authentication.idToken,
+              let email = user.profile.email else {
             // The Google SignIn for may have been canceled.
             //TODO: Add analytis
             return
