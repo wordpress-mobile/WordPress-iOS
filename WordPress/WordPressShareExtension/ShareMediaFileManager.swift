@@ -31,8 +31,8 @@ import Foundation
     }
 
     // MARK: - Singleton
-    
-    static let shared : ShareMediaFileManager = ShareMediaFileManager()
+
+    static let shared: ShareMediaFileManager = ShareMediaFileManager()
     private override init() {}
 
     // MARK: - Instance methods
