@@ -241,7 +241,7 @@ private extension ShareViewController {
 private extension ShareViewController {
     func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping () -> ()) {
 
-        guard let attachedImageData = attachedImageData, let mediaDirectory = ShareMediaFileManager.default.mediaUploadDirectoryURL else {
+        guard let attachedImageData = attachedImageData, let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
             return
         }
 
@@ -276,13 +276,15 @@ private extension ShareViewController {
             return media
         }()
 
+        // The success and error blocks will probably never get called here, but let's add them just in case. Shared
+        // container cleanup will most likely occur in the container (WPiOS) app after the background session completes.
         remote.createPost(remotePost, with: remoteMedia, requestEqueued: {
             requestEqueued()
         }, success: {_ in
-            ShareMediaFileManager.default.purgeUploadDirectory()
+            ShareMediaFileManager.shared.purgeUploadDirectory()
         }) { error in
             NSLog("Error creating post in share extension: \(String(describing: error))")
-            ShareMediaFileManager.default.purgeUploadDirectory()
+            ShareMediaFileManager.shared.purgeUploadDirectory()
         }
     }
 }

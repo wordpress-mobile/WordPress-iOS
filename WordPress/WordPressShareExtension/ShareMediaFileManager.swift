@@ -1,8 +1,8 @@
 import Foundation
 
-/// Encapsulates Media functions relative to the shared container's Media directory.
+/// Encapsulates media file operations relative to the shared container's Media directory.
 ///
-class ShareMediaFileManager: NSObject {
+@objc class ShareMediaFileManager: NSObject {
 
     /// Directory name for media uploads
     ///
@@ -24,20 +24,16 @@ class ShareMediaFileManager: NSObject {
             do {
                 try fileManager.createDirectory(at: mediaDirectoryURL, withIntermediateDirectories: true, attributes: nil)
             } catch {
-                NSLog("Error creating local media directory: \(error)")
+                DDLogError("Error creating local media directory: \(error)")
             }
         }
         return mediaDirectoryURL
     }
 
-    // MARK: - Class init
-
-    /// The default instance of a MediaFileManager.
-    ///
-    @objc (defaultManager)
-    static let `default`: ShareMediaFileManager = {
-        return ShareMediaFileManager()
-    }()
+    // MARK: - Singleton
+    
+    static let shared : ShareMediaFileManager = ShareMediaFileManager()
+    private override init() {}
 
     // MARK: - Instance methods
 
@@ -54,7 +50,7 @@ class ShareMediaFileManager: NSObject {
                                                            includingPropertiesForKeys: nil,
                                                            options: .skipsHiddenFiles)
         } catch {
-            NSLog("Error retrieving contents of shared container media directory: \(error)")
+            DDLogError("Error retrieving contents of shared container media directory: \(error)")
             return
         }
 
@@ -65,12 +61,12 @@ class ShareMediaFileManager: NSObject {
                     try fileManager.removeItem(at: url)
                     removedCount += 1
                 } catch {
-                    NSLog("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
+                    DDLogError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
                 }
             }
         }
         if removedCount > 0 {
-            NSLog("Media: removed \(removedCount) file(s) during cleanup.")
+            DDLogInfo("Shared container media: removed \(removedCount) file(s) during cleanup.")
         }
     }
 }
