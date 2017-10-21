@@ -9,6 +9,7 @@ import CocoaLumberjack
     case needsMultifactorCode
     case invalidOneTimePassword
     case socialLoginExistingUserUnconnected
+    case invalidTwoStepCode
 }
 
 /// `WordPressComOAuthClient` encapsulates the pattern of authenticating against WordPress.com OAuth2 service.
@@ -19,6 +20,7 @@ import CocoaLumberjack
 public final class WordPressComOAuthClient: NSObject {
 
     public static let WordPressComOAuthErrorResponseObjectKey = "WordPressComOAuthErrorResponseObjectKey"
+    public static let WordPressComOAuthErrorNewNonceKey = "WordPressComOAuthErrorNewNonceKey"
     public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
     public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
     public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint&version=1.0"
@@ -342,6 +344,7 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
         "needs_2fa": WordPressComOAuthError.needsMultifactorCode,
         "invalid_otp": WordPressComOAuthError.invalidOneTimePassword,
         "user_exists": WordPressComOAuthError.socialLoginExistingUserUnconnected,
+        "invalid_two_step_code": WordPressComOAuthError.invalidTwoStepCode
     ]
 
 
@@ -383,6 +386,18 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
 
                 error?.pointee = errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject)
             }
+        } else if httpResponse.statusCode == 403 {
+            // Social 2FA token wasn't good
+            if let responseDict = responseObject as? [String: AnyObject],
+                let data = responseDict["data"] as? [String: AnyObject],
+                let newNonce = data["two_step_nonce"] as? String,
+                let errors = data["errors"] as? NSArray,
+                let err = errors[0] as? [String: AnyObject],
+                let errorCode = err["code"] as? String,
+                let errorDescription = err["message"] as? String {
+
+                error?.pointee = errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject, newNonce: newNonce)
+            }
         }
 
         return responseObject as AnyObject?
@@ -396,11 +411,15 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
     ///   - errorCode: A string representing the error code. This is not the same as an HTTP status code.
     ///   - errorDescription: A description of the error.
     ///   - responseObject: The responseObject (if any) that was passed with the error.
+    ///   - newNonce: *optional* The new nonce provided when a 2FA fails
     /// - Returns: An NSError.
-    func errorFor(errorCode: String, errorDescription: String, responseObject: Any?) -> NSError {
+    func errorFor(errorCode: String, errorDescription: String, responseObject: Any?, newNonce: String? = nil) -> NSError {
         var userInfo:[String: AnyObject] = [NSLocalizedDescriptionKey: errorDescription as AnyObject]
         if let responseObject = responseObject {
             userInfo[WordPressComOAuthClient.WordPressComOAuthErrorResponseObjectKey] = responseObject as AnyObject
+        }
+        if let newNonce = newNonce {
+            userInfo[WordPressComOAuthClient.WordPressComOAuthErrorNewNonceKey] = newNonce as AnyObject
         }
         let mappedCode = errorsMap[errorCode]?.rawValue ?? WordPressComOAuthError.unknown.rawValue
         return NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,

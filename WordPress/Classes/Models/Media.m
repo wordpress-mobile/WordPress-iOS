@@ -162,15 +162,17 @@
 
 - (NSString *)remoteStatusText
 {
-    switch ([self.remoteStatusNumber intValue]) {
+    switch (self.remoteStatus) {
         case MediaRemoteStatusPushing:
-            return NSLocalizedString(@"Uploading", @"");
+            return NSLocalizedString(@"Uploading", @"Status for Media object that is being uploaded.");
         case MediaRemoteStatusFailed:
-            return NSLocalizedString(@"Failed", @"");
+            return NSLocalizedString(@"Failed", @"Status for Media object that is failed upload or export.");
         case MediaRemoteStatusSync:
-            return NSLocalizedString(@"Uploaded", @"");
-        default:
-            return NSLocalizedString(@"Pending", @"");
+            return NSLocalizedString(@"Uploaded", @"Status for Media object that is uploaded and sync with server.");
+        case MediaRemoteStatusProcessing:
+            return NSLocalizedString(@"Pending", @"Status for Media object that is being processed locally.");
+        case MediaRemoteStatusLocal:
+            return NSLocalizedString(@"Local", @"Status for Media object that is only exists locally.");
     }
 }
 
