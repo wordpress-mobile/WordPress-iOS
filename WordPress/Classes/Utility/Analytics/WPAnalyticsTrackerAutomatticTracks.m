@@ -514,6 +514,36 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatLoginForgotPasswordClicked:
             eventName = @"login_forgot_password_clicked";
             break;
+        case WPAnalyticsStatLoginSocialButtonClick:
+            eventName = @"login_social_button_click";
+            break;
+        case WPAnalyticsStatLoginSocialButtonFailure:
+            eventName = @"login_social_button_failure";
+            break;
+        case WPAnalyticsStatLoginSocialConnectSuccess:
+            eventName = @"login_social_connect_success";
+            break;
+        case WPAnalyticsStatLoginSocialConnectFailure:
+            eventName = @"login_social_connect_failure";
+            break;
+        case WPAnalyticsStatLoginSocialSuccess:
+            eventName = @"login_social_login_success";
+            break;
+        case WPAnalyticsStatLoginSocialFailure:
+            eventName = @"login_social_login_failure";
+            break;
+        case WPAnalyticsStatLoginSocial2faNeeded:
+            eventName = @"login_social_2fa_needed";
+            break;
+        case WPAnalyticsStatLoginSocialAccountsNeedConnecting:
+            eventName = @"login_social_accounts_need_connecting";
+            break;
+        case WPAnalyticsStatLoginSocialErrorAccountAlreadyConnected:
+            eventName = @"login_social_error_account_already_connected";
+            break;
+        case WPAnalyticsStatLoginSocialErrorUnknownUser:
+            eventName = @"login_social_error_unknown_user";
+            break;
         case WPAnalyticsStatLogout:
             eventName = @"account_logout";
             break;
