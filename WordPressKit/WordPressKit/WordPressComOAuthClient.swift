@@ -377,9 +377,9 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
 
     /// Create the NSError from the response dictionary
     private func parseError(from responseDict: [String: AnyObject]) -> NSError {
-        var errorCode: String = ""
-        var errorDescription: String = ""
-        var newNonce: String? = nil
+        var errorCode = ""
+        var errorDescription = ""
+        var newNonce: String?
 
         // there's either a data object, or an error.
         if  let errorStr = responseDict["error"] as? String {
