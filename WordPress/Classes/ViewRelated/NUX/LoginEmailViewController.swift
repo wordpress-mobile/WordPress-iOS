@@ -135,7 +135,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             return
         }
 
-        let button = UIButton.googleLoginButton()
+        let button = WPStyleGuide.googleLoginButton()
         let buttonWrapper = UIView()
         buttonWrapper.addSubview(button)
         stackView.addArrangedSubview(buttonWrapper)
@@ -143,7 +143,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
         buttonWrapper.addConstraints([
             buttonWrapper.topAnchor.constraint(equalTo: button.topAnchor, constant: Constants.googleButtonOffset),
-            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: Constants.googleButtonOffset * -1.0),
+            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor),
             buttonWrapper.leadingAnchor.constraint(equalTo: button.leadingAnchor),
             buttonWrapper.trailingAnchor.constraint(equalTo: button.trailingAnchor)
             ])
