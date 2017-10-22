@@ -393,7 +393,7 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
             newNonce = data["two_step_nonce"] as? String
         }
 
-        return errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseObject, newNonce: newNonce)
+        return errorFor(errorCode: errorCode, errorDescription: errorDescription, responseObject: responseDict, newNonce: newNonce)
     }
 
     /// Creates an NSError from the supplied arguements. The response object is
