@@ -9,10 +9,10 @@ class EditorSettings: NSObject {
     }
 
     // MARK: - Enabled Editors Keys
-    
+
     fileprivate let hybridEditorEnabledKey = "kUserDefaultsNewEditorEnabled"
     fileprivate let aztecEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
-    
+
     // MARK: - Forcing Aztec Keys
 
     fileprivate let lastVersionWhereAztecWasForced = "lastVersionWhereAztecWasForced"
@@ -24,29 +24,29 @@ class EditorSettings: NSObject {
     init(database: KeyValueDatabase) {
         self.database = database
         super.init()
-        
+
         setDefaultsForVersionFirstLaunch()
     }
 
     convenience override init() {
         self.init(database: UserDefaults() as KeyValueDatabase)
     }
-    
+
     // MARK: - Native Editor By Default
-    
+
     fileprivate let aztecEditorMadeDefault = "aztecEditorMadeDefault"
-    
+
     /// Contains the logic for setting the defaults the first time a version is launched.
     ///
     func setDefaultsForVersionFirstLaunch() {
         let bundleVersion = Bundle.main.bundleVersion()
-        
+
         let lastInternalForcedVersion = database.object(forKey: lastVersionWhereAztecWasForced) as? String ?? ""
-        
+
         guard lastInternalForcedVersion != bundleVersion else {
             return
         }
-        
+
         enable(.aztec)
         database.set(bundleVersion, forKey: lastVersionWhereAztecWasForced)
     }
@@ -56,7 +56,7 @@ class EditorSettings: NSObject {
     private var current: Editor {
         let hybridEditorEnabled = database.object(forKey: hybridEditorEnabledKey) as? Bool ?? false
         let nativeEditorEnabled = database.object(forKey: aztecEditorEnabledKey) as? Bool ?? false
-        
+
         if nativeEditorEnabled {
             return .aztec
         } else if hybridEditorEnabled {
@@ -65,22 +65,22 @@ class EditorSettings: NSObject {
             return .legacy
         }
     }
-    
+
     func isEnabled(_ editor: Editor) -> Bool {
         return current == editor
     }
-    
+
     /// Enables the specified editor.
     ///
     func enable(_ editor: Editor) {
-        
+
         // Tracking ON and OFF for Aztec specifically.
         if editor == .aztec && !isEnabled(.aztec) {
             WPAnalytics.track(.editorToggledOn)
         } else if editor != .aztec && isEnabled(.aztec) {
             WPAnalytics.track(.editorToggledOff)
         }
-        
+
         switch editor {
         case .legacy:
             database.set(false, forKey: hybridEditorEnabledKey)
