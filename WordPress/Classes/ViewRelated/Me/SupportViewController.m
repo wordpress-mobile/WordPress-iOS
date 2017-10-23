@@ -154,7 +154,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     presenter.optionsDictionary = self.helpshiftOptions;
 
     __weak __typeof(self) weakSelf = self;
-    void (^completion)() = ^{
+    void (^completion)(void) = ^{
         weakSelf.helpshiftLoadingIndexPath = nil;
     };
 

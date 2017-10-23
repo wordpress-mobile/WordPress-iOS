@@ -161,7 +161,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 - (void)likePost:(NSUInteger)postID
          forSite:(NSUInteger)siteID
-         success:(void (^)())success
+         success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%lu/posts/%lu/likes/new", (unsigned long)siteID, (unsigned long)postID];
@@ -181,7 +181,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 - (void)unlikePost:(NSUInteger)postID
            forSite:(NSUInteger)siteID
-           success:(void (^)())success
+           success:(void (^)(void))success
            failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%lu/posts/%lu/likes/mine/delete", (unsigned long)siteID, (unsigned long)postID];
@@ -754,7 +754,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     NSString *content = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyContent]];
     BOOL isPrivateSite = [self siteIsPrivateFromPostDictionary:dict];
 
-    return [RichContentFormatter formatContentString:content isPrivateStie:isPrivateSite];
+    return [RichContentFormatter formatContentString:content isPrivateSite:isPrivateSite];
 }
 
 /**

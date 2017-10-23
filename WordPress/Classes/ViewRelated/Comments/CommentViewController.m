@@ -628,7 +628,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     __typeof(self) __weak weakSelf = self;
     
-    void (^successBlock)() = ^void() {
+    void (^successBlock)(void) = ^void() {
         [SVProgressHUD showDismissibleSuccessWithStatus:successMessage];
     };
     

@@ -267,6 +267,6 @@ open class NotificationSettingsService: LocalCoreDataService {
     }
 
     fileprivate var deviceId: String {
-        return PushNotificationsManager.sharedInstance.deviceId ?? String()
+        return PushNotificationsManager.shared.deviceId ?? String()
     }
 }

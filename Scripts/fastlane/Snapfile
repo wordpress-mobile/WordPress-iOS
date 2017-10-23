@@ -19,6 +19,8 @@ scheme "WordPressScreenshotGeneration"
 # Where is your project (or workspace)? Provide the full path here
 workspace "../../WordPress.xcworkspace"
 
+reinstall_app true
+erase_simulator true
 localize_simulator true
 
 # By default, the latest version should be used automatically. If you want to change it, do it here

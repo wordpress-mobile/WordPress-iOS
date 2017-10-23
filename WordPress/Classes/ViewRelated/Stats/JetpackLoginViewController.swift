@@ -410,7 +410,7 @@ class JetpackLoginViewController: UIViewController {
     fileprivate func signIn() {
         isAuthenticating = true
         hideKeyboard()
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
         loginFields.username = usernameTextField.nonNilTrimmedText()
         loginFields.password = passwordTextField.nonNilTrimmedText()
         loginFields.multifactorCode = verificationCodeTextField.nonNilTrimmedText()
@@ -419,7 +419,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func sendSMSCode() {
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
         loginFields.username = usernameTextField.nonNilTrimmedText()
         loginFields.password = passwordTextField.nonNilTrimmedText()
         loginFacade.requestOneTimeCode(with: loginFields)
@@ -439,18 +439,15 @@ class JetpackLoginViewController: UIViewController {
     fileprivate func openInstallJetpackURL() {
         WPAppAnalytics.track(.selectedInstallJetpack)
         let targetURL = blog.adminUrl(withPath: jetpackInstallRelativePath)
-        displayWebView(url: targetURL,
-                            username: blog.usernameForSite,
-                            password: blog.password,
-                            wpLoginURL: URL(string: blog.loginUrl()))
+        displayWebView(url: targetURL)
     }
 
     fileprivate func openMoreInformationURL() {
         WPAppAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen)
-        displayWebView(url: jetpackMoreInformationURL, username: nil, password: nil, wpLoginURL: nil)
+        displayWebView(url: jetpackMoreInformationURL)
     }
 
-    fileprivate func displayWebView(url: String, username: String?, password: String?, wpLoginURL: URL?) {
+    fileprivate func displayWebView(url: String) {
         guard let url =  URL(string: url) else {
             return
         }
@@ -458,9 +455,7 @@ class JetpackLoginViewController: UIViewController {
             return
         }
 
-        webViewController.username = username
-        webViewController.password = password
-        webViewController.wpLoginURL = wpLoginURL
+        webViewController.authenticate(with: blog)
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)

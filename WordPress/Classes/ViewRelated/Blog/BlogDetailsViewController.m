@@ -53,7 +53,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
-@property (nonatomic, copy) void (^callback)();
+@property (nonatomic, copy) void (^callback)(void);
 
 @end
 
@@ -61,7 +61,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                         image:(UIImage * __nonnull)image
-                     callback:(void(^)())callback
+                     callback:(void(^)(void))callback
 {
     return [self initWithTitle:title
                     identifier:BlogDetailsCellIdentifier
@@ -72,7 +72,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                    identifier:(NSString * __nonnull)identifier 
                         image:(UIImage * __nonnull)image
-                     callback:(void(^)())callback
+                     callback:(void(^)(void))callback
 {
     self = [super init];
     if (self) {
@@ -999,10 +999,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    webViewController.authToken = self.blog.authToken;
-    webViewController.username = self.blog.usernameForSite;
-    webViewController.password = self.blog.password;
-    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
+    [webViewController authenticateWithBlog:self.blog];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];

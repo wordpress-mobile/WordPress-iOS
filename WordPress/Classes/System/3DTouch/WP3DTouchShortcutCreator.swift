@@ -112,21 +112,26 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     @objc fileprivate func createLoggedInShortcuts() {
-        var entireShortcutArray = loggedInShortcutArray()
-        var visibleShortcutArray = [UIApplicationShortcutItem]()
+        DispatchQueue.main.async {[weak self]() in
+            guard let strongSelf = self else {
+                return
+            }
+            var entireShortcutArray = strongSelf.loggedInShortcutArray()
+            var visibleShortcutArray = [UIApplicationShortcutItem]()
 
-        if hasWordPressComAccount() {
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.notifications.rawValue])
+            if strongSelf.hasWordPressComAccount() {
+                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.notifications.rawValue])
+            }
+
+            if strongSelf.doesCurrentBlogSupportStats() {
+                visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
+            }
+
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
+
+            strongSelf.shortcutsProvider.shortcutItems = visibleShortcutArray
         }
-
-        if doesCurrentBlogSupportStats() {
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.stats.rawValue])
-        }
-
-        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPhotoPost.rawValue])
-        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.newPost.rawValue])
-
-        shortcutsProvider.shortcutItems = visibleShortcutArray
     }
 
     fileprivate func clearShortcuts() {
