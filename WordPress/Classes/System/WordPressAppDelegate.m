@@ -111,22 +111,6 @@ int ddLogLevel = DDLogLevelInfo;
 
     self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
 
-    // Temporary force of Aztec to "on" for all internal users
-#ifdef INTERNAL_BUILD
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *defaultsKey = @"AztecInternalForcedOnVersion";
-    NSString *lastBuildAztecForcedOn = [defaults stringForKey:defaultsKey];
-    NSString *currentVersion = [[NSBundle mainBundle] bundleVersion];
-    if (![currentVersion isEqualToString:lastBuildAztecForcedOn]) {
-        [defaults setObject:currentVersion forKey:defaultsKey];
-        [defaults synchronize];
-
-        EditorSettings *settings = [EditorSettings new];
-        [settings setVisualEditorEnabled:TRUE];
-        [settings setNativeEditorEnabled:TRUE];
-    }
-#endif
-
     return YES;
 }
 
