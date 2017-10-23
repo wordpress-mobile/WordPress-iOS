@@ -340,6 +340,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             if (error as NSError).code == WordPressComOAuthError.unknownUser.rawValue {
                 errorTitle = NSLocalizedString("Connected But…", comment: "Title shown when a user logs in with Google but no matching WordPress.com account is found")
                 errorDescription = NSLocalizedString("The Google account \"\(loginFields.username)\" doesn't match any account on WordPress.com", comment: "Description shown when a user logs in with Google but no matching WordPress.com account is found")
+                WPAppAnalytics.track(.loginSocialErrorUnknownUser)
             } else {
                 errorTitle = NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com")
                 errorDescription = error.localizedDescription
