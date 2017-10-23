@@ -31,7 +31,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
     public func getSettings(success: @escaping (AccountSettings) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "me/settings"
         let parameters = ["context": "edit"]
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
         wordPressComRestApi.GET(path!,
                 parameters: parameters as [String : AnyObject]?,
@@ -52,7 +52,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
 
     public func updateSetting(_ change: AccountSettingsChange, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "me/settings"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = [fieldNameForChange(change): change.stringValue]
 
         wordPressComRestApi.POST(path!,
