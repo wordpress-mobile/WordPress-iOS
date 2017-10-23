@@ -538,9 +538,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatLoginSocialAccountsNeedConnecting:
             eventName = @"login_social_accounts_need_connecting";
             break;
-        case WPAnalyticsStatLoginSocialErrorAccountAlreadyConnected:
-            eventName = @"login_social_error_account_already_connected";
-            break;
         case WPAnalyticsStatLoginSocialErrorUnknownUser:
             eventName = @"login_social_error_unknown_user";
             break;
