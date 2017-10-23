@@ -81,6 +81,7 @@
         }
     } failure:^(NSError *error) {
         [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
+        [WPAppAnalytics track:WPAnalyticsStatLoginSocialFailure error:error];
         if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
             [self.delegate displayRemoteError:error];
         }

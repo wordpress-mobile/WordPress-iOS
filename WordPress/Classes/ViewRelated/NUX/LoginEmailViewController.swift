@@ -172,6 +172,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
 
         GIDSignIn.sharedInstance().signIn()
+
+        WPAppAnalytics.track(.loginSocialButtonClick)
     }
 
 
@@ -338,6 +340,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             if (error as NSError).code == WordPressComOAuthError.unknownUser.rawValue {
                 errorTitle = NSLocalizedString("Connected But…", comment: "Title shown when a user logs in with Google but no matching WordPress.com account is found")
                 errorDescription = NSLocalizedString("The Google account \"\(loginFields.username)\" doesn't match any account on WordPress.com", comment: "Description shown when a user logs in with Google but no matching WordPress.com account is found")
+                WPAppAnalytics.track(.loginSocialErrorUnknownUser)
             } else {
                 errorTitle = NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com")
                 errorDescription = error.localizedDescription
@@ -441,6 +444,7 @@ extension LoginEmailViewController {
         syncWPCom(username, authToken: authToken, requiredMultifactor: false)
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
+        WPAppAnalytics.track(.loginSocialSuccess)
     }
 
 
@@ -452,6 +456,7 @@ extension LoginEmailViewController {
         loginFields.emailAddress = email
 
         performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.showWPComLogin, sender: self)
+        WPAppAnalytics.track(.loginSocialAccountsNeedConnecting)
     }
 
 
@@ -460,19 +465,23 @@ extension LoginEmailViewController {
         loginFields.nonceUserID = userID
 
         performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.show2FA, sender: self)
+        WPAppAnalytics.track(.loginSocial2faNeeded)
     }
 }
 
 extension LoginEmailViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
-        // TODO: finish implementing wpcom login via Google code
         guard let user = user,
-              let token = user.authentication.idToken,
-              let email = user.profile.email else {
-            // The Google SignIn for may have been canceled.
-            //TODO: Add analytis
-            configureViewLoading(false)
-            return
+            let token = user.authentication.idToken,
+            let email = user.profile.email else {
+                // The Google SignIn for may have been canceled.
+                if let err = error {
+                    WPAppAnalytics.track(.loginSocialButtonFailure, error: err)
+                } else {
+                    WPAppAnalytics.track(.loginSocialButtonFailure)
+                }
+                configureViewLoading(false)
+                return
         }
 
         // Store the email address and token.
@@ -481,8 +490,6 @@ extension LoginEmailViewController: GIDSignInDelegate {
         loginFields.meta.socialServiceIDToken = token
 
         loginFacade.loginToWordPressDotCom(withGoogleIDToken: token)
-
-        //TODO: Add analytis
     }
 }
 
