@@ -9,8 +9,8 @@ class MockAttachmentDelegate: TextViewAttachmentDelegate {
         success(UIImage())
     }
 
-    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL {
-        return URL(string: "http://someExampleImage.jpg")!
+    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
+        return URL(string: "http://someExampleImage.jpg")
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
