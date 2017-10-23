@@ -90,26 +90,24 @@ class AppSettingsViewController: UITableViewController {
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         var editorRows = [ImmuTableRow]()
 
-        let editor = editorSettings.editor
-
         let textEditor = CheckmarkRow(
             title: NSLocalizedString("Plain Text", comment: "Option to enable the plain text (legacy) editor"),
-            checked: (editor == .legacy),
-            action: visualEditorChanged(editor: .legacy)
+            checked: editorSettings.isEnabled(.legacy),
+            action: enableEditor(.legacy)
         )
         editorRows.append(textEditor)
 
         let visualEditor = CheckmarkRow(
             title: NSLocalizedString("Visual", comment: "Option to enable the hybrid visual editor"),
-            checked: (editor == .hybrid),
-            action: visualEditorChanged(editor: .hybrid)
+            checked: editorSettings.isEnabled(.hybrid),
+            action: enableEditor(.hybrid)
         )
         editorRows.append(visualEditor)
 
         let nativeEditor = CheckmarkRow(
             title: NSLocalizedString("Visual 2.0", comment: "Option to enable the beta native editor (Aztec)"),
-            checked: (editor == .aztec),
-            action: visualEditorChanged(editor: .aztec)
+            checked: editorSettings.isEnabled(.aztec),
+            action: enableEditor(.aztec)
         )
         editorRows.append(nativeEditor)
 
@@ -191,7 +189,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
-        return section == Sections.editor.rawValue && EditorSettings().editor == .aztec
+        return section == Sections.editor.rawValue && EditorSettings().isEnabled(.aztec)
     }
 
     @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
@@ -311,38 +309,10 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func visualEditorChanged(editor: EditorSettings.Editor) -> ImmuTableAction {
-        return { [weak self] row in
-            let currentEditorIsAztec = EditorSettings().nativeEditorEnabled
-
-            switch editor {
-            case .legacy:
-                EditorSettings().nativeEditorEnabled = false
-                EditorSettings().visualEditorEnabled = false
-                if currentEditorIsAztec {
-                    WPAnalytics.track(.editorToggledOff)
-                }
-            case .hybrid:
-                EditorSettings().nativeEditorEnabled = false
-                EditorSettings().visualEditorEnabled = true
-                if currentEditorIsAztec {
-                    WPAnalytics.track(.editorToggledOff)
-                }
-            case .aztec:
-                EditorSettings().visualEditorEnabled = true
-                EditorSettings().nativeEditorEnabled = true
-                if !currentEditorIsAztec {
-                    WPAnalytics.track(.editorToggledOn)
-                }
-            }
-
+    func enableEditor(_ editor: EditorSettings.Editor) -> ImmuTableAction {
+        return { [weak self] _ in
+            EditorSettings().enable(editor)
             self?.reloadViewModel()
-        }
-    }
-
-    func nativeEditorChanged() -> (Bool) -> Void {
-        return { enabled in
-            EditorSettings().nativeEditorEnabled = enabled
         }
     }
 
