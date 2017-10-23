@@ -8,10 +8,10 @@ import CocoaLumberjack
 ///
 open class MediaImportService: LocalCoreDataService {
 
-    private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
+    private static let defaultImportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
-    public lazy var exportQueue: DispatchQueue = {
-        return MediaImportService.defaultExportQueue
+    public lazy var importQueue: DispatchQueue = {
+        return MediaImportService.defaultImportQueue
     }()
 
     /// Constant for the ideal compression quality used when images are added to the Media Library.
@@ -39,7 +39,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     @objc(importAsset:toMedia:onCompletion:onError:)
     public func `import`(_ asset: PHAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        exportQueue.async {
+        importQueue.async {
 
             let exporter = MediaAssetExporter()
             exporter.imageOptions = self.exporterImageOptions
@@ -69,7 +69,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     @objc(importImage:toMedia:onCompletion:onError:)
     public func `import`(_ image: UIImage, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        exportQueue.async {
+        importQueue.async {
 
             let exporter = MediaImageExporter()
             exporter.options = self.exporterImageOptions
@@ -98,7 +98,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     @objc(importURL:toMedia:onCompletion:onError:)
     public func `import`(_ url: URL, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        exportQueue.async {
+        importQueue.async {
 
             let exporter = MediaURLExporter()
             exporter.imageOptions = self.exporterImageOptions
