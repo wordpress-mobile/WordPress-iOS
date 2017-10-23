@@ -252,6 +252,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAppReviewsSentFeedback:
             eventName = @"app_reviews_feedback_sent";
             break;
+        case WPAnalyticsStatAppSettingsImageOptimizationChanged:
+            eventName = @"app_settings_image_optimization_changed";
+            break;
+        case WPAnalyticsStatAppSettingsMediaRemoveLocationChanged:
+            eventName = @"app_settings_media_remove_location_changed";
+            break;
+        case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
+            eventName = @"app_settings_video_optimization_changed";
+            break;
         case WPAnalyticsStatCreateAccountInitiated:
             eventName = @"account_create_initiated";
             break;
@@ -285,6 +294,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary:
             eventName = @"editor_video_added";
             eventProperties = @{ @"via" : @"media_library" };
+            break;
+        case WPAnalyticsStatEditorAddedOtherMediaViaWPMediaLibrary:
+            eventName = @"editor_other_media_added";
+            eventProperties = @{ @"via" : @"media_library" };
+            break;
+        case WPAnalyticsStatEditorAddedVideoViaOtherApps:
+            eventName = @"editor_video_added";
+            eventProperties = @{ @"via" : @"other_apps" };
+            break;
+        case WPAnalyticsStatEditorAddedPhotoViaOtherApps:
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"other_apps" };
             break;
         case WPAnalyticsStatEditorAztecBetaLink:
             eventName = @"editor_aztec_beta_link";
@@ -362,6 +383,26 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"image" };
             break;
+        case WPAnalyticsStatEditorMediaPickerTappedDismiss:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"cancel" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedDevicePhotos:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"device_photos" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedCamera:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"camera" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedMediaLibrary:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"media_library" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedOtherApps:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"other_apps" };
+            break;
         case WPAnalyticsStatEditorTappedItalic:
             eventName = @"editor_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"italic" };
@@ -436,6 +477,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatLoginAutoFillCredentialsUpdated:
             eventName = @"login_autofill_credentials_updated";
+            break;
+        case WPAnalyticsStatLoginProloguePaged:
+            eventName = @"login_prologue_paged";
             break;
         case WPAnalyticsStatLoginPrologueViewed:
             eventName = @"login_prologue_viewed";

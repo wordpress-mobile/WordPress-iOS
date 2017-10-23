@@ -50,7 +50,7 @@ class SigninHelperTests: XCTestCase {
 
     func testValidateFieldsPopulatedForSignin() {
         let loginFields = LoginFields()
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
 
         XCTAssert(!SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "Empty fields should not validate.")
 
@@ -60,10 +60,10 @@ class SigninHelperTests: XCTestCase {
         loginFields.password = "password"
         XCTAssert(SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "should validate wpcom with username and password.")
 
-        loginFields.userIsDotCom = false
+        loginFields.meta.userIsDotCom = false
         XCTAssert(!SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "should not validate self-hosted with just username and password.")
 
-        loginFields.siteUrl = "example.com"
+        loginFields.siteAddress = "example.com"
         XCTAssert(SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "should validate self-hosted with username, password, and site.")
     }
 
@@ -75,13 +75,13 @@ class SigninHelperTests: XCTestCase {
         XCTAssertEqual(nonWPComSite, SigninHelpers.extractUsername(from: nonWPComSite))
 
         let wpComSite = "testuser.wordpress.com"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from:wpComSite))
+        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSite))
 
         let wpComSiteSlash = "testuser.wordpress.com/"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from:wpComSiteSlash))
+        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSiteSlash))
 
         let wpComSiteHttp = "http://testuser.wordpress.com/"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from:wpComSiteHttp))
+        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSiteHttp))
 
         let nonWPComSiteFtp = "ftp://asite.mycompany.co/"
         XCTAssertEqual("asite.mycompany.co", SigninHelpers.extractUsername(from: nonWPComSiteFtp))
@@ -102,13 +102,13 @@ class SigninHelperTests: XCTestCase {
     func testValidateSiteForSignin() {
         let loginFields = LoginFields()
 
-        loginFields.siteUrl = ""
+        loginFields.siteAddress = ""
         XCTAssert(!SigninHelpers.validateSiteForSignin(loginFields), "Empty site should not validate.")
 
-        loginFields.siteUrl = "hostname"
+        loginFields.siteAddress = "hostname"
         XCTAssert(SigninHelpers.validateSiteForSignin(loginFields), "Just a host name should validate.")
 
-        loginFields.siteUrl = "host name.com"
+        loginFields.siteAddress = "host name.com"
         XCTAssert(!SigninHelpers.validateSiteForSignin(loginFields), "Hostname with spaces should not validate.")
     }
 

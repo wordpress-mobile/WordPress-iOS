@@ -3,14 +3,32 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 63
+## WordPress 67
+- @3vangelos 2017-09-26
+- `Media` added `alt` string property. Stores the information for an html alt tag for images.
 
+## WordPress 66
+- @elibud 2017-08-17
+- `BlogSettings` added the following Jetpack security settings properties: 
+    `jetpackMonitorEnabled`, `jetpackMonitorEmailNotifications`, `jetpackMonitorPushNotifications`, 
+    `jetpackBlockMaliciousLoginAttempts`, `jetpackSSOEnabled`, `jetpackSSOMatchAccountsByEmail`, 
+    `jetpackSSORequireTwoStepAuthentication` boolean, default `NO` and
+    `jetpackLoginWhiteListedIPAddresses` string set property.
+
+## WordPress 65
+- @elibud 2017-08-02
+- `Theme` added `themeUrl` string property.
+
+## WordPress 64
+- @elibud 2017-08-02
+- `Theme` added `custom` boolean property. Default `NO`.
+
+## WordPress 63
 - @koke 2017-07-31
 - `Role` added with `slug`, `name`, `blog`.
 - `Blog` added `roles` relationship.
 
 ## WordPress 62
-
 - @koke 2017-07-21
 - `Blog` removed `jetpackAccount`
 - `WPAccount` removed `jetpackBlogs`

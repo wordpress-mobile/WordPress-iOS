@@ -330,7 +330,7 @@ struct MockStore: Store {
             let products = products.flatMap({ $0 })
 
             let completion = {
-                if (self.succeeds) {
+                if self.succeeds {
                     success(products)
                 } else {
                     failure(ProductRequestError.missingProduct)

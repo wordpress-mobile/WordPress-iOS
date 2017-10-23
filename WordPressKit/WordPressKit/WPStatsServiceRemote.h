@@ -49,7 +49,7 @@ typedef NS_ENUM(NSUInteger, StatsFollowerType) {
       authorsCompletionHandler:(StatsRemoteItemsCompletion)authorsCompletion
   searchTermsCompletionHandler:(StatsRemoteItemsCompletion)searchTermsCompletion
                  progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock
-    andOverallCompletionHandler:(void (^)())completionHandler;
+    andOverallCompletionHandler:(void (^)(void))completionHandler;
 
 - (void)batchFetchInsightsStatsWithAllTimeCompletionHandler:(StatsRemoteAllTimeCompletion)allTimeCompletion
                                   insightsCompletionHandler:(StatsRemoteInsightsCompletion)insightsCompletion
@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger, StatsFollowerType) {
                                  publicizeCompletionHandler:(StatsRemoteItemsCompletion)publicizeCompletion
                                     streakCompletionHandler:(StatsRemoteStreakCompletion)streakCompletion
                                               progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock
-                                andOverallCompletionHandler:(void (^)())completionHandler;
+                                andOverallCompletionHandler:(void (^)(void))completionHandler;
 
 - (void)fetchPostDetailsStatsForPostID:(NSNumber *)postID
                  withCompletionHandler:(StatsRemotePostDetailsCompletion)completionHandler;

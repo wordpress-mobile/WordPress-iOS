@@ -97,7 +97,7 @@ extension NSAttributedString {
     }
 }
 
-public typealias StyledHTMLAttributes = [HTMLAttributeType : [String : AnyObject]]
+public typealias StyledHTMLAttributes = [HTMLAttributeType: [String: AnyObject]]
 
 public enum HTMLAttributeType: String {
     case BodyAttribute

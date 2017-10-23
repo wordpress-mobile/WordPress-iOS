@@ -14,7 +14,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 @implementation ReaderSiteService
 
-- (void)followSiteByURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)followSiteByURL:(NSURL *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -36,7 +36,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)followSiteWithID:(NSUInteger)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)followSiteWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -69,7 +69,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)unfollowSiteWithID:(NSUInteger)siteID success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -90,7 +90,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     } failure:failure];
 }
 
-- (void)followSiteAtURL:(NSString *)siteURL success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)followSiteAtURL:(NSString *)siteURL success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -129,7 +129,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }];
 }
 
-- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -174,7 +174,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     [postService fetchPostsForTopic:followedSites earlierThan:[NSDate date] success:nil failure:nil];
 }
 
-- (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)flagSiteWithID:(NSNumber *)siteID asBlocked:(BOOL)blocked success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     if (!api) {
@@ -224,7 +224,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 /**
  Called once a URL is confirmed to point at a valid site. Continues the following process.
  */
-- (void)followExistingSiteByURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)followExistingSiteByURL:(NSURL *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     WordPressComRestApi *api = [self apiForRequest];
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithWordPressComRestApi:api];

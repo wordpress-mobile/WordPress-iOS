@@ -5,7 +5,7 @@ protocol LoginSegueHandler {
     associatedtype SegueIdentifier: RawRepresentable
 }
 
-extension LoginSegueHandler where Self: NUXAbstractViewController, SegueIdentifier.RawValue == String {
+extension LoginSegueHandler where Self: NUXAbstractViewController {
     func performSegue(withIdentifier identifier: SegueIdentifier, sender: AnyObject?) {
         performSegue(withIdentifier: identifier.rawValue, sender: sender)
     }

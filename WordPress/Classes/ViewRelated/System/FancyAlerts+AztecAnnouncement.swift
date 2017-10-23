@@ -2,7 +2,7 @@ import UIKit
 import Gridicons
 import WordPressShared
 
-let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")
+let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")!
 
 
 extension FancyAlertViewController {
@@ -37,7 +37,6 @@ extension FancyAlertViewController {
             static let tryIt = NSLocalizedString("Try It", comment: "Title of the primary button on alert prompting users to try the new Aztec editor")
             static let notNow = NSLocalizedString("Not Now", comment: "Title of the cancel button on alert prompting users to try the new Aztec editor")
             static let whatsNew = NSLocalizedString("What's new?", comment: "Title of more info button on alert prompting users to try the new Aztec editor")
-            static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
         }
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
@@ -50,7 +49,7 @@ extension FancyAlertViewController {
             WPAnalytics.track(.editorToggledOn)
         }
 
-        let addConfetti: (FancyAlertButtonHandler) = { controller in
+        let addConfetti: ((FancyAlertViewController) -> Void) = { controller in
             guard let imageView = controller.headerImageView, let imageViewHolder = imageView.superview else { return }
 
             let confettiView = ConfettiView.aztecAnnouncementConfettiView()
@@ -61,7 +60,7 @@ extension FancyAlertViewController {
             confettiView.start(duration: Constants.confettiDuration)
         }
 
-        let defaultButton = Button(Strings.tryIt, { controller in
+        let defaultButton = Button(Strings.tryIt, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoPositive)
 
             enableEditor()
@@ -87,19 +86,14 @@ extension FancyAlertViewController {
             })
         })
 
-        let cancelButton = Button(Strings.notNow, { controller in
+        let cancelButton = Button(Strings.notNow, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoNegative)
             controller.dismiss(animated: true, completion: nil)
         })
 
-        let moreInfoButton = Button(Strings.whatsNew, { controller in
+        let moreInfoButton = Button(Strings.whatsNew, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
-        })
-
-        let titleAccessoryButton = Button(Strings.beta, { controller in
-            WPAppAnalytics.track(.editorAztecBetaLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
+            FancyAlertViewController.presentWhatsNewWebView(from: controller)
         })
 
         let image = UIImage(named: "wp-illustration-hand-write")
@@ -111,7 +105,7 @@ extension FancyAlertViewController {
                                                      defaultButton: defaultButton,
                                                      cancelButton: cancelButton,
                                                      moreInfoButton: moreInfoButton,
-                                                     titleAccessoryButton: titleAccessoryButton,
+                                                     titleAccessoryButton: nil,
                                                      dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
@@ -120,22 +114,16 @@ extension FancyAlertViewController {
     // Shown to users of the app who already have Aztec enabled
     static func existingTesterAztecAnnouncementController() -> FancyAlertViewController {
         struct Strings {
-            static let titleText = NSLocalizedString("New Editor in Public Beta!", comment: "Title of alert prompting users to try the new Aztec editor")
-            static let bodyText = NSLocalizedString("The WordPress app's beautiful new editor is now in public beta. It looks like you already have it enabled, so you're all set!", comment: "Body text of alert informing existing testers that the new Aztec editor is now in public beta")
+            static let titleText = NSLocalizedString("New Editor!", comment: "Title of alert prompting users to try the new Aztec editor")
+            static let bodyText = NSLocalizedString("The WordPress app's beautiful new editor is now in public beta. It looks like you already have it enabled, so you're all set!", comment: "Body text of alert informing existing testers that the new Aztec editor is now public")
             static let whatsNew = NSLocalizedString("What's new?", comment: "Title of more info button on alert prompting users to try the new Aztec editor")
-            static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
         }
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.whatsNew, { controller in
+        let moreInfoButton = Button(Strings.whatsNew, { controller, _ in
             WPAppAnalytics.track(.editorAztecPromoLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
-        })
-
-        let titleAccessoryButton = Button(Strings.beta, { controller in
-            WPAppAnalytics.track(.editorAztecBetaLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
+            FancyAlertViewController.presentWhatsNewWebView(from: controller)
         })
 
         let image = UIImage(named: "wp-illustration-hand-write")
@@ -146,7 +134,7 @@ extension FancyAlertViewController {
                                                      dividerPosition: .bottom,
                                                      defaultButton: nil,
                                                      cancelButton: nil,
-                                                     moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton, dismissAction: nil)
+                                                     moreInfoButton: moreInfoButton, titleAccessoryButton: nil, dismissAction: nil)
 
         return FancyAlertViewController.controllerWithConfiguration(configuration: config)
     }
@@ -156,20 +144,14 @@ extension FancyAlertViewController {
             static let titleText = NSLocalizedString("New Editor Enabled!", comment: "Title of alert informing users that the new Aztec editor has been enabled")
             static let bodyText = NSLocalizedString("Thanks for trying it out! You can switch editor modes at any time in", comment: "Body text of alert informing users that the new Aztec editor has been enabled")
             static let appSettings = NSLocalizedString("Me > App Settings", comment: "Text for button telling user where to find the App Settings section of the app")
-            static let beta = NSLocalizedString("Beta", comment: "Used to indicate a feature of the app currently in beta testing.")
         }
 
         typealias Button = FancyAlertViewController.Config.ButtonConfig
 
-        let moreInfoButton = Button(Strings.appSettings, { controller in
+        let moreInfoButton = Button(Strings.appSettings, { controller, _ in
             controller.presentingViewController?.dismiss(animated: true, completion: {
                 WPTabBarController.sharedInstance().switchMeTabToAppSettings()
             })
-        })
-
-        let titleAccessoryButton = Button(Strings.beta, { controller in
-            WPAppAnalytics.track(.editorAztecBetaLink)
-            WPWebViewController.presentWhatsNewWebView(from: controller)
         })
 
         let image = UIImage(named: "wp-illustration-thank-you")
@@ -178,7 +160,7 @@ extension FancyAlertViewController {
                                                bodyText: Strings.bodyText,
                                                headerImage: image,
                                                dividerPosition: .bottom,
-                                               defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: titleAccessoryButton,
+                                               defaultButton: nil, cancelButton: nil, moreInfoButton: moreInfoButton, titleAccessoryButton: nil,
                                                dismissAction: {
                                                 WPTabBarController.sharedInstance().showPostTab(animated: true, toMedia: false)
         })
@@ -218,19 +200,17 @@ extension UserDefaults {
 
 // MARK: - What's New Web View
 
-extension WPWebViewController {
+extension FancyAlertViewController {
     static func presentWhatsNewWebView(from viewController: UIViewController) {
         // Replace the web view's options button with our own bug reporting button
         let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
         bugButton.accessibilityLabel = NSLocalizedString("Report a bug", comment: "Button allowing the user to report a bug with the beta Aztec editor")
 
-        var webViewController: WPWebViewController
-
+        let configuration = WebViewControllerConfiguration(url: AztecAnnouncementWhatsNewURL)
         if HelpshiftUtils.isHelpshiftEnabled() {
-            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL, optionsButton: bugButton)
-        } else {
-            webViewController = WPWebViewController(url: AztecAnnouncementWhatsNewURL)
+            configuration.optionsButton = bugButton
         }
+        let webViewController = WebViewControllerFactory.controller(configuration: configuration)
 
         let navigationController = UINavigationController(rootViewController: webViewController)
 
@@ -249,7 +229,7 @@ extension WPWebViewController {
         presenter.sourceTag = SupportSourceTag.aztecFeedback
         presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                        refreshUserDetails: true,
-                                                                       completion:nil)
+                                                                       completion: nil)
     }
 }
 

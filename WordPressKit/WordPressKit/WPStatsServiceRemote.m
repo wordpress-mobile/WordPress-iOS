@@ -119,7 +119,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
       authorsCompletionHandler:(StatsRemoteItemsCompletion)authorsCompletion
   searchTermsCompletionHandler:(StatsRemoteItemsCompletion)searchTermsCompletion
                  progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock
-    andOverallCompletionHandler:(void (^)())completionHandler
+   andOverallCompletionHandler:(void (^)(void))completionHandler
 {
     NSMutableArray *mutableOperations = [NSMutableArray new];
 
@@ -184,7 +184,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
                                  publicizeCompletionHandler:(StatsRemoteItemsCompletion)publicizeCompletion
                                     streakCompletionHandler:(StatsRemoteStreakCompletion)streakCompletion
                                               progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock
-                                andOverallCompletionHandler:(void (^)())completionHandler
+                                andOverallCompletionHandler:(void (^)(void))completionHandler
 {
     NSMutableArray *mutableOperations = [NSMutableArray new];
 
@@ -280,15 +280,20 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
         }
 
         for (NSArray *visit in visitsData) {
-            StatsSummary *statsSummary = [StatsSummary new];
-            statsSummary.periodUnit = StatsPeriodUnitDay;
-            statsSummary.date = [self deviceLocalDateForString:visit[0] withPeriodUnit:StatsPeriodUnitDay];
-            statsSummary.label = [self nicePointNameForDate:statsSummary.date forStatsPeriodUnit:statsSummary.periodUnit];
-            statsSummary.views = [self localizedStringForNumber:visit[1]];
-            statsSummary.viewsValue = visit[1];
-            
-            [visitsArray addObject:statsSummary];
-            visitsDictionary[statsSummary.date] = statsSummary;
+            // We can only save stats data that has a proper date on it
+            // Otherwise it will crash on the visitsDictionary insertion
+            NSDate *statDate = [self deviceLocalDateForString:visit[0] withPeriodUnit:StatsPeriodUnitDay];
+            if (statDate) {
+                StatsSummary *statsSummary = [StatsSummary new];
+                statsSummary.periodUnit = StatsPeriodUnitDay;
+                statsSummary.date = statDate;
+                statsSummary.label = [self nicePointNameForDate:statsSummary.date forStatsPeriodUnit:statsSummary.periodUnit];
+                statsSummary.views = [self localizedStringForNumber:visit[1]];
+                statsSummary.viewsValue = visit[1];
+
+                [visitsArray addObject:statsSummary];
+                visitsDictionary[statsSummary.date] = statsSummary;
+            }
         }
         
         NSMutableArray *yearsItems = [NSMutableArray new];
@@ -1545,7 +1550,8 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
     };
     
     NSDictionary *parameters = @{@"startDate" : [self deviceLocalStringForDate:startDate],
-                                 @"endDate"   : [self deviceLocalStringForDate:endDate]};
+                                 @"endDate"   : [self deviceLocalStringForDate:endDate],
+                                 @"max"       : @3000};
     
     id failureHandler = ^(NSURLSessionDataTask *task, NSError *error) {
         if (completionHandler) {

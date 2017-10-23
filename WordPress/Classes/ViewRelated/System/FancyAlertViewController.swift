@@ -73,7 +73,7 @@ class FancyAlertViewController: UIViewController {
         static let resizeAnimationDelay: TimeInterval = 0.3
     }
 
-    // MARK - IBOutlets
+    // MARK: - IBOutlets
 
     /// Wraps the entire view to give it a background and rounded corners
     @IBOutlet private weak var wrapperView: UIView!
@@ -115,7 +115,7 @@ class FancyAlertViewController: UIViewController {
     ///
     private var buttonHandlers = [UIButton: FancyAlertButtonHandler]()
 
-    typealias FancyAlertButtonHandler = (FancyAlertViewController) -> Void
+    typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
 
     private(set) var configuration: Config?
 
@@ -327,7 +327,7 @@ class FancyAlertViewController: UIViewController {
     @IBAction private func buttonTapped(_ sender: UIButton) {
         // Offload to a handler if one is configured for this button
         if let handler = buttonHandlers[sender] {
-            handler(self)
+            handler(self, sender)
         }
     }
 

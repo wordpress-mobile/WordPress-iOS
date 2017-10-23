@@ -17,6 +17,7 @@
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
+@import Gridicons;
 @import WordPressShared;
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
@@ -44,6 +45,7 @@ NSString * const WPNewPostURLParamImageKey = @"image";
 
 static NSInteger const WPTabBarIconOffsetiPad = 7;
 static NSInteger const WPTabBarIconOffsetiPhone = 5;
+static CGFloat const WPTabBarIconSize = 32.0f;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
@@ -103,6 +105,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         // Create a background
         // (not strictly needed when white, but left here for possible customization)
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
+
+        // This can't be set using UIAppearance, otherwise it overrides the titleTextAttributes
+        // set for unselected items.
+        [[self tabBar] setUnselectedItemTintColor:[WPStyleGuide greyLighten10]];
 
         [self setViewControllers:@[self.blogListSplitViewController,
                                    self.readerSplitViewController,
@@ -191,7 +197,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
     UIImage *mySitesTabBarImage = [UIImage imageNamed:@"icon-tab-mysites"];
-    _blogListNavigationController.tabBarItem.image = [mySitesTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _blogListNavigationController.tabBarItem.image = mySitesTabBarImage;
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
@@ -215,7 +221,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
         _readerNavigationController.navigationBar.translucent = NO;
         UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
-        _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _readerNavigationController.tabBarItem.image = readerTabBarImage;
         _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
         _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
@@ -240,14 +246,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         return _newPostViewController;
     }
 
-    UIImage *newPostImage = [UIImage imageNamed:@"icon-tab-newpost"];
-    newPostImage = [newPostImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _newPostViewController = [[UIViewController alloc] init];
-    _newPostViewController.tabBarItem.image = newPostImage;
-    _newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
-    _newPostViewController.tabBarItem.accessibilityIdentifier = @"New Post";
-    _newPostViewController.tabBarItem.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+    _newPostViewController.tabBarItem.accessibilityIdentifier = @"Write";
+    _newPostViewController.tabBarItem.title = NSLocalizedString(@"Write", @"The accessibility value of the post tab.");
+
+    [self updateWriteButtonAppearance];
 
     return _newPostViewController;
 }
@@ -257,7 +260,7 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
         UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-        _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _meNavigationController.tabBarItem.image = meTabBarImage;
         _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
@@ -286,10 +289,10 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
     _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
     _notificationsNavigationController.navigationBar.translucent = NO;
-    self.notificationsTabBarImage = [[UIImage imageNamed:@"icon-tab-notifications"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
     self.notificationsTabBarImageUnread = [[UIImage imageNamed:@"icon-tab-notifications-unread"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
-    _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications"];
+    _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
@@ -298,9 +301,41 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     return _notificationsNavigationController;
 }
 
+- (void)updateWriteButtonAppearance
+{
+    CGSize size = self.view.bounds.size;
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+
+    // Try and determine whether the app is displayed at a size which will result in a tab
+    // bar with button titles and images horizontally stacked, instead of vertically
+    BOOL iPhoneLandscape = [WPDeviceIdentification isiPhone] && UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]);
+    BOOL iPadPortraitFullscreen = [WPDeviceIdentification isiPad] &&
+    UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) &&
+    size.width == screenWidth;
+    BOOL iPadLandscapeGreaterThanHalfSplit = [WPDeviceIdentification isiPad] &&
+    UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) &&
+    size.width > screenWidth / 2;
+
+    if (iPhoneLandscape || iPadPortraitFullscreen || iPadLandscapeGreaterThanHalfSplit) {
+        self.newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsZero;
+        self.newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetZero;
+        self.newPostViewController.tabBarItem.image = [Gridicon iconOfType:GridiconTypeCreate withSize:CGSizeMake(WPTabBarIconSize, WPTabBarIconSize)];
+    } else {
+        self.newPostViewController.tabBarItem.imageInsets = [self tabBarIconImageInsets];
+        self.newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 99999.0);
+
+        self.newPostViewController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-newpost"];
+    }
+}
+
 - (UIEdgeInsets)tabBarIconImageInsets
 {
-    CGFloat offset = [WPDeviceIdentification isiPad] ? WPTabBarIconOffsetiPad : WPTabBarIconOffsetiPhone;
+    CGFloat offset = 0;
+    if ([WPDeviceIdentification isiPad]) {
+        offset = WPTabBarIconOffsetiPad;
+    } else {
+        offset = WPTabBarIconOffsetiPhone;
+    }
 
     return UIEdgeInsetsMake(offset, 0, -offset, 0);
 }
@@ -743,9 +778,11 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [super viewDidLayoutSubviews];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self updateWriteButtonAppearance];
 }
 
 - (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator

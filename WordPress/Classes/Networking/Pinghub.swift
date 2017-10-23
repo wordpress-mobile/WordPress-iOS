@@ -86,9 +86,10 @@ public class PinghubClient {
             guard let client = self else {
                 return
             }
+            let error = error as NSError?
             let filteredError: NSError? = error.flatMap({ error in
                 // Filter out normal disconnects that we initiated
-                if error.domain == WebSocket.ErrorDomain && error.code == Int(WebSocket.CloseCode.normal.rawValue) {
+                if error.domain == WebSocket.ErrorDomain && error.code == Int(CloseCode.normal.rawValue) {
                     return nil
                 }
                 return error
@@ -135,7 +136,7 @@ public class PinghubClient {
         }
     }
 
-    internal static let endpoint = URL(string: "wss://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
+    internal static let endpoint = URL(string: "https://public-api.wordpress.com/pinghub/wpcom/me/newest-note-data")!
 }
 
 
@@ -225,7 +226,7 @@ internal protocol Socket: class {
     func connect()
     func disconnect()
     var onConnect: (() -> Void)? { get set }
-    var onDisconnect: ((NSError?) -> Void)? { get set }
+    var onDisconnect: ((Error?) -> Void)? { get set }
     var onText: ((String) -> Void)? { get set }
     var onData: ((Data) -> Void)? { get set }
 }
@@ -237,10 +238,9 @@ internal protocol Socket: class {
 
 
 private func starscreamSocket(url: URL, token: String) -> Socket {
-    let socket = WebSocket(url: PinghubClient.endpoint)
-    socket.origin = nil
-    socket.headers = ["Authorization": "Bearer \(token)"]
-    return socket
+    var request = URLRequest(url: PinghubClient.endpoint)
+    request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    return WebSocket(request: request)
 }
 
 extension WebSocket: Socket {

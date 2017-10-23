@@ -14,9 +14,6 @@ class LoginLinkAuthViewController: LoginViewController {
     var token: String = ""
     var didSync: Bool = false
 
-    // let the storyboard's style stay
-    override func setupStyles() {}
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
