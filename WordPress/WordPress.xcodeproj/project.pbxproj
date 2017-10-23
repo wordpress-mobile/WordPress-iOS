@@ -684,6 +684,7 @@
 		E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
 		E125F1E51E8E596200320B67 /* SharePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E31E8E595E00320B67 /* SharePost.swift */; };
 		E125F1E71E8E59C800320B67 /* SharePost+UIActivityItemSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E125F1E61E8E59C800320B67 /* SharePost+UIActivityItemSource.swift */; };
+		E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E126C81E1F95FC1B00A5F464 /* PluginViewController.swift */; };
 		E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = E12BE5ED1C5235DB000FD5CA /* get-me-settings-v1.1.json */; };
 		E12DB07B1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */; };
 		E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
@@ -2001,6 +2002,7 @@
 		E125445512BF5B3900D87A0A /* PostCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategory.m; sourceTree = "<group>"; };
 		E125F1E31E8E595E00320B67 /* SharePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharePost.swift; sourceTree = "<group>"; };
 		E125F1E61E8E59C800320B67 /* SharePost+UIActivityItemSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SharePost+UIActivityItemSource.swift"; sourceTree = "<group>"; };
+		E126C81E1F95FC1B00A5F464 /* PluginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginViewController.swift; sourceTree = "<group>"; };
 		E12963A8174654B2002E7744 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12BE5ED1C5235DB000FD5CA /* get-me-settings-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-me-settings-v1.1.json"; sourceTree = "<group>"; };
 		E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPAccount+AccountSettings.swift"; sourceTree = "<group>"; };
@@ -4788,6 +4790,7 @@
 			isa = PBXGroup;
 			children = (
 				E14694061F3459E2004052C8 /* PluginListViewController.swift */,
+				E126C81E1F95FC1B00A5F464 /* PluginViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -6529,6 +6532,7 @@
 				E1CECE051E6F01CE009C6695 /* PostPreviewGenerator.swift in Sources */,
 				086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */,
 				174122051EFDCBBF00AFA901 /* FancyAlertPresentationController.swift in Sources */,
+				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
 				B5032DDD1F02B30B00D946DC /* CalypsoProcessorIn.swift in Sources */,

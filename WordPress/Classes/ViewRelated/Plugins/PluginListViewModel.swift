@@ -1,3 +1,7 @@
+protocol PluginPresenter {
+    func present(plugin: PluginState)
+}
+
 enum PluginListViewModel {
     case loading
     case ready([PluginState])
@@ -28,13 +32,18 @@ enum PluginListViewModel {
         }
     }
 
-    func tableViewModelWithPresenter(_ presenter: ImmuTablePresenter?) -> ImmuTable {
+    func tableViewModel(presenter: PluginPresenter) -> ImmuTable {
         switch self {
         case .loading, .error:
             return .Empty
         case .ready(let pluginStates):
             let rows = pluginStates.map({ pluginState in
-                return PluginListRow(name: pluginState.name, state: pluginState.stateDescription)
+                return PluginListRow(
+                    name: pluginState.name,
+                    state: pluginState.stateDescription,
+                    action: { (row) in
+                        presenter.present(plugin: pluginState)
+                })
             })
             return ImmuTable(sections: [
                 ImmuTableSection(rows: rows)
