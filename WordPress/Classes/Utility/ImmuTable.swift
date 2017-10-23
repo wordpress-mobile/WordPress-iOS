@@ -256,6 +256,9 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         }
     }
 
+    /// Configure the handler to automatically deselect any cell after tapping it.
+    var automaticallyDeselectCells = false
+
     // MARK: Table View Data Source
 
     open func numberOfSections(in tableView: UITableView) -> Int {
@@ -298,6 +301,9 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
         } else {
             let row = viewModel.rowAtIndexPath(indexPath)
             row.action?(row)
+        }
+        if automaticallyDeselectCells {
+            tableView.deselectRow(at: indexPath, animated: true)
         }
     }
 
