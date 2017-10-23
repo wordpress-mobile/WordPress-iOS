@@ -109,7 +109,6 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatLoginSocialFailure,
     WPAnalyticsStatLoginSocial2faNeeded,
     WPAnalyticsStatLoginSocialAccountsNeedConnecting,
-    WPAnalyticsStatLoginSocialErrorAccountAlreadyConnected,
     WPAnalyticsStatLoginSocialErrorUnknownUser,
     WPAnalyticsStatLogout,
     WPAnalyticsStatLowMemoryWarning,
