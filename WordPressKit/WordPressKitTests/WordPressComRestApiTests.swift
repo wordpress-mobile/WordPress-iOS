@@ -6,9 +6,9 @@ import WordPressShared
 
 class WordPressComRestApiTests: XCTestCase {
 
-    let wordPressComRestApi = "https://public-api.wordpress.com/rest/"
-    let wordPressMediaRoute = "v1.1/sites/0/media/"
-    let wordPressMediaNewEndpoint = "v1.1/sites/0/media/new"
+    let wordPressComRestApi = "https://public-api.wordpress.com/"
+    let wordPressMediaRoute = "rest/v1.1/sites/0/media/"
+    let wordPressMediaNewEndpoint = "rest/v1.1/sites/0/media/new"
 
     override func setUp() {
         super.setUp()

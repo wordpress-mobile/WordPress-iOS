@@ -31,7 +31,7 @@ open class WordPressComRestApi: NSObject {
     public typealias SuccessResponseBlock = (_ responseObject: AnyObject, _ httpResponse: HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
-    open static let apiBaseURLString: String = "https://public-api.wordpress.com/rest/"
+    open static let apiBaseURLString: String = "https://public-api.wordpress.com/"
     
     open static let defaultBackgroundSessionIdentifier = "org.wordpress.wpcomrestapi"
     

@@ -2,14 +2,12 @@
 
 @class WordPressComRestApi;
 
-typedef NS_ENUM(NSInteger, ServiceRemoteWordPressComRESTApiVersion)
-{
-    ServiceRemoteWordPressComRESTApiNoVersion   = 0000,
-    ServiceRemoteWordPressComRESTApiVersion_1_0 = 1000,
-    ServiceRemoteWordPressComRESTApiVersion_1_1 = 1001,
-    ServiceRemoteWordPressComRESTApiVersion_1_2 = 1002,
-    ServiceRemoteWordPressComRESTApiVersion_1_3 = 1003,
-};
+typedef NSInteger NS_TYPED_ENUM ServiceRemoteWordPressComRESTApiVersion;
+extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_0;
+extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_1;
+extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_2;
+extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_3;
+extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_2_0;
 
 /**
  *  @class  ServiceRemoteREST

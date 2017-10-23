@@ -10,7 +10,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
 
     public func getPlugins(siteID: Int, success: @escaping ([PluginState]) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/plugins"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)!
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)!
         let parameters = [String: AnyObject]()
 
         wordPressComRestApi.GET(path, parameters: parameters, success: { (responseObject, httpResponse) in

@@ -36,7 +36,11 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
+    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [OCMStub([api GET:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -58,7 +62,6 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         successBlock(jsonDictionary, nil);
     }];
 
-    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
     XCTAssertNoThrow([service getActiveThemeForBlogId:blogId
                                               success:successBlock
                                               failure:nil]);
@@ -86,7 +89,11 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/purchased", blogId];
+    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/themes/purchased", blogId];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [OCMStub([api GET:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -108,7 +115,6 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         successBlock(jsonDictionary, nil);
     }];
 
-    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
     XCTAssertNoThrow([service getPurchasedThemesForBlogId:blogId
                                                   success:successBlock
                                                   failure:nil]);
@@ -136,8 +142,12 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeServiceRemote *service = nil;
     
-    NSString *url = [NSString stringWithFormat:@"v1.1/themes/%@", themeId];
-    
+    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"themes/%@", themeId];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     [OCMStub([api GET:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
@@ -158,7 +168,6 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         successBlock(jsonDictionary, nil);
     }];
     
-    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
     XCTAssertNoThrow([service getThemeId:themeId
                                  success:successBlock
                                  failure:nil]);
@@ -182,8 +191,12 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeServiceRemote *service = nil;
 
-    static NSString* const url = @"v1.2/themes";
     static NSInteger const expectedThemes = 20;
+
+    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *url = [service pathForEndpoint:@"themes"
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
 
     ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount) {
         NSCAssert([themes count] == expectedThemes, @"Expected %ld themes to be returned", expectedThemes);
@@ -210,7 +223,6 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         successBlock(jsonDictionary, nil);
     }];
 
-    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
     XCTAssertNoThrow([service getWPThemesPage:1
                                      freeOnly:NO
                                       success:successBlock
@@ -229,7 +241,11 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.2/sites/%@/themes", blogId];
+    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/themes", blogId];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
 
     [OCMStub([api GET:[OCMArg isEqual:url]
            parameters:[OCMArg isNotNil]
@@ -251,7 +267,6 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         successBlock(jsonDictionary, nil);
     }];
 
-    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
     XCTAssertNoThrow([service getThemesForBlogId:blogId
                                             page:1
                                          success:successBlock
@@ -280,8 +295,12 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeServiceRemote *service = nil;
-    
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
+
+    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     DictionaryVerificationBlock checkBlock = ^BOOL(NSDictionary *parameters) {
         NSCAssert([parameters isKindOfClass:[NSDictionary class]],
@@ -310,7 +329,6 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
         NSCAssert(failureBlock != nil, @"Expected a failure block");
     }];
     
-    XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
     XCTAssertNoThrow([service activateThemeId:themeId
                                     forBlogId:blogId
                                       success:nil
