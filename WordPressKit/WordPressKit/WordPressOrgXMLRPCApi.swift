@@ -77,7 +77,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
      */
     open func invalidateAndCancelTasks() {
         sessionManager.session.invalidateAndCancel()
-        uploadSessionManager.session.finishTasksAndInvalidate()
+        uploadSessionManager.session.invalidateAndCancel()
     }
 
     // MARK: - Network requests
