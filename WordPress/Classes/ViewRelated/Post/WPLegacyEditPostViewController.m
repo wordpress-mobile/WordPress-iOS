@@ -61,7 +61,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    BOOL dontRestoreIfNewEditorIsEnabled = [[EditorSettings new] visualEditorEnabled];
+    BOOL dontRestoreIfNewEditorIsEnabled = [[EditorSettings new] isEnabled:EditorHybrid];
     
     if (dontRestoreIfNewEditorIsEnabled) {
         return nil;

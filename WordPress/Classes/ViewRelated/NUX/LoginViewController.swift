@@ -190,9 +190,11 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         accountService.connectToSocialService(service, serviceIDToken: token, success: {
-            // noop
+            WPAppAnalytics.track(.loginSocialConnectSuccess)
+            WPAppAnalytics.track(.loginSocialSuccess)
         }, failure: { error in
             DDLogError(error.description)
+            WPAppAnalytics.track(.loginSocialConnectFailure, error: error)
             // We're opting to let this call fail silently.
             // Our user has already successfully authenticated and can use the app --
             // connecting the social service isn't critical.  There's little to

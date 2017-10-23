@@ -386,7 +386,7 @@ UIDocumentPickerDelegate
 {
     UIViewController* restoredViewController = nil;
     
-    BOOL restoreOnlyIfNewEditorIsEnabled = [[EditorSettings new] visualEditorEnabled];
+    BOOL restoreOnlyIfNewEditorIsEnabled = [[EditorSettings new] isEnabled:EditorHybrid];
     
     if (restoreOnlyIfNewEditorIsEnabled) {
         restoredViewController = [self restoreViewControllerWithIdentifierPath:identifierComponents
