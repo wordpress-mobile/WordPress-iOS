@@ -377,6 +377,20 @@ int ddLogLevel = DDLogLevelInfo;
     return [[Restorer new] viewControllerWithIdentifier:restoreID];
 }
 
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {
+
+    // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
+    // is no need to inspect the identifier beyond the simple check here.
+    if ([identifier containsString:WPAppGroupName]) {
+        DDLogInfo(@"Rejoining session with identifier: %@ with application in state: %@", identifier, application.applicationState);
+        ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
+        sessionManager.backgroundSessionCompletionBlock = ^{
+            dispatch_async(dispatch_get_main_queue(), completionHandler);
+        };
+        [sessionManager startBackgroundSession];
+    }
+}
+
 #pragma mark - Application startup
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
@@ -545,8 +559,7 @@ int ddLogLevel = DDLogLevelInfo;
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)] forBarMetrics:UIBarMetricsDefault];
 
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
-    [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
-    [[UITabBar appearance] setUnselectedItemTintColor:[WPStyleGuide grey]];
+    [[UITabBar appearance] setTintColor:[WPStyleGuide mediumBlue]];
 
     [[UINavigationBar appearance] setBackgroundImage:[WPStyleGuide navigationBarBackgroundImage] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[WPStyleGuide navigationBarShadowImage]];
@@ -555,7 +568,7 @@ int ddLogLevel = DDLogLevelInfo;
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont]} forState:UIControlStateNormal];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:10.0], NSForegroundColorAttributeName: [WPStyleGuide allTAllShadeGrey]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide grey]} forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide wordPressBlue]} forState:UIControlStateSelected];
 
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];

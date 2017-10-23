@@ -34,7 +34,13 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
+
+        let paragraphStyle = ParagraphStyle.default
+
+        // Paragraph style customizations will go here.
+        paragraphStyle.lineSpacing = 4
+
+        let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
         textView.inputProcessor =
             PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
@@ -188,6 +194,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let cancelItem = UIBarButtonItem(customView: self.closeButton)
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
+        cancelItem.accessibilityIdentifier = "Close"
         return cancelItem
     }()
 
@@ -292,7 +299,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureBetaButton(button)
 
-        button.setTitle(NSLocalizedString("Feedback", comment: "Title for Feedback button for the new Aztec editor"), for: .normal)
         button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
         button.isEnabled = true
         button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
@@ -638,6 +644,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         let insets = titleTextField.textContainerInset
+
         NSLayoutConstraint.activate([
             titlePlaceholderLabel.leftAnchor.constraint(equalTo: titleTextField.leftAnchor, constant: insets.left + titleTextField.textContainer.lineFragmentPadding),
             titlePlaceholderLabel.rightAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: -insets.right - titleTextField.textContainer.lineFragmentPadding),
@@ -684,7 +691,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
-
+        navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
     }
@@ -1831,8 +1838,7 @@ extension AztecPostViewController {
         richTextView.inputAssistantItem.leadingBarButtonGroups = originalLeadingBarButtonGroup
         richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
         richTextView.autocorrectionType = .yes
-        richTextView.resignFirstResponder()
-        richTextView.becomeFirstResponder()
+        richTextView.reloadInputViews()
     }
 
     @IBAction func presentMediaPicker() {
@@ -3172,9 +3178,9 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
     }
 
-    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL {
+    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
         saveToMedia(attachment: imageAttachment)
-        return URL(string: "placeholder://")!
+        return nil
     }
 
     func cancelAllPendingMediaRequests() {
