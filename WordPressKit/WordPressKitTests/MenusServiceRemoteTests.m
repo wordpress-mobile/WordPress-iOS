@@ -20,7 +20,11 @@
     OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/new", dotComID];
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/menus/new", dotComID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     NSString *name = @"SomeName";
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
@@ -33,9 +37,7 @@
            parameters:[OCMArg checkWithBlock:parametersCheckBlock]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
-    
+
     [service createMenuWithName:name
                          siteID:dotComID
                         success:^(RemoteMenu *menu) {}
@@ -51,15 +53,17 @@
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
     OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", dotComID, menu.menuID];
-    
+
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/menus/%@", dotComID, menu.menuID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
 
     [service updateMenuForID:menu.menuID
                         siteID:dotComID
@@ -79,16 +83,18 @@
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
     OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", dotComID, menu.menuID];
-    
+
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", dotComID, menu.menuID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
-    
+
     [service deleteMenuForID:menu.menuID
                       siteID:dotComID
                     success:^{}
@@ -100,16 +106,19 @@
     NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     MenusServiceRemote *service = nil;
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus", dotComID];
-    
+
+    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/menus", dotComID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithWordPressComRestApi:api]);
-    
+
     [service getMenusForSiteID:dotComID
                        success:^(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations) {}
                        failure:^(NSError *error) {}];
