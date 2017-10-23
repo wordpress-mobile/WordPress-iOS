@@ -6,6 +6,10 @@
 @import NSObject_SafeExpectations;
 @import WordPressShared;
 
+static NSString* const ReaderSiteServiceRemoteURLKey = @"url";
+static NSString* const ReaderSiteServiceRemoteSourceKey = @"source";
+static NSString* const ReaderSiteServiceRemoteSourceValue = @"ios";
+
 NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteErrorDomain";
 
 @implementation ReaderSiteServiceRemote
@@ -37,13 +41,15 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)followSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)followSiteWithID:(NSUInteger)siteID success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/new", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    
-    [self.wordPressComRestApi POST:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+
+    NSDictionary *params = @{ReaderSiteServiceRemoteSourceKey: ReaderSiteServiceRemoteSourceValue};
+
+    [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             success();
         }
@@ -54,7 +60,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)unfollowSiteWithID:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteWithID:(NSUInteger)siteID success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/mine/delete", (unsigned long)siteID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -71,13 +77,14 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)followSiteAtURL:(NSString *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"read/following/mine/new?url=%@", siteURL];
+    NSString *path = @"read/following/mine/new";
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSDictionary *params = @{@"url": siteURL};
+    NSDictionary *params = @{ReaderSiteServiceRemoteURLKey: siteURL,
+                             ReaderSiteServiceRemoteSourceKey: ReaderSiteServiceRemoteSourceValue};
     [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *dict = (NSDictionary *)responseObject;
         BOOL subscribed = [[dict numberForKey:@"subscribed"] boolValue];
@@ -99,13 +106,13 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"read/following/mine/delete?url=%@", siteURL];
+    NSString *path = @"read/following/mine/delete";
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
-    NSDictionary *params = @{@"url": siteURL};
+    NSDictionary *params = @{ReaderSiteServiceRemoteURLKey: siteURL};
     
     [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         NSDictionary *dict = (NSDictionary *)responseObject;
@@ -180,7 +187,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
+- (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
     // Just ping the URL and make sure we don't get back a 40x error.
     AFHTTPSessionManager *mgr = [[AFHTTPSessionManager alloc] init];
@@ -241,7 +248,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
     }];
 }
 
-- (void)flagSiteWithID:(NSUInteger)siteID asBlocked:(BOOL)blocked success:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)flagSiteWithID:(NSUInteger)siteID asBlocked:(BOOL)blocked success:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     NSString *path;
     if (blocked) {

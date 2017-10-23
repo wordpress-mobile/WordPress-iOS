@@ -82,7 +82,7 @@ class EditPostViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        if (!hasShownEditor) {
+        if !hasShownEditor {
             showEditor()
             hasShownEditor = true
         }

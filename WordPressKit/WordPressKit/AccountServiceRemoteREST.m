@@ -67,7 +67,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 }
 
 - (void)updateBlogsVisibility:(NSDictionary *)blogs
-                      success:(void (^)())success
+                      success:(void (^)(void))success
                       failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([blogs isKindOfClass:[NSDictionary class]]);
@@ -204,7 +204,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                             clientID:(NSString *)clientID
                         clientSecret:(NSString *)clientSecret
                          wpcomScheme:(NSString *)scheme
-                             success:(void (^)())success failure:(void (^)(NSError *error))failure
+                             success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     NSAssert([email length] > 0, @"Needs an email address.");
 
@@ -233,6 +233,22 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
            }];
 }
 
+- (void)requestVerificationEmailWithSucccess:(void (^)(void))success
+                                    failure:(void (^)(NSError *))failure
+{
+    NSString *path = [self pathForEndpoint:@"me/send-verification-email"
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    [self.wordPressComRestApi POST:path parameters:nil success:^(id _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
+        if (success) {
+            success();
+        }
+    } failure:^(NSError * _Nonnull error, NSHTTPURLResponse * _Nullable response) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
 
 #pragma mark - Private Methods
 

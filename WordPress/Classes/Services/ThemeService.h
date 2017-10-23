@@ -4,9 +4,9 @@
 @class Theme;
 @class WPAccount;
 
-typedef void(^ThemeServiceSuccessBlock)();
+typedef void(^ThemeServiceSuccessBlock)(void);
 typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
-typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore);
+typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
 @interface ThemeService : LocalCoreDataService
@@ -119,6 +119,11 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                          success:(ThemeServiceThemesRequestSuccessBlock)success
                          failure:(ThemeServiceFailureBlock)failure;
 
+- (NSProgress *)getCustomThemesForBlog:(Blog *)blog
+                                  sync:(BOOL)sync
+                               success:(ThemeServiceThemesRequestSuccessBlock)success
+                               failure:(ThemeServiceFailureBlock)failure;
+
 #pragma mark - Remote queries: Activating themes
 
 /**
@@ -135,5 +140,24 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                       forBlog:(Blog *)blog
                       success:(ThemeServiceThemeRequestSuccessBlock)success
                       failure:(ThemeServiceFailureBlock)failure;
+
+#pragma mark - Remote queries: Installing themes
+
+/**
+ *  @brief      Installs the specified theme for the specified blog.
+ *
+ *  @param      themeId     The theme to install.  Cannot be nil.
+ *  @param      blogId      The target blog.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ *
+ *  @returns    The progress object.
+ */
+- (NSProgress *)installTheme:(Theme *)theme
+                      forBlog:(Blog *)blog
+                      success:(ThemeServiceSuccessBlock)success
+                      failure:(ThemeServiceFailureBlock)failure;
+
+
 
 @end

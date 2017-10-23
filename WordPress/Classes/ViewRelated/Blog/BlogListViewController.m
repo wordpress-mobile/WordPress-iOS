@@ -855,7 +855,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)showLoginControllerForAddingSelfHostedSite
 {
     [self setEditing:NO animated:NO];
-    [SigninHelpers showSigninForSelfHostedSite:self];
+    [SigninHelpers showLoginForSelfHostedSite:self];
 }
 
 - (void)setVisible:(BOOL)visible forBlog:(Blog *)blog

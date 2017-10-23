@@ -311,6 +311,25 @@
     return spacerButton;
 }
 
++ (void)configureNavigationBarAppearance
+{
+    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+
+    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
+}
+
+// The app's appearance settings override the doc picker color scheme.
+// This method sets the nav colors so the doc picker has the correct appearance.
+// The app colors can be restored with configureNavigationBarAppearance().
++ (void)configureDocumentPickerNavBarAppearance
+{
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:[WPStyleGuide mediumBlue]];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide mediumBlue]} forState:UIControlStateNormal];
+}
 
 #pragma mark - View and TableView Styles
 
@@ -391,21 +410,11 @@
 	if (![footer isKindOfClass:[UITableViewHeaderFooterView class]]) {
 		return;
 	}
-	footer.textLabel.textColor = [self greyDarken10];
-}
-
-// TODO: Move to fetaure category
-+ (void)configureFollowButton:(UIButton *)followButton {
-    followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    followButton.backgroundColor = [UIColor clearColor];
-    followButton.titleLabel.font = [WPStyleGuide subtitleFont];
-    NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
-    NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
-    [followButton setTitle:followString forState:UIControlStateNormal];
-    [followButton setTitle:followedString forState:UIControlStateSelected];
-    [followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
-    [followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
-    [followButton setTitleColor:[self allTAllShadeGrey] forState:UIControlStateNormal];
+    if (footer.textLabel.userInteractionEnabled) {
+        footer.textLabel.textColor = [self wordPressBlue];
+    } else {
+        footer.textLabel.textColor = [self greyDarken10];
+    }
 }
 
 

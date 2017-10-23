@@ -12,8 +12,25 @@ public enum ThemeAction {
     case tryCustomize
     case view
 
-    static let actives = [customize, details, support]
-    static let inactives = [tryCustomize, activate, view, details, support]
+    static func activeActionsForTheme(_ theme: Theme) ->[ThemeAction] {
+        if theme.custom {
+            if theme.hasDetailsURL() {
+                return [customize, details]
+            }
+            return [customize]
+        }
+        return [customize, details, support]
+    }
+
+    static func inactiveActionsForTheme(_ theme: Theme) ->[ThemeAction] {
+        if theme.custom {
+            if theme.hasDetailsURL() {
+                return [tryCustomize, activate, details]
+            }
+            return [tryCustomize, activate]
+        }
+        return [tryCustomize, activate, view, details, support]
+    }
 
     var title: String {
         switch self {
@@ -76,6 +93,8 @@ open class ThemeBrowserCell: UICollectionViewCell {
             refreshGUI()
         }
     }
+
+    open var showPriceInformation: Bool = false
     open weak var presenter: ThemePresenter?
 
     fileprivate var placeholderImage = UIImage(named: "theme-loading")
@@ -109,6 +128,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
         super.prepareForReuse()
         theme = nil
         presenter = nil
+        showPriceInformation = false
     }
 
     fileprivate func refreshGUI() {
@@ -138,7 +158,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
                 actionButton.setImage(inactiveEllipsisImage, for: UIControlState())
 
                 nameLabel.textColor = Styles.inactiveCellNameColor
-                if theme.isPremium() {
+                if theme.isPremium() && showPriceInformation {
                     infoLabel.textColor = Styles.inactiveCellPriceColor
                     infoLabel.text = theme.price
                 } else {
@@ -167,7 +187,9 @@ open class ThemeBrowserCell: UICollectionViewCell {
     }
 
     fileprivate func refreshScreenshotImage(_ imageUrl: String) {
-        let imageUrlForWidth = imageUrl + "?w=\(presenter!.screenshotWidth)"
+        // Themes not hosted on WP.com have an incorrect screenshotUrl and do not correctly support the w param
+        let imageUrlForWidth = imageUrl.hasPrefix("http") ? imageUrl + "?w=\(presenter!.screenshotWidth)" :
+                                                            String(format: "http:%@", imageUrl)
         let screenshotUrl = URL(string: imageUrlForWidth)
 
         imageView.backgroundColor = Styles.placeholderColor
@@ -194,7 +216,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let themeActions = theme.isCurrentTheme() ? ThemeAction.actives : ThemeAction.inactives
+        let themeActions = theme.isCurrentTheme() ? ThemeAction.activeActionsForTheme(theme) : ThemeAction.inactiveActionsForTheme(theme)
         themeActions.forEach { themeAction in
             alertController.addActionWithTitle(themeAction.title,
                 style: .default,

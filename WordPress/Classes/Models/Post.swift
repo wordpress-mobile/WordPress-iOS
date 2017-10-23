@@ -257,8 +257,8 @@ class Post: AbstractPost {
                 return true
             }
 
-            if (!NSDictionary(dictionary: disabledPublicizeConnections ?? [:])
-                             .isEqual(to: originalPost.disabledPublicizeConnections ?? [:])) {
+            if !NSDictionary(dictionary: disabledPublicizeConnections ?? [:])
+                             .isEqual(to: originalPost.disabledPublicizeConnections ?? [:]) {
                 return true
             }
         }

@@ -170,7 +170,7 @@
 }
 
 - (void)deleteMedia:(RemoteMedia *)media
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([media.mediaID longLongValue] > 0);
@@ -228,7 +228,14 @@
     remoteMedia.height = [xmlRPC numberForKeyPath:@"metadata.height"];
     remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"] ?: [xmlRPC numberForKey:@"id"];
     remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"] ?: [xmlRPC stringForKey:@"type"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent] ?: [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
+    NSString *link = nil;
+    if ([[xmlRPC objectForKeyPath:@"link"] isKindOfClass:NSDictionary.class]) {
+        NSDictionary *linkDictionary = (NSDictionary *)[xmlRPC objectForKeyPath:@"link"];
+        link = [linkDictionary stringForKeyPath:@"url"];
+    } else {
+        link = [xmlRPC stringForKeyPath:@"link"];
+    }
+    remoteMedia.file = [link lastPathComponent] ?: [[xmlRPC objectForKeyPath:@"file"] lastPathComponent];
 
     if (xmlRPC[@"date_created_gmt"] != nil) {
         remoteMedia.date = xmlRPC[@"date_created_gmt"];
@@ -236,6 +243,7 @@
 
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
+    remoteMedia.alt = [xmlRPC stringForKey:@"alt"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
 

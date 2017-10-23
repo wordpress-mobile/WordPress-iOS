@@ -37,7 +37,7 @@ typedef void (^StatsStreakCompletion)(StatsStreak *streak, NSError *error);
        authorsCompletionHandler:(StatsGroupCompletion)authorsCompletion
    searchTermsCompletionHandler:(StatsGroupCompletion)searchTermsCompletionHandler
                   progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations)) progressBlock
-     andOverallCompletionHandler:(void (^)())completionHandler;
+     andOverallCompletionHandler:(void (^)(void))completionHandler;
 
 - (void)retrievePostDetailsStatsForPostID:(NSNumber *)postID
                     withCompletionHandler:(StatsPostDetailsCompletion)completion;
@@ -85,7 +85,7 @@ typedef void (^StatsStreakCompletion)(StatsStreak *streak, NSError *error);
                                     publicizeCompletionHandler:(StatsGroupCompletion)publicizeCompletion
                                        streakCompletionHandler:(StatsStreakCompletion)streakCompletion
                                                  progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations)) progressBlock
-                                   andOverallCompletionHandler:(void (^)())completionHandler;
+                                   andOverallCompletionHandler:(void (^)(void))completionHandler;
 
 - (void)retrieveTodayStatsWithCompletionHandler:(StatsSummaryCompletion)completion failureHandler:(void (^)(NSError *))failureHandler;
 

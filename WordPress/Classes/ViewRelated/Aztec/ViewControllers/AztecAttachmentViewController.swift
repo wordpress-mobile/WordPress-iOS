@@ -3,11 +3,6 @@ import UIKit
 import WordPressShared
 import Aztec
 
-protocol AztecAttachmentViewControllerDelegate: class {
-
-    func aztecAttachmentViewController(_ viewController: AztecAttachmentViewController, changedAttachment: ImageAttachment)
-
-}
 
 class AztecAttachmentViewController: UITableViewController {
 
@@ -16,16 +11,19 @@ class AztecAttachmentViewController: UITableViewController {
             if let attachment = attachment {
                 alignment = attachment.alignment
                 size = attachment.size
+                alt = attachment.alt
             }
         }
     }
 
     var alignment = ImageAttachment.Alignment.none
     var size = ImageAttachment.Size.full
+    var alt: String?
+
+    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String?) -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
 
-    weak var delegate: AztecAttachmentViewControllerDelegate?
 
     // MARK: - Initialization
 
@@ -54,10 +52,10 @@ class AztecAttachmentViewController: UITableViewController {
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target:self, action: #selector(AztecAttachmentViewController.handleCancelButtonTapped))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(AztecAttachmentViewController.handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
 
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target:self, action: #selector(AztecAttachmentViewController.handleDoneButtonTapped))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(AztecAttachmentViewController.handleDoneButtonTapped))
         navigationItem.rightBarButtonItem = doneButton
     }
 
@@ -81,12 +79,18 @@ class AztecAttachmentViewController: UITableViewController {
             value: size.localizedString,
             action: displaySizeSelector)
 
+        let altRow = EditableTextRow(
+            title: NSLocalizedString("Alt Text", comment: "Image alt attribute option title."),
+            value: alt ?? "",
+            action: displayAltTextfield)
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: displaySettingsHeader,
                 rows: [
                     alignmentRow,
                     sizeRow,
+                    altRow
                 ],
                 footerText: nil)
             ])
@@ -94,6 +98,15 @@ class AztecAttachmentViewController: UITableViewController {
 
 
     // MARK: - Actions
+
+    private func displayAltTextfield(row: ImmuTableRow) {
+        let editableRow = row as! EditableTextRow
+        let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
+        self.pushSettingsController(for: editableRow, hint: hint, onValueChanged: { value in
+            self.alt = value
+            self.tableView.reloadData()
+        })
+    }
 
     func displayAlignmentSelector(row: ImmuTableRow) {
 
@@ -107,7 +120,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         let dict: [String: Any] = [
             SettingsSelectionDefaultValueKey: alignment,
-            SettingsSelectionTitleKey: NSLocalizedString("Alignment", comment:"Title of the screen for choosing an image's alignment."),
+            SettingsSelectionTitleKey: NSLocalizedString("Alignment", comment: "Title of the screen for choosing an image's alignment."),
             SettingsSelectionTitlesKey: titles,
             SettingsSelectionValuesKey: values,
             SettingsSelectionCurrentValueKey: currentValue
@@ -167,14 +180,23 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        if let attachment = self.attachment {
-            attachment.alignment = alignment
-            attachment.size = size
-            delegate?.aztecAttachmentViewController(self, changedAttachment: attachment)
-        }
+        let checkedAlt = alt == "" ? nil : alt
+        onUpdate?(alignment, size, checkedAlt)
         dismiss(animated: true, completion: nil)
     }
 
+    private func pushSettingsController(for row: EditableTextRow,
+                                        hint: String? = nil,
+                                        onValueChanged: @escaping SettingsTextChanged) {
+        let title = row.title
+        let value = row.value
+        let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
+
+        controller.title = title
+        controller.onValueChanged = onValueChanged
+
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 extension ImageAttachment.Alignment {

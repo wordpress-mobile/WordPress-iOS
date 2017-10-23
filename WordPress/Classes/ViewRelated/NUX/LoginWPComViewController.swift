@@ -40,7 +40,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         super.viewWillAppear(animated)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
 
         configureTextFields()
         configureSubmitButton(animating: false)
@@ -51,8 +51,8 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
-                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
         passwordField?.becomeFirstResponder()
         WPAppAnalytics.track(.loginPasswordFormViewed)
@@ -120,6 +120,12 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     }
 
     func localizeControls() {
+        if let service = loginFields.meta.socialService, service == SocialServiceName.google {
+            instructionLabel?.text = NSLocalizedString("To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once.", comment: "")
+        } else {
+            instructionLabel?.text = NSLocalizedString("Enter the password for your WordPress.com account.", comment: "Instructional text shown when requesting the user's password for login.")
+        }
+
         passwordField?.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
         passwordField?.accessibilityIdentifier = "Password"
 
@@ -133,9 +139,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         forgotPasswordButton?.setTitle(forgotPasswordTitle, for: .highlighted)
         forgotPasswordButton?.titleLabel?.numberOfLines = 0
     }
-
-    // let the storyboard's style stay
-    override func setupStyles() {}
 
 
     // MARK: - Instance Methods

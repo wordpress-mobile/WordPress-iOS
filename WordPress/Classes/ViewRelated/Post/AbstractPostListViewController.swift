@@ -128,6 +128,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         configureSearchController()
         configureSearchHelper()
         configureAuthorFilter()
+        configureSearchBackingView()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.reloadData()
@@ -156,6 +157,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     @objc fileprivate func keyboardDidShow(_ notification: Foundation.Notification) {
+        if #available(iOS 11.0, *) {
+            return
+        }
+
+        // The following adjustments don't appear to be necessary on iOS 11.
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = tableView.frame.maxY - keyboardFrame.origin.y
 
@@ -166,6 +172,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     @objc fileprivate func keyboardDidHide(_ notification: Foundation.Notification) {
+        if #available(iOS 11.0, *) {
+            return
+        }
+
+        // The following adjustments don't appear to be necessary on iOS 11.
         tableView.contentInset.top = topLayoutGuide.length
         tableView.contentInset.bottom = 0
         tableView.scrollIndicatorInsets.top = searchController.isActive ? searchBarHeight : topLayoutGuide.length
@@ -224,8 +235,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         navigationItem.backBarButtonItem = backButton
 
         let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
+        rightBarButtonItem.width = rightBarButtonView.frame.size.width
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
-
         navigationItem.titleView = filterButton
         updateFilterTitle()
     }
@@ -291,7 +302,31 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     fileprivate func configureInitialScrollInsets() {
-        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        if #available(iOS 11.0, *) {
+            tableView.scrollIndicatorInsets.top = 0
+            tableView.contentInset.top = 0
+        } else {
+            tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        }
+    }
+
+    fileprivate func configureSearchBackingView() {
+        // This mask view is required to cover the area between the top of the search
+        // bar and the top of the screen on an iPhone X.
+        if #available(iOS 11.0, *) {
+            let backingView = UIView()
+            view.addSubview(backingView)
+
+            backingView.backgroundColor = searchController.searchBar.barTintColor
+            backingView.translatesAutoresizingMaskIntoConstraints = false
+
+            NSLayoutConstraint.activate([
+                backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                backingView.topAnchor.constraint(equalTo: view.topAnchor),
+                backingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+                ])
+        }
     }
 
     func configureSearchHelper() {
@@ -307,7 +342,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func propertiesForAnalytics() -> [String: AnyObject] {
         var properties = [String: AnyObject]()
 
-        properties["type"] = postTypeToSync()
+        properties["type"] = postTypeToSync().rawValue as AnyObject?
         properties["filter"] = filterSettings.currentPostListFilter().title as AnyObject?
 
         if let dotComID = blog.dotComID {
@@ -350,7 +385,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         // The result is the cells do not show the correct layouts relative to superview margins.
         // HACK: kurzee, 2016-07-12
         // Use a generic cell in this situation and reload the table view once its back in a window.
-        if (tableView.window == nil) {
+        if tableView.window == nil {
             reloadTableViewBeforeAppearing = true
             return tableView.dequeueReusableCell(withIdentifier: abstractPostWindowlessCellIdenfitier)
         }
@@ -568,7 +603,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     internal func postTypeToSync() -> PostServiceType {
         // Subclasses should override.
-        return PostServiceTypeAny as PostServiceType
+        return .any
     }
 
     func lastSyncDate() -> Date? {
@@ -593,7 +628,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.purgesLocalSync = true
 
         postService.syncPosts(
-            ofType: postTypeToSync() as String,
+            ofType: postTypeToSync(),
             with: options,
             for: blog,
             success: {[weak self] posts in
@@ -644,7 +679,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
 
         postService.syncPosts(
-            ofType: postTypeToSync() as String,
+            ofType: postTypeToSync(),
             with: options,
             for: blog,
             success: {[weak self] posts in
@@ -668,7 +703,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             })
     }
 
-    func syncContentEnded() {
+    func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl?.endRefreshing()
         postListFooterView.showSpinner(false)
 
@@ -779,7 +814,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         options.search = searchText
 
         postService.syncPosts(
-            ofType: postTypeToSync() as String,
+            ofType: postTypeToSync(),
             with: options,
             for: blog,
             success: { [weak self] posts in
@@ -993,7 +1028,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                     SettingsSelectionTitleKey: NSLocalizedString("Filters", comment: "Title of the list of post status filters."),
                     SettingsSelectionTitlesKey: titles,
                     SettingsSelectionValuesKey: availableFilters,
-                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String : Any]
+                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String: Any]
 
         let controller = SettingsSelectionViewController(style: .plain, andDictionary: dict as [AnyHashable: Any])
         controller?.onItemSelected = { [weak self] (selectedValue: Any!) -> () in
@@ -1037,7 +1072,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         searchController.searchBar.text = nil
         searchHelper.searchCanceled()
 
-        tableView.scrollIndicatorInsets.top = topLayoutGuide.length
+        configureInitialScrollInsets()
     }
 
     func updateSearchResults(for searchController: UISearchController) {

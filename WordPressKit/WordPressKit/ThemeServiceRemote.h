@@ -4,9 +4,9 @@
 @class Blog;
 @class RemoteTheme;
 
-typedef void(^ThemeServiceRemoteSuccessBlock)();
+typedef void(^ThemeServiceRemoteSuccessBlock)(void);
 typedef void(^ThemeServiceRemoteThemeRequestSuccessBlock)(RemoteTheme *theme);
-typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray<RemoteTheme *> *themes, BOOL hasMore);
+typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount);
 typedef void(^ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)(NSArray *themeIdentifiers);
 typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
 
@@ -58,15 +58,17 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @details    Includes premium themes even if not purchased.  Don't call this method if the list
  *              you want to retrieve is for a specific blog.  Use getThemesForBlogId instead.
  *
+ *  @param      freeOnly    Only fetch free themes, if false all WP themes will be returned
  *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSProgress *)getThemesPage:(NSInteger)page
-                       success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                       failure:(ThemeServiceRemoteFailureBlock)failure;
+- (NSProgress *)getWPThemesPage:(NSInteger)page
+                       freeOnly:(BOOL)freeOnly
+                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                        failure:(ThemeServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Gets the list of available themes for a blog.
@@ -84,9 +86,23 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
 - (NSProgress *)getThemesForBlogId:(NSNumber *)blogId
-                               page:(NSInteger)page
-                            success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                            failure:(ThemeServiceRemoteFailureBlock)failure;
+                              page:(NSInteger)page
+                           success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                           failure:(ThemeServiceRemoteFailureBlock)failure;
+
+/**
+ *  @brief      Gets the list of available custom themes for a blog.
+ *  @details    To be used with Jetpack sites, it returns the list of themes uploaded to the site.
+ *
+ *  @param      blogId      The ID of the blog to get the themes for.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ *
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
+ */
+- (NSProgress *)getCustomThemesForBlogId:(NSNumber *)blogId
+                                 success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                                 failure:(ThemeServiceRemoteFailureBlock)failure;
 
 #pragma mark - Activating themes
 
@@ -104,5 +120,21 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
                        forBlogId:(NSNumber *)blogId
                          success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure;
+
+
+/**
+ *  @brief      Installs the specified theme on the specified Jetpack blog.
+ *
+ *  @param      themeId     The ID of the theme to install.  Cannot be nil.
+ *  @param      blogId      The ID of the target blog.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ *
+ *  @returns    A progress object that can be used to track progress and/or cancel the task
+ */
+- (NSProgress *)installThemeId:(NSString*)themeId
+                     forBlogId:(NSNumber *)blogId
+                       success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
+                       failure:(ThemeServiceRemoteFailureBlock)failure;
 
 @end

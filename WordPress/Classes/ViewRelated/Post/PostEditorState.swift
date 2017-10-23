@@ -283,8 +283,15 @@ public class PostEditorStateContext {
     }
 
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published
+    ///
     var publishActionAnalyticsStat: WPAnalyticsStat {
         return editorState.action.publishActionAnalyticsStat
+    }
+
+    /// Indicates if the editor should be dismissed when the publish button is tapped
+    ///
+    var publishActionDismissesEditor: Bool {
+        return editorState.action != .update
     }
 
     /// Should post-post be shown for the current editor when publishing has happened

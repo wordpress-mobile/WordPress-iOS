@@ -65,6 +65,7 @@ class LoginLinkRequestViewController: LoginViewController {
         usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
         usePasswordButton?.titleLabel?.numberOfLines = 0
+        usePasswordButton?.accessibilityIdentifier = "Use Password"
     }
 
     func configureLoading(_ animating: Bool) {
@@ -72,9 +73,6 @@ class LoginLinkRequestViewController: LoginViewController {
 
         sendLinkButton?.isEnabled = !animating
     }
-
-    // let the storyboard's style stay
-    override func setupStyles() {}
 
 
     // MARK: - Instance Methods

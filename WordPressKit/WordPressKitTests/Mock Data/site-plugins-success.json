@@ -1,0 +1,130 @@
+{
+  "plugins": [
+    {
+      "id": "akismet/akismet",
+      "slug": "akismet",
+      "active": true,
+      "name": "Akismet Anti-Spam",
+      "plugin_url": "https://akismet.com/",
+      "version": "3.3.3",
+      "description": "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam</strong>. It keeps your site protected even while you sleep. To get started: activate the Akismet plugin and then go to your Akismet Settings page to set up your API key.",
+      "author": "Automattic",
+      "author_url": "https://automattic.com/wordpress-plugins/",
+      "network": false,
+      "autoupdate": true,
+      "action_links": []
+    },
+    {
+      "id": "upload-fail.php_/upload-fail",
+      "slug": "upload-fail.php_",
+      "active": false,
+      "name": "Force Failed Uploads",
+      "plugin_url": "",
+      "version": "",
+      "description": "",
+      "author": "",
+      "author_url": "",
+      "network": false,
+      "autoupdate": false,
+      "action_links": []
+    },
+    {
+      "id": "jetpack/jetpack",
+      "slug": "jetpack",
+      "active": true,
+      "name": "Jetpack by WordPress.com",
+      "plugin_url": "https://jetpack.com",
+      "version": "5.2.1",
+      "description": "Bring the power of the WordPress.com cloud to your self-hosted WordPress. Jetpack enables you to connect your blog to a WordPress.com account to use the powerful features normally only available to WordPress.com users.",
+      "author": "Automattic",
+      "author_url": "https://jetpack.com",
+      "network": false,
+      "autoupdate": true,
+      "action_links": {
+        "Jetpack": "https://example.com/wp-admin/admin.php?page=jetpack",
+        "Settings": "https://example.com/wp-admin/admin.php?page=jetpack#/settings",
+        "Support": "https://example.com/wp-admin/admin.php?page=jetpack-debugger"
+      }
+    },
+    {
+      "id": "koketest",
+      "slug": "koketest",
+      "active": false,
+      "name": "Koke Test",
+      "plugin_url": "",
+      "version": "",
+      "description": "",
+      "author": "",
+      "author_url": "",
+      "network": false,
+      "autoupdate": false,
+      "action_links": []
+    },
+    {
+      "id": "user-role-editor/user-role-editor",
+      "slug": "user-role-editor",
+      "active": true,
+      "name": "User Role Editor",
+      "plugin_url": "https://www.role-editor.com",
+      "version": "4.35.3",
+      "description": "Change/add/delete WordPress user roles and capabilities.",
+      "author": "Vladimir Garagulya",
+      "author_url": "https://www.role-editor.com",
+      "network": false,
+      "autoupdate": false,
+      "action_links": []
+    },
+    {
+      "id": "vaultpress/vaultpress",
+      "slug": "vaultpress",
+      "active": false,
+      "name": "VaultPress",
+      "plugin_url": "http://vaultpress.com/?utm_source=plugin-uri&amp;utm_medium=plugin-description&amp;utm_campaign=1.0",
+      "version": "1.9.2",
+      "description": "Protect your content, themes, plugins, and settings with <strong>realtime backup</strong> and <strong>automated security scanning</strong> from <a href=\"http://vaultpress.com/?utm_source=wp-admin&amp;utm_medium=plugin-description&amp;utm_campaign=1.0\" rel=\"nofollow\">VaultPress</a>. Activate, enter your registration key, and never worry again. <a href=\"http://vaultpress.com/help/?utm_source=wp-admin&amp;utm_medium=plugin-description&amp;utm_campaign=1.0\" rel=\"nofollow\">Need some help?</a>",
+      "author": "Automattic",
+      "author_url": "http://vaultpress.com/?utm_source=author-uri&amp;utm_medium=plugin-description&amp;utm_campaign=1.0",
+      "network": false,
+      "autoupdate": false,
+      "action_links": []
+    },
+    {
+      "id": "wordpress-beta-tester/wp-beta-tester",
+      "slug": "wordpress-beta-tester",
+      "active": true,
+      "name": "WordPress Beta Tester",
+      "plugin_url": "https://wordpress.org/plugins/wordpress-beta-tester/",
+      "version": "1.1.2",
+      "description": "Allows you to easily upgrade to Beta releases.",
+      "author": "Peter Westwood",
+      "author_url": "http://blog.ftwr.co.uk/",
+      "network": true,
+      "autoupdate": true,
+      "action_links": []
+    },
+    {
+      "id": "wordpress-seo/wp-seo",
+      "slug": "wordpress-seo",
+      "active": true,
+      "update": {
+        "id": "w.org/plugins/wordpress-seo",
+        "slug": "wordpress-seo",
+        "plugin": "wordpress-seo/wp-seo.php",
+        "new_version": "5.1",
+        "url": "https://wordpress.org/plugins/wordpress-seo/",
+        "package": "https://downloads.wordpress.org/plugin/wordpress-seo.5.1.zip",
+        "tested": "4.8",
+        "compatibility": {}
+      },
+      "name": "Yoast SEO",
+      "plugin_url": "https://yoast.com/wordpress/plugins/seo/#utm_source=wpadmin&utm_medium=plugin&utm_campaign=wpseoplugin",
+      "version": "5.0",
+      "description": "The first true all-in-one SEO solution for WordPress, including on-page content analysis, XML sitemaps and much more.",
+      "author": "Team Yoast",
+      "author_url": "https://yoast.com/",
+      "network": false,
+      "autoupdate": false,
+      "action_links": []
+    }
+  ]
+}

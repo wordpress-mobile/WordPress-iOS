@@ -10,6 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIFont *)systemBoldFontOfSize:(CGFloat)size;
 + (UIFont *)systemSemiBoldFontOfSize:(CGFloat)size;
 + (UIFont *)systemRegularFontOfSize:(CGFloat)size;
++ (UIFont *)systemMediumFontOfSize:(CGFloat)size;
 
 /// Loads the Noto font family for the life of the current process.
 /// This effectively makes it possible to look this font up using font descriptors.

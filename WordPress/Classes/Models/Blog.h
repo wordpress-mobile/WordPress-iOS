@@ -35,6 +35,10 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
     /// Does the blog support theme browsing?
     BlogFeatureThemeBrowsing,
+    /// Does the blog support custom themes?
+    BlogFeatureCustomThemes,
+    /// Does the blog support premium themes?
+    BlogFeaturePremiumThemes,
     /// Does the blog support Menus management?
     BlogFeatureMenus,
     /// Does the blog support private visibility?
@@ -47,6 +51,10 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureSiteManagement,
     /// Does the blog support different paid plans?
     BlogFeaturePlans,
+    /// Does the blog support plugins?
+    BlogFeaturePluginManagement,
+    /// Does the blog support Jetpack settings
+    BlogFeatureJetpackSettings,
     /// Does the blog support custom domains?
     BlogFeatureDomains,
     /// Does the blog support frame-nonce to authenticate previews?
@@ -137,6 +145,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormatNames;
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormats;
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedConnections;
+@property (nonatomic, readonly, nullable) NSArray<Role *> *sortedRoles;
 @property (nonatomic, strong,  readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic,   weak,  readonly, nullable) NSString       *version;
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;

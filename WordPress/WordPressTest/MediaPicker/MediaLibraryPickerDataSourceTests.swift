@@ -36,7 +36,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         }
         let size = media.pixelSize()
         XCTAssertTrue(size.width == 1024, "Width should be 1024")
-        XCTAssertTrue(size.height == 680 , "Height should be 680")
+        XCTAssertTrue(size.height == 680, "Height should be 680")
     }
 
     func testImageFetchUsingSizeZero() {
@@ -58,7 +58,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             }
             let size = image.size
             XCTAssertTrue(size.width == 1024, "Width should be 1024")
-            XCTAssertTrue(size.height == 680 , "Height should be 680")
+            XCTAssertTrue(size.height == 680, "Height should be 680")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
     }
@@ -83,7 +83,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             }
             let size = image.size
             XCTAssertTrue(size.width == requestedSize.width, "Width should match requested size")
-            XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
+            XCTAssertTrue(size.height == requestedSize.height, "Height should match requested size")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
     }
@@ -108,7 +108,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
             }
             let size = image.size
             XCTAssertTrue(size.width == requestedSize.width, "Width should match requested siz")
-            XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
+            XCTAssertTrue(size.height == requestedSize.height, "Height should match requested size")
         })
         self.waitForExpectations(timeout: 5, handler: nil)
     }
@@ -151,11 +151,11 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
     }
 
     fileprivate func newImageMedia() -> Media? {
-        return newMedia(fromResource: "test-image", withExtension:"jpg")
+        return newMedia(fromResource: "test-image", withExtension: "jpg")
     }
 
     fileprivate func newVideoMedia() -> Media? {
-        return newMedia(fromResource: "test-video-device-gps", withExtension:"m4v")
+        return newMedia(fromResource: "test-video-device-gps", withExtension: "m4v")
     }
 
     fileprivate func newMedia(fromResource resource: String, withExtension ext: String) -> Media? {

@@ -27,7 +27,7 @@
  */
 - (void)updateCommentWithID:(NSNumber *)commentID
                     content:(NSString *)content
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -51,21 +51,21 @@
  */
 - (void)moderateCommentWithID:(NSNumber *)commentID
                        status:(NSString *)status
-                      success:(void (^)())success
+                      success:(void (^)(void))success
                       failure:(void (^)(NSError *error))failure;
 
 /**
  Trashes a comment with a commentID
  */
 - (void)trashCommentWithID:(NSNumber *)commentID
-                   success:(void (^)())success
+                   success:(void (^)(void))success
                    failure:(void (^)(NSError *error))failure;
 
 /**
  Like a comment with a commentID
  */
 - (void)likeCommentWithID:(NSNumber *)commentID
-                  success:(void (^)())success
+                  success:(void (^)(void))success
                   failure:(void (^)(NSError *error))failure;
 
 
@@ -73,7 +73,7 @@
  Unlike a comment with a commentID
  */
 - (void)unlikeCommentWithID:(NSNumber *)commentID
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 @end

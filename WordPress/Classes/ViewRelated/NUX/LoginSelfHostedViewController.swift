@@ -51,7 +51,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         super.viewWillAppear(animated)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = false
+        loginFields.meta.userIsDotCom = false
 
         configureTextFields()
         configureSubmitButton(animating: false)
@@ -64,8 +64,8 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        registerForKeyboardEvents(keyboardWillShowAction: #selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
-                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
         WPAppAnalytics.track(.loginUsernamePasswordFormViewed)
     }
@@ -87,10 +87,6 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
 
     // MARK: - Setup and Configuration
-
-
-    /// let the storyboard's style stay
-    override func setupStyles() {}
 
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
@@ -115,7 +111,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
                                                             target: self,
-                                                            selector: #selector(SigninSelfHostedViewController.handleOnePasswordButtonTapped(_:)))
+                                                            selector: #selector(handleOnePasswordButtonTapped(_:)))
     }
 
 
@@ -178,7 +174,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     /// Configure the site header.
     ///
     func configureHeader() {
-        if let siteInfo = loginFields.siteInfo {
+        if let siteInfo = loginFields.meta.siteInfo {
             configureBlogDetailHeaderView(siteInfo: siteInfo)
         } else {
             configureSiteAddressHeader()
@@ -205,7 +201,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         siteAddressStackView.isHidden = false
         siteHeaderView.isHidden = true
 
-        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteUrl)
+        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
     }
 
 

@@ -8,6 +8,12 @@ import CocoaLumberjack
 ///
 open class MediaExportService: LocalCoreDataService {
 
+    private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaExportService", autoreleaseFrequency: .workItem)
+
+    public lazy var exportQueue: DispatchQueue = {
+        return MediaExportService.defaultExportQueue
+    }()
+
     /// Constant for the ideal compression quality used when images are added to the Media Library.
     ///
     /// - Note: This value may or may not be honored, depending on the export implementation and underlying data.
@@ -25,12 +31,13 @@ open class MediaExportService: LocalCoreDataService {
     // MARK: - Instance methods
 
     /// Creates a Media object with an absoluteLocalURL for a PHAsset's data, asynchronously.
-    ///
+    /// - paramater blog: a blog object to where the media object will be added to.
+    /// - paramater post: an optional post object to where the media object will be attached to.
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func exportMediaWith(blog: Blog, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        DispatchQueue.global(qos: .default).async {
+    public func exportMediaWith(blog: Blog, post: AbstractPost?, asset: PHAsset, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+        exportQueue.async {
 
             let exporter = MediaAssetExporter()
             exporter.imageOptions = self.exporterImageOptions
@@ -38,8 +45,12 @@ open class MediaExportService: LocalCoreDataService {
 
             exporter.exportData(forAsset: asset, onCompletion: { (assetExport) in
                 self.managedObjectContext.perform {
-
-                    let media = Media.makeMedia(blog: blog)
+                    let media: Media
+                    if let post = post {
+                        media = Media.makeMedia(post: post)
+                    } else {
+                        media = Media.makeMedia(blog: blog)
+                    }
                     self.configureMedia(media, withExport: assetExport)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         onCompletion(media)
@@ -55,19 +66,25 @@ open class MediaExportService: LocalCoreDataService {
     ///
     /// The UIImage is expected to be a JPEG, PNG, or other 'normal' image.
     ///
+    /// - paramater blog: a blog object to where the media object will be added to.
+    /// - paramater post: an optional post object to where the media object will be attached to.
     /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func exportMediaWith(blog: Blog, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        DispatchQueue.global(qos: .default).async {
+    public func exportMediaWith(blog: Blog, post: AbstractPost?, image: UIImage, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+        exportQueue.async {
 
             let exporter = MediaImageExporter()
             exporter.options = self.exporterImageOptions
 
             exporter.exportImage(image, fileName: nil, onCompletion: { (imageExport) in
                 self.managedObjectContext.perform {
-
-                    let media = Media.makeMedia(blog: blog)
+                    let media: Media
+                    if let post = post {
+                        media = Media.makeMedia(post: post)
+                    } else {
+                        media = Media.makeMedia(blog: blog)
+                    }
                     self.configureMedia(media, withExport: imageExport)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         onCompletion(media)
@@ -83,11 +100,13 @@ open class MediaExportService: LocalCoreDataService {
     ///
     /// The file URL is expected to be a JPEG, PNG, GIF, other 'normal' image, or video.
     ///
+    /// - paramater blog: a blog object to where the media object will be added to.
+    /// - paramater post: an optional post object to where the media object will be attached to.
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
-    public func exportMediaWith(blog: Blog, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        DispatchQueue.global(qos: .default).async {
+    public func exportMediaWith(blog: Blog, post: AbstractPost?, url: URL, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+        exportQueue.async {
 
             let exporter = MediaURLExporter()
             exporter.imageOptions = self.exporterImageOptions
@@ -95,8 +114,12 @@ open class MediaExportService: LocalCoreDataService {
 
             exporter.exportURL(fileURL: url, onCompletion: { (urlExport) in
                 self.managedObjectContext.perform {
-
-                    let media = Media.makeMedia(blog: blog)
+                    let media: Media
+                    if let post = post {
+                        media = Media.makeMedia(post: post)
+                    } else {
+                        media = Media.makeMedia(blog: blog)
+                    }
                     self.configureMedia(media, withExport: urlExport)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
                         onCompletion(media)
