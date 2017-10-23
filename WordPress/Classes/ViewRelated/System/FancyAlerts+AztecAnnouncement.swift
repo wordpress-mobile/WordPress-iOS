@@ -46,9 +46,6 @@ extension FancyAlertViewController {
 
             settings.enable(.aztec)
 
-            //settings.visualEditorEnabled = true
-            //settings.nativeEditorEnabled = true
-
             WPAnalytics.track(.editorToggledOn)
         }
 
