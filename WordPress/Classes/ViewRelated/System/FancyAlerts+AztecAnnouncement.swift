@@ -22,7 +22,7 @@ extension FancyAlertViewController {
     }
 
     static func aztecAnnouncementController() -> FancyAlertViewController {
-        if EditorSettings().nativeEditorEnabled {
+        if EditorSettings().isEnabled(.aztec) {
             return existingTesterAztecAnnouncementController()
         } else {
             return newTesterAztecAnnouncementController()
@@ -43,8 +43,11 @@ extension FancyAlertViewController {
 
         let enableEditor = {
             let settings = EditorSettings(database: UserDefaults.standard)
-            settings.visualEditorEnabled = true
-            settings.nativeEditorEnabled = true
+            
+            settings.enable(.aztec)
+            
+            //settings.visualEditorEnabled = true
+            //settings.nativeEditorEnabled = true
 
             WPAnalytics.track(.editorToggledOn)
         }
