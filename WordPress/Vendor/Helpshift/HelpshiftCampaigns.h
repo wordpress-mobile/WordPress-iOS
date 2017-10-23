@@ -1,6 +1,6 @@
 /*
  *    HelpshiftCampaigns.h
- *    SDK Version 5.10.1
+ *    SDK Version 6.3.0
  *
  *    Get the documentation at http://www.helpshift.com/docs
  *
@@ -12,10 +12,16 @@
 #import "HelpshiftCore.h"
 #import "HelpshiftInbox.h"
 
-@interface HelpshiftCampaigns : NSObject <HsApiProvider>
-{
+@protocol HelpshiftCampaignsDelegate;
+
+/**
+ *  Campaigns API provider
+ */
+@interface HelpshiftCampaigns : NSObject <HsApiProvider>{
     BOOL isInitialized;
 }
+
+@property (nonatomic, weak) id<HelpshiftCampaignsDelegate> delegate;
 
 /**
  *  Delegate for getting callbacks related to Campaigns inbox messages.
@@ -39,6 +45,14 @@
  */
 + (BOOL) addProperty:(NSString *)key withInteger:(NSInteger)value;
 
+/**
+ * Add an long long property for current user
+ * @param key   name of the key with which you want to associate data
+ * @param value long long value of the key
+ *
+ * @return YES if property key is valid, NO otherwise
+ */
++ (BOOL) addProperty:(NSString *)key withLongLong:(long long)value;
 
 /**
  *  Add a string property for current user
@@ -110,7 +124,7 @@
 /**
  *  Show the campaign detail screen.
  *
- *  @param campaignId        Campaign id which is received in the push packet
+ *  @param messageId        Campaign id which is received in the push packet
  *  @param viewController    viewController on which Detail UI will be shown
  *  @param configObject      API config object which can customize and change the behaviour of the Helpshift SDK. Currently supported flags are :
  *  presentFullScreenOniPad : Show the Inbox UI in fullscreen mode on iPad.
@@ -126,9 +140,42 @@
  *  Return the current count of unread campaign messages in the Inbox.
  *
  *  @return count of unread campaign messages.
+ *  @deprecated Deprecated in SDK version 6.3.0
  */
-+ (NSInteger) getCountOfUnreadMessages;
++ (NSInteger) getCountOfUnreadMessages __deprecated_msg("Use requestUnreadMessagesCount instead.");
+
+/** Get the count of unread campaign messages.
+ *
+ *
+ * If you want to show your user notifications for unread campaigns, you can get the count of unread campaigns asynchronously by implementing the HelpshiftCampaignsDelegate in your respective .h and .m files.
+ * Now you can call the method
+ * @code
+ * [HelpshiftCampaigns requestUnreadMessagesCount];
+ * @endcode
+ * This will return a notification count in the
+ * - (void) didReceiveUnreadMessagesCount:(NSInteger)count
+ * count delegate method.
+ *
+ * @available Available in SDK version 6.3.0 or later
+ */
+
++ (void) requestUnreadMessagesCount;
 
 + (void) configureWithOptions:(NSDictionary *)configOptions;
+
+@end
+
+/**
+ *  A delegate which defines the callbacks which are available in the SDK
+ */
+@protocol HelpshiftCampaignsDelegate <NSObject>
+
+/** Delegate method call that should be implemented if you are calling requestUnreadMessagesCount:
+ * @param count Returns the number of unread campaign messages
+ *
+ * Available in SDK version 6.3.0 or later
+ */
+
+- (void) didReceiveUnreadMessagesCount:(NSInteger)count;
 
 @end

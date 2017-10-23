@@ -168,7 +168,7 @@ extension BlogSettings {
         fileprivate static let minimumValue  = 2
         fileprivate static let maximumValue  = 10
 
-        fileprivate static var descriptionMap: [Int : String] {
+        fileprivate static var descriptionMap: [Int: String] {
             let descriptionFormat = NSLocalizedString("%@ levels", comment: "Comments Threading Levels")
             var optionsMap = [Int: String]()
 

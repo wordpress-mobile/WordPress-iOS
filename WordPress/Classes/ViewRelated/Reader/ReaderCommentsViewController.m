@@ -9,7 +9,6 @@
 #import "UIView+Subviews.h"
 #import "WPImageViewController.h"
 #import "WPTableViewHandler.h"
-#import "WPWebViewController.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
@@ -56,6 +55,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
+@property (nonatomic) BOOL failedToFetchComments;
 @property (nonatomic, strong) NSCache *estimatedRowHeights;
 
 @end
@@ -454,7 +454,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     if (self.isLoadingPost || self.syncHelper.isSyncing) {
         return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
     }
-    
+    // If we couldn't fetch the comments lets let the user know
+    if (self.failedToFetchComments) {
+        return NSLocalizedString(@"There has been an unexpected error while loading the comments.", @"Message shown when comments for a post can not be loaded.");
+    }
     return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
 }
 
@@ -661,7 +664,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
 
-    void (^successBlock)() = ^void() {
+    void (^successBlock)(void) = ^void() {
         [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
         NSMutableDictionary *properties = [NSMutableDictionary dictionary];
@@ -725,6 +728,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    self.failedToFetchComments = NO;
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
     [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
         if (success) {
@@ -736,6 +740,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    self.failedToFetchComments = NO;
     [self.activityFooter startAnimating];
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] newDerivedContext]];
@@ -747,7 +752,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     } failure:failure];
 }
 
-- (void)syncContentEnded
+- (void)syncContentEnded:(WPContentSyncHelper *)syncHelper
 {
     [self.activityFooter stopAnimating];
     if ([self.tableViewHandler isScrolling]) {
@@ -757,6 +762,12 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self refreshTableViewAndNoResultsView];
 }
 
+- (void)syncContentFailed:(WPContentSyncHelper *)syncHelper
+{
+    self.failedToFetchComments = YES;
+    [self.activityFooter stopAnimating];
+    [self refreshTableViewAndNoResultsView];
+}
 
 #pragma mark - Async Loading Helpers
 
@@ -876,6 +887,17 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // Override WPTableViewHandler's default of UITableViewAutomaticDimension,
+    // which results in 30pt tall headers on iOS 11
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
+}
 
 #pragma mark - UIScrollView Delegate Methods
 
@@ -935,8 +957,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)cell:(ReaderCommentCell *)cell didTapAuthor:(Comment *)comment
 {
     NSURL *url = [comment authorURL];
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
-    webViewController.addsWPComReferrer = YES;
+    WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:url];
+    [configuration authenticateWithDefaultAccount];
+    [configuration setAddsWPComReferrer:YES];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -1050,8 +1074,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         linkURL = [components URLRelativeToURL:[NSURL URLWithString:self.post.blogURL]];
     }
 
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
-    webViewController.addsWPComReferrer = YES;
+    WebViewControllerConfiguration *configuration = [[WebViewControllerConfiguration alloc] initWithUrl:linkURL];
+    [configuration authenticateWithDefaultAccount];
+    [configuration setAddsWPComReferrer:YES];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }

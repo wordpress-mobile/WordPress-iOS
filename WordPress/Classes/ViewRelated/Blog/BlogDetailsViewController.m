@@ -12,7 +12,6 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
@@ -53,7 +52,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
-@property (nonatomic, copy) void (^callback)();
+@property (nonatomic, copy) void (^callback)(void);
 
 @end
 
@@ -61,7 +60,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                         image:(UIImage * __nonnull)image
-                     callback:(void(^)())callback
+                     callback:(void(^)(void))callback
 {
     return [self initWithTitle:title
                     identifier:BlogDetailsCellIdentifier
@@ -72,7 +71,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (instancetype)initWithTitle:(NSString * __nonnull)title
                    identifier:(NSString * __nonnull)identifier 
                         image:(UIImage * __nonnull)image
-                     callback:(void(^)())callback
+                     callback:(void(^)(void))callback
 {
     self = [super init];
     if (self) {
@@ -492,6 +491,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                         image:[Gridicon iconOfType:GridiconTypeUser]
                                                      callback:^{
                                                          [weakSelf showPeople];
+                                                     }]];
+    }
+
+    if ([Feature enabled:FeatureFlagPluginManagement] && [self.blog supports:BlogFeaturePluginManagement]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
+                                                        image:[Gridicon iconOfType:GridiconTypePlugins]
+                                                     callback:^{
+                                                         [weakSelf showPlugins];
                                                      }]];
     }
 
@@ -918,6 +925,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showDetailViewController:controller sender:self];
 }
 
+- (void)showPlugins
+{
+    PluginListViewController *controller = [[PluginListViewController alloc] initWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
+}
+
 - (void)showPlans
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPlans withBlog:self.blog];
@@ -984,11 +997,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    webViewController.authToken = self.blog.authToken;
-    webViewController.username = self.blog.usernameForSite;
-    webViewController.password = self.blog.password;
-    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];

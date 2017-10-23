@@ -178,7 +178,7 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
 private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = [String: Any]
     let acceptedType = kUTTypePropertyList as String
-    func convert(payload: [String : Any]) -> ExtractedItem? {
+    func convert(payload: [String: Any]) -> ExtractedItem? {
         guard let results = payload[NSExtensionJavaScriptPreprocessingResultsKey] as? [String: Any] else {
             return nil
         }

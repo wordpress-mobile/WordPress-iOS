@@ -30,6 +30,18 @@ extension Header.HeaderType {
         }
     }
 
+    var accessibilityLabel: String {
+        switch self {
+        case .none: return NSLocalizedString("Switches to the default Font Size", comment: "Accessibility Identifier for the Default Font Aztec Style.")
+        case .h1: return NSLocalizedString("Switches to the Heading 1 font size", comment: "Accessibility Identifier for the H1 Aztec Style")
+        case .h2: return NSLocalizedString("Switches to the Heading 2 font size", comment: "Accessibility Identifier for the H2 Aztec Style")
+        case .h3: return NSLocalizedString("Switches to the Heading 3 font size", comment: "Accessibility Identifier for the H3 Aztec Style")
+        case .h4: return NSLocalizedString("Switches to the Heading 4 font size", comment: "Accessibility Identifier for the H4 Aztec Style")
+        case .h5: return NSLocalizedString("Switches to the Heading 5 font size", comment: "Accessibility Identifier for the H5 Aztec Style")
+        case .h6: return NSLocalizedString("Switches to the Heading 6 font size", comment: "Accessibility Identifier for the H6 Aztec Style")
+        }
+    }
+
     var iconImage: UIImage? {
         switch self {
         case .none: return UIImage(color: .clear, havingSize: Gridicon.defaultSize)

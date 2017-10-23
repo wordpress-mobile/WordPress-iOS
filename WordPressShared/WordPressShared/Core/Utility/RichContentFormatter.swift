@@ -40,7 +40,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func formatContentString(_ string: String, isPrivateStie isPrivate: Bool) -> String {
+    public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
         guard string.characters.count > 0 else {
             return string
         }
@@ -209,11 +209,7 @@ import Foundation
             return string
         }
 
-        guard let window = UIApplication.shared.keyWindow else {
-            return string
-        }
-
-        let imageSize = window.frame.size
+        let imageSize = UIScreen.main.bounds.size
         let scale = UIScreen.main.scale
         let scaledSize = imageSize.applying(CGAffineTransform(scaleX: scale, y: scale))
 

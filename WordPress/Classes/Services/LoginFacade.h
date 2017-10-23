@@ -2,6 +2,7 @@
 
 
 @class LoginFields;
+@class SocialLogin2FANonceInfo;
 @protocol WordPressComOAuthClientFacade;
 @protocol WordPressXMLRPCAPIFacade;
 @protocol LoginFacadeDelegate;
@@ -42,6 +43,24 @@
  *  @param loginFields the fields representing the site we need a 2fa code for.
  */
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
+
+/**
+ * Social login via google.
+ *
+ * @param googleIDToken A Google id_token.
+ */
+- (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken;
+
+/**
+ * Social login via a social account with 2FA using a nonce.
+ *
+ * @param googleIDToken A Google id_token.
+ */
+- (void)loginToWordPressDotComWithUser:(NSInteger)userID
+                              authType:(NSString *)authType
+                           twoStepCode:(NSString *)twoStepCode
+                          twoStepNonce:(NSString *)twoStepNonce;
+
 
 /**
  *  A delegate with a few methods that indicate various aspects of the login process
@@ -87,6 +106,14 @@
 - (void)needsMultifactorCode;
 
 /**
+ *  This is called when the initial login failed because we need a 2fa code for a social login.
+ *
+ *  @param userID the WPCom userID of the user logging in.
+ *  @param nonceInfo an object containing information about available 2fa nonce options.
+ */
+- (void)needsMultifactorCodeForUserID:(NSInteger)userID andNonceInfo:(SocialLogin2FANonceInfo *)nonceInfo;
+
+/**
  *  This is called when there's been an error and we want to inform the user.
  *
  *  @param error the error in question.
@@ -112,6 +139,33 @@
  *  @param requiredMultifactorCode  whether the login required a 2fa code
  */
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode;
+
+
+/**
+ *  Called when finished logging in to a WordPress.com site via a Google token.
+ *
+ *  @param googleIDToken            the token used
+ *  @param authToken                authToken to be used to access the site
+ */
+- (void)finishedLoginWithGoogleIDToken:(NSString *)googleIDToken authToken:(NSString *)authToken;
+
+
+/**
+ *  Called when finished logging in to a WordPress.com site via a 2FA Nonce.
+ *
+ *  @param googleIDToken            the token used
+ *  @param authToken                authToken to be used to access the site
+ */
+- (void)finishedLoginWithNonceAuthToken:(NSString *)authToken;
+
+
+/**
+ * Lets the delegate know that a social login attempt found a matching user, but
+ * their account has not been connected to the social service previously.
+ *
+ * @param email The email address that was matched.
+ */
+- (void)existingUserNeedsConnection:(NSString *)email;
 
 @end
 

@@ -39,8 +39,6 @@
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     OCMExpect([mockApplication registerForRemoteNotifications]);
     
-    [OCMStub([mockApplication isRunningSimulator]) andReturnValue:OCMOCK_VALUE(false)];
-    
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
     [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
@@ -90,12 +88,12 @@
     [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
-    
+
     XCTAssertTrue([mockManager handleHelpshiftNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
     XCTAssertFalse([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
-    
+
     OCMExpect([manager handleHelpshiftNotification:userInfo completionHandler:nil]);
     [mockManager handleNotification:userInfo completionHandler:nil];
     OCMVerify(mockManager);

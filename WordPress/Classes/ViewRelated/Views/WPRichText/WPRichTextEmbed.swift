@@ -85,7 +85,7 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
         }
 
         // embeds, unlike images, typically have no intrinsic content size that we can use to fall back on
-        if (fixedHeight > 0) {
+        if fixedHeight > 0 {
             return CGSize(width: CGFloat.greatestFiniteMagnitude, height: fixedHeight)
         }
 
@@ -97,7 +97,7 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
     }
 
     func contentRatio() -> CGFloat {
-        if (fixedHeight > 0) {
+        if fixedHeight > 0 {
             return 0.0
         }
 
@@ -105,7 +105,7 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
             return attachmentSize.width / attachmentSize.height
         }
 
-        if (!documentSize.equalTo(CGSize.zero)) {
+        if !documentSize.equalTo(CGSize.zero) {
             return documentSize.width / documentSize.height
         }
 

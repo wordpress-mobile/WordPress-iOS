@@ -15,6 +15,8 @@ static NSInteger const ImageSizeMediumWidth = 480;
 static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
+static NSInteger const JetpackProfessionalYearlyPlanId = 2004;
+static NSInteger const JetpackProfessionalMonthlyPlanId = 2001;
 
 NSString * const BlogEntityName = @"Blog";
 NSString * const PostFormatStandard = @"standard";
@@ -22,7 +24,6 @@ NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
-
 
 @interface Blog ()
 
@@ -273,6 +274,11 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [[self.connections allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
+- (NSArray<Role *> *)sortedRoles
+{
+    return [self.roles sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:YES]]];
+}
+
 - (NSString *)defaultPostFormatText
 {
     return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
@@ -449,10 +455,19 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureMentions:
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeaturePluginManagement:
+            return [self supportsRestApi] && ![self isHostedAtWPcom];
+        case BlogFeatureJetpackSettings:
+            return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
-            return [self isHostedAtWPcom] && [self isAdmin];
+            return [self supportsRestApi] && [self isAdmin];
+        case BlogFeatureCustomThemes:
+            return [self supportsRestApi] && [self isAdmin] && ![self isHostedAtWPcom];
+        case BlogFeaturePremiumThemes:
+            return [self supports:BlogFeatureCustomThemes] && (self.planID.integerValue == JetpackProfessionalYearlyPlanId
+                                                               || self.planID.integerValue == JetpackProfessionalMonthlyPlanId);
         case BlogFeatureMenus:
             return [self supportsRestApi] && [self isAdmin];
         case BlogFeaturePrivate:

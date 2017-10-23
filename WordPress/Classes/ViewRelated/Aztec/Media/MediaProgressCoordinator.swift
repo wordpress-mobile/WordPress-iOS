@@ -23,7 +23,7 @@ public class MediaProgressCoordinator: NSObject {
 
     private(set) var mediaUploadingProgress: Progress?
 
-    private(set) lazy var mediaUploading: [String:Progress] = {
+    private(set) lazy var mediaUploading: [String: Progress] = {
         return [String: Progress]()
     }()
 
@@ -49,7 +49,7 @@ public class MediaProgressCoordinator: NSObject {
 
         if self.mediaUploadingProgress == nil {
             self.mediaUploadingProgress = Progress.discreteProgress(totalUnitCount: 0)
-            self.mediaUploadingProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options:[.new], context:&mediaUploadingProgressObserverContext)
+            self.mediaUploadingProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options: [.new], context: &mediaUploadingProgressObserverContext)
 
             delegate?.mediaProgressCoordinatorDidStartUploading(self)
         }
@@ -91,7 +91,7 @@ public class MediaProgressCoordinator: NSObject {
         return object
     }
 
-    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard
             context == &mediaUploadingProgressObserverContext,
             keyPath == #keyPath(Progress.fractionCompleted)

@@ -174,7 +174,7 @@ class MediaImageExporter: MediaExporter {
             if let maximumImageSize = options.maximumImageSize {
                 writer.maximumSize = maximumImageSize as CFNumber
             }
-            writer.lossyCompressionQuality = options.imageCompressionQuality as CFNumber
+            writer.lossyCompressionQuality = options.imageCompressionQuality
             writer.nullifyGPSData = options.stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
             onCompletion(MediaImageExport(url: url,
@@ -200,7 +200,7 @@ class MediaImageExporter: MediaExporter {
 
         /// The Compression quality used, defaults to 1.0 or full
         ///
-        var lossyCompressionQuality = 1.0 as CFNumber
+        var lossyCompressionQuality = 1.0
 
         /// Whether or not GPS data should be nullified.
         ///
@@ -236,7 +236,7 @@ class MediaImageExporter: MediaExporter {
             // Configure destination properties
             imageProperties[kCGImageDestinationLossyCompressionQuality] = lossyCompressionQuality
             // Configure orientation properties to default .up or 1
-            imageProperties[kCGImagePropertyOrientation] = CGImagePropertyOrientation.up
+            imageProperties[kCGImagePropertyOrientation] = Int(CGImagePropertyOrientation.up.rawValue) as CFNumber
             if var tiffProperties = imageProperties[kCGImagePropertyTIFFDictionary] as? [NSString: Any] {
                 // Remove TIFF orientation value
                 tiffProperties.removeValue(forKey: kCGImagePropertyTIFFOrientation)
@@ -296,6 +296,7 @@ class MediaImageExporter: MediaExporter {
             guard written == true else {
                 throw ImageExportError.imageSourceDestinationWriteFailed
             }
+
             // Return the result with any interesting properties.
             return WriteResultProperties(width: width,
                                          height: height)

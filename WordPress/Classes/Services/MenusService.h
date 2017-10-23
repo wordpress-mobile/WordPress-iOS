@@ -7,8 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 @class MenuLocation;
 @class MenuItem;
 
-typedef void(^MenusServiceSuccessBlock)();
-typedef void(^MenusServiceCreateOrUpdateMenuRequestSuccessBlock)();
+typedef void(^MenusServiceSuccessBlock)(void);
+typedef void(^MenusServiceCreateOrUpdateMenuRequestSuccessBlock)(void);
 typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> * _Nullable menus);
 typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> * _Nullable locations);
 typedef void(^MenusServiceFailureBlock)(NSError *error);

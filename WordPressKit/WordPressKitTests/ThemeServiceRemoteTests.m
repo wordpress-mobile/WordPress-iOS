@@ -185,8 +185,9 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     static NSString* const url = @"v1.2/themes";
     static NSInteger const expectedThemes = 20;
 
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore) {
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount) {
         NSCAssert([themes count] == expectedThemes, @"Expected %ld themes to be returned", expectedThemes);
+        NSCAssert(totalThemeCount == expectedThemes, @"Expected %ld themes to be found", expectedThemes);
     };
     
     [OCMStub([api GET:[OCMArg isEqual:url]
@@ -210,17 +211,19 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     }];
 
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api]);
-    XCTAssertNoThrow([service getThemesPage:1
-                                    success:successBlock
-                                    failure:nil]);
+    XCTAssertNoThrow([service getWPThemesPage:1
+                                     freeOnly:NO
+                                      success:successBlock
+                                      failure:nil]);
 }
 
 - (void)testThatGetThemesForBlogIdWorks
 {
     NSNumber *blogId = @124;
-    
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore) {
+
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore, NSInteger totalThemeCount) {
         NSCAssert([themes count] > 0, @"Expected themes to be returned");
+        NSCAssert(totalThemeCount > 0, @"Expected total themes count to be > 0");
     };
     
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);

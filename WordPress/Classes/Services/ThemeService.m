@@ -4,6 +4,7 @@
 #import "Theme.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 @import WordPressKit;
 
 /**
@@ -145,6 +146,8 @@ const NSInteger ThemeOrderTrailing = 9999;
     
     NSProgress *progress = [remote getActiveThemeForBlogId:[blog dotComID]
                                                      success:^(RemoteTheme *remoteTheme) {
+                                                         remoteTheme = [self removeWPComSuffixIfNeeded:remoteTheme
+                                                                                               forBlog:blog];
                                                          Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                                                          forBlog:blog];
                                                          
@@ -179,7 +182,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                                              
                                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                                  if (success) {
-                                                                     success(themes, NO);
+                                                                     success(themes, NO, themes.count);
                                                                  }
                                                              }];
                                                          } failure:failure];
@@ -229,14 +232,15 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
     
-    NSProgress *progress = [remote getThemesPage:page
-                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
+    NSProgress *progress = [remote getWPThemesPage:page
+                                          freeOnly:false
+                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
                                                 NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                                        forBlog:nil];
 
                                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                     if (success) {
-                                                        success(themes, hasMore);
+                                                        success(themes, hasMore, totalThemeCount);
                                                     }
                                                 }];
                                             } failure:failure];
@@ -260,37 +264,116 @@ const NSInteger ThemeOrderTrailing = 9999;
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
     NSMutableSet *unsyncedThemes = sync ? [NSMutableSet setWithSet:blog.themes] : nil;
-    
-    NSProgress *progress = [remote getThemesForBlogId:[blog dotComID]
-                                                   page:page
-                                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
-                                                    NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                           forBlog:blog];
-                                                    if (sync) {
-                                                        [unsyncedThemes minusSet:[NSSet setWithArray:themes]];
-                                                        for (Theme *deleteTheme in unsyncedThemes) {
-                                                            if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
-                                                                [self.managedObjectContext deleteObject:deleteTheme];
-                                                            }
-                                                        }
-                                                    }
-                                                    
-                                                    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                        if (success) {
-                                                            success(themes, hasMore);
-                                                        }
-                                                    }];
-                                                } failure:failure];
-    
-    return progress;
+
+    if ([blog supports:BlogFeatureCustomThemes]) {
+        return [remote getWPThemesPage:page
+                              freeOnly:![blog supports:BlogFeaturePremiumThemes]
+                               success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                   NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                          forBlog:blog];
+                                   if (sync) {
+                                       // We don't want to touch custom themes here, only WP.com themes
+                                       NSMutableSet *unsyncedWPThemes = [unsyncedThemes mutableCopy];
+                                       for (Theme *theme in unsyncedThemes) {
+                                           if (theme.custom) {
+                                               [unsyncedWPThemes removeObject:theme];
+                                           }
+                                       }
+                                       [unsyncedWPThemes minusSet:[NSSet setWithArray:themes]];
+                                       for (Theme *deleteTheme in unsyncedWPThemes) {
+                                           if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                               [self.managedObjectContext deleteObject:deleteTheme];
+                                           }
+                                       }
+                                   }
+
+                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                       if (success) {
+                                           success(themes, hasMore, totalThemeCount);
+                                       }
+                                   }];
+                               } failure:failure];
+    } else {
+        return [remote getThemesForBlogId:[blog dotComID]
+                                     page:page
+                                  success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                      NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                             forBlog:blog];
+                                      if (sync) {
+                                          [unsyncedThemes minusSet:[NSSet setWithArray:themes]];
+                                          for (Theme *deleteTheme in unsyncedThemes) {
+                                              if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                                  [self.managedObjectContext deleteObject:deleteTheme];
+                                              }
+                                          }
+                                      }
+
+                                      [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                          if (success) {
+                                              success(themes, hasMore, totalThemeCount);
+                                          }
+                                      }];
+                                  } failure:failure];
+    }
+}
+
+- (NSProgress *)getCustomThemesForBlog:(Blog *)blog
+                                  sync:(BOOL)sync
+                               success:(ThemeServiceThemesRequestSuccessBlock)success
+                               failure:(ThemeServiceFailureBlock)failure {
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSAssert([self blogSupportsThemeServices:blog],
+             @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
+
+    if (blog.wordPressComRestApi == nil) {
+        return nil;
+    }
+
+    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
+
+    return [remote getCustomThemesForBlogId:[blog dotComID]
+                                    success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                        NSMutableArray *validRemoteThemes = [NSMutableArray array];
+                                        // We need to filter out themes with an id ending in -wpcom to match Calypso
+                                        for (RemoteTheme *remoteTheme in remoteThemes) {
+                                            if (![ThemeIdHelper themeIdHasWPComSuffix:remoteTheme.themeId]) {
+                                                [validRemoteThemes addObject:remoteTheme];
+                                            }
+                                        }
+
+                                        NSArray *themes = [self customThemesFromRemoteThemes:validRemoteThemes
+                                                                                     forBlog:blog];
+                                        if (sync) {
+                                            // We don't want to touch WP.com themes here, only custom themes
+                                            NSMutableSet *unsyncedThemes = [NSMutableSet setWithSet:blog.themes];
+                                            NSMutableSet *unsyncedCustomThemes = [unsyncedThemes mutableCopy];
+                                            for (Theme *theme in unsyncedThemes) {
+                                                if (!theme.custom) {
+                                                    [unsyncedCustomThemes removeObject:theme];
+                                                }
+                                            }
+                                            [unsyncedCustomThemes minusSet:[NSSet setWithArray:themes]];
+                                            for (Theme *deleteTheme in unsyncedCustomThemes) {
+                                                if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                                    [self.managedObjectContext deleteObject:deleteTheme];
+                                                }
+                                            }
+                                        }
+
+                                        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                            if (success) {
+                                                success(themes, hasMore, themes.count);
+                                            }
+                                        }];
+                                    } failure:failure];
 }
 
 #pragma mark - Remote queries: Activating themes
 
 - (NSProgress *)activateTheme:(Theme *)theme
-                       forBlog:(Blog *)blog
-                       success:(ThemeServiceThemeRequestSuccessBlock)success
-                       failure:(ThemeServiceFailureBlock)failure
+                      forBlog:(Blog *)blog
+                      success:(ThemeServiceThemeRequestSuccessBlock)success
+                      failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([theme isKindOfClass:[Theme class]]);
     NSParameterAssert([theme.themeId isKindOfClass:[NSString class]]);
@@ -303,21 +386,124 @@ const NSInteger ThemeOrderTrailing = 9999;
     }
 
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
-    
-    NSProgress *progress = [remote activateThemeId:theme.themeId
-                                           forBlogId:[blog dotComID]
-                                             success:^(RemoteTheme *remoteTheme) {
-                                                 Theme *theme = [self themeFromRemoteTheme:remoteTheme
-                                                                                   forBlog:blog];
-                                                 
-                                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                     if (success) {
-                                                         success(theme);
-                                                     }
-                                                 }];
-                                             } failure:failure];
-    
-    return progress;
+
+    if ([blog supports:BlogFeatureCustomThemes] &&
+        !theme.custom) {
+        NSString *themeIdWithWPComSuffix = [ThemeIdHelper themeIdWithWPComSuffix:theme.themeId];
+        return [remote installThemeId:themeIdWithWPComSuffix
+                            forBlogId:[blog dotComID]
+                              success:^(RemoteTheme *remoteTheme) {
+                                  [self activateThemeId:themeIdWithWPComSuffix
+                                                forBlog:blog
+                                                success:^(){
+                                                    [self themeActivatedSuccessfully:theme
+                                                                             forBlog:blog
+                                                                             success:success];
+                                                }
+                                                failure:failure];
+                              } failure:^(NSError *error) {
+                                  // There's no way to know from the WP.com theme list if the theme was already
+                                  // installed, BUT trying to install an already installed theme returns an error,
+                                  // so regardless we are trying to activate. Calypso does this same thing.
+                                  [self activateThemeId:themeIdWithWPComSuffix
+                                                forBlog:blog
+                                                success:^(){
+                                                    [self themeActivatedSuccessfully:theme
+                                                                             forBlog:blog
+                                                                             success:success];
+                                                } failure:failure];
+                              }];
+    } else {
+        return [self activateThemeId:theme.themeId
+                             forBlog:blog
+                             success:^(){
+                                 [self themeActivatedSuccessfully:theme
+                                                          forBlog:blog
+                                                          success:success];
+                             } failure:failure];
+    }
+}
+
+- (NSProgress *)activateThemeId:(NSString *)themeId
+                        forBlog:(Blog *)blog
+                        success:(ThemeServiceSuccessBlock)success
+                        failure:(ThemeServiceFailureBlock)failure
+{
+    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
+
+    return [remote activateThemeId:themeId
+                         forBlogId:[blog dotComID]
+                           success:^(RemoteTheme *remoteTheme) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:failure];
+}
+
+- (void)themeActivatedSuccessfully:(Theme *)theme
+                           forBlog:(Blog *)blog
+                           success:(ThemeServiceThemeRequestSuccessBlock)success
+{
+    blog.currentThemeId = theme.themeId;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        if (success) {
+            success(theme);
+        }
+    }];
+}
+
+- (RemoteTheme *)removeWPComSuffixIfNeeded:(RemoteTheme *)remoteTheme
+                                   forBlog:(Blog *)blog
+{
+    remoteTheme.themeId = [ThemeIdHelper themeIdWithWPComSuffixRemoved:remoteTheme.themeId
+                                                               forBlog:blog];
+    return remoteTheme;
+}
+
+#pragma mark - Remote queries: Installing themes
+
+/**
+ *  @brief      Installs the specified theme for the specified blog.
+ *
+ *  @param      themeId     The theme to install.  Cannot be nil.
+ *  @param      blogId      The target blog.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ *
+ *  @returns    The progress object.
+ */
+- (NSProgress *)installTheme:(Theme *)theme
+                     forBlog:(Blog *)blog
+                     success:(ThemeServiceSuccessBlock)success
+                     failure:(ThemeServiceFailureBlock)failure
+{
+    NSParameterAssert([theme isKindOfClass:[Theme class]]);
+    NSParameterAssert([theme.themeId isKindOfClass:[NSString class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSAssert([self blogSupportsThemeServices:blog],
+             @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
+
+    if (blog.wordPressComRestApi == nil) {
+        return nil;
+    }
+
+    ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:blog.wordPressComRestApi];
+
+    NSString *themeIdWithWPComSuffix = [ThemeIdHelper themeIdWithWPComSuffix:theme.themeId];
+    return [remote installThemeId:themeIdWithWPComSuffix
+                        forBlogId:[blog dotComID]
+                          success:^(RemoteTheme *remoteTheme) {
+                              if (success) {
+                                  success();
+                              }
+                          } failure:^(NSError *error) {
+                              // Since installing a previously installed theme will fail, but there is no
+                              // way of knowing if it failed because of that or if the theme was previously installed,
+                              // I'm going to go ahead and call success. Calypso does this same thing. I'm sorry.
+                              if (success) {
+                                  success();
+                              }
+                          }];
 }
 
 #pragma mark - Parsing the dictionary replies
@@ -345,6 +531,7 @@ const NSInteger ThemeOrderTrailing = 9999;
         theme.authorUrl = remoteTheme.authorUrl;
     }
     theme.demoUrl = remoteTheme.demoUrl;
+    theme.themeUrl = remoteTheme.themeUrl;
     theme.details = remoteTheme.desc;
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
@@ -372,7 +559,6 @@ const NSInteger ThemeOrderTrailing = 9999;
     return theme;
 }
 
-
 /**
  *  @brief      Updates our local themes matching the specified remote themes.
  *  @details    If the local themes do not exist, they are created.
@@ -387,19 +573,44 @@ const NSInteger ThemeOrderTrailing = 9999;
 - (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
                                      forBlog:(nullable Blog *)blog
 {
+    return [self themesFromRemoteThemes:remoteThemes custom:NO forBlog:blog];
+}
+
+/**
+ *  @brief      Updates our local themes matching the specified remote themes.
+ *  @details    If the local themes do not exist, they are created.
+ *
+ *  @param      remoteThemes    An array with the remote custom themes containing the data to update
+ *                              locally.  Cannot be nil.
+ *  @param      blog            Blog being updated. May be nil for account.
+ *  @param      ordered         Whether to update displayed order
+ *
+ *  @returns    An array with the updated and matching local themes.
+ */
+- (NSArray<Theme *> *)customThemesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                           forBlog:(nullable Blog *)blog
+{
+    return [self themesFromRemoteThemes:remoteThemes custom:YES forBlog:blog];
+}
+
+- (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                      custom:(BOOL)custom
+                                     forBlog:(nullable Blog *)blog
+{
     NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
-    
+
     NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:remoteThemes.count];
-    
+
     [remoteThemes enumerateObjectsUsingBlock:^(RemoteTheme *remoteTheme, NSUInteger idx, BOOL *stop) {
         NSAssert([remoteTheme isKindOfClass:[RemoteTheme class]],
                  @"Expected a remote theme.");
-        
+
         Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                           forBlog:blog];
+        theme.custom = custom;
         [themes addObject:theme];
     }];
-    
+
     return [NSArray arrayWithArray:themes];
 }
 
