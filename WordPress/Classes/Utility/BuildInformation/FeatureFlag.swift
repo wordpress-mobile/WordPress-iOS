@@ -21,7 +21,7 @@ enum FeatureFlag: Int {
         case .pluginManagement:
             return BuildConfiguration.current == .localDeveloper
         case .googleLogin:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         }
