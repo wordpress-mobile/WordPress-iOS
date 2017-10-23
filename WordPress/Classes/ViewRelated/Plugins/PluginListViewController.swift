@@ -11,7 +11,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     fileprivate var viewModel: PluginListViewModel = .loading {
         didSet {
-            handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+            handler.viewModel = viewModel.tableViewModel(presenter: self)
             updateNoResults()
         }
     }
@@ -44,7 +44,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([PluginListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+        handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateNoResults()
     }
 
@@ -86,5 +86,14 @@ extension PluginListViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView!) {
         let supportVC = SupportViewController()
         supportVC.showFromTabBar()
+    }
+}
+
+// MARK: - PluginPresenter
+
+extension PluginListViewController: PluginPresenter {
+    func present(plugin: PluginState) {
+        let controller = PluginViewController(plugin: plugin, siteID: siteID, service: service)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
