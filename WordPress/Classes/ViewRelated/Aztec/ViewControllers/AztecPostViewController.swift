@@ -328,6 +328,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
             refreshEditorVisibility()
             refreshPlaceholderVisibility()
+            refreshTitlePosition()
         }
     }
 
@@ -561,7 +562,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Title and Title placeholder position methods
 
-    func updateTitlePosition() {
+    func refreshTitlePosition() {
         let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
 
@@ -1386,7 +1387,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateTitlePosition()
+        refreshTitlePosition()
     }
 
     // MARK: - Title Input Sanitization
