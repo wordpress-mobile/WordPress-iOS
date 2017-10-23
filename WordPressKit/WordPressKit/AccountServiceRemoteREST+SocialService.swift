@@ -17,7 +17,7 @@ extension AccountServiceRemoteREST {
     ///     - success The block that will be executed on success.
     ///     - failure The block that will be executed on failure.
     public func connectToSocialService(_ service: SocialServiceName, serviceIDToken token: String, oAuthClientID: String, oAuthClientSecret: String, success:@escaping (() -> Void), failure:@escaping ((NSError) -> Void)) {
-        guard let path = self.path(forEndpoint: "me/social-login/connect", with: .version_1_1) else {
+        guard let path = self.path(forEndpoint: "me/social-login/connect", withVersion: ._1_1) else {
             // This should never fail but if it does we don't want to ignore the problem.
             fatalError("There was a problem creating a valid path for the supplied endpoint and REST API version.")
         }
@@ -43,7 +43,7 @@ extension AccountServiceRemoteREST {
     ///     - success The block that will be executed on success.
     ///     - failure The block that will be executed on failure.
     public func disconnectFromSocialService(_ service: SocialServiceName, oAuthClientID: String, oAuthClientSecret: String, success:@escaping(() -> Void), failure:@escaping((NSError) -> Void)) {
-        guard let path = self.path(forEndpoint: "me/social-login/disconnect", with: .version_1_1) else {
+        guard let path = self.path(forEndpoint: "me/social-login/disconnect", withVersion: ._1_1) else {
             // This should never fail but if it does we don't want to ignore the problem.
             fatalError("There was a problem creating a valid path for the supplied endpoint and REST API version.")
         }
