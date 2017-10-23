@@ -119,7 +119,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
       authorsCompletionHandler:(StatsRemoteItemsCompletion)authorsCompletion
   searchTermsCompletionHandler:(StatsRemoteItemsCompletion)searchTermsCompletion
                  progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock
-    andOverallCompletionHandler:(void (^)())completionHandler
+   andOverallCompletionHandler:(void (^)(void))completionHandler
 {
     NSMutableArray *mutableOperations = [NSMutableArray new];
 
@@ -184,7 +184,7 @@ typedef void (^TaskUpdateHandler)(NSURLSessionTask *, NSArray<NSURLSessionTask*>
                                  publicizeCompletionHandler:(StatsRemoteItemsCompletion)publicizeCompletion
                                     streakCompletionHandler:(StatsRemoteStreakCompletion)streakCompletion
                                               progressBlock:(void (^)(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations))progressBlock
-                                andOverallCompletionHandler:(void (^)())completionHandler
+                                andOverallCompletionHandler:(void (^)(void))completionHandler
 {
     NSMutableArray *mutableOperations = [NSMutableArray new];
 

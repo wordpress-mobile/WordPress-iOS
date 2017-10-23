@@ -67,7 +67,7 @@ extern NSString *const WPBlogUpdatedNotification;
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncBlogsForAccount:(WPAccount *)account
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -78,7 +78,7 @@ extern NSString *const WPBlogUpdatedNotification;
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncBlog:(Blog *)blog
-         success:(void (^)())success
+         success:(void (^)(void))success
          failure:(void (^)(NSError *error))failure;
 
 /**
@@ -91,7 +91,7 @@ extern NSString *const WPBlogUpdatedNotification;
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncBlogAndAllMetadata:(Blog *)blog
-             completionHandler:(void (^)())completionHandler;
+             completionHandler:(void (^)(void))completionHandler;
 
 /**
  *  Sync the available postTypes configured for the blog.
@@ -101,7 +101,7 @@ extern NSString *const WPBlogUpdatedNotification;
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncPostTypesForBlog:(Blog *)blog
-                     success:(void (^)())success
+                     success:(void (^)(void))success
                      failure:(void (^)(NSError *error))failure;
 
 /**
@@ -112,7 +112,7 @@ extern NSString *const WPBlogUpdatedNotification;
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncPostFormatsForBlog:(Blog *)blog
-                       success:(void (^)())success
+                       success:(void (^)(void))success
                        failure:(void (^)(NSError *error))failure;
 
 /**
@@ -123,7 +123,7 @@ extern NSString *const WPBlogUpdatedNotification;
  *  @param failure a block that in invoked when the sync fails.
  */
 - (void)syncSettingsForBlog:(Blog *)blog
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -134,7 +134,7 @@ extern NSString *const WPBlogUpdatedNotification;
  *  @param failure a block that in invoked when the update fails.
  */
 - (void)updateSettingsForBlog:(Blog *)blog
-                      success:(nullable void (^)())success
+                      success:(nullable void (^)(void))success
                       failure:(nullable void (^)(NSError *error))failure;
 
 

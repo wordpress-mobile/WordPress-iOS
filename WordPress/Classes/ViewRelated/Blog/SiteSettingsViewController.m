@@ -1002,10 +1002,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     NSURL *targetURL = [NSURL URLWithString:path];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    webViewController.authToken = self.blog.authToken;
-    webViewController.username = self.username;
-    webViewController.password = self.password;
-    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
+    [webViewController authenticateWithBlog:self.blog];
     webViewController.shouldScrollToBottom = YES;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];

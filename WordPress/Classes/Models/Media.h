@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 // Managed properties
 
+@property (nonatomic, strong, nullable) NSString *alt;
 @property (nonatomic, strong, nullable) NSString *caption;
 @property (nonatomic, strong) NSDate *creationDate;
 @property (nonatomic, strong, nullable) NSString *desc;

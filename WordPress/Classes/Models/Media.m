@@ -4,6 +4,7 @@
 
 @implementation Media
 
+@dynamic alt;
 @dynamic mediaID;
 @dynamic remoteURL;
 @dynamic localURL;

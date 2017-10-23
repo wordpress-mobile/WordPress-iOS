@@ -73,7 +73,7 @@ import WordPressShared
         super.viewWillAppear(animated)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = true
+        loginFields.meta.userIsDotCom = true
 
         configureLayoutForSmallScreensIfNeeded()
         configureSubmitButton(animating: false)
@@ -181,7 +181,7 @@ import WordPressShared
                 !loginFields.emailAddress.isEmpty &&
                 !loginFields.username.isEmpty &&
                 !loginFields.password.isEmpty &&
-                !loginFields.siteUrl.isEmpty
+                !loginFields.siteAddress.isEmpty
         )
     }
 
@@ -302,7 +302,7 @@ import WordPressShared
         }
 
         // Remove ".wordpress.com" if it was entered.
-        loginFields.siteUrl = loginFields.siteUrl.components(separatedBy: ".")[0]
+        loginFields.siteAddress = loginFields.siteAddress.components(separatedBy: ".")[0]
 
         configureLoading(true)
 
@@ -348,7 +348,7 @@ import WordPressShared
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service.createBlogAndSigninToWPCom(blogURL: loginFields.siteUrl,
+        service.createBlogAndSigninToWPCom(blogURL: loginFields.siteAddress,
                                            blogTitle: loginFields.username,
                                            emailAddress: loginFields.emailAddress,
                                            username: loginFields.username,
@@ -402,7 +402,7 @@ import WordPressShared
         loginFields.emailAddress = emailField.nonNilTrimmedText()
         loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
-        loginFields.siteUrl = siteURLField.nonNilTrimmedText()
+        loginFields.siteAddress = siteURLField.nonNilTrimmedText()
 
         configureSubmitButton(animating: false)
     }
@@ -510,7 +510,7 @@ extension SignupViewController: UITextFieldDelegate {
         }
         // If the user has not customized the site name, then let it match the
         // username they chose.
-        loginFields.siteUrl = loginFields.username
+        loginFields.siteAddress = loginFields.username
         siteURLField.text = loginFields.username
     }
 

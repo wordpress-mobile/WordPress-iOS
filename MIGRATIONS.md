@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 67
+- @3vangelos 2017-09-26
+- `Media` added `alt` string property. Stores the information for an html alt tag for images.
+
 ## WordPress 66
 - @elibud 2017-08-17
 - `BlogSettings` added the following Jetpack security settings properties: 
