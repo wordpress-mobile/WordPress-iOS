@@ -1,17 +1,21 @@
 import Foundation
 
 class EditorSettings: NSObject {
-    enum Editor {
-        case aztec
-        case hybrid
+    @objc
+    enum Editor: Int {
         case legacy
+        case hybrid
+        case aztec
     }
 
-    // MARK: - Constants
-    fileprivate let newEditorAvailableKey = "kUserDefaultsNewEditorAvailable"
-    fileprivate let newEditorEnabledKey = "kUserDefaultsNewEditorEnabled"
-    fileprivate let nativeEditorAvailableKey = "kUserDefaultsNativeEditorAvailable"
-    fileprivate let nativeEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
+    // MARK: - Enabled Editors Keys
+    
+    fileprivate let hybridEditorEnabledKey = "kUserDefaultsNewEditorEnabled"
+    fileprivate let aztecEditorEnabledKey = "kUserDefaultsNativeEditorEnabled"
+    
+    // MARK: - Forcing Aztec Keys
+
+    fileprivate let lastVersionWhereAztecWasForced = "lastVersionWhereAztecWasForced"
 
     // MARK: - Internal variables
     fileprivate let database: KeyValueDatabase
@@ -20,49 +24,73 @@ class EditorSettings: NSObject {
     init(database: KeyValueDatabase) {
         self.database = database
         super.init()
+        
+        setDefaultsForVersionFirstLaunch()
     }
 
     convenience override init() {
         self.init(database: UserDefaults() as KeyValueDatabase)
     }
+    
+    // MARK: - Native Editor By Default
+    
+    fileprivate let aztecEditorMadeDefault = "aztecEditorMadeDefault"
+    
+    /// Contains the logic for setting the defaults the first time a version is launched.
+    ///
+    func setDefaultsForVersionFirstLaunch() {
+        let bundleVersion = Bundle.main.bundleVersion()
+        
+        let lastInternalForcedVersion = database.object(forKey: lastVersionWhereAztecWasForced) as? String ?? ""
+        
+        guard lastInternalForcedVersion != bundleVersion else {
+            return
+        }
+        
+        enable(.aztec)
+        database.set(bundleVersion, forKey: lastVersionWhereAztecWasForced)
+    }
 
     // MARK: Public accessors
 
-    var editor: Editor {
-        if visualEditorEnabled {
-            if nativeEditorEnabled {
-                return .aztec
-            } else {
-                return .hybrid
-            }
+    private var current: Editor {
+        let hybridEditorEnabled = database.object(forKey: hybridEditorEnabledKey) as? Bool ?? false
+        let nativeEditorEnabled = database.object(forKey: aztecEditorEnabledKey) as? Bool ?? false
+        
+        if nativeEditorEnabled {
+            return .aztec
+        } else if hybridEditorEnabled {
+            return .hybrid
         } else {
             return .legacy
         }
     }
-
-    var visualEditorEnabled: Bool {
-        get {
-            if let visualEditorEnabled = database.object(forKey: newEditorEnabledKey) as? Bool {
-                return visualEditorEnabled
-            } else {
-                return true
-            }
-        }
-        set {
-            database.set(newValue, forKey: newEditorEnabledKey)
-        }
+    
+    func isEnabled(_ editor: Editor) -> Bool {
+        return current == editor
     }
-
-    var nativeEditorEnabled: Bool {
-        get {
-            if let nativeEditorEnabled = database.object(forKey: nativeEditorEnabledKey) as? Bool {
-                return nativeEditorEnabled
-            } else {
-                return false
-            }
+    
+    /// Enables the specified editor.
+    ///
+    func enable(_ editor: Editor) {
+        
+        // Tracking ON and OFF for Aztec specifically.
+        if editor == .aztec && !isEnabled(.aztec) {
+            WPAnalytics.track(.editorToggledOn)
+        } else if editor != .aztec && isEnabled(.aztec) {
+            WPAnalytics.track(.editorToggledOff)
         }
-        set {
-            database.set(newValue, forKey: nativeEditorEnabledKey)
+        
+        switch editor {
+        case .legacy:
+            database.set(false, forKey: hybridEditorEnabledKey)
+            database.set(false, forKey: aztecEditorEnabledKey)
+        case .hybrid:
+            database.set(true, forKey: hybridEditorEnabledKey)
+            database.set(false, forKey: aztecEditorEnabledKey)
+        case .aztec:
+            database.set(false, forKey: hybridEditorEnabledKey)
+            database.set(true, forKey: aztecEditorEnabledKey)
         }
     }
 
@@ -71,7 +99,7 @@ class EditorSettings: NSObject {
     // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
     // and then let the caller configure the editor.
     func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch editor {
+        switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
             configure(vc, vc)
@@ -88,7 +116,7 @@ class EditorSettings: NSObject {
     }
 
     func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
-        switch editor {
+        switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
             configure(vc, vc)
