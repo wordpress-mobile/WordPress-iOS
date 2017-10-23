@@ -16,7 +16,7 @@ class EditorSettings: NSObject {
     // MARK: - Forcing Aztec Keys
 
     fileprivate let lastVersionWhereAztecWasForced = "lastVersionWhereAztecWasForced"
-
+    
     // MARK: - Internal variables
     fileprivate let database: KeyValueDatabase
 

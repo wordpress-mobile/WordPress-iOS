@@ -10,20 +10,35 @@ class EditorSettingsTests: XCTestCase {
         super.tearDown()
     }
 
-    func testNativeEditorEnabledAvailableButDisabledByDefault() {
-        BuildConfiguration.localDeveloper.test {
-            let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
-
-            XCTAssertFalse(editorSettings.nativeEditorEnabled)
+    func testAztecEnabledByDefaultButNotForcedAgain() {
+        let testClosure: () -> () = { _ in
+            let database = EphemeralKeyValueDatabase()
+            
+            // This simulates the first launch
+            let editorSettings = EditorSettings(database: database)
+            
+            XCTAssertFalse(editorSettings.isEnabled(.legacy))
+            XCTAssertFalse(editorSettings.isEnabled(.hybrid))
+            XCTAssertTrue(editorSettings.isEnabled(.aztec))
+            
+            // We pick another editor and try again
+            editorSettings.enable(.hybrid)
+            
+            XCTAssertFalse(editorSettings.isEnabled(.legacy))
+            XCTAssertTrue(editorSettings.isEnabled(.hybrid))
+            XCTAssertFalse(editorSettings.isEnabled(.aztec))
+            
+            // This simulates a second launch
+            let secondEditorSettings = EditorSettings(database: database)
+            
+            XCTAssertFalse(secondEditorSettings.isEnabled(.legacy))
+            XCTAssertTrue(secondEditorSettings.isEnabled(.hybrid))
+            XCTAssertFalse(secondEditorSettings.isEnabled(.aztec))
         }
-    }
-
-    func testNativeEditorEnabledFromOverride() {
-        BuildConfiguration.appStore.test {
-            let editorSettings = EditorSettings(database: EphemeralKeyValueDatabase())
-            editorSettings.nativeEditorEnabled = true
-
-            XCTAssertTrue(editorSettings.nativeEditorEnabled)
-        }
+        
+        BuildConfiguration.localDeveloper.test(testClosure)
+        BuildConfiguration.a8cBranchTest.test(testClosure)
+        BuildConfiguration.a8cPrereleaseTesting.test(testClosure)
+        BuildConfiguration.appStore.test(testClosure)
     }
 }
