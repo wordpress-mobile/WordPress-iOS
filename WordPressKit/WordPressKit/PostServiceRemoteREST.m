@@ -121,7 +121,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
 - (void)createPost:(RemotePost *)post
          withMedia:(RemoteMedia *)media
-    requestEqueued:(void (^)(void))requestEqueued
+   requestEnqueued:(void (^)(void))requestEnqueued
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
@@ -141,7 +141,11 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     [self.wordPressComRestApi multipartPOST:requestUrl
                                  parameters:parameters
                                   fileParts:@[filePart]
-                                    success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
+                            requestEnqueued:^{
+                                if (requestEnqueued) {
+                                    requestEnqueued();
+                                }
+    } success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
         if (success) {
             success(post);
@@ -151,10 +155,6 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
             failure(error);
         }
     }];
-
-    if (requestEqueued) {
-        requestEqueued();
-    }
 }
 
 - (void)updatePost:(RemotePost *)post

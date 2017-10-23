@@ -239,7 +239,7 @@ private extension ShareViewController {
 /// ShareViewController Extension: Backend Interaction
 ///
 private extension ShareViewController {
-    func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping () -> ()) {
+    func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEnqueued: @escaping () -> ()) {
 
         guard let attachedImageData = attachedImageData, let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
             return
@@ -278,8 +278,8 @@ private extension ShareViewController {
 
         // The success and error blocks will probably never get called here, but let's add them just in case. Shared
         // container cleanup will most likely occur in the container (WPiOS) app after the background session completes.
-        remote.createPost(remotePost, with: remoteMedia, requestEqueued: {
-            requestEqueued()
+        remote.createPost(remotePost, with: remoteMedia, requestEnqueued: {
+            requestEnqueued()
         }, success: {_ in
             ShareMediaFileManager.shared.purgeUploadDirectory()
         }) { error in

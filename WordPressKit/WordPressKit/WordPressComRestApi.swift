@@ -28,6 +28,7 @@ open class WordPressComRestApi: NSObject {
     open static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
     open static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
 
+    public typealias RequestEnqueuedBlock = () -> Void
     public typealias SuccessResponseBlock = (_ responseObject: AnyObject, _ httpResponse: HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
@@ -223,6 +224,7 @@ open class WordPressComRestApi: NSObject {
      - parameter URLString:  the endpoint to connect
      - parameter parameters: the parameters to use on the request
      - parameter fileParts:  the file parameters that are added to the multipart request
+     - parameter requestEnqueued: callback to be called on when the fileparts are serialized and request is added to the background session. Defaults to nil
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
@@ -233,6 +235,7 @@ open class WordPressComRestApi: NSObject {
     @discardableResult open func multipartPOST(_ URLString: String,
                               parameters: [String: AnyObject]?,
                               fileParts: [FilePart],
+                              requestEnqueued: RequestEnqueuedBlock? = nil,
                               success: @escaping SuccessResponseBlock,
                               failure: @escaping FailureReponseBlock) -> Progress? {
         
@@ -256,6 +259,7 @@ open class WordPressComRestApi: NSObject {
                     success(responseObject as AnyObject, response as? HTTPURLResponse)
                 }
             }
+            requestEnqueued?()
             task.resume()
             progress.cancellationHandler = {
                 task.cancel()
