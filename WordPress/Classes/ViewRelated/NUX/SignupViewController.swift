@@ -74,6 +74,7 @@ import WordPressShared
 
         // Update special case login fields.
         loginFields.meta.userIsDotCom = true
+        emailField.text = loginFields.emailAddress
 
         configureLayoutForSmallScreensIfNeeded()
         configureSubmitButton(animating: false)
