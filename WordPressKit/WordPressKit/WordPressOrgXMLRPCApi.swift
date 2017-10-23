@@ -1,5 +1,6 @@
 import Foundation
 import wpxmlrpc
+import Alamofire
 
 open class WordPressOrgXMLRPCApi: NSObject {
     public typealias SuccessResponseBlock = (AnyObject, HTTPURLResponse?) -> ()
@@ -7,35 +8,44 @@ open class WordPressOrgXMLRPCApi: NSObject {
 
     fileprivate let endpoint: URL
     fileprivate let userAgent: String?
-    fileprivate var ongoingUploads = [URLSessionTask: TaskAction]()
     fileprivate var backgroundUploads: Bool
     fileprivate var backgroundSessionIdentifier: String
     open static let defaultBackgroundSessionIdentifier = "org.wordpress.wporgxmlrpcapi"
 
-    fileprivate lazy var session: URLSession = {
+    fileprivate lazy var sessionManager: Alamofire.SessionManager = {
         let sessionConfiguration = URLSessionConfiguration.default
-        let session = self.makeSession(configuration: sessionConfiguration)
-        return session
+        let sessionManager = self.makeSessionManager(configuration: sessionConfiguration)
+        return sessionManager
     }()
 
-    fileprivate lazy var uploadSession: URLSession = {
+    fileprivate lazy var uploadSessionManager: Alamofire.SessionManager = {
         if self.backgroundUploads {
             let sessionConfiguration = URLSessionConfiguration.background(withIdentifier: self.backgroundSessionIdentifier)
-            let session = self.makeSession(configuration: sessionConfiguration)
-            return session
+            let sessionManager = self.makeSessionManager(configuration: sessionConfiguration)
+            return sessionManager
         }
 
-        return self.session
+        return self.sessionManager
     }()
 
-    fileprivate func makeSession(configuration sessionConfiguration: URLSessionConfiguration) -> URLSession {
+    fileprivate func makeSessionManager(configuration sessionConfiguration: URLSessionConfiguration) -> Alamofire.SessionManager {
         var additionalHeaders: [String : AnyObject] = ["Accept-Encoding": "gzip, deflate" as AnyObject]
         if let userAgent = self.userAgent {
             additionalHeaders["User-Agent"] = userAgent as AnyObject?
         }
         sessionConfiguration.httpAdditionalHeaders = additionalHeaders
-        let session = URLSession(configuration: sessionConfiguration, delegate: self, delegateQueue: nil)
-        return session
+        let sessionManager = Alamofire.SessionManager(configuration: sessionConfiguration)
+
+        let sessionDidReceiveChallengeWithCompletion: ((URLSession, URLAuthenticationChallenge, (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) = { session, authenticationChallenge, completionHandler in
+            return self.urlSession(session, didReceive: authenticationChallenge, completionHandler: completionHandler)
+        }
+        sessionManager.delegate.sessionDidReceiveChallengeWithCompletion = sessionDidReceiveChallengeWithCompletion
+
+        let  taskDidReceiveChallengeWithCompletion: ((URLSession, URLSessionTask, URLAuthenticationChallenge, (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) = { session, task, authenticationChallenge, completionHandler in
+            return self.urlSession(session, task: task, didReceive: authenticationChallenge, completionHandler: completionHandler)
+        }
+        sessionManager.delegate.taskDidReceiveChallengeWithCompletion = taskDidReceiveChallengeWithCompletion
+        return sessionManager
     }
 
     /// Creates a new API object to connect to the WordPress XMLRPC API for the specified endpoint.
@@ -58,16 +68,16 @@ open class WordPressOrgXMLRPCApi: NSObject {
     }
 
     deinit {
-        session.finishTasksAndInvalidate()
-        uploadSession.finishTasksAndInvalidate()
+        sessionManager.session.finishTasksAndInvalidate()
+        uploadSessionManager.session.finishTasksAndInvalidate()
     }
 
     /**
      Cancels all ongoing and makes the session so the object will not fullfil any more request
      */
     open func invalidateAndCancelTasks() {
-        session.invalidateAndCancel()
-        uploadSession.finishTasksAndInvalidate()
+        sessionManager.session.invalidateAndCancel()
+        uploadSessionManager.session.finishTasksAndInvalidate()
     }
 
     // MARK: - Network requests
@@ -111,27 +121,25 @@ open class WordPressOrgXMLRPCApi: NSObject {
             return nil
         }
 
-        var progress: Progress?
-        // Create task
-        let task = session.dataTask(with: request, completionHandler: { (data, urlResponse, error) in
-            if let uploadProgress = progress {
-                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
-            }
-            do {
-                let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
-                DispatchQueue.main.async {
-                    success(responseObject, urlResponse as? HTTPURLResponse)
+        let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        sessionManager.request(request)
+            .downloadProgress { (requestProgress) in
+                progress.totalUnitCount = requestProgress.totalUnitCount + 1
+                progress.completedUnitCount = requestProgress.completedUnitCount
+            }.response { (response) in
+                progress.completedUnitCount = progress.totalUnitCount
+                do {
+                    let responseObject = try self.handleResponseWithData(response.data, urlResponse: response.response, error: response.error as NSError?)
+                    DispatchQueue.main.async {
+                        success(responseObject, response.response)
+                    }
+                } catch let error as NSError {
+                    DispatchQueue.main.async {
+                        failure(error, response.response)
+                    }
+                    return
                 }
-            } catch let error as NSError {
-                DispatchQueue.main.async {
-                    failure(error, urlResponse as? HTTPURLResponse)
-                }
-                return
             }
-        })
-        let action = createUploadAction(task: task, success: nil, failure: nil)
-        progress = action.progress
-        task.resume()
         return progress
     }
 
@@ -162,27 +170,26 @@ open class WordPressOrgXMLRPCApi: NSObject {
             return nil
         }
 
-        // Create task
-        let session = uploadSession
-        var progress: Progress?
-        let task = session.uploadTask(with: request, fromFile: fileURL, completionHandler: { (data, urlResponse, error) in
-            let _ = try? FileManager.default.removeItem(at: fileURL)
-            do {
-                let responseObject = try self.handleResponseWithData(data, urlResponse: urlResponse, error: error as NSError?)
-                success(responseObject, urlResponse as? HTTPURLResponse)
-            } catch let error as NSError {
-                failure(error, urlResponse as? HTTPURLResponse)
-            }
-            if let uploadProgress = progress {
-                uploadProgress.completedUnitCount = uploadProgress.totalUnitCount
-            }
-        })
-        let action = createUploadAction(task: task, success: success, failure: failure)
-        progress = action.progress
-
-        task.resume()
-
-        return action.progress
+        let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        uploadSessionManager.request(request)
+            .downloadProgress { (requestProgress) in
+                progress.totalUnitCount = requestProgress.totalUnitCount + 1
+                progress.completedUnitCount = requestProgress.completedUnitCount
+            }.response { (response) in
+                progress.completedUnitCount = progress.totalUnitCount
+                do {
+                    let responseObject = try self.handleResponseWithData(response.data, urlResponse: response.response, error: response.error as NSError?)
+                    DispatchQueue.main.async {
+                        success(responseObject, response.response)
+                    }
+                } catch let error as NSError {
+                    DispatchQueue.main.async {
+                        failure(error, response.response)
+                    }
+                    return
+                }
+        }
+        return progress
     }
 
     // MARK: - Request Building
@@ -216,33 +223,6 @@ open class WordPressOrgXMLRPCApi: NSObject {
         let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.xmlrpc"
         let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
         return fileURL
-    }
-
-    // MARK: - Progress reporting
-
-    struct TaskAction {
-        let progress: Progress
-        let success: SuccessResponseBlock?
-        let failure: FailureReponseBlock?
-    }
-
-    fileprivate func createUploadAction(task: URLSessionTask, success: SuccessResponseBlock?,
-                                               failure: FailureReponseBlock?) -> TaskAction {
-        // Progress report
-        let progress = Progress(parent: Progress.current(), userInfo: nil)
-        progress.totalUnitCount = 1
-        if let contentLengthString = task.originalRequest?.allHTTPHeaderFields?["Content-Length"],
-            let contentLength = Int64(contentLengthString) {
-            // Sergio Estevao: Add an extra 1 unit to the progress to take in account the upload response and not only the uploading of data
-            progress.totalUnitCount = contentLength + 1
-        }
-        progress.cancellationHandler = {
-            task.cancel()
-        }
-        let action = TaskAction(progress: progress, success: success, failure: failure)
-        ongoingUploads[task] = action
-
-        return action
     }
 
     // MARK: - Handling of data
@@ -290,31 +270,11 @@ open class WordPressOrgXMLRPCApi: NSObject {
     }
 }
 
-extension WordPressOrgXMLRPCApi: URLSessionTaskDelegate, URLSessionDelegate {
+extension WordPressOrgXMLRPCApi {
 
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        guard let action = ongoingUploads[task] else {
-            return
-        }
-        action.progress.completedUnitCount = totalBytesSent
-        if (totalBytesSent == totalBytesExpectedToSend) {
-            ongoingUploads.removeValue(forKey: task)
-        }
-    }
-
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let action = ongoingUploads[task] else {
-            return
-        }
-        if let error = error {
-            action.failure?(error as NSError, task.response as? HTTPURLResponse)
-        } else {
-            action.success?(NSObject(), task.response  as? HTTPURLResponse)
-        }
-
-        ongoingUploads.removeValue(forKey: task)
-    }
-    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    public func urlSession(_ session: URLSession,
+                           didReceive challenge: URLAuthenticationChallenge,
+                           completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         switch challenge.protectionSpace.authenticationMethod {
         case NSURLAuthenticationMethodServerTrust:
             if let credential = URLCredentialStorage.shared.defaultCredential(for: challenge.protectionSpace), challenge.previousFailureCount == 0 {

@@ -936,9 +936,9 @@
 		F1049F331F39FCF9004DF0BB /* CalypsoProcessorOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */; };
 		F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTests.m */; };
+		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
 		F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690151F828FF000200E30 /* FeatureFlag.swift */; };
 		F1D690171F82914200200E30 /* BuildConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D690141F828FF000200E30 /* BuildConfiguration.swift */; };
-		F18B43781F849F580089B817 /* PostAttachmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18B43771F849F580089B817 /* PostAttachmentTests.swift */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
@@ -2374,9 +2374,9 @@
 		F128C31A1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPNavigationMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPNavigationMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1564E5A18946087009F8F97 /* NSStringHelpersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTests.m; sourceTree = "<group>"; };
+		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
 		F1D690141F828FF000200E30 /* BuildConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguration.swift; sourceTree = "<group>"; };
 		F1D690151F828FF000200E30 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
-		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
 		F373612EEEEF10E500093FF3 /* Pods-WordPress.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		F47DB4A8EC2E6844E213A3FA /* Pods_WordPressShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
@@ -2807,7 +2807,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -5550,7 +5550,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -5752,6 +5752,7 @@
 				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress/Pods-WordPress-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/1PasswordExtension/OnePasswordExtension.framework",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Automattic-Tracks-iOS/AutomatticTracks.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
@@ -5773,13 +5774,13 @@
 				"${BUILT_PRODUCTS_DIR}/WordPress-iOS-Editor/WordPressEditor.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressComKit/WordPressComKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OnePasswordExtension.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AutomatticTracks.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
@@ -5801,7 +5802,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressEditor.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wpxmlrpc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressComKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5867,7 +5867,7 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
+				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -7153,7 +7153,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -7219,7 +7219,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -7512,7 +7512,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -7946,7 +7946,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
