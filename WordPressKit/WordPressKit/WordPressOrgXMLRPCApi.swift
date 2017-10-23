@@ -36,12 +36,12 @@ open class WordPressOrgXMLRPCApi: NSObject {
         sessionConfiguration.httpAdditionalHeaders = additionalHeaders
         let sessionManager = Alamofire.SessionManager(configuration: sessionConfiguration)
 
-        let sessionDidReceiveChallengeWithCompletion: ((URLSession, URLAuthenticationChallenge, (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) = { session, authenticationChallenge, completionHandler in
+        let sessionDidReceiveChallengeWithCompletion: ((URLSession, URLAuthenticationChallenge, @escaping(URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) = { session, authenticationChallenge, completionHandler in
             return self.urlSession(session, didReceive: authenticationChallenge, completionHandler: completionHandler)
         }
         sessionManager.delegate.sessionDidReceiveChallengeWithCompletion = sessionDidReceiveChallengeWithCompletion
 
-        let  taskDidReceiveChallengeWithCompletion: ((URLSession, URLSessionTask, URLAuthenticationChallenge, (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) = { session, task, authenticationChallenge, completionHandler in
+        let  taskDidReceiveChallengeWithCompletion: ((URLSession, URLSessionTask, URLAuthenticationChallenge,  @escaping(URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Void) = { session, task, authenticationChallenge, completionHandler in
             return self.urlSession(session, task: task, didReceive: authenticationChallenge, completionHandler: completionHandler)
         }
         sessionManager.delegate.taskDidReceiveChallengeWithCompletion = taskDidReceiveChallengeWithCompletion
@@ -171,7 +171,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
         }
 
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
-        uploadSessionManager.request(request)
+        uploadSessionManager.upload(fileURL, with: request)
             .downloadProgress { (requestProgress) in
                 progress.totalUnitCount = requestProgress.totalUnitCount + 1
                 progress.completedUnitCount = requestProgress.completedUnitCount
