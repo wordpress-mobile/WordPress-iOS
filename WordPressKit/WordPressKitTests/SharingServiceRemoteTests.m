@@ -22,7 +22,11 @@
     [service getPublicizeServices:^(NSArray *services) {} failure:^(NSError *error) {}];
 
     XCTAssertTrue([api getMethodCalled], @"Method was not called");
-    XCTAssertEqualObjects([api URLStringPassedIn], @"v1.1/meta/external-services", @"Incorrect URL passed in");
+
+    NSString *url = [service pathForEndpoint:@"meta/external-services"
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+    XCTAssertEqualObjects([api URLStringPassedIn], url, @"Incorrect URL passed in");
     NSDictionary * parameters = [api parametersPassedIn];
     XCTAssertEqualObjects(parameters[@"type"], @"publicize", @"incorrect type parameter");
 }
@@ -33,9 +37,10 @@
     MockWordPressComRestApi *api = [[MockWordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     SharingServiceRemote *service = nil;
 
-    NSString *url = @"v1.1/me/keyring-connections";
-
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *url = [service pathForEndpoint:@"me/keyring-connections"
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [service getKeyringConnections:^(NSArray *connections) {} failure:^(NSError *error) {}];
 
@@ -51,9 +56,11 @@
     MockWordPressComRestApi *api = [[MockWordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     SharingServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/publicize-connections", mockID];
-
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/publicize-connections", mockID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [service getPublicizeConnections:mockID
                              success:^(NSArray *connections) {}
@@ -71,9 +78,11 @@
     MockWordPressComRestApi *api = [[MockWordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     SharingServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/publicize-connections/new", mockID];
-
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/publicize-connections/new", mockID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [service createPublicizeConnection:mockID
                    keyringConnectionID:mockID
@@ -92,9 +101,11 @@
     MockWordPressComRestApi *api = [[MockWordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     SharingServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/publicize-connections/%@/delete", mockID, mockID];
-
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/publicize-connections/%@/delete", mockID, mockID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [service deletePublicizeConnection:mockID connectionID:mockID success:^{} failure:^(NSError *error) {}];
 
@@ -111,9 +122,11 @@
     MockWordPressComRestApi *api = [[MockWordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     SharingServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/sharing-buttons", mockID];
-
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/sharing-buttons", mockID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [service getSharingButtonsForSite:mockID
                              success:^(NSArray *buttons) {}
@@ -131,10 +144,12 @@
     MockWordPressComRestApi *api = [[MockWordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     SharingServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/sharing-buttons", mockID];
-    NSArray *buttons = [NSArray array];
-
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithWordPressComRestApi:api]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/sharing-buttons", mockID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    NSArray *buttons = [NSArray array];
 
     [service updateSharingButtonsForSite:mockID
                           sharingButtons:buttons

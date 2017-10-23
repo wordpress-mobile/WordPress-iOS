@@ -35,7 +35,10 @@
 
 - (NSString *)GETtaxonomyURLWithType:(NSString *)taxonomyTypeIdentifier
 {
-    return [NSString stringWithFormat:@"v1.1/sites/%@/%@?context=edit", self.service.siteID, taxonomyTypeIdentifier];
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/%@?context=edit", self.service.siteID, taxonomyTypeIdentifier];
+    NSString *url = [self.service pathForEndpoint:endpoint
+                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    return url;
 }
 
 #pragma mark - Categories
@@ -46,8 +49,10 @@
     OCMStub([category name]).andReturn(@"name");
     OCMStub([category parentID]).andReturn(nil);
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/%@/new?context=edit", self.service.siteID, @"categories"];
-    
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.service.siteID, @"categories"];
+    NSString *url = [self.service pathForEndpoint:endpoint
+                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"name"] isEqualToString:category.name]);
     };
@@ -157,8 +162,10 @@
 {
     RemotePostTag *tag = OCMStrictClassMock([RemotePostTag class]);
     OCMStub([tag name]).andReturn(@"name");
-    
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/%@/new?context=edit", self.service.siteID, @"tags"];
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.service.siteID, @"tags"];
+    NSString *url = [self.service pathForEndpoint:endpoint
+                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"name"] isEqualToString:tag.name]);

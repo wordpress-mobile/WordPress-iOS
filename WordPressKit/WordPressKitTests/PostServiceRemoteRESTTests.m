@@ -32,18 +32,19 @@
     NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
-    
+
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
     NSNumber *postID = @1;
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@", dotComID, postID];
-    
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@", dotComID, postID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
-    
+
     [service getPostWithID:postID
                    success:^(RemotePost *post) {}
                    failure:^(NSError *error) {}];
@@ -66,11 +67,15 @@
     NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
-    
+
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
     NSString* postType = @"SomeType";
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", dotComID];
-    
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts", dotComID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         
         return ([parameters isKindOfClass:[NSDictionary class]]
@@ -82,7 +87,6 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
 
     [service getPostsOfType:postType
                     success:^(NSArray<RemotePost *> *remotePosts) {}
@@ -94,11 +98,15 @@
     NSNumber *dotComID = @10;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     PostServiceRemoteREST *service = nil;
-    
+
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
     NSString* postType = @"SomeType";
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", dotComID];
-    
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts", dotComID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     NSString *testOptionKey = @"SomeKey";
     NSString *testOptionValue = @"SomeValue";
     NSDictionary *options = @{testOptionKey: testOptionValue};
@@ -114,9 +122,7 @@
           parameters:[OCMArg checkWithBlock:parametersCheckBlock]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
-    
+
     [service getPostsOfType:postType
                     options:options
                     success:^(NSArray<RemotePost *> *remotePosts) {}
@@ -138,16 +144,18 @@
     OCMStub([post password]).andReturn(@"Password");
     OCMStub([post type]).andReturn(@"Type");
     OCMStub([post metadata]).andReturn(@[]);
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/new?context=edit", dotComID];
-    
+
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", dotComID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
-    
+
     [service createPost:post
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
@@ -180,15 +188,17 @@
     OCMStub([post type]).andReturn(@"Type");
     OCMStub([post metadata]).andReturn(@[]);
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@?context=edit", dotComID, post.postID];
-    
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", dotComID, post.postID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
-    
+
     [service updatePost:post
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
@@ -214,16 +224,18 @@
     
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", dotComID, post.postID];
+
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", dotComID, post.postID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
-    
+
     [service deletePost:post
                 success:^() {}
                 failure:^(NSError *error) {}];
@@ -249,16 +261,18 @@
     
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", dotComID, post.postID];
-    
+
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", dotComID, post.postID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
-    
+
     [service trashPost:post
                success:^(RemotePost *posts) {}
                failure:^(NSError *error) {}];
@@ -284,16 +298,18 @@
     
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
-    
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/restore", dotComID, post.postID];
-    
+
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
+
+    NSString *endpoint = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", dotComID, post.postID];
+    NSString *url = [service pathForEndpoint:endpoint
+                                 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
-    
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithWordPressComRestApi:api siteID:dotComID]);
-    
+
     [service restorePost:post
                  success:^(RemotePost *posts) {}
                  failure:^(NSError *error) {}];
