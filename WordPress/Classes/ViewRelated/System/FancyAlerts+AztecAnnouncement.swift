@@ -43,9 +43,9 @@ extension FancyAlertViewController {
 
         let enableEditor = {
             let settings = EditorSettings(database: UserDefaults.standard)
-            
+
             settings.enable(.aztec)
-            
+
             //settings.visualEditorEnabled = true
             //settings.nativeEditorEnabled = true
 
