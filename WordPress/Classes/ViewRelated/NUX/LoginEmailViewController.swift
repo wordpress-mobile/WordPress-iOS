@@ -476,11 +476,11 @@ extension LoginEmailViewController: GIDSignInDelegate {
 
 extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     private func cleanupAfterSocialErrors() {
-        loginFields.username = ""
         dismiss(animated: true) {}
     }
 
     func retryWithEmail() {
+        loginFields.username = ""
         cleanupAfterSocialErrors()
     }
     func retryWithAddress() {
@@ -491,6 +491,7 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
         cleanupAfterSocialErrors()
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
+            controller.loginFields = loginFields
             navigationController?.pushViewController(controller, animated: true)
         }
     }
