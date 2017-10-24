@@ -34,11 +34,30 @@ class PluginViewModel {
                 self.present?(alert)
             },
             accessibilityIdentifier: "remove-plugin")
+
+        var links = [ImmuTableRow]()
+        let directoryLink = NavigationItemRow(
+            title: NSLocalizedString("WordPress.org Plugin page", comment: "Link to a plugin's page in the plugin directory"),
+            action: { [unowned self] _ in
+                let controller = WebViewControllerFactory.controller(url: self.plugin.directoryURL)
+                self.present?(controller)
+        })
+        links.append(directoryLink)
+        if let homeURL = plugin.homeURL {
+            let homeLink = NavigationItemRow(
+                title: NSLocalizedString("Plugin homepage", comment: "Link to a plugin's home page"),
+                action: { [unowned self] _ in
+                    let controller = WebViewControllerFactory.controller(url: homeURL)
+                    self.present?(controller)
+            })
+            links.append(homeLink)
+        }
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
                 activeRow,
                 autoupdatesRow
                 ]),
+            ImmuTableSection(rows: links),
             ImmuTableSection(rows: [
                 removeRow
                 ])

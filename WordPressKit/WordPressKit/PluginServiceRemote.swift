@@ -51,12 +51,14 @@ fileprivate extension PluginServiceRemote {
                 throw ResponseError.decodingFailure
         }
         let version = response["version"] as? String
+        let url = response["plugin_url"] as? URL
         return PluginState(id: id,
                            slug: slug,
                            active: active,
                            name: name,
                            version: version,
-                           autoupdate: autoupdate)
+                           autoupdate: autoupdate,
+                           url: url)
 
     }
 
