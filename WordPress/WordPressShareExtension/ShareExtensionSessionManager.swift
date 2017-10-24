@@ -64,9 +64,10 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
     }
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let error = error else {
+        guard let error = error as NSError? else {
             return
         }
+        WPAppAnalytics.track(.shareExtensionError, error: error)
         DDLogError("Error recieved for share extension media uploading. Session:\(session) Task:\(task) Error:\(error).")
     }
 }

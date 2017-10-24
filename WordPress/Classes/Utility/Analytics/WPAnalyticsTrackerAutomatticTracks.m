@@ -1116,6 +1116,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatLoginMagicLinkSucceeded:
             eventName = @"login_magic_link_succeeded";
             break;
+        case WPAnalyticsStatShareExtensionError:
+            eventName = @"share_extension_error";
+            break;
 
             // to be implemented
         case WPAnalyticsStatDefaultAccountChanged:
