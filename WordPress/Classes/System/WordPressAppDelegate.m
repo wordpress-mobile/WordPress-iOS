@@ -361,6 +361,20 @@ int ddLogLevel = DDLogLevelInfo;
     return [[Restorer new] viewControllerWithIdentifier:restoreID];
 }
 
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {
+
+    // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
+    // is no need to inspect the identifier beyond the simple check here.
+    if ([identifier containsString:WPAppGroupName]) {
+        DDLogInfo(@"Rejoining session with identifier: %@ with application in state: %@", identifier, application.applicationState);
+        ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
+        sessionManager.backgroundSessionCompletionBlock = ^{
+            dispatch_async(dispatch_get_main_queue(), completionHandler);
+        };
+        [sessionManager startBackgroundSession];
+    }
+}
+
 #pragma mark - Application startup
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
