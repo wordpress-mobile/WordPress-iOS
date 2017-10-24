@@ -16,7 +16,7 @@ extension Tracks {
     }
 
     public func trackExtensionError(_ error: NSError) {
-        let properties = ["error": error.localizedDescription]
+        let properties = ["error_code": String(error.code), "error_domain": error.domain, "error_description": error.description]
         trackExtensionEvent(.Error, properties: properties as [String: AnyObject]?)
     }
 
