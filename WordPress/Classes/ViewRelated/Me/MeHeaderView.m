@@ -10,7 +10,7 @@ const CGFloat MeHeaderViewVerticalMargin = 20.0;
 const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
-@interface MeHeaderView ()
+@interface MeHeaderView () <UIDropInteractionDelegate>
 
 @property (nonatomic, strong) UIImageView *gravatarImageView;
 @property (nonatomic, strong) UILabel *displayNameLabel;
@@ -206,6 +206,11 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     recognizer.minimumPressDuration = MeHeaderViewMinimumPressDuration;
     [imageView addGestureRecognizer:recognizer];
     
+    if (@available(iOS 11.0, *)) {
+        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+        [imageView addInteraction:dropInteraction];
+    }
+    
     return imageView;
 }
 
@@ -241,6 +246,41 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
             self.onGravatarPress();
         }
     }
+}
+
+#pragma mark - Drop Interaction Handler
+- (BOOL)dropInteraction:(UIDropInteraction *)interaction
+       canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    BOOL isAnImage = [session canLoadObjectsOfClass:[UIImage self]];
+    BOOL isSingleImage = [session.items count] == 1;
+    return (isAnImage && isSingleImage);
+}
+
+- (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
+                   sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    CGPoint dropLocation = [session locationInView:self.gravatarImageView];
+    UIDropOperation dropOperation;
+    
+    if (CGRectContainsPoint(self.gravatarImageView.frame, dropLocation)) {
+        dropOperation = UIDropOperationCopy;
+    } else {
+        dropOperation = UIDropOperationCancel;
+    }
+    
+    UIDropProposal *dropProposal = [[UIDropProposal alloc] initWithDropOperation:dropOperation];
+    
+    return  dropProposal;
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+            performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    __weak __typeof(self) weakSelf = self;
+    [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
+            weakSelf.gravatarImageView.image = [images firstObject];
+    }];
 }
 
 @end
