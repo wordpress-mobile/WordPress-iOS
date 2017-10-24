@@ -62,4 +62,11 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
 
         backgroundSessionCompletionBlock?()
     }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard let error = error else {
+            return
+        }
+        DDLogError("Error recieved for share extension media uploading. Session:\(session) Task:\(task) Error:\(error).")
+    }
 }

@@ -283,7 +283,11 @@ private extension ShareViewController {
         }, success: {_ in
             ShareMediaFileManager.shared.purgeUploadDirectory()
         }) { error in
-            NSLog("Error creating post in share extension: \(String(describing: error))")
+            guard let error = error as NSError? else {
+                return
+            }
+            NSLog("Error creating post in share extension: \(error.localizedDescription)")
+            self.tracks.trackExtensionError(error)
             ShareMediaFileManager.shared.purgeUploadDirectory()
         }
     }
