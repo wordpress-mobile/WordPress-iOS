@@ -135,7 +135,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             return
         }
 
-        let button = UIButton.googleLoginButton()
+        let button = WPStyleGuide.googleLoginButton()
         let buttonWrapper = UIView()
         buttonWrapper.addSubview(button)
         stackView.addArrangedSubview(buttonWrapper)
@@ -143,7 +143,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
         buttonWrapper.addConstraints([
             buttonWrapper.topAnchor.constraint(equalTo: button.topAnchor, constant: Constants.googleButtonOffset),
-            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: Constants.googleButtonOffset * -1.0),
+            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor),
             buttonWrapper.leadingAnchor.constraint(equalTo: button.leadingAnchor),
             buttonWrapper.trailingAnchor.constraint(equalTo: button.trailingAnchor)
             ])
@@ -158,6 +158,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     func googleLoginTapped() {
         awaitingGoogle = true
+        configureViewLoading(true)
+
         GIDSignIn.sharedInstance().disconnect()
 
         // Flag this as a social sign in.
@@ -170,6 +172,8 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
 
         GIDSignIn.sharedInstance().signIn()
+
+        WPAppAnalytics.track(.loginSocialButtonClick)
     }
 
 
@@ -329,8 +333,20 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
         if awaitingGoogle {
             awaitingGoogle = false
+            GIDSignIn.sharedInstance().disconnect()
 
-            let socialErrorVC = LoginSocialErrorViewController(title: NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com"), description: error.localizedDescription)
+            let errorTitle: String
+            let errorDescription: String
+            if (error as NSError).code == WordPressComOAuthError.unknownUser.rawValue {
+                errorTitle = NSLocalizedString("Connected But…", comment: "Title shown when a user logs in with Google but no matching WordPress.com account is found")
+                errorDescription = NSLocalizedString("The Google account \"\(loginFields.username)\" doesn't match any account on WordPress.com", comment: "Description shown when a user logs in with Google but no matching WordPress.com account is found")
+                WPAppAnalytics.track(.loginSocialErrorUnknownUser)
+            } else {
+                errorTitle = NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com")
+                errorDescription = error.localizedDescription
+            }
+
+            let socialErrorVC = LoginSocialErrorViewController(title: errorTitle, description: errorDescription)
             let socialErrorNav = LoginNavigationController(rootViewController: socialErrorVC)
             socialErrorVC.delegate = self
             present(socialErrorNav, animated: true) {}
@@ -428,6 +444,7 @@ extension LoginEmailViewController {
         syncWPCom(username, authToken: authToken, requiredMultifactor: false)
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
+        WPAppAnalytics.track(.loginSocialSuccess)
     }
 
 
@@ -439,22 +456,32 @@ extension LoginEmailViewController {
         loginFields.emailAddress = email
 
         performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.showWPComLogin, sender: self)
+        WPAppAnalytics.track(.loginSocialAccountsNeedConnecting)
     }
 
 
     func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
-        // TODO: to be implemented.
+        loginFields.nonceInfo = nonceInfo
+        loginFields.nonceUserID = userID
+
+        performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.show2FA, sender: self)
+        WPAppAnalytics.track(.loginSocial2faNeeded)
     }
 }
 
 extension LoginEmailViewController: GIDSignInDelegate {
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        // TODO: finish implementing wpcom login via Google code
-        guard let token = user.authentication.idToken,
-                let email = user.profile.email else {
-            // The Google SignIn for may have been canceled.
-            //TODO: Add analytis
-            return
+    func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
+        guard let user = user,
+            let token = user.authentication.idToken,
+            let email = user.profile.email else {
+                // The Google SignIn for may have been canceled.
+                if let err = error {
+                    WPAppAnalytics.track(.loginSocialButtonFailure, error: err)
+                } else {
+                    WPAppAnalytics.track(.loginSocialButtonFailure)
+                }
+                configureViewLoading(false)
+                return
         }
 
         // Store the email address and token.
@@ -462,21 +489,17 @@ extension LoginEmailViewController: GIDSignInDelegate {
         loginFields.username = email
         loginFields.meta.socialServiceIDToken = token
 
-        configureViewLoading(true)
-
         loginFacade.loginToWordPressDotCom(withGoogleIDToken: token)
-
-        //TODO: Add analytis
     }
 }
 
 extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     private func cleanupAfterSocialErrors() {
-        loginFields.username = ""
         dismiss(animated: true) {}
     }
 
     func retryWithEmail() {
+        loginFields.username = ""
         cleanupAfterSocialErrors()
     }
     func retryWithAddress() {
@@ -487,6 +510,7 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
         cleanupAfterSocialErrors()
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
+            controller.loginFields = loginFields
             navigationController?.pushViewController(controller, animated: true)
         }
     }

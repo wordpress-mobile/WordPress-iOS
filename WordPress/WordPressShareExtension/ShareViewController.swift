@@ -1,6 +1,6 @@
 import UIKit
 import Social
-import WordPressComKit
+import WordPressKit
 
 
 class ShareViewController: SLComposeServiceViewController {
@@ -66,7 +66,10 @@ class ShareViewController: SLComposeServiceViewController {
         "publish": NSLocalizedString("Publish", comment: "Publish post status")
     ]
 
-
+    fileprivate enum MediaSettings {
+        static let filename = "image.jpg"
+        static let mimeType = "image/jpeg"
+    }
 
     // MARK: - UIViewController Methods
 
@@ -76,9 +79,6 @@ class ShareViewController: SLComposeServiceViewController {
         // Tracker
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
-
-        // Initialization
-        setupBearerToken()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -136,8 +136,6 @@ class ShareViewController: SLComposeServiceViewController {
         uploadPostWithSubject(subject, body: body, status: postStatus, siteID: siteID, attachedImageData: encodedMedia) {
             self.tracks.trackExtensionPosted(self.postStatus)
             self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-
-// TODO: Handle retry?
         }
     }
 
@@ -159,9 +157,6 @@ class ShareViewController: SLComposeServiceViewController {
         return [blogPickerItem, statusPickerItem]
     }
 }
-
-
-
 
 /// ShareViewController Extension: Encapsulates all of the Action Helpers.
 ///
@@ -207,19 +202,9 @@ private extension ShareViewController {
     }
 }
 
-
-
 /// ShareViewController Extension: Encapsulates private helpers
 ///
 private extension ShareViewController {
-    func setupBearerToken() {
-        guard let bearerToken = oauth2Token else {
-            return
-        }
-
-        RequestRouter.bearerToken = bearerToken
-    }
-
     func loadContent(extensionContext: NSExtensionContext) {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
@@ -251,19 +236,55 @@ private extension ShareViewController {
     }
 }
 
-
-
 /// ShareViewController Extension: Backend Interaction
 ///
 private extension ShareViewController {
-    func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEqueued: @escaping () -> ()) {
-        let configuration = URLSessionConfiguration.backgroundSessionConfigurationWithRandomizedIdentifier()
-        let service = PostService(configuration: configuration)
+    func uploadPostWithSubject(_ subject: String, body: String, status: String, siteID: Int, attachedImageData: Data?, requestEnqueued: @escaping () -> ()) {
 
-        service.createPost(siteID: siteID, status: status, title: subject, body: body, attachedImageJPEGData: attachedImageData, requestEqueued: {
-            requestEqueued()
-        }, completion: { (post, error) in
-            print("Post \(String(describing: post)) Error \(String(describing: error))")
-        })
+        guard let attachedImageData = attachedImageData, let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+            return
+        }
+
+        let identifier = WPAppGroupName + "." + UUID().uuidString
+        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil, backgroundUploads: true, backgroundSessionIdentifier: identifier, sharedContainerIdentifier: WPAppGroupName)
+
+        let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
+        let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
+        let fullPath = mediaDirectory.appendingPathComponent(fileName)
+
+        do {
+            try attachedImageData.write(to: fullPath, options: [.atomic])
+        } catch {
+            NSLog("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            return
+        }
+
+        let remotePost: RemotePost = {
+            let post = RemotePost()
+            post.siteID = NSNumber(value: siteID)
+            post.status = status
+            post.title = subject
+            post.content = body
+            return post
+        }()
+
+        let remoteMedia: RemoteMedia = {
+            let media = RemoteMedia()
+            media.file = MediaSettings.filename
+            media.mimeType = MediaSettings.mimeType
+            media.localURL = fullPath
+            return media
+        }()
+
+        // The success and error blocks will probably never get called here, but let's add them just in case. Shared
+        // container cleanup will most likely occur in the container (WPiOS) app after the background session completes.
+        remote.createPost(remotePost, with: remoteMedia, requestEnqueued: {
+            requestEnqueued()
+        }, success: {_ in
+            ShareMediaFileManager.shared.purgeUploadDirectory()
+        }) { error in
+            NSLog("Error creating post in share extension: \(String(describing: error))")
+            ShareMediaFileManager.shared.purgeUploadDirectory()
+        }
     }
 }
