@@ -43,16 +43,14 @@ fileprivate extension PluginServiceRemote {
     }
 
     func pluginState(response: [String: AnyObject]) throws -> PluginState {
-        guard let id = response["id"] as? String,
-            let slug = response["slug"] as? String,
+        guard let slug = response["slug"] as? String,
             let active = response["active"] as? Bool,
             let autoupdate = response["autoupdate"] as? Bool,
             let name = response["display_name"] as? String else {
                 throw ResponseError.decodingFailure
         }
         let version = response["version"] as? String
-        return PluginState(id: id,
-                           slug: slug,
+        return PluginState(slug: slug,
                            active: active,
                            name: name,
                            version: version,
