@@ -34,7 +34,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     /// - paramater asset: the PHAsset media where data will be read from.
     /// - paramater media: the media object to where media will be imported to.
-    /// - parameter onCompletion: Called if the Media was successfully created and the asset's data exported to an absoluteLocalURL.
+    /// - parameter onCompletion: Called if the Media was successfully created and the asset's data imported to the absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     @objc(importAsset:toMedia:onCompletion:onError:)
@@ -64,7 +64,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     /// - paramater image: the UIImage where data will be read from.
     /// - paramater media: the media object to where media will be imported to.
-    /// - parameter onCompletion: Called if the Media was successfully created and the image's data exported to an absoluteLocalURL.
+    /// - parameter onCompletion: Called if the Media was successfully created and the image's data imported to the absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     @objc(importImage:toMedia:onCompletion:onError:)
@@ -93,7 +93,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     /// - paramater url: the URL from where data will be read from.
     /// - paramater media: the media object to where media will be imported to.
-    /// - parameter onCompletion: Called if the Media was successfully created and the file's data exported to an absoluteLocalURL.
+    /// - parameter onCompletion: Called if the Media was successfully created and the file's data imported to the absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     @objc(importURL:toMedia:onCompletion:onError:)
