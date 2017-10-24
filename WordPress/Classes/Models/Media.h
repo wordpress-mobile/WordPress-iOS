@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 @property (nonatomic, strong, nullable) NSString *alt;
 @property (nonatomic, strong, nullable) NSString *caption;
-@property (nonatomic, strong) NSDate *creationDate;
+@property (nonatomic, strong, nullable) NSDate *creationDate;
 @property (nonatomic, strong, nullable) NSString *desc;
 @property (nonatomic, strong, nullable) NSString *filename;
 @property (nonatomic, strong, nullable) NSNumber *filesize;

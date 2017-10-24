@@ -144,10 +144,26 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.configureSearchController()
 
         searchWrapperView.addSubview(searchController.searchBar)
-        tableView.tableHeaderView = headerStackView
 
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+
+        updateTableHeaderSize()
     }
+
+    fileprivate func updateTableHeaderSize() {
+        if searchController.isActive {
+            // Account for the search bar being moved to the top of the screen.
+            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+        } else {
+            searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
+        }
+
+        headerStackView.frame.size.height = headerStackView.subviews.reduce(0, { $0 + $1.frame.size.height })
+
+        // Resetting the tableHeaderView is necessary to get the new height to take effect
+        tableView.tableHeaderView = headerStackView
+    }
+
 
     fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
         if isSearching() {
@@ -589,5 +605,20 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         default:
             return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         }
+    }
+
+    // MARK: - UISearchControllerDelegate
+
+    func didPresentSearchController(_ searchController: UISearchController) {
+        if #available(iOS 11.0, *) {
+            updateTableHeaderSize()
+
+            tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
+            tableView.contentInset.top = 0
+        }
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        updateTableHeaderSize()
     }
 }

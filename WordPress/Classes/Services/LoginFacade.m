@@ -81,10 +81,36 @@
         }
     } failure:^(NSError *error) {
         [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
+        [WPAppAnalytics track:WPAnalyticsStatLoginSocialFailure error:error];
         if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
             [self.delegate displayRemoteError:error];
         }
     }];
+}
+
+- (void)loginToWordPressDotComWithUser:(NSInteger)userID
+                              authType:(NSString *)authType
+                           twoStepCode:(NSString *)twoStepCode
+                          twoStepNonce:(NSString *)twoStepNonce
+{
+    if ([self.delegate respondsToSelector:@selector(displayLoginMessage:)]) {
+        [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+    }
+
+    [self.wordpressComOAuthClientFacade authenticateSocialLoginUser:userID
+                                                           authType:authType
+                                                        twoStepCode:twoStepCode
+                                                       twoStepNonce:twoStepNonce
+                                                            success:^(NSString *authToken) {
+                                                                if ([self.delegate respondsToSelector:@selector(finishedLoginWithNonceAuthToken:)]) {
+                                                                    [self.delegate finishedLoginWithNonceAuthToken:authToken];
+                                                                }
+                                                            } failure:^(NSError *error) {
+                                                                [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
+                                                                if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
+                                                                    [self.delegate displayRemoteError:error];
+                                                                }
+                                                            }];
 }
 
 - (void)signInToWordpressDotCom:(LoginFields *)loginFields
