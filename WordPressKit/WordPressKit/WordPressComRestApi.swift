@@ -28,6 +28,7 @@ open class WordPressComRestApi: NSObject {
     open static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
     open static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
 
+    public typealias RequestEnqueuedBlock = () -> Void
     public typealias SuccessResponseBlock = (_ responseObject: AnyObject, _ httpResponse: HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
@@ -36,6 +37,8 @@ open class WordPressComRestApi: NSObject {
     open static let defaultBackgroundSessionIdentifier = "org.wordpress.wpcomrestapi"
     
     open let backgroundSessionIdentifier: String
+
+    open let sharedContainerIdentifier: String?
     
     fileprivate let backgroundUploads: Bool
 
@@ -58,6 +61,7 @@ open class WordPressComRestApi: NSObject {
     fileprivate lazy var uploadSessionManager: AFHTTPSessionManager = {
         if self.backgroundUploads {
             let sessionConfiguration = URLSessionConfiguration.background(withIdentifier: self.backgroundSessionIdentifier)
+            sessionConfiguration.sharedContainerIdentifier = self.sharedContainerIdentifier
             let sessionManager = self.makeSessionManager(configuration: sessionConfiguration)
             return sessionManager
         }
@@ -92,15 +96,22 @@ open class WordPressComRestApi: NSObject {
     ///   - userAgent: the user agent to identify the client doing the connection.
     ///   - backgroundUploads: If this value is true the API object will use a background session to execute uploads requests when using the `multipartPOST` function. The default value is false.
     ///   - backgroundSessionIdentifier: The session identifier to use for the background session. This must be unique in the system.
+    ///   - sharedContainerIdentifier: An optional string used when setting up background sessions for use in an app extension. Default is nil.
     ///
-    /// - Discussion: When backgroundUploads are activated any request done by the multipartPOST method will use background session. This background session is shared for all multipart requests and the identifier
-    /// used must be unique in the system, Apple recomends to use invert DNS base on your bundle ID. Keep in mind these requests will continue even after the app is killed by the system and the system will retried them
-    /// until they are done.
-    public init(oAuthToken: String? = nil, userAgent: String? = nil, backgroundUploads: Bool = false, backgroundSessionIdentifier: String = WordPressComRestApi.defaultBackgroundSessionIdentifier) {
+    /// - Discussion: When backgroundUploads are activated any request done by the multipartPOST method will use background session. This background session is shared for all multipart
+    ///   requests and the identifier used must be unique in the system, Apple recomends to use invert DNS base on your bundle ID. Keep in mind these requests will continue even
+    ///   after the app is killed by the system and the system will retried them until they are done. If the background session is initiated from an app extension, you *must* provide a value
+    ///   for the sharedContainerIdentifier.
+    ///
+    public init(oAuthToken: String? = nil, userAgent: String? = nil,
+                backgroundUploads: Bool = false,
+                backgroundSessionIdentifier: String = WordPressComRestApi.defaultBackgroundSessionIdentifier,
+                sharedContainerIdentifier: String? = nil) {
         self.oAuthToken = oAuthToken
         self.userAgent = userAgent
         self.backgroundUploads = backgroundUploads
         self.backgroundSessionIdentifier = backgroundSessionIdentifier
+        self.sharedContainerIdentifier = sharedContainerIdentifier
         super.init()
     }
 
@@ -213,6 +224,7 @@ open class WordPressComRestApi: NSObject {
      - parameter URLString:  the endpoint to connect
      - parameter parameters: the parameters to use on the request
      - parameter fileParts:  the file parameters that are added to the multipart request
+     - parameter requestEnqueued: callback to be called on when the fileparts are serialized and request is added to the background session. Defaults to nil
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
@@ -223,6 +235,7 @@ open class WordPressComRestApi: NSObject {
     @discardableResult open func multipartPOST(_ URLString: String,
                               parameters: [String: AnyObject]?,
                               fileParts: [FilePart],
+                              requestEnqueued: RequestEnqueuedBlock? = nil,
                               success: @escaping SuccessResponseBlock,
                               failure: @escaping FailureReponseBlock) -> Progress? {
         
@@ -246,6 +259,7 @@ open class WordPressComRestApi: NSObject {
                     success(responseObject as AnyObject, response as? HTTPURLResponse)
                 }
             }
+            requestEnqueued?()
             task.resume()
             progress.cancellationHandler = {
                 task.cancel()
