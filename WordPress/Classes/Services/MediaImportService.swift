@@ -32,8 +32,8 @@ open class MediaImportService: LocalCoreDataService {
 
     /// Imports media from a PHAsset to the Media object, asynchronously.
     ///
-    /// - paramater asset: the PHAsset media where data will be read from.
-    /// - paramater media: the media object to where media will be imported to.
+    /// - parameter asset: the PHAsset media where data will be read from.
+    /// - parameter media: the media object to where media will be imported to.
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data imported to the absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
@@ -62,8 +62,8 @@ open class MediaImportService: LocalCoreDataService {
     ///
     /// The UIImage is expected to be a JPEG, PNG, or other 'normal' image.
     ///
-    /// - paramater image: the UIImage where data will be read from.
-    /// - paramater media: the media object to where media will be imported to.
+    /// - parameter image: the UIImage where data will be read from.
+    /// - parameter media: the media object to where media will be imported to.
     /// - parameter onCompletion: Called if the Media was successfully created and the image's data imported to the absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
@@ -91,8 +91,8 @@ open class MediaImportService: LocalCoreDataService {
     ///
     /// The file URL is expected to be a JPEG, PNG, GIF, other 'normal' image, or video.
     ///
-    /// - paramater url: the URL from where data will be read from.
-    /// - paramater media: the media object to where media will be imported to.
+    /// - parameter url: the URL from where data will be read from.
+    /// - parameter media: the media object to where media will be imported to.
     /// - parameter onCompletion: Called if the Media was successfully created and the file's data imported to the absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
