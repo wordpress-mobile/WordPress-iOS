@@ -8,6 +8,7 @@ enum FeatureFlag: Int {
     case pluginManagement
     case googleLogin
     case jetpackDisconnect
+    case jetpackCommentsOnReader
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -21,9 +22,11 @@ enum FeatureFlag: Int {
         case .pluginManagement:
             return BuildConfiguration.current == .localDeveloper
         case .googleLogin:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
+        case .jetpackCommentsOnReader:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         }
     }
 }

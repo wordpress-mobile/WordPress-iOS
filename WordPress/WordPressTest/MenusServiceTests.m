@@ -71,7 +71,7 @@
     blog.dotComID = @1;
     blog.isAdmin = YES;
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus", [blog dotComID]];
+    NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus", [blog dotComID]];
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
@@ -93,7 +93,7 @@
     blog.dotComID = @1;
     blog.isAdmin = YES;
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/new", [blog dotComID]];
+    NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus/new", [blog dotComID]];
     NSString *name = @"SomeName";
     Menu *menu = [NSEntityDescription insertNewObjectForEntityForName:[Menu entityName] inManagedObjectContext:context];
     menu.name = name;
@@ -152,7 +152,7 @@
     menu.name = @"name";
     menu.items = items;
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuID];
+    NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuID];
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
@@ -178,7 +178,7 @@
     Menu *menu = [NSEntityDescription insertNewObjectForEntityForName:[Menu entityName] inManagedObjectContext:context];
     menu.menuID = @1;
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
+    NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -205,7 +205,7 @@
     Menu *menu = [NSEntityDescription insertNewObjectForEntityForName:[Menu entityName] inManagedObjectContext:context];
     menu.menuID = nil;
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
+    NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]

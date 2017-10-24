@@ -34,7 +34,13 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Aztec's Awesomeness
     ///
     fileprivate(set) lazy var richTextView: Aztec.TextView = {
-        let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultMissingImage: Assets.defaultMissingImage)
+
+        let paragraphStyle = ParagraphStyle.default
+
+        // Paragraph style customizations will go here.
+        paragraphStyle.lineSpacing = 4
+
+        let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
         textView.inputProcessor =
             PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
@@ -188,6 +194,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var closeBarButtonItem: UIBarButtonItem = {
         let cancelItem = UIBarButtonItem(customView: self.closeButton)
         cancelItem.accessibilityLabel = NSLocalizedString("Close", comment: "Action button to close edior and cancel changes or insertion of post")
+        cancelItem.accessibilityIdentifier = "Close"
         return cancelItem
     }()
 
@@ -292,7 +299,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureBetaButton(button)
 
-        button.setTitle(NSLocalizedString("Feedback", comment: "Title for Feedback button for the new Aztec editor"), for: .normal)
         button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
         button.isEnabled = true
         button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
@@ -322,6 +328,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
             refreshEditorVisibility()
             refreshPlaceholderVisibility()
+            refreshTitlePosition()
         }
     }
 
@@ -555,7 +562,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Title and Title placeholder position methods
 
-    func updateTitlePosition() {
+    func refreshTitlePosition() {
         let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
 
@@ -638,6 +645,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         let insets = titleTextField.textContainerInset
+
         NSLayoutConstraint.activate([
             titlePlaceholderLabel.leftAnchor.constraint(equalTo: titleTextField.leftAnchor, constant: insets.left + titleTextField.textContainer.lineFragmentPadding),
             titlePlaceholderLabel.rightAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: -insets.right - titleTextField.textContainer.lineFragmentPadding),
@@ -684,7 +692,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func configureNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
-
+        navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = [separatorButtonItem, closeBarButtonItem, blogPickerBarButtonItem]
         navigationItem.rightBarButtonItems = [moreBarButtonItem, publishBarButtonItem, separatorButtonItem]
     }
@@ -1379,7 +1387,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateTitlePosition()
+        refreshTitlePosition()
     }
 
     // MARK: - Title Input Sanitization
@@ -1831,8 +1839,7 @@ extension AztecPostViewController {
         richTextView.inputAssistantItem.leadingBarButtonGroups = originalLeadingBarButtonGroup
         richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
         richTextView.autocorrectionType = .yes
-        richTextView.resignFirstResponder()
-        richTextView.becomeFirstResponder()
+        richTextView.reloadInputViews()
     }
 
     @IBAction func presentMediaPicker() {
@@ -2681,7 +2688,8 @@ extension AztecPostViewController {
         }
         switch media.mediaType {
         case .image:
-            let _ = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
+            let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
+            attachment.alt = media.alt
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         case .video:
             var posterURL: URL?
@@ -2970,10 +2978,11 @@ extension AztecPostViewController {
     func displayDetails(forAttachment attachment: ImageAttachment) {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
-        controller.onUpdate = { [weak self] (alignment, size) in
+        controller.onUpdate = { [weak self] (alignment, size, alt) in
             self?.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
+                updated.alt = alt
             }
         }
 
@@ -2999,15 +3008,18 @@ extension AztecPostViewController {
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let imageSize = CGSize(width: 128, height: 128)
-
+        let icon: UIImage
         switch attachment {
         case _ as ImageAttachment:
-            return Gridicon.iconOfType(.image, withSize: imageSize)
+            icon = Gridicon.iconOfType(.image, withSize: imageSize)
         case _ as VideoAttachment:
-            return Gridicon.iconOfType(.video, withSize: imageSize)
+            icon = Gridicon.iconOfType(.video, withSize: imageSize)
         default:
-            return Gridicon.iconOfType(.attachment, withSize: imageSize)
+            icon = Gridicon.iconOfType(.attachment, withSize: imageSize)
         }
+
+        icon.addAccessibilityForAttachment(attachment)
+        return icon
     }
 
     // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
@@ -3167,9 +3179,9 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         }
     }
 
-    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL {
+    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
         saveToMedia(attachment: imageAttachment)
-        return URL(string: "placeholder://")!
+        return nil
     }
 
     func cancelAllPendingMediaRequests() {
@@ -3253,6 +3265,17 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             if formatBar.trailingItem != insertToolbarItem {
                 formatBar.trailingItem = insertToolbarItem
             }
+        }
+    }
+}
+
+// MARK: - Accessibility Helpers
+//
+extension UIImage {
+    func addAccessibilityForAttachment(_ attachment: NSTextAttachment) {
+        if let attachment = attachment as? ImageAttachment,
+            let accessibilityLabel = attachment.alt {
+            self.accessibilityLabel = accessibilityLabel
         }
     }
 }
