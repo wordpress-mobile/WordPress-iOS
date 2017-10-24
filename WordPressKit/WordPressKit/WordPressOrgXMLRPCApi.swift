@@ -2,6 +2,7 @@ import Foundation
 import wpxmlrpc
 import Alamofire
 
+/// Class to connect to the XMLRPC API on self hosted sites.
 open class WordPressOrgXMLRPCApi: NSObject {
     public typealias SuccessResponseBlock = (AnyObject, HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
@@ -63,8 +64,13 @@ open class WordPressOrgXMLRPCApi: NSObject {
         super.init()
     }
 
+    /// Creates a new API object to connect to the WordPress XMLRPC API for the specified endpoint. The background uploads are disabled when using this initializer.
+    ///
+    /// - Parameters:
+    ///   - endpoint:  the endpoint to connect to the xmlrpc api interface.
+    ///   - userAgent: the user agent to use on the connection.
     convenience public init(endpoint: URL, userAgent: String? = nil) {
-        self.init(endpoint: endpoint, userAgent: userAgent, backgroundUploads: true, backgroundSessionIdentifier: WordPressOrgXMLRPCApi.defaultBackgroundSessionIdentifier + "." + endpoint.absoluteString)
+        self.init(endpoint: endpoint, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressOrgXMLRPCApi.defaultBackgroundSessionIdentifier + "." + endpoint.absoluteString)
     }
 
     deinit {
