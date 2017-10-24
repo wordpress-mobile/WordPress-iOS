@@ -17,7 +17,7 @@ end
 def shared_with_networking_pods
   pod 'AFNetworking', '3.1.0'
   pod 'wpxmlrpc', '0.8.3'
-  pod 'Alamofire'
+  pod 'Alamofire', '4.5.1'
 end
 
 def shared_test_pods
