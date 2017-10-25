@@ -19,6 +19,8 @@ class CalypsoProcessorIn: Processor {
             "|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section" +
             "|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary"
 
+        print("Initial in: \(text)")
+        
         // Normalize line breaks.
         var output = text.replacingMatches(of: "\r\n|\r", with: "\n")
 
@@ -80,13 +82,13 @@ class CalypsoProcessorIn: Processor {
         output = output.replacingMatches(of: "<\\/option>\\s*", with: "</option>", options: .caseInsensitive)
 
         // Normalize multiple line breaks and white space chars.
-        output = output.replacingMatches(of: "\n\\s*\n+", with: "\n\n")
+        //output = output.replacingMatches(of: "\n\\s*\n+", with: "\n\n")
 
         // Convert two line breaks to a paragraph.
-        output = output.replacingMatches(of: "([\\s\\S]+?)\n\n", with: "<p>$1</p>\n")
+        output = output.replacingMatches(of: "([\\s\\S]*?)\n\n", with: "<p>$1</p>\n")
 
         // Remove empty paragraphs.
-        output = output.replacingMatches(of: "<p>\\s*?<\\/p>", with: "", options: .caseInsensitive)
+        //output = output.replacingMatches(of: "<p>\\s*?<\\/p>", with: "", options: .caseInsensitive)
 
         // Remove <p> tags that are around block tags.
         output = output.replacingMatches(of: "<p>\\s*(</?(?:" + blocklist + ")(?: [^>]*)?>)\\s*</p>", with: "$1", options: .caseInsensitive)
@@ -130,6 +132,8 @@ class CalypsoProcessorIn: Processor {
             output = output.replacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$1>")
         }
 
+        print("Final in: \(output)")
+        
         return output
     }
 }
