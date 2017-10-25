@@ -2624,15 +2624,20 @@ extension AztecPostViewController {
 
     fileprivate func insertDeviceImage(phAsset: PHAsset) {
         let attachment = imageAttachmentWithPlaceholder()
-        attachment.uploadID = attachment.identifier
+        let uploadID = attachment.identifier
+        attachment.uploadID = uploadID
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
                                  forPost: post.objectID,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
-                                    self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
-            },
+                                    if let attachment = self?.findAttachment(withUploadID: uploadID) {
+                                        self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
+                                    }
+                                 },
                                  completion: { [weak self](media, error) in
-                                    self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaLocalLibrary)
+                                    if let attachment = self?.findAttachment(withUploadID: uploadID) {
+                                        self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaLocalLibrary)
+                                    }
         })
     }
 
@@ -2786,38 +2791,13 @@ extension AztecPostViewController {
     private func upload(media: Media, mediaID: String) {
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: { _ in
-            guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
-                return
-            }
-            DispatchQueue.main.async {
-                guard let attachment = self.findAttachment(withUploadID: mediaID) else {
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
+                guard let strongSelf = self else {
                     return
                 }
-                attachment.uploadID = nil
-                if let imageAttachment = attachment as? ImageAttachment {
-                    if let width = media.width?.intValue {
-                        imageAttachment.width = width
-                    }
-                    if let height = media.height?.intValue {
-                        imageAttachment.height = height
-                    }
-                    if let mediaID = media.mediaID?.intValue {
-                        imageAttachment.imageID = mediaID
-                    }
-                    imageAttachment.updateURL(remoteURL, refreshAsset: false)
-                } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
-                    videoAttachment.srcURL = URL(string: videoURLString)
-                    if let videoPosterURLString = media.remoteThumbnailURL {
-                        videoAttachment.posterURL = URL(string: videoPosterURLString)
-                    }
-                    if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
-                        videoAttachment.videoPressID = videoPressGUID
-                    }
-
+                DispatchQueue.main.async {
+                    strongSelf.handleUploaded(media: media, mediaUploadID: mediaID)
                 }
-                self.richTextView.refresh(attachment)
-            }
             }, failure: { [weak self] error in
                 guard let strongSelf = self else {
                     return
@@ -2835,6 +2815,38 @@ extension AztecPostViewController {
         if let progress = uploadProgress {
             mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
         }
+    }
+
+    private func handleUploaded(media: Media, mediaUploadID: String) {
+        guard let remoteURLStr = media.remoteURL,
+              let remoteURL = URL(string: remoteURLStr),
+              let attachment = self.findAttachment(withUploadID: mediaUploadID)
+        else {
+            return
+        }
+
+        attachment.uploadID = nil
+        if let imageAttachment = attachment as? ImageAttachment {
+            if let width = media.width?.intValue {
+                imageAttachment.width = width
+            }
+            if let height = media.height?.intValue {
+                imageAttachment.height = height
+            }
+            if let mediaID = media.mediaID?.intValue {
+                imageAttachment.imageID = mediaID
+            }
+            imageAttachment.updateURL(remoteURL, refreshAsset: false)
+        } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
+            videoAttachment.srcURL = URL(string: videoURLString)
+            if let videoPosterURLString = media.remoteThumbnailURL {
+                videoAttachment.posterURL = URL(string: videoPosterURLString)
+            }
+            if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
+                videoAttachment.videoPressID = videoPressGUID
+            }
+        }
+        richTextView.refresh(attachment)
     }
 
     private func handleError(_ error: NSError?, onAttachment attachment: Aztec.MediaAttachment) {
