@@ -35,7 +35,6 @@ class CalypsoProcessorOut: Processor {
         
         // Protect empty paragraphs
         output = output.replacingOccurrences(of: "<p></p>", with: "<wp-temp-empty-p>")
-        //output = output.replacingMatches(of: "<p>(?:<br ?\\/?>|\\u00a0|\\uFEFF| )*<\\/p>", with: "<p>&nbsp;</p>")
 
         // Protect script and style tags.
         if output.contains("<script") || output.contains("<style") {
@@ -155,7 +154,6 @@ class CalypsoProcessorOut: Processor {
 
         output = output.replacingOccurrences(of: "<wp-temp-empty-p>", with: "\n\n")
         
-        print("Final out: \(output)")
         return output
     }
 }
