@@ -5,7 +5,6 @@ import UIKit
 /// Wrangles attachment layout and exclusion paths for the specified UITextView.
 ///
 @objc open class WPTextAttachmentManager: NSObject {
-    fileprivate let attributeAttachmentName = "NSAttachment" // HACK: DTCoreText hijacks NSAttachmentAttributeName.
     open var attachments = [WPTextAttachment]()
     var attachmentViews = [String: WPTextAttachmentView]()
     open weak var delegate: WPTextAttachmentManagerDelegate?
@@ -57,7 +56,7 @@ import UIKit
         }
 
         // Now do the update.
-        textStorage.enumerateAttribute(attributeAttachmentName,
+        textStorage.enumerateAttribute(NSAttachmentAttributeName,
             in: NSMakeRange(0, textStorage.length),
             options: [],
             using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
@@ -111,7 +110,7 @@ import UIKit
             return
         }
 
-        layoutManager.textStorage?.enumerateAttribute(attributeAttachmentName,
+        layoutManager.textStorage?.enumerateAttribute(NSAttachmentAttributeName,
             in: NSMakeRange(0, textStorage.length),
             options: [],
             using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
