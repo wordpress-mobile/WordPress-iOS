@@ -112,7 +112,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
 
         submitButton?.isEnabled = (
             !animating &&
-            !loginFields.multifactorCode.isEmpty &&
             isNumeric &&
             isValidLength
         )
