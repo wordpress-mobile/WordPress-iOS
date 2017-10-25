@@ -26,6 +26,7 @@ public final class WordPressComOAuthClient: NSObject {
     @objc public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
     @objc public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint&version=1.0"
     @objc public static let WordPressComSocialLogin2FAUrl = "https://wordpress.com/wp-login.php?action=two-step-authentication-endpoint&version=1.0"
+    @objc public static let WordPressComSocialLoginNewSMS2FAUrl = "https://wordpress.com/wp-login.php?action=send-sms-code-endpoint"
     @objc public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
     @objc public static let WordPressComSocialLoginEndpointVersion = 1.0
 
@@ -42,6 +43,10 @@ public final class WordPressComOAuthClient: NSObject {
 
     fileprivate let social2FASessionManager: AFHTTPSessionManager = {
         return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComSocialLogin2FAUrl)
+    }()
+
+    fileprivate let socialNewSMS2FASessionmanager: AFHTTPSessionManager = {
+        return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComSocialLoginNewSMS2FAUrl)
     }()
 
     fileprivate class func sessionManager(url: String) -> AFHTTPSessionManager {
@@ -299,6 +304,24 @@ public final class WordPressComOAuthClient: NSObject {
         }
         )
     }
+
+    /// Request a new SMS code to be sent during social login
+    ///
+    public func requestNewSocialSMS2FACode(_ userID: Int,
+                                           success: @escaping () -> Void,
+                                           failure: @escaping (_ error: NSError) -> Void) {
+        let parameters = [
+            "user_id" : userID
+        ]
+
+        socialNewSMS2FASessionmanager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
+            print("sms request succeeded")
+        }) { (task, error) in
+            let errDesc = (error as NSError).description
+            print("sms request failed \(errDesc)")
+        }
+    }
+
 
 
     fileprivate func cleanedUpResponseForLogging(_ response: AnyObject) -> AnyObject {
