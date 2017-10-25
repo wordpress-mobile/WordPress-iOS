@@ -2,11 +2,12 @@ import UIKit
 import SVProgressHUD
 import WordPressShared
 import GoogleSignIn
+import WordPressComKit
 
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
+class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITextFieldDelegate {
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
@@ -107,9 +108,14 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
     override func configureSubmitButton(animating: Bool) {
         submitButton?.showActivityIndicator(animating)
 
+        let isNumeric = loginFields.multifactorCode.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+        let isValidLength = SocialLogin2FANonceInfo.TwoFactorTypeLengths(rawValue: loginFields.multifactorCode.count) != nil
+
         submitButton?.isEnabled = (
             !animating &&
-                !loginFields.multifactorCode.isEmpty
+            !loginFields.multifactorCode.isEmpty &&
+            isNumeric &&
+            isValidLength
         )
     }
 
@@ -171,9 +177,18 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
         WPAppAnalytics.track(.loginSocialSuccess)
     }
 
+    /// Only allow digits in the 2FA text field
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        let isOnlyNumbers = allowedCharacters.isSuperset(of: characterSet)
+        let isShortEnough = (textField.text?.count ?? 0) + string.count <= SocialLogin2FANonceInfo.TwoFactorTypeLengths.backup.rawValue
+        return isOnlyNumbers && isShortEnough
+    }
+
 
     // MARK: - Actions
-
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.multifactorCode = verificationCodeField.nonNilTrimmedText()
@@ -217,9 +232,11 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder {
                 return
         }
         let isNumeric = pasteString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
-        guard isNumeric && pasteString.count == 6 else {
+        guard isNumeric, let _ = SocialLogin2FANonceInfo.TwoFactorTypeLengths(rawValue: pasteString.count) else {
+            displayError(message: NSLocalizedString("That doesn't appear to be a valid verification code.", comment: "Shown when a user pastes a code into the two factor field that contains letters or is the wrong length"))
             return
         }
+        displayError(message: "")
         verificationCodeField.text = pasteString
         handleTextFieldDidChange(verificationCodeField)
     }
