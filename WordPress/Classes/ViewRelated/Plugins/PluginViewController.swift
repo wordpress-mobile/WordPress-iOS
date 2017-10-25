@@ -35,30 +35,35 @@ class PluginViewModel {
             },
             accessibilityIdentifier: "remove-plugin")
 
-        var links = [ImmuTableRow]()
         let directoryLink = NavigationItemRow(
             title: NSLocalizedString("WordPress.org Plugin page", comment: "Link to a plugin's page in the plugin directory"),
             action: { [unowned self] _ in
                 let controller = WebViewControllerFactory.controller(url: self.plugin.directoryURL)
-                self.present?(controller)
+                let navigationController = UINavigationController(rootViewController: controller)
+                self.present?(navigationController)
         })
-        links.append(directoryLink)
+
+        var homeLink: ImmuTableRow?
         if let homeURL = plugin.homeURL {
-            let homeLink = NavigationItemRow(
+            homeLink = NavigationItemRow(
                 title: NSLocalizedString("Plugin homepage", comment: "Link to a plugin's home page"),
                 action: { [unowned self] _ in
                     let controller = WebViewControllerFactory.controller(url: homeURL)
-                    self.present?(controller)
+                    let navigationController = UINavigationController(rootViewController: controller)
+                    self.present?(navigationController)
             })
-            links.append(homeLink)
         }
-        return ImmuTable(sections: [
-            ImmuTableSection(rows: [
+
+        return ImmuTable(optionalSections: [
+            ImmuTableSection(optionalRows: [
                 activeRow,
                 autoupdatesRow
                 ]),
-            ImmuTableSection(rows: links),
-            ImmuTableSection(rows: [
+            ImmuTableSection(optionalRows: [
+                directoryLink,
+                homeLink
+                ]),
+            ImmuTableSection(optionalRows: [
                 removeRow
                 ])
             ])
@@ -81,7 +86,7 @@ class PluginViewModel {
     }
 
     static var immutableRows: [ImmuTableRow.Type] {
-        return [SwitchRow.self, DestructiveButtonRow.self]
+        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self]
     }
 }
 
