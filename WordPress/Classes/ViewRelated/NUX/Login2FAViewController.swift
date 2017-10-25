@@ -2,7 +2,6 @@ import UIKit
 import SVProgressHUD
 import WordPressShared
 import GoogleSignIn
-import WordPressComKit
 
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
@@ -178,8 +177,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     }
 
     /// Only allow digits in the 2FA text field
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
-    {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let allowedCharacters = CharacterSet.decimalDigits
         let characterSet = CharacterSet(charactersIn: string)
         let isOnlyNumbers = allowedCharacters.isSuperset(of: characterSet)
