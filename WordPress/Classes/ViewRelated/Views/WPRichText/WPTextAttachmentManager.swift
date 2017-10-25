@@ -110,7 +110,7 @@ import UIKit
             return
         }
 
-        layoutManager.textStorage?.enumerateAttribute(attributeAttachmentName,
+        layoutManager.textStorage?.enumerateAttribute(NSAttachmentAttributeName,
             in: NSMakeRange(0, textStorage.length),
             options: [],
             using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
