@@ -18,7 +18,7 @@ class CalypsoProcessorIn: Processor {
         let blocklist = "table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre" +
             "|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section" +
             "|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary"
-        
+
         // Normalize line breaks.
         var output = text.replacingMatches(of: "\r\n|\r", with: "\n")
 
@@ -118,7 +118,7 @@ class CalypsoProcessorIn: Processor {
         if preserveBR {
             output = output.replacingMatches(of: "<wp-temp-br([^>]*)>", with: "<br$1>")
         }
-        
+
         return output
     }
 }

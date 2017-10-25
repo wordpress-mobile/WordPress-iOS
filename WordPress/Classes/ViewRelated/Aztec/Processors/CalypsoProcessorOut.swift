@@ -31,8 +31,6 @@ class CalypsoProcessorOut: Processor {
 
         var output = text
 
-        print("Initial out: \(output)")
-        
         // Protect empty paragraphs
         output = output.replacingOccurrences(of: "<p></p>", with: "<wp-temp-empty-p>")
 
@@ -153,7 +151,7 @@ class CalypsoProcessorOut: Processor {
         }
 
         output = output.replacingOccurrences(of: "<wp-temp-empty-p>", with: "\n\n")
-        
+
         return output
     }
 }
