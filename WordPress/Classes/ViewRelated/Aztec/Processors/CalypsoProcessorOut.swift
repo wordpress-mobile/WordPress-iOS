@@ -20,6 +20,7 @@ class CalypsoProcessorOut: Processor {
         }
 
         let lineBreakMarker = "<wp-line-break>"
+        let emptyParagraphMarker = "<wp-empty-paragraph>"
         let preserveMarker = "<wp-preserve>"
 
         var preserveLinebreaks = false
@@ -30,6 +31,9 @@ class CalypsoProcessorOut: Processor {
         let blocklist2 = blocklist + "|pre"
 
         var output = text
+
+        // Protect empty paragraphs
+        output = output.replacingOccurrences(of: "<p></p>", with: emptyParagraphMarker)
 
         // Protect script and style tags.
         if output.contains("<script") || output.contains("<style") {
@@ -147,7 +151,9 @@ class CalypsoProcessorOut: Processor {
             })
         }
 
-        //                return html;
+        // Restore empty paragraphs
+        output = output.replacingOccurrences(of: emptyParagraphMarker, with: "\n\n")
+
         return output
     }
 }
