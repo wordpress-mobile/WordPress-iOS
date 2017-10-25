@@ -166,35 +166,38 @@ open class WordPressOrgXMLRPCApi: NSObject {
                                  parameters: [AnyObject]?,
                                  success: @escaping SuccessResponseBlock,
                                  failure: @escaping FailureReponseBlock) -> Progress? {
-        let fileURL = URLForTemporaryFile()
-        //Encode request
-        let request: URLRequest
-        do {
-            request = try streamingRequestWithMethod(method, parameters: parameters, usingFileURLForCache: fileURL)
-        } catch let encodingError as NSError {
-            failure(encodingError, nil)
-            return nil
+        let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        DispatchQueue.global().async {
+            let fileURL = self.URLForTemporaryFile()
+            //Encode request
+            let request: URLRequest
+            do {
+                request = try self.streamingRequestWithMethod(method, parameters: parameters, usingFileURLForCache: fileURL)
+            } catch let encodingError as NSError {
+                failure(encodingError, nil)
+                return
+            }
+
+            self.uploadSessionManager.upload(fileURL, with: request)
+                .uploadProgress { (requestProgress) in
+                    progress.totalUnitCount = requestProgress.totalUnitCount + 1
+                    progress.completedUnitCount = requestProgress.completedUnitCount
+                }.response(queue: DispatchQueue.global()) { (response) in
+                    progress.completedUnitCount = progress.totalUnitCount
+                    do {
+                        let responseObject = try self.handleResponseWithData(response.data, urlResponse: response.response, error: response.error as NSError?)
+                        DispatchQueue.main.async {
+                            success(responseObject, response.response)
+                        }
+                    } catch let error as NSError {
+                        DispatchQueue.main.async {
+                            failure(error, response.response)
+                        }
+                        return
+                    }
+            }
         }
 
-        let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
-        uploadSessionManager.upload(fileURL, with: request)
-            .downloadProgress { (requestProgress) in
-                progress.totalUnitCount = requestProgress.totalUnitCount + 1
-                progress.completedUnitCount = requestProgress.completedUnitCount
-            }.response(queue: DispatchQueue.global()) { (response) in
-                progress.completedUnitCount = progress.totalUnitCount
-                do {
-                    let responseObject = try self.handleResponseWithData(response.data, urlResponse: response.response, error: response.error as NSError?)
-                    DispatchQueue.main.async {
-                        success(responseObject, response.response)
-                    }
-                } catch let error as NSError {
-                    DispatchQueue.main.async {
-                        failure(error, response.response)
-                    }
-                    return
-                }
-        }
         return progress
     }
 
