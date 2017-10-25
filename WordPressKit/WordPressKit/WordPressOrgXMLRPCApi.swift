@@ -132,7 +132,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
             .downloadProgress { (requestProgress) in
                 progress.totalUnitCount = requestProgress.totalUnitCount + 1
                 progress.completedUnitCount = requestProgress.completedUnitCount
-            }.response { (response) in
+            }.response(queue: DispatchQueue.global()) { (response) in
                 progress.completedUnitCount = progress.totalUnitCount
                 do {
                     let responseObject = try self.handleResponseWithData(response.data, urlResponse: response.response, error: response.error as NSError?)
@@ -181,7 +181,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
             .downloadProgress { (requestProgress) in
                 progress.totalUnitCount = requestProgress.totalUnitCount + 1
                 progress.completedUnitCount = requestProgress.completedUnitCount
-            }.response { (response) in
+            }.response(queue: DispatchQueue.global()) { (response) in
                 progress.completedUnitCount = progress.totalUnitCount
                 do {
                     let responseObject = try self.handleResponseWithData(response.data, urlResponse: response.response, error: response.error as NSError?)
