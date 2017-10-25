@@ -974,6 +974,7 @@
 		FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */; };
 		FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */; };
 		FF96EB911F9F6D70005EFCD5 /* MediaAttachment+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF96EB901F9F6D70005EFCD5 /* MediaAttachment+WordPress.swift */; };
+		FF96EB951FA0CDE9005EFCD5 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF96EB941FA0CDE9005EFCD5 /* ImgUploadProcessor.swift */; };
 		FF9839A91CD3963200E85258 /* WordPressComOAuthClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF9839A81CD3963200E85258 /* WordPressComOAuthClientTests.swift */; };
 		FF9839AB1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json in Resources */ = {isa = PBXBuildFile; fileRef = FF9839AA1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json */; };
 		FF9839AD1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json in Resources */ = {isa = PBXBuildFile; fileRef = FF9839AC1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json */; };
@@ -2433,6 +2434,7 @@
 		FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaLibraryPickerDataSource.m; sourceTree = "<group>"; };
 		FF947A8C1BBE89A100B27B6A /* WordPress 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 39.xcdatamodel"; sourceTree = "<group>"; };
 		FF96EB901F9F6D70005EFCD5 /* MediaAttachment+WordPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MediaAttachment+WordPress.swift"; sourceTree = "<group>"; };
+		FF96EB941FA0CDE9005EFCD5 /* ImgUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgUploadProcessor.swift; sourceTree = "<group>"; };
 		FF9839A81CD3963200E85258 /* WordPressComOAuthClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WordPressComOAuthClientTests.swift; path = WordPressAPI/WordPressComOAuthClientTests.swift; sourceTree = "<group>"; };
 		FF9839AA1CD39F3D00E85258 /* WordPressOAuthClientSuccess.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WordPressOAuthClientSuccess.json; sourceTree = "<group>"; };
 		FF9839AC1CD3F82300E85258 /* WordPressOAuthClientWrongPasswordFail.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WordPressOAuthClientWrongPasswordFail.json; sourceTree = "<group>"; };
@@ -3925,6 +3927,7 @@
 				B50C0C551EF42A0000372C65 /* VideoShortcodeProcessor.swift */,
 				B5032DDC1F02B30B00D946DC /* CalypsoProcessorIn.swift */,
 				F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */,
+				FF96EB941FA0CDE9005EFCD5 /* ImgUploadProcessor.swift */,
 			);
 			path = Processors;
 			sourceTree = "<group>";
@@ -6205,6 +6208,7 @@
 				B538F37F1EF44017001003D5 /* VideoAttachment+WordPress.swift in Sources */,
 				822D60B91F4CCC7A0016C46D /* BlogJetpackSettingsService.swift in Sources */,
 				08216FD51CDBF96000304BA7 /* MenuItemTypeViewController.m in Sources */,
+				FF96EB951FA0CDE9005EFCD5 /* ImgUploadProcessor.swift in Sources */,
 				B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */,
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,

@@ -2819,34 +2819,42 @@ extension AztecPostViewController {
 
     private func handleUploaded(media: Media, mediaUploadID: String) {
         guard let remoteURLStr = media.remoteURL,
-              let remoteURL = URL(string: remoteURLStr),
-              let attachment = self.findAttachment(withUploadID: mediaUploadID)
+              let remoteURL = URL(string: remoteURLStr)
         else {
             return
         }
 
-        attachment.uploadID = nil
-        if let imageAttachment = attachment as? ImageAttachment {
-            if let width = media.width?.intValue {
-                imageAttachment.width = width
+        switch self.mode {
+        case .richText:
+            guard let attachment = self.findAttachment(withUploadID: mediaUploadID) else {
+                return
             }
-            if let height = media.height?.intValue {
-                imageAttachment.height = height
+            attachment.uploadID = nil
+            if let imageAttachment = attachment as? ImageAttachment {
+                if let width = media.width?.intValue {
+                    imageAttachment.width = width
+                }
+                if let height = media.height?.intValue {
+                    imageAttachment.height = height
+                }
+                if let mediaID = media.mediaID?.intValue {
+                    imageAttachment.imageID = mediaID
+                }
+                imageAttachment.updateURL(remoteURL, refreshAsset: false)
+            } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
+                videoAttachment.srcURL = URL(string: videoURLString)
+                if let videoPosterURLString = media.remoteThumbnailURL {
+                    videoAttachment.posterURL = URL(string: videoPosterURLString)
+                }
+                if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
+                    videoAttachment.videoPressID = videoPressGUID
+                }
             }
-            if let mediaID = media.mediaID?.intValue {
-                imageAttachment.imageID = mediaID
-            }
-            imageAttachment.updateURL(remoteURL, refreshAsset: false)
-        } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
-            videoAttachment.srcURL = URL(string: videoURLString)
-            if let videoPosterURLString = media.remoteThumbnailURL {
-                videoAttachment.posterURL = URL(string: videoPosterURLString)
-            }
-            if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
-                videoAttachment.videoPressID = videoPressGUID
-            }
+            richTextView.refresh(attachment)
+        case .html:
+            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
+            htmlTextView.text = imgPostUploadProcessor.process(htmlTextView.text)
         }
-        richTextView.refresh(attachment)
     }
 
     private func handleError(_ error: NSError?, onAttachment attachment: Aztec.MediaAttachment) {
