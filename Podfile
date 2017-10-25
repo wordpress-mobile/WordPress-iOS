@@ -71,8 +71,6 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
-
-    pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   end
 
   target 'WordPressTodayWidget' do

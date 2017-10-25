@@ -1,5 +1,4 @@
 import Foundation
-import WordPressComKit
 
 extension AccountService {
 
