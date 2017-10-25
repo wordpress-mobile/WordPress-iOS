@@ -20,7 +20,6 @@ class CalypsoProcessorOut: Processor {
         }
 
         let lineBreakMarker = "<wp-line-break>"
-        let emptyParagraphMarker = "<wp-empty-paragraph>"
         let preserveMarker = "<wp-preserve>"
 
         var preserveLinebreaks = false
@@ -33,7 +32,7 @@ class CalypsoProcessorOut: Processor {
         var output = text
 
         // Protect empty paragraphs
-        output = output.replacingOccurrences(of: "<p></p>", with: emptyParagraphMarker)
+        output = output.replacingMatches(of: "<p>(?:<br ?\\/?>|\\u00a0|\\uFEFF| )*<\\/p>", with: "<p>&nbsp;</p>")
 
         // Protect script and style tags.
         if output.contains("<script") || output.contains("<style") {
@@ -103,7 +102,7 @@ class CalypsoProcessorOut: Processor {
 
         // Pad block elements tags with a line break.
         output = output.replacingMatches(of: "\\s*<((?:" + blocklist2 + ")(?: [^>]*)?)\\s*>", with: "\n<$1>")
-        output = output.replacingMatches(of: "\\s*</(' + blocklist2 + ')>\\s*", with: "</$1>\n")
+        output = output.replacingMatches(of: "\\s*</(" + blocklist2 + ")>\\s*", with: "</$1>\n")
 
         // Indent <li>, <dt> and <dd> tags.
         output = output.replacingMatches(of: "<((li|dt|dd)[^>]*)>", with: " \t<$1>")
@@ -150,9 +149,6 @@ class CalypsoProcessorOut: Processor {
                 return preserve.removeFirst()
             })
         }
-
-        // Restore empty paragraphs
-        output = output.replacingOccurrences(of: emptyParagraphMarker, with: "\n\n")
 
         return output
     }
