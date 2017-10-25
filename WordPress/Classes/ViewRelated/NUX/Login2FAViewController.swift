@@ -177,12 +177,24 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     }
 
     /// Only allow digits in the 2FA text field
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString: String) -> Bool {
         let allowedCharacters = CharacterSet.decimalDigits
-        let characterSet = CharacterSet(charactersIn: string)
+        let characterSet = CharacterSet(charactersIn: replacementString)
         let isOnlyNumbers = allowedCharacters.isSuperset(of: characterSet)
-        let isShortEnough = (textField.text?.count ?? 0) + string.count <= SocialLogin2FANonceInfo.TwoFactorTypeLengths.backup.rawValue
-        return isOnlyNumbers && isShortEnough
+        let isShortEnough = (textField.text?.count ?? 0) + replacementString.count <= SocialLogin2FANonceInfo.TwoFactorTypeLengths.backup.rawValue
+
+        if isOnlyNumbers && isShortEnough {
+            displayError(message: "")
+            return true
+        }
+
+        if let pasteString = UIPasteboard.general.string, pasteString == replacementString {
+            displayError(message: NSLocalizedString("That doesn't appear to be a valid verification code.", comment: "Shown when a user pastes a code into the two factor field that contains letters or is the wrong length"))
+        } else if !isOnlyNumbers {
+            displayError(message: NSLocalizedString("A verification code will only contain numbers.", comment: "Shown when a user types a non-number into the two factor field."))
+        }
+
+        return false
     }
 
 
@@ -231,7 +243,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         }
         let isNumeric = pasteString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
         guard isNumeric, let _ = SocialLogin2FANonceInfo.TwoFactorTypeLengths(rawValue: pasteString.count) else {
-            displayError(message: NSLocalizedString("That doesn't appear to be a valid verification code.", comment: "Shown when a user pastes a code into the two factor field that contains letters or is the wrong length"))
             return
         }
         displayError(message: "")
