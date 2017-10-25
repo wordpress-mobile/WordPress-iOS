@@ -51,9 +51,10 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        service.getPlugins(siteID: siteID, success: { result in
-            self.viewModel = .ready(result)
+        service.getPlugins(siteID: siteID, success: { (plugins, _) in
+            self.viewModel = .ready(plugins)
         }, failure: { error in
+            DDLogError("Error loading plugins: \(error)")
             self.viewModel = .error(String(describing: error))
         })
     }
