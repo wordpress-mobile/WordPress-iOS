@@ -15,6 +15,11 @@ extension Tracks {
         trackExtensionEvent(.Posted, properties: properties as [String: AnyObject]?)
     }
 
+    public func trackExtensionError(_ error: NSError) {
+        let properties = ["error_code": String(error.code), "error_domain": error.domain, "error_description": error.description]
+        trackExtensionEvent(.Error, properties: properties as [String: AnyObject]?)
+    }
+
     public func trackExtensionCancelled() {
         trackExtensionEvent(.Canceled)
     }
@@ -31,5 +36,6 @@ extension Tracks {
         case Launched   = "wpios_share_extension_launched"
         case Posted     = "wpios_share_extension_posted"
         case Canceled   = "wpios_share_extension_canceled"
+        case Error      = "wpios_share_extension_error"
     }
 }
