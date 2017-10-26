@@ -9,13 +9,13 @@
 ########################################
 
 # This folder has to include one folder for each language
-# More information about automatic screenshot upload: 
+# More information about automatic screenshot upload:
 # https://github.com/KrauseFx/deliver#upload-screenshots-to-itunes-connect
 screenshots_path "./screenshots/"
 app_identifier "org.wordpress"
 
 # Make sure to update these keys for a new version
-app_version "8.6"
+app_version "8.7"
 
 privacy_url({
   'default' => 'https://automattic.com/privacy/',
