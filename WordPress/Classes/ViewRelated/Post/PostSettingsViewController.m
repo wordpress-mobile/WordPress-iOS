@@ -1359,23 +1359,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.tableView reloadData];
 }
 
-#pragma mark - WPTableImageSourceDelegate
-
-//- (void)tableImageSource:(WPTableImageSource *)tableImageSource
-//              imageReady:(UIImage *)image
-//            forIndexPath:(NSIndexPath *)indexPath
-//{
-//    self.featuredImage = image;
-//    [self.tableView reloadData];
-//}
-//
-//- (void)tableImageSource:(WPTableImageSource *)tableImageSource
-// imageFailedforIndexPath:(NSIndexPath *)indexPath
-//                   error:(NSError *)error
-//{
-//    [self featuredImageFailedLoading:indexPath withError:error];
-//}
-
 - (NSString *)titleForVisibility
 {
     if (self.apost.password) {
