@@ -60,7 +60,6 @@ class PluginViewModel {
                 autoupdatesRow
                 ]),
             ImmuTableSection(optionalRows: [
-                directoryLink,
                 homeLink
                 ]),
             ImmuTableSection(optionalRows: [
