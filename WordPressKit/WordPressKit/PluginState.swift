@@ -24,12 +24,10 @@ public extension PluginState {
     }
 
     var homeURL: URL? {
-        guard url != directoryURL else {
-            return nil
-        }
         return url
     }
 
+    @available(*, unavailable, message: "Don't use until we can figure out if the plugin is in the WordPress.org directory")
     var directoryURL: URL {
         return URL(string: "https://wordpress.org/plugins/\(slug)")!
     }
