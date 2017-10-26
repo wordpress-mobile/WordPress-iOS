@@ -6,10 +6,12 @@ class PluginViewModel {
             onModelChange?()
         }
     }
+    let capabilities: SitePluginCapabilities
     let service: PluginServiceRemote
 
-    init(plugin: PluginState, service: PluginServiceRemote) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, service: PluginServiceRemote) {
         self.plugin = plugin
+        self.capabilities = capabilities
         self.service = service
     }
 
@@ -22,26 +24,25 @@ class PluginViewModel {
             value: plugin.active,
             onChange: { (active) in
         })
-        let autoupdatesRow = SwitchRow(
-            title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
-            value: plugin.autoupdate,
-            onChange: { (autoupdate) in
-        })
-        let removeRow = DestructiveButtonRow(
-            title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
-            action: { [unowned self] _ in
-                let alert = self.confirmRemovalAlert(plugin: self.plugin)
-                self.present?(alert)
-            },
-            accessibilityIdentifier: "remove-plugin")
+        var autoupdatesRow: ImmuTableRow?
+        if capabilities.autoupdate {
+            autoupdatesRow = SwitchRow(
+                title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
+                value: plugin.autoupdate,
+                onChange: { (autoupdate) in
+            })
+        }
 
-        let directoryLink = NavigationItemRow(
-            title: NSLocalizedString("WordPress.org Plugin page", comment: "Link to a plugin's page in the plugin directory"),
-            action: { [unowned self] _ in
-                let controller = WebViewControllerFactory.controller(url: self.plugin.directoryURL)
-                let navigationController = UINavigationController(rootViewController: controller)
-                self.present?(navigationController)
-        })
+        var removeRow: ImmuTableRow?
+        if capabilities.modify {
+            removeRow = DestructiveButtonRow(
+                title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
+                action: { [unowned self] _ in
+                    let alert = self.confirmRemovalAlert(plugin: self.plugin)
+                    self.present?(alert)
+                },
+                accessibilityIdentifier: "remove-plugin")
+        }
 
         var homeLink: ImmuTableRow?
         if let homeURL = plugin.homeURL {
@@ -105,10 +106,10 @@ class PluginViewController: UITableViewController {
 
     fileprivate let viewModel: PluginViewModel
 
-    init(plugin: PluginState, siteID: Int, service: PluginServiceRemote) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, service: PluginServiceRemote) {
         self.siteID = siteID
         self.plugin = plugin
-        viewModel = PluginViewModel(plugin: plugin, service: service)
+        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, service: service)
         super.init(style: .grouped)
         viewModel.onModelChange = bindViewModel
         viewModel.present = { [weak self] viewController in
