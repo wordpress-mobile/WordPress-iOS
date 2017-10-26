@@ -121,16 +121,6 @@ class PluginViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init?(plugin: PluginState, blog: Blog) {
-        precondition(blog.dotComID != nil)
-        guard let api = blog.wordPressComRestApi(),
-            let service = PluginServiceRemote(wordPressComRestApi: api) else {
-                return nil
-        }
-
-        self.init(plugin: plugin, siteID: Int(blog.dotComID!), service: service)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         ImmuTable.registerRows(PluginViewModel.immutableRows, tableView: tableView)
