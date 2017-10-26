@@ -222,7 +222,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 {
     RemotePostTag *tag = [RemotePostTag new];
     tag.tagID = [xmlrpcDictionary numberForKey:TaxonomyXMLRPCIDParameter];
-    tag.name = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCNumberParameter];
+    tag.name = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCNameParameter];
     tag.slug = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCSlugParameter];
     return tag;
 }
