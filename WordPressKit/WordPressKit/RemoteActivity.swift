@@ -73,7 +73,7 @@ open class RemoteActivityActor {
     }
 }
 
-public struct RemoteActivityObject {
+open class RemoteActivityObject {
     public let name: String
     public let type: String
     public let attributes: [String: Any]
@@ -88,5 +88,29 @@ public struct RemoteActivityObject {
         } else {
             attributes = [:]
         }
+    }
+}
+
+extension RemoteActivity: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        let dateFormatter = ISO8601DateFormatter()
+        let publishedDate = published != nil ? dateFormatter.string(from: published!) : ""
+        return "<RemoteActivity: (activityID: \(activityID), summary: \(summary), name: \(name), type: \(type) " +
+               "gridicon: \(gridicon), status: \(status), rewindable: \(rewindable), published: \(publishedDate) " +
+               "actor: \(actor.debugDescription), object: \(object.debugDescription), " +
+               "target: \(target.debugDescription), items: \(items != nil ? items.debugDescription : "[]")>";
+    }
+}
+
+extension RemoteActivityActor: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "<RemoteActivityActor(displayName: \(displayName), type: \(type), wpcomUserID: \(wpcomUserID) " +
+               "avatarURL: \(avatarURL), role: \(role)>"
+    }
+}
+
+extension RemoteActivityObject: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "<RemoteActivityObject(name: \(name), type: \(type), attributes: \(attributes.debugDescription)>"
     }
 }
