@@ -51,8 +51,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        service.getPlugins(siteID: siteID, success: { (plugins, _) in
-            self.viewModel = .ready(plugins)
+        service.getPlugins(siteID: siteID, success: { (plugins, capabilities) in
+            self.viewModel = .ready(plugins, capabilities)
         }, failure: { error in
             DDLogError("Error loading plugins: \(error)")
             self.viewModel = .error(String(describing: error))
@@ -93,8 +93,8 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 // MARK: - PluginPresenter
 
 extension PluginListViewController: PluginPresenter {
-    func present(plugin: PluginState) {
-        let controller = PluginViewController(plugin: plugin, siteID: siteID, service: service)
+    func present(plugin: PluginState, capabilities: SitePluginCapabilities) {
+        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, siteID: siteID, service: service)
         navigationController?.pushViewController(controller, animated: true)
     }
 }
