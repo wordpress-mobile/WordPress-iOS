@@ -3074,6 +3074,9 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         } else {
             // if it's a new attachment tapped let's unmark the previous one
             if let selectedAttachment = currentSelectedAttachment {
+                if selectedAttachment is ImageAttachment {
+                    selectedAttachment.overlayImage = nil
+                }
                 selectedAttachment.message = nil
                 richTextView.refresh(selectedAttachment)
             }
