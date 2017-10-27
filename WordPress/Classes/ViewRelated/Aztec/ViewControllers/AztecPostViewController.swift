@@ -64,6 +64,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
@@ -108,6 +109,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
