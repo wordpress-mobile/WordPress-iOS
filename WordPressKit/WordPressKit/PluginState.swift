@@ -32,4 +32,13 @@ public extension PluginState {
     var directoryURL: URL {
         return URL(string: "https://wordpress.org/plugins/\(slug)")!
     }
+
+    var deactivateAllowed: Bool {
+        return !isJetpack
+    }
+
+    var isJetpack: Bool {
+        return slug == "jetpack"
+            || slug == "jetpack-dev"
+    }
 }

@@ -29,13 +29,16 @@ class PluginViewModel {
                 value: version)
         }
 
-        let activeRow = SwitchRow(
-            title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
-            value: plugin.active,
-            onChange: { [unowned self] (active) in
-                self.setActive(active)
-            }
-        )
+        var activeRow: ImmuTableRow?
+        if plugin.deactivateAllowed {
+            activeRow = SwitchRow(
+                title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
+                value: plugin.active,
+                onChange: { [unowned self] (active) in
+                    self.setActive(active)
+                }
+            )
+        }
 
         var autoupdatesRow: ImmuTableRow?
         if capabilities.autoupdate {
