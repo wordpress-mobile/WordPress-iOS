@@ -23,6 +23,13 @@ class PluginViewController: UITableViewController {
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
         }
+        viewModel.dismiss = { [weak self] in
+            guard let navigationController = self?.navigationController,
+                navigationController.topViewController == self else {
+                    return
+            }
+            navigationController.popViewController(animated: true)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {

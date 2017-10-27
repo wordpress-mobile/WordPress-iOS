@@ -57,14 +57,31 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
             ] as [String: AnyObject]
         updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
+
+    public func remove(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        guard let escapedPluginID = encoded(pluginID: pluginID) else {
+            return
+        }
+        let endpoint = "sites/\(siteID)/plugins/\(escapedPluginID)/delete"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)!
+
+        wordPressComRestApi.POST(
+            path,
+            parameters: nil,
+            success: { _ in
+                success()
+            }, failure: { (error, _) in
+                failure(error)
+            }
+        )
+    }
+
     private func updatePlugin(parameters: [String: AnyObject], pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        let allowedCharacters = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
-        guard let escapedPluginID = pluginID.addingPercentEncoding(withAllowedCharacters: allowedCharacters) else {
-            assertionFailure("Can't escape plugin ID: \(pluginID)")
+        guard let escapedPluginID = encoded(pluginID: pluginID) else {
             return
         }
         let endpoint = "sites/\(siteID)/plugins/\(escapedPluginID)"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)!
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)!
 
         wordPressComRestApi.POST(
             path,
@@ -79,6 +96,15 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
 }
 
 fileprivate extension PluginServiceRemote {
+    func encoded(pluginID: String) -> String? {
+        let allowedCharacters = CharacterSet.urlPathAllowed.subtracting(CharacterSet(charactersIn: "/"))
+        guard let escapedPluginID = pluginID.addingPercentEncoding(withAllowedCharacters: allowedCharacters) else {
+            assertionFailure("Can't escape plugin ID: \(pluginID)")
+            return nil
+        }
+        return escapedPluginID
+    }
+
     func pluginStates(response: [String: AnyObject]) throws -> [PluginState] {
         guard let plugins = response["plugins"] as? [[String: AnyObject]] else {
             throw ResponseError.decodingFailure

@@ -19,6 +19,7 @@ class PluginViewModel {
 
     var onModelChange: (() -> Void)?
     var present: ((UIViewController) -> Void)?
+    var dismiss: (() -> Void)?
 
     var tableViewModel: ImmuTable {
         var versionRow: ImmuTableRow?
@@ -92,9 +93,19 @@ class PluginViewModel {
             title: NSLocalizedString("Remove Plugin?", comment: "Title for the alert to confirm a plugin removal"),
             message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel removing a plugin"))
-        alert.addDestructiveActionWithTitle(NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"), handler: { _ in
-            // TODO: Remove plugin
-        })
+        alert.addDestructiveActionWithTitle(
+            NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
+            handler: { [unowned self] _ in
+                self.dismiss?()
+                self.service.remove(
+                    pluginID: self.plugin.id,
+                    siteID: self.siteID,
+                    success: {},
+                    failure: { error in
+                        DDLogError("Error removing plugin: \(error)")
+                    })
+            }
+        )
         return alert
     }
 
