@@ -67,8 +67,8 @@ private extension ActivityServiceRemote {
                 throw ActivityServiceRemote.ResponseError.decodingFailure
         }
 
-        let activities = orderedItems.map { activity -> RemoteActivity in
-            return RemoteActivity(dictionary: activity)
+        let activities = try orderedItems.map { activity -> RemoteActivity in
+            return try RemoteActivity(dictionary: activity)
         }
 
         return (activities, totalItems)
