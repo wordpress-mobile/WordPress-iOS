@@ -670,6 +670,20 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [self jetpackActiveModule:ActiveModulesKeySharingButtons];
 }
 
+- (BOOL)isBasicAuthCredentialStored {
+    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+    NSURL *url = [NSURL URLWithString:self.url];
+    NSDictionary * credentials = storage.allCredentials;
+    for (NSURLProtectionSpace *protectionSpace in credentials.allKeys) {
+        if ( [protectionSpace.host isEqual:url.host]
+           && (protectionSpace.port == ([url.port integerValue] ? : 80))
+           && (protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic)) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 #pragma mark - Private Methods
 
 - (id)getOptionValue:(NSString *)name
