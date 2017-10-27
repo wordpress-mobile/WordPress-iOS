@@ -260,7 +260,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
                    sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    CGPoint dropLocation = [session locationInView:self.gravatarImageView];
+    CGPoint dropLocation = [session locationInView:self];
     UIDropOperation dropOperation;
     
     if (CGRectContainsPoint(self.gravatarImageView.frame, dropLocation)) {
@@ -277,9 +277,8 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)dropInteraction:(UIDropInteraction *)interaction
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    __weak __typeof(self) weakSelf = self;
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
-            weakSelf.gravatarImageView.image = [images firstObject];
+            self.gravatarImageView.image = [images firstObject];
     }];
 }
 
