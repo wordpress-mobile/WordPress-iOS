@@ -97,7 +97,7 @@ fileprivate extension PluginServiceRemote {
             let name = response["display_name"] as? String else {
                 throw ResponseError.decodingFailure
         }
-        let version = response["version"] as? String
+        let version = (response["version"] as? String)?.nonEmptyString()
         let url = (response["plugin_url"] as? String).flatMap(URL.init(string:))
         return PluginState(id: id,
                            slug: slug,
