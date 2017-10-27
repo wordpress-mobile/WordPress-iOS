@@ -1,6 +1,6 @@
 import Foundation
 
-open class RemoteActivity {
+public struct RemoteActivity {
     public let activityID: String
     public let summary: String
     public let name: String
@@ -14,8 +14,11 @@ open class RemoteActivity {
     public let target: RemoteActivityObject?
     public let items: [RemoteActivityObject]?
 
-    init(dictionary: [String: AnyObject]) {
-        activityID = dictionary["activity_id"] as? String ?? ""
+    init(dictionary: [String: AnyObject]) throws {
+        guard let id = dictionary["activity_id"] as? String else {
+            throw RemoteActivityError.missingActivityId
+        }
+        activityID = id
         summary = dictionary["summary"] as? String ?? ""
         name = dictionary["name"] as? String ?? ""
         type = dictionary["type"] as? String ?? ""
@@ -53,7 +56,7 @@ open class RemoteActivity {
     }
 }
 
-open class RemoteActivityActor {
+public struct RemoteActivityActor {
     public let displayName: String
     public let type: String
     public let wpcomUserID: String
@@ -73,7 +76,7 @@ open class RemoteActivityActor {
     }
 }
 
-open class RemoteActivityObject {
+public struct RemoteActivityObject {
     public let name: String
     public let type: String
     public let attributes: [String: Any]
@@ -89,6 +92,10 @@ open class RemoteActivityObject {
             attributes = [:]
         }
     }
+}
+
+enum RemoteActivityError: Error {
+    case missingActivityId
 }
 
 extension RemoteActivity: CustomDebugStringConvertible {
