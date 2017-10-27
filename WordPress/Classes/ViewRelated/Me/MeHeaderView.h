@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 typedef void (^MeHeaderViewCallback)(void);
+typedef void (^MeHeaderViewDropCallback)(UIImage *image);
 
 @interface MeHeaderView : UIView
 
@@ -8,6 +9,7 @@ typedef void (^MeHeaderViewCallback)(void);
 @property (nonatomic,   copy) NSString              *username;
 @property (nonatomic,   copy) NSString              *gravatarEmail;
 @property (nonatomic,   copy) MeHeaderViewCallback  onGravatarPress;
+@property (nonatomic,   copy) MeHeaderViewDropCallback  onDroppedImage;
 @property (nonatomic, assign) BOOL                  showsActivityIndicator;
 
 /// Overrides the current Gravatar Image (set via Email) with a given image reference.
