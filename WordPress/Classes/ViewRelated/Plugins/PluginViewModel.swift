@@ -21,6 +21,13 @@ class PluginViewModel {
     var present: ((UIViewController) -> Void)?
 
     var tableViewModel: ImmuTable {
+        var versionRow: ImmuTableRow?
+        if let version = plugin.version {
+            versionRow = TextRow(
+                title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
+                value: version)
+        }
+
         let activeRow = SwitchRow(
             title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
             value: plugin.active,
@@ -63,6 +70,9 @@ class PluginViewModel {
         }
 
         return ImmuTable(optionalSections: [
+            ImmuTableSection(optionalRows: [
+                versionRow
+                ]),
             ImmuTableSection(optionalRows: [
                 activeRow,
                 autoupdatesRow
@@ -139,6 +149,6 @@ class PluginViewModel {
     }
 
     static var immutableRows: [ImmuTableRow.Type] {
-        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self]
+        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self]
     }
 }
