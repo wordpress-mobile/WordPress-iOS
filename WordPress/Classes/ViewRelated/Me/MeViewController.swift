@@ -414,6 +414,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         headerView.onGravatarPress = { [weak self] in
             self?.presentGravatarPicker()
         }
+        headerView.onDroppedImage = { [weak self] image in
+            if let updatedGravatarImage = image {
+                self?.uploadGravatarImage(updatedGravatarImage)
+            }
+        }
         return headerView
     }()
 
