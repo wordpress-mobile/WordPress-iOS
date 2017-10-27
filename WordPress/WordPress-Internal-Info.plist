@@ -48,7 +48,7 @@
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>GOOGLE_LOGIN_INTERNAL_SCHEME_ID</string>
+				<string>GOOGLE_LOGIN_SCHEME_ID</string>
 			</array>
 		</dict>
 	</array>

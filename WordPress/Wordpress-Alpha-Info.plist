@@ -49,7 +49,7 @@
 			<string>GoogleSignIn</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>GOOGLE_LOGIN_ALPHA_SCHEME_ID</string>
+				<string>GOOGLE_LOGIN_SCHEME_ID</string>
 			</array>
 		</dict>
 	</array>
