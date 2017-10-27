@@ -8,10 +8,12 @@ class PluginViewModel {
     }
     let capabilities: SitePluginCapabilities
     let service: PluginServiceRemote
+    let siteID: Int
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, service: PluginServiceRemote) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, service: PluginServiceRemote) {
         self.plugin = plugin
         self.capabilities = capabilities
+        self.siteID = siteID
         self.service = service
     }
 
@@ -22,15 +24,20 @@ class PluginViewModel {
         let activeRow = SwitchRow(
             title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
             value: plugin.active,
-            onChange: { (active) in
-        })
+            onChange: { [unowned self] (active) in
+                self.setActive(active)
+            }
+        )
+
         var autoupdatesRow: ImmuTableRow?
         if capabilities.autoupdate {
             autoupdatesRow = SwitchRow(
                 title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
                 value: plugin.autoupdate,
-                onChange: { (autoupdate) in
-            })
+                onChange: { [unowned self] (autoupdate) in
+                    self.setAutoupdate(autoupdate)
+                }
+            )
         }
 
         var removeRow: ImmuTableRow?
@@ -79,6 +86,52 @@ class PluginViewModel {
             // TODO: Remove plugin
         })
         return alert
+    }
+
+    private func setActive(_ active: Bool) {
+        plugin.active = active
+        if active {
+            service.activatePlugin(
+                pluginID: plugin.id,
+                siteID: siteID,
+                success: { _ in },
+                failure: { [weak self] (error) in
+                    DDLogError("Error activating plugin: \(error)")
+                    self?.plugin.active = !active
+            })
+        } else {
+            service.deactivatePlugin(
+                pluginID: plugin.id,
+                siteID: siteID,
+                success: { _ in },
+                failure: { [weak self] (error) in
+                    DDLogError("Error deactivating plugin: \(error)")
+                    self?.plugin.active = !active
+            })
+        }
+    }
+
+    private func setAutoupdate(_ autoupdate: Bool) {
+        plugin.autoupdate = autoupdate
+        if autoupdate {
+            service.enableAutoupdates(
+                pluginID: plugin.id,
+                siteID: siteID,
+                success: { _ in },
+                failure: { [weak self] (error) in
+                    DDLogError("Error enabling autoupdates for plugin: \(error)")
+                    self?.plugin.autoupdate = !autoupdate
+            })
+        } else {
+            service.disableAutoupdates(
+                pluginID: plugin.id,
+                siteID: siteID,
+                success: { _ in },
+                failure: { [weak self] (error) in
+                    DDLogError("Error disabling autoupdates for plugin: \(error)")
+                    self?.plugin.autoupdate = !autoupdate
+            })
+        }
     }
 
     var title: String {
