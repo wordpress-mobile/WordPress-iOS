@@ -1,7 +1,6 @@
 import Foundation
 
 class PluginViewController: UITableViewController {
-    let siteID: Int
     var plugin: PluginState {
         didSet {
             viewModel.plugin = plugin
@@ -17,9 +16,8 @@ class PluginViewController: UITableViewController {
     fileprivate let viewModel: PluginViewModel
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, service: PluginServiceRemote) {
-        self.siteID = siteID
         self.plugin = plugin
-        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, service: service)
+        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, siteID: siteID, service: service)
         super.init(style: .grouped)
         viewModel.onModelChange = bindViewModel
         viewModel.present = { [weak self] viewController in
