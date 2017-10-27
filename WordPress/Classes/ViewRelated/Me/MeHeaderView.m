@@ -86,7 +86,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 - (BOOL)showsActivityIndicator
 {
-    // Note: ActivityIndicator will be visible only while it's beign animated
+    // Note: ActivityIndicator will be visible only while it's being animated
     return [_activityIndicator isAnimating];
 }
 
@@ -277,8 +277,14 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)dropInteraction:(UIDropInteraction *)interaction
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
+    [self.gravatarImageView depressSpringAnimation:nil];
+    [self setShowsActivityIndicator:YES];
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
-            self.gravatarImageView.image = [images firstObject];
+        UIImage *image = [images firstObject];
+        if (self.onDroppedImage) {
+            self.onDroppedImage(image);
+            [_gravatarImageView normalizeSpringAnimation:nil];
+        }
     }];
 }
 
