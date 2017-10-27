@@ -199,9 +199,9 @@ File.open(path) do |f|
       googleplus = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
       google_id = value
-    elsif k == "GOOGLE_LOGIN_CLIENT_ALPHA_ID"
+    elsif k == "GOOGLE_LOGIN_ALPHA_CLIENT_ID"
       google_id_alpha = value
-    elsif k == "GOOGLE_LOGIN_CLIENT_INTERNAL_ID"
+    elsif k == "GOOGLE_LOGIN_INTERNAL_CLIENT_ID"
       google_id_internal = value
     elsif k == "GOOGLE_LOGIN_SERVER_ID"
       google_login_server = value
