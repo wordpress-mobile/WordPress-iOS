@@ -52,7 +52,7 @@ class PluginViewModel {
         }
 
         var removeRow: ImmuTableRow?
-        if capabilities.modify {
+        if capabilities.modify && plugin.deactivateAllowed {
             removeRow = DestructiveButtonRow(
                 title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
                 action: { [unowned self] _ in
