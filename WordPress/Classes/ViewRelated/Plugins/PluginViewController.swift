@@ -38,6 +38,7 @@ class PluginViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginViewModel.immutableRows, tableView: tableView)
         bindViewModel()
     }
