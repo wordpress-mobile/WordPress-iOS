@@ -264,12 +264,11 @@
         } else if (media.mediaType == MediaTypeImage) {
             NSString *remote = media.remoteURL;
             remoteURL = [NSURL URLWithString:remote];
-            if (!media.blog.isPrivate) {
-                remoteURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:remoteURL];
-            } else {
+            if (media.blog.isPrivate || (!media.blog.isHostedAtWPcom && [media.blog isBasicAuthCredentialStored])) {
                 remoteURL = [WPImageURLHelper imageURLWithSize:size forImageURL:remoteURL];
+            } else {
+                remoteURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:remoteURL];
             }
-
         }
         if (!remoteURL) {
             if (failure) {
