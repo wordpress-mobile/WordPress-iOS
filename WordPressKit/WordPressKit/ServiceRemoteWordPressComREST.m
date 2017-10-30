@@ -54,6 +54,10 @@ static NSString* const ServiceRemoteWordPressComRESTApiVersionString_2_0 = @"wpc
             result = ServiceRemoteWordPressComRESTApiVersionString_1_3;
             break;
 
+        case ServiceRemoteWordPressComRESTApiVersion_2_0:
+            result = ServiceRemoteWordPressComRESTApiVersionString_2_0;
+            break;
+
         default:
             NSAssert(NO, @"This should never by executed");
             result = ServiceRemoteWordPressComRESTApiVersionStringInvalid;

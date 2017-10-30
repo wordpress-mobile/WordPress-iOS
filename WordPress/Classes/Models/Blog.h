@@ -221,6 +221,13 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  */
 - (nullable WordPressComRestApi *)wordPressComRestApi;
 
+/**
+ Check if there is already a basic auth credential stored for this blog/site.
+
+ @return YES if there is a credential
+ */
+- (BOOL)isBasicAuthCredentialStored;
+
 @end
 
 NS_ASSUME_NONNULL_END
