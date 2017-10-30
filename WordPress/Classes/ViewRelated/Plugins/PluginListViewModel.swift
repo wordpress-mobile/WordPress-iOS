@@ -1,11 +1,22 @@
-protocol PluginPresenter {
+import WordPressKit
+
+protocol PluginPresenter: class {
     func present(plugin: PluginState, capabilities: SitePluginCapabilities)
 }
 
 enum PluginListViewModel {
     case loading
-    case ready([PluginState], SitePluginCapabilities)
+    case ready(SitePlugins)
     case error(String)
+
+    init(plugins: SitePlugins?) {
+        switch plugins {
+        case .none:
+            self = .loading
+        case .some(let plugins):
+            self = .ready(plugins)
+        }
+    }
 
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
@@ -36,13 +47,13 @@ enum PluginListViewModel {
         switch self {
         case .loading, .error:
             return .Empty
-        case .ready(let pluginStates, let capabilities):
-            let rows = pluginStates.map({ pluginState in
+        case .ready(let sitePlugins):
+            let rows = sitePlugins.plugins.map({ pluginState in
                 return PluginListRow(
                     name: pluginState.name,
                     state: pluginState.stateDescription,
-                    action: { (row) in
-                        presenter.present(plugin: pluginState, capabilities: capabilities)
+                    action: { [weak presenter] (row) in
+                        presenter?.present(plugin: pluginState, capabilities: sitePlugins.capabilities)
                 })
             })
             return ImmuTable(sections: [

@@ -3,7 +3,7 @@ import WordPressKit
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let siteID: Int
-    let service: PluginServiceRemote
+    let store: PluginStore
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -17,13 +17,22 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     fileprivate let noResultsView = WPNoResultsView()
+    private var listener: FluxStore.Listener!
 
-    init(siteID: Int, service: PluginServiceRemote) {
+    deinit {
+        store.removeListener(listener)
+    }
+
+    init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID
-        self.service = service
+        self.store = store
         super.init(style: .grouped)
         title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
         noResultsView.delegate = self
+        listener = store.onChange { [weak self] in
+            self?.refreshModel()
+        }
+        refreshModel()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,12 +41,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
-        guard let api = blog.wordPressComRestApi(),
-            let service = PluginServiceRemote(wordPressComRestApi: api) else {
-                return nil
-        }
 
-        self.init(siteID: Int(blog.dotComID!), service: service)
+        self.init(siteID: Int(blog.dotComID!))
     }
 
     override func viewDidLoad() {
@@ -46,17 +51,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows([PluginListRow.self], tableView: tableView)
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateNoResults()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        service.getPlugins(siteID: siteID, success: { (plugins, capabilities) in
-            self.viewModel = .ready(plugins, capabilities)
-        }, failure: { error in
-            DDLogError("Error loading plugins: \(error)")
-            self.viewModel = .error(String(describing: error))
-        })
     }
 
     func updateNoResults() {
@@ -79,6 +73,10 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
+
+    func refreshModel() {
+        viewModel = PluginListViewModel(plugins: store.getPlugins(siteID: siteID))
+    }
 }
 
 // MARK: - WPNoResultsViewDelegate
@@ -94,7 +92,7 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 
 extension PluginListViewController: PluginPresenter {
     func present(plugin: PluginState, capabilities: SitePluginCapabilities) {
-        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, siteID: siteID, service: service)
+        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, siteID: siteID)
         navigationController?.pushViewController(controller, animated: true)
     }
 }
