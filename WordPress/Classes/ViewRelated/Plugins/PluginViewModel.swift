@@ -7,14 +7,26 @@ class PluginViewModel {
         }
     }
     let capabilities: SitePluginCapabilities
-    let service: PluginServiceRemote
+    let store: PluginStore
     let siteID: Int
+    var listener: FluxStore.Listener!
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, service: PluginServiceRemote) {
+    deinit {
+        store.removeListener(listener)
+    }
+
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
         self.capabilities = capabilities
         self.siteID = siteID
-        self.service = service
+        self.store = store
+        listener = store.onChange { [weak self] in
+            guard let plugin = store.getPlugin(id: plugin.id, siteID: siteID) else {
+                self?.dismiss?()
+                return
+            }
+            self?.plugin = plugin
+        }
     }
 
     var onModelChange: (() -> Void)?
@@ -99,62 +111,25 @@ class PluginViewModel {
         alert.addDestructiveActionWithTitle(
             NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
-                self.dismiss?()
-                self.service.remove(
-                    pluginID: self.plugin.id,
-                    siteID: self.siteID,
-                    success: {},
-                    failure: { error in
-                        DDLogError("Error removing plugin: \(error)")
-                    })
+                self.store.removePlugin(pluginID: self.plugin.id, siteID: self.siteID)
             }
         )
         return alert
     }
 
     private func setActive(_ active: Bool) {
-        plugin.active = active
         if active {
-            service.activatePlugin(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error activating plugin: \(error)")
-                    self?.plugin.active = !active
-            })
+            store.activatePlugin(pluginID: plugin.id, siteID: siteID)
         } else {
-            service.deactivatePlugin(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error deactivating plugin: \(error)")
-                    self?.plugin.active = !active
-            })
+            store.deactivatePlugin(pluginID: plugin.id, siteID: siteID)
         }
     }
 
     private func setAutoupdate(_ autoupdate: Bool) {
-        plugin.autoupdate = autoupdate
         if autoupdate {
-            service.enableAutoupdates(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error enabling autoupdates for plugin: \(error)")
-                    self?.plugin.autoupdate = !autoupdate
-            })
+            store.enableAutoupdatesPlugin(pluginID: plugin.id, siteID: siteID)
         } else {
-            service.disableAutoupdates(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error disabling autoupdates for plugin: \(error)")
-                    self?.plugin.autoupdate = !autoupdate
-            })
+            store.disableAutoupdatesPlugin(pluginID: plugin.id, siteID: siteID)
         }
     }
 
