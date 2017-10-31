@@ -21,10 +21,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
         title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
         noResultsView.delegate = self
-
-        viewModelListener = viewModel.onChange { [weak self] in
-            self?.refreshModel()
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -41,6 +37,9 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
+        viewModelListener = viewModel.onChange { [weak self] in
+            self?.refreshModel()
+        }
         refreshModel()
     }
 
