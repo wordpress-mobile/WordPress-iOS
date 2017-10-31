@@ -1,3 +1,1 @@
-import Foundation
-
 protocol FluxAction {}

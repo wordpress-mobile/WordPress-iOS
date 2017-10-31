@@ -1,5 +1,3 @@
-import Foundation
-
 open class FluxStore {
     private let globalDispatcher: FluxDispatcher
     private var dispatchToken: FluxDispatcher.DispatchToken!
