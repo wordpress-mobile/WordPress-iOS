@@ -1,8 +1,64 @@
 import Foundation
 
+protocol FluxAction {}
+
+class FluxDispatcher {
+    typealias DispatchToken = UUID
+    typealias Payload = FluxAction
+    typealias Callback = (Payload) -> Void
+
+    private let queue = DispatchQueue(label: "org.wordpress.flux-dispatcher")
+    var observers = [DispatchToken: Callback]()
+
+    static let global = FluxDispatcher()
+
+    func register(callback: @escaping Callback) -> DispatchToken {
+        let token = DispatchToken()
+        queue.sync {
+            observers[token] = callback
+        }
+        return token
+    }
+
+    func unregister(token: DispatchToken) {
+        queue.sync {
+            observers[token] = nil
+        }
+    }
+
+    static func dispatch(_ payload: Payload, dispatcher: FluxDispatcher = .global) {
+        dispatcher.dispatch(payload)
+    }
+
+    func dispatch(_ payload: Payload) {
+        queue.async {
+            self.observers.forEach { (_, callback) in
+                callback(payload)
+            }
+        }
+    }
+}
+
 open class FluxStore {
     private let changeNotification = NSNotification.Name("FluxStoreChanged")
     var listenerCount = 0
+    private let dispatcher: FluxDispatcher
+    private var dispatchToken: FluxDispatcher.DispatchToken!
+
+    deinit {
+        dispatcher.unregister(token: dispatchToken)
+    }
+
+    init(dispatcher: FluxDispatcher = .global) {
+        self.dispatcher = dispatcher
+        dispatchToken = dispatcher.register(callback: { [weak self] (action) in
+            self?.onDispatch(action)
+        })
+    }
+
+    func onDispatch(_ action: FluxAction) {
+        // Subclasses should override this
+    }
 
     func onChange(_ handler: @escaping Action) -> Listener {
         listenerCount += 1
