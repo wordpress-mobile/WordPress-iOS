@@ -91,7 +91,14 @@ class PluginViewModel {
     }
 
     private func confirmRemovalAlert(plugin: PluginState) -> UIAlertController {
-        let message = NSLocalizedString("Are you sure you want to remove \(plugin.name)?", comment: "Text for the alert to confirm a plugin removal")
+        let message: String
+        if let siteTitle = getSiteTitle() {
+            let messageTemplate = NSLocalizedString("Are you sure you want to remove %1$@ from %2$@? This will deactivate the plugin and delete all associated files and data.", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title.")
+            message = String(format: messageTemplate, plugin.name, siteTitle)
+        } else {
+            let messageTemplate = NSLocalizedString("Are you sure you want to remove %1$@? This will deactivate the plugin and delete all associated files and data.", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name.")
+            message = String(format: messageTemplate, plugin.name)
+        }
         let alert = UIAlertController(
             title: NSLocalizedString("Remove Plugin?", comment: "Title for the alert to confirm a plugin removal"),
             message: message, preferredStyle: .alert)
@@ -156,6 +163,13 @@ class PluginViewModel {
                     self?.plugin.autoupdate = !autoupdate
             })
         }
+    }
+
+    private func getSiteTitle() -> String? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
+        let blog = service.blog(byBlogId: siteID as NSNumber)
+        return blog?.settings?.name?.nonEmptyString()
     }
 
     var title: String {
