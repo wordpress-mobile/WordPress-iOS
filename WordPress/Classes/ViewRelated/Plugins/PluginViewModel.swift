@@ -11,10 +11,6 @@ class PluginViewModel {
     let siteID: Int
     var listener: FluxStore.Listener!
 
-    deinit {
-        store.removeListener(listener)
-    }
-
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
         self.capabilities = capabilities
