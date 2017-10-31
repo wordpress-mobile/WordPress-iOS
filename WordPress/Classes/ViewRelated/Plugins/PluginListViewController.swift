@@ -11,7 +11,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     fileprivate var viewModel: PluginListViewModel = .loading {
         didSet {
-            handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+            handler.viewModel = viewModel.tableViewModel(presenter: self)
             updateNoResults()
         }
     }
@@ -44,15 +44,15 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([PluginListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+        handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateNoResults()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        service.getPlugins(siteID: siteID, success: { (plugins, _) in
-            self.viewModel = .ready(plugins)
+        service.getPlugins(siteID: siteID, success: { (plugins, capabilities) in
+            self.viewModel = .ready(plugins, capabilities)
         }, failure: { error in
             DDLogError("Error loading plugins: \(error)")
             self.viewModel = .error(String(describing: error))
@@ -87,5 +87,14 @@ extension PluginListViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView!) {
         let supportVC = SupportViewController()
         supportVC.showFromTabBar()
+    }
+}
+
+// MARK: - PluginPresenter
+
+extension PluginListViewController: PluginPresenter {
+    func present(plugin: PluginState, capabilities: SitePluginCapabilities) {
+        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, siteID: siteID, service: service)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
