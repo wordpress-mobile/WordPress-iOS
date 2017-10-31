@@ -1,1 +1,3 @@
-Bu dağıtım ile ilgili çok göze batan bir değişiklik fark etmeyebilirsiniz ama daha sağlam ve hızlı bir uygulama bekleyin. Kullandıkça göreceksiniz!
+Ortam kütüphanesi: Ortam kütüphanesinden belgelere bağlantı eklemeye izin ver
+Ortam kütüphanesi: Alt alanını düzenlenebilir yap
+Aztec editör: Sonraki sayfa desteği

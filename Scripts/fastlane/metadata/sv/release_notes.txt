@@ -1,1 +1,3 @@
-På direkten märker du inte några större skillnader med denna version, men din app bör fungera lite snabbare och vara lite stabilare. Det märker du när du använder den!
+Mediabibliotek: Gör det möjligt att lägga in länkar i dokument från mediabiblioteket.
+Mediabibliotek: Gör det möjligt att redigera fältet Alt.
+Aztec-redigeraren: Stöd för Nästa sida.

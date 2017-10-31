@@ -189,7 +189,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///
     /// - Returns: Instance of the associated Blog, if any
     ///
-    fileprivate func blogForChannel(_ channel: NotificationSettings.Channel, blogMap: [Int : Blog]?) -> Blog? {
+    fileprivate func blogForChannel(_ channel: NotificationSettings.Channel, blogMap: [Int: Blog]?) -> Blog? {
         // We reuse a Blog Map by ID, since it's actually one order of magnitude faster than fetching
         // each time.
         switch channel {
@@ -212,7 +212,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     /// - Returns: Dictionary of values, as expected by the Backend, for the specified Channel and Stream.
     ///
     fileprivate func remoteFromSettings(_ settings: [String: Bool], channel: Channel, stream: Stream) -> [String: Any] {
-        var wrappedSettings : Any     = settings as Any
+        var wrappedSettings: Any     = settings as Any
         var streamKey                 = stream.kind.rawValue
 
         switch stream.kind {

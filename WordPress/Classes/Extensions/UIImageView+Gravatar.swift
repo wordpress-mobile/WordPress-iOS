@@ -31,7 +31,7 @@ extension UIImageView {
     ///     - rating: expected image rating
     ///
     func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings) {
-        downloadGravatarWithEmail(email, rating: rating, placeholderImage : GravatarDefaults.placeholderImage)
+        downloadGravatarWithEmail(email, rating: rating, placeholderImage: GravatarDefaults.placeholderImage)
     }
 
     /// Downloads and sets the User's Gravatar, given his email.

@@ -11,7 +11,7 @@
 @implementation BlogSyncFacade
 
 - (void)syncBlogsForAccount:(WPAccount *)account
-                    success:(void (^)())success
+                    success:(void (^)(void))success
                     failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -29,7 +29,7 @@
                     password:(NSString *)password
                       xmlrpc:(NSString *)xmlrpc
                      options:(NSDictionary *)options
-                finishedSync:(void(^)())finishedSync
+                finishedSync:(void(^)(void))finishedSync
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];

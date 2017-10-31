@@ -13,6 +13,12 @@ class MediaThumbnailService: LocalCoreDataService {
     ///
     public typealias OnError = (Error) -> Void
 
+    private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaThumbnailService", autoreleaseFrequency: .workItem)
+
+    public lazy var exportQueue: DispatchQueue = {
+        return MediaThumbnailService.defaultExportQueue
+    }()
+
     /// Generate a URL to a thumbnail of the Media, if available.
     ///
     /// - Parameters:
@@ -64,7 +70,7 @@ class MediaThumbnailService: LocalCoreDataService {
                         onCompletion(nil)
                         return
                     }
-                    DispatchQueue.global(qos: .default).async {
+                    self.exportQueue.async {
                         exporter.exportThumbnail(forImage: image,
                                                  onCompletion: onThumbnailExport,
                                                  onError: onThumbnailExportError)
@@ -76,7 +82,7 @@ class MediaThumbnailService: LocalCoreDataService {
 
             // If the Media asset is available locally, export thumbnails from the local asset.
             if let localAssetURL = media.absoluteLocalURL, exporter.supportsThumbnailExport(forFile: localAssetURL) {
-                DispatchQueue.global(qos: .default).async {
+                self.exportQueue.async {
                     exporter.exportThumbnail(forFile: localAssetURL,
                                              onCompletion: onThumbnailExport,
                                              onError: onThumbnailExportError)
@@ -86,7 +92,7 @@ class MediaThumbnailService: LocalCoreDataService {
 
             // If the Media item is a video and has a remote video URL, try and export from the remote video URL.
             if media.mediaType == .video, let remoteURLStr = media.remoteURL, let videoURL = URL(string: remoteURLStr) {
-                DispatchQueue.global(qos: .default).async {
+                self.exportQueue.async {
                     exporter.exportThumbnail(forVideoURL: videoURL,
                                              onCompletion: onThumbnailExport,
                                              onError: { (error) in
@@ -135,7 +141,7 @@ class MediaThumbnailService: LocalCoreDataService {
                 return
             }
             // Get an expected WP URL, for sizing.
-            if media.blog.isPrivate() {
+            if media.blog.isPrivate() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
                 remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
             } else {
                 remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
@@ -194,7 +200,7 @@ class MediaThumbnailService: LocalCoreDataService {
     /// Handle the OnError callback and logging any errors encountered.
     ///
     fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
-        MediaExportService.logExportError(error)
+        MediaImportService.logExportError(error)
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
                 errorHandler(error.toNSError())

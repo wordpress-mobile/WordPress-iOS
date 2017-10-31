@@ -70,7 +70,7 @@ open class ReaderPostMenu {
 
     fileprivate class func shouldShowBlockSiteMenuItemForPost(_ post: ReaderPost) -> Bool {
         if let topic = post.topic {
-            if (ReaderHelpers.isLoggedIn()) {
+            if ReaderHelpers.isLoggedIn() {
                 return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
             }
         }
@@ -131,9 +131,10 @@ open class ReaderPostMenu {
                 return
         }
 
-        let controller = WPWebViewController(url: siteURL)
-        controller?.addsWPComReferrer = true
-        let navController = UINavigationController(rootViewController: controller!)
+        let configuration = WebViewControllerConfiguration(url: siteURL)
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
         viewController.present(navController, animated: true, completion: nil)
     }
 }

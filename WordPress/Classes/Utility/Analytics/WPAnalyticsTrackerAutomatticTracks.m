@@ -299,6 +299,14 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_other_media_added";
             eventProperties = @{ @"via" : @"media_library" };
             break;
+        case WPAnalyticsStatEditorAddedVideoViaOtherApps:
+            eventName = @"editor_video_added";
+            eventProperties = @{ @"via" : @"other_apps" };
+            break;
+        case WPAnalyticsStatEditorAddedPhotoViaOtherApps:
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"other_apps" };
+            break;
         case WPAnalyticsStatEditorAztecBetaLink:
             eventName = @"editor_aztec_beta_link";
             break;
@@ -390,6 +398,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatEditorMediaPickerTappedMediaLibrary:
             eventName = @"media_picker_button_tapped";
             eventProperties = @{ TracksEventPropertyButtonKey : @"media_library" };
+            break;
+        case WPAnalyticsStatEditorMediaPickerTappedOtherApps:
+            eventName = @"media_picker_button_tapped";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"other_apps" };
             break;
         case WPAnalyticsStatEditorTappedItalic:
             eventName = @"editor_button_tapped";
@@ -501,6 +513,33 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatLoginForgotPasswordClicked:
             eventName = @"login_forgot_password_clicked";
+            break;
+        case WPAnalyticsStatLoginSocialButtonClick:
+            eventName = @"login_social_button_click";
+            break;
+        case WPAnalyticsStatLoginSocialButtonFailure:
+            eventName = @"login_social_button_failure";
+            break;
+        case WPAnalyticsStatLoginSocialConnectSuccess:
+            eventName = @"login_social_connect_success";
+            break;
+        case WPAnalyticsStatLoginSocialConnectFailure:
+            eventName = @"login_social_connect_failure";
+            break;
+        case WPAnalyticsStatLoginSocialSuccess:
+            eventName = @"login_social_login_success";
+            break;
+        case WPAnalyticsStatLoginSocialFailure:
+            eventName = @"login_social_login_failure";
+            break;
+        case WPAnalyticsStatLoginSocial2faNeeded:
+            eventName = @"login_social_2fa_needed";
+            break;
+        case WPAnalyticsStatLoginSocialAccountsNeedConnecting:
+            eventName = @"login_social_accounts_need_connecting";
+            break;
+        case WPAnalyticsStatLoginSocialErrorUnknownUser:
+            eventName = @"login_social_error_unknown_user";
             break;
         case WPAnalyticsStatLogout:
             eventName = @"account_logout";
@@ -1076,6 +1115,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatLoginMagicLinkSucceeded:
             eventName = @"login_magic_link_succeeded";
+            break;
+        case WPAnalyticsStatShareExtensionError:
+            eventName = @"share_extension_error";
             break;
 
             // to be implemented

@@ -57,6 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIBarButtonItemStyle)barButtonStyleForBordered;
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
++ (void)configureNavigationBarAppearance;
++ (void)configureDocumentPickerNavBarAppearance;
 
 // View and TableView Helpers
 + (void)configureColorsForView:(nullable UIView *)view andTableView:(nullable UITableView *)tableView;
@@ -73,7 +75,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIColor *)buttonActionColor;
 + (UIColor *)nuxFormText;
 + (UIColor *)nuxFormPlaceholderText;
-+ (void)configureFollowButton:(nullable UIButton *)followButton;
 
 // Deprecated Colors
 + (UIColor *)baseLighterBlue;

@@ -19,7 +19,7 @@ class LoginEpilogueViewController: UIViewController {
         var numberOfBlogs = 0
         if let info = epilogueUserInfo {
             tableViewController?.epilogueUserInfo = info
-            if (info.blog != nil) {
+            if info.blog != nil {
                 numberOfBlogs = 1
             }
         } else {
@@ -72,6 +72,7 @@ class LoginEpilogueViewController: UIViewController {
         }
         continueButton?.setTitle(NSLocalizedString("Continue", comment: "A button title"),
                                  for: .normal)
+        continueButton?.accessibilityIdentifier = "Continue"
         connectButton?.setTitle(connectTitle, for: .normal)
 
     }

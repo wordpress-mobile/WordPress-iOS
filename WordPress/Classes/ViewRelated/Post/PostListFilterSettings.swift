@@ -83,9 +83,9 @@ class PostListFilterSettings: NSObject {
 
     func keyForCurrentListStatusFilter() -> String {
         switch postType {
-        case PostServiceTypePage as String:
+        case .page:
             return type(of: self).currentPageListStatusFilterKey
-        case PostServiceTypePost as String:
+        case .post:
             return type(of: self).currentPageListStatusFilterKey
         default:
             return ""
@@ -120,7 +120,7 @@ class PostListFilterSettings: NSObject {
     // MARK: - Author-related methods
 
     func canFilterByAuthor() -> Bool {
-        if postType as String == PostServiceTypePost {
+        if postType == .post {
             return blog.isMultiAuthor && blog.userID != nil
         }
         return false
@@ -168,7 +168,7 @@ class PostListFilterSettings: NSObject {
     func propertiesForAnalytics() -> [String: AnyObject] {
         var properties = [String: AnyObject]()
 
-        properties["type"] = postType
+        properties["type"] = postType.rawValue as AnyObject?
         properties["filter"] = currentPostListFilter().title as AnyObject?
 
         if let dotComID = blog.dotComID {

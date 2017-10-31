@@ -87,7 +87,7 @@ open class AlertView: NSObject {
     ///
     fileprivate func applyBoldStyles(_ message: NSMutableAttributedString) -> NSMutableAttributedString {
         let boldPattern = "(\\*{1,2}).+?\\1"
-        message.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes as [String : AnyObject])
+        message.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes as [String: AnyObject])
         return message
     }
 
@@ -102,9 +102,9 @@ open class AlertView: NSObject {
     fileprivate func removeBoldMarkers(_ message: NSMutableAttributedString) -> NSMutableAttributedString {
         let range = NSRange(location: 0, length: message.length)
         message.mutableString.replaceOccurrences(of: "**",
-            with  : "",
-            options     : .caseInsensitive,
-            range       : range)
+            with: "",
+            options: .caseInsensitive,
+            range: range)
         return message
     }
 

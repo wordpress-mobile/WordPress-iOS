@@ -133,6 +133,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     __block NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
                                                     parameters:parameters
                                                      fileParts:@[filePart]
+                                               requestEnqueued:nil
                                                        success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         NSDictionary *response = (NSDictionary *)responseObject;
         NSArray * errorList = response[@"errors"];
@@ -191,7 +192,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 }
 
 - (void)deleteMedia:(RemoteMedia *)media
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([media isKindOfClass:[RemoteMedia class]]);

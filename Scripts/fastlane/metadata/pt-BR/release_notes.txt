@@ -1,1 +1,3 @@
-Você pode não perceber nada evidentemente diferente nesta versão, mas espere um app mais rápido e mais estável. A prova está na utilização!
+Biblioteca de mídia: permite inserir links para documentos da biblioteca de mídia.
+Biblioteca de mídia: torna o campo de texto alternativo editável.
+Editor Aztec: adicionado suporte à próxima página.
