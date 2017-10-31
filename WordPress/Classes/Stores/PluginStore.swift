@@ -18,7 +18,7 @@ class PluginStore: FluxStore {
     }
     fileprivate var fetching = [Int: Bool]()
 
-    override func removeListener(_ listener: FluxStore.Listener) {
+    func removeListener(_ listener: FluxListener) {
         super.removeListener(listener)
         if listenerCount == 0 {
             // Remove plugins from memory if nothing is listening for changes

@@ -835,6 +835,7 @@
 		E1ECE3541FA88E7D007FA37A /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ECE3531FA88E7D007FA37A /* Dispatcher.swift */; };
 		E1ECE3561FA88E98007FA37A /* FluxDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ECE3551FA88E98007FA37A /* FluxDispatcher.swift */; };
 		E1ECE3581FA88EDC007FA37A /* FluxAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ECE3571FA88EDC007FA37A /* FluxAction.swift */; };
+		E1ECE35A1FA8C09E007FA37A /* FluxEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ECE3591FA8C09E007FA37A /* FluxEmitter.swift */; };
 		E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */; };
 		E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */; };
 		E1F8E1231B0B411E0073E628 /* JetpackService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8E1221B0B411E0073E628 /* JetpackService.m */; };
@@ -2260,6 +2261,7 @@
 		E1ECE3531FA88E7D007FA37A /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
 		E1ECE3551FA88E98007FA37A /* FluxDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluxDispatcher.swift; sourceTree = "<group>"; };
 		E1ECE3571FA88EDC007FA37A /* FluxAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluxAction.swift; sourceTree = "<group>"; };
+		E1ECE3591FA8C09E007FA37A /* FluxEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluxEmitter.swift; sourceTree = "<group>"; };
 		E1EEFAD91CC4CC5700126533 /* Confirmable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Confirmable.h; sourceTree = "<group>"; };
 		E1F5A1BA1771C90A00E0495F /* WPTableImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableImageSource.h; sourceTree = "<group>"; };
 		E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSource.m; sourceTree = "<group>"; };
@@ -5060,6 +5062,7 @@
 			children = (
 				E1ECE3531FA88E7D007FA37A /* Dispatcher.swift */,
 				E1ECE3571FA88EDC007FA37A /* FluxAction.swift */,
+				E1ECE3591FA8C09E007FA37A /* FluxEmitter.swift */,
 				E1ECE3551FA88E98007FA37A /* FluxDispatcher.swift */,
 				E11C2AD31FA780030023BDE2 /* FluxStore.swift */,
 			);
@@ -6232,6 +6235,7 @@
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
 				B5015C581D4FDBB300C9449E /* NotificationActionsService.swift in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
+				E1ECE35A1FA8C09E007FA37A /* FluxEmitter.swift in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				E10520581F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel in Sources */,
