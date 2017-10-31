@@ -14,12 +14,15 @@ class PluginViewController: UITableViewController {
     }()
 
     fileprivate let viewModel: PluginViewModel
+    var viewModelListener: FluxListener?
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int) {
         self.plugin = plugin
         viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, siteID: siteID)
         super.init(style: .grouped)
-        viewModel.onModelChange = bindViewModel
+        viewModelListener = viewModel.onChange { [weak self] in
+            self?.bindViewModel()
+        }
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
         }

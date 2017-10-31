@@ -17,7 +17,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     fileprivate let noResultsView = WPNoResultsView()
-    private var listener: FluxStore.Listener!
+    private var listener: FluxListener!
     private var dispatchToken: FluxDispatcher.DispatchToken!
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {

@@ -1,15 +1,16 @@
 import Foundation
 
-class PluginViewModel {
+class PluginViewModel: FluxEmitter {
     var plugin: PluginState {
         didSet {
-            onModelChange?()
+            dispatcher.dispatch()
         }
     }
     let capabilities: SitePluginCapabilities
     let store: PluginStore
     let siteID: Int
-    var listener: FluxStore.Listener!
+    var listener: FluxListener!
+    let dispatcher = Dispatcher<Void>()
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
@@ -25,7 +26,6 @@ class PluginViewModel {
         }
     }
 
-    var onModelChange: (() -> Void)?
     var present: ((UIViewController) -> Void)?
     var dismiss: (() -> Void)?
 
