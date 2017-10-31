@@ -22,7 +22,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     public func getActivityForSite(_ siteID: Int,
                                    offset: Int = 0,
                                    count: Int,
-                                   success: @escaping (_ activities: [RemoteActivity], _ hasMore: Bool) -> Void,
+                                   success: @escaping (_ activities: [Activity], _ hasMore: Bool) -> Void,
                                    failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/activity"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
@@ -58,7 +58,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
 
 private extension ActivityServiceRemote {
 
-    func mapActivitiesResponse(_ response: AnyObject) throws -> ([RemoteActivity], Int) {
+    func mapActivitiesResponse(_ response: AnyObject) throws -> ([Activity], Int) {
 
         guard let json = response as? [String: AnyObject],
             let totalItems = json["totalItems"] as? Int,
@@ -67,8 +67,8 @@ private extension ActivityServiceRemote {
                 throw ActivityServiceRemote.ResponseError.decodingFailure
         }
 
-        let activities = try orderedItems.map { activity -> RemoteActivity in
-            return try RemoteActivity(dictionary: activity)
+        let activities = try orderedItems.map { activity -> Activity in
+            return try Activity(dictionary: activity)
         }
 
         return (activities, totalItems)
