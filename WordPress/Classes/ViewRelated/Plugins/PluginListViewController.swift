@@ -3,36 +3,28 @@ import WordPressKit
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let siteID: Int
-    let store: PluginStore
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    fileprivate var viewModel: PluginListViewModel = .loading {
-        didSet {
-            handler.viewModel = viewModel.tableViewModel(presenter: self)
-            updateNoResults()
-        }
-    }
+    fileprivate var viewModel: PluginListViewModel
 
     fileprivate let noResultsView = WPNoResultsView()
-    private var listener: FluxListener!
-    private var dispatchToken: FluxDispatcher.DispatchToken!
+    var viewModelListener: FluxListener?
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID
-        self.store = store
+        viewModel = PluginListViewModel(siteID: siteID, store: store)
+
         super.init(style: .grouped)
+
         title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
         noResultsView.delegate = self
-        listener = store.onChange { [weak self] in
+
+        viewModelListener = viewModel.onChange { [weak self] in
             self?.refreshModel()
         }
-        dispatchToken = FluxDispatcher.global.register(callback: { [weak self] (action) in
-            self?.onDispatch(action: action)
-        })
-        refreshModel()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -48,9 +40,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
-        ImmuTable.registerRows([PluginListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModel(presenter: self)
-        updateNoResults()
+        ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
+        refreshModel()
     }
 
     func updateNoResults() {
@@ -75,22 +66,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     func refreshModel() {
-        viewModel = PluginListViewModel(plugins: store.getPlugins(siteID: siteID))
-    }
-
-    func onDispatch(action: FluxAction) {
-        guard let pluginAction = action as? PluginAction else {
-            return
-        }
-        switch pluginAction {
-        case .receivePluginsFailed(let siteID, let error):
-            guard siteID == self.siteID else {
-                return
-            }
-            viewModel = .error(error.localizedDescription)
-        default:
-            return
-        }
+        handler.viewModel = viewModel.tableViewModel(presenter: self)
+        updateNoResults()
     }
 }
 
