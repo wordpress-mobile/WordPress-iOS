@@ -255,7 +255,7 @@ private extension ShareViewController {
         do {
             try attachedImageData.write(to: fullPath, options: [.atomic])
         } catch {
-            NSLog("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
             return
         }
 
@@ -283,7 +283,11 @@ private extension ShareViewController {
         }, success: {_ in
             ShareMediaFileManager.shared.purgeUploadDirectory()
         }) { error in
-            NSLog("Error creating post in share extension: \(String(describing: error))")
+            guard let error = error as NSError? else {
+                return
+            }
+            DDLogError("Error creating post in share extension: \(error.localizedDescription)")
+            self.tracks.trackExtensionError(error)
             ShareMediaFileManager.shared.purgeUploadDirectory()
         }
     }

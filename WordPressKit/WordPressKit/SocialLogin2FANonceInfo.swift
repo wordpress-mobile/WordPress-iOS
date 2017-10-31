@@ -14,22 +14,22 @@ public class SocialLogin2FANonceInfo: NSObject {
     }
 
     /// These constants match the server-side authentication code
-    private enum AuthTypeLengths {
-        static let authenticator = 6
-        static let sms = 7
-        static let backup = 8
+    public enum TwoFactorTypeLengths: Int {
+        case authenticator = 6
+        case sms = 7
+        case backup = 8
     }
 
     public func authTypeAndNonce(for code: String) -> (String, String) {
         let typeNoncePair: (String, String)
         switch code.count {
-        case AuthTypeLengths.sms:
+        case TwoFactorTypeLengths.sms.rawValue:
             typeNoncePair = ("sms", nonceSMS)
             nonceSMS = Constants.lastUsedPlaceholder
-        case AuthTypeLengths.backup:
+        case TwoFactorTypeLengths.backup.rawValue:
             typeNoncePair = ("backup", nonceBackup)
             nonceBackup = Constants.lastUsedPlaceholder
-        case AuthTypeLengths.authenticator:
+        case TwoFactorTypeLengths.authenticator.rawValue:
             fallthrough
         default:
             typeNoncePair = ("authenticator", nonceAuthenticator)
