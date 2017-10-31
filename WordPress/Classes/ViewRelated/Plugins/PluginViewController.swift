@@ -20,9 +20,6 @@ class PluginViewController: UITableViewController {
         self.plugin = plugin
         viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, siteID: siteID)
         super.init(style: .grouped)
-        viewModelListener = viewModel.onChange { [weak self] in
-            self?.bindViewModel()
-        }
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
         }
@@ -43,6 +40,9 @@ class PluginViewController: UITableViewController {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginViewModel.immutableRows, tableView: tableView)
+        viewModelListener = viewModel.onChange { [weak self] in
+            self?.bindViewModel()
+        }
         bindViewModel()
     }
 
