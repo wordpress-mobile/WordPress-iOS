@@ -1,5 +1,13 @@
 import Foundation
 
+enum PluginAction: FluxAction {
+    case activate(id: String, siteID: Int)
+    case deactivate(id: String, siteID: Int)
+    case enableAutoupdates(id: String, siteID: Int)
+    case disableAutoupdates(id: String, siteID: Int)
+    case remove(id: String, siteID: Int)
+}
+
 class PluginStore: FluxStore {
     private var plugins = [Int: SitePlugins]() {
         didSet {
@@ -40,6 +48,24 @@ class PluginStore: FluxStore {
             return nil
         }
         return sitePlugins.plugins.first(where: { $0.id == id })
+    }
+
+    override func onDispatch(_ action: FluxAction) {
+        guard let pluginAction = action as? PluginAction else {
+            return
+        }
+        switch pluginAction {
+        case .activate(let pluginID, let siteID):
+            activatePlugin(pluginID: pluginID, siteID: siteID)
+        case .deactivate(let pluginID, let siteID):
+            deactivatePlugin(pluginID: pluginID, siteID: siteID)
+        case .enableAutoupdates(let pluginID, let siteID):
+            enableAutoupdatesPlugin(pluginID: pluginID, siteID: siteID)
+        case .disableAutoupdates(let pluginID, let siteID):
+            disableAutoupdatesPlugin(pluginID: pluginID, siteID: siteID)
+        case .remove(let pluginID, let siteID):
+            removePlugin(pluginID: pluginID, siteID: siteID)
+        }
     }
 
     func activatePlugin(pluginID: String, siteID: Int) {

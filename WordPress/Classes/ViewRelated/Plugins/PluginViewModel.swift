@@ -114,7 +114,7 @@ class PluginViewModel {
         alert.addDestructiveActionWithTitle(
             NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
-                self.store.removePlugin(pluginID: self.plugin.id, siteID: self.siteID)
+                FluxDispatcher.dispatch(PluginAction.remove(id: self.plugin.id, siteID: self.siteID))
             }
         )
         return alert
@@ -122,17 +122,17 @@ class PluginViewModel {
 
     private func setActive(_ active: Bool) {
         if active {
-            store.activatePlugin(pluginID: plugin.id, siteID: siteID)
+            FluxDispatcher.dispatch(PluginAction.activate(id: plugin.id, siteID: siteID))
         } else {
-            store.deactivatePlugin(pluginID: plugin.id, siteID: siteID)
+            FluxDispatcher.dispatch(PluginAction.deactivate(id: plugin.id, siteID: siteID))
         }
     }
 
     private func setAutoupdate(_ autoupdate: Bool) {
         if autoupdate {
-            store.enableAutoupdatesPlugin(pluginID: plugin.id, siteID: siteID)
+            FluxDispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, siteID: siteID))
         } else {
-            store.disableAutoupdatesPlugin(pluginID: plugin.id, siteID: siteID)
+            FluxDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, siteID: siteID))
         }
     }
 
