@@ -3194,6 +3194,10 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             size.width = size.width * UIScreen.main.scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
+        } else if !self.post.blog.isHostedAtWPcom && self.post.blog.isBasicAuthCredentialStored() {
+            size.width = size.width * UIScreen.main.scale
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
         } else {
             // the size that PhotonImageURLHelper expects is points size
             requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
