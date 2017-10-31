@@ -7,7 +7,6 @@ class PluginViewModel: FluxEmitter {
         }
     }
     let capabilities: SitePluginCapabilities
-    let store: PluginStore
     let siteID: Int
     var listener: FluxListener!
     let dispatcher = Dispatcher<Void>()
@@ -16,7 +15,6 @@ class PluginViewModel: FluxEmitter {
         self.plugin = plugin
         self.capabilities = capabilities
         self.siteID = siteID
-        self.store = store
         listener = store.onChange { [weak self] in
             guard let plugin = store.getPlugin(id: plugin.id, siteID: siteID) else {
                 self?.dismiss?()
