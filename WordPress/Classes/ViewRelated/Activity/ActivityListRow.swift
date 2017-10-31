@@ -1,4 +1,3 @@
-import Gridicons
 
 struct ActivityListRow: ImmuTableRow {
     typealias CellType = ActivityTableViewCell
