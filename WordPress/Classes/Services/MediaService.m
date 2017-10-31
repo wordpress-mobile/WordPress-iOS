@@ -39,7 +39,7 @@
                 completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [[url pathComponents] lastObject];
-    [self exportMediaWith:url
+    [self createMediaWith:url
                  objectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
@@ -53,7 +53,7 @@
                 completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [[url pathComponents] lastObject];
-    [self exportMediaWith:url
+    [self createMediaWith:url
                  objectID:blogObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
@@ -67,7 +67,7 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self exportMediaWith:image
+    [self createMediaWith:image
                  objectID:postObjectID
                 mediaName:mediaID
         thumbnailCallback:thumbnailCallback
@@ -81,7 +81,7 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-    [self exportMediaWith:asset
+    [self createMediaWith:asset
                  objectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
@@ -95,7 +95,7 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-    [self exportMediaWith:asset
+    [self createMediaWith:asset
                  objectID:blogObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
@@ -108,7 +108,7 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self exportMediaWith:image
+    [self createMediaWith:image
                  objectID:blogObjectID
                 mediaName:[[NSUUID UUID] UUIDString]
         thumbnailCallback:thumbnailCallback
@@ -117,7 +117,7 @@
 
 #pragma mark - Private exporting
 
-- (void)exportMediaWith:(id<ExportableAsset>)exportable
+- (void)createMediaWith:(id<ExportableAsset>)exportable
                objectID:(NSManagedObjectID *)objectID
               mediaName:(NSString *)mediaName
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
@@ -151,6 +151,13 @@
         return;
     }
 
+    Media *media;
+    if (post != nil) {
+        media = [Media makeMediaWithPost:post];
+    } else {
+        media = [Media makeMediaWithBlog:blog];
+    }
+
     // Setup completion handlers
     void(^completionWithMedia)(Media *) = ^(Media *media) {
         // Pre-generate a thumbnail image, see the method notes.
@@ -167,25 +174,22 @@
     };
 
     // Export based on the type of the exportable.
-    MediaExportService *exportService = [[MediaExportService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if ([exportable isKindOfClass:[PHAsset class]]) {
-        [exportService exportMediaWithBlog:blog
-                                      post:post
-                                     asset:(PHAsset *)exportable
-                              onCompletion:completionWithMedia
-                                   onError:completionWithError];
+        [importService importAsset:(PHAsset *)exportable
+                           toMedia:media
+                      onCompletion:completionWithMedia
+                           onError:completionWithError];
     } else if ([exportable isKindOfClass:[UIImage class]]) {
-        [exportService exportMediaWithBlog:blog
-                                      post:post
-                                     image:(UIImage *)exportable
-                              onCompletion:completionWithMedia
-                                   onError:completionWithError];
+        [importService importImage:(UIImage *)exportable
+                           toMedia:media
+                      onCompletion:completionWithMedia
+                           onError:completionWithError];
     } else if ([exportable isKindOfClass:[NSURL class]]) {
-        [exportService exportMediaWithBlog:blog
-                                      post:post
-                                       url:(NSURL *)exportable
-                              onCompletion:completionWithMedia
-                                   onError:completionWithError];
+        [importService importURL:(NSURL *)exportable
+                         toMedia:media
+                    onCompletion:completionWithMedia
+                         onError:completionWithError];
     } else {
         completionWithError(nil);
     }

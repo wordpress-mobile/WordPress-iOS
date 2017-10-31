@@ -1,7 +1,6 @@
 import Foundation
 
 public struct PluginState {
-    public let id: String
     public let slug: String
     public let active: Bool
     public let name: String
