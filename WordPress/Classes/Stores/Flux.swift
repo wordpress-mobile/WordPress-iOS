@@ -2,15 +2,15 @@ import Foundation
 
 protocol FluxAction {}
 
-class FluxDispatcher {
+class Dispatcher<Payload> {
     typealias DispatchToken = UUID
-    typealias Payload = FluxAction
     typealias Callback = (Payload) -> Void
 
-    private let queue = DispatchQueue(label: "org.wordpress.flux-dispatcher")
-    var observers = [DispatchToken: Callback]()
-
-    static let global = FluxDispatcher()
+    private let queue = DispatchQueue(label: "org.wordpress.dispatcher")
+    private var observers = [DispatchToken: Callback]()
+    var observerCount: Int {
+        return observers.count
+    }
 
     func register(callback: @escaping Callback) -> DispatchToken {
         let token = DispatchToken()
@@ -26,31 +26,40 @@ class FluxDispatcher {
         }
     }
 
-    static func dispatch(_ payload: Payload, dispatcher: FluxDispatcher = .global) {
-        dispatcher.dispatch(payload)
-    }
-
     func dispatch(_ payload: Payload) {
         queue.async {
             self.observers.forEach { (_, callback) in
-                callback(payload)
+                DispatchQueue.main.sync {
+                    callback(payload)
+                }
             }
         }
     }
 }
 
+class FluxDispatcher: Dispatcher<FluxAction> {
+    static let global = FluxDispatcher()
+
+    static func dispatch(_ action: FluxAction, dispatcher: FluxDispatcher = .global) {
+        dispatcher.dispatch(action)
+    }
+}
+
 open class FluxStore {
-    private let changeNotification = NSNotification.Name("FluxStoreChanged")
-    var listenerCount = 0
-    private let dispatcher: FluxDispatcher
+    private let globalDispatcher: FluxDispatcher
     private var dispatchToken: FluxDispatcher.DispatchToken!
+    private let storeDispatcher = Dispatcher<Void>()
+
+    var listenerCount: Int {
+        return storeDispatcher.observerCount
+    }
 
     deinit {
-        dispatcher.unregister(token: dispatchToken)
+        globalDispatcher.unregister(token: dispatchToken)
     }
 
     init(dispatcher: FluxDispatcher = .global) {
-        self.dispatcher = dispatcher
+        self.globalDispatcher = dispatcher
         dispatchToken = dispatcher.register(callback: { [weak self] (action) in
             self?.onDispatch(action)
         })
@@ -61,38 +70,30 @@ open class FluxStore {
     }
 
     func onChange(_ handler: @escaping Action) -> Listener {
-        listenerCount += 1
-        let notificationObserver = NotificationCenter.default.addObserver(
-            forName: changeNotification,
-            object: self,
-            queue: nil,
-            using: { _ in
-                handler()
-        })
-        return Listener(notificationObserver: notificationObserver, store: self)
+        let token = storeDispatcher.register(callback: handler)
+        return Listener(dispatchToken: token, store: self)
     }
 
     func removeListener(_ listener: Listener) {
-        guard let notificationObserver = listener.notificationObserver else {
+        guard let token = listener.dispatchToken else {
             assertionFailure("Attempting to remove a listener that has already stopped listening.")
             return
         }
-        NotificationCenter.default.removeObserver(notificationObserver, name: changeNotification, object: self)
-        listenerCount -= 1
+        storeDispatcher.unregister(token: token)
     }
 
     func emitChange() {
-        NotificationCenter.default.post(name: changeNotification, object: self)
+        storeDispatcher.dispatch()
     }
 }
 
 extension FluxStore {
     class Listener {
-        var notificationObserver: NSObjectProtocol?
+        var dispatchToken: Dispatcher<Void>.DispatchToken?
         weak var store: FluxStore?
 
-        fileprivate init(notificationObserver: NSObjectProtocol, store: FluxStore) {
-            self.notificationObserver = notificationObserver
+        fileprivate init(dispatchToken: Dispatcher<Void>.DispatchToken, store: FluxStore) {
+            self.dispatchToken = dispatchToken
             self.store = store
         }
 
