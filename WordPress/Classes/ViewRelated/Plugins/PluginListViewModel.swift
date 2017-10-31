@@ -4,22 +4,43 @@ protocol PluginPresenter: class {
     func present(plugin: PluginState, capabilities: SitePluginCapabilities)
 }
 
-enum PluginListViewModel {
-    case loading
-    case ready(SitePlugins)
-    case error(String)
+class PluginListViewModel: FluxEmitter {
+    enum State {
+        case loading
+        case ready(SitePlugins)
+        case error(String)
+    }
 
-    init(plugins: SitePlugins?) {
-        switch plugins {
-        case .none:
-            self = .loading
-        case .some(let plugins):
-            self = .ready(plugins)
+    let siteID: Int
+    let dispatcher = Dispatcher<Void>()
+    private var state: State = .loading {
+        didSet {
+            dispatcher.dispatch()
         }
     }
 
+    private let store: PluginStore
+    private var listener: FluxListener?
+    private var dispatchToken: FluxDispatcher.DispatchToken?
+
+    init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
+        self.siteID = siteID
+        self.store = store
+        listener = store.onChange { [weak self] in
+            self?.refreshPlugins()
+        }
+        dispatchToken = FluxDispatcher.global.register(callback: { [weak self] (action) in
+            guard case PluginAction.receivePluginsFailed(let receivedSiteID, let error) = action,
+                case receivedSiteID = siteID else {
+                    return
+            }
+            self?.state = .error(error.localizedDescription)
+        })
+        refreshPlugins()
+    }
+
     var noResultsViewModel: WPNoResultsView.Model? {
-        switch self {
+        switch state {
         case .loading:
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site")
@@ -44,7 +65,7 @@ enum PluginListViewModel {
     }
 
     func tableViewModel(presenter: PluginPresenter) -> ImmuTable {
-        switch self {
+        switch state {
         case .loading, .error:
             return .Empty
         case .ready(let sitePlugins):
@@ -60,5 +81,16 @@ enum PluginListViewModel {
                 ImmuTableSection(rows: rows)
                 ])
         }
+    }
+
+    static var immutableRows: [ImmuTableRow.Type] {
+        return [PluginListRow.self]
+    }
+
+    private func refreshPlugins() {
+        guard let plugins = store.getPlugins(siteID: siteID) else {
+            return
+        }
+        state = .ready(plugins)
     }
 }
