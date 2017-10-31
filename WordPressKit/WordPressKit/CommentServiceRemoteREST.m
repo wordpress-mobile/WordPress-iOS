@@ -30,6 +30,7 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
                                  @"status": @"all",
                                  @"context": @"edit",
+                                 @"force": @"wpcom", // Force fetching data from shadow site on Jetpack sites
                                  @"number": @(maximumComments)
                                  }];
     if (options) {
@@ -173,7 +174,12 @@
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
-    [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+    NSDictionary *parameters = @{
+        @"force": @"wpcom" // Force fetching data from shadow site on Jetpack sites
+    };
+    [self.wordPressComRestApi GET:requestUrl
+                       parameters:parameters
+                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             NSArray *comments = [self remoteCommentsFromJSONArray:[dict arrayForKey:@"comments"]];
