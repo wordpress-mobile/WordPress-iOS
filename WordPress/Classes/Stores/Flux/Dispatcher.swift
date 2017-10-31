@@ -1,5 +1,3 @@
-import Foundation
-
 class Dispatcher<Payload> {
     typealias DispatchToken = UUID
     typealias Callback = (Payload) -> Void

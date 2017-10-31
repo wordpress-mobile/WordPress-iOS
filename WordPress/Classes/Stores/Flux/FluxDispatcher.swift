@@ -1,5 +1,3 @@
-import Foundation
-
 class FluxDispatcher: Dispatcher<FluxAction> {
     static let global = FluxDispatcher()
 
