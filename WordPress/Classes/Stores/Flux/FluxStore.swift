@@ -1,5 +1,5 @@
 open class FluxStore {
-    private let globalDispatcher: FluxDispatcher
+    let globalDispatcher: FluxDispatcher
     private var dispatchToken: FluxDispatcher.DispatchToken!
     private let storeDispatcher = Dispatcher<Void>()
 

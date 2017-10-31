@@ -18,6 +18,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     fileprivate let noResultsView = WPNoResultsView()
     private var listener: FluxStore.Listener!
+    private var dispatchToken: FluxDispatcher.DispatchToken!
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID
@@ -28,6 +29,9 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         listener = store.onChange { [weak self] in
             self?.refreshModel()
         }
+        dispatchToken = FluxDispatcher.global.register(callback: { [weak self] (action) in
+            self?.onDispatch(action: action)
+        })
         refreshModel()
     }
 
@@ -72,6 +76,21 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     func refreshModel() {
         viewModel = PluginListViewModel(plugins: store.getPlugins(siteID: siteID))
+    }
+
+    func onDispatch(action: FluxAction) {
+        guard let pluginAction = action as? PluginAction else {
+            return
+        }
+        switch pluginAction {
+        case .receivePluginsFailed(let siteID, let error):
+            guard siteID == self.siteID else {
+                return
+            }
+            viewModel = .error(error.localizedDescription)
+        default:
+            return
+        }
     }
 }
 

@@ -6,15 +6,17 @@ enum PluginAction: FluxAction {
     case enableAutoupdates(id: String, siteID: Int)
     case disableAutoupdates(id: String, siteID: Int)
     case remove(id: String, siteID: Int)
+    case receivePlugins(siteID: Int, plugins: SitePlugins)
+    case receivePluginsFailed(siteID: Int, error: Error)
 }
 
 class PluginStore: FluxStore {
-    private var plugins = [Int: SitePlugins]() {
+    fileprivate var plugins = [Int: SitePlugins]() {
         didSet {
             emitChange()
         }
     }
-    private var fetching = [Int: Bool]()
+    fileprivate var fetching = [Int: Bool]()
 
     override func removeListener(_ listener: FluxStore.Listener) {
         super.removeListener(listener)
@@ -28,18 +30,7 @@ class PluginStore: FluxStore {
         if let sitePlugins = plugins[siteID] {
             return sitePlugins
         }
-        if !(fetching[siteID] ?? false),
-            let remote = remote {
-            remote.getPlugins(
-                siteID: siteID,
-                success: { [weak self] (plugins) in
-                    self?.plugins[siteID] = plugins
-                    self?.fetching[siteID] = false
-                },
-                failure: { [weak self] (error) in
-                    self?.fetching[siteID] = false
-                })
-        }
+        fetchPlugins(siteID: siteID)
         return nil
     }
 
@@ -65,9 +56,15 @@ class PluginStore: FluxStore {
             disableAutoupdatesPlugin(pluginID: pluginID, siteID: siteID)
         case .remove(let pluginID, let siteID):
             removePlugin(pluginID: pluginID, siteID: siteID)
+        case .receivePlugins(let siteID, let plugins):
+            receivePlugins(siteID: siteID, plugins: plugins)
+        case .receivePluginsFailed(let siteID, _):
+            fetching[siteID] = false
         }
     }
+}
 
+private extension PluginStore {
     func activatePlugin(pluginID: String, siteID: Int) {
         modifyPlugin(id: pluginID, siteID: siteID) { (plugin) in
             plugin.active = true
@@ -144,7 +141,7 @@ class PluginStore: FluxStore {
         })
     }
 
-    private func modifyPlugin(id: String, siteID: Int, change: (inout PluginState) -> Void) {
+    func modifyPlugin(id: String, siteID: Int, change: (inout PluginState) -> Void) {
         guard let sitePlugins = plugins[siteID],
             let index = sitePlugins.plugins.index(where: { $0.id == id }) else {
                 return
@@ -155,7 +152,32 @@ class PluginStore: FluxStore {
         emitChange()
     }
 
-    private var remote: PluginServiceRemote? {
+    func fetchPlugins(siteID: Int) {
+        guard !fetching[siteID, default: false],
+            let remote = remote else {
+                return
+        }
+        fetching[siteID] = true
+        remote.getPlugins(
+            siteID: siteID,
+            success: { [globalDispatcher] (plugins) in
+                globalDispatcher.dispatch(PluginAction.receivePlugins(siteID: siteID, plugins: plugins))
+            },
+            failure: { [globalDispatcher] (error) in
+                globalDispatcher.dispatch(PluginAction.receivePluginsFailed(siteID: siteID, error: error))
+        })
+    }
+
+    func receivePlugins(siteID: Int, plugins: SitePlugins) {
+        self.plugins[siteID] = plugins
+        fetching[siteID] = false
+    }
+
+    func receivePluginsFailed(siteID: Int) {
+        fetching[siteID] = false
+    }
+
+    var remote: PluginServiceRemote? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
