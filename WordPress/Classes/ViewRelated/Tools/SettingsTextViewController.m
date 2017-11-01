@@ -300,6 +300,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     BOOL requiresSecureTextEntry = NO;
     UIKeyboardType keyboardType = UIKeyboardTypeDefault;
     UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationTypeSentences;
+    UITextAutocorrectionType autocorrectionType = UITextAutocorrectionTypeDefault;
 
     if (newMode == SettingsTextModesLowerCaseText) {
         autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -308,11 +309,18 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     } else if (newMode == SettingsTextModesEmail) {
         keyboardType = UIKeyboardTypeEmailAddress;
         autocapitalizationType = UITextAutocapitalizationTypeNone;
+    } else if (newMode == SettingsTextModesURL) {
+        keyboardType = UIKeyboardTypeURL;
+        autocapitalizationType = UITextAutocapitalizationTypeNone;
+        autocorrectionType = UITextAutocorrectionTypeNo;
     }
     
     self.textField.autocapitalizationType = autocapitalizationType;
     self.textField.keyboardType = keyboardType;
     self.textField.secureTextEntry = requiresSecureTextEntry;
+    
+    self.autocorrectionType = autocorrectionType;
+    self.textField.autocorrectionType = autocorrectionType;
 }
 
 

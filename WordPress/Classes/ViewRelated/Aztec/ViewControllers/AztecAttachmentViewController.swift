@@ -10,6 +10,7 @@ class AztecAttachmentViewController: UITableViewController {
         didSet {
             if let attachment = attachment {
                 alignment = attachment.alignment
+                linkURL = attachment.linkURL
                 size = attachment.size
                 alt = attachment.alt
             }
@@ -17,10 +18,11 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     var alignment = ImageAttachment.Alignment.none
+    var linkURL: URL?
     var size = ImageAttachment.Size.full
     var alt: String?
 
-    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String?) -> Void)?
+    var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?) -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -73,6 +75,11 @@ class AztecAttachmentViewController: UITableViewController {
             title: NSLocalizedString("Alignment", comment: "Image alignment option title."),
             value: alignment.localizedString,
             action: displayAlignmentSelector)
+        
+        let linkToRow = EditableTextRow(
+            title: NSLocalizedString("Link To", comment: "Image link option title."),
+            value: linkURL?.absoluteString ?? "",
+            action: displayLinkTextfield)
 
         let sizeRow = EditableTextRow(
             title: NSLocalizedString("Size", comment: "Image size option title."),
@@ -89,6 +96,7 @@ class AztecAttachmentViewController: UITableViewController {
                 headerText: displaySettingsHeader,
                 rows: [
                     alignmentRow,
+                    linkToRow,
                     sizeRow,
                     altRow
                 ],
@@ -102,10 +110,19 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
-        self.pushSettingsController(for: editableRow, hint: hint, onValueChanged: { value in
+        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { value in
             self.alt = value
             self.tableView.reloadData()
-        })
+        }
+    }
+    
+    private func displayLinkTextfield(row: ImmuTableRow) {
+        let editableRow = row as! EditableTextRow
+        let hint = NSLocalizedString("Image Link", comment: "Hint for image link on image settings.")
+        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { value in
+            self.linkURL = URL(string: value)
+            self.tableView.reloadData()
+        }
     }
 
     func displayAlignmentSelector(row: ImmuTableRow) {
@@ -181,18 +198,20 @@ class AztecAttachmentViewController: UITableViewController {
 
     func handleDoneButtonTapped(sender: UIBarButtonItem) {
         let checkedAlt = alt == "" ? nil : alt
-        onUpdate?(alignment, size, checkedAlt)
+        onUpdate?(alignment, size, linkURL, checkedAlt)
         dismiss(animated: true, completion: nil)
     }
 
     private func pushSettingsController(for row: EditableTextRow,
                                         hint: String? = nil,
+                                        settingsTextMode: SettingsTextModes,
                                         onValueChanged: @escaping SettingsTextChanged) {
         let title = row.title
         let value = row.value
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
 
         controller.title = title
+        controller.mode = settingsTextMode
         controller.onValueChanged = onValueChanged
 
         navigationController?.pushViewController(controller, animated: true)
