@@ -103,27 +103,27 @@ extension NotificationRange {
     /// Known kinds of Range
     ///
     enum Kind: String {
-        case User               = "user"
-        case Post               = "post"
-        case Comment            = "comment"
-        case Stats              = "stat"
-        case Follow             = "follow"
-        case Blockquote         = "blockquote"
-        case Noticon            = "noticon"
-        case Site               = "site"
-        case Match              = "match"
+        case User = "user"
+        case Post = "post"
+        case Comment = "comment"
+        case Stats = "stat"
+        case Follow = "follow"
+        case Blockquote = "blockquote"
+        case Noticon = "noticon"
+        case Site = "site"
+        case Match = "match"
         case Link = "link"
     }
 
     /// Parsing Keys
     ///
     fileprivate enum RangeKeys {
-        static let RawType      = "type"
-        static let URL          = "url"
-        static let Indices      = "indices"
-        static let Id           = "id"
-        static let Value        = "value"
-        static let SiteId       = "site_id"
-        static let PostId       = "post_id"
+        static let RawType = "type"
+        static let URL = "url"
+        static let Indices = "indices"
+        static let Id = "id"
+        static let Value = "value"
+        static let SiteId = "site_id"
+        static let PostId = "post_id"
     }
 }
