@@ -1,0 +1,147 @@
+import Foundation
+
+/// MediaUploadCoordinator is responsible for creating and uploading new media
+/// items, independently of a specific view controller. It should be accessed
+/// via the `shared` singleton.
+///
+class MediaUploadCoordinator {
+    static let shared = MediaUploadCoordinator()
+
+    private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
+
+    // MARK: - Adding Media
+
+    /// Adds the specified media asset to the specified blog. The upload process
+    /// can be observed by adding an observer block using the `addObserver(_:for:)` method.
+    ///
+    /// - parameter asset: The asset to add.
+    /// - parameter blog: The blog that the asset should be added to.
+    ///
+    func addMedia(from asset: ExportableAsset, to blog: Blog) {
+        guard let asset = asset as? PHAsset else {
+            return
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = MediaService(managedObjectContext: context)
+        service.createMedia(with: asset,
+                            forBlogObjectID: blog.objectID,
+                            thumbnailCallback: nil,
+                            completion: { media, error in
+                                guard let media = media else {
+                                    return
+                                }
+
+                                self.begin(media)
+
+                                var progress: Progress? = nil
+                                service.uploadMedia(media,
+                                                    progress: &progress,
+                                                    success: {
+                                                        self.end(media)
+                                }, failure: { _ in
+                                    self.end(media)
+                                })
+        })
+    }
+
+    // MARK: - Observing
+
+    typealias ObserverBlock = (Media, MediaState) -> Void
+
+    private var mediaObservers = [UUID: MediaObserver]()
+
+    /// Add an observer to receive updates when media items are updated.
+    ///
+    /// - parameter onUpdate: A block that will be called whenever media items
+    ///                       (or a specific media item) are updated.
+    /// - parameter media: An optional specific media item to receive updates for.
+    ///                    If provided, the `onUpdate` block will only be called
+    ///                    for updates to this media item, otherwise it will be
+    ///                    called when changes occur to _any_ media item.
+    /// - returns: A UUID that can be used to unregister the observer block at a later time.
+    ///
+    func addObserver(_ onUpdate: @escaping ObserverBlock, for media: Media? = nil) -> UUID {
+        let uuid = UUID()
+
+        let observer = MediaObserver(media: media, onUpdate: onUpdate)
+
+        queue.sync {
+            mediaObservers[uuid] = observer
+        }
+
+        return uuid
+    }
+
+    /// Removes the observer block for the specified UUID.
+    ///
+    /// - parameter uuid: The UUID that matches the observer to be removed.
+    ///
+    func removeObserver(withUUID uuid: UUID) {
+        queue.sync {
+            mediaObservers[uuid] = nil
+        }
+    }
+
+    /// Encapsulates the state of a media item.
+    ///
+    enum MediaState: CustomDebugStringConvertible {
+        case uploading
+        case ended
+
+        var debugDescription: String {
+            switch self {
+            case .uploading:
+                return "Uploading"
+            case .ended:
+                return "Ended"
+            }
+        }
+    }
+
+    /// Encapsulates an observer block and an optional observed media item.
+    struct MediaObserver {
+        let media: Media?
+        let onUpdate: ObserverBlock
+    }
+
+    /// Utility method to return all observers for a specific media item,
+    /// including any 'wildcard' observers that are observing _all_ media items.
+    ///
+    private func observersForMedia(_ media: Media) -> [MediaObserver] {
+        return mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID }) + wildcardObservers
+    }
+
+    /// Utility method to return all 'wildcard' observers that are
+    /// observing _all_ media items.
+    ///
+    private var wildcardObservers: [MediaObserver] {
+        return mediaObservers.values.filter({ $0.media == nil })
+    }
+
+    // MARK: - Notifying observers
+
+    /// Notifies observers that a media item has begun uploading.
+    ///
+    func begin(_ media: Media) {
+        queue.async {
+            self.observersForMedia(media).forEach({ observer in
+                DispatchQueue.main.sync {
+                    observer.onUpdate(media, .uploading)
+                }
+            })
+        }
+    }
+
+    /// Notifies observers that a media item has ended uploading.
+    ///
+    func end(_ media: Media) {
+        queue.async {
+            self.observersForMedia(media).forEach({ observer in
+                DispatchQueue.main.sync {
+                    observer.onUpdate(media, .ended)
+                }
+            })
+        }
+    }
+}
