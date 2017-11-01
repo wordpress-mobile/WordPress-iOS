@@ -36,8 +36,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
 
         wordPressComRestApi.GET(path!,
                                 parameters: parameters as [String : AnyObject]?,
-                                success: {
-                                    response, _ in
+                                success: { response, _ in
                                     do {
                                         let (activities, totalItems) = try self.mapActivitiesResponse(response)
                                         let hasMore = totalItems > pageNumber * (count + 1)
@@ -48,12 +47,10 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
                                         DDLogDebug("Full response: \(response)")
                                         failure(error)
                                     }
-        }, failure: {
-            error, _ in
-            failure(error)
-        })
+                                }, failure: { error, _ in
+                                    failure(error)
+                                })
     }
-
 }
 
 private extension ActivityServiceRemote {
