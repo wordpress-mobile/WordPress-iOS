@@ -7,7 +7,7 @@
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
-@interface BlogDetailHeaderView ()
+@interface BlogDetailHeaderView () <UIDropInteractionDelegate>
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
@@ -118,6 +118,11 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                                                                 action:@selector(blavatarImageTapped)];
     singleTap.numberOfTapsRequired = 1;
     [imageView addGestureRecognizer:singleTap];
+    
+    if (@available(iOS 11.0, *)) {
+        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+        [imageView addInteraction:dropInteraction];
+    }
 
     [_stackView addArrangedSubview:imageView];
 
@@ -207,6 +212,46 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     } else {
         [self.blavatarUpdateActivityIndicatorView stopAnimating];
     }
+}
+
+#pragma mark - Drop Interaction Handler
+- (BOOL)dropInteraction:(UIDropInteraction *)interaction
+       canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    BOOL isAnImage = [session canLoadObjectsOfClass:[UIImage self]];
+    BOOL isSingleImage = [session.items count] == 1;
+    return (isAnImage && isSingleImage);
+}
+
+- (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
+                   sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    CGPoint dropLocation = [session locationInView:self];
+    UIDropOperation dropOperation;
+    
+    if (CGRectContainsPoint(self.blavatarImageView.frame, dropLocation)) {
+        dropOperation = UIDropOperationCopy;
+    } else {
+        dropOperation = UIDropOperationCancel;
+    }
+    
+    UIDropProposal *dropProposal = [[UIDropProposal alloc] initWithDropOperation:dropOperation];
+    
+    return  dropProposal;
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+            performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self setUpdatingIcon:YES];
+    
+    __weak __typeof(self) weakSelf = self;
+    [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
+        UIImage *image = [images firstObject];
+        weakSelf.blavatarImageView.image = image;
+        [self.delegate siteIconReceivedDroppedImage:image];
+        [self setUpdatingIcon:NO];
+    }];
 }
 
 @end
