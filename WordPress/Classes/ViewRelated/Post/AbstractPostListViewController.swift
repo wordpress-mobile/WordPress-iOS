@@ -752,7 +752,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     // MARK: - Searching
 
     func isSearching() -> Bool {
-        return searchController.isActive && currentSearchTerm()?.characters.count > 0
+        return searchController.isActive && currentSearchTerm()?.count > 0
     }
 
     func currentSearchTerm() -> String? {
