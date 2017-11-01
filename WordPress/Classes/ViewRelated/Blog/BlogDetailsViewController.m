@@ -435,12 +435,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  callback:^{
                                                      [weakSelf showMediaLibrary];
                                                  }]];
+    
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Portfolio", @"Noun. Title. Links to the user's portfolio projects.")
+                                                    image:[Gridicon iconOfType:GridiconTypeFolder]
+                                                 callback:^{
+                                                     [weakSelf showPortfolioList];
+                                                 }]];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[Gridicon iconOfType:GridiconTypeComment]
                                                        callback:^{
                                                            [weakSelf showComments];
                                                        }];
+    
     NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
     if (numberOfPendingComments > 0) {
         row.detail = [NSString stringWithFormat:@"%d", numberOfPendingComments];
@@ -915,6 +922,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedMediaLibrary withBlog:self.blog];
     MediaLibraryViewController *controller = [[MediaLibraryViewController alloc] initWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
+}
+
+- (void)showPortfolioList
+{
+    // TODO: Add tracking style: [WPAppAnalytics track:WPAnalyticsStatOpenedPortfolio withBlog:self.blog];
+    PortfolioViewController *controller = [[PortfolioViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 
