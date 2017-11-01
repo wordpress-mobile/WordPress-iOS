@@ -199,7 +199,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if searchText?.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
 
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
@@ -208,7 +208,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(filterPredicate)
         }
 
-        if let searchText = searchText, searchText.characters.count > 0 {
+        if let searchText = searchText, searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
