@@ -41,34 +41,20 @@ class NotificationRange {
     /// Designated Initializer
     ///
     init?(dictionary: [String: AnyObject]) {
-        guard let indices = dictionary[RangeKeys.Indices] as? [Int],
+        guard let theKind = NotificationRange.kind(for: dictionary),
+            let indices = dictionary[RangeKeys.Indices] as? [Int],
             let start = indices.first,
             let end = indices.last
         else {
             return nil
         }
 
+        kind = theKind
         range = NSMakeRange(start, end - start)
         siteID = dictionary[RangeKeys.SiteId] as? NSNumber
 
         if let rawURL = dictionary[RangeKeys.URL] as? String {
             url = URL(string: rawURL)
-        }
-
-        // The Duck is STILL ALIVE:
-        // ========================
-        // I truly hope the reviewer, and the Opensource Community can forgive this ongoing hack.
-        // Notifications can now carry URL's without specifying an explicit 'Type'. For that reason,
-        // surprise!... we're now also inferring the Notification Type.
-        //
-        if let type = dictionary[RangeKeys.RawType] as? String, let theKind = Kind(rawValue: type) {
-            kind = theKind
-        } else if siteID != nil {
-            kind = .Site
-        } else if url != nil {
-            kind = .Link
-        } else {
-            return nil
         }
 
         //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
@@ -95,6 +81,30 @@ class NotificationRange {
         default:
             break
         }
+    }
+
+
+    /// Returns the NotificationRange Kind, for a given raw Notification Range.
+    ///
+    /// - Details:
+    ///     I truly hope the reviewer, and the Opensource Community can forgive this ongoing hack.
+    ///     Notifications can now carry URL's without specifying an explicit 'Type'. For that reason,
+    ///     surprise!... we're now also inferring the Notification Type.
+    ///
+    private static func kind(for dictionary: [String: AnyObject]) -> Kind? {
+        if let type = dictionary[RangeKeys.RawType] as? String, let kind = Kind(rawValue: type) {
+            return kind
+        }
+
+        if dictionary[RangeKeys.SiteId] != nil {
+            return .Site
+        }
+
+        if dictionary[RangeKeys.URL] != nil {
+            return .Link
+        }
+
+        return nil
     }
 }
 
