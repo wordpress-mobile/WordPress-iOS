@@ -633,6 +633,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showUpdateSiteIconAlert];
 }
 
+- (void)siteIconReceivedDroppedImage:(UIImage *)image
+{
+    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
+        // Gracefully ignore the tap for users that can not upload files or
+        // blogs that do not have capabilities since those will not support the REST API icon update
+        return;
+    }
+    [self uploadDroppedSiteIconImage:image];
+}
+
 #pragma mark Site Icon Update Management
 
 - (void)showUpdateSiteIconAlert
@@ -659,6 +669,25 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                 handler:nil];
 
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
+}
+
+- (void)uploadDroppedSiteIconImage:(UIImage *)image
+{
+    // an image has been received from a drop action
+    // what is your next step: Display Resize & Crop VC, or Auto-Crop?
+    
+    /// For Resize & Crop VC:
+    // Create a Resize & Crop view controller, separate from the siteIconPicker.
+    
+    // Present the Resize & Crop view controller.
+    
+    // Upon completing this step (the user tapped "use"), show a spinner over the blavatar
+    
+    // Upload the new blavatar
+    
+    // Upon successful completion of the upload, hide the spinner
+    
+    // Upon failing to upload, call the method `showErrorForSiteIconUpdate`
 }
 
 - (void)updateSiteIcon
