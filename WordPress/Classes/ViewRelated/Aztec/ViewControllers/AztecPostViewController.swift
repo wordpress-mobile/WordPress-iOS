@@ -1422,7 +1422,7 @@ extension AztecPostViewController: UITextViewDelegate {
     ///
     private func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
 
-        guard text.characters.count > 1 else {
+        guard text.count > 1 else {
             guard text.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) == nil else {
                 richTextView.becomeFirstResponder()
                 richTextView.selectedRange = NSRange(location: 0, length: 0)

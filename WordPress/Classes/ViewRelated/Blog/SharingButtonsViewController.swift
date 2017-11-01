@@ -283,7 +283,7 @@ import WordPressShared
             cell.textLabel?.text = self.twitterUsernameTitle
 
             var name = self.blog.settings!.sharingTwitterName
-            if name.characters.count > 0 {
+            if name.count > 0 {
                 name = "@\(name)"
             }
             cell.detailTextLabel?.text = name

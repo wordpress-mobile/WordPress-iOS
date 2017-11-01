@@ -15,7 +15,7 @@ class CalypsoProcessorOut: Processor {
     ///
     func process(_ text: String) -> String {
 
-        guard text.characters.count > 0 else {
+        guard text.count > 0 else {
             return ""
         }
 

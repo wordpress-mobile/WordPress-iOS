@@ -108,7 +108,7 @@ private extension CommentAttachmentRenderer {
 
     func verify(_ text: String, startsWith string: String) -> Bool {
 
-        guard let endIndex = text.index(text.startIndex, offsetBy: string.characters.count, limitedBy: text.endIndex) else {
+        guard let endIndex = text.index(text.startIndex, offsetBy: string.count, limitedBy: text.endIndex) else {
             return false
         }
 

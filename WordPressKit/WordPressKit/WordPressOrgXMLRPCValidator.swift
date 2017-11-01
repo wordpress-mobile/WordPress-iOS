@@ -243,7 +243,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
 
         let matches = rsdURLRegExp.matches(in: html,
                                                    options: NSRegularExpression.MatchingOptions(),
-                                                   range: NSMakeRange(0, html.characters.count))
+                                                   range: NSMakeRange(0, html.count))
         if matches.count <= 0 {
             return nil
         }
