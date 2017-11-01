@@ -112,6 +112,7 @@ extension NotificationRange {
         case Noticon            = "noticon"
         case Site               = "site"
         case Match              = "match"
+        case Link = "link"
     }
 
     /// Parsing Keys
