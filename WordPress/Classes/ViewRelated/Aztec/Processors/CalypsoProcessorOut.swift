@@ -31,6 +31,9 @@ class CalypsoProcessorOut: Processor {
 
         var output = text
 
+        // Protect empty paragraphs
+        output = output.replacingOccurrences(of: "<p></p>", with: "<wp-temp-empty-p>")
+
         // Protect script and style tags.
         if output.contains("<script") || output.contains("<style") {
             output = output.replacingMatches(of: "<(script|style)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) -> String in
@@ -99,7 +102,7 @@ class CalypsoProcessorOut: Processor {
 
         // Pad block elements tags with a line break.
         output = output.replacingMatches(of: "\\s*<((?:" + blocklist2 + ")(?: [^>]*)?)\\s*>", with: "\n<$1>")
-        output = output.replacingMatches(of: "\\s*</(' + blocklist2 + ')>\\s*", with: "</$1>\n")
+        output = output.replacingMatches(of: "\\s*</(" + blocklist2 + ")>\\s*", with: "</$1>\n")
 
         // Indent <li>, <dt> and <dd> tags.
         output = output.replacingMatches(of: "<((li|dt|dd)[^>]*)>", with: " \t<$1>")
@@ -147,7 +150,8 @@ class CalypsoProcessorOut: Processor {
             })
         }
 
-        //                return html;
+        output = output.replacingOccurrences(of: "<wp-temp-empty-p>", with: "\n\n")
+
         return output
     }
 }
