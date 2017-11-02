@@ -75,7 +75,7 @@ class AztecAttachmentViewController: UITableViewController {
             title: NSLocalizedString("Alignment", comment: "Image alignment option title."),
             value: alignment.localizedString,
             action: displayAlignmentSelector)
-        
+
         let linkToRow = EditableTextRow(
             title: NSLocalizedString("Link To", comment: "Image link option title."),
             value: linkURL?.absoluteString ?? "",
@@ -115,7 +115,7 @@ class AztecAttachmentViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-    
+
     private func displayLinkTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Link", comment: "Hint for image link on image settings.")
