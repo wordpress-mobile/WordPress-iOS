@@ -113,7 +113,8 @@ class MediaUploadCoordinator {
     /// including any 'wildcard' observers that are observing _all_ media items.
     ///
     private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        return mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID }) + wildcardObservers
+        let values = mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
+        return values + wildcardObservers
     }
 
     /// Utility method to return all 'wildcard' observers that are
