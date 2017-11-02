@@ -14,12 +14,12 @@ class PluginViewController: UITableViewController {
     }()
 
     fileprivate let viewModel: PluginViewModel
+    var viewModelListener: FluxListener?
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, service: PluginServiceRemote) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int) {
         self.plugin = plugin
-        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, siteID: siteID, service: service)
+        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, siteID: siteID)
         super.init(style: .grouped)
-        viewModel.onModelChange = bindViewModel
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
         }
@@ -40,6 +40,9 @@ class PluginViewController: UITableViewController {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginViewModel.immutableRows, tableView: tableView)
+        viewModelListener = viewModel.onChange { [weak self] in
+            self?.bindViewModel()
+        }
         bindViewModel()
     }
 
