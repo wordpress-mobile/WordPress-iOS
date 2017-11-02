@@ -94,7 +94,7 @@ public final class WordPressComOAuthClient: NSObject {
             "wpcom_supports_2fa": true as AnyObject
         ]
 
-        if let multifactorCode = multifactorCode, multifactorCode.characters.count > 0 {
+        if let multifactorCode = multifactorCode, multifactorCode.count > 0 {
             parameters["wpcom_otp"] = multifactorCode as AnyObject?
         }
 
