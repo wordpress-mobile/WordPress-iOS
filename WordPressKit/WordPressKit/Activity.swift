@@ -17,14 +17,14 @@ public struct Activity {
 
     init(dictionary: [String: AnyObject]) throws {
         guard let id = dictionary["activity_id"] as? String else {
-            throw RemoteActivityError.missingActivityId
+            throw Errors.missingActivityId
         }
         guard let publishedString = dictionary["published"] as? String else {
-            throw RemoteActivityError.missingPublishedDate
+            throw Errors.missingPublishedDate
         }
         let dateFormatter = ISO8601DateFormatter()
         guard let publishedDate = dateFormatter.date(from: publishedString) else {
-            throw RemoteActivityError.incorrectPusblishedDateFormat
+            throw Errors.incorrectPusblishedDateFormat
         }
         activityID = id
         published = publishedDate
@@ -36,17 +36,17 @@ public struct Activity {
         rewindable = dictionary["is_rewindable"] as? Bool ?? false
         rewindID = dictionary["rewind_id"] as? String
         if let actorData = dictionary["actor"] as? [String: AnyObject] {
-            actor = ActivityActor.init(dictionary: actorData)
+            actor = ActivityActor(dictionary: actorData)
         } else {
             actor = nil
         }
         if let objectData = dictionary["object"] as? [String: AnyObject] {
-            object = ActivityObject.init(dictionary: objectData)
+            object = ActivityObject(dictionary: objectData)
         } else {
             object = nil
         }
         if let targetData = dictionary["actor"] as? [String: AnyObject] {
-            target = ActivityObject.init(dictionary: targetData)
+            target = ActivityObject(dictionary: targetData)
         } else {
             target = nil
         }
@@ -57,6 +57,14 @@ public struct Activity {
         } else {
             items = nil
         }
+    }
+}
+
+private extension Activity {
+    enum Errors: Error {
+        case missingActivityId
+        case missingPublishedDate
+        case incorrectPusblishedDateFormat
     }
 }
 
@@ -98,36 +106,6 @@ public struct ActivityObject {
     }
 }
 
-enum RemoteActivityError: Error {
-    case missingActivityId
-    case missingPublishedDate
-    case incorrectPusblishedDateFormat
-}
-
 public struct ActivityName {
     public static let fullBackup = "rewind__backup_complete_full"
-}
-
-extension Activity: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        let dateFormatter = ISO8601DateFormatter()
-        return "<Activity: (activityID: \(activityID), summary: \(summary), name: \(name), type: \(type) " +
-               "gridicon: \(gridicon), status: \(status), rewindable: \(rewindable), " +
-               "published: \(dateFormatter.string(from: published)) actor: \(actor.debugDescription), " +
-               "object: \(object.debugDescription), target: \(target.debugDescription), " +
-               "items: \(items != nil ? items.debugDescription : "[]")>";
-    }
-}
-
-extension ActivityActor: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        return "<ActivityActor(displayName: \(displayName), type: \(type), wpcomUserID: \(wpcomUserID) " +
-               "avatarURL: \(avatarURL), role: \(role)>"
-    }
-}
-
-extension ActivityObject: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        return "<ActivityObject(name: \(name), type: \(type), attributes: \(attributes.debugDescription)>"
-    }
 }
