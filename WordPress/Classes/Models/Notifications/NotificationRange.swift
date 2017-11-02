@@ -92,15 +92,17 @@ class NotificationRange {
     ///     surprise!... we're now also inferring the Notification Type.
     ///
     private static func kind(for dictionary: [String: AnyObject]) -> Kind? {
-        if let type = dictionary[RangeKeys.RawType] as? String, let kind = Kind(rawValue: type) {
+        if let type = dictionary[RangeKeys.RawType] as? String,
+            let kind = Kind(rawValue: type)
+        {
             return kind
         }
 
-        if dictionary[RangeKeys.SiteId] != nil {
+        if let _ = dictionary[RangeKeys.SiteId] {
             return .Site
         }
 
-        if dictionary[RangeKeys.URL] != nil {
+        if let _ = dictionary[RangeKeys.URL] {
             return .Link
         }
 
