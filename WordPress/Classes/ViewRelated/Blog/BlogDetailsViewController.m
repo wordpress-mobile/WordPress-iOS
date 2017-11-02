@@ -675,12 +675,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 // an image has been received from a drop action
 - (void)uploadDroppedSiteIconImage:(UIImage *)image
 {
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
+    __block UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     // Create a Resize & Crop view controller, separate from the siteIconPicker.
     self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
-//    self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
+    self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
    
     // When the user tapped "use"
     self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
