@@ -17,14 +17,14 @@ public struct Activity {
 
     init(dictionary: [String: AnyObject]) throws {
         guard let id = dictionary["activity_id"] as? String else {
-            throw Errors.missingActivityId
+            throw Error.missingActivityId
         }
         guard let publishedString = dictionary["published"] as? String else {
-            throw Errors.missingPublishedDate
+            throw Error.missingPublishedDate
         }
         let dateFormatter = ISO8601DateFormatter()
         guard let publishedDate = dateFormatter.date(from: publishedString) else {
-            throw Errors.incorrectPusblishedDateFormat
+            throw Error.incorrectPusblishedDateFormat
         }
         activityID = id
         published = publishedDate
@@ -61,7 +61,7 @@ public struct Activity {
 }
 
 private extension Activity {
-    enum Errors: Error {
+    enum Error: Swift.Error {
         case missingActivityId
         case missingPublishedDate
         case incorrectPusblishedDateFormat
