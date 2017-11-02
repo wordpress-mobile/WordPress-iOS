@@ -47,7 +47,7 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { (_, _, alt) in
+        controller.onUpdate = { (_, _, _, alt) in
         richTextView.edit(attachment) { updated in
                 if let alt = alt {
                     updated.alt = alt
@@ -81,7 +81,7 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { (_, _, alt) in
+        controller.onUpdate = { (_, _, _, alt) in
         richTextView.edit(attachment) { updated in
                 if let alt = alt {
                     updated.alt = alt
