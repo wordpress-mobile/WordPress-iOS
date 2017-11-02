@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -58,15 +58,26 @@
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="dsX-LD-1XZ" secondAttribute="top" id="9dw-Qk-yyT"/>
                         </constraints>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pA-bu-D5A">
+                        <rect key="frame" x="0.0" y="0.0" width="6" height="74"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="6" id="wTc-YC-CJo"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="1pA-bu-D5A" secondAttribute="bottom" id="AIK-5K-HqA"/>
+                    <constraint firstItem="1pA-bu-D5A" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" id="Sna-6k-ZWA"/>
                     <constraint firstItem="dsX-LD-1XZ" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" id="WVn-it-RvF"/>
                     <constraint firstAttribute="bottomMargin" secondItem="dsX-LD-1XZ" secondAttribute="bottom" id="YbA-Pd-ZGu"/>
                     <constraint firstAttribute="trailingMargin" secondItem="dsX-LD-1XZ" secondAttribute="trailing" id="mUy-WB-D5x"/>
                     <constraint firstItem="dsX-LD-1XZ" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="topMargin" id="qkF-E2-4Jc"/>
+                    <constraint firstItem="1pA-bu-D5A" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="top" id="yal-Ih-1Mc"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="borderView" destination="1pA-bu-D5A" id="5LJ-HS-4Q4"/>
                 <outlet property="gravatarImageView" destination="0Gm-n3-CNm" id="GXM-xm-h6r"/>
                 <outlet property="summaryLabel" destination="Wrp-Wr-ZBq" id="avY-5i-4By"/>
                 <outlet property="timestampLabel" destination="bDl-id-9M7" id="sk9-hl-b6r"/>
