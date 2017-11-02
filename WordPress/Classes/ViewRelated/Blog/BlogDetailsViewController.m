@@ -115,6 +115,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
+@property (nonatomic, strong) ImageCropViewController *imageCropViewController;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -671,23 +672,34 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
 }
 
+// an image has been received from a drop action
 - (void)uploadDroppedSiteIconImage:(UIImage *)image
 {
-    // an image has been received from a drop action
-    // what is your next step: Display Resize & Crop VC, or Auto-Crop?
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     
-    /// For Resize & Crop VC:
     // Create a Resize & Crop view controller, separate from the siteIconPicker.
+    self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
+//    self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
+   
+    // When the user tapped "use"
+    self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
+        // dismiss the modal
+        [navController dismissViewControllerAnimated:YES completion:nil];
+        
+        // Upload the new blavatar
+        
+        // Upon successful completion of the upload, hide the spinner
+        
+        // Upon failing to upload, call the method `showErrorForSiteIconUpdate`
+        if (modified) {
+            
+        }
+        
+    };
     
     // Present the Resize & Crop view controller.
-    
-    // Upon completing this step (the user tapped "use"), show a spinner over the blavatar
-    
-    // Upload the new blavatar
-    
-    // Upon successful completion of the upload, hide the spinner
-    
-    // Upon failing to upload, call the method `showErrorForSiteIconUpdate`
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)updateSiteIcon
