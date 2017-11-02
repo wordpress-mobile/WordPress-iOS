@@ -29,6 +29,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureCommentLikes,
     /// Can we show stats for the blog?
     BlogFeatureStats,
+    /// Can we show activity for the blog?
+    BlogFeatureActivity,
     /// Does the blog support mentions?
     BlogFeatureMentions,
     /// Does the blog support push notifications?
