@@ -35,9 +35,9 @@ open class ActivityTableViewCell: WPTableViewCell {
                                                              attributes: Style.summaryRegularStyle())
         }
         if activity.rewindable {
-            backgroundColor = Style.backgroundRewindableColor()
+            borderView.backgroundColor = Style.backgroundRewindableColor()
         } else {
-            backgroundColor = Style.backgroundColor()
+            borderView.backgroundColor = Style.backgroundColor()
         }
     }
 
@@ -70,4 +70,5 @@ open class ActivityTableViewCell: WPTableViewCell {
     @IBOutlet fileprivate var gravatarImageView: CircularImageView!
     @IBOutlet fileprivate var summaryLabel: UILabel!
     @IBOutlet fileprivate var timestampLabel: UILabel!
+    @IBOutlet fileprivate var borderView: UIView!
 }
