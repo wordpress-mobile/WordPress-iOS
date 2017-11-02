@@ -475,6 +475,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // This needs to called first
+        configureMediaAppearance()
+
         // TODO: Fix the warnings triggered by this one!
         WPFontManager.loadNotoFontFamily()
 
@@ -493,8 +496,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
-
-        configureMediaAppearance()
 
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
@@ -2829,7 +2830,8 @@ extension AztecPostViewController {
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
-        attachment.overlayImage = Gridicon.iconOfType(.refresh)
+        attachment.overlayImage = Gridicon.iconOfType(.refresh, withSize: Constants.mediaOverlayIconSize)
+        attachment.shouldHideBorder = true
         richTextView.refresh(attachment)
     }
 
@@ -3040,6 +3042,7 @@ extension AztecPostViewController {
             mediaAttachment.overlayImage = nil
         }
         mediaAttachment.message = nil
+        mediaAttachment.shouldHideBorder = false
     }
 }
 
@@ -3064,23 +3067,23 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
-        //check if it's the current selected attachment or an failed upload
-        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
-            //if it's the same attachment has before let's display the options
-            displayActions(forAttachment: attachment, position: position)
-        } else {
-            // if it's a new attachment tapped let's unmark the previous one
+        // Check to see if this is an error
+        if mediaProgressCoordinator.error(forMediaID: attachment.identifier) == nil {
+            // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {
                 self.resetMediaAttachmentOverlay(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
-            // and mark the newly tapped attachment
-            if attachment is ImageAttachment {
-                attachment.overlayImage = Gridicon.iconOfType(.pencil)
-            }
+
+            // ...and mark the newly tapped attachment
+            let message = ""
+            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
             richTextView.refresh(attachment)
             currentSelectedAttachment = attachment
         }
+
+        // Display the action sheet right away
+        displayActions(forAttachment: attachment, position: position)
     }
 
     func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
@@ -3354,6 +3357,7 @@ extension AztecPostViewController {
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
+        static let mediaOverlayIconSize     = CGSize(width:32, height:32)
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
@@ -3377,7 +3381,7 @@ extension AztecPostViewController {
         static let progressBackground       = WPStyleGuide.wordPressBlue()
         static let progressTint             = UIColor.white
         static let progressTrack            = WPStyleGuide.wordPressBlue()
-        static let mediaProgressOverlay     = UIColor(white: 1, alpha: 0.6)
+        static let mediaProgressOverlay     = UIColor(white: 0.6, alpha: 0.6)
         static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
         static let mediaProgressBarTrack    = WPStyleGuide.wordPressBlue()
         static let aztecLinkColor           = WPStyleGuide.mediumBlue()

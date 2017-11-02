@@ -166,7 +166,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
   WordPress-Aztec-iOS:
-    :commit: 0bf6d3d4013b36b6e4ef5b5d8d1d8da0fd71ec47
+    :commit: 63a2c373843f5bbe3c652981a10849ff778f064f
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
