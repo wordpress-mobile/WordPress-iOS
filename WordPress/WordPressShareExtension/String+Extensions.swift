@@ -12,7 +12,7 @@ extension String {
             return self
         }
 
-        let range   = NSMakeRange(0, characters.count)
+        let range   = NSMakeRange(0, count)
         var offset  = 0
 
         detector.enumerateMatches(in: self, options: [], range: range) { (result, flags, stop) in
@@ -25,7 +25,7 @@ extension String {
             let anchoredURL     = "<a href=\"\(rawURL)\">\(rawURL)</a>"
 
             output.replaceCharacters(in: rangeWithOffset, with: anchoredURL)
-            offset += anchoredURL.characters.count - rawURL.characters.count
+            offset += anchoredURL.count - rawURL.count
         }
 
         return output as String
