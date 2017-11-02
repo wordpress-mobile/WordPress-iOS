@@ -91,7 +91,7 @@ extension FancyAlertViewController {
             message = NSLocalizedString("Incorrect username or password. Please try entering your login details again.", comment: "An error message shown when a user signed in with incorrect credentials.")
         }
 
-        if message.trim().characters.count == 0 {
+        if message.trim().count == 0 {
             message = NSLocalizedString("Log in failed. Please try again.", comment: "A generic error message for a failed log in.")
         }
 
