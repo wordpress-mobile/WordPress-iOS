@@ -66,7 +66,7 @@ class Post: AbstractPost {
     // MARK: - Content Preview
 
     fileprivate func buildContentPreview() {
-        if let excerpt = mt_excerpt, excerpt.characters.count > 0 {
+        if let excerpt = mt_excerpt, excerpt.count > 0 {
             storedContentPreviewForDisplay = String.makePlainText(excerpt)
         } else if let content = content {
             storedContentPreviewForDisplay = NSString.summary(fromContent: content)
@@ -221,13 +221,13 @@ class Post: AbstractPost {
     }
 
     override func hasTags() -> Bool {
-        return (tags?.trim().characters.count > 0)
+        return (tags?.trim().count > 0)
     }
 
     // MARK: - BasePost
 
     override func contentPreviewForDisplay() -> String {
-        if storedContentPreviewForDisplay.characters.count == 0 {
+        if storedContentPreviewForDisplay.count == 0 {
             buildContentPreview()
         }
 
@@ -290,7 +290,7 @@ class Post: AbstractPost {
         var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
         title = title.stringByDecodingXMLCharacters()
 
-        if title.characters.count == 0 && contentPreviewForDisplay().characters.count == 0 && !hasRemote() {
+        if title.count == 0 && contentPreviewForDisplay().count == 0 && !hasRemote() {
             title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
         }
 

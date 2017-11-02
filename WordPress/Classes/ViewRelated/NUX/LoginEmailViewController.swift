@@ -457,6 +457,7 @@ extension LoginEmailViewController {
 
         performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.showWPComLogin, sender: self)
         WPAppAnalytics.track(.loginSocialAccountsNeedConnecting)
+        configureViewLoading(false)
     }
 
 
@@ -466,6 +467,7 @@ extension LoginEmailViewController {
 
         performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.show2FA, sender: self)
         WPAppAnalytics.track(.loginSocial2faNeeded)
+        configureViewLoading(false)
     }
 }
 
