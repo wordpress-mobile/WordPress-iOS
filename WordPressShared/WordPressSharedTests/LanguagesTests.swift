@@ -16,8 +16,8 @@ class LanguagesTests: XCTestCase {
         let sum = languages.all + languages.popular
 
         for language in sum {
-            XCTAssert(language.slug.characters.count > 0)
-            XCTAssert(language.name.characters.count > 0)
+            XCTAssert(language.slug.count > 0)
+            XCTAssert(language.name.count > 0)
         }
     }
 

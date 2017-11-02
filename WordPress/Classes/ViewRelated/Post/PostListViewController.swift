@@ -306,7 +306,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if searchText?.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
             predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
@@ -322,7 +322,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(authorPredicate)
         }
 
-        if let searchText = searchText, searchText.characters.count > 0 {
+        if let searchText = searchText, searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
@@ -387,7 +387,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = type(of: self).postCardRestoreCellIdentifier
-        } else if post.pathForDisplayImage?.characters.count > 0 {
+        } else if post.pathForDisplayImage?.count > 0 {
             identifier = type(of: self).postCardImageCellIdentifier
         } else {
             identifier = type(of: self).postCardTextCellIdentifier

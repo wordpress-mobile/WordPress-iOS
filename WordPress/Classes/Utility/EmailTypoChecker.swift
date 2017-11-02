@@ -66,7 +66,7 @@ open class EmailTypoChecker: NSObject {
         }
 
         // If the domain name is too long, don't try suggestion (resource consuming and useless)
-        guard domain.characters.count < lengthOfLongestKnownDomain() + 1 else {
+        guard domain.count < lengthOfLongestKnownDomain() + 1 else {
             return email
         }
 
@@ -88,22 +88,22 @@ private func edits(_ word: String) -> [String] {
     // deletes
     let deleted = deletes(word)
     let transposed = transposes(word)
-    let replaced = alphabet.characters.flatMap({ character in
-        return replaces(character, ys: word.characters)
+    let replaced = alphabet.flatMap({ character in
+        return replaces(character, ys: word)
     })
-    let inserted = alphabet.characters.flatMap({ character in
-        return between(character, ys: word.characters)
+    let inserted = alphabet.flatMap({ character in
+        return between(character, ys: word)
     })
 
     return deleted + transposed + replaced + inserted
 }
 
 private func deletes(_ word: String) -> [String] {
-    return word.characters.indices.map({ word.removing(at: $0) })
+    return word.indices.map({ word.removing(at: $0) })
 }
 
 private func transposes(_ word: String) -> [String] {
-    return word.characters.indices.flatMap({ index in
+    return word.indices.flatMap({ index in
         let (i, j) = (index, word.index(after: index))
         guard j < word.endIndex else {
             return nil
@@ -114,24 +114,24 @@ private func transposes(_ word: String) -> [String] {
     })
 }
 
-private func replaces(_ x: Character, ys: String.CharacterView) -> [String] {
+private func replaces(_ x: Character, ys: String) -> [String] {
     guard let head = ys.first else {
         return [String(x)]
     }
     let tail = ys.dropFirst()
-    return [String(x) + String(tail)] + replaces(x, ys: tail).map({ String(head) + $0 })
+    return [String(x) + String(tail)] + replaces(x, ys: String(tail)).map({ String(head) + $0 })
 }
 
-private func between(_ x: Character, ys: String.CharacterView) -> [String] {
+private func between(_ x: Character, ys: String) -> [String] {
     guard let head = ys.first else {
         return [String(x)]
     }
     let tail = ys.dropFirst()
-    return [String(x) + String(ys)] + between(x, ys: tail).map({ String(head) + $0 })
+    return [String(x) + String(ys)] + between(x, ys: String(tail)).map({ String(head) + $0 })
 }
 
 private let alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 private func lengthOfLongestKnownDomain() -> Int {
-    return knownDomains.map({ $0.characters.count }).max() ?? 0
+    return knownDomains.map({ $0.count }).max() ?? 0
 }
