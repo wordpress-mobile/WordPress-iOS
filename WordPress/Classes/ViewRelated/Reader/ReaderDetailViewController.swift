@@ -628,11 +628,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func configureTag() {
         var tag = ""
         if let rawTag = post?.primaryTag {
-            if rawTag.characters.count > 0 {
+            if rawTag.count > 0 {
                 tag = "#\(rawTag)"
             }
         }
-        tagButton.isHidden = tag.characters.count == 0
+        tagButton.isHidden = tag.count == 0
         tagButton.setTitle(tag, for: UIControlState())
         tagButton.setTitle(tag, for: .highlighted)
     }
