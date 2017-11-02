@@ -10,6 +10,7 @@ open class ActivityTableViewCell: WPTableViewCell {
         assert(gravatarImageView != nil)
         assert(summaryLabel != nil)
         assert(timestampLabel != nil)
+        assert(borderView != nil)
     }
 
     // MARK: - Public Methods
