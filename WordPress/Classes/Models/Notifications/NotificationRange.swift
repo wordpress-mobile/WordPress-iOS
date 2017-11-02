@@ -93,9 +93,8 @@ class NotificationRange {
     ///
     private static func kind(for dictionary: [String: AnyObject]) -> Kind? {
         if let type = dictionary[RangeKeys.RawType] as? String,
-            let kind = Kind(rawValue: type)
-        {
-            return kind
+            let kind = Kind(rawValue: type) {
+                return kind
         }
 
         if let _ = dictionary[RangeKeys.SiteId] {
