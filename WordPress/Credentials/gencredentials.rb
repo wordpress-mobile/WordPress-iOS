@@ -176,6 +176,7 @@ debugging_key = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,value) = l.split("=")
+    next if !value
     value.strip!
     if k == "WPCOM_APP_ID"
       client = value
