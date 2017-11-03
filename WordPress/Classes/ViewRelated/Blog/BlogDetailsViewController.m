@@ -672,7 +672,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
 }
 
-// an image has been received from a drop action
 - (void)uploadDroppedSiteIconImage:(UIImage *)image
 {
     self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
