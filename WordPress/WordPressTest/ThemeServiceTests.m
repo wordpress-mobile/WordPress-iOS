@@ -71,7 +71,7 @@
     blog.account.wordPressComRestApi = api;
     ThemeService *service = nil;
     NSNumber *blogId = @1;
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
+    NSString *url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/themes/mine", blogId];
 
     blog.dotComID = blogId;
 
@@ -105,7 +105,7 @@
     blog.account.wordPressComRestApi = api;
     ThemeService *service = nil;
     NSNumber *blogId = @1;
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/purchased", blogId];
+    NSString *url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/themes/purchased", blogId];
     blog.dotComID = blogId;
     
     OCMStub([api GET:[OCMArg isEqual:url]
@@ -138,7 +138,7 @@
     account.wordPressComRestApi = api;
     ThemeService *service = nil;
     NSString *themeId = @"SomeTheme";
-    NSString *url = [NSString stringWithFormat:@"v1.1/themes/%@", themeId];
+    NSString *url = [NSString stringWithFormat:@"rest/v1.1/themes/%@", themeId];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -187,7 +187,7 @@
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     account.wordPressComRestApi = api;
     ThemeService *service = nil;
-    NSString *url = @"v1.2/themes";
+    NSString *url = @"rest/v1.2/themes";
 
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
@@ -220,7 +220,7 @@
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
-    NSString *url = [NSString stringWithFormat:@"v1.2/sites/%@/themes", blogId];
+    NSString *url = [NSString stringWithFormat:@"rest/v1.2/sites/%@/themes", blogId];
 
     blog.dotComID = blogId;
     blog.account.wordPressComRestApi = api;
@@ -259,7 +259,7 @@
     NSNumber *blogId = @1;
     WordPressComRestApi *api = OCMStrictClassMock([WordPressComRestApi class]);
     ThemeService *service = nil;
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
+    NSString *url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/themes/mine", blogId];
     
     theme.themeId = @"SomeThemeId";
 

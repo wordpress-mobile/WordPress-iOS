@@ -291,6 +291,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatTrainTracksInteract,
     WPAnalyticsStatTwoFactorCodeRequested,
     WPAnalyticsStatTwoFactorSentSMS,
+    WPAnalyticsStatShareExtensionError,
     WPAnalyticsStatMaxValue
 };
 

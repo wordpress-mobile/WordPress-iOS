@@ -141,7 +141,7 @@ class MediaThumbnailService: LocalCoreDataService {
                 return
             }
             // Get an expected WP URL, for sizing.
-            if media.blog.isPrivate() {
+            if media.blog.isPrivate() || (!media.blog.isHostedAtWPcom && media.blog.isBasicAuthCredentialStored()) {
                 remoteURL = WPImageURLHelper.imageURLWithSize(preferredSize, forImageURL: remoteAssetURL)
             } else {
                 remoteURL = PhotonImageURLHelper.photonURL(with: preferredSize, forImageURL: remoteAssetURL)
@@ -200,7 +200,7 @@ class MediaThumbnailService: LocalCoreDataService {
     /// Handle the OnError callback and logging any errors encountered.
     ///
     fileprivate func handleExportError(_ error: MediaExportError, errorHandler: OnError?) {
-        MediaExportService.logExportError(error)
+        MediaImportService.logExportError(error)
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
                 errorHandler(error.toNSError())

@@ -191,8 +191,8 @@ extension NotificationBlock {
             if range.kind == .Noticon {
                 let noticon         = (range.value ?? String()) + " "
                 theString.replaceCharacters(in: shiftedRange, with: noticon)
-                lengthShift         += noticon.characters.count
-                shiftedRange.length += noticon.characters.count
+                lengthShift         += noticon.count
+                shiftedRange.length += noticon.count
             }
 
             if let rangeStyle = rangeStylesMap?[range.kind] {
