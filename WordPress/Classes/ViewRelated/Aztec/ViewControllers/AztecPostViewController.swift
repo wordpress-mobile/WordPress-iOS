@@ -3359,7 +3359,7 @@ extension AztecPostViewController {
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
-        static let mediaOverlayIconSize     = CGSize(width:32, height:32)
+        static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
