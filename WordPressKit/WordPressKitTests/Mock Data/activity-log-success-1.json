@@ -70,7 +70,8 @@
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
                          },
-                         "is_rewindable": false,
+                         "is_rewindable": true,
+                         "rewind_id": "35555666",
                          "gridicon": "lock",
                          "status": null,
                          "activity_id": "AV8MajCujEqjFGbxwDy9",
