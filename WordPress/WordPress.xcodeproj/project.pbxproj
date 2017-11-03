@@ -7479,7 +7479,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
+				INFOPLIST_PREFIX_HEADER = "InfoPlist-alpha.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -7913,7 +7913,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
-				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
+				INFOPLIST_PREFIX_HEADER = "InfoPlist-internal.h";
 				INFOPLIST_PREPROCESS = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
