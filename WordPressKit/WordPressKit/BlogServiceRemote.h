@@ -9,7 +9,7 @@ typedef void (^PostTypesHandler)(NSArray <RemotePostType *> *postTypes);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
 typedef void (^UsersHandler)(NSArray <RemoteUser *> *users);
 typedef void (^MultiAuthorCheckHandler)(BOOL isMultiAuthor);
-typedef void (^SuccessHandler)();
+typedef void (^SuccessHandler)(void);
 
 @protocol BlogServiceRemote <NSObject>
 

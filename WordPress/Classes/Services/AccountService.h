@@ -3,7 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class WPAccount, Blog;
+@class WPAccount;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
@@ -83,14 +83,24 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 
 /**
- Requets a one-time authentication link sent to an existing account associated with the
+ Requests a one-time authentication link sent to an existing account associated with the
  specified email address.
 
  @param email
  @param success
  @param failure
  */
-- (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+
+/**
+ Requests a verification email to be sent to the email address associated with the current account.
+
+ @param success
+ @param failure
+ */
+- (void)requestVerificationEmail:(void (^)(void))success
+                         failure:(void (^)(NSError *error))failure;
+
 
 
 ///-----------------------
@@ -134,7 +144,9 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
  @param account WPAccount to be updated
  */
-- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)updateUserDetailsForAccount:(WPAccount *)account
+                            success:(nullable void (^)(void))success
+                            failure:(nullable void (^)(NSError *error))failure;
 
 /**
  Initializes the WordPress iOS Extensions with the WordPress.com Default Account.

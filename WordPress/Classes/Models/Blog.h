@@ -29,6 +29,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureCommentLikes,
     /// Can we show stats for the blog?
     BlogFeatureStats,
+    /// Can we show activity for the blog?
+    BlogFeatureActivity,
     /// Does the blog support mentions?
     BlogFeatureMentions,
     /// Does the blog support push notifications?
@@ -145,6 +147,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormatNames;
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedPostFormats;
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedConnections;
+@property (nonatomic, readonly, nullable) NSArray<Role *> *sortedRoles;
 @property (nonatomic, strong,  readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic,   weak,  readonly, nullable) NSString       *version;
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
@@ -219,6 +222,13 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return a WordPressComRestApi object if available
  */
 - (nullable WordPressComRestApi *)wordPressComRestApi;
+
+/**
+ Check if there is already a basic auth credential stored for this blog/site.
+
+ @return YES if there is a credential
+ */
+- (BOOL)isBasicAuthCredentialStored;
 
 @end
 

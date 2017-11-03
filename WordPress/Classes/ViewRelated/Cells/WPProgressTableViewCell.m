@@ -1,5 +1,8 @@
 #import "WPProgressTableViewCell.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-prototypes"
 #import "MRProgress.h"
+#pragma clang diagnostic pop
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
@@ -32,6 +35,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 
 - (void)prepareForReuse
 {
+    [super prepareForReuse];
     [self setProgress:nil];
     self.progressView.hidden = YES;
     self.progressView.hidesWhenStopped=YES;

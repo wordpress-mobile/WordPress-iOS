@@ -14,6 +14,7 @@ class PostPostViewController: UIViewController {
 
     private(set) var post: Post?
     var revealPost = false
+    private var hasAnimated = false
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var postStatusLabel: UILabel!
     @IBOutlet var siteIconView: UIImageView!
@@ -58,17 +59,16 @@ class PostPostViewController: UIViewController {
         navBar.setBackgroundImage(clearImage, for: .default)
 
         view.alpha = WPAlphaZero
-        shareButton.alpha = WPAlphaZero
+
         shareButton.setTitle(NSLocalizedString("Share", comment: "Button label to share a post"), for: .normal)
         shareButton.setImage(Gridicon.iconOfType(.shareIOS, withSize: CGSize(width: 18, height: 18)), for: .normal)
         shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
-        editButton.alpha = WPAlphaZero
         editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), for: .normal)
-        viewButton.alpha = WPAlphaZero
         viewButton.setTitle(NSLocalizedString("View Post", comment: "Button label for viewing a post"), for: .normal)
 
         if revealPost {
-            showPostPost()
+            view.alpha = WPAlphaFull
+            animatePostPost()
         }
     }
 
@@ -76,12 +76,19 @@ class PostPostViewController: UIViewController {
         super.viewDidAppear(animated)
     }
 
-    func showPostPost() {
-        view.alpha = WPAlphaFull
+    func animatePostPost() {
+        guard !hasAnimated else {
+            return
+        }
+        hasAnimated = true
+
         shadeView.isHidden = false
         shadeView.backgroundColor = UIColor.black
         shadeView.alpha = WPAlphaFull * 0.5
         postInfoView.alpha = WPAlphaZero
+        viewButton.alpha = WPAlphaZero
+        editButton.alpha = WPAlphaZero
+        shareButton.alpha = WPAlphaZero
 
         let animationScaleBegin: CGFloat = -0.75
         shareButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin

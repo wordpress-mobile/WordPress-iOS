@@ -233,6 +233,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies the default styles to the cell's subviews
     */
     fileprivate func applyStyles() {
+        backgroundColor = WPStyleGuide.greyLighten30()
         contentView.backgroundColor = WPStyleGuide.greyLighten30()
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
@@ -435,9 +436,9 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate func configureCommentActionButton() {
 
         // Show comments if logged in and comments are enabled, or if comments exist.
-        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // But only if it is from wpcom or jetpack (external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        if contentProvider!.isWPCom() {
+        if contentProvider!.isWPCom() || (contentProvider!.isJetpack() && FeatureFlag.jetpackCommentsOnReader.enabled) {
             if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().intValue > 0 {
 
                 commentActionButton.tag = CardAction.comment.rawValue
@@ -589,7 +590,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-extension ReaderPostCardCell : ReaderCardDiscoverAttributionViewDelegate {
+extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
     }

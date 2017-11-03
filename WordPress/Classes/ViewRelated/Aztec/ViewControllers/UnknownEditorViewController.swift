@@ -39,7 +39,7 @@ class UnknownEditorViewController: UIViewController {
 
     /// Closure to be executed whenever the user cancels edition
     ///
-    var onDidCancel: ((Void) -> Void)?
+    var onDidCancel: (() -> Void)?
 
 
 

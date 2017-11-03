@@ -22,6 +22,15 @@
 
 @implementation MediaService
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
+    self = [super initWithManagedObjectContext:context];
+    if (self) {
+        _concurrentThumbnailGeneration = NO;
+    }
+    return self;
+}
+
 #pragma mark - Creating media
 
 - (void)createMediaWithURL:(NSURL *)url
@@ -30,8 +39,22 @@
                 completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [[url pathComponents] lastObject];
-    [self exportMediaWith:url
+    [self createMediaWith:url
                  objectID:postObjectID
+                mediaName:mediaName
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
+
+- (void)createMediaWithURL:(NSURL *)url
+           forBlogObjectID:(NSManagedObjectID *)blogObjectID
+         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSString *mediaName = [[url pathComponents] lastObject];
+    [self createMediaWith:url
+                 objectID:blogObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
                completion:completion
@@ -44,7 +67,7 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self exportMediaWith:image
+    [self createMediaWith:image
                  objectID:postObjectID
                 mediaName:mediaID
         thumbnailCallback:thumbnailCallback
@@ -58,7 +81,7 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-    [self exportMediaWith:asset
+    [self createMediaWith:asset
                  objectID:postObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
@@ -72,7 +95,7 @@
                     completion:(void (^)(Media *media, NSError *error))completion
 {
     NSString *mediaName = [asset originalFilename];
-    [self exportMediaWith:asset
+    [self createMediaWith:asset
                  objectID:blogObjectID
                 mediaName:mediaName
         thumbnailCallback:thumbnailCallback
@@ -85,7 +108,7 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self exportMediaWith:image
+    [self createMediaWith:image
                  objectID:blogObjectID
                 mediaName:[[NSUUID UUID] UUIDString]
         thumbnailCallback:thumbnailCallback
@@ -94,7 +117,7 @@
 
 #pragma mark - Private exporting
 
-- (void)exportMediaWith:(id<ExportableAsset>)exportable
+- (void)createMediaWith:(id<ExportableAsset>)exportable
                objectID:(NSManagedObjectID *)objectID
               mediaName:(NSString *)mediaName
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
@@ -128,6 +151,13 @@
         return;
     }
 
+    Media *media;
+    if (post != nil) {
+        media = [Media makeMediaWithPost:post];
+    } else {
+        media = [Media makeMediaWithBlog:blog];
+    }
+
     // Setup completion handlers
     void(^completionWithMedia)(Media *) = ^(Media *media) {
         // Pre-generate a thumbnail image, see the method notes.
@@ -144,22 +174,22 @@
     };
 
     // Export based on the type of the exportable.
-    MediaExportService *exportService = [[MediaExportService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
     if ([exportable isKindOfClass:[PHAsset class]]) {
-        [exportService exportMediaWithBlog:blog
-                                     asset:(PHAsset *)exportable
-                              onCompletion:completionWithMedia
-                                   onError:completionWithError];
+        [importService importAsset:(PHAsset *)exportable
+                           toMedia:media
+                      onCompletion:completionWithMedia
+                           onError:completionWithError];
     } else if ([exportable isKindOfClass:[UIImage class]]) {
-        [exportService exportMediaWithBlog:blog
-                                     image:(UIImage *)exportable
-                              onCompletion:completionWithMedia
-                                   onError:completionWithError];
+        [importService importImage:(UIImage *)exportable
+                           toMedia:media
+                      onCompletion:completionWithMedia
+                           onError:completionWithError];
     } else if ([exportable isKindOfClass:[NSURL class]]) {
-        [exportService exportMediaWithBlog:blog
-                                       url:(NSURL *)exportable
-                              onCompletion:completionWithMedia
-                                   onError:completionWithError];
+        [importService importURL:(NSURL *)exportable
+                         toMedia:media
+                    onCompletion:completionWithMedia
+                         onError:completionWithError];
     } else {
         completionWithError(nil);
     }
@@ -206,7 +236,7 @@
 
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
     Blog *blog = media.blog;
@@ -236,7 +266,6 @@
             }
 
             [self updateMedia:mediaInContext withRemoteMedia:media];
-            mediaInContext.remoteStatus = MediaRemoteStatusSync;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
                     success();
@@ -283,7 +312,7 @@
 #pragma mark - Updating media
 
 - (void)updateMedia:(Media *)media
-            success:(void (^)())success
+            success:(void (^)(void))success
             failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
@@ -327,7 +356,7 @@
 }
 
 - (void)updateMedia:(NSArray<Media *> *)mediaObjects
-     overallSuccess:(void (^)())overallSuccess
+     overallSuccess:(void (^)(void))overallSuccess
             failure:(void (^)(NSError *error))failure
 {
     if (mediaObjects.count == 0) {
@@ -419,14 +448,14 @@
 #pragma mark - Deleting media
 
 - (void)deleteMedia:(nonnull Media *)media
-            success:(nullable void (^)())success
+            success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
     NSManagedObjectID *mediaObjectID = media.objectID;
 
-    void (^successBlock)() = ^() {
+    void (^successBlock)(void) = ^() {
         [self.managedObjectContext performBlock:^{
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             [self.managedObjectContext deleteObject:mediaInContext];
@@ -446,8 +475,8 @@
 
 - (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
            progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
-            success:(nullable void (^)())success
-            failure:(nullable void (^)())failure
+            success:(nullable void (^)(void))success
+            failure:(nullable void (^)(void))failure
 {
     if (mediaObjects.count == 0) {
         if (success) {
@@ -540,7 +569,7 @@
 }
 
 - (void)syncMediaLibraryForBlog:(Blog *)blog
-                        success:(void (^)())success
+                        success:(void (^)(void))success
                         failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
@@ -678,6 +707,9 @@
 {
     if (!_thumbnailService) {
         _thumbnailService = [[MediaThumbnailService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        if (self.concurrentThumbnailGeneration) {
+            _thumbnailService.exportQueue = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
+        }
     }
     return _thumbnailService;
 }
@@ -738,8 +770,7 @@
         @autoreleasepool {
             Media *local = [Media existingMediaWithMediaID:remote.mediaID inBlog:blog];
             if (!local) {
-                local = [Media makeMediaWithBlog:blog];
-                local.remoteStatus = MediaRemoteStatusSync;
+                local = [Media makeMediaWithBlog:blog];                
             }
             [self updateMedia:local withRemoteMedia:remote];
             [mediaToKeep addObject:local];
@@ -778,6 +809,7 @@
     media.title = remoteMedia.title;
     media.caption = remoteMedia.caption;
     media.desc = remoteMedia.descriptionText;
+    media.alt = remoteMedia.alt;
     media.height = remoteMedia.height;
     media.width = remoteMedia.width;
     media.shortcode = remoteMedia.shortcode;
@@ -785,6 +817,8 @@
     media.length = remoteMedia.length;
     media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
     media.postID = remoteMedia.postID;
+
+    media.remoteStatus = MediaRemoteStatusSync;
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media
@@ -798,6 +832,7 @@
     remoteMedia.title = media.title;
     remoteMedia.caption = media.caption;
     remoteMedia.descriptionText = media.desc;
+    remoteMedia.alt = media.alt;
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;
