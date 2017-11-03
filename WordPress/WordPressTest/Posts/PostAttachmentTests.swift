@@ -101,7 +101,7 @@ class PostAttachmentTests: XCTestCase {
         let prefixString = "Image with link: "
         let imageName = "someExampleImage.jpg"
         let linkURLValue = URL(string: "https://wordpress.com/")!
-        
+
         let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
         let delegate = MockAttachmentDelegate()
         richTextView.textAttachmentDelegate = delegate
@@ -109,9 +109,9 @@ class PostAttachmentTests: XCTestCase {
         let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange,
                                                        sourceURL: URL(string: imageName)!,
                                                        placeHolderImage: UIImage())
-        
+
         let expect = expectation(description: "Link URL value has been updated")
-        
+
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.linkURL = linkURLValue
@@ -124,9 +124,9 @@ class PostAttachmentTests: XCTestCase {
             }
         }
         controller.handleDoneButtonTapped(sender: UIBarButtonItem())
-        
+
         waitForExpectations(timeout: 1, handler: nil)
-        
+
         let html = richTextView.getHTML()
         XCTAssert(html == "<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\"></a></p>")
     }
