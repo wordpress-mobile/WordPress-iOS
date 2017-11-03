@@ -675,31 +675,45 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 // an image has been received from a drop action
 - (void)uploadDroppedSiteIconImage:(UIImage *)image
 {
-    __block UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    // Create a Resize & Crop view controller, separate from the siteIconPicker.
     self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
     self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
    
-    // When the user tapped "use"
+    __weak __typeof(self) weakSelf = self;
     self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
-        // dismiss the modal
-        [navController dismissViewControllerAnimated:YES completion:nil];
-        
-        // Upload the new blavatar
-        
-        // Upon successful completion of the upload, hide the spinner
-        
-        // Upon failing to upload, call the method `showErrorForSiteIconUpdate`
-        if (modified) {
-            
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        if (!modified) {
+            return;
         }
-        
+        [weakSelf uploadDroppedSiteIcon:image];
     };
     
-    // Present the Resize & Crop view controller.
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)uploadDroppedSiteIcon:(UIImage *)image
+{
+    if (self.blog.objectID == nil) {
+        return;
+    }
+    
+    __weak __typeof(self) weakSelf = self;
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    [mediaService createMediaWithImage:image
+                       forBlogObjectID:self.blog.objectID
+                     thumbnailCallback:nil
+                            completion:^(Media * _Nullable media, NSError * _Nullable error) {
+                                if (media == nil || error != nil) {
+                                    return;
+                                }
+                                NSProgress *uploadProgress;
+                                [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                                    [weakSelf updateBlogIconWithMedia:media];
+                                } failure:^(NSError * _Nonnull error) {
+                                    [weakSelf showErrorForSiteIconUpdate];
+                                }];
+                            }];
 }
 
 - (void)updateSiteIcon
