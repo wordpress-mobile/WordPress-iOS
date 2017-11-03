@@ -36,6 +36,11 @@ extension FluxEmitter {
             assertionFailure("Attempting to remove a listener that has already stopped listening.")
             return
         }
+        guard let emitter = listener.emitter,
+            emitter === self else {
+            assertionFailure("Attempting to remove a listener that's registered to a different emitter.")
+            return
+        }
         dispatcher.unregister(token: token)
         listener.dispatchToken = nil
     }
