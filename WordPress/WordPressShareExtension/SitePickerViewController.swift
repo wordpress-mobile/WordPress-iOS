@@ -41,7 +41,7 @@ class SitePickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let site = sites[indexPath.row]
-        onChange?(site.blogID.intValue, (site.name?.characters.count)! > 0 ? site.name : URL(string: site.url)?.host)
+        onChange?(site.blogID.intValue, (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host)
         _ = navigationController?.popViewController(animated: true)
     }
 
