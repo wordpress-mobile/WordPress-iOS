@@ -383,7 +383,7 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private var hasSearchQuery: Bool {
-        return (pickerDataSource.searchQuery ?? "").characters.count > 0
+        return (pickerDataSource.searchQuery ?? "").count > 0
     }
 
     // MARK: - Actions

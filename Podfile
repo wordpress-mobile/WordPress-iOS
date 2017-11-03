@@ -17,6 +17,7 @@ end
 def shared_with_networking_pods
   pod 'AFNetworking', '3.1.0'
   pod 'wpxmlrpc', '0.8.3'
+  pod 'Alamofire', '4.5.1'
 end
 
 def shared_test_pods
@@ -53,7 +54,7 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.1'
   pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.23'
+  pod 'WPMediaPicker', '0.24'
   pod 'WordPress-iOS-Editor', '1.9.7'
   pod 'WordPress-Aztec-iOS', '=1.0.0-beta.13'
 
@@ -71,8 +72,6 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
-
-    pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   end
 
   target 'WordPressTodayWidget' do

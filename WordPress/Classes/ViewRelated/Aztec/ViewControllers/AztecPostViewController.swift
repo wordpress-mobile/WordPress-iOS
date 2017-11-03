@@ -64,6 +64,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
@@ -108,6 +109,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
@@ -328,6 +330,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
             refreshEditorVisibility()
             refreshPlaceholderVisibility()
+            refreshTitlePosition()
         }
     }
 
@@ -561,7 +564,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Title and Title placeholder position methods
 
-    func updateTitlePosition() {
+    func refreshTitlePosition() {
         let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
         titleTopConstraint.constant = -(referenceView.contentOffset.y+referenceView.contentInset.top)
 
@@ -1386,7 +1389,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        updateTitlePosition()
+        refreshTitlePosition()
     }
 
     // MARK: - Title Input Sanitization
@@ -1421,7 +1424,7 @@ extension AztecPostViewController: UITextViewDelegate {
     ///
     private func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
 
-        guard text.characters.count > 1 else {
+        guard text.count > 1 else {
             guard text.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) == nil else {
                 richTextView.becomeFirstResponder()
                 richTextView.selectedRange = NSRange(location: 0, length: 0)
@@ -2902,10 +2905,7 @@ extension AztecPostViewController {
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
-                                                if attachment is ImageAttachment {
-                                                    attachment.overlayImage = nil
-                                                }
-                                                attachment.message = nil
+                                                self.resetMediaAttachmentOverlay(attachment)
                                                 self.richTextView.refresh(attachment)
                                             }
         })
@@ -2943,10 +2943,7 @@ extension AztecPostViewController {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        if attachment is ImageAttachment {
-                                                            attachment.overlayImage = nil
-                                                        }
-                                                        attachment.message = nil
+                                                        self.resetMediaAttachmentOverlay(attachment)
                                                         attachment.progress = 0
                                                         self.richTextView.refresh(attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
@@ -3041,6 +3038,13 @@ extension AztecPostViewController {
         updateToolbar(formatBar, forMode: .text)
         restoreInputAssistantItems()
     }
+
+    fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
+        if mediaAttachment is ImageAttachment {
+            mediaAttachment.overlayImage = nil
+        }
+        mediaAttachment.message = nil
+    }
 }
 
 
@@ -3071,7 +3075,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         } else {
             // if it's a new attachment tapped let's unmark the previous one
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                self.resetMediaAttachmentOverlay(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
             // and mark the newly tapped attachment
@@ -3128,10 +3132,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func deselected(textAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
         currentSelectedAttachment = nil
         if let mediaAttachment = attachment as? MediaAttachment {
-            mediaAttachment.message = nil
-            if mediaAttachment is ImageAttachment {
-                mediaAttachment.overlayImage = nil
-            }
+            self.resetMediaAttachmentOverlay(mediaAttachment)
             richTextView.refresh(mediaAttachment)
         }
     }
@@ -3150,6 +3151,10 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             size.width = size.width * UIScreen.main.scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: requestURL)
+        } else if !self.post.blog.isHostedAtWPcom && self.post.blog.isBasicAuthCredentialStored() {
+            size.width = size.width * UIScreen.main.scale
+            requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: requestURL)
+            request = URLRequest(url: requestURL)
         } else {
             // the size that PhotonImageURLHelper expects is points size
             requestURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: requestURL)
