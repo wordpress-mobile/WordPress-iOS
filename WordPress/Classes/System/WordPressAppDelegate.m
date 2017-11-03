@@ -111,22 +111,6 @@ int ddLogLevel = DDLogLevelInfo;
 
     self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
 
-    // Temporary force of Aztec to "on" for all internal users
-#ifdef INTERNAL_BUILD
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *defaultsKey = @"AztecInternalForcedOnVersion";
-    NSString *lastBuildAztecForcedOn = [defaults stringForKey:defaultsKey];
-    NSString *currentVersion = [[NSBundle mainBundle] bundleVersion];
-    if (![currentVersion isEqualToString:lastBuildAztecForcedOn]) {
-        [defaults setObject:currentVersion forKey:defaultsKey];
-        [defaults synchronize];
-
-        EditorSettings *settings = [EditorSettings new];
-        [settings setVisualEditorEnabled:TRUE];
-        [settings setNativeEditorEnabled:TRUE];
-    }
-#endif
-
     return YES;
 }
 
@@ -375,6 +359,20 @@ int ddLogLevel = DDLogLevelInfo;
 {
     NSString *restoreID = [identifierComponents lastObject];
     return [[Restorer new] viewControllerWithIdentifier:restoreID];
+}
+
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier completionHandler:(void (^)(void))completionHandler {
+
+    // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
+    // is no need to inspect the identifier beyond the simple check here.
+    if ([identifier containsString:WPAppGroupName]) {
+        DDLogInfo(@"Rejoining session with identifier: %@ with application in state: %@", identifier, application.applicationState);
+        ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
+        sessionManager.backgroundSessionCompletionBlock = ^{
+            dispatch_async(dispatch_get_main_queue(), completionHandler);
+        };
+        [sessionManager startBackgroundSession];
+    }
 }
 
 #pragma mark - Application startup

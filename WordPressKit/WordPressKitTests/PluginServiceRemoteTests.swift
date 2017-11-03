@@ -34,8 +34,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(sitePluginsEndpoint,
                            filename: getPluginsSuccessMockFilename,
                            contentType: .ApplicationJSON)
-        remote.getPlugins(siteID: siteID, success: { (plugins) in
-            XCTAssertEqual(plugins.count, 8)
+        remote.getPlugins(siteID: siteID, success: { (plugins, capabilities) in
+            XCTAssertEqual(plugins.count, 5)
+            XCTAssertTrue(capabilities.autoupdate)
+            XCTAssertTrue(capabilities.modify)
             expect.fulfill()
         }, failure: { (error) in
             XCTFail("This callback shouldn't get called")

@@ -3,10 +3,11 @@ import Foundation
 public struct PluginState {
     public let id: String
     public let slug: String
-    public let active: Bool
+    public var active: Bool
     public let name: String
     public let version: String?
-    public let autoupdate: Bool
+    public var autoupdate: Bool
+    public let url: URL?
 }
 
 public extension PluginState {
@@ -21,5 +22,23 @@ public extension PluginState {
         case (true, true):
             return NSLocalizedString("Active, Autoupdates on", comment: "The plugin is active on the site and has enabled automatic updates")
         }
+    }
+
+    var homeURL: URL? {
+        return url
+    }
+
+    @available(*, unavailable, message: "Don't use until we can figure out if the plugin is in the WordPress.org directory")
+    var directoryURL: URL {
+        return URL(string: "https://wordpress.org/plugins/\(slug)")!
+    }
+
+    var deactivateAllowed: Bool {
+        return !isJetpack
+    }
+
+    var isJetpack: Bool {
+        return slug == "jetpack"
+            || slug == "jetpack-dev"
     }
 }

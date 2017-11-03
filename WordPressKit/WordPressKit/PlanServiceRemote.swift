@@ -13,7 +13,7 @@ public class PlanServiceRemote: ServiceRemoteWordPressComREST {
 
     public func getPlansForSite(_ siteID: Int, success: @escaping (SitePlans) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/plans"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_2)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let parameters = ["locale": locale]
 
