@@ -178,7 +178,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.restoreStatusForSite(siteID,
                                     restoreID: restoreID,
                                     success: { (restoreStatus) in
-                                        XCTAssertEqual(restoreStatus.status, RestoreStatus.Status.finished)
+                                        XCTAssertEqual(restoreStatus.status, .finished)
                                         XCTAssertEqual(restoreStatus.percent, 100)
                                         expect.fulfill()
                                     }, failure: { error in
