@@ -9,6 +9,9 @@ class MediaUploadCoordinator {
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
+    // Init marked private to ensure use of shared singleton.
+    private init() {}
+
     // MARK: - Adding Media
 
     /// Adds the specified media asset to the specified blog. The upload process
@@ -54,7 +57,8 @@ class MediaUploadCoordinator {
     /// Add an observer to receive updates when media items are updated.
     ///
     /// - parameter onUpdate: A block that will be called whenever media items
-    ///                       (or a specific media item) are updated.
+    ///                       (or a specific media item) are updated. The update
+    ///                       block will always be called on the main queue.
     /// - parameter media: An optional specific media item to receive updates for.
     ///                    If provided, the `onUpdate` block will only be called
     ///                    for updates to this media item, otherwise it will be
@@ -109,7 +113,8 @@ class MediaUploadCoordinator {
     /// including any 'wildcard' observers that are observing _all_ media items.
     ///
     private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        return mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID }) + wildcardObservers
+        let values = mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
+        return values + wildcardObservers
     }
 
     /// Utility method to return all 'wildcard' observers that are

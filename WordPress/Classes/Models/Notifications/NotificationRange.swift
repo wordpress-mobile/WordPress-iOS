@@ -41,12 +41,15 @@ class NotificationRange {
     /// Designated Initializer
     ///
     init?(dictionary: [String: AnyObject]) {
-        guard let type = dictionary[RangeKeys.RawType] as? String, let indices = dictionary[RangeKeys.Indices] as? [Int],
-            let start = indices.first, let end = indices.last else {
+        guard let theKind = NotificationRange.kind(for: dictionary),
+            let indices = dictionary[RangeKeys.Indices] as? [Int],
+            let start = indices.first,
+            let end = indices.last
+        else {
             return nil
         }
 
-        kind = Kind(rawValue: type) ?? .Site
+        kind = theKind
         range = NSMakeRange(start, end - start)
         siteID = dictionary[RangeKeys.SiteId] as? NSNumber
 
@@ -79,6 +82,31 @@ class NotificationRange {
             break
         }
     }
+
+
+    /// Returns the NotificationRange Kind, for a given raw Notification Range.
+    ///
+    /// - Details:
+    ///     I truly hope the reviewer, and the Opensource Community can forgive this ongoing hack.
+    ///     Notifications can now carry URL's without specifying an explicit 'Type'. For that reason,
+    ///     surprise!... we're now also inferring the Notification Type.
+    ///
+    private static func kind(for dictionary: [String: AnyObject]) -> Kind? {
+        if let type = dictionary[RangeKeys.RawType] as? String,
+            let kind = Kind(rawValue: type) {
+                return kind
+        }
+
+        if let _ = dictionary[RangeKeys.SiteId] {
+            return .Site
+        }
+
+        if let _ = dictionary[RangeKeys.URL] {
+            return .Link
+        }
+
+        return nil
+    }
 }
 
 
@@ -103,26 +131,27 @@ extension NotificationRange {
     /// Known kinds of Range
     ///
     enum Kind: String {
-        case User               = "user"
-        case Post               = "post"
-        case Comment            = "comment"
-        case Stats              = "stat"
-        case Follow             = "follow"
-        case Blockquote         = "blockquote"
-        case Noticon            = "noticon"
-        case Site               = "site"
-        case Match              = "match"
+        case User = "user"
+        case Post = "post"
+        case Comment = "comment"
+        case Stats = "stat"
+        case Follow = "follow"
+        case Blockquote = "blockquote"
+        case Noticon = "noticon"
+        case Site = "site"
+        case Match = "match"
+        case Link = "link"
     }
 
     /// Parsing Keys
     ///
     fileprivate enum RangeKeys {
-        static let RawType      = "type"
-        static let URL          = "url"
-        static let Indices      = "indices"
-        static let Id           = "id"
-        static let Value        = "value"
-        static let SiteId       = "site_id"
-        static let PostId       = "post_id"
+        static let RawType = "type"
+        static let URL = "url"
+        static let Indices = "indices"
+        static let Id = "id"
+        static let Value = "value"
+        static let SiteId = "site_id"
+        static let PostId = "post_id"
     }
 }
