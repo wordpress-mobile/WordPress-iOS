@@ -16,7 +16,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 @implementation ReaderTopicService
 
-- (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -46,7 +46,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)fetchFollowedSitesWithSuccess:(void(^)())success failure:(void(^)(NSError *error))failure
+- (void)fetchFollowedSitesWithSuccess:(void(^)(void))success failure:(void(^)(NSError *error))failure
 {
     ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
@@ -284,7 +284,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
     [self unfollowTag:topic withSuccess:^{
@@ -299,7 +299,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 }
 
-- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     // Optimistically unfollow the topic
     topic.following = NO;
@@ -336,7 +336,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)followTagNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)followTagNamed:(NSString *)topicName withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     topicName = [[topicName lowercaseString] trim];
 
@@ -357,7 +357,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
@@ -374,7 +374,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 }
 
-- (void)toggleFollowingForTag:(ReaderTagTopic *)tagTopic success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)toggleFollowingForTag:(ReaderTagTopic *)tagTopic success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     NSError *error;
     ReaderTagTopic *topic = (ReaderTagTopic *)[self.managedObjectContext existingObjectWithID:tagTopic.objectID error:&error];
@@ -444,7 +444,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic success:(void (^)(void))success failure:(void (^)(NSError *error))failure
 {
     NSError *error;
     ReaderSiteTopic *topic = (ReaderSiteTopic *)[self.managedObjectContext existingObjectWithID:siteTopic.objectID error:&error];
@@ -470,7 +470,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     // Define success block
-    void (^successBlock)() = ^void() {
+    void (^successBlock)(void) = ^void() {
         [self refreshPostsForFollowedTopic];
         if (success) {
             success();
@@ -873,7 +873,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
  @param topics An array of `ReaderAbstractTopics` to save.
  */
-- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)())success
+- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)(void))success
 {
     [self.managedObjectContext performBlock:^{
         NSArray *currentTopics = [self allMenuTopics];

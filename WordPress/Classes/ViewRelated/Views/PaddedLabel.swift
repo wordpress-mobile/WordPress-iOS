@@ -1,7 +1,7 @@
 import UIKit
 
 class PaddedLabel: UIView {
-    var padding: (horizontal: CGFloat, vertical: CGFloat) = (0,0) {
+    var padding: (horizontal: CGFloat, vertical: CGFloat) = (0, 0) {
         didSet {
             setNeedsLayout()
         }

@@ -342,7 +342,7 @@ private extension NoteBlockActionsTableViewCell {
 //
 private extension NoteBlockActionsTableViewCell {
     struct Approve {
-        static let normalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
+        static let normalTitle      = NSLocalizedString("Approve", comment: "Approve a comment")
         static let selectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
         static let normalHint       = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
         static let selectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
@@ -378,6 +378,6 @@ private extension NoteBlockActionsTableViewCell {
 
     struct Constants {
         static let buttonSpacing = CGFloat(20)
-        static let buttonSpacingCompact = CGFloat(10)
+        static let buttonSpacingCompact = CGFloat(9)
     }
 }

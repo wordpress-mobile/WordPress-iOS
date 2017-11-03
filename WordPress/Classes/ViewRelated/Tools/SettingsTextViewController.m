@@ -81,6 +81,9 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
     self.shouldNotifyValue = YES;
 
+    // Don't auto-size rows
+    self.tableView.estimatedRowHeight = 0;
+
     [self startListeningTextfieldChanges];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }

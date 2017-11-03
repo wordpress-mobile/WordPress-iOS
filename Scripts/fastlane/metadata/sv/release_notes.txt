@@ -1,2 +1,3 @@
-Webbplatser med Jetpack: Stöd för anpassade roller tillagt.
-Ett flertal mindre förbättringar och felrättningar.
+Mediabibliotek: Gör det möjligt att lägga in länkar i dokument från mediabiblioteket.
+Mediabibliotek: Gör det möjligt att redigera fältet Alt.
+Aztec-redigeraren: Stöd för Nästa sida.

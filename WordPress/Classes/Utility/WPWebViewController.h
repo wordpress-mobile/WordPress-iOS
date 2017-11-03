@@ -1,43 +1,30 @@
 #import <UIKit/UIKit.h>
 
+@class Blog;
+@class WPAccount;
+@class WebViewControllerConfiguration;
+@class WebViewAuthenticator;
 
+NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - WPWebViewController
 
 @interface WPWebViewController : UIViewController<UIWebViewDelegate>
 
-/**
- *	@brief		Represents the Endpoint URL to render
- */
-@property (nonatomic, strong) NSURL     *url;
+- (instancetype)initWithConfiguration:(WebViewControllerConfiguration *)configuration;
 
 /**
- *	@brief		Login URL that should be used to authenticate the user.
+ *    @brief        Represents the Endpoint URL to render
  */
-@property (nonatomic, strong) NSURL     *wpLoginURL;
+@property (nonatomic, strong, nullable) NSURL     *url;
 
 /**
- *	@brief		Username. Optional, will be used in case the endpoint requires authentication.
+ *  @brief      A custom options button to show instead of the share button. Must be set before presented.
  */
-@property (nonatomic, strong) NSString  *username;
+@property (nonatomic, strong, nullable) UIBarButtonItem *optionsButton;
 
 /**
- *	@brief		Password. Optional, will be used in case the endpoint requires authentication.
- */
-@property (nonatomic, strong) NSString  *password;
-
-/**
- *	@brief		Bearer Token. Optional, will be used in case the endpoint requires authentication.
- */
-@property (nonatomic, strong) NSString  *authToken;
-
-/**
- *	@brief		Optionally scrolls the endpoint to the bottom of the screen, automatically.
- */
-@property (nonatomic, assign) BOOL      shouldScrollToBottom;
-
-/**
- *	@brief		Optionally suppresses navigation and sharing
+ *    @brief        Optionally suppresses navigation and sharing
  */
 @property (nonatomic, assign) BOOL      secureInteraction;
 
@@ -46,29 +33,13 @@
  */
 @property (nonatomic, assign) BOOL addsWPComReferrer;
 
+@property (nonatomic, strong, nullable) WebViewAuthenticator *authenticator;
+
 /**
  *	@brief		Dismiss modal presentation
  */
 - (IBAction)dismiss;
 
-/**
- *	@brief      Helper method to initialize a WebViewController Instance
- *
- *	@param		url         The URL that needs to be rendered
- *  @returns                A WPWebViewController instance ready to be pushed.
- */
-+ (instancetype)webViewControllerWithURL:(NSURL *)url;
-
-/**
- *	@brief      Helper method to initialize a WebViewController Instance with a 
- *              custom options button
- *
- *	@param		url         The URL that needs to be rendered
- *  @param      button      A custom options button to display instead of the
- *                          default share button.
- *  @returns                A WPWebViewController instance ready to be pushed.
- */
-+ (instancetype)webViewControllerWithURL:(NSURL *)url
-                           optionsButton:(UIBarButtonItem *)button;
-
 @end
+
+NS_ASSUME_NONNULL_END

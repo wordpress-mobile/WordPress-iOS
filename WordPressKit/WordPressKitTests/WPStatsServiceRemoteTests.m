@@ -971,7 +971,7 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"testStreak completion"];
     
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [[request.URL absoluteString] hasPrefix:@"https://public-api.wordpress.com/rest/v1.1/sites/123456/stats/streak/?endDate=2016-01-28&startDate=2014-01-01"];
+        return [[request.URL absoluteString] hasPrefix:@"https://public-api.wordpress.com/rest/v1.1/sites/123456/stats/streak/?endDate=2016-01-28&max=3000&startDate=2014-01-01"];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
         return [OHHTTPStubsResponse responseWithFileAtPath:OHPathForFile(@"stats-v1.1-streak.json", self.class) statusCode:200 headers:@{@"Content-Type" : @"application/json"}];
     }];

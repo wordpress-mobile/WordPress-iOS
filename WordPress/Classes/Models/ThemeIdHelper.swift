@@ -13,7 +13,7 @@ class ThemeIdHelper: NSObject {
         if blog.supports(.customThemes) && themeIdHasWPComSuffix(themeId) {
             // When a WP.com theme is used on a JP site, its themeId is modified to themeId-wpcom,
             // we need to remove this to be able to match it on the theme list
-            return String(themeId.characters.dropLast(WPComThemesIDSuffix.characters.count))
+            return String(themeId.dropLast(WPComThemesIDSuffix.count))
         }
 
         return themeId
