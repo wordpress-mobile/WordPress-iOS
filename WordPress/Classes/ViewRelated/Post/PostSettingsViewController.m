@@ -673,14 +673,16 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     textCell.textField.placeholder = NSLocalizedString(@"Enter a password", @"");
     textCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textCell.textField.secureTextEntry = YES;
+
+    [[textCell.contentView.heightAnchor constraintGreaterThanOrEqualToConstant:CellHeight] isActive];
     
     textCell.tag = PostSettingsRowPassword;
     
     self.passwordTextField = textCell.textField;
     self.passwordTextField.accessibilityIdentifier = @"Password Value";
-    
+
     [self configureVisibilityButtonForPasswordCell:textCell];
-    
+
     return textCell;
 }
 
