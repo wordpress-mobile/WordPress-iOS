@@ -283,6 +283,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         url = [WPImageURLHelper imageURLWithSize:scaledSize forImageURL:url];
         NSURLRequest *request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
         [self.postCardImageView setImageWithURLRequest:request placeholderImage:nil success:nil failure:nil];
+    } else if (!post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored) {
+        [self.postCardImageView setImageWithURL:url placeholderImage:nil];
     } else {
         // if not private create photon url
         url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];

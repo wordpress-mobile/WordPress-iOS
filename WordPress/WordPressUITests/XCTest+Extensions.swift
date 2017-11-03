@@ -43,7 +43,7 @@ extension XCUIElement {
     func clearAndEnterText(text: String) -> Void {
         let app = XCUIApplication()
 
-        if (self.value as! String).characters.count > 0 {
+        if (self.value as! String).count > 0 {
             self.press(forDuration: 1.2)
             app.menuItems["Select All"].tap()
         } else {
@@ -65,7 +65,7 @@ extension XCTestCase {
         let timeoutValue = timeout ?? 5
 
         waitForExpectations(timeout: TimeInterval(timeoutValue)) { (error) -> Void in
-            if (error != nil) {
+            if error != nil {
                 let message = "Failed to find \(element) after \(timeoutValue) seconds."
                 self.recordFailure(withDescription: message,
                                                   inFile: file, atLine: line, expected: true)
@@ -99,7 +99,7 @@ extension XCTestCase {
         emailOrUsernameTextField.typeText( username )
 
         let nextButton = app.buttons[ elementStringIDs.loginNextButton ]
-        if ( nextButton.exists ) {
+        if nextButton.exists {
             nextButton.tap()
         }
 
@@ -116,7 +116,7 @@ extension XCTestCase {
         emailOrUsernameTextField.typeText( username )
 
         let nextButton = app.buttons[ elementStringIDs.loginNextButton ]
-        if ( nextButton.exists ) {
+        if nextButton.exists {
             nextButton.tap()
         }
 
@@ -155,7 +155,7 @@ extension XCTestCase {
         waitForElementToAppear(element: removeButton)
         removeButton.tap()
 
-        if ( isIpad(app: app) ) {
+        if isIpad(app: app) {
             app.alerts.buttons.element(boundBy: 1).tap()
         } else {
             app.sheets.buttons.element(boundBy: 0).tap()
@@ -184,7 +184,7 @@ extension XCTestCase {
         passwordField.tap()
         passwordField.clearAndEnterText(text: password)
 
-        if ( url != nil ) {
+        if url != nil {
             urlField.tap()
             urlField.clearAndEnterText(text: url!)
         }

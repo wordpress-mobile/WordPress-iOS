@@ -13,7 +13,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
     public func getJetpackSettingsForSite(_ siteID: Int, success: @escaping (RemoteBlogJetpackSettings) -> Void, failure: @escaping (Error) -> Void) {
         
         let endpoint = "jetpack-blogs/\(siteID)/rest-api"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = ["path": "/jetpack/v4/settings"]
 
         wordPressComRestApi.GET(path!,
@@ -37,7 +37,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
     public func getJetpackMonitorSettingsForSite(_ siteID: Int, success: @escaping (RemoteBlogJetpackMonitorSettings) -> Void, failure: @escaping (Error) -> Void) {
 
         let endpoint = "jetpack-blogs/\(siteID)"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
         wordPressComRestApi.GET(path!,
                                 parameters: nil,
@@ -55,28 +55,27 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
                                 })
     }
 
-    /// Saves the ONE Jetpack settings for the specified site
-    /// Only one, the API would not allow us to do more than one at a time
+    /// Saves the Jetpack settings for the specified site
     ///
-    public func updateJetpackSetting(_ siteID: Int, key: String, value: AnyObject, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+    public func updateJetpackSettingsForSite(_ siteID: Int, settings: RemoteBlogJetpackSettings, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
 
-        let dictionary = [key: value] as [String : AnyObject]
-
+        let dictionary = dictionaryFromJetpackSettings(settings)
         guard let jSONData = try? JSONSerialization.data(withJSONObject: dictionary, options: []),
             let jSONBody = String(data: jSONData, encoding: .ascii) else {
-            failure(nil)
-            return
+                failure(nil)
+                return
         }
 
         let endpoint = "jetpack-blogs/\(siteID)/rest-api"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = ["path": "/jetpack/v4/settings",
-                          "body": jSONBody] as [String : AnyObject]
+                          "body": jSONBody,
+                          "json": true] as [String : AnyObject]
 
         wordPressComRestApi.POST(path!,
-                                 parameters: parameters as [String : AnyObject],
+                                 parameters: parameters,
                                  success: {
-                                    _, _ in
+                                    _ in
                                     success()
                                  }, failure: {
                                     error, _ in
@@ -89,18 +88,35 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
     public func updateJetpackMonitorSettingsForSite(_ siteID: Int, settings: RemoteBlogJetpackMonitorSettings, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
 
         let endpoint = "jetpack-blogs/\(siteID)"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_1)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = dictionaryFromJetpackMonitorSettings(settings)
 
         wordPressComRestApi.POST(path!,
                                  parameters: parameters,
                                  success: {
-                                    _, _ in
+                                    _ in
                                     success()
-                                }, failure: {
+                                 }, failure: {
                                     error, _ in
                                     failure(error)
                                 })
+    }
+
+    /// Disconnects Jetpack from a site
+    ///
+    public func disconnectJetpackFromSite(_ siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let endpoint = "jetpack-blogs/\(siteID)/mine/delete"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
+
+        wordPressComRestApi.POST(path!,
+                                 parameters: nil,
+                                 success: {
+                                     _ in
+                                     success()
+                                 }, failure: {
+                                     error, _ in
+                                     failure(error)
+                                 })
     }
 
 }
@@ -138,13 +154,13 @@ private extension BlogJetpackSettingsServiceRemote {
     }
 
     func dictionaryFromJetpackSettings(_ settings: RemoteBlogJetpackSettings) -> [String: AnyObject] {
-
+        let joinedIPs = settings.loginWhiteListedIPAddresses.joined(separator: ", ")
         return [Keys.monitorEnabled: settings.monitorEnabled as AnyObject,
                 Keys.blockMaliciousLoginAttempts: settings.blockMaliciousLoginAttempts as AnyObject,
-                Keys.whiteListedIPAddresses: settings.loginWhiteListedIPAddresses as AnyObject,
+                Keys.whiteListedIPAddresses: joinedIPs as AnyObject,
                 Keys.ssoEnabled: settings.ssoEnabled as AnyObject,
-                Keys.ssoMatchAccountsByEmail: settings.ssoEnabled as AnyObject,
-                Keys.ssoRequireTwoStepAuthentication: settings.ssoEnabled as AnyObject]
+                Keys.ssoMatchAccountsByEmail: settings.ssoMatchAccountsByEmail as AnyObject,
+                Keys.ssoRequireTwoStepAuthentication: settings.ssoRequireTwoStepAuthentication as AnyObject]
 
     }
 
@@ -157,7 +173,6 @@ private extension BlogJetpackSettingsServiceRemote {
 
 public extension BlogJetpackSettingsServiceRemote {
 
-  //  public struct Keys Enum {
     public enum Keys {
 
         // RemoteBlogJetpackSettings keys

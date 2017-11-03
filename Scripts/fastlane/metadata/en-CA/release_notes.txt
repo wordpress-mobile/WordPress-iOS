@@ -1,2 +1,3 @@
-Jetpack sites: Added support for custom roles.
-Several minor improvements and bug fixes.
+Media Library: Allow inserting links to documents from the Media Library.
+Media Library: Make the Alt field editable.
+Aztec Editor: Next Page support.

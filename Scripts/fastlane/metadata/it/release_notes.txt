@@ -1,2 +1,0 @@
-Siti Jetpack: Aggiunto supporto per ruoli personalizzati.
-Diverse migliorie e correzioni.

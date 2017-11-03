@@ -54,7 +54,7 @@
     NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
 
-    void(^trackResizedPhotoError)() = nil;
+    void(^trackResizedPhotoError)(void) = nil;
     if (mediaType == MediaTypeImage && maxImageSize > 0) {
         // Only tracking resized photo if the user selected a max size that's not the -1 value for "Original"
         NSDictionary *properties = @{@"resize_width": @(maxImageSize)};
@@ -168,7 +168,6 @@
         } else if ([object isKindOfClass:[Blog class]]) {
             Blog *blog = (Blog *)object;
             media = [Media makeMediaWithBlog:blog];
-            media.remoteStatusNumber = @(MediaRemoteStatusLocal);
         }
 
         if (media) {
@@ -265,12 +264,11 @@
         } else if (media.mediaType == MediaTypeImage) {
             NSString *remote = media.remoteURL;
             remoteURL = [NSURL URLWithString:remote];
-            if (!media.blog.isPrivate) {
-                remoteURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:remoteURL];
-            } else {
+            if (media.blog.isPrivate || (!media.blog.isHostedAtWPcom && [media.blog isBasicAuthCredentialStored])) {
                 remoteURL = [WPImageURLHelper imageURLWithSize:size forImageURL:remoteURL];
+            } else {
+                remoteURL = [PhotonImageURLHelper photonURLWithSize:size forImageURL:remoteURL];
             }
-
         }
         if (!remoteURL) {
             if (failure) {

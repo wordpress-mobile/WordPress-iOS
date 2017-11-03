@@ -12,6 +12,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     fileprivate var handler: ImmuTableViewHandler!
+    fileprivate static let aztecEditorFooterHeight = CGFloat(34.0)
 
     // MARK: - Initialization
 
@@ -30,9 +31,6 @@ class AppSettingsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.register(AppSettingsEditorFooterView.self,
-                           forHeaderFooterViewReuseIdentifier: AppSettingsEditorFooterView.reuseIdentifier)
 
         ImmuTable.registerRows([
             DestructiveButtonRow.self,
@@ -92,26 +90,24 @@ class AppSettingsViewController: UITableViewController {
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         var editorRows = [ImmuTableRow]()
 
-        let editor = editorSettings.editor
-
         let textEditor = CheckmarkRow(
             title: NSLocalizedString("Plain Text", comment: "Option to enable the plain text (legacy) editor"),
-            checked: (editor == .legacy),
-            action: visualEditorChanged(editor: .legacy)
+            checked: editorSettings.isEnabled(.legacy),
+            action: enableEditor(.legacy)
         )
         editorRows.append(textEditor)
 
         let visualEditor = CheckmarkRow(
             title: NSLocalizedString("Visual", comment: "Option to enable the hybrid visual editor"),
-            checked: (editor == .hybrid),
-            action: visualEditorChanged(editor: .hybrid)
+            checked: editorSettings.isEnabled(.hybrid),
+            action: enableEditor(.hybrid)
         )
         editorRows.append(visualEditor)
 
         let nativeEditor = CheckmarkRow(
             title: NSLocalizedString("Visual 2.0", comment: "Option to enable the beta native editor (Aztec)"),
-            checked: (editor == .aztec),
-            action: visualEditorChanged(editor: .aztec)
+            checked: editorSettings.isEnabled(.aztec),
+            action: enableEditor(.aztec)
         )
         editorRows.append(nativeEditor)
 
@@ -167,17 +163,18 @@ class AppSettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if shouldShowEditorFooterForSection(section) {
-            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: AppSettingsEditorFooterView.reuseIdentifier) as! AppSettingsEditorFooterView
+            let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
+                                                                   y: 0.0,
+                                                                   width: tableView.frame.width,
+                                                                   height: AppSettingsViewController.aztecEditorFooterHeight))
+            footer.textLabel?.text = NSLocalizedString("Editor release notes & bug reporting",
+                                                       comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
+            footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
+            footer.textLabel?.isUserInteractionEnabled = true
 
-            view.tapBlock = { [weak self] in
-                WPAppAnalytics.track(.editorAztecBetaLink)
-
-                if let controller = self {
-                    WPWebViewController.presentWhatsNewWebView(from: controller)
-                }
-            }
-
-            return view
+            let tap = UITapGestureRecognizer(target: self, action: #selector(handleEditorFooterTap(_:)))
+            footer.addGestureRecognizer(tap)
+            return footer
         }
 
         return nil
@@ -185,14 +182,19 @@ class AppSettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if shouldShowEditorFooterForSection(section) {
-            return AppSettingsEditorFooterView.height
+            return AppSettingsViewController.aztecEditorFooterHeight
         }
 
         return UITableViewAutomaticDimension
     }
 
     private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
-        return section == Sections.editor.rawValue && EditorSettings().editor == .aztec
+        return section == Sections.editor.rawValue && EditorSettings().isEnabled(.aztec)
+    }
+
+    @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
+        WPAppAnalytics.track(.editorAztecBetaLink)
+        FancyAlertViewController.presentWhatsNewWebView(from: self)
     }
 
     // MARK: - Media cache methods
@@ -282,7 +284,7 @@ class AppSettingsViewController: UITableViewController {
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentVideoResolution,
                                                   SettingsSelectionTitleKey: NSLocalizedString("Resolution", comment: "The largest resolution allowed for uploading"),
                                                   SettingsSelectionTitlesKey: titles,
-                                                  SettingsSelectionValuesKey: values] as [String : Any]
+                                                  SettingsSelectionValuesKey: values] as [String: Any]
 
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
@@ -307,38 +309,10 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func visualEditorChanged(editor: EditorSettings.Editor) -> ImmuTableAction {
-        return { [weak self] row in
-            let currentEditorIsAztec = EditorSettings().nativeEditorEnabled
-
-            switch editor {
-            case .legacy:
-                EditorSettings().nativeEditorEnabled = false
-                EditorSettings().visualEditorEnabled = false
-                if currentEditorIsAztec {
-                    WPAnalytics.track(.editorToggledOff)
-                }
-            case .hybrid:
-                EditorSettings().nativeEditorEnabled = false
-                EditorSettings().visualEditorEnabled = true
-                if currentEditorIsAztec {
-                    WPAnalytics.track(.editorToggledOff)
-                }
-            case .aztec:
-                EditorSettings().visualEditorEnabled = true
-                EditorSettings().nativeEditorEnabled = true
-                if !currentEditorIsAztec {
-                    WPAnalytics.track(.editorToggledOn)
-                }
-            }
-
+    func enableEditor(_ editor: EditorSettings.Editor) -> ImmuTableAction {
+        return { [weak self] _ in
+            EditorSettings().enable(editor)
             self?.reloadViewModel()
-        }
-    }
-
-    func nativeEditorChanged() -> (Bool) -> Void {
-        return { enabled in
-            EditorSettings().nativeEditorEnabled = enabled
         }
     }
 
@@ -394,50 +368,5 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
         cell.selectionStyle = .none
 
         (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
-    }
-}
-
-fileprivate class AppSettingsEditorFooterView: UITableViewHeaderFooterView {
-    static let height: CGFloat = 38.0
-    static let reuseIdentifier = "AppSettingsEditorFooterView"
-    var tapBlock: (() -> Void)? = nil
-
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        stackView.axis = .horizontal
-
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
-        label.text = NSLocalizedString("Editor release notes & bug reporting", comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
-        label.textColor = WPStyleGuide.greyDarken10()
-        stackView.addArrangedSubview(label)
-
-        let button = UIButton(type: .custom)
-        button.setImage(Gridicon.iconOfType(.infoOutline), for: .normal)
-        button.tintColor = WPStyleGuide.greyDarken10()
-        button.addTarget(self, action: #selector(footerButtonTapped), for: .touchUpInside)
-
-        contentView.addSubview(stackView)
-        stackView.addArrangedSubview(button)
-
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            stackView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
-            ])
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    @IBAction private func footerButtonTapped() {
-        tapBlock?()
     }
 }
