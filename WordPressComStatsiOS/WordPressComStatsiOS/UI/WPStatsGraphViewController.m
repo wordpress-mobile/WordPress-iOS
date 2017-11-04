@@ -243,20 +243,14 @@ static NSInteger const RecommendedYAxisTicks = 2;
 
 - (CGFloat)fontSizeForString: (NSString *)string inRect: (CGRect)rect
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(rect), 17.0f)];
-    label.text = string;
-    label.textAlignment = NSTextAlignmentCenter;
-    label.adjustsFontSizeToFitWidth = YES;
-    label.minimumScaleFactor = 0.5;
-    label.font = [WPStyleGuide axisLabelFont];
-
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:label.attributedText];
-    [text setAttributes:@{NSFontAttributeName:label.font} range:NSMakeRange(0, text.length)];
+    UIFont *font = [WPStyleGuide axisLabelFont];
+    NSAttributedString *text = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName:font}];
 
     NSStringDrawingContext *context = [NSStringDrawingContext new];
-    context.minimumScaleFactor = label.minimumScaleFactor;
-    [text boundingRectWithSize:label.frame.size options:NSStringDrawingUsesLineFragmentOrigin context:context];
-    CGFloat adjustedFontSize = label.font.pointSize * context.actualScaleFactor;
+    context.minimumScaleFactor = 0.5;
+    CGSize size = CGSizeMake(CGRectGetWidth(rect), CGRectGetHeight(rect));
+    [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin context:context];
+    CGFloat adjustedFontSize = font.pointSize * context.actualScaleFactor;
 
     return adjustedFontSize;
 }
