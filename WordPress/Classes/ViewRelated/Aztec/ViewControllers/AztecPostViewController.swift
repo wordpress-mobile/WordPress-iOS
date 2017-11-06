@@ -817,7 +817,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         case .html:
             html = htmlTextView.text
         case .richText:
-            html = richTextView.getHTML(prettyPrint: false)
+            html = richTextView.getHTML()
         }
 
         return html

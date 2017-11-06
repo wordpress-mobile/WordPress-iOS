@@ -113,7 +113,7 @@ PODS:
   - Starscream (3.0.2)
   - SVProgressHUD (2.2.1)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.13)
+  - WordPress-Aztec-iOS (1.0.0-beta.14)
   - WordPress-iOS-Editor (1.9.7):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -148,7 +148,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.2)
   - SVProgressHUD (= 2.2.1)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `issue/8063-update-media-overlay`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, branch `develop`)
   - WordPress-iOS-Editor (= 1.9.7)
   - WPMediaPicker (= 0.24)
   - wpxmlrpc (= 0.8.3)
@@ -158,7 +158,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
   WordPress-Aztec-iOS:
-    :branch: issue/8063-update-media-overlay
+    :branch: develop
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
@@ -166,7 +166,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
   WordPress-Aztec-iOS:
-    :commit: da245667fca20240bd5bf7030e89656f2784440b
+    :commit: 00c407e27164431759840d363ff6a61b2fd70ad6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
@@ -200,11 +200,11 @@ SPEC CHECKSUMS:
   Starscream: b512c62f6706421221b5ceb2ba01a9f58aca5bea
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: e1a61e3c0d9257e79e20701908a76fc874a05e3c
+  WordPress-Aztec-iOS: 0ab6bfcd8023c994dc2b117bc7633467f1a1a5ad
   WordPress-iOS-Editor: 03b3bc631a31520ccf78e665548286c6d12c17f4
   WPMediaPicker: 5e2db7fd30d8ca497d91b26fbf61e94d6660f1c6
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: d98fe0ec57b4b8ca51f72957a2884dff61820e3e
+PODFILE CHECKSUM: 19e969bddfc21a181d94459bbac33f4c9ee46aa2
 
 COCOAPODS: 1.3.1
