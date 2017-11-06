@@ -199,9 +199,9 @@ File.open(path) do |f|
       googleplus = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
       google_id = value
-    elsif k == "GOOGLE_LOGIN_CLIENT_ALPHA_ID"
+    elsif k == "GOOGLE_LOGIN_ALPHA_CLIENT_ID"
       google_id_alpha = value
-    elsif k == "GOOGLE_LOGIN_CLIENT_INTERNAL_ID"
+    elsif k == "GOOGLE_LOGIN_INTERNAL_CLIENT_ID"
       google_id_internal = value
     elsif k == "GOOGLE_LOGIN_SERVER_ID"
       google_login_server = value
@@ -257,4 +257,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_internal, google_id_alpha, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_id_alpha, google_id_internal, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)

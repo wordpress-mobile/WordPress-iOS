@@ -196,6 +196,11 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         return false
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        validateForm()
+        return false
+    }
+
 
     // MARK: - Actions
 

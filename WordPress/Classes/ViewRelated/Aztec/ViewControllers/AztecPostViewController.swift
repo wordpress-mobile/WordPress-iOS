@@ -64,6 +64,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
@@ -108,6 +109,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
@@ -2946,10 +2948,7 @@ extension AztecPostViewController {
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
-                                                if attachment is ImageAttachment {
-                                                    attachment.overlayImage = nil
-                                                }
-                                                attachment.message = nil
+                                                self.resetMediaAttachmentOverlay(attachment)
                                                 self.richTextView.refresh(attachment)
                                             }
         })
@@ -2987,10 +2986,7 @@ extension AztecPostViewController {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        if attachment is ImageAttachment {
-                                                            attachment.overlayImage = nil
-                                                        }
-                                                        attachment.message = nil
+                                                        self.resetMediaAttachmentOverlay(attachment)
                                                         attachment.progress = 0
                                                         self.richTextView.refresh(attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
@@ -3085,6 +3081,13 @@ extension AztecPostViewController {
         updateToolbar(formatBar, forMode: .text)
         restoreInputAssistantItems()
     }
+
+    fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
+        if mediaAttachment is ImageAttachment {
+            mediaAttachment.overlayImage = nil
+        }
+        mediaAttachment.message = nil
+    }
 }
 
 
@@ -3115,7 +3118,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         } else {
             // if it's a new attachment tapped let's unmark the previous one
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                self.resetMediaAttachmentOverlay(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
             // and mark the newly tapped attachment
@@ -3172,10 +3175,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func deselected(textAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
         currentSelectedAttachment = nil
         if let mediaAttachment = attachment as? MediaAttachment {
-            mediaAttachment.message = nil
-            if mediaAttachment is ImageAttachment {
-                mediaAttachment.overlayImage = nil
-            }
+            self.resetMediaAttachmentOverlay(mediaAttachment)
             richTextView.refresh(mediaAttachment)
         }
     }
