@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSArray<StatsSummary *> *statsData;
 @property (nonatomic, assign) StatsSummaryType currentSummaryType;
 @property (nonatomic, strong) NSDate *selectedDate;
-@property CGFloat dateFontSize;
+@property (nonatomic) CGFloat dateFontSize;
 
 @end
 
@@ -229,7 +229,7 @@ static NSInteger const RecommendedYAxisTicks = 2;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
 
         WPStatsGraphBarCell *cell = [self collectionView:self.collectionView cellForItemAtIndexPath:indexPath];
-        CGFloat currentFontSize = [self fontSizeForString:cell.barName inRect:cell.frame];
+        CGFloat currentFontSize = [self fontSizeForString:cell.barName containerSize:cell.frame.size];
 
         if (index == 0) {
             smallestFontSize = currentFontSize;
@@ -241,14 +241,13 @@ static NSInteger const RecommendedYAxisTicks = 2;
     return smallestFontSize;
 }
 
-- (CGFloat)fontSizeForString: (NSString *)string inRect: (CGRect)rect
+- (CGFloat)fontSizeForString: (NSString *)string containerSize: (CGSize)size
 {
     UIFont *font = [WPStyleGuide axisLabelFont];
     NSAttributedString *text = [[NSAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName:font}];
 
     NSStringDrawingContext *context = [NSStringDrawingContext new];
     context.minimumScaleFactor = 0.5;
-    CGSize size = CGSizeMake(CGRectGetWidth(rect), CGRectGetHeight(rect));
     [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin context:context];
     CGFloat adjustedFontSize = font.pointSize * context.actualScaleFactor;
 
