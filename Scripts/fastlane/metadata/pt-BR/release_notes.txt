@@ -1,3 +1,3 @@
-Biblioteca de mídia: permite inserir links para documentos da biblioteca de mídia.
-Biblioteca de mídia: torna o campo de texto alternativo editável.
-Editor Aztec: adicionado suporte à próxima página.
+Login social: esta versão inclui suporte para login social através do Google
+Editor Aztec: tornou-se o editor padrão.
+Editor Aztec: agora é possível importar mídia de outros aplicativos.
