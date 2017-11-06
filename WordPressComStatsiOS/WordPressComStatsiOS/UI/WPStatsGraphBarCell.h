@@ -9,7 +9,7 @@
 @property (nonatomic, strong) NSArray *categoryBars;
 
 @property (nonatomic, copy) NSString *barName;
-@property CGFloat barNameFontSize;
+@property (nonatomic) CGFloat barNameFontSize;
 
 - (void)finishedSettingProperties;
 
