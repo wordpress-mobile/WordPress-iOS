@@ -2854,8 +2854,13 @@ extension AztecPostViewController {
             }
             richTextView.refresh(attachment)
         case .html:
-            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
-            htmlTextView.text = imgPostUploadProcessor.process(htmlTextView.text)
+            if media.mediaType == .image {
+                let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
+                htmlTextView.text = imgPostUploadProcessor.process(htmlTextView.text)
+            } else if media.mediaType == .video {
+                let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
+                htmlTextView.text = videoPostUploadProcessor.process(htmlTextView.text)
+            }
         }
     }
 
