@@ -22,7 +22,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     public func getActivityForSite(_ siteID: Int,
                                    offset: Int = 0,
                                    count: Int,
-                                   success: @escaping (_ activities: [RemoteActivity], _ hasMore: Bool) -> Void,
+                                   success: @escaping (_ activities: [Activity], _ hasMore: Bool) -> Void,
                                    failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/activity"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
@@ -36,8 +36,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
 
         wordPressComRestApi.GET(path!,
                                 parameters: parameters as [String : AnyObject]?,
-                                success: {
-                                    response, _ in
+                                success: { response, _ in
                                     do {
                                         let (activities, totalItems) = try self.mapActivitiesResponse(response)
                                         let hasMore = totalItems > pageNumber * (count + 1)
@@ -48,17 +47,15 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
                                         DDLogDebug("Full response: \(response)")
                                         failure(error)
                                     }
-        }, failure: {
-            error, _ in
-            failure(error)
-        })
+                                }, failure: { error, _ in
+                                    failure(error)
+                                })
     }
-
 }
 
 private extension ActivityServiceRemote {
 
-    func mapActivitiesResponse(_ response: AnyObject) throws -> ([RemoteActivity], Int) {
+    func mapActivitiesResponse(_ response: AnyObject) throws -> ([Activity], Int) {
 
         guard let json = response as? [String: AnyObject],
             let totalItems = json["totalItems"] as? Int,
@@ -67,8 +64,8 @@ private extension ActivityServiceRemote {
                 throw ActivityServiceRemote.ResponseError.decodingFailure
         }
 
-        let activities = try orderedItems.map { activity -> RemoteActivity in
-            return try RemoteActivity(dictionary: activity)
+        let activities = try orderedItems.map { activity -> Activity in
+            return try Activity(dictionary: activity)
         }
 
         return (activities, totalItems)
