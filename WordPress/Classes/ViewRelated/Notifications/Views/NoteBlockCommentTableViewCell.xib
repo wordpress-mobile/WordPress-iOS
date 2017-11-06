@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,13 +19,13 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="99.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="254" verticalHuggingPriority="254" translatesAutoresizingMaskIntoConstraints="NO" id="B30-uC-0a3" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                        <rect key="frame" x="15" y="11" width="37" height="37"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="B30-uC-0a3" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="16" y="31" width="37" height="37"/>
                         <constraints>
-                            <constraint firstAttribute="width" priority="751" constant="37" id="AOG-ko-gpf"/>
-                            <constraint firstAttribute="width" priority="751" constant="32" id="KEp-Kp-Vb8"/>
-                            <constraint firstAttribute="height" priority="751" constant="32" id="ejc-rj-Nvm"/>
-                            <constraint firstAttribute="height" priority="751" constant="37" id="yiY-al-iMr"/>
+                            <constraint firstAttribute="width" constant="37" id="AOG-ko-gpf"/>
+                            <constraint firstAttribute="width" constant="32" id="KEp-Kp-Vb8"/>
+                            <constraint firstAttribute="height" constant="32" id="ejc-rj-Nvm"/>
+                            <constraint firstAttribute="height" constant="37" id="yiY-al-iMr"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -41,8 +42,8 @@
                             </mask>
                         </variation>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Y-Yo-5I1">
-                        <rect key="frame" x="62" y="9" width="243" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Y-Yo-5I1">
+                        <rect key="frame" x="63" y="29" width="25" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="750" constant="18" id="TnG-1t-sH0"/>
                         </constraints>
@@ -50,8 +51,8 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nV-U0-dRc">
-                        <rect key="frame" x="62" y="27" width="243" height="18"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" text="Details" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nV-U0-dRc">
+                        <rect key="frame" x="63" y="47" width="39" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="750" constant="18" id="suV-Ve-xon"/>
                         </constraints>
@@ -59,8 +60,8 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rgQ-sb-b7a" userLabel="RichTextView" customClass="RichTextView" customModule="WordPress">
-                        <rect key="frame" x="15" y="53" width="290" height="36"/>
+                    <view contentMode="scaleToFill" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="rgQ-sb-b7a" userLabel="RichTextView" customClass="RichTextView" customModule="WordPress">
+                        <rect key="frame" x="16" y="73" width="288" height="16"/>
                         <color key="backgroundColor" red="0.90245449542999268" green="0.91623926162719727" blue="0.93599998950958252" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="28" id="DF6-bm-kGr"/>
@@ -68,13 +69,13 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="J2Y-Yo-5I1" secondAttribute="trailing" id="0rY-qi-Fsw"/>
+                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="J2Y-Yo-5I1" secondAttribute="trailing" id="0rY-qi-Fsw"/>
                     <constraint firstItem="rgQ-sb-b7a" firstAttribute="top" secondItem="B30-uC-0a3" secondAttribute="bottom" constant="5" id="6v9-jN-jDW"/>
                     <constraint firstItem="J2Y-Yo-5I1" firstAttribute="top" secondItem="GbU-dc-vAM" secondAttribute="topMargin" constant="-2" id="BbX-mc-1hp"/>
                     <constraint firstAttribute="bottomMargin" secondItem="rgQ-sb-b7a" secondAttribute="bottom" id="EnP-lZ-Ym3"/>
                     <constraint firstItem="rgQ-sb-b7a" firstAttribute="leading" secondItem="GbU-dc-vAM" secondAttribute="leadingMargin" id="OG7-0A-RZJ"/>
                     <constraint firstAttribute="trailingMargin" secondItem="rgQ-sb-b7a" secondAttribute="trailing" id="PTb-Aw-Ikj"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="0nV-U0-dRc" secondAttribute="trailing" id="bV5-Sv-6NA"/>
+                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="0nV-U0-dRc" secondAttribute="trailing" id="bV5-Sv-6NA"/>
                     <constraint firstItem="0nV-U0-dRc" firstAttribute="top" secondItem="J2Y-Yo-5I1" secondAttribute="bottom" id="gif-Al-5Yz"/>
                     <constraint firstItem="J2Y-Yo-5I1" firstAttribute="leading" secondItem="B30-uC-0a3" secondAttribute="trailing" constant="10" id="jLN-8d-1wX"/>
                     <constraint firstItem="0nV-U0-dRc" firstAttribute="leading" secondItem="B30-uC-0a3" secondAttribute="trailing" constant="10" id="raS-VD-uJf"/>
