@@ -2598,7 +2598,7 @@ extension AztecPostViewController {
             }
 
             guard let attachment = newAttachment, let statType = newStatType else { return }
-
+            attachment.uploadID = attachment.identifier
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             mediaService.createMedia(url: url, forPost: post.objectID,
                                      thumbnailCallback: { [weak self](thumbnailURL) in
@@ -2693,7 +2693,7 @@ extension AztecPostViewController {
 
     private func handleNewMedia(_ media: Media?, error: Error?, attachment: MediaAttachment, statType: WPAnalyticsStat) {
 
-        guard let media = media, error == nil else {
+        guard let media = media, error == nil, let mediaUploadID = attachment.uploadID else {
             DispatchQueue.main.async {
                 self.handleError(error as NSError?, onAttachment: attachment)
             }
@@ -2702,7 +2702,7 @@ extension AztecPostViewController {
 
         WPAppAnalytics.track(statType, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post.blog)
 
-        upload(media: media, mediaID: attachment.identifier)
+        upload(media: media, mediaID: mediaUploadID)
     }
 
     fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
