@@ -37,13 +37,9 @@ function processIcon() {
     echo "xcrun -sdk iphoneos pngcrush -revert-iphone-optimizations -q '${base_file}' '${base_tmp_normalizedFilePath}'"
     xcrun -sdk iphoneos pngcrush -revert-iphone-optimizations -q "${base_file}" "${base_tmp_normalizedFilePath}"
     
-    echo "identify -format %w \"${base_tmp_normalizedFilePath}\""
     width=`identify -format %w "${base_tmp_normalizedFilePath}"`
-
-    echo "identify -format %h \"${base_tmp_normalizedFilePath}\""
     height=`identify -format %h "${base_tmp_normalizedFilePath}"`
 
-    echo "($height * 33) / 100"
     band_height=$((($height * 33) / 100))
     band_position=$(($height - $band_height))
     text_position=$(($band_position - 3))
@@ -85,7 +81,7 @@ function processIcon() {
 # icons_dir="${SRCROOT}/Images.xcassets/AppIcon.appiconset"
 icons_dir="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}"
 icons_tmp_dir="${TEMP_DIR}/ModifiedIcons"
-icons_dest_dir="${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+icons_dest_dir="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}"
 mkdir "${icons_tmp_dir}"
 
 for icon in "${icons_dir}"/AppIcon*.png;
