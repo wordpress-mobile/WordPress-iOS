@@ -2986,6 +2986,14 @@ extension AztecPostViewController {
             }
         }
 
+        controller.onCancel = { [weak self] in
+            if attachment == self?.currentSelectedAttachment {
+                self?.currentSelectedAttachment = nil
+                self?.resetMediaAttachmentOverlay(attachment)
+                self?.richTextView.refresh(attachment)
+            }
+        }
+
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
