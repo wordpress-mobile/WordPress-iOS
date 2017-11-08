@@ -6,7 +6,7 @@ import WordPressShared
 /// HTML tags that require special handling before the text is shown in a UITextView.
 ///
 class WPRichTextFormatter {
- 
+
     typealias ParsedSource = (parsedString: String, attachments: [WPTextAttachment])
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
     let blockquoteIndentation = CGFloat(20.0)
@@ -332,7 +332,7 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
         if !matched {
             return (parsedString, nil)
         }
-   
+
         // If the blockquote contains no paragraphs just insert the marker after
         // the tag.
         if !parsedString.contains("<p>") {
