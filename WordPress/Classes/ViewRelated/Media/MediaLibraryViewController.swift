@@ -74,6 +74,10 @@ class MediaLibraryViewController: UIViewController {
         self.pickerViewController = WPMediaPickerViewController()
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
 
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
+            self.pickerDataSource.includeUnsyncedMedia = true
+        }
+
         super.init(nibName: nil, bundle: nil)
 
         super.restorationIdentifier = MediaLibraryViewController.restorationIdentifier
