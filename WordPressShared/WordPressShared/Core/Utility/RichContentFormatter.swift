@@ -25,9 +25,16 @@ import Foundation
 
         // Gallery Images
         static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
+        static let galleryStartIdentifier = "WPGalleryStartIdentifier"
+        static let galleryEndIdentifier = "WPGalleryEndIdentifier"
+        static let galleryDivStart = try! NSRegularExpression(pattern: "<div[^>]*?\(galleryStartIdentifier)[^>]*?>", options: .caseInsensitive)
+        static let galleryDivEnd = try! NSRegularExpression(pattern: "</div[^>]*?\(galleryEndIdentifier)[^>]*?>", options: .caseInsensitive)
 
         // Trailing BR Tags
         static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .caseInsensitive)
+        
+
+
     }
 
 
@@ -41,12 +48,13 @@ import Foundation
     /// - Returns: The formatted string.
     ///
     public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return string
         }
 
         var content = string
         content = removeForbiddenTags(content)
+        content = normalizeGallery(content)
         content = normalizeParagraphs(content)
         content = removeInlineStyles(content)
         content = (content as NSString).replacingHTMLEmoticonsWithEmoji() as String
@@ -64,24 +72,24 @@ import Foundation
     /// - Returns: The formatted string.
     ///
     public class func removeForbiddenTags(_ string: String) -> String {
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return string
         }
         var content = string
 
         content = RegEx.styleTags.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.characters.count),
+                                                                   range: NSRange(location: 0, length: content.count),
                                                                    withTemplate: "")
 
         content = RegEx.scriptTags.stringByReplacingMatches(in: content,
                                                                     options: .reportCompletion,
-                                                                    range: NSRange(location: 0, length: content.characters.count),
+                                                                    range: NSRange(location: 0, length: content.count),
                                                                     withTemplate: "")
 
         content = RegEx.tableTags.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.characters.count),
+                                                                   range: NSRange(location: 0, length: content.count),
                                                                    withTemplate: "")
 
         return content
@@ -96,7 +104,7 @@ import Foundation
     /// - Returns: The formatted string.
     ///
     public class func normalizeParagraphs(_ string: String) -> String {
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return string
         }
         var content = string
@@ -106,23 +114,23 @@ import Foundation
          // Convert div tags to p tags
         content = RegEx.divTagsStart.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.characters.count),
+                                                                   range: NSRange(location: 0, length: content.count),
                                                                    withTemplate: openPTag)
 
         content = RegEx.divTagsEnd.stringByReplacingMatches(in: content,
                                                                     options: .reportCompletion,
-                                                                    range: NSRange(location: 0, length: content.characters.count),
+                                                                    range: NSRange(location: 0, length: content.count),
                                                                     withTemplate: closePTag)
 
         // Remove duplicate/redundant p tags.
         content = RegEx.pTagsStart.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.characters.count),
+                                                                   range: NSRange(location: 0, length: content.count),
                                                                    withTemplate: openPTag)
 
         content = RegEx.pTagsEnd.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.characters.count),
+                                                                   range: NSRange(location: 0, length: content.count),
                                                                    withTemplate: closePTag)
 
         content = filterNewLines(content)
@@ -130,18 +138,108 @@ import Foundation
         return content
     }
 
-
+    public class func normalizeGallery(_ string : String) -> String {
+        
+        guard string.count > 0 else {
+            return string
+        }
+        
+        let iconGallery = "class='gallery"
+        let tiledGallery = "class=\"tiled-gallery"
+        
+        let galleryStart = "<gallery>"
+        let galleryEnd = "</gallery>"
+        
+        var content = string
+        
+        content = scannerForGalleryBy(galleryType: iconGallery, inString: content)
+        content = scannerForGalleryBy(galleryType: tiledGallery, inString: content)
+        content = RegEx.galleryDivStart.stringByReplacingMatches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count), withTemplate: galleryStart)
+        content = RegEx.galleryDivEnd.stringByReplacingMatches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count), withTemplate: galleryEnd)
+        
+        return content
+    }
+    
+    private class func scannerForGalleryBy(galleryType : String, inString : String) -> String {
+        
+        let galleryScanner = Scanner(string: inString)
+        galleryScanner.charactersToBeSkipped = nil
+        
+        let divStr = "div"
+        
+        var str = ""
+        var tempStr: NSString? = ""
+        
+        var divCounter = 0
+        var galleriesFound : Int = 0
+        
+        while !galleryScanner.isAtEnd {
+            
+            
+            if galleriesFound <= 0 {
+                //check for gallery
+                galleryScanner.scanUpTo(galleryType, into: &tempStr)
+                
+                if let tempStr = tempStr {
+                    str += tempStr as String
+                }
+                
+                tempStr = ""
+                if galleryScanner.isAtEnd {
+                    break //nothing to see here
+                } else {
+                    galleriesFound += 1
+                    divCounter += 1
+                }
+                
+                str += galleryType
+                str += RegEx.galleryStartIdentifier
+                galleryScanner.scanLocation += Int(galleryType.count)
+                
+            } else {
+                
+                //gallery found, proceed to find divs
+                galleryScanner.scanUpTo(divStr, into: &tempStr)
+                
+                if let tempStr = tempStr {
+                    str += tempStr as String
+                }
+                
+                tempStr = ""
+                if galleryScanner.isAtEnd {
+                    break //nothing to see here
+                }
+                
+                if str.last == "/" {
+                    divCounter -= 1
+                } else if str.last == "<" {
+                    divCounter += 1
+                }
+                
+                galleryScanner.scanLocation += 3
+                str += divStr
+                
+                if divCounter == 0 {
+                    galleriesFound -= 1
+                    str += RegEx.galleryEndIdentifier
+                }
+            }
+        }
+        
+        return str
+    }
+    
     public class func filterNewLines(_ string: String) -> String {
         var content = string
 
         var ranges = [NSRange]()
         // We don't want to remove new lines from preformatted tag blocks,
         // so get the ranges of such blocks.
-        let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.characters.count))
+        let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
         if matches.count == 0 {
 
             // No blocks found, so we'll parse the whole string.
-            ranges.append(NSRange(location: 0, length: content.characters.count))
+            ranges.append(NSRange(location: 0, length: content.count))
 
         } else {
 
@@ -157,7 +255,7 @@ import Foundation
                 location = match.range.location + match.range.length
             }
 
-            length = content.characters.count - location
+            length = content.count - location
             ranges.append(NSRange(location: location, length: length))
         }
 
@@ -182,14 +280,14 @@ import Foundation
     /// - Returns: The formatted string.
     ///
     public class func removeInlineStyles(_ string: String) -> String {
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return string
         }
         var content = string
 
         content = RegEx.styleAttr.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.characters.count),
+                                                                   range: NSRange(location: 0, length: content.count),
                                                                    withTemplate: "")
 
         return content
@@ -205,7 +303,7 @@ import Foundation
     /// - Returns: The formatted string.
     ///
     public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return string
         }
 
@@ -241,7 +339,7 @@ import Foundation
             mImageStr.replaceOccurrences(of: srcImgURLStr,
                                          with: modifiedURL.absoluteString,
                                          options: .literal,
-                                         range: NSRange(location: 0, length: imgElementStr.characters.count))
+                                         range: NSRange(location: 0, length: imgElementStr.count))
 
             mContent.replaceCharacters(in: match.range, with: mImageStr as String)
         }
@@ -283,13 +381,13 @@ import Foundation
     /// - Returns: The formatted string.
     ///
     public class func removeTrailingBreakTags(_ string: String) -> String {
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return string
         }
         var content = string.trim()
-        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.characters.count))
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
         if let match = matches.first {
-            let index = content.characters.index(content.startIndex, offsetBy: match.range.location)
+            let index = content.index(content.startIndex, offsetBy: match.range.location)
             content = content.substring(to: index)
         }
 

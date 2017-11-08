@@ -6,7 +6,7 @@ import WordPressShared
 /// HTML tags that require special handling before the text is shown in a UITextView.
 ///
 class WPRichTextFormatter {
-
+ 
     typealias ParsedSource = (parsedString: String, attachments: [WPTextAttachment])
     static let blockquoteIdentifier = "WPBLOCKQUOTEIDENTIFIER"
     let blockquoteIndentation = CGFloat(20.0)
@@ -95,7 +95,7 @@ class WPRichTextFormatter {
 
         let str = attrString.string
         let regex = try! NSRegularExpression(pattern: HRTagProcessor.horizontalRuleIdentifier, options: .caseInsensitive)
-        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.characters.count))
+        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.count))
 
         for match: NSTextCheckingResult in matches.reversed() {
             let range = match.range
@@ -140,7 +140,7 @@ class WPRichTextFormatter {
 
         let str = attrString.string
         let regex = try! NSRegularExpression(pattern: type(of: self).blockquoteIdentifier, options: .caseInsensitive)
-        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.characters.count))
+        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.count))
 
         for match: NSTextCheckingResult in matches.reversed() {
 
@@ -180,7 +180,7 @@ class WPRichTextFormatter {
     func processAndExtractTags(_ string: String) -> ParsedSource {
         var attachments = [WPTextAttachment]()
 
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return (string, attachments)
         }
 
@@ -291,7 +291,7 @@ class HtmlTagProcessor {
             parsedString += endTag
 
             // Advance the scanner to account for the closing tag.
-            scanner.scanLocation += endTag.characters.count
+            scanner.scanLocation += endTag.count
         }
 
         return (success, parsedString)
@@ -332,12 +332,12 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
         if !matched {
             return (parsedString, nil)
         }
-
+   
         // If the blockquote contains no paragraphs just insert the marker after
         // the tag.
         if !parsedString.contains("<p>") {
             var str = parsedString as NSString
-            let location = "<\(tagName)>".characters.count
+            let location = "<\(tagName)>".count
             str = str.replacingCharacters(in: NSRange(location: location, length: 0), with: WPRichTextFormatter.blockquoteIdentifier) as NSString
             parsedString = str as String
             return (parsedString, nil)
