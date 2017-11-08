@@ -150,7 +150,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `00c407e27164431759840d363ff6a61b2fd70ad6`)
   - WordPress-iOS-Editor (= 1.9.7)
-  - WPMediaPicker (= 0.24)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, branch `feature/cell-overlays`)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -160,6 +160,9 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 00c407e27164431759840d363ff6a61b2fd70ad6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WPMediaPicker:
+    :branch: feature/cell-overlays
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -168,6 +171,9 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: 00c407e27164431759840d363ff6a61b2fd70ad6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WPMediaPicker:
+    :commit: 432c9cb2607baa91637abf050ed61751c3133767
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
@@ -205,6 +211,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 5e2db7fd30d8ca497d91b26fbf61e94d6660f1c6
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 26227e217b90bce49de481fdc8187fc8703a5925
+PODFILE CHECKSUM: 11d6c883279a33c66d3ddbceb6ec4d3ed1caf63e
 
 COCOAPODS: 1.3.1
