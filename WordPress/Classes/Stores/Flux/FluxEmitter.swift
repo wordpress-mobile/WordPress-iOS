@@ -8,7 +8,9 @@ class FluxListener {
     }
 
     deinit {
-        stopListening()
+        if dispatchToken != nil {
+            stopListening()
+        }
     }
 
     func stopListening() {
