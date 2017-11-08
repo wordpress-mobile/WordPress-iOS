@@ -1,3 +1,3 @@
-Librería multimedia: Permite insertar enlaces a documentos de la librería mutimedia.
-Librería multimedia: Hace editable el campo Alt.
-Editor Aztec: Soporte para "Siguiente página.
+Acceso social: Esta versión incluye compatibilidad con acceso social a través d Google
+Editor Aztec: Ahora es el editor por defecto.
+Editor Aztec: Ahora puede importar medios de otras aplicaciones.
