@@ -135,7 +135,7 @@
     }
     // try to sync from the server
     MediaSyncCoordinator *mediaSyncCoordinator = [MediaSyncCoordinator shared];
-    [mediaSyncCoordinator syncMediaOf:self.blog success:^{
+    [mediaSyncCoordinator syncMediaFor:self.blog success:^{
         if (!localResultsAvailable && successBlock) {
             successBlock();
         }

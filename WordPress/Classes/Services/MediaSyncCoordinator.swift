@@ -16,7 +16,7 @@ public class MediaSyncCoordinator: NSObject {
     ///
     /// - parameter blog: The blog from where to sync the media library from.
     ///
-    func syncMedia(of blog: Blog, success: (() -> ())?, failure: ((Error) -> ())? ) {
+    func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
         let service = MediaService(managedObjectContext: context)
         service.syncMediaLibrary(for: blog, success: success, failure: failure)
     }
