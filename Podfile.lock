@@ -113,7 +113,7 @@ PODS:
   - Starscream (3.0.2)
   - SVProgressHUD (2.2.1)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.13)
+  - WordPress-Aztec-iOS (1.0.0-beta.14)
   - WordPress-iOS-Editor (1.9.7):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -148,7 +148,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.2)
   - SVProgressHUD (= 2.2.1)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.13)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.14)
   - WordPress-iOS-Editor (= 1.9.7)
   - WPMediaPicker (= 0.24)
   - wpxmlrpc (= 0.8.3)
@@ -194,11 +194,11 @@ SPEC CHECKSUMS:
   Starscream: b512c62f6706421221b5ceb2ba01a9f58aca5bea
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: cd45f31ca416e53d2e41411aff6b997aed6f7c2b
+  WordPress-Aztec-iOS: 32349e981fa992e772e3aada781c92dd3ea66d19
   WordPress-iOS-Editor: 03b3bc631a31520ccf78e665548286c6d12c17f4
   WPMediaPicker: 5e2db7fd30d8ca497d91b26fbf61e94d6660f1c6
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 139a3f5a96f04fd3dfbcfa4d4baf28a72561eab1
+PODFILE CHECKSUM: 10bdbe66381324c61aad502a47cc10b484510478
 
 COCOAPODS: 1.3.1
