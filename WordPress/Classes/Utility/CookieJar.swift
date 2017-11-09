@@ -15,7 +15,14 @@ import WebKit
 // extensions, as it needs to be accessible to Obj-C.
 // Whenever we migrate enough code so this doesn't need to be called from Swift,
 // a regular CookieJar protocol with shared implementation on an extension would suffice.
-private protocol CookieJarSharedImplementation: CookieJar {
+//
+// Also, although you're not supposed to use this outside this file, it can't be private
+// since we're subclassing HTTPCookieStorage (which conforms to this) in MockCookieJar in
+// the test target, and the swift compiler will crash when doing that ¯\_(ツ)_/¯
+//
+// https://bugs.swift.org/browse/SR-2370
+//
+protocol CookieJarSharedImplementation: CookieJar {
 }
 
 extension CookieJarSharedImplementation {
