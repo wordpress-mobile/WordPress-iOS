@@ -5,6 +5,7 @@ import WordPressShared
 import WPMediaPicker
 import MobileCoreServices
 
+
 /// Displays the user's media library in a grid
 ///
 class MediaLibraryViewController: UIViewController {
@@ -72,6 +73,7 @@ class MediaLibraryViewController: UIViewController {
 
         self.blog = blog
         self.pickerViewController = WPMediaPickerViewController()
+        self.pickerViewController.registerClass(forReusableCellOverlayViews: MediaCellProgressView.self)
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
 
         if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
@@ -398,6 +400,20 @@ class MediaLibraryViewController: UIViewController {
         }
     }
 
+    private func reloadCell(for media: Media) {
+        guard let cells = pickerViewController.collectionView?.visibleCells as? [WPMediaCollectionViewCell] else {
+            return
+        }
+
+        cells.forEach({ cell in
+            if let asset = cell.asset as? Media,
+                asset == media {
+                cell.overlayView = nil
+                cell.asset = media
+            }
+        })
+    }
+
     private var hasSearchQuery: Bool {
         return (pickerDataSource.searchQuery ?? "").count > 0
     }
@@ -569,8 +585,11 @@ class MediaLibraryViewController: UIViewController {
             return
         }
 
-        uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ (media, state) in
+        uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ [weak self] (media, state) in
             print("Media \(String(describing: media.filename)) in state \(String(describing: state))")
+            if state == .ended {
+                self?.reloadCell(for: media)
+            }
         }, for: nil)
     }
 
@@ -777,6 +796,18 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         useUploadCoordinator = false
 
         dismiss(animated: true, completion: nil)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView!, forCellFor asset: WPMediaAsset) {
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled,
+            let media = asset as? Media {
+            return media.remoteStatus != .sync
+        }
+
+        return false
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {
