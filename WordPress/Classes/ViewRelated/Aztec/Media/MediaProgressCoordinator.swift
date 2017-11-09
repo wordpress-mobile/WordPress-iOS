@@ -33,14 +33,9 @@ public class MediaProgressCoordinator: NSObject {
         mediaUploadingProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
     }
 
-    func finishOneItem() {
-        guard let mediaUploadingProgress = mediaUploadingProgress else {
-            return
-        }
-
-        mediaUploadingProgress.completedUnitCount += 1
-    }
-
+    /// Setup the coordinator to track the provided number of tasks
+    ///
+    /// - Parameter count: the number of tasks that need to be tracked
     func track(numberOfItems count: Int) {
         if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
@@ -57,6 +52,12 @@ public class MediaProgressCoordinator: NSObject {
         self.mediaUploadingProgress?.totalUnitCount += Int64(count)
     }
 
+    /// Start the tracking of a task that is represented by the provided progress and is associated to an object with the provided mediaID.
+    ///
+    /// - Parameters:
+    ///   - progress: the object that tracks the progress
+    ///   - object: the associated object.
+    ///   - mediaID: the unique taskID
     func track(progress: Progress, ofObject object: Any, withMediaID mediaID: String) {
         progress.setUserInfoObject(mediaID, forKey: ProgressUserInfoKey(ProgressMediaKeys.mediaID.rawValue))
         progress.setUserInfoObject(object, forKey: ProgressUserInfoKey(ProgressMediaKeys.mediaObject.rawValue))
@@ -64,6 +65,23 @@ public class MediaProgressCoordinator: NSObject {
         mediaUploading[mediaID] = progress
     }
 
+    /// Finish one of the tasks.
+    ///
+    /// Note: This method is used to advance the completed number of tasks, when the task doesn't have any relevant associated work/progress to be tracked.
+    /// For example an already existing media object that is already uploaded to the server.
+    func finishOneItem() {
+        guard let mediaUploadingProgress = mediaUploadingProgress else {
+            return
+        }
+
+        mediaUploadingProgress.completedUnitCount += 1
+    }
+
+    /// Attach an error to an ongoing media creation/upload task
+    ///
+    /// - Parameters:
+    ///   - error: the error to attach
+    ///   - mediaID: the mediaID to attach error
     func attach(error: NSError, toMediaID mediaID: String) {
         guard let progress = mediaUploading[mediaID] else {
             return
@@ -71,6 +89,12 @@ public class MediaProgressCoordinator: NSObject {
         progress.setUserInfoObject(error, forKey: ProgressUserInfoKey(ProgressMediaKeys.error.rawValue))
     }
 
+    // MARK: - Methods to check state of a mediaID process
+
+    /// Return the error, if any, associated to the task with the provided mediaID
+    ///
+    /// - Parameter mediaID: mediaID to search for error
+    /// - Returns: the error value if any
     func error(forMediaID mediaID: String) -> NSError? {
         guard let progress = mediaUploading[mediaID],
             let error = progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] as? NSError
@@ -91,23 +115,6 @@ public class MediaProgressCoordinator: NSObject {
         return object
     }
 
-    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard
-            context == &mediaUploadingProgressObserverContext,
-            keyPath == #keyPath(Progress.fractionCompleted)
-            else {
-                super.observeValue(forKeyPath: keyPath,
-                                   of: object,
-                                   change: change,
-                                   context: context)
-                return
-        }
-
-        DispatchQueue.main.async {
-            self.refreshMediaProgress()
-        }
-    }
-
     var totalProgress: Float {
         var value = Float(0)
         if let progress = mediaUploadingProgress {
@@ -116,13 +123,8 @@ public class MediaProgressCoordinator: NSObject {
         return value
     }
 
-    private func refreshMediaProgress() {
-
-        delegate?.mediaProgressCoordinator(self, progressDidChange: totalProgress)
-
-        if !isRunning {
-            delegate?.mediaProgressCoordinatorDidFinishUpload(self)
-        }
+    func progress(forMediaID mediaID: String) -> Progress? {
+        return mediaUploading[mediaID]
     }
 
     func isMediaUploading(mediaID: String) -> Bool {
@@ -133,6 +135,7 @@ public class MediaProgressCoordinator: NSObject {
         return false
     }
 
+    /// Returns true if any task is still ongoing
     var isRunning: Bool {
         guard let progress = mediaUploadingProgress else {
             return false
@@ -154,6 +157,7 @@ public class MediaProgressCoordinator: NSObject {
         return false
     }
 
+    /// Returns true if any of media tasks being tracked have an error associated
     var hasFailedMedia: Bool {
         for progress in mediaUploading.values {
             if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] != nil {
@@ -161,16 +165,6 @@ public class MediaProgressCoordinator: NSObject {
             }
         }
         return false
-    }
-
-    func cancelAndStopTrack(of mediaID: String) {
-        guard let mediaProgress = mediaUploading[mediaID] else {
-            return
-        }
-        if mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
-            mediaProgress.cancel()
-        }
-        mediaUploading.removeValue(forKey: mediaID)
     }
 
     var allCancelledIDs: [String] {
@@ -193,6 +187,55 @@ public class MediaProgressCoordinator: NSObject {
         return mediaIDs
     }
 
+    var failedMediaIDs: [String] {
+        var failedMediaIDs = [String]()
+        for (key, progress) in mediaUploading {
+            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] != nil {
+                failedMediaIDs.append(key)
+            }
+        }
+        return failedMediaIDs
+    }
+
+    // MARK: - KeyPath observer method for the global progress property
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard
+            context == &mediaUploadingProgressObserverContext,
+            keyPath == #keyPath(Progress.fractionCompleted)
+            else {
+                super.observeValue(forKeyPath: keyPath,
+                                   of: object,
+                                   change: change,
+                                   context: context)
+                return
+        }
+
+        DispatchQueue.main.async {
+            self.refreshMediaProgress()
+        }
+    }
+
+    private func refreshMediaProgress() {
+
+        delegate?.mediaProgressCoordinator(self, progressDidChange: totalProgress)
+
+        if !isRunning {
+            delegate?.mediaProgressCoordinatorDidFinishUpload(self)
+        }
+    }
+
+    //MARK: - Actions
+
+    func cancelAndStopTrack(of mediaID: String) {
+        guard let mediaProgress = mediaUploading[mediaID] else {
+            return
+        }
+        if mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            mediaProgress.cancel()
+        }
+        mediaUploading.removeValue(forKey: mediaID)
+    }
+
     func cancelAllPendingUploads() {
         let pendingUploadIds = mediaUploading.keys
 
@@ -211,23 +254,10 @@ public class MediaProgressCoordinator: NSObject {
         mediaUploading.removeAll()
     }
 
-    var failedMediaIDs: [String] {
-        var failedMediaIDs = [String]()
-        for (key, progress) in mediaUploading {
-            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] != nil {
-                failedMediaIDs.append(key)
-            }
-        }
-        return failedMediaIDs
-    }
-
     func stopTrackingAllFailedMedia() {
         for key in failedMediaIDs {
             mediaUploading.removeValue(forKey: key)
         }
     }
 
-    func progress(forMediaID mediaID: String) -> Progress? {
-        return mediaUploading[mediaID]
-    }
 }
