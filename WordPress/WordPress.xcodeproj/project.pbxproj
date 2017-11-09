@@ -971,6 +971,7 @@
 		FF2716A11CABC7D40006E2D4 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		FF286C761DE70A4500383A62 /* NSURL+Exporters.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */; };
 		FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = FF28B3F01AEB251200E11AAE /* InfoPListTranslator.m */; };
+		FF355D981FB492DD00244E6D /* ExportableAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF355D971FB492DD00244E6D /* ExportableAsset.swift */; };
 		FF4258501BA092EE00580C68 /* RelatedPostsSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */; };
 		FF54D4641D6F3FA900A0DC4D /* EditorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF54D4631D6F3FA900A0DC4D /* EditorSettings.swift */; };
 		FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */; };
@@ -2431,6 +2432,7 @@
 		FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+Exporters.swift"; sourceTree = "<group>"; };
 		FF28B3EF1AEB251200E11AAE /* InfoPListTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoPListTranslator.h; sourceTree = "<group>"; };
 		FF28B3F01AEB251200E11AAE /* InfoPListTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoPListTranslator.m; sourceTree = "<group>"; };
+		FF355D971FB492DD00244E6D /* ExportableAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableAsset.swift; sourceTree = "<group>"; };
 		FF42584E1BA092EE00580C68 /* RelatedPostsSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelatedPostsSettingsViewController.h; sourceTree = "<group>"; };
 		FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelatedPostsSettingsViewController.m; sourceTree = "<group>"; };
 		FF54D4631D6F3FA900A0DC4D /* EditorSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorSettings.swift; sourceTree = "<group>"; };
@@ -2650,6 +2652,10 @@
 		086C4D0C1E81F7920011D960 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				FF355D971FB492DD00244E6D /* ExportableAsset.swift */,
+				FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */,
+				FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */,
+				FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */,
 				086C4D0F1E81F9240011D960 /* Media+Blog.swift */,
 			);
 			name = Media;
@@ -4216,12 +4222,9 @@
 				B587797119B799D800E57C5A /* NSParagraphStyle+Helpers.swift */,
 				B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */,
 				B5BE31C31CB825A100BDF770 /* NSURLCache+Helpers.swift */,
-				FFB1FA9F1BF0EC4E0090C761 /* PHAsset+Exporters.swift */,
-				FF286C751DE70A4500383A62 /* NSURL+Exporters.swift */,
 				1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */,
 				B587797219B799D800E57C5A /* UIDevice+Helpers.swift */,
 				E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */,
-				FFB1FA9D1BF0EB840090C761 /* UIImage+Exporters.swift */,
 				E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */,
 				E67B30291DD2428B00F2F47B /* UIImage+Tint.swift */,
 				B57F010D1CB6931900B761B3 /* UIImageView+Gravatar.swift */,
@@ -6425,6 +6428,7 @@
 				E1BB85981F82459800797050 /* WebViewAuthenticator.swift in Sources */,
 				43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */,
 				E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */,
+				FF355D981FB492DD00244E6D /* ExportableAsset.swift in Sources */,
 				F1049F331F39FCF9004DF0BB /* CalypsoProcessorOut.swift in Sources */,
 				E15644EF1CE0E53B00D96E64 /* PlanListViewModel.swift in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
