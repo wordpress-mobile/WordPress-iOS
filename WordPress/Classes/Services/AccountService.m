@@ -102,19 +102,31 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[PushNotificationsManager shared] unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
-    if (account) {
-        [self.managedObjectContext deleteObject:account];
+    if (account == nil) {
+        return;
     }
+    NSString *username = account.username;
+    [self.managedObjectContext deleteObject:account];
 
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     
     // Clear WordPress.com cookies
-    NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie *cookie in wpcomCookies) {
-        if (cookie.domain.isWordPressComPath) {
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-        }
+    NSArray<id<CookieJar>> *cookieJars;
+    if (@available(iOS 11.0, *)) {
+        cookieJars = @[
+                       [NSHTTPCookieStorage sharedHTTPCookieStorage],
+                       [[WKWebsiteDataStore defaultDataStore] httpCookieStore]
+                       ];
+    } else {
+        cookieJars = @[
+                       [NSHTTPCookieStorage sharedHTTPCookieStorage]
+                       ];
     }
+    NSURL *url = [NSURL URLWithString:@"https://wordpress.com/"];
+    for (id<CookieJar> cookieJar in cookieJars) {
+        [cookieJar removeCookiesWithUrl:url username:username completion:^{}];
+    }
+
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     // Remove defaults
