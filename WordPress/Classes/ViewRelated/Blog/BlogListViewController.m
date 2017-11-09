@@ -233,7 +233,6 @@ static NSInteger HideSearchMinSites = 3;
         return;
     }
     if (![self defaultWordPressComAccount]) {
-        [WPAnalytics track:WPAnalyticsStatLogout];
         [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
     }
 }
@@ -318,6 +317,13 @@ static NSInteger HideSearchMinSites = 3;
             [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
         }
     }];
+}
+
+- (void)trackLogoutIfNeeded
+{
+    if (self.dataSource.allBlogsCount == 0 && ![self defaultWordPressComAccount]) {
+        [WPAnalytics track:WPAnalyticsStatLogout];
+    }
 }
 
 #pragma mark - Header methods
@@ -905,6 +911,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self.tableView reloadData];
     [self updateEditButton];
+    [self trackLogoutIfNeeded];
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
