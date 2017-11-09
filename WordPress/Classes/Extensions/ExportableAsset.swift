@@ -26,7 +26,7 @@ typealias ErrorHandler = (_ error: NSError) -> ()
                      synchronous: Bool,
                      successHandler: @escaping SuccessHandler,
                      errorHandler: @escaping ErrorHandler)
-    
+
     /// Exports an image thumbnail of the asset to a file URL that respects the targetSize.
     /// The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that
     /// mantains the aspect ratio of the asset
@@ -43,7 +43,7 @@ typealias ErrorHandler = (_ error: NSError) -> ()
                               synchronous: Bool,
                               successHandler: @escaping SuccessHandler,
                               errorHandler: @escaping ErrorHandler)
-    
+
     /**
      Export the original asset without any modification to the specified URL
      
@@ -53,13 +53,13 @@ typealias ErrorHandler = (_ error: NSError) -> ()
      
      */
     func exportOriginalImage(_ toURL: URL, successHandler: @escaping SuccessHandler, errorHandler: @escaping ErrorHandler)
-    
+
     func originalUTI() -> String?
-    
+
     /// The MediaType for the asset
     ///
     var assetMediaType: MediaType { get }
-    
+
     /// The default UTI for thumbnails
     ///
     var defaultThumbnailUTI: String { get }
