@@ -637,11 +637,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)siteIconReceivedDroppedImage:(UIImage *)image
 {
     if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
-        // Gracefully ignore the tap for users that can not upload files or
+        // Gracefully ignore the drop for users that can not upload files or
         // blogs that do not have capabilities since those will not support the REST API icon update
         return;
     }
-    [self uploadDroppedSiteIconImage:image];
+    [self presentCropViewControllerForDroppedSiteIcon:image];
 }
 
 #pragma mark Site Icon Update Management
@@ -672,7 +672,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
 }
 
-- (void)uploadDroppedSiteIconImage:(UIImage *)image
+- (void)presentCropViewControllerForDroppedSiteIcon:(UIImage *)image
 {
     self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
     self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
