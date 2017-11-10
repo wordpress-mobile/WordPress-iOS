@@ -215,6 +215,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 }
 
 #pragma mark - Drop Interaction Handler
+
 - (BOOL)dropInteraction:(UIDropInteraction *)interaction
        canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {

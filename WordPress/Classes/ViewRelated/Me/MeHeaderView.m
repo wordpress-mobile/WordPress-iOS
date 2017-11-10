@@ -249,12 +249,19 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 }
 
 #pragma mark - Drop Interaction Handler
+
 - (BOOL)dropInteraction:(UIDropInteraction *)interaction
        canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
     BOOL isAnImage = [session canLoadObjectsOfClass:[UIImage self]];
     BOOL isSingleImage = [session.items count] == 1;
     return (isAnImage && isSingleImage);
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+        sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.gravatarImageView depressSpringAnimation:nil];
 }
 
 - (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
@@ -277,15 +284,19 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)dropInteraction:(UIDropInteraction *)interaction
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    [self.gravatarImageView depressSpringAnimation:nil];
     [self setShowsActivityIndicator:YES];
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
         UIImage *image = [images firstObject];
         if (self.onDroppedImage) {
             self.onDroppedImage(image);
-            [_gravatarImageView normalizeSpringAnimation:nil];
         }
     }];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidExit:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.gravatarImageView normalizeSpringAnimation:nil];
 }
 
 @end
