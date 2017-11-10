@@ -25,14 +25,18 @@ class MockCookieJar: HTTPCookieStorage {
         _cookies.append(cookie)
     }
 
-    func setWordPressComCookie(username: String) {
+    func setWordPressCookie(username: String, domain: String) {
         let cookie = HTTPCookie(properties: [
-            .domain: "wordpress.com",
+            .domain: domain,
             .path: "/",
             .secure: true,
             .name: "wordpress_logged_in",
             .value: "\(username)%00000"
             ])!
         setCookie(cookie)
+    }
+
+    func setWordPressComCookie(username: String) {
+        setWordPressCookie(username: username, domain: ".wordpress.com")
     }
 }
