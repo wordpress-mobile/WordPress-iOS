@@ -19,7 +19,7 @@ class CookieJarTests: XCTestCase {
 
         let expectation = self.expectation(description: "getCookies completion called")
         cookieJar.getCookies(url: wordPressComLoginURL) { (cookies) in
-            XCTAssertEqual(cookies.count, 1)
+            XCTAssertEqual(cookies.count, 2)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -47,22 +47,11 @@ class CookieJarTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
     }
 
-    func testRemoveCookiesMatching() {
+    func testRemoveCookies() {
         addCookies()
 
         let expectation = self.expectation(description: "removeCookies completion called")
-        cookieJar.removeCookies(url: wordPressComLoginURL, username: "testuser") { [mockCookieJar] in
-            XCTAssertEqual(mockCookieJar.cookies?.count, 0)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
-    func testRemoveCookiesNotMatching() {
-        addCookies()
-
-        let expectation = self.expectation(description: "removeCookies completion called")
-        cookieJar.removeCookies(url: wordPressComLoginURL, username: "anotheruser") { [mockCookieJar] in
+        cookieJar.removeWordPressComCookies { [mockCookieJar] in
             XCTAssertEqual(mockCookieJar.cookies?.count, 1)
             expectation.fulfill()
         }
@@ -73,5 +62,6 @@ class CookieJarTests: XCTestCase {
 private extension CookieJarTests {
     func addCookies() {
         mockCookieJar.setWordPressComCookie(username: "testuser")
+        mockCookieJar.setWordPressCookie(username: "testuser", domain: "example.com")
     }
 }
