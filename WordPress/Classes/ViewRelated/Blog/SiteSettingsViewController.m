@@ -26,6 +26,7 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralURL,
     SiteSettingsGeneralPrivacy,
     SiteSettingsGeneralLanguage,
+    SiteSettingsGeneralTimeZone,
     SiteSettingsGeneralCount,
 };
 
@@ -74,6 +75,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
 @property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
 @property (nonatomic, strong) SettingTableViewCell *languageTextCell;
+@property (nonatomic, strong) SettingTableViewCell *timeZoneTextCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
@@ -430,10 +432,21 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (_languageTextCell) {
         return _languageTextCell;
     }
-    _languageTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Language", @"Label for the privacy setting")
+    _languageTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Language", @"Label for the Language setting")
                                                            editable:self.blog.isAdmin
                                                     reuseIdentifier:nil];
     return _languageTextCell;
+}
+
+- (SettingTableViewCell *)timeZoneTextCell
+{
+    if (_timeZoneTextCell) {
+        return _timeZoneTextCell;
+    }
+    _timeZoneTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Time Zone", @"Label for the time zone setting")
+                                                           editable:self.blog.isAdmin
+                                                    reuseIdentifier:nil];
+    return _timeZoneTextCell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
@@ -472,6 +485,19 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             
             [self.languageTextCell setTextValue:name];
             return self.languageTextCell;
+        }
+        case SiteSettingsGeneralTimeZone:
+        {
+            NSString *timeZoneString = self.blog.settings.timeZoneString;
+            if ([timeZoneString isEqualToString:@""]) {
+                long hoursUTC = self.blog.settings.gmtOffset.integerValue;
+                long minutesUTC = ([self.blog.settings.gmtOffset doubleValue] - hoursUTC) * 60;
+                NSString *utcString = [NSString stringWithFormat:@"UTC %+ld:%ld", hoursUTC, minutesUTC];
+                [self.timeZoneTextCell setTextValue:utcString];
+            } else {
+                [self.timeZoneTextCell setTextValue:timeZoneString];
+            }
+            return self.timeZoneTextCell;
         }
     }
 
