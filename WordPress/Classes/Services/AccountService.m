@@ -105,7 +105,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     if (account == nil) {
         return;
     }
-    NSString *username = account.username;
     [self.managedObjectContext deleteObject:account];
 
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
@@ -122,9 +121,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
                        [NSHTTPCookieStorage sharedHTTPCookieStorage]
                        ];
     }
-    NSURL *url = [NSURL URLWithString:@"https://wordpress.com/"];
     for (id<CookieJar> cookieJar in cookieJars) {
-        [cookieJar removeCookiesWithUrl:url username:username completion:^{}];
+        [cookieJar removeWordPressComCookiesWithCompletion:^{}];
     }
 
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
