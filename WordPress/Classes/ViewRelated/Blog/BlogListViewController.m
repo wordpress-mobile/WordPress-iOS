@@ -319,13 +319,6 @@ static NSInteger HideSearchMinSites = 3;
     }];
 }
 
-- (void)trackLogoutIfNeeded
-{
-    if (self.dataSource.allBlogsCount == 0 && ![self defaultWordPressComAccount]) {
-        [WPAnalytics track:WPAnalyticsStatLogout];
-    }
-}
-
 #pragma mark - Header methods
 
 - (UIView *)headerView
@@ -911,7 +904,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self.tableView reloadData];
     [self updateEditButton];
-    [self trackLogoutIfNeeded];
+    [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
