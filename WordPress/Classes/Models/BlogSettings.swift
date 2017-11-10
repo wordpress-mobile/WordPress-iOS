@@ -34,6 +34,14 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var iconMediaID: NSNumber?
 
+    /// Stores the Blog's gmt timezone offset
+    ///
+    @NSManaged var gmtOffset: NSNumber?
+
+    /// Stores the Blog's time zone string
+    ///
+    @NSManaged var timeZoneString: NSString?
+
     // MARK: - Writing
 
     /// Contains the Default Category ID. Used when creating new posts.

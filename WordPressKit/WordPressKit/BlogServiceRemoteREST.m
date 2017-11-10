@@ -13,6 +13,8 @@ static NSString * const RemoteBlogTaglineKey                                = @"
 static NSString * const RemoteBlogPrivacyKey                                = @"blog_public";
 static NSString * const RemoteBlogLanguageKey                               = @"lang_id";
 static NSString * const RemoteBlogIconKey                                   = @"site_icon";
+static NSString * const RemoteBlogGMTOffsetKey                              = @"gmt_offset";
+static NSString * const RemoteBlogTimeZoneStringKey                         = @"timezone_string";
 
 static NSString * const RemoteBlogSettingsKey                               = @"settings";
 static NSString * const RemoteBlogDefaultCategoryKey                        = @"default_category";
@@ -323,6 +325,8 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     settings.privacy = [rawSettings numberForKey:RemoteBlogPrivacyKey];
     settings.languageID = [rawSettings numberForKey:RemoteBlogLanguageKey];
     settings.iconMediaID = [rawSettings numberForKey:RemoteBlogIconKey];
+    settings.gmtOffset = [rawSettings numberForKey:RemoteBlogGMTOffsetKey];
+    settings.timeZoneString = [rawSettings stringForKey:RemoteBlogTimeZoneStringKey];
 
     // Writing
     settings.defaultCategoryID = [rawSettings numberForKey:RemoteBlogDefaultCategoryKey] ?: @(RemoteBlogUncategorizedCategory);
