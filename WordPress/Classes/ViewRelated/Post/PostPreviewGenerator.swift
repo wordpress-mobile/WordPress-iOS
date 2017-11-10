@@ -9,9 +9,11 @@ protocol PostPreviewGeneratorDelegate {
 class PostPreviewGenerator: NSObject {
     let post: AbstractPost
     weak var delegate: PostPreviewGeneratorDelegate?
+    fileprivate let authenticator: WebViewAuthenticator?
 
     init(post: AbstractPost) {
         self.post = post
+        authenticator = WebViewAuthenticator(blog: post.blog)
         super.init()
     }
 
@@ -40,6 +42,10 @@ class PostPreviewGenerator: NSObject {
                 " " +
                 NSLocalizedString("A simple preview is shown below.", comment: "")
         )
+    }
+
+    func interceptRedirect(request: URLRequest) -> URLRequest? {
+        return authenticator?.interceptRedirect(request: request)
     }
 }
 
@@ -104,7 +110,7 @@ private extension PostPreviewGenerator {
     }
 
     func attemptCookieAuthenticatedRequest(url: URL) {
-        guard let authenticator = WebViewAuthenticator(blog: post.blog) else {
+        guard let authenticator = authenticator else {
             showFakePreview()
             return
         }
