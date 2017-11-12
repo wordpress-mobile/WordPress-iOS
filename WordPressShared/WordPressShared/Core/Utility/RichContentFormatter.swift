@@ -138,22 +138,37 @@ import Foundation
         return content
     }
 
+    
+    /// Converts DIV with class gallery class to gallery tags
+    ///
+    /// - Parameters:
+    ///     - string: The content string to format.
+    ///
+    /// - Returns: The formatted string.
+    ///
     public class func normalizeGallery(_ string : String) -> String {
         
         guard string.count > 0 else {
             return string
         }
         
+        
+        //Types of WP Galleries
         let iconGallery = "class='gallery"
         let tiledGallery = "class=\"tiled-gallery"
         
+        //Gallery Tag for identification
         let galleryStart = "<gallery>"
         let galleryEnd = "</gallery>"
         
         var content = string
         
+        //Scan and Insert Indentifier for Gallery Start and End
         content = scannerForGalleryBy(galleryType: iconGallery, inString: content)
         content = scannerForGalleryBy(galleryType: tiledGallery, inString: content)
+        
+        
+        //Replace Div with Gallery tag
         content = RegEx.galleryDivStart.stringByReplacingMatches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count), withTemplate: galleryStart)
         content = RegEx.galleryDivEnd.stringByReplacingMatches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count), withTemplate: galleryEnd)
         

@@ -18,6 +18,7 @@ class WPRichContentView: UITextView {
         static let photonQuality = 65
         static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
+        static let defaultGalleryHeight = CGFloat(150.0)
     }
 
     /// Used to keep references to image attachments.
@@ -205,9 +206,10 @@ class WPRichContentView: UITextView {
 
 extension WPRichContentView: WPTextAttachmentManagerDelegate {
     func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
-        if attachment.tagName == "img" {
+        if attachment.tagName == "gallery" {
+            return galleryForAttachment(attachment)
+        }else if attachment.tagName == "img" {
             return imageForAttachment(attachment)
-
         } else {
             return embedForAttachment(attachment)
         }
@@ -281,6 +283,45 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         mediaArray.append(media)
 
         return img
+    }
+    
+    func galleryForAttachment(_ attachment : WPTextAttachment) -> WPRichTextGallery {
+        
+        let width: CGFloat = textContainer.size.width
+        let height: CGFloat = Constants.defaultGalleryHeight
+        
+        let gallery = WPRichTextGallery(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
+        
+        attachment.maxSize = CGSize(width: width, height: height)
+        
+        if let htmlString = attachment.html, htmlString.count > 0 {
+            
+            var content = htmlString
+            
+            //remove gallery tags
+            let galleryTagsStart = try! NSRegularExpression(pattern: "<gallery[^>]*>", options: .caseInsensitive)
+            let galleryTagsEnd = try! NSRegularExpression(pattern: "</gallery>", options: .caseInsensitive)
+            
+            content = galleryTagsStart.stringByReplacingMatches(in: content,
+                                                                options: .reportCompletion,
+                                                                range: NSRange(location: 0, length: content.count),
+                                                                withTemplate: "")
+            
+            content = galleryTagsEnd.stringByReplacingMatches(in: content,
+                                                                options: .reportCompletion,
+                                                                range: NSRange(location: 0, length: content.count),
+                                                                withTemplate: "")
+            
+            //get images as their own attachments, to become datasource
+            let formatter = WPRichTextFormatter()
+            let (_, attachments) = formatter.processAndExtractTags(content)
+
+            gallery.imageAttachments = attachments.filter({ (attachment) -> Bool in
+                    return attachment.tagName == "img"
+            })
+        }
+        
+        return gallery
     }
 
 

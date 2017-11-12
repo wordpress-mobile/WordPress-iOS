@@ -63,6 +63,7 @@ import UIKit
                 guard let attachment = object as? WPTextAttachment else {
                     return
                 }
+                
                 self.layoutAttachmentViewForAttachment(attachment, atRange: range)
         })
     }
@@ -82,6 +83,10 @@ import UIKit
             let attachmentView = attachmentViews[attachment.identifier] else {
             return
         }
+        
+        print(attachmentView.identifier)
+        print(attachmentView.view.frame)
+        print(range)
 
         // Make sure attachments are correctly laid out.
         layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
@@ -91,6 +96,8 @@ import UIKit
         if frame == infiniteFrame {
             return
         }
+        
+        print(frame)
 
         attachmentView.view.frame = frame
     }
