@@ -17,7 +17,7 @@ extension ProgressUserInfoKey {
 /// Media Progress Coordinator allow the tracking of multiple media progress uploads.
 ///
 public class MediaProgressCoordinator: NSObject {
-    
+
     public weak var delegate: MediaProgressCoordinatorDelegate?
 
     private(set) var mediaUploadingProgress: Progress?
@@ -165,7 +165,7 @@ public class MediaProgressCoordinator: NSObject {
         }
         return false
     }
-    
+
     /// Return a list of media ID that where cancelled
     ///
     var allCancelledIDs: [String] {
@@ -229,7 +229,7 @@ public class MediaProgressCoordinator: NSObject {
         }
     }
 
-    //MARK: - Actions
+    // MARK: - Actions
 
     /// Cancels and stop tracking of progress for a media upload
     ///
