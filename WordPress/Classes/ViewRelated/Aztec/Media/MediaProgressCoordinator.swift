@@ -166,7 +166,7 @@ public class MediaProgressCoordinator: NSObject {
         return false
     }
 
-    /// Return a list of media ID that where cancelled
+    /// Return a list of media ID that were cancelled
     ///
     var allCancelledIDs: [String] {
         var mediaIDs = [String]()
