@@ -263,13 +263,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self preloadBlogData];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    [self showAztecAnnouncement];
-}
-
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
@@ -1033,19 +1026,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         dashboardUrl = [self.blog adminUrlWithPath:@""];
     }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
-}
-
-- (void)showAztecAnnouncement
-{
-    if (![[NSUserDefaults standardUserDefaults] aztecAnnouncementWasDisplayed]) {
-        [[NSUserDefaults standardUserDefaults] setAztecAnnouncementWasDisplayed:YES];
-
-        FancyAlertViewController *controller = [FancyAlertViewController aztecAnnouncementController];
-        controller.modalPresentationStyle = UIModalPresentationCustom;
-        controller.transitioningDelegate = self;
-
-        [self.tabBarController presentViewController:controller animated:YES completion:nil];
-    }
 }
 
 #pragma mark - Remove Site
