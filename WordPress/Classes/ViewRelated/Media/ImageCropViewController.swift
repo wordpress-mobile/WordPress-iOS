@@ -37,8 +37,8 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(btnCropWasPressed))
-        
-        if (shouldShowCancelButton) {
+
+        if shouldShowCancelButton {
             let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel the crop")
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
                                                                style: .plain,
@@ -107,7 +107,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         let clippedImage = UIImage(cgImage: clippedImageRef, scale: screenScale, orientation: .up)
         onCompletion?(clippedImage, true)
     }
-    
+
     @IBAction func btnCropCancelWasPressed() {
         onCancel?()
     }
