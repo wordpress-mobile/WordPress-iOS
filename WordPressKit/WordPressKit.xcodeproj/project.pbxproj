@@ -203,7 +203,7 @@
 		74FC6F421F191C1D00112505 /* notifications-load-hash.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3E1F191C1D00112505 /* notifications-load-hash.json */; };
 		74FC6F431F191C1D00112505 /* notifications-load-all.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3F1F191C1D00112505 /* notifications-load-all.json */; };
 		826016F11F9FA13A00533B6C /* ActivityServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826016F01F9FA13A00533B6C /* ActivityServiceRemote.swift */; };
-		826016F31F9FA17B00533B6C /* RemoteActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826016F21F9FA17B00533B6C /* RemoteActivity.swift */; };
+		826016F31F9FA17B00533B6C /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826016F21F9FA17B00533B6C /* Activity.swift */; };
 		826016F91F9FAF6300533B6C /* activity-log-success-3.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F41F9FAF6300533B6C /* activity-log-success-3.json */; };
 		826016FA1F9FAF6300533B6C /* activity-log-success-1.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F51F9FAF6300533B6C /* activity-log-success-1.json */; };
 		826016FB1F9FAF6300533B6C /* activity-log-auth-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F61F9FAF6300533B6C /* activity-log-auth-failure.json */; };
@@ -565,7 +565,7 @@
 		74FC6F3E1F191C1D00112505 /* notifications-load-hash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-load-hash.json"; sourceTree = "<group>"; };
 		74FC6F3F1F191C1D00112505 /* notifications-load-all.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-load-all.json"; sourceTree = "<group>"; };
 		826016F01F9FA13A00533B6C /* ActivityServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityServiceRemote.swift; sourceTree = "<group>"; };
-		826016F21F9FA17B00533B6C /* RemoteActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteActivity.swift; sourceTree = "<group>"; };
+		826016F21F9FA17B00533B6C /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		826016F41F9FAF6300533B6C /* activity-log-success-3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-success-3.json"; sourceTree = "<group>"; };
 		826016F51F9FAF6300533B6C /* activity-log-success-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-success-1.json"; sourceTree = "<group>"; };
 		826016F61F9FAF6300533B6C /* activity-log-auth-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-auth-failure.json"; sourceTree = "<group>"; };
@@ -1085,7 +1085,7 @@
 				7403A3011EF0726E00DED7DC /* AccountSettings.swift */,
 				74E229591F1E77290085F7F2 /* KeyringConnection.swift */,
 				74E2295A1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift */,
-				826016F21F9FA17B00533B6C /* RemoteActivity.swift */,
+				826016F21F9FA17B00533B6C /* Activity.swift */,
 				93C674E51EE8345300BFAF05 /* RemoteBlog.h */,
 				93C674E61EE8345300BFAF05 /* RemoteBlog.m */,
 				82FFBF511F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift */,
@@ -1849,7 +1849,7 @@
 				7403A2E41EF06ED500DED7DC /* AccountSettingsRemote.swift in Sources */,
 				93C674E81EE8345300BFAF05 /* RemoteBlog.m in Sources */,
 				93BD27831EE73944002BB00B /* WordPressRSDParser.swift in Sources */,
-				826016F31F9FA17B00533B6C /* RemoteActivity.swift in Sources */,
+				826016F31F9FA17B00533B6C /* Activity.swift in Sources */,
 				742362E31F1025B400BD0A7F /* RemoteMenuLocation.m in Sources */,
 				82FFBF561F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift in Sources */,
 				9368C7B81EC630270092CE8E /* StatsStreakItem.m in Sources */,
