@@ -10,13 +10,10 @@ import UIKit
 import WordPressShared
 
 class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
-    struct Constants {
-        static let photonQuality = 65
-        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
-        static let defaultAttachmentHeight = CGFloat(50.0)
-    }
 
     fileprivate let galleryCellIdentifier = "ReaderGalleryCell"
+    
+    fileprivate var viewHeight : CGFloat
 
     var contentURL: URL?
     var linkURL: URL?
@@ -27,7 +24,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         let source = WPTableImageSource(maxSize: self.maxDisplaySize)
         source?.delegate = self
         source?.forceLargerSizeWhenFetching = false
-        source?.photonQuality = Constants.photonQuality
+        source?.photonQuality = 65
         return source!
     }()
 
@@ -65,9 +62,11 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.footerReferenceSize = CGSize(width: frame.width, height: 20.0)
+        
+        viewHeight = frame.height
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         super.init(frame: frame)
 
@@ -77,23 +76,26 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
     }
 
     required public init?(coder aDecoder: NSCoder) {
-        //TODO: figure out what the hell these do
-
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        collectionView = aDecoder.decodeObject(forKey: UICollectionView.classNameWithoutNamespaces()) as! UICollectionView
+        contentURL = aDecoder.decodeObject(forKey: "contentURL") as! URL?
+        linkURL = aDecoder.decodeObject(forKey: "linkURL") as! URL?
+        viewHeight = aDecoder.decodeObject(forKey: "viewHeight") as! CGFloat
 
         super.init(coder: aDecoder)
+        
+        sharedSetup()
     }
 
     fileprivate func sharedSetup() {
 
-        let galleryXib = UINib(nibName: "ReaderGalleryCell", bundle: nil)
+        let galleryXib = UINib(nibName: "ReaderGalleryCell", bundle: Bundle.main)
 
         collectionView.register(galleryXib, forCellWithReuseIdentifier: galleryCellIdentifier)
+        collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
         collectionView.backgroundColor = .clear
+        collectionView.clipsToBounds = true
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -106,15 +108,17 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
     override open func encode(with aCoder: NSCoder) {
 
-//        aCoder.encode(imageView, forKey: UIImage.classNameWithoutNamespaces())
-//
-//        if let url = contentURL {
-//            aCoder.encode(url, forKey: "contentURL")
-//        }
-//
-//        if let url = linkURL {
-//            aCoder.encode(url, forKey: "linkURL")
-//        }
+        aCoder.encode(collectionView, forKey: UICollectionView.classNameWithoutNamespaces())
+
+        if let url = contentURL {
+            aCoder.encode(url, forKey: "contentURL")
+        }
+
+        if let url = linkURL {
+            aCoder.encode(url, forKey: "linkURL")
+        }
+        
+        aCoder.encode(viewHeight, forKey: "viewHeight")
 
         super.encode(with: aCoder)
     }
@@ -125,14 +129,13 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
     func contentSize() -> CGSize {
 
 
-        return CGSize(width: collectionView.frame.width, height: 150.0)
+        return CGSize(width: collectionView.frame.width, height: viewHeight)
     }
 
     func contentRatio() -> CGFloat {
 
 
-        return collectionView.frame.width / 150.0
-
+        return collectionView.frame.width / viewHeight
     }
 }
 
@@ -164,8 +167,6 @@ extension WPRichTextGallery: UICollectionViewDataSource {
             mediaArray.append(media)
         }
 
-
-
         return cell
     }
 
@@ -174,11 +175,12 @@ extension WPRichTextGallery: UICollectionViewDataSource {
 extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         let rightInset = CGFloat(8.0)
         let rightExtraContent = CGFloat(8.0)
 
         let width = collectionView.bounds.width > 0 ? collectionView.bounds.width - (rightInset + rightExtraContent) : 0
-        let height = CGFloat(150.0)
+        let height = collectionView.bounds.height > 0 ? collectionView.bounds.height : viewHeight
 
         return CGSize(width: width, height: height)
     }

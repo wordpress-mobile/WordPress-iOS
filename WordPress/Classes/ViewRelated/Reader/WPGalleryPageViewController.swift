@@ -8,13 +8,6 @@
 
 import UIKit
 
-
-extension Array {
-    subscript(safe index: Int) -> Element? {
-        return index >= 0 && index < count ? self[index] : nil
-    }
-}
-
 class WPGalleryPageViewController: UIPageViewController {
 
     // MARK: - Properties
@@ -92,8 +85,6 @@ class WPGalleryPageViewController: UIPageViewController {
 
         return nil
     }
-
-
 
 
     /*

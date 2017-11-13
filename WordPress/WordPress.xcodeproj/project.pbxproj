@@ -318,7 +318,6 @@
 		5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */; };
 		5FDAFE601FB956A80090CDAD /* WPGalleryPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDAFE5F1FB956A70090CDAD /* WPGalleryPageViewController.swift */; };
 		5FFB9D681FB799C200C7368C /* WPRichTextGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB9D671FB799C200C7368C /* WPRichTextGallery.swift */; };
-		5FFB9D6D1FB7BB8800C7368C /* WPRichTextGalleryLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB9D6C1FB7BB8800C7368C /* WPRichTextGalleryLayout.swift */; };
 		5FFB9D701FB7BF7E00C7368C /* ReaderGalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FFB9D6E1FB7BF7E00C7368C /* ReaderGalleryCell.swift */; };
 		5FFB9D711FB7BF7E00C7368C /* ReaderGalleryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FFB9D6F1FB7BF7E00C7368C /* ReaderGalleryCell.xib */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
@@ -1498,7 +1497,6 @@
 		5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PageListTableViewCell.xib; sourceTree = "<group>"; };
 		5FDAFE5F1FB956A70090CDAD /* WPGalleryPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPGalleryPageViewController.swift; sourceTree = "<group>"; };
 		5FFB9D671FB799C200C7368C /* WPRichTextGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPRichTextGallery.swift; sourceTree = "<group>"; };
-		5FFB9D6C1FB7BB8800C7368C /* WPRichTextGalleryLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPRichTextGalleryLayout.swift; sourceTree = "<group>"; };
 		5FFB9D6E1FB7BF7E00C7368C /* ReaderGalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderGalleryCell.swift; sourceTree = "<group>"; };
 		5FFB9D6F1FB7BF7E00C7368C /* ReaderGalleryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderGalleryCell.xib; sourceTree = "<group>"; };
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
@@ -3395,14 +3393,6 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		5FFB9D6B1FB7BA9F00C7368C /* Layouts */ = {
-			isa = PBXGroup;
-			children = (
-				5FFB9D6C1FB7BB8800C7368C /* WPRichTextGalleryLayout.swift */,
-			);
-			name = Layouts;
-			sourceTree = "<group>";
-		};
 		7430C4471F97F0DA00E2673E /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -4731,7 +4721,6 @@
 			isa = PBXGroup;
 			children = (
 				5D1D04731B7A50B100CDE646 /* Reader.storyboard */,
-				5FFB9D6B1FB7BA9F00C7368C /* Layouts */,
 				5D08B8FD19647C0800D5B381 /* Controllers */,
 				E6D2E16A1B8B41AC0000ED14 /* Headers */,
 				5D5A6E901B613C1800DAF819 /* Cards */,
@@ -6708,7 +6697,6 @@
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
-				5FFB9D6D1FB7BB8800C7368C /* WPRichTextGalleryLayout.swift in Sources */,
 				E1CECE021E6EC7A8009C6695 /* FakePreviewBuilder.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
 				0815CF461E96F22600069916 /* MediaImportService.swift in Sources */,

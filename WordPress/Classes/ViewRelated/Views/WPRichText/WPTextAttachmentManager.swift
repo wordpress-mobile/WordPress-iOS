@@ -84,10 +84,6 @@ import UIKit
             return
         }
 
-        print(attachmentView.identifier)
-        print(attachmentView.view.frame)
-        print(range)
-
         // Make sure attachments are correctly laid out.
         layoutManager.invalidateLayout(forCharacterRange: range, actualCharacterRange: nil)
         layoutManager.ensureLayout(for: textView.textContainer)
@@ -96,8 +92,6 @@ import UIKit
         if frame == infiniteFrame {
             return
         }
-
-        print(frame)
 
         attachmentView.view.frame = frame
     }

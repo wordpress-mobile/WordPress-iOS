@@ -19,7 +19,7 @@ class WPRichContentView: UITextView {
         static let photonQuality = 65
         static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
-        static let defaultGalleryHeight = CGFloat(150.0)
+        static let defaultGalleryHeight = CGFloat(250.0)
     }
 
     /// Used to keep references to image attachments.
@@ -288,7 +288,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
     func galleryForAttachment(_ attachment: WPTextAttachment) -> WPRichTextGallery {
 
-        let width: CGFloat = textContainer.size.width
+        let width: CGFloat = attachment.width > 0 ? attachment.width : UIScreen.main.bounds.width
         let height: CGFloat = Constants.defaultGalleryHeight
 
         let gallery = WPRichTextGallery(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
