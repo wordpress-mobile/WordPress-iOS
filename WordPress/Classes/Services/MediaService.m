@@ -146,7 +146,8 @@
     } else {
         media = [Media makeMediaWithBlog:blog];
     }
-
+    media.mediaType = exportable.assetMediaType;
+    
     // Setup completion handlers
     void(^completionWithMedia)(Media *) = ^(Media *media) {
         // Pre-generate a thumbnail image, see the method notes.
