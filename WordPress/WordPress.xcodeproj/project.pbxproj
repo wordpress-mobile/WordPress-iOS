@@ -154,7 +154,7 @@
 		17D1C22D1EFB16C10076734A /* FancyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D1C22C1EFB16C10076734A /* FancyAlertViewController.swift */; };
 		17D1C22F1EFBFB6C0076734A /* FancyAlerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17D1C22E1EFBFB6C0076734A /* FancyAlerts.storyboard */; };
 		17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D2FDC11C6A468A00944265 /* PlanComparisonViewController.swift */; };
-		17D4335A1EFD2F2900CAB602 /* FancyAlertViewController+WhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D433591EFD2F2900CAB602 /* FancyAlertViewController+WhatsNew.swift */; };
+		17D4335A1EFD2F2900CAB602 /* FancyAlertViewController+AztecWhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D433591EFD2F2900CAB602 /* FancyAlertViewController+AztecWhatsNew.swift */; };
 		17D975AF1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */; };
 		17EC9FC61DDC761D00D5BE8E /* UIWindow+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EC9FC51DDC761D00D5BE8E /* UIWindow+Helpers.swift */; };
 		17F0AE301F091563007D5A6B /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F0AE2F1F091563007D5A6B /* ConfettiView.swift */; };
@@ -1237,7 +1237,7 @@
 		17D1C22C1EFB16C10076734A /* FancyAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertViewController.swift; sourceTree = "<group>"; };
 		17D1C22E1EFBFB6C0076734A /* FancyAlerts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FancyAlerts.storyboard; sourceTree = "<group>"; };
 		17D2FDC11C6A468A00944265 /* PlanComparisonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanComparisonViewController.swift; sourceTree = "<group>"; };
-		17D433591EFD2F2900CAB602 /* FancyAlertViewController+WhatsNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+WhatsNew.swift"; sourceTree = "<group>"; };
+		17D433591EFD2F2900CAB602 /* FancyAlertViewController+AztecWhatsNew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+AztecWhatsNew.swift"; sourceTree = "<group>"; };
 		17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Aztec.swift"; sourceTree = "<group>"; };
 		17EC9FC51DDC761D00D5BE8E /* UIWindow+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIWindow+Helpers.swift"; sourceTree = "<group>"; };
 		17F0AE2F1F091563007D5A6B /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
@@ -2811,7 +2811,7 @@
 				405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */,
 				17D1C22C1EFB16C10076734A /* FancyAlertViewController.swift */,
 				17D1C22E1EFBFB6C0076734A /* FancyAlerts.storyboard */,
-				17D433591EFD2F2900CAB602 /* FancyAlertViewController+WhatsNew.swift */,
+				17D433591EFD2F2900CAB602 /* FancyAlertViewController+AztecWhatsNew.swift */,
 				174122041EFDCBBF00AFA901 /* FancyAlertPresentationController.swift */,
 			);
 			name = "Fancy Alerts";
@@ -6317,7 +6317,7 @@
 				E1FFA9DC1E3FA84500CED178 /* CustomCellMarginBehavior.swift in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
-				17D4335A1EFD2F2900CAB602 /* FancyAlertViewController+WhatsNew.swift in Sources */,
+				17D4335A1EFD2F2900CAB602 /* FancyAlertViewController+AztecWhatsNew.swift in Sources */,
 				B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */,
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
 				E14A52371E39F43E00EE203E /* AppRatingsUtility.swift in Sources */,
