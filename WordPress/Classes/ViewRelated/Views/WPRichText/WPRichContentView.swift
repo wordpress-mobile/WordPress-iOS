@@ -19,7 +19,7 @@ class WPRichContentView: UITextView {
         static let photonQuality = 65
         static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
-        static let defaultGalleryHeight = CGFloat(250.0)
+        static let defaultGalleryHeight = CGFloat(280.0)
     }
 
     /// Used to keep references to image attachments.
@@ -296,6 +296,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         attachment.maxSize = CGSize(width: width, height: height)
 
         gallery.handleGalleryTapped = handleGalleryTapped
+        gallery.isPrivate = isPrivate
 
         if let htmlString = attachment.html, htmlString.count > 0 {
 

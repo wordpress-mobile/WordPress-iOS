@@ -15,6 +15,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
     fileprivate var viewHeight: CGFloat
 
+    var isPrivate : Bool = false
     var contentURL: URL?
     var linkURL: URL?
 
@@ -29,6 +30,8 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
     }()
 
     fileprivate var collectionView: UICollectionView
+    var captionLabel : UILabel?
+    var pageLabel : UILabel?
 
     /// Used to keep references to image attachments.
     ///
@@ -62,17 +65,40 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.footerReferenceSize = CGSize(width: frame.width, height: 20.0)
 
         viewHeight = frame.height
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
+        
+        let captionLabel = UILabel()
+        self.captionLabel = captionLabel
+        //WPStyleGuide.applyReaderCardSummaryLabelStyle(captionLabel)
+        captionLabel.text = ""
+        
+        let pageLabel = UILabel()
+        self.pageLabel = pageLabel
+        WPStyleGuide.applyReaderCardSummaryLabelStyle(pageLabel)
+        pageLabel.text = ""
 
         super.init(frame: frame)
+        
+        let footerStack = UIStackView(arrangedSubviews: [captionLabel, pageLabel])
+        footerStack.translatesAutoresizingMaskIntoConstraints = false
 
         sharedSetup()
 
         addSubview(collectionView)
+        addSubview(footerStack)
+        
+        collectionView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: footerStack.topAnchor).isActive = true
+        
+        footerStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
+        footerStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
+        footerStack.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
+        footerStack.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor).isActive = true
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -95,7 +121,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         collectionView.backgroundColor = .clear
-        collectionView.clipsToBounds = true
+        collectionView.clipsToBounds = false
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -160,7 +186,7 @@ extension WPRichTextGallery: UICollectionViewDataSource {
             } else {
                 let index = mediaArray.count
                 let indexPath = IndexPath(row: index, section: 1)
-                imageSource.fetchImage(for: url, with: maxDisplaySize, indexPath: indexPath, isPrivate: false)
+                imageSource.fetchImage(for: url, with: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
             }
 
             let media = GalleryMedia(cell: cell, attachment: attachment)
@@ -187,6 +213,43 @@ extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         handleGalleryTapped?(indexPath.row, imageAttachments)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        //Thanks Stackoverflow
+        ///https://stackoverflow.com/a/36190887
+        
+        let pageWidth = scrollView.frame.size.width
+        let page = Int(floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1)
+        
+        if let attachment = imageAttachments[safe: page] {
+            let title = attachment.attributes?["title"]
+            captionLabel?.text = title
+        }
+        
+        pageLabel?.text = "\(page + 1)/\(imageAttachments.count)"
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        let row = indexPath.row
+        
+        let mediaIndex = mediaArray.index { (media) -> Bool in
+            if media.cell == cell {
+                return true
+            }
+            
+            return false
+        }
+        
+        guard let index = mediaIndex, let media = mediaArray[safe: index] else {
+            return
+        }
+        
+
+        
     }
 
 }
