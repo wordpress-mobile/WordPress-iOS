@@ -420,11 +420,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             imageCropViewController.shouldShowCancelButton = true
 
             imageCropViewController.onCancel = { () -> Void in
-                self?.dismiss(animated: true, completion: nil);
+                self?.dismiss(animated: true, completion: nil)
                 self?.gravatarUploadInProgress = false
             }
             imageCropViewController.onCompletion = { (UIImage, Bool) -> Void in
-                self?.dismiss(animated: true, completion: nil);
+                self?.dismiss(animated: true, completion: nil)
                 if let updatedGravatarImage = image {
                     self?.uploadGravatarImage(updatedGravatarImage)
                 }
