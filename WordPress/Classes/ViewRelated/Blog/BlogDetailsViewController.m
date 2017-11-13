@@ -676,16 +676,20 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
     self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
+    self.imageCropViewController.shouldShowCancelButton = YES;
    
     __weak __typeof(self) weakSelf = self;
-    self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
+    self.imageCropViewController.onCancel = ^(void) {
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        if (!modified) {
-            return;
-        }
-        [weakSelf uploadDroppedSiteIcon:image];
+        weakSelf.headerView.updatingIcon = NO;
     };
     
+    self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        [weakSelf uploadDroppedSiteIcon:image];
+        weakSelf.headerView.blavatarImageView.image = image;
+        weakSelf.headerView.updatingIcon = NO;
+    };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:nil];
