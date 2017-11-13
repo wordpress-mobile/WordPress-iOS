@@ -5,6 +5,7 @@ import WordPressShared
 
 @objc protocol WPRichContentViewDelegate: UITextViewDelegate {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage)
+    func richContentView(_ richContentView: WPRichContentView, didReceiveGalleryAction image: [WPTextAttachment], indexTapped index: Int)
     @objc optional func richContentViewShouldUpdateLayoutForAttachments(_ richContentView: WPRichContentView) -> Bool
     @objc optional func richContentViewDidUpdateLayoutForAttachments(_ richContentView: WPRichContentView)
 }
@@ -284,34 +285,36 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
         return img
     }
-    
-    func galleryForAttachment(_ attachment : WPTextAttachment) -> WPRichTextGallery {
-        
+
+    func galleryForAttachment(_ attachment: WPTextAttachment) -> WPRichTextGallery {
+
         let width: CGFloat = textContainer.size.width
         let height: CGFloat = Constants.defaultGalleryHeight
-        
+
         let gallery = WPRichTextGallery(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
-        
+
         attachment.maxSize = CGSize(width: width, height: height)
-        
+
+        gallery.handleGalleryTapped = handleGalleryTapped
+
         if let htmlString = attachment.html, htmlString.count > 0 {
-            
+
             var content = htmlString
-            
+
             //remove gallery tags
             let galleryTagsStart = try! NSRegularExpression(pattern: "<gallery[^>]*>", options: .caseInsensitive)
             let galleryTagsEnd = try! NSRegularExpression(pattern: "</gallery>", options: .caseInsensitive)
-            
+
             content = galleryTagsStart.stringByReplacingMatches(in: content,
                                                                 options: .reportCompletion,
                                                                 range: NSRange(location: 0, length: content.count),
                                                                 withTemplate: "")
-            
+
             content = galleryTagsEnd.stringByReplacingMatches(in: content,
                                                                 options: .reportCompletion,
                                                                 range: NSRange(location: 0, length: content.count),
                                                                 withTemplate: "")
-            
+
             //get images as their own attachments, to become datasource
             let formatter = WPRichTextFormatter()
             let (_, attachments) = formatter.processAndExtractTags(content)
@@ -320,7 +323,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
                     return attachment.tagName == "img"
             })
         }
-        
+
         return gallery
     }
 
@@ -403,7 +406,17 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         guard let richDelegate = delegate as? WPRichContentViewDelegate else {
             return
         }
+
         richDelegate.richContentView(self, didReceiveImageAction: sender)
+    }
+
+    func handleGalleryTapped(selectedIndex: Int, galleryImages: [WPTextAttachment]) {
+
+        guard let richDelegate = delegate as? WPRichContentViewDelegate else {
+            return
+        }
+
+        richDelegate.richContentView(self, didReceiveGalleryAction: galleryImages, indexTapped: selectedIndex)
     }
 }
 
