@@ -416,17 +416,23 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
         headerView.onDroppedImage = { [weak self] image in
             let imageCropViewController = ImageCropViewController.init(image: image!)
-                imageCropViewController.maskShape = .square
-                imageCropViewController.shouldShowCancelButton = true
-                imageCropViewController.onCancel = { () -> Void in
-                    self?.dismiss(animated: true, completion: nil);
+            imageCropViewController.maskShape = .square
+            imageCropViewController.shouldShowCancelButton = true
+
+            imageCropViewController.onCancel = { () -> Void in
+                self?.dismiss(animated: true, completion: nil);
+                self?.gravatarUploadInProgress = false
+            }
+            imageCropViewController.onCompletion = { (UIImage, Bool) -> Void in
+                self?.dismiss(animated: true, completion: nil);
+                if let updatedGravatarImage = image {
+                    self?.uploadGravatarImage(updatedGravatarImage)
                 }
-                imageCropViewController.onCompletion = { (UIImage, Bool) -> Void in
-                    self?.dismiss(animated: true, completion: nil);
-                    if let updatedGravatarImage = image {
-                        self?.uploadGravatarImage(updatedGravatarImage)
-                    }
-                }
+            }
+
+            let navController = UINavigationController(rootViewController: imageCropViewController)
+            navController.modalPresentationStyle = .formSheet
+            self?.present(navController, animated: true, completion: nil)
         }
         return headerView
     }()
