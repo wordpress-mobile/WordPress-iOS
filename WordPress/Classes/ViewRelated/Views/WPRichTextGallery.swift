@@ -12,8 +12,8 @@ import WordPressShared
 class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
     fileprivate let galleryCellIdentifier = "ReaderGalleryCell"
-    
-    fileprivate var viewHeight : CGFloat
+
+    fileprivate var viewHeight: CGFloat
 
     var contentURL: URL?
     var linkURL: URL?
@@ -63,7 +63,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.footerReferenceSize = CGSize(width: frame.width, height: 20.0)
-        
+
         viewHeight = frame.height
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
@@ -76,14 +76,14 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
     }
 
     required public init?(coder aDecoder: NSCoder) {
-        
+
         collectionView = aDecoder.decodeObject(forKey: UICollectionView.classNameWithoutNamespaces()) as! UICollectionView
         contentURL = aDecoder.decodeObject(forKey: "contentURL") as! URL?
         linkURL = aDecoder.decodeObject(forKey: "linkURL") as! URL?
         viewHeight = aDecoder.decodeObject(forKey: "viewHeight") as! CGFloat
 
         super.init(coder: aDecoder)
-        
+
         sharedSetup()
     }
 
@@ -93,7 +93,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         collectionView.register(galleryXib, forCellWithReuseIdentifier: galleryCellIdentifier)
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
+
         collectionView.backgroundColor = .clear
         collectionView.clipsToBounds = true
 
@@ -117,7 +117,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         if let url = linkURL {
             aCoder.encode(url, forKey: "linkURL")
         }
-        
+
         aCoder.encode(viewHeight, forKey: "viewHeight")
 
         super.encode(with: aCoder)
@@ -175,7 +175,7 @@ extension WPRichTextGallery: UICollectionViewDataSource {
 extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
+
         let rightInset = CGFloat(8.0)
         let rightExtraContent = CGFloat(8.0)
 
