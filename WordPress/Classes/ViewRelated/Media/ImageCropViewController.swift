@@ -10,7 +10,9 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     /// Will be invoked with the cropped and scaled image and a boolean indicating
     /// whether or not the original image was modified
     var onCompletion: ((UIImage, Bool) -> Void)?
+    var onCancel: (() -> Void)?
     var maskShape: ImageCropOverlayMaskShape = .circle
+    var shouldShowCancelButton: Bool = false
 
     // MARK: - Public Initializers
 
@@ -35,6 +37,14 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(btnCropWasPressed))
+        
+        if (shouldShowCancelButton) {
+            let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel the crop")
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(btnCropCancelWasPressed))
+        }
 
         // Setup: ImageView
         imageView.image = rawImage
@@ -96,6 +106,10 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
 
         let clippedImage = UIImage(cgImage: clippedImageRef, scale: screenScale, orientation: .up)
         onCompletion?(clippedImage, true)
+    }
+    
+    @IBAction func btnCropCancelWasPressed() {
+        onCancel?()
     }
 
 
