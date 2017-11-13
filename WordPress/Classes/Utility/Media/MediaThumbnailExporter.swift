@@ -60,6 +60,10 @@ class MediaThumbnailExporter: MediaExporter {
             }
             return max(size.width, size.height) * scale
         }
+        
+        lazy var identifier: String = {
+           return UUID().uuidString
+        }()
     }
 
     // MARK: - Types
