@@ -64,6 +64,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
@@ -108,6 +109,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if #available(iOS 11, *) {
             textView.smartDashesType = .no
+            textView.smartQuotesType = .no
         }
 
         return textView
@@ -475,6 +477,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // This needs to called first
+        configureMediaAppearance()
+
         // TODO: Fix the warnings triggered by this one!
         WPFontManager.loadNotoFontFamily()
 
@@ -493,8 +498,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
-
-        configureMediaAppearance()
 
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
@@ -754,14 +757,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide), name: .UIKeyboardWillHide, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
         nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: .UIApplicationWillResignActive, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
         nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        nc.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        nc.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
         nc.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
     }
 
@@ -814,7 +817,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         case .html:
             html = htmlTextView.text
         case .richText:
-            html = richTextView.getHTML(prettyPrint: false)
+            html = richTextView.getHTML()
         }
 
         return html
@@ -895,7 +898,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
-    func keyboardWillHide(_ notification: Foundation.Notification) {
+    func keyboardDidHide(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -2535,6 +2538,8 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         MediaAttachment.defaultAppearance.progressBackgroundColor = Colors.mediaProgressBarBackground
         MediaAttachment.defaultAppearance.progressColor = Colors.mediaProgressBarTrack
         MediaAttachment.defaultAppearance.overlayColor = Colors.mediaProgressOverlay
+        MediaAttachment.defaultAppearance.overlayBorderWidth = Constants.mediaOverlayBorderWidth
+        MediaAttachment.defaultAppearance.overlayBorderColor = Colors.mediaOverlayBorderColor
     }
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
@@ -2827,7 +2832,8 @@ extension AztecPostViewController {
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
-        attachment.overlayImage = Gridicon.iconOfType(.refresh)
+        attachment.overlayImage = Gridicon.iconOfType(.refresh, withSize: Constants.mediaOverlayIconSize)
+        attachment.shouldHideBorder = true
         richTextView.refresh(attachment)
     }
 
@@ -2903,15 +2909,12 @@ extension AztecPostViewController {
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
                                                 self.currentSelectedAttachment = nil
-                                                if attachment is ImageAttachment {
-                                                    attachment.overlayImage = nil
-                                                }
-                                                attachment.message = nil
+                                                self.resetMediaAttachmentOverlay(attachment)
                                                 self.richTextView.refresh(attachment)
                                             }
         })
         if let imageAttachment = attachment as? ImageAttachment {
-            alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Details", comment: "User action to edit media details."),
+            alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Edit", comment: "User action to edit media details."),
                                                style: .default,
                                                handler: { (action) in
                                                 self.displayDetails(forAttachment: imageAttachment)
@@ -2944,10 +2947,7 @@ extension AztecPostViewController {
                                                     //retry upload
                                                     if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        if attachment is ImageAttachment {
-                                                            attachment.overlayImage = nil
-                                                        }
-                                                        attachment.message = nil
+                                                        self.resetMediaAttachmentOverlay(attachment)
                                                         attachment.progress = 0
                                                         self.richTextView.refresh(attachment)
                                                         self.mediaProgressCoordinator.track(numberOfItems: 1)
@@ -2958,7 +2958,7 @@ extension AztecPostViewController {
                                                     }
                 })
             }
-            alertController.addActionWithTitle(NSLocalizedString("Remove Media", comment: "User action to remove media."),
+            alertController.addActionWithTitle(NSLocalizedString("Remove", comment: "User action to remove media."),
                                                style: .destructive,
                                                handler: { (action) in
                                                 self.richTextView.remove(attachmentID: mediaID)
@@ -2986,6 +2986,14 @@ extension AztecPostViewController {
             }
         }
 
+        controller.onCancel = { [weak self] in
+            if attachment == self?.currentSelectedAttachment {
+                self?.currentSelectedAttachment = nil
+                self?.resetMediaAttachmentOverlay(attachment)
+                self?.richTextView.refresh(attachment)
+            }
+        }
+
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         present(navController, animated: true, completion: nil)
@@ -2996,13 +3004,9 @@ extension AztecPostViewController {
     var mediaMessageAttributes: [String: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let shadow = NSShadow()
-        shadow.shadowOffset = CGSize(width: 1, height: 1)
-        shadow.shadowColor = UIColor(white: 0, alpha: 0.6)
-        let attributes: [String: Any] = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 20),
+        let attributes: [String: Any] = [NSFontAttributeName: Fonts.mediaOverlay,
                                         NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.white,
-                                        NSShadowAttributeName: shadow]
+                                        NSForegroundColorAttributeName: UIColor.white]
         return attributes
     }
 
@@ -3042,6 +3046,14 @@ extension AztecPostViewController {
         updateToolbar(formatBar, forMode: .text)
         restoreInputAssistantItems()
     }
+
+    fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
+        if mediaAttachment is ImageAttachment {
+            mediaAttachment.overlayImage = nil
+        }
+        mediaAttachment.message = nil
+        mediaAttachment.shouldHideBorder = false
+    }
 }
 
 
@@ -3065,25 +3077,23 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
-        //check if it's the current selected attachment or an failed upload
-        if attachment == currentSelectedAttachment || mediaProgressCoordinator.error(forMediaID: attachment.identifier) != nil {
-            //if it's the same attachment has before let's display the options
-            displayActions(forAttachment: attachment, position: position)
-        } else {
-            // if it's a new attachment tapped let's unmark the previous one
+        // Check to see if this is an error
+        if mediaProgressCoordinator.error(forMediaID: attachment.identifier) == nil {
+            // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {
-                selectedAttachment.message = nil
+                self.resetMediaAttachmentOverlay(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
-            // and mark the newly tapped attachment
-            let message = NSLocalizedString("Tap for options", comment: "Message to overlay on top of a image to show when tapping on a media on the post/page editor.")
+
+            // ...and mark the newly tapped attachment
+            let message = ""
             attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
-            if attachment is ImageAttachment {
-                attachment.overlayImage = Gridicon.iconOfType(.pencil)
-            }
             richTextView.refresh(attachment)
             currentSelectedAttachment = attachment
         }
+
+        // Display the action sheet right away
+        displayActions(forAttachment: attachment, position: position)
     }
 
     func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
@@ -3129,10 +3139,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func deselected(textAttachment attachment: NSTextAttachment, atPosition position: CGPoint) {
         currentSelectedAttachment = nil
         if let mediaAttachment = attachment as? MediaAttachment {
-            mediaAttachment.message = nil
-            if mediaAttachment is ImageAttachment {
-                mediaAttachment.overlayImage = nil
-            }
+            self.resetMediaAttachmentOverlay(mediaAttachment)
             richTextView.refresh(mediaAttachment)
         }
     }
@@ -3359,6 +3366,8 @@ extension AztecPostViewController {
         static let mediaPickerInsertText    = NSLocalizedString("Insert %@", comment: "Button title used in media picker to insert media (photos / videos) into a post. Placeholder will be the number of items that will be inserted.")
         static let mediaPickerKeyboardHeightRatioPortrait   = CGFloat(0.20)
         static let mediaPickerKeyboardHeightRatioLandscape  = CGFloat(0.30)
+        static let mediaOverlayBorderWidth  = CGFloat(3.0)
+        static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
@@ -3382,10 +3391,11 @@ extension AztecPostViewController {
         static let progressBackground       = WPStyleGuide.wordPressBlue()
         static let progressTint             = UIColor.white
         static let progressTrack            = WPStyleGuide.wordPressBlue()
-        static let mediaProgressOverlay = UIColor(white: 1, alpha: 0.6)
+        static let mediaProgressOverlay     = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
         static let mediaProgressBarBackground = WPStyleGuide.lightGrey()
-        static let mediaProgressBarTrack = WPStyleGuide.wordPressBlue()
-        static let aztecLinkColor = WPStyleGuide.mediumBlue()
+        static let mediaProgressBarTrack    = WPStyleGuide.wordPressBlue()
+        static let aztecLinkColor           = WPStyleGuide.mediumBlue()
+        static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
     }
 
     struct Fonts {
@@ -3394,6 +3404,7 @@ extension AztecPostViewController {
         static let title                    = WPFontManager.notoBoldFont(ofSize: 24.0)
         static let blogPicker               = Fonts.semiBold
         static let mediaPickerInsert        = WPFontManager.systemMediumFont(ofSize: 15.0)
+        static let mediaOverlay             = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
     }
 
     struct Restoration {
