@@ -245,13 +245,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
     [self setUpdatingIcon:YES];
-    
-    __weak __typeof(self) weakSelf = self;
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
         UIImage *image = [images firstObject];
-        weakSelf.blavatarImageView.image = image;
         [self.delegate siteIconReceivedDroppedImage:image];
-        [self setUpdatingIcon:NO];
     }];
 }
 
