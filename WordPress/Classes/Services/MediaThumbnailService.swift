@@ -53,7 +53,7 @@ class MediaThumbnailService: LocalCoreDataService {
             if let identifier = media.localThumbnailIdentifier {
                 exporter.options.identifier = identifier
             }
-            
+
             // Configure a handler for any thumbnail exports
             let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
                 self.managedObjectContext.perform {
