@@ -144,7 +144,7 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     func exportThumbnail(forImage image: UIImage, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaImageExporter()
-        exporter.mediaDirectoryType = .temporary
+        exporter.mediaDirectoryType = .cache
         exporter.options = imageExporterOptions
         exporter.exportImage(image,
                              fileName: UUID().uuidString,
@@ -169,7 +169,7 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     fileprivate func exportImageThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaImageExporter()
-        exporter.mediaDirectoryType = .temporary
+        exporter.mediaDirectoryType = .cache
         exporter.options = imageExporterOptions
         exporter.exportImage(atFile: url,
                              onCompletion: { (export) in
@@ -182,7 +182,7 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     fileprivate func exportVideoThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaVideoExporter()
-        exporter.mediaDirectoryType = .temporary
+        exporter.mediaDirectoryType = .cache
         exporter.exportPreviewImageForVideo(atURL: url,
                                             imageOptions: imageExporterOptions,
                                             onCompletion: { (export) in
@@ -221,7 +221,7 @@ class MediaThumbnailExporter: MediaExporter {
     fileprivate func exportImageToThumbnailCache(_ export: MediaImageExport, onCompletion: OnThumbnailExport, onError: OnExportError) {
         do {
             // Generate a unique ID
-            let identifier = UUID().uuidString
+            let identifier = options.identifier
             let thumbnail = try thumbnailURL(withIdentifier: identifier)
             let fileManager = FileManager.default
             // Move the exported file at the url to the new URL.
