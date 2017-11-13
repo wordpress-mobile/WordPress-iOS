@@ -1,6 +1,6 @@
 import Foundation
 
-public struct RemoteActivity {
+public struct Activity {
     public let activityID: String
     public let summary: String
     public let name: String
@@ -8,47 +8,51 @@ public struct RemoteActivity {
     public let gridicon: String
     public let status: String
     public let rewindable: Bool
-    public let published: Date?
-    public let actor: RemoteActivityActor?
-    public let object: RemoteActivityObject?
-    public let target: RemoteActivityObject?
-    public let items: [RemoteActivityObject]?
+    public let rewindID: String?
+    public let published: Date
+    public let actor: ActivityActor?
+    public let object: ActivityObject?
+    public let target: ActivityObject?
+    public let items: [ActivityObject]?
 
     init(dictionary: [String: AnyObject]) throws {
         guard let id = dictionary["activity_id"] as? String else {
-            throw RemoteActivityError.missingActivityId
+            throw Error.missingActivityId
+        }
+        guard let publishedString = dictionary["published"] as? String else {
+            throw Error.missingPublishedDate
+        }
+        let dateFormatter = ISO8601DateFormatter()
+        guard let publishedDate = dateFormatter.date(from: publishedString) else {
+            throw Error.incorrectPusblishedDateFormat
         }
         activityID = id
+        published = publishedDate
         summary = dictionary["summary"] as? String ?? ""
         name = dictionary["name"] as? String ?? ""
         type = dictionary["type"] as? String ?? ""
         gridicon = dictionary["gridicon"] as? String ?? ""
         status = dictionary["status"] as? String ?? ""
         rewindable = dictionary["is_rewindable"] as? Bool ?? false
-        let dateFormatter = ISO8601DateFormatter()
-        if let publishedString = dictionary["published"] as? String {
-            published = dateFormatter.date(from: publishedString)
-        } else {
-            published = nil
-        }
+        rewindID = dictionary["rewind_id"] as? String
         if let actorData = dictionary["actor"] as? [String: AnyObject] {
-            actor = RemoteActivityActor.init(dictionary: actorData)
+            actor = ActivityActor(dictionary: actorData)
         } else {
             actor = nil
         }
         if let objectData = dictionary["object"] as? [String: AnyObject] {
-            object = RemoteActivityObject.init(dictionary: objectData)
+            object = ActivityObject(dictionary: objectData)
         } else {
             object = nil
         }
         if let targetData = dictionary["actor"] as? [String: AnyObject] {
-            target = RemoteActivityObject.init(dictionary: targetData)
+            target = ActivityObject(dictionary: targetData)
         } else {
             target = nil
         }
         if let orderedItems = dictionary["items"] as? [[String: AnyObject]] {
-            items = orderedItems.map { item -> RemoteActivityObject in
-                return RemoteActivityObject(dictionary: item)
+            items = orderedItems.map { item -> ActivityObject in
+                return ActivityObject(dictionary: item)
             }
         } else {
             items = nil
@@ -56,7 +60,15 @@ public struct RemoteActivity {
     }
 }
 
-public struct RemoteActivityActor {
+private extension Activity {
+    enum Error: Swift.Error {
+        case missingActivityId
+        case missingPublishedDate
+        case incorrectPusblishedDateFormat
+    }
+}
+
+public struct ActivityActor {
     public let displayName: String
     public let type: String
     public let wpcomUserID: String
@@ -76,7 +88,7 @@ public struct RemoteActivityActor {
     }
 }
 
-public struct RemoteActivityObject {
+public struct ActivityObject {
     public let name: String
     public let type: String
     public let attributes: [String: Any]
@@ -94,30 +106,6 @@ public struct RemoteActivityObject {
     }
 }
 
-enum RemoteActivityError: Error {
-    case missingActivityId
-}
-
-extension RemoteActivity: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        let dateFormatter = ISO8601DateFormatter()
-        let publishedDate = published != nil ? dateFormatter.string(from: published!) : ""
-        return "<RemoteActivity: (activityID: \(activityID), summary: \(summary), name: \(name), type: \(type) " +
-               "gridicon: \(gridicon), status: \(status), rewindable: \(rewindable), published: \(publishedDate) " +
-               "actor: \(actor.debugDescription), object: \(object.debugDescription), " +
-               "target: \(target.debugDescription), items: \(items != nil ? items.debugDescription : "[]")>";
-    }
-}
-
-extension RemoteActivityActor: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        return "<RemoteActivityActor(displayName: \(displayName), type: \(type), wpcomUserID: \(wpcomUserID) " +
-               "avatarURL: \(avatarURL), role: \(role)>"
-    }
-}
-
-extension RemoteActivityObject: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        return "<RemoteActivityObject(name: \(name), type: \(type), attributes: \(attributes.debugDescription)>"
-    }
+public struct ActivityName {
+    public static let fullBackup = "rewind__backup_complete_full"
 }

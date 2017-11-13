@@ -9,7 +9,6 @@
 #import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import <WordPressShared/WPImageSource.h>
-#import "MediaService+Legacy.h"
 #import <WordPressShared/WPAnalytics.h>
 @import WordPressKit;
 @import WordPressShared;
@@ -123,16 +122,6 @@
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
              completion:(void (^)(Media *media, NSError *error))completion
 {
-    // Revert to legacy category methods if not using the new exporting services.
-    if (![self supportsNewMediaExports]) {
-        [self createMediaWith:exportable
-                  forObjectID:objectID
-                    mediaName:mediaName
-            thumbnailCallback:thumbnailCallback
-                   completion:completion];
-        return;
-    }
-
     // Use the new export services as indicated by the FeatureFlag.
     AbstractPost *post = nil;
     Blog *blog = nil;
@@ -225,11 +214,6 @@
                                         onError:^(NSError *error) {
                                             DDLogError(@"Error occurred exporting placeholder thumbnail: %@", error);
                                         }];
-}
-
-- (BOOL)supportsNewMediaExports
-{
-    return [Feature enabled:FeatureFlagNewMediaExports];
 }
 
 #pragma mark - Uploading media
@@ -645,23 +629,15 @@
 {
     NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
     [self.managedObjectContext performBlock:^{
-        /*
-         When using the new Media export services, return the URL via the MediaThumbnailService.
-         Otherwise, use the original implementation's `absoluteThumbnailLocalURL`.
-         */
         Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
-        if ([self supportsNewMediaExports]) {
-            [self.thumbnailService thumbnailURLForMedia:media
-                                          preferredSize:preferredSize
-                                           onCompletion:^(NSURL *url) {
-                                               completion(url, nil);
-                                           }
-                                                onError:^(NSError *error) {
-                                                    completion(nil, error);
-                                                }];
-        } else {
-            completion(media.absoluteThumbnailLocalURL, nil);
-        }
+        [self.thumbnailService thumbnailURLForMedia:media
+                                      preferredSize:preferredSize
+                                       onCompletion:^(NSURL *url) {
+                                           completion(url, nil);
+                                       }
+                                            onError:^(NSError *error) {
+                                                completion(nil, error);
+                                            }];
     }];
 }
 
@@ -671,35 +647,20 @@
 {
     NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
     [self.managedObjectContext performBlock:^{
-        /*
-         When using the new Media export services, generate a thumbnail image from the URL
-         of the MediaThumbnailService.
-         Otherwise, use the legacy category method `imageForMedia:`.
-         */
         Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
-        if ([self supportsNewMediaExports]) {
-            [self.thumbnailService thumbnailURLForMedia:media
-                                          preferredSize:preferredSize
-                                           onCompletion:^(NSURL *url) {
-                                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-                                                   UIImage *image = [UIImage imageWithContentsOfFile:url.path];
-                                                   [self.managedObjectContext performBlock:^{
-                                                       completion(image, nil);
-                                                   }];
-                                               });
-                                           }
-                                                onError:^(NSError *error) {
-                                                    completion(nil, error);
-                                                }];
-        } else {
-            [self imageForMedia:mediaInRandomContext
-                           size:preferredSize
-                        success:^(UIImage *image) {
-                            completion(image, nil);
-                        } failure:^(NSError *error) {
-                            completion(nil, error);
-                        }];
-        }
+        [self.thumbnailService thumbnailURLForMedia:media
+                                      preferredSize:preferredSize
+                                       onCompletion:^(NSURL *url) {
+                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+                                               UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+                                               [self.managedObjectContext performBlock:^{
+                                                   completion(image, nil);
+                                               }];
+                                           });
+                                       }
+                                            onError:^(NSError *error) {
+                                                completion(nil, error);
+                                            }];
     }];
 }
 
