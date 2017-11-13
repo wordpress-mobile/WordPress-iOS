@@ -9,16 +9,15 @@ import Foundation
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)
 }
 
+extension ProgressUserInfoKey {
+    static let mediaID = ProgressUserInfoKey("mediaID")
+    static let mediaError = ProgressUserInfoKey("mediaError")
+    static let mediaObject = ProgressUserInfoKey("mediaObject")
+}
 /// Media Progress Coordinator allow the tracking of multiple media progress uploads.
 ///
 public class MediaProgressCoordinator: NSObject {
-
-    enum ProgressMediaKeys: String {
-        case mediaID = "mediaID"
-        case error = "mediaError"
-        case mediaObject = "mediaObject"
-    }
-
+    
     public weak var delegate: MediaProgressCoordinatorDelegate?
 
     private(set) var mediaUploadingProgress: Progress?
@@ -59,8 +58,8 @@ public class MediaProgressCoordinator: NSObject {
     ///   - object: the associated object.
     ///   - mediaID: the unique taskID
     func track(progress: Progress, ofObject object: Any, withMediaID mediaID: String) {
-        progress.setUserInfoObject(mediaID, forKey: ProgressUserInfoKey(ProgressMediaKeys.mediaID.rawValue))
-        progress.setUserInfoObject(object, forKey: ProgressUserInfoKey(ProgressMediaKeys.mediaObject.rawValue))
+        progress.setUserInfoObject(mediaID, forKey: .mediaID)
+        progress.setUserInfoObject(object, forKey: .mediaObject)
         mediaUploadingProgress?.addChild(progress, withPendingUnitCount: 1)
         mediaUploading[mediaID] = progress
     }
@@ -86,7 +85,7 @@ public class MediaProgressCoordinator: NSObject {
         guard let progress = mediaUploading[mediaID] else {
             return
         }
-        progress.setUserInfoObject(error, forKey: ProgressUserInfoKey(ProgressMediaKeys.error.rawValue))
+        progress.setUserInfoObject(error, forKey: .mediaError)
     }
 
     // MARK: - Methods to check state of a mediaID process
@@ -97,7 +96,7 @@ public class MediaProgressCoordinator: NSObject {
     /// - Returns: the error value if any
     func error(forMediaID mediaID: String) -> NSError? {
         guard let progress = mediaUploading[mediaID],
-            let error = progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] as? NSError
+            let error = progress.userInfo[.mediaError] as? NSError
             else {
                 return nil
         }
@@ -107,7 +106,7 @@ public class MediaProgressCoordinator: NSObject {
 
     func object(forMediaID mediaID: String) -> Any? {
         guard let progress = mediaUploading[mediaID],
-            let object = progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.mediaObject.rawValue)]
+            let object = progress.userInfo[.mediaObject]
             else {
                 return nil
         }
@@ -160,13 +159,15 @@ public class MediaProgressCoordinator: NSObject {
     /// Returns true if any of media tasks being tracked have an error associated
     var hasFailedMedia: Bool {
         for progress in mediaUploading.values {
-            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] != nil {
+            if !progress.isCancelled && progress.userInfo[.mediaError] != nil {
                 return true
             }
         }
         return false
     }
-
+    
+    /// Return a list of media ID that where cancelled
+    ///
     var allCancelledIDs: [String] {
         var mediaIDs = [String]()
         for (key, progress) in mediaUploading {
@@ -177,20 +178,24 @@ public class MediaProgressCoordinator: NSObject {
         return mediaIDs
     }
 
+    /// Return a list of media ID that are still uploading
+    ///
     var pendingUploadIDs: [String] {
         var mediaIDs = [String]()
         for (key, progress) in mediaUploading {
-            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] == nil {
+            if !progress.isCancelled && progress.userInfo[.mediaError] == nil {
                 mediaIDs.append(key)
             }
         }
         return mediaIDs
     }
 
+    /// Returns a list of all media ID that have an error attached
+    ///
     var failedMediaIDs: [String] {
         var failedMediaIDs = [String]()
         for (key, progress) in mediaUploading {
-            if !progress.isCancelled && progress.userInfo[ProgressUserInfoKey(ProgressMediaKeys.error.rawValue)] != nil {
+            if !progress.isCancelled && progress.userInfo[.mediaError] != nil {
                 failedMediaIDs.append(key)
             }
         }
@@ -226,6 +231,10 @@ public class MediaProgressCoordinator: NSObject {
 
     //MARK: - Actions
 
+    /// Cancels and stop tracking of progress for a media upload
+    ///
+    /// - Parameter mediaID: the identifier for the media
+    ///
     func cancelAndStopTrack(of mediaID: String) {
         guard let mediaProgress = mediaUploading[mediaID] else {
             return
@@ -236,7 +245,9 @@ public class MediaProgressCoordinator: NSObject {
         mediaUploading.removeValue(forKey: mediaID)
     }
 
-    func cancelAllPendingUploads() {
+    /// Cancels all pending uploads and stops tracking the progress of them
+    ///
+    func cancelAndStopAllPendingUploads() {
         let pendingUploadIds = mediaUploading.keys
 
         for mediaID in pendingUploadIds {
@@ -246,6 +257,8 @@ public class MediaProgressCoordinator: NSObject {
         mediaUploadingProgress?.cancel()
     }
 
+    /// Stop trackings all media uploads and resets the global progress tracking
+    ///
     func stopTrackingOfAllUploads() {
         if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
@@ -254,6 +267,7 @@ public class MediaProgressCoordinator: NSObject {
         mediaUploading.removeAll()
     }
 
+    /// Stop tracking of all media uploads that are in failed/error state.
     func stopTrackingAllFailedMedia() {
         for key in failedMediaIDs {
             mediaUploading.removeValue(forKey: key)
