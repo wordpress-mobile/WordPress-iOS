@@ -195,6 +195,11 @@ static CGFloat const MinimumZoomScale = 0.1;
     [self centerImage];
 }
 
+- (BOOL)prefersHomeIndicatorAutoHidden
+{
+    return self.shouldHideStatusBar;
+}
+
 #pragma mark - Instance Methods
 
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated
@@ -206,9 +211,17 @@ static CGFloat const MinimumZoomScale = 0.1;
         [UIView animateWithDuration:0.3
                          animations:^{
                              [self setNeedsStatusBarAppearanceUpdate];
+
+                             if (@available(iOS 11.0, *)) {
+                                 [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+                             }
                          }];
     } else {
         [self setNeedsStatusBarAppearanceUpdate];
+
+        if (@available(iOS 11.0, *)) {
+            [self setNeedsUpdateOfHomeIndicatorAutoHidden];
+        }
     }
 }
 
