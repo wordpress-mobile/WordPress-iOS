@@ -49,6 +49,11 @@ class MediaThumbnailService: LocalCoreDataService {
                 return
             }
 
+            // If we already set an identifier before let's reuse it
+            if let identifier = media.localThumbnailIdentifier {
+                exporter.options.identifier = identifier
+            }
+            
             // Configure a handler for any thumbnail exports
             let onThumbnailExport: MediaThumbnailExporter.OnThumbnailExport = { (identifier, export) in
                 self.managedObjectContext.perform {
@@ -192,8 +197,10 @@ class MediaThumbnailService: LocalCoreDataService {
             onCompletion(nil)
             return
         }
-        media.localThumbnailIdentifier = identifier
-        ContextManager.sharedInstance().save(managedObjectContext)
+        if media.localThumbnailIdentifier != identifier {
+            media.localThumbnailIdentifier = identifier
+            ContextManager.sharedInstance().save(managedObjectContext)
+        }
         onCompletion(export.url)
     }
 
