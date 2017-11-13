@@ -183,7 +183,9 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
             guard let media = mediaProgressCoordinator.object(forMediaID: mediaID) as? Media else {
                 continue
             }
-            progress(mediaProgress.fractionCompleted, media: media)
+            if media.remoteStatus == .pushing {
+                progress(mediaProgress.fractionCompleted, media: media)
+            }
         }
     }
 
