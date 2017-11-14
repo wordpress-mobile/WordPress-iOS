@@ -134,9 +134,8 @@
         }
     }
     // try to sync from the server
-    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
-    [mediaService syncMediaLibraryForBlog:self.blog success:^{
+    MediaSyncCoordinator *mediaSyncCoordinator = [MediaSyncCoordinator shared];
+    [mediaSyncCoordinator syncMediaFor:self.blog success:^{
         if (!localResultsAvailable && successBlock) {
             successBlock();
         }
@@ -448,12 +447,6 @@
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    if (self.mediaRemoved.count == 0 && self.mediaInserted.count == 0) {
-        //if it's not a removal or insertion we can ignore. We do this because
-        // every time we request get a new thumbnail beside getting it from the internet we
-            // are saving a reference to the database/coredata and triggering another fetch result controller udpate
-        return;
-    }
     [self notifyObserversWithIncrementalChanges:YES
                                         removed:self.mediaRemoved
                                        inserted:self.mediaInserted
