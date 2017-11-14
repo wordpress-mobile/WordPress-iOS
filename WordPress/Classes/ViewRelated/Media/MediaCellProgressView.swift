@@ -41,12 +41,14 @@ private class ProgressIndicatorView: UIView {
         static let defaultSize: CGFloat = 25.0
         static let lineWidth: CGFloat = 3.0
         static let lineColor: UIColor = .white
-        static let strokeEnd: CGFloat = 0.85
     }
 
     private enum Animations {
         static let rotationAmount = Float.pi * 2.0
-        static let duration: TimeInterval = 1.2
+        static let rotationDuration: TimeInterval = 1.2
+        static let strokeDuration: TimeInterval = 0.8
+        static let strokeSlowdownPoint: Float = 0.8
+        static let strokeBeginTime: TimeInterval = 0.5
     }
 
     convenience init() {
@@ -63,7 +65,6 @@ private class ProgressIndicatorView: UIView {
         progressLayer.strokeColor = Appearance.lineColor.cgColor
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.width / 2.0).cgPath
-        progressLayer.strokeEnd = Appearance.strokeEnd
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -81,13 +82,28 @@ private class ProgressIndicatorView: UIView {
     }
 
     func startAnimating() {
+        let strokeEnd = CAKeyframeAnimation(keyPath: "strokeEnd")
+        strokeEnd.duration = Animations.strokeDuration
+        strokeEnd.values = [0.0, 1.0]
+
+        let strokeStart = CAKeyframeAnimation(keyPath: "strokeStart")
+        strokeStart.duration = Animations.strokeDuration
+        strokeStart.values = [0.0, Animations.strokeSlowdownPoint, 1.0]
+        strokeStart.beginTime = Animations.strokeBeginTime
+
+        let group = CAAnimationGroup()
+        group.animations = [strokeEnd, strokeStart]
+        group.duration = Animations.strokeDuration + strokeStart.beginTime
+        group.repeatCount = Float.infinity
+
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = 0
         animation.toValue = Animations.rotationAmount
-        animation.duration = Animations.duration
+        animation.duration = Animations.rotationDuration
         animation.repeatCount = Float.infinity
 
         progressLayer.add(animation, forKey: "rotation")
+        progressLayer.add(group, forKey: "rotationGroup")
     }
 
     func stopAnimating() {
