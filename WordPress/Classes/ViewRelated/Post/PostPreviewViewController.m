@@ -120,15 +120,25 @@
 {
     DDLogMethodParam(error);
 
-    [self stopLoading];
-
     // Watch for NSURLErrorCancelled (aka NSURLErrorDomain error -999). This error is returned
     // when an asynchronous load is canceled. For example, a link is tapped (or some other
     // action that causes a new page to load) before the current page has completed loading.
     // It should be safe to ignore.
-    if([error code] == NSURLErrorCancelled) {
+    if([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
         return;
     }
+
+    // In iOS 11, it seems UIWebView is based on WebKit, and it's returning a different error when
+    // we redirect and cancel a request from shouldStartLoadWithRequest:
+    //
+    //   Error Domain=WebKitErrorDomain Code=102 "Frame load interrupted"
+    //
+    // I haven't found a relevant WebKit constant for error 102
+    if ([error.domain isEqualToString:@"WebKitErrorDomain"] && error.code == 102) {
+        return;
+    }
+
+    [self stopLoading];
 
     [self.generator previewRequestFailedWithError:error];
 }
@@ -137,6 +147,13 @@
         shouldStartLoadWithRequest:(NSURLRequest *)request
         navigationType:(UIWebViewNavigationType)navigationType
 {
+    NSURLRequest *redirectRequest = [self.generator interceptRedirectWithRequest:request];
+    if (redirectRequest != NULL) {
+        DDLogInfo(@"Found redirect to %@", redirectRequest);
+        [self.webView loadRequest:redirectRequest];
+        return NO;
+    }
+
     if ([[[request URL] query] isEqualToString:@"action=postpass"]) {
         // Password-protected post, user entered password
         return YES;
