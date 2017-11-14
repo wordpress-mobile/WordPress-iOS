@@ -144,7 +144,7 @@ public extension RestoreStatus {
     }
 }
 
-internal extension RestoreStatus {
+extension RestoreStatus {
     enum Error: Swift.Error {
         case missingRestoreStatus
         case invalidRestoreStatus
