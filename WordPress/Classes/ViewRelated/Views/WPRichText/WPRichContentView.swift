@@ -288,7 +288,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
     func galleryForAttachment(_ attachment: WPTextAttachment) -> WPRichTextGallery {
 
-        let width: CGFloat = attachment.width > 0 ? attachment.width : UIScreen.main.bounds.width
+        let width: CGFloat = attachment.width > 0 ? attachment.width : self.bounds.width
         let height: CGFloat = Constants.defaultGalleryHeight
 
         let gallery = WPRichTextGallery(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))

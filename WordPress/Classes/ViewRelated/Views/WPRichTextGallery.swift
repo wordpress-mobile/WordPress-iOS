@@ -18,6 +18,8 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
     var isPrivate : Bool = false
     var contentURL: URL?
     var linkURL: URL?
+    
+    var cellSize : CGFloat = 10
 
     /// Used to load images for attachments.
     ///
@@ -65,14 +67,14 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-
+        layout.minimumInteritemSpacing = 8.0
         viewHeight = frame.height
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
         
         let captionLabel = UILabel()
         self.captionLabel = captionLabel
-        //WPStyleGuide.applyReaderCardSummaryLabelStyle(captionLabel)
+        WPStyleGuide.applyReaderCardSummaryLabelStyle(captionLabel)
         captionLabel.text = ""
         
         let pageLabel = UILabel()
@@ -127,8 +129,6 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         collectionView.delegate = self
 
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isPagingEnabled = true
-
 
     }
 
@@ -201,21 +201,48 @@ extension WPRichTextGallery: UICollectionViewDataSource {
 extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        let rightInset = CGFloat(8.0)
-        let rightExtraContent = CGFloat(8.0)
-
-        let width = collectionView.bounds.width > 0 ? collectionView.bounds.width - (rightInset + rightExtraContent) : 0
+        
+        
+        let leadingEdge = frame.minX - (superview?.frame.minX ?? 0)
+        let superWidth = superview?.frame.width ?? 0
+        let cellWidth = superWidth - (2 * leadingEdge)
+        
+        cellSize = cellWidth
+        
         let height = collectionView.bounds.height > 0 ? collectionView.bounds.height : viewHeight
 
-        return CGSize(width: width, height: height)
+        return CGSize(width: cellWidth, height: height)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         handleGalleryTapped?(indexPath.row, imageAttachments)
     }
     
+    /* In case the user scrolls for a long swipe, the scroll view should animate to the nearest page when the scrollview decelerated. */
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        scrollToPage(scrollView, withVelocity: velocity)
+    }
+    
+    func scrollToPage(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+        let cellWidth: CGFloat = cellSize
+        let cellPadding: CGFloat = 8
+        
+        var page: Int = Int((scrollView.contentOffset.x - cellWidth / 2) / (cellWidth + cellPadding) + 1)
+        if velocity.x > 0 {
+            page += 1
+        }
+        if velocity.x < 0 {
+            page -= 1
+        }
+        page = max(page, 0)
+        let newOffset: CGFloat = CGFloat(page) * (cellWidth + cellPadding)
+        
+        scrollView.setContentOffset(CGPoint(x:newOffset, y:0), animated: true)
+    }
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollToPage(scrollView, withVelocity: CGPoint(x:0, y:0))
         
         //Thanks Stackoverflow
         ///https://stackoverflow.com/a/36190887
@@ -229,26 +256,6 @@ extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
         }
         
         pageLabel?.text = "\(page + 1)/\(imageAttachments.count)"
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        let row = indexPath.row
-        
-        let mediaIndex = mediaArray.index { (media) -> Bool in
-            if media.cell == cell {
-                return true
-            }
-            
-            return false
-        }
-        
-        guard let index = mediaIndex, let media = mediaArray[safe: index] else {
-            return
-        }
-        
-
         
     }
 
