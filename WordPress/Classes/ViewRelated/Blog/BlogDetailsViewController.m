@@ -264,13 +264,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self preloadBlogData];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    [self showAztecAnnouncement];
-}
-
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
@@ -1093,19 +1086,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
 }
 
-- (void)showAztecAnnouncement
-{
-    if (![[NSUserDefaults standardUserDefaults] aztecAnnouncementWasDisplayed]) {
-        [[NSUserDefaults standardUserDefaults] setAztecAnnouncementWasDisplayed:YES];
-
-        FancyAlertViewController *controller = [FancyAlertViewController aztecAnnouncementController];
-        controller.modalPresentationStyle = UIModalPresentationCustom;
-        controller.transitioningDelegate = self;
-
-        [self.tabBarController presentViewController:controller animated:YES completion:nil];
-    }
-}
-
 #pragma mark - Remove Site
 
 - (void)showRemoveSiteAlert
@@ -1133,6 +1113,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService removeBlog:self.blog];
+    [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
