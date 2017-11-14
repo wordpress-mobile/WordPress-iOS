@@ -293,7 +293,7 @@ class MediaLibraryViewController: UIViewController {
 
     @objc private func statusHUDWasTapped(_ notification: Notification) {
         if mediaProgressCoordinator.isRunning {
-            mediaProgressCoordinator.cancelAllPendingUploads()
+            mediaProgressCoordinator.cancelAndStopAllPendingUploads()
             SVProgressHUD.dismiss()
         }
     }
