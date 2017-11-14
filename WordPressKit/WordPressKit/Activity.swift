@@ -137,14 +137,14 @@ public struct RestoreStatus {
 
 public extension RestoreStatus {
     enum Status: String {
-        case queued = "queued"
-        case finished = "finished"
-        case running = "running"
-        case fail = "fail"
+        case queued
+        case finished
+        case running
+        case fail
     }
 }
 
-private extension RestoreStatus {
+internal extension RestoreStatus {
     enum Error: Swift.Error {
         case missingRestoreStatus
         case invalidRestoreStatus
