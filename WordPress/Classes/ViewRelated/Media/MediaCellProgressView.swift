@@ -1,5 +1,4 @@
 import UIKit
-import MRProgress
 import WordPressShared
 
 /// Progress view displayed in cells in the media library to indicate that an
