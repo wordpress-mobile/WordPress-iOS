@@ -134,9 +134,8 @@
         }
     }
     // try to sync from the server
-    NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
-    [mediaService syncMediaLibraryForBlog:self.blog success:^{
+    MediaSyncCoordinator *mediaSyncCoordinator = [MediaSyncCoordinator shared];
+    [mediaSyncCoordinator syncMediaFor:self.blog success:^{
         if (!localResultsAvailable && successBlock) {
             successBlock();
         }
