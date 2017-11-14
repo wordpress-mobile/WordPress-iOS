@@ -233,7 +233,6 @@ static NSInteger HideSearchMinSites = 3;
         return;
     }
     if (![self defaultWordPressComAccount]) {
-        [WPAnalytics track:WPAnalyticsStatLogout];
         [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
     }
 }
@@ -905,6 +904,7 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self.tableView reloadData];
     [self updateEditButton];
+    [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
