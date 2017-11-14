@@ -830,7 +830,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)cancelMediaUploads
 {
-    [self.mediaProgressCoordinator cancelAllPendingUploads];
+    [self.mediaProgressCoordinator cancelAndStopAllPendingUploads];
     [self autosaveContent];
     [self setupNavbar];
 }
