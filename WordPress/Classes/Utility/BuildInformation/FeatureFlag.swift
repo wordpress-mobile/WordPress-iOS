@@ -6,6 +6,7 @@ enum FeatureFlag: Int {
     case iCloudFilesSupport
     case pluginManagement
     case googleLogin
+    case socialSignup
     case jetpackDisconnect
     case jetpackCommentsOnReader
     case asyncUploadsInMediaLibrary
@@ -22,6 +23,8 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .googleLogin:
             return true
+        case .socialSignup:
+            return BuildConfiguration.current == .localDeveloper
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .jetpackCommentsOnReader:
