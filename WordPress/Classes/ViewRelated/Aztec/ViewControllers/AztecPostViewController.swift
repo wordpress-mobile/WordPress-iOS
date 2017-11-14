@@ -1261,7 +1261,7 @@ private extension AztecPostViewController {
     @IBAction func displayCancelMediaUploads() {
         let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
-            self.mediaProgressCoordinator.cancelAllPendingUploads()
+            self.mediaProgressCoordinator.cancelAndStopAllPendingUploads()
         }
         alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
         present(alertController, animated: true, completion: nil)
@@ -2417,7 +2417,7 @@ private extension AztecPostViewController {
             post.remove()
         }
 
-        mediaProgressCoordinator.cancelAllPendingUploads()
+        mediaProgressCoordinator.cancelAndStopAllPendingUploads()
         ContextManager.sharedInstance().save(context)
     }
 
