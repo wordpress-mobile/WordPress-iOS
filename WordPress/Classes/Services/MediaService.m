@@ -755,34 +755,6 @@
     }
 }
 
-- (void)updateMedia:(Media *)media withRemoteMedia:(RemoteMedia *)remoteMedia
-{
-    media.mediaID =  remoteMedia.mediaID;
-    media.remoteURL = [remoteMedia.url absoluteString];
-    if (remoteMedia.date) {
-        media.creationDate = remoteMedia.date;
-    }
-    media.filename = remoteMedia.file;
-    if (remoteMedia.mimeType.length > 0) {
-        [media setMediaTypeForMimeType:remoteMedia.mimeType];
-    } else if (remoteMedia.extension.length > 0) {
-        [media setMediaTypeForExtension:remoteMedia.extension];
-    }
-    media.title = remoteMedia.title;
-    media.caption = remoteMedia.caption;
-    media.desc = remoteMedia.descriptionText;
-    media.alt = remoteMedia.alt;
-    media.height = remoteMedia.height;
-    media.width = remoteMedia.width;
-    media.shortcode = remoteMedia.shortcode;
-    media.videopressGUID = remoteMedia.videopressGUID;
-    media.length = remoteMedia.length;
-    media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
-    media.postID = remoteMedia.postID;
-
-    media.remoteStatus = MediaRemoteStatusSync;
-}
-
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media
 {
     RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
