@@ -15,11 +15,11 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
     fileprivate var viewHeight: CGFloat
 
-    var isPrivate : Bool = false
+    var isPrivate: Bool = false
     var contentURL: URL?
     var linkURL: URL?
-    
-    var cellSize : CGFloat = 10
+
+    var cellSize: CGFloat = 10
 
     /// Used to load images for attachments.
     ///
@@ -32,8 +32,8 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
     }()
 
     fileprivate var collectionView: UICollectionView
-    var captionLabel : UILabel?
-    var pageLabel : UILabel?
+    var captionLabel: UILabel?
+    var pageLabel: UILabel?
 
     /// Used to keep references to image attachments.
     ///
@@ -71,19 +71,19 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         viewHeight = frame.height
 
         collectionView = UICollectionView(frame: frame, collectionViewLayout: layout)
-        
+
         let captionLabel = UILabel()
         self.captionLabel = captionLabel
         WPStyleGuide.applyReaderCardSummaryLabelStyle(captionLabel)
         captionLabel.text = ""
-        
+
         let pageLabel = UILabel()
         self.pageLabel = pageLabel
         WPStyleGuide.applyReaderCardSummaryLabelStyle(pageLabel)
         pageLabel.text = ""
 
         super.init(frame: frame)
-        
+
         let footerStack = UIStackView(arrangedSubviews: [captionLabel, pageLabel])
         footerStack.translatesAutoresizingMaskIntoConstraints = false
 
@@ -91,12 +91,12 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         addSubview(collectionView)
         addSubview(footerStack)
-        
+
         collectionView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
         collectionView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: footerStack.topAnchor).isActive = true
-        
+
         footerStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
         footerStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
         footerStack.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
@@ -201,14 +201,14 @@ extension WPRichTextGallery: UICollectionViewDataSource {
 extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        
+
+
         let leadingEdge = frame.minX - (superview?.frame.minX ?? 0)
         let superWidth = superview?.frame.width ?? 0
         let cellWidth = superWidth - (2 * leadingEdge)
-        
+
         cellSize = cellWidth
-        
+
         let height = collectionView.bounds.height > 0 ? collectionView.bounds.height : viewHeight
 
         return CGSize(width: cellWidth, height: height)
@@ -217,17 +217,19 @@ extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         handleGalleryTapped?(indexPath.row, imageAttachments)
     }
-    
+
+    ///Stackoverflow
+    ///https://stackoverflow.com/a/46303794
     /* In case the user scrolls for a long swipe, the scroll view should animate to the nearest page when the scrollview decelerated. */
-    
+
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         scrollToPage(scrollView, withVelocity: velocity)
     }
-    
+
     func scrollToPage(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         let cellWidth: CGFloat = cellSize
         let cellPadding: CGFloat = 8
-        
+
         var page: Int = Int((scrollView.contentOffset.x - cellWidth / 2) / (cellWidth + cellPadding) + 1)
         if velocity.x > 0 {
             page += 1
@@ -237,26 +239,26 @@ extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
         }
         page = max(page, 0)
         let newOffset: CGFloat = CGFloat(page) * (cellWidth + cellPadding)
-        
-        scrollView.setContentOffset(CGPoint(x:newOffset, y:0), animated: true)
+
+        scrollView.setContentOffset(CGPoint(x: newOffset, y: 0), animated: true)
     }
-    
+
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        scrollToPage(scrollView, withVelocity: CGPoint(x:0, y:0))
-        
+        scrollToPage(scrollView, withVelocity: CGPoint(x: 0, y: 0))
+
         //Thanks Stackoverflow
         ///https://stackoverflow.com/a/36190887
-        
+
         let pageWidth = scrollView.frame.size.width
         let page = Int(floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1)
-        
+
         if let attachment = imageAttachments[safe: page] {
             let title = attachment.attributes?["title"]
             captionLabel?.text = title
         }
-        
+
         pageLabel?.text = "\(page + 1)/\(imageAttachments.count)"
-        
+
     }
 
 }
