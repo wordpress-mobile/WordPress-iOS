@@ -587,10 +587,12 @@ class MediaLibraryViewController: UIViewController {
 
         uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ [weak self] (media, state) in
             print("Media \(String(describing: media.filename)) in state \(String(describing: state))")
-            if state == .ended {
+            switch state {
+            case .ended:
                 self?.reloadCell(for: media)
+            default: break
             }
-        }, for: nil)
+            }, for: nil)
     }
 
     private func unregisterUploadCoordinatorObserver() {
@@ -798,7 +800,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 
-    func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView!, forCellFor asset: WPMediaAsset) {
+    func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
