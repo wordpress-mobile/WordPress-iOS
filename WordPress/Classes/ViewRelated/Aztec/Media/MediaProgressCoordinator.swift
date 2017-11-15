@@ -20,35 +20,35 @@ public class MediaProgressCoordinator: NSObject {
 
     public weak var delegate: MediaProgressCoordinatorDelegate?
 
-    private(set) var mediaUploadingProgress: Progress?
+    private(set) var mediaGlobalProgress: Progress?
 
     private(set) lazy var mediaUploading: [String: Progress] = {
         return [String: Progress]()
     }()
 
-    private var mediaUploadingProgressObserverContext: String = "mediaUploadingProgressObserverContext"
+    private var mediaUprogressObserverContext: String = "mediaProgressObserverContext"
 
     deinit {
-        mediaUploadingProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
+        mediaGlobalProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
     }
 
     /// Setup the coordinator to track the provided number of tasks
     ///
     /// - Parameter count: the number of tasks that need to be tracked
     func track(numberOfItems count: Int) {
-        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
+        if let mediaUploadingProgress = self.mediaGlobalProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
-            self.mediaUploadingProgress = nil
+            self.mediaGlobalProgress = nil
         }
 
-        if self.mediaUploadingProgress == nil {
-            self.mediaUploadingProgress = Progress.discreteProgress(totalUnitCount: 0)
-            self.mediaUploadingProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options: [.new], context: &mediaUploadingProgressObserverContext)
+        if self.mediaGlobalProgress == nil {
+            self.mediaGlobalProgress = Progress.discreteProgress(totalUnitCount: 0)
+            self.mediaGlobalProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options: [.new], context: &mediaUprogressObserverContext)
 
             delegate?.mediaProgressCoordinatorDidStartUploading(self)
         }
 
-        self.mediaUploadingProgress?.totalUnitCount += Int64(count)
+        self.mediaGlobalProgress?.totalUnitCount += Int64(count)
     }
 
     /// Start the tracking of a task that is represented by the provided progress and is associated to an object with the provided mediaID.
@@ -60,7 +60,7 @@ public class MediaProgressCoordinator: NSObject {
     func track(progress: Progress, ofObject object: Any, withMediaID mediaID: String) {
         progress.setUserInfoObject(mediaID, forKey: .mediaID)
         progress.setUserInfoObject(object, forKey: .mediaObject)
-        mediaUploadingProgress?.addChild(progress, withPendingUnitCount: 1)
+        mediaGlobalProgress?.addChild(progress, withPendingUnitCount: 1)
         mediaUploading[mediaID] = progress
     }
 
@@ -69,7 +69,7 @@ public class MediaProgressCoordinator: NSObject {
     /// Note: This method is used to advance the completed number of tasks, when the task doesn't have any relevant associated work/progress to be tracked.
     /// For example an already existing media object that is already uploaded to the server.
     func finishOneItem() {
-        guard let mediaUploadingProgress = mediaUploadingProgress else {
+        guard let mediaUploadingProgress = mediaGlobalProgress else {
             return
         }
 
@@ -116,7 +116,7 @@ public class MediaProgressCoordinator: NSObject {
 
     var totalProgress: Float {
         var value = Float(0)
-        if let progress = mediaUploadingProgress {
+        if let progress = mediaGlobalProgress {
             value = Float(progress.fractionCompleted)
         }
         return value
@@ -136,7 +136,7 @@ public class MediaProgressCoordinator: NSObject {
 
     /// Returns true if any task is still ongoing
     var isRunning: Bool {
-        guard let progress = mediaUploadingProgress else {
+        guard let progress = mediaGlobalProgress else {
             return false
         }
 
@@ -205,7 +205,7 @@ public class MediaProgressCoordinator: NSObject {
     // MARK: - KeyPath observer method for the global progress property
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard
-            context == &mediaUploadingProgressObserverContext,
+            context == &mediaUprogressObserverContext,
             keyPath == #keyPath(Progress.fractionCompleted)
             else {
                 super.observeValue(forKeyPath: keyPath,
@@ -254,15 +254,15 @@ public class MediaProgressCoordinator: NSObject {
             cancelAndStopTrack(of: mediaID)
         }
 
-        mediaUploadingProgress?.cancel()
+        mediaGlobalProgress?.cancel()
     }
 
     /// Stop trackings all media uploads and resets the global progress tracking
     ///
     func stopTrackingOfAllUploads() {
-        if let mediaUploadingProgress = self.mediaUploadingProgress, !isRunning {
+        if let mediaUploadingProgress = self.mediaGlobalProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
-            self.mediaUploadingProgress = nil
+            self.mediaGlobalProgress = nil
         }
         mediaUploading.removeAll()
     }
