@@ -47,7 +47,7 @@ public class WordPressComLanguageDatabase: NSObject {
     ///
     /// - Returns: A string containing the language name, or an empty string, in case it wasn't found.
     ///
-    public func nameForLanguageWithId(_ languageId: Int) -> String {
+    @objc public func nameForLanguageWithId(_ languageId: Int) -> String {
         return find(id: languageId)?.name ?? ""
     }
 
@@ -105,7 +105,7 @@ public class WordPressComLanguageDatabase: NSObject {
 
     /// Overrides the device language. For testing purposes only.
     ///
-    func _overrideDeviceLanguageCode(_ code: String) {
+    @objc func _overrideDeviceLanguageCode(_ code: String) {
         deviceLanguageCode = code.lowercased()
     }
 
