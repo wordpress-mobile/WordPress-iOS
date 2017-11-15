@@ -2254,7 +2254,7 @@ UIDocumentPickerDelegate
     
     self.selectedMediaID = mediaId;
 
-    if (![self.mediaProgressCoordinator isMediaUploadingWithMediaID:mediaId] && ![self.mediaProgressCoordinator errorForMediaID:mediaId]){
+    if (![self.mediaProgressCoordinator isMediaInProgressWithMediaID:mediaId] && ![self.mediaProgressCoordinator errorForMediaID:mediaId]){
         // The image is already uploaded so nothing to here, but in the future we could plug in image actions here
         return;
     }
@@ -2269,7 +2269,7 @@ UIDocumentPickerDelegate
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
     // Is upload still going?
-    if ([self.mediaProgressCoordinator isMediaUploadingWithMediaID:mediaId]) {
+    if ([self.mediaProgressCoordinator isMediaInProgressWithMediaID:mediaId]) {
         [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"User action to dismiss stop upload question")
                                       style:UIAlertActionStyleCancel
                                     handler:^(UIAlertAction *action) {
