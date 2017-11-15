@@ -7,18 +7,18 @@ import Foundation
 /// but also treated like it is a Remote Object.
 ///
 open class KeyringConnection: NSObject {
-    open var additionalExternalUsers = [KeyringConnectionExternalUser]()
-    open var dateIssued = Date()
-    open var dateExpires: Date? = nil
-    open var externalID = "" // Some services uses strings for their IDs
-    open var externalName = ""
-    open var externalDisplay = ""
-    open var externalProfilePicture = ""
-    open var label = ""
-    open var keyringID: NSNumber = 0
-    open var refreshURL = ""
-    open var service = ""
-    open var status = ""
-    open var type = ""
-    open var userID: NSNumber = 0
+    @objc open var additionalExternalUsers = [KeyringConnectionExternalUser]()
+    @objc open var dateIssued = Date()
+    @objc open var dateExpires: Date? = nil
+    @objc open var externalID = "" // Some services uses strings for their IDs
+    @objc open var externalName = ""
+    @objc open var externalDisplay = ""
+    @objc open var externalProfilePicture = ""
+    @objc open var label = ""
+    @objc open var keyringID: NSNumber = 0
+    @objc open var refreshURL = ""
+    @objc open var service = ""
+    @objc open var status = ""
+    @objc open var type = ""
+    @objc open var userID: NSNumber = 0
 }

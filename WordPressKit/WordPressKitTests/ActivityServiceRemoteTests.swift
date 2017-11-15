@@ -7,16 +7,25 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
     /// MARK: - Constants
 
     let siteID = 321
+    let rewindID = "33"
+    let restoreID = "22"
 
     let getActivitySuccessOneMockFilename = "activity-log-success-1.json"
     let getActivitySuccessTwoMockFilename = "activity-log-success-2.json"
     let getActivitySuccessThreeMockFilename = "activity-log-success-3.json"
     let getActivityBadJsonFailureMockFilename = "activity-log-bad-json-failure.json"
     let getActivityAuthFailureMockFilename = "activity-log-auth-failure.json"
+    let restoreSuccessMockFilename = "activity-restore-success.json"
+    let restoreBadIdFailureMockFilename = "activity-restore-bad-id-failure.json"
+    let restoreStatusSuccessMockFilename = "activity-restore-status-success.json"
+    let restoreStatusFailureMockFilename = "activity-restore-status-failure.json"
 
     /// MARK: - Properties
 
     var siteActivityEndpoint: String { return "sites/\(siteID)/activity" }
+    var restoreEndpoint: String { return "activity-log/\(siteID)/rewind/to/\(rewindID)" }
+    var restoreStatusEndpoint: String { return "activity-log/\(siteID)/rewind/\(restoreID)/restore-status" }
+
     var remote: ActivityServiceRemote!
 
     /// MARK: - Overridden Methods
@@ -92,7 +101,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
     }
 
     func testGetActivityWithBadAuthFails() {
-        let expect = expectation(description: "Get plans with bad auth failure")
+        let expect = expectation(description: "Get activity with bad auth failure")
 
         stubRemoteResponse(siteActivityEndpoint, filename: getActivityAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
         remote.getActivityForSite(siteID,
@@ -111,7 +120,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
     }
 
     func testGetActivityWithBadJsonFails() {
-        let expect = expectation(description: "Get plans with invalid json response failure")
+        let expect = expectation(description: "Get activity with invalid json response failure")
 
         stubRemoteResponse(siteActivityEndpoint, filename: getActivityBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
         remote.getActivityForSite(siteID,
@@ -123,6 +132,75 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
                                       expect.fulfill()
                                  })
 
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testRestoreSucceeds() {
+        let expect = expectation(description: "Trigger restore success")
+
+        stubRemoteResponse(restoreEndpoint, filename: restoreSuccessMockFilename, contentType: .ApplicationJSON)
+
+        remote.restoreSite(siteID,
+                           rewindID: rewindID,
+                           success: { (restoreID) in
+                               XCTAssertEqual(restoreID, self.restoreID)
+                               expect.fulfill()
+                           }, failure: { error in
+                               XCTFail("This callback shouldn't get called")
+                               expect.fulfill()
+                           })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    // This test is commented because the server is not returning an error upon an invalid rewindId.
+    // Once that starts happening we will update the mock file accordingly and enable this test.
+    /*func testRestoreWithBadIdFails() {
+        let expect = expectation(description: "Trigger restore success")
+
+        stubRemoteResponse(restoreEndpoint, filename: restoreSuccessMockFilename, contentType: .ApplicationJSON)
+
+        remote.restoreSite(siteID,
+                           rewindID: rewindID,
+                           success: { (restoreID) in
+                               XCTFail("This callback shouldn't get called")
+                               expect.fulfill()
+                           }, failure: { error in
+                               expect.fulfill()
+                           })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }*/
+
+    func testGetRestoreStatusSuceeds() {
+        let expect = expectation(description: "Check restore status success")
+
+        stubRemoteResponse(restoreStatusEndpoint, filename: restoreStatusSuccessMockFilename, contentType: .ApplicationJSON)
+
+        remote.restoreStatusForSite(siteID,
+                                    restoreID: restoreID,
+                                    success: { (restoreStatus) in
+                                        XCTAssertEqual(restoreStatus.status, .finished)
+                                        XCTAssertEqual(restoreStatus.percent, 100)
+                                        expect.fulfill()
+                                    }, failure: { error in
+                                        XCTFail("This callback shouldn't get called")
+                                        expect.fulfill()
+                                    })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testGetRestoreStatusWithBadJsonFails() {
+        let expect = expectation(description: "Check restore status failure")
+
+        stubRemoteResponse(restoreStatusEndpoint, filename: restoreStatusFailureMockFilename, contentType: .ApplicationJSON)
+
+        remote.restoreStatusForSite(siteID,
+                                    restoreID: restoreID,
+                                    success: { (restoreStatus) in
+                                        XCTFail("This callback shouldn't get called")
+                                        expect.fulfill()
+                                    }, failure: { error in
+                                        expect.fulfill()
+                                    })
         waitForExpectations(timeout: timeout, handler: nil)
     }
 }
