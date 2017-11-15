@@ -847,8 +847,17 @@ static NSInteger HideSearchMinSites = 3;
 - (void)showAddNewWordPressController
 {
     [self setEditing:NO animated:NO];
-    CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
-    [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
+    
+    if ([Feature enabled:FeatureFlagSiteCreation]) {
+        // TODO: replace with Site Type Selection VC
+        SiteCreationNavigationController *createNewSiteVC = [[SiteCreationNavigationController alloc] init];
+        [self.navigationController presentViewController:createNewSiteVC animated:YES completion:nil];
+    }
+    
+    else {
+        CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
+        [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
+    }
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
