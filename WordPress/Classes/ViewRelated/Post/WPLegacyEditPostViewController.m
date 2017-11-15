@@ -830,7 +830,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)cancelMediaUploads
 {
-    [self.mediaProgressCoordinator cancelAndStopAllPendingUploads];
+    [self.mediaProgressCoordinator cancelAndStopAllInProgressMedia];
     [self autosaveContent];
     [self setupNavbar];
 }
@@ -1062,7 +1062,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 #pragma mark - MediaProgressCoordinator
 
 - (void)mediaProgressCoordinatorDidFinishUpload:(MediaProgressCoordinator *)mediaProgressCoordinator {
-    [self.mediaProgressCoordinator stopTrackingOfAllUploads];
+    [self.mediaProgressCoordinator stopTrackingOfAllMedia];
 }
 
 - (void)mediaProgressCoordinatorDidStartUploading:(MediaProgressCoordinator *)mediaProgressCoordinator {
