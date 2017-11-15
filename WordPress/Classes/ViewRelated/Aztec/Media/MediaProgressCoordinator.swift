@@ -124,7 +124,7 @@ public class MediaProgressCoordinator: NSObject {
 
         return object
     }
-    
+
     /// Returns the Progress object associated with a mediaID.
     ///
     /// - Parameter mediaID: the media ID to search for
@@ -156,7 +156,7 @@ public class MediaProgressCoordinator: NSObject {
         }
         return value
     }
-    
+
     /// Returns true if any task is still ongoing.
     ///
     var isRunning: Bool {
