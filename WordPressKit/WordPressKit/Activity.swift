@@ -109,3 +109,45 @@ public struct ActivityObject {
 public struct ActivityName {
     public static let fullBackup = "rewind__backup_complete_full"
 }
+
+public struct RestoreStatus {
+    public let status: Status
+    public let percent: Int
+    public let message: String?
+    public let errorCode: String?
+    public let failureReason: String?
+
+    init(dictionary: [String: AnyObject]) throws {
+        guard let restoreStatus = dictionary["status"] as? String else {
+            throw Error.missingRestoreStatus
+        }
+        guard let restoreStatusEnum = Status(rawValue: restoreStatus) else {
+            throw Error.invalidRestoreStatus
+        }
+        guard let percentCompleted = dictionary["percent"] as? Int else {
+            throw Error.missingRestorePercent
+        }
+        status = restoreStatusEnum
+        percent = percentCompleted
+        message = dictionary["message"] as? String
+        errorCode = dictionary["error_code"] as? String
+        failureReason = dictionary["failure_reason"] as? String
+    }
+}
+
+public extension RestoreStatus {
+    enum Status: String {
+        case queued
+        case finished
+        case running
+        case fail
+    }
+}
+
+extension RestoreStatus {
+    enum Error: Swift.Error {
+        case missingRestoreStatus
+        case invalidRestoreStatus
+        case missingRestorePercent
+    }
+}

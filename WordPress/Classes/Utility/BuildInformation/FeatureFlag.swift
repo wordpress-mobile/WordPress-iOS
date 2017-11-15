@@ -29,7 +29,7 @@ enum FeatureFlag: Int {
         case .asyncUploadsInMediaLibrary:
             return BuildConfiguration.current == .localDeveloper
         case .activity:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 }
