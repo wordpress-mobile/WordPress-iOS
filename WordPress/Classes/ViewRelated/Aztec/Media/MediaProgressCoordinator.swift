@@ -14,6 +14,7 @@ extension ProgressUserInfoKey {
     static let mediaError = ProgressUserInfoKey("mediaError")
     static let mediaObject = ProgressUserInfoKey("mediaObject")
 }
+
 /// Media Progress Coordinator allow the tracking of progress on multiple media objects.
 ///
 public class MediaProgressCoordinator: NSObject {
@@ -84,6 +85,7 @@ public class MediaProgressCoordinator: NSObject {
     /// - Parameters:
     ///   - error: the error to attach
     ///   - mediaID: the mediaID to attach error
+    ///
     func attach(error: NSError, toMediaID mediaID: String) {
         guard let progress = mediaInProgress[mediaID] else {
             return
@@ -93,10 +95,11 @@ public class MediaProgressCoordinator: NSObject {
 
     // MARK: - Methods to check state of a mediaID process
 
-    /// Return the error, if any, associated to the task with the provided mediaID
+    /// Return the error, if any, associated to the task with the provided mediaID.
     ///
     /// - Parameter mediaID: mediaID to search for error
     /// - Returns: the error value if any
+    ///
     func error(forMediaID mediaID: String) -> NSError? {
         guard let progress = mediaInProgress[mediaID],
             let error = progress.userInfo[.mediaError] as? NSError
@@ -107,10 +110,11 @@ public class MediaProgressCoordinator: NSObject {
         return error
     }
 
-    /// And Media object if any associated to the MediaID provided
+    /// And Media object if any associated to the MediaID provided.
     ///
     /// - Parameter mediaID: the mediaID object to search for
     /// - Returns: the Media object associated
+    ///
     func media(forMediaID mediaID: String) -> Media? {
         guard let progress = mediaInProgress[mediaID],
             let object = progress.userInfo[.mediaObject] as? Media
@@ -121,18 +125,20 @@ public class MediaProgressCoordinator: NSObject {
         return object
     }
     
-    /// Returns the Progress object associated with a mediaID
+    /// Returns the Progress object associated with a mediaID.
     ///
     /// - Parameter mediaID: the media ID to search for
     /// - Returns: a Progress object associated with the MediaID
+    ///
     func progress(forMediaID mediaID: String) -> Progress? {
         return mediaInProgress[mediaID]
     }
 
-    /// Returns, if any, a media object associated with the provided media ID
+    /// Returns, if any, a media object associated with the provided media ID.
     ///
     /// - Parameter mediaID: the media ID to search for
     /// - Returns: the Media object
+    //
     func isMediaInProgress(mediaID: String) -> Bool {
         if let mediaProgress = mediaInProgress[mediaID],
             mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
@@ -141,7 +147,7 @@ public class MediaProgressCoordinator: NSObject {
         return false
     }
 
-    /// The global value of progress for all task being runned
+    /// The global value of progress for all task being runned.
     ///
     var totalProgress: Float {
         var value = Float(0)
@@ -151,7 +157,8 @@ public class MediaProgressCoordinator: NSObject {
         return value
     }
     
-    /// Returns true if any task is still ongoing
+    /// Returns true if any task is still ongoing.
+    ///
     var isRunning: Bool {
         guard let progress = mediaGlobalProgress else {
             return false
@@ -173,7 +180,8 @@ public class MediaProgressCoordinator: NSObject {
         return false
     }
 
-    /// Returns true if any of media tasks being tracked have an error associated
+    /// Returns true if any of media tasks being tracked have an error associated.
+    ///
     var hasFailedMedia: Bool {
         for progress in mediaInProgress.values {
             if !progress.isCancelled && progress.userInfo[.mediaError] != nil {
@@ -183,7 +191,7 @@ public class MediaProgressCoordinator: NSObject {
         return false
     }
 
-    /// Returns a list of media IDs that were cancelled
+    /// Returns a list of media IDs that were cancelled,
     ///
     var cancelledMediaIDs: [String] {
         var mediaIDs = [String]()
@@ -195,7 +203,7 @@ public class MediaProgressCoordinator: NSObject {
         return mediaIDs
     }
 
-    /// Returns a list of media IDs that are still uploading
+    /// Returns a list of media IDs that are still uploading.
     ///
     var inProgressMediaIDs: [String] {
         var mediaIDs = [String]()
@@ -220,6 +228,7 @@ public class MediaProgressCoordinator: NSObject {
     }
 
     // MARK: - KeyPath observer method for the global progress property
+    
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard
             context == &mediaProgressObserverContext,
@@ -285,6 +294,7 @@ public class MediaProgressCoordinator: NSObject {
     }
 
     /// Stop tracking of all media uploads that are in failed/error state.
+    ///
     func stopTrackingAllFailedMedia() {
         for key in failedMediaIDs {
             mediaInProgress.removeValue(forKey: key)
