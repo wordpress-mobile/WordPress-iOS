@@ -6,7 +6,7 @@ public protocol ApplicationShortcutsProvider {
 }
 
 extension UIApplication: ApplicationShortcutsProvider {
-    public var is3DTouchAvailable: Bool {
+    @objc public var is3DTouchAvailable: Bool {
         return keyWindow?.traitCollection.forceTouchCapability == .available
     }
 }
@@ -20,8 +20,8 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     var shortcutsProvider: ApplicationShortcutsProvider
-    let mainContext = ContextManager.sharedInstance().mainContext
-    let blogService: BlogService
+    @objc let mainContext = ContextManager.sharedInstance().mainContext
+    @objc let blogService: BlogService
 
     fileprivate let logInShortcutIconImageName = "icon-shortcut-signin"
     fileprivate let notificationsShortcutIconImageName = "icon-shortcut-notifications"
@@ -44,7 +44,7 @@ open class WP3DTouchShortcutCreator: NSObject {
         self.init(shortcutsProvider: UIApplication.shared)
     }
 
-    open func createShortcutsIf3DTouchAvailable(_ loggedIn: Bool) {
+    @objc open func createShortcutsIf3DTouchAvailable(_ loggedIn: Bool) {
         guard shortcutsProvider.is3DTouchAvailable else {
             return
         }

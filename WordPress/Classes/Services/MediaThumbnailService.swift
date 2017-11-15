@@ -15,7 +15,7 @@ class MediaThumbnailService: LocalCoreDataService {
 
     private static let defaultExportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaThumbnailService", autoreleaseFrequency: .workItem)
 
-    public lazy var exportQueue: DispatchQueue = {
+    @objc public lazy var exportQueue: DispatchQueue = {
         return MediaThumbnailService.defaultExportQueue
     }()
 
@@ -30,7 +30,7 @@ class MediaThumbnailService: LocalCoreDataService {
     /// - Note: Images may be downloaded and resized if required, avoid requesting multiple explicit preferredSizes
     ///   as several images could be downloaded, resized, and cached, if there are several variations in size.
     ///
-    func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
+    @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
         managedObjectContext.perform {
             // Configure a thumbnail exporter.
             let exporter = MediaThumbnailExporter()

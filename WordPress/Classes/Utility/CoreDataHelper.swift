@@ -10,7 +10,7 @@ extension NSManagedObject {
     ///
     /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
     ///
-    class var entityName: String {
+    @objc class var entityName: String {
         return entity().name ?? classNameWithoutNamespaces()
     }
 
@@ -18,7 +18,7 @@ extension NSManagedObject {
     ///
     /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
     ///
-    class func safeFetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    @objc class func safeFetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         guard entity().name == nil else {
             return fetchRequest()
         }

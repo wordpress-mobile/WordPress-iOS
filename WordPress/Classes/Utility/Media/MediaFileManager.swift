@@ -69,7 +69,7 @@ class MediaFileManager: NSObject {
 
     /// Returns filesystem URL for the local Media directory.
     ///
-    func directoryURL() throws -> URL {
+    @objc func directoryURL() throws -> URL {
         let fileManager = FileManager.default
         let mediaDirectory = directory.url
         // Check whether or not the file path exists for the Media directory.
@@ -87,7 +87,7 @@ class MediaFileManager: NSObject {
     /// - Note: if a file already exists with the same name, the file name is appended with a number
     ///   and incremented until a unique filename is found.
     ///
-    func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, incremented: Bool = true) throws -> URL {
+    @objc func makeLocalMediaURL(withFilename filename: String, fileExtension: String?, incremented: Bool = true) throws -> URL {
         let baseURL = try directoryURL()
         var url: URL
         if let fileExtension = fileExtension {
@@ -104,13 +104,13 @@ class MediaFileManager: NSObject {
 
     /// Objc friendly signature without specifying the `incremented` parameter.
     ///
-    func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
+    @objc func makeLocalMediaURL(withFilename filename: String, fileExtension: String?) throws -> URL {
         return try makeLocalMediaURL(withFilename: filename, fileExtension: fileExtension, incremented: true)
     }
 
     /// Returns a string appended with the thumbnail naming convention for local Media files.
     ///
-    func mediaFilenameAppendingThumbnail(_ filename: String) -> String {
+    @objc func mediaFilenameAppendingThumbnail(_ filename: String) -> String {
         var filename = filename as NSString
         let pathExtension = filename.pathExtension
         filename = filename.deletingPathExtension.appending("-thumbnail") as NSString
@@ -121,7 +121,7 @@ class MediaFileManager: NSObject {
     ///
     /// - Note: once we drop ObjC, this should be an optional that would return nil instead of zero.
     ///
-    func imageSizeForMediaAt(fileURL: URL?) -> CGSize {
+    @objc func imageSizeForMediaAt(fileURL: URL?) -> CGSize {
         guard let fileURL = fileURL else {
             return CGSize.zero
         }
@@ -164,7 +164,7 @@ class MediaFileManager: NSObject {
     /// - Note: These files can show up because of the app being killed while a media object
     ///   was being created or when a CoreData migration fails and the database is recreated.
     ///
-    func clearUnusedFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+    @objc func clearUnusedFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         purgeMediaFiles(exceptMedia: NSPredicate(format: "blog != NULL || remoteURL == NULL"),
                         onCompletion: onCompletion,
                         onError: onError)
@@ -172,7 +172,7 @@ class MediaFileManager: NSObject {
 
     /// Clear the local Media directory of any cached media files that are available remotely.
     ///
-    func clearFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+    @objc func clearFilesFromDirectory(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         do {
             try purgeDirectory(exceptFiles: [])
             onCompletion?()
@@ -185,7 +185,7 @@ class MediaFileManager: NSObject {
 
     /// Helper method for clearing unused Media upload files.
     ///
-    class func clearUnusedMediaUploadFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+    @objc class func clearUnusedMediaUploadFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         MediaFileManager.default.clearUnusedFilesFromDirectory(onCompletion: onCompletion, onError: onError)
     }
 
@@ -198,14 +198,14 @@ class MediaFileManager: NSObject {
 
     /// Helper method for clearing the Media cache directory.
     ///
-    class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+    @objc class func clearAllMediaCacheFiles(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
         let cacheManager = MediaFileManager(directory: .cache)
         cacheManager.clearFilesFromDirectory(onCompletion: onCompletion, onError: onError)
     }
 
     /// Helper method for getting the default upload directory URL.
     ///
-    class func uploadsDirectoryURL() throws -> URL {
+    @objc class func uploadsDirectoryURL() throws -> URL {
         return try MediaFileManager.default.directoryURL()
     }
 
