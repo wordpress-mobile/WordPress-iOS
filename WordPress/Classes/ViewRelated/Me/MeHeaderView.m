@@ -268,12 +268,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
                    sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
     CGPoint dropLocation = [session locationInView:self];
-    UIDropOperation dropOperation;
+    UIDropOperation dropOperation = UIDropOperationCancel;
     
     if (CGRectContainsPoint(self.gravatarImageView.frame, dropLocation)) {
         dropOperation = UIDropOperationCopy;
-    } else {
-        dropOperation = UIDropOperationCancel;
     }
     
     UIDropProposal *dropProposal = [[UIDropProposal alloc] initWithDropOperation:dropOperation];
@@ -285,6 +283,8 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
     [self setShowsActivityIndicator:YES];
+    [self.gravatarImageView normalizeSpringAnimation:nil];
+    
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
         UIImage *image = [images firstObject];
         if (self.onDroppedImage) {
