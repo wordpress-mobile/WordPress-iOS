@@ -180,7 +180,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Float) {
         for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
-            guard let media = mediaProgressCoordinator.object(forMediaID: mediaID) as? Media else {
+            guard let media = mediaProgressCoordinator.media(forMediaID: mediaID) else {
                 continue
             }
             if media.remoteStatus == .pushing {
