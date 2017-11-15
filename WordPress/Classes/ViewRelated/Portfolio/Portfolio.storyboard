@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Portfolio-->
+        <scene sceneID="5e3-9S-G4m">
+            <objects>
+                <viewController storyboardIdentifier="PortfolioListViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Iyh-Nw-rHr" userLabel="Portfolio" customClass="PortfolioListViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QVt-iV-j25"/>
+                        <viewControllerLayoutGuide type="bottom" id="LNR-aQ-IpK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uWe-E5-Cdr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hk-SY-SLb">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <connections>
+                                    <segue destination="UOf-UC-H8O" kind="embed" id="h5t-39-QBl"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottomMargin" secondItem="5hk-SY-SLb" secondAttribute="bottom" id="BU1-f3-4Ke"/>
+                            <constraint firstItem="5hk-SY-SLb" firstAttribute="top" secondItem="uWe-E5-Cdr" secondAttribute="topMargin" id="E7P-zQ-Yc1"/>
+                            <constraint firstAttribute="trailing" secondItem="5hk-SY-SLb" secondAttribute="trailing" id="FHZ-ap-nEl"/>
+                            <constraint firstItem="5hk-SY-SLb" firstAttribute="leading" secondItem="uWe-E5-Cdr" secondAttribute="leading" id="MFS-UF-dfc"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <navigationItem key="navigationItem" title="Portfolio" id="aNJ-I6-TXT"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="addButton" destination="sQ1-yR-sa6" id="H6o-ZV-xQJ"/>
+                        <outlet property="filterButton" destination="mdd-xs-dfC" id="z6X-7i-sKv"/>
+                        <outlet property="rightBarButtonView" destination="mze-5v-MXb" id="DzF-3k-sX1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pq2-te-AuG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="mdd-xs-dfC" customClass="NavBarTitleDropdownButton">
+                    <rect key="frame" x="0.0" y="0.0" width="77" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <inset key="imageEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Button" image="icon-nav-chevron">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapFilterButton:" destination="Iyh-Nw-rHr" eventType="touchUpInside" id="Xiw-S1-z1x"/>
+                    </connections>
+                </button>
+                <view clipsSubviews="YES" contentMode="scaleToFill" id="mze-5v-MXb" userLabel="Right Bar Button View">
+                    <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQ1-yR-sa6" userLabel="Add Button">
+                            <rect key="frame" x="40" y="0.0" width="40" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="40" id="ZJz-QB-OAq"/>
+                            </constraints>
+                            <state key="normal" image="icon-post-add">
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <state key="highlighted" image="icon-post-add-highlight"/>
+                            <connections>
+                                <action selector="handleAddButtonTapped:" destination="Iyh-Nw-rHr" eventType="touchUpInside" id="ViG-xp-Kaj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="sQ1-yR-sa6" firstAttribute="top" secondItem="mze-5v-MXb" secondAttribute="top" id="6Yk-47-vEF"/>
+                        <constraint firstAttribute="bottom" secondItem="sQ1-yR-sa6" secondAttribute="bottom" id="CPK-qw-Nfs"/>
+                        <constraint firstAttribute="trailing" secondItem="sQ1-yR-sa6" secondAttribute="trailing" id="Zwq-WJ-DRX"/>
+                    </constraints>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="-453" y="-623"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="zmQ-gW-j5g">
+            <objects>
+                <tableViewController id="UOf-UC-H8O" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="03w-qx-tGs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="UOf-UC-H8O" id="LFI-dh-GNQ"/>
+                            <outlet property="delegate" destination="UOf-UC-H8O" id="mYy-pD-y5i"/>
+                        </connections>
+                    </tableView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="RVL-9n-voS">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Ks-Kj-O5c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="319" y="-624"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="icon-nav-chevron" width="14" height="8"/>
+        <image name="icon-post-add" width="22" height="22"/>
+        <image name="icon-post-add-highlight" width="22" height="22"/>
+    </resources>
+</document>

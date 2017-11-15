@@ -451,7 +451,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Portfolio", @"Noun. Title. Links to the blog's Portfolio screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeFolder]
                                                  callback:^{
-                                                     // TODO: show Portfolio
+                                                     [weakSelf showPortfolio];
                                                  }]];
 
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
@@ -909,6 +909,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlog:self.blog];
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
+}
+
+- (void)showPortfolio
+{
+    // TODO: Implement missing enum case
+    // [WPAppAnalytics track:WPAnalyticsStatOpenedPortfolio withBlog:self.blog];
+     PortfolioListViewController *controller = [PortfolioListViewController controllerWithBlog:self.blog];
+     [self showDetailViewController:controller sender:self];
 }
 
 - (void)showPageList
