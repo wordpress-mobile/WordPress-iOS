@@ -315,7 +315,6 @@
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", @"blog", blog];
     NSMutableArray *mediaPredicates = [NSMutableArray new];
-    NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
 
     if ((filter & WPMediaTypeAll) == WPMediaTypeAll) {
         [mediaPredicates addObject:[NSPredicate predicateWithValue:YES]];
@@ -333,8 +332,7 @@
 
     NSCompoundPredicate *mediaPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:mediaPredicates];
 
-    return [NSCompoundPredicate andPredicateWithSubpredicates:
-            @[predicate, mediaPredicate, statusPredicate]];
+    return [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, mediaPredicate]];
 }
 
 - (NSPredicate *)predicateForSearchQuery
@@ -373,6 +371,15 @@
     } else {
         fetchRequest.predicate = filterPredicate;
     }
+
+    NSPredicate *statusPredicate;
+    if (self.includeUnsyncedMedia) {
+        statusPredicate = [NSPredicate predicateWithFormat:@"%K != %@", @"remoteStatusNumber", @(MediaRemoteStatusFailed)];
+    } else {
+        statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
+    }
+
+    fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
     fetchRequest.sortDescriptors = @[sortDescriptor];
