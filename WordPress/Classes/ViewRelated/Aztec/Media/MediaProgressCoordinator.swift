@@ -36,14 +36,14 @@ public class MediaProgressCoordinator: NSObject {
     ///
     /// - Parameter count: the number of tasks that need to be tracked
     func track(numberOfItems count: Int) {
-        if let mediaUploadingProgress = self.mediaGlobalProgress, !isRunning {
+        if let mediaUploadingProgress = mediaGlobalProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
-            self.mediaGlobalProgress = nil
+            mediaGlobalProgress = nil
         }
 
-        if self.mediaGlobalProgress == nil {
-            self.mediaGlobalProgress = Progress.discreteProgress(totalUnitCount: 0)
-            self.mediaGlobalProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options: [.new], context: &mediaProgressObserverContext)
+        if mediaGlobalProgress == nil {
+            mediaGlobalProgress = Progress.discreteProgress(totalUnitCount: 0)
+            mediaGlobalProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options: [.new], context: &mediaProgressObserverContext)
 
             delegate?.mediaProgressCoordinatorDidStartUploading(self)
         }
@@ -57,6 +57,7 @@ public class MediaProgressCoordinator: NSObject {
     ///   - progress: the object that tracks the progress
     ///   - object: the associated object.
     ///   - mediaID: the unique taskID
+    ///
     func track(progress: Progress, ofObject object: Media, withMediaID mediaID: String) {
         progress.setUserInfoObject(mediaID, forKey: .mediaID)
         progress.setUserInfoObject(object, forKey: .mediaObject)
@@ -68,6 +69,7 @@ public class MediaProgressCoordinator: NSObject {
     ///
     /// Note: This method is used to advance the completed number of tasks, when the task doesn't have any relevant associated work/progress to be tracked.
     /// For example an already existing media object that is already uploaded to the server.
+    ///
     func finishOneItem() {
         guard let mediaUploadingProgress = mediaGlobalProgress else {
             return
@@ -274,9 +276,9 @@ public class MediaProgressCoordinator: NSObject {
     /// Stop trackings all media uploads and resets the global progress tracking
     ///
     func stopTrackingOfAllMedia() {
-        if let mediaUploadingProgress = self.mediaGlobalProgress, !isRunning {
+        if let mediaUploadingProgress = mediaGlobalProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
-            self.mediaGlobalProgress = nil
+            mediaGlobalProgress = nil
         }
         mediaInProgress.removeAll()
     }
