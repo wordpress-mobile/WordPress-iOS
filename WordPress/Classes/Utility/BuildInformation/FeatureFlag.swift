@@ -7,7 +7,6 @@ enum FeatureFlag: Int {
     case pluginManagement
     case googleLogin
     case jetpackDisconnect
-    case jetpackCommentsOnReader
     case asyncUploadsInMediaLibrary
     case activity
 
@@ -24,8 +23,6 @@ enum FeatureFlag: Int {
             return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .jetpackCommentsOnReader:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .asyncUploadsInMediaLibrary:
             return BuildConfiguration.current == .localDeveloper
         case .activity:
