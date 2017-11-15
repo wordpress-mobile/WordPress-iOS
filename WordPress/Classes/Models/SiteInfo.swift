@@ -1,9 +1,9 @@
 import Foundation
 
 @objc open class SiteInfo: NSObject {
-    var name = ""
-    var tagline = ""
-    var url = ""
-    var hasJetpack = false
-    var icon = ""
+    @objc var name = ""
+    @objc var tagline = ""
+    @objc var url = ""
+    @objc var hasJetpack = false
+    @objc var icon = ""
 }

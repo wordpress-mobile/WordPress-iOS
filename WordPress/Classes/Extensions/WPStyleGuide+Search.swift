@@ -3,7 +3,7 @@ import WordPressShared
 
 extension WPStyleGuide {
 
-    public class func configureSearchBar(_ searchBar: UISearchBar) {
+    @objc public class func configureSearchBar(_ searchBar: UISearchBar) {
         searchBar.accessibilityIdentifier = NSLocalizedString("Search", comment: "")
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
@@ -14,7 +14,7 @@ extension WPStyleGuide {
         searchBar.returnKeyType = .done
     }
 
-    public class func configureSearchBarAppearance() {
+    @objc public class func configureSearchBarAppearance() {
         configureSearchBarTextAppearance()
         // Cancel button
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
@@ -28,7 +28,7 @@ extension WPStyleGuide {
         UISearchBar.appearance().setImage(searchImage, for: .search, state: UIControlState())
     }
 
-    public class func configureSearchBarTextAppearance() {
+    @objc public class func configureSearchBarTextAppearance() {
         // Cancel button
         let barButtonTitleAttributes: [String: Any] = [NSFontAttributeName: WPStyleGuide.fontForTextStyle(.headline),
                                                        NSForegroundColorAttributeName: WPStyleGuide.darkGrey()]

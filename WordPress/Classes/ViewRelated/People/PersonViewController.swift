@@ -41,11 +41,11 @@ final class PersonViewController: UITableViewController {
 
     /// Blog to which the Person belongs
     ///
-    var blog: Blog!
+    @objc var blog: Blog!
 
     /// Core Data Context that should be used
     ///
-    var context: NSManagedObjectContext!
+    @objc var context: NSManagedObjectContext!
 
     /// Person to be displayed
     ///

@@ -7,7 +7,7 @@ extension FancyAlertViewController {
         case unknown
     }
 
-    public static func verificationPromptController(completion: (() -> Void)?) -> FancyAlertViewController {
+    @objc public static func verificationPromptController(completion: (() -> Void)?) -> FancyAlertViewController {
         let resendEmailButton = FancyAlertViewController.Config.ButtonConfig(Strings.resendEmail) { controller, button in
 
             let managedObjectContext = ContextManager.sharedInstance().mainContext
