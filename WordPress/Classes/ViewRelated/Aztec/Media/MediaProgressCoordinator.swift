@@ -26,7 +26,7 @@ public class MediaProgressCoordinator: NSObject {
         return [String: Progress]()
     }()
 
-    private var mediaUprogressObserverContext: String = "mediaProgressObserverContext"
+    private var mediaProgressObserverContext: String = "mediaProgressObserverContext"
 
     deinit {
         mediaGlobalProgress?.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
@@ -43,7 +43,7 @@ public class MediaProgressCoordinator: NSObject {
 
         if self.mediaGlobalProgress == nil {
             self.mediaGlobalProgress = Progress.discreteProgress(totalUnitCount: 0)
-            self.mediaGlobalProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options: [.new], context: &mediaUprogressObserverContext)
+            self.mediaGlobalProgress?.addObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted), options: [.new], context: &mediaProgressObserverContext)
 
             delegate?.mediaProgressCoordinatorDidStartUploading(self)
         }
@@ -205,7 +205,7 @@ public class MediaProgressCoordinator: NSObject {
     // MARK: - KeyPath observer method for the global progress property
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard
-            context == &mediaUprogressObserverContext,
+            context == &mediaProgressObserverContext,
             keyPath == #keyPath(Progress.fractionCompleted)
             else {
                 super.observeValue(forKeyPath: keyPath,
