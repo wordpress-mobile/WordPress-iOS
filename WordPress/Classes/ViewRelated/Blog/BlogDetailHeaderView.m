@@ -228,14 +228,12 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                    sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
     CGPoint dropLocation = [session locationInView:self];
-    UIDropOperation dropOperation;
+    UIDropOperation dropOperation = UIDropOperationCancel;
     
     if (CGRectContainsPoint(self.blavatarImageView.frame, dropLocation)) {
         dropOperation = UIDropOperationCopy;
-    } else {
-        dropOperation = UIDropOperationCancel;
     }
-    
+
     UIDropProposal *dropProposal = [[UIDropProposal alloc] initWithDropOperation:dropOperation];
     
     return  dropProposal;
