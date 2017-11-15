@@ -32,9 +32,6 @@ import Foundation
 
         // Trailing BR Tags
         static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .caseInsensitive)
-        
-
-
     }
 
 
@@ -152,7 +149,6 @@ import Foundation
             return string
         }
         
-        
         //Types of WP Galleries
         let iconGallery = "class='gallery"
         let tiledGallery = "class=\"tiled-gallery"
@@ -164,9 +160,8 @@ import Foundation
         var content = string
         
         //Scan and Insert Indentifier for Gallery Start and End
-        content = scannerForGalleryBy(galleryType: iconGallery, inString: content)
-        content = scannerForGalleryBy(galleryType: tiledGallery, inString: content)
-        
+        content = scanForGalleryBy(galleryType: iconGallery, inString: content)
+        content = scanForGalleryBy(galleryType: tiledGallery, inString: content)
         
         //Replace Div with Gallery tag
         content = RegEx.galleryDivStart.stringByReplacingMatches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count), withTemplate: galleryStart)
@@ -175,7 +170,7 @@ import Foundation
         return content
     }
     
-    private class func scannerForGalleryBy(galleryType : String, inString : String) -> String {
+    private class func scanForGalleryBy(galleryType : String, inString : String) -> String {
         
         let galleryScanner = Scanner(string: inString)
         galleryScanner.charactersToBeSkipped = nil
@@ -189,7 +184,6 @@ import Foundation
         var galleriesFound : Int = 0
         
         while !galleryScanner.isAtEnd {
-            
             
             if galleriesFound <= 0 {
                 //check for gallery
@@ -231,7 +225,7 @@ import Foundation
                     divCounter += 1
                 }
                 
-                galleryScanner.scanLocation += 3
+                galleryScanner.scanLocation += divStr.count
                 str += divStr
                 
                 if divCounter == 0 {

@@ -209,7 +209,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
         if attachment.tagName == "gallery" {
             return galleryForAttachment(attachment)
-        }else if attachment.tagName == "img" {
+        } else if attachment.tagName == "img" {
             return imageForAttachment(attachment)
         } else {
             return embedForAttachment(attachment)

@@ -39,6 +39,7 @@
             <size key="customSize" width="251" height="211"/>
             <connections>
                 <outlet property="galleryImageView" destination="Ajo-bT-AZE" id="COb-J9-HCW"/>
+                <outlet property="loadingIndicator" destination="cAa-GN-Pga" id="urp-z1-VwJ"/>
             </connections>
             <point key="canvasLocation" x="31" y="-8"/>
         </collectionViewCell>

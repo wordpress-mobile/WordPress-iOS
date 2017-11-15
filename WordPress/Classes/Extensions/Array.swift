@@ -13,7 +13,7 @@ extension Array {
         }
     }
 
-    //Safely returns an index from an array.
+    /// Safely returns an index from an array.
     ///
     subscript(safe index: Int) -> Element? {
         return index >= 0 && index < count ? self[index] : nil

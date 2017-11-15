@@ -9,7 +9,7 @@
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithMedia:(Media *)media;
-- (instancetype)initForGallery:(NSURL *)url;
+- (instancetype)initForGallery:(NSURL *)url andIndex:(NSNumber *)index;
 
 - (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url;
 - (instancetype)initWithImage:(UIImage *)image andMedia:(Media *)media;

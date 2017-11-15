@@ -1,18 +1,10 @@
-//
-//  WPGalleryPageViewController.swift
-//  WordPress
-//
-//  Created by Jeff Jacka on 11/12/17.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
-
 import UIKit
 
 class WPGalleryPageViewController: UIPageViewController {
 
     // MARK: - Properties
     var images: [WPTextAttachment]?
-    var initialIndex: Int = 0
+    var initialIndex = 0
 
     // MARK: - Convenience Factories
 
@@ -47,55 +39,27 @@ class WPGalleryPageViewController: UIPageViewController {
         }
 
         dataSource = self
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     func imageViewControllerForIndex(index: Int) -> WPImageViewController? {
 
-        guard index >= 0 else {
+        guard index >= 0, let imageAttachment = images?[safe: index] else {
             return nil
         }
 
-        guard let imageAttachment = images?[safe: index] else {
+        let urlString = imageAttachment.attributes?["data-large-file"] ?? imageAttachment.src
+
+        guard let url = URL(string: urlString) else {
             return nil
         }
 
-        var urlString: String?
-
-        if let largeUrl = imageAttachment.attributes?["data-large-file"] {
-            urlString = largeUrl
-        } else {
-            urlString = imageAttachment.src
-        }
-
-        guard let url = urlString, let finalUrl = URL(string: url) else {
-            return nil
-        }
-
-        if WPImageViewController.isUrlSupported(finalUrl) {
-            let vc = WPImageViewController(forGallery: finalUrl)
-            vc?.index = index as NSNumber
+        if WPImageViewController.isUrlSupported(url) {
+            let vc = WPImageViewController(forGallery: url, andIndex: index as NSNumber)
             return vc
         }
 
         return nil
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
