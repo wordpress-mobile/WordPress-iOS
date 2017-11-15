@@ -6,7 +6,7 @@ import Aztec
 
 class AztecAttachmentViewController: UITableViewController {
 
-    var attachment: ImageAttachment? {
+    @objc var attachment: ImageAttachment? {
         didSet {
             if let attachment = attachment {
                 alignment = attachment.alignment
@@ -18,10 +18,10 @@ class AztecAttachmentViewController: UITableViewController {
 
     var alignment = ImageAttachment.Alignment.none
     var size = ImageAttachment.Size.full
-    var alt: String?
+    @objc var alt: String?
 
     var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String?) -> Void)?
-    var onCancel: (() -> Void)?
+    @objc var onCancel: (() -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -176,12 +176,12 @@ class AztecAttachmentViewController: UITableViewController {
 
     // MARK: - Helper methods
 
-    func handleCancelButtonTapped(sender: UIBarButtonItem) {
+    @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
         onCancel?()
         dismiss(animated: true, completion: nil)
     }
 
-    func handleDoneButtonTapped(sender: UIBarButtonItem) {
+    @objc func handleDoneButtonTapped(sender: UIBarButtonItem) {
         let checkedAlt = alt == "" ? nil : alt
         onUpdate?(alignment, size, checkedAlt)
         dismiss(animated: true, completion: nil)
