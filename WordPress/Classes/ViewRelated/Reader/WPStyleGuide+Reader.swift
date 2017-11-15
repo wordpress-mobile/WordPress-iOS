@@ -8,19 +8,19 @@ extension WPStyleGuide {
 
     // MARK: - System Defaults
 
-    public class func accessoryDefaultTintColor() -> UIColor {
+    @objc public class func accessoryDefaultTintColor() -> UIColor {
         return UIColor(fromRGBAColorWithRed: 199.0, green: 199.0, blue: 204.0, alpha: 1.0)
     }
 
 
-    public class func cellDefaultHighlightColor() -> UIColor {
+    @objc public class func cellDefaultHighlightColor() -> UIColor {
         return UIColor(fromRGBAColorWithRed: 217.0, green: 217.0, blue: 217.0, alpha: 1.0)
     }
 
 
     // MARK: - Original Post/Site Attribution Styles.
 
-    public class func originalAttributionParagraphAttributes() -> [String: AnyObject] {
+    @objc public class func originalAttributionParagraphAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.fontForTextStyle(originalAttributionTextStyle())
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -31,27 +31,27 @@ extension WPStyleGuide {
         ]
     }
 
-    public class func originalAttributionTextStyle() -> UIFontTextStyle {
+    @objc public class func originalAttributionTextStyle() -> UIFontTextStyle {
         return Cards.contentTextStyle
     }
 
 
     // MARK: - Reader Card Styles
 
-    public class func readerCardBlogNameLabelTextColor() -> UIColor {
+    @objc public class func readerCardBlogNameLabelTextColor() -> UIColor {
         return mediumBlue()
     }
 
-    public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
+    @objc public class func readerCardBlogNameLabelDisabledTextColor() -> UIColor {
         return darkGrey()
     }
 
     // MARK: - Custom Colors
-    public class func readerCardCellBorderColor() -> UIColor {
+    @objc public class func readerCardCellBorderColor() -> UIColor {
         return UIColor(red: 215.0/255.0, green: 227.0/255.0, blue: 235.0/255.0, alpha: 1.0)
     }
 
-    public class func readerCardCellHighlightedBorderColor() -> UIColor {
+    @objc public class func readerCardCellHighlightedBorderColor() -> UIColor {
         // #87a6bc
         return UIColor(red: 135/255.0, green: 166/255.0, blue: 188/255.0, alpha: 1.0)
     }

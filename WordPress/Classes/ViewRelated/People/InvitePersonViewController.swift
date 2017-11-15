@@ -13,11 +13,11 @@ class InvitePersonViewController: UITableViewController {
 
     /// Target Blog
     ///
-    var blog: Blog!
+    @objc var blog: Blog!
 
     /// Core Data Context
     ///
-    let context = ContextManager.sharedInstance().mainContext
+    @objc let context = ContextManager.sharedInstance().mainContext
 
     // MARK: - Private Properties
 
@@ -245,7 +245,7 @@ extension InvitePersonViewController {
         }
     }
 
-    func sendInvitation(_ blog: Blog, recipient: String, role: String, message: String) {
+    @objc func sendInvitation(_ blog: Blog, recipient: String, role: String, message: String) {
         guard let service = PeopleService(blog: blog, context: context) else {
             return
         }
@@ -261,7 +261,7 @@ extension InvitePersonViewController {
         })
     }
 
-    func handleSendError(_ onRetry: @escaping (() -> Void)) {
+    @objc func handleSendError(_ onRetry: @escaping (() -> Void)) {
         let message = NSLocalizedString("There has been an unexpected error while sending your Invitation", comment: "Invite Failed Message")
         let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
         let retryText = NSLocalizedString("Try Again", comment: "Retries an Action")
