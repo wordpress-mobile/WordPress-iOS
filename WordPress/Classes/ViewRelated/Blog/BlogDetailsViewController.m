@@ -679,16 +679,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
         [weakSelf dismissViewControllerAnimated:YES completion:nil];
-        [weakSelf uploadDroppedSiteIcon:image];
-        weakSelf.headerView.blavatarImageView.image = image;
-        weakSelf.headerView.updatingIcon = NO;
+        [weakSelf uploadDroppedSiteIcon:image onCompletion:^{
+            weakSelf.headerView.blavatarImageView.image = image;
+            weakSelf.headerView.updatingIcon = NO;
+        }];
     };
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)uploadDroppedSiteIcon:(UIImage *)image
+- (void)uploadDroppedSiteIcon:(UIImage *)image onCompletion:(void(^)(void))completion
 {
     if (self.blog.objectID == nil) {
         return;
@@ -706,8 +707,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                 NSProgress *uploadProgress;
                                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
                                     [weakSelf updateBlogIconWithMedia:media];
+                                    completion();
                                 } failure:^(NSError * _Nonnull error) {
                                     [weakSelf showErrorForSiteIconUpdate];
+                                    completion();
                                 }];
                             }];
 }
