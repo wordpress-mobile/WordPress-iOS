@@ -36,7 +36,7 @@ extension NSURL: ExportableAsset {
         }
     }
 
-    func exportImageToURL(_ url: NSURL,
+    @objc func exportImageToURL(_ url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
@@ -94,7 +94,7 @@ extension NSURL: ExportableAsset {
         successHandler(pixelSize)
     }
 
-    func exportVideoToURL(_ url: NSURL,
+    @objc func exportVideoToURL(_ url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
@@ -209,7 +209,7 @@ extension NSURL: ExportableAsset {
 
     // MARK: - Helper methods
 
-    var pixelSize: CGSize {
+    @objc var pixelSize: CGSize {
         get {
             if isVideo {
                 let asset = AVAsset(url: self as URL)
@@ -231,7 +231,7 @@ extension NSURL: ExportableAsset {
         }
     }
 
-    var typeIdentifier: String? {
+    @objc var typeIdentifier: String? {
         guard isFileURL else { return nil }
         do {
             let data = try bookmarkData(options: NSURL.BookmarkCreationOptions.minimalBookmark, includingResourceValuesForKeys: [URLResourceKey.typeIdentifierKey], relativeTo: nil)
@@ -246,7 +246,7 @@ extension NSURL: ExportableAsset {
         }
     }
 
-    var mimeType: String {
+    @objc var mimeType: String {
         guard let uti = typeIdentifier,
             let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?.takeUnretainedValue() as String?
             else {
@@ -256,7 +256,7 @@ extension NSURL: ExportableAsset {
         return mimeType
     }
 
-    var isVideo: Bool {
+    @objc var isVideo: Bool {
         guard let uti = typeIdentifier else {
             return false
         }
@@ -264,7 +264,7 @@ extension NSURL: ExportableAsset {
         return UTTypeConformsTo(uti as CFString, kUTTypeMovie)
     }
 
-    var isImage: Bool {
+    @objc var isImage: Bool {
         guard let uti = typeIdentifier else {
             return false
         }
@@ -273,7 +273,7 @@ extension NSURL: ExportableAsset {
     }
 
 
-    func removeAttributes(attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject] {
+    @objc func removeAttributes(attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject] {
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValue(forKey: attribute)
@@ -296,7 +296,7 @@ extension NSURL: ExportableAsset {
     ///
     /// - Returns: A new metadata object where the values match the values on the UIImage
     ///
-    func matchMetadata(metadata: [String: AnyObject], image: UIImage) -> [String: AnyObject] {
+    @objc func matchMetadata(metadata: [String: AnyObject], image: UIImage) -> [String: AnyObject] {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
         resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
