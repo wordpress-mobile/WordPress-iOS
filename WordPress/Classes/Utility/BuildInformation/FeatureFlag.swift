@@ -24,7 +24,7 @@ enum FeatureFlag: Int {
         case .googleLogin:
             return true
         case .socialSignup:
-            return BuildConfiguration.current == .localDeveloper
+            return false // placeholder until the first social signup screen is added
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .jetpackCommentsOnReader:
