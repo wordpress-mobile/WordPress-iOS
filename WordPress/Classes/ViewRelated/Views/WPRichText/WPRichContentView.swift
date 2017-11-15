@@ -221,7 +221,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     ///
     /// - Returns: A WPRichTextEmbed instance configured for the attachment.
     ///
-    func embedForAttachment(_ attachment: WPTextAttachment) -> WPRichTextEmbed {
+    @objc func embedForAttachment(_ attachment: WPTextAttachment) -> WPRichTextEmbed {
         let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
         let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
         let embed = WPRichTextEmbed(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
@@ -253,7 +253,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     ///
     /// - Returns: A WPRichTextImage instance configured for the attachment.
     ///
-    func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
+    @objc func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
         guard let url = URL(string: attachment.src) else {
             return WPRichTextImage(frame: CGRect.zero)
         }
@@ -291,7 +291,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     ///
     /// - Returns: An NSURL optional.
     ///
-    func linkURLForImageAttachment(_ attachment: WPTextAttachment) -> URL? {
+    @objc func linkURLForImageAttachment(_ attachment: WPTextAttachment) -> URL? {
         var link: URL?
         let attrText = attributedText
         attrText?.enumerateAttachments { (textAttachment, range) in
@@ -347,7 +347,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// - Parameters:
     ///     - sender: The WPRichTextImage that was tapped.
     ///
-    func handleImageTapped(_ sender: WPRichTextImage) {
+    @objc func handleImageTapped(_ sender: WPRichTextImage) {
         guard let delegate = delegate else {
             return
         }

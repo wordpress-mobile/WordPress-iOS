@@ -16,7 +16,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is a default topic
     ///
-    open class func isTopicDefault(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func isTopicDefault(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderDefaultTopic.self)
     }
 
@@ -28,7 +28,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is a list topic
     ///
-    open class func isTopicList(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func isTopicList(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderListTopic.self)
     }
 
@@ -40,7 +40,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is a site topic
     ///
-    open class func isTopicSite(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func isTopicSite(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderSiteTopic.self)
     }
 
@@ -52,7 +52,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is a tag topic
     ///
-    open class func isTopicTag(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func isTopicTag(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderTagTopic.self)
     }
 
@@ -64,7 +64,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is a search topic
     ///
-    open class func isTopicSearchTopic(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func isTopicSearchTopic(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.isKind(of: ReaderSearchTopic.self)
     }
 
@@ -76,7 +76,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is for Freshly Pressed
     ///
-    open class func topicIsFreshlyPressed(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func topicIsFreshlyPressed(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/freshly-pressed")
     }
 
@@ -88,7 +88,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is for Discover
     ///
-    open class func topicIsDiscover(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func topicIsDiscover(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.contains("/read/sites/53424024/posts")
     }
 
@@ -100,7 +100,7 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is for Following
     ///
-    open class func topicIsFollowing(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func topicIsFollowing(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/read/following")
     }
 
@@ -112,14 +112,14 @@ import WordPressShared
     ///
     /// - Returns: True if the topic is for Posts I Like
     ///
-    open class func topicIsLiked(_ topic: ReaderAbstractTopic) -> Bool {
+    @objc open class func topicIsLiked(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/read/liked")
     }
 
 
     // MARK: Analytics Helpers
 
-    open class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
+    @objc open class func trackLoadedTopic(_ topic: ReaderAbstractTopic, withProperties properties: [AnyHashable: Any]) {
         var stat: WPAnalyticsStat?
 
         if topicIsFreshlyPressed(topic) {
@@ -142,7 +142,7 @@ import WordPressShared
     }
 
 
-    open class func statsPropertiesForPost(_ post: ReaderPost, andValue value: AnyObject?, forKey key: String?) -> [AnyHashable: Any] {
+    @objc open class func statsPropertiesForPost(_ post: ReaderPost, andValue value: AnyObject?, forKey key: String?) -> [AnyHashable: Any] {
         var properties = [AnyHashable: Any]()
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeyPostID] = post.postID
@@ -160,7 +160,7 @@ import WordPressShared
     }
 
 
-    open class func bumpPageViewForPost(_ post: ReaderPost) {
+    @objc open class func bumpPageViewForPost(_ post: ReaderPost) {
         // Don't bump page views for feeds else the wrong blog/post get's bumped
         if post.isExternal && !post.isJetpack {
             return
@@ -204,7 +204,7 @@ import WordPressShared
         task.resume()
     }
 
-    open class func isUserAdminOnSiteWithID(_ siteID: NSNumber) -> Bool {
+    @objc open class func isUserAdminOnSiteWithID(_ siteID: NSNumber) -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         if let blog = blogService.blog(byBlogId: siteID) {
@@ -216,7 +216,7 @@ import WordPressShared
 
     // MARK: Logged in helper
 
-    open class func isLoggedIn() -> Bool {
+    @objc open class func isLoggedIn() -> Bool {
         return AccountHelper.isDotcomAvailable()
     }
 }

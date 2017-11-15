@@ -310,6 +310,7 @@ class FancyAlertViewController: UIViewController {
     // MARK: - Animation
 
     func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
+    @objc func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Constants.fadeAnimationDuration, animations: {
             self.contentViews.forEach({ $0.alpha = (visible) ? WPAlphaFull : WPAlphaZero })
             animation?(self)
