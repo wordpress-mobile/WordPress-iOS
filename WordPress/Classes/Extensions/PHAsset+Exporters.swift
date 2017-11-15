@@ -36,7 +36,7 @@ extension PHAsset: ExportableAsset {
         }
     }
 
-    internal func exportImageToURL(_ url: URL,
+    @objc internal func exportImageToURL(_ url: URL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
@@ -77,12 +77,12 @@ extension PHAsset: ExportableAsset {
         }
     }
 
-    func exportMaximumSizeImage(_ completion: @escaping (UIImage?, [AnyHashable: Any]?) -> Void) {
+    @objc func exportMaximumSizeImage(_ completion: @escaping (UIImage?, [AnyHashable: Any]?) -> Void) {
         let targetSize = CGSize(width: pixelWidth, height: pixelHeight)
         exportImageWithSize(targetSize, synchronous: false, completion: completion)
     }
 
-    func exportImageWithSize(_ targetSize: CGSize, synchronous: Bool, completion: @escaping (UIImage?, [AnyHashable: Any]?) -> Void) {
+    @objc func exportImageWithSize(_ targetSize: CGSize, synchronous: Bool, completion: @escaping (UIImage?, [AnyHashable: Any]?) -> Void) {
         let options = PHImageRequestOptions()
         options.version = .current
         options.deliveryMode = .highQualityFormat
@@ -123,7 +123,7 @@ extension PHAsset: ExportableAsset {
         }
     }
 
-    func removeAttributes(_ attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject] {
+    @objc func removeAttributes(_ attributes: [String], fromMetadata: [String: AnyObject]) -> [String: AnyObject] {
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValue(forKey: attribute)
@@ -146,7 +146,7 @@ extension PHAsset: ExportableAsset {
     ///
     /// - Returns: A new metadata object where the values match the values on the UIImage
     ///
-    func matchMetadata(_ metadata: [String: AnyObject], image: UIImage) -> [String: AnyObject] {
+    @objc func matchMetadata(_ metadata: [String: AnyObject], image: UIImage) -> [String: AnyObject] {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
         resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue) as AnyObject?
@@ -158,7 +158,7 @@ extension PHAsset: ExportableAsset {
         return resultingMetadata
     }
 
-    func exportVideoToURL(_ url: URL,
+    @objc func exportVideoToURL(_ url: URL,
         targetUTI: String,
         maximumResolution: CGSize,
         stripGeoLocation: Bool,
@@ -272,7 +272,7 @@ extension PHAsset: ExportableAsset {
         return error
     }
 
-    func requestMetadataWithCompletionBlock(_ completionBlock: @escaping (_ metadata: [String: AnyObject]) ->(), failureBlock: @escaping (_ error: NSError) -> ()) {
+    @objc func requestMetadataWithCompletionBlock(_ completionBlock: @escaping (_ metadata: [String: AnyObject]) ->(), failureBlock: @escaping (_ error: NSError) -> ()) {
         let editOptions = PHContentEditingInputRequestOptions()
         editOptions.isNetworkAccessAllowed = true
         self.requestContentEditingInput(with: editOptions) { (contentEditingInput, info) -> Void in
@@ -309,7 +309,7 @@ extension PHAsset: ExportableAsset {
         return nil
     }
 
-    func originalFilename() -> String? {
+    @objc func originalFilename() -> String? {
         let resources = PHAssetResource.assetResources(for: self)
         var types: [PHAssetResourceType.RawValue] = []
         if mediaType == PHAssetMediaType.image {
