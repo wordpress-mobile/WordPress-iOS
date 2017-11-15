@@ -928,7 +928,7 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
             return
         }
 
-        guard let progress = mediaProgressCoordinator.mediaUploadingProgress,
+        guard let progress = mediaProgressCoordinator.mediaGlobalProgress,
             !progress.isCancelled else {
             mediaProgressCoordinator.stopTrackingOfAllUploads()
             return
@@ -939,7 +939,7 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
-        guard let mediaProgress = mediaProgressCoordinator.mediaUploadingProgress,
+        guard let mediaProgress = mediaProgressCoordinator.mediaGlobalProgress,
             !mediaProgress.isCancelled,
             mediaProgress.completedUnitCount < mediaProgress.totalUnitCount else {
                 return
