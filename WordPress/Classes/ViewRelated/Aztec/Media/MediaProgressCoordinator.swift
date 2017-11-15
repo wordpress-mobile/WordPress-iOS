@@ -1,6 +1,6 @@
 import Foundation
 
-/// Media Progress Coordinator Delegate comunicates changes on media uploading progress.
+/// Media Progress Coordinator Delegate comunicates changes on media progress.
 ///
 @objc public protocol MediaProgressCoordinatorDelegate: class {
 
@@ -14,7 +14,7 @@ extension ProgressUserInfoKey {
     static let mediaError = ProgressUserInfoKey("mediaError")
     static let mediaObject = ProgressUserInfoKey("mediaObject")
 }
-/// Media Progress Coordinator allow the tracking of multiple media progress uploads.
+/// Media Progress Coordinator allow the tracking of progress on multiple media objects.
 ///
 public class MediaProgressCoordinator: NSObject {
 
@@ -35,6 +35,7 @@ public class MediaProgressCoordinator: NSObject {
     /// Setup the coordinator to track the provided number of tasks
     ///
     /// - Parameter count: the number of tasks that need to be tracked
+    ///
     func track(numberOfItems count: Int) {
         if let mediaUploadingProgress = mediaGlobalProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
@@ -48,7 +49,7 @@ public class MediaProgressCoordinator: NSObject {
             delegate?.mediaProgressCoordinatorDidStartUploading(self)
         }
 
-        self.mediaGlobalProgress?.totalUnitCount += Int64(count)
+        mediaGlobalProgress?.totalUnitCount += Int64(count)
     }
 
     /// Start the tracking of a task that is represented by the provided progress and is associated to an object with the provided mediaID.
