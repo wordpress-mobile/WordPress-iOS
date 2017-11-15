@@ -2545,7 +2545,7 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
         mediaProgressView.progress = progress
-        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
+        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaInProgress {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
                 continue
             }
