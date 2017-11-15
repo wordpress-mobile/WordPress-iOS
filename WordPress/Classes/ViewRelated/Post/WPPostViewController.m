@@ -1752,7 +1752,7 @@ UIDocumentPickerDelegate
 {
     self.mediaProgressView.hidden = ![self isMediaUploading];
     self.mediaProgressView.progress = self.mediaProgressCoordinator.totalProgress;
-    for(NSString * mediaID in self.mediaProgressCoordinator.pendingUploadIDs) {
+    for(NSString * mediaID in self.mediaProgressCoordinator.inProgressMediaIDs) {
         NSProgress *progress = [self.mediaProgressCoordinator progressForMediaID:mediaID];
         if (progress) {
             [self.editorView setProgress:progress.fractionCompleted onImage:mediaID];
@@ -1774,7 +1774,7 @@ UIDocumentPickerDelegate
 - (void)cancelMediaUploads
 {
     [self.mediaProgressCoordinator cancelAndStopAllPendingUploads];
-    for (NSString *mediaID in self.mediaProgressCoordinator.allCancelledIDs) {
+    for (NSString *mediaID in self.mediaProgressCoordinator.cancelledMediaIDs) {
         [self.editorView removeImage:mediaID];
         [self.editorView removeVideo:mediaID];
     }
@@ -1885,7 +1885,7 @@ UIDocumentPickerDelegate
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
 
-    Media *media = [self.mediaProgressCoordinator objectForMediaID:imageUniqueId];
+    Media *media = [self.mediaProgressCoordinator mediaForMediaID:imageUniqueId];
     if (!media) {
         return;
     }

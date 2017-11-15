@@ -2945,7 +2945,7 @@ extension AztecPostViewController {
                                                    style: .default,
                                                    handler: { (action) in
                                                     //retry upload
-                                                    if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
+                                                    if let media = self.mediaProgressCoordinator.media(forMediaID: mediaID),
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
                                                         self.resetMediaAttachmentOverlay(attachment)
                                                         attachment.progress = 0
