@@ -10,6 +10,7 @@ enum FeatureFlag: Int {
     case jetpackCommentsOnReader
     case asyncUploadsInMediaLibrary
     case activity
+    case siteCreation
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -30,6 +31,8 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .siteCreation:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
