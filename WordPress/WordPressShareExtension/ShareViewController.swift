@@ -259,7 +259,11 @@ private extension ShareViewController {
 
     func uploadPost(subject: String, body: String, status: String, siteID: Int, requestEnqueued: @escaping () -> ()) {
         // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads so set it false
-        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil, backgroundUploads: false, backgroundSessionIdentifier: backgroundSessionIdentifier, sharedContainerIdentifier: WPAppGroupName)
+        let api = WordPressComRestApi(oAuthToken: oauth2Token,
+                                      userAgent: nil,
+                                      backgroundUploads: false,
+                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                      sharedContainerIdentifier: WPAppGroupName)
         let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         let remotePost: RemotePost = {
             let post = RemotePost()
@@ -291,7 +295,11 @@ private extension ShareViewController {
                 return
         }
 
-        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil, backgroundUploads: true, backgroundSessionIdentifier: backgroundSessionIdentifier, sharedContainerIdentifier: WPAppGroupName)
+        let api = WordPressComRestApi(oAuthToken: oauth2Token,
+                                      userAgent: nil,
+                                      backgroundUploads: true,
+                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                      sharedContainerIdentifier: WPAppGroupName)
         let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         let remotePost: RemotePost = {
             let post = RemotePost()
