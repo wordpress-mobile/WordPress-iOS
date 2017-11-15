@@ -63,6 +63,7 @@ import UIKit
                 guard let attachment = object as? WPTextAttachment else {
                     return
                 }
+
                 self.layoutAttachmentViewForAttachment(attachment, atRange: range)
         })
     }

@@ -25,6 +25,10 @@ import Foundation
 
         // Gallery Images
         static let galleryImgTags = try! NSRegularExpression(pattern: "<img[^>]*data-orig-file[^>]*/>", options: .caseInsensitive)
+        static let galleryStartIdentifier = "WPGalleryStartIdentifier"
+        static let galleryEndIdentifier = "WPGalleryEndIdentifier"
+        static let galleryDivStart = try! NSRegularExpression(pattern: "<div[^>]*?\(galleryStartIdentifier)[^>]*?>", options: .caseInsensitive)
+        static let galleryDivEnd = try! NSRegularExpression(pattern: "</div[^>]*?\(galleryEndIdentifier)[^>]*?>", options: .caseInsensitive)
 
         // Trailing BR Tags
         static let trailingBRTags = try! NSRegularExpression(pattern: "(\\s*<br\\s*(/?)\\s*>\\s*)+$", options: .caseInsensitive)
@@ -47,6 +51,7 @@ import Foundation
 
         var content = string
         content = removeForbiddenTags(content)
+        content = normalizeGallery(content)
         content = normalizeParagraphs(content)
         content = removeInlineStyles(content)
         content = (content as NSString).replacingHTMLEmoticonsWithEmoji() as String
@@ -130,7 +135,109 @@ import Foundation
         return content
     }
 
-
+    
+    /// Converts DIV with class gallery class to gallery tags
+    ///
+    /// - Parameters:
+    ///     - string: The content string to format.
+    ///
+    /// - Returns: The formatted string.
+    ///
+    public class func normalizeGallery(_ string : String) -> String {
+        
+        guard string.count > 0 else {
+            return string
+        }
+        
+        //Types of WP Galleries
+        let iconGallery = "class='gallery"
+        let tiledGallery = "class=\"tiled-gallery"
+        
+        //Gallery Tag for identification
+        let galleryStart = "<gallery>"
+        let galleryEnd = "</gallery>"
+        
+        var content = string
+        
+        //Scan and Insert Indentifier for Gallery Start and End
+        content = scanForGalleryBy(galleryType: iconGallery, inString: content)
+        content = scanForGalleryBy(galleryType: tiledGallery, inString: content)
+        
+        //Replace Div with Gallery tag
+        content = RegEx.galleryDivStart.stringByReplacingMatches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count), withTemplate: galleryStart)
+        content = RegEx.galleryDivEnd.stringByReplacingMatches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count), withTemplate: galleryEnd)
+        
+        return content
+    }
+    
+    private class func scanForGalleryBy(galleryType : String, inString : String) -> String {
+        
+        let galleryScanner = Scanner(string: inString)
+        galleryScanner.charactersToBeSkipped = nil
+        
+        let divStr = "div"
+        
+        var str = ""
+        var tempStr: NSString? = ""
+        
+        var divCounter = 0
+        var galleriesFound : Int = 0
+        
+        while !galleryScanner.isAtEnd {
+            
+            if galleriesFound <= 0 {
+                //check for gallery
+                galleryScanner.scanUpTo(galleryType, into: &tempStr)
+                
+                if let tempStr = tempStr {
+                    str += tempStr as String
+                }
+                
+                tempStr = ""
+                if galleryScanner.isAtEnd {
+                    break //nothing to see here
+                } else {
+                    galleriesFound += 1
+                    divCounter += 1
+                }
+                
+                str += galleryType
+                str += RegEx.galleryStartIdentifier
+                galleryScanner.scanLocation += Int(galleryType.count)
+                
+            } else {
+                
+                //gallery found, proceed to find divs
+                galleryScanner.scanUpTo(divStr, into: &tempStr)
+                
+                if let tempStr = tempStr {
+                    str += tempStr as String
+                }
+                
+                tempStr = ""
+                if galleryScanner.isAtEnd {
+                    break //nothing to see here
+                }
+                
+                if str.last == "/" {
+                    divCounter -= 1
+                } else if str.last == "<" {
+                    divCounter += 1
+                }
+                
+                galleryScanner.scanLocation += divStr.count
+                str += divStr
+                
+                if divCounter == 0 {
+                    galleriesFound -= 1
+                    str += RegEx.galleryEndIdentifier
+                }
+            }
+        }
+        
+        return str
+    }
+    
     public class func filterNewLines(_ string: String) -> String {
         var content = string
 

@@ -27,6 +27,7 @@ class WPRichTextFormatter {
             AttachmentTagProcessor(tagName: "video", includesEndTag: true),
             AttachmentTagProcessor(tagName: "audio", includesEndTag: true),
             AttachmentTagProcessor(tagName: "embed", includesEndTag: false),
+            AttachmentTagProcessor(tagName: "gallery", includesEndTag: true)
         ]
     }()
 

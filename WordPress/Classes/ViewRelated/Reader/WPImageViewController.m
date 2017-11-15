@@ -13,6 +13,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
 
+@property (nonatomic, assign) BOOL galleryMode;
 @property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -34,6 +35,13 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (instancetype)initWithURL:(NSURL *)url
 {
+    return [self initWithImage:nil andURL:url];
+}
+
+- (instancetype)initForGallery:(NSURL *)url andIndex:(NSNumber *)index
+{
+    self.galleryMode = YES;
+    self.index = index;
     return [self initWithImage:nil andURL:url];
 }
 
@@ -102,8 +110,10 @@ static CGFloat const MinimumZoomScale = 0.1;
     [tgr1 requireGestureRecognizerToFail:tgr2];
     [self.scrollView addGestureRecognizer:tgr1];
 
-    self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
-    self.flingableViewHandler.delegate = self;
+    if (!self.galleryMode) {
+        self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
+        self.flingableViewHandler.delegate = self;
+    }
 
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.activityIndicatorView.color = [WPStyleGuide greyDarken30];
