@@ -20,14 +20,14 @@ import CocoaLumberjack
 ///
 public final class WordPressComOAuthClient: NSObject {
 
-    public static let WordPressComOAuthErrorResponseObjectKey = "WordPressComOAuthErrorResponseObjectKey"
-    public static let WordPressComOAuthErrorNewNonceKey = "WordPressComOAuthErrorNewNonceKey"
-    public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
-    public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
-    public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint&version=1.0"
-    public static let WordPressComSocialLogin2FAUrl = "https://wordpress.com/wp-login.php?action=two-step-authentication-endpoint&version=1.0"
-    public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
-    public static let WordPressComSocialLoginEndpointVersion = 1.0
+    @objc public static let WordPressComOAuthErrorResponseObjectKey = "WordPressComOAuthErrorResponseObjectKey"
+    @objc public static let WordPressComOAuthErrorNewNonceKey = "WordPressComOAuthErrorNewNonceKey"
+    @objc public static let WordPressComOAuthErrorDomain = "WordPressComOAuthError"
+    @objc public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
+    @objc public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint&version=1.0"
+    @objc public static let WordPressComSocialLogin2FAUrl = "https://wordpress.com/wp-login.php?action=two-step-authentication-endpoint&version=1.0"
+    @objc public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
+    @objc public static let WordPressComSocialLoginEndpointVersion = 1.0
 
     fileprivate let clientID: String
     fileprivate let secret: String
@@ -55,7 +55,7 @@ public final class WordPressComOAuthClient: NSObject {
     /// Creates a WordPresComOAuthClient initialized with the clientID and secret constants defined in the
     /// ApiCredentials singleton
     ///
-    public class func client(clientID: String, secret: String) -> WordPressComOAuthClient {
+    @objc public class func client(clientID: String, secret: String) -> WordPressComOAuthClient {
         let client = WordPressComOAuthClient(clientID: clientID, secret: secret)
         return client
     }
@@ -66,7 +66,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - clientID: the app oauth clientID
     ///     - secret: the app secret
     ///
-    public init(clientID: String, secret: String) {
+    @objc public init(clientID: String, secret: String) {
         self.clientID = clientID
         self.secret = secret
     }
@@ -80,7 +80,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - success: block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
-    public func authenticateWithUsername(_ username: String,
+    @objc public func authenticateWithUsername(_ username: String,
                                   password: String,
                                   multifactorCode: String?,
                                   success: @escaping (_ authToken: String?) -> (),
@@ -122,7 +122,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - success: block to be called if authentication was successful.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
-    public func requestOneTimeCodeWithUsername(_ username: String, password: String,
+    @objc public func requestOneTimeCodeWithUsername(_ username: String, password: String,
                                         success: @escaping () -> (), failure: @escaping (_ error: NSError) -> ()) {
         let parameters = [
             "username": username,
@@ -151,7 +151,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - needsMultifactor: block to be called if a 2fa token is needed to complete the auth process.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
-    public func authenticateWithIDToken(_ token: String,
+    @objc public func authenticateWithIDToken(_ token: String,
                                         success: @escaping (_ authToken: String?) -> Void,
                                         needsMultifactor: @escaping (_ userID: Int, _ nonceInfo: SocialLogin2FANonceInfo) -> Void,
                                         existingUserNeedsConnection: @escaping (_ email: String) -> Void,
@@ -264,7 +264,7 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - success: block to be called if authentication was successful. The OAuth2 token is passed as a parameter.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
-    public func authenticateSocialLoginUser(_ userID: Int,
+    @objc public func authenticateSocialLoginUser(_ userID: Int,
                                             authType: String,
                                             twoStepCode: String,
                                             twoStepNonce: String,
@@ -405,7 +405,7 @@ final class WordPressComOAuthResponseSerializer: AFJSONResponseSerializer {
     ///   - responseObject: The responseObject (if any) that was passed with the error.
     ///   - newNonce: *optional* The new nonce provided when a 2FA fails
     /// - Returns: An NSError.
-    func errorFor(errorCode: String, errorDescription: String, responseObject: Any?, newNonce: String? = nil) -> NSError {
+    @objc func errorFor(errorCode: String, errorDescription: String, responseObject: Any?, newNonce: String? = nil) -> NSError {
         var userInfo:[String: AnyObject] = [NSLocalizedDescriptionKey: errorDescription as AnyObject]
         if let responseObject = responseObject {
             userInfo[WordPressComOAuthClient.WordPressComOAuthErrorResponseObjectKey] = responseObject as AnyObject
