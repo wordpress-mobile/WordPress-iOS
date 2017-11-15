@@ -126,7 +126,7 @@ public class MediaProgressCoordinator: NSObject {
         return mediaInProgress[mediaID]
     }
 
-    func isMediaUploading(mediaID: String) -> Bool {
+    func isMediaInProgress(mediaID: String) -> Bool {
         if let mediaProgress = mediaInProgress[mediaID],
             mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
             return true

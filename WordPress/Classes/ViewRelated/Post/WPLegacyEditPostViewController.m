@@ -778,7 +778,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)showMediaProgress
 {
-    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgressCoordinator.mediaGlobalProgress childrenProgress:self.mediaProgressCoordinator.mediaUploading.allValues];
+    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgressCoordinator.mediaGlobalProgress childrenProgress:self.mediaProgressCoordinator.mediaInProgress.allValues];
     
     vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
     
