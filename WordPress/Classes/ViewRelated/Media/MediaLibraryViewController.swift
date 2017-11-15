@@ -287,7 +287,7 @@ class MediaLibraryViewController: UIViewController {
 
     @objc private func statusHUDWasTapped(_ notification: Notification) {
         if mediaProgressCoordinator.isRunning {
-            mediaProgressCoordinator.cancelAndStopAllPendingUploads()
+            mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
             SVProgressHUD.dismiss()
         }
     }
@@ -924,17 +924,17 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         guard !mediaProgressCoordinator.hasFailedMedia else {
             SVProgressHUD.showError(withStatus: NSLocalizedString("Upload failed", comment: "Text displayed in a HUD when media items have failed to upload."))
-            mediaProgressCoordinator.stopTrackingOfAllUploads()
+            mediaProgressCoordinator.stopTrackingOfAllMedia()
             return
         }
 
         guard let progress = mediaProgressCoordinator.mediaGlobalProgress,
             !progress.isCancelled else {
-            mediaProgressCoordinator.stopTrackingOfAllUploads()
+            mediaProgressCoordinator.stopTrackingOfAllMedia()
             return
         }
 
-        mediaProgressCoordinator.stopTrackingOfAllUploads()
+        mediaProgressCoordinator.stopTrackingOfAllMedia()
         SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Uploaded!", comment: "Text displayed in a HUD when media items have been uploaded successfully."))
     }
 

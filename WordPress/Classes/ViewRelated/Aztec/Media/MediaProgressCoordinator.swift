@@ -261,7 +261,7 @@ public class MediaProgressCoordinator: NSObject {
 
     /// Cancels all pending uploads and stops tracking the progress of them
     ///
-    func cancelAndStopAllPendingUploads() {
+    func cancelAndStopAllInProgressMedia() {
         let pendingUploadIds = mediaInProgress.keys
 
         for mediaID in pendingUploadIds {
@@ -273,7 +273,7 @@ public class MediaProgressCoordinator: NSObject {
 
     /// Stop trackings all media uploads and resets the global progress tracking
     ///
-    func stopTrackingOfAllUploads() {
+    func stopTrackingOfAllMedia() {
         if let mediaUploadingProgress = self.mediaGlobalProgress, !isRunning {
             mediaUploadingProgress.removeObserver(self, forKeyPath: #keyPath(Progress.fractionCompleted))
             self.mediaGlobalProgress = nil
