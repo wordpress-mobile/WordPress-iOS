@@ -48,7 +48,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.3)
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
-  - Gridicons (0.10)
+  - Gridicons (0.12)
   - GTMOAuth2 (1.1.5):
     - GTMSessionFetcher (~> 1.1)
   - GTMSessionFetcher (1.1.12):
@@ -132,7 +132,7 @@ DEPENDENCIES:
   - FLAnimatedImage (= 1.0.12)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - GoogleSignIn (= 4.1.0)
-  - Gridicons (= 0.10)
+  - Gridicons (= 0.12)
   - HockeySDK (= 5.0.0)
   - lottie-ios (= 1.5.1)
   - MGSwipeTableCell (= 1.6.1)
@@ -189,7 +189,7 @@ SPEC CHECKSUMS:
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   GoogleSignIn: 8c599fc10d25b2af86a3f82fd9631e863f2b1400
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
-  Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
+  Gridicons: af3f55efbc4f38824e97d820cde4eb8421eaa31e
   GTMOAuth2: be83fd28d63ae3087e7d351b1f39c1a7e24ab6e7
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   HockeySDK: 82bf8dcbe1af3c87c24dc98924fcf2e2ba5be8c4
