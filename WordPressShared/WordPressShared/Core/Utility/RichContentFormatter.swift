@@ -40,7 +40,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
+    @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
         guard string.count > 0 else {
             return string
         }
@@ -63,7 +63,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func removeForbiddenTags(_ string: String) -> String {
+    @objc public class func removeForbiddenTags(_ string: String) -> String {
         guard string.count > 0 else {
             return string
         }
@@ -95,7 +95,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func normalizeParagraphs(_ string: String) -> String {
+    @objc public class func normalizeParagraphs(_ string: String) -> String {
         guard string.count > 0 else {
             return string
         }
@@ -131,7 +131,7 @@ import Foundation
     }
 
 
-    public class func filterNewLines(_ string: String) -> String {
+    @objc public class func filterNewLines(_ string: String) -> String {
         var content = string
 
         var ranges = [NSRange]()
@@ -181,7 +181,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func removeInlineStyles(_ string: String) -> String {
+    @objc public class func removeInlineStyles(_ string: String) -> String {
         guard string.count > 0 else {
             return string
         }
@@ -204,7 +204,7 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
+    @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
         guard string.count > 0 else {
             return string
         }
@@ -258,7 +258,7 @@ import Foundation
     ///
     /// - Returns: The value for the attribute or an empty string..
     ///
-    public class func parseValueForAttribute(_ attribute: String, inElement element: String) -> String {
+    @objc public class func parseValueForAttribute(_ attribute: String, inElement element: String) -> String {
         let elementStr = element as NSString
         var value = ""
         let attrStr = "\(attribute)=\""
@@ -282,15 +282,20 @@ import Foundation
     ///
     /// - Returns: The formatted string.
     ///
-    public class func removeTrailingBreakTags(_ string: String) -> String {
+    @objc public class func removeTrailingBreakTags(_ string: String) -> String {
         guard string.count > 0 else {
             return string
         }
+
         var content = string.trim()
         let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
         if let match = matches.first {
             let index = content.index(content.startIndex, offsetBy: match.range.location)
+#if swift(>=4.0)
+            content = String(content.prefix(upTo: index))
+#else
             content = content.substring(to: index)
+#endif
         }
 
         return content
