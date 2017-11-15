@@ -179,7 +179,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
     // MARK: - MediaProgressCoordinatorDelegate
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Float) {
-        for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaUploading {
+        for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
             guard let media = mediaProgressCoordinator.object(forMediaID: mediaID) as? Media else {
                 continue
             }
