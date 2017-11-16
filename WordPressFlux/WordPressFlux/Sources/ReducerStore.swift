@@ -1,7 +1,9 @@
-open class ReducerStore<State>: Store {
+open class ReducerStore<State: Equatable>: Store {
     public var state: State {
         didSet {
-            emitChange()
+            if state != oldValue {
+                emitChange()
+            }
         }
     }
 
