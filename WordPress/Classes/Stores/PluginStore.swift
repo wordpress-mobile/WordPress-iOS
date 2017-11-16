@@ -11,24 +11,26 @@ enum PluginAction: WordPressFlux.Action {
     case receivePluginsFailed(siteID: Int, error: Error)
 }
 
-class PluginStore: Store {
-    fileprivate var plugins = [Int: SitePlugins]() {
-        didSet {
-            emitChange()
-        }
+struct PluginStoreState {
+    var plugins = [Int: SitePlugins]()
+    var fetching = [Int: Bool]()
+}
+
+class PluginStore: StatefulStore<PluginStoreState> {
+    init(dispatcher: Dispatcher = .global) {
+        super.init(initialState: PluginStoreState(), dispatcher: dispatcher)
     }
-    fileprivate var fetching = [Int: Bool]()
 
     func removeListener(_ listener: EventListener) {
         super.removeListener(listener)
         if listenerCount == 0 {
             // Remove plugins from memory if nothing is listening for changes
-            plugins = [:]
+            state.plugins = [:]
         }
     }
 
     func getPlugins(siteID: Int) -> SitePlugins? {
-        if let sitePlugins = plugins[siteID] {
+        if let sitePlugins = state.plugins[siteID] {
             return sitePlugins
         }
         fetchPlugins(siteID: siteID)
@@ -60,7 +62,7 @@ class PluginStore: Store {
         case .receivePlugins(let siteID, let plugins):
             receivePlugins(siteID: siteID, plugins: plugins)
         case .receivePluginsFailed(let siteID, _):
-            fetching[siteID] = false
+            state.fetching[siteID] = false
         }
     }
 }
@@ -127,12 +129,11 @@ private extension PluginStore {
     }
 
     func removePlugin(pluginID: String, siteID: Int) {
-        guard let sitePlugins = plugins[siteID],
+        guard let sitePlugins = state.plugins[siteID],
             let index = sitePlugins.plugins.index(where: { $0.id == pluginID }) else {
                 return
         }
-        plugins[siteID]?.plugins.remove(at: index)
-        emitChange()
+        state.plugins[siteID]?.plugins.remove(at: index)
         remote?.remove(
             pluginID: pluginID,
             siteID: siteID,
@@ -143,22 +144,21 @@ private extension PluginStore {
     }
 
     func modifyPlugin(id: String, siteID: Int, change: (inout PluginState) -> Void) {
-        guard let sitePlugins = plugins[siteID],
+        guard let sitePlugins = state.plugins[siteID],
             let index = sitePlugins.plugins.index(where: { $0.id == id }) else {
                 return
         }
         var plugin = sitePlugins.plugins[index]
         change(&plugin)
-        plugins[siteID]?.plugins[index] = plugin
-        emitChange()
+        state.plugins[siteID]?.plugins[index] = plugin
     }
 
     func fetchPlugins(siteID: Int) {
-        guard !fetching[siteID, default: false],
+        guard !state.fetching[siteID, default: false],
             let remote = remote else {
                 return
         }
-        fetching[siteID] = true
+        state.fetching[siteID] = true
         remote.getPlugins(
             siteID: siteID,
             success: { [globalDispatcher] (plugins) in
@@ -170,12 +170,12 @@ private extension PluginStore {
     }
 
     func receivePlugins(siteID: Int, plugins: SitePlugins) {
-        self.plugins[siteID] = plugins
-        fetching[siteID] = false
+        state.plugins[siteID] = plugins
+        state.fetching[siteID] = false
     }
 
     func receivePluginsFailed(siteID: Int) {
-        fetching[siteID] = false
+        state.fetching[siteID] = false
     }
 
     var remote: PluginServiceRemote? {
