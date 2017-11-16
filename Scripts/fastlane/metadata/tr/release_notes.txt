@@ -1,3 +1,0 @@
-Ortam kütüphanesi: Ortam kütüphanesinden belgelere bağlantı eklemeye izin ver
-Ortam kütüphanesi: Alt alanını düzenlenebilir yap
-Aztec editör: Sonraki sayfa desteği

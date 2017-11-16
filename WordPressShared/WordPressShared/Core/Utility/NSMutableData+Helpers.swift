@@ -9,7 +9,7 @@ extension NSMutableData {
     ///
     /// - Parameter string: The raw String to be UTF8-Encoded, and appended
     ///
-    public func appendString(_ string: String) {
+    @objc public func appendString(_ string: String) {
         if let data = string.data(using: String.Encoding.utf8) {
             append(data)
         }
