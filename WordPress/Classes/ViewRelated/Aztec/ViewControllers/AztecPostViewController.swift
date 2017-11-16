@@ -2991,10 +2991,11 @@ extension AztecPostViewController {
     func displayDetails(forAttachment attachment: ImageAttachment) {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
-        controller.onUpdate = { [weak self] (alignment, size, alt) in
+        controller.onUpdate = { [weak self] (alignment, size, linkURL, alt) in
             self?.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
+                updated.linkURL = linkURL
                 updated.alt = alt
             }
         }

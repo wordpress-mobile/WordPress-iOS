@@ -144,10 +144,12 @@ private extension WebViewAuthenticator {
     }
 
     func redirectUrl(url: String) -> String? {
-        guard case .dotCom = credentials else {
+        guard case .dotCom = credentials,
+            let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             return url
         }
-        return self.url(string: "https://wordpress.com/", parameters: [WebViewAuthenticator.redirectParameter: url])?.absoluteString
+
+        return self.url(string: "https://wordpress.com/", parameters: [WebViewAuthenticator.redirectParameter: escapedUrl])?.absoluteString
     }
 
     func url(string: String, parameters: [String: String]) -> URL? {
