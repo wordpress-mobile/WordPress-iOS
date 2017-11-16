@@ -493,8 +493,8 @@ class AttachmentTagProcessor: HtmlTagProcessor {
 
         let matches = regex.matches(in: tag! as String, options: .reportCompletion, range: NSRange(location: 0, length: tag!.length))
         for match in matches {
-            let keyRange = match.rangeAt(1)
-            let valueRange = match.rangeAt(2)
+            let keyRange = match.range(at: 1)
+            let valueRange = match.range(at: 2)
 
             let key = tag!.substring(with: keyRange).lowercased()
             let value = tag!.substring(with: valueRange)
