@@ -63,7 +63,7 @@ extension String {
             var submatchStrings = [String]()
 
             for submatchIndex in 0 ..< match.numberOfRanges {
-                let submatchRange = self.range(from: match.rangeAt(submatchIndex))
+                let submatchRange = self.range(from: match.range(at: submatchIndex))
                 let submatchString = self.substring(with: submatchRange)
 
                 submatchStrings.append(submatchString)
