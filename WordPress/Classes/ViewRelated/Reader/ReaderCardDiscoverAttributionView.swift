@@ -29,7 +29,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
     }
 
-    weak var delegate: ReaderCardDiscoverAttributionViewDelegate?
+    @objc weak var delegate: ReaderCardDiscoverAttributionViewDelegate?
 
 
     // MARK: - Lifecycle Methods
@@ -71,7 +71,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel.backgroundColor = UIColor.white
     }
 
-    open func configureView(_ contentProvider: ReaderPostContentProvider?) {
+    @objc open func configureView(_ contentProvider: ReaderPostContentProvider?) {
         if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.post {
             configurePostAttribution(contentProvider!)
         } else if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.site {
@@ -82,7 +82,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     }
 
 
-    open func configureViewWithVerboseSiteAttribution(_ contentProvider: ReaderPostContentProvider?) {
+    @objc open func configureViewWithVerboseSiteAttribution(_ contentProvider: ReaderPostContentProvider?) {
         if let contentProvider = contentProvider {
             configureSiteAttribution(contentProvider, verboseAttribution: true)
         } else {

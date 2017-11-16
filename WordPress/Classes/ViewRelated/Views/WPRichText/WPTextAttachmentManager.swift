@@ -5,12 +5,12 @@ import UIKit
 /// Wrangles attachment layout and exclusion paths for the specified UITextView.
 ///
 @objc open class WPTextAttachmentManager: NSObject {
-    open var attachments = [WPTextAttachment]()
+    @objc open var attachments = [WPTextAttachment]()
     var attachmentViews = [String: WPTextAttachmentView]()
-    open weak var delegate: WPTextAttachmentManagerDelegate?
-    fileprivate(set) open weak var textView: UITextView?
-    let layoutManager: NSLayoutManager
-    let infiniteFrame = CGRect(x: CGFloat.infinity, y: CGFloat.infinity, width: 0.0, height: 0.0)
+    @objc open weak var delegate: WPTextAttachmentManagerDelegate?
+    @objc fileprivate(set) open weak var textView: UITextView?
+    @objc let layoutManager: NSLayoutManager
+    @objc let infiniteFrame = CGRect(x: CGFloat.infinity, y: CGFloat.infinity, width: 0.0, height: 0.0)
 
 
     /// Designaged initializer.
@@ -19,7 +19,7 @@ import UIKit
     ///     - textView: The UITextView to manage attachment layout.
     ///     - delegate: The delegate who will provide the UIViews used as content represented by WPTextAttachments in the UITextView's NSAttributedString.
     ///
-    public init(textView: UITextView, delegate: WPTextAttachmentManagerDelegate) {
+    @objc public init(textView: UITextView, delegate: WPTextAttachmentManagerDelegate) {
         self.textView = textView
         self.delegate = delegate
         self.layoutManager = textView.layoutManager

@@ -58,7 +58,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         return request
     }
 
-    var blog: Blog! {
+    @objc var blog: Blog! {
         didSet {
             if let context = blog.managedObjectContext {
                 fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
@@ -73,9 +73,9 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
     var service: DomainsService!
-    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    @objc var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
 
-    class func controllerWithBlog(_ blog: Blog) -> DomainsListViewController {
+    @objc class func controllerWithBlog(_ blog: Blog) -> DomainsListViewController {
         let storyboard = UIStoryboard(name: "Domains", bundle: Bundle(for: self))
         let controller = storyboard.instantiateInitialViewController() as! DomainsListViewController
 
