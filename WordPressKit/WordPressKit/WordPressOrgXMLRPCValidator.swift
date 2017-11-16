@@ -37,7 +37,7 @@ import CocoaLumberjack
 /// WordPress XMLRPC sites.
 open class WordPressOrgXMLRPCValidator: NSObject {
 
-    open static let UserInfoHasJetpackKey = "UserInfoHasJetpackKey"
+    @objc open static let UserInfoHasJetpackKey = "UserInfoHasJetpackKey"
 
     // The documentation for NSURLErrorHTTPTooManyRedirects says that 16
     // is the default threshold for allowable redirects.
@@ -57,7 +57,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
      - parameter failure: completion handler that is invoked when the site is considered invalid,
      the error object provides details why the endpoint is invalid
      */
-    open func guessXMLRPCURLForSite(_ site: String,
+    @objc open func guessXMLRPCURLForSite(_ site: String,
                                     userAgent: String,
                                       success: @escaping (_ xmlrpcURL: URL) -> (),
                                       failure: @escaping (_ error: NSError) -> ()) {
@@ -247,7 +247,13 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         if matches.count <= 0 {
             return nil
         }
+
+#if swift(>=4.0)
+        let rsdURLRange = matches[0].range(at: 1)
+#else
         let rsdURLRange = matches[0].rangeAt(1)
+#endif
+
         if rsdURLRange.location == NSNotFound {
             return nil
         }

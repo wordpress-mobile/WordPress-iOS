@@ -598,6 +598,13 @@ int ddLogLevel = DDLogLevelInfo;
     [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
 }
 
+- (void)trackLogoutIfNeeded
+{
+    if (![self isLoggedIn]) {
+        [WPAnalytics track:WPAnalyticsStatLogout];
+    }
+}
+
 #pragma mark - Analytics
 
 - (void)configureAnalytics
@@ -851,10 +858,7 @@ int ddLogLevel = DDLogLevelInfo;
     if (notification.object) {
         [self setupShareExtensionToken];
     } else {
-        if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
-            [WPAnalytics track:WPAnalyticsStatLogout];
-        }
-
+        [self trackLogoutIfNeeded];
         [self removeTodayWidgetConfiguration];
         [self removeShareExtensionConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
