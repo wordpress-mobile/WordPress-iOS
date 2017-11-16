@@ -94,7 +94,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         return {
             [unowned self] in
             let controller = controllerGenerator($0)
-            self.present(controller, animated: true, completion: { _ in
+            self.present(controller, animated: true, completion: { () in
                 // When the detail view is displayed as a modal on iPad, we don't receive
                 // view did/will appear/disappear. Because of this, the selected row in the list
                 // is never deselected. So we'll do it manually.
