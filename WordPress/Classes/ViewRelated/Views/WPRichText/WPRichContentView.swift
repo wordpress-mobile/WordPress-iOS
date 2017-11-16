@@ -26,13 +26,13 @@ class WPRichContentView: UITextView {
 
     /// Manages the layout and positioning of text attachments.
     ///
-    lazy var attachmentManager: WPTextAttachmentManager = {
+    @objc lazy var attachmentManager: WPTextAttachmentManager = {
         return WPTextAttachmentManager(textView: self, delegate: self)
     }()
 
     /// Used to load images for attachments.
     ///
-    lazy var imageSource: WPTableImageSource = {
+    @objc lazy var imageSource: WPTableImageSource = {
         let source = WPTableImageSource(maxSize: self.maxDisplaySize)
         source?.delegate = self
         source?.forceLargerSizeWhenFetching = false
@@ -42,17 +42,17 @@ class WPRichContentView: UITextView {
 
     /// The maximum size for images.
     ///
-    lazy var maxDisplaySize: CGSize = {
+    @objc lazy var maxDisplaySize: CGSize = {
         let bounds = UIScreen.main.bounds
         let side = max(bounds.size.width, bounds.size.height)
         return CGSize(width: side, height: side)
     }()
 
 
-    let topMarginAttachment = NSTextAttachment()
-    let bottomMarginAttachment = NSTextAttachment()
+    @objc let topMarginAttachment = NSTextAttachment()
+    @objc let bottomMarginAttachment = NSTextAttachment()
 
-    var topMargin: CGFloat {
+    @objc var topMargin: CGFloat {
         get {
             return topMarginAttachment.bounds.height
         }
@@ -75,7 +75,7 @@ class WPRichContentView: UITextView {
     // NOTE: Avoid setting attachment bounds with a zero height. A zero height
     // for an attachment at the end of a text run can glitch TextKit's layout
     // causing glyphs to not be drawn.
-    var bottomMargin: CGFloat {
+    @objc var bottomMargin: CGFloat {
         get {
             return bottomMarginAttachment.bounds.height
         }
@@ -104,9 +104,9 @@ class WPRichContentView: UITextView {
 
     /// Whether the view shows private content. Used when fetching images.
     ///
-    var isPrivate = false
+    @objc var isPrivate = false
 
-    var content: String {
+    @objc var content: String {
         get {
             return text ?? ""
         }
@@ -172,7 +172,7 @@ class WPRichContentView: UITextView {
 
     /// A convenience method for one-time, common setup that should be done in init.
     ///
-    func setupView() {
+    @objc func setupView() {
         // Because the attachment manager is a lazy property.
         _ = attachmentManager
 
@@ -180,7 +180,7 @@ class WPRichContentView: UITextView {
     }
 
 
-    func layoutAttachmentViews() {
+    @objc func layoutAttachmentViews() {
         if let richDelegate = delegate as? WPRichContentViewDelegate {
             if richDelegate.richContentViewShouldUpdateLayoutForAttachments?(self) == false {
                 return
@@ -195,7 +195,7 @@ class WPRichContentView: UITextView {
     }
 
 
-    func updateLayoutForAttachments() {
+    @objc func updateLayoutForAttachments() {
         attachmentManager.layoutAttachmentViews()
         invalidateIntrinsicContentSize()
     }

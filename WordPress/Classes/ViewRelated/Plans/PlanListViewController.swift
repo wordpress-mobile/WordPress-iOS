@@ -14,7 +14,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     fileprivate let noResultsView = WPNoResultsView()
 
-    func updateNoResults() {
+    @objc func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         } else {
@@ -31,15 +31,15 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
 
-    func hideNoResults() {
+    @objc func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
 
-    static let restorationIdentifier = "PlanList"
+    @objc static let restorationIdentifier = "PlanList"
     /// Reference to the blog object if initialized with a blog. Used for state restoration only.
     fileprivate var restorationBlogURL: URL? = nil
 
-    convenience init?(blog: Blog) {
+    @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
         guard let service = PlanService(blog: blog, store: StoreKitStore()) else {
             return nil
@@ -49,7 +49,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         restorationBlogURL = blog.objectID.uriRepresentation()
     }
 
-    let siteID: Int
+    @objc let siteID: Int
     let service: PlanService<StoreKitStore>
     init(siteID: Int, service: PlanService<StoreKitStore>) {
         self.siteID = siteID

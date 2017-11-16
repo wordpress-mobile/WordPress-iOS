@@ -11,7 +11,7 @@ import MobileCoreServices
 class MediaLibraryViewController: UIViewController {
     fileprivate static let restorationIdentifier = "MediaLibraryViewController"
 
-    let blog: Blog
+    @objc let blog: Blog
 
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
@@ -54,7 +54,7 @@ class MediaLibraryViewController: UIViewController {
         return coordinator
     }()
 
-    var searchQuery: String? = nil
+    @objc var searchQuery: String? = nil
 
     private var uploadCoordinatorUUID: UUID? = nil
 
@@ -66,7 +66,7 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         WPMediaCollectionViewCell.appearance().placeholderTintColor = WPStyleGuide.greyLighten30()
         WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = WPStyleGuide.darkGrey()
         WPMediaCollectionViewCell.appearance().loadingBackgroundColor = WPStyleGuide.lightGrey()
@@ -110,7 +110,7 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - View Loading
 
-    var uploadObserverUUID: UUID?
+    @objc var uploadObserverUUID: UUID?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -375,7 +375,7 @@ class MediaLibraryViewController: UIViewController {
         noResultsView?.sizeToFit()
     }
 
-    func updateNoResultsForFetching() {
+    @objc func updateNoResultsForFetching() {
         noResultsView?.titleText = NSLocalizedString("Fetching media...", comment: "Title displayed whilst fetching media from the user's media library")
         noResultsView?.messageText = nil
         noResultsView?.buttonTitle = nil
@@ -750,7 +750,7 @@ extension MediaLibraryViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 
-    func clearSearch() {
+    @objc func clearSearch() {
         searchQuery = nil
         searchBar.text = nil
         pickerDataSource.searchQuery = nil
@@ -843,7 +843,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         updateNavigationItemButtonsForCurrentAssetSelection()
     }
 
-    func updateNavigationItemButtonsForCurrentAssetSelection() {
+    @objc func updateNavigationItemButtonsForCurrentAssetSelection() {
         if isEditing {
             // Check that our selected items haven't been deleted – we're notified
             // of changes to the data source before the collection view has
@@ -867,7 +867,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return MediaItemViewController(media: asset)
     }
 
-    func makeAndUploadMediaWith(_ asset: PHAsset) {
+    @objc func makeAndUploadMediaWith(_ asset: PHAsset) {
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
                             forBlogObjectID: blog.objectID,

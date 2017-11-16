@@ -12,7 +12,7 @@ class SiteInfoHeaderView: BlogDetailHeaderView {
     }
 
 
-    func configureStyles() {
+    @objc func configureStyles() {
 
         titleLabel.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: UIFontWeightSemibold)
         titleLabel.textColor = WPStyleGuide.darkGrey()

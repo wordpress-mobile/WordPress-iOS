@@ -80,7 +80,7 @@ private class ProgressIndicatorView: UIView {
         startAnimating()
     }
 
-    func startAnimating() {
+    @objc func startAnimating() {
         let strokeEnd = CAKeyframeAnimation(keyPath: "strokeEnd")
         strokeEnd.duration = Animations.strokeDuration
         strokeEnd.values = [0.0, 1.0]
@@ -105,7 +105,7 @@ private class ProgressIndicatorView: UIView {
         progressLayer.add(group, forKey: "rotationGroup")
     }
 
-    func stopAnimating() {
+    @objc func stopAnimating() {
         progressLayer.removeAllAnimations()
     }
 }

@@ -6,10 +6,10 @@ open class ReaderCrossPostCell: UITableViewCell {
     @IBOutlet fileprivate weak var avatarImageView: UIImageView!
     @IBOutlet fileprivate weak var label: UILabel!
 
-    open weak var contentProvider: ReaderPostContentProvider?
+    @objc open weak var contentProvider: ReaderPostContentProvider?
 
-    let blavatarPlaceholder = "post-blavatar-placeholder"
-    let xPostTitlePrefix = "X-post: "
+    @objc let blavatarPlaceholder = "post-blavatar-placeholder"
+    @objc let xPostTitlePrefix = "X-post: "
 
     // MARK: - Accessors
 
@@ -25,7 +25,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
     }()
 
-    open var enableLoggedInFeatures: Bool = true
+    @objc open var enableLoggedInFeatures: Bool = true
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
@@ -76,7 +76,7 @@ open class ReaderCrossPostCell: UITableViewCell {
 
     // MARK: - Configuration
 
-    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
+    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureLabel()

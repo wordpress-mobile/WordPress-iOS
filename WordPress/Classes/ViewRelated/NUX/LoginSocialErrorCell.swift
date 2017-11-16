@@ -11,7 +11,7 @@ class LoginSocialErrorCell: UITableViewCell {
         static let descriptionMinHeight: CGFloat = 14.0
     }
 
-    init(title: String, description: String) {
+    @objc init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
         titleLabel = UILabel()
