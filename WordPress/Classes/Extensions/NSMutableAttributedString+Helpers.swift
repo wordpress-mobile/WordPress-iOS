@@ -14,8 +14,7 @@ extension NSMutableAttributedString {
             let regex = try NSRegularExpression(pattern: pattern, options: .dotMatchesLineSeparators)
             let range = NSRange(location: 0, length: length)
 
-            regex.enumerateMatches(in: string, options: .reportCompletion, range: range) {
-                (result: NSTextCheckingResult?, flags: NSRegularExpression.MatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            regex.enumerateMatches(in: string, options: .reportCompletion, range: range) { (result, _, _) -> Void in
 
                 if let theResult = result {
                     self.addAttributes(styles, range: theResult.range)

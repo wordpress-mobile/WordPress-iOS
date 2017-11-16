@@ -72,7 +72,7 @@ extension UITableView {
         }
     }
 
-    fileprivate static let defaultFlashLength: TimeInterval = 0.7
+    static let defaultFlashLength: TimeInterval = 0.7
 
     /// Disables Editing after a specified delay.
     ///
