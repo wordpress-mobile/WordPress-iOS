@@ -43,30 +43,30 @@ class FlingableViewHandler: NSObject {
         animator = UIDynamicAnimator(referenceView: targetView.superview!)
 
         super.init()
-        
+
         let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
         leftSwipe.direction = .left
         targetView.addGestureRecognizer(leftSwipe)
-        
+
         let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
         rightSwipe.direction = .right
         targetView.addGestureRecognizer(rightSwipe)
 
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-        
+
         //Allow swipe gestures to pass through first
         panGestureRecognizer.require(toFail: leftSwipe)
         panGestureRecognizer.require(toFail: rightSwipe)
-        
+
         targetView.addGestureRecognizer(panGestureRecognizer)
         isActive = true
     }
-    
+
     @objc
     fileprivate func handleSwipeGesture(_ recognizer: UISwipeGestureRecognizer) {
-        
+
         isActive = false
-        
+
     }
 
     @objc
