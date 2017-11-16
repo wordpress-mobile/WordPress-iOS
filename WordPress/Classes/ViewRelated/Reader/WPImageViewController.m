@@ -223,12 +223,6 @@ static CGFloat const MinimumZoomScale = 0.1;
     [self scrollViewDidZoom:self.scrollView];
 }
 
-- (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
-{
-    NSLog(@"swiping");
-    self.flingableViewHandler.isActive = false;
-}
-
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr
 {
     [self dismissViewControllerAnimated:YES completion:nil];

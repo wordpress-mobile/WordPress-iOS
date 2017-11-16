@@ -1079,7 +1079,7 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
 
     func richContentView(_ richContentView: WPRichContentView, didReceiveGalleryAction image: [WPTextAttachment], indexTapped index: Int) {
 
-        let galleryVC = WPGalleryPageViewController.controllerWithImages(image, selectedIndex: index)
+        let galleryVC = WPGalleryPageViewController.controllerWithImages(with: image, selectedIndex: index)
 
         galleryVC.modalTransitionStyle = .crossDissolve
         galleryVC.modalPresentationStyle = .fullScreen

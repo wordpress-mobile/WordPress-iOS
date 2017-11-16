@@ -3,8 +3,11 @@ import UIKit
 class WPGalleryPageViewController: UIPageViewController {
 
     // MARK: - Properties
-    var images: [WPTextAttachment]?
+    let largeImageKey = "data-large-file"
+    var images = [WPTextAttachment]()
     var initialIndex = 0
+    var currentVC : WPImageViewController?
+    var imageViewControllers = [WPImageViewController : Int]()
 
     // MARK: - Convenience Factories
 
@@ -18,7 +21,7 @@ class WPGalleryPageViewController: UIPageViewController {
     ///
     /// - Return: A WPGalleryPageViewController instance.
     ///
-    open class func controllerWithImages(_ images: [WPTextAttachment], selectedIndex: Int) -> WPGalleryPageViewController {
+    open class func controllerWithImages(with images: [WPTextAttachment], selectedIndex: Int) -> WPGalleryPageViewController {
 
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "GalleryPageViewController") as! WPGalleryPageViewController
@@ -33,28 +36,52 @@ class WPGalleryPageViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let initalVC = imageViewControllerForIndex(index: initialIndex) {
-            setViewControllers([initalVC], direction: .forward, animated: true, completion: nil)
+        
+        view.backgroundColor = .black
+        
+        if let initialVC = imageViewControllerFor(index: initialIndex) {
+            setViewControllers([initialVC], direction: .forward, animated: true, completion: nil)
+            currentVC = initialVC
         }
 
         dataSource = self
+        delegate = self
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        /// Clear out uneeded view controllers to save memory
+        ///
+        if let currentVC = currentVC, let index = imageViewControllers[currentVC] {
+                imageViewControllers.removeAll()
+                imageViewControllers[currentVC] = index
+        }
     }
 
-    func imageViewControllerForIndex(index: Int) -> WPImageViewController? {
+    func imageViewControllerFor(index: Int) -> WPImageViewController? {
 
-        guard index >= 0, let imageAttachment = images?[safe: index] else {
+        guard index >= 0, let imageAttachment = images[safe: index] else {
             return nil
         }
 
-        let urlString = imageAttachment.attributes?["data-large-file"] ?? imageAttachment.src
+        let urlString = imageAttachment.attributes?[largeImageKey] ?? imageAttachment.src
 
         guard let url = URL(string: urlString) else {
             return nil
         }
+        
+        
+        //Check if we already have one
+        let previouslyInitializedViewController = imageViewControllers.first(where: { $0.value == index})?.key
 
-        if WPImageViewController.isUrlSupported(url) {
-            let vc = WPImageViewController(forGallery: url, andIndex: index as NSNumber)
+        if let vc = previouslyInitializedViewController {
+            return vc
+        }
+        
+        if WPImageViewController.isUrlSupported(url),  let vc = WPImageViewController(url: url)  {
+           
+            imageViewControllers[vc] = index
             return vc
         }
 
@@ -70,12 +97,12 @@ extension WPGalleryPageViewController: UIPageViewControllerDataSource {
         guard let imageVC = viewController  as? WPImageViewController else {
             return nil
         }
-
-        if let index = imageVC.index as? Int {
-            return imageViewControllerForIndex(index: index + 1)
+    
+        guard let index = imageViewControllers[imageVC] else {
+            return nil
         }
 
-        return nil
+        return imageViewControllerFor(index: index + 1)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -83,12 +110,22 @@ extension WPGalleryPageViewController: UIPageViewControllerDataSource {
         guard let imageVC = viewController  as? WPImageViewController else {
             return nil
         }
-
-        if let index = imageVC.index as? Int {
-            return imageViewControllerForIndex(index: index - 1)
+        
+        guard let index = imageViewControllers[imageVC] else {
+            return nil
         }
-
-        return nil
+        
+        return imageViewControllerFor(index: index - 1)
     }
 
+}
+
+extension WPGalleryPageViewController : UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        
+        if finished, let currentVC = previousViewControllers.first as? WPImageViewController  {
+            self.currentVC =  currentVC
+        }
+    }
 }
