@@ -41,7 +41,7 @@ open class QueryStore<State, QueryType>: StatefulStore<State>, QueryProcessor wh
         }
     }
 
-    public func run(query: QueryType) -> QuerySubscription {
+    public func query(_ query: QueryType) -> QuerySubscription {
         let queryRef = QueryRef(query)
         activeQueries.append(queryRef)
         return QuerySubscription(dispatchToken: queryRef.token, processor: self)
