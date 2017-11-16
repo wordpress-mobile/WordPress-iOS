@@ -13,7 +13,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
 
-@property (nonatomic, assign) BOOL galleryMode;
 @property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -40,7 +39,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (instancetype)initForGallery:(NSURL *)url andIndex:(NSNumber *)index
 {
-    self.galleryMode = YES;
     self.index = index;
     return [self initWithImage:nil andURL:url];
 }
@@ -109,11 +107,9 @@ static CGFloat const MinimumZoomScale = 0.1;
     [tgr1 setNumberOfTapsRequired:1];
     [tgr1 requireGestureRecognizerToFail:tgr2];
     [self.scrollView addGestureRecognizer:tgr1];
-
-    if (!self.galleryMode) {
-        self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
-        self.flingableViewHandler.delegate = self;
-    }
+    
+    self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
+    self.flingableViewHandler.delegate = self;
 
     self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     self.activityIndicatorView.color = [WPStyleGuide greyDarken30];
@@ -231,6 +227,12 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
 
     [self scrollViewDidZoom:self.scrollView];
+}
+
+- (void)handleSwipe:(UISwipeGestureRecognizer *)swipe
+{
+    NSLog(@"swiping");
+    self.flingableViewHandler.isActive = false;
 }
 
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr
