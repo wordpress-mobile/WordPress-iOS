@@ -113,22 +113,22 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         sharedSetup()
     }
-    
+
     override open func encode(with aCoder: NSCoder) {
-        
+
         aCoder.encode(collectionView, forKey: UICollectionView.classNameWithoutNamespaces())
         aCoder.encode(footerStack, forKey: UIStackView.classNameWithoutNamespaces())
-        
+
         if let url = contentURL {
             aCoder.encode(url, forKey: contentUrlKey)
         }
-        
+
         if let url = linkURL {
             aCoder.encode(url, forKey: linkUrlKey)
         }
-        
+
         aCoder.encode(viewHeight, forKey: viewHeightKey)
-        
+
         super.encode(with: aCoder)
     }
 
@@ -138,7 +138,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         setupCollectionView()
         setupLabels()
-        
+
         collectionView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
         collectionView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor).isActive = true
