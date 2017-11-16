@@ -6,7 +6,7 @@ private struct QueryRef<QueryType> where QueryType: Query {
     }
 }
 
-protocol QueryProcessor: class {
+private protocol QueryProcessor: class {
     func stop(query: QuerySubscription)
 }
 
@@ -30,7 +30,7 @@ public class QuerySubscription {
     }
 }
 
-open class QueryStore<State: Equatable, QueryType>: ReducerStore<State> where QueryType: Query {
+open class QueryStore<State, QueryType>: StatefulStore<State> where QueryType: Query {
     fileprivate var activeQueries = [QueryRef<QueryType>]() {
         didSet {
             processQueries(state: state)
@@ -39,9 +39,7 @@ open class QueryStore<State: Equatable, QueryType>: ReducerStore<State> where Qu
 
     public override var state: State {
         didSet {
-            if state != oldValue {
-                processQueries(state: state)
-            }
+            processQueries(state: state)
         }
     }
 
