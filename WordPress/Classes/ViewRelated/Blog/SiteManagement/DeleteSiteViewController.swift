@@ -12,7 +12,7 @@ open class DeleteSiteViewController: UITableViewController {
     ///
     /// - Parameter blog: A Blog instance.
     ///
-    class func controller(_ blog: Blog) -> DeleteSiteViewController {
+    @objc class func controller(_ blog: Blog) -> DeleteSiteViewController {
         let storyboard = UIStoryboard(name: "DeleteSite", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "DeleteSiteViewController") as! DeleteSiteViewController
         controller.blog = blog
@@ -21,7 +21,7 @@ open class DeleteSiteViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var blog: Blog!
+    @objc var blog: Blog!
 
     @IBOutlet fileprivate weak var warningImage: UIImageView!
     @IBOutlet fileprivate weak var siteTitleLabel: UILabel!
@@ -197,7 +197,7 @@ open class DeleteSiteViewController: UITableViewController {
 
     /// Verifies site address as password for Delete Site
     ///
-    func alertTextFieldDidChange(_ sender: UITextField) {
+    @objc func alertTextFieldDidChange(_ sender: UITextField) {
         guard let deleteAction = (presentedViewController as? UIAlertController)?.actions.last else {
             return
         }

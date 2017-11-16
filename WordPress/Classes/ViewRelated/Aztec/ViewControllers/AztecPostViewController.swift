@@ -887,7 +887,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         return []
     }
 
-    func keyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func keyboardWillShow(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -899,7 +899,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
-    func keyboardDidHide(_ notification: Foundation.Notification) {
+    @objc func keyboardDidHide(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -1767,7 +1767,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    func alertTextFieldDidChange(_ textField: UITextField) {
+    @objc func alertTextFieldDidChange(_ textField: UITextField) {
         guard
             let alertController = presentedViewController as? UIAlertController,
             let urlFieldText = alertController.textFields?.first?.text,
@@ -1807,7 +1807,8 @@ extension AztecPostViewController {
     /// Method to be called when the grid icon is pressed on the media input toolbar.
     ///
     /// - Parameter sender: the button that was pressed.
-    func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
+    ///
+    @objc func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
         presentMediaPickerFullScreen(animated: true)
         restoreInputAssistantItems()
     }
@@ -1815,7 +1816,7 @@ extension AztecPostViewController {
     /// Method to be called when canceled is pressed.
     ///
     /// - Parameter sender: the button that was pressed.
-    func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
+    @objc func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
             return
@@ -1827,7 +1828,7 @@ extension AztecPostViewController {
     /// Method to be called when done is pressed on the media input toolbar.
     ///
     /// - Parameter sender: the button that was pressed.
-    func mediaAddInputDone(_ sender: UIBarButtonItem) {
+    @objc func mediaAddInputDone(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker
         else {
@@ -1846,7 +1847,7 @@ extension AztecPostViewController {
         richTextView.reloadInputViews()
     }
 
-    @IBAction func presentMediaPicker() {
+    @IBAction @objc func presentMediaPicker() {
         if let item = formatBar.leadingItem {
             presentMediaPicker(fromButton: item, animated: true)
         }
@@ -1927,7 +1928,7 @@ extension AztecPostViewController {
         presentToolbarViewControllerAsInputView(picker)
     }
 
-    func toggleEditingMode() {
+    @objc func toggleEditingMode() {
         if mediaProgressCoordinator.isRunning {
             displayMediaIsUploadingAlert()
             return
@@ -3032,7 +3033,8 @@ extension AztecPostViewController {
     // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
     // iPads only...not the 12.9"
     // See http://www.openradar.me/radar?id=4972612522344448 for more details.
-    func applicationWillResignActive(_ notification: Foundation.Notification) {
+    //
+    @objc func applicationWillResignActive(_ notification: Foundation.Notification) {
         if UIDevice.isPad() {
             closeMediaPickerInputViewController()
         }
