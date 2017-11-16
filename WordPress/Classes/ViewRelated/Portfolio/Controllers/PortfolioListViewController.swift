@@ -1,4 +1,4 @@
-import Foundation
+ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
@@ -11,6 +11,10 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
         footer.backgroundColor = WPStyleGuide.greyLighten20()
         return footer
     }()
+    
+    // MARK: - GUI
+    
+    fileprivate let animatedBox = WPAnimatedBox()
     
     // MARK: - Convenience constructors
     
@@ -218,5 +222,79 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     
     func createProject() {
         // TODO: implement this
+    }
+    
+    // MARK: - Refreshing noResultsView
+    
+    func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+        noResultsView.titleText = noResultsTitle()
+        noResultsView.messageText = noResultsMessage()
+        noResultsView.accessoryView = noResultsAccessoryView()
+        noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+    
+    // MARK: - NoResultsView Customizer helpers
+    
+    fileprivate func noResultsAccessoryView() -> UIView {
+        if syncHelper.isSyncing {
+            animatedBox.animate(afterDelay: 0.1)
+            return animatedBox
+        }
+        
+        return UIImageView(image: UIImage(named: "illustration-posts"))
+    }
+    
+    fileprivate func noResultsButtonTitle() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+        
+        let filterType = filterSettings.currentPostListFilter().filterType
+        
+        switch filterType {
+        case .trashed:
+            return ""
+        default:
+            return NSLocalizedString("Start a Project", comment: "Button title, encourages users to create their first project on their blog.")
+        }
+    }
+    
+    fileprivate func noResultsTitle() -> String {
+        if syncHelper.isSyncing == true {
+            return NSLocalizedString("Fetching projects...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new projects.")
+        }
+        
+        let filter = filterSettings.currentPostListFilter()
+        let titles = noResultsTitles()
+        let title = titles[filter.filterType]
+        return title ?? ""
+    }
+    
+    fileprivate func noResultsMessage() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+        
+        let filterType = filterSettings.currentPostListFilter().filterType
+        
+        switch filterType {
+        case .draft:
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the portfolio and there are no projects")
+        case .scheduled:
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled projects in the portfolio and there are no projects")
+        case .trashed:
+            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed projects in the portfolio and there are no projects")
+        default:
+            return NSLocalizedString("Would you like to publish your first project?", comment: "Displayed when the user views published projects in the portfolio and there are no projects")
+        }
+    }
+    
+    // MARK: - UISearchControllerDelegate
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        if #available(iOS 11.0, *) {
+            tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - topLayoutGuide.length
+            tableView.contentInset.top = 0
+        }
     }
 }
