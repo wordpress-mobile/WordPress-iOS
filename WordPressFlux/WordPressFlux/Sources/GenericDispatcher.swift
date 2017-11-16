@@ -18,9 +18,6 @@ public class GenericDispatcher<Payload> {
     public init() {}
 
     private var observers = [DispatchToken: Callback]()
-    var observerCount: Int {
-        return observers.count
-    }
 
     public func register(callback: @escaping Callback) -> DispatchToken {
         assertMainThread()

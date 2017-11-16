@@ -5,10 +5,6 @@ open class Store: EventEmitter {
     private var dispatchToken: DispatchToken!
     public let dispatcher = GenericDispatcher<Void>()
 
-    public var listenerCount: Int {
-        return dispatcher.observerCount
-    }
-
     deinit {
         globalDispatcher.unregister(token: dispatchToken)
     }
