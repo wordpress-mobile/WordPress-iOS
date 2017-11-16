@@ -102,7 +102,7 @@ extension NSURL: ExportableAsset {
         errorHandler: @escaping ErrorHandler) {
 
         let asset = AVURLAsset(url: self as URL)
-        guard let track = asset.tracks(withMediaType: AVMediaTypeVideo).first else {
+        guard let track = asset.tracks(withMediaType: AVMediaType.video).first else {
             errorHandler(errorForCode(errorCode: .FailedToExport,
                 failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of an media asset fails")
                 ))
@@ -121,7 +121,7 @@ extension NSURL: ExportableAsset {
                 ))
             return
         }
-        exportSession.outputFileType = targetUTI
+        exportSession.outputFileType = AVFileType(rawValue: targetUTI)
         exportSession.shouldOptimizeForNetworkUse = true
         exportSession.outputURL = url as URL
         if stripGeoLocation {
@@ -213,7 +213,7 @@ extension NSURL: ExportableAsset {
         get {
             if isVideo {
                 let asset = AVAsset(url: self as URL)
-                if let track = asset.tracks(withMediaType: AVMediaTypeVideo).first {
+                if let track = asset.tracks(withMediaType: .video).first {
                     return track.naturalSize.applying(track.preferredTransform)
                 }
             } else if isImage {
