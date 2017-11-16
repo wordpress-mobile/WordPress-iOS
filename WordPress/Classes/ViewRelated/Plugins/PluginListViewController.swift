@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import WordPressFlux
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let siteID: Int
@@ -11,7 +12,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var viewModel: PluginListViewModel
 
     fileprivate let noResultsView = WPNoResultsView()
-    var viewModelListener: FluxListener?
+    var viewModelListener: EventListener?
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID

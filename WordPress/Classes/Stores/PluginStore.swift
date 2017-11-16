@@ -1,6 +1,7 @@
 import Foundation
+import WordPressFlux
 
-enum PluginAction: FluxAction {
+enum PluginAction: WordPressFlux.Action {
     case activate(id: String, siteID: Int)
     case deactivate(id: String, siteID: Int)
     case enableAutoupdates(id: String, siteID: Int)
@@ -10,7 +11,7 @@ enum PluginAction: FluxAction {
     case receivePluginsFailed(siteID: Int, error: Error)
 }
 
-class PluginStore: FluxStore {
+class PluginStore: Store {
     fileprivate var plugins = [Int: SitePlugins]() {
         didSet {
             emitChange()
@@ -18,7 +19,7 @@ class PluginStore: FluxStore {
     }
     fileprivate var fetching = [Int: Bool]()
 
-    func removeListener(_ listener: FluxListener) {
+    func removeListener(_ listener: EventListener) {
         super.removeListener(listener)
         if listenerCount == 0 {
             // Remove plugins from memory if nothing is listening for changes
@@ -41,7 +42,7 @@ class PluginStore: FluxStore {
         return sitePlugins.plugins.first(where: { $0.id == id })
     }
 
-    override func onDispatch(_ action: FluxAction) {
+    override func onDispatch(_ action: Action) {
         guard let pluginAction = action as? PluginAction else {
             return
         }
