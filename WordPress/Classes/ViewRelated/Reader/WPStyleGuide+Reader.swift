@@ -303,7 +303,7 @@ extension WPStyleGuide {
         guard let titleLabel = button.titleLabel else {
             return
         }
-        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.loadMoreButtonTextStyle, fontWeight: UIFontWeightSemibold)
+        WPStyleGuide.configureLabel(titleLabel, textStyle: Cards.loadMoreButtonTextStyle, fontWeight: .semibold)
         button.setTitleColor(UIColor.white, for: UIControlState())
     }
 
