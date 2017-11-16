@@ -43,7 +43,7 @@ class PluginViewController: UITableViewController {
         bindViewModel()
     }
 
-    func bindViewModel() {
+    @objc func bindViewModel() {
         handler.viewModel = viewModel.tableViewModel
         title = viewModel.title
     }

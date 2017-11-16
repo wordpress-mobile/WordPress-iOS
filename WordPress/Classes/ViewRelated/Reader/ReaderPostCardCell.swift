@@ -61,8 +61,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     // Layout Constraints
     @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
 
-    open weak var delegate: ReaderPostCellDelegate?
-    open weak var contentProvider: ReaderPostContentProvider?
+    @objc open weak var delegate: ReaderPostCellDelegate?
+    @objc open weak var contentProvider: ReaderPostContentProvider?
 
     fileprivate let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(100.0)
     fileprivate var featuredImageDesiredWidth = CGFloat()
@@ -73,8 +73,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate var currentLoadedCardImageURL: String?
 
     // MARK: - Accessors
-    open var hidesFollowButton = false
-    open var enableLoggedInFeatures = true
+    @objc open var hidesFollowButton = false
+    @objc open var enableLoggedInFeatures = true
 
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
@@ -92,7 +92,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyHighlightedEffect(highlighted, animated: animated)
     }
 
-    open var headerBlogButtonIsEnabled: Bool {
+    @objc open var headerBlogButtonIsEnabled: Bool {
         get {
             return headerBlogButton.isEnabled
         }
@@ -262,7 +262,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         likeActionButton.titleLabel?.backgroundColor = UIColor.white
     }
 
-    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
+    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureHeader()
@@ -518,7 +518,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     // MARK: -
 
-    func notifyDelegateHeaderWasTapped() {
+    @objc func notifyDelegateHeaderWasTapped() {
         if headerBlogButtonIsEnabled {
             delegate?.readerCell(self, headerActionForProvider: contentProvider!)
         }

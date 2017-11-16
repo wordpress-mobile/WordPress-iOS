@@ -18,7 +18,7 @@ open class ReaderBlockedSiteCell: UITableViewCell {
         label.textColor = WPStyleGuide.whisperGrey()
     }
 
-    open func setSiteName(_ name: String) {
+    @objc open func setSiteName(_ name: String) {
         let format = NSLocalizedString("The site %@ will no longer appear in your reader. Tap to undo.",
             comment: "Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site.")
         let str = NSString(format: format as NSString, name)

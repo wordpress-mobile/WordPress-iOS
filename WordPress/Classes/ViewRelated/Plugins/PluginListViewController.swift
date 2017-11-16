@@ -2,8 +2,8 @@ import UIKit
 import WordPressKit
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
-    let siteID: Int
-    let service: PluginServiceRemote
+    @objc let siteID: Int
+    @objc let service: PluginServiceRemote
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -18,7 +18,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     fileprivate let noResultsView = WPNoResultsView()
 
-    init(siteID: Int, service: PluginServiceRemote) {
+    @objc init(siteID: Int, service: PluginServiceRemote) {
         self.siteID = siteID
         self.service = service
         super.init(style: .grouped)
@@ -30,7 +30,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init?(blog: Blog) {
+    @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
         guard let api = blog.wordPressComRestApi(),
             let service = PluginServiceRemote(wordPressComRestApi: api) else {
@@ -59,7 +59,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         })
     }
 
-    func updateNoResults() {
+    @objc func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         } else {
@@ -76,7 +76,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
 
-    func hideNoResults() {
+    @objc func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
 }

@@ -3,11 +3,11 @@ import UIKit
 class EditPostViewController: UIViewController {
 
     /// appear instantly, without animations
-    var showImmediately: Bool = false
+    @objc var showImmediately: Bool = false
     /// appear with the media picker open
-    var openWithMediaPicker: Bool = false
+    @objc var openWithMediaPicker: Bool = false
 
-    fileprivate(set) var post: Post?
+    @objc fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
     fileprivate let blog: Blog
@@ -15,7 +15,7 @@ class EditPostViewController: UIViewController {
         return UIStoryboard(name: "PostPost", bundle: nil).instantiateViewController(withIdentifier: "PostPostViewController") as! PostPostViewController
     }()
 
-    var onClose: ((_ changesSaved: Bool) -> ())?
+    @objc var onClose: ((_ changesSaved: Bool) -> ())?
 
     override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
@@ -32,7 +32,7 @@ class EditPostViewController: UIViewController {
     /// Initialize as an editor with the provided post
     ///
     /// - Parameter post: post to edit
-    convenience init(post: Post) {
+    @objc convenience init(post: Post) {
         self.init(post: post, blog: post.blog)
     }
 
@@ -40,7 +40,7 @@ class EditPostViewController: UIViewController {
     /// Initialize as an editor to create a new post for the provided blog
     ///
     /// - Parameter blog: blog to create a new post for
-    convenience init(blog: Blog) {
+    @objc convenience init(blog: Blog) {
         self.init(post: nil, blog: blog)
     }
 
@@ -143,7 +143,7 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    func closeEditor(_ changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
+    @objc func closeEditor(_ changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
         onClose?(changesSaved)
 
         var dismissPostPostImmediately = true
@@ -168,7 +168,7 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    func shouldShowPostPost(hasChanges: Bool) -> Bool {
+    @objc func shouldShowPostPost(hasChanges: Bool) -> Bool {
         guard let post = post else {
             return false
         }
@@ -184,7 +184,7 @@ class EditPostViewController: UIViewController {
         return hasChanges
     }
 
-    func previewPost() {
+    @objc func previewPost() {
         guard let post = post else {
             return
         }
@@ -197,7 +197,7 @@ class EditPostViewController: UIViewController {
         postPost.present(navWrapper, animated: true) {}
     }
 
-    func closePostPost(animated: Bool) {
+    @objc func closePostPost(animated: Bool) {
         // will dismiss self
         dismiss(animated: animated) {}
     }

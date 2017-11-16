@@ -58,7 +58,7 @@ extension WPStyleGuide {
 
     // MARK: - Card Attributed Text Attributes
 
-    public class func readerCrossPostTitleAttributes() -> [String: AnyObject] {
+    @objc public class func readerCrossPostTitleAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.notoBoldFontForTextStyle(Cards.titleTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -71,7 +71,7 @@ extension WPStyleGuide {
         ]
     }
 
-    public class func readerCrossPostBoldSubtitleAttributes() -> [String: AnyObject] {
+    @objc public class func readerCrossPostBoldSubtitleAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle, symbolicTraits: .traitBold)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -84,7 +84,7 @@ extension WPStyleGuide {
         ]
     }
 
-    public class func readerCrossPostSubtitleAttributes() -> [String: AnyObject] {
+    @objc public class func readerCrossPostSubtitleAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.fontForTextStyle(Cards.crossPostSubtitleTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -97,7 +97,7 @@ extension WPStyleGuide {
         ]
     }
 
-    public class func readerCardTitleAttributes() -> [String: AnyObject] {
+    @objc public class func readerCardTitleAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.notoBoldFontForTextStyle(Cards.titleTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -109,7 +109,7 @@ extension WPStyleGuide {
         ]
     }
 
-    public class func readerCardSummaryAttributes() -> [String: AnyObject] {
+    @objc public class func readerCardSummaryAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.notoFontForTextStyle(Cards.contentTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -122,7 +122,7 @@ extension WPStyleGuide {
         ]
     }
 
-    public class func readerCardReadingTimeAttributes() -> [String: AnyObject] {
+    @objc public class func readerCardReadingTimeAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.fontForTextStyle(Cards.subtextTextStyle)
 
         return [
@@ -132,7 +132,7 @@ extension WPStyleGuide {
 
     // MARK: - Detail styles
 
-    public class func readerDetailTitleAttributes() -> [String: AnyObject] {
+    @objc public class func readerDetailTitleAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.notoBoldFontForTextStyle(Detail.titleTextStyle)
 
         let lineHeight = font.pointSize + 10.0
@@ -149,7 +149,7 @@ extension WPStyleGuide {
 
     // MARK: - Stream Header Attributed Text Attributes
 
-    public class func readerStreamHeaderDescriptionAttributes() -> [String: AnyObject] {
+    @objc public class func readerStreamHeaderDescriptionAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.notoFontForTextStyle(Cards.contentTextStyle)
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -165,7 +165,7 @@ extension WPStyleGuide {
 
     // MARK: - Apply Card Styles
 
-    public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
+    @objc public class func applyReaderCardSiteButtonStyle(_ button: UIButton) {
         guard let titleLabel = button.titleLabel else {
             return
         }
@@ -175,26 +175,26 @@ extension WPStyleGuide {
         button.setTitleColor(darkGrey(), for: .disabled)
     }
 
-    public class func applyReaderCardBlogNameStyle(_ label: UILabel) {
+    @objc public class func applyReaderCardBlogNameStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
         label.textColor = readerCardBlogNameLabelTextColor()
         label.highlightedTextColor = lightBlue()
     }
 
-    public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
+    @objc public class func applyReaderCardBylineLabelStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = greyLighten10()
     }
 
-    public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
+    @objc public class func applyReaderCardTitleLabelStyle(_ label: UILabel) {
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
+    @objc public class func applyReaderCardSummaryLabelStyle(_ label: UILabel) {
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
+    @objc public class func applyReaderCardTagButtonStyle(_ button: UIButton) {
         WPStyleGuide.configureLabel(button.titleLabel!, textStyle: Cards.subtextTextStyle)
         button.setTitleColor(mediumBlue(), for: UIControlState())
         button.setTitleColor(lightBlue(), for: .highlighted)
@@ -202,7 +202,7 @@ extension WPStyleGuide {
         button.titleLabel?.lineBreakMode = .byTruncatingTail
     }
 
-    public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
+    @objc public class func applyReaderCardActionButtonStyle(_ button: UIButton) {
         guard let titleLabel = button.titleLabel else {
             return
         }
@@ -216,22 +216,22 @@ extension WPStyleGuide {
 
     // MARK: - Apply Stream Header Styles
 
-    public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
+    @objc public class func applyReaderStreamHeaderTitleStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.buttonTextStyle)
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
+    @objc public class func applyReaderStreamHeaderDetailStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = greyDarken10()
     }
 
-    public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
+    @objc public class func applyReaderSiteStreamDescriptionStyle(_ label: UILabel) {
         WPStyleGuide.configureLabelForNotoFont(label, textStyle: .subheadline)
         label.textColor = darkGrey()
     }
 
-    public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
+    @objc public class func applyReaderSiteStreamCountStyle(_ label: UILabel) {
         WPStyleGuide.configureLabel(label, textStyle: Cards.subtextTextStyle)
         label.textColor = grey()
     }
@@ -239,7 +239,7 @@ extension WPStyleGuide {
 
     // MARK: - Button Styles and Text
 
-    public class func applyReaderFollowButtonStyle(_ button: UIButton) {
+    @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
         let side = WPStyleGuide.fontSizeForTextStyle(Cards.buttonTextStyle)
         let size = CGSize(width: side, height: side)
         let followStr = followStringForDisplay(false)
@@ -261,7 +261,7 @@ extension WPStyleGuide {
         button.setTitle(followingStr, for: .highlighted)
     }
 
-    public class func likeCountForDisplay(_ count: Int) -> String {
+    @objc public class func likeCountForDisplay(_ count: Int) -> String {
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
         let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
 
@@ -274,7 +274,7 @@ extension WPStyleGuide {
         }
     }
 
-    public class func commentCountForDisplay(_ count: Int) -> String {
+    @objc public class func commentCountForDisplay(_ count: Int) -> String {
         let commentStr = NSLocalizedString("Comment", comment: "Text for the 'comment' when there is 1 or 0 comments")
         let commentsStr = NSLocalizedString("Comments", comment: "Text for the 'comment' button when there are multiple comments")
 
@@ -287,7 +287,7 @@ extension WPStyleGuide {
         }
     }
 
-    public class func followStringForDisplay(_ isFollowing: Bool) -> String {
+    @objc public class func followStringForDisplay(_ isFollowing: Bool) -> String {
         if isFollowing {
             return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
         } else {
@@ -298,7 +298,7 @@ extension WPStyleGuide {
 
     // MARK: - Gap Marker Styles
 
-    public class func applyGapMarkerButtonStyle(_ button: UIButton) {
+    @objc public class func applyGapMarkerButtonStyle(_ button: UIButton) {
         button.backgroundColor = gapMarkerButtonBackgroundColor()
         guard let titleLabel = button.titleLabel else {
             return
@@ -307,11 +307,11 @@ extension WPStyleGuide {
         button.setTitleColor(UIColor.white, for: UIControlState())
     }
 
-    public class func gapMarkerButtonBackgroundColor() -> UIColor {
+    @objc public class func gapMarkerButtonBackgroundColor() -> UIColor {
         return WPStyleGuide.greyDarken10()
     }
 
-    public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
+    @objc public class func gapMarkerButtonBackgroundColorHighlighted() -> UIColor {
         return WPStyleGuide.lightBlue()
     }
 
