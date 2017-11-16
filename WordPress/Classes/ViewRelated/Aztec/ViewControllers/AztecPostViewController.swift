@@ -2779,7 +2779,7 @@ extension AztecPostViewController {
         }
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: { _ in
+        mediaService.uploadMedia(media, progress: &uploadProgress, success: { () in
             guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
                 return
             }

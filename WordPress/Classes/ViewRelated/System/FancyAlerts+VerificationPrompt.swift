@@ -17,7 +17,7 @@ extension FancyAlertViewController {
 
             submitButton?.showActivityIndicator(true)
 
-            accountService.requestVerificationEmail({ _ in
+            accountService.requestVerificationEmail({ 
                 submitButton?.showActivityIndicator(false)
                 controller.setViewConfiguration(successfullySentVerificationEmailConfig(), animated: true)
             }, failure: { error in

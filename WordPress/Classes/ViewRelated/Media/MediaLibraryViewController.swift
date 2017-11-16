@@ -527,13 +527,11 @@ class MediaLibraryViewController: UIViewController {
         updateProgress(nil)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteMedia(assets,
-                            progress: updateProgress,
-                            success: { [weak self] in
-                                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
-                                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-                                self?.isEditing = false
-        }, failure: { error in
+        service.deleteMedia(assets, progress: updateProgress, success: { [weak self] () in
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
+            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+            self?.isEditing = false
+        }, failure: { () in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
     }

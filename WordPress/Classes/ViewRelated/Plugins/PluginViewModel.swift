@@ -125,7 +125,7 @@ class PluginViewModel {
             service.activatePlugin(
                 pluginID: plugin.id,
                 siteID: siteID,
-                success: { _ in },
+                success: {  },
                 failure: { [weak self] (error) in
                     DDLogError("Error activating plugin: \(error)")
                     self?.plugin.active = !active
@@ -134,7 +134,7 @@ class PluginViewModel {
             service.deactivatePlugin(
                 pluginID: plugin.id,
                 siteID: siteID,
-                success: { _ in },
+                success: {  },
                 failure: { [weak self] (error) in
                     DDLogError("Error deactivating plugin: \(error)")
                     self?.plugin.active = !active
@@ -148,7 +148,7 @@ class PluginViewModel {
             service.enableAutoupdates(
                 pluginID: plugin.id,
                 siteID: siteID,
-                success: { _ in },
+                success: {  },
                 failure: { [weak self] (error) in
                     DDLogError("Error enabling autoupdates for plugin: \(error)")
                     self?.plugin.autoupdate = !autoupdate
@@ -157,7 +157,7 @@ class PluginViewModel {
             service.disableAutoupdates(
                 pluginID: plugin.id,
                 siteID: siteID,
-                success: { _ in },
+                success: {  },
                 failure: { [weak self] (error) in
                     DDLogError("Error disabling autoupdates for plugin: \(error)")
                     self?.plugin.autoupdate = !autoupdate
