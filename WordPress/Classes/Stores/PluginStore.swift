@@ -1,7 +1,7 @@
 import Foundation
 import WordPressFlux
 
-enum PluginAction: WordPressFlux.Action {
+enum PluginAction: Action {
     case activate(id: String, siteID: Int)
     case deactivate(id: String, siteID: Int)
     case enableAutoupdates(id: String, siteID: Int)
