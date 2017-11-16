@@ -122,7 +122,7 @@
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Debug">
+      buildConfiguration = "Release-Internal">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release-Internal"
