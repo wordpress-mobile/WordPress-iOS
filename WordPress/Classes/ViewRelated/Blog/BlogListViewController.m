@@ -849,9 +849,11 @@ static NSInteger HideSearchMinSites = 3;
     [self setEditing:NO animated:NO];
     
     if ([Feature enabled:FeatureFlagSiteCreation]) {
-        // TODO: replace with Site Type Selection VC
-        SiteCreationNavigationController *createNewSiteVC = [[SiteCreationNavigationController alloc] init];
-        [self.navigationController presentViewController:createNewSiteVC animated:YES completion:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
+        SiteTypeViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteType"];
+        SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
+                                                           initWithRootViewController:controller];
+        [self presentViewController:navController animated:YES completion:nil];
     }
     
     else {

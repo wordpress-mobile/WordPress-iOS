@@ -6,6 +6,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,10 +19,43 @@
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <connections>
+                        <segue destination="4mn-Jx-c9X" kind="relationship" relationship="rootViewController" id="d2h-nf-Sxl"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qF8-kH-BnU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1142" y="80"/>
+        </scene>
+        <!--Site Type View Controller-->
+        <scene sceneID="ozs-3u-bQ7">
+            <objects>
+                <viewController storyboardIdentifier="siteType" id="4mn-Jx-c9X" customClass="SiteTypeViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b7n-v4-BNy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the first step in the new site creation flow. It is a work in progress. Bask in the glory of its greatness." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J47-YW-RgQ">
+                                <rect key="frame" x="16" y="254" width="343" height="158"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.45138680930000002" green="0.99309605359999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="J47-YW-RgQ" firstAttribute="trailing" secondItem="b7n-v4-BNy" secondAttribute="trailingMargin" id="EBC-Sw-Vj9"/>
+                            <constraint firstItem="J47-YW-RgQ" firstAttribute="top" secondItem="Agd-CZ-AVB" secondAttribute="top" constant="190" id="Jhe-E3-PHD"/>
+                            <constraint firstItem="J47-YW-RgQ" firstAttribute="centerY" secondItem="b7n-v4-BNy" secondAttribute="centerY" id="ZU1-ih-ael"/>
+                            <constraint firstItem="J47-YW-RgQ" firstAttribute="leading" secondItem="b7n-v4-BNy" secondAttribute="leadingMargin" id="cRZ-eb-5JY"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Agd-CZ-AVB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="oFe-Cg-Vhc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aKE-dl-tf6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-455.19999999999999" y="80.50974512743629"/>
         </scene>
     </scenes>
 </document>
