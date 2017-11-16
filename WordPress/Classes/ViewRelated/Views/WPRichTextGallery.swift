@@ -20,7 +20,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
     /// Default cell size, will be recalculated as page is laid out
     ///
     var cellWidth: CGFloat = 1.0
-    var cellPadding: CGFloat = 1.0
+    let cellPadding: CGFloat = 8.0
 
     /// Used to load images for attachments.
     ///
@@ -54,6 +54,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 8.0
+        layout.minimumLineSpacing = 8.0
         return layout
     }()
 
@@ -71,6 +72,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
     override open var frame: CGRect {
         didSet {
+            
             // If Voice Over is enabled, the OS will query for the accessibilityPath
             // to know what region of the screen to highlight. If the path is nil
             // the OS should fall back to computing based on the frame but this
@@ -115,25 +117,19 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
     fileprivate func sharedSetup() {
 
+        clipsToBounds = false
+
         setupCollectionView()
         setupLabels()
-
-        collectionView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: footerStack.topAnchor).isActive = true
-
-        footerStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
-        footerStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
-        footerStack.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
-        footerStack.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor).isActive = true
+        
+        collectionView.isPrefetchingEnabled = true
     }
 
     fileprivate func setupLabels() {
 
         let captionLabel = UILabel()
         self.captionLabel = captionLabel
-        WPStyleGuide.applyReaderCardSummaryLabelStyle(captionLabel)
+        WPStyleGuide.applyPageTitleStyle(captionLabel)
         footerStack.addArrangedSubview(captionLabel)
 
         let pageLabel = UILabel()
@@ -172,6 +168,7 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         collectionView.showsHorizontalScrollIndicator = false
     }
+    
 
     override open func encode(with aCoder: NSCoder) {
 
@@ -239,6 +236,17 @@ extension WPRichTextGallery: UICollectionViewDataSource {
 }
 
 extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
+    
+    func setOffsetIfNeeded() {
+        //TODO: Still Needs Fixing
+        let leadingEdge = frame.minX - (superview?.frame.minX ?? 0)
+        
+        if leadingEdge < 16 {
+            let neededOffset = 16 - leadingEdge
+            
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: neededOffset, bottom: 0, right: 0)
+        }
+    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 

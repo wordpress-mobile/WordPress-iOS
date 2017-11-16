@@ -66,7 +66,6 @@ class FlingableViewHandler: NSObject {
     fileprivate func handleSwipeGesture(_ recognizer: UISwipeGestureRecognizer) {
 
         isActive = false
-
     }
 
     @objc
