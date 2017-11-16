@@ -11,14 +11,40 @@ enum PluginAction: WordPressFlux.Action {
     case receivePluginsFailed(siteID: Int, error: Error)
 }
 
+enum PluginQuery: Query {
+    case all(siteID: Int)
+
+    var siteID: Int {
+        switch self {
+        case .all(let siteID):
+            return siteID
+        }
+    }
+}
+
 struct PluginStoreState {
     var plugins = [Int: SitePlugins]()
     var fetching = [Int: Bool]()
+    var lastFetch = [Int: Date]()
 }
 
-class PluginStore: StatefulStore<PluginStoreState> {
+class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
+    fileprivate let refreshInterval: TimeInterval = 60 // seconds
+
     init(dispatcher: Dispatcher = .global) {
         super.init(initialState: PluginStoreState(), dispatcher: dispatcher)
+    }
+
+    override func processQueries(queries: [PluginQuery]) {
+        let sitesWithQuery = queries
+            .map({ $0.siteID })
+            .unique
+        let sitesToFetch = sitesWithQuery
+            .filter(shouldFetch(siteID:))
+
+        sitesToFetch.forEach { (siteID) in
+            fetchPlugins(siteID: siteID)
+        }
     }
 
     func removeListener(_ listener: EventListener) {
@@ -27,21 +53,6 @@ class PluginStore: StatefulStore<PluginStoreState> {
             // Remove plugins from memory if nothing is listening for changes
             state.plugins = [:]
         }
-    }
-
-    func getPlugins(siteID: Int) -> SitePlugins? {
-        if let sitePlugins = state.plugins[siteID] {
-            return sitePlugins
-        }
-        fetchPlugins(siteID: siteID)
-        return nil
-    }
-
-    func getPlugin(id: String, siteID: Int) -> PluginState? {
-        guard let sitePlugins = getPlugins(siteID: siteID) else {
-            return nil
-        }
-        return sitePlugins.plugins.first(where: { $0.id == id })
     }
 
     override func onDispatch(_ action: Action) {
@@ -67,6 +78,25 @@ class PluginStore: StatefulStore<PluginStoreState> {
     }
 }
 
+// MARK: - Selectors
+extension PluginStore {
+    func getPlugins(siteID: Int) -> SitePlugins? {
+        return state.plugins[siteID]
+    }
+
+    func getPlugin(id: String, siteID: Int) -> PluginState? {
+        return getPlugins(siteID: siteID)?.plugins.first(where: { $0.id == id })
+    }
+
+    func shouldFetch(siteID: Int) -> Bool {
+        let lastFetch = state.lastFetch[siteID, default: .distantPast]
+        let needsRefresh = lastFetch + refreshInterval < Date()
+        let isFetching = state.fetching[siteID, default: false]
+        return needsRefresh && !isFetching
+    }
+}
+
+// MARK: - Action handlers
 private extension PluginStore {
     func activatePlugin(pluginID: String, siteID: Int) {
         modifyPlugin(id: pluginID, siteID: siteID) { (plugin) in
@@ -154,9 +184,8 @@ private extension PluginStore {
     }
 
     func fetchPlugins(siteID: Int) {
-        guard !state.fetching[siteID, default: false],
-            let remote = remote else {
-                return
+        guard let remote = remote else {
+            return
         }
         state.fetching[siteID] = true
         remote.getPlugins(
@@ -172,13 +201,15 @@ private extension PluginStore {
     func receivePlugins(siteID: Int, plugins: SitePlugins) {
         state.plugins[siteID] = plugins
         state.fetching[siteID] = false
+        state.lastFetch[siteID] = Date()
     }
 
     func receivePluginsFailed(siteID: Int) {
         state.fetching[siteID] = false
+        state.lastFetch[siteID] = Date()
     }
 
-    var remote: PluginServiceRemote? {
+    private var remote: PluginServiceRemote? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
