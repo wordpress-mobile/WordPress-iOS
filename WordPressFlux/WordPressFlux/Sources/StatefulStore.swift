@@ -13,4 +13,10 @@ open class StatefulStore<State>: Store {
         state = initialState
         super.init(dispatcher: dispatcher)
     }
+
+    public func transaction(_ modify: (inout State) -> Void) {
+        var copy = state
+        modify(&copy)
+        state = copy
+    }
 }

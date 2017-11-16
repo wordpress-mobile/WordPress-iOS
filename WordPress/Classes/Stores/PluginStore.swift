@@ -38,8 +38,10 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     override func queriesChanged() {
         guard !activeQueries.isEmpty else {
             // Remove plugins from memory if nothing is listening for changes
-            state.plugins = [:]
-            state.lastFetch = [:]
+            transaction({ (state) in
+                state.plugins = [:]
+                state.lastFetch = [:]
+            })
             return
         }
         processQueries()
@@ -201,14 +203,18 @@ private extension PluginStore {
     }
 
     func receivePlugins(siteID: Int, plugins: SitePlugins) {
-        state.plugins[siteID] = plugins
-        state.fetching[siteID] = false
-        state.lastFetch[siteID] = Date()
+        transaction { (state) in
+            state.plugins[siteID] = plugins
+            state.fetching[siteID] = false
+            state.lastFetch[siteID] = Date()
+        }
     }
 
     func receivePluginsFailed(siteID: Int) {
-        state.fetching[siteID] = false
-        state.lastFetch[siteID] = Date()
+        transaction { (state) in
+            state.fetching[siteID] = false
+            state.lastFetch[siteID] = Date()
+        }
     }
 
     private var remote: PluginServiceRemote? {
