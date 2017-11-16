@@ -625,8 +625,8 @@ import WordPressShared
         // Use the lower fitting size priority as we want to minimize our height consumption
         // according to the layout's contraints and intrinsic size.
         let size = headerView.systemLayoutSizeFitting(fittingSize,
-                                                          withHorizontalFittingPriority: UILayoutPriorityRequired,
-                                                          verticalFittingPriority: UILayoutPriorityFittingSizeLevel)
+                                                      withHorizontalFittingPriority: .required,
+                                                      verticalFittingPriority: .fittingSizeLevel)
         // Update the tableHeaderView itself. Classic.
         var headerFrame = headerView.frame
         headerFrame.size.height = size.height

@@ -225,7 +225,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.setTitle(self.postEditorStateContext.publishButtonText, for: .normal)
         button.sizeToFit()
         button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
-        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
 
@@ -244,7 +244,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.frame = CGRect(origin: .zero, size: image.size)
         button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
-        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
 
@@ -263,7 +263,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-        cancelButton.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        cancelButton.setContentHuggingPriority(.required, for: .horizontal)
         return cancelButton
     }()
 
@@ -276,7 +276,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         if #available(iOS 11, *) {
             button.translatesAutoresizingMaskIntoConstraints = false
         }
-        button.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
 
@@ -289,7 +289,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         if #available(iOS 11, *) {
             button.translatesAutoresizingMaskIntoConstraints = false
         }
-        button.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
 
@@ -301,7 +301,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureBetaButton(button)
 
-        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
         button.isEnabled = true
         button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
 
