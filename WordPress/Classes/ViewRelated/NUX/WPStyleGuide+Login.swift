@@ -45,8 +45,8 @@ extension WPStyleGuide {
         let onePasswordButton = UIButton(type: .custom)
         onePasswordButton.setImage(UIImage(named: "onepassword-wp-button"), for: UIControlState())
         onePasswordButton.sizeToFit()
-        onePasswordButton.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
-        onePasswordButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+        onePasswordButton.setContentHuggingPriority(.required, for: .horizontal)
+        onePasswordButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         stack.addArrangedSubview(onePasswordButton)
 

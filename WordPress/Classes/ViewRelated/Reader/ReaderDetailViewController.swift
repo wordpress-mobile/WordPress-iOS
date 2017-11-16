@@ -532,7 +532,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             attribute: .width,
             multiplier: ratio,
             constant: 0)
-        constraint.priority = UILayoutPriorityDefaultHigh
+        constraint.priority = .defaultHigh
         featuredImageView.addConstraint(constraint)
         featuredImageView.setNeedsUpdateConstraints()
         featuredImageView.image = image

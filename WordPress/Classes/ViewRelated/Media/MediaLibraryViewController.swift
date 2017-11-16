@@ -216,11 +216,11 @@ class MediaLibraryViewController: UIViewController {
 
         let height = searchBar.intrinsicContentSize.height
         let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: height)
-        heightConstraint.priority = UILayoutPriorityDefaultLow
+        heightConstraint.priority = .defaultLow
         heightConstraint.isActive = true
 
         let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: height)
-        expandedHeightConstraint.priority = UILayoutPriorityRequired
+        expandedHeightConstraint.priority = .required
         expandedHeightConstraint.isActive = true
 
         searchBarContainer.layoutIfNeeded()
