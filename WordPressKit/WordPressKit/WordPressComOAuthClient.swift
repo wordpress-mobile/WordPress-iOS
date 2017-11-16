@@ -183,8 +183,6 @@ public final class WordPressComOAuthClient: NSObject {
 
             success(nonceInfo.nonceSMS)
         }) { (task, error) in
-            let errDesc = (error as NSError).description
-            print("sms request failed \(errDesc)")
             if let newNonce = (error as NSError).userInfo[WordPressComOAuthClient.WordPressComOAuthErrorNewNonceKey] as? String {
                 failure(error as NSError, newNonce)
             } else {
