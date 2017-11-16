@@ -25,9 +25,10 @@ extension WPStyleGuide {
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = Cards.defaultLineSpacing
+
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font,
+            .paragraphStyle: paragraphStyle,
+            .font: font,
         ]
     }
 
@@ -65,9 +66,9 @@ extension WPStyleGuide {
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font,
-            NSForegroundColorAttributeName: darkGrey()
+            .paragraphStyle: paragraphStyle,
+            .font: font,
+            .foregroundColor: darkGrey()
         ]
     }
 
@@ -78,9 +79,9 @@ extension WPStyleGuide {
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font,
-            NSForegroundColorAttributeName: grey()
+            .paragraphStyle: paragraphStyle,
+            .font: font,
+            .foregroundColor: grey()
         ]
     }
 
@@ -91,9 +92,9 @@ extension WPStyleGuide {
         paragraphStyle.lineSpacing = Cards.crossPostLineSpacing
 
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font,
-            NSForegroundColorAttributeName: grey()
+            .paragraphStyle: paragraphStyle,
+            .font: font,
+            .foregroundColor: grey()
         ]
     }
 
@@ -104,8 +105,8 @@ extension WPStyleGuide {
         paragraphStyle.lineSpacing = Cards.titleLineSpacing
 
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            .paragraphStyle: paragraphStyle,
+            .font: font
         ]
     }
 
@@ -117,17 +118,15 @@ extension WPStyleGuide {
         paragraphStyle.lineBreakMode = .byTruncatingTail
 
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            .paragraphStyle: paragraphStyle,
+            .font: font
         ]
     }
 
     @objc public class func readerCardReadingTimeAttributes() -> [NSAttributedStringKey: Any] {
         let font = WPStyleGuide.fontForTextStyle(Cards.subtextTextStyle)
 
-        return [
-            NSFontAttributeName: font,
-        ]
+        return [.font: font]
     }
 
     // MARK: - Detail styles
@@ -141,8 +140,8 @@ extension WPStyleGuide {
         paragraphStyle.maximumLineHeight = lineHeight
 
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            .paragraphStyle: paragraphStyle,
+            .font: font
         ]
     }
 
@@ -157,8 +156,8 @@ extension WPStyleGuide {
         paragraphStyle.alignment = .center
 
         return [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSFontAttributeName: font
+            .paragraphStyle: paragraphStyle,
+            .font: font
         ]
     }
 

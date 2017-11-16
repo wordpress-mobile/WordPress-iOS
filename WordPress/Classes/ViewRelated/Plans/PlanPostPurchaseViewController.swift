@@ -268,7 +268,7 @@ class PlanPostPurchasePageViewController: UIViewController {
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.alignment = .center
 
-        let attributedText = NSMutableAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName: descriptionLabel.font])
+        let attributedText = NSMutableAttributedString(string: text, attributes: [.paragraphStyle: paragraphStyle, .font: descriptionLabel.font])
         descriptionLabel.attributedText = attributedText
     }
 

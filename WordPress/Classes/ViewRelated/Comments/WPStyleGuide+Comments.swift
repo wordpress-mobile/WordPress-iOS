@@ -15,43 +15,43 @@ extension WPStyleGuide {
             return approved ? WPStyleGuide.readGrey() : WPStyleGuide.alertYellowDark()
         }
 
-        public static func detailsRegularStyle(isApproved approved: Bool) -> [String: AnyObject] {
+        public static func detailsRegularStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertYellowDark()
 
-            return  [   NSParagraphStyleAttributeName: titleParagraph,
-                        NSFontAttributeName: titleRegularFont,
-                        NSForegroundColorAttributeName: color ]
+            return  [.paragraphStyle: titleParagraph,
+                     .font: titleRegularFont,
+                     .foregroundColor: color ]
         }
 
-        public static func detailsRegularRedStyle(isApproved approved: Bool) -> [String: AnyObject] {
+        public static func detailsRegularRedStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
-            return  [   NSParagraphStyleAttributeName: titleParagraph,
-                        NSFontAttributeName: titleRegularFont,
-                        NSForegroundColorAttributeName: color ]
+            return  [.paragraphStyle: titleParagraph,
+                     .font: titleRegularFont,
+                     .foregroundColor: color ]
         }
 
-        public static func detailsItalicsStyle(isApproved approved: Bool) -> [String: AnyObject] {
+        public static func detailsItalicsStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
-            return  [   NSParagraphStyleAttributeName: titleParagraph,
-                        NSFontAttributeName: titleItalicsFont,
-                        NSForegroundColorAttributeName: color ]
+            return  [.paragraphStyle: titleParagraph,
+                     .font: titleItalicsFont,
+                     .foregroundColor: color ]
         }
 
-        public static func detailsBoldStyle(isApproved approved: Bool) -> [String: AnyObject] {
+        public static func detailsBoldStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
 
-            return  [   NSParagraphStyleAttributeName: titleParagraph,
-                        NSFontAttributeName: titleBoldFont,
-                        NSForegroundColorAttributeName: color ]
+            return  [.paragraphStyle: titleParagraph,
+                     .font: titleBoldFont,
+                     .foregroundColor: color ]
         }
 
-        public static func timestampStyle(isApproved approved: Bool) -> [String: AnyObject] {
+        public static func timestampStyle(isApproved approved: Bool) -> [NSAttributedStringKey: Any] {
             let color = approved ? WPStyleGuide.allTAllShadeGrey() : WPStyleGuide.alertYellowDark()
 
-            return  [   NSFontAttributeName: timestampFont,
-                        NSForegroundColorAttributeName: color ]
+            return  [.font: timestampFont,
+                     .foregroundColor: color ]
         }
 
         public static func backgroundColor(isApproved approved: Bool) -> UIColor {

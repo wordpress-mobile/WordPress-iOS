@@ -224,7 +224,7 @@ import Foundation
         }
 
         // Load the NSURL instance, if any
-        let rawURL = textStorage.attribute(NSLinkAttributeName, at: characterIndex, effectiveRange: nil) as? URL
+        let rawURL = textStorage.attribute(.link, at: characterIndex, effectiveRange: nil) as? URL
         if let unwrappedURL = rawURL {
             delegate?.textView?(textView, didPressLink: unwrappedURL)
         }

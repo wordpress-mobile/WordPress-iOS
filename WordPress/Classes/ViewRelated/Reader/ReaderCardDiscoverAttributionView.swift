@@ -18,7 +18,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     @IBOutlet fileprivate weak var imageView: CircularImageView!
     @IBOutlet fileprivate weak var textLabel: UILabel!
 
-    fileprivate lazy var originalAttributionParagraphAttributes: [AnyHashable: Any] = {
+    fileprivate lazy var originalAttributionParagraphAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.originalAttributionParagraphAttributes()
     }()
 
@@ -106,7 +106,7 @@ private enum ReaderCardDiscoverAttribution: Int {
 
         let str = stringForPostAttribution(contentProvider.sourceAuthorNameForDisplay(),
                                             blogName: contentProvider.sourceBlogNameForDisplay())
-        let attributes = originalAttributionParagraphAttributes as! [String: AnyObject]
+        let attributes = originalAttributionParagraphAttributes
         textLabel.textColor = WPStyleGuide.grey()
         textLabel.attributedText = NSAttributedString(string: str, attributes: attributes)
         attributionAction = .none
@@ -125,9 +125,9 @@ private enum ReaderCardDiscoverAttribution: Int {
 
         let range = (str as NSString).range(of: blogName!)
         let font = WPStyleGuide.fontForTextStyle(WPStyleGuide.originalAttributionTextStyle(), symbolicTraits: .traitItalic)
-        let attributes = originalAttributionParagraphAttributes as! [String: AnyObject]
+        let attributes = originalAttributionParagraphAttributes
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
-        attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
+        attributedString.addAttribute(.font, value: font, range: range)
         textLabel.textColor = WPStyleGuide.mediumBlue()
         textLabel.highlightedTextColor = WPStyleGuide.lightBlue()
         textLabel.attributedText = attributedString
