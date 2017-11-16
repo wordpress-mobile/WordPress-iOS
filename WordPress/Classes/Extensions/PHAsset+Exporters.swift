@@ -181,7 +181,7 @@ extension PHAsset: ExportableAsset {
                         }
                         return
                     }
-                    exportSession.outputFileType = targetUTI
+                    exportSession.outputFileType = AVFileType(rawValue: targetUTI)
                     exportSession.shouldOptimizeForNetworkUse = true
                     if stripGeoLocation {
                         exportSession.metadataItemFilter = AVMetadataItemFilter.forSharing()
