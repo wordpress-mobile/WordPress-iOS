@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 class PluginViewController: UITableViewController {
     var plugin: PluginState {
@@ -14,7 +15,7 @@ class PluginViewController: UITableViewController {
     }()
 
     fileprivate let viewModel: PluginViewModel
-    var viewModelListener: FluxListener?
+    var viewModelListener: EventListener?
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int) {
         self.plugin = plugin

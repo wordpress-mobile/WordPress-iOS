@@ -1,10 +1,11 @@
 import WordPressKit
+import WordPressFlux
 
 protocol PluginPresenter: class {
     func present(plugin: PluginState, capabilities: SitePluginCapabilities)
 }
 
-class PluginListViewModel: FluxEmitter {
+class PluginListViewModel: EventEmitter {
     enum State {
         case loading
         case ready(SitePlugins)
@@ -12,7 +13,7 @@ class PluginListViewModel: FluxEmitter {
     }
 
     let siteID: Int
-    let dispatcher = Dispatcher<Void>()
+    let dispatcher = GenericDispatcher<Void>()
     private var state: State = .loading {
         didSet {
             dispatcher.dispatch()
@@ -20,8 +21,8 @@ class PluginListViewModel: FluxEmitter {
     }
 
     private let store: PluginStore
-    private var listener: FluxListener?
-    private var dispatchToken: FluxDispatcher.DispatchToken?
+    private var listener: EventListener?
+    private var dispatchToken: DispatchToken?
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID
@@ -29,7 +30,7 @@ class PluginListViewModel: FluxEmitter {
         listener = store.onChange { [weak self] in
             self?.refreshPlugins()
         }
-        dispatchToken = FluxDispatcher.global.register(callback: { [weak self] (action) in
+        dispatchToken = Dispatcher.global.register(callback: { [weak self] (action) in
             guard case PluginAction.receivePluginsFailed(let receivedSiteID, let error) = action,
                 case receivedSiteID = siteID else {
                     return

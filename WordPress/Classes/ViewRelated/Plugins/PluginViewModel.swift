@@ -1,6 +1,7 @@
 import Foundation
+import WordPressFlux
 
-class PluginViewModel: FluxEmitter {
+class PluginViewModel: EventEmitter {
     var plugin: PluginState {
         didSet {
             dispatcher.dispatch()
@@ -8,8 +9,8 @@ class PluginViewModel: FluxEmitter {
     }
     let capabilities: SitePluginCapabilities
     let siteID: Int
-    var listener: FluxListener!
-    let dispatcher = Dispatcher<Void>()
+    var listener: EventListener?
+    let dispatcher = GenericDispatcher<Void>()
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
@@ -112,7 +113,7 @@ class PluginViewModel: FluxEmitter {
         alert.addDestructiveActionWithTitle(
             NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
-                FluxDispatcher.dispatch(PluginAction.remove(id: self.plugin.id, siteID: self.siteID))
+                Dispatcher.dispatch(PluginAction.remove(id: self.plugin.id, siteID: self.siteID))
             }
         )
         return alert
@@ -120,17 +121,17 @@ class PluginViewModel: FluxEmitter {
 
     private func setActive(_ active: Bool) {
         if active {
-            FluxDispatcher.dispatch(PluginAction.activate(id: plugin.id, siteID: siteID))
+            Dispatcher.dispatch(PluginAction.activate(id: plugin.id, siteID: siteID))
         } else {
-            FluxDispatcher.dispatch(PluginAction.deactivate(id: plugin.id, siteID: siteID))
+            Dispatcher.dispatch(PluginAction.deactivate(id: plugin.id, siteID: siteID))
         }
     }
 
     private func setAutoupdate(_ autoupdate: Bool) {
         if autoupdate {
-            FluxDispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, siteID: siteID))
+            Dispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, siteID: siteID))
         } else {
-            FluxDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, siteID: siteID))
+            Dispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, siteID: siteID))
         }
     }
 

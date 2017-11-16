@@ -17,7 +17,7 @@ open class ReducerStore<State: Equatable>: Store {
         return state
     }
 
-    override func onDispatch(_ action: Action) {
+    override open func onDispatch(_ action: Action) {
         state = reduce(action: action, state: state)
     }
 }

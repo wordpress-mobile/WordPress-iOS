@@ -1,11 +1,11 @@
 import Foundation
 
 open class Store: EventEmitter {
-    let globalDispatcher: Dispatcher
+    public let globalDispatcher: Dispatcher
     private var dispatchToken: DispatchToken!
     public let dispatcher = GenericDispatcher<Void>()
 
-    var listenerCount: Int {
+    public var listenerCount: Int {
         return dispatcher.observerCount
     }
 
@@ -13,14 +13,14 @@ open class Store: EventEmitter {
         globalDispatcher.unregister(token: dispatchToken)
     }
 
-    init(dispatcher: Dispatcher = .global) {
+    public init(dispatcher: Dispatcher = .global) {
         globalDispatcher = dispatcher
         dispatchToken = dispatcher.register(callback: { [weak self] (action) in
             self?.onDispatch(action)
         })
     }
 
-    func onDispatch(_ action: Action) {
+    open func onDispatch(_ action: Action) {
         // Subclasses should override this
     }
 
