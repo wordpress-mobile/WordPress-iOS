@@ -5,6 +5,7 @@ import WordPressShared
 import WPMediaPicker
 import MobileCoreServices
 
+
 /// Displays the user's media library in a grid
 ///
 class MediaLibraryViewController: UIViewController {
@@ -72,7 +73,12 @@ class MediaLibraryViewController: UIViewController {
 
         self.blog = blog
         self.pickerViewController = WPMediaPickerViewController()
+        self.pickerViewController.registerClass(forReusableCellOverlayViews: MediaCellProgressView.self)
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
+
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
+            self.pickerDataSource.includeUnsyncedMedia = true
+        }
 
         super.init(nibName: nil, bundle: nil)
 
@@ -287,7 +293,7 @@ class MediaLibraryViewController: UIViewController {
 
     @objc private func statusHUDWasTapped(_ notification: Notification) {
         if mediaProgressCoordinator.isRunning {
-            mediaProgressCoordinator.cancelAllPendingUploads()
+            mediaProgressCoordinator.cancelAndStopAllPendingUploads()
             SVProgressHUD.dismiss()
         }
     }
@@ -392,6 +398,20 @@ class MediaLibraryViewController: UIViewController {
                 searchBarContainer.removeFromSuperview()
             }
         }
+    }
+
+    private func reloadCell(for media: Media) {
+        guard let cells = pickerViewController.collectionView?.visibleCells as? [WPMediaCollectionViewCell] else {
+            return
+        }
+
+        cells.forEach({ cell in
+            if let asset = cell.asset as? Media,
+                asset == media {
+                cell.overlayView = nil
+                cell.asset = media
+            }
+        })
     }
 
     private var hasSearchQuery: Bool {
@@ -565,9 +585,14 @@ class MediaLibraryViewController: UIViewController {
             return
         }
 
-        uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ (media, state) in
+        uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ [weak self] (media, state) in
             print("Media \(String(describing: media.filename)) in state \(String(describing: state))")
-        }, for: nil)
+            switch state {
+            case .ended:
+                self?.reloadCell(for: media)
+            default: break
+            }
+            }, for: nil)
     }
 
     private func unregisterUploadCoordinatorObserver() {
@@ -773,6 +798,18 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         useUploadCoordinator = false
 
         dismiss(animated: true, completion: nil)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled,
+            let media = asset as? Media {
+            return media.remoteStatus != .sync
+        }
+
+        return false
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {

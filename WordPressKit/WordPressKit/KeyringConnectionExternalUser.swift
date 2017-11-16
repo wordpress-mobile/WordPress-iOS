@@ -5,8 +5,8 @@ import Foundation
 /// external service that could be used other than the default account.
 ///
 open class KeyringConnectionExternalUser: NSObject {
-    open var externalID = ""
-    open var externalName = ""
-    open var externalCategory = ""
-    open var externalProfilePicture = ""
+    @objc open var externalID = ""
+    @objc open var externalName = ""
+    @objc open var externalCategory = ""
+    @objc open var externalProfilePicture = ""
 }
