@@ -132,12 +132,12 @@ class WPRichContentView: UITextView {
                     // first paragraph might not have the correct line height.
                     var paraStyle = NSParagraphStyle.default
                     if attrTxt.length > 0 {
-                        if let pstyle = attrTxt.attribute(NSParagraphStyleAttributeName, at: 0, effectiveRange: nil) as? NSParagraphStyle {
+                        if let pstyle = attrTxt.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle {
                             paraStyle = pstyle
                         }
                     }
                     mattrTxt.insert(NSAttributedString(attachment: topMarginAttachment), at: 0)
-                    mattrTxt.addAttributes([NSParagraphStyleAttributeName: paraStyle], range: NSRange(location: 0, length: 1))
+                    mattrTxt.addAttributes([.paragraphStyle: paraStyle], range: NSRange(location: 0, length: 1))
                     mattrTxt.append(NSAttributedString(attachment: bottomMarginAttachment))
 
                     attributedText = mattrTxt
@@ -297,7 +297,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         attrText?.enumerateAttachments { (textAttachment, range) in
             if textAttachment == attachment {
                 var effectiveRange = NSRange()
-                if let value = attrText?.attribute(NSLinkAttributeName, at: range.location, longestEffectiveRange: &effectiveRange, in: NSRange(location: 0, length: (attrText?.length)!)) as? URL {
+                if let value = attrText?.attribute(.link, at: range.location, longestEffectiveRange: &effectiveRange, in: NSRange(location: 0, length: (attrText?.length)!)) as? URL {
                     link = value
                 }
             }

@@ -56,7 +56,7 @@ import UIKit
         }
 
         // Now do the update.
-        textStorage.enumerateAttribute(NSAttachmentAttributeName,
+        textStorage.enumerateAttribute(.attachment,
             in: NSMakeRange(0, textStorage.length),
             options: [],
             using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
@@ -110,7 +110,7 @@ import UIKit
             return
         }
 
-        layoutManager.textStorage?.enumerateAttribute(NSAttachmentAttributeName,
+        layoutManager.textStorage?.enumerateAttribute(.attachment,
             in: NSMakeRange(0, textStorage.length),
             options: [],
             using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in

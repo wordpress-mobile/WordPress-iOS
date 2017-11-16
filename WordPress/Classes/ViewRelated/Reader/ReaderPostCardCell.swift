@@ -108,15 +108,15 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    fileprivate lazy var readerCardTitleAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardTitleAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardTitleAttributes()
     }()
 
-    fileprivate lazy var readerCardSummaryAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardSummaryAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    fileprivate lazy var readerCardReadingTimeAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardReadingTimeAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardReadingTimeAttributes()
     }()
 

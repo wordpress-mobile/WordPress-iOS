@@ -396,9 +396,7 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
             return highlighted
         }
         let font = UIFont.systemFont(ofSize: WPStyleGuide.tableviewTextFont().pointSize, weight: .bold)
-        highlighted.setAttributes([
-            NSFontAttributeName: font,
-            ], range: range)
+        highlighted.setAttributes([.font: font], range: range)
         return highlighted
     }
 }
