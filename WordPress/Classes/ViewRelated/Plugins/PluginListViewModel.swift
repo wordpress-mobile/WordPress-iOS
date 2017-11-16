@@ -38,7 +38,7 @@ class PluginListViewModel: EventEmitter {
             }
             self?.state = .error(error.localizedDescription)
         })
-        querySubscription = store.run(query: .all(siteID: siteID))
+        querySubscription = store.query(.all(siteID: siteID))
         refreshPlugins()
     }
 
