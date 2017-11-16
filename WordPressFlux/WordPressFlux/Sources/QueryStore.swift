@@ -29,21 +29,19 @@ public class QuerySubscription {
 }
 
 open class QueryStore<State, QueryType>: StatefulStore<State>, QueryProcessor where QueryType: Query {
-    fileprivate var activeQueries = [QueryRef<QueryType>]() {
+    fileprivate var activeQueryReferences = [QueryRef<QueryType>]() {
         didSet {
-            processQueries()
+            queriesChanged()
         }
     }
 
-    public override var state: State {
-        didSet {
-            processQueries()
-        }
+    public var activeQueries: [QueryType] {
+        return activeQueryReferences.map({ $0.query })
     }
 
     public func query(_ query: QueryType) -> QuerySubscription {
         let queryRef = QueryRef(query)
-        activeQueries.append(queryRef)
+        activeQueryReferences.append(queryRef)
         return QuerySubscription(dispatchToken: queryRef.token, processor: self)
     }
 
@@ -52,18 +50,14 @@ open class QueryStore<State, QueryType>: StatefulStore<State>, QueryProcessor wh
     }
 
     fileprivate func stopQuery(token: DispatchToken) {
-        guard let index = activeQueries.index(where: { $0.token == token }) else {
+        guard let index = activeQueryReferences.index(where: { $0.token == token }) else {
             assertionFailure("Stopping a query that's not active")
             return
         }
-        activeQueries.remove(at: index)
+        activeQueryReferences.remove(at: index)
     }
 
-    private func processQueries() {
-        processQueries(queries: activeQueries.map({ $0.query }))
-    }
-
-    open func processQueries(queries: [QueryType]) {
+    open func queriesChanged() {
         // Subclasses should implement this
     }
 }
