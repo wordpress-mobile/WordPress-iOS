@@ -11,7 +11,7 @@ import Foundation
     ///     - success: Closure to be executed on success. Can be nil.
     ///     - failure: Closure to be executed on failure. Can be nil.
     ///
-    open func authorizeLogin(_ token: String, success: (() -> ())?, failure: (() -> ())?) {
+    @objc open func authorizeLogin(_ token: String, success: (() -> ())?, failure: (() -> ())?) {
         let path = "me/two-step/push-authentication"
         let requestUrl = self.path(forEndpoint: path, withVersion: ._1_1)
 
