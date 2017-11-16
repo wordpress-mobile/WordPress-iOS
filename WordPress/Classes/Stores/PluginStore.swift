@@ -35,8 +35,18 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
         super.init(initialState: PluginStoreState(), dispatcher: dispatcher)
     }
 
-    override func processQueries(queries: [PluginQuery]) {
-        let sitesWithQuery = queries
+    override func queriesChanged() {
+        guard !activeQueries.isEmpty else {
+            // Remove plugins from memory if nothing is listening for changes
+            state.plugins = [:]
+            state.lastFetch = [:]
+            return
+        }
+        processQueries()
+    }
+
+    func processQueries() {
+        let sitesWithQuery = activeQueries
             .map({ $0.siteID })
             .unique
         let sitesToFetch = sitesWithQuery
@@ -44,14 +54,6 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
 
         sitesToFetch.forEach { (siteID) in
             fetchPlugins(siteID: siteID)
-        }
-    }
-
-    func removeListener(_ listener: EventListener) {
-        super.removeListener(listener)
-        if listenerCount == 0 {
-            // Remove plugins from memory if nothing is listening for changes
-            state.plugins = [:]
         }
     }
 
