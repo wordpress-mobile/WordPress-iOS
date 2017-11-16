@@ -8,7 +8,6 @@ enum FeatureFlag: Int {
     case googleLogin
     case socialSignup
     case jetpackDisconnect
-    case jetpackCommentsOnReader
     case asyncUploadsInMediaLibrary
     case activity
 
@@ -27,8 +26,6 @@ enum FeatureFlag: Int {
             return false // placeholder until the first social signup screen is added
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .jetpackCommentsOnReader:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .asyncUploadsInMediaLibrary:
             return BuildConfiguration.current == .localDeveloper
         case .activity:
