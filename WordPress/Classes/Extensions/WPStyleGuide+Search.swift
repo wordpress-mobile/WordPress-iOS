@@ -39,9 +39,8 @@ extension WPStyleGuide {
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes =
             (WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.darkGrey()))
         let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar")
-        let attributedPlaceholderText =
-            NSAttributedString(string: placeholderText,
-                               attributes: WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey()))
+        let attributedPlaceholderText = NSAttributedString(string: placeholderText,
+                                                           attributes: WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey()))
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).attributedPlaceholder =
             attributedPlaceholderText
     }
