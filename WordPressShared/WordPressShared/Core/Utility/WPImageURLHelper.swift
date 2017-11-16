@@ -13,7 +13,7 @@ open class WPImageURLHelper: NSObject {
 
      - note: If there is any problem with the original URL parsing, the original URL is returned with no changes.
      */
-    open class func imageURLWithSize(_ size: CGSize, forImageURL url: URL) -> URL {
+    @objc open class func imageURLWithSize(_ size: CGSize, forImageURL url: URL) -> URL {
         guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             return url
         }

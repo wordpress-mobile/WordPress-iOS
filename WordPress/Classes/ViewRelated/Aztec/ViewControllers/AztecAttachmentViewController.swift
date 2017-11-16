@@ -21,6 +21,7 @@ class AztecAttachmentViewController: UITableViewController {
     var alt: String?
 
     var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String?) -> Void)?
+    var onCancel: (() -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -176,6 +177,7 @@ class AztecAttachmentViewController: UITableViewController {
     // MARK: - Helper methods
 
     func handleCancelButtonTapped(sender: UIBarButtonItem) {
+        onCancel?()
         dismiss(animated: true, completion: nil)
     }
 
