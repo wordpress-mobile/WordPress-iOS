@@ -72,7 +72,6 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
     override open var frame: CGRect {
         didSet {
-            
             // If Voice Over is enabled, the OS will query for the accessibilityPath
             // to know what region of the screen to highlight. If the path is nil
             // the OS should fall back to computing based on the frame but this
@@ -114,15 +113,40 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
 
         sharedSetup()
     }
+    
+    override open func encode(with aCoder: NSCoder) {
+        
+        aCoder.encode(collectionView, forKey: UICollectionView.classNameWithoutNamespaces())
+        aCoder.encode(footerStack, forKey: UIStackView.classNameWithoutNamespaces())
+        
+        if let url = contentURL {
+            aCoder.encode(url, forKey: contentUrlKey)
+        }
+        
+        if let url = linkURL {
+            aCoder.encode(url, forKey: linkUrlKey)
+        }
+        
+        aCoder.encode(viewHeight, forKey: viewHeightKey)
+        
+        super.encode(with: aCoder)
+    }
 
     fileprivate func sharedSetup() {
 
-        clipsToBounds = false
+        clipsToBounds = true
 
         setupCollectionView()
         setupLabels()
         
-        collectionView.isPrefetchingEnabled = true
+        collectionView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
+        collectionView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: footerStack.topAnchor).isActive = true
+
+        footerStack.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
+        footerStack.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
+        footerStack.heightAnchor.constraint(equalToConstant: 20.0).isActive = true
     }
 
     fileprivate func setupLabels() {
@@ -167,25 +191,6 @@ class WPRichTextGallery: UIView, WPRichTextMediaAttachment {
         collectionView.delegate = self
 
         collectionView.showsHorizontalScrollIndicator = false
-    }
-    
-
-    override open func encode(with aCoder: NSCoder) {
-
-        aCoder.encode(collectionView, forKey: UICollectionView.classNameWithoutNamespaces())
-        aCoder.encode(footerStack, forKey: UIStackView.classNameWithoutNamespaces())
-
-        if let url = contentURL {
-            aCoder.encode(url, forKey: "contentURL")
-        }
-
-        if let url = linkURL {
-            aCoder.encode(url, forKey: "linkURL")
-        }
-
-        aCoder.encode(viewHeight, forKey: "viewHeight")
-
-        super.encode(with: aCoder)
     }
 
 
@@ -236,14 +241,14 @@ extension WPRichTextGallery: UICollectionViewDataSource {
 }
 
 extension WPRichTextGallery: UICollectionViewDelegateFlowLayout {
-    
+
     func setOffsetIfNeeded() {
         //TODO: Still Needs Fixing
         let leadingEdge = frame.minX - (superview?.frame.minX ?? 0)
-        
+
         if leadingEdge < 16 {
             let neededOffset = 16 - leadingEdge
-            
+
             collectionView.contentInset = UIEdgeInsets(top: 0, left: neededOffset, bottom: 0, right: 0)
         }
     }

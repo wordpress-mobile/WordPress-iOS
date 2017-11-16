@@ -37,12 +37,6 @@ static CGFloat const MinimumZoomScale = 0.1;
     return [self initWithImage:nil andURL:url];
 }
 
-- (instancetype)initForGallery:(NSURL *)url andIndex:(NSNumber *)index
-{
-    self.index = index;
-    return [self initWithImage:nil andURL:url];
-}
-
 - (instancetype)initWithMedia:(Media *)media
 {
     return [self initWithImage:nil andMedia:media];
