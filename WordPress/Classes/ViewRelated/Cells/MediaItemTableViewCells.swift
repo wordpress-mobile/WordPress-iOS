@@ -50,7 +50,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
             customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             ])
 
-        customImageView.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        customImageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
 
     private func setupLoadingViews() {
@@ -88,7 +88,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
             }
 
             aspectRatioConstraint = customImageView.heightAnchor.constraint(equalTo: customImageView.widthAnchor, multiplier: newValue, constant: 1.0)
-            aspectRatioConstraint?.priority = UILayoutPriorityDefaultHigh
+            aspectRatioConstraint?.priority = .defaultHigh
             aspectRatioConstraint?.isActive = true
         }
         get {
