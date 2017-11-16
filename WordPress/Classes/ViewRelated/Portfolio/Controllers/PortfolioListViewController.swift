@@ -6,6 +6,12 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     
     fileprivate static let portfolioViewControllerRestorationKey = "PortfolioViewControllerRestorationKey"
     
+    fileprivate lazy var sectionFooterSeparatorView: UIView = {
+        let footer = UIView()
+        footer.backgroundColor = WPStyleGuide.greyLighten20()
+        return footer
+    }()
+    
     // MARK: - Convenience constructors
     
     class func controllerWithBlog(_ blog: Blog) -> PortfolioListViewController {
@@ -59,8 +65,8 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // TODO:
-//        title = NSLocalizedString("Pages", comment: "Tile of the screen showing the list of pages for a blog.")
+
+        title = NSLocalizedString("Portfolio", comment: "Tile of the screen showing the list of projects (Portfolio) for a blog.")
     }
     
     // MARK: - Configuration
@@ -83,6 +89,49 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
 //        tableView.register(restorePageCellNib, forCellReuseIdentifier: type(of: self).restorePageCellIdentifier)
         
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+    }
+    
+    override func configureSearchController() {
+        super.configureSearchController()
+        
+        tableView.tableHeaderView = searchController.searchBar
+        
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+    }
+    
+    fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
+        if isSearching() {
+            return noResultsTitlesWhenSearching()
+        } else {
+            return noResultsTitlesWhenFiltering()
+        }
+    }
+    
+    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status: String] {
+        
+        let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let scheduledMessage = String(format: NSLocalizedString("No scheduled projects match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let trashedMessage = String(format: NSLocalizedString("No trashed projects match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        let publishedMessage = String(format: NSLocalizedString("No projects match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
+        
+        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
+    }
+    
+    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
+        
+        let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the portfolio list and there are no projects")
+        let scheduledMessage = NSLocalizedString("You don't have any scheduled projects.", comment: "Displayed when the user views scheduled projects in the portfolio list and there are no projects")
+        let trashedMessage = NSLocalizedString("You don't have any projects in your trash folder.", comment: "Displayed when the user views trashed in the portfolio list and there are no projects")
+        let publishedMessage = NSLocalizedString("You haven't published any projects yet.", comment: "Displayed when the user views published projects in the portfolio list and there are no projects")
+        
+        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
+    }
+    
+    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status: String] {
+        return [.draft: draft,
+                .scheduled: scheduled,
+                .trashed: trashed,
+                .published: published]
     }
     
     override func configureAuthorFilter() {
@@ -129,6 +178,13 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     }
     
     // MARK: - Table View Handling
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
+        if section == tableView.numberOfSections - 1 {
+            return sectionFooterSeparatorView
+        }
+        return UIView(frame: CGRect.zero)
+    }
     
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // TODO:
