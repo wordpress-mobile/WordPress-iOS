@@ -35,7 +35,7 @@ extension NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         if let attributes = attributes,
             let bodyAttributes = attributes[.BodyAttribute],
-            let pStyle = bodyAttributes[NSParagraphStyleAttributeName] as? NSParagraphStyle {
+            let pStyle = bodyAttributes[.paragraphStyle] as? NSParagraphStyle {
                 paragraphStyle.setParagraphStyle(pStyle)
         }
 

@@ -59,7 +59,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
-        textView.linkTextAttributes = [NSUnderlineStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue), NSForegroundColorAttributeName: Colors.aztecLinkColor]
+        textView.linkTextAttributes = NSAttributedStringKey.convertToRaw(attributes: linkAttributes)
         textView.textAlignment = .natural
 
         if #available(iOS 11, *) {
@@ -120,6 +120,13 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Title's UITextView
     ///
     fileprivate(set) lazy var titleTextField: UITextView = {
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .natural
+
+        let attributes: [NSAttributedStringKey: Any] = [.foregroundColor: UIColor.darkText,
+                                                        .font: Fonts.title,
+                                                        .paragraphStyle: titleParagraphStyle]
+
         let textView = UITextView()
 
         textView.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
@@ -127,9 +134,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.font = Fonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        let titleParagraphStyle = NSMutableParagraphStyle()
-        titleParagraphStyle.alignment = .natural
-        textView.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title, NSParagraphStyleAttributeName: titleParagraphStyle]
+        textView.typingAttributes = NSAttributedStringKey.convertToRaw(attributes: attributes)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
@@ -869,21 +874,26 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     override var keyCommands: [UIKeyCommand] {
         if richTextView.isFirstResponder {
-            return [ UIKeyCommand(input: "B", modifierFlags: .command, action: #selector(toggleBold), discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "I", modifierFlags: .command, action: #selector(toggleItalic), discoverabilityTitle: NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "S", modifierFlags: [.command], action: #selector(toggleStrikethrough), discoverabilityTitle: NSLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "U", modifierFlags: .command, action: #selector(toggleUnderline(_:)), discoverabilityTitle: NSLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "Q", modifierFlags: [.command, .alternate], action: #selector(toggleBlockquote), discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
-                     UIKeyCommand(input: "K", modifierFlags: .command, action: #selector(toggleLink), discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
-                     UIKeyCommand(input: "M", modifierFlags: [.command, .alternate], action: #selector(presentMediaPicker), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
-                     UIKeyCommand(input: "U", modifierFlags: [.command, .alternate], action: #selector(toggleUnorderedList), discoverabilityTitle: NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
-                     UIKeyCommand(input: "O", modifierFlags: [.command, .alternate], action: #selector(toggleOrderedList), discoverabilityTitle: NSLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
-                     UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
-            ]
-        } else if htmlTextView.isFirstResponder {
-            return [UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+            return [
+                UIKeyCommand(input: "B", modifierFlags: .command, action: #selector(toggleBold), discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
+                UIKeyCommand(input: "I", modifierFlags: .command, action: #selector(toggleItalic), discoverabilityTitle: NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
+                UIKeyCommand(input: "S", modifierFlags: [.command], action: #selector(toggleStrikethrough), discoverabilityTitle: NSLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
+                UIKeyCommand(input: "U", modifierFlags: .command, action: #selector(toggleUnderline(_:)), discoverabilityTitle: NSLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
+                UIKeyCommand(input: "Q", modifierFlags: [.command, .alternate], action: #selector(toggleBlockquote), discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
+                UIKeyCommand(input: "K", modifierFlags: .command, action: #selector(toggleLink), discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
+                UIKeyCommand(input: "M", modifierFlags: [.command, .alternate], action: #selector(presentMediaPickerWasPressed), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
+                UIKeyCommand(input: "U", modifierFlags: [.command, .alternate], action: #selector(toggleUnorderedList), discoverabilityTitle: NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
+                UIKeyCommand(input: "O", modifierFlags: [.command, .alternate], action: #selector(toggleOrderedList), discoverabilityTitle: NSLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
+                UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
             ]
         }
+
+        if htmlTextView.isFirstResponder {
+            return [
+                UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+            ]
+        }
+
         return []
     }
 
