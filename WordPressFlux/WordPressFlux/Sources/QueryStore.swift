@@ -6,12 +6,12 @@ private struct QueryRef<QueryType> where QueryType: Query {
     }
 }
 
-private protocol QueryProcessor: class {
+public protocol QueryProcessor: class {
     func stop(query: QuerySubscription)
 }
 
 public class QuerySubscription {
-    private var dispatchToken: DispatchToken?
+    fileprivate let dispatchToken: DispatchToken
     private weak var processor: QueryProcessor?
 
     fileprivate init(dispatchToken: DispatchToken, processor: QueryProcessor) {
@@ -20,9 +20,7 @@ public class QuerySubscription {
     }
 
     deinit {
-        if dispatchToken != nil {
-            stopListening()
-        }
+        stopListening()
     }
 
     private func stopListening() {
@@ -30,23 +28,27 @@ public class QuerySubscription {
     }
 }
 
-open class QueryStore<State, QueryType>: StatefulStore<State> where QueryType: Query {
+open class QueryStore<State, QueryType>: StatefulStore<State>, QueryProcessor where QueryType: Query {
     fileprivate var activeQueries = [QueryRef<QueryType>]() {
         didSet {
-            processQueries(state: state)
+            processQueries()
         }
     }
 
     public override var state: State {
         didSet {
-            processQueries(state: state)
+            processQueries()
         }
     }
 
-    public func run(query: QueryType) -> DispatchToken {
+    public func run(query: QueryType) -> QuerySubscription {
         let queryRef = QueryRef(query)
         activeQueries.append(queryRef)
-        return queryRef.token
+        return QuerySubscription(dispatchToken: queryRef.token, processor: self)
+    }
+
+    public func stop(query subscription: QuerySubscription) {
+        stopQuery(token: subscription.dispatchToken)
     }
 
     fileprivate func stopQuery(token: DispatchToken) {
@@ -57,11 +59,11 @@ open class QueryStore<State, QueryType>: StatefulStore<State> where QueryType: Q
         activeQueries.remove(at: index)
     }
 
-    private func processQueries(state: State) {
-        processQueries(state: state, queries: activeQueries.map({ $0.query }))
+    private func processQueries() {
+        processQueries(queries: activeQueries.map({ $0.query }))
     }
 
-    open func processQueries(state: State, queries: [QueryType]) {
+    open func processQueries(queries: [QueryType]) {
         // Subclasses should implement this
     }
 }
