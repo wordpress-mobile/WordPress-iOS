@@ -50,4 +50,14 @@ class LoginPrologueViewController: UIViewController {
                               for: .normal)
 
     }
+
+    // MARK: - Actions
+
+    @IBAction func signupTapped() {
+        if Feature.enabled(.socialSignup) {
+            performSegue(withIdentifier: "showSigninV2", sender: self)
+        } else {
+            performSegue(withIdentifier: "showSigninV1", sender: self)
+        }
+    }
 }
