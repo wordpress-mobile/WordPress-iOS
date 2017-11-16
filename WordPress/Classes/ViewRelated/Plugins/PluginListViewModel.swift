@@ -23,6 +23,7 @@ class PluginListViewModel: EventEmitter {
     private let store: PluginStore
     private var listener: EventListener?
     private var dispatchToken: DispatchToken?
+    private var querySubscription: QuerySubscription?
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID
@@ -37,6 +38,7 @@ class PluginListViewModel: EventEmitter {
             }
             self?.state = .error(error.localizedDescription)
         })
+        querySubscription = store.run(query: .all(siteID: siteID))
         refreshPlugins()
     }
 
