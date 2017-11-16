@@ -115,7 +115,7 @@ extension WPStyleGuide {
         // 👇 don't want to crash when a translation lacks "{G}"
         let lastPart = labelParts.indices.contains(1) ? labelParts[1] : ""
 
-        let labelString = NSMutableAttributedString(string: firstPart, attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyDarken30()])
+        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: WPStyleGuide.greyDarken30()])
 
         if let googleIcon = UIImage(named: "google"), lastPart != "" {
             let googleAttachment = NSTextAttachment()
@@ -125,7 +125,7 @@ extension WPStyleGuide {
             labelString.append(iconString)
         }
 
-        labelString.append(NSAttributedString(string: lastPart, attributes: [NSForegroundColorAttributeName: linkColor]))
+        labelString.append(NSAttributedString(string: lastPart, attributes: [.foregroundColor: linkColor]))
 
         return labelString
     }

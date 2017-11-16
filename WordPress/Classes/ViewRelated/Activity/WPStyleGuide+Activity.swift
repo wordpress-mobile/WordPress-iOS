@@ -12,21 +12,21 @@ extension WPStyleGuide {
             return gravatar
         }
 
-        public static func summaryRegularStyle() -> [String: AnyObject] {
-            return  [NSParagraphStyleAttributeName: summaryParagraph,
-                     NSFontAttributeName: summaryRegularFont,
-                     NSForegroundColorAttributeName: WPStyleGuide.littleEddieGrey()]
+        public static func summaryRegularStyle() -> [NSAttributedStringKey: Any] {
+            return  [.paragraphStyle: summaryParagraph,
+                     .font: summaryRegularFont,
+                     .foregroundColor: WPStyleGuide.littleEddieGrey()]
         }
 
-        public static func summaryBoldStyle() -> [String: AnyObject] {
-            return [NSParagraphStyleAttributeName: summaryParagraph,
-                    NSFontAttributeName: summaryBoldFont,
-                    NSForegroundColorAttributeName: WPStyleGuide.littleEddieGrey()]
+        public static func summaryBoldStyle() -> [NSAttributedStringKey: Any] {
+            return [.paragraphStyle: summaryParagraph,
+                    .font: summaryBoldFont,
+                    .foregroundColor: WPStyleGuide.littleEddieGrey()]
         }
 
-        public static func timestampStyle() -> [String: AnyObject] {
-            return  [NSFontAttributeName: timestampFont,
-                     NSForegroundColorAttributeName: WPStyleGuide.allTAllShadeGrey()]
+        public static func timestampStyle() -> [NSAttributedStringKey: Any] {
+            return  [.font: timestampFont,
+                     .foregroundColor: WPStyleGuide.allTAllShadeGrey()]
         }
 
         public static func backgroundColor() -> UIColor {

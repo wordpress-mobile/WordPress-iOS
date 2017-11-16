@@ -153,9 +153,9 @@ class JetpackLoginViewController: UIViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
 
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14),
-                                                                   NSForegroundColorAttributeName: WPStyleGuide.allTAllShadeGrey(),
-                                                                   NSParagraphStyleAttributeName: paragraphStyle ]]
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [.font: UIFont.systemFont(ofSize: 14),
+                                                                  .foregroundColor: WPStyleGuide.allTAllShadeGrey(),
+                                                                  .paragraphStyle: paragraphStyle]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
         let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
@@ -180,10 +180,10 @@ class JetpackLoginViewController: UIViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
 
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 14),
-                                                                   NSForegroundColorAttributeName: WPStyleGuide.allTAllShadeGrey(),
-                                                                   NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue as AnyObject,
-                                                                   NSParagraphStyleAttributeName: paragraphStyle ]]
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: UIFont.systemFont(ofSize: 14),
+                                                                   .foregroundColor: WPStyleGuide.allTAllShadeGrey(),
+                                                                   .underlineStyle: NSUnderlineStyle.styleSingle.rawValue as AnyObject,
+                                                                   .paragraphStyle: paragraphStyle ]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
         let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString

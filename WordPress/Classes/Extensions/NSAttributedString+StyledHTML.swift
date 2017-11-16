@@ -43,9 +43,9 @@ extension NSAttributedString {
         paragraphStyle.paragraphSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 0
 
-        attributedString.addAttribute(NSParagraphStyleAttributeName,
-                                   value: paragraphStyle,
-                                   range: NSMakeRange(0, attributedString.string.count - 1))
+        attributedString.addAttribute(.paragraphStyle,
+                                      value: paragraphStyle,
+                                      range: NSMakeRange(0, attributedString.string.count - 1))
 
         return NSAttributedString(attributedString: attributedString)
     }
@@ -68,21 +68,21 @@ extension NSAttributedString {
 
     /// Converts a limited set of `NSAttributedString` attribute types from their
     /// raw objects (e.g. `UIColor`) into CSS text.
-    fileprivate class func cssStyleForAttributeName(_ attributeName: String, attribute: AnyObject) -> String? {
-        switch attributeName {
-        case NSFontAttributeName:
+    fileprivate class func cssStyleForAttributeName(_ attributeKey: NSAttributedStringKey, attribute: Any) -> String? {
+        switch attributeKey {
+        case .font:
             if let font = attribute as? UIFont {
                 let size = font.pointSize
                 let boldStyle = "font-weight: " + (font.isBold ? "bold;" : "normal;")
                 let italicStyle = "font-style: " + (font.isItalic ? "italic;" : "normal;")
                 return "font-family: -apple-system; font-size: \(size)px; " + boldStyle + italicStyle
             }
-        case NSForegroundColorAttributeName:
+        case .foregroundColor:
             if let color = attribute as? UIColor,
                 let colorHex = color.hexString() {
                 return "color: #\(colorHex);"
             }
-        case NSUnderlineStyleAttributeName:
+        case .underlineStyle:
             if let style = attribute as? Int {
                 if style == NSUnderlineStyle.styleNone.rawValue {
                     return "text-decoration: none;"
@@ -97,7 +97,7 @@ extension NSAttributedString {
     }
 }
 
-public typealias StyledHTMLAttributes = [HTMLAttributeType: [String: AnyObject]]
+public typealias StyledHTMLAttributes = [HTMLAttributeType: [NSAttributedStringKey: Any]]
 
 public enum HTMLAttributeType: String {
     case BodyAttribute

@@ -120,7 +120,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
         let range = NSRange(location: 0, length: commentText.length)
         let textColor = Style.blockUnapprovedTextColor
-        commentText.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
+        commentText.addAttribute(.foregroundColor, value: textColor, range: range)
 
         return commentText
     }
