@@ -73,7 +73,7 @@ extension WPStyleGuide {
     ///
     @objc class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
         let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
-        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: UIFontWeightMedium)
+        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: .medium)
     }
 
     // MARK: - Google Signin Button Methods

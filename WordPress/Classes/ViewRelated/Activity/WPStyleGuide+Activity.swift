@@ -50,7 +50,7 @@ extension WPStyleGuide {
         }
 
         private static var summaryBoldFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: UIFontWeightSemibold)
+            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         }
 
         private static var summaryLineSize: CGFloat {

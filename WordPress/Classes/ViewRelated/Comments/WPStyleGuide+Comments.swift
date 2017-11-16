@@ -79,7 +79,7 @@ extension WPStyleGuide {
         }
 
         private static var titleBoldFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: UIFontWeightSemibold)
+            return WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         }
 
         private static var titleItalicsFont: UIFont {
