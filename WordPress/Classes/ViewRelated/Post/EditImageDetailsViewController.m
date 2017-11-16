@@ -484,11 +484,11 @@ typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
         return self.imageTitleCell;
     } else if (indexPath.row == 1) {
         return self.imageCaptionCell;
-
     } else if (indexPath.row == 2) {
         return self.imageAltTextCell;
     }
 
+    // TODO: I don't think this will ever be called, as tableView:numberOfRowsInSection: will only return 0, 1, or 3 -nh
     return cell;
 }
 
