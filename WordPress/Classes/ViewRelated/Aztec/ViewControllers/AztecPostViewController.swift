@@ -42,18 +42,19 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.inputProcessor =
-            PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
-                               VideoShortcodeProcessor.wordPressVideoPreProcessor,
-                               CalypsoProcessorIn()])
+        textView.inputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
+                                                     VideoShortcodeProcessor.wordPressVideoPreProcessor,
+                                                     CalypsoProcessorIn()])
 
-        textView.outputProcessor =
-            PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
-                               VideoShortcodeProcessor.wordPressVideoPostProcessor,
-                               CalypsoProcessorOut()])
+        textView.outputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
+                                                      VideoShortcodeProcessor.wordPressVideoPostProcessor,
+                                                      CalypsoProcessorOut()])
 
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
+
+        let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue),
+                                                            .foregroundColor: Colors.aztecLinkColor]
 
         textView.delegate = self
         textView.formattingDelegate = self
@@ -1592,35 +1593,35 @@ extension AztecPostViewController {
         mediaPickerController(mediaPicker.mediaPicker, didFinishPicking: mediaPicker.mediaPicker.selectedAssets)
     }
 
-    func toggleBold() {
+    @objc func toggleBold() {
         trackFormatBarAnalytics(stat: .editorTappedBold)
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
 
-    func toggleItalic() {
+    @objc func toggleItalic() {
         trackFormatBarAnalytics(stat: .editorTappedItalic)
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
 
-    func toggleUnderline() {
+    @objc func toggleUnderline() {
         trackFormatBarAnalytics(stat: .editorTappedUnderline)
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
 
 
-    func toggleStrikethrough() {
+    @objc func toggleStrikethrough() {
         trackFormatBarAnalytics(stat: .editorTappedStrikethrough)
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
-    func toggleOrderedList() {
+    @objc func toggleOrderedList() {
         trackFormatBarAnalytics(stat: .editorTappedOrderedList)
         richTextView.toggleOrderedList(range: richTextView.selectedRange)
     }
 
-    func toggleUnorderedList() {
+    @objc func toggleUnorderedList() {
         trackFormatBarAnalytics(stat: .editorTappedUnorderedList)
         richTextView.toggleUnorderedList(range: richTextView.selectedRange)
     }
@@ -1654,7 +1655,7 @@ extension AztecPostViewController {
     }
 
 
-    func toggleBlockquote() {
+    @objc func toggleBlockquote() {
         trackFormatBarAnalytics(stat: .editorTappedBlockquote)
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
@@ -1681,7 +1682,7 @@ extension AztecPostViewController {
     }
 
 
-    func toggleLink() {
+    @objc func toggleLink() {
         trackFormatBarAnalytics(stat: .editorTappedLink)
 
         var linkTitle = ""
@@ -1857,7 +1858,7 @@ extension AztecPostViewController {
         richTextView.reloadInputViews()
     }
 
-    @IBAction @objc func presentMediaPicker() {
+    @IBAction @objc func presentMediaPickerWasPressed() {
         if let item = formatBar.leadingItem {
             presentMediaPicker(fromButton: item, animated: true)
         }

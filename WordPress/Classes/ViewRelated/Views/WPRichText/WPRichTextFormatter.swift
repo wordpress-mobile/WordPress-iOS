@@ -64,7 +64,7 @@ class WPRichTextFormatter {
             ]
 
         if let defaultDocumentAttributes = defaultDocumentAttributes {
-            options[NSDefaultAttributesDocumentAttribute] = defaultDocumentAttributes as AnyObject?
+            options[.defaultAttributes] = defaultDocumentAttributes
         }
 
         var attrString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
