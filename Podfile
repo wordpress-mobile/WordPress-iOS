@@ -56,7 +56,7 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.24'
   pod 'WordPress-iOS-Editor', '1.9.7'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.14'
+  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.14.1'
 
   target 'WordPressTest' do
     inherit! :search_paths
