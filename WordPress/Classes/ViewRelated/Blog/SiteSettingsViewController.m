@@ -492,7 +492,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             if ([timeZoneString isEqualToString:@""]) {
                 long hoursUTC = self.blog.settings.gmtOffset.integerValue;
                 long minutesUTC = ([self.blog.settings.gmtOffset doubleValue] - hoursUTC) * 60;
-                NSString *utcString = [NSString stringWithFormat:@"UTC %+ld:%ld", hoursUTC, minutesUTC];
+                NSString *utcString;
+                if (minutesUTC == 0) {
+                    utcString = [NSString stringWithFormat:@"UTC %+ld", hoursUTC];
+                } else {
+                    utcString = [NSString stringWithFormat:@"UTC %+ld:%ld", hoursUTC, minutesUTC];
+                }
                 [self.timeZoneTextCell setTextValue:utcString];
             } else {
                 [self.timeZoneTextCell setTextValue:timeZoneString];
@@ -662,6 +667,14 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showTimeZoneSelector
+{
+    TimeZoneSelectorViewController *vc = [[TimeZoneSelectorViewController alloc] init];
+    vc.usersCurrentTimeZone = self.blog.settings.timeZoneString;
+    vc.usersManualOffset = self.blog.settings.gmtOffset;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)showLanguageSelectorForBlog:(Blog *)blog
 {
     NSParameterAssert(blog);
@@ -698,6 +711,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             
         case SiteSettingsGeneralLanguage:
             [self showLanguageSelectorForBlog:self.blog];
+            break;
+
+        case SiteSettingsGeneralTimeZone:
+            [self showTimeZoneSelector];
             break;
     }
 }
