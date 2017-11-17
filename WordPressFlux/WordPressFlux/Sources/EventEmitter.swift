@@ -19,18 +19,18 @@ public class EventListener {
 }
 
 public protocol EventEmitter: class {
-    var dispatcher: GenericDispatcher<Void> { get }
+    var changeDispatcher: Dispatcher<Void> { get }
     func onChange(_ handler: @escaping () -> Void) -> EventListener
 }
 
 public extension EventEmitter {
     func onChange(_ handler: @escaping () -> Void) -> EventListener {
-        let token = dispatcher.register(callback: handler)
+        let token = changeDispatcher.register(callback: handler)
         return EventListener(dispatchToken: token, emitter: self)
     }
 
     func emitChange() {
-        dispatcher.dispatch()
+        changeDispatcher.dispatch()
     }
 
     func removeListener(_ listener: EventListener) {
@@ -43,7 +43,7 @@ public extension EventEmitter {
             assertionFailure("Attempting to remove a listener that's registered to a different emitter.")
             return
         }
-        dispatcher.unregister(token: token)
+        changeDispatcher.unregister(token: token)
         listener.dispatchToken = nil
     }
 }
