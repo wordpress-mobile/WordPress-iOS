@@ -1,5 +1,3 @@
-import Foundation
-
 public struct DispatchToken: Hashable, Equatable {
     private let uuid = UUID()
 
