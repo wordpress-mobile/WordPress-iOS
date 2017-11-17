@@ -1,9 +1,4 @@
 public protocol Action {}
-extension Action {
-    func dispatch(dispatcher: ActionDispatcher = .global) {
-        dispatcher.dispatch(self)
-    }
-}
 
 public class ActionDispatcher: Dispatcher<Action> {
     public static let global = ActionDispatcher()
