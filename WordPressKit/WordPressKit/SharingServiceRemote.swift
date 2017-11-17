@@ -16,7 +16,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: An `NSError` object.
     ///
-    func errorForUnexpectedResponse(_ httpResponse: HTTPURLResponse?) -> NSError {
+    @objc func errorForUnexpectedResponse(_ httpResponse: HTTPURLResponse?) -> NSError {
         let failureReason = "The request returned an unexpected type."
         let domain = "org.wordpress.sharing-management"
         let code = 0
@@ -41,7 +41,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting an array of `RemotePublicizeService` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func getPublicizeServices(_ success: (([RemotePublicizeService]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func getPublicizeServices(_ success: (([RemotePublicizeService]) -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "meta/external-services"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let params = ["type": "publicize"]
@@ -98,7 +98,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting an array of `KeyringConnection` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func getKeyringConnections(_ success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func getKeyringConnections(_ success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "me/keyring-connections"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
@@ -174,7 +174,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting an array of `RemotePublicizeConnection` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func getPublicizeConnections(_ siteID: NSNumber, success: (([RemotePublicizeConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func getPublicizeConnections(_ siteID: NSNumber, success: (([RemotePublicizeConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
@@ -213,7 +213,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting a `RemotePublicizeConnection` object.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func createPublicizeConnection(_ siteID: NSNumber,
+    @objc open func createPublicizeConnection(_ siteID: NSNumber,
         keyringConnectionID: NSNumber,
         externalUserID: String?,
         success: ((RemotePublicizeConnection) -> Void)?,
@@ -259,7 +259,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func updatePublicizeConnectionWithID(_ connectionID: NSNumber,
+    @objc open func updatePublicizeConnectionWithID(_ connectionID: NSNumber,
         externalID: String?,
         forSite siteID: NSNumber,
         success: ((RemotePublicizeConnection) -> Void)?,
@@ -302,7 +302,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func updatePublicizeConnectionWithID(_ connectionID: NSNumber,
+    @objc open func updatePublicizeConnectionWithID(_ connectionID: NSNumber,
         shared: Bool,
         forSite siteID: NSNumber,
         success: ((RemotePublicizeConnection) -> Void)?,
@@ -342,7 +342,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func deletePublicizeConnection(_ siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func deletePublicizeConnection(_ siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
@@ -415,7 +415,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting an array of `RemoteSharingButton` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func getSharingButtonsForSite(_ siteID: NSNumber, success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func getSharingButtonsForSite(_ siteID: NSNumber, success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
@@ -450,7 +450,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting an array of `RemoteSharingButton` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    open func updateSharingButtonsForSite(_ siteID: NSNumber, sharingButtons: [RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func updateSharingButtonsForSite(_ siteID: NSNumber, sharingButtons: [RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let buttons = dictionariesFromRemoteSharingButtons(sharingButtons)

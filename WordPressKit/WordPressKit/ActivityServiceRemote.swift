@@ -62,7 +62,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Returns: A restoreID to check the status of the rewind request.
     ///
-    public func restoreSite(_ siteID: Int,
+    @objc public func restoreSite(_ siteID: Int,
                             rewindID: String,
                             success: @escaping (_ restoreID: String) -> Void,
                             failure: @escaping (Error) -> Void) {
