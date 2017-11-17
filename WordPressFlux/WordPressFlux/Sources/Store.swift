@@ -1,5 +1,3 @@
-import Foundation
-
 open class Store: Observable {
     public let actionDispatcher: ActionDispatcher
     private var dispatchReceipt: Receipt?
@@ -15,5 +13,4 @@ open class Store: Observable {
     open func onDispatch(_ action: Action) {
         // Subclasses should override this
     }
-
 }
