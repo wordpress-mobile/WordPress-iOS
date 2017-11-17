@@ -16,6 +16,11 @@
                                success:(void (^)(void))success
                                failure:(void (^)(NSError *error))failure;
 
+- (void)requestSocial2FACodeWithUserID:(NSInteger)userID
+                                 nonce:(NSString *)nonce
+                               success:(void (^)(NSString *newNonce))success
+                               failure:(void (^)(NSError *error, NSString *newNonce))failure;
+
 - (void)authenticateWithGoogleIDToken:(NSString *)token
                               success:(void (^)(NSString *authToken))success
                      needsMultiFactor:(void (^)(NSInteger userID, SocialLogin2FANonceInfo *nonceInfo))needsMultifactor
