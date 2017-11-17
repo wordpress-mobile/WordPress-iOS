@@ -101,6 +101,7 @@ class ProgressIndicatorView: UIView {
         configureLayer(progressLayer)
         progressTrackLayer.addSublayer(progressLayer)
         progressLayer.isHidden = false
+        progressLayer.strokeEnd = 0.0
     }
 
     func configureLayer(_ layer: CAShapeLayer) {
