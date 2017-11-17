@@ -4,12 +4,13 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case iCloudFilesSupport
-    case newMediaExports
     case pluginManagement
     case googleLogin
+    case socialSignup
     case jetpackDisconnect
-    case jetpackCommentsOnReader
+    case asyncUploadsInMediaLibrary
     case activity
+    case siteCreation
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -18,17 +19,19 @@ enum FeatureFlag: Int {
             return true
         case .iCloudFilesSupport:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .newMediaExports:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .pluginManagement:
             return BuildConfiguration.current == .localDeveloper
         case .googleLogin:
             return true
+        case .socialSignup:
+            return false // placeholder until the first social signup screen is added
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .jetpackCommentsOnReader:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+        case .asyncUploadsInMediaLibrary:
+            return BuildConfiguration.current == .localDeveloper
         case .activity:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .siteCreation:
             return BuildConfiguration.current == .localDeveloper
         }
     }
