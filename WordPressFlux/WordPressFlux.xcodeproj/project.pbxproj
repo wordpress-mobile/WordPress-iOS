@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E111D6451FBF01E3007641D0 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E111D6441FBF01E3007641D0 /* Receipt.swift */; };
 		E12F96EE1FBC67AC00329E2E /* WordPressFlux.h in Headers */ = {isa = PBXBuildFile; fileRef = E12F96EC1FBC67AC00329E2E /* WordPressFlux.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E181A6FB1FBC6AFB0083D849 /* EventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F51FBC6AFA0083D849 /* EventEmitter.swift */; };
+		E181A6FB1FBC6AFB0083D849 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F51FBC6AFA0083D849 /* Observable.swift */; };
 		E181A6FC1FBC6AFB0083D849 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F61FBC6AFA0083D849 /* Store.swift */; };
 		E181A6FD1FBC6AFB0083D849 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F71FBC6AFA0083D849 /* Dispatcher.swift */; };
 		E181A6FE1FBC6AFB0083D849 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F81FBC6AFA0083D849 /* Action.swift */; };
@@ -18,10 +19,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E111D6441FBF01E3007641D0 /* Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
 		E12F96E91FBC67AC00329E2E /* WordPressFlux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressFlux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E12F96EC1FBC67AC00329E2E /* WordPressFlux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressFlux.h; sourceTree = "<group>"; };
 		E12F96ED1FBC67AC00329E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E181A6F51FBC6AFA0083D849 /* EventEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventEmitter.swift; sourceTree = "<group>"; };
+		E181A6F51FBC6AFA0083D849 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		E181A6F61FBC6AFA0083D849 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		E181A6F71FBC6AFA0083D849 /* Dispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
 		E181A6F81FBC6AFA0083D849 /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
@@ -71,10 +73,11 @@
 			isa = PBXGroup;
 			children = (
 				E181A6F81FBC6AFA0083D849 /* Action.swift */,
-				E181A6F51FBC6AFA0083D849 /* EventEmitter.swift */,
+				E181A6F51FBC6AFA0083D849 /* Observable.swift */,
 				E181A6F71FBC6AFA0083D849 /* Dispatcher.swift */,
 				E181A7001FBC6B010083D849 /* Query.swift */,
 				E181A7011FBC6B010083D849 /* QueryStore.swift */,
+				E111D6441FBF01E3007641D0 /* Receipt.swift */,
 				E19FED0C1FBD8F4300D77FAB /* StatefulStore.swift */,
 				E181A6F61FBC6AFA0083D849 /* Store.swift */,
 			);
@@ -165,9 +168,10 @@
 				E181A7021FBC6B010083D849 /* Query.swift in Sources */,
 				E19FED0D1FBD8F4300D77FAB /* StatefulStore.swift in Sources */,
 				E181A6FD1FBC6AFB0083D849 /* Dispatcher.swift in Sources */,
+				E111D6451FBF01E3007641D0 /* Receipt.swift in Sources */,
 				E181A6FE1FBC6AFB0083D849 /* Action.swift in Sources */,
 				E181A7031FBC6B010083D849 /* QueryStore.swift in Sources */,
-				E181A6FB1FBC6AFB0083D849 /* EventEmitter.swift in Sources */,
+				E181A6FB1FBC6AFB0083D849 /* Observable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

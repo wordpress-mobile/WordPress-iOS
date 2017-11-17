@@ -5,7 +5,7 @@ protocol PluginPresenter: class {
     func present(plugin: PluginState, capabilities: SitePluginCapabilities)
 }
 
-class PluginListViewModel: EventEmitter {
+class PluginListViewModel: Observable {
     enum State {
         case loading
         case ready(SitePlugins)
@@ -21,24 +21,24 @@ class PluginListViewModel: EventEmitter {
     }
 
     private let store: PluginStore
-    private var listener: EventListener?
-    private var dispatchToken: DispatchToken?
-    private var querySubscription: QuerySubscription?
+    private var storeReceipt: Receipt?
+    private var actionReceipt: Receipt?
+    private var queryReceipt: Receipt?
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID
         self.store = store
-        listener = store.onChange { [weak self] in
+        storeReceipt = store.onChange { [weak self] in
             self?.refreshPlugins()
         }
-        dispatchToken = ActionDispatcher.global.register(callback: { [weak self] (action) in
+        actionReceipt = ActionDispatcher.global.subscribe { [weak self] (action) in
             guard case PluginAction.receivePluginsFailed(let receivedSiteID, let error) = action,
                 case receivedSiteID = siteID else {
                     return
             }
             self?.state = .error(error.localizedDescription)
-        })
-        querySubscription = store.query(.all(siteID: siteID))
+        }
+        queryReceipt = store.query(.all(siteID: siteID))
         refreshPlugins()
     }
 
