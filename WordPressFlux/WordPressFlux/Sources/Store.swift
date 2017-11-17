@@ -1,16 +1,16 @@
 import Foundation
 
 open class Store: EventEmitter {
-    public let globalDispatcher: Dispatcher
+    public let actionDispatcher: ActionDispatcher
     private var dispatchToken: DispatchToken!
-    public let dispatcher = GenericDispatcher<Void>()
+    public let changeDispatcher = Dispatcher<Void>()
 
     deinit {
-        globalDispatcher.unregister(token: dispatchToken)
+        actionDispatcher.unregister(token: dispatchToken)
     }
 
-    public init(dispatcher: Dispatcher = .global) {
-        globalDispatcher = dispatcher
+    public init(dispatcher: ActionDispatcher = .global) {
+        actionDispatcher = dispatcher
         dispatchToken = dispatcher.register(callback: { [weak self] (action) in
             self?.onDispatch(action)
         })
