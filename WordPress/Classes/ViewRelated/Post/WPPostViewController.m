@@ -1773,7 +1773,7 @@ UIDocumentPickerDelegate
 
 - (void)cancelMediaUploads
 {
-    [self.mediaProgressCoordinator cancelAllPendingUploads];
+    [self.mediaProgressCoordinator cancelAndStopAllPendingUploads];
     for (NSString *mediaID in self.mediaProgressCoordinator.allCancelledIDs) {
         [self.editorView removeImage:mediaID];
         [self.editorView removeVideo:mediaID];
