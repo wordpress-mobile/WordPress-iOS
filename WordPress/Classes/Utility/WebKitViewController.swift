@@ -6,7 +6,6 @@ import WebKit
 class WebKitViewController: UIViewController {
     let webView = WKWebView()
     let progressView = WebProgressView()
-    let toolbar = UIToolbar()
     let titleView = NavigationTitleView()
 
     var backButton: UIBarButtonItem?
@@ -51,9 +50,6 @@ class WebKitViewController: UIViewController {
             progressView,
             webView
             ])
-        if !secureInteraction {
-            stackView.addArrangedSubview(toolbar)
-        }
         stackView.axis = .vertical
         view = stackView
     }
@@ -132,7 +128,8 @@ class WebKitViewController: UIViewController {
     }
 
     func configureToolbar() {
-        toolbar.barTintColor = UIColor.white
+        navigationController?.isToolbarHidden = secureInteraction
+        navigationController?.toolbar.barTintColor = UIColor.white
 
         backButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
                                      style: .plain,
@@ -156,7 +153,7 @@ class WebKitViewController: UIViewController {
 
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        toolbar.items = [
+        let items = [
             backButton!,
             space,
             forwardButton!,
@@ -166,9 +163,11 @@ class WebKitViewController: UIViewController {
             safariButton!
         ]
 
-        toolbar.items?.forEach({ (button) in
+        items.forEach({ (button) in
             button.tintColor = WPStyleGuide.greyLighten10()
         })
+
+        setToolbarItems(items, animated: false)
     }
 
     func close() {
