@@ -1055,6 +1055,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService removeBlog:self.blog];
+    [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

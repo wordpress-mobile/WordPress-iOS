@@ -48,7 +48,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be called on success.
     ///     - failure: Optional closure to be called on failure.
     ///
-    open func updateSettings(_ settings: [String: AnyObject], success: (() -> ())?, failure: ((NSError?) -> Void)?) {
+    @objc open func updateSettings(_ settings: [String: AnyObject], success: (() -> ())?, failure: ((NSError?) -> Void)?) {
         let path = String(format: "me/notifications/settings/")
         let requestUrl = self.path(forEndpoint: path, withVersion: ._1_1)
 
@@ -73,7 +73,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be called on success.
     ///     - failure: Optional closure to be called on failure.
     ///
-    open func registerDeviceForPushNotifications(_ token: String, pushNotificationAppId: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
+    @objc open func registerDeviceForPushNotifications(_ token: String, pushNotificationAppId: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
         let endpoint = "devices/new"
         let requestUrl = path(forEndpoint: endpoint, withVersion: ._1_1)
 
@@ -117,7 +117,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be called on success.
     ///     - failure: Optional closure to be called on failure.
     ///
-    open func unregisterDeviceForPushNotifications(_ deviceId: String, success: (() -> ())?, failure: ((NSError) -> Void)?) {
+    @objc open func unregisterDeviceForPushNotifications(_ deviceId: String, success: (() -> ())?, failure: ((NSError) -> Void)?) {
         let endpoint = String(format: "devices/%@/delete", deviceId)
         let requestUrl = path(forEndpoint: endpoint, withVersion: ._1_1)
 
