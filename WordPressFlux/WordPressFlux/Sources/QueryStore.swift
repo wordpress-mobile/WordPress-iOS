@@ -1,7 +1,7 @@
-private struct QueryRef<QueryType> where QueryType: Query {
-    let query: QueryType
+private struct QueryRef {
+    let query: Query
     let token = DispatchToken()
-    init(_ query: QueryType) {
+    init(_ query: Query) {
         self.query = query
     }
 }
@@ -28,18 +28,18 @@ public class QuerySubscription {
     }
 }
 
-open class QueryStore<State, QueryType>: StatefulStore<State>, QueryProcessor where QueryType: Query {
-    fileprivate var activeQueryReferences = [QueryRef<QueryType>]() {
+open class QueryStore<State>: StatefulStore<State>, QueryProcessor {
+    fileprivate var activeQueryReferences = [QueryRef]() {
         didSet {
             queriesChanged()
         }
     }
 
-    public var activeQueries: [QueryType] {
+    public var activeQueries: [Query] {
         return activeQueryReferences.map({ $0.query })
     }
 
-    public func query(_ query: QueryType) -> QuerySubscription {
+    public func query(_ query: Query) -> QuerySubscription {
         let queryRef = QueryRef(query)
         activeQueryReferences.append(queryRef)
         return QuerySubscription(dispatchToken: queryRef.token, processor: self)
