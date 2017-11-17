@@ -12,7 +12,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var viewModel: PluginListViewModel
 
     fileprivate let noResultsView = WPNoResultsView()
-    var viewModelListener: EventListener?
+    var viewModelReceipt: Receipt?
 
     init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.siteID = siteID
@@ -38,7 +38,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
-        viewModelListener = viewModel.onChange { [weak self] in
+        viewModelReceipt = viewModel.onChange { [weak self] in
             self?.refreshModel()
         }
         refreshModel()

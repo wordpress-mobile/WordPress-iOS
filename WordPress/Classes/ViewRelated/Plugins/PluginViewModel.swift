@@ -1,7 +1,7 @@
 import Foundation
 import WordPressFlux
 
-class PluginViewModel: EventEmitter {
+class PluginViewModel: Observable {
     var plugin: PluginState {
         didSet {
             changeDispatcher.dispatch()
@@ -9,14 +9,14 @@ class PluginViewModel: EventEmitter {
     }
     let capabilities: SitePluginCapabilities
     let siteID: Int
-    var listener: EventListener?
+    var storeReceipt: Receipt?
     let changeDispatcher = Dispatcher<Void>()
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
         self.capabilities = capabilities
         self.siteID = siteID
-        listener = store.onChange { [weak self] in
+        storeReceipt = store.onChange { [weak self] in
             guard let plugin = store.getPlugin(id: plugin.id, siteID: siteID) else {
                 self?.dismiss?()
                 return

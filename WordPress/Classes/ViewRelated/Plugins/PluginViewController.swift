@@ -15,7 +15,7 @@ class PluginViewController: UITableViewController {
     }()
 
     fileprivate let viewModel: PluginViewModel
-    var viewModelListener: EventListener?
+    var viewModelReceipt: Receipt?
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int) {
         self.plugin = plugin
@@ -41,7 +41,7 @@ class PluginViewController: UITableViewController {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginViewModel.immutableRows, tableView: tableView)
-        viewModelListener = viewModel.onChange { [weak self] in
+        viewModelReceipt = viewModel.onChange { [weak self] in
             self?.bindViewModel()
         }
         bindViewModel()
