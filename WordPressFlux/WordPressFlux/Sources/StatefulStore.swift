@@ -9,7 +9,7 @@ open class StatefulStore<State>: Store {
         }
     }
 
-    public init(initialState: State, dispatcher: Dispatcher = .global) {
+    public init(initialState: State, dispatcher: ActionDispatcher = .global) {
         state = initialState
         super.init(dispatcher: dispatcher)
     }

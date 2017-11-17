@@ -31,7 +31,7 @@ struct PluginStoreState {
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
 
-    init(dispatcher: Dispatcher = .global) {
+    init(dispatcher: ActionDispatcher = .global) {
         super.init(initialState: PluginStoreState(), dispatcher: dispatcher)
     }
 
@@ -194,11 +194,11 @@ private extension PluginStore {
         state.fetching[siteID] = true
         remote.getPlugins(
             siteID: siteID,
-            success: { [globalDispatcher] (plugins) in
-                globalDispatcher.dispatch(PluginAction.receivePlugins(siteID: siteID, plugins: plugins))
+            success: { [actionDispatcher] (plugins) in
+                actionDispatcher.dispatch(PluginAction.receivePlugins(siteID: siteID, plugins: plugins))
             },
-            failure: { [globalDispatcher] (error) in
-                globalDispatcher.dispatch(PluginAction.receivePluginsFailed(siteID: siteID, error: error))
+            failure: { [actionDispatcher] (error) in
+                actionDispatcher.dispatch(PluginAction.receivePluginsFailed(siteID: siteID, error: error))
         })
     }
 

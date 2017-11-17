@@ -13,10 +13,10 @@ class PluginListViewModel: EventEmitter {
     }
 
     let siteID: Int
-    let dispatcher = GenericDispatcher<Void>()
+    let changeDispatcher = Dispatcher<Void>()
     private var state: State = .loading {
         didSet {
-            dispatcher.dispatch()
+            changeDispatcher.dispatch()
         }
     }
 
@@ -31,7 +31,7 @@ class PluginListViewModel: EventEmitter {
         listener = store.onChange { [weak self] in
             self?.refreshPlugins()
         }
-        dispatchToken = Dispatcher.global.register(callback: { [weak self] (action) in
+        dispatchToken = ActionDispatcher.global.register(callback: { [weak self] (action) in
             guard case PluginAction.receivePluginsFailed(let receivedSiteID, let error) = action,
                 case receivedSiteID = siteID else {
                     return

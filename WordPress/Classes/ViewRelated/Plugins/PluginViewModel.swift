@@ -4,13 +4,13 @@ import WordPressFlux
 class PluginViewModel: EventEmitter {
     var plugin: PluginState {
         didSet {
-            dispatcher.dispatch()
+            changeDispatcher.dispatch()
         }
     }
     let capabilities: SitePluginCapabilities
     let siteID: Int
     var listener: EventListener?
-    let dispatcher = GenericDispatcher<Void>()
+    let changeDispatcher = Dispatcher<Void>()
 
     init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
@@ -113,7 +113,7 @@ class PluginViewModel: EventEmitter {
         alert.addDestructiveActionWithTitle(
             NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
-                Dispatcher.dispatch(PluginAction.remove(id: self.plugin.id, siteID: self.siteID))
+                ActionDispatcher.dispatch(PluginAction.remove(id: self.plugin.id, siteID: self.siteID))
             }
         )
         return alert
@@ -121,17 +121,17 @@ class PluginViewModel: EventEmitter {
 
     private func setActive(_ active: Bool) {
         if active {
-            Dispatcher.dispatch(PluginAction.activate(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.activate(id: plugin.id, siteID: siteID))
         } else {
-            Dispatcher.dispatch(PluginAction.deactivate(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.deactivate(id: plugin.id, siteID: siteID))
         }
     }
 
     private func setAutoupdate(_ autoupdate: Bool) {
         if autoupdate {
-            Dispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, siteID: siteID))
         } else {
-            Dispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, siteID: siteID))
         }
     }
 
