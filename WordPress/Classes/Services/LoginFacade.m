@@ -61,6 +61,23 @@
     }];
 }
 
+- (void)requestSocial2FACodeWithLoginFields:(LoginFields *)loginFields
+{
+    [self.wordpressComOAuthClientFacade requestSocial2FACodeWithUserID:loginFields.nonceUserID
+                                                                nonce:loginFields.nonceInfo.nonceSMS
+                                                                 success:^(NSString *newNonce) {
+                                                                     if (newNonce) {
+                                                                         loginFields.nonceInfo.nonceSMS = newNonce;
+                                                                     }
+                                                                     [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
+                                                                 } failure:^(NSError *error, NSString *newNonce) {
+                                                                     if (newNonce) {
+                                                                         loginFields.nonceInfo.nonceSMS = newNonce;
+                                                                     }
+                                                                     DDLogError(@"Failed to request one time code");
+                                                                 }];
+}
+
 - (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken
 {
     if ([self.delegate respondsToSelector:@selector(displayLoginMessage:)]) {
