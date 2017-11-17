@@ -11,7 +11,7 @@ enum PluginAction: Action {
     case receivePluginsFailed(siteID: Int, error: Error)
 }
 
-enum PluginQuery: Query {
+enum PluginQuery {
     case all(siteID: Int)
 
     var siteID: Int {
