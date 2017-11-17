@@ -29,7 +29,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         localizeControls()
         configureTextFields()
         configureSubmitButton(animating: false)
-        configureSendCodeButton()
     }
 
 
@@ -89,16 +88,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     ///
     func configureTextFields() {
         verificationCodeField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-    }
-
-    /// Hides the send code button when appropriate
-    ///
-    func configureSendCodeButton() {
-        guard let _ = loginFields.nonceInfo else {
-            return
-        }
-        sendCodeButton.isEnabled = false
-        sendCodeButton.setTitle("", for: .normal)
     }
 
 
@@ -225,7 +214,12 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
         SVProgressHUD.showDismissibleSuccess(withStatus: message)
 
-        loginFacade.requestOneTimeCode(with: loginFields)
+        if let _ = loginFields.nonceInfo {
+            // social login
+            loginFacade.requestSocial2FACode(with: loginFields)
+        } else {
+            loginFacade.requestOneTimeCode(with: loginFields)
+        }
     }
 
 
