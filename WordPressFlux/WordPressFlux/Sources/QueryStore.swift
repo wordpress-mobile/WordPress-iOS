@@ -6,29 +6,7 @@ private struct QueryRef<QueryType> where QueryType: Query {
     }
 }
 
-public protocol QueryProcessor: class {
-    func stop(query: QuerySubscription)
-}
-
-public class QuerySubscription {
-    fileprivate let dispatchToken: DispatchToken
-    private weak var processor: QueryProcessor?
-
-    fileprivate init(dispatchToken: DispatchToken, processor: QueryProcessor) {
-        self.dispatchToken = dispatchToken
-        self.processor = processor
-    }
-
-    deinit {
-        stopListening()
-    }
-
-    private func stopListening() {
-        processor?.stop(query: self)
-    }
-}
-
-open class QueryStore<State, QueryType>: StatefulStore<State>, QueryProcessor where QueryType: Query {
+open class QueryStore<State, QueryType>: StatefulStore<State>, Unsubscribable where QueryType: Query {
     fileprivate var activeQueryReferences = [QueryRef<QueryType>]() {
         didSet {
             queriesChanged()
@@ -39,18 +17,14 @@ open class QueryStore<State, QueryType>: StatefulStore<State>, QueryProcessor wh
         return activeQueryReferences.map({ $0.query })
     }
 
-    public func query(_ query: QueryType) -> QuerySubscription {
+    public func query(_ query: QueryType) -> Receipt {
         let queryRef = QueryRef(query)
         activeQueryReferences.append(queryRef)
-        return QuerySubscription(dispatchToken: queryRef.token, processor: self)
+        return Receipt(token: queryRef.token, owner: self)
     }
 
-    public func stop(query subscription: QuerySubscription) {
-        stopQuery(token: subscription.dispatchToken)
-    }
-
-    fileprivate func stopQuery(token: DispatchToken) {
-        guard let index = activeQueryReferences.index(where: { $0.token == token }) else {
+    public func unsubscribe(receipt: Receipt) {
+        guard let index = activeQueryReferences.index(where: { $0.token == receipt.token }) else {
             assertionFailure("Stopping a query that's not active")
             return
         }

@@ -19,7 +19,7 @@ public class Dispatcher<Payload> {
 
     private var observers = [DispatchToken: Callback]()
 
-    public func register(callback: @escaping Callback) -> DispatchToken {
+    public func register(_ callback: @escaping Callback) -> DispatchToken {
         assertMainThread()
         let token = DispatchToken()
         observers[token] = callback
@@ -40,6 +40,17 @@ public class Dispatcher<Payload> {
 
     private func assertMainThread(file: StaticString = #file, line: UInt = #line) {
         assert(Thread.current.isMainThread, "Dispatcher should only be called from the main thread", file: file, line: line)
+    }
+}
+
+extension Dispatcher: Unsubscribable {
+    public func subscribe(_ callback: @escaping Callback) -> Receipt {
+        let token = register(callback)
+        return Receipt(token: token, owner: self)
+    }
+
+    public func unsubscribe(receipt: Receipt) {
+        unregister(token: receipt.token)
     }
 }
 
