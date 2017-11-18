@@ -20,7 +20,7 @@ class SiteTypeTableViewController: UITableViewController {
     }
     
     func setupTable() {
-        ImmuTable.registerRows([InstructionRow.self], tableView: tableView)
+        ImmuTable.registerRows([InstructionRow.self, SiteTypeRow.self], tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         tableHandler.viewModel = tableViewModel()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
@@ -48,10 +48,27 @@ class SiteTypeTableViewController: UITableViewController {
         let instr2 = NSLocalizedString("Choose an option below:", comment: "Choose site type prompt.")
         let instructionRow = InstructionRow(step: step, instr1: instr1, instr2: instr2, action: nil)
         
+        // TODO - add images
+        
+        let blog = NSLocalizedString("Start with a Blog", comment: "Start with site type.")
+        let blogDescr = NSLocalizedString("To share your ideas, stories and photographs with your followers.", comment: "Site type description.")
+        let blogRow = SiteTypeRow(startWith: blog, typeDescr: blogDescr, typeImage: nil, action: nil)
+
+        let website = NSLocalizedString("Start with a Website", comment: "Start with site type.")
+        let websiteDescr = NSLocalizedString("To promote your business or brand, and connect with your audience.", comment: "Site type description.")
+        let websiteRow = SiteTypeRow(startWith: website, typeDescr: websiteDescr, typeImage: nil, action: nil)
+        
+        let portfolio = NSLocalizedString("Start with a Portfolio", comment: "Start with site type.")
+        let portfolioDescr = NSLocalizedString("To present your creative projects in a visual showcase.", comment: "Site type description.")
+        let portfolioRow = SiteTypeRow(startWith: portfolio, typeDescr: portfolioDescr, typeImage: nil, action: nil)
+        
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
-                    instructionRow
+                    instructionRow,
+                    blogRow,
+                    websiteRow,
+                    portfolioRow
                 ])
             ])
     }
