@@ -16,6 +16,10 @@ class InstructionTableViewCell: WPTableViewCell {
 
 class SiteTypeTableViewCell: WPTableViewCell {
 
+    @IBOutlet weak var typeImageView: UIImageView!
+    @IBOutlet weak var startWithLabel: UILabel!
+    @IBOutlet weak var typeDescrLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -52,3 +56,25 @@ struct InstructionRow: ImmuTableRow {
     }
 }
 
+struct SiteTypeRow: ImmuTableRow {
+    typealias CellType = SiteTypeTableViewCell
+    
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "SiteTypeTableViewCell", bundle: Bundle(for: CellType.self))
+        return ImmuTableCell.nib(nib, CellType.self)
+    }()
+    
+    let startWith: String
+    let typeDescr: String
+    let typeImage: UIImage? // TODO - make this required when have images.
+    let action: ImmuTableAction?
+    
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! CellType
+        cell.accessoryType = .disclosureIndicator
+        cell.selectionStyle = .none
+        cell.startWithLabel.text = startWith
+        cell.typeDescrLabel.text = typeDescr
+        cell.typeImageView.image = typeImage
+    }
+}
