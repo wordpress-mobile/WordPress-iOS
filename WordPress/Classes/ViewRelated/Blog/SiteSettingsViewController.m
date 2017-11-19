@@ -24,9 +24,9 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
+    SiteSettingsGeneralTimeZone,
     SiteSettingsGeneralPrivacy,
     SiteSettingsGeneralLanguage,
-    SiteSettingsGeneralTimeZone,
     SiteSettingsGeneralCount,
 };
 
