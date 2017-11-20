@@ -386,6 +386,12 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     [parameters setValueIfNotNil:settings.privacy forKey:RemoteBlogPrivacyKey];
     [parameters setValueIfNotNil:settings.languageID forKey:RemoteBlogLanguageKey];
     [parameters setValueIfNotNil:settings.iconMediaID forKey:RemoteBlogIconKey];
+    if (!settings.timeZoneString || [settings.timeZoneString isEqualToString:@""]) {
+        NSString *utcString = [NSString stringWithFormat:@"UTC%+.2f", settings.gmtOffset.floatValue];
+        [parameters setValue:utcString forKey:RemoteBlogTimeZoneStringKey];
+    } else {
+        [parameters setValueIfNotNil:settings.timeZoneString forKey:RemoteBlogTimeZoneStringKey];
+    }
 
     [parameters setValueIfNotNil:settings.defaultCategoryID forKey:RemoteBlogDefaultCategoryKey];
     [parameters setValueIfNotNil:settings.defaultPostFormat forKey:RemoteBlogDefaultPostFormatKey];

@@ -685,6 +685,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     TimeZoneSelectorViewController *vc = [[TimeZoneSelectorViewController alloc] init];
     vc.usersCurrentTimeZone = self.blog.settings.timeZoneString;
     vc.usersManualOffset = self.blog.settings.gmtOffset;
+    __weak __typeof__(self) weakSelf = self;
+
+    vc.onChange = ^(NSString * _Nonnull timezoneString, NSNumber * _Nullable manualOffset){
+        if (manualOffset == nil) {
+            weakSelf.blog.settings.timeZoneString = timezoneString;
+        } else {
+            weakSelf.blog.settings.timeZoneString = @"";
+        }
+        weakSelf.blog.settings.gmtOffset = manualOffset;
+        [weakSelf saveSettings];
+    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 

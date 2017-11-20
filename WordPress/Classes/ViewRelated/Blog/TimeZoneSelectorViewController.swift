@@ -14,11 +14,16 @@ class TimeZoneSelectorViewController: UITableViewController {
     var continentNames: [String] = []
     /// used to show text in cell sorted by continent
     var timezoneNamesSortedByContinent: [String: [String]] = [:]
+    /// all timezones from CoreData DB
     var allTimezones: [TimezoneInfo] = []
     /// users current timezone passed by SiteSettingsVC, if empty means manual offset is to be used
     var usersCurrentTimeZone: String?
     /// users manual offset passed by SiteSettingsVC
     var usersManualOffset: NSNumber?
+
+    /// timezoneString will be set if user selects anything other than Manual Offset section
+    /// manualOffset will be set if users selects anything from Manual Offset section
+    @objc var onChange: ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?
     /// constant used below in string checks
     let MANUAL_OFFSET: String = "Manual Offsets"
 
@@ -188,6 +193,21 @@ class TimeZoneSelectorViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        self.navigationController?.popViewController(animated: true)
+        let continentName = self.continentNames[indexPath.section]
+        let timezoneLabel = self.timezoneNamesSortedByContinent[continentName]?[indexPath.row]
+        let timezoneValue = self.allTimezones.first(where: { $0.label == timezoneLabel })?.value
+        var manualOffset: NSNumber?
+        var timezoneString: String = ""
+        if continentName == self.MANUAL_OFFSET,
+            let numberString = timezoneValue?.components(separatedBy: "UTC").last,
+            let floatVal = Float(numberString) {
+            let manualOffsetNumber: NSNumber = NSNumber(value: floatVal)
+            manualOffset = manualOffsetNumber
+        } else {
+            timezoneString = timezoneValue ?? ""
+        }
+        self.onChange?(timezoneString, manualOffset)
     }
 
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
