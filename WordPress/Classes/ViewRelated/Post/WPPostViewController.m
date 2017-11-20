@@ -1736,7 +1736,7 @@ UIDocumentPickerDelegate
 
 }
 
-- (void)mediaProgressCoordinator:(MediaProgressCoordinator *)mediaProgressCoordinator progressDidChange:(float)progress {
+- (void)mediaProgressCoordinator:(MediaProgressCoordinator *)mediaProgressCoordinator progressDidChange:(double)progress {
     [self refreshMediaProgress];
 }
 
@@ -1877,7 +1877,7 @@ UIDocumentPickerDelegate
     // during serialization, and we'll get a crash if we attempt to add a nil
     // child to mediaGlobalProgress.
     if (uploadProgress) {
-        [self.mediaProgressCoordinator trackWithProgress:uploadProgress ofObject:media withMediaID:mediaUniqueId];
+        [self.mediaProgressCoordinator trackProgress:uploadProgress ofMedia:media withIdentifier:mediaUniqueId];
     }
 }
 
@@ -1885,7 +1885,7 @@ UIDocumentPickerDelegate
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
 
-    Media *media = [self.mediaProgressCoordinator mediaForMediaID:imageUniqueId];
+    Media *media = [self.mediaProgressCoordinator mediaWithIdentifier:imageUniqueId];
     if (!media) {
         return;
     }
