@@ -3493,8 +3493,6 @@
 				43A85B301E9E815B00FA990B /* Login.storyboard */,
 				43FB3F421EC0DDAD00FC8A62 /* LoginEpilogueSectionHeader.xib */,
 				982BED971FBCF392000B848E /* SiteCreation.storyboard */,
-				985554341FBF88A3002D6D12 /* InstructionTableViewCell.xib */,
-				98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */,
 				E6417B961CA07B060084050A /* Controllers */,
 				E6C448581CB09E1F00458157 /* Protocols */,
 				E6417B9A1CA07C0A0084050A /* Helpers */,
@@ -3882,6 +3880,16 @@
 				985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */,
 			);
 			name = "Create Site";
+			sourceTree = "<group>";
+		};
+		98DED29B1FC38DBE00015AE4 /* Select Site Type */ = {
+			isa = PBXGroup;
+			children = (
+				985554341FBF88A3002D6D12 /* InstructionTableViewCell.xib */,
+				98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */,
+				985554321FBF86F4002D6D12 /* SiteTypeTableViewCells.swift */,
+			);
+			name = "Select Site Type";
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
@@ -5138,6 +5146,7 @@
 		E6417B951CA07AFE0084050A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				98DED29B1FC38DBE00015AE4 /* Select Site Type */,
 				436269631ECD0726008692C7 /* LoginButton.swift */,
 				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				43FB3F441EC1020600FC8A62 /* LoginEpilogueSectionHeader.swift */,
@@ -5145,7 +5154,6 @@
 				43CC1EBF1ED898E30097E334 /* LoginTextField.swift */,
 				E64E17651CA8518800BE7744 /* NUXSubmitButton.swift */,
 				E6B84DD41F01BDAA00B1B686 /* SiteInfoHeaderView.swift */,
-				985554321FBF86F4002D6D12 /* SiteTypeTableViewCells.swift */,
 				A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */,
 				A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */,
 				85AD6AEA173CCF9E002CB896 /* WPNUXPrimaryButton.h */,
