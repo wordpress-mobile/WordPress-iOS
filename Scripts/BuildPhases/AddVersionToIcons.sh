@@ -1,4 +1,6 @@
 #!/bin/sh
+# Based on Eric Krzysztof Zablocki Boostrap library - https://github.com/krzysztofzablocki/Bootstrap
+
 convertPath=`which convert`
 echo ${convertPath}
 if [[ ! -f ${convertPath} || -z ${convertPath} ]]; then
