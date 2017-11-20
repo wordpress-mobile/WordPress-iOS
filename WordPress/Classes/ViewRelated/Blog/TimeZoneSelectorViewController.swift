@@ -143,7 +143,7 @@ class TimeZoneSelectorViewController: UITableViewController {
             let section = self.continentNames.index(of: self.MANUAL_OFFSET),
             let dict = self.timezoneNamesSortedByContinent[MANUAL_OFFSET] {
             let hoursUTC = manualOffset.intValue
-            let minutesUTC = Int((manualOffset.doubleValue - Double(hoursUTC)) * 60)
+            let minutesUTC = abs(Int((manualOffset.doubleValue - Double(hoursUTC)) * 60))
             let utcString: String
             if minutesUTC == 0 {
                 utcString = String(format: "UTC%+d", hoursUTC)

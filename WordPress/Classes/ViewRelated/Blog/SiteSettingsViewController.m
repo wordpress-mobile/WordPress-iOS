@@ -504,7 +504,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                     gmtOffset = [self.blog getOptionValue:@"gmt_offset"];
                 }
                 long hoursUTC = gmtOffset.integerValue;
-                long minutesUTC = ([gmtOffset doubleValue] - hoursUTC) * 60;
+                long minutesUTC = fabs(([gmtOffset doubleValue] - hoursUTC) * 60);
                 NSString *utcString;
                 if (minutesUTC == 0) {
                     utcString = [NSString stringWithFormat:@"UTC %+ld", hoursUTC];
