@@ -18,18 +18,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="1EV-xM-yS2">
-                    <rect key="frame" x="20" y="10" width="538" height="105"/>
+                    <rect key="frame" x="20" y="20" width="538" height="85"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="O8l-P4-QST">
-                            <rect key="frame" x="0.0" y="17.5" width="70" height="70"/>
-                            <color key="backgroundColor" red="1" green="0.5409764051" blue="0.84731429820000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="O8l-P4-QST">
+                            <rect key="frame" x="0.0" y="7.5" width="93.5" height="70"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="70" id="Gsc-XG-kj3"/>
-                                <constraint firstAttribute="width" secondItem="O8l-P4-QST" secondAttribute="height" multiplier="1:1" id="wO1-eL-Ynf"/>
+                                <constraint firstAttribute="width" secondItem="O8l-P4-QST" secondAttribute="height" multiplier="1:0.75" id="wO1-eL-Ynf"/>
                             </constraints>
                         </imageView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="OlP-Mi-afE" userLabel="Labels Stack View">
-                            <rect key="frame" x="80" y="33" width="538" height="39"/>
+                            <rect key="frame" x="103.5" y="23" width="538" height="39"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start with a Blog" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nk3-tb-Wg0">
                                     <rect key="frame" x="0.0" y="0.0" width="538" height="18"/>
@@ -51,9 +50,9 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="1EV-xM-yS2" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="7nT-bn-R28"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="1EV-xM-yS2" secondAttribute="bottom" constant="10" id="LHq-8a-NKk"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="1EV-xM-yS2" secondAttribute="bottom" constant="20" id="LHq-8a-NKk"/>
                 <constraint firstAttribute="trailing" secondItem="1EV-xM-yS2" secondAttribute="trailing" constant="40" id="Qod-9W-3Sz"/>
-                <constraint firstItem="1EV-xM-yS2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="lf4-JA-yZQ"/>
+                <constraint firstItem="1EV-xM-yS2" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="lf4-JA-yZQ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
