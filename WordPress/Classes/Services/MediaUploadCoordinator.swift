@@ -54,7 +54,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
                                     self.end(media)
                                 })
                                 if let taskProgress = progress {
-                                    self.mediaProgressCoordinator.track(progress: taskProgress, ofObject: media, withMediaID: mediaID)
+                                    self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: mediaID)
                                 }
         })
     }
@@ -178,9 +178,9 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
 
     // MARK: - MediaProgressCoordinatorDelegate
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Float) {
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Double) {
         for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
-            guard let media = mediaProgressCoordinator.media(forMediaID: mediaID) else {
+            guard let media = mediaProgressCoordinator.media(withIdentifier: mediaID) else {
                 continue
             }
             if media.remoteStatus == .pushing {

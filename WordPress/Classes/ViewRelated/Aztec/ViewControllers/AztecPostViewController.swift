@@ -2542,9 +2542,9 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         MediaAttachment.defaultAppearance.overlayBorderColor = Colors.mediaOverlayBorderColor
     }
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
-        mediaProgressView.progress = progress
+        mediaProgressView.progress = Float(progress)
         for (attachmentID, progress) in self.mediaProgressCoordinator.mediaInProgress {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
                 continue
@@ -2815,7 +2815,7 @@ extension AztecPostViewController {
                 }
         })
         if let progress = uploadProgress {
-            mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+            mediaProgressCoordinator.track(progress: progress, of: media, withIdentifier: mediaID)
         }
     }
 
@@ -2945,7 +2945,7 @@ extension AztecPostViewController {
                                                    style: .default,
                                                    handler: { (action) in
                                                     //retry upload
-                                                    if let media = self.mediaProgressCoordinator.media(forMediaID: mediaID),
+                                                    if let media = self.mediaProgressCoordinator.media(withIdentifier: mediaID),
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
                                                         self.resetMediaAttachmentOverlay(attachment)
                                                         attachment.progress = 0
