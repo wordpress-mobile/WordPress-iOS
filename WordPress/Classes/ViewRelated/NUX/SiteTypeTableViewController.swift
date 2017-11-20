@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteTypeTableViewController: UITableViewController {
+class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpViewController {
 
     // MARK: - Properties
     
@@ -33,6 +33,8 @@ class SiteTypeTableViewController: UITableViewController {
                                            target: self,
                                            action: #selector(handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
+        
+        _ = addHelpButtonToNavController()
     }
     
     // MARK: - Handle Nav Bar Actions

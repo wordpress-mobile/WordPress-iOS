@@ -46,16 +46,17 @@ struct InstructionRow: ImmuTableRow {
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! CellType
-        cell.backgroundColor = UIColor.clear
-        cell.stepLabel.text = step
-        cell.instr1Label.text = instr1
-        cell.selectionStyle = .none
-        
-        cell.instr2Label.isHidden = true
-        if let instr2 = instr2, !instr2.isEmpty {
+        if let cell = cell as? CellType {
+            cell.backgroundColor = UIColor.clear
+            cell.stepLabel.text = step
+            cell.instr1Label.text = instr1
+            cell.selectionStyle = .none
+            
+            cell.instr2Label.isHidden = true
+            if let instr2 = instr2, !instr2.isEmpty {
                 cell.instr2Label.isHidden = false
                 cell.instr2Label.text = instr2
+            }
         }
     }
 }
@@ -74,11 +75,12 @@ struct SiteTypeRow: ImmuTableRow {
     let action: ImmuTableAction?
     
     func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! CellType
-        cell.accessoryType = .disclosureIndicator
-        cell.selectionStyle = .none
-        cell.startWithLabel.text = startWith
-        cell.typeDescrLabel.text = typeDescr
-        cell.typeImageView.image = typeImage
+        if let cell = cell as? CellType {
+            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .none
+            cell.startWithLabel.text = startWith
+            cell.typeDescrLabel.text = typeDescr
+            cell.typeImageView.image = typeImage
+        }
     }
 }
