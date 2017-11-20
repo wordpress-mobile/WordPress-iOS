@@ -150,8 +150,8 @@ public final class WordPressComOAuthClient: NSObject {
     /// Request a new SMS code to be sent during social login
     ///
     /// - Parameters:
-    ///     - username: the account's username.
-    ///     - password: the account's password.
+    ///     - userID: The wpcom user id.
+    ///     - nonce: The nonce from a social login attempt.
     ///     - success: block to be called if authentication was successful.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
