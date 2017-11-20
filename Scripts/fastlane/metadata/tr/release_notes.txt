@@ -1,3 +1,1 @@
-Ortam kütüphanesi: Ortam kütüphanesinden belgelere bağlantı eklemeye izin ver
-Ortam kütüphanesi: Alt alanını düzenlenebilir yap
-Aztec editör: Sonraki sayfa desteği
+Yeni ziller ve ıslıklar yok, sadece size daha hızlı, daha istikrarlı bir uygulama sunmak için artan iyileştirmeler. Parlayan her şey altın değildir, bazen bu koddur!

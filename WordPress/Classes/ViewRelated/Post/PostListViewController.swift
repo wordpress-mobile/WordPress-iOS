@@ -144,10 +144,26 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.configureSearchController()
 
         searchWrapperView.addSubview(searchController.searchBar)
-        tableView.tableHeaderView = headerStackView
 
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
+
+        updateTableHeaderSize()
     }
+
+    fileprivate func updateTableHeaderSize() {
+        if searchController.isActive {
+            // Account for the search bar being moved to the top of the screen.
+            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+        } else {
+            searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
+        }
+
+        headerStackView.frame.size.height = headerStackView.subviews.reduce(0, { $0 + $1.frame.size.height })
+
+        // Resetting the tableHeaderView is necessary to get the new height to take effect
+        tableView.tableHeaderView = headerStackView
+    }
+
 
     fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
         if isSearching() {
@@ -290,7 +306,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
         // or posts that were recently deleted.
-        if searchText?.characters.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
+        if searchText?.count == 0 && recentlyTrashedPostObjectIDs.count > 0 {
             let trashedPredicate = NSPredicate(format: "SELF IN %@", recentlyTrashedPostObjectIDs)
 
             predicates.append(NSCompoundPredicate(orPredicateWithSubpredicates: [filterPredicate, trashedPredicate]))
@@ -306,7 +322,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             predicates.append(authorPredicate)
         }
 
-        if let searchText = searchText, searchText.characters.count > 0 {
+        if let searchText = searchText, searchText.count > 0 {
             let searchPredicate = NSPredicate(format: "postTitle CONTAINS[cd] %@", searchText)
             predicates.append(searchPredicate)
         }
@@ -371,7 +387,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = type(of: self).postCardRestoreCellIdentifier
-        } else if post.pathForDisplayImage?.characters.count > 0 {
+        } else if post.pathForDisplayImage?.count > 0 {
             identifier = type(of: self).postCardImageCellIdentifier
         } else {
             identifier = type(of: self).postCardTextCellIdentifier
@@ -500,7 +516,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
-            if (post.status == .trash) {
+            if post.status == .trash {
 
                 let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
                 let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
@@ -589,5 +605,20 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         default:
             return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         }
+    }
+
+    // MARK: - UISearchControllerDelegate
+
+    func didPresentSearchController(_ searchController: UISearchController) {
+        if #available(iOS 11.0, *) {
+            updateTableHeaderSize()
+
+            tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
+            tableView.contentInset.top = 0
+        }
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        updateTableHeaderSize()
     }
 }

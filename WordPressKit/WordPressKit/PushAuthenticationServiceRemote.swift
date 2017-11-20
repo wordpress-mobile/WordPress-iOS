@@ -13,7 +13,7 @@ import Foundation
     ///
     open func authorizeLogin(_ token: String, success: (() -> ())?, failure: (() -> ())?) {
         let path = "me/two-step/push-authentication"
-        let requestUrl = self.path(forEndpoint: path, with: .version_1_1)
+        let requestUrl = self.path(forEndpoint: path, withVersion: ._1_1)
 
         let parameters  = [
             "action": "authorize_login",

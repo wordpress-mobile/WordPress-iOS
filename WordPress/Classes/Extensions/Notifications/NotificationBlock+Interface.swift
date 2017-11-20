@@ -14,9 +14,9 @@ extension NotificationBlock {
     var attributedSubjectText: NSAttributedString {
         let attributedText = memoize {
             let subject = self.textWithStyles(Styles.subjectRegularStyle as [String : AnyObject],
-                quoteStyles:    Styles.subjectItalicsStyle as [String : AnyObject]?,
+                quoteStyles: Styles.subjectItalicsStyle as [String : AnyObject]?,
                 rangeStylesMap: Constants.subjectRangeStylesMap,
-                linksColor:     nil)
+                linksColor: nil)
 
             return subject.trimNewlines()
         }
@@ -29,9 +29,9 @@ extension NotificationBlock {
     var attributedSnippetText: NSAttributedString {
         let attributedText = memoize {
             let snippet = self.textWithStyles(Styles.snippetRegularStyle as [String : AnyObject],
-                quoteStyles:    nil,
+                quoteStyles: nil,
                 rangeStylesMap: nil,
-                linksColor:     nil)
+                linksColor: nil)
 
             return snippet.trimNewlines()
         }
@@ -44,9 +44,9 @@ extension NotificationBlock {
     var attributedHeaderTitleText: NSAttributedString {
         let attributedText = memoize {
             return self.textWithStyles(Styles.headerTitleRegularStyle as [String : AnyObject],
-                quoteStyles:    nil,
+                quoteStyles: nil,
                 rangeStylesMap: Constants.headerTitleRangeStylesMap,
-                linksColor:     nil)
+                linksColor: nil)
         }
 
         return attributedText(MemoizeKeys.headerTitle)
@@ -57,9 +57,9 @@ extension NotificationBlock {
     var attributedFooterText: NSAttributedString {
         let attributedText = memoize {
             return self.textWithStyles(Styles.footerRegularStyle as [String : AnyObject],
-                quoteStyles:    nil,
+                quoteStyles: nil,
                 rangeStylesMap: Constants.footerStylesMap,
-                linksColor:     nil)
+                linksColor: nil)
         }
 
         return attributedText(MemoizeKeys.footer)
@@ -76,9 +76,9 @@ extension NotificationBlock {
 
         let attributedText = memoize {
             return self.textWithStyles(Styles.contentBlockRegularStyle as [String : AnyObject],
-                quoteStyles:    Styles.contentBlockBoldStyle as [String : AnyObject]?,
+                quoteStyles: Styles.contentBlockBoldStyle as [String : AnyObject]?,
                 rangeStylesMap: Constants.richRangeStylesMap,
-                linksColor:     Styles.blockLinkColor)
+                linksColor: Styles.blockLinkColor)
         }
 
         return attributedText(MemoizeKeys.text)
@@ -90,9 +90,9 @@ extension NotificationBlock {
     var attributedBadgeText: NSAttributedString {
         let attributedText = memoize {
             return self.textWithStyles(Styles.badgeRegularStyle as [String : AnyObject],
-                quoteStyles:    Styles.badgeBoldStyle as [String : AnyObject]?,
+                quoteStyles: Styles.badgeBoldStyle as [String : AnyObject]?,
                 rangeStylesMap: Constants.badgeRangeStylesMap,
-                linksColor:     Styles.badgeLinkColor)
+                linksColor: Styles.badgeLinkColor)
         }
 
         return attributedText(MemoizeKeys.badge)
@@ -191,8 +191,8 @@ extension NotificationBlock {
             if range.kind == .Noticon {
                 let noticon         = (range.value ?? String()) + " "
                 theString.replaceCharacters(in: shiftedRange, with: noticon)
-                lengthShift         += noticon.characters.count
-                shiftedRange.length += noticon.characters.count
+                lengthShift         += noticon.count
+                shiftedRange.length += noticon.count
             }
 
             if let rangeStyle = rangeStylesMap?[range.kind] {

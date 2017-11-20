@@ -38,11 +38,9 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v8.6-whats-new"
+msgctxt "v8.8-whats-new"
 msgid ""
-"Media Library: Allow inserting links to documents from the Media Library.\n"
-"Media Library: Make the Alt field editable.\n"
-"Aztec Editor: Next Page support.\n"
+"No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

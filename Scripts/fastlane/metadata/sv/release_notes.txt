@@ -1,3 +1,1 @@
-Mediabibliotek: Gör det möjligt att lägga in länkar i dokument från mediabiblioteket.
-Mediabibliotek: Gör det möjligt att redigera fältet Alt.
-Aztec-redigeraren: Stöd för Nästa sida.
+Inga nya fantastiska funktioner denna gång, utan bara en rad små förbättringar för att ge dig en snabbare och stabilare app. Allt är inte guld som glimmar: Ibland kan det vara programkod!

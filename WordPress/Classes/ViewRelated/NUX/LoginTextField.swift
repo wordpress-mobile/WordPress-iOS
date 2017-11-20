@@ -4,7 +4,7 @@ import WordPressShared
 class LoginTextField: WPWalkthroughTextField {
 
     override func draw(_ rect: CGRect) {
-        if (showTopLineSeparator) {
+        if showTopLineSeparator {
             guard let context = UIGraphicsGetCurrentContext() else {
                 return
             }

@@ -139,7 +139,7 @@ import WordPressShared
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
-        if let presenter = rootViewController.presentedViewController, presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of:LoginNavigationController.self) {
+        if let presenter = rootViewController.presentedViewController, presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of: LoginNavigationController.self) {
             rootViewController.dismiss(animated: false, completion: {
                 rootViewController.present(navController, animated: false, completion: nil)
             })
@@ -192,7 +192,7 @@ import WordPressShared
     /// - Returns: The base URL or an empty string.
     ///
     class func baseSiteURL(string: String) -> String {
-        guard let siteURL = NSURL(string: NSURL.idnEncodedURL(string)), string.characters.count > 0 else {
+        guard let siteURL = NSURL(string: NSURL.idnEncodedURL(string)), string.count > 0 else {
             return ""
         }
 
@@ -330,7 +330,7 @@ import WordPressShared
     /// - Returns: True if the username is 50 characters or less.
     ///
     class func validateUsernameMaxLength(_ username: String) -> Bool {
-        return username.characters.count <= 50
+        return username.count <= 50
     }
 
 

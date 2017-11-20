@@ -75,13 +75,13 @@ class SigninHelperTests: XCTestCase {
         XCTAssertEqual(nonWPComSite, SigninHelpers.extractUsername(from: nonWPComSite))
 
         let wpComSite = "testuser.wordpress.com"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from:wpComSite))
+        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSite))
 
         let wpComSiteSlash = "testuser.wordpress.com/"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from:wpComSiteSlash))
+        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSiteSlash))
 
         let wpComSiteHttp = "http://testuser.wordpress.com/"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from:wpComSiteHttp))
+        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSiteHttp))
 
         let nonWPComSiteFtp = "ftp://asite.mycompany.co/"
         XCTAssertEqual("asite.mycompany.co", SigninHelpers.extractUsername(from: nonWPComSiteFtp))

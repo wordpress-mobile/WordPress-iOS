@@ -12,7 +12,6 @@
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
 #import "WPGUIConstants.h"
-#import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
@@ -264,13 +263,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self preloadBlogData];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-    [self showAztecAnnouncement];
-}
-
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
@@ -398,6 +390,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  callback:^{
                                                      [weakSelf showStats];
                                                  }]];
+
+    if ([Feature enabled:FeatureFlagActivity] && [self.blog supports:BlogFeatureActivity]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
+                                                        image:[Gridicon iconOfType:GridiconTypeStatsAlt]
+                                                     callback:^{
+                                                         [weakSelf showActivity];
+                                                     }]];
+    }
 
     if ([self.blog supports:BlogFeaturePlans]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
@@ -980,6 +980,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 }
 
+- (void)showActivity
+{
+    ActivityListViewController *controller = [[ActivityListViewController alloc] initWithBlog:self.blog];
+    [self showDetailViewController:controller sender:self];
+}
+
 - (void)showThemes
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
@@ -998,8 +1004,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    [webViewController authenticateWithBlog:self.blog];
+    UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
@@ -1021,19 +1026,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         dashboardUrl = [self.blog adminUrlWithPath:@""];
     }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
-}
-
-- (void)showAztecAnnouncement
-{
-    if (![[NSUserDefaults standardUserDefaults] aztecAnnouncementWasDisplayed]) {
-        [[NSUserDefaults standardUserDefaults] setAztecAnnouncementWasDisplayed:YES];
-
-        FancyAlertViewController *controller = [FancyAlertViewController aztecAnnouncementController];
-        controller.modalPresentationStyle = UIModalPresentationCustom;
-        controller.transitioningDelegate = self;
-
-        [self.tabBarController presentViewController:controller animated:YES completion:nil];
-    }
 }
 
 #pragma mark - Remove Site

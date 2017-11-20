@@ -47,7 +47,7 @@ class WPRichTextFormatter {
     ///
     /// - Returns: An NSAttributedString optional.
     ///
-    func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [String : AnyObject]?) throws -> NSAttributedString? {
+    func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [String: AnyObject]?) throws -> NSAttributedString? {
         // Process the html in the string. Replace attachment tags with placeholders, etc.
         let parsed = processAndExtractTags(string)
         let parsedString = parsed.parsedString
@@ -95,7 +95,7 @@ class WPRichTextFormatter {
 
         let str = attrString.string
         let regex = try! NSRegularExpression(pattern: HRTagProcessor.horizontalRuleIdentifier, options: .caseInsensitive)
-        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.characters.count))
+        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.count))
 
         for match: NSTextCheckingResult in matches.reversed() {
             let range = match.range
@@ -140,7 +140,7 @@ class WPRichTextFormatter {
 
         let str = attrString.string
         let regex = try! NSRegularExpression(pattern: type(of: self).blockquoteIdentifier, options: .caseInsensitive)
-        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.characters.count))
+        let matches = regex.matches(in: str, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, str.count))
 
         for match: NSTextCheckingResult in matches.reversed() {
 
@@ -180,7 +180,7 @@ class WPRichTextFormatter {
     func processAndExtractTags(_ string: String) -> ParsedSource {
         var attachments = [WPTextAttachment]()
 
-        guard string.characters.count > 0 else {
+        guard string.count > 0 else {
             return (string, attachments)
         }
 
@@ -291,7 +291,7 @@ class HtmlTagProcessor {
             parsedString += endTag
 
             // Advance the scanner to account for the closing tag.
-            scanner.scanLocation += endTag.characters.count
+            scanner.scanLocation += endTag.count
         }
 
         return (success, parsedString)
@@ -337,7 +337,7 @@ class BlockquoteTagProcessor: HtmlTagProcessor {
         // the tag.
         if !parsedString.contains("<p>") {
             var str = parsedString as NSString
-            let location = "<\(tagName)>".characters.count
+            let location = "<\(tagName)>".count
             str = str.replacingCharacters(in: NSRange(location: location, length: 0), with: WPRichTextFormatter.blockquoteIdentifier) as NSString
             parsedString = str as String
             return (parsedString, nil)

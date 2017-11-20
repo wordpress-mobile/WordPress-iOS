@@ -22,7 +22,6 @@ class MediaLibraryViewController: UIViewController {
 
     fileprivate var capturePresenter: WPMediaCapturePresenter?
 
-    private let defaultSearchBarHeight: CGFloat = 44.0
     lazy fileprivate var searchBarContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -56,6 +55,14 @@ class MediaLibraryViewController: UIViewController {
 
     var searchQuery: String? = nil
 
+    private var uploadCoordinatorUUID: UUID? = nil
+
+    // Only used during testing phase of upload coordinator development.
+    // Remove when upload coordinator is properly integrated into the media library.
+    // @frosty 2017-11-01
+    //
+    fileprivate var useUploadCoordinator = false
+
     // MARK: - Initializers
 
     init(blog: Blog) {
@@ -81,6 +88,7 @@ class MediaLibraryViewController: UIViewController {
 
     deinit {
         unregisterChangeObserver()
+        unregisterUploadCoordinatorObserver()
     }
 
     private func configurePickerViewController() {
@@ -96,6 +104,8 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - View Loading
 
+    var uploadObserverUUID: UUID?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -109,6 +119,7 @@ class MediaLibraryViewController: UIViewController {
         addNoResultsView()
 
         registerChangeObserver()
+        registerUploadCoordinatorObserver()
 
         updateViewState(for: pickerDataSource.totalAssetCount)
     }
@@ -186,24 +197,50 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private func addSearchBarContainer() {
+        searchBarContainer.backgroundColor = searchBar.barTintColor
+
         stackView.insertArrangedSubview(searchBarContainer, at: 0)
 
         NSLayoutConstraint.activate([
             searchBarContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchBarContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+            ])
 
-        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: defaultSearchBarHeight)
+        wrapSearchBarInPaddingView()
+
+        let height = searchBar.intrinsicContentSize.height
+        let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: height)
         heightConstraint.priority = UILayoutPriorityDefaultLow
         heightConstraint.isActive = true
 
-        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: defaultSearchBarHeight)
+        let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: height)
         expandedHeightConstraint.priority = UILayoutPriorityRequired
         expandedHeightConstraint.isActive = true
 
         searchBarContainer.layoutIfNeeded()
-        searchBarContainer.addSubview(searchBar)
         searchBar.sizeToFit()
+    }
+
+    private func wrapSearchBarInPaddingView() {
+        let paddingView = UIView()
+        paddingView.translatesAutoresizingMaskIntoConstraints = false
+        searchBarContainer.addSubview(paddingView)
+        paddingView.addSubview(searchBar)
+
+        var leading = searchBarContainer.leadingAnchor
+        var trailing = searchBarContainer.trailingAnchor
+
+        if #available(iOS 11.0, *) {
+            leading = searchBarContainer.safeAreaLayoutGuide.leadingAnchor
+            trailing = searchBarContainer.safeAreaLayoutGuide.trailingAnchor
+        }
+
+        NSLayoutConstraint.activate([
+            paddingView.leadingAnchor.constraint(equalTo: leading),
+            paddingView.trailingAnchor.constraint(equalTo: trailing),
+            paddingView.topAnchor.constraint(equalTo: searchBarContainer.topAnchor),
+            paddingView.bottomAnchor.constraint(equalTo: searchBarContainer.bottomAnchor),
+            ])
     }
 
     private func addNoResultsView() {
@@ -358,7 +395,7 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private var hasSearchQuery: Bool {
-        return (pickerDataSource.searchQuery ?? "").characters.count > 0
+        return (pickerDataSource.searchQuery ?? "").count > 0
     }
 
     // MARK: - Actions
@@ -405,6 +442,13 @@ class MediaLibraryViewController: UIViewController {
 
         menuAlert.addDefaultActionWithTitle(NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")) { _ in
             self.showDocumentPicker()
+        }
+
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
+            menuAlert.addDefaultActionWithTitle("Photo Library (Async - Debug)") { _ in
+                self.useUploadCoordinator = true
+                self.showMediaPicker()
+            }
         }
 
         menuAlert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
@@ -514,6 +558,24 @@ class MediaLibraryViewController: UIViewController {
         }
     }
 
+    // MARK: - Upload Coordinator Observer
+
+    private func registerUploadCoordinatorObserver() {
+        guard FeatureFlag.asyncUploadsInMediaLibrary.enabled else {
+            return
+        }
+
+        uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ (media, state) in
+            print("Media \(String(describing: media.filename)) in state \(String(describing: state))")
+        }, for: nil)
+    }
+
+    private func unregisterUploadCoordinatorObserver() {
+        if let uuid = uploadObserverUUID {
+            MediaUploadCoordinator.shared.removeObserver(withUUID: uuid)
+        }
+    }
+
     // MARK: - Document Picker
 
     private func showDocumentPicker() {
@@ -579,7 +641,7 @@ class MediaLibraryViewController: UIViewController {
         switch mediaType {
         case String(kUTTypeImage):
             if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable : Any] {
+                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
                 WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
             }
         case String(kUTTypeMovie):
@@ -690,6 +752,16 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         guard let assets = assets as? [PHAsset],
             assets.count > 0 else { return }
 
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled && useUploadCoordinator {
+            useUploadCoordinator = false
+
+            for asset in assets {
+                MediaUploadCoordinator.shared.addMedia(from: asset, to: blog)
+            }
+
+            return
+        }
+
         prepareMediaProgressForNumberOfAssets(assets.count)
 
         for asset in assets {
@@ -698,6 +770,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        useUploadCoordinator = false
+
         dismiss(animated: true, completion: nil)
     }
 
