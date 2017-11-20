@@ -82,7 +82,7 @@ public class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
 
     fileprivate func fetchPlanFeatures(_ success: @escaping (RemotePlanFeatures) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "plans/features"
-        let path = self.path(forEndpoint: endpoint, with: .version_1_2)
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)
         let locale = languageDatabase.deviceLanguage.slug
         let parameters = ["locale": locale]
 

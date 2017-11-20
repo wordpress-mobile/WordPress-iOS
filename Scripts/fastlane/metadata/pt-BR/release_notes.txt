@@ -1,3 +1,1 @@
-Biblioteca de mídia: permite inserir links para documentos da biblioteca de mídia.
-Biblioteca de mídia: torna o campo de texto alternativo editável.
-Editor Aztec: adicionado suporte à próxima página.
+Nada de muito aparente, só melhorias para tornar o aplicativo mais rápido e mais estável. Nem tudo que reluz é outro, às vezes é código!

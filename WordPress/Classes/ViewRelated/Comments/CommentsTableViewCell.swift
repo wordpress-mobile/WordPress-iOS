@@ -127,9 +127,9 @@ open class CommentsTableViewCell: WPTableViewCell {
 
         // Arrange the Replacement Map
         let replacementMap  = [
-            "%1$@": NSAttributedString(string: unwrappedAuthor,    attributes: detailsBoldStyle),
-            "%2$@": NSAttributedString(string: unwrappedTitle,     attributes: detailsItalicsStyle),
-            "%3$@": NSAttributedString(string: unwrappedContent,   attributes: detailsRegularStyle)
+            "%1$@": NSAttributedString(string: unwrappedAuthor, attributes: detailsBoldStyle),
+            "%2$@": NSAttributedString(string: unwrappedTitle, attributes: detailsItalicsStyle),
+            "%3$@": NSAttributedString(string: unwrappedContent, attributes: detailsRegularStyle)
         ]
 
         // Replace Author + Title + Content

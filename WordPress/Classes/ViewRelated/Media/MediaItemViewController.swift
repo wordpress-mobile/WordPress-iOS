@@ -54,7 +54,7 @@ class MediaItemViewController: UITableViewController {
         let descRow = editableRowIfSupported(title: NSLocalizedString("Description", comment: "Label for the description for a media asset (image / video)"),
                                              value: mediaMetadata.desc,
                                              action: editDescription())
-        let altRow = editableRowIfSupported(title: NSLocalizedString("Alt Text",comment: "Label for the alt for a media asset (image)"),
+        let altRow = editableRowIfSupported(title: NSLocalizedString("Alt Text", comment: "Label for the alt for a media asset (image)"),
                                             value: mediaMetadata.alt,
                                             action: editAlt())
 
@@ -112,7 +112,7 @@ class MediaItemViewController: UITableViewController {
         default: break
         }
 
-        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate.mediumString()))
+        rows.append(TextRow(title: NSLocalizedString("Uploaded", comment: "Label for the date a media asset (image / video) was uploaded"), value: media.creationDate?.mediumString() ?? ""))
 
         return rows
     }
@@ -200,9 +200,7 @@ class MediaItemViewController: UITableViewController {
         guard let remoteURL = media.remoteURL,
             let url = URL(string: remoteURL) else { return }
 
-        let controller = WPWebViewController()
-        controller.authenticate(with: media.blog)
-        controller.url = url
+        let controller = WebViewControllerFactory.controller(url: url, blog: media.blog)
         controller.loadViewIfNeeded()
         controller.navigationItem.titleView = nil
         controller.title = media.title ?? ""
@@ -450,7 +448,11 @@ private struct MediaMetadataPresenter {
 
     /// A String containing the uppercased file extension of the asset (.JPG, .PNG, etc)
     var fileType: String? {
-        return (media.filename! as NSString).pathExtension.uppercased()
+        guard let filename = media.filename else {
+            return nil
+        }
+
+        return (filename as NSString).pathExtension.uppercased()
     }
 }
 

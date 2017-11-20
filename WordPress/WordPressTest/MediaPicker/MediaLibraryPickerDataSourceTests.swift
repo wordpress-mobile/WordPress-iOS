@@ -36,81 +36,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         }
         let size = media.pixelSize()
         XCTAssertTrue(size.width == 1024, "Width should be 1024")
-        XCTAssertTrue(size.height == 680 , "Height should be 680")
-    }
-
-    func testImageFetchUsingSizeZero() {
-        guard FeatureFlag.newMediaExports.enabled == false else {
-            // Drop test in favor of MediaExporter tests.
-            return
-        }
-        guard let media = newImageMedia() else {
-            XCTFail("Media should be created without error")
-            return
-        }
-        let expect = self.expectation(description: "Image should be returned")
-        // test if using size zero give back the full image
-        media.image(with: CGSize.zero, completionHandler: { (image, error) in
-            expect.fulfill()
-            guard error == nil, let image = image else {
-                XCTFail("Image should be returned without error")
-                return
-            }
-            let size = image.size
-            XCTAssertTrue(size.width == 1024, "Width should be 1024")
-            XCTAssertTrue(size.height == 680 , "Height should be 680")
-        })
-        self.waitForExpectations(timeout: 5, handler: nil)
-    }
-
-    func testImageFetchUsingFixedSize() {
-        guard FeatureFlag.newMediaExports.enabled == false else {
-            // Drop test in favor of MediaExporter tests.
-            return
-        }
-        guard let media = newImageMedia() else {
-            XCTFail("Media should be created without error")
-            return
-        }
-        let expect = self.expectation(description: "Image should be returned")
-        let requestedSize = CGSize(width: 512, height: 340)
-        // test if using size zero give back the full image
-        media.image(with: requestedSize, completionHandler: { (image, error) in
-            expect.fulfill()
-            guard error == nil, let image = image else {
-                XCTFail("Image should be returned without error")
-                return
-            }
-            let size = image.size
-            XCTAssertTrue(size.width == requestedSize.width, "Width should match requested size")
-            XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
-        })
-        self.waitForExpectations(timeout: 5, handler: nil)
-    }
-
-    func testImageFetchUsingVideoSource() {
-        guard FeatureFlag.newMediaExports.enabled == false else {
-            // Drop test in favor of MediaExporter tests.
-            return
-        }
-        guard let video = newVideoMedia() else {
-            XCTFail("Media should be created without error")
-            return
-        }
-
-        let expect = self.expectation(description: "Image should be returned")
-        let requestedSize = CGSize(width: 213, height: 120)
-        video.image(with: requestedSize, completionHandler: { (image, error) in
-            expect.fulfill()
-            guard error == nil, let image = image else {
-                XCTFail("Image should be returned without error")
-                return
-            }
-            let size = image.size
-            XCTAssertTrue(size.width == requestedSize.width, "Width should match requested siz")
-            XCTAssertTrue(size.height == requestedSize.height , "Height should match requested size")
-        })
-        self.waitForExpectations(timeout: 5, handler: nil)
+        XCTAssertTrue(size.height == 680, "Height should be 680")
     }
 
     func testVideoFetchForImage() {
@@ -151,11 +77,11 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
     }
 
     fileprivate func newImageMedia() -> Media? {
-        return newMedia(fromResource: "test-image", withExtension:"jpg")
+        return newMedia(fromResource: "test-image", withExtension: "jpg")
     }
 
     fileprivate func newVideoMedia() -> Media? {
-        return newMedia(fromResource: "test-video-device-gps", withExtension:"m4v")
+        return newMedia(fromResource: "test-video-device-gps", withExtension: "m4v")
     }
 
     fileprivate func newMedia(fromResource resource: String, withExtension ext: String) -> Media? {

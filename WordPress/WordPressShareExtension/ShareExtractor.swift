@@ -130,6 +130,9 @@ private extension TypeBasedExtensionContentExtractor {
 
     func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void) {
         guard let provider = context.itemProviders(ofType: acceptedType).first else {
+            DispatchQueue.main.async {
+                completion(nil)
+            }
             return
         }
         provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
@@ -178,7 +181,7 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
 private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
     typealias Payload = [String: Any]
     let acceptedType = kUTTypePropertyList as String
-    func convert(payload: [String : Any]) -> ExtractedItem? {
+    func convert(payload: [String: Any]) -> ExtractedItem? {
         guard let results = payload[NSExtensionJavaScriptPreprocessingResultsKey] as? [String: Any] else {
             return nil
         }

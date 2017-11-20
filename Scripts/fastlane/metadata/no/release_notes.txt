@@ -1,3 +1,1 @@
-Mediebibliotek: Tillat å sette inn lenker til dokumenter fra Mediebiblioteket.
-Mediebibliotek: Gjør Alt-feltet redigerbart.
-Aztec-redigereren: Støtte for Neste side.
+Ingen nye bjeller og fløyter, bare trinnvise forbedringer for å gi deg en raskere, mer stabil app. Det er ikke gull alt som glimrer – noen ganger er det kode!

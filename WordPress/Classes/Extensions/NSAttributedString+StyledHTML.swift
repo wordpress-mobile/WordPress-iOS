@@ -45,7 +45,7 @@ extension NSAttributedString {
 
         attributedString.addAttribute(NSParagraphStyleAttributeName,
                                    value: paragraphStyle,
-                                   range: NSMakeRange(0, attributedString.string.characters.count - 1))
+                                   range: NSMakeRange(0, attributedString.string.count - 1))
 
         return NSAttributedString(attributedString: attributedString)
     }
@@ -97,7 +97,7 @@ extension NSAttributedString {
     }
 }
 
-public typealias StyledHTMLAttributes = [HTMLAttributeType : [String : AnyObject]]
+public typealias StyledHTMLAttributes = [HTMLAttributeType: [String: AnyObject]]
 
 public enum HTMLAttributeType: String {
     case BodyAttribute

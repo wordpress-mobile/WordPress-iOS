@@ -463,6 +463,9 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
             return [self supportsRestApi] && [self isAdmin];
+        case BlogFeatureActivity:
+            // For now Activity is suported only on Jetpack sites for admin users
+            return [self supportsRestApi] && [self isAdmin] && ![self isHostedAtWPcom];
         case BlogFeatureCustomThemes:
             return [self supportsRestApi] && [self isAdmin] && ![self isHostedAtWPcom];
         case BlogFeaturePremiumThemes:
@@ -668,6 +671,20 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 - (BOOL)jetpackSharingButtonsModuleEnabled
 {
     return [self jetpackActiveModule:ActiveModulesKeySharingButtons];
+}
+
+- (BOOL)isBasicAuthCredentialStored {
+    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
+    NSURL *url = [NSURL URLWithString:self.url];
+    NSDictionary * credentials = storage.allCredentials;
+    for (NSURLProtectionSpace *protectionSpace in credentials.allKeys) {
+        if ( [protectionSpace.host isEqual:url.host]
+           && (protectionSpace.port == ([url.port integerValue] ? : 80))
+           && (protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic)) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - Private Methods

@@ -44,8 +44,23 @@
  */
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
 
-
+/**
+ * Social login via google.
+ *
+ * @param googleIDToken A Google id_token.
+ */
 - (void)loginToWordPressDotComWithGoogleIDToken:(NSString *)googleIDToken;
+
+/**
+ * Social login via a social account with 2FA using a nonce.
+ *
+ * @param googleIDToken A Google id_token.
+ */
+- (void)loginToWordPressDotComWithUser:(NSInteger)userID
+                              authType:(NSString *)authType
+                           twoStepCode:(NSString *)twoStepCode
+                          twoStepNonce:(NSString *)twoStepNonce;
+
 
 /**
  *  A delegate with a few methods that indicate various aspects of the login process
@@ -133,6 +148,24 @@
  *  @param authToken                authToken to be used to access the site
  */
 - (void)finishedLoginWithGoogleIDToken:(NSString *)googleIDToken authToken:(NSString *)authToken;
+
+
+/**
+ *  Called when finished logging in to a WordPress.com site via a 2FA Nonce.
+ *
+ *  @param googleIDToken            the token used
+ *  @param authToken                authToken to be used to access the site
+ */
+- (void)finishedLoginWithNonceAuthToken:(NSString *)authToken;
+
+
+/**
+ * Lets the delegate know that a social login attempt found a matching user, but
+ * their account has not been connected to the social service previously.
+ *
+ * @param email The email address that was matched.
+ */
+- (void)existingUserNeedsConnection:(NSString *)email;
 
 @end
 

@@ -38,7 +38,7 @@ extension SpecialTagAttachmentRenderer: TextViewAttachmentImageProvider {
 
         let textRect = colorMessage.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
         let textPosition = CGPoint(x: ((size.width - textRect.width) * 0.5), y: ((size.height - textRect.height) * 0.5))
-        colorMessage.draw(in: CGRect(origin: textPosition , size: CGSize(width: size.width, height: textRect.size.height)))
+        colorMessage.draw(in: CGRect(origin: textPosition, size: CGSize(width: size.width, height: textRect.size.height)))
 
         let path = UIBezierPath()
 
@@ -50,7 +50,7 @@ extension SpecialTagAttachmentRenderer: TextViewAttachmentImageProvider {
         path.move(to: CGPoint(x: 0, y: centerY))
         path.addLine(to: CGPoint(x: ((size.width - textRect.width) * 0.5) - Constants.defaultDashWidth, y: centerY))
 
-        path.move(to: CGPoint(x:((size.width + textRect.width) * 0.5) + Constants.defaultDashWidth, y: centerY))
+        path.move(to: CGPoint(x: ((size.width + textRect.width) * 0.5) + Constants.defaultDashWidth, y: centerY))
         path.addLine(to: CGPoint(x: size.width, y: centerY))
 
         textColor.setStroke()

@@ -17,6 +17,7 @@ end
 def shared_with_networking_pods
   pod 'AFNetworking', '3.1.0'
   pod 'wpxmlrpc', '0.8.3'
+  pod 'Alamofire', '4.5.1'
 end
 
 def shared_test_pods
@@ -44,8 +45,8 @@ target 'WordPress' do
   pod 'FLAnimatedImage', '1.0.12'
   pod 'MGSwipeTableCell', '1.6.1'
   pod 'lottie-ios', '1.5.1'
-  pod 'Starscream', '2.1.1'
-  pod 'GoogleSignIn', '4.0.2'
+  pod 'Starscream', '3.0.2'
+  pod 'GoogleSignIn', '4.1.0'
 
   # --------------------
   # WordPress components
@@ -53,9 +54,9 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.1'
   pod 'Gridicons', '0.10'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.23'
+  pod 'WPMediaPicker', '0.24'
   pod 'WordPress-iOS-Editor', '1.9.7'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.13'
+  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.14.1'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -63,7 +64,7 @@ target 'WordPress' do
     shared_test_pods
     pod 'Specta', '1.0.7'
     pod 'Expecta', '1.0.6'
-    pod 'Nimble', '~> 7.0.0'
+    pod 'Nimble', '~> 7.0.2'
   end
 
   target 'WordPressShareExtension' do
@@ -71,8 +72,6 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
-
-    pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.6'
   end
 
   target 'WordPressTodayWidget' do

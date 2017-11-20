@@ -1,3 +1,1 @@
-Librería multimedia: Permite insertar enlaces a documentos de la librería mutimedia.
-Librería multimedia: Hace editable el campo Alt.
-Editor Aztec: Soporte para "Siguiente página.
+Nada de parafernalia, solo mejoras relevantes para ofrecerte una aplicación más rápida y estable. No todo lo que brilla es oro - ¡a veces es código!

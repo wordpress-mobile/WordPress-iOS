@@ -6,13 +6,25 @@
 @protocol AccountServiceRemote <NSObject>
 
 /**
- *  @brief      Gets an account's posts.
+ *  @brief      Gets all blogs for an account.
  *
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)getBlogsWithSuccess:(void (^)(NSArray *blogs))success
                     failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Gets only visible blogs for an account.
+ *
+ *  @discussion This method is designed for use in extensions in order to provide a simple
+ *              way to retrieve a quick list of availible sites.
+ *
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)getVisibleBlogsWithSuccess:(void (^)(NSArray *))success
+                           failure:(void (^)(NSError *))failure;
 
 /**
  *  @brief      Gets an account's details.
@@ -81,5 +93,14 @@
                          wpcomScheme:(NSString *)scheme
                              success:(void (^)(void))success
                              failure:(void (^)(NSError *error))failure;
+
+ /**
+  * @brief      Request to (re-)send the verification email for the current user.
+  *
+  *  @param      success     The block that will be executed on success.  Can be nil.
+  *  @param      failure     The block that will be executed on failure.  Can be nil.
+  */
+- (void)requestVerificationEmailWithSucccess:(void (^)(void))success
+                                     failure:(void (^)(NSError *error))failure;
 
 @end
