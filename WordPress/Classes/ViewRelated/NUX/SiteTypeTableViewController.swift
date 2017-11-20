@@ -24,6 +24,8 @@ class SiteTypeTableViewController: UITableViewController {
         tableHandler = ImmuTableViewHandler(takeOver: self)
         tableHandler.viewModel = tableViewModel()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        // remove empty cells
+        tableView.tableFooterView = UIView()
     }
     
     func setupNavBar() {
