@@ -10,7 +10,9 @@ class InstructionTableViewCell: WPTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        assert(stepLabel != nil)
+        assert(instr1Label != nil)
+        assert(instr2Label != nil)
     }
 }
 
@@ -22,7 +24,9 @@ class SiteTypeTableViewCell: WPTableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        assert(typeImageView != nil)
+        assert(startWithLabel != nil)
+        assert(typeDescrLabel != nil)
     }
 }
 
