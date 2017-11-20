@@ -1,10 +1,17 @@
- import Foundation
+import Foundation
 import CocoaLumberjack
 import WordPressShared
 
 class PortfolioListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     
+    fileprivate static let portfolioSectionHeaderHeight = CGFloat(24.0)
+    fileprivate static let portfolioCellEstimatedRowHeight = CGFloat(47.0)
     fileprivate static let portfolioViewControllerRestorationKey = "PortfolioViewControllerRestorationKey"
+    fileprivate static let projectCellIdentifier = "ProjectCellIdentifier"
+    fileprivate static let projectCellNibName = "ProjectTableViewCell"
+    fileprivate static let restoreProjectCellIdentifier = "RestoreProjectCellIdentifier"
+    fileprivate static let restoreProjectCellNibName = "RestoreProjectTableViewCell"
+    fileprivate static let currentPortfolioListStatusFilterKey = "CurrentPortfolioListStatusFilterKey"
     
     fileprivate lazy var sectionFooterSeparatorView: UIView = {
         let footer = UIView()
@@ -61,8 +68,7 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.refreshNoResultsView = { [weak self] noResultsView in
-            // TODO:
-//            self?.handleRefreshNoResultsView(noResultsView)
+            self?.handleRefreshNoResultsView(noResultsView)
         }
         super.tableViewController = (segue.destination as! UITableViewController)
     }
@@ -78,19 +84,17 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PortfolioTable"
         tableView.isAccessibilityElement = true
-        // TODO:
-//        tableView.estimatedRowHeight = type(of: self).pageCellEstimatedRowHeight
+        tableView.estimatedRowHeight = type(of: self).portfolioCellEstimatedRowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         
-//        let bundle = Bundle.main
+        let bundle = Bundle.main
         
         // Register the cells
-        // TODO:
-//        let pageCellNib = UINib(nibName: type(of: self).pageCellNibName, bundle: bundle)
-//        tableView.register(pageCellNib, forCellReuseIdentifier: type(of: self).pageCellIdentifier)
-//
-//        let restorePageCellNib = UINib(nibName: type(of: self).restorePageCellNibName, bundle: bundle)
-//        tableView.register(restorePageCellNib, forCellReuseIdentifier: type(of: self).restorePageCellIdentifier)
+        let projectCellNib = UINib(nibName: type(of: self).projectCellNibName, bundle: bundle)
+        tableView.register(projectCellNib, forCellReuseIdentifier: type(of: self).projectCellIdentifier)
+
+        let restoreProjectCellNib = UINib(nibName: type(of: self).restoreProjectCellNibName, bundle: bundle)
+        tableView.register(restoreProjectCellNib, forCellReuseIdentifier: type(of: self).restoreProjectCellIdentifier)
         
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
