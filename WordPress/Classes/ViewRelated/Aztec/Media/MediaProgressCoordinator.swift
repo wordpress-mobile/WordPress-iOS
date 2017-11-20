@@ -4,7 +4,7 @@ import Foundation
 ///
 @objc public protocol MediaProgressCoordinatorDelegate: class {
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float)
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double)
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator)
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)
 }
@@ -57,12 +57,13 @@ public class MediaProgressCoordinator: NSObject {
     ///
     /// - Parameters:
     ///   - progress: the object that tracks the progress
-    ///   - object: the associated object.
+    ///   - media: the associated media object.
     ///   - mediaID: the unique taskID
     ///
-    func track(progress: Progress, ofObject object: Media, withMediaID mediaID: String) {
+    @objc(trackProgress:ofMedia:withIdentifier:)
+    func track(progress: Progress, of media: Media, withIdentifier mediaID: String) {
         progress.setUserInfoObject(mediaID, forKey: .mediaID)
-        progress.setUserInfoObject(object, forKey: .mediaObject)
+        progress.setUserInfoObject(media, forKey: .mediaObject)
         mediaGlobalProgress?.addChild(progress, withPendingUnitCount: 1)
         mediaInProgress[mediaID] = progress
     }
@@ -110,12 +111,12 @@ public class MediaProgressCoordinator: NSObject {
         return error
     }
 
-    /// And Media object if any associated to the MediaID provided.
+    /// Returns a Media object associated with the identifier provided.
     ///
     /// - Parameter mediaID: the mediaID object to search for
     /// - Returns: the Media object associated
     ///
-    func media(forMediaID mediaID: String) -> Media? {
+    func media(withIdentifier mediaID: String) -> Media? {
         guard let progress = mediaInProgress[mediaID],
             let object = progress.userInfo[.mediaObject] as? Media
             else {
@@ -149,10 +150,10 @@ public class MediaProgressCoordinator: NSObject {
 
     /// The global value of progress for all task being runned.
     ///
-    var totalProgress: Float {
-        var value = Float(0)
+    var totalProgress: Double {
+        var value = Double(0)
         if let progress = mediaGlobalProgress {
-            value = Float(progress.fractionCompleted)
+            value = progress.fractionCompleted
         }
         return value
     }
@@ -191,7 +192,7 @@ public class MediaProgressCoordinator: NSObject {
         return false
     }
 
-    /// Returns a list of media IDs that were cancelled,
+    /// Returns a list of media IDs that were cancelled.
     ///
     var cancelledMediaIDs: [String] {
         var mediaIDs = [String]()
