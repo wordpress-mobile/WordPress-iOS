@@ -488,10 +488,23 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         case SiteSettingsGeneralTimeZone:
         {
-            NSString *timeZoneString = self.blog.settings.timeZoneString;
+            NSString *timeZoneString;
+            if (self.blog.isAdmin) {
+                timeZoneString = self.blog.settings.timeZoneString;
+            } else {
+                // timeZoneString is nil, so that means we can't fetch settings for this blog
+                // so instead we'll use the blog options to get the timezone
+                timeZoneString = [self.blog getOptionValue:@"timezone"];
+            }
             if ([timeZoneString isEqualToString:@""]) {
-                long hoursUTC = self.blog.settings.gmtOffset.integerValue;
-                long minutesUTC = ([self.blog.settings.gmtOffset doubleValue] - hoursUTC) * 60;
+                NSNumber *gmtOffset;
+                if (self.blog.isAdmin) {
+                    gmtOffset = self.blog.settings.gmtOffset;
+                } else {
+                    gmtOffset = [self.blog getOptionValue:@"gmt_offset"];
+                }
+                long hoursUTC = gmtOffset.integerValue;
+                long minutesUTC = ([gmtOffset doubleValue] - hoursUTC) * 60;
                 NSString *utcString;
                 if (minutesUTC == 0) {
                     utcString = [NSString stringWithFormat:@"UTC %+ld", hoursUTC];
