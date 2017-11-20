@@ -71,7 +71,7 @@ struct SiteTypeRow: ImmuTableRow {
 
     let startWith: String
     let typeDescr: String
-    let typeImage: UIImage? // TODO - make this required when have images.
+    let typeImage: UIImage?
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
@@ -80,7 +80,10 @@ struct SiteTypeRow: ImmuTableRow {
             cell.selectionStyle = .none
             cell.startWithLabel.text = startWith
             cell.typeDescrLabel.text = typeDescr
-            cell.typeImageView.image = typeImage
+
+            if let typeImage = typeImage {
+                cell.typeImageView.image = typeImage
+            }
         }
     }
 }
