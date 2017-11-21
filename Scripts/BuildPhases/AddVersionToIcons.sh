@@ -1,5 +1,5 @@
 #!/bin/sh
-# Based on Eric Krzysztof Zablocki Boostrap library - https://github.com/krzysztofzablocki/Bootstrap
+# Based on Krzysztof Zablocki Boostrap library - https://github.com/krzysztofzablocki/Bootstrap
 
 convertPath=`which convert`
 echo ${convertPath}
