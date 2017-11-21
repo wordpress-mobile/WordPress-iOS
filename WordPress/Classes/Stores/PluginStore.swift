@@ -2,30 +2,30 @@ import Foundation
 import WordPressFlux
 
 enum PluginAction: Action {
-    case activate(id: String, siteID: Int)
-    case deactivate(id: String, siteID: Int)
-    case enableAutoupdates(id: String, siteID: Int)
-    case disableAutoupdates(id: String, siteID: Int)
-    case remove(id: String, siteID: Int)
-    case receivePlugins(siteID: Int, plugins: SitePlugins)
-    case receivePluginsFailed(siteID: Int, error: Error)
+    case activate(id: String, site: JetpackSiteRef)
+    case deactivate(id: String, site: JetpackSiteRef)
+    case enableAutoupdates(id: String, site: JetpackSiteRef)
+    case disableAutoupdates(id: String, site: JetpackSiteRef)
+    case remove(id: String, site: JetpackSiteRef)
+    case receivePlugins(site: JetpackSiteRef, plugins: SitePlugins)
+    case receivePluginsFailed(site: JetpackSiteRef, error: Error)
 }
 
 enum PluginQuery {
-    case all(siteID: Int)
+    case all(site: JetpackSiteRef)
 
-    var siteID: Int {
+    var site: JetpackSiteRef {
         switch self {
-        case .all(let siteID):
-            return siteID
+        case .all(let site):
+            return site
         }
     }
 }
 
 struct PluginStoreState {
-    var plugins = [Int: SitePlugins]()
-    var fetching = [Int: Bool]()
-    var lastFetch = [Int: Date]()
+    var plugins = [JetpackSiteRef: SitePlugins]()
+    var fetching = [JetpackSiteRef: Bool]()
+    var lastFetch = [JetpackSiteRef: Date]()
 }
 
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
@@ -49,13 +49,13 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
 
     func processQueries() {
         let sitesWithQuery = activeQueries
-            .map({ $0.siteID })
+            .map({ $0.site })
             .unique
         let sitesToFetch = sitesWithQuery
-            .filter(shouldFetch(siteID:))
+            .filter(shouldFetch(site:))
 
-        sitesToFetch.forEach { (siteID) in
-            fetchPlugins(siteID: siteID)
+        sitesToFetch.forEach { (site) in
+            fetchPlugins(site: site)
         }
     }
 
@@ -64,165 +64,165 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             return
         }
         switch pluginAction {
-        case .activate(let pluginID, let siteID):
-            activatePlugin(pluginID: pluginID, siteID: siteID)
-        case .deactivate(let pluginID, let siteID):
-            deactivatePlugin(pluginID: pluginID, siteID: siteID)
-        case .enableAutoupdates(let pluginID, let siteID):
-            enableAutoupdatesPlugin(pluginID: pluginID, siteID: siteID)
-        case .disableAutoupdates(let pluginID, let siteID):
-            disableAutoupdatesPlugin(pluginID: pluginID, siteID: siteID)
-        case .remove(let pluginID, let siteID):
-            removePlugin(pluginID: pluginID, siteID: siteID)
-        case .receivePlugins(let siteID, let plugins):
-            receivePlugins(siteID: siteID, plugins: plugins)
-        case .receivePluginsFailed(let siteID, _):
-            state.fetching[siteID] = false
+        case .activate(let pluginID, let site):
+            activatePlugin(pluginID: pluginID, site: site)
+        case .deactivate(let pluginID, let site):
+            deactivatePlugin(pluginID: pluginID, site: site)
+        case .enableAutoupdates(let pluginID, let site):
+            enableAutoupdatesPlugin(pluginID: pluginID, site: site)
+        case .disableAutoupdates(let pluginID, let site):
+            disableAutoupdatesPlugin(pluginID: pluginID, site: site)
+        case .remove(let pluginID, let site):
+            removePlugin(pluginID: pluginID, site: site)
+        case .receivePlugins(let site, let plugins):
+            receivePlugins(site: site, plugins: plugins)
+        case .receivePluginsFailed(let site, _):
+            state.fetching[site] = false
         }
     }
 }
 
 // MARK: - Selectors
 extension PluginStore {
-    func getPlugins(siteID: Int) -> SitePlugins? {
-        return state.plugins[siteID]
+    func getPlugins(site: JetpackSiteRef) -> SitePlugins? {
+        return state.plugins[site]
     }
 
-    func getPlugin(id: String, siteID: Int) -> PluginState? {
-        return getPlugins(siteID: siteID)?.plugins.first(where: { $0.id == id })
+    func getPlugin(id: String, site: JetpackSiteRef) -> PluginState? {
+        return getPlugins(site: site)?.plugins.first(where: { $0.id == id })
     }
 
-    func shouldFetch(siteID: Int) -> Bool {
-        let lastFetch = state.lastFetch[siteID, default: .distantPast]
+    func shouldFetch(site: JetpackSiteRef) -> Bool {
+        let lastFetch = state.lastFetch[site, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let isFetching = state.fetching[siteID, default: false]
+        let isFetching = state.fetching[site, default: false]
         return needsRefresh && !isFetching
     }
 }
 
 // MARK: - Action handlers
 private extension PluginStore {
-    func activatePlugin(pluginID: String, siteID: Int) {
-        modifyPlugin(id: pluginID, siteID: siteID) { (plugin) in
+    func activatePlugin(pluginID: String, site: JetpackSiteRef) {
+        modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = true
         }
-        remote?.activatePlugin(
+        remote(site: site)?.activatePlugin(
             pluginID: pluginID,
-            siteID: siteID,
+            siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, siteID: siteID, change: { (plugin) in
+                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = false
                 })
         })
     }
 
-    func deactivatePlugin(pluginID: String, siteID: Int) {
-        modifyPlugin(id: pluginID, siteID: siteID) { (plugin) in
+    func deactivatePlugin(pluginID: String, site: JetpackSiteRef) {
+        modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = false
         }
-        remote?.deactivatePlugin(
+        remote(site: site)?.deactivatePlugin(
             pluginID: pluginID,
-            siteID: siteID,
+            siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, siteID: siteID, change: { (plugin) in
+                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = true
                 })
         })
     }
 
-    func enableAutoupdatesPlugin(pluginID: String, siteID: Int) {
-        modifyPlugin(id: pluginID, siteID: siteID) { (plugin) in
+    func enableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
+        modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = true
         }
-        remote?.enableAutoupdates(
+        remote(site: site)?.enableAutoupdates(
             pluginID: pluginID,
-            siteID: siteID,
+            siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, siteID: siteID, change: { (plugin) in
+                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = false
                 })
         })
     }
 
-    func disableAutoupdatesPlugin(pluginID: String, siteID: Int) {
-        modifyPlugin(id: pluginID, siteID: siteID) { (plugin) in
+    func disableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
+        modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = false
         }
-        remote?.disableAutoupdates(
+        remote(site: site)?.disableAutoupdates(
             pluginID: pluginID,
-            siteID: siteID,
+            siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, siteID: siteID, change: { (plugin) in
+                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = true
                 })
         })
     }
 
-    func removePlugin(pluginID: String, siteID: Int) {
-        guard let sitePlugins = state.plugins[siteID],
+    func removePlugin(pluginID: String, site: JetpackSiteRef) {
+        guard let sitePlugins = state.plugins[site],
             let index = sitePlugins.plugins.index(where: { $0.id == pluginID }) else {
                 return
         }
-        state.plugins[siteID]?.plugins.remove(at: index)
-        remote?.remove(
+        state.plugins[site]?.plugins.remove(at: index)
+        remote(site: site)?.remove(
             pluginID: pluginID,
-            siteID: siteID,
+            siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                _ = self?.getPlugins(siteID: siteID)
+                _ = self?.getPlugins(site: site)
         })
     }
 
-    func modifyPlugin(id: String, siteID: Int, change: (inout PluginState) -> Void) {
-        guard let sitePlugins = state.plugins[siteID],
+    func modifyPlugin(id: String, site: JetpackSiteRef, change: (inout PluginState) -> Void) {
+        guard let sitePlugins = state.plugins[site],
             let index = sitePlugins.plugins.index(where: { $0.id == id }) else {
                 return
         }
         var plugin = sitePlugins.plugins[index]
         change(&plugin)
-        state.plugins[siteID]?.plugins[index] = plugin
+        state.plugins[site]?.plugins[index] = plugin
     }
 
-    func fetchPlugins(siteID: Int) {
-        guard let remote = remote else {
+    func fetchPlugins(site: JetpackSiteRef) {
+        guard let remote = remote(site: site) else {
             return
         }
-        state.fetching[siteID] = true
+        state.fetching[site] = true
         remote.getPlugins(
-            siteID: siteID,
+            siteID: site.siteID,
             success: { [actionDispatcher] (plugins) in
-                actionDispatcher.dispatch(PluginAction.receivePlugins(siteID: siteID, plugins: plugins))
+                actionDispatcher.dispatch(PluginAction.receivePlugins(site: site, plugins: plugins))
             },
             failure: { [actionDispatcher] (error) in
-                actionDispatcher.dispatch(PluginAction.receivePluginsFailed(siteID: siteID, error: error))
+                actionDispatcher.dispatch(PluginAction.receivePluginsFailed(site: site, error: error))
         })
     }
 
-    func receivePlugins(siteID: Int, plugins: SitePlugins) {
+    func receivePlugins(site: JetpackSiteRef, plugins: SitePlugins) {
         transaction { (state) in
-            state.plugins[siteID] = plugins
-            state.fetching[siteID] = false
-            state.lastFetch[siteID] = Date()
+            state.plugins[site] = plugins
+            state.fetching[site] = false
+            state.lastFetch[site] = Date()
         }
     }
 
-    func receivePluginsFailed(siteID: Int) {
+    func receivePluginsFailed(site: JetpackSiteRef) {
         transaction { (state) in
-            state.fetching[siteID] = false
-            state.lastFetch[siteID] = Date()
+            state.fetching[site] = false
+            state.lastFetch[site] = Date()
         }
     }
 
-    private var remote: PluginServiceRemote? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
+    func remote(site: JetpackSiteRef) -> PluginServiceRemote? {
+        guard let token = CredentialsService().getOAuthToken(site: site) else {
             return nil
         }
-        return PluginServiceRemote(wordPressComRestApi: account.wordPressComRestApi)
+        let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
+
+        return PluginServiceRemote(wordPressComRestApi: api)
     }
 }

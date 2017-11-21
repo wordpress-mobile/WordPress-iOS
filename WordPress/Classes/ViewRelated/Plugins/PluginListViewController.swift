@@ -3,7 +3,7 @@ import WordPressKit
 import WordPressFlux
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
-    let siteID: Int
+    let site: JetpackSiteRef
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -14,9 +14,9 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate let noResultsView = WPNoResultsView()
     var viewModelReceipt: Receipt?
 
-    init(siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
-        self.siteID = siteID
-        viewModel = PluginListViewModel(siteID: siteID, store: store)
+    init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        self.site = site
+        viewModel = PluginListViewModel(site: site, store: store)
 
         super.init(style: .grouped)
 
@@ -29,9 +29,11 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     convenience init?(blog: Blog) {
-        precondition(blog.dotComID != nil)
+        guard let site = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
 
-        self.init(siteID: Int(blog.dotComID!))
+        self.init(site: site)
     }
 
     override func viewDidLoad() {
@@ -84,7 +86,7 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 
 extension PluginListViewController: PluginPresenter {
     func present(plugin: PluginState, capabilities: SitePluginCapabilities) {
-        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, siteID: siteID)
+        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, site: site)
         navigationController?.pushViewController(controller, animated: true)
     }
 }

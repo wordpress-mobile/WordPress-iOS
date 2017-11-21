@@ -8,16 +8,16 @@ class PluginViewModel: Observable {
         }
     }
     let capabilities: SitePluginCapabilities
-    let siteID: Int
+    let site: JetpackSiteRef
     var storeReceipt: Receipt?
     let changeDispatcher = Dispatcher<Void>()
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, store: PluginStore = StoreContainer.shared.plugin) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
         self.capabilities = capabilities
-        self.siteID = siteID
+        self.site = site
         storeReceipt = store.onChange { [weak self] in
-            guard let plugin = store.getPlugin(id: plugin.id, siteID: siteID) else {
+            guard let plugin = store.getPlugin(id: plugin.id, site: site) else {
                 self?.dismiss?()
                 return
             }
@@ -113,7 +113,7 @@ class PluginViewModel: Observable {
         alert.addDestructiveActionWithTitle(
             NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
-                ActionDispatcher.dispatch(PluginAction.remove(id: self.plugin.id, siteID: self.siteID))
+                ActionDispatcher.dispatch(PluginAction.remove(id: self.plugin.id, site: self.site))
             }
         )
         return alert
@@ -121,24 +121,24 @@ class PluginViewModel: Observable {
 
     private func setActive(_ active: Bool) {
         if active {
-            ActionDispatcher.dispatch(PluginAction.activate(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.activate(id: plugin.id, site: site))
         } else {
-            ActionDispatcher.dispatch(PluginAction.deactivate(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.deactivate(id: plugin.id, site: site))
         }
     }
 
     private func setAutoupdate(_ autoupdate: Bool) {
         if autoupdate {
-            ActionDispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, site: site))
         } else {
-            ActionDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, siteID: siteID))
+            ActionDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, site: site))
         }
     }
 
     private func getSiteTitle() -> String? {
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
-        let blog = service.blog(byBlogId: siteID as NSNumber)
+        let blog = service.blog(byBlogId: site.siteID as NSNumber)
         return blog?.settings?.name?.nonEmptyString()
     }
 

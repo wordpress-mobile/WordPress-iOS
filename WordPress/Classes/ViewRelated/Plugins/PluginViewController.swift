@@ -17,9 +17,9 @@ class PluginViewController: UITableViewController {
     fileprivate let viewModel: PluginViewModel
     var viewModelReceipt: Receipt?
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
         self.plugin = plugin
-        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, siteID: siteID)
+        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, site: site)
         super.init(style: .grouped)
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
