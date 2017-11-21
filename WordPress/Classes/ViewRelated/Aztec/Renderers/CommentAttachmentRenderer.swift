@@ -113,7 +113,7 @@ private extension CommentAttachmentRenderer {
         }
 
         let testRange = text.startIndex ..< endIndex
-        let testString = text.substring(with: testRange)
+        let testString = String(text[testRange])
 
         return testString == string
     }
