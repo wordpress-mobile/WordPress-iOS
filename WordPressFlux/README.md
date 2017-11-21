@@ -100,7 +100,7 @@ Instead of having to call `emitChange()` every time you modify the state, WordPr
 
 ```swift
 struct CommentsStoreState {
-        // Stored comments keyed by site
+    // Stored comments keyed by site
     var comments = [Int: [Comment]]()
     // Fetching state per site
     var fetching = [Int: Bool]()
