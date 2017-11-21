@@ -33,11 +33,13 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
         guard let api = blog.wordPressComRestApi(),
-            let service = PluginServiceRemote(wordPressComRestApi: api) else {
-                return nil
+            let service = PluginServiceRemote(wordPressComRestApi: api),
+            let dotComID = blog.dotComID?.intValue
+        else {
+            return nil
         }
 
-        self.init(siteID: Int(blog.dotComID!), service: service)
+        self.init(siteID: dotComID, service: service)
     }
 
     override func viewDidLoad() {
