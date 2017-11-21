@@ -778,7 +778,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)showMediaProgress
 {
-    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgressCoordinator.mediaUploadingProgress childrenProgress:self.mediaProgressCoordinator.mediaUploading.allValues];
+    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgressCoordinator.mediaGlobalProgress childrenProgress:self.mediaProgressCoordinator.mediaInProgress.allValues];
     
     vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
     
@@ -830,7 +830,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 - (void)cancelMediaUploads
 {
-    [self.mediaProgressCoordinator cancelAndStopAllPendingUploads];
+    [self.mediaProgressCoordinator cancelAndStopAllInProgressMedia];
     [self autosaveContent];
     [self setupNavbar];
 }
@@ -862,7 +862,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
         NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
         createMediaProgress.totalUnitCount = 100;
-        [self.mediaProgressCoordinator trackWithProgress:createMediaProgress ofObject:nil withMediaID:imageUniqueId];
+        [self.mediaProgressCoordinator trackProgress:createMediaProgress ofMedia:nil withIdentifier:imageUniqueId];
         [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID thumbnailCallback:nil completion:^(Media *media, NSError * error) {
             __typeof__(self) strongSelf = weakSelf;
             if (!strongSelf) {
@@ -910,7 +910,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
         [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
         uploadProgress.kind = NSProgressKindFile;
         [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
-        [self.mediaProgressCoordinator trackWithProgress:uploadProgress ofObject:media withMediaID:mediaUniqueId];
+        [self.mediaProgressCoordinator trackProgress:uploadProgress ofMedia:media withIdentifier:mediaUniqueId];
     }
 }
 
@@ -1062,14 +1062,14 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 #pragma mark - MediaProgressCoordinator
 
 - (void)mediaProgressCoordinatorDidFinishUpload:(MediaProgressCoordinator *)mediaProgressCoordinator {
-    [self.mediaProgressCoordinator stopTrackingOfAllUploads];
+    [self.mediaProgressCoordinator stopTrackingOfAllMedia];
 }
 
 - (void)mediaProgressCoordinatorDidStartUploading:(MediaProgressCoordinator *)mediaProgressCoordinator {
 
 }
 
-- (void)mediaProgressCoordinator:(MediaProgressCoordinator *)mediaProgressCoordinator progressDidChange:(float)progress {
+- (void)mediaProgressCoordinator:(MediaProgressCoordinator *)mediaProgressCoordinator progressDidChange:(double)progress {
     [self setupNavbar];
 }
 
