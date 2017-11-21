@@ -1,11 +1,3 @@
-//
-//  TimeZoneSelectorViewController.swift
-//  WordPress
-//
-//  Created by Asif on 11/11/17.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
-
 import UIKit
 
 class TimeZoneSelectorViewController: UITableViewController {
@@ -165,7 +157,7 @@ class TimeZoneSelectorViewController: UITableViewController {
         return nil
     }
 
-    // MARK:- UITableView Datasource
+    // MARK: UITableView Datasource
     override func numberOfSections(in tableView: UITableView) -> Int {
         return self.continentNames.count
     }
