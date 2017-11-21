@@ -98,7 +98,7 @@ class Notification: NSManagedObject {
             return
         }
 
-        guard type(of: self).cachedAttributes.contains(key) else {
+        guard Swift.type(of: self).cachedAttributes.contains(key) else {
             return
         }
 
