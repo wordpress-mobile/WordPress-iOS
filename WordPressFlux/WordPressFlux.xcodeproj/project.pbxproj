@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		E111D6451FBF01E3007641D0 /* Receipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E111D6441FBF01E3007641D0 /* Receipt.swift */; };
 		E12F96EE1FBC67AC00329E2E /* WordPressFlux.h in Headers */ = {isa = PBXBuildFile; fileRef = E12F96EC1FBC67AC00329E2E /* WordPressFlux.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E16A76E81FC4425000A661E3 /* WordPressFluxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16A76E71FC4425000A661E3 /* WordPressFluxTests.swift */; };
+		E16A76EA1FC4425000A661E3 /* WordPressFlux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E12F96E91FBC67AC00329E2E /* WordPressFlux.framework */; };
 		E181A6FB1FBC6AFB0083D849 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F51FBC6AFA0083D849 /* Observable.swift */; };
 		E181A6FC1FBC6AFB0083D849 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F61FBC6AFA0083D849 /* Store.swift */; };
 		E181A6FD1FBC6AFB0083D849 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E181A6F71FBC6AFA0083D849 /* Dispatcher.swift */; };
@@ -17,12 +19,25 @@
 		E19FED0D1FBD8F4300D77FAB /* StatefulStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19FED0C1FBD8F4300D77FAB /* StatefulStore.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E16A76EB1FC4425000A661E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E12F96E01FBC67AC00329E2E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E12F96E81FBC67AC00329E2E;
+			remoteInfo = WordPressFlux;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E111D6441FBF01E3007641D0 /* Receipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Receipt.swift; sourceTree = "<group>"; };
 		E12F96E91FBC67AC00329E2E /* WordPressFlux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressFlux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E12F96EC1FBC67AC00329E2E /* WordPressFlux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressFlux.h; sourceTree = "<group>"; };
 		E12F96ED1FBC67AC00329E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E14A85771FC2F57A00B1688D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E16A76E51FC4425000A661E3 /* WordPressFluxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressFluxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E16A76E71FC4425000A661E3 /* WordPressFluxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressFluxTests.swift; sourceTree = "<group>"; };
+		E16A76E91FC4425000A661E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E181A6F51FBC6AFA0083D849 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		E181A6F61FBC6AFA0083D849 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		E181A6F71FBC6AFA0083D849 /* Dispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
@@ -39,6 +54,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E16A76E21FC4425000A661E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E16A76EA1FC4425000A661E3 /* WordPressFlux.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -47,6 +70,7 @@
 			children = (
 				E14A85771FC2F57A00B1688D /* README.md */,
 				E12F96EB1FBC67AC00329E2E /* WordPressFlux */,
+				E16A76E61FC4425000A661E3 /* WordPressFluxTests */,
 				E12F96EA1FBC67AC00329E2E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				E12F96E91FBC67AC00329E2E /* WordPressFlux.framework */,
+				E16A76E51FC4425000A661E3 /* WordPressFluxTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,6 +92,15 @@
 				E12F96EC1FBC67AC00329E2E /* WordPressFlux.h */,
 			);
 			path = WordPressFlux;
+			sourceTree = "<group>";
+		};
+		E16A76E61FC4425000A661E3 /* WordPressFluxTests */ = {
+			isa = PBXGroup;
+			children = (
+				E16A76E71FC4425000A661E3 /* WordPressFluxTests.swift */,
+				E16A76E91FC4425000A661E3 /* Info.plist */,
+			);
+			path = WordPressFluxTests;
 			sourceTree = "<group>";
 		};
 		E181A7041FBC6B0F0083D849 /* Sources */ = {
@@ -115,12 +149,31 @@
 			productReference = E12F96E91FBC67AC00329E2E /* WordPressFlux.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		E16A76E41FC4425000A661E3 /* WordPressFluxTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E16A76EF1FC4425100A661E3 /* Build configuration list for PBXNativeTarget "WordPressFluxTests" */;
+			buildPhases = (
+				E16A76E11FC4425000A661E3 /* Sources */,
+				E16A76E21FC4425000A661E3 /* Frameworks */,
+				E16A76E31FC4425000A661E3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E16A76EC1FC4425000A661E3 /* PBXTargetDependency */,
+			);
+			name = WordPressFluxTests;
+			productName = WordPressFluxTests;
+			productReference = E16A76E51FC4425000A661E3 /* WordPressFluxTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		E12F96E01FBC67AC00329E2E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0910;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
@@ -128,6 +181,10 @@
 						CreatedOnToolsVersion = 9.1;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
+					};
+					E16A76E41FC4425000A661E3 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -144,12 +201,20 @@
 			projectRoot = "";
 			targets = (
 				E12F96E81FBC67AC00329E2E /* WordPressFlux */,
+				E16A76E41FC4425000A661E3 /* WordPressFluxTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E12F96E71FBC67AC00329E2E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E16A76E31FC4425000A661E3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,7 +238,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E16A76E11FC4425000A661E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E16A76E81FC4425000A661E3 /* WordPressFluxTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E16A76EC1FC4425000A661E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E12F96E81FBC67AC00329E2E /* WordPressFlux */;
+			targetProxy = E16A76EB1FC4425000A661E3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E12F96EF1FBC67AC00329E2E /* Debug */ = {
@@ -336,6 +417,36 @@
 			};
 			name = Release;
 		};
+		E16A76ED1FC4425100A661E3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = WordPressFluxTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressFluxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E16A76EE1FC4425100A661E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = WordPressFluxTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressFluxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -353,6 +464,15 @@
 			buildConfigurations = (
 				E12F96F21FBC67AC00329E2E /* Debug */,
 				E12F96F31FBC67AC00329E2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E16A76EF1FC4425100A661E3 /* Build configuration list for PBXNativeTarget "WordPressFluxTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E16A76ED1FC4425100A661E3 /* Debug */,
+				E16A76EE1FC4425100A661E3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
