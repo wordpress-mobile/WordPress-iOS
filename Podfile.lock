@@ -117,7 +117,7 @@ PODS:
   - WordPress-iOS-Editor (1.9.7):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-  - WPMediaPicker (0.24)
+  - WPMediaPicker (0.25)
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
@@ -150,7 +150,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `00c407e27164431759840d363ff6a61b2fd70ad6`)
   - WordPress-iOS-Editor (= 1.9.7)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `73bafc4236ece8e9d28aad8be1e2357caf8481da`)
+  - WPMediaPicker (= 0.25)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -160,9 +160,6 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 00c407e27164431759840d363ff6a61b2fd70ad6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WPMediaPicker:
-    :commit: 73bafc4236ece8e9d28aad8be1e2357caf8481da
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -171,9 +168,6 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: 00c407e27164431759840d363ff6a61b2fd70ad6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WPMediaPicker:
-    :commit: 73bafc4236ece8e9d28aad8be1e2357caf8481da
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
@@ -208,9 +202,9 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 0ab6bfcd8023c994dc2b117bc7633467f1a1a5ad
   WordPress-iOS-Editor: 03b3bc631a31520ccf78e665548286c6d12c17f4
-  WPMediaPicker: 5e2db7fd30d8ca497d91b26fbf61e94d6660f1c6
+  WPMediaPicker: 80c7401edd8ca05d4277f43afc691662f3a26614
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 4df16359823b0040171b94827062ee4ec62e5cfc
+PODFILE CHECKSUM: 128031205b25a02cd7df272597fdb1c1df09971a
 
 COCOAPODS: 1.3.1
