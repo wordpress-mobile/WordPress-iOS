@@ -29,7 +29,7 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
                                            action: #selector(handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
         _ = addHelpButtonToNavController()
-        navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site page title.")
+        navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
     }
 
     // MARK: - Cancel Button Action
