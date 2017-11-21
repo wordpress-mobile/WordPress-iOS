@@ -65,6 +65,9 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         onCompletion?(nil)
     }
 
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return nil
+    }
 
     // MARK: - Private Methods
 

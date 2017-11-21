@@ -2,7 +2,7 @@ import Foundation
 
 @objc
 public class SocialLogin2FANonceInfo: NSObject {
-    @objc var nonceSMS = ""
+    @objc public var nonceSMS = ""
     @objc var nonceBackup = ""
     @objc var nonceAuthenticator = ""
     @objc var supportedAuthTypes = [String]() // backup|authenticator|sms

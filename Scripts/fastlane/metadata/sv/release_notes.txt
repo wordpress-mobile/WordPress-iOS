@@ -1,3 +1,1 @@
-Inloggning via sociala nät: Denna version innehåller stöd för inloggning via Google
-Aztec-redigeraren: Nu är den standardredigeraren.
-Aztec-redigeraren: Kan nu importera media från andra appar.
+Inga nya fantastiska funktioner denna gång, utan bara en rad små förbättringar för att ge dig en snabbare och stabilare app. Allt är inte guld som glimmar: Ibland kan det vara programkod!
