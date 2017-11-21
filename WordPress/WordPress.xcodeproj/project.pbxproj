@@ -348,6 +348,7 @@
 		822D60B11F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822D60B01F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift */; };
 		822D60B91F4CCC7A0016C46D /* BlogJetpackSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */; };
 		82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82301B8E1E787420009C9C4E /* AppRatingUtilityTests.swift */; };
+		825327581FBF7CD600B8B7D2 /* ActivityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */; };
 		8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 8261B4CA1EA8E13700668298 /* SVProgressHUD+Dismiss.m */; };
 		827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827704F01F607C0E002E8A03 /* JetpackConnectionViewController.swift */; };
 		8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F38E1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift */; };
@@ -1545,6 +1546,7 @@
 		822D60B01F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackSecuritySettingsViewController.swift; sourceTree = "<group>"; };
 		822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogJetpackSettingsService.swift; sourceTree = "<group>"; };
 		82301B8E1E787420009C9C4E /* AppRatingUtilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRatingUtilityTests.swift; sourceTree = "<group>"; };
+		825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityUtils.swift; sourceTree = "<group>"; };
 		8261B4CA1EA8E13700668298 /* SVProgressHUD+Dismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SVProgressHUD+Dismiss.m"; sourceTree = "<group>"; };
 		8261B4CB1EA8E13700668298 /* SVProgressHUD+Dismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD+Dismiss.h"; sourceTree = "<group>"; };
 		827482C81E966E32001A2B62 /* WordPress 58.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 58.xcdatamodel"; sourceTree = "<group>"; };
@@ -3444,6 +3446,7 @@
 				82FC611C1FA8ADAC00A1757E /* ActivityTableViewCell.swift */,
 				82FC611E1FA8ADAC00A1757E /* ActivityTableViewCell.xib */,
 				82FC611F1FA8ADAC00A1757E /* WPStyleGuide+Activity.swift */,
+				825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -6315,6 +6318,7 @@
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
 				B50C0C571EF42A0000372C65 /* VideoShortcodeProcessor.swift in Sources */,
 				B5F641B31E37C36700B7819F /* AdaptiveNavigationController.swift in Sources */,
+				825327581FBF7CD600B8B7D2 /* ActivityUtils.swift in Sources */,
 				080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */,
 				E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
