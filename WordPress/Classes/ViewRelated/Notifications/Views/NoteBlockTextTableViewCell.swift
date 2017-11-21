@@ -25,7 +25,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     @objc var linkColor: UIColor? {
         didSet {
             if let unwrappedLinkColor = linkColor {
-                textView.linkTextAttributes = [NSForegroundColorAttributeName as NSObject: unwrappedLinkColor]
+                textView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: unwrappedLinkColor]
             }
         }
     }
