@@ -23,6 +23,10 @@ class MediaLibraryViewController: UIViewController {
 
     fileprivate var capturePresenter: WPMediaCapturePresenter?
 
+    // After 99% progress, we'll count a media item as being uploaded, and we'll
+    // show an indeterminate spinner as the server processes it.
+    fileprivate static let uploadCompleteProgress: Double = 0.99
+
     lazy fileprivate var searchBarContainer: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -401,17 +405,38 @@ class MediaLibraryViewController: UIViewController {
     }
 
     private func reloadCell(for media: Media) {
+        visibleCells(for: media).forEach { cell in
+            cell.overlayView = nil
+            cell.asset = media
+        }
+    }
+
+    private func updateCellProgress(_ progress: Double, for media: Media) {
+        visibleCells(for: media).forEach { cell in
+            if let overlayView = cell.overlayView as? MediaCellProgressView {
+                if progress < MediaLibraryViewController.uploadCompleteProgress {
+                    overlayView.progressIndicator.state = .progress(progress)
+                } else {
+                    overlayView.progressIndicator.state = .indeterminate
+                }
+            }
+        }
+    }
+
+    private func showUploadingStateForCell(for media: Media) {
+        visibleCells(for: media).forEach { cell in
+            if let overlayView = cell.overlayView as? MediaCellProgressView {
+                overlayView.progressIndicator.state = .indeterminate
+            }
+        }
+    }
+
+    private func visibleCells(for media: Media) -> [WPMediaCollectionViewCell] {
         guard let cells = pickerViewController.collectionView?.visibleCells as? [WPMediaCollectionViewCell] else {
-            return
+            return []
         }
 
-        cells.forEach({ cell in
-            if let asset = cell.asset as? Media,
-                asset == media {
-                cell.overlayView = nil
-                cell.asset = media
-            }
-        })
+        return cells.filter({ ($0.asset as? Media) == media })
     }
 
     private var hasSearchQuery: Bool {
@@ -586,11 +611,14 @@ class MediaLibraryViewController: UIViewController {
         }
 
         uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ [weak self] (media, state) in
-            print("Media \(String(describing: media.filename)) in state \(String(describing: state))")
             switch state {
+            case .progress(let progress) :
+                self?.updateCellProgress(progress, for: media)
+                break
+            case .uploading:
+                self?.showUploadingStateForCell(for: media)
             case .ended:
                 self?.reloadCell(for: media)
-            default: break
             }
             }, for: nil)
     }
@@ -801,6 +829,12 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {
+        if let overlayView = overlayView as? MediaCellProgressView,
+            let media = asset as? Media {
+            if media.remoteStatus == .processing {
+                overlayView.progressIndicator.state = .indeterminate
+            }
+        }
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
@@ -917,6 +951,10 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         isLoading = false
 
         updateViewState(for: pickerDataSource.numberOfAssets())
+    }
+
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return nil
     }
 }
 
