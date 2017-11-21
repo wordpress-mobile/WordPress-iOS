@@ -101,6 +101,7 @@ class TimeZoneSelectorViewController: UITableViewController {
             if let allTimezones = self?.allTimezones {
                 self?.setupVariables(with: allTimezones)
             }
+            self?.tableView.reloadData()
             self?.highlightCurrentSelection()
             }, failure: { (error) in
                 print(error)
