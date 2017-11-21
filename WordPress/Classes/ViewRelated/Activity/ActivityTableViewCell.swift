@@ -17,9 +17,9 @@ open class ActivityTableViewCell: WPTableViewCell {
 
     open func configureCell(_ activity: Activity) {
         self.activity = activity
-        timestampLabel?.attributedText = NSAttributedString(string: activity.published.mediumStringWithTime(),
+        timestampLabel?.attributedText = NSAttributedString(string: activity.published.mediumStringWithUTCTime(),
                                                             attributes: Style.timestampStyle())
-        if activity.name == ActivityName.fullBackup {
+        if activity.isFullBackup {
             gravatarImageView.isHidden = true
             summaryLabel.attributedText = NSAttributedString(string: activity.summary,
                                                              attributes: Style.summaryBoldStyle())
@@ -35,10 +35,16 @@ open class ActivityTableViewCell: WPTableViewCell {
             summaryLabel.attributedText = NSAttributedString(string: activity.summary,
                                                              attributes: Style.summaryRegularStyle())
         }
-        if activity.rewindable {
-            borderView.backgroundColor = Style.backgroundRewindableColor()
+        if activity.isDiscarded {
+            contentView.backgroundColor = Style.backgroundDiscardedColor()
+            borderView.backgroundColor = Style.backgroundDiscardedColor()
         } else {
-            borderView.backgroundColor = Style.backgroundColor()
+            contentView.backgroundColor = Style.backgroundColor()
+            if activity.rewindable {
+                borderView.backgroundColor = Style.backgroundRewindableColor()
+            } else {
+                borderView.backgroundColor = Style.backgroundColor()
+            }
         }
     }
 
