@@ -56,7 +56,7 @@
 		<key>Bar button font size</key>
 		<string></string>
 		<key>Background color</key>
-		<string></string>
+		<string>FFFFFF</string>
 		<key>Set Translucent</key>
 		<true/>
 	</dict>
