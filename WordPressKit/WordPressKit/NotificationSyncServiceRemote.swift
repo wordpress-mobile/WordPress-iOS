@@ -58,7 +58,7 @@ public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     ///     - read: The new Read Status to set.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    public func updateReadStatus(_ notificationID: String, read: Bool, completion: @escaping ((Error?) -> Void)) {
+    @objc public func updateReadStatus(_ notificationID: String, read: Bool, completion: @escaping ((Error?) -> Void)) {
         let path = "notifications/read"
         let requestUrl = self.path(forEndpoint: path, withVersion: ._1_1)
 
@@ -85,7 +85,7 @@ public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
     ///     - timestamp: Timestamp of the last seen notification.
     ///     - completion: Closure to be executed on completion, indicating whether the OP was successful or not.
     ///
-    public func updateLastSeen(_ timestamp: String, completion: @escaping ((Error?) -> Void)) {
+    @objc public func updateLastSeen(_ timestamp: String, completion: @escaping ((Error?) -> Void)) {
         let path = "notifications/seen"
         let requestUrl = self.path(forEndpoint: path, withVersion: ._1_1)
 

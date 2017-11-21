@@ -130,6 +130,9 @@ private extension TypeBasedExtensionContentExtractor {
 
     func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void) {
         guard let provider = context.itemProviders(ofType: acceptedType).first else {
+            DispatchQueue.main.async {
+                completion(nil)
+            }
             return
         }
         provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
