@@ -145,9 +145,9 @@ import WordPressShared
     @objc func configureTermsButtonText() {
         let string = NSLocalizedString("By creating an account you agree to the fascinating <u>Terms of Service</u>.",
                                        comment: "Message displayed when a verification code is needed")
-        let options: [String: Any] = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html.rawValue,
+            .characterEncoding: String.Encoding.utf8.rawValue
         ]
 
         let styledString = "<style>body {font-family: -apple-system, sans-serif; font-size:13px; color: #ffffff; text-align:center;}</style>" + string

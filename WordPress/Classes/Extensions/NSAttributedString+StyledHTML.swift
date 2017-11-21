@@ -19,10 +19,10 @@ extension NSAttributedString {
     class func attributedStringWithHTML(_ htmlString: String, attributes: StyledHTMLAttributes?) -> NSAttributedString {
         let styles = styleTagTextForAttributes(attributes)
         let styledString = styles + htmlString
-        guard let data = styledString.data(using: String.Encoding.utf8),
+        guard let data = styledString.data(using: .utf8),
             let attributedString = try? NSMutableAttributedString(
             data: data,
-            options: [ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue) ],
+            options: [ .documentType: NSAttributedString.DocumentType.html.rawValue, .characterEncoding: String.Encoding.utf8.rawValue ],
             documentAttributes: nil) else {
                 // if creating the html-ed string fails (and it has, thus this change) we return the string without any styling
                 return NSAttributedString(string: htmlString)
