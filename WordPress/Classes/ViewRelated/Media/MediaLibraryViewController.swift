@@ -918,6 +918,10 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
         updateViewState(for: pickerDataSource.numberOfAssets())
     }
+
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return nil
+    }
 }
 
 // MARK: - State restoration
