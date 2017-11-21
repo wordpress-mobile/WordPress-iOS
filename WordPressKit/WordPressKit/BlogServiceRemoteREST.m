@@ -244,48 +244,6 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
                           }];
 }
 
-- (void)fetchTimeZoneList:(void(^_Nullable)(NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> * _Nonnull resultDict))success
-                  failure:(void (^_Nullable)(NSError * _Nullable error))failure
-{
-    NSString *path = @"timezones";
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_2_0];
-
-    [self.wordPressComRestApi GET:requestUrl
-                       parameters:nil
-                          success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-                              if (success) {
-                                  NSDictionary *dict = (NSDictionary *)responseObject;
-                                  NSDictionary *timezonesByContinent = [dict dictionaryForKey:@"timezones_by_continent"];
-                                  NSMutableDictionary *resultsDict = [[NSMutableDictionary alloc] init];
-                                  for (NSString *continent in timezonesByContinent.keyEnumerator) {
-                                      NSMutableDictionary *newContinentDict = [[NSMutableDictionary alloc] init];
-                                      NSArray *continentArray = [timezonesByContinent arrayForKey:continent];
-                                      for (NSDictionary *labelValDict in continentArray) {
-                                          NSString *labelString = [labelValDict stringForKey:@"label"];
-                                          NSString *valueString = [labelValDict stringForKey:@"value"];
-                                          newContinentDict[labelString] = valueString;
-                                      }
-                                      resultsDict[continent] = newContinentDict;
-                                  }
-                                  NSArray *manualUTCDict = [dict arrayForKey:@"manual_utc_offsets"];
-                                  NSMutableDictionary *manualUTCModifiedDict = [[NSMutableDictionary alloc] init];
-                                  for (NSDictionary *manualOffsetDict in manualUTCDict) {
-                                      NSString *labelString = [manualOffsetDict stringForKey:@"label"];
-                                      NSString *valueString = [manualOffsetDict stringForKey:@"value"];
-                                      manualUTCModifiedDict[labelString] = valueString;
-                                  }
-                                  resultsDict[@"Manual Offsets"] = manualUTCModifiedDict;
-                                  resultsDict[@"UTC"] = @{@"UTC":@"UTC"};
-                                  success(resultsDict);
-                              }
-                          } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-                              if (failure) {
-                                  failure(error);
-                              }
-                          }];
-}
-
 #pragma mark - API paths
 
 - (NSString *)pathForUsers
