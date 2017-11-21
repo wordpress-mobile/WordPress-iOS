@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Activity {
+public class Activity {
     public let activityID: String
     public let summary: String
     public let name: String
@@ -10,6 +10,7 @@ public struct Activity {
     public let rewindable: Bool
     public let rewindID: String?
     public let published: Date
+    public var isDiscarded: Bool = false
     public let actor: ActivityActor?
     public let object: ActivityObject?
     public let target: ActivityObject?
@@ -58,6 +59,14 @@ public struct Activity {
             items = nil
         }
     }
+
+    public lazy var isRewindComplete: Bool = {
+        return self.name == ActivityName.rewindComplete
+    }()
+
+    public lazy var isFullBackup: Bool = {
+        return self.name == ActivityName.fullBackup
+    }()
 }
 
 private extension Activity {
@@ -68,7 +77,7 @@ private extension Activity {
     }
 }
 
-public struct ActivityActor {
+public class ActivityActor {
     public let displayName: String
     public let type: String
     public let wpcomUserID: String
@@ -88,7 +97,7 @@ public struct ActivityActor {
     }
 }
 
-public struct ActivityObject {
+public class ActivityObject {
     public let name: String
     public let type: String
     public let attributes: [String: Any]
@@ -108,9 +117,10 @@ public struct ActivityObject {
 
 public struct ActivityName {
     public static let fullBackup = "rewind__backup_complete_full"
+    public static let rewindComplete = "rewind__complete"
 }
 
-public struct RestoreStatus {
+public class RestoreStatus {
     public let status: Status
     public let percent: Int
     public let message: String?
