@@ -22,6 +22,7 @@
 		E12F96E91FBC67AC00329E2E /* WordPressFlux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressFlux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E12F96EC1FBC67AC00329E2E /* WordPressFlux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressFlux.h; sourceTree = "<group>"; };
 		E12F96ED1FBC67AC00329E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E14A85771FC2F57A00B1688D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E181A6F51FBC6AFA0083D849 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		E181A6F61FBC6AFA0083D849 /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		E181A6F71FBC6AFA0083D849 /* Dispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
@@ -44,6 +45,7 @@
 		E12F96DF1FBC67AC00329E2E = {
 			isa = PBXGroup;
 			children = (
+				E14A85771FC2F57A00B1688D /* README.md */,
 				E12F96EB1FBC67AC00329E2E /* WordPressFlux */,
 				E12F96EA1FBC67AC00329E2E /* Products */,
 			);

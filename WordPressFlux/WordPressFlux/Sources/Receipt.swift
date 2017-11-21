@@ -2,6 +2,7 @@
 /// subscription.
 ///
 public protocol Unsubscribable: class {
+    /// Unregisters the subscription associated with the given Receipt.
     func unsubscribe(receipt: Receipt)
 }
 
