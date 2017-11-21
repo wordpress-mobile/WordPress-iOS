@@ -59,7 +59,7 @@ enum PlanListViewModel {
 
         let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: UIFont.systemFont(ofSize: 12),
                                                                    .foregroundColor: bodyColor ],
-                                                 .ATagAttribute: [ .underlineStyle: NSUnderlineStyle.styleNone.rawValue as AnyObject,
+                                                 .ATagAttribute: [ .underlineStyle: NSUnderlineStyle.styleNone.rawValue,
                                                                    .foregroundColor: linkColor] ]
 
         let attributedTos = NSAttributedString.attributedStringWithHTML(tos, attributes: attributes)

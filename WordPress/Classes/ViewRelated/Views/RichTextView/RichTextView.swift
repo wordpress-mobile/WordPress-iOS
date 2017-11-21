@@ -94,9 +94,9 @@ import Foundation
         }
     }
 
-    @objc open var linkTextAttributes: [AnyHashable: Any]! {
+    @objc open var linkTextAttributes: [String: Any]! {
         set {
-            textView.linkTextAttributes = newValue as! [String: AnyObject]
+            textView.linkTextAttributes = newValue
         }
         get {
             return textView.linkTextAttributes

@@ -53,7 +53,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
-        let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue),
+        let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
                                                             .foregroundColor: Colors.aztecLinkColor]
 
         textView.delegate = self
