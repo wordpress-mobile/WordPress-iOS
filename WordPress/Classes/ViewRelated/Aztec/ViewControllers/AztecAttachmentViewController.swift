@@ -239,7 +239,7 @@ extension ImageAttachment.Size {
         case .thumbnail: return NSLocalizedString("Thumbnail", comment: "Thumbnail image size. Should be the same as in core WP.")
         case .medium: return NSLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP.")
         case .large: return NSLocalizedString("Large", comment: "Large image size. Should be the same as in core WP.")
-        case .full: return NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
+        case .none, .full: return NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
         }
     }
 }
