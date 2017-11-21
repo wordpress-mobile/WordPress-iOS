@@ -46,17 +46,18 @@ struct InstructionRow: ImmuTableRow {
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
-        if let cell = cell as? CellType {
-            cell.backgroundColor = UIColor.clear
-            cell.stepLabel.text = step
-            cell.instr1Label.text = instr1
-            cell.selectionStyle = .none
+        
+        guard let cell = cell as? CellType else { return }
 
-            cell.instr2Label.isHidden = true
-            if let instr2 = instr2, !instr2.isEmpty {
-                cell.instr2Label.isHidden = false
-                cell.instr2Label.text = instr2
-            }
+        cell.backgroundColor = UIColor.clear
+        cell.stepLabel.text = step
+        cell.instr1Label.text = instr1
+        cell.selectionStyle = .none
+        
+        cell.instr2Label.isHidden = true
+        if let instr2 = instr2, !instr2.isEmpty {
+            cell.instr2Label.isHidden = false
+            cell.instr2Label.text = instr2
         }
     }
 }
@@ -75,15 +76,16 @@ struct SiteTypeRow: ImmuTableRow {
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
-        if let cell = cell as? CellType {
-            cell.accessoryType = .disclosureIndicator
-            cell.selectionStyle = .none
-            cell.startWithLabel.text = startWith
-            cell.typeDescrLabel.text = typeDescr
-
-            if let typeImage = typeImage {
-                cell.typeImageView.image = typeImage
-            }
+        
+        guard let cell = cell as? CellType else { return }
+        
+        cell.accessoryType = .disclosureIndicator
+        cell.selectionStyle = .none
+        cell.startWithLabel.text = startWith
+        cell.typeDescrLabel.text = typeDescr
+        
+        if let typeImage = typeImage {
+            cell.typeImageView.image = typeImage
         }
     }
 }
