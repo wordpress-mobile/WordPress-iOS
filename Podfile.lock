@@ -117,7 +117,7 @@ PODS:
   - WordPress-iOS-Editor (1.9.7):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-  - WPMediaPicker (0.24)
+  - WPMediaPicker (0.25)
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
@@ -150,7 +150,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.15)
   - WordPress-iOS-Editor (= 1.9.7)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `73bafc4236ece8e9d28aad8be1e2357caf8481da`)
+  - WPMediaPicker (= 0.25)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -202,7 +202,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 8004dec8c4449372b4eeaa7492811a85aa70cfa3
   WordPress-iOS-Editor: 03b3bc631a31520ccf78e665548286c6d12c17f4
-  WPMediaPicker: 5e2db7fd30d8ca497d91b26fbf61e94d6660f1c6
+  WPMediaPicker: 80c7401edd8ca05d4277f43afc691662f3a26614
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
 PODFILE CHECKSUM: 5ccb151a9dfbca9b3e4c272c7b1b79bc6468865c
