@@ -182,7 +182,7 @@ class JetpackLoginViewController: UIViewController {
 
         let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: UIFont.systemFont(ofSize: 14),
                                                                    .foregroundColor: WPStyleGuide.allTAllShadeGrey(),
-                                                                   .underlineStyle: NSUnderlineStyle.styleSingle.rawValue as AnyObject,
+                                                                   .underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
                                                                    .paragraphStyle: paragraphStyle ]]
 
         let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
