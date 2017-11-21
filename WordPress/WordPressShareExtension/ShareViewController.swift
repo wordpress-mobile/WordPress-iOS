@@ -7,9 +7,6 @@ class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
 
-    fileprivate lazy var coreDataStack = SharedCoreDataStack()
-    fileprivate var managedContext: NSManagedObjectContext!
-
     /// WordPress.com Username
     ///
     fileprivate lazy var wpcomUsername: String? = {
@@ -66,6 +63,10 @@ class ShareViewController: SLComposeServiceViewController {
         return identifier
     }()
 
+    /// Core Data stack for application extensions
+    ///
+    fileprivate lazy var coreDataStack = SharedCoreDataStack()
+    fileprivate var managedContext: NSManagedObjectContext!
 
     // MARK: - Private Constants
 
@@ -264,8 +265,45 @@ private extension ShareViewController {
     }
 }
 
-/// ShareViewController Extension: Backend Interaction
-///
+// MARK: - ShareViewController Extension: Persistence
+
+private extension ShareViewController {
+    func saveMediaOperation(_ remoteMedia: RemoteMedia, with status: UploadOperation.UploadStatus, siteID: NSNumber) -> NSManagedObjectID {
+        let uploadMediaOp = UploadOperation(context: managedContext)
+        uploadMediaOp.updateWithMedia(remote: remoteMedia)
+        uploadMediaOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        uploadMediaOp.created = NSDate()
+        uploadMediaOp.currentStatus = status
+        uploadMediaOp.siteID = siteID.int32Value
+        coreDataStack.saveContext()
+        return uploadMediaOp.objectID
+    }
+
+    func savePostOperation(_ remotePost: RemotePost,  with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
+        let uploadPostOp = UploadOperation(context: managedContext)
+        uploadPostOp.updateWithPost(remote: remotePost)
+        uploadPostOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        uploadPostOp.created = NSDate()
+        uploadPostOp.currentStatus = status
+        coreDataStack.saveContext()
+        return uploadPostOp.objectID
+    }
+
+    func updateStatus(_ status: UploadOperation.UploadStatus, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
+        var uploadOp: UploadOperation?
+        do {
+            uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
+        } catch {
+            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+            return
+        }
+        uploadOp?.currentStatus = status
+        coreDataStack.saveContext()
+    }
+}
+
+// MARK: - ShareViewController Extension: Backend Interaction
+
 private extension ShareViewController {
 
     func uploadPost(subject: String, body: String, status: String, siteID: Int, requestEnqueued: @escaping () -> ()) {
@@ -284,24 +322,20 @@ private extension ShareViewController {
             post.content = body
             return post
         }()
-
-        let uploadPostOp = UploadOperation(context: managedContext)
-        uploadPostOp.updateWithPost(remote: remotePost)
-        uploadPostOp.backgroundSessionIdentifier = backgroundSessionIdentifier
-        uploadPostOp.created = NSDate()
-        uploadPostOp.currentStatus = .Pending
-        coreDataStack.saveContext()
+        let uploadPostOpID = savePostOperation(remotePost, with: .InProgress)
 
         remote.createPost(remotePost, success: { post in
             if let post = post {
                 DDLogInfo("Post #\(post.postID) was shared.")
             }
+            self.updateStatus(.Complete, forUploadOpWithObjectID: uploadPostOpID)
             requestEnqueued()
         }, failure: { error in
             if let error = error as NSError? {
                 DDLogError("Error creating post in share extension: \(error.localizedDescription)")
                 self.tracks.trackExtensionError(error)
             }
+            self.updateStatus(.Error, forUploadOpWithObjectID: uploadPostOpID)
             requestEnqueued()
         })
     }
@@ -327,18 +361,13 @@ private extension ShareViewController {
             post.content = body
             return post
         }()
-
-        let uploadPostOp = UploadOperation(context: managedContext)
-        uploadPostOp.updateWithPost(remote: remotePost)
-        uploadPostOp.backgroundSessionIdentifier = backgroundSessionIdentifier
-        uploadPostOp.created = NSDate()
-        uploadPostOp.currentStatus = .Pending
+        let uploadPostOpID = savePostOperation(remotePost, with: .Pending)
 
         let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
         let fullPath = mediaDirectory.appendingPathComponent(fileName)
         let remoteMedia: RemoteMedia = {
             let media = RemoteMedia()
-            media.file = MediaSettings.filename
+            media.file = fileName
             media.mimeType = MediaSettings.mimeType
             media.localURL = fullPath
             return media
@@ -350,28 +379,26 @@ private extension ShareViewController {
             DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
             return
         }
-
-        let uploadMediaOp = UploadOperation(context: managedContext)
-        uploadMediaOp.updateWithMedia(remote: remoteMedia)
-        uploadMediaOp.backgroundSessionIdentifier = backgroundSessionIdentifier
-        uploadMediaOp.created = NSDate()
-        uploadMediaOp.currentStatus = .Pending
-
-        coreDataStack.saveContext()
+        let uploadMediaOpID = saveMediaOperation(remoteMedia, with: .Pending, siteID: NSNumber(value: siteID))
 
         // The success and error blocks will probably never get called here, but let's add them just in case. Shared
         // container cleanup will most likely occur in the container (WPiOS) app after the background session completes.
         remote.createPost(remotePost, with: remoteMedia, requestEnqueued: {
+            self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadPostOpID)
+            self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadMediaOpID)
             requestEnqueued()
         }, success: {_ in
-            ShareMediaFileManager.shared.purgeUploadDirectory()
+            self.updateStatus(.Complete, forUploadOpWithObjectID: uploadPostOpID)
+            self.updateStatus(.Complete, forUploadOpWithObjectID: uploadMediaOpID)
+            ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
         }) { error in
             guard let error = error as NSError? else {
                 return
             }
             DDLogError("Error creating post in share extension: \(error.localizedDescription)")
+            self.updateStatus(.Error, forUploadOpWithObjectID: uploadPostOpID)
+            self.updateStatus(.Error, forUploadOpWithObjectID: uploadMediaOpID)
             self.tracks.trackExtensionError(error)
-            ShareMediaFileManager.shared.purgeUploadDirectory()
         }
     }
 }
