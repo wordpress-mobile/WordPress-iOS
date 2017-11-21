@@ -2,6 +2,11 @@ import Foundation
 
 extension BlogServiceRemoteREST {
 
+    /// Fetch all Timezones from the API, with special handling for 'Manual Offsets' and 'UTC' sections
+    ///
+    /// - Parameters:
+    ///     - success The block that will be executed on success.
+    ///     - failure The block that will be executed on failure.
     public func fetchTimeZoneList(success: @escaping ([String: [String: String]]) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "timezones"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
