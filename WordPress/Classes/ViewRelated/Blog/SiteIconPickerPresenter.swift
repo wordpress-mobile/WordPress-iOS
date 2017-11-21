@@ -158,4 +158,8 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
             break
         }
     }
+
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return nil
+    }
 }
