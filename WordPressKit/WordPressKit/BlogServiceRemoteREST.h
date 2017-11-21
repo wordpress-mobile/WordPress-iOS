@@ -54,4 +54,16 @@ typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
                         success:(void(^)(NSDictionary *siteInfoDict))success
                         failure:(void (^)(NSError *error))failure;
 
+/**
+ *  @brief      Fetch timezone information
+ *
+ *  @note       Uses anonymous API
+ *
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+
+- (void)fetchTimeZoneList:(void(^_Nullable)(NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> * _Nonnull resultDict))success
+                  failure:(void (^_Nullable)(NSError * _Nullable error))failure;
+
 @end

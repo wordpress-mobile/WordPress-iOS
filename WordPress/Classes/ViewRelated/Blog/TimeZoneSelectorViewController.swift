@@ -86,8 +86,9 @@ class TimeZoneSelectorViewController: UITableViewController {
     }
 
     private func loadDataFromAPIAndSaveToDB() {
-        let remoteService = BlogJetpackSettingsServiceRemote(wordPressComRestApi: WordPressComRestApi())!
-        remoteService.fetchTimeZoneList(success: { [weak self] (resultsDict) in
+        let api = ServiceRemoteWordPressComREST.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress())!
+        let remoteService = BlogServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: 0))
+        remoteService.fetchTimeZoneList({ [weak self] (resultsDict) in
             self?.insertDataToDB(resultsDict: resultsDict)
             self?.loadDataFromDB()
             if let allTimezones = self?.allTimezones {
