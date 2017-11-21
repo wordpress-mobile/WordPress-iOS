@@ -1,10 +1,11 @@
 import Foundation
+import CoreData
 
 /// Manages URLSessions initiated by the share extension
 ///
 @objc class ShareExtensionSessionManager: NSObject {
 
-    /// MARK: - Public Properties
+    // MARK: - Public Properties
 
     typealias ShareExtensionBackgroundCompletionBlock = () -> Void
     @objc var backgroundSessionCompletionBlock: ShareExtensionBackgroundCompletionBlock?
@@ -19,6 +20,10 @@ import Foundation
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         return session
     }()
+
+    /// Core Data stack for application extensions
+    ///
+    fileprivate lazy var coreDataStack = SharedCoreDataStack()
 
     // MARK: - Initializers
 
@@ -51,15 +56,35 @@ import Foundation
     func startBackgroundSession() {
         DDLogInfo("Initializing background session: \(backgroundSession)")
     }
+
+    // MARK: - Private Functions
+
+    fileprivate func markAllSessionUploadOperationsWith(_ status: UploadOperation.UploadStatus) {
+        // Mark the items as complete in the shared core data instance
+        let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@)", backgroundSessionIdentifier)
+        for uploadOp in coreDataStack.managedContext.allObjects(ofType: UploadOperation.self, matching: predicate) {
+            uploadOp.currentStatus = .Complete
+        }
+        coreDataStack.saveContext()
+    }
+
+    fileprivate func removeAllSessionTempFiles() {
+        let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@ AND isMedia == true)", backgroundSessionIdentifier)
+        for uploadOp in coreDataStack.managedContext.allObjects(ofType: UploadOperation.self, matching: predicate) {
+            if let fileName = uploadOp.fileName {
+                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
+            }
+        }
+    }
 }
+
+// MARK: - URLSessionTaskDelegate
 
 extension ShareExtensionSessionManager: URLSessionTaskDelegate {
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         DDLogInfo("Completed background media uploading for session \(session).")
-
-        // Cleanup the media directory in the shared container just in case it still contains temp files
-        ShareMediaFileManager.shared.purgeUploadDirectory()
-
+        removeAllSessionTempFiles()
+        markAllSessionUploadOperationsWith(.Complete)
         backgroundSessionCompletionBlock?()
     }
 
@@ -68,6 +93,7 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
             return
         }
         WPAppAnalytics.track(.shareExtensionError, error: error)
+        markAllSessionUploadOperationsWith(.Error)
         DDLogError("Error recieved for share extension media uploading. Session:\(session) Task:\(task) Error:\(error).")
     }
 }
