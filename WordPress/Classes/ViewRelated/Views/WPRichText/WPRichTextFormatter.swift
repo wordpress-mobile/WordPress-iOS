@@ -58,9 +58,9 @@ class WPRichTextFormatter {
             return nil
         }
 
-        var options: [String: Any] = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue),
+        var options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html.rawValue,
+            .characterEncoding: String.Encoding.utf8.rawValue
             ]
 
         if let defaultDocumentAttributes = defaultDocumentAttributes {
