@@ -50,17 +50,17 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
         let blog = NSLocalizedString("Start with a Blog", comment: "Start with site type.")
         let blogDescr = NSLocalizedString("To share your ideas, stories and photographs with your followers.", comment: "Site type description.")
         let blogImage = UIImage(named: "type-blog")
-        let blogRow = SiteTypeRow(startWith: blog, typeDescr: blogDescr, typeImage: blogImage, action: nil)
+        let blogRow = SiteTypeRow(startWith: blog, typeDescr: blogDescr, typeImage: blogImage, action: siteTypeRowSelected())
 
         let website = NSLocalizedString("Start with a Website", comment: "Start with site type.")
         let websiteDescr = NSLocalizedString("To promote your business or brand, and connect with your audience.", comment: "Site type description.")
         let websiteImage = UIImage(named: "type-website")
-        let websiteRow = SiteTypeRow(startWith: website, typeDescr: websiteDescr, typeImage: websiteImage, action: nil)
+        let websiteRow = SiteTypeRow(startWith: website, typeDescr: websiteDescr, typeImage: websiteImage, action: siteTypeRowSelected())
 
         let portfolio = NSLocalizedString("Start with a Portfolio", comment: "Start with site type.")
         let portfolioDescr = NSLocalizedString("To present your creative projects in a visual showcase.", comment: "Site type description.")
         let portfolioImage = UIImage(named: "type-portfolio")
-        let portfolioRow = SiteTypeRow(startWith: portfolio, typeDescr: portfolioDescr, typeImage: portfolioImage, action: nil)
+        let portfolioRow = SiteTypeRow(startWith: portfolio, typeDescr: portfolioDescr, typeImage: portfolioImage, action: siteTypeRowSelected())
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -72,6 +72,22 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
                 ])
             ])
     }
+
+    // MARK: - Row Handler
+
+    func siteTypeRowSelected() -> ImmuTableAction {
+        return { [unowned self] row in
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            let message = "This is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+            let alertController = UIAlertController(title: nil,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+            alertController.addDefaultActionWithTitle("OK")
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    // MARK: - Misc
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
