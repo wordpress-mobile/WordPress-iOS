@@ -1,10 +1,14 @@
 import UIKit
 import Social
+import CoreData
 import WordPressKit
 
 class ShareViewController: SLComposeServiceViewController {
 
     // MARK: - Private Properties
+
+    fileprivate lazy var coreDataStack = SharedCoreDataStack()
+    fileprivate var managedContext: NSManagedObjectContext!
 
     /// WordPress.com Username
     ///
@@ -85,6 +89,9 @@ class ShareViewController: SLComposeServiceViewController {
         // Tracker
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
+
+        // Core Data
+        managedContext = coreDataStack.managedContext
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -94,6 +101,10 @@ class ShareViewController: SLComposeServiceViewController {
         dismissIfNeeded()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        coreDataStack.saveContext()
+    }
 
     override func beginRequest(with context: NSExtensionContext) {
         super.beginRequest(with: context)
@@ -274,6 +285,13 @@ private extension ShareViewController {
             return post
         }()
 
+        let uploadPostOp = UploadOperation(context: managedContext)
+        uploadPostOp.updateWithPost(remote: remotePost)
+        uploadPostOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        uploadPostOp.created = NSDate()
+        uploadPostOp.currentStatus = .Pending
+        coreDataStack.saveContext()
+
         remote.createPost(remotePost, success: { post in
             if let post = post {
                 DDLogInfo("Post #\(post.postID) was shared.")
@@ -310,6 +328,12 @@ private extension ShareViewController {
             return post
         }()
 
+        let uploadPostOp = UploadOperation(context: managedContext)
+        uploadPostOp.updateWithPost(remote: remotePost)
+        uploadPostOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        uploadPostOp.created = NSDate()
+        uploadPostOp.currentStatus = .Pending
+
         let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
         let fullPath = mediaDirectory.appendingPathComponent(fileName)
         let remoteMedia: RemoteMedia = {
@@ -326,6 +350,14 @@ private extension ShareViewController {
             DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
             return
         }
+
+        let uploadMediaOp = UploadOperation(context: managedContext)
+        uploadMediaOp.updateWithMedia(remote: remoteMedia)
+        uploadMediaOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        uploadMediaOp.created = NSDate()
+        uploadMediaOp.currentStatus = .Pending
+
+        coreDataStack.saveContext()
 
         // The success and error blocks will probably never get called here, but let's add them just in case. Shared
         // container cleanup will most likely occur in the container (WPiOS) app after the background session completes.

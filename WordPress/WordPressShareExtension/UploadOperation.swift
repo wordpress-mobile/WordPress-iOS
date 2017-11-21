@@ -68,7 +68,7 @@ extension UploadOperation {
     ///
     func updateWithMedia(remote: RemoteMedia) {
         isMedia = true
-        localURL = remote.localURL.absoluteString
+        localURL = remote.localURL?.absoluteString
         fileName = remote.file
         mimeType = remote.mimeType
     }
