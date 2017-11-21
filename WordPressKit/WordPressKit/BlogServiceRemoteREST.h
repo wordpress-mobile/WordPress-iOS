@@ -2,8 +2,8 @@
 #import "BlogServiceRemote.h"
 #import "SiteServiceRemoteWordPressComREST.h"
 
-typedef void (^BlogDetailsHandler)(RemoteBlog * _Null_unspecified remoteBlog);
-typedef void (^SettingsHandler)(RemoteBlogSettings * _Null_unspecified settings);
+typedef void (^BlogDetailsHandler)(RemoteBlog *remoteBlog);
+typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 
 @interface BlogServiceRemoteREST : SiteServiceRemoteWordPressComREST <BlogServiceRemote>
 
@@ -15,8 +15,8 @@ typedef void (^SettingsHandler)(RemoteBlogSettings * _Null_unspecified settings)
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)syncBlogWithSuccess:(_Null_unspecified BlogDetailsHandler)success
-                    failure:(void (^ _Null_unspecified)(NSError * _Null_unspecified error))failure;
+- (void)syncBlogWithSuccess:(BlogDetailsHandler)success
+                    failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's settings.
@@ -26,8 +26,8 @@ typedef void (^SettingsHandler)(RemoteBlogSettings * _Null_unspecified settings)
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)syncBlogSettingsWithSuccess:(_Null_unspecified SettingsHandler)success
-                            failure:(void (^ _Null_unspecified)(NSError * _Null_unspecified error))failure;
+- (void)syncBlogSettingsWithSuccess:(SettingsHandler)success
+                            failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Updates the blog settings.
@@ -37,9 +37,9 @@ typedef void (^SettingsHandler)(RemoteBlogSettings * _Null_unspecified settings)
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)updateBlogSettings:(RemoteBlogSettings * _Null_unspecified)remoteBlogSettings
-                   success:(SuccessHandler _Null_unspecified)success
-                   failure:(void (^ _Null_unspecified)(NSError * _Null_unspecified error))failure;
+- (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
+                   success:(SuccessHandler)success
+                   failure:(void (^)(NSError *error))failure;
 
 
 /**
@@ -50,9 +50,9 @@ typedef void (^SettingsHandler)(RemoteBlogSettings * _Null_unspecified settings)
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)fetchSiteInfoForAddress:(NSString * _Null_unspecified)siteAddress
-                        success:(void(^ _Null_unspecified)(NSDictionary * _Null_unspecified siteInfoDict))success
-                        failure:(void (^ _Null_unspecified)(NSError * _Null_unspecified error))failure;
+- (void)fetchSiteInfoForAddress:(NSString *)siteAddress
+                        success:(void(^)(NSDictionary *siteInfoDict))success
+                        failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Fetch timezone information
