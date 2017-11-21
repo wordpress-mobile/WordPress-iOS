@@ -41,11 +41,13 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
-        guard let service = PlanService(blog: blog, store: StoreKitStore()) else {
+        guard let service = PlanService(blog: blog, store: StoreKitStore()),
+            let siteID = blog.dotComID?.intValue
+        else {
             return nil
         }
 
-        self.init(siteID: Int(blog.dotComID!), service: service)
+        self.init(siteID: siteID, service: service)
         restorationBlogURL = blog.objectID.uriRepresentation()
     }
 
