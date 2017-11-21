@@ -113,7 +113,7 @@ PODS:
   - Starscream (3.0.2)
   - SVProgressHUD (2.2.1)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.14)
+  - WordPress-Aztec-iOS (1.0.0-beta.15)
   - WordPress-iOS-Editor (1.9.7):
     - CocoaLumberjack (~> 3.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
@@ -148,7 +148,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.2)
   - SVProgressHUD (= 2.2.1)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `00c407e27164431759840d363ff6a61b2fd70ad6`)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.15)
   - WordPress-iOS-Editor (= 1.9.7)
   - WPMediaPicker (= 0.25)
   - wpxmlrpc (= 0.8.3)
@@ -157,17 +157,17 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
-  WordPress-Aztec-iOS:
-    :commit: 00c407e27164431759840d363ff6a61b2fd70ad6
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WPMediaPicker:
+    :commit: 73bafc4236ece8e9d28aad8be1e2357caf8481da
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
-  WordPress-Aztec-iOS:
-    :commit: 00c407e27164431759840d363ff6a61b2fd70ad6
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WPMediaPicker:
+    :commit: 73bafc4236ece8e9d28aad8be1e2357caf8481da
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: e775a29310c65851e5a6cec1afc349ab4e334e47
@@ -200,11 +200,11 @@ SPEC CHECKSUMS:
   Starscream: b512c62f6706421221b5ceb2ba01a9f58aca5bea
   SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 0ab6bfcd8023c994dc2b117bc7633467f1a1a5ad
+  WordPress-Aztec-iOS: 8004dec8c4449372b4eeaa7492811a85aa70cfa3
   WordPress-iOS-Editor: 03b3bc631a31520ccf78e665548286c6d12c17f4
   WPMediaPicker: 80c7401edd8ca05d4277f43afc691662f3a26614
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 128031205b25a02cd7df272597fdb1c1df09971a
+PODFILE CHECKSUM: 5ccb151a9dfbca9b3e4c272c7b1b79bc6468865c
 
 COCOAPODS: 1.3.1
