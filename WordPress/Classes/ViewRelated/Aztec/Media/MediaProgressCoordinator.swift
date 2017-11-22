@@ -2,8 +2,8 @@ import Foundation
 
 /// Media Progress Coordinator Delegate comunicates changes on media progress.
 ///
-@objc public protocol MediaProgressCoordinatorDelegate: class {
-
+@objc
+public protocol MediaProgressCoordinatorDelegate: class {
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double)
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator)
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator)
@@ -19,11 +19,14 @@ extension ProgressUserInfoKey {
 ///
 public class MediaProgressCoordinator: NSObject {
 
-    @objc public weak var delegate: MediaProgressCoordinatorDelegate?
+    @objc
+    public weak var delegate: MediaProgressCoordinatorDelegate?
 
-    @objc private(set) var mediaGlobalProgress: Progress?
+    @objc
+    private(set) var mediaGlobalProgress: Progress?
 
-    @objc private(set) lazy var mediaInProgress: [String: Progress] = {
+    @objc
+    private(set) lazy var mediaInProgress: [String: Progress] = {
         return [String: Progress]()
     }()
 
@@ -229,7 +232,8 @@ public class MediaProgressCoordinator: NSObject {
 
     /// Returns a list of all media ID that have an error attached
     ///
-    @objc var failedMediaIDs: [String] {
+    @objc
+    var failedMediaIDs: [String] {
         var failedMediaIDs = [String]()
         for (key, progress) in mediaInProgress {
             if !progress.isCancelled && progress.userInfo[.mediaError] != nil {
