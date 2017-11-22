@@ -3,29 +3,29 @@ import Gridicons
 import WordPressShared
 
 extension WPStyleGuide {
-    @objc static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
+    static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
 
-    @objc static let aztecFormatBarActiveColor: UIColor = UIColor(hexString: "11181D")
+    static let aztecFormatBarActiveColor: UIColor = UIColor(hexString: "11181D")
 
-    @objc static let aztecFormatBarDisabledColor = WPStyleGuide.greyLighten20()
+    static let aztecFormatBarDisabledColor = WPStyleGuide.greyLighten20()
 
-    @objc static let aztecFormatBarDividerColor = WPStyleGuide.greyLighten30()
+    static let aztecFormatBarDividerColor = WPStyleGuide.greyLighten30()
 
-    @objc static let aztecFormatBarBackgroundColor = UIColor.white
+    static let aztecFormatBarBackgroundColor = UIColor.white
 
-    @objc static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
+    static var aztecFormatPickerSelectedCellBackgroundColor: UIColor {
         get {
             return (UIDevice.isPad()) ? WPStyleGuide.lightGrey() : WPStyleGuide.greyLighten30()
         }
     }
 
-    @objc static var aztecFormatPickerBackgroundColor: UIColor {
+    static var aztecFormatPickerBackgroundColor: UIColor {
         get {
             return (UIDevice.isPad()) ? .white : WPStyleGuide.lightGrey()
         }
     }
 
-    @objc static func configureBetaButton(_ button: UIButton) {
+    static func configureBetaButton(_ button: UIButton) {
         let helpImage = Gridicon.iconOfType(.helpOutline)
         button.setImage(helpImage, for: .normal)
         button.tintColor = WPStyleGuide.greyLighten10()
