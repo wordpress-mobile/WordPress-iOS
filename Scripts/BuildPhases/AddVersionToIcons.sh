@@ -79,8 +79,8 @@ function processIcon() {
 
 # Process all app icons and create the corresponding internal icons
 # icons_dir="${SRCROOT}/Images.xcassets/AppIcon.appiconset"
-icons_dir="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}"
-icons_tmp_dir="${TEMP_DIR}/ModifiedIcons"
+icons_dir="${PROJECT_DIR}/${CONTENTS_FOLDER_PATH}/Images.xcassets/AppIcon.appiconset"
+icons_internal_dir="${PROJECT_DIR}/${CONTENTS_FOLDER_PATH}/Images.xcassets/AppIcon-Internal.appiconset"
 icons_dest_dir="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}"
 mkdir "${icons_tmp_dir}"
 
