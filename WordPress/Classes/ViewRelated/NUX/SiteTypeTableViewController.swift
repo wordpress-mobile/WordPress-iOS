@@ -34,7 +34,7 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
 
     // MARK: - Cancel Button Action
 
-    func handleCancelButtonTapped(sender: UIBarButtonItem) {
+    @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
 
