@@ -47,7 +47,9 @@ struct InstructionRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
 
-        guard let cell = cell as? CellType else { return }
+        guard let cell = cell as? CellType else {
+            return
+        }
 
         cell.backgroundColor = UIColor.clear
         cell.stepLabel.text = step
@@ -77,7 +79,9 @@ struct SiteTypeRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
 
-        guard let cell = cell as? CellType else { return }
+        guard let cell = cell as? CellType else {
+            return
+        }
 
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
