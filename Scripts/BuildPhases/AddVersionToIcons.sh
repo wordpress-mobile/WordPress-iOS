@@ -80,8 +80,6 @@ function processIcon() {
     filename=New"${base_file}"
     convert /tmp/temp.png /tmp/labels-base.png -geometry +0+$band_position -composite /tmp/labels.png -geometry +0+$text_position -geometry +${w}-${h} -composite -alpha remove "${final_file_path}"
     
-    # cp "${base_file}" "${final_file_path}"
-    
     # clean up
     rm /tmp/temp.png
     rm /tmp/labels-base.png
