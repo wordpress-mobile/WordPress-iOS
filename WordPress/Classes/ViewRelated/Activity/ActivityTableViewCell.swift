@@ -29,6 +29,9 @@ open class ActivityTableViewCell: WPTableViewCell {
             if let actor = activity.actor,
                 let url = URL(string: actor.avatarURL) {
                 downloadGravatarWithURL(url)
+            } else if let actor = activity.actor,
+                       actor.isJetpack {
+                gravatarImageView.image = jetpackGravatar
             } else {
                 gravatarImageView.image = placeholderImage
             }
@@ -71,6 +74,7 @@ open class ActivityTableViewCell: WPTableViewCell {
     fileprivate var placeholderImage: UIImage {
         return Style.gravatarPlaceholderImage()
     }
+    fileprivate var jetpackGravatar = UIImage(named: "icon-jetpack-gray")
 
     // MARK: - IBOutlets
 

@@ -95,6 +95,11 @@ public class ActivityActor {
         }
         role = dictionary["role"] as? String ?? ""
     }
+
+    public lazy var isJetpack: Bool = {
+        return self.type == ActivityActorType.application &&
+               self.displayName == ActivityActorApplicationType.jetpack
+    }()
 }
 
 public class ActivityObject {
@@ -118,6 +123,15 @@ public class ActivityObject {
 public struct ActivityName {
     public static let fullBackup = "rewind__backup_complete_full"
     public static let rewindComplete = "rewind__complete"
+}
+
+public struct ActivityActorType {
+    public static let person = "Person"
+    public static let application = "Application"
+}
+
+public struct ActivityActorApplicationType {
+    public static let jetpack = "Jetpack"
 }
 
 public class RestoreStatus {
