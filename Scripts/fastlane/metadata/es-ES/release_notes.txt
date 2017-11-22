@@ -1,3 +1,1 @@
-Acceso social: Esta versión incluye compatibilidad con acceso social a través d Google
-Editor Aztec: Ahora es el editor por defecto.
-Editor Aztec: Ahora puede importar medios de otras aplicaciones.
+Nada de parafernalia, solo mejoras relevantes para ofrecerte una aplicación más rápida y estable. No todo lo que brilla es oro - ¡a veces es código!

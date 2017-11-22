@@ -1736,7 +1736,7 @@ UIDocumentPickerDelegate
 
 }
 
-- (void)mediaProgressCoordinator:(MediaProgressCoordinator *)mediaProgressCoordinator progressDidChange:(float)progress {
+- (void)mediaProgressCoordinator:(MediaProgressCoordinator *)mediaProgressCoordinator progressDidChange:(double)progress {
     [self refreshMediaProgress];
 }
 
@@ -1752,7 +1752,7 @@ UIDocumentPickerDelegate
 {
     self.mediaProgressView.hidden = ![self isMediaUploading];
     self.mediaProgressView.progress = self.mediaProgressCoordinator.totalProgress;
-    for(NSString * mediaID in self.mediaProgressCoordinator.pendingUploadIDs) {
+    for(NSString * mediaID in self.mediaProgressCoordinator.inProgressMediaIDs) {
         NSProgress *progress = [self.mediaProgressCoordinator progressForMediaID:mediaID];
         if (progress) {
             [self.editorView setProgress:progress.fractionCompleted onImage:mediaID];
@@ -1773,12 +1773,12 @@ UIDocumentPickerDelegate
 
 - (void)cancelMediaUploads
 {
-    [self.mediaProgressCoordinator cancelAndStopAllPendingUploads];
-    for (NSString *mediaID in self.mediaProgressCoordinator.allCancelledIDs) {
+    [self.mediaProgressCoordinator cancelAndStopAllInProgressMedia];
+    for (NSString *mediaID in self.mediaProgressCoordinator.cancelledMediaIDs) {
         [self.editorView removeImage:mediaID];
         [self.editorView removeVideo:mediaID];
     }
-    [self.mediaProgressCoordinator stopTrackingOfAllUploads];
+    [self.mediaProgressCoordinator stopTrackingOfAllMedia];
     [self autosaveContent];
     [self refreshNavigationBarButtons:NO];
 }
@@ -1877,7 +1877,7 @@ UIDocumentPickerDelegate
     // during serialization, and we'll get a crash if we attempt to add a nil
     // child to mediaGlobalProgress.
     if (uploadProgress) {
-        [self.mediaProgressCoordinator trackWithProgress:uploadProgress ofObject:media withMediaID:mediaUniqueId];
+        [self.mediaProgressCoordinator trackProgress:uploadProgress ofMedia:media withIdentifier:mediaUniqueId];
     }
 }
 
@@ -1885,7 +1885,7 @@ UIDocumentPickerDelegate
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{WPAppAnalyticsKeyEditorSource: WPAppAnalyticsEditorSourceValueHybrid} withPost:self.post];
 
-    Media *media = [self.mediaProgressCoordinator objectForMediaID:imageUniqueId];
+    Media *media = [self.mediaProgressCoordinator mediaWithIdentifier:imageUniqueId];
     if (!media) {
         return;
     }
@@ -2254,7 +2254,7 @@ UIDocumentPickerDelegate
     
     self.selectedMediaID = mediaId;
 
-    if (![self.mediaProgressCoordinator isMediaUploadingWithMediaID:mediaId] && ![self.mediaProgressCoordinator errorForMediaID:mediaId]){
+    if (![self.mediaProgressCoordinator isMediaInProgressWithMediaID:mediaId] && ![self.mediaProgressCoordinator errorForMediaID:mediaId]){
         // The image is already uploaded so nothing to here, but in the future we could plug in image actions here
         return;
     }
@@ -2269,7 +2269,7 @@ UIDocumentPickerDelegate
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
     // Is upload still going?
-    if ([self.mediaProgressCoordinator isMediaUploadingWithMediaID:mediaId]) {
+    if ([self.mediaProgressCoordinator isMediaInProgressWithMediaID:mediaId]) {
         [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"User action to dismiss stop upload question")
                                       style:UIAlertActionStyleCancel
                                     handler:^(UIAlertAction *action) {
