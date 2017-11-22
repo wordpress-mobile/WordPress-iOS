@@ -730,7 +730,7 @@ extension NotificationsViewController {
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
-            DispatchQueue.main.asyncAfter(deadline: delay) { 
+            DispatchQueue.main.asyncAfter(deadline: delay) {
                 self.refreshControl?.endRefreshing()
                 self.clearUnreadNotifications()
             }
