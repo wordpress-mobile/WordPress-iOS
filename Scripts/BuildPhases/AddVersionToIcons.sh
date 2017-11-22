@@ -111,12 +111,6 @@ fi
 rm -rf "${icons_dest_path}"
 cp -rf "${icons_path}" "${icons_dest_path}"
 
-# for icon in $icons_dir/AppIcon*.png;
-# do
-#    echo "${icon}"
-#    processIcon "${icon}" "${icons_dir}" "${TEMP_DIR}" "${icons_dest_dir}"
-# done
-
 # Reference: https://askubuntu.com/a/343753
 find "${icons_path}" -type f -name "*.png" -print0 | 
 while IFS= read -r -d '' file; do
