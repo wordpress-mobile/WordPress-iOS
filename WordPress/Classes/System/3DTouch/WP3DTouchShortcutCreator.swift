@@ -63,9 +63,9 @@ open class WP3DTouchShortcutCreator: NSObject {
     fileprivate func registerForNotifications() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name(rawValue: RecentSitesService.RecentSitesChanged), object: nil)
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name.WPBlogUpdated, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPRecentSitesChanged, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPBlogUpdated, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
     }
 
     fileprivate func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
