@@ -139,6 +139,7 @@ public class MediaProgressCoordinator: NSObject {
     /// - Parameter mediaID: the media ID to search for
     /// - Returns: a Progress object associated with the MediaID
     ///
+    @objc
     func progress(forMediaID mediaID: String) -> Progress? {
         return mediaInProgress[mediaID]
     }
