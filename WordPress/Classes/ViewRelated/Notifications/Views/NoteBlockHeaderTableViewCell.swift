@@ -32,14 +32,16 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(_ url: URL?) {
-        if url == gravatarURL {
+    @objc func downloadGravatar(with url: URL?) {
+        guard url != gravatarURL else {
             return
         }
 
-        let placeholderImage = Style.gravatarPlaceholderImage
-        let gravatar = url.flatMap { Gravatar($0) }
-        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
+        if let url = url, let gravatar = Gravatar(url) {
+            gravatarImageView.downloadGravatar(gravatar, placeholder: Style.gravatarPlaceholderImage, animate: true)
+        } else {
+            gravatarImageView.downloadImage(url, placeholderImage: Style.gravatarPlaceholderImage)
+        }
 
         gravatarURL = url
     }
