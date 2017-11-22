@@ -65,6 +65,7 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
+        webView.uiDelegate = self
 
         loadWebViewRequest()
     }
@@ -249,5 +250,14 @@ extension WebKitViewController: WKNavigationDelegate {
             return
         }
         decisionHandler(.allow)
+    }
+}
+
+extension WebKitViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+        return nil
     }
 }
