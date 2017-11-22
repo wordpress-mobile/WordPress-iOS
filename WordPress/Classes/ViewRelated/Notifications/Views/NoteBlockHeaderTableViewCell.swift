@@ -1,7 +1,20 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
+
+// MARK: - NoteBlockHeaderTableViewCell
+//
 class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
+
+    // MARK: - Private
+    private var gravatarURL: URL?
+    private typealias Style = WPStyleGuide.Notifications
+
+    // MARK: - IBOutlets
+    @IBOutlet private var gravatarImageView: UIImageView!
+    @IBOutlet private var headerTitleLabel: UILabel!
+    @IBOutlet private var headerDetailsLabel: UILabel!
+
     // MARK: - Public Properties
     var headerTitle: String? {
         set {
@@ -51,8 +64,8 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         super.awakeFromNib()
 
         accessoryType = .disclosureIndicator
-
         backgroundColor = Style.blockBackgroundColor
+
         headerTitleLabel.font = Style.headerTitleBoldFont
         headerTitleLabel.textColor = Style.headerTitleColor
         headerDetailsLabel.font = Style.headerDetailsRegularFont
@@ -65,16 +78,4 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         separatorsView.bottomVisible = true
         separatorsView.bottomInsets = UIEdgeInsets.zero
     }
-
-
-    // MARK: - Private Alias
-    fileprivate typealias Style = WPStyleGuide.Notifications
-
-    // MARK: - Private
-    fileprivate var gravatarURL: URL?
-
-    // MARK: - IBOutlets
-    @IBOutlet fileprivate weak var gravatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var headerTitleLabel: UILabel!
-    @IBOutlet fileprivate weak var headerDetailsLabel: UILabel!
 }
