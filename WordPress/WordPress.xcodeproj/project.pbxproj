@@ -5375,8 +5375,8 @@
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
 				E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */,
-				1D60588D0D05DD3D006BFB54 /* Resources */,
 				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
+				1D60588D0D05DD3D006BFB54 /* Resources */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
 				E1756E61169493AD00D9EC00 /* Generate API credentials */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
