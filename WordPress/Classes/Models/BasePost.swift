@@ -4,7 +4,7 @@ extension BasePost {
     // We can't use #keyPath on a non-@objc property, and we can't expose
     // status to Objc-C since it returns an optional enum.
     // I'd prefer #keyPath over a string constant, but the enum brings way more value.
-    @objc static let statusKeyPath = "status"
+    static let statusKeyPath = "status"
     var status: Status? {
         get {
             return rawValue(forKey: BasePost.statusKeyPath)
