@@ -1927,18 +1927,6 @@ extension AztecPostViewController {
     }
 
     func toggleEditingMode() {
-//        if mediaProgressCoordinator.isRunning {
-//            displayMediaIsUploadingAlert()
-//            return
-//        }
-//
-//        if mediaProgressCoordinator.hasFailedMedia {
-//            displayHasFailedMediaAlert(then: {
-//                self.toggleEditingMode()
-//            })
-//            return
-//        }
-
         trackFormatBarAnalytics(stat: .editorTappedHTML)
         formatBar.overflowToolbar(expand: true)
 
