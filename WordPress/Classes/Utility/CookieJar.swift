@@ -133,7 +133,18 @@ private extension HTTPCookie {
     }
 
     func matches(url: URL) -> Bool {
-        return domain == url.host
+        guard let host = url.host else {
+            return false
+        }
+
+        let matchesDomain: Bool
+        if domain.hasPrefix(".") {
+            matchesDomain = host.hasSuffix(domain)
+                || host == domain.dropFirst()
+        } else {
+            matchesDomain = host == domain
+        }
+        return matchesDomain
             && url.path.hasPrefix(path)
             && (!isSecure || (url.scheme == "https"))
     }
