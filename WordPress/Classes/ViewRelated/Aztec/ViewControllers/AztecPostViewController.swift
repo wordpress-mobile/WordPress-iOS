@@ -3329,6 +3329,10 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         updateFormatBarInsertAssetCount()
     }
 
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return nil
+    }
+
     private func updateFormatBarInsertAssetCount() {
         guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count else {
             return
