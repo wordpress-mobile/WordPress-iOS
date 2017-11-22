@@ -3,7 +3,10 @@ import Gridicons
 
 protocol LoginWithLogoAndHelpViewController {
     func addWordPressLogoToNavController()
+    func handleHelpButtonTapped(_ sender: AnyObject)
     func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel)
+    func displaySupportViewController(sourceTag: SupportSourceTag)
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification)
 }
 
 extension LoginWithLogoAndHelpViewController where Self: UIViewController {
@@ -12,6 +15,7 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
         let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
     }
+
     func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel) {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
         let helpBadgeSize = CGSize(width: 12, height: 10)
@@ -50,9 +54,22 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
 
         return (helpButton, helpBadge)
     }
+
+    /// Displays the support vc.
+    ///
+    func displaySupportViewController(sourceTag: SupportSourceTag) {
+        let controller = SupportViewController()
+        controller.sourceTag = sourceTag
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.navigationBar.isTranslucent = false
+        navController.modalPresentationStyle = .formSheet
+
+        navigationController?.present(navController, animated: true, completion: nil)
+    }
 }
 
-class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewController {
+class LoginViewController: NUXAbstractViewController {
     @IBOutlet var instructionLabel: UILabel?
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
