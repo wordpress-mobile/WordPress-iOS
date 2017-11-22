@@ -12,6 +12,8 @@ protocol LoginSocialErrorViewControllerDelegate {
 class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHelpViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
+    var helpBadge: WPNUXHelpBadgeLabel!
+    var helpButton: UIButton!
     var delegate: LoginSocialErrorViewControllerDelegate?
 
     fileprivate enum Sections: Int {
@@ -52,7 +54,9 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
         super.viewDidLoad()
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
-        _ = addHelpButtonToNavController()
+        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
+        helpButton = helpButtonResult
+        helpBadge = helpBadgeResult
         addWordPressLogoToNavController()
     }
 
@@ -72,6 +76,17 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
         default:
             delegate.retryAsSignup()
         }
+    }
+
+    func handleHelpButtonTapped(_ sender: AnyObject) {
+        displaySupportViewController(sourceTag: .wpComLogin)
+    }
+
+    // this VC isn't setup to handle the badge count. Should be fixed when NUXAbstractViewController and LoginViewController are refactored
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
+        let count = HelpshiftUtils.unreadNotificationCount()
+        helpBadge.text = "\(count)"
+        helpBadge.isHidden = (count == 0)
     }
 }
 
