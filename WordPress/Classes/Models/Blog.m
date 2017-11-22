@@ -56,6 +56,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic lastPostsSync;
 @dynamic lastStatsSync;
 @dynamic lastPagesSync;
+@dynamic lastProjectsSync;
 @dynamic lastCommentsSync;
 @dynamic lastUpdateWarning;
 @dynamic options;

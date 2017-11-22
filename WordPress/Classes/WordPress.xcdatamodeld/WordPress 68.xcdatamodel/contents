@@ -109,6 +109,9 @@
         <attribute name="lastPostsSync" optional="YES" attributeType="Date" usesScalarValueType="NO">
             <userInfo/>
         </attribute>
+        <attribute name="lastProjectsSync" optional="YES" attributeType="Date" usesScalarValueType="NO">
+            <userInfo/>
+        </attribute>
         <attribute name="lastStatsSync" optional="YES" attributeType="Date" usesScalarValueType="NO">
             <userInfo/>
         </attribute>
@@ -646,7 +649,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="675"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="690"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="705"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
@@ -661,6 +664,7 @@
         <element name="Post" positionX="0" positionY="0" width="128" height="240"/>
         <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="Project" positionX="36" positionY="162" width="128" height="45"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
         <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
@@ -678,6 +682,5 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
-        <element name="Project" positionX="36" positionY="162" width="128" height="45"/>
     </elements>
 </model>

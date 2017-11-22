@@ -813,6 +813,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self preloadStats];
         [self preloadPosts];
         [self preloadPages];
+        [self preloadProjects];
         [self preloadComments];
     }
 }
@@ -837,6 +838,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self preloadPostsOfType:PostServiceTypePage];
 }
 
+- (void)preloadProjects
+{
+    [self preloadPostsOfType:PostServiceTypeProject];
+}
+
 // preloads posts or pages.
 - (void)preloadPostsOfType:(PostServiceType)postType
 {
@@ -851,6 +857,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSDate *lastSyncDate;
     if ([postType isEqual:PostServiceTypePage]) {
         lastSyncDate = self.blog.lastPagesSync;
+    } else if ([postType isEqualToString:PostServiceTypeProject]) {
+        lastSyncDate = self.blog.lastProjectsSync;
     } else {
         lastSyncDate = self.blog.lastPostsSync;
     }
@@ -869,6 +877,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
         if ([postType isEqual:PostServiceTypePage]) {
             self.blog.lastPagesSync = [NSDate date];
+        } else if ([postType isEqual:PostServiceTypeProject]) {
+            self.blog.lastProjectsSync = [NSDate date];
         } else {
             self.blog.lastPostsSync = [NSDate date];
         }
@@ -879,6 +889,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             NSDate *invalidatedDate = [NSDate dateWithTimeIntervalSince1970:0.0];
             if ([postType isEqual:PostServiceTypePage]) {
                 self.blog.lastPagesSync = invalidatedDate;
+            } else if ([postType isEqual:PostServiceTypeProject]) {
+                self.blog.lastProjectsSync = invalidatedDate;
             } else {
                 self.blog.lastPostsSync = invalidatedDate;
             }

@@ -147,13 +147,11 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     // MARK: - Sync Methods
     
     override internal func postTypeToSync() -> PostServiceType {
-        // TODO: return .project
-        return .page
+        return .project
     }
     
     override internal func lastSyncDate() -> Date? {
-        // TODO: return correct value
-        return blog?.lastPagesSync
+        return blog?.lastProjectsSync
     }
     
     // MARK: - Model Interaction
