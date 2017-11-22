@@ -155,11 +155,10 @@ public final class WordPressComOAuthClient: NSObject {
     ///     - success: block to be called if authentication was successful.
     ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
     ///
-    @objc
-    public func requestSocial2FACodeWithUserID(_ userID: Int,
-                                     nonce: String,
-                                      success: @escaping (_ newNonce: String) -> Void,
-                                      failure: @escaping (_ error: NSError, _ newNonce: String?) -> Void) {
+    @objc public func requestSocial2FACodeWithUserID(_ userID: Int,
+                                                     nonce: String,
+                                                     success: @escaping (_ newNonce: String) -> Void,
+                                                     failure: @escaping (_ error: NSError, _ newNonce: String?) -> Void) {
         let parameters = [
             "user_id": userID,
             "two_step_nonce": nonce,
