@@ -1697,7 +1697,8 @@ extension AztecPostViewController {
         var urlToUse = url
 
         if isInsertingNewLink {
-            if let pastedURL = UIPasteboard.general.value(forPasteboardType: String(kUTTypeURL)) as? URL {
+            if UIPasteboard.general.hasURLs,
+                let pastedURL = UIPasteboard.general.url {
                 urlToUse = pastedURL
             }
         }
