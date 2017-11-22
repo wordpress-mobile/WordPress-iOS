@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 
 static CGFloat CellHeight = 44.0f;
 static NSInteger RowIndexForDatePicker = 0;
+static NSInteger RowIndexForPassword = 3;
 static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
@@ -514,6 +515,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (sectionId == PostSettingsSectionMeta) {
         if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
             return CGRectGetHeight(self.datePicker.frame);
+        } else if (indexPath.row == RowIndexForPassword) {
+            return CellHeight;
         }
     }
 
