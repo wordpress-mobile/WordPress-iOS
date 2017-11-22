@@ -1273,7 +1273,7 @@ private extension AztecPostViewController {
     @IBAction func displayCancelMediaUploads() {
         let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
-            self.mediaProgressCoordinator.cancelAndStopAllPendingUploads()
+            self.mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
         }
         alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
         present(alertController, animated: true, completion: nil)
@@ -1709,7 +1709,8 @@ extension AztecPostViewController {
         var urlToUse = url
 
         if isInsertingNewLink {
-            if let pastedURL = UIPasteboard.general.value(forPasteboardType: String(kUTTypeURL)) as? URL {
+            if UIPasteboard.general.hasURLs,
+                let pastedURL = UIPasteboard.general.url {
                 urlToUse = pastedURL
             }
         }
@@ -2430,7 +2431,7 @@ private extension AztecPostViewController {
             post.remove()
         }
 
-        mediaProgressCoordinator.cancelAndStopAllPendingUploads()
+        mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
         ContextManager.sharedInstance().save(context)
     }
 
@@ -2555,10 +2556,10 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         MediaAttachment.defaultAppearance.overlayBorderColor = Colors.mediaOverlayBorderColor
     }
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double) {
         mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
-        mediaProgressView.progress = progress
-        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaUploading {
+        mediaProgressView.progress = Float(progress)
+        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaInProgress {
             guard let attachment = richTextView.attachment(withId: attachmentID) else {
                 continue
             }
@@ -2828,7 +2829,7 @@ extension AztecPostViewController {
                 }
         })
         if let progress = uploadProgress {
-            mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+            mediaProgressCoordinator.track(progress: progress, of: media, withIdentifier: mediaID)
         }
     }
 
@@ -2934,7 +2935,7 @@ extension AztecPostViewController {
             })
         } else if let videoAttachment = attachment as? VideoAttachment,
             mediaProgressCoordinator.error(forMediaID: mediaID) == nil,
-            !mediaProgressCoordinator.isMediaUploading(mediaID: mediaID) {
+            !mediaProgressCoordinator.isMediaInProgress(mediaID: mediaID) {
             alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Play Video", comment: "User action to play a video on the editor."),
                                                                                  style: .default,
                                                                                  handler: { (action) in
@@ -2958,7 +2959,7 @@ extension AztecPostViewController {
                                                    style: .default,
                                                    handler: { (action) in
                                                     //retry upload
-                                                    if let media = self.mediaProgressCoordinator.object(forMediaID: mediaID) as? Media,
+                                                    if let media = self.mediaProgressCoordinator.media(withIdentifier: mediaID),
                                                         let attachment = self.richTextView.attachment(withId: mediaID) {
                                                         self.resetMediaAttachmentOverlay(attachment)
                                                         attachment.progress = 0
