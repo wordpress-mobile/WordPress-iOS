@@ -102,7 +102,7 @@ extension NSURL: ExportableAsset {
         errorHandler: @escaping ErrorHandler) {
 
         let asset = AVURLAsset(url: self as URL)
-        guard let track = asset.tracks(withMediaType: AVMediaType.video).first else {
+        guard let track = asset.tracks(withMediaType: .video).first else {
             errorHandler(errorForCode(errorCode: .FailedToExport,
                 failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of an media asset fails")
                 ))
