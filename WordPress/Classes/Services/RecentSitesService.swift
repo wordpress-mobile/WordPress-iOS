@@ -1,5 +1,13 @@
 import Foundation
 
+
+/// Recent Sites Notifications
+///
+extension NSNotification.Name {
+    static let WPRecentSitesChanged = NSNotification.Name(rawValue: "RecentSitesChanged")
+}
+
+
 /// Keep track of recently used sites
 ///
 class RecentSitesService: NSObject {
@@ -10,7 +18,6 @@ class RecentSitesService: NSObject {
     private let database: KeyValueDatabase
     private let databaseKey = "RecentSites"
     private let legacyLastUsedBlogKey = "LastUsedBlogURLDefaultsKey"
-    @objc static let RecentSitesChanged = "RecentSitesChanged"
 
     /// The maximum number of recent sites (read only)
     ///
@@ -69,7 +76,7 @@ class RecentSitesService: NSObject {
                     recent.append(recentSite)
         }
         database.set(recent, forKey: databaseKey)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RecentSitesService.RecentSitesChanged), object: nil)
+        NotificationCenter.default.post(name: .WPRecentSitesChanged, object: nil)
     }
 
     /// Marks a Blog as recently used.
