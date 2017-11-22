@@ -55,7 +55,7 @@ public extension Gravatar {
 
         // Treat unknown@gravatar.com as a nil url
         guard url.lastPathComponent != Defaults.unknownHash else {
-                return nil
+            return nil
         }
 
         guard let sanitizedURL = components.url else {
