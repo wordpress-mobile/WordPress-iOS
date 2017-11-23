@@ -18,6 +18,9 @@ class SiteIconPickerPresenter: NSObject {
 
     /// MARK: - Private Properties
 
+    fileprivate let noResultsView = WPNoResultsView.makeViewForMediaPicker()
+    fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
     /// Media Library Data Source
     ///
     fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
@@ -31,6 +34,7 @@ class SiteIconPickerPresenter: NSObject {
         options.showMostRecentFirst = true
         options.filter = [.image]
         options.allowMultipleSelection = false
+        options.showSearchBar = true
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
 
@@ -53,10 +57,15 @@ class SiteIconPickerPresenter: NSObject {
         super.init()
     }
 
+    deinit {
+        unregisterChangeObserver()
+    }
+
     /// Presents a new WPMediaPickerViewController instance.
     ///
     func presentPickerFrom(_ viewController: UIViewController) {
         viewController.present(mediaPickerViewController, animated: true)
+        registerChangeObserver(forPicker: mediaPickerViewController.mediaPicker)
     }
 
     /// MARK: - Private Methods
@@ -111,20 +120,65 @@ class SiteIconPickerPresenter: NSObject {
             self.mediaPickerViewController.show(after: imageCropViewController)
         }
     }
+
+    fileprivate func registerChangeObserver(forPicker picker: WPMediaPickerViewController) {
+        assert(mediaLibraryChangeObserverKey == nil)
+        mediaLibraryChangeObserverKey = mediaLibraryDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+            guard let strongSelf = self else { return }
+
+            strongSelf.updateSearchBar(mediaPicker: picker)
+
+            let numberOfAssets = strongSelf.mediaLibraryDataSource.numberOfAssets()
+            if numberOfAssets == 0 {
+                strongSelf.noResultsView.updateForNoMediaAssets(userCanUploadMedia: false)
+            }
+        })
+    }
+
+    fileprivate func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            mediaLibraryDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
+        }
+        mediaLibraryChangeObserverKey = nil
+    }
+
+    fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
+        if mediaLibraryDataSource.dataSourceType == .mediaLibrary && mediaLibraryDataSource.numberOfAssets() > 0 {
+            mediaPicker.showSearchBar()
+        } else {
+            mediaPicker.hideSearchBar()
+        }
+    }
 }
 
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        picker.searchBar?.resignFirstResponder()
+        picker.searchBar?.text = nil
+        mediaLibraryDataSource.searchCancelled()
+        updateSearchBar(mediaPicker: picker)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
+        if let searchQuery = mediaLibraryDataSource.searchQuery {
+            noResultsView.updateForNoSearchResult(searchQuery: searchQuery)
+        }
+    }
+
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShow asset: WPMediaAsset) -> Bool {
         return asset.isKind(of: PHAsset.self)
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        mediaLibraryDataSource.searchCancelled()
         onCompletion?(nil, nil)
     }
 
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
     ///
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
+        mediaLibraryDataSource.searchCancelled()
         if assets.isEmpty {
             return
         }
@@ -160,6 +214,6 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
     }
 
     func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        return nil
+        return noResultsView
     }
 }

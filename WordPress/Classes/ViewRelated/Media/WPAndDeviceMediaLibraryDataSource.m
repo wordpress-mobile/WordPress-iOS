@@ -7,6 +7,7 @@
     @property (nonatomic, strong) WPPHAssetDataSource *deviceLibraryDataSource;
     @property (nonatomic, strong) id<WPMediaCollectionDataSource> currentDataSource;
     @property (nonatomic, strong) NSMutableDictionary *observers;
+    @property (nonatomic, readwrite, copy) NSString *searchQuery;
 @end
 
 @implementation WPAndDeviceMediaLibraryDataSource
@@ -52,7 +53,8 @@
     _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
 
     _observers = [[NSMutableDictionary alloc] init];
-
+    _searchQuery = @"";
+    
     [self setDataSourceType:sourceType];
 
     // If we're showing the media library first, ensure that we have
@@ -85,6 +87,11 @@
     return [self.mediaLibraryDataSource numberOfGroups] + [self.deviceLibraryDataSource numberOfGroups];
 }
 
+-(NSString *)searchQuery
+{
+    return self.mediaLibraryDataSource.searchQuery;
+}
+
 - (id<WPMediaGroup>)groupAtIndex:(NSInteger)index
 {
     NSInteger numberOfGroupsInMediaLibrary = [self.mediaLibraryDataSource numberOfGroups];
@@ -110,6 +117,16 @@
         [self.deviceLibraryDataSource setSelectedGroup:group];
         self.currentDataSource = self.deviceLibraryDataSource;
     }
+}
+
+- (void)searchFor:(NSString *)searchText
+{
+    [self.mediaLibraryDataSource searchFor:searchText];
+}
+
+- (void)searchCancelled
+{
+    [self.mediaLibraryDataSource searchCancelled];
 }
 
 - (NSInteger)numberOfAssets

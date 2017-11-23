@@ -16,7 +16,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     fileprivate var isLoading: Bool = false
-    fileprivate let noResultsView = WPNoResultsView()
+    fileprivate let noResultsView = WPNoResultsView.makeViewForMediaPicker()
 
     fileprivate var selectedAsset: Media? = nil
 
@@ -92,9 +92,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         automaticallyAdjustsScrollViewInsets = false
 
-        setupNoResultsView()
         registerChangeObserver()
         registerUploadCoordinatorObserver()
+        noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
         if let searchBar = self.searchBar {
@@ -132,11 +132,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         if self.searchBar?.isFirstResponder == .some(true) {
             searchBar?.resignFirstResponder()
         }
-    }
-
-    private func setupNoResultsView() {
-        noResultsView.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
-        noResultsView.delegate = self
     }
 
     // MARK: - HUD handling
@@ -569,6 +564,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         // We're only interested in the upload picker
         guard picker != self else { return }
+        pickerDataSource.searchCancelled()
 
         dismiss(animated: true, completion: nil)
 
@@ -599,6 +595,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         useUploadCoordinator = false
+        pickerDataSource.searchCancelled()
 
         dismiss(animated: true, completion: nil)
     }
@@ -720,10 +717,6 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         isLoading = false
 
         updateViewState(for: pickerDataSource.numberOfAssets())
-    }
-
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        return nil
     }
 }
 
