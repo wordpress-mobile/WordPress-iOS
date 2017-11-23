@@ -54,7 +54,7 @@ class DomainsServiceTests: XCTestCase {
 
 
     fileprivate func findAllDomains() -> [ManagedDomain] {
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         fetch.sortDescriptors = [ NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true) ]
         fetch.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, testBlog)
 
@@ -115,7 +115,7 @@ class DomainsServiceTests: XCTestCase {
     }
 
     func testDomainServiceUpdatesExistingDomains() {
-        let existingDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName, into: context) as! ManagedDomain
+        let existingDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
         existingDomain.domainName = "example.com"
         existingDomain.isPrimary = false
         existingDomain.domainType = .wpCom
