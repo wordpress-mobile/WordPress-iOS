@@ -1,14 +1,13 @@
-//
-//  MediaNoResultView.swift
-//  WordPress
-//
-//  Created by Eduardo Toledo on 11/18/17.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
 
 import Foundation
 
 extension WPNoResultsView {
+
+    class func makeViewForMediaPicker() -> WPNoResultsView {
+        let noResultView = WPNoResultsView()
+        noResultView.updateForNoMediaAssets(userCanUploadMedia: false)
+        return noResultView
+    }
 
     func updateForNoSearchResult(searchQuery: String) {
         accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
