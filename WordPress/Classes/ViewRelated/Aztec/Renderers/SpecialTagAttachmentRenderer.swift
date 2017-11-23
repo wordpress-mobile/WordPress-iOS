@@ -33,8 +33,7 @@ extension SpecialTagAttachmentRenderer: TextViewAttachmentImageProvider {
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
 
         let label = attachment.text.uppercased()
-        let attributes = [NSForegroundColorAttributeName: textColor]
-        let colorMessage = NSAttributedString(string: label, attributes: attributes)
+        let colorMessage = NSAttributedString(string: label, attributes: [.foregroundColor: textColor])
 
         let textRect = colorMessage.boundingRect(with: size, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
         let textPosition = CGPoint(x: ((size.width - textRect.width) * 0.5), y: ((size.height - textRect.height) * 0.5))

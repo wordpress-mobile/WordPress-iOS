@@ -578,6 +578,7 @@
 		B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */; };
 		B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56994441B7A7EF200FF26FA /* WPStyleGuide+Comments.swift */; };
 		B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */; };
+		B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */; };
 		B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */; };
 		B5722E421D51A28100F40C5E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5722E401D51A28100F40C5E /* Notification.swift */; };
 		B57273601B66CCEF000D1C4F /* AlertInternalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B572735D1B66CCEF000D1C4F /* AlertInternalView.swift */; };
@@ -1893,6 +1894,7 @@
 		B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableHeaderView.xib; sourceTree = "<group>"; };
 		B56994441B7A7EF200FF26FA /* WPStyleGuide+Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Comments.swift"; sourceTree = "<group>"; };
 		B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
+		B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedStringKey+Conversion.swift"; sourceTree = "<group>"; };
 		B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
 		B5722E401D51A28100F40C5E /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		B572735D1B66CCEF000D1C4F /* AlertInternalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertInternalView.swift; sourceTree = "<group>"; };
@@ -4268,6 +4270,7 @@
 				177CBE4F1DA3A3AC009F951E /* CollectionType+Helpers.swift */,
 				E14DFAFA1E07E7C400494688 /* Data.swift */,
 				B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */,
+				B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */,
 				B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */,
 				B5DD04731CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift */,
 				E19B17AF1E5C69A5007517C6 /* NSManagedObject.swift */,
@@ -5534,7 +5537,7 @@
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = PZYM8XX95Q;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0910;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -6785,6 +6788,7 @@
 				E1CECE021E6EC7A8009C6695 /* FakePreviewBuilder.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
 				0815CF461E96F22600069916 /* MediaImportService.swift in Sources */,
+				B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */,
 				E148362F1C6DF7D8005ACF53 /* Product.swift in Sources */,
 				082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */,
 				82FC612A1FA8B6F000A1757E /* ActivityListViewModel.swift in Sources */,
@@ -7277,7 +7281,7 @@
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wpdebug;
@@ -7343,7 +7347,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress App Store";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wordpress;
@@ -7636,7 +7640,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Enterprise";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 				WPCOM_SCHEME = wpalpha;
@@ -7671,7 +7675,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Alpha";
@@ -7734,7 +7738,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Today Widget Enterprise";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -7797,7 +7801,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -7849,7 +7853,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Share App Store Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -7902,7 +7906,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Share Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -7955,7 +7959,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Share Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -8070,7 +8074,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Distribution";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 				WPCOM_SCHEME = wpinternal;
@@ -8105,7 +8109,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Internal";
@@ -8161,7 +8165,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -8214,7 +8218,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Today Widget App Store Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -8268,7 +8272,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Today Widget Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -8437,7 +8441,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -8470,7 +8474,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;

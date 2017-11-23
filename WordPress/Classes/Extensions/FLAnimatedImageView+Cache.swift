@@ -3,9 +3,9 @@ import FLAnimatedImage
 
 open class CachedAnimatedImageView: FLAnimatedImageView {
 
-    var currentTask: URLSessionTask?
+    @objc var currentTask: URLSessionTask?
 
-    func setAnimatedImage(_ urlRequest: URLRequest,
+    @objc func setAnimatedImage(_ urlRequest: URLRequest,
                           placeholderImage: UIImage?,
                           success: ((FLAnimatedImage) -> ())? ,
                           failure: ((NSError?) -> ())? ) {

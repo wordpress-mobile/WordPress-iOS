@@ -150,7 +150,7 @@ class ProgressIndicatorView: UIView {
         progressTrackLayer.isHidden = hidden
     }
 
-    func startAnimating() {
+    @objc func startAnimating() {
         guard !isAnimating && window != nil else {
             return
         }
@@ -185,7 +185,7 @@ class ProgressIndicatorView: UIView {
         indeterminateLayer.add(group, forKey: "rotationGroup")
     }
 
-    func stopAnimating() {
+    @objc func stopAnimating() {
         guard isAnimating else {
             return
         }
