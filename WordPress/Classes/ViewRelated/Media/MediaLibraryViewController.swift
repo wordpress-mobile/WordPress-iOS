@@ -254,7 +254,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func visibleCells(for media: Media) -> [WPMediaCollectionViewCell] {
-        guard let cells = pickerViewController.collectionView?.visibleCells as? [WPMediaCollectionViewCell] else {
+        guard let cells = collectionView?.visibleCells as? [WPMediaCollectionViewCell] else {
             return []
         }
 
