@@ -17,7 +17,7 @@ extension FancyAlertViewController {
         }
     }
 
-    static func siteAddressHelpController(loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    @objc static func siteAddressHelpController(loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
@@ -66,7 +66,7 @@ extension FancyAlertViewController {
     ///
     /// - Returns: A FancyAlertViewController instance.
     ///
-    static func alertForError(_ error: NSError, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    @objc static func alertForError(_ error: NSError, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
         var message = error.localizedDescription
 
         DDLogError(message)
@@ -146,7 +146,7 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     /// - Parameter sourceTag: tag of the source of the error
     ///
-    static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    @objc static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from

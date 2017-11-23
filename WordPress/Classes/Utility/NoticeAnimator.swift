@@ -64,7 +64,7 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Initializers
-    init(target: UIView) {
+    @objc init(target: UIView) {
         targetView = target
         super.init()
     }
@@ -72,14 +72,14 @@ class NoticeAnimator: Animator {
 
 
     // MARK: - Public Methods
-    func layout() {
+    @objc func layout() {
         var targetFrame = noticeLabel.frame
         targetFrame.size.width = targetView.bounds.width
         targetFrame.size.height = heightForMessage(message)
         noticeLabel.frame = targetFrame
     }
 
-    func animateMessage(_ message: String?) {
+    @objc func animateMessage(_ message: String?) {
         let shouldAnimate = self.message != message
         self.message = message
 

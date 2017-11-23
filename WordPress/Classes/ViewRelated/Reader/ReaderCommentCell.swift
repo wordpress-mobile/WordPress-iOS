@@ -19,7 +19,7 @@ class ReaderCommentCell: UITableViewCell {
         static let buttonSize = CGSize(width: 20, height: 20)
     }
 
-    var enableLoggedInFeatures = false
+    @objc var enableLoggedInFeatures = false
 
     @IBOutlet var avatarImageView: UIImageView!
     @IBOutlet var authorButton: UIButton!
@@ -30,15 +30,15 @@ class ReaderCommentCell: UITableViewCell {
     @IBOutlet var actionBar: UIStackView!
     @IBOutlet var leadingContentConstraint: NSLayoutConstraint!
 
-    weak var delegate: ReaderCommentCellDelegate? {
+    @objc weak var delegate: ReaderCommentCellDelegate? {
         didSet {
             textView.delegate = delegate
         }
     }
 
-    var comment: Comment?
+    @objc var comment: Comment?
 
-    var showReply: Bool {
+    @objc var showReply: Bool {
         get {
             if let comment = comment, let post = comment.post as? ReaderPost {
                 return post.commentsOpen && enableLoggedInFeatures
@@ -74,7 +74,7 @@ class ReaderCommentCell: UITableViewCell {
     // MARK: = Setup
 
 
-    func applyStyles() {
+    @objc func applyStyles() {
         WPStyleGuide.applyReaderCardSiteButtonStyle(authorButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(timeLabel)
 
@@ -84,7 +84,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func setupReplyButton() {
+    @objc func setupReplyButton() {
         let icon = Gridicon.iconOfType(.reply, withSize: Constants.buttonSize)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.grey())?.rotate180Degrees()
         let highlightedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.rotate180Degrees()
@@ -98,7 +98,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func setupLikeButton() {
+    @objc func setupLikeButton() {
         let size = Constants.buttonSize
         let tintedIcon = Gridicon.iconOfType(.starOutline, withSize: size).imageWithTintColor(WPStyleGuide.grey())
         let highlightedIcon = Gridicon.iconOfType(.star, withSize: size).imageWithTintColor(WPStyleGuide.lightBlue())
@@ -115,7 +115,7 @@ class ReaderCommentCell: UITableViewCell {
     // MARK: - Configuration
 
 
-    func configureCell(comment: Comment) {
+    @objc func configureCell(comment: Comment) {
         self.comment = comment
 
         configureAvatar()
@@ -126,7 +126,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func configureAvatar() {
+    @objc func configureAvatar() {
         guard let comment = comment else {
             return
         }
@@ -140,7 +140,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func configureAuthorButton() {
+    @objc func configureAuthorButton() {
         guard let comment = comment else {
             return
         }
@@ -160,7 +160,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func configureTime() {
+    @objc func configureTime() {
         guard let comment = comment else {
             return
         }
@@ -169,7 +169,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func configureText() {
+    @objc func configureText() {
         guard let comment = comment else {
             return
         }
@@ -181,7 +181,7 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func configureActionBar() {
+    @objc func configureActionBar() {
         guard let comment = comment else {
             return
         }
@@ -202,12 +202,12 @@ class ReaderCommentCell: UITableViewCell {
     }
 
 
-    func updateLeadingContentConstraint() {
+    @objc func updateLeadingContentConstraint() {
         leadingContentConstraint.constant = CGFloat(indentationLevel) * indentationWidth
     }
 
 
-    func ensureTextViewLayout() {
+    @objc func ensureTextViewLayout() {
         textView.updateLayoutForAttachments()
     }
 
