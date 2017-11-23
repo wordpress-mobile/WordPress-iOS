@@ -447,11 +447,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// The view to show when media picker has no assets to show.
     ///
-    fileprivate let noResultsView: WPNoResultsView = {
-        let noResultsView = WPNoResultsView()
-        noResultsView.accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
-        return noResultsView
-    }()
+    fileprivate let noResultsView = WPNoResultsView.makeViewForMediaPicker()
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
@@ -3284,6 +3280,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             unregisterChangeObserver()
+            mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
         }
     }
@@ -3291,6 +3288,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
             unregisterChangeObserver()
+            mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
             selectedMediaOrigin = .fullScreenPicker
         } else {
@@ -3327,10 +3325,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
         updateFormatBarInsertAssetCount()
-    }
-
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        return nil
     }
 
     private func updateFormatBarInsertAssetCount() {
