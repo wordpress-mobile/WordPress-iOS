@@ -67,6 +67,19 @@ public class Activity {
     public lazy var isFullBackup: Bool = {
         return self.name == ActivityName.fullBackup
     }()
+
+    public lazy var isStatusError: Bool = {
+        return self.status == ActivityStatus.error
+    }()
+
+    public lazy var isStatusSuccess: Bool = {
+        return self.status == ActivityStatus.success
+    }()
+
+    public lazy var isStatusWarning: Bool = {
+        return self.status == ActivityStatus.warning
+    }()
+
 }
 
 private extension Activity {
@@ -132,6 +145,12 @@ public struct ActivityActorType {
 
 public struct ActivityActorApplicationType {
     public static let jetpack = "Jetpack"
+}
+
+public struct ActivityStatus {
+    public static let error = "error"
+    public static let success = "success"
+    public static let warning = "warning"
 }
 
 public class RestoreStatus {
