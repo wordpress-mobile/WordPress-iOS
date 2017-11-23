@@ -16,35 +16,35 @@ import UIKit
 @objc class KeyboardDismissHelper: NSObject {
     /// Reference to the control to-be-dismissed
     ///
-    var dismissableControl: UIView?
+    @objc var dismissableControl: UIView?
 
     /// Reference to the bottom layout constraint
     ///
-    var bottomLayoutConstraint: NSLayoutConstraint
+    @objc var bottomLayoutConstraint: NSLayoutConstraint
 
     /// Closure to be executed whenever the Keyboard will be Hidden
     ///
-    var onWillHide: (() -> Void)?
+    @objc var onWillHide: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard was hidden
     ///
-    var onDidHide: (() -> Void)?
+    @objc var onDidHide: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard will be Shown
     ///
-    var onWillShow: (() -> Void)?
+    @objc var onWillShow: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard was Shown
     ///
-    var onDidShow: (() -> Void)?
+    @objc var onDidShow: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard *will* change its frame
     ///
-    var onWillChangeFrame: (() -> Void)?
+    @objc var onWillChangeFrame: (() -> Void)?
 
     /// Closure to be executed whenever the Keyboard *did* change its frame
     ///
-    var onDidChangeFrame: (() -> Void)?
+    @objc var onDidChangeFrame: (() -> Void)?
 
 
 
@@ -88,7 +88,7 @@ import UIKit
     ///
     /// -   Parameter scrollView: View that contains everything
     ///
-    init(parentView: UIView, scrollView: UIScrollView, dismissableControl: UIView, bottomLayoutConstraint: NSLayoutConstraint) {
+    @objc init(parentView: UIView, scrollView: UIScrollView, dismissableControl: UIView, bottomLayoutConstraint: NSLayoutConstraint) {
         self.parentView = parentView
         self.scrollView = scrollView
         self.dismissableControl = dismissableControl
@@ -100,7 +100,7 @@ import UIKit
 
     /// Initializes the Keyboard Event Listeners
     ///
-    func startListeningToKeyboardNotifications() {
+    @objc func startListeningToKeyboardNotifications() {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         nc.addObserver(self, selector: #selector(keyboardDidShow), name: .UIKeyboardDidShow, object: nil)
@@ -113,7 +113,7 @@ import UIKit
 
     /// Removes all of the Keyboard Event Listeners
     ///
-    func stopListeningToKeyboardNotifications() {
+    @objc func stopListeningToKeyboardNotifications() {
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -121,7 +121,7 @@ import UIKit
 
     /// ScrollView willBeginDragging Event
     ///
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    @objc func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let dismissableControl = dismissableControl, isKeyboardVisible == true else {
             return
         }
@@ -133,7 +133,7 @@ import UIKit
 
     /// ScrollView didScroll Event
     ///
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    @objc func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard trackingDragOperation == true else {
             return
         }
@@ -155,39 +155,39 @@ import UIKit
         scrollView.contentOffset = previousContentOffset
     }
 
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+    @objc func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         trackingDragOperation = false
     }
 
 
     // MARK: - Notification Helpers
-    func keyboardWillShow(_ note: Foundation.Notification) {
+    @objc func keyboardWillShow(_ note: Foundation.Notification) {
         isKeyboardVisible = true
         refreshBottomInsetIfNeeded(note)
         onWillShow?()
     }
 
-    func keyboardDidShow(_ note: Foundation.Notification) {
+    @objc func keyboardDidShow(_ note: Foundation.Notification) {
         refreshBottomInsetIfNeeded(note)
         onDidShow?()
     }
 
-    func keyboardWillHide(_ note: Foundation.Notification) {
+    @objc func keyboardWillHide(_ note: Foundation.Notification) {
         isKeyboardVisible = false
         refreshBottomInsetIfNeeded(note, isHideEvent: true)
         onWillHide?()
     }
 
-    func keyboardDidHide(_ note: Foundation.Notification) {
+    @objc func keyboardDidHide(_ note: Foundation.Notification) {
         refreshBottomInsetIfNeeded(note, isHideEvent: true)
         onDidHide?()
     }
 
-    func keyboardWillChangeFrame(_ note: Foundation.Notification) {
+    @objc func keyboardWillChangeFrame(_ note: Foundation.Notification) {
         onWillChangeFrame?()
     }
 
-    func keyboardDidChangeFrame(_ note: Foundation.Notification) {
+    @objc func keyboardDidChangeFrame(_ note: Foundation.Notification) {
         onDidChangeFrame?()
     }
 

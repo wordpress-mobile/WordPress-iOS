@@ -69,7 +69,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         let expect = expectation(description: "Sync")
 
         // Sync!
-        mediator.sync { _ in
+        mediator.sync { (_, _) in
             XCTAssert(self.manager.mainContext.countObjects(ofType: Notification.self) == 1)
             expect.fulfill()
         }
@@ -100,7 +100,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             group.enter()
 
             let newMediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
-            newMediator?.sync { _ in
+            newMediator?.sync { (_, _) in
                 group.leave()
             }
         }

@@ -42,24 +42,25 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.inputProcessor =
-            PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
-                               VideoShortcodeProcessor.wordPressVideoPreProcessor,
-                               CalypsoProcessorIn()])
+        textView.inputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
+                                                     VideoShortcodeProcessor.wordPressVideoPreProcessor,
+                                                     CalypsoProcessorIn()])
 
-        textView.outputProcessor =
-            PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
-                               VideoShortcodeProcessor.wordPressVideoPostProcessor,
-                               CalypsoProcessorOut()])
+        textView.outputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
+                                                      VideoShortcodeProcessor.wordPressVideoPostProcessor,
+                                                      CalypsoProcessorOut()])
 
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
+
+        let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
+                                                            .foregroundColor: Colors.aztecLinkColor]
 
         textView.delegate = self
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
-        textView.linkTextAttributes = [NSUnderlineStyleAttributeName: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue), NSForegroundColorAttributeName: Colors.aztecLinkColor]
+        textView.linkTextAttributes = NSAttributedStringKey.convertToRaw(attributes: linkAttributes)
         textView.textAlignment = .natural
 
         if #available(iOS 11, *) {
@@ -120,6 +121,13 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Title's UITextView
     ///
     fileprivate(set) lazy var titleTextField: UITextView = {
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .natural
+
+        let attributes: [NSAttributedStringKey: Any] = [.foregroundColor: UIColor.darkText,
+                                                        .font: Fonts.title,
+                                                        .paragraphStyle: titleParagraphStyle]
+
         let textView = UITextView()
 
         textView.accessibilityLabel = NSLocalizedString("Title", comment: "Post title")
@@ -127,9 +135,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.font = Fonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        let titleParagraphStyle = NSMutableParagraphStyle()
-        titleParagraphStyle.alignment = .natural
-        textView.typingAttributes = [NSForegroundColorAttributeName: UIColor.darkText, NSFontAttributeName: Fonts.title, NSParagraphStyleAttributeName: titleParagraphStyle]
+        textView.typingAttributes = NSAttributedStringKey.convertToRaw(attributes: attributes)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
@@ -146,7 +152,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let titlePlaceholderLabel = UILabel()
 
-        let attributes = [NSForegroundColorAttributeName: Colors.title, NSFontAttributeName: Fonts.title]
+        let attributes: [NSAttributedStringKey: Any] = [.foregroundColor: Colors.title, .font: Fonts.title]
+
         titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText, attributes: attributes)
         titlePlaceholderLabel.sizeToFit()
         titlePlaceholderLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -225,7 +232,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.setTitle(self.postEditorStateContext.publishButtonText, for: .normal)
         button.sizeToFit()
         button.isEnabled = self.postEditorStateContext.isPublishButtonEnabled
-        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
 
@@ -244,7 +251,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.frame = CGRect(origin: .zero, size: image.size)
         button.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
         button.addTarget(self, action: #selector(moreWasPressed), for: .touchUpInside)
-        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
 
@@ -263,7 +270,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let cancelButton = WPStyleGuide.buttonForBar(with: Assets.closeButtonModalImage, target: self, selector: #selector(closeWasPressed))
         cancelButton.leftSpacing = Constants.cancelButtonPadding.left
         cancelButton.rightSpacing = Constants.cancelButtonPadding.right
-        cancelButton.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        cancelButton.setContentHuggingPriority(.required, for: .horizontal)
         return cancelButton
     }()
 
@@ -276,7 +283,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         if #available(iOS 11, *) {
             button.translatesAutoresizingMaskIntoConstraints = false
         }
-        button.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
 
@@ -289,7 +296,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         if #available(iOS 11, *) {
             button.translatesAutoresizingMaskIntoConstraints = false
         }
-        button.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        button.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return button
     }()
 
@@ -301,7 +308,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         button.translatesAutoresizingMaskIntoConstraints = false
         WPStyleGuide.configureBetaButton(button)
 
-        button.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
         button.isEnabled = true
         button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
 
@@ -836,7 +843,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             pickerTitle = blogName
         }
 
-        let titleText = NSAttributedString(string: pickerTitle, attributes: [NSFontAttributeName: Fonts.blogPicker])
+        let titleText = NSAttributedString(string: pickerTitle, attributes: [.font: Fonts.blogPicker])
         let shouldEnable = !isSingleSiteMode
 
         blogPickerButton.setAttributedTitle(titleText, for: .normal)
@@ -868,25 +875,30 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     override var keyCommands: [UIKeyCommand] {
         if richTextView.isFirstResponder {
-            return [ UIKeyCommand(input: "B", modifierFlags: .command, action: #selector(toggleBold), discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "I", modifierFlags: .command, action: #selector(toggleItalic), discoverabilityTitle: NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "S", modifierFlags: [.command], action: #selector(toggleStrikethrough), discoverabilityTitle: NSLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "U", modifierFlags: .command, action: #selector(toggleUnderline(_:)), discoverabilityTitle: NSLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
-                     UIKeyCommand(input: "Q", modifierFlags: [.command, .alternate], action: #selector(toggleBlockquote), discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
-                     UIKeyCommand(input: "K", modifierFlags: .command, action: #selector(toggleLink), discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
-                     UIKeyCommand(input: "M", modifierFlags: [.command, .alternate], action: #selector(presentMediaPicker), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
-                     UIKeyCommand(input: "U", modifierFlags: [.command, .alternate], action: #selector(toggleUnorderedList), discoverabilityTitle: NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
-                     UIKeyCommand(input: "O", modifierFlags: [.command, .alternate], action: #selector(toggleOrderedList), discoverabilityTitle: NSLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
-                     UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
-            ]
-        } else if htmlTextView.isFirstResponder {
-            return [UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+            return [
+                UIKeyCommand(input: "B", modifierFlags: .command, action: #selector(toggleBold), discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
+                UIKeyCommand(input: "I", modifierFlags: .command, action: #selector(toggleItalic), discoverabilityTitle: NSLocalizedString("Italic", comment: "Discoverability title for italic formatting keyboard shortcut.")),
+                UIKeyCommand(input: "S", modifierFlags: [.command], action: #selector(toggleStrikethrough), discoverabilityTitle: NSLocalizedString("Strikethrough", comment: "Discoverability title for strikethrough formatting keyboard shortcut.")),
+                UIKeyCommand(input: "U", modifierFlags: .command, action: #selector(toggleUnderline(_:)), discoverabilityTitle: NSLocalizedString("Underline", comment: "Discoverability title for underline formatting keyboard shortcut.")),
+                UIKeyCommand(input: "Q", modifierFlags: [.command, .alternate], action: #selector(toggleBlockquote), discoverabilityTitle: NSLocalizedString("Block Quote", comment: "Discoverability title for block quote keyboard shortcut.")),
+                UIKeyCommand(input: "K", modifierFlags: .command, action: #selector(toggleLink), discoverabilityTitle: NSLocalizedString("Insert Link", comment: "Discoverability title for insert link keyboard shortcut.")),
+                UIKeyCommand(input: "M", modifierFlags: [.command, .alternate], action: #selector(presentMediaPickerWasPressed), discoverabilityTitle: NSLocalizedString("Insert Media", comment: "Discoverability title for insert media keyboard shortcut.")),
+                UIKeyCommand(input: "U", modifierFlags: [.command, .alternate], action: #selector(toggleUnorderedList), discoverabilityTitle: NSLocalizedString("Bullet List", comment: "Discoverability title for bullet list keyboard shortcut.")),
+                UIKeyCommand(input: "O", modifierFlags: [.command, .alternate], action: #selector(toggleOrderedList), discoverabilityTitle: NSLocalizedString("Numbered List", comment: "Discoverability title for numbered list keyboard shortcut.")),
+                UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
             ]
         }
+
+        if htmlTextView.isFirstResponder {
+            return [
+                UIKeyCommand(input: "H", modifierFlags: [.command, .shift], action: #selector(toggleEditingMode), discoverabilityTitle: NSLocalizedString("Toggle HTML Source ", comment: "Discoverability title for HTML keyboard shortcut."))
+            ]
+        }
+
         return []
     }
 
-    func keyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func keyboardWillShow(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -898,7 +910,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
-    func keyboardDidHide(_ notification: Foundation.Notification) {
+    @objc func keyboardDidHide(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
@@ -1581,35 +1593,35 @@ extension AztecPostViewController {
         mediaPickerController(mediaPicker.mediaPicker, didFinishPicking: mediaPicker.mediaPicker.selectedAssets)
     }
 
-    func toggleBold() {
+    @objc func toggleBold() {
         trackFormatBarAnalytics(stat: .editorTappedBold)
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
 
-    func toggleItalic() {
+    @objc func toggleItalic() {
         trackFormatBarAnalytics(stat: .editorTappedItalic)
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
 
-    func toggleUnderline() {
+    @objc func toggleUnderline() {
         trackFormatBarAnalytics(stat: .editorTappedUnderline)
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
 
 
-    func toggleStrikethrough() {
+    @objc func toggleStrikethrough() {
         trackFormatBarAnalytics(stat: .editorTappedStrikethrough)
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
     }
 
-    func toggleOrderedList() {
+    @objc func toggleOrderedList() {
         trackFormatBarAnalytics(stat: .editorTappedOrderedList)
         richTextView.toggleOrderedList(range: richTextView.selectedRange)
     }
 
-    func toggleUnorderedList() {
+    @objc func toggleUnorderedList() {
         trackFormatBarAnalytics(stat: .editorTappedUnorderedList)
         richTextView.toggleUnorderedList(range: richTextView.selectedRange)
     }
@@ -1643,7 +1655,7 @@ extension AztecPostViewController {
     }
 
 
-    func toggleBlockquote() {
+    @objc func toggleBlockquote() {
         trackFormatBarAnalytics(stat: .editorTappedBlockquote)
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
@@ -1670,7 +1682,7 @@ extension AztecPostViewController {
     }
 
 
-    func toggleLink() {
+    @objc func toggleLink() {
         trackFormatBarAnalytics(stat: .editorTappedLink)
 
         var linkTitle = ""
@@ -1767,7 +1779,7 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    func alertTextFieldDidChange(_ textField: UITextField) {
+    @objc func alertTextFieldDidChange(_ textField: UITextField) {
         guard
             let alertController = presentedViewController as? UIAlertController,
             let urlFieldText = alertController.textFields?.first?.text,
@@ -1795,7 +1807,7 @@ extension AztecPostViewController {
 
         for item in toolbar.items! {
             item.tintColor = WPStyleGuide.aztecFormatBarActiveColor
-            item.setTitleTextAttributes([NSForegroundColorAttributeName: WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
+            item.setTitleTextAttributes([.foregroundColor: WPStyleGuide.aztecFormatBarActiveColor], for: .normal)
         }
 
         return toolbar
@@ -1807,7 +1819,8 @@ extension AztecPostViewController {
     /// Method to be called when the grid icon is pressed on the media input toolbar.
     ///
     /// - Parameter sender: the button that was pressed.
-    func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
+    ///
+    @objc func mediaAddShowFullScreen(_ sender: UIBarButtonItem) {
         presentMediaPickerFullScreen(animated: true)
         restoreInputAssistantItems()
     }
@@ -1815,7 +1828,7 @@ extension AztecPostViewController {
     /// Method to be called when canceled is pressed.
     ///
     /// - Parameter sender: the button that was pressed.
-    func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
+    @objc func mediaAddInputCancelled(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker else {
             return
@@ -1827,7 +1840,7 @@ extension AztecPostViewController {
     /// Method to be called when done is pressed on the media input toolbar.
     ///
     /// - Parameter sender: the button that was pressed.
-    func mediaAddInputDone(_ sender: UIBarButtonItem) {
+    @objc func mediaAddInputDone(_ sender: UIBarButtonItem) {
 
         guard let mediaPicker = mediaPickerInputViewController?.mediaPicker
         else {
@@ -1846,7 +1859,7 @@ extension AztecPostViewController {
         richTextView.reloadInputViews()
     }
 
-    @IBAction func presentMediaPicker() {
+    @IBAction @objc func presentMediaPickerWasPressed() {
         if let item = formatBar.leadingItem {
             presentMediaPicker(fromButton: item, animated: true)
         }
@@ -1927,7 +1940,7 @@ extension AztecPostViewController {
         presentToolbarViewControllerAsInputView(picker)
     }
 
-    func toggleEditingMode() {
+    @objc func toggleEditingMode() {
         trackFormatBarAnalytics(stat: .editorTappedHTML)
         formatBar.overflowToolbar(expand: true)
 
@@ -1938,9 +1951,9 @@ extension AztecPostViewController {
         trackFormatBarAnalytics(stat: .editorTappedHeader)
 
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
-            let attributes = [
-                NSFontAttributeName: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
-                NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
+            let attributes: [NSAttributedStringKey: Any] = [
+                .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
+                .foregroundColor: WPStyleGuide.darkGrey()
             ]
 
             let title = NSAttributedString(string: headerType.description, attributes: attributes)
@@ -2789,6 +2802,7 @@ extension AztecPostViewController {
     private func upload(media: Media, mediaID: String) {
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         var uploadProgress: Progress?
+
         mediaService.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
                 guard let strongSelf = self else {
                     return
@@ -3068,13 +3082,13 @@ extension AztecPostViewController {
         WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
     }
 
-    var mediaMessageAttributes: [String: Any] {
+    var mediaMessageAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        let attributes: [String: Any] = [NSFontAttributeName: Fonts.mediaOverlay,
-                                        NSParagraphStyleAttributeName: paragraphStyle,
-                                        NSForegroundColorAttributeName: UIColor.white]
-        return attributes
+
+        return [.font: Fonts.mediaOverlay,
+                .paragraphStyle: paragraphStyle,
+                .foregroundColor: UIColor.white]
     }
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
@@ -3097,7 +3111,8 @@ extension AztecPostViewController {
     // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
     // iPads only...not the 12.9"
     // See http://www.openradar.me/radar?id=4972612522344448 for more details.
-    func applicationWillResignActive(_ notification: Foundation.Notification) {
+    //
+    @objc func applicationWillResignActive(_ notification: Foundation.Notification) {
         if UIDevice.isPad() {
             closeMediaPickerInputViewController()
         }
