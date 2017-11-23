@@ -6,25 +6,6 @@ import Foundation
 ///
 public class ActivityUtils {
 
-    /// Returns a memoized function.
-    ///
-    /// - Parameters:
-    ///     - body: The function to memoize.
-    ///
-    class func memoize<T: Hashable, U>(body: @escaping ((T)->U, T) -> U) -> (T)->U {
-        var memo = [T: U]()
-        var result: ((T)->U)!
-        result = { x in
-            if let q = memo[x] {
-                return q
-            }
-            let r = body(result, x)
-            memo[x] = r
-            return r
-        }
-        return result
-    }
-
     /// Returns a function which can be used to compute whether or not an event should be considered discarded.
     ///
     /// - Parameters:
@@ -32,7 +13,7 @@ public class ActivityUtils {
     ///     - viewFrom: Timestamp from perspective from which we are analyzing discardability of events.
     ///
     class func makeIsDiscarded(rewinds: [(rp: TimeInterval, bp: TimeInterval)], viewFrom: TimeInterval) -> (TimeInterval) -> Bool {
-        let isDiscarded = memoize { isDiscarded, ts in
+        let isDiscarded = memoizeRecursive { isDiscarded, ts in
 
             /// Returns whether an event is discarded or not by finding covering restore events and
             /// recursing to eliminate discarded restores.
