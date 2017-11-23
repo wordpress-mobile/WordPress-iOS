@@ -50,10 +50,8 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
             return
         }
 
-        if let url = url, let gravatar = Gravatar(url) {
-            gravatarImageView.downloadGravatar(gravatar, placeholder: Style.gravatarPlaceholderImage, animate: true)
-        } else {
-            gravatarImageView.downloadImage(url, placeholderImage: Style.gravatarPlaceholderImage)
+        if let siteIconUrl = url?.absoluteString {
+            gravatarImageView.setImageWithSiteIcon(siteIconUrl, placeholderImage: Style.gravatarPlaceholderImage)
         }
 
         gravatarURL = url
