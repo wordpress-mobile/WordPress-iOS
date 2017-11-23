@@ -1,8 +1,16 @@
 import Foundation
 import CoreData
 
+/// Model for TimezoneSelectorViewController's ImmuTablePresenter
 enum TimezoneSelectorViewModel {
     case loading
+    /**
+     - parameters
+        - first param: - all TimezoneInfo objects from DB
+        - second param: - usersCurrentTimeZoneString passed from TimezoneSelectorVC
+        - third param: - usersCurrentManualGMTOffset passed from TimezoneSelectorVC
+        - fourth param: - action block to be executed when user clicks on a cell
+    */
     case ready([TimezoneInfo], String?, NSNumber?, ImmuTableAction)
     case error(String)
 
@@ -10,6 +18,7 @@ enum TimezoneSelectorViewModel {
     /// the second param is a mapping from continent to timezones in that continent
     typealias ContinentsAndTimezones = ([String], [String: [(String, String)]])
 
+    /// constant used in the functions below
     var MANUAL_OFFSET: String { return "Manual Offsets" }
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
