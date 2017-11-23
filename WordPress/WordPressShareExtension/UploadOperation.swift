@@ -61,6 +61,50 @@ public class UploadOperation: NSManagedObject {
     @NSManaged public var created: NSDate?
 }
 
+// MARK: - Computed Properties
+//
+extension UploadOperation {
+    /// Returns a RemotePost object based on this UploadOperation
+    ///
+    var remotePost: RemotePost? {
+        guard isMedia == false else {
+            return nil
+        }
+
+        let remotePost: RemotePost = {
+            let post = RemotePost()
+            post.siteID = NSNumber(value: siteID)
+            post.postID = NSNumber(value: postID)
+            post.content = postContent
+            post.title = postTitle
+            post.status = postStatus
+            return post
+        }()
+
+        return remotePost
+    }
+
+    /// Returns a RemoteMedia object based on this UploadOperation
+    ///
+    var remoteMedia: RemoteMedia? {
+        guard isMedia == true else {
+            return nil
+        }
+
+        let remoteMedia: RemoteMedia = {
+            let media = RemoteMedia()
+            media.file = fileName
+            media.mimeType = mimeType
+            if let localURL = localURL {
+                media.localURL = URL(fileURLWithPath: localURL)
+            }
+            return media
+        }()
+
+        return remoteMedia
+    }
+}
+
 // MARK: - Update Helpers
 
 extension UploadOperation {
