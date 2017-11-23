@@ -489,7 +489,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsGeneralTimeZone:
         {
             NSString *timeZoneString;
-            if (self.blog.isAdmin) {
+            if (self.blog.settings.timeZoneString != nil) {
                 timeZoneString = self.blog.settings.timeZoneString;
             } else {
                 // timeZoneString is nil, so that means we can't fetch settings for this blog
@@ -498,7 +498,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             }
             if ([timeZoneString isEqualToString:@""]) {
                 NSNumber *gmtOffset;
-                if (self.blog.isAdmin) {
+                if (self.blog.settings.gmtOffset != nil) {
                     gmtOffset = self.blog.settings.gmtOffset;
                 } else {
                     gmtOffset = [self.blog getOptionValue:@"gmt_offset"];
