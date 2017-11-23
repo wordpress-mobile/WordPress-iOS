@@ -353,6 +353,7 @@
 		827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827704F01F607C0E002E8A03 /* JetpackConnectionViewController.swift */; };
 		8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F38E1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift */; };
 		8298F3921EEF3BA7008EB7F0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */; };
+		82B67B361FC726CD006FB593 /* Memoize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B67B351FC726CD006FB593 /* Memoize.swift */; };
 		82B85DF91EDDB807004FD510 /* SiteIconPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */; };
 		82FC61241FA8ADAD00A1757E /* ActivityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FC611C1FA8ADAC00A1757E /* ActivityTableViewCell.swift */; };
 		82FC61251FA8ADAD00A1757E /* ActivityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FC611D1FA8ADAC00A1757E /* ActivityListViewController.swift */; };
@@ -1555,6 +1556,7 @@
 		827704F01F607C0E002E8A03 /* JetpackConnectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackConnectionViewController.swift; sourceTree = "<group>"; };
 		8298F38E1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFeedbackPromptView.swift; sourceTree = "<group>"; };
 		8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		82B67B351FC726CD006FB593 /* Memoize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memoize.swift; sourceTree = "<group>"; };
 		82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteIconPickerPresenter.swift; sourceTree = "<group>"; };
 		82FA39771EB132090058A2D0 /* WordPress 59.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 59.xcdatamodel"; sourceTree = "<group>"; };
 		82FC611C1FA8ADAC00A1757E /* ActivityTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityTableViewCell.swift; sourceTree = "<group>"; };
@@ -3451,6 +3453,7 @@
 				82FC611E1FA8ADAC00A1757E /* ActivityTableViewCell.xib */,
 				82FC611F1FA8ADAC00A1757E /* WPStyleGuide+Activity.swift */,
 				825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */,
+				82B67B351FC726CD006FB593 /* Memoize.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -6637,6 +6640,7 @@
 				177076211EA206C000705A4A /* PlayIconView.swift in Sources */,
 				E1468DE71E794A4D0044D80F /* LanguageSelectorViewController.swift in Sources */,
 				E14694071F3459E2004052C8 /* PluginListViewController.swift in Sources */,
+				82B67B361FC726CD006FB593 /* Memoize.swift in Sources */,
 				E1C3C8531CE467A900D5DB36 /* EmailTypoChecker.swift in Sources */,
 				B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */,
 				E1B84F001E02E94D00BF6434 /* PingHubManager.swift in Sources */,
