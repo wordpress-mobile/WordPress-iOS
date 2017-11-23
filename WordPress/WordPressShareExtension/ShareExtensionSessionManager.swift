@@ -76,6 +76,16 @@ import CoreData
             }
         }
     }
+
+    fileprivate func fetchSessionPost() -> RemotePost? {
+        var remotePost: RemotePost?
+        var uploadOp: UploadOperation?
+        let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@ AND isMedia == false)", backgroundSessionIdentifier)
+        let uploadOp? = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
+        remotePost = uploadOp?.remotePost
+
+        return remotePost
+    }
 }
 
 // MARK: - URLSessionTaskDelegate
