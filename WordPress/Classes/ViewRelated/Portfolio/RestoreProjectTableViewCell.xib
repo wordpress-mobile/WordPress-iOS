@@ -12,15 +12,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="mtS-Un-VR1" customClass="RestoreProjectTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+        <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="mtS-Un-VR1" customClass="RestoreProjectTableViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="47"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mtS-Un-VR1" id="uGt-2c-uiH">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="46.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Page moved to trash." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9qX-7Q-3Mu" userLabel="Restore Label">
-                        <rect key="frame" x="16" y="9" width="272" height="26"/>
+                        <rect key="frame" x="16" y="10.5" width="272" height="26"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="26" id="LgM-G9-iO2"/>
                         </constraints>
@@ -29,7 +29,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QuM-Mo-Kad" userLabel="Restore Button">
-                        <rect key="frame" x="288" y="9" width="86" height="26"/>
+                        <rect key="frame" x="288" y="10.5" width="86" height="26"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="86" id="JLI-Cm-9gL"/>
                         </constraints>
@@ -46,12 +46,14 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="QuM-Mo-Kad" firstAttribute="centerY" secondItem="uGt-2c-uiH" secondAttribute="centerY" id="6Uo-X5-6fK"/>
+                    <constraint firstAttribute="bottom" secondItem="9qX-7Q-3Mu" secondAttribute="bottom" constant="10" id="374-c4-aPc"/>
+                    <constraint firstItem="QuM-Mo-Kad" firstAttribute="top" secondItem="uGt-2c-uiH" secondAttribute="top" constant="10.5" id="8Cy-H9-5Ys"/>
+                    <constraint firstItem="9qX-7Q-3Mu" firstAttribute="top" secondItem="uGt-2c-uiH" secondAttribute="top" constant="10.5" id="FCj-hB-Gw0"/>
                     <constraint firstItem="QuM-Mo-Kad" firstAttribute="height" secondItem="9qX-7Q-3Mu" secondAttribute="height" id="IxL-8c-RwO"/>
+                    <constraint firstAttribute="bottom" secondItem="QuM-Mo-Kad" secondAttribute="bottom" constant="10" id="Rqg-I9-eS4"/>
                     <constraint firstItem="9qX-7Q-3Mu" firstAttribute="leading" secondItem="uGt-2c-uiH" secondAttribute="leadingMargin" id="VP8-k2-lSz"/>
                     <constraint firstItem="QuM-Mo-Kad" firstAttribute="leading" secondItem="9qX-7Q-3Mu" secondAttribute="trailing" id="hAn-fA-TxS"/>
                     <constraint firstAttribute="trailingMargin" secondItem="QuM-Mo-Kad" secondAttribute="trailing" priority="999" constant="-15" id="nmm-ta-1HX"/>
-                    <constraint firstItem="9qX-7Q-3Mu" firstAttribute="centerY" secondItem="uGt-2c-uiH" secondAttribute="centerY" id="zRi-nK-6aw"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
