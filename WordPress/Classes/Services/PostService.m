@@ -12,7 +12,7 @@
 
 PostServiceType const PostServiceTypePost = @"post";
 PostServiceType const PostServiceTypePage = @"page";
-PostServiceType const PostServiceTypeProject = @"project";
+PostServiceType const PostServiceTypeProject = @"jetpack-portfolio";
 PostServiceType const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
