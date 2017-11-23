@@ -20,7 +20,7 @@ public class ActivityUtils {
             ///
             /// - Parameters:
             ///     - rp: Timestamp of "Restore Point" event.
-            ///     - bp: Timestamp from perspective from which we are analyzing discardability of events.
+            ///     - bp: Timestamp of "Backup Point" event.
             ///
             return ts > viewFrom ||
                    rewinds.contains(where: { (rp: TimeInterval, bp: TimeInterval) -> Bool in
