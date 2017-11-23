@@ -22,6 +22,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     fileprivate var capturePresenter: WPMediaCapturePresenter?
 
+    // After 99% progress, we'll count a media item as being uploaded, and we'll
+    // show an indeterminate spinner as the server processes it.
+    fileprivate static let uploadCompleteProgress: Double = 0.99
+
     fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
@@ -146,7 +150,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     @objc private func statusHUDWasTapped(_ notification: Notification) {
         if mediaProgressCoordinator.isRunning {
-            mediaProgressCoordinator.cancelAndStopAllPendingUploads()
+            mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
             SVProgressHUD.dismiss()
         }
     }
@@ -223,17 +227,38 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func reloadCell(for media: Media) {
-        guard let cells = self.collectionView?.visibleCells as? [WPMediaCollectionViewCell] else {
-            return
+        visibleCells(for: media).forEach { cell in
+            cell.overlayView = nil
+            cell.asset = media
+        }
+    }
+
+    private func updateCellProgress(_ progress: Double, for media: Media) {
+        visibleCells(for: media).forEach { cell in
+            if let overlayView = cell.overlayView as? MediaCellProgressView {
+                if progress < MediaLibraryViewController.uploadCompleteProgress {
+                    overlayView.progressIndicator.state = .progress(progress)
+                } else {
+                    overlayView.progressIndicator.state = .indeterminate
+                }
+            }
+        }
+    }
+
+    private func showUploadingStateForCell(for media: Media) {
+        visibleCells(for: media).forEach { cell in
+            if let overlayView = cell.overlayView as? MediaCellProgressView {
+                overlayView.progressIndicator.state = .indeterminate
+            }
+        }
+    }
+
+    private func visibleCells(for media: Media) -> [WPMediaCollectionViewCell] {
+        guard let cells = pickerViewController.collectionView?.visibleCells as? [WPMediaCollectionViewCell] else {
+            return []
         }
 
-        cells.forEach({ cell in
-            if let asset = cell.asset as? Media,
-                asset == media {
-                cell.overlayView = nil
-                cell.asset = media
-            }
-        })
+        return cells.filter({ ($0.asset as? Media) == media })
     }
 
     private var hasSearchQuery: Bool {
@@ -408,11 +433,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
 
         uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ [weak self] (media, state) in
-            print("Media \(String(describing: media.filename)) in state \(String(describing: state))")
             switch state {
+            case .progress(let progress) :
+                self?.updateCellProgress(progress, for: media)
+                break
+            case .uploading:
+                self?.showUploadingStateForCell(for: media)
             case .ended:
                 self?.reloadCell(for: media)
-            default: break
             }
             }, for: nil)
     }
@@ -455,7 +483,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         })
 
         if let progress = uploadProgress {
-            mediaProgressCoordinator.track(progress: progress, ofObject: media, withMediaID: mediaID)
+            mediaProgressCoordinator.track(progress: progress, of: media, withIdentifier: mediaID)
         }
     }
 
@@ -601,6 +629,12 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {
+        if let overlayView = overlayView as? MediaCellProgressView,
+            let media = asset as? Media {
+            if media.remoteStatus == .processing {
+                overlayView.progressIndicator.state = .indeterminate
+            }
+        }
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
@@ -761,28 +795,28 @@ extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
         guard !mediaProgressCoordinator.hasFailedMedia else {
             SVProgressHUD.showError(withStatus: NSLocalizedString("Upload failed", comment: "Text displayed in a HUD when media items have failed to upload."))
-            mediaProgressCoordinator.stopTrackingOfAllUploads()
+            mediaProgressCoordinator.stopTrackingOfAllMedia()
             return
         }
 
-        guard let progress = mediaProgressCoordinator.mediaUploadingProgress,
+        guard let progress = mediaProgressCoordinator.mediaGlobalProgress,
             !progress.isCancelled else {
-            mediaProgressCoordinator.stopTrackingOfAllUploads()
+            mediaProgressCoordinator.stopTrackingOfAllMedia()
             return
         }
 
-        mediaProgressCoordinator.stopTrackingOfAllUploads()
+        mediaProgressCoordinator.stopTrackingOfAllMedia()
         SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Uploaded!", comment: "Text displayed in a HUD when media items have been uploaded successfully."))
     }
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Float) {
-        guard let mediaProgress = mediaProgressCoordinator.mediaUploadingProgress,
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double) {
+        guard let mediaProgress = mediaProgressCoordinator.mediaGlobalProgress,
             !mediaProgress.isCancelled,
             mediaProgress.completedUnitCount < mediaProgress.totalUnitCount else {
                 return
         }
 
-        SVProgressHUD.showProgress(progress, status: NSLocalizedString("Uploading...\nTap to cancel", comment: "Text displayed in HUD while media items are being uploaded."))
+        SVProgressHUD.showProgress(Float(progress), status: NSLocalizedString("Uploading...\nTap to cancel", comment: "Text displayed in HUD while media items are being uploaded."))
     }
 }
 
