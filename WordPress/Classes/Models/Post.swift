@@ -44,7 +44,7 @@ class Post: AbstractPost {
 
     // MARK: - NSManagedObject
 
-    override class var entityName: String {
+    override class func entityName() -> String {
         return "Post"
     }
 
