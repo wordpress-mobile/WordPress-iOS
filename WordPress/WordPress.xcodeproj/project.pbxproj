@@ -954,6 +954,7 @@
 		E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */; };
 		E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */; };
 		F0A95B8E1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A95B8D1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift */; };
+		F0AE52301FC4957100838D52 /* TimezoneSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0AE522F1FC4957100838D52 /* TimezoneSelectorViewModel.swift */; };
 		F0FB891B1FBEA3090057C478 /* TimezoneInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FB89191FBEA3090057C478 /* TimezoneInfo.swift */; };
 		F1049F331F39FCF9004DF0BB /* CalypsoProcessorOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */; };
 		F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */; };
@@ -2416,6 +2417,7 @@
 		EF379F0A70B6AC45330EE287 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
 		F0A95B8C1FB640E600CDF031 /* WordPress 68.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 68.xcdatamodel"; sourceTree = "<group>"; };
 		F0A95B8D1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewController.swift; sourceTree = "<group>"; };
+		F0AE522F1FC4957100838D52 /* TimezoneSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneSelectorViewModel.swift; sourceTree = "<group>"; };
 		F0FB89191FBEA3090057C478 /* TimezoneInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneInfo.swift; sourceTree = "<group>"; };
 		F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalypsoProcessorOut.swift; sourceTree = "<group>"; };
 		F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 67.xcdatamodel"; sourceTree = "<group>"; };
@@ -3979,6 +3981,7 @@
 				FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */,
 				82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */,
 				F0A95B8D1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift */,
+				F0AE522F1FC4957100838D52 /* TimezoneSelectorViewModel.swift */,
 			);
 			path = Blog;
 			sourceTree = "<group>";
@@ -6390,6 +6393,7 @@
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
 				E14A52371E39F43E00EE203E /* AppRatingsUtility.swift in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
+				F0AE52301FC4957100838D52 /* TimezoneSelectorViewModel.swift in Sources */,
 				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,
 				B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */,
