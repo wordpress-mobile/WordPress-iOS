@@ -11,7 +11,7 @@ import MobileCoreServices
 class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate static let restorationIdentifier = "MediaLibraryViewController"
 
-    let blog: Blog
+    @objc let blog: Blog
 
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
@@ -42,7 +42,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     // MARK: - Initializers
 
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         WPMediaCollectionViewCell.appearance().placeholderTintColor = WPStyleGuide.greyLighten30()
         WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = WPStyleGuide.darkGrey()
         WPMediaCollectionViewCell.appearance().loadingBackgroundColor = WPStyleGuide.lightGrey()
@@ -87,7 +87,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     // MARK: - View Loading
 
-    var uploadObserverUUID: UUID?
+    @objc var uploadObserverUUID: UUID?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -374,13 +374,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         updateProgress(nil)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteMedia(assets,
-                            progress: updateProgress,
-                            success: { [weak self] in
-                                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
-                                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-                                self?.isEditing = false
-        }, failure: { error in
+        service.deleteMedia(assets, progress: updateProgress, success: { [weak self] () in
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
+            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+            self?.isEditing = false
+        }, failure: { () in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
     }
@@ -677,7 +675,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         updateNavigationItemButtonsForCurrentAssetSelection()
     }
 
-    func updateNavigationItemButtonsForCurrentAssetSelection() {
+    @objc func updateNavigationItemButtonsForCurrentAssetSelection() {
         if isEditing {
             // Check that our selected items haven't been deleted – we're notified
             // of changes to the data source before the collection view has
@@ -701,7 +699,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return MediaItemViewController(media: asset)
     }
 
-    func makeAndUploadMediaWith(_ asset: PHAsset) {
+    @objc func makeAndUploadMediaWith(_ asset: PHAsset) {
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
                             forBlogObjectID: blog.objectID,
