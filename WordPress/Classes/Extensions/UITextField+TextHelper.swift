@@ -1,7 +1,7 @@
 import UIKit
 
 extension UITextField {
-    func nonNilTrimmedText() -> String {
+    @objc func nonNilTrimmedText() -> String {
         return text?.trim() ?? ""
     }
 }

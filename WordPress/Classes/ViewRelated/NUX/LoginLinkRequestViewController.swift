@@ -53,7 +53,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
-    func localizeControls() {
+    @objc func localizeControls() {
         let format = NSLocalizedString("We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!", comment: "Instructional text for the magic link login flow.")
         label?.text = NSString(format: format as NSString, loginFields.username) as String
 
@@ -68,7 +68,7 @@ class LoginLinkRequestViewController: LoginViewController {
         usePasswordButton?.accessibilityIdentifier = "Use Password"
     }
 
-    func configureLoading(_ animating: Bool) {
+    @objc func configureLoading(_ animating: Bool) {
         sendLinkButton?.showActivityIndicator(animating)
 
         sendLinkButton?.isEnabled = !animating
@@ -79,7 +79,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
     /// Makes the call to request a magic authentication link be emailed to the user.
     ///
-    func requestAuthenticationLink() {
+    @objc func requestAuthenticationLink() {
         let email = loginFields.username
         guard email.isValidEmail() else {
             // This is a bit of paranioa as in practice it should never happen.
@@ -114,7 +114,7 @@ class LoginLinkRequestViewController: LoginViewController {
         requestAuthenticationLink()
     }
 
-    func didRequestAuthenticationLink() {
+    @objc func didRequestAuthenticationLink() {
         WPAppAnalytics.track(.loginMagicLinkRequested)
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         performSegue(withIdentifier: .showLinkMailView, sender: self)

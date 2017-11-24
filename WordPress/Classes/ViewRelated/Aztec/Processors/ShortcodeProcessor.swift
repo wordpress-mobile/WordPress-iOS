@@ -20,7 +20,7 @@ public struct Shortcode {
 ///
 open class ShortcodeProcessor: RegexProcessor {
 
-    public typealias ShortcodeReplacer = (Shortcode) -> String
+    public typealias ShortcodeReplacer = (Shortcode) -> String?
 
     let tag: String
 
