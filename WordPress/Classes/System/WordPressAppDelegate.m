@@ -99,7 +99,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self.window makeKeyAndVisible];
 
     // Local Notifications
-    [self listenLocalNotifications];
+    [self addNotificationObservers];
 
     WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
