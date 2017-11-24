@@ -11,7 +11,7 @@ class EditorSettingsTests: XCTestCase {
     }
 
     func testAztecEnabledByDefaultButNotForcedAgain() {
-        let testClosure: () -> () = { _ in
+        let testClosure: () -> () = { () in
             let database = EphemeralKeyValueDatabase()
 
             // This simulates the first launch

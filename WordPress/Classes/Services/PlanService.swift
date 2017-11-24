@@ -7,7 +7,7 @@ public typealias PlanFeature = RemotePlanFeature
 public typealias PlanFeatureGroup = RemotePlanFeatureGroup
 public typealias PlanFeatures = RemotePlanFeatures
 
-struct PlanService<S: Store> {
+struct PlanService<S: InAppPurchaseStore> {
     // FIXME: @koke 2016-03-22
     // This was going to be generic but it's causing a lot of trouble. Figure out conflicts first
 //    typealias S = StoreKitStore

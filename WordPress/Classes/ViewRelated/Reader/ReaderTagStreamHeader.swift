@@ -18,7 +18,7 @@ import WordPressShared
         adjustInsetsForTextDirection()
     }
 
-    func applyStyles() {
+    @objc func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
@@ -28,13 +28,13 @@ import WordPressShared
 
     // MARK: - Configuration
 
-    open func configureHeader(_ topic: ReaderAbstractTopic) {
+    @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
         WPStyleGuide.applyReaderFollowButtonStyle(followButton)
         followButton.isSelected = topic.following
     }
 
-    open func enableLoggedInFeatures(_ enable: Bool) {
+    @objc open func enableLoggedInFeatures(_ enable: Bool) {
         followButton.isHidden = !enable
     }
 

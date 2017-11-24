@@ -18,12 +18,12 @@ class WebProgressView: UIProgressView {
         configure()
     }
 
-    func startedLoading() {
+    @objc func startedLoading() {
         alpha = Animation.visibleAlpha
         progress = Progress.initial
     }
 
-    func finishedLoading() {
+    @objc func finishedLoading() {
         UIView.animate(withDuration: Animation.longDuration, animations: { [weak self] in
             self?.progress = Progress.final
         }, completion: { [weak self] _ in
