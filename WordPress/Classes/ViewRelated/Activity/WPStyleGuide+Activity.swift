@@ -33,6 +33,10 @@ extension WPStyleGuide {
             return UIColor.white
         }
 
+        public static func backgroundDiscardedColor() -> UIColor {
+            return WPStyleGuide.greyLighten30()
+        }
+
         public static func backgroundRewindableColor() -> UIColor {
             return WPStyleGuide.lightBlue()
         }
