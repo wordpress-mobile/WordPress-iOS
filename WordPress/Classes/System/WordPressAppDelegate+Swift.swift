@@ -4,7 +4,7 @@ import Foundation
 
 extension WordPressAppDelegate {
 
-    @objc func listenLocalNotifications() {
+    @objc func addNotificationObservers() {
         let nc = NotificationCenter.default
 
         nc.addObserver(self,
