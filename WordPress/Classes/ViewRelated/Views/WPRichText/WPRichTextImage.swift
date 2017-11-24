@@ -6,7 +6,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     var contentURL: URL?
     var linkURL: URL?
-    fileprivate(set) var imageView: UIImageView
+    @objc fileprivate(set) var imageView: UIImageView
 
     override open var frame: CGRect {
         didSet {

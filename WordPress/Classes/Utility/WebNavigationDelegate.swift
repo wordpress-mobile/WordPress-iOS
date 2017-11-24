@@ -11,20 +11,20 @@ import WebKit
 //   return .redirect(request)
 // }
 class WebNavigationPolicy: NSObject {
-    private(set) var redirectRequest: URLRequest?
-    private(set) var action: WKNavigationActionPolicy = .cancel
+    @objc private(set) var redirectRequest: URLRequest?
+    @objc private(set) var action: WKNavigationActionPolicy = .cancel
 
     private override init() {}
 
-    static let allow: WebNavigationPolicy = {
+    @objc static let allow: WebNavigationPolicy = {
         let policy = WebNavigationPolicy()
         policy.action = .allow
         return policy
     }()
 
-    static let cancel = WebNavigationPolicy()
+    @objc static let cancel = WebNavigationPolicy()
 
-    static func redirect(_ request: URLRequest) -> WebNavigationPolicy {
+    @objc static func redirect(_ request: URLRequest) -> WebNavigationPolicy {
         let policy = WebNavigationPolicy()
         policy.redirectRequest = request
         return policy

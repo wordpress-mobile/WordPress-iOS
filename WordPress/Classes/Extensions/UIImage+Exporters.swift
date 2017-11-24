@@ -24,7 +24,7 @@ extension UIImage {
      - compressionQuality: defines the compression quality of the export. This is only relevant for type formats that support a quality parameter. Ex: jpeg
      - metadata: the image metadata to save to file.
      */
-    func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9, metadata: [String: AnyObject]? = nil) throws {
+    @objc func writeToURL(_ url: URL, type: String, compressionQuality: Float = 0.9, metadata: [String: AnyObject]? = nil) throws {
         let properties: [String: AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality as AnyObject]
         var finalMetadata = metadata
         if metadata == nil {
@@ -53,13 +53,13 @@ extension UIImage {
      - Parameters:
      - url: file url to where the asset should be exported, this must be writable location
      */
-    func writeJPEGToURL(_ url: URL) throws {
+    @objc func writeJPEGToURL(_ url: URL) throws {
         let data = UIImageJPEGRepresentation(self, 0.9)
         try data?.write(to: url, options: NSData.WritingOptions())
     }
 
     // Converts the imageOrientation from the image to the CGImagePropertyOrientation to use in the file metadata.
-    var metadataOrientation: CGImagePropertyOrientation {
+    @objc var metadataOrientation: CGImagePropertyOrientation {
         get {
             switch imageOrientation {
             case .up: return CGImagePropertyOrientation.up
