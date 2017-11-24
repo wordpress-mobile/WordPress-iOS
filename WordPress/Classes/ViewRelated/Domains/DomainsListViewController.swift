@@ -50,7 +50,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var viewModel: ImmuTable!
 
     fileprivate var fetchRequest: NSFetchRequest<NSFetchRequestResult> {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
         request.sortDescriptors = [NSSortDescriptor(key: ManagedDomain.Attributes.isPrimary, ascending: false),
                                    NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true)]
