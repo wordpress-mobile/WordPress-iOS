@@ -155,7 +155,7 @@ class NotificationSyncMediatorTests: XCTestCase {
 
         // Inject Dummy Note
         let path = "notifications-like.json"
-        let note = manager.loadEntityNamed(Notification.entityName, withContentsOfFile: path) as! WordPress.Notification
+        let note = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path) as! WordPress.Notification
 
         XCTAssertNotNil(note)
         XCTAssertFalse(note.read)
