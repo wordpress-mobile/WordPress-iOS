@@ -12,7 +12,7 @@ open class DeleteSiteViewController: UITableViewController {
     ///
     /// - Parameter blog: A Blog instance.
     ///
-    class func controller(_ blog: Blog) -> DeleteSiteViewController {
+    @objc class func controller(_ blog: Blog) -> DeleteSiteViewController {
         let storyboard = UIStoryboard(name: "DeleteSite", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "DeleteSiteViewController") as! DeleteSiteViewController
         controller.blog = blog
@@ -21,7 +21,7 @@ open class DeleteSiteViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var blog: Blog!
+    @objc var blog: Blog!
 
     @IBOutlet fileprivate weak var warningImage: UIImageView!
     @IBOutlet fileprivate weak var siteTitleLabel: UILabel!
@@ -113,9 +113,10 @@ open class DeleteSiteViewController: UITableViewController {
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
-        let attributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
-                           NSForegroundColorAttributeName: WPStyleGuide.darkGrey(),
-                           NSParagraphStyleAttributeName: paragraphStyle ]
+
+        let attributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 17.0),
+                                                        .foregroundColor: WPStyleGuide.darkGrey(),
+                                                        .paragraphStyle: paragraphStyle ]
         let htmlAttributes: StyledHTMLAttributes = [ .BodyAttribute: attributes]
 
         let attributedText1 = NSAttributedString.attributedStringWithHTML(paragraph1, attributes: htmlAttributes)
@@ -127,9 +128,9 @@ open class DeleteSiteViewController: UITableViewController {
         combinedAttributedString.append(attributedText2)
         sectionThreeBody.attributedText = combinedAttributedString
 
-        let contactButtonAttributes = [ NSFontAttributeName: UIFont.systemFont(ofSize: 17.0),
-                                        NSForegroundColorAttributeName: WPStyleGuide.wordPressBlue(),
-                                        NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue as AnyObject]
+        let contactButtonAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 17.0),
+                                                                     .foregroundColor: WPStyleGuide.wordPressBlue(),
+                                                                     .underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
         supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support", comment: "Button label for contacting support"), attributes: contactButtonAttributes),
                                          for: .normal)
     }
@@ -197,7 +198,7 @@ open class DeleteSiteViewController: UITableViewController {
 
     /// Verifies site address as password for Delete Site
     ///
-    func alertTextFieldDidChange(_ sender: UITextField) {
+    @objc func alertTextFieldDidChange(_ sender: UITextField) {
         guard let deleteAction = (presentedViewController as? UIAlertController)?.actions.last else {
             return
         }
@@ -232,7 +233,9 @@ open class DeleteSiteViewController: UITableViewController {
                                     self?.updateNavigationStackAfterSiteDeletion()
 
                                     let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                                    accountService.updateUserDetails(for: (accountService.defaultWordPressComAccount()!), success: { _ in }, failure: { _ in })
+                                    accountService.updateUserDetails(for: (accountService.defaultWordPressComAccount()!),
+                                                                     success: { () in },
+                                                                     failure: { _ in })
             },
                                   failure: { error in
                                     DDLogError("Error deleting site: \(error.localizedDescription)")

@@ -41,7 +41,7 @@ class LoginPrologueViewController: UIViewController {
 
     // MARK: - Setup and Config
 
-    func localizeControls() {
+    @objc func localizeControls() {
         loginButton.setTitle(NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form."),
                              for: .normal)
         loginButton.accessibilityIdentifier = "Log In"
