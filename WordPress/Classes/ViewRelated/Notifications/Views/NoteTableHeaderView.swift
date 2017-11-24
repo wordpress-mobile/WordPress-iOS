@@ -6,7 +6,7 @@ import WordPressShared
 ///
 class NoteTableHeaderView: UIView {
     // MARK: - Public Properties
-    var title: String? {
+    @objc var title: String? {
         set {
             // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
             let unwrappedTitle = newValue?.localizedUppercase ?? String()
@@ -19,7 +19,7 @@ class NoteTableHeaderView: UIView {
         }
     }
 
-    var separatorColor: UIColor? {
+    @objc var separatorColor: UIColor? {
         set {
             contentView.bottomColor = newValue ?? UIColor.clear
             contentView.topColor = newValue ?? UIColor.clear
@@ -29,7 +29,7 @@ class NoteTableHeaderView: UIView {
         }
     }
 
-    class func makeFromNib() -> NoteTableHeaderView {
+    @objc class func makeFromNib() -> NoteTableHeaderView {
         return Bundle.main.loadNibNamed("NoteTableHeaderView", owner: self, options: nil)?.first as! NoteTableHeaderView
     }
 
@@ -55,7 +55,7 @@ class NoteTableHeaderView: UIView {
     typealias Style = WPStyleGuide.Notifications
 
     // MARK: - Static Properties
-    static let estimatedHeight  = CGFloat(26)
+    @objc static let estimatedHeight  = CGFloat(26)
 
     // MARK: - Outlets
     @IBOutlet fileprivate var contentView: SeparatorsView!

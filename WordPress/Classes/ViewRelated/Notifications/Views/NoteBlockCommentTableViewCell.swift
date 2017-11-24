@@ -6,14 +6,14 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     typealias EventHandler = ((_ sender: AnyObject) -> Void)
 
     // MARK: - Public Properties
-    var onDetailsClick: EventHandler?
+    @objc var onDetailsClick: EventHandler?
 
-    var attributedCommentText: NSAttributedString? {
+    @objc var attributedCommentText: NSAttributedString? {
         didSet {
             refreshApprovalColors()
         }
     }
-    var commentText: String? {
+    @objc var commentText: String? {
         set {
             let text = newValue ?? String()
             attributedCommentText = NSMutableAttributedString(string: text, attributes: Style.contentBlockRegularStyle)
@@ -22,13 +22,13 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
             return attributedCommentText?.string
         }
     }
-    var isApproved: Bool = false {
+    @objc var isApproved: Bool = false {
         didSet {
             refreshApprovalColors()
             refreshSeparators()
         }
     }
-    var name: String? {
+    @objc var name: String? {
         set {
             titleLabel.text  = newValue
         }
@@ -36,12 +36,12 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
             return titleLabel.text
         }
     }
-    var timestamp: String? {
+    @objc var timestamp: String? {
         didSet {
             refreshDetails()
         }
     }
-    var site: String? {
+    @objc var site: String? {
         didSet {
             refreshDetails()
         }
@@ -50,13 +50,13 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(_ url: URL?) {
+    @objc func downloadGravatarWithURL(_ url: URL?) {
         let gravatar = url.flatMap { Gravatar($0) }
 
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }
 
-    func downloadGravatarWithEmail(_ email: String?) {
+    @objc func downloadGravatarWithEmail(_ email: String?) {
         guard let unwrappedEmail = email else {
             gravatarImageView.image = placeholderImage
             return
@@ -120,7 +120,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
         let range = NSRange(location: 0, length: commentText.length)
         let textColor = Style.blockUnapprovedTextColor
-        commentText.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
+        commentText.addAttribute(.foregroundColor, value: textColor, range: range)
 
         return commentText
     }

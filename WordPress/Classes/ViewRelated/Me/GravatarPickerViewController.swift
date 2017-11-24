@@ -8,7 +8,7 @@ import Photos
 class GravatarPickerViewController: UIViewController, WPMediaPickerViewControllerDelegate {
     // MARK: - Public Properties
 
-    var onCompletion: ((UIImage?) -> Void)?
+    @objc var onCompletion: ((UIImage?) -> Void)?
 
     // MARK: - Private Properties
 

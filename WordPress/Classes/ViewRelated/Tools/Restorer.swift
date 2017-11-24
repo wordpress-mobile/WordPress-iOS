@@ -15,7 +15,7 @@ class Restorer: NSObject {
         }
     }
 
-    func viewController(identifier: String) -> UIViewController? {
+    @objc func viewController(identifier: String) -> UIViewController? {
         return Identifier(rawValue: identifier)?.instantiate()
     }
 }

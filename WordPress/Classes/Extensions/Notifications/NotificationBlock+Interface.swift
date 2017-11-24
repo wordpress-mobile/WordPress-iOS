@@ -13,8 +13,8 @@ extension NotificationBlock {
     ///
     var attributedSubjectText: NSAttributedString {
         let attributedText = memoize {
-            let subject = self.textWithStyles(Styles.subjectRegularStyle as [String : AnyObject],
-                quoteStyles: Styles.subjectItalicsStyle as [String : AnyObject]?,
+            let subject = self.textWithStyles(Styles.subjectRegularStyle,
+                quoteStyles: Styles.subjectItalicsStyle,
                 rangeStylesMap: Constants.subjectRangeStylesMap,
                 linksColor: nil)
 
@@ -28,7 +28,7 @@ extension NotificationBlock {
     ///
     var attributedSnippetText: NSAttributedString {
         let attributedText = memoize {
-            let snippet = self.textWithStyles(Styles.snippetRegularStyle as [String : AnyObject],
+            let snippet = self.textWithStyles(Styles.snippetRegularStyle,
                 quoteStyles: nil,
                 rangeStylesMap: nil,
                 linksColor: nil)
@@ -43,7 +43,7 @@ extension NotificationBlock {
     ///
     var attributedHeaderTitleText: NSAttributedString {
         let attributedText = memoize {
-            return self.textWithStyles(Styles.headerTitleRegularStyle as [String : AnyObject],
+            return self.textWithStyles(Styles.headerTitleRegularStyle,
                 quoteStyles: nil,
                 rangeStylesMap: Constants.headerTitleRangeStylesMap,
                 linksColor: nil)
@@ -56,7 +56,7 @@ extension NotificationBlock {
     ///
     var attributedFooterText: NSAttributedString {
         let attributedText = memoize {
-            return self.textWithStyles(Styles.footerRegularStyle as [String : AnyObject],
+            return self.textWithStyles(Styles.footerRegularStyle,
                 quoteStyles: nil,
                 rangeStylesMap: Constants.footerStylesMap,
                 linksColor: nil)
@@ -75,8 +75,8 @@ extension NotificationBlock {
         }
 
         let attributedText = memoize {
-            return self.textWithStyles(Styles.contentBlockRegularStyle as [String : AnyObject],
-                quoteStyles: Styles.contentBlockBoldStyle as [String : AnyObject]?,
+            return self.textWithStyles(Styles.contentBlockRegularStyle,
+                quoteStyles: Styles.contentBlockBoldStyle,
                 rangeStylesMap: Constants.richRangeStylesMap,
                 linksColor: Styles.blockLinkColor)
         }
@@ -89,8 +89,8 @@ extension NotificationBlock {
     ///
     var attributedBadgeText: NSAttributedString {
         let attributedText = memoize {
-            return self.textWithStyles(Styles.badgeRegularStyle as [String : AnyObject],
-                quoteStyles: Styles.badgeBoldStyle as [String : AnyObject]?,
+            return self.textWithStyles(Styles.badgeRegularStyle,
+                quoteStyles: Styles.badgeBoldStyle,
                 rangeStylesMap: Constants.badgeRangeStylesMap,
                 linksColor: Styles.badgeLinkColor)
         }
@@ -167,9 +167,9 @@ extension NotificationBlock {
     ///
     /// - Returns: A NSAttributedString instance, formatted with all of the specified parameters
     ///
-    fileprivate func textWithStyles(_ attributes: [String: AnyObject],
-                                quoteStyles: [String: AnyObject]?,
-                             rangeStylesMap: [NotificationRange.Kind: [String: AnyObject]]?,
+    fileprivate func textWithStyles(_ attributes: [NSAttributedStringKey: Any],
+                                quoteStyles: [NSAttributedStringKey: Any]?,
+                             rangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]]?,
                                  linksColor: UIColor?) -> NSAttributedString {
         guard let text = text else {
             return NSAttributedString()
@@ -200,8 +200,8 @@ extension NotificationBlock {
             }
 
             if let rangeURL = range.url, let linksColor = linksColor {
-                theString.addAttribute(NSLinkAttributeName, value: rangeURL, range: shiftedRange)
-                theString.addAttribute(NSForegroundColorAttributeName, value: linksColor, range: shiftedRange)
+                theString.addAttribute(.link, value: rangeURL, range: shiftedRange)
+                theString.addAttribute(.foregroundColor, value: linksColor, range: shiftedRange)
             }
         }
 
@@ -212,35 +212,35 @@ extension NotificationBlock {
     // MARK: - Constants
     //
     fileprivate struct Constants {
-        static let subjectRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User: Styles.subjectBoldStyle as Dictionary<String, AnyObject>,
-            .Post: Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
-            .Comment: Styles.subjectItalicsStyle as Dictionary<String, AnyObject>,
-            .Blockquote: Styles.subjectQuotedStyle as Dictionary<String, AnyObject>,
+        static let subjectRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
+            .User: Styles.subjectBoldStyle,
+            .Post: Styles.subjectItalicsStyle,
+            .Comment: Styles.subjectItalicsStyle,
+            .Blockquote: Styles.subjectQuotedStyle,
             .Noticon: Styles.subjectNoticonStyle
         ]
 
-        static let headerTitleRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User: Styles.headerTitleBoldStyle as Dictionary<String, AnyObject>,
-            .Post: Styles.headerTitleContextStyle as Dictionary<String, AnyObject>,
-            .Comment: Styles.headerTitleContextStyle as Dictionary<String, AnyObject>
+        static let headerTitleRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
+            .User: Styles.headerTitleBoldStyle,
+            .Post: Styles.headerTitleContextStyle,
+            .Comment: Styles.headerTitleContextStyle
         ]
 
-        static let footerStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .Noticon: Styles.blockNoticonStyle as Dictionary<String, AnyObject>
+        static let footerStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
+            .Noticon: Styles.blockNoticonStyle
         ]
 
-        static let richRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .Blockquote: Styles.contentBlockQuotedStyle as Dictionary<String, AnyObject>,
-            .Noticon: Styles.blockNoticonStyle as Dictionary<String, AnyObject>,
-            .Match: Styles.contentBlockMatchStyle as Dictionary<String, AnyObject>
+        static let richRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
+            .Blockquote: Styles.contentBlockQuotedStyle,
+            .Noticon: Styles.blockNoticonStyle,
+            .Match: Styles.contentBlockMatchStyle
         ]
 
-        static let badgeRangeStylesMap: [NotificationRange.Kind: [String: AnyObject]] = [
-            .User: Styles.badgeBoldStyle as Dictionary<String, AnyObject>,
-            .Post: Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
-            .Comment: Styles.badgeItalicsStyle as Dictionary<String, AnyObject>,
-            .Blockquote: Styles.badgeQuotedStyle as Dictionary<String, AnyObject>
+        static let badgeRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
+            .User: Styles.badgeBoldStyle,
+            .Post: Styles.badgeItalicsStyle,
+            .Comment: Styles.badgeItalicsStyle,
+            .Blockquote: Styles.badgeQuotedStyle
         ]
     }
 
@@ -253,5 +253,5 @@ extension NotificationBlock {
         static let badge        = "badge"
     }
 
-    fileprivate typealias Styles    = WPStyleGuide.Notifications
+    fileprivate typealias Styles = WPStyleGuide.Notifications
 }

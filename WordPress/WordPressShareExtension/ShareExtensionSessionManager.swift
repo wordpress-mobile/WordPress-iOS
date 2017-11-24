@@ -22,7 +22,7 @@ import Foundation
 
     // MARK: - Initializers
 
-    required init(appGroup: String, backgroundSessionIdentifier: String) {
+    @objc required init(appGroup: String, backgroundSessionIdentifier: String) {
         self.appGroup = appGroup
         self.backgroundSessionIdentifier = backgroundSessionIdentifier
     }
@@ -35,20 +35,20 @@ import Foundation
 
     /// Invalidates the background URLSession allowing any outstanding tasks to complete.
     ///
-    func shutdown() {
+    @objc func shutdown() {
         backgroundSession.finishTasksAndInvalidate()
     }
 
     /// Cancels all outstanding tasks and invalidates the background URLSession.
     ///
-    func forceShutdown() {
+    @objc func forceShutdown() {
         backgroundSession.invalidateAndCancel()
     }
 
     /// Starts up the background URLSession with the sharedContainerIdentifier (appGroup) and backgroundSessionIdentifier
     /// passed into init().
     ///
-    func startBackgroundSession() {
+    @objc func startBackgroundSession() {
         DDLogInfo("Initializing background session: \(backgroundSession)")
     }
 }
