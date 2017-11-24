@@ -18,7 +18,7 @@ class SiteIconPickerPresenter: NSObject {
 
     /// MARK: - Private Properties
 
-    fileprivate let noResultsView = WPNoResultsView.makeViewForMediaPicker()
+    fileprivate let noResultsView = MediaNoResultsView.makeView()
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
     /// Media Library Data Source
@@ -124,13 +124,14 @@ class SiteIconPickerPresenter: NSObject {
     fileprivate func registerChangeObserver(forPicker picker: WPMediaPickerViewController) {
         assert(mediaLibraryChangeObserverKey == nil)
         mediaLibraryChangeObserverKey = mediaLibraryDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-            guard let strongSelf = self else { return }
 
-            strongSelf.updateSearchBar(mediaPicker: picker)
+            self?.updateSearchBar(mediaPicker: picker)
 
-            let numberOfAssets = strongSelf.mediaLibraryDataSource.numberOfAssets()
-            if numberOfAssets == 0 {
-                strongSelf.noResultsView.updateForNoMediaAssets(userCanUploadMedia: false)
+            let isNotSearching = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+            let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
+
+            if isNotSearching && hasNoAssets {
+                self?.noResultsView.updateForNoAssets(userCanUploadMedia: false)
             }
         })
     }
@@ -143,7 +144,10 @@ class SiteIconPickerPresenter: NSObject {
     }
 
     fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
-        if mediaLibraryDataSource.dataSourceType == .mediaLibrary && mediaLibraryDataSource.numberOfAssets() > 0 {
+        let isSearching = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+        let hasAssets = mediaLibraryDataSource.numberOfAssets() > 0
+
+        if mediaLibraryDataSource.dataSourceType == .mediaLibrary && (isSearching || hasAssets) {
             mediaPicker.showSearchBar()
         } else {
             mediaPicker.hideSearchBar()
@@ -154,15 +158,23 @@ class SiteIconPickerPresenter: NSObject {
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
-        picker.searchBar?.resignFirstResponder()
-        picker.searchBar?.text = nil
-        mediaLibraryDataSource.searchCancelled()
+        if mediaLibraryDataSource.dataSourceType == .mediaLibrary {
+            if let searchBar = picker.searchBar {
+                WPStyleGuide.configureSearchBar(searchBar)
+            }
+        }
+        updateSearchBar(mediaPicker: picker)
+        noResultsView.updateForFetching()
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        noResultsView.updateForNoAssets(userCanUploadMedia: false)
         updateSearchBar(mediaPicker: picker)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
         if let searchQuery = mediaLibraryDataSource.searchQuery {
-            noResultsView.updateForNoSearchResult(searchQuery: searchQuery)
+            noResultsView.updateForNoSearchResult(with: searchQuery)
         }
     }
 
