@@ -26,6 +26,7 @@ public final class WordPressComOAuthClient: NSObject {
     @objc public static let WordPressComOAuthBaseUrl = "https://public-api.wordpress.com/oauth2"
     @objc public static let WordPressComSocialLoginUrl = "https://wordpress.com/wp-login.php?action=social-login-endpoint&version=1.0"
     @objc public static let WordPressComSocialLogin2FAUrl = "https://wordpress.com/wp-login.php?action=two-step-authentication-endpoint&version=1.0"
+    @objc public static let WordPressComSocialLoginNewSMS2FAUrl = "https://wordpress.com/wp-login.php?action=send-sms-code-endpoint"
     @objc public static let WordPressComOAuthRedirectUrl = "https://wordpress.com/"
     @objc public static let WordPressComSocialLoginEndpointVersion = 1.0
 
@@ -42,6 +43,10 @@ public final class WordPressComOAuthClient: NSObject {
 
     fileprivate let social2FASessionManager: AFHTTPSessionManager = {
         return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComSocialLogin2FAUrl)
+    }()
+
+    fileprivate let socialNewSMS2FASessionmanager: AFHTTPSessionManager = {
+        return WordPressComOAuthClient.sessionManager(url: WordPressComOAuthClient.WordPressComSocialLoginNewSMS2FAUrl)
     }()
 
     fileprivate class func sessionManager(url: String) -> AFHTTPSessionManager {
@@ -142,6 +147,50 @@ public final class WordPressComOAuthClient: NSObject {
         )
     }
 
+    /// Request a new SMS code to be sent during social login
+    ///
+    /// - Parameters:
+    ///     - userID: The wpcom user id.
+    ///     - nonce: The nonce from a social login attempt.
+    ///     - success: block to be called if authentication was successful.
+    ///     - failure: block to be called if authentication failed. The error object is passed as a parameter.
+    ///
+    @objc public func requestSocial2FACodeWithUserID(_ userID: Int,
+                                                     nonce: String,
+                                                     success: @escaping (_ newNonce: String) -> Void,
+                                                     failure: @escaping (_ error: NSError, _ newNonce: String?) -> Void) {
+        let parameters = [
+            "user_id": userID,
+            "two_step_nonce": nonce,
+            "client_id": clientID,
+            "client_secret": secret,
+            "wpcom_supports_2fa": true,
+            "wpcom_resend_otp": true
+        ] as [String : Any]
+
+        socialNewSMS2FASessionmanager.post("", parameters: parameters, progress: nil, success: { (task, responseObject) in
+            let defaultError = NSError(domain: WordPressComOAuthClient.WordPressComOAuthErrorDomain,
+                                       code: WordPressComOAuthError.unknown.rawValue,
+                                       userInfo: nil)
+
+            guard let responseDictionary = responseObject as? [String: AnyObject],
+                let responseData = responseDictionary["data"] as? [String: AnyObject] else {
+                    failure(defaultError, nil)
+                    return
+            }
+
+            let nonceInfo = self.extractNonceInfo(data: responseData)
+
+            success(nonceInfo.nonceSMS)
+        }) { (task, error) in
+            if let newNonce = (error as NSError).userInfo[WordPressComOAuthClient.WordPressComOAuthErrorNewNonceKey] as? String {
+                failure(error as NSError, newNonce)
+            } else {
+                failure(error as NSError, nil)
+            }
+        }
+    }
+
     /// Authenticate on WordPress.com with a social service's ID token.
     /// Only google is supported at this time.
     ///
@@ -231,6 +280,11 @@ public final class WordPressComOAuthClient: NSObject {
             nonceInfo.nonceAuthenticator = nonceAuthenticator
         }
 
+        // atm, the only use of the more vague "two_step_nonce" key is when requesting a new SMS code
+        if let nonce = data["two_step_nonce"] as? String {
+            nonceInfo.nonceSMS = nonce
+        }
+
         if let nonce = data["two_step_nonce_sms"] as? String {
             nonceInfo.nonceSMS = nonce
         }
@@ -299,7 +353,6 @@ public final class WordPressComOAuthClient: NSObject {
         }
         )
     }
-
 
     fileprivate func cleanedUpResponseForLogging(_ response: AnyObject) -> AnyObject {
         guard var responseDictionary = response as? [String: AnyObject],
