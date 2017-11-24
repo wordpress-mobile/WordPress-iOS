@@ -17,6 +17,9 @@ static NSString * const RemoteBlogIconKey                                   = @"
 static NSString * const RemoteBlogSettingsKey                               = @"settings";
 static NSString * const RemoteBlogDefaultCategoryKey                        = @"default_category";
 static NSString * const RemoteBlogDefaultPostFormatKey                      = @"default_post_format";
+
+static NSString * const RemoteBlogPortfolioEnabledKey                       = @"jetpack_portfolio";
+
 static NSString * const RemoteBlogCommentsAllowedKey                        = @"default_comment_status";
 static NSString * const RemoteBlogCommentsBlacklistKeys                     = @"blacklist_keys";
 static NSString * const RemoteBlogCommentsCloseAutomaticallyKey             = @"close_comments_for_old_posts";
@@ -335,6 +338,8 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     } else {
         settings.defaultPostFormat = [rawSettings stringForKey:RemoteBlogDefaultPostFormatKey];
     }
+
+    settings.portfolioEnabled = [rawSettings numberForKey:RemoteBlogPortfolioEnabledKey];
     
     // Discussion
     settings.commentsAllowed = [rawSettings numberForKey:RemoteBlogCommentsAllowedKey];
@@ -385,6 +390,8 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
 
     [parameters setValueIfNotNil:settings.defaultCategoryID forKey:RemoteBlogDefaultCategoryKey];
     [parameters setValueIfNotNil:settings.defaultPostFormat forKey:RemoteBlogDefaultPostFormatKey];
+
+    [parameters setValueIfNotNil:settings.portfolioEnabled forKey:RemoteBlogPortfolioEnabledKey];
     
     [parameters setValueIfNotNil:settings.commentsAllowed forKey:RemoteBlogCommentsAllowedKey];
     [parameters setValueIfNotNil:settings.commentsBlacklistKeys forKey:RemoteBlogCommentsBlacklistKeys];

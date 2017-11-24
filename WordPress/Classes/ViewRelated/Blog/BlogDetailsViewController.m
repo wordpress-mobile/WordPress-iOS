@@ -447,12 +447,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         row.detail = [NSString stringWithFormat:@"%d", numberOfPendingComments];
     }
     [rows addObject:row];
-    
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Portfolio", @"Noun. Title. Links to the blog's Portfolio screen.")
-                                                    image:[Gridicon iconOfType:GridiconTypeFolder]
-                                                 callback:^{
-                                                     [weakSelf showPortfolio];
-                                                 }]];
+
+    if ([self.blog.settings portfolioEnabled]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Portfolio", @"Noun. Title. Links to the blog's Portfolio screen.")
+                                                        image:[Gridicon iconOfType:GridiconTypeFolder]
+                                                     callback:^{
+                                                         [weakSelf showPortfolio];
+                                                     }]];
+    }
 
     NSString *title = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
