@@ -454,7 +454,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// The view to show when media picker has no assets to show.
     ///
-    fileprivate let noResultsView = WPNoResultsView.makeViewForMediaPicker()
+    fileprivate let noResultsView = MediaNoResultsView.makeView()
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
@@ -877,22 +877,27 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
-        if mediaPicker.dataSource?.numberOfAssets() == .some(0) {
-            mediaPicker.hideSearchBar()
-        } else {
+        let isSearching = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+        let hasAssets = mediaLibraryDataSource.totalAssetCount > 0
+
+        if isSearching || hasAssets {
             mediaPicker.showSearchBar()
+        } else {
+            mediaPicker.hideSearchBar()
         }
     }
 
     fileprivate func registerChangeObserver(forPicker picker: WPMediaPickerViewController) {
         assert(mediaLibraryChangeObserverKey == nil)
         mediaLibraryChangeObserverKey = mediaLibraryDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
-            guard let strongSelf = self else { return }
-            strongSelf.updateSearchBar(mediaPicker: picker)
 
-            let numberOfAssets = strongSelf.mediaLibraryDataSource.numberOfAssets()
-            if numberOfAssets == 0 {
-                strongSelf.noResultsView.updateForNoMediaAssets(userCanUploadMedia: false)
+            self?.updateSearchBar(mediaPicker: picker)
+
+            let isNotSearching = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 == 0
+            let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
+
+            if isNotSearching && hasNoAssets {
+                self?.noResultsView.updateForNoAssets(userCanUploadMedia: false)
             }
         })
     }
@@ -3342,19 +3347,22 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
-        if assetCount == 0 {
-            noResultsView.updateForNoSearchResult(searchQuery: mediaLibraryDataSource.searchQuery)
+        if let searchQuery = mediaLibraryDataSource.searchQuery {
+            noResultsView.updateForNoSearchResult(with: searchQuery)
         }
     }
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        if let searchBar = picker.searchBar {
+            WPStyleGuide.configureSearchBar(searchBar)
+        }
         updateSearchBar(mediaPicker: picker)
-        noResultsView.updateForMediaFetching()
+        noResultsView.updateForFetching()
     }
 
     func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
         updateSearchBar(mediaPicker: picker)
-        noResultsView.updateForNoMediaAssets(userCanUploadMedia: false)
+        noResultsView.updateForNoAssets(userCanUploadMedia: false)
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {

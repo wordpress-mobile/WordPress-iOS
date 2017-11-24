@@ -1,15 +1,16 @@
 
 import Foundation
 
-extension WPNoResultsView {
+class MediaNoResultsView: WPNoResultsView {
 
-    class func makeViewForMediaPicker() -> WPNoResultsView {
-        let noResultView = WPNoResultsView()
-        noResultView.updateForNoMediaAssets(userCanUploadMedia: false)
+    @objc(view)
+    class func makeView() -> MediaNoResultsView {
+        let noResultView = MediaNoResultsView()
+        noResultView.updateForNoAssets(userCanUploadMedia: false)
         return noResultView
     }
 
-    func updateForNoSearchResult(searchQuery: String) {
+    @objc func updateForNoSearchResult(with searchQuery: String) {
         accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
         let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
         titleText = String.localizedStringWithFormat(text, searchQuery)
@@ -18,7 +19,8 @@ extension WPNoResultsView {
         sizeToFit()
     }
 
-    func updateForNoMediaAssets(userCanUploadMedia: Bool) {
+    @objc(updateForNoMediaAssetsShowingUploadMediaButton:)
+    func updateForNoAssets(userCanUploadMedia: Bool) {
         accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
         titleText = NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso.")
 
@@ -29,7 +31,7 @@ extension WPNoResultsView {
         sizeToFit()
     }
 
-    func updateForMediaFetching() {
+    @objc func updateForFetching() {
         titleText = NSLocalizedString("Fetching media...", comment: "Title displayed whilst fetching media from the user's media library")
         messageText = nil
         buttonTitle = nil
