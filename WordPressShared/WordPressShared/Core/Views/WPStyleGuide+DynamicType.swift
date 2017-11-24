@@ -45,7 +45,7 @@ extension WPStyleGuide {
     ///       UIFontWeightRegular, UIFontWeightMedium, UIFontWeightSemibold, UIFontWeightBold,
     ///       UIFontWeightHeavy, UIFontWeightBlack).
     ///
-    @objc public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle, fontWeight weight: CGFloat) {
+    @objc public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle, fontWeight weight: UIFont.Weight) {
         label.font = fontForTextStyle(style, fontWeight: weight)
         label.adjustsFontForContentSizeCategory = true
     }
@@ -97,7 +97,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: The created font.
     ///
-    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, fontWeight weight: CGFloat) -> UIFont {
+    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, fontWeight weight: UIFont.Weight) -> UIFont {
         var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
 
 #if swift(>=4.0)
