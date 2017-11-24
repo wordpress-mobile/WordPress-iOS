@@ -11,7 +11,7 @@ import CocoaLumberjack
     /// - Parameters:
     ///     - phrase: The search phrase in question.
     ///
-    func createOrUpdateSuggestionForPhrase(_ phrase: String) {
+    @objc func createOrUpdateSuggestionForPhrase(_ phrase: String) {
         var suggestion = findSuggestionForPhrase(phrase)
         if suggestion == nil {
             suggestion = NSEntityDescription.insertNewObject(forEntityName: ReaderSearchSuggestion.classNameWithoutNamespaces(),
@@ -30,7 +30,7 @@ import CocoaLumberjack
     ///
     /// - Returns: A matching search phrase or nil.
     ///
-    func findSuggestionForPhrase(_ phrase: String) -> ReaderSearchSuggestion? {
+    @objc func findSuggestionForPhrase(_ phrase: String) -> ReaderSearchSuggestion? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         fetchRequest.predicate = NSPredicate(format: "searchPhrase MATCHES[cd] %@", phrase)
 
@@ -52,7 +52,7 @@ import CocoaLumberjack
     ///
     /// - Returns: An array of matching `ReaderSearchSuggestion`s.
     ///
-    func fetchSuggestionsLikePhrase(_ phrase: String) -> [ReaderSearchSuggestion] {
+    @objc func fetchSuggestionsLikePhrase(_ phrase: String) -> [ReaderSearchSuggestion] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         fetchRequest.predicate = NSPredicate(format: "searchPhrase BEGINSWITH[cd] %@", phrase)
 
@@ -75,7 +75,7 @@ import CocoaLumberjack
     /// - Parameters:
     ///     - suggestion: The `ReaderSearchSuggestion` to delete.
     ///
-    func deleteSuggestion(_ suggestion: ReaderSearchSuggestion) {
+    @objc func deleteSuggestion(_ suggestion: ReaderSearchSuggestion) {
         managedObjectContext.delete(suggestion)
         ContextManager.sharedInstance().saveContextAndWait(managedObjectContext)
     }
@@ -83,7 +83,7 @@ import CocoaLumberjack
 
     /// Deletes all saved search suggestions.
     ///
-    func deleteAllSuggestions() {
+    @objc func deleteAllSuggestions() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         var suggestions = [ReaderSearchSuggestion]()
         do {

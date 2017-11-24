@@ -83,8 +83,8 @@ public protocol ThemePresenter: class {
 
     // MARK: - Constants
 
-    static let reuseIdentifierForThemesHeader = "ThemeBrowserSectionHeaderViewThemes"
-    static let reuseIdentifierForCustomThemesHeader = "ThemeBrowserSectionHeaderViewCustomThemes"
+    @objc static let reuseIdentifierForThemesHeader = "ThemeBrowserSectionHeaderViewThemes"
+    @objc static let reuseIdentifierForCustomThemesHeader = "ThemeBrowserSectionHeaderViewCustomThemes"
 
     // MARK: - Properties: must be set by parent
 
@@ -92,7 +92,7 @@ public protocol ThemePresenter: class {
      *  @brief      The blog this VC will work with.
      *  @details    Must be set by the creator of this VC.
      */
-    open var blog: Blog!
+    @objc open var blog: Blog!
 
     // MARK: - Properties
 
@@ -180,7 +180,7 @@ public protocol ThemePresenter: class {
 
     fileprivate var suspendedSearch = ""
 
-    func resumingSearch() -> Bool {
+    @objc func resumingSearch() -> Bool {
         return !suspendedSearch.trim().isEmpty
     }
 
@@ -228,7 +228,7 @@ public protocol ThemePresenter: class {
     /**
      *  @brief      Load theme screenshots at maximum displayed width
      */
-    open var screenshotWidth: Int = {
+    @objc open var screenshotWidth: Int = {
         let windowSize = UIApplication.shared.keyWindow!.bounds.size
         let vWidth = Styles.imageWidthForFrameWidth(windowSize.width)
         let hWidth = Styles.imageWidthForFrameWidth(windowSize.height)
@@ -256,7 +256,7 @@ public protocol ThemePresenter: class {
      *
      *  @returns    ThemeBrowserViewController instance
      */
-    open class func browserWithBlog(_ blog: Blog) -> ThemeBrowserViewController {
+    @objc open class func browserWithBlog(_ blog: Blog) -> ThemeBrowserViewController {
         let storyboard = UIStoryboard(name: "ThemeBrowser", bundle: nil)
         let viewController = storyboard.instantiateInitialViewController() as! ThemeBrowserViewController
         viewController.blog = blog
@@ -367,7 +367,7 @@ public protocol ThemePresenter: class {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
-    open func keyboardDidShow(_ notification: Foundation.Notification) {
+    @objc open func keyboardDidShow(_ notification: Foundation.Notification) {
         let keyboardFrame = localKeyboardFrameFromNotification(notification)
         let keyboardHeight = collectionView.frame.maxY - keyboardFrame.origin.y
 
@@ -376,7 +376,7 @@ public protocol ThemePresenter: class {
         collectionView.scrollIndicatorInsets.bottom = keyboardHeight
     }
 
-    open func keyboardWillHide(_ notification: Foundation.Notification) {
+    @objc open func keyboardWillHide(_ notification: Foundation.Notification) {
         let tabBarHeight = tabBarController?.tabBar.bounds.height ?? 0
 
         collectionView.contentInset.top = topLayoutGuide.length
@@ -474,7 +474,7 @@ public protocol ThemePresenter: class {
             })
     }
 
-    open func currentTheme() -> Theme? {
+    @objc open func currentTheme() -> Theme? {
         guard let themeId = blog.currentThemeId, !themeId.isEmpty else {
             return nil
         }
@@ -791,7 +791,7 @@ public protocol ThemePresenter: class {
 
     // MARK: - ThemePresenter
 
-    open func activateTheme(_ theme: Theme?) {
+    @objc open func activateTheme(_ theme: Theme?) {
         guard let theme = theme, !theme.isCurrentTheme() else {
             return
         }
@@ -832,7 +832,7 @@ public protocol ThemePresenter: class {
         })
     }
 
-    open func installThemeAndPresentCustomizer(_ theme: Theme) {
+    @objc open func installThemeAndPresentCustomizer(_ theme: Theme) {
         _ = themeService.installTheme(theme,
             for: blog,
             success: { [weak self] in
@@ -840,12 +840,12 @@ public protocol ThemePresenter: class {
             }, failure: nil)
     }
 
-    open func presentCustomizeForTheme(_ theme: Theme?) {
+    @objc open func presentCustomizeForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
     }
 
-    open func presentPreviewForTheme(_ theme: Theme?) {
+    @objc open func presentPreviewForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesPreviewedSite, with: self.blog)
         // In order to Try & Customize a theme we first need to install it (Jetpack sites)
         if let theme = theme, self.blog.supports(.customThemes) && !theme.custom {
@@ -855,22 +855,22 @@ public protocol ThemePresenter: class {
         }
     }
 
-    open func presentDetailsForTheme(_ theme: Theme?) {
+    @objc open func presentDetailsForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesDetailsAccessed, with: self.blog)
         presentUrlForTheme(theme, url: theme?.detailsUrl())
     }
 
-    open func presentSupportForTheme(_ theme: Theme?) {
+    @objc open func presentSupportForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesSupportAccessed, with: self.blog)
         presentUrlForTheme(theme, url: theme?.supportUrl())
     }
 
-    open func presentViewForTheme(_ theme: Theme?) {
+    @objc open func presentViewForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesDemoAccessed, with: self.blog)
         presentUrlForTheme(theme, url: theme?.viewUrl())
     }
 
-    open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true) {
+    @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true) {
         guard let theme = theme, let url = url.flatMap(URL.init(string:)) else {
             return
         }
@@ -899,7 +899,7 @@ public protocol ThemePresenter: class {
         }
     }
 
-    open func activatePresentingTheme() {
+    @objc open func activatePresentingTheme() {
         suspendedSearch = ""
         _ = navigationController?.popViewController(animated: true)
         activateTheme(presentingTheme)

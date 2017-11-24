@@ -255,7 +255,7 @@ class AppSettingsViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func imageSizeChanged() -> (Int) -> Void {
+    @objc func imageSizeChanged() -> (Int) -> Void {
         return { value in
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
@@ -302,7 +302,7 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func mediaRemoveLocationChanged() -> (Bool) -> Void {
+    @objc func mediaRemoveLocationChanged() -> (Bool) -> Void {
         return { value in
             MediaSettings().removeLocationSetting = value
             WPAnalytics.track(.appSettingsMediaRemoveLocationChanged, withProperties: ["enabled": value as AnyObject])
@@ -316,7 +316,7 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func usageTrackingChanged() -> (Bool) -> Void {
+    @objc func usageTrackingChanged() -> (Bool) -> Void {
         return { enabled in
             let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
             appAnalytics?.setTrackingUsage(enabled)
