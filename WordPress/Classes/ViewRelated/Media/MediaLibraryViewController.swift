@@ -16,7 +16,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     fileprivate var isLoading: Bool = false
-    fileprivate let noResultsView = WPNoResultsView.makeViewForMediaPicker()
+    fileprivate let noResultsView = MediaNoResultsView.makeView()
 
     fileprivate var selectedAsset: Media? = nil
 
@@ -133,7 +133,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         unregisterForHUDNotifications()
 
-        if self.searchBar?.isFirstResponder == .some(true) {
+        if searchBar?.isFirstResponder == true {
             searchBar?.resignFirstResponder()
         }
     }
@@ -208,11 +208,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         guard assetCount == 0 else { return }
 
         if isLoading {
-            noResultsView.updateForMediaFetching()
+            noResultsView.updateForFetching()
         } else if hasSearchQuery {
-            noResultsView.updateForNoSearchResult(searchQuery: pickerDataSource.searchQuery)
+            noResultsView.updateForNoSearchResult(with: pickerDataSource.searchQuery)
         } else {
-            noResultsView.updateForNoMediaAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            noResultsView.updateForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
         }
     }
 
@@ -334,12 +334,12 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         options.allowMultipleSelection = isEditing
         self.options = options
 
-        self.clearSelectedAssets(true)
+        clearSelectedAssets(true)
     }
 
     @objc private func trashTapped() {
         let message: String
-        if self.selectedAssets.count == 1 {
+        if selectedAssets.count == 1 {
             message = NSLocalizedString("Are you sure you want to permanently delete this item?", comment: "Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso.")
         } else {
             message = NSLocalizedString("Are you sure you want to permanently delete these items?", comment: "Message prompting the user to confirm that they want to permanently delete a group of media items.")
@@ -357,8 +357,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func deleteSelectedItems() {
-        guard self.selectedAssets.count > 0 else { return }
-        guard let assets = self.selectedAssets as? [Media] else { return }
+        guard selectedAssets.count > 0 else { return }
+        guard let assets = selectedAssets as? [Media] else { return }
 
         let deletedItemsCount = assets.count
 
@@ -680,7 +680,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             // Check that our selected items haven't been deleted – we're notified
             // of changes to the data source before the collection view has
             // updated its selected assets.
-            guard let assets = (self.selectedAssets as? [Media]) else { return }
+            guard let assets = (selectedAssets as? [Media]) else { return }
             let existingAssets = assets.filter({ !$0.isDeleted })
 
             navigationItem.rightBarButtonItem?.isEnabled = (existingAssets.count > 0)
@@ -729,7 +729,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         // If we've finished all uploads, restart the data source
         if !mediaProgressCoordinator.isRunning && pickerDataSource.isPaused {
             pickerDataSource.isPaused = false
-            self.collectionView?.reloadData()
+            collectionView?.reloadData()
 
             updateViewState(for: pickerDataSource.numberOfAssets())
         }
