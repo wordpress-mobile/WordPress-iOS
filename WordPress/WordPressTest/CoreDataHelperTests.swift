@@ -24,7 +24,7 @@ class CoreDataHelperTests: XCTestCase {
     ///
     func testNewFetchRequestReturnsNewRequestWithGenericEntityName() {
         let request = DummyEntity.safeFetchRequest()
-        XCTAssert(request.entityName! == DummyEntity.entityName)
+        XCTAssert(request.entityName! == DummyEntity.entityName())
     }
 
     /// Verifies that allObjects returns all of the entities of the specialized kind.
@@ -217,7 +217,7 @@ class DummyStack {
 
         // Entity
         let entity = NSEntityDescription()
-        entity.name = DummyEntity.entityName
+        entity.name = DummyEntity.entityName()
         entity.managedObjectClassName = String(reflecting: DummyEntity.self)
         entity.properties = [keyAttribute, valueAttribute]
 

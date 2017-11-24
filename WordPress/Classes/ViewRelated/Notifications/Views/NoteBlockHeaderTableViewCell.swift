@@ -3,7 +3,7 @@ import WordPressShared.WPStyleGuide
 
 class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     // MARK: - Public Properties
-    var headerTitle: String? {
+    @objc var headerTitle: String? {
         set {
             headerTitleLabel.text  = newValue
         }
@@ -12,7 +12,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         }
     }
 
-    var attributedHeaderTitle: NSAttributedString? {
+    @objc var attributedHeaderTitle: NSAttributedString? {
         set {
             headerTitleLabel.attributedText  = newValue
         }
@@ -21,7 +21,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         }
     }
 
-    var headerDetails: String? {
+    @objc var headerDetails: String? {
         set {
             headerDetailsLabel.text = newValue
         }
@@ -32,7 +32,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(_ url: URL?) {
+    @objc func downloadGravatarWithURL(_ url: URL?) {
         if url == gravatarURL {
             return
         }

@@ -4,8 +4,8 @@ import WordPressShared
 import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
-    static let restorationIdentifier = "WPMeRestorationID"
-    var handler: ImmuTableViewHandler!
+    @objc static let restorationIdentifier = "WPMeRestorationID"
+    @objc var handler: ImmuTableViewHandler!
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().meViewController
@@ -326,7 +326,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     /// Selects the App Settings row and pushes the App Settings view controller
     ///
-    public func navigateToAppSettings() {
+    @objc public func navigateToAppSettings() {
         let matchRow: ((ImmuTableRow) -> Bool) = { [weak self] row in
             if let row = row as? NavigationItemRow {
                 return row.title == self?.appSettingsRow.title
@@ -349,7 +349,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Notification observers
 
-    func refreshModelWithNotification(_ notification: Foundation.Notification) {
+    @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
         reloadViewModel()
     }
 
@@ -392,7 +392,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         guard let account = defaultAccount() else { return }
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service.updateUserDetails(for: account, success: { _ in }, failure: { _ in })
+        service.updateUserDetails(for: account, success: { () in }, failure: { _ in })
     }
 
     fileprivate func logOut() {

@@ -6,7 +6,7 @@ open class ShareExtensionService: NSObject {
     ///
     /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
-    class func configureShareExtensionToken(_ oauth2Token: String) {
+    @objc class func configureShareExtensionToken(_ oauth2Token: String) {
         do {
             try SFHFKeychainUtils.storeUsername(WPShareExtensionKeychainTokenKey,
                 andPassword: oauth2Token,
@@ -22,7 +22,7 @@ open class ShareExtensionService: NSObject {
     ///
     /// - Parameter oauth2Token: WordPress.com OAuth Token
     ///
-    class func configureShareExtensionUsername(_ username: String) {
+    @objc class func configureShareExtensionUsername(_ username: String) {
         do {
             try SFHFKeychainUtils.storeUsername(WPShareExtensionKeychainUsernameKey,
                 andPassword: username,
@@ -41,7 +41,7 @@ open class ShareExtensionService: NSObject {
     ///     - defaultSiteID: The ID of the Primary Site.
     ///     - defaultSiteName: The Primary Site's Name
     ///
-    class func configureShareExtensionDefaultSiteID(_ defaultSiteID: Int, defaultSiteName: String) {
+    @objc class func configureShareExtensionDefaultSiteID(_ defaultSiteID: Int, defaultSiteName: String) {
         guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return
         }
@@ -57,7 +57,7 @@ open class ShareExtensionService: NSObject {
     ///     - lastUsedSiteID: The ID of the Last Used Site.
     ///     - lastUsedSiteName: The Last Used Site's Name
     ///
-    class func configureShareExtensionLastUsedSiteID(_ lastUsedSiteID: Int, lastUsedSiteName: String) {
+    @objc class func configureShareExtensionLastUsedSiteID(_ lastUsedSiteID: Int, lastUsedSiteName: String) {
         guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return
         }
@@ -72,7 +72,7 @@ open class ShareExtensionService: NSObject {
     ///
     /// - Parameter maximumMediaSize: The maximum size a media attachment might occupy.
     ///
-    class func configureShareExtensionMaximumMediaDimension(_ maximumMediaDimension: Int) {
+    @objc class func configureShareExtensionMaximumMediaDimension(_ maximumMediaDimension: Int) {
         guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
             return
         }
@@ -83,7 +83,7 @@ open class ShareExtensionService: NSObject {
 
     /// Nukes all of the Share Extension Configuration
     ///
-    class func removeShareExtensionConfiguration() {
+    @objc class func removeShareExtensionConfiguration() {
         do {
             try SFHFKeychainUtils.deleteItem(forUsername: WPShareExtensionKeychainTokenKey,
                 andServiceName: WPShareExtensionKeychainServiceName,
@@ -112,7 +112,7 @@ open class ShareExtensionService: NSObject {
 
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
     ///
-    class func retrieveShareExtensionToken() -> String? {
+    @objc class func retrieveShareExtensionToken() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
             andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else {
             return nil
@@ -123,7 +123,7 @@ open class ShareExtensionService: NSObject {
 
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
-    class func retrieveShareExtensionUsername() -> String? {
+    @objc class func retrieveShareExtensionUsername() -> String? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
             andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else {
             return nil

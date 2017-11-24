@@ -4,11 +4,11 @@ class ThemeBrowserSearchHeaderView: UICollectionReusableView {
 
     // MARK: - Constants
 
-    static let reuseIdentifier = "ThemeBrowserSearchHeaderView"
+    @objc static let reuseIdentifier = "ThemeBrowserSearchHeaderView"
 
     fileprivate var searchWrapperView: UIView!
 
-    var searchBar: UISearchBar? = nil {
+    @objc var searchBar: UISearchBar? = nil {
         didSet {
             if let searchBar = searchBar, searchBar != oldValue {
                 searchWrapperView.addSubview(searchBar)
