@@ -28,7 +28,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init?(blog: Blog) {
+    @objc convenience init?(blog: Blog) {
         guard let site = JetpackSiteRef(blog: blog) else {
             return nil
         }

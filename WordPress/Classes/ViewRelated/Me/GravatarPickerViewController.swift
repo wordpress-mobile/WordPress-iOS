@@ -8,7 +8,7 @@ import Photos
 class GravatarPickerViewController: UIViewController, WPMediaPickerViewControllerDelegate {
     // MARK: - Public Properties
 
-    var onCompletion: ((UIImage?) -> Void)?
+    @objc var onCompletion: ((UIImage?) -> Void)?
 
     // MARK: - Private Properties
 
@@ -65,6 +65,9 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         onCompletion?(nil)
     }
 
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return nil
+    }
 
     // MARK: - Private Methods
 

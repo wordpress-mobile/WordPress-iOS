@@ -58,13 +58,13 @@ extension String {
 
         for match in matches.reversed() {
             let matchRange = range(from: match.range)
-            let matchString = substring(with: matchRange)
+            let matchString = String(self[matchRange])
 
             var submatchStrings = [String]()
 
             for submatchIndex in 0 ..< match.numberOfRanges {
-                let submatchRange = self.range(from: match.rangeAt(submatchIndex))
-                let submatchString = self.substring(with: submatchRange)
+                let submatchRange = self.range(from: match.range(at: submatchIndex))
+                let submatchString = String(self[submatchRange])
 
                 submatchStrings.append(submatchString)
             }

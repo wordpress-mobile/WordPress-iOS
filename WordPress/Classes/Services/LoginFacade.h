@@ -45,6 +45,13 @@
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
 
 /**
+ *  This method requests a one time code needed for 2fa when using social login
+ *
+ *  @param loginFields the fields representing the site we need a 2fa code for.
+ */
+- (void)requestSocial2FACodeWithLoginFields:(LoginFields *)loginFields;
+
+/**
  * Social login via google.
  *
  * @param googleIDToken A Google id_token.

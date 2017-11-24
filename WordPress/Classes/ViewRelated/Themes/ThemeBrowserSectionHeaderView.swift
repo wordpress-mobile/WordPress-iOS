@@ -7,9 +7,9 @@ class ThemeBrowserSectionHeaderView: UICollectionReusableView {
 
     // MARK: - Constants
 
-    static let height = 40
+    @objc static let height = 40
 
-    var themeCount: NSInteger = 0 {
+    @objc var themeCount: NSInteger = 0 {
         didSet {
             if themeCount > 0 {
                 countLabel.text = "  " + String(themeCount) + "  "

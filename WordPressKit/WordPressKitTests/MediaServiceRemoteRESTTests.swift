@@ -42,7 +42,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
             }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertNotNil(remoteMedia)
-        XCTAssertEqual(remoteMedia?.mediaID.intValue, id)
+        XCTAssertEqual(remoteMedia?.mediaID?.intValue, id)
     }
 
     func testCreateMediaPath() {
@@ -220,18 +220,18 @@ class MediaServiceRemoteRESTTests: XCTestCase {
                                                       "width": width]
 
         let remoteMedia = mediaServiceRemote.remoteMedia(fromJSONDictionary: jsonDictionary)
-        XCTAssertEqual(remoteMedia.mediaID.intValue, id)
-        XCTAssertEqual(remoteMedia.url.absoluteString, url)
-        XCTAssertEqual(remoteMedia.guid.absoluteString, guid)
+        XCTAssertEqual(remoteMedia.mediaID?.intValue, id)
+        XCTAssertEqual(remoteMedia.url?.absoluteString, url)
+        XCTAssertEqual(remoteMedia.guid?.absoluteString, guid)
         XCTAssertEqual(remoteMedia.date, Date.dateWithISO8601String(date)!)
-        XCTAssertEqual(remoteMedia.postID.intValue, postID)
+        XCTAssertEqual(remoteMedia.postID?.intValue, postID)
         XCTAssertEqual(remoteMedia.file, file)
         XCTAssertEqual(remoteMedia.mimeType, mimeType)
         XCTAssertEqual(remoteMedia.title, title)
         XCTAssertEqual(remoteMedia.caption, caption)
         XCTAssertEqual(remoteMedia.descriptionText, description)
         XCTAssertEqual(remoteMedia.alt, alt)
-        XCTAssertEqual(remoteMedia.height.intValue, height)
-        XCTAssertEqual(remoteMedia.width.intValue, width)
+        XCTAssertEqual(remoteMedia.height?.intValue, height)
+        XCTAssertEqual(remoteMedia.width?.intValue, width)
     }
 }

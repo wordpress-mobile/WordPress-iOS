@@ -13,13 +13,13 @@ extension WPStyleGuide {
     /// - Parameters:
     ///     - view: The view to style.
     ///
-    class func configureColorsForSigninView(_ view: UIView) {
+    @objc class func configureColorsForSigninView(_ view: UIView) {
         view.backgroundColor = wordPressBlue()
     }
 
     /// Adds a 1password button to a WPWalkthroughTextField, if available
     ///
-    class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
+    @objc class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
         if !OnePasswordFacade().isOnePasswordEnabled() {
             return
         }
@@ -37,7 +37,7 @@ extension WPStyleGuide {
 
     /// Adds a 1password button to a stack view, if available
     ///
-    class func configureOnePasswordButtonForStackView(_ stack: UIStackView, target: NSObject, selector: Selector) {
+    @objc class func configureOnePasswordButtonForStackView(_ stack: UIStackView, target: NSObject, selector: Selector) {
         if !OnePasswordFacade().isOnePasswordEnabled() {
             return
         }
@@ -45,8 +45,8 @@ extension WPStyleGuide {
         let onePasswordButton = UIButton(type: .custom)
         onePasswordButton.setImage(UIImage(named: "onepassword-wp-button"), for: UIControlState())
         onePasswordButton.sizeToFit()
-        onePasswordButton.setContentHuggingPriority(UILayoutPriorityRequired, for: .horizontal)
-        onePasswordButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+        onePasswordButton.setContentHuggingPriority(.required, for: .horizontal)
+        onePasswordButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         stack.addArrangedSubview(onePasswordButton)
 
@@ -55,14 +55,14 @@ extension WPStyleGuide {
 
     ///
     ///
-    class func colorForErrorView(_ opaque: Bool) -> UIColor {
+    @objc class func colorForErrorView(_ opaque: Bool) -> UIColor {
         let alpha: CGFloat = opaque ? 1.0 : 0.95
         return UIColor(fromRGBAColorWithRed: 17.0, green: 17.0, blue: 17.0, alpha: alpha)
     }
 
     ///
     ///
-    class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
+    @objc class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
         return UIEdgeInsetsMake(7, 20, 7, 20)
     }
 
@@ -71,9 +71,9 @@ extension WPStyleGuide {
     /// - note: iOS won't return UIFontWeightMedium for dynamic system font :(
     /// So instead get the dynamic font size, then ask for the non-dynamic font at that size
     ///
-    class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
+    @objc class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
         let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
-        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: UIFontWeightMedium)
+        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: .medium)
     }
 
     // MARK: - Google Signin Button Methods
@@ -82,7 +82,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: A properly styled UIButton
     ///
-    class func googleLoginButton() -> UIButton {
+    @objc class func googleLoginButton() -> UIButton {
         let baseString =  NSLocalizedString("Or you can {G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
 
         let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
@@ -115,7 +115,7 @@ extension WPStyleGuide {
         // 👇 don't want to crash when a translation lacks "{G}"
         let lastPart = labelParts.indices.contains(1) ? labelParts[1] : ""
 
-        let labelString = NSMutableAttributedString(string: firstPart, attributes: [NSForegroundColorAttributeName: WPStyleGuide.greyDarken30()])
+        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: WPStyleGuide.greyDarken30()])
 
         if let googleIcon = UIImage(named: "google"), lastPart != "" {
             let googleAttachment = NSTextAttachment()
@@ -125,7 +125,7 @@ extension WPStyleGuide {
             labelString.append(iconString)
         }
 
-        labelString.append(NSAttributedString(string: lastPart, attributes: [NSForegroundColorAttributeName: linkColor]))
+        labelString.append(NSAttributedString(string: lastPart, attributes: [.foregroundColor: linkColor]))
 
         return labelString
     }
