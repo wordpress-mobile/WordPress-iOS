@@ -44,10 +44,11 @@ extension WPStyleGuide {
         }
 
         public static func getIconForActivity(_ activity: Activity) -> UIImage? {
-            if let gridicon = stringToGridiconMapping[activity.gridicon] {
-                return gridicon.imageWithTintColor(getColorByActivityStatus(activity))
+            guard let gridiconType = stringToGridiconTypeMapping[activity.gridicon] else {
+                return nil
             }
-            return nil
+            let gridicon = Gridicon.iconOfType(gridiconType)
+            return gridicon.imageWithTintColor(getColorByActivityStatus(activity))
         }
 
         // MARK: - Private Properties
@@ -78,46 +79,46 @@ extension WPStyleGuide {
         }
 
         private static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
-            if activity.isStatusError {
+            switch activity.status {
+            case ActivityStatus.error:
                 return WPStyleGuide.errorRed()
-            }
-            if activity.isStatusSuccess {
+            case ActivityStatus.success:
                 return WPStyleGuide.validGreen()
-            }
-            if activity.isStatusWarning {
+            case ActivityStatus.warning:
                 return WPStyleGuide.warningYellow()
+            default:
+                return WPStyleGuide.greyLighten10()
             }
-            return WPStyleGuide.greyLighten10()
         }
 
         // We will be able to get rid of this disgusting dictionary once we build the
-        // String->Gridicon mapping into the Gridicon module and we get a server side
+        // String->GridiconType mapping into the Gridicon module and we get a server side
         // fix to have all the names correctly mapping.
-        private static let stringToGridiconMapping: [String: UIImage] = [
-            "checkmark": Gridicon.iconOfType(.checkmark),
-            "cog": Gridicon.iconOfType(.cog),
-            "comment": Gridicon.iconOfType(.comment),
-            "cross": Gridicon.iconOfType(.cross),
-            "domains": Gridicon.iconOfType(.domains),
-            "history": Gridicon.iconOfType(.history),
-            "image": Gridicon.iconOfType(.image),
-            "layout": Gridicon.iconOfType(.layout),
-            "lock": Gridicon.iconOfType(.lock),
-            "logout": Gridicon.iconOfType(.signOut),
-            "mail": Gridicon.iconOfType(.mail),
-            "menu": Gridicon.iconOfType(.menu),
-            "my-sites": Gridicon.iconOfType(.mySites),
-            "notice": Gridicon.iconOfType(.notice),
-            "notice-outline": Gridicon.iconOfType(.noticeOutline),
-            "pages": Gridicon.iconOfType(.pages),
-            "plugins": Gridicon.iconOfType(.plugins),
-            "posts": Gridicon.iconOfType(.posts),
-            "share": Gridicon.iconOfType(.share),
-            "shipping": Gridicon.iconOfType(.shipping),
-            "spam": Gridicon.iconOfType(.spam),
-            "themes": Gridicon.iconOfType(.themes),
-            "trash": Gridicon.iconOfType(.trash),
-            "user": Gridicon.iconOfType(.user),
+        private static let stringToGridiconTypeMapping: [String: GridiconType] = [
+            "checkmark": GridiconType.checkmark,
+            "cog": GridiconType.cog,
+            "comment": GridiconType.comment,
+            "cross": GridiconType.cross,
+            "domains": GridiconType.domains,
+            "history": GridiconType.history,
+            "image": GridiconType.image,
+            "layout": GridiconType.layout,
+            "lock": GridiconType.lock,
+            "logout": GridiconType.signOut,
+            "mail": GridiconType.mail,
+            "menu": GridiconType.menu,
+            "my-sites": GridiconType.mySites,
+            "notice": GridiconType.notice,
+            "notice-outline": GridiconType.noticeOutline,
+            "pages": GridiconType.pages,
+            "plugins": GridiconType.plugins,
+            "posts": GridiconType.posts,
+            "share": GridiconType.share,
+            "shipping": GridiconType.shipping,
+            "spam": GridiconType.spam,
+            "themes": GridiconType.themes,
+            "trash": GridiconType.trash,
+            "user": GridiconType.user,
         ]
     }
 }

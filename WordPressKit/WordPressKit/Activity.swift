@@ -68,18 +68,6 @@ public class Activity {
         return self.name == ActivityName.fullBackup
     }()
 
-    public lazy var isStatusError: Bool = {
-        return self.status == ActivityStatus.error
-    }()
-
-    public lazy var isStatusSuccess: Bool = {
-        return self.status == ActivityStatus.success
-    }()
-
-    public lazy var isStatusWarning: Bool = {
-        return self.status == ActivityStatus.warning
-    }()
-
 }
 
 private extension Activity {
