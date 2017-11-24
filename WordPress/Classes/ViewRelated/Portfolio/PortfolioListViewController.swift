@@ -5,7 +5,7 @@ import WordPressShared
 class PortfolioListViewController: AbstractPostListViewController, UIViewControllerRestoration {
     
     fileprivate static let portfolioSectionHeaderHeight = CGFloat(24.0)
-    fileprivate static let portfolioCellEstimatedRowHeight = CGFloat(47.0)
+    fileprivate static let portfolioCellEstimatedRowHeight = CGFloat(60.0)
     fileprivate static let portfolioViewControllerRestorationKey = "PortfolioViewControllerRestorationKey"
     fileprivate static let projectCellIdentifier = "ProjectCellIdentifier"
     fileprivate static let projectCellNibName = "ProjectTableViewCell"

@@ -18,25 +18,23 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="MZN-oM-SAV" customClass="ProjectTableViewCell" customModule="WordPress" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="47"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="MZN-oM-SAV" id="IyV-IB-MWG">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="46.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Project Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68g-tY-SKH" userLabel="Title Label">
-                        <rect key="frame" x="16" y="3" width="307" height="40.5"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fec-3M-CSo" userLabel="Featured Image">
+                        <rect key="frame" x="242" y="4" width="78" height="52"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="41" id="0vt-7u-28i"/>
+                            <constraint firstAttribute="height" constant="52" id="RDO-A6-lpI"/>
+                            <constraint firstAttribute="width" constant="78" id="lGO-x5-vER"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="NotoSerif" family="Noto Serif" pointSize="15"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wzV-Fy-dFb" userLabel="Menu Button">
-                        <rect key="frame" x="323" y="0.0" width="54" height="47"/>
+                        <rect key="frame" x="323" y="0.0" width="54" height="60"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="47" id="ifi-fP-qzf"/>
+                            <constraint firstAttribute="height" constant="60" id="ifi-fP-qzf"/>
                             <constraint firstAttribute="width" constant="54" id="uzb-Pc-f9y"/>
                         </constraints>
                         <state key="normal" image="icon-post-actionbar-more">
@@ -46,20 +44,34 @@
                             <action selector="onAction:" destination="MZN-oM-SAV" eventType="touchUpInside" id="kGB-hi-EEu"/>
                         </connections>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Project Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68g-tY-SKH" userLabel="Title Label">
+                        <rect key="frame" x="16" y="10" width="223" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="x3v-RM-w4O"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="NotoSerif" family="Noto Serif" pointSize="15"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="fec-3M-CSo" secondAttribute="bottom" constant="3.5" id="8tv-qU-l9F"/>
                     <constraint firstItem="wzV-Fy-dFb" firstAttribute="top" secondItem="IyV-IB-MWG" secondAttribute="top" id="AON-6B-YeV"/>
-                    <constraint firstItem="wzV-Fy-dFb" firstAttribute="leading" secondItem="68g-tY-SKH" secondAttribute="trailing" id="ffu-kQ-PG8"/>
-                    <constraint firstItem="68g-tY-SKH" firstAttribute="leading" secondItem="IyV-IB-MWG" secondAttribute="leadingMargin" id="iGe-cm-P3A"/>
-                    <constraint firstItem="68g-tY-SKH" firstAttribute="top" secondItem="IyV-IB-MWG" secondAttribute="top" constant="3" id="isC-NK-UTR"/>
-                    <constraint firstAttribute="bottom" secondItem="68g-tY-SKH" secondAttribute="bottom" constant="3" id="mcR-8b-BGx"/>
+                    <constraint firstItem="fec-3M-CSo" firstAttribute="leading" secondItem="68g-tY-SKH" secondAttribute="trailing" constant="3" id="ASM-Tf-4TE"/>
+                    <constraint firstItem="wzV-Fy-dFb" firstAttribute="leading" secondItem="fec-3M-CSo" secondAttribute="trailing" constant="3" id="Gze-Pp-9WL"/>
+                    <constraint firstAttribute="bottom" secondItem="68g-tY-SKH" secondAttribute="bottom" constant="9.5" id="NvE-9V-QhV"/>
+                    <constraint firstItem="68g-tY-SKH" firstAttribute="leading" secondItem="IyV-IB-MWG" secondAttribute="leadingMargin" id="Pkq-YI-IxW"/>
+                    <constraint firstItem="68g-tY-SKH" firstAttribute="top" secondItem="IyV-IB-MWG" secondAttribute="top" constant="10" id="XQ3-7y-D6P"/>
+                    <constraint firstItem="fec-3M-CSo" firstAttribute="top" secondItem="IyV-IB-MWG" secondAttribute="top" constant="4" id="iOq-mb-QIy"/>
                     <constraint firstAttribute="trailingMargin" secondItem="wzV-Fy-dFb" secondAttribute="trailing" priority="999" constant="-18" id="wKd-9x-R7w"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="featuredImageView" destination="fec-3M-CSo" id="940-Nz-SbN"/>
                 <outlet property="menuButton" destination="wzV-Fy-dFb" id="BSw-4S-wh9"/>
                 <outlet property="titleLabel" destination="68g-tY-SKH" id="XGo-Y7-jOg"/>
             </connections>
+            <point key="canvasLocation" x="32.5" y="106"/>
         </tableViewCell>
     </objects>
     <resources>
