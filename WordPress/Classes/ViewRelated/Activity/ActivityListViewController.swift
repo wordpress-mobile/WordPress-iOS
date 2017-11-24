@@ -1,5 +1,6 @@
 import Foundation
 import CocoaLumberjack
+import SVProgressHUD
 import WordPressShared
 
 class ActivityListViewController: UITableViewController, ImmuTablePresenter {
@@ -7,14 +8,16 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     @objc let siteID: Int
     @objc let service: ActivityServiceRemote
 
+    fileprivate var restoreStatusCheckTimer: Timer?
+    fileprivate var restoreStatusCheckAttempt: Int = 0
+
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
     fileprivate var viewModel: ActivityListViewModel = .loading {
         didSet {
-            handler.viewModel = viewModel.tableViewModel()
-            updateNoResults()
+            refreshModel()
         }
     }
 
@@ -48,14 +51,17 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         self.init(siteID: siteID, service: service)
     }
 
+    deinit {
+        restoreStatusCheckTimer?.invalidate()
+    }
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([ActivityListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModel()
-        updateNoResults()
+        refreshModel()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -74,7 +80,12 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         })
     }
 
-    @objc func updateNoResults() {
+    func refreshModel() {
+        handler.viewModel = viewModel.tableViewModel(presenter: self)
+        updateNoResults()
+    }
+
+    func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         } else {
@@ -94,6 +105,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     @objc func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
+
 }
 
 // MARK: - WPNoResultsViewDelegate
@@ -103,4 +115,117 @@ extension ActivityListViewController: WPNoResultsViewDelegate {
         let supportVC = SupportViewController()
         supportVC.showFromTabBar()
     }
+}
+
+// MARK: - ActivityRewindPresenter
+
+extension ActivityListViewController: ActivityRewindPresenter {
+
+    func presentRewindFor(activity: Activity) {
+        guard let rewindID = activity.rewindID,
+            !activity.isDiscarded && activity.rewindable else {
+            return
+        }
+
+        let title = NSLocalizedString("Rewind Site",
+                                      comment: "Title displayed in the Rewind Site alert, should match Calypso")
+        let rewindDate = activity.published.mediumStringWithUTCTime()
+        let message = NSLocalizedString("Are you sure you want to rewind your site back to \(rewindDate)\nThis will remove all content and options created or changed since then.",
+                                        comment: "Mesage displayed in the Rewind Site alert, the palceholder holds a date, should match Calypso.")
+
+        let alertController = UIAlertController(title: title,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
+                                                                        comment: "Confirm Rewind button title"),
+                                                      handler: { action in
+                                                        self.restoreSiteToRewindID(rewindID)
+                                                      })
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+}
+
+// MARK: - Restores handling
+
+extension ActivityListViewController {
+
+    struct RestoreStatusCheck {
+        static let maxRetries = 12
+        static let pollingInterval = 5.0
+    }
+
+    fileprivate func restoreSiteToRewindID(_ rewindID: String) {
+        service.restoreSite(siteID, rewindID: rewindID, success: { (restoreID) in
+            self.showRestoringMessage()
+            self.restoreStatusCheckAttempt = 0
+            self.restoreStatusCheckTimer = Timer.scheduledTimer(timeInterval: RestoreStatusCheck.pollingInterval,
+                                                                target: self as Any,
+                                                                selector: #selector(self.checkStatusForRestoreID(timer:)),
+                                                                userInfo: restoreID,
+                                                                repeats: true)
+        }) { (error) in
+            self.showErrorRestoringMessage()
+        }
+    }
+
+    @objc fileprivate func checkStatusForRestoreID(timer: Timer!) {
+        guard let restoreID = timer.userInfo as? String else {
+            self.restoreStatusCheckTimer?.invalidate()
+            return
+        }
+
+        if self.restoreStatusCheckAttempt == RestoreStatusCheck.maxRetries {
+            self.restoreStatusCheckTimer?.invalidate()
+        } else {
+            self.restoreStatusCheckAttempt = self.restoreStatusCheckAttempt + 1
+        }
+
+        service.restoreStatusForSite(siteID, restoreID: restoreID, success: { (restoreStatus) in
+            switch restoreStatus.status {
+            case .running, .queued:
+                if self.restoreStatusCheckAttempt < RestoreStatusCheck.maxRetries {
+                    self.showRestoringMessage(Float(restoreStatus.percent) / 100.0)
+                } else {
+                    self.showErrorFetchingRestoreStatus()
+                }
+            case .finished:
+                self.restoreCompleted()
+            case .fail:
+                self.restoreFailed()
+            }
+        }) { (error) in
+            DDLogError("Error checking restore status \(error)")
+        }
+    }
+
+    fileprivate func showErrorRestoringMessage() {
+        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Unable to restore your site, please try again later or contact support.",
+                                                                         comment: "Text displayed when a site restore fails."))
+    }
+
+    fileprivate func showRestoringMessage(_ progress: Float = 0) {
+        SVProgressHUD.showProgress(progress, status: NSLocalizedString("Restoring ...",
+                                                                       comment: "Text displayed in HUD while a site is being restored."))
+    }
+
+    fileprivate func showErrorFetchingRestoreStatus() {
+        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Your restore is taking longer than usual, please check again in a few minutes.",
+                                                                         comment: "Text displayed when a site restore takes too long."))
+    }
+
+    fileprivate func restoreCompleted() {
+        self.restoreStatusCheckTimer?.invalidate()
+        SVProgressHUD.showDismissibleSuccess(withStatus: NSLocalizedString("Restore completed",
+                                                                           comment: "Text displayed in HUD when the site restore is completed."))
+        refreshModel()
+    }
+
+    fileprivate func restoreFailed() {
+        self.restoreStatusCheckTimer?.invalidate()
+        self.showErrorRestoringMessage()
+    }
+
+
 }
