@@ -11,7 +11,7 @@ enum ProductRequestError: Error {
 }
 
 class StoreKitTransactionObserver: NSObject, SKPaymentTransactionObserver {
-    static let instance = StoreKitTransactionObserver()
+    @objc static let instance = StoreKitTransactionObserver()
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             StoreKitCoordinator.instance.processTransaction(transaction)
@@ -358,17 +358,17 @@ private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
     typealias Success = ([SKProduct]) -> Void
     typealias Failure = (Error) -> Void
 
-    let onSuccess: Success
-    let onError: Failure
-    var retainedObjects = [NSObject]()
+    @objc let onSuccess: Success
+    @objc let onError: Failure
+    @objc var retainedObjects = [NSObject]()
 
-    init(onSuccess: @escaping Success, onError: @escaping Failure) {
+    @objc init(onSuccess: @escaping Success, onError: @escaping Failure) {
         self.onSuccess = onSuccess
         self.onError = onError
         super.init()
     }
 
-    func retainUntilFinished(_ object: NSObject) {
+    @objc func retainUntilFinished(_ object: NSObject) {
         retainedObjects.append(object)
     }
 

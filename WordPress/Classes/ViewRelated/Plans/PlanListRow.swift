@@ -30,17 +30,17 @@ struct PlanListRow: ImmuTableRow {
     }
 
     struct Formatter {
-        static let titleAttributes: [String: Any] = [
-            NSFontAttributeName: WPStyleGuide.tableviewTextFont(),
-            NSForegroundColorAttributeName: WPStyleGuide.tableViewActionColor()
+        static let titleAttributes: [NSAttributedStringKey: Any] = [
+            .font: WPStyleGuide.tableviewTextFont(),
+            .foregroundColor: WPStyleGuide.tableViewActionColor()
         ]
-        static let priceAttributes: [String: Any] = [
-            NSFontAttributeName: WPFontManager.systemRegularFont(ofSize: 14.0),
-            NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
+        static let priceAttributes: [NSAttributedStringKey: Any] = [
+            .font: WPFontManager.systemRegularFont(ofSize: 14.0),
+            .foregroundColor: WPStyleGuide.darkGrey()
         ]
-        static let pricePeriodAttributes: [String: Any] = [
-            NSFontAttributeName: WPFontManager.systemItalicFont(ofSize: 14.0),
-            NSForegroundColorAttributeName: WPStyleGuide.grey()
+        static let pricePeriodAttributes: [NSAttributedStringKey: Any] = [
+            .font: WPFontManager.systemItalicFont(ofSize: 14.0),
+            .foregroundColor: WPStyleGuide.grey()
         ]
 
         static func attributedTitle(_ title: String, price: String, active: Bool) -> NSAttributedString {
@@ -50,9 +50,9 @@ struct PlanListRow: ImmuTableRow {
             let attributedTitle = NSMutableAttributedString(attributedString: planTitle)
 
             if active {
-                let currentPlanAttributes: [String: Any] = [
-                    NSFontAttributeName: WPFontManager.systemSemiBoldFont(ofSize: 11.0),
-                    NSForegroundColorAttributeName: WPStyleGuide.validGreen()
+                let currentPlanAttributes: [NSAttributedStringKey: Any] = [
+                    .font: WPFontManager.systemSemiBoldFont(ofSize: 11.0),
+                    .foregroundColor: WPStyleGuide.validGreen()
                 ]
                 let currentPlan = NSLocalizedString("Current Plan", comment: "").localizedUppercase
                 let attributedCurrentPlan = NSAttributedString(string: currentPlan, attributes: currentPlanAttributes)
@@ -61,8 +61,8 @@ struct PlanListRow: ImmuTableRow {
 
                 let pricePeriod = String(format: NSLocalizedString("%@ <em>per year</em>", comment: "Plan yearly price"), price)
 
-                let attributes: StyledHTMLAttributes = [ .BodyAttribute: priceAttributes as Dictionary<String, AnyObject>,
-                                                         .EmTagAttribute: pricePeriodAttributes as Dictionary<String, AnyObject> ]
+                let attributes: StyledHTMLAttributes = [ .BodyAttribute: priceAttributes,
+                                                         .EmTagAttribute: pricePeriodAttributes ]
 
                 let attributedPricePeriod = NSAttributedString.attributedStringWithHTML(pricePeriod, attributes: attributes)
                 attributedTitle.append(attributedPricePeriod)

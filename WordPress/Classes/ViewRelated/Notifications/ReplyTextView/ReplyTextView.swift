@@ -14,7 +14,7 @@ import WordPressShared.WPStyleGuide
 //
 @objc open class ReplyTextView: UIView, UITextViewDelegate {
     // MARK: - Initializers
-    public convenience init(width: CGFloat) {
+    @objc public convenience init(width: CGFloat) {
         let frame = CGRect(x: 0, y: 0, width: width, height: 0)
         self.init(frame: frame)
     }
@@ -31,11 +31,11 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Public Properties
-    open weak var delegate: ReplyTextViewDelegate?
+    @objc open weak var delegate: ReplyTextViewDelegate?
 
-    open var onReply: ((String) -> ())?
+    @objc open var onReply: ((String) -> ())?
 
-    open var text: String! {
+    @objc open var text: String! {
         set {
             textView.text = newValue ?? String()
             refreshInterface()
@@ -44,7 +44,7 @@ import WordPressShared.WPStyleGuide
             return textView.text
         }
     }
-    open var placeholder: String! {
+    @objc open var placeholder: String! {
         set {
             placeholderLabel.text = newValue ?? String()
             textView.accessibilityLabel = placeholderLabel.text
@@ -54,7 +54,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    open var replyText: String! {
+    @objc open var replyText: String! {
         set {
             replyButton.setTitle(newValue, for: UIControlState())
         }
@@ -63,7 +63,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    open var autocorrectionType: UITextAutocorrectionType {
+    @objc open var autocorrectionType: UITextAutocorrectionType {
         set {
             textView.autocorrectionType = newValue
         }
@@ -72,7 +72,7 @@ import WordPressShared.WPStyleGuide
         }
     }
 
-    open var keyboardType: UIKeyboardType {
+    @objc open var keyboardType: UIKeyboardType {
         set {
             textView.keyboardType = newValue
         }
@@ -87,7 +87,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Public Methods
-    open func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
+    @objc open func replaceTextAtCaret(_ text: NSString?, withText replacement: String?) {
         guard let replacementText = replacement,
               let textToReplace = text,
               let selectedRange = textView.selectedTextRange,
@@ -174,7 +174,7 @@ import WordPressShared.WPStyleGuide
 
 
     // MARK: - Gestures Recognizers
-    open func backgroundWasTapped() {
+    @objc open func backgroundWasTapped() {
         _ = becomeFirstResponder()
     }
 

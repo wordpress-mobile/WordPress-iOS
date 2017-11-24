@@ -2,20 +2,20 @@ import Foundation
 
 
 extension UIDevice {
-    public class func isPad() -> Bool {
+    @objc public class func isPad() -> Bool {
         return UIDevice.current.userInterfaceIdiom == .pad
     }
 
-    public class func isPhone() -> Bool {
+    @objc public class func isPhone() -> Bool {
         return UIDevice.current.userInterfaceIdiom == .phone
     }
 
-    public class func isOS8() -> Bool {
+    @objc public class func isOS8() -> Bool {
         let systemVersion = UIDevice.current.systemVersion as NSString
         return systemVersion.doubleValue >= 8.0
     }
 
-    public var systemMajorVersion: Int {
+    @objc public var systemMajorVersion: Int {
         let versionString = UIDevice.current.systemVersion as NSString
         return versionString.integerValue
     }

@@ -1,13 +1,13 @@
 import Foundation
 
 class FakePreviewBuilder: NSObject {
-    let title: String?
-    let content: String?
-    let tags: [String]
-    let categories: [String]
-    let message: String?
+    @objc let title: String?
+    @objc let content: String?
+    @objc let tags: [String]
+    @objc let categories: [String]
+    @objc let message: String?
 
-    init(title: String?, content: String?, tags: [String], categories: [String], message: String?) {
+    @objc init(title: String?, content: String?, tags: [String], categories: [String], message: String?) {
         self.title = title
         self.content = content
         self.tags = tags
@@ -16,7 +16,7 @@ class FakePreviewBuilder: NSObject {
         super.init()
     }
 
-    func build() -> String {
+    @objc func build() -> String {
         let template = loadTemplate()
         let messageParagraph = message.map({ "<p>\($0)</p>" }) ?? ""
         return template
@@ -68,7 +68,7 @@ private extension FakePreviewBuilder {
 // MARK: - Processing AbstractPost
 
 extension FakePreviewBuilder {
-    convenience init(apost: AbstractPost, message: String?) {
+    @objc convenience init(apost: AbstractPost, message: String?) {
         let title = apost.postTitle
         let content = apost.content
         let tags: [String]

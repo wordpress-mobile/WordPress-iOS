@@ -5,22 +5,22 @@ import WordPressShared.WPStyleGuide
 //  ReplyBezierView is a helper class, used to render the ReplyTextView bubble
 //
 class ReplyBezierView: UIView {
-    var outerColor = WPStyleGuide.Reply.backgroundColor {
+    @objc var outerColor = WPStyleGuide.Reply.backgroundColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    var bezierColor = WPStyleGuide.Reply.separatorColor {
+    @objc var bezierColor = WPStyleGuide.Reply.separatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    var bezierRadius = CGFloat(5) {
+    @objc var bezierRadius = CGFloat(5) {
         didSet {
             setNeedsDisplay()
         }
     }
-    var insets = UIEdgeInsets(top: 8, left: 1, bottom: 8, right: 1) {
+    @objc var insets = UIEdgeInsets(top: 8, left: 1, bottom: 8, right: 1) {
         didSet {
             setNeedsDisplay()
         }
