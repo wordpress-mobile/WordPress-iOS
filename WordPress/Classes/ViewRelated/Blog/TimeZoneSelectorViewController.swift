@@ -3,9 +3,9 @@ import UIKit
 class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter {
 
     /// users current timezone passed by SiteSettingsVC, if empty means manual offset is to be used
-    var usersCurrentTimeZone: String?
+    @objc var usersCurrentTimeZone: String?
     /// users manual offset passed by SiteSettingsVC
-    var usersManualOffset: NSNumber?
+    @objc var usersManualOffset: NSNumber?
 
     /// timezoneString will be set to a non empty string
     /// if user selects anything other than Manual Offset section

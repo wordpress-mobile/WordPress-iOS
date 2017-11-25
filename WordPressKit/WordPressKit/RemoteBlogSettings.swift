@@ -28,11 +28,11 @@ public class RemoteBlogSettings: NSObject {
 
     /// Stores the Blog's gmt timezone offset
     ///
-    public var gmtOffset: NSNumber?
+    @objc public var gmtOffset: NSNumber?
 
     /// Stores the Blog's time zone string
     ///
-    public var timeZoneString: NSString?
+    @objc public var timeZoneString: NSString?
 
     // MARK: - Writing
 
