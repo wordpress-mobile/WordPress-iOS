@@ -109,7 +109,7 @@ class MediaSettings: NSObject {
     ///
     /// - Note: if the image doesn't need to be resized, it returns `Int.max`
     ///
-    var imageSizeForUpload: Int {
+    @objc var imageSizeForUpload: Int {
         if maxImageSizeSetting >= maxImageDimension {
             return Int.max
         } else {
@@ -125,7 +125,7 @@ class MediaSettings: NSObject {
     /// - Important: don't access this propery directly to check what size to resize an image, use
     ///             `imageSizeForUpload` instead.
     ///
-    var maxImageSizeSetting: Int {
+    @objc var maxImageSizeSetting: Int {
         get {
             if let savedSize = database.object(forKey: maxImageSizeKey) as? Int {
                 return savedSize
@@ -143,7 +143,7 @@ class MediaSettings: NSObject {
         }
     }
 
-    var removeLocationSetting: Bool {
+    @objc var removeLocationSetting: Bool {
         get {
             if let savedRemoveLocation = database.object(forKey: removeLocationKey) as? Bool {
                 return savedRemoveLocation

@@ -2,13 +2,13 @@ import UIKit
 import WordPressShared
 
 class LoginEpilogueViewController: UIViewController {
-    var originalPresentingVC: UIViewController?
-    var dismissBlock: ((_ cancelled: Bool) -> Void)?
+    @objc var originalPresentingVC: UIViewController?
+    @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
     @IBOutlet var buttonPanel: UIView?
     @IBOutlet var shadowView: UIView?
     @IBOutlet var connectButton: UIButton?
     @IBOutlet var continueButton: UIButton?
-    var tableViewController: LoginEpilogueTableView?
+    @objc var tableViewController: LoginEpilogueTableView?
     var epilogueUserInfo: LoginEpilogueUserInfo?
 
     // MARK: - Lifecycle Methods
@@ -63,7 +63,7 @@ class LoginEpilogueViewController: UIViewController {
 
     // MARK: - Configuration
 
-    func configureButtons(numberOfBlogs: Int) {
+    @objc func configureButtons(numberOfBlogs: Int) {
         var connectTitle: String
         if numberOfBlogs == 0 {
             connectTitle = NSLocalizedString("Connect a site", comment: "Button title")
@@ -77,7 +77,7 @@ class LoginEpilogueViewController: UIViewController {
 
     }
 
-    func colorPanelBasedOnTableViewContents() {
+    @objc func colorPanelBasedOnTableViewContents() {
         guard let tableView = tableViewController?.tableView,
             let buttonPanel = buttonPanel else {
                 return

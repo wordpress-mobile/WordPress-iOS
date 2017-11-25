@@ -11,7 +11,7 @@ import MobileCoreServices
 class MediaLibraryViewController: UIViewController {
     fileprivate static let restorationIdentifier = "MediaLibraryViewController"
 
-    let blog: Blog
+    @objc let blog: Blog
 
     fileprivate let pickerViewController: WPMediaPickerViewController
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
@@ -58,7 +58,7 @@ class MediaLibraryViewController: UIViewController {
         return coordinator
     }()
 
-    var searchQuery: String? = nil
+    @objc var searchQuery: String? = nil
 
     private var uploadCoordinatorUUID: UUID? = nil
 
@@ -70,7 +70,7 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         WPMediaCollectionViewCell.appearance().placeholderTintColor = WPStyleGuide.greyLighten30()
         WPMediaCollectionViewCell.appearance().placeholderBackgroundColor = WPStyleGuide.darkGrey()
         WPMediaCollectionViewCell.appearance().loadingBackgroundColor = WPStyleGuide.lightGrey()
@@ -114,7 +114,7 @@ class MediaLibraryViewController: UIViewController {
 
     // MARK: - View Loading
 
-    var uploadObserverUUID: UUID?
+    @objc var uploadObserverUUID: UUID?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -220,11 +220,11 @@ class MediaLibraryViewController: UIViewController {
 
         let height = searchBar.intrinsicContentSize.height
         let heightConstraint = searchBarContainer.heightAnchor.constraint(equalToConstant: height)
-        heightConstraint.priority = UILayoutPriorityDefaultLow
+        heightConstraint.priority = .defaultLow
         heightConstraint.isActive = true
 
         let expandedHeightConstraint = searchBarContainer.heightAnchor.constraint(greaterThanOrEqualToConstant: height)
-        expandedHeightConstraint.priority = UILayoutPriorityRequired
+        expandedHeightConstraint.priority = .required
         expandedHeightConstraint.isActive = true
 
         searchBarContainer.layoutIfNeeded()
@@ -379,7 +379,7 @@ class MediaLibraryViewController: UIViewController {
         noResultsView?.sizeToFit()
     }
 
-    func updateNoResultsForFetching() {
+    @objc func updateNoResultsForFetching() {
         noResultsView?.titleText = NSLocalizedString("Fetching media...", comment: "Title displayed whilst fetching media from the user's media library")
         noResultsView?.messageText = nil
         noResultsView?.buttonTitle = nil
@@ -552,13 +552,11 @@ class MediaLibraryViewController: UIViewController {
         updateProgress(nil)
 
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteMedia(assets,
-                            progress: updateProgress,
-                            success: { [weak self] in
-                                WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
-                                SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-                                self?.isEditing = false
-        }, failure: { error in
+        service.deleteMedia(assets, progress: updateProgress, success: { [weak self] () in
+            WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
+            SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
+            self?.isEditing = false
+        }, failure: { () in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
     }
@@ -778,7 +776,7 @@ extension MediaLibraryViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 
-    func clearSearch() {
+    @objc func clearSearch() {
         searchQuery = nil
         searchBar.text = nil
         pickerDataSource.searchQuery = nil
@@ -877,7 +875,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         updateNavigationItemButtonsForCurrentAssetSelection()
     }
 
-    func updateNavigationItemButtonsForCurrentAssetSelection() {
+    @objc func updateNavigationItemButtonsForCurrentAssetSelection() {
         if isEditing {
             // Check that our selected items haven't been deleted – we're notified
             // of changes to the data source before the collection view has
@@ -901,7 +899,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return MediaItemViewController(media: asset)
     }
 
-    func makeAndUploadMediaWith(_ asset: PHAsset) {
+    @objc func makeAndUploadMediaWith(_ asset: PHAsset) {
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
                             forBlogObjectID: blog.objectID,

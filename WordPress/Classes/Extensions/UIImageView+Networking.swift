@@ -2,18 +2,18 @@ import Foundation
 
 
 extension UIImageView {
-    public func downloadImage(_ url: URL?, placeholderImage: UIImage?) {
+    @objc public func downloadImage(_ url: URL?, placeholderImage: UIImage?) {
         downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil, processImage: nil)
     }
 
-    public func downloadResizedImage(_ url: URL?, placeholderImage: UIImage?, pointSize size: CGSize) {
+    @objc public func downloadResizedImage(_ url: URL?, placeholderImage: UIImage?, pointSize size: CGSize) {
         let processor: (UIImage) -> UIImage = { image in
             return image.resizedImage(with: .scaleAspectFill, bounds: size, interpolationQuality: .high)
         }
         downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil, processImage: processor)
     }
 
-    public func downloadImage(_ url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())?, failure: ((Error?) -> ())? = nil, processImage processor: ((UIImage) -> UIImage)? = nil) {
+    @objc public func downloadImage(_ url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())?, failure: ((Error?) -> ())? = nil, processImage processor: ((UIImage) -> UIImage)? = nil) {
         // Failsafe: Halt if the URL is empty
         guard let unwrappedUrl = url else {
             image = placeholderImage

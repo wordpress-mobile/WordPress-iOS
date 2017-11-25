@@ -65,7 +65,7 @@ struct DomainsService {
     fileprivate func managedDomainWithName(_ domainName: String, forSite siteID: Int) -> ManagedDomain? {
         guard let blog = blogForSiteID(siteID) else { return nil }
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K = %@ AND %K = %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainName)
         request.fetchLimit = 1
         let results = (try? context.fetch(request) as! [ManagedDomain]) ?? []
@@ -75,7 +75,7 @@ struct DomainsService {
     fileprivate func createManagedDomain(_ domain: Domain, forSite siteID: Int) {
         guard let blog = blogForSiteID(siteID) else { return }
 
-        let managedDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName, into: context) as! ManagedDomain
+        let managedDomain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
         managedDomain.updateWith(domain, blog: blog)
         DDLogDebug("Created domain \(managedDomain)")
     }
@@ -83,7 +83,7 @@ struct DomainsService {
     fileprivate func domainsForSite(_ siteID: Int) -> [Domain] {
         guard let blog = blogForSiteID(siteID) else { return [] }
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
 
         let domains: [ManagedDomain]
@@ -100,7 +100,7 @@ struct DomainsService {
     fileprivate func removeDomains(_ domainNames: Set<String>, fromSite siteID: Int) {
         guard let blog = blogForSiteID(siteID) else { return }
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K = %@ AND %K IN %@", ManagedDomain.Relationships.blog, blog, ManagedDomain.Attributes.domainName, domainNames)
         let objects = (try? context.fetch(request) as! [NSManagedObject]) ?? []
         for object in objects {
