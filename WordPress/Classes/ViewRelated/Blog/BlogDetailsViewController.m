@@ -448,7 +448,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     [rows addObject:row];
 
-    if ([self.blog.settings portfolioEnabled]) {
+    if ([Feature enabled:FeatureFlagPortfolio] && [self.blog.settings portfolioEnabled]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Portfolio", @"Noun. Title. Links to the blog's Portfolio screen.")
                                                         image:[Gridicon iconOfType:GridiconTypeFolder]
                                                      callback:^{
