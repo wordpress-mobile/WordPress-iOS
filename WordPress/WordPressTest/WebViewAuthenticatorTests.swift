@@ -44,7 +44,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         XCTAssertEqual(request.url, siteLoginURL)
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/x-www-form-urlencoded")
         XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
-        XCTAssertEqual(request.httpBodyString, "log=\(siteUser)&pwd=\(sitePasswordEncoded)&rememberme=true&redirect_to=\(expectedRedirect)")
+        XCTAssertEqual(request.httpBodyString, "log=\(siteUser)&pwd=\(sitePasswordEncoded)&redirect_to=\(expectedRedirect)")
     }
 
     func testAuthenticatedDotComRequestWithoutCookie() {
@@ -64,7 +64,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         XCTAssertEqual(request.url, dotComLoginURL)
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/x-www-form-urlencoded")
         XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer \(dotComToken)")
-        XCTAssertEqual(request.httpBodyString, "log=\(dotComUser)&rememberme=true&redirect_to=\(expectedRedirect)")
+        XCTAssertEqual(request.httpBodyString, "log=\(dotComUser)&redirect_to=\(expectedRedirect)")
     }
 
     func testUnauthenticatedDotComRequestWithCookie() {
