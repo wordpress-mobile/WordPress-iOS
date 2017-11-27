@@ -5,6 +5,7 @@
 @dynamic tagID;
 @dynamic name;
 @dynamic slug;
+@dynamic tagDescription;
 @dynamic blog;
 
 + (NSString *)entityName
