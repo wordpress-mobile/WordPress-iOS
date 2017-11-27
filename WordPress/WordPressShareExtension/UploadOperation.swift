@@ -28,6 +28,10 @@ public class UploadOperation: NSManagedObject {
     ///
     @NSManaged public var isMedia: Bool
 
+    /// ID which is unique to a group of upload operations
+    ///
+    @NSManaged public var groupID: String
+
     /// NSURL background session ID assigned to this upload op
     ///
     @NSManaged public var backgroundSessionIdentifier: String?
