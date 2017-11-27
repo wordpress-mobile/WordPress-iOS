@@ -7,10 +7,10 @@ import UIKit
 @objc class HelpshiftPresenter: NSObject {
 
     /// set the source of the presenter for tagging in Helpshift
-    var sourceTag: SupportSourceTag?
+    @objc var sourceTag: SupportSourceTag?
 
     /// any additional options to pass along to helpshift
-    var optionsDictionary: [AnyHashable: Any]?
+    @objc var optionsDictionary: [AnyHashable: Any]?
 
     /// Presents a Helpshift window displaying a specific FAQ.
     ///
@@ -18,7 +18,7 @@ import UIKit
     ///   - faqID: The 'publish ID' of the FAQ to display.
     ///   - viewController: The view controller from which to present the Helpshift window.
     ///   - completion: Optional block to be called when the window is presented.
-    func presentHelpshiftWindowForFAQ(_ faqID: String, fromViewController viewController: UIViewController, completion: (() -> Void)?) {
+    @objc func presentHelpshiftWindowForFAQ(_ faqID: String, fromViewController viewController: UIViewController, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(false) {
             HelpshiftSupport.showSingleFAQ(faqID, with: viewController, with: self.helpshiftConfig())
             completion?()
@@ -32,7 +32,7 @@ import UIKit
     ///   - refreshUserDetails: If `true`, refresh user ID, display name, and email emailAddress
     ///     from the WordPress.com REST API (if appropriate) before displaying the window.
     ///   - completion: Optional block to be called when the window is presented.
-    func presentHelpshiftConversationWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
+    @objc func presentHelpshiftConversationWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(refreshUserDetails) {
             HelpshiftSupport.showConversation(viewController, with: self.helpshiftConfig())
             completion?()
@@ -46,7 +46,7 @@ import UIKit
     ///   - refreshUserDetails: If `true`, refresh user ID, display name, and email emailAddress
     ///     from the WordPress.com REST API (if appropriate) before displaying the window.
     ///   - completion: Optional block to be called when the window is presented.
-    func presentHelpshiftFAQWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
+    @objc func presentHelpshiftFAQWindowFromViewController(_ viewController: UIViewController, refreshUserDetails: Bool, completion: (() -> Void)?) {
         prepareToDisplayHelpshiftWindow(refreshUserDetails) {
             HelpshiftSupport.showFAQs(viewController, with: self.helpshiftConfig())
             completion?()

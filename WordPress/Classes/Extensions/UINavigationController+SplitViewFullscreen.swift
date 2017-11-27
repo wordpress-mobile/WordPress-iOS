@@ -12,7 +12,7 @@ fileprivate let fadeAnimationDuration: TimeInterval = 0.1
 // status, and then restore the items color afterwards – thus masking the
 // UIKit glitch.
 extension UINavigationController {
-    func pushFullscreenViewController(_ viewController: UIViewController, animated: Bool) {
+    @objc func pushFullscreenViewController(_ viewController: UIViewController, animated: Bool) {
         guard let splitViewController = splitViewController, splitViewController.preferredDisplayMode != .primaryHidden else {
             pushViewController(viewController, animated: animated)
             return
@@ -58,7 +58,7 @@ extension UIView {
     ///             the snapshot should be taken after recent changes have been 
     ///             incorporated. Pass the value false to capture the screen in 
     ///             its current state, which might not include recent changes.
-    func hideWithBlankingSnapshot(afterScreenUpdates: Bool = false) {
+    @objc func hideWithBlankingSnapshot(afterScreenUpdates: Bool = false) {
         if subviews.first is BlankingView {
             return
         }
@@ -74,7 +74,7 @@ extension UIView {
 
 
     /// Animates away any existing blanking snapshot.
-    func fadeOutAndRemoveBlankingSnapshot() {
+    @objc func fadeOutAndRemoveBlankingSnapshot() {
         guard let blankingView = subviews.last as? BlankingView else {
             return
         }
@@ -89,13 +89,13 @@ extension UIView {
 }
 
 extension UINavigationBar {
-    func fadeOutNavigationItems(animated: Bool = true) {
+    @objc func fadeOutNavigationItems(animated: Bool = true) {
         if let barTintColor = barTintColor {
             fadeNavigationItems(toColor: barTintColor, animated: animated)
         }
     }
 
-    func fadeInNavigationItemsIfNecessary(animated: Bool = true) {
+    @objc func fadeInNavigationItemsIfNecessary(animated: Bool = true) {
         if tintColor != UIColor.white {
             fadeNavigationItems(toColor: UIColor.white, animated: animated)
         }
@@ -112,7 +112,7 @@ extension UINavigationBar {
             layer.add(fadeAnimation, forKey: "fadeNavigationBar")
         }
 
-        titleTextAttributes = [NSForegroundColorAttributeName: color]
+        titleTextAttributes = [.foregroundColor: color]
         tintColor = color
     }
 }
@@ -123,15 +123,15 @@ extension UINavigationBar {
 /// from or to a fullscreen split view layout.
 ///
 class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransitioning {
-    static let transitionDuration: TimeInterval = 0.3
+    @objc static let transitionDuration: TimeInterval = 0.3
 
-    let operation: UINavigationControllerOperation
+    @objc let operation: UINavigationControllerOperation
 
-    var pushing: Bool {
+    @objc var pushing: Bool {
         return operation == .push
     }
 
-    init(operation: UINavigationControllerOperation) {
+    @objc init(operation: UINavigationControllerOperation) {
         self.operation = operation
         super.init()
     }
