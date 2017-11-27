@@ -7,17 +7,17 @@ protocol PostPreviewGeneratorDelegate {
 }
 
 class PostPreviewGenerator: NSObject {
-    let post: AbstractPost
-    weak var delegate: PostPreviewGeneratorDelegate?
+    @objc let post: AbstractPost
+    @objc weak var delegate: PostPreviewGeneratorDelegate?
     fileprivate let authenticator: WebViewAuthenticator?
 
-    init(post: AbstractPost) {
+    @objc init(post: AbstractPost) {
         self.post = post
         authenticator = WebViewAuthenticator(blog: post.blog)
         super.init()
     }
 
-    func generate() {
+    @objc func generate() {
         guard let url = post.permaLink.flatMap(URL.init(string:)),
             !post.hasLocalChanges() else {
                 showFakePreview()
@@ -36,7 +36,7 @@ class PostPreviewGenerator: NSObject {
         attemptPreview(url: url)
     }
 
-    func previewRequestFailed(error: NSError) {
+    @objc func previewRequestFailed(error: NSError) {
         showFakePreview(message:
             NSLocalizedString("There has been an error while trying to reach your site.", comment: "") +
                 " " +
@@ -44,7 +44,7 @@ class PostPreviewGenerator: NSObject {
         )
     }
 
-    func interceptRedirect(request: URLRequest) -> URLRequest? {
+    @objc func interceptRedirect(request: URLRequest) -> URLRequest? {
         return authenticator?.interceptRedirect(request: request)
     }
 }

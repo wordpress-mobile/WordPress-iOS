@@ -5,7 +5,7 @@ extension ReachabilityUtils {
     /// Performs the action when an internet connection is available
     /// If no internet connection is available an error message is displayed
     ///
-    class func onAvailableInternetConnectionDo(_ action: () -> Void) {
+    @objc class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
             let title = NSLocalizedString("No Connection",
                                           comment: "Title of error prompt when no internet connection is available.")

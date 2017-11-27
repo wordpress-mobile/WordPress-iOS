@@ -14,7 +14,7 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
     fileprivate var errorDescription: String
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
-    var delegate: LoginSocialErrorViewControllerDelegate?
+    @objc var delegate: LoginSocialErrorViewControllerDelegate?
 
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
@@ -36,7 +36,7 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
     /// - Parameters:
     ///   - title: The title that will be shown on the error VC
     ///   - description: A brief explination of what failed during social login
-    init(title: String, description: String) {
+    @objc init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
 

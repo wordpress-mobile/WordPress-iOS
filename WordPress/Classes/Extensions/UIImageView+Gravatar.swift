@@ -30,7 +30,7 @@ extension UIImageView {
     ///     - email: the user's email
     ///     - rating: expected image rating
     ///
-    func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings) {
+    @objc func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings) {
         downloadGravatarWithEmail(email, rating: rating, placeholderImage: GravatarDefaults.placeholderImage)
     }
 
@@ -41,7 +41,7 @@ extension UIImageView {
     ///     - rating: expected image rating
     ///     - placeholderImage: Image to be used as Placeholder
     ///
-    func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = GravatarDefaults.rating, placeholderImage: UIImage) {
+    @objc func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = GravatarDefaults.rating, placeholderImage: UIImage) {
         let targetSize = gravatarDefaultSize()
         let targetURL = gravatarUrlForEmail(email, size: targetSize, rating: rating.stringValue())
         let targetRequest = URLRequest(url: targetURL!)
@@ -102,7 +102,7 @@ extension UIImageView {
     /// P.s.:
     /// Hope buddah, and the code reviewer, can forgive me for this hack.
     ///
-    func overrideGravatarImageCache(_ image: UIImage, rating: GravatarRatings, email: String) {
+    @objc func overrideGravatarImageCache(_ image: UIImage, rating: GravatarRatings, email: String) {
         guard let targetURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
             return
         }
