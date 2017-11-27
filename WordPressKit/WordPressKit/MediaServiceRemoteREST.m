@@ -116,20 +116,60 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
 
 - (void)uploadMedia:(RemoteMedia *)media
-           progress:(NSProgress **)progress
+    requestEnqueued:(void (^)(void))requestEnqueued
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    [self uploadMedia:media
-             progress:progress
-      requestEnqueued:nil
-              success:success
-              failure:failure];
+    NSString *type = media.mimeType;
+    NSString *filename = media.file;
+
+    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", self.siteID];
+    NSString *requestUrl = [self pathForEndpoint:apiPath
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{}];
+    if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
+        parameters[@"attrs[0][parent_id]"] = media.postID;
+    }
+    FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:media.localURL filename:filename mimeType:type];
+    __weak __typeof(self) weakSelf = self;
+    [self.wordPressComRestApi multipartPOST:requestUrl
+                                 parameters:parameters
+                                  fileParts:@[filePart]
+                            requestEnqueued:^{
+                                if (requestEnqueued) {
+                                    requestEnqueued();
+                                }
+    } success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
+        NSDictionary *response = (NSDictionary *)responseObject;
+        NSArray * errorList = response[@"errors"];
+        NSArray * mediaList = response[@"media"];
+        if (mediaList.count > 0){
+            RemoteMedia * remoteMedia = [weakSelf remoteMediaFromJSONDictionary:mediaList[0]];
+            if (success) {
+                success(remoteMedia);
+            }
+        } else {
+            DDLogDebug(@"Error uploading file: %@", errorList);
+            NSError * error = nil;
+            if (errorList.count > 0){
+                NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
+                error = [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUploadFailed userInfo:errorDictionary];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }
+    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+        DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
+
 
 - (void)uploadMedia:(RemoteMedia *)media
            progress:(NSProgress **)progress
-    requestEnqueued:(void (^)(void))requestEnqueued
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
@@ -147,7 +187,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     __block NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
                                                     parameters:parameters
                                                      fileParts:@[filePart]
-                                               requestEnqueued:requestEnqueued
+                                               requestEnqueued:nil
                                                        success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         NSDictionary *response = (NSDictionary *)responseObject;
         NSArray * errorList = response[@"errors"];

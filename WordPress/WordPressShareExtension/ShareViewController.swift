@@ -347,12 +347,6 @@ private extension ShareViewController {
                 return
         }
 
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: true,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-        let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         let remotePost: RemotePost = {
             let post = RemotePost()
             post.siteID = NSNumber(value: siteID)
@@ -361,7 +355,7 @@ private extension ShareViewController {
             post.content = body
             return post
         }()
-        let uploadPostOpID = savePostOperation(remotePost, with: .Pending)
+        _ = savePostOperation(remotePost, with: .Pending)
 
         let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
         let fullPath = mediaDirectory.appendingPathComponent(fileName)
@@ -381,14 +375,20 @@ private extension ShareViewController {
         }
         let uploadMediaOpID = saveMediaOperation(remoteMedia, with: .Pending, siteID: NSNumber(value: siteID))
 
-        // The success and error blocks will probably never get called here, but let's add them just in case. Shared
-        // container cleanup will most likely occur in the container (WPiOS) app after the background session completes.
-        remote.createPost(remotePost, with: remoteMedia, requestEnqueued: {
-            self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadPostOpID)
+        // Upload the first media item
+        let api = WordPressComRestApi(oAuthToken: oauth2Token,
+                                      userAgent: nil,
+                                      backgroundUploads: true,
+                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                      sharedContainerIdentifier: WPAppGroupName)
+
+        // The success and error blocks should never get called here, but let's add them just in case. The remaining
+        // upload operations will be handled in the container (WPiOS) app after the background session completes.
+        let remote = MediaServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
+        remote.uploadMedia(remoteMedia, requestEnqueued: {
             self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadMediaOpID)
             requestEnqueued()
         }, success: {_ in
-            self.updateStatus(.Complete, forUploadOpWithObjectID: uploadPostOpID)
             self.updateStatus(.Complete, forUploadOpWithObjectID: uploadMediaOpID)
             ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
         }) { error in
@@ -396,7 +396,6 @@ private extension ShareViewController {
                 return
             }
             DDLogError("Error creating post in share extension: \(error.localizedDescription)")
-            self.updateStatus(.Error, forUploadOpWithObjectID: uploadPostOpID)
             self.updateStatus(.Error, forUploadOpWithObjectID: uploadMediaOpID)
             self.tracks.trackExtensionError(error)
         }
