@@ -9,6 +9,7 @@ open class ActivityTableViewCell: WPTableViewCell {
         super.awakeFromNib()
         assert(gravatarImageView != nil)
         assert(summaryLabel != nil)
+        assert(statusImageView != nil)
         assert(timestampLabel != nil)
         assert(borderView != nil)
     }
@@ -23,7 +24,6 @@ open class ActivityTableViewCell: WPTableViewCell {
             gravatarImageView.isHidden = true
             summaryLabel.attributedText = NSAttributedString(string: activity.summary,
                                                              attributes: Style.summaryBoldStyle())
-
         } else {
             gravatarImageView.isHidden = false
             if let actor = activity.actor,
@@ -37,6 +37,13 @@ open class ActivityTableViewCell: WPTableViewCell {
             }
             summaryLabel.attributedText = NSAttributedString(string: activity.summary,
                                                              attributes: Style.summaryRegularStyle())
+        }
+
+        if let statusImage = Style.getIconForActivity(activity) {
+            statusImageView.image = statusImage
+            statusImageView.isHidden = false
+        } else {
+            statusImageView.isHidden = true
         }
         if activity.isDiscarded {
             contentView.backgroundColor = Style.backgroundDiscardedColor()
@@ -64,7 +71,7 @@ open class ActivityTableViewCell: WPTableViewCell {
         gravatarURL = url
     }
 
-    typealias Style = WPStyleGuide.Activity
+    typealias Style = WPStyleGuide.ActivityStyleGuide
 
     // MARK: - Private Properties
 
@@ -80,6 +87,7 @@ open class ActivityTableViewCell: WPTableViewCell {
 
     @IBOutlet fileprivate var gravatarImageView: CircularImageView!
     @IBOutlet fileprivate var summaryLabel: UILabel!
+    @IBOutlet fileprivate var statusImageView: UIImageView!
     @IBOutlet fileprivate var timestampLabel: UILabel!
     @IBOutlet fileprivate var borderView: UIView!
 }
