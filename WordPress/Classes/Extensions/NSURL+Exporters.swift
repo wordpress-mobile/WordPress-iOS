@@ -323,4 +323,8 @@ extension NSURL: ExportableAsset {
         return error
     }
 
+    var mediaName: String? {
+        return lastPathComponent
+    }
+
 }

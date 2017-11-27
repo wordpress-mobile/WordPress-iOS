@@ -134,4 +134,8 @@ extension UIImage: ExportableAsset {
             return kUTTypeJPEG as String
         }
     }
+
+    var mediaName: String? {
+        return UUID().uuidString
+    }
 }

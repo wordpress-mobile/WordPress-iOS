@@ -1922,8 +1922,8 @@ UIDocumentPickerDelegate
     BOOL isImage = (asset.mediaType == PHAssetMediaTypeImage);
     NSString *mediaUniqueID = [self uniqueIdForMedia];
 
-    [mediaService createMediaWithPHAsset:asset
-                         forPostObjectID:self.post.objectID
+    [mediaService createMediaWith:asset
+                         objectID:self.post.objectID
                        thumbnailCallback:^(NSURL *thumbnailURL) {
                            [weakSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
                        }
@@ -2153,9 +2153,8 @@ UIDocumentPickerDelegate
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
     NSString *mediaUniqueID = [self uniqueIdForMedia];
-    [mediaService createMediaWithImage:image
-                           withMediaID:mediaUniqueID
-                       forPostObjectID:self.post.objectID
+    [mediaService createMediaWith:image
+                       objectID:self.post.objectID
                      thumbnailCallback:^(NSURL *thumbnailURL) {
                          __typeof__(self) strongSelf = weakSelf;
                          if (!strongSelf) {
@@ -2380,8 +2379,8 @@ UIDocumentPickerDelegate
     BOOL isImage = [WPImageViewController isUrlSupported:url];
     __weak __typeof__(self) weakSelf = self;
 
-    [mediaService createMediaWithURL:url
-                     forPostObjectID:self.post.objectID
+    [mediaService createMediaWith:url
+                     objectID:self.post.objectID
                    thumbnailCallback:^(NSURL *thumbnailURL) {
                        [weakSelf handleThumbnailURL:thumbnailURL mediaID:mediaUniqueID isImage:isImage];
                    }

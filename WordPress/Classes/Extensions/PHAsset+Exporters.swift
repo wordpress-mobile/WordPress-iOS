@@ -324,6 +324,10 @@ extension PHAsset: ExportableAsset {
         }
         return nil
     }
+
+    var mediaName: String? {
+        return originalFilename()
+    }
 }
 
 extension String {
