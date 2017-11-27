@@ -10,26 +10,26 @@ import MGSwipeTableCell
 ///
 class NoteTableViewCell: MGSwipeTableCell {
     // MARK: - Public Properties
-    var read: Bool = false {
+    @objc var read: Bool = false {
         didSet {
             if read != oldValue {
                 refreshBackgrounds()
             }
         }
     }
-    var unapproved: Bool = false {
+    @objc var unapproved: Bool = false {
         didSet {
             if unapproved != oldValue {
                 refreshBackgrounds()
             }
         }
     }
-    var showsUndeleteOverlay: Bool {
+    @objc var showsUndeleteOverlay: Bool {
         get {
             return undeleteOverlayText != nil
         }
     }
-    var showsBottomSeparator: Bool {
+    @objc var showsBottomSeparator: Bool {
         set {
             separatorsView.bottomVisible = newValue
         }
@@ -37,7 +37,7 @@ class NoteTableViewCell: MGSwipeTableCell {
             return separatorsView.bottomVisible == false
         }
     }
-    var attributedSubject: NSAttributedString? {
+    @objc var attributedSubject: NSAttributedString? {
         set {
             subjectLabel.attributedText = newValue
             setNeedsLayout()
@@ -46,7 +46,7 @@ class NoteTableViewCell: MGSwipeTableCell {
             return subjectLabel.attributedText
         }
     }
-    var attributedSnippet: NSAttributedString? {
+    @objc var attributedSnippet: NSAttributedString? {
         set {
             snippetLabel.attributedText = newValue
             refreshNumberOfLines()
@@ -56,7 +56,7 @@ class NoteTableViewCell: MGSwipeTableCell {
             return snippetLabel.attributedText
         }
     }
-    var undeleteOverlayText: String? {
+    @objc var undeleteOverlayText: String? {
         didSet {
             if undeleteOverlayText != oldValue {
                 refreshSubviewVisibility()
@@ -66,7 +66,7 @@ class NoteTableViewCell: MGSwipeTableCell {
             }
         }
     }
-    var noticon: String? {
+    @objc var noticon: String? {
         set {
             noticonLabel.text = newValue
         }
@@ -74,16 +74,16 @@ class NoteTableViewCell: MGSwipeTableCell {
             return noticonLabel.text
         }
     }
-    var onUndelete: (() -> Void)?
+    @objc var onUndelete: (() -> Void)?
 
 
 
     // MARK: - Public Methods
-    class func reuseIdentifier() -> String {
+    @objc class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
 
-    func downloadIconWithURL(_ url: URL?) {
+    @objc func downloadIconWithURL(_ url: URL?) {
         let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? false
         if isGravatarURL {
             downloadGravatarWithURL(url)
@@ -178,7 +178,7 @@ class NoteTableViewCell: MGSwipeTableCell {
 
     // MARK: - Private Methods
 
-    func refreshSeparators() {
+    @objc func refreshSeparators() {
         var insets = UIEdgeInsets.zero
         insets.left = readableContentGuide.layoutFrame.origin.x
         separatorsView.bottomInsets = insets

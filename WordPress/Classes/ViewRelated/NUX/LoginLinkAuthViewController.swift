@@ -10,9 +10,9 @@ import WordPressShared
 ///
 class LoginLinkAuthViewController: LoginViewController {
     @IBOutlet weak var statusLabel: UILabel?
-    var email: String = ""
-    var token: String = ""
-    var didSync: Bool = false
+    @objc var email: String = ""
+    @objc var token: String = ""
+    @objc var didSync: Bool = false
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

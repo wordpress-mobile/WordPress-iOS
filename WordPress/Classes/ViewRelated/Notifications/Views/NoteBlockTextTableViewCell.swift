@@ -4,9 +4,9 @@ import WordPressShared
 
 class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate {
     // MARK: - Public Properties
-    var onUrlClick: ((URL) -> Void)?
-    var onAttachmentClick: ((NSTextAttachment) -> Void)?
-    var attributedText: NSAttributedString? {
+    @objc var onUrlClick: ((URL) -> Void)?
+    @objc var onAttachmentClick: ((NSTextAttachment) -> Void)?
+    @objc var attributedText: NSAttributedString? {
         set {
             textView.attributedText = newValue
             invalidateIntrinsicContentSize()
@@ -22,15 +22,15 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
-    var linkColor: UIColor? {
+    @objc var linkColor: UIColor? {
         didSet {
             if let unwrappedLinkColor = linkColor {
-                textView.linkTextAttributes = [NSForegroundColorAttributeName as NSObject: unwrappedLinkColor]
+                textView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: unwrappedLinkColor]
             }
         }
     }
 
-    var dataDetectors: UIDataDetectorTypes {
+    @objc var dataDetectors: UIDataDetectorTypes {
         set {
             textView.dataDetectorTypes = newValue
         }
@@ -39,7 +39,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
-    var isTextViewSelectable: Bool {
+    @objc var isTextViewSelectable: Bool {
         set {
             textView.selectable = newValue
         }
@@ -48,7 +48,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
-    var isTextViewClickable: Bool {
+    @objc var isTextViewClickable: Bool {
         set {
             textView.isUserInteractionEnabled = newValue
         }
@@ -95,7 +95,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
 
 
     // MARK: - Constants
-    static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
+    @objc static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
 
     // MARK: - IBOutlets
     @IBOutlet fileprivate weak var textView: RichTextView!

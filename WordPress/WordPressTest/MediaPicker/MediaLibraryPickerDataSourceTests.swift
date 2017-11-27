@@ -17,7 +17,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
         blog = NSEntityDescription.insertNewObject(forEntityName: "Blog", into: context) as! Blog
         blog.url = "http://wordpress.com"
         blog.xmlrpc = "http://wordpress.com"
-        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName, into: context) as! Post
+        post = NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
         post.blog = blog
         dataSource = MediaLibraryPickerDataSource(blog: blog)
     }
