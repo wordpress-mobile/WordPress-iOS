@@ -4,24 +4,24 @@ import UIKit
 import WebKit
 
 class WebKitViewController: UIViewController {
-    let webView = WKWebView()
-    let progressView = WebProgressView()
-    let titleView = NavigationTitleView()
+    @objc let webView = WKWebView()
+    @objc let progressView = WebProgressView()
+    @objc let titleView = NavigationTitleView()
 
-    var backButton: UIBarButtonItem?
-    var forwardButton: UIBarButtonItem?
-    var shareButton: UIBarButtonItem?
-    var safariButton: UIBarButtonItem?
-    var customOptionsButton: UIBarButtonItem?
+    @objc var backButton: UIBarButtonItem?
+    @objc var forwardButton: UIBarButtonItem?
+    @objc var shareButton: UIBarButtonItem?
+    @objc var safariButton: UIBarButtonItem?
+    @objc var customOptionsButton: UIBarButtonItem?
 
-    let url: URL
-    let authenticator: WebViewAuthenticator?
-    let navigationDelegate: WebNavigationDelegate?
-    var secureInteraction = false
-    var addsWPComReferrer = false
-    var customTitle: String?
+    @objc let url: URL
+    @objc let authenticator: WebViewAuthenticator?
+    @objc let navigationDelegate: WebNavigationDelegate?
+    @objc var secureInteraction = false
+    @objc var addsWPComReferrer = false
+    @objc var customTitle: String?
 
-    init(configuration: WebViewControllerConfiguration) {
+    @objc init(configuration: WebViewControllerConfiguration) {
         url = configuration.url
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
@@ -65,11 +65,12 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
+        webView.uiDelegate = self
 
         loadWebViewRequest()
     }
 
-    func loadWebViewRequest() {
+    @objc func loadWebViewRequest() {
         guard let authenticator = authenticator,
             #available(iOS 11, *) else {
             load(request: URLRequest(url: url))
@@ -80,7 +81,7 @@ class WebKitViewController: UIViewController {
         }
     }
 
-    func load(request: URLRequest) {
+    @objc func load(request: URLRequest) {
         var request = request
         if addsWPComReferrer {
             request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
@@ -88,7 +89,7 @@ class WebKitViewController: UIViewController {
         webView.load(request)
     }
 
-    func configureNavigation() {
+    @objc func configureNavigation() {
         let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
         closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
 
@@ -127,7 +128,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton?.tintColor = WPStyleGuide.greyLighten10()
     }
 
-    func configureToolbar() {
+    @objc func configureToolbar() {
         navigationController?.isToolbarHidden = secureInteraction
         navigationController?.toolbar.barTintColor = UIColor.white
 
@@ -170,11 +171,11 @@ class WebKitViewController: UIViewController {
         setToolbarItems(items, animated: false)
     }
 
-    func close() {
+    @objc func close() {
         dismiss(animated: true, completion: nil)
     }
 
-    func share() {
+    @objc func share() {
         guard let url = webView.url else {
             return
         }
@@ -189,19 +190,19 @@ class WebKitViewController: UIViewController {
 
     }
 
-    func refresh() {
+    @objc func refresh() {
         webView.reload()
     }
 
-    func goBack() {
+    @objc func goBack() {
         webView.goBack()
     }
 
-    func goForward() {
+    @objc func goForward() {
         webView.goForward()
     }
 
-    func openInSafari() {
+    @objc func openInSafari() {
         guard let url = webView.url else {
             return
         }
@@ -249,5 +250,14 @@ extension WebKitViewController: WKNavigationDelegate {
             return
         }
         decisionHandler(.allow)
+    }
+}
+
+extension WebKitViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil {
+            webView.load(navigationAction.request)
+        }
+        return nil
     }
 }

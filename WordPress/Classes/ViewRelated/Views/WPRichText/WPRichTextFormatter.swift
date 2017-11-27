@@ -47,7 +47,7 @@ class WPRichTextFormatter {
     ///
     /// - Returns: An NSAttributedString optional.
     ///
-    func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [String: AnyObject]?) throws -> NSAttributedString? {
+    func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [NSAttributedStringKey: Any]?) throws -> NSAttributedString? {
         // Process the html in the string. Replace attachment tags with placeholders, etc.
         let parsed = processAndExtractTags(string)
         let parsedString = parsed.parsedString
@@ -58,13 +58,13 @@ class WPRichTextFormatter {
             return nil
         }
 
-        var options: [String: Any] = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: NSNumber(value: String.Encoding.utf8.rawValue),
+        var options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html.rawValue,
+            .characterEncoding: String.Encoding.utf8.rawValue
             ]
 
         if let defaultDocumentAttributes = defaultDocumentAttributes {
-            options[NSDefaultAttributesDocumentAttribute] = defaultDocumentAttributes as AnyObject?
+            options[.defaultAttributes] = defaultDocumentAttributes
         }
 
         var attrString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
@@ -105,14 +105,14 @@ class WPRichTextFormatter {
             mParagraphStyle.setParagraphStyle(NSParagraphStyle.default)
             mParagraphStyle.paragraphSpacing = defaultParagraphSpacing
             mParagraphStyle.maximumLineHeight = 1.0
-            if  let pStyle = attrString.attribute(NSParagraphStyleAttributeName, at: range.location, effectiveRange: nil) as? NSParagraphStyle,
-                let font = attrString.attribute(NSFontAttributeName, at: range.location, effectiveRange: nil) as? UIFont {
+            if  let pStyle = attrString.attribute(.paragraphStyle, at: range.location, effectiveRange: nil) as? NSParagraphStyle,
+                let font = attrString.attribute(.font, at: range.location, effectiveRange: nil) as? UIFont {
 
                  mParagraphStyle.paragraphSpacing = round(pStyle.minimumLineHeight - font.xHeight) / 2.0
             }
-            let attributes: [String: Any] = [
-                NSParagraphStyleAttributeName: mParagraphStyle,
-                NSBackgroundColorAttributeName: horizontalRuleColor
+            let attributes: [NSAttributedStringKey: Any] = [
+                .paragraphStyle: mParagraphStyle,
+                .backgroundColor: horizontalRuleColor
             ]
 
             let attachment = WPHorizontalRuleAttachment()
@@ -152,14 +152,14 @@ class WPRichTextFormatter {
             // of the string could yield an out of bounds index.
             if index < attrString.length {
                 var effectiveRange = NSRange()
-                let pStyle = attrString.attribute(NSParagraphStyleAttributeName, at: index, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.default
+                let pStyle = attrString.attribute(.paragraphStyle, at: index, effectiveRange: &effectiveRange) as? NSParagraphStyle ?? NSParagraphStyle.default
 
                 let mParaStyle = NSMutableParagraphStyle()
                 mParaStyle.setParagraphStyle(pStyle)
                 mParaStyle.headIndent = blockquoteIndentation
                 mParaStyle.firstLineHeadIndent = blockquoteIndentation
 
-                attrString.addAttribute(NSParagraphStyleAttributeName, value: mParaStyle, range: effectiveRange)
+                attrString.addAttribute(.paragraphStyle, value: mParaStyle, range: effectiveRange)
             }
             // Delete the marker
             attrString.deleteCharacters(in: match.range)
@@ -493,8 +493,8 @@ class AttachmentTagProcessor: HtmlTagProcessor {
 
         let matches = regex.matches(in: tag! as String, options: .reportCompletion, range: NSRange(location: 0, length: tag!.length))
         for match in matches {
-            let keyRange = match.rangeAt(1)
-            let valueRange = match.rangeAt(2)
+            let keyRange = match.range(at: 1)
+            let valueRange = match.range(at: 2)
 
             let key = tag!.substring(with: keyRange).lowercased()
             let value = tag!.substring(with: valueRange)
