@@ -97,15 +97,8 @@ class AppSettingsViewController: UITableViewController {
         )
         editorRows.append(textEditor)
 
-        let visualEditor = CheckmarkRow(
-            title: NSLocalizedString("Visual", comment: "Option to enable the hybrid visual editor"),
-            checked: editorSettings.isEnabled(.hybrid),
-            action: enableEditor(.hybrid)
-        )
-        editorRows.append(visualEditor)
-
         let nativeEditor = CheckmarkRow(
-            title: NSLocalizedString("Visual 2.0", comment: "Option to enable the beta native editor (Aztec)"),
+            title: NSLocalizedString("Visual", comment: "Option to enable the beta native editor (Aztec)"),
             checked: editorSettings.isEnabled(.aztec),
             action: enableEditor(.aztec)
         )

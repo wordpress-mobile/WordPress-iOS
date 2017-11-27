@@ -12,7 +12,6 @@
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
 #import "WPMediaProgressTableViewController.h"
-#import "WPPostViewController.h"
 #import "WPProgressTableViewCell.h"
 #import <Photos/Photos.h>
 #import <WordPressShared/UIImage+Util.h>
@@ -61,9 +60,9 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    BOOL dontRestoreIfNewEditorIsEnabled = [[EditorSettings new] isEnabled:EditorHybrid];
+    BOOL shouldRestore = [[EditorSettings new] isEnabled:EditorLegacy];
     
-    if (dontRestoreIfNewEditorIsEnabled) {
+    if (!shouldRestore) {
         return nil;
     }
 
