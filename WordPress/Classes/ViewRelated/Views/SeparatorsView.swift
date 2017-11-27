@@ -3,57 +3,57 @@ import WordPressShared
 
 open class SeparatorsView: UIView {
     // MARK: - Public Properties
-    open var leftVisible = false {
+    @objc open var leftVisible = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var leftColor = UIColor.clear {
+    @objc open var leftColor = UIColor.clear {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var leftWidthInPoints = CGFloat(3) {
+    @objc open var leftWidthInPoints = CGFloat(3) {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var topVisible = false {
+    @objc open var topVisible = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var topColor = WPStyleGuide.Notifications.blockSeparatorColor {
+    @objc open var topColor = WPStyleGuide.Notifications.blockSeparatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var topHeightInPixels = CGFloat(1) {
+    @objc open var topHeightInPixels = CGFloat(1) {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var topInsets = UIEdgeInsets.zero {
+    @objc open var topInsets = UIEdgeInsets.zero {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var bottomVisible = false {
+    @objc open var bottomVisible = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var bottomColor = WPStyleGuide.Notifications.blockSeparatorColor {
+    @objc open var bottomColor = WPStyleGuide.Notifications.blockSeparatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var bottomHeightInPixels = CGFloat(1) {
+    @objc open var bottomHeightInPixels = CGFloat(1) {
         didSet {
             setNeedsDisplay()
         }
     }
-    open var bottomInsets = UIEdgeInsets.zero {
+    @objc open var bottomInsets = UIEdgeInsets.zero {
         didSet {
             setNeedsDisplay()
         }

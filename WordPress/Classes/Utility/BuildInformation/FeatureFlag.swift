@@ -42,7 +42,7 @@ enum FeatureFlag: Int {
 /// Since we can't expose properties on Swift enums we use a class instead
 class Feature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
-    static func enabled(_ feature: FeatureFlag) -> Bool {
+    @objc static func enabled(_ feature: FeatureFlag) -> Bool {
         return feature.enabled
     }
 }

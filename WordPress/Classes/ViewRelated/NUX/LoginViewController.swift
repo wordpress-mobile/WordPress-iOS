@@ -73,9 +73,9 @@ class LoginViewController: NUXAbstractViewController {
     @IBOutlet var instructionLabel: UILabel?
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
-    var errorToPresent: Error?
+    @objc var errorToPresent: Error?
 
-    lazy var loginFacade: LoginFacade = {
+    @objc lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
         facade.delegate = self
         return facade
@@ -100,13 +100,13 @@ class LoginViewController: NUXAbstractViewController {
 
     /// Places the WordPress logo in the navbar
     ///
-    func setupNavBarIcon() {
+    @objc func setupNavBarIcon() {
         addWordPressLogoToNavController()
     }
 
     /// Configures instruction label font
     ///
-    func styleInstructions() {
+    @objc func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
     }
 
@@ -120,7 +120,7 @@ class LoginViewController: NUXAbstractViewController {
 
     /// Sets the text of the error label.
     ///
-    func displayError(message: String) {
+    @objc func displayError(message: String) {
         guard message.count > 0 else {
             errorLabel?.isHidden = true
             return
@@ -131,14 +131,14 @@ class LoginViewController: NUXAbstractViewController {
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
+    @objc func configureSubmitButton(animating: Bool) {
         submitButton?.showActivityIndicator(animating)
         submitButton?.isEnabled = enableSubmit(animating: animating)
     }
 
     /// Determines if the submit button should be enabled. Meant to be overridden in subclasses.
     ///
-    open func enableSubmit(animating: Bool) -> Bool {
+    @objc open func enableSubmit(animating: Bool) -> Bool {
         return !animating
     }
 
@@ -149,7 +149,7 @@ class LoginViewController: NUXAbstractViewController {
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with login.
     ///
-    func validateFormAndLogin() {
+    @objc func validateFormAndLogin() {
         view.endEditing(true)
         displayError(message: "")
 
@@ -185,7 +185,7 @@ class LoginViewController: NUXAbstractViewController {
 }
 
 extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
-    func configureStatusLabel(_ message: String) {
+    @objc func configureStatusLabel(_ message: String) {
         // this is now a no-op, unless status labels return
     }
 
@@ -193,7 +193,7 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    @objc func configureViewLoading(_ loading: Bool) {
         configureSubmitButton(animating: loading)
         navigationItem.hidesBackButton = loading
     }
@@ -246,11 +246,11 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     // Update safari stored credentials. Call after a successful sign in.
     ///
-    func updateSafariCredentialsIfNeeded() {
+    @objc func updateSafariCredentialsIfNeeded() {
         SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 
-    func loginDismissal() {
+    @objc func loginDismissal() {
         self.performSegue(withIdentifier: .showEpilogue, sender: self)
     }
 }

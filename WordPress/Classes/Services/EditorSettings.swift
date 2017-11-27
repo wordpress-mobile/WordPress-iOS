@@ -38,7 +38,7 @@ class EditorSettings: NSObject {
 
     /// Contains the logic for setting the defaults the first time a version is launched.
     ///
-    func setDefaultsForVersionFirstLaunch() {
+    @objc func setDefaultsForVersionFirstLaunch() {
         let bundleVersion = Bundle.main.bundleVersion()
 
         let lastInternalForcedVersion = database.object(forKey: lastVersionWhereAztecWasForced) as? String ?? ""
@@ -66,13 +66,13 @@ class EditorSettings: NSObject {
         }
     }
 
-    func isEnabled(_ editor: Editor) -> Bool {
+    @objc func isEnabled(_ editor: Editor) -> Bool {
         return current == editor
     }
 
     /// Enables the specified editor.
     ///
-    func enable(_ editor: Editor) {
+    @objc func enable(_ editor: Editor) {
 
         // Tracking ON and OFF for Aztec specifically.
         if editor == .aztec && !isEnabled(.aztec) {
@@ -98,7 +98,7 @@ class EditorSettings: NSObject {
     // a configure block as a hack.
     // In Swift 4, we'll be able to do `instantiateEditor() -> UIViewController & PostEditor`,
     // and then let the caller configure the editor.
-    func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+    @objc func instantiatePostEditor(post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
@@ -115,7 +115,7 @@ class EditorSettings: NSObject {
         }
     }
 
-    func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
+    @objc func instantiatePageEditor(page post: AbstractPost, configure: (PostEditor, UIViewController) -> Void) -> UIViewController {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)

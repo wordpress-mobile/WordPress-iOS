@@ -15,8 +15,8 @@ import WordPressShared
 ///
 class NotificationsViewController: UITableViewController, UIViewControllerRestoration {
 
-    static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
-    static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
+    @objc static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
+    @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
 
     // MARK: - Properties
 
@@ -482,7 +482,7 @@ extension NotificationsViewController {
     ///
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
-    func showDetailsForNotificationWithID(_ noteId: String) {
+    @objc func showDetailsForNotificationWithID(_ noteId: String) {
         if let note = loadNotificationWithID(noteId) {
             showDetailsForNotification(note)
             return
@@ -497,7 +497,7 @@ extension NotificationsViewController {
     ///
     /// - Parameter note: The Notification that should be rendered.
     ///
-    func showDetailsForNotification(_ note: Notification) {
+    @objc func showDetailsForNotification(_ note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         prepareToShowDetailsForNotification(note)
@@ -717,7 +717,7 @@ private extension NotificationsViewController {
 // MARK: - UIRefreshControl Methods
 //
 extension NotificationsViewController {
-    func refresh() {
+    @objc func refresh() {
         guard let mediator = NotificationSyncMediator() else {
             refreshControl?.endRefreshing()
             return
@@ -730,7 +730,7 @@ extension NotificationsViewController {
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
-            DispatchQueue.main.asyncAfter(deadline: delay) { _ in
+            DispatchQueue.main.asyncAfter(deadline: delay) {
                 self.refreshControl?.endRefreshing()
                 self.clearUnreadNotifications()
             }
@@ -747,7 +747,7 @@ extension NotificationsViewController {
 // MARK: - UISegmentedControl Methods
 //
 extension NotificationsViewController {
-    func segmentedControlDidChange(_ sender: UISegmentedControl) {
+    @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
         selectedNotification = nil
 
         updateUnreadNotificationsForSegmentedControlChange()
@@ -757,7 +757,7 @@ extension NotificationsViewController {
         selectFirstNotificationIfAppropriate()
     }
 
-    func selectFirstNotificationIfAppropriate() {
+    @objc func selectFirstNotificationIfAppropriate() {
         // If we don't currently have a selected notification and there is a notification
         // in the list, then select it.
         if !splitViewControllerIsHorizontallyCompact && selectedNotification == nil {
@@ -773,7 +773,7 @@ extension NotificationsViewController {
         }
     }
 
-    func updateUnreadNotificationsForSegmentedControlChange() {
+    @objc func updateUnreadNotificationsForSegmentedControlChange() {
         if Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) == .unread {
             refreshUnreadNotifications(reloadingResultsController: false)
         } else {
@@ -799,13 +799,13 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         return request
     }
 
-    func predicateForFetchRequest() -> NSPredicate {
+    @objc func predicateForFetchRequest() -> NSPredicate {
         let deletedIdsPredicate = NSPredicate(format: "NOT (SELF IN %@)", Array(notificationIdsBeingDeleted))
         let selectedFilterPredicate = predicateForSelectedFilters()
         return NSCompoundPredicate(andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate])
     }
 
-    func predicateForSelectedFilters() -> NSPredicate {
+    @objc func predicateForSelectedFilters() -> NSPredicate {
         guard let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex),
             let condition = filter.condition else {
                 return NSPredicate(value: true)
@@ -850,7 +850,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         configureCellActions(cell, note: note)
     }
 
-    func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
+    @objc func configureCellActions(_ cell: NoteTableViewCell, note: Notification) {
         // Let "Mark as Read" expand
         let leadingExpansionButton = 0
 
@@ -874,7 +874,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         return "sectionIdentifier"
     }
 
-    func entityName() -> String {
+    @objc func entityName() -> String {
         return Notification.classNameWithoutNamespaces()
     }
 
@@ -1325,7 +1325,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
 // MARK: - AppFeedbackPromptViewDelegate Methods
 //
 extension NotificationsViewController: AppFeedbackPromptViewDelegate {
-    func likedApp() {
+    @objc func likedApp() {
         WPAnalytics.track(.appReviewsLikedApp)
         AppRatingUtility.shared.likedCurrentVersion()
         hideRatingViewWithDelay(3.0)
@@ -1343,12 +1343,12 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
 
     }
 
-    func dislikedApp() {
+    @objc func dislikedApp() {
         WPAnalytics.track(.appReviewsDidntLikeApp)
         AppRatingUtility.shared.dislikedCurrentVersion()
     }
 
-    func gatherFeedback() {
+    @objc func gatherFeedback() {
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
         AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
         hideRatingViewWithDelay(0.0)
@@ -1365,7 +1365,7 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
         }
     }
 
-    func dismissPrompt() {
+    @objc func dismissPrompt() {
         WPAnalytics.track(.appReviewsDeclinedToRateApp)
         AppRatingUtility.shared.declinedToRateCurrentVersion()
         hideRatingViewWithDelay(0.0)
@@ -1375,11 +1375,11 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
 // MARK: - Details Navigation Datasource
 //
 extension NotificationsViewController: NotificationsNavigationDataSource {
-    func notification(succeeding note: Notification) -> Notification? {
+    @objc func notification(succeeding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: -1)
     }
 
-    func notification(preceding note: Notification) -> Notification? {
+    @objc func notification(preceding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: +1)
     }
 }

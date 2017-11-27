@@ -6,18 +6,19 @@ import WordPressShared
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
+
 class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithLogoAndHelpViewController {
 
-    var helpBadge: WPNUXHelpBadgeLabel!
-    var helpButton: UIButton!
-    var loginFields = LoginFields()
-    var restrictToWPCom = false
+    @objc var helpBadge: WPNUXHelpBadgeLabel!
+    @objc var helpButton: UIButton!
+    @objc var loginFields = LoginFields()
+    @objc var restrictToWPCom = false
 
-    let helpButtonMarginSpacerWidth = CGFloat(-8)
-    let helpBadgeSize = CGSize(width: 12, height: 10)
-    let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
+    @objc let helpButtonMarginSpacerWidth = CGFloat(-8)
+    @objc let helpBadgeSize = CGSize(width: 12, height: 10)
+    @objc let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-    var dismissBlock: ((_ cancelled: Bool) -> Void)?
+    @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
 
     enum SegueIdentifier: String {
         case showURLUsernamePassword
@@ -32,7 +33,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// The Helpshift tag to track the origin of user conversations
     ///
-    var sourceTag: SupportSourceTag {
+    @objc var sourceTag: SupportSourceTag {
         get {
             return .generalLogin
         }
@@ -75,7 +76,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Sets up a gesture recognizer to detect taps on the view, but not its content.
     ///
-    func setupBackgroundTapGestureRecognizer() {
+    @objc func setupBackgroundTapGestureRecognizer() {
         let tgr = UITapGestureRecognizer(target: self, action: #selector(NUXAbstractViewController.handleBackgroundTapGesture(_:)))
         view.addGestureRecognizer(tgr)
     }
@@ -84,7 +85,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
     /// Sets up the cancel button for the navbar if its needed.
     /// The cancel button is only shown when its appropriate to dismiss the modal view controller.
     ///
-    func setupCancelButtonIfNeeded() {
+    @objc func setupCancelButtonIfNeeded() {
         if !shouldShowCancelButton() {
             return
         }
@@ -96,7 +97,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Sets up the help button and the helpshift conversation badge.
     ///
-    func setupHelpButtonAndBadge() {
+    @objc func setupHelpButtonAndBadge() {
         NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
 
         let customView = UIView(frame: helpButtonContainerFrame)
@@ -141,7 +142,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
     ///
     /// - Returns: True if the back button should be visible. False otherwise.
     ///
-    func shouldShowCancelButton() -> Bool {
+    @objc func shouldShowCancelButton() -> Bool {
         return isCancellable() && navigationController?.viewControllers.first == self
     }
 
@@ -152,7 +153,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
     ///
     /// - Returns: True if cancellable. False otherwise.
     ///
-    func isCancellable() -> Bool {
+    @objc func isCancellable() -> Bool {
         // if there is an existing blog, or an existing account return true.
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
@@ -162,7 +163,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Displays a login error in an attractive dialog
     ///
-    func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
+    @objc func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -172,7 +173,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Displays a login error message in an attractive dialog
     ///
-    func displayErrorAlert(_ message: String, sourceTag: SupportSourceTag) {
+    @objc func displayErrorAlert(_ message: String, sourceTag: SupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -182,7 +183,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// It is assumed that NUX view controllers are always presented modally.
     ///
-    func dismiss() {
+    @objc func dismiss() {
         dismiss(cancelled: false)
     }
 
@@ -204,7 +205,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Updates the badge count and its visibility.
     ///
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
+    @objc func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
         let count = HelpshiftUtils.unreadNotificationCount()
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
@@ -214,18 +215,18 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
     // MARK: - Actions
 
 
-    func handleBackgroundTapGesture(_ tgr: UITapGestureRecognizer) {
+    @objc func handleBackgroundTapGesture(_ tgr: UITapGestureRecognizer) {
         view.endEditing(true)
     }
 
 
-    func handleCancelButtonTapped(_ sender: UIButton) {
+    @objc func handleCancelButtonTapped(_ sender: UIButton) {
         dismiss(cancelled: true)
     }
 
     // Handle the help button being tapped
     //
-    func handleHelpButtonTapped(_ sender: AnyObject) {
+    @objc func handleHelpButtonTapped(_ sender: UIButton) {
         displaySupportViewController(sourceTag: sourceTag)
     }
 }
