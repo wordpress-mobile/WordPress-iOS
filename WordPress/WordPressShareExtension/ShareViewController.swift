@@ -63,6 +63,13 @@ class ShareViewController: SLComposeServiceViewController {
         return identifier
     }()
 
+    /// Unique identifier a group of upload operations
+    ///
+    fileprivate lazy var groupIdentifier: String = {
+        let groupIdentifier = UUID().uuidString
+        return groupIdentifier
+    }()
+
     /// Core Data stack for application extensions
     ///
     fileprivate lazy var coreDataStack = SharedCoreDataStack()
@@ -272,6 +279,7 @@ private extension ShareViewController {
         let uploadMediaOp = UploadOperation(context: managedContext)
         uploadMediaOp.updateWithMedia(remote: remoteMedia)
         uploadMediaOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        uploadMediaOp.groupID = groupIdentifier
         uploadMediaOp.created = NSDate()
         uploadMediaOp.currentStatus = status
         uploadMediaOp.siteID = siteID.int32Value
@@ -282,7 +290,7 @@ private extension ShareViewController {
     func savePostOperation(_ remotePost: RemotePost,  with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
         let uploadPostOp = UploadOperation(context: managedContext)
         uploadPostOp.updateWithPost(remote: remotePost)
-        uploadPostOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        uploadPostOp.groupID = groupIdentifier
         uploadPostOp.created = NSDate()
         uploadPostOp.currentStatus = status
         coreDataStack.saveContext()
