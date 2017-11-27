@@ -314,5 +314,20 @@
             </objects>
             <point key="canvasLocation" x="1040.8" y="99.400299850074973"/>
         </scene>
+        <!--Signup Domain Suggestion View Controller-->
+        <scene sceneID="4E2-No-D1s">
+            <objects>
+                <viewController id="csx-fA-VYe" customClass="SignupDomainSuggestionViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Iab-Ii-JoU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="MlL-UJ-XmI"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WYd-Xx-7Rj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="726" y="80"/>
+        </scene>
     </scenes>
 </document>
