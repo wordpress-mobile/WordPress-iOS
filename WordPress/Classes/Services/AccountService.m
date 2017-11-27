@@ -113,12 +113,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSArray<id<CookieJar>> *cookieJars;
     if (@available(iOS 11.0, *)) {
         cookieJars = @[
-                       [NSHTTPCookieStorage sharedHTTPCookieStorage],
-                       [[WKWebsiteDataStore defaultDataStore] httpCookieStore]
+                       (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage],
+                       (id<CookieJar>)[[WKWebsiteDataStore defaultDataStore] httpCookieStore]
                        ];
     } else {
         cookieJars = @[
-                       [NSHTTPCookieStorage sharedHTTPCookieStorage]
+                       (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage]
                        ];
     }
     for (id<CookieJar> cookieJar in cookieJars) {

@@ -15,7 +15,7 @@ import CoreData
     @NSManaged open var title: String
     @NSManaged open var type: String
 
-    open class var TopicType: String {
+    @objc open class var TopicType: String {
         assert(false, "Subclasses must override")
         return "abstract"
     }

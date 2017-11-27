@@ -10,7 +10,7 @@ open class MediaImportService: LocalCoreDataService {
 
     private static let defaultImportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
-    public lazy var importQueue: DispatchQueue = {
+    @objc public lazy var importQueue: DispatchQueue = {
         return MediaImportService.defaultImportQueue
     }()
 
@@ -18,7 +18,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     /// - Note: This value may or may not be honored, depending on the export implementation and underlying data.
     ///
-    static let preferredImageCompressionQuality = 0.9
+    @objc static let preferredImageCompressionQuality = 0.9
 
     /// Completion handler for a created Media object.
     ///

@@ -111,12 +111,12 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
-    func loadModel() {
+    @objc func loadModel() {
         handler.viewModel = controller.tableViewModelWithPresenter(self)
         noticeMessage = controller.noticeMessage
     }
 
-    var noticeMessage: String? = nil {
+    @objc var noticeMessage: String? = nil {
         didSet {
             guard noticeMessage != oldValue else { return }
             noticeAnimator.animateMessage(noticeMessage)
@@ -125,5 +125,5 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Constants
 
-    static let modelChangedNotification = "ImmuTableControllerChanged"
+    @objc static let modelChangedNotification = "ImmuTableControllerChanged"
 }
