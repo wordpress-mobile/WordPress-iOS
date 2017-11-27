@@ -863,7 +863,7 @@ NSString *const WPAppAnalyticsEditorSourceValueLegacy = @"legacy";
         NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
         createMediaProgress.totalUnitCount = 100;
         [self.mediaProgressCoordinator trackProgress:createMediaProgress ofMedia:nil withIdentifier:imageUniqueId];
-        [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID thumbnailCallback:nil completion:^(Media *media, NSError * error) {
+        [mediaService createMediaWith:asset objectID:self.post.objectID thumbnailCallback:nil completion:^(Media *media, NSError * error) {
             __typeof__(self) strongSelf = weakSelf;
             if (!strongSelf) {
                 return;

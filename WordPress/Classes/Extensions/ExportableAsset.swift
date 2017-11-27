@@ -63,4 +63,6 @@ typealias ErrorHandler = (_ error: NSError) -> ()
     /// The default UTI for thumbnails
     ///
     var defaultThumbnailUTI: String { get }
+
+    var mediaName: String? { get }
 }
