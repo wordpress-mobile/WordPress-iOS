@@ -81,7 +81,7 @@ import CoreData
         var remotePost: RemotePost?
         var uploadOp: UploadOperation?
         let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@ AND isMedia == false)", backgroundSessionIdentifier)
-        let uploadOp? = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
+        uploadOp = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
         remotePost = uploadOp?.remotePost
 
         return remotePost
