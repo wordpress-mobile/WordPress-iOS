@@ -17,7 +17,7 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
     ///
     /// - Parameter url: Target image URL.
     ///
-    func downloadImage(_ url: URL?) {
+    @objc func downloadImage(_ url: URL?) {
         guard imageURL != url else {
             return
         }

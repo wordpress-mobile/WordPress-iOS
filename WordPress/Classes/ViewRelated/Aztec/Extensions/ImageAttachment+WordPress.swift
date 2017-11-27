@@ -5,7 +5,7 @@ import Aztec
 ///
 extension ImageAttachment {
 
-    var alt: String? {
+    @objc var alt: String? {
         get {
             return extraAttributes["alt"]
         }

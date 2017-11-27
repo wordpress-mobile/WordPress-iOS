@@ -2,7 +2,7 @@ import WordPressEditor
 import WordPressShared
 
 class WPEditorStatMap: NSObject {
-    class func map(_ stat: WPEditorStat) -> WPAnalyticsStat {
+    @objc class func map(_ stat: WPEditorStat) -> WPAnalyticsStat {
         switch stat {
         case .tappedBlockquote:
             return .editorTappedBlockquote

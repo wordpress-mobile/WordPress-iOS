@@ -41,7 +41,7 @@ class LoginPrologueViewController: UIViewController {
 
     // MARK: - Setup and Config
 
-    func localizeControls() {
+    @objc func localizeControls() {
         loginButton.setTitle(NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form."),
                              for: .normal)
         loginButton.accessibilityIdentifier = "Log In"
@@ -49,5 +49,15 @@ class LoginPrologueViewController: UIViewController {
         signupButton.setTitle(NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
                               for: .normal)
 
+    }
+
+    // MARK: - Actions
+
+    @IBAction func signupTapped() {
+        if Feature.enabled(.socialSignup) {
+            performSegue(withIdentifier: "showSigninV2", sender: self)
+        } else {
+            performSegue(withIdentifier: "showSigninV1", sender: self)
+        }
     }
 }

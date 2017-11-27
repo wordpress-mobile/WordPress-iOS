@@ -69,7 +69,7 @@ class NotificationSyncMediatorTests: XCTestCase {
         let expect = expectation(description: "Sync")
 
         // Sync!
-        mediator.sync { _ in
+        mediator.sync { (_, _) in
             XCTAssert(self.manager.mainContext.countObjects(ofType: Notification.self) == 1)
             expect.fulfill()
         }
@@ -100,7 +100,7 @@ class NotificationSyncMediatorTests: XCTestCase {
             group.enter()
 
             let newMediator = NotificationSyncMediator(manager: manager, dotcomAPI: dotcomAPI)
-            newMediator?.sync { _ in
+            newMediator?.sync { (_, _) in
                 group.leave()
             }
         }
@@ -155,7 +155,7 @@ class NotificationSyncMediatorTests: XCTestCase {
 
         // Inject Dummy Note
         let path = "notifications-like.json"
-        let note = manager.loadEntityNamed(Notification.entityName, withContentsOfFile: path) as! WordPress.Notification
+        let note = manager.loadEntityNamed(Notification.entityName(), withContentsOfFile: path) as! WordPress.Notification
 
         XCTAssertNotNil(note)
         XCTAssertFalse(note.read)
