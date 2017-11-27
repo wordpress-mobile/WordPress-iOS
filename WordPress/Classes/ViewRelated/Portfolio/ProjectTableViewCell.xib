@@ -67,7 +67,9 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="featuredImageHeightConstraint" destination="RDO-A6-lpI" id="Y2y-5R-pXt"/>
                 <outlet property="featuredImageView" destination="fec-3M-CSo" id="940-Nz-SbN"/>
+                <outlet property="featuredImageWidthConstraint" destination="lGO-x5-vER" id="ZuO-DJ-Rfx"/>
                 <outlet property="menuButton" destination="wzV-Fy-dFb" id="BSw-4S-wh9"/>
                 <outlet property="titleLabel" destination="68g-tY-SKH" id="XGo-Y7-jOg"/>
             </connections>

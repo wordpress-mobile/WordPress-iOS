@@ -4,6 +4,8 @@ class ProjectTableViewCell: BasePageListCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var menuButton: UIButton!
     @IBOutlet var featuredImageView: UIImageView!
+    @IBOutlet var featuredImageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var featuredImageHeightConstraint: NSLayoutConstraint!
     
     override var post: AbstractPost? {
         didSet {
@@ -45,12 +47,27 @@ class ProjectTableViewCell: BasePageListCell {
         }
         
         let rightPost = getRightPost(from: post)
-        if let featuredImage = rightPost.featuredImage {
-            featuredImage.image(with: .zero, completionHandler: { image, error in
-                if error == nil {
-                    self.featuredImageView.image = image
+
+        if let featuredImagePath = rightPost.pathForDisplayImage, let featuredImageURL = URL(string: featuredImagePath) {
+            if (post.blog.isHostedAtWPcom) {
+                let desiredWidth = featuredImageWidthConstraint.constant
+                let desiredHeight = featuredImageHeightConstraint.constant
+                if (post.isPrivate()) {
+                    let scale = UIScreen.main.scale
+                    let scaledSize = CGSize(width: desiredWidth * scale, height: desiredHeight * scale)
+                    let url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: featuredImageURL)
+                    if let request = PrivateSiteURLProtocol.requestForPrivateSite(from: url) {
+                        featuredImageView.setImageWith(request, placeholderImage: nil, success: nil, failure: nil)
+                    }
+                } else {
+                    let size = CGSize(width: desiredWidth, height: desiredHeight)
+                    if let url = PhotonImageURLHelper.photonURL(with: size, forImageURL: featuredImageURL) {
+                        featuredImageView.setImageWith(url, placeholderImage: nil)
+                    }
                 }
-            })
+            } else { // Not supported outside of wordpress.com
+                self.featuredImageView.image = nil
+            }
         } else {
             self.featuredImageView.image = nil
         }
