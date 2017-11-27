@@ -7,7 +7,7 @@ let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobil
 // MARK: - What's New Web View
 
 extension FancyAlertViewController {
-    static func presentWhatsNewWebView(from viewController: UIViewController) {
+    @objc static func presentWhatsNewWebView(from viewController: UIViewController) {
         // Replace the web view's options button with our own bug reporting button
         let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
         bugButton.accessibilityLabel = NSLocalizedString("Report a bug", comment: "Button allowing the user to report a bug with the beta Aztec editor")

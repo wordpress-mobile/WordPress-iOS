@@ -1,28 +1,28 @@
 import UIKit
 
 class WebViewControllerConfiguration: NSObject {
-    var url: URL
-    var optionsButton: UIBarButtonItem?
-    var secureInteraction: Bool = false
-    var addsWPComReferrer: Bool = false
-    var customTitle: String?
-    var authenticator: WebViewAuthenticator?
-    weak var navigationDelegate: WebNavigationDelegate?
+    @objc var url: URL
+    @objc var optionsButton: UIBarButtonItem?
+    @objc var secureInteraction: Bool = false
+    @objc var addsWPComReferrer: Bool = false
+    @objc var customTitle: String?
+    @objc var authenticator: WebViewAuthenticator?
+    @objc weak var navigationDelegate: WebNavigationDelegate?
 
-    init(url: URL) {
+    @objc init(url: URL) {
         self.url = url
         super.init()
     }
 
-    func authenticate(blog: Blog) {
+    @objc func authenticate(blog: Blog) {
         self.authenticator = WebViewAuthenticator(blog: blog)
     }
 
-    func authenticate(account: WPAccount) {
+    @objc func authenticate(account: WPAccount) {
         self.authenticator = WebViewAuthenticator(account: account)
     }
 
-    func authenticateWithDefaultAccount() {
+    @objc func authenticateWithDefaultAccount() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {

@@ -12,14 +12,12 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPTextFieldTableViewCell.h>
 
-static const CGFloat HorizontalMargin = 15.0f;
-
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) PostCategory *parentCategory;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) UITextField *categoryTextField;
-@property (nonatomic, strong) WPTableViewCell *createCategoryCell;
+@property (nonatomic, strong) WPTextFieldTableViewCell *createCategoryCell;
 @property (nonatomic, strong) WPTableViewCell *parentCategoryCell;
 @property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
 
@@ -42,6 +40,8 @@ static const CGFloat HorizontalMargin = 15.0f;
 
     self.title = NSLocalizedString(@"Add a Category", @"The title on the add category screen");
     self.tableView.sectionFooterHeight = 0.0f;
+    // Set this to 0 to avoid automattic sizing of cells and getting label cell to short.
+    self.tableView.estimatedRowHeight = 0.0f;
 
     self.saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
                                                            style:[WPStyleGuide barButtonStyleForDone]
@@ -178,26 +178,23 @@ static const CGFloat HorizontalMargin = 15.0f;
     return cell;
 }
 
-- (WPTableViewCell *)createCategoryCell
+- (WPTextFieldTableViewCell *)createCategoryCell
 {
     if (_createCategoryCell) {
         return _createCategoryCell;
     }
     _createCategoryCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    
-    self.categoryTextField = [[UITextField alloc] initWithFrame:CGRectInset(_createCategoryCell.bounds, HorizontalMargin, 0)];
-    self.categoryTextField.clearButtonMode = UITextFieldViewModeAlways;
-    self.categoryTextField.font = [WPStyleGuide tableviewTextFont];
-    self.categoryTextField.textColor = [WPStyleGuide darkGrey];
-    self.categoryTextField.text = @"";
-    self.categoryTextField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");;
-    self.categoryTextField.returnKeyType = UIReturnKeyDone;
-    self.categoryTextField.keyboardType = UIKeyboardTypeDefault;
-    self.categoryTextField.secureTextEntry = NO;
-    self.categoryTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.categoryTextField.delegate = self;
-
-    [_createCategoryCell.contentView addSubview:self.categoryTextField];
+         
+    _createCategoryCell.textField.clearButtonMode = UITextFieldViewModeAlways;
+    _createCategoryCell.textField.font = [WPStyleGuide tableviewTextFont];
+    _createCategoryCell.textField.textColor = [WPStyleGuide darkGrey];
+    _createCategoryCell.textField.text = @"";
+    _createCategoryCell.textField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");;
+    _createCategoryCell.textField.returnKeyType = UIReturnKeyDone;
+    _createCategoryCell.textField.keyboardType = UIKeyboardTypeDefault;
+    _createCategoryCell.textField.secureTextEntry = NO;
+    _createCategoryCell.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _createCategoryCell.textField.delegate = self;
     
     return _createCategoryCell;
 }

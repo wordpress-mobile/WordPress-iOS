@@ -10,11 +10,11 @@ class SiteIconPickerPresenter: NSObject {
 
     /// MARK: - Public Properties
 
-    var blog: Blog
+    @objc var blog: Blog
     /// Will be invoked with a Media item from the user library or an error
-    var onCompletion: ((Media?, Error?) -> Void)?
-    var onIconSelection: (() -> Void)?
-    var originalMedia: Media?
+    @objc var onCompletion: ((Media?, Error?) -> Void)?
+    @objc var onIconSelection: (() -> Void)?
+    @objc var originalMedia: Media?
 
     /// MARK: - Private Properties
 
@@ -48,14 +48,14 @@ class SiteIconPickerPresenter: NSObject {
     /// - Parameters:
     ///     - blog: The current blog.
     ///
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         self.blog = blog
         super.init()
     }
 
     /// Presents a new WPMediaPickerViewController instance.
     ///
-    func presentPickerFrom(_ viewController: UIViewController) {
+    @objc func presentPickerFrom(_ viewController: UIViewController) {
         viewController.present(mediaPickerViewController, animated: true)
     }
 
@@ -157,5 +157,9 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         default:
             break
         }
+    }
+
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return nil
     }
 }

@@ -4,13 +4,13 @@ import Foundation
 extension NSString {
     /// Returns the string's hostname, if any
     ///
-    public func hostname() -> String? {
+    @objc public func hostname() -> String? {
         return URLComponents(string: self as String)?.host
     }
 
     /// Splits the lines contained in the current string, and returns the unique values in a NSSet instance
     ///
-    public func uniqueStringComponentsSeparatedByNewline() -> NSSet {
+    @objc public func uniqueStringComponentsSeparatedByNewline() -> NSSet {
         let components = self.components(separatedBy: CharacterSet.newlines)
 
         let filtered = components.filter { !$0.isEmpty }
@@ -23,7 +23,7 @@ extension NSString {
 
     /// Validates the current string. Returns true if passes validation
     ///
-    public func isValidEmail() -> Bool {
+    @objc public func isValidEmail() -> Bool {
         let emailRegex = "^.+@.+$"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
 
