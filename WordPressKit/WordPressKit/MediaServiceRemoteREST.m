@@ -114,8 +114,22 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
           }];
 }
 
+
 - (void)uploadMedia:(RemoteMedia *)media
            progress:(NSProgress **)progress
+            success:(void (^)(RemoteMedia *remoteMedia))success
+            failure:(void (^)(NSError *error))failure
+{
+    [self uploadMedia:media
+             progress:progress
+      requestEnqueued:nil
+              success:success
+              failure:failure];
+}
+
+- (void)uploadMedia:(RemoteMedia *)media
+           progress:(NSProgress **)progress
+    requestEnqueued:(void (^)(void))requestEnqueued
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
@@ -133,7 +147,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     __block NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
                                                     parameters:parameters
                                                      fileParts:@[filePart]
-                                               requestEnqueued:nil
+                                               requestEnqueued:requestEnqueued
                                                        success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         NSDictionary *response = (NSDictionary *)responseObject;
         NSArray * errorList = response[@"errors"];
