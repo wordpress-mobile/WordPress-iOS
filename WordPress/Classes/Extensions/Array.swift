@@ -13,3 +13,9 @@ extension Array {
         }
     }
 }
+
+extension Array where Element: Hashable {
+    public var unique: [Element] {
+        return Array(Set(self))
+    }
+}

@@ -21,18 +21,18 @@ class OptionsTableViewController: UITableViewController {
 
     var options = [OptionsTableViewOption]()
 
-    var onSelect: OnSelectHandler?
+    @objc var onSelect: OnSelectHandler?
 
-    var cellBackgroundColor: UIColor = .white {
+    @objc var cellBackgroundColor: UIColor = .white {
         didSet {
             tableView.backgroundColor = cellBackgroundColor
             tableView?.reloadData()
         }
     }
 
-    var cellSelectedBackgroundColor: UIColor = .lightGray
+    @objc var cellSelectedBackgroundColor: UIColor = .lightGray
 
-    var cellDeselectedTintColor: UIColor? {
+    @objc var cellDeselectedTintColor: UIColor? {
         didSet {
             tableView?.reloadData()
         }
@@ -58,7 +58,7 @@ class OptionsTableViewController: UITableViewController {
         super.init(coder: aDecoder)
     }
 
-    func selectRow(at index: Int) {
+    @objc func selectRow(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
 
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
@@ -120,9 +120,9 @@ extension OptionsTableViewController {
 }
 
 class OptionsTableViewCell: UITableViewCell {
-    static let reuseIdentifier = "OptionCell"
+    @objc static let reuseIdentifier = "OptionCell"
 
-    var deselectedTintColor: UIColor?
+    @objc var deselectedTintColor: UIColor?
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)

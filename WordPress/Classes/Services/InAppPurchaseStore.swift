@@ -11,7 +11,7 @@ enum ProductRequestError: Error {
 }
 
 class StoreKitTransactionObserver: NSObject, SKPaymentTransactionObserver {
-    static let instance = StoreKitTransactionObserver()
+    @objc static let instance = StoreKitTransactionObserver()
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             StoreKitCoordinator.instance.processTransaction(transaction)
@@ -47,7 +47,7 @@ enum StoreCoordinatorError: Error {
 /// - `StoreKitCoordinator.TransactionDidFailNotification` on failure.
 ///   The notification's `userInfo` will also contain the productID of the attempted
 ///   purchased product, as well as a localized error message under `NSUnderlyingErrorKey`.
-class StoreCoordinator<S: Store> {
+class StoreCoordinator<S: InAppPurchaseStore> {
     fileprivate let store: S
     fileprivate let database: KeyValueDatabase
 
@@ -204,7 +204,7 @@ private struct DatabaseKeys {
     static let pendingPaymentSiteID    = "PendingPaymentSiteIDDatabaseKey"
 }
 
-protocol Store {
+protocol InAppPurchaseStore {
     associatedtype ProductType: Product
     func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void)
     func requestPayment(_ product: ProductType)
@@ -221,7 +221,7 @@ enum PurchaseAvailability {
     case available
 }
 
-extension Store {
+extension InAppPurchaseStore {
     /// Requests prices for the given plans.
     ///
     /// On success, it calls the `success` function with an array of prices. If
@@ -247,7 +247,7 @@ extension Store {
     }
 }
 
-class StoreKitStore: Store {
+class StoreKitStore: InAppPurchaseStore {
 
     typealias ProductType = SKProduct
     internal func getProductsWithIdentifiers(_ identifiers: Set<String>, success: @escaping ([ProductType]) -> Void, failure: @escaping (Error) -> Void) {
@@ -284,7 +284,7 @@ class StoreKitStore: Store {
 /// If you want to simulate a failure, use `MockStore.failing(after:)`.
 ///
 /// Both constructors support an optional `delay` parameter that defaults to 1 second.
-struct MockStore: Store {
+struct MockStore: InAppPurchaseStore {
     typealias ProductType = MockProduct
     /// Response delay in seconds
     let delay: Double
@@ -358,17 +358,17 @@ private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
     typealias Success = ([SKProduct]) -> Void
     typealias Failure = (Error) -> Void
 
-    let onSuccess: Success
-    let onError: Failure
-    var retainedObjects = [NSObject]()
+    @objc let onSuccess: Success
+    @objc let onError: Failure
+    @objc var retainedObjects = [NSObject]()
 
-    init(onSuccess: @escaping Success, onError: @escaping Failure) {
+    @objc init(onSuccess: @escaping Success, onError: @escaping Failure) {
         self.onSuccess = onSuccess
         self.onError = onError
         super.init()
     }
 
-    func retainUntilFinished(_ object: NSObject) {
+    @objc func retainUntilFinished(_ object: NSObject) {
         retainedObjects.append(object)
     }
 
