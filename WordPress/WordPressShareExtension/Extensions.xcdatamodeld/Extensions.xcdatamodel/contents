@@ -4,6 +4,7 @@
         <attribute name="backgroundSessionIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="groupID" attributeType="String" syncable="YES"/>
         <attribute name="isMedia" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="localURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
@@ -15,6 +16,6 @@
         <attribute name="uploadStatus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="UploadOperation" positionX="-45" positionY="0" width="128" height="225"/>
+        <element name="UploadOperation" positionX="-45" positionY="0" width="128" height="240"/>
     </elements>
 </model>

@@ -77,7 +77,7 @@ import CoreData
         }
     }
 
-    fileprivate func fetchSessionPost() -> RemotePost? {
+    fileprivate func fetchSessionPost(with groupID: String) -> RemotePost? {
         var remotePost: RemotePost?
         var uploadOp: UploadOperation?
         let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@ AND isMedia == false)", backgroundSessionIdentifier)
@@ -86,24 +86,39 @@ import CoreData
 
         return remotePost
     }
+
+    fileprivate func fetchSessionUploadOp() -> UploadOperation? {
+        var uploadOp: UploadOperation?
+        let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@)", backgroundSessionIdentifier)
+        uploadOp = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
+
+        return uploadOp
+    }
 }
 
 // MARK: - URLSessionTaskDelegate
 
-extension ShareExtensionSessionManager: URLSessionTaskDelegate {
+extension ShareExtensionSessionManager: URLSessionDelegate {
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         DDLogInfo("Completed background media uploading for session \(session).")
-        removeAllSessionTempFiles()
-        markAllSessionUploadOperationsWith(.Complete)
+        if let uploadOp = fetchSessionUploadOp() {
+            uploadOp.currentStatus = .Complete
+            var remotePost = fetchSessionPost(with: uploadOp.groupID)
+            // TODO: embed the media into the post content and then upload in another bg session
+            coreDataStack.saveContext()
+            if let fileName = uploadOp.fileName {
+                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
+            }
+        }
         backgroundSessionCompletionBlock?()
     }
 
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         guard let error = error as NSError? else {
             return
         }
         WPAppAnalytics.track(.shareExtensionError, error: error)
         markAllSessionUploadOperationsWith(.Error)
-        DDLogError("Error recieved for share extension media uploading. Session:\(session) Task:\(task) Error:\(error).")
+        DDLogError("Background session invalidated with error. Session:\(session) Error:\(error).")
     }
 }
