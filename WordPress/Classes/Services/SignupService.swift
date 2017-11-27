@@ -291,7 +291,7 @@ open class SignupService: LocalCoreDataService {
     ///
     /// - Returns: A blog or nil.
     ///
-    func createBlogFromBlogOptions(_ blogOptions: [String: AnyObject], failure: SignupFailureBlock) -> Blog? {
+    @objc func createBlogFromBlogOptions(_ blogOptions: [String: AnyObject], failure: SignupFailureBlock) -> Blog? {
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let blogService = BlogService(managedObjectContext: managedObjectContext)
 
@@ -343,11 +343,11 @@ open class SignupService: LocalCoreDataService {
 
     // MARK: Private Instance Methods
 
-    func anonymousApi() -> WordPressComRestApi {
+    @objc func anonymousApi() -> WordPressComRestApi {
         return WordPressComRestApi(userAgent: WPUserAgent.wordPress())
     }
 
-    func trackAccountCreationError(_ error: Error?) {
+    @objc func trackAccountCreationError(_ error: Error?) {
         if let error = error as NSError?,
             let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
             switch errorCode {

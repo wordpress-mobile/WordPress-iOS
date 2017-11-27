@@ -22,7 +22,7 @@ class NotificationMediaDownloader: NSObject {
     ///     - maximumWidth: Represents the maximum width that a returned image should have.
     ///     - completion: Is a closure that will get executed once all of the assets are ready
     ///
-    func downloadMedia(urls: Set<URL>, maximumWidth: CGFloat, completion: @escaping SuccessBlock) {
+    @objc func downloadMedia(urls: Set<URL>, maximumWidth: CGFloat, completion: @escaping SuccessBlock) {
         let missingUrls         = urls.filter { self.shouldDownloadImage(url: $0) }
         let group               = DispatchGroup()
         let shouldHitCompletion = !missingUrls.isEmpty
@@ -68,7 +68,7 @@ class NotificationMediaDownloader: NSObject {
     ///     - maximumWidth: Represents the maximum width that a returned image should have
     ///     - completion: Is a closure that will get executed just one time, after all of the assets get resized
     ///
-    func resizeMediaWithIncorrectSize(_ maximumWidth: CGFloat, completion: @escaping SuccessBlock) {
+    @objc func resizeMediaWithIncorrectSize(_ maximumWidth: CGFloat, completion: @escaping SuccessBlock) {
         let group               = DispatchGroup()
         var shouldHitCompletion = false
 
@@ -104,7 +104,7 @@ class NotificationMediaDownloader: NSObject {
     ///
     /// - Returns: A dictionary with URL as Key, and Image as Value.
     ///
-    func imagesForUrls(_ urls: [URL]) -> [URL: UIImage] {
+    @objc func imagesForUrls(_ urls: [URL]) -> [URL: UIImage] {
         var filtered = [URL: UIImage]()
 
         for (url, image) in resizedImagesMap {

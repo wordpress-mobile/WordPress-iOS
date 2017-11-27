@@ -10,7 +10,7 @@ extension NSManagedObject {
     ///
     /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
     ///
-    class var entityName: String {
+    @objc class func entityName() -> String {
         return entity().name ?? classNameWithoutNamespaces()
     }
 
@@ -18,12 +18,12 @@ extension NSManagedObject {
     ///
     /// Note: entity().name returns nil as per iOS 10, in Unit Testing Targets. Awesome.
     ///
-    class func safeFetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
+    @objc class func safeFetchRequest() -> NSFetchRequest<NSFetchRequestResult> {
         guard entity().name == nil else {
             return fetchRequest()
         }
 
-        return NSFetchRequest(entityName: entityName)
+        return NSFetchRequest(entityName: entityName())
     }
 }
 
@@ -100,7 +100,7 @@ extension NSManagedObjectContext {
     /// Inserts a new Entity. For performance reasons, this helper *DOES NOT* persists the context.
     ///
     func insertNewObject<T: NSManagedObject>(ofType type: T.Type) -> T {
-        return NSEntityDescription.insertNewObject(forEntityName: T.entityName, into: self) as! T
+        return NSEntityDescription.insertNewObject(forEntityName: T.entityName(), into: self) as! T
     }
 
     /// Loads a single NSManagedObject instance, given its ObjectID, if available.

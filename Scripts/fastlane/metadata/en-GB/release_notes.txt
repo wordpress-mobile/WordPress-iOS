@@ -1,3 +1,1 @@
-Social Login: This release includes support for Social Login via Google
-Aztec Editor: Now the default editor.
-Aztec Editor: Can now import media from other Apps.
+No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!

@@ -6,7 +6,7 @@ import Foundation
 @objc class AccountHelper: NSObject {
     /// Threadsafe Helper that indicates whether a Default Dotcom Account is available, or not
     ///
-    static func isDotcomAvailable() -> Bool {
+    @objc static func isDotcomAvailable() -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         var available = false
