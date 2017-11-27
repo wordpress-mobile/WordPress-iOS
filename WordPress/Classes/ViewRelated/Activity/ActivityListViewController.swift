@@ -4,8 +4,8 @@ import WordPressShared
 
 class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
-    let siteID: Int
-    let service: ActivityServiceRemote
+    @objc let siteID: Int
+    @objc let service: ActivityServiceRemote
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -24,7 +24,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Constructors
 
-    init(siteID: Int, service: ActivityServiceRemote) {
+    @objc init(siteID: Int, service: ActivityServiceRemote) {
         self.siteID = siteID
         self.service = service
         super.init(style: .grouped)
@@ -36,14 +36,16 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init?(blog: Blog) {
+    @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
         guard let api = blog.wordPressComRestApi(),
-            let service = ActivityServiceRemote(wordPressComRestApi: api) else {
-                return nil
+            let service = ActivityServiceRemote(wordPressComRestApi: api),
+            let siteID = blog.dotComID?.intValue
+        else {
+            return nil
         }
 
-        self.init(siteID: Int(blog.dotComID!), service: service)
+        self.init(siteID: siteID, service: service)
     }
 
     // MARK: - View lifecycle
@@ -60,14 +62,19 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidAppear(animated)
 
         service.getActivityForSite(siteID, count: 100, success: { (activities, _) in
-            self.viewModel = .ready(activities)
+            do {
+                self.viewModel = try .ready(ActivityUtils.rewriteStream(activities: activities))
+            } catch {
+                DDLogError("Error rewriting activities stream \(error)")
+                self.viewModel = .ready(activities)
+            }
         }, failure: { error in
             DDLogError("Error loading activities: \(error)")
             self.viewModel = .error(String(describing: error))
         })
     }
 
-    func updateNoResults() {
+    @objc func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         } else {
@@ -84,7 +91,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
 
-    func hideNoResults() {
+    @objc func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
 }

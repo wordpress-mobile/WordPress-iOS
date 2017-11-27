@@ -22,9 +22,9 @@ open class WP3DTouchShortcutHandler: NSObject {
         }
     }
 
-    static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
+    @objc static let applicationShortcutUserInfoIconKey = "applicationShortcutUserInfoIconKey"
 
-    open func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
+    @objc open func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) -> Bool {
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
 
         switch shortcutItem.type {
