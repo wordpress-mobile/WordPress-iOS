@@ -98,7 +98,7 @@ class AppSettingsViewController: UITableViewController {
         editorRows.append(textEditor)
 
         let nativeEditor = CheckmarkRow(
-            title: NSLocalizedString("Visual", comment: "Option to enable the beta native editor (Aztec)"),
+            title: NSLocalizedString("Visual", comment: "Option to enable the Aztec editor."),
             checked: editorSettings.isEnabled(.aztec),
             action: enableEditor(.aztec)
         )
