@@ -39,7 +39,7 @@ open class ReaderGapMarkerCell: UITableViewCell {
         button.isUserInteractionEnabled = false
     }
 
-    open func animateActivityView(_ animate: Bool) {
+    @objc open func animateActivityView(_ animate: Bool) {
         button.alpha = animate ? WPAlphaZero : WPAlphaFull
         if animate {
             activityView.startAnimating()
@@ -59,7 +59,7 @@ open class ReaderGapMarkerCell: UITableViewCell {
         }
     }
 
-    func drawTearBackground() {
+    @objc func drawTearBackground() {
         let tearImage = UIImage(named: "background-reader-tear")
         tearBackgroundView.backgroundColor = UIColor(patternImage: tearImage!)
     }

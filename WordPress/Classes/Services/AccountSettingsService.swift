@@ -158,7 +158,7 @@ class AccountSettingsService {
     }
 
     fileprivate func managedAccountSettingsWithID(_ userID: Int) -> ManagedAccountSettings? {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedAccountSettings.entityName)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedAccountSettings.entityName())
         request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
         guard let results = (try? context.fetch(request)) as? [ManagedAccountSettings] else {
@@ -174,7 +174,7 @@ class AccountSettingsService {
             return
         }
 
-        if let managedSettings = NSEntityDescription.insertNewObject(forEntityName: ManagedAccountSettings.entityName, into: context) as? ManagedAccountSettings {
+        if let managedSettings = NSEntityDescription.insertNewObject(forEntityName: ManagedAccountSettings.entityName(), into: context) as? ManagedAccountSettings {
             managedSettings.updateWith(settings)
             managedSettings.account = account
         }

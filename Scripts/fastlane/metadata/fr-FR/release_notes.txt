@@ -1,3 +1,1 @@
-Connexion aux réseaux sociaux : cette version inclue le support de la connexion via Google
-Aztec Editor : c’est maintenant l’éditeur par défaut.
-Aztec Editor : il y a maintenant la possibilité d’importer des médias depuis d’autres applications.
+Pas de grandes nouveautés mais quelques améliorations pour vous offrir une app plus rapide et plus stable. Tout ce qui brille n’est pas or, parfois c'est du code !

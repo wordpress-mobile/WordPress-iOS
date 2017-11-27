@@ -129,11 +129,11 @@ open class NotificationSettingsViewController: UIViewController {
 
 
     // MARK: - UITableView Datasource Methods
-    open func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+    @objc open func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return groupedSettings?.count ?? emptyCount
     }
 
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    @objc open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
         case .blog where requiresBlogsPagination:
             return displayMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
@@ -142,7 +142,7 @@ open class NotificationSettingsViewController: UIViewController {
         }
     }
 
-    open func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    @objc open func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         let identifier  = reusableIdentifierForIndexPath(indexPath)
         let cell        = tableView.dequeueReusableCell(withIdentifier: identifier)!
 
@@ -151,14 +151,14 @@ open class NotificationSettingsViewController: UIViewController {
         return cell
     }
 
-    open func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
+    @objc open func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
         let isBlogSection   = indexPath.section == Section.blog.rawValue
         let isNotPagination = !isPaginationRow(indexPath)
 
         return isBlogSection && isNotPagination ? blogRowHeight : WPTableViewDefaultRowHeight
     }
 
-    open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    @objc open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // Hide when the section is empty!
         if isSectionEmpty(section) {
             return nil
@@ -168,11 +168,11 @@ open class NotificationSettingsViewController: UIViewController {
         return theSection.headerText()
     }
 
-    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    @objc open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
-    open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    @objc open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         // Hide when the section is empty!
         if isSectionEmpty(section) {
             return nil
@@ -182,14 +182,14 @@ open class NotificationSettingsViewController: UIViewController {
         return theSection.footerText()
     }
 
-    open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    @objc open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
 
 
     // MARK: - UITableView Delegate Methods
-    open func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+    @objc open func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
         if isPaginationRow(indexPath) {
             toggleDisplayMoreBlogs()
         } else if let settings = settingsForRowAtIndexPath(indexPath) {

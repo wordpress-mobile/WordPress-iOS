@@ -1,7 +1,7 @@
 import UIKit
 
 class LoginProloguePageViewController: UIPageViewController {
-    var pages: [UIViewController] = []
+    @objc var pages: [UIViewController] = []
     fileprivate var pageControl: UIPageControl?
     fileprivate var bgAnimation: UIViewPropertyAnimator?
     fileprivate struct Constants {
@@ -26,7 +26,7 @@ class LoginProloguePageViewController: UIPageViewController {
         addPageControl()
     }
 
-    func addPageControl() {
+    @objc func addPageControl() {
         let newControl = UIPageControl()
 
         newControl.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ class LoginProloguePageViewController: UIPageViewController {
         pageControl = newControl
     }
 
-    func handlePageControlValueChanged(sender: UIPageControl) {
+    @objc func handlePageControlValueChanged(sender: UIPageControl) {
         guard let currentPage = viewControllers?.first,
             let currentIndex = pages.index(of: currentPage) else {
             return

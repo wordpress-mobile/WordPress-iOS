@@ -249,7 +249,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         UIApplication.shared.open(targetURL!)
     }
 
-    func refreshPushAuthorizationStatus() {
+    @objc func refreshPushAuthorizationStatus() {
         PushNotificationsManager.shared.loadAuthorizationStatus { authorized in
             self.pushNotificationsAuthorized = authorized
         }

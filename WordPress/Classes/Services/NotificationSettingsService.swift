@@ -28,7 +28,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///     - managedObjectContext: A Reference to the MOC that should be used to interact with the Core Data Stack.
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
-    public convenience init(managedObjectContext context: NSManagedObjectContext, wordPressComRestApi: WordPressComRestApi) {
+    @objc public convenience init(managedObjectContext context: NSManagedObjectContext, wordPressComRestApi: WordPressComRestApi) {
         self.init(managedObjectContext: context)
         self.remoteApi = wordPressComRestApi
     }
@@ -88,7 +88,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///     - success: Closure to be called on success.
     ///     - failure: Closure to be called on failure, with the associated error.
     ///
-    open func registerDeviceForPushNotifications(_ token: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
+    @objc open func registerDeviceForPushNotifications(_ token: String, success: ((_ deviceId: String) -> ())?, failure: ((NSError) -> Void)?) {
         if token.isEmpty {
             DDLogWarn("Error: registerDeviceForPushNotifications called with an empty token!")
             return
@@ -108,7 +108,7 @@ open class NotificationSettingsService: LocalCoreDataService {
     ///     - success: Closure to be called on success.
     ///     - failure: Closure to be called on failure, with the associated error.
     ///
-    open func unregisterDeviceForPushNotifications(_ deviceId: String, success: (() -> ())?, failure: ((NSError) -> Void)?) {
+    @objc open func unregisterDeviceForPushNotifications(_ deviceId: String, success: (() -> ())?, failure: ((NSError) -> Void)?) {
         if deviceId.isEmpty {
             DDLogWarn("Error: unregisterDeviceForPushNotifications called with an empty deviceId!")
             return

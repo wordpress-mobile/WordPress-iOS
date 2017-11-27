@@ -6,7 +6,7 @@ public extension Blog {
     ///
     /// - Returns: Whether site management is permitted
     ///
-    func supportsSiteManagementServices() -> Bool {
+    @objc func supportsSiteManagementServices() -> Bool {
         return isHostedAtWPcom && isAdmin
     }
 }
@@ -21,7 +21,7 @@ open class SiteManagementService: LocalCoreDataService {
     ///     - success: Optional success block with no parameters
     ///     - failure: Optional failure block with NSError
     ///
-    open func deleteSiteForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
+    @objc open func deleteSiteForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
@@ -50,7 +50,7 @@ open class SiteManagementService: LocalCoreDataService {
     ///     - success: Optional success block with no parameters
     ///     - failure: Optional failure block with NSError
     ///
-    open func exportContentForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
+    @objc open func exportContentForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
@@ -70,7 +70,7 @@ open class SiteManagementService: LocalCoreDataService {
     ///     - success: Optional success block with array of purchases (if any)
     ///     - failure: Optional failure block with NSError
     ///
-    open func getActivePurchasesForBlog(_ blog: Blog, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
+    @objc open func getActivePurchasesForBlog(_ blog: Blog, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
@@ -91,7 +91,7 @@ open class SiteManagementService: LocalCoreDataService {
     ///
     /// - Returns: Remote service for site management
     ///
-    func siteManagementServiceRemoteForBlog(_ blog: Blog) -> SiteManagementServiceRemote? {
+    @objc func siteManagementServiceRemoteForBlog(_ blog: Blog) -> SiteManagementServiceRemote? {
         guard let api = blog.wordPressComRestApi() else {
             return nil
         }
