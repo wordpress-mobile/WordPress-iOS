@@ -123,11 +123,12 @@ private extension PostTagPickerViewController {
     func loadTags() {
         dataSource = LoadingDataSource()
         let context = ContextManager.sharedInstance().mainContext
-        let service = PostTagService(managedObjectContext: context)
+        let service = PostTagService(managedObjectContext: context)        
         service.getTopTags(
             for: blog,
             success: { [weak self] tags in
-                self?.tagsLoaded(tags: tags)
+                let tagNames = tags.flatMap { return $0.name }
+                self?.tagsLoaded(tags: tagNames)
             },
             failure: { [weak self] error in
                 self?.tagsFailedLoading(error: error)
