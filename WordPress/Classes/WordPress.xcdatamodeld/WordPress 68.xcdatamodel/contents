@@ -640,48 +640,48 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <entity name="TimezoneInfo" representedClassName=".TimezoneInfo" syncable="YES">
+    <entity name="TimeZoneInfo" representedClassName=".TimeZoneInfo" syncable="YES">
         <attribute name="continent" attributeType="String" syncable="YES"/>
         <attribute name="label" attributeType="String" syncable="YES"/>
         <attribute name="value" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="675"/>
-        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="735"/>
-        <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="390"/>
-        <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
-        <element name="MenuItem" positionX="45" positionY="180" width="128" height="255"/>
-        <element name="MenuLocation" positionX="54" positionY="189" width="128" height="120"/>
-        <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
-        <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Person" positionX="18" positionY="153" width="128" height="225"/>
-        <element name="Post" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
-        <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
-        <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
-        <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
-        <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
-        <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
-        <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
-        <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
-        <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="660"/>
-        <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
-        <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
-        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="210"/>
-        <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
-        <element name="ReaderTeamTopic" positionX="27" positionY="153" width="128" height="60"/>
-        <element name="Role" positionX="36" positionY="162" width="128" height="105"/>
-        <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
-        <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
-        <element name="TimezoneInfo" positionX="27" positionY="153" width="128" height="90"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Account" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="AccountSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BasePost" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Blog" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="BlogSettings" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Category" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Comment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Domain" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Media" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Menu" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MenuItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MenuLocation" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Notification" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Page" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Person" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Post" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PostTag" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PostType" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PublicizeConnection" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="PublicizeService" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderAbstractTopic" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderCrossPostMeta" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderDefaultTopic" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderGapMarker" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderListTopic" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderSearchSuggestion" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderSearchTopic" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderSiteTopic" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderTagTopic" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ReaderTeamTopic" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Role" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SharingButton" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SourcePostAttribution" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Theme" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TimeZoneInfo" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

@@ -6,12 +6,12 @@ enum TimezoneSelectorViewModel {
     case loading
     /**
      - parameters
-        - first param: - all TimezoneInfo objects from DB
+        - first param: - all TimeZoneInfo objects from DB
         - second param: - usersCurrentTimeZoneString passed from TimezoneSelectorVC
         - third param: - usersCurrentManualGMTOffset passed from TimezoneSelectorVC
         - fourth param: - action block to be executed when user clicks on a cell
     */
-    case ready([TimezoneInfo], String?, NSNumber?, ImmuTableAction)
+    case ready([TimeZoneInfo], String?, NSNumber?, ImmuTableAction)
     case error(String)
 
     /// the first param is a list of all continents, used as section headers
@@ -86,7 +86,7 @@ enum TimezoneSelectorViewModel {
         context.performAndWait {
             for (continent, timezonesInContinent) in resultsDict {
                 for (key, val) in timezonesInContinent {
-                    let timezoneInfo = NSEntityDescription.insertNewObject(forEntityName: "TimezoneInfo", into: context) as! TimezoneInfo
+                    let timezoneInfo = NSEntityDescription.insertNewObject(forEntityName: "TimeZoneInfo", into: context) as! TimeZoneInfo
                     timezoneInfo.label = key
                     timezoneInfo.value = val
                     timezoneInfo.continent = continent
@@ -96,9 +96,9 @@ enum TimezoneSelectorViewModel {
         }
     }
 
-    /// Helper method to fetch all TimezoneInfo objects from DB
-    func loadDataFromDB() -> [TimezoneInfo] {
-        let fetchRequest = NSFetchRequest<TimezoneInfo>(entityName: "TimezoneInfo")
+    /// Helper method to fetch all TimeZoneInfo objects from DB
+    func loadDataFromDB() -> [TimeZoneInfo] {
+        let fetchRequest = NSFetchRequest<TimeZoneInfo>(entityName: "TimeZoneInfo")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "continent", ascending: true),
                                         NSSortDescriptor(key: "label", ascending: true)]
         do {
@@ -110,7 +110,7 @@ enum TimezoneSelectorViewModel {
     }
 
     /// Returns a sorted list of continents and timezones mapped to a continent
-    private func setupVariables(with result: [TimezoneInfo]) -> ContinentsAndTimezones {
+    private func setupVariables(with result: [TimeZoneInfo]) -> ContinentsAndTimezones {
         var continentNames = result.reduce(into: Set<String>(), { (mySet, timezone) in
             mySet.insert(timezone.continent)
         }).sorted()
@@ -146,7 +146,7 @@ enum TimezoneSelectorViewModel {
     }
 
     /// returns an IndexPath, which is the user's current selection
-    private func getIndexPathToHighlight(timezoneString: String?, manualOffset: NSNumber?, data: ContinentsAndTimezones, allTimezones: [TimezoneInfo]) -> IndexPath? {
+    private func getIndexPathToHighlight(timezoneString: String?, manualOffset: NSNumber?, data: ContinentsAndTimezones, allTimezones: [TimeZoneInfo]) -> IndexPath? {
         if let usersTimeZone = timezoneString, !usersTimeZone.isEmpty {
             for (continentIndex, continent) in data.0.enumerated() {
                 let allTimezonesInContinent = allTimezones.filter({ $0.continent == continent })
