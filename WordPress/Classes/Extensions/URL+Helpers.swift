@@ -55,5 +55,74 @@ extension URL {
     static func fileExtensionForUTType(_ type: String) -> String? {
         let fileExtension = UTTypeCopyPreferredTagWithClass(type as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue()
         return fileExtension as String?
+    }    
+
+    var pixelSize: CGSize {
+        get {
+            if isVideo {
+                let asset = AVAsset(url: self as URL)
+                if let track = asset.tracks(withMediaType: .video).first {
+                    return track.naturalSize.applying(track.preferredTransform)
+                }
+            } else if isImage {
+                let options: [NSString: NSObject] = [kCGImageSourceShouldCache: false as CFBoolean]
+                if
+                    let imageSource = CGImageSourceCreateWithURL(self as NSURL, nil),
+                    let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, options as CFDictionary?) as NSDictionary?,
+                    let pixelWidth = imageProperties[kCGImagePropertyPixelWidth as NSString] as? Int,
+                    let pixelHeight = imageProperties[kCGImagePropertyPixelHeight as NSString] as? Int
+                {
+                    return CGSize(width: pixelWidth, height: pixelHeight)
+                }
+            }
+            return CGSize.zero
+        }
+    }
+
+    var typeIdentifier: String? {
+        guard isFileURL else { return nil }
+        do {
+            let data = try bookmarkData(options: NSURL.BookmarkCreationOptions.minimalBookmark, includingResourceValuesForKeys: [URLResourceKey.typeIdentifierKey], relativeTo: nil)
+            guard
+                let resourceValues = NSURL.resourceValues(forKeys: [URLResourceKey.typeIdentifierKey], fromBookmarkData: data),
+                let typeIdentifier = resourceValues[URLResourceKey.typeIdentifierKey] as? String else {
+                    return nil
+            }
+            return typeIdentifier
+        } catch {
+            return nil
+        }
+    }
+
+    var mimeType: String {
+        guard let uti = typeIdentifier,
+            let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?.takeUnretainedValue() as String?
+            else {
+                return "application/octet-stream"
+        }
+
+        return mimeType
+    }
+
+    var isVideo: Bool {
+        guard let uti = typeIdentifier else {
+            return false
+        }
+
+        return UTTypeConformsTo(uti as CFString, kUTTypeMovie)
+    }
+
+    var isImage: Bool {
+        guard let uti = typeIdentifier else {
+            return false
+        }
+
+        return UTTypeConformsTo(uti as CFString, kUTTypeImage)
+    }
+}
+
+extension NSURL {
+    @objc var isVideo: Bool {
+        return (self as URL).isVideo
     }
 }
