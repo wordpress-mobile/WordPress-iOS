@@ -1,6 +1,6 @@
 import UIKit
 
-private let reuseIdentifier = "themeCell"
+private let reuseIdentifier = "themeSelectionCell"
 
 class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController {
 
