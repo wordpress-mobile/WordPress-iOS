@@ -17,20 +17,12 @@ class EditorSettingsTests: XCTestCase {
             // This simulates the first launch
             let editorSettings = EditorSettings(database: database)
 
-            XCTAssertFalse(editorSettings.isEnabled(.legacy))
             XCTAssertTrue(editorSettings.isEnabled(.aztec))
-
-            // We pick another editor and try again
-            editorSettings.enable(.legacy)
-
-            XCTAssertTrue(editorSettings.isEnabled(.legacy))
-            XCTAssertFalse(editorSettings.isEnabled(.aztec))
 
             // This simulates a second launch
             let secondEditorSettings = EditorSettings(database: database)
 
-            XCTAssertTrue(secondEditorSettings.isEnabled(.legacy))
-            XCTAssertFalse(secondEditorSettings.isEnabled(.aztec))
+            XCTAssertTrue(secondEditorSettings.isEnabled(.aztec))
         }
 
         BuildConfiguration.localDeveloper.test(testClosure)
