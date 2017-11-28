@@ -454,7 +454,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// The view to show when media picker has no assets to show.
     ///
-    fileprivate let noResultsView = MediaNoResultsView.makeView()
+    fileprivate let noResultsView = MediaNoResultsView()
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
@@ -882,6 +882,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         if isSearching || hasAssets {
             mediaPicker.showSearchBar()
+            if let searchBar = mediaPicker.searchBar {
+                WPStyleGuide.configureSearchBar(searchBar)
+            }
         } else {
             mediaPicker.hideSearchBar()
         }
@@ -3353,9 +3356,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
-        if let searchBar = picker.searchBar {
-            WPStyleGuide.configureSearchBar(searchBar)
-        }
         updateSearchBar(mediaPicker: picker)
         noResultsView.updateForFetching()
     }

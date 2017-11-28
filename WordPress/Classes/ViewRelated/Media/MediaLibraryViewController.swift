@@ -16,7 +16,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     fileprivate var isLoading: Bool = false
-    fileprivate let noResultsView = MediaNoResultsView.makeView()
+    fileprivate let noResultsView = MediaNoResultsView()
 
     fileprivate var selectedAsset: Media? = nil
 
@@ -101,9 +101,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
-        if let searchBar = self.searchBar {
-            WPStyleGuide.configureSearchBar(searchBar)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -221,6 +218,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         if shouldShowBar {
             showSearchBar()
+            if let searchBar = self.searchBar {
+                WPStyleGuide.configureSearchBar(searchBar)
+            }
         } else {
             hideSearchBar()
         }
