@@ -38,7 +38,7 @@ class ProjectTableViewCell: BasePageListCell {
         
         let rightPost = getRightPost(from: post)
         let str = rightPost.titleForDisplay() ?? ""
-        titleLabel.attributedText = NSAttributedString(string: str, attributes: WPStyleGuide.pageCellTitleAttributes() as? [String: Any])
+        titleLabel.attributedText = NSAttributedString(string: str, attributes: WPStyleGuide.pageCellTitleAttributes() as? [NSAttributedStringKey: Any])
     }
 
     func configureImage() {

@@ -25,7 +25,7 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     
     // MARK: - Convenience constructors
     
-    class func controllerWithBlog(_ blog: Blog) -> PortfolioListViewController {
+    @objc class func controllerWithBlog(_ blog: Blog) -> PortfolioListViewController {
         
         let storyBoard = UIStoryboard(name: "Portfolio", bundle: Bundle.main)
         let controller = storyBoard.instantiateViewController(withIdentifier: "PortfolioListViewController") as! PortfolioListViewController
@@ -248,7 +248,7 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
             return windowlessCell
         }
@@ -440,7 +440,7 @@ class PortfolioListViewController: AbstractPostListViewController, UIViewControl
     
     // MARK: - Refreshing noResultsView
     
-    func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+    @objc func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
