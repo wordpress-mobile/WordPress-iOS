@@ -15,6 +15,8 @@ static NSString * const TaxonomyRESTTagIdentifier = @"tags";
 static NSString * const TaxonomyRESTIDParameter = @"ID";
 static NSString * const TaxonomyRESTNameParameter = @"name";
 static NSString * const TaxonomyRESTSlugParameter = @"slug";
+static NSString * const TaxonomyRESTDescriptionParameter = @"description";
+static NSString * const TaxonomyRESTPostCountParameter = @"post_count";
 static NSString * const TaxonomyRESTParentParameter = @"parent";
 static NSString * const TaxonomyRESTSearchParameter = @"search";
 static NSString * const TaxonomyRESTOrderParameter = @"order";
@@ -220,6 +222,8 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
     tag.tagID = [jsonTag numberForKey:TaxonomyRESTIDParameter];
     tag.name = [jsonTag stringForKey:TaxonomyRESTNameParameter];
     tag.slug = [jsonTag stringForKey:TaxonomyRESTSlugParameter];
+    tag.tagDescription = [jsonTag stringForKey:TaxonomyRESTDescriptionParameter];
+    tag.postCount = [jsonTag numberForKey:TaxonomyRESTPostCountParameter];
     return tag;
 }
 
