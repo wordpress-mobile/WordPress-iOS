@@ -5,7 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 68
 - @ctarda 2017-11-27
-- `PostTag` added `tagDescription`  string property. Stores an optional description.
+- `PostTag` added `tagDescription`  string property and `postCount` integer property. Store an optional description and the number of posts a tag has been used in.
 
 ## WordPress 67
 - @3vangelos 2017-09-26
