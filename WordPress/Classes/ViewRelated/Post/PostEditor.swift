@@ -19,19 +19,3 @@ import CocoaLumberjack
     ///
     var isOpenedDirectlyForPhotoPost: Bool { get set }
 }
-
-extension WPLegacyEditPostViewController: PostEditor {
-    /// Whether the editor should open directly to the media picker.
-    ///
-    var isOpenedDirectlyForPhotoPost: Bool {
-        get {
-            return false
-        }
-        set {
-            // Ignore
-            if newValue {
-                DDLogWarn("Trying to open legacy editor for photo post")
-            }
-        }
-    }
-}
