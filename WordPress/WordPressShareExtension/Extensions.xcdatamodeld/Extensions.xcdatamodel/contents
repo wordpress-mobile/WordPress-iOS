@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13533" systemVersion="17B48" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="UploadOperation" representedClassName="UploadOperation" syncable="YES">
         <attribute name="backgroundSessionIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="backgroundSessionTaskID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="groupID" attributeType="String" syncable="YES"/>
@@ -16,6 +17,6 @@
         <attribute name="uploadStatus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="UploadOperation" positionX="-45" positionY="0" width="128" height="240"/>
+        <element name="UploadOperation" positionX="-45" positionY="0" width="128" height="255"/>
     </elements>
 </model>
