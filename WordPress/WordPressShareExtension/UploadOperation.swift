@@ -32,6 +32,10 @@ public class UploadOperation: NSManagedObject {
     ///
     @NSManaged public var groupID: String
 
+    /// NSURL background session task ID assigned to this upload op
+    ///
+    @NSManaged public var backgroundSessionTaskID: Int32
+
     /// NSURL background session ID assigned to this upload op
     ///
     @NSManaged public var backgroundSessionIdentifier: String?

@@ -17,7 +17,7 @@
  *  @param  failure         The block that will be executed on failure.  Can be nil.
  */
 - (void)uploadMedia:(RemoteMedia *)media
-    requestEnqueued:(void (^)(void))requestEnqueued
+    requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure;
 

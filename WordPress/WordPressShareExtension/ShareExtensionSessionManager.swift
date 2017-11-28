@@ -87,9 +87,9 @@ import CoreData
         return remotePost
     }
 
-    fileprivate func fetchSessionUploadOp() -> UploadOperation? {
+    fileprivate func fetchSessionUploadOp(taskID: Int) -> UploadOperation? {
         var uploadOp: UploadOperation?
-        let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@)", backgroundSessionIdentifier)
+        let predicate = NSPredicate(format: "(backgroundSessionTaskID == %d AND backgroundSessionIdentifier == %@)", taskID, backgroundSessionIdentifier)
         uploadOp = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
 
         return uploadOp
@@ -99,26 +99,69 @@ import CoreData
 // MARK: - URLSessionTaskDelegate
 
 extension ShareExtensionSessionManager: URLSessionDelegate {
+
+    /*
+        If an application has received an -application:handleEventsForBackgroundURLSession:completionHandler: message,
+        the session delegate will receive this message to indicate that all messages previously enqueued for this
+        session have been delivered. At this time it is safe to invoke the previously stored completion handler,
+        or to begin any internal updates that will result in invoking the completion handler.
+     */
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        if let completionHandler = backgroundSessionCompletionBlock {
+            backgroundSessionCompletionBlock = nil
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
         DDLogInfo("Completed background media uploading for session \(session).")
-        if let uploadOp = fetchSessionUploadOp() {
+    }
+
+    /*
+        Tells the URL session that the session has been invalidated. If you invalidate a session by calling its
+        finishTasksAndInvalidate() method, the session waits until after the final task in the session finishes or
+        fails before calling this delegate method. If you call the invalidateAndCancel() method, the session calls
+        this delegate method immediately.
+     */
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        if let error = error {
+            DDLogError("Background session invalidated with error. Session:\(session) Error:\(error).")
+        } else {
+            DDLogError("Background session explicitly invalidated. Session:\(session).")
+        }
+        WPAppAnalytics.track(.shareExtensionError, error: error)
+        markAllSessionUploadOperationsWith(.Error)
+    }
+}
+
+// MARK: - URLSessionTaskDelegate
+
+extension ShareExtensionSessionManager: URLSessionTaskDelegate {
+    
+    // Periodically informs the delegate of the progress of sending body content to the server.
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        DDLogInfo("didSendBodyData [session:\(session) task:\(task.debugDescription) bytesSent:\(bytesSent) totalBytesSent:\(totalBytesSent) totalBytesExpectedToSend:\(totalBytesExpectedToSend)]")
+    }
+
+    // Tells the delegate that the task finished transferring data. Server errors are not reported through the
+    // error parameter. The only errors your delegate receives through the error parameter are client-side errors,
+    // such as being unable to resolve the hostname or connect to the host.
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if let error = error {
+            DDLogError("Background session task completed with error. Session:\(session) Task:\(task.debugDescription) Error:\(error).")
+            return
+        }
+
+        if let uploadOp = fetchSessionUploadOp(taskID: task.taskIdentifier) {
             uploadOp.currentStatus = .Complete
-            var remotePost = fetchSessionPost(with: uploadOp.groupID)
             // TODO: embed the media into the post content and then upload in another bg session
+            // var remotePost = fetchSessionPost(with: uploadOp.groupID)
             coreDataStack.saveContext()
             if let fileName = uploadOp.fileName {
                 ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
             }
         }
-        backgroundSessionCompletionBlock?()
-    }
 
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        guard let error = error as NSError? else {
-            return
-        }
-        WPAppAnalytics.track(.shareExtensionError, error: error)
-        markAllSessionUploadOperationsWith(.Error)
-        DDLogError("Background session invalidated with error. Session:\(session) Error:\(error).")
+        DDLogInfo("Background session task completed. Session:\(session) Task:\(task.debugDescription).")
     }
 }
+

@@ -368,9 +368,7 @@ int ddLogLevel = DDLogLevelInfo;
     if ([identifier containsString:WPAppGroupName]) {
         DDLogInfo(@"Rejoining session with identifier: %@ with application in state: %@", identifier, application.applicationState);
         ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
-        sessionManager.backgroundSessionCompletionBlock = ^{
-            dispatch_async(dispatch_get_main_queue(), completionHandler);
-        };
+        sessionManager.backgroundSessionCompletionBlock = completionHandler;
         [sessionManager startBackgroundSession];
     }
 }
