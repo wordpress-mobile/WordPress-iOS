@@ -36,6 +36,14 @@ extension Date {
             return formatter
         }()
 
+        static let mediumUTCDateTime: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return formatter
+        }()
+
         static let shortDateTime: DateFormatter = {
             let formatter = DateFormatter()
             formatter.doesRelativeDateFormatting = true
@@ -118,6 +126,14 @@ extension Date {
     ///
     public func mediumStringWithTime() -> String {
         return DateFormatters.mediumDateTime.string(from: self)
+    }
+
+    /// Formats the current date as (non relattive) medium date/time in UTC.
+    ///
+    /// - Example: Jan 28, 2017, 1:51 PM
+    ///
+    public func mediumStringWithUTCTime() -> String {
+        return DateFormatters.mediumUTCDateTime.string(from: self)
     }
 
     /// Formats the current date as a short relative date/time.
