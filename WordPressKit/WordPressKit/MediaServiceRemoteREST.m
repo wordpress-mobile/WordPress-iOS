@@ -116,7 +116,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
 
 - (void)uploadMedia:(RemoteMedia *)media
-    requestEnqueued:(void (^)(void))requestEnqueued
+    requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
@@ -135,9 +135,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     [self.wordPressComRestApi multipartPOST:requestUrl
                                  parameters:parameters
                                   fileParts:@[filePart]
-                            requestEnqueued:^{
+                            requestEnqueued:^(NSNumber *taskID) {
                                 if (requestEnqueued) {
-                                    requestEnqueued();
+                                    requestEnqueued(taskID);
                                 }
     } success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         NSDictionary *response = (NSDictionary *)responseObject;

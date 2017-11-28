@@ -308,6 +308,18 @@ private extension ShareViewController {
         uploadOp?.currentStatus = status
         coreDataStack.saveContext()
     }
+
+    func updateTaskID(_ taskID: NSNumber, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
+        var uploadOp: UploadOperation?
+        do {
+            uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
+        } catch {
+            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+            return
+        }
+        uploadOp?.backgroundSessionTaskID = taskID.int32Value
+        coreDataStack.saveContext()
+    }
 }
 
 // MARK: - ShareViewController Extension: Backend Interaction
@@ -393,8 +405,11 @@ private extension ShareViewController {
         // The success and error blocks should never get called here, but let's add them just in case. The remaining
         // upload operations will be handled in the container (WPiOS) app after the background session completes.
         let remote = MediaServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
-        remote.uploadMedia(remoteMedia, requestEnqueued: {
+        remote.uploadMedia(remoteMedia, requestEnqueued: { taskID in
             self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadMediaOpID)
+            if let taskID = taskID {
+                self.updateTaskID(taskID, forUploadOpWithObjectID: uploadMediaOpID)
+            }
             requestEnqueued()
         }, success: {_ in
             self.updateStatus(.Complete, forUploadOpWithObjectID: uploadMediaOpID)
