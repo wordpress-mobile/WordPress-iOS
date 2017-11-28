@@ -62,7 +62,12 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidAppear(animated)
 
         service.getActivityForSite(siteID, count: 100, success: { (activities, _) in
-            self.viewModel = .ready(activities)
+            do {
+                self.viewModel = try .ready(ActivityUtils.rewriteStream(activities: activities))
+            } catch {
+                DDLogError("Error rewriting activities stream \(error)")
+                self.viewModel = .ready(activities)
+            }
         }, failure: { error in
             DDLogError("Error loading activities: \(error)")
             self.viewModel = .error(String(describing: error))
