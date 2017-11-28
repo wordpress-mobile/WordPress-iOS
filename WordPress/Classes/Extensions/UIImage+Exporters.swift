@@ -77,23 +77,23 @@ extension UIImage {
 
 extension UIImage: ExportableAsset {
 
-    func originalUTI() -> String? {
+    public func originalUTI() -> String? {
         return kUTTypeJPEG as String
     }
 
-    var assetMediaType: MediaType {
+    public var assetMediaType: MediaType {
         get {
             return .image
         }
     }
 
-    var defaultThumbnailUTI: String {
+    public var defaultThumbnailUTI: String {
         get {
             return kUTTypeJPEG as String
         }
     }
 
-    var mediaName: String? {
+    public var mediaName: String? {
         return UUID().uuidString
     }
 }
