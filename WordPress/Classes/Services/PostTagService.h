@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  Retrieves the most used tags for a blog.
  */
 - (void)getTopTagsForBlog:(Blog *)blog
-                  success:(nullable void (^)(NSArray <NSString *> *tags))success
+                  success:(nullable void (^)(NSArray <PostTag *> *tags))success
                   failure:(nullable void (^)(NSError *error))failure;
 
 /**
