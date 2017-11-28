@@ -158,6 +158,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     tag.name = remoteTag.name;
     tag.slug = remoteTag.slug;
+    tag.tagDescription = remoteTag.tagDescription;
+    tag.postCount = remoteTag.postCount;
     
     return tag;
 }
