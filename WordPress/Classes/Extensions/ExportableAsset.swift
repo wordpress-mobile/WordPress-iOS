@@ -5,5 +5,5 @@ import Foundation
     /// The MediaType for the asset
     ///
     var assetMediaType: MediaType { get }
-    
+
 }
