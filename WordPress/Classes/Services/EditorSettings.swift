@@ -3,7 +3,6 @@ import Foundation
 class EditorSettings: NSObject {
     @objc
     enum Editor: Int {
-        case legacy
         case aztec
     }
 
@@ -52,13 +51,7 @@ class EditorSettings: NSObject {
     // MARK: Public accessors
 
     private var current: Editor {
-        let nativeEditorEnabled = database.object(forKey: aztecEditorEnabledKey) as? Bool ?? false
-
-        if nativeEditorEnabled {
-            return .aztec
-        } else {
-            return .legacy
-        }
+        return .aztec
     }
 
     @objc func isEnabled(_ editor: Editor) -> Bool {
@@ -77,8 +70,6 @@ class EditorSettings: NSObject {
         }
 
         switch editor {
-        case .legacy:
-            database.set(false, forKey: aztecEditorEnabledKey)
         case .aztec:
             database.set(true, forKey: aztecEditorEnabledKey)
         }
@@ -94,10 +85,6 @@ class EditorSettings: NSObject {
             let vc = AztecPostViewController(post: post)
             configure(vc, vc)
             return vc
-        case .legacy:
-            let vc = WPLegacyEditPostViewController(post: post)
-            configure(vc, vc)
-            return vc
         }
     }
 
@@ -105,10 +92,6 @@ class EditorSettings: NSObject {
         switch current {
         case .aztec:
             let vc = AztecPostViewController(post: post)
-            configure(vc, vc)
-            return vc
-        case .legacy:
-            let vc = WPLegacyEditPageViewController(post: post)
             configure(vc, vc)
             return vc
         }
