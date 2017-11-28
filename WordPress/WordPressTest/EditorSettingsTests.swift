@@ -18,21 +18,18 @@ class EditorSettingsTests: XCTestCase {
             let editorSettings = EditorSettings(database: database)
 
             XCTAssertFalse(editorSettings.isEnabled(.legacy))
-            XCTAssertFalse(editorSettings.isEnabled(.hybrid))
             XCTAssertTrue(editorSettings.isEnabled(.aztec))
 
             // We pick another editor and try again
-            editorSettings.enable(.hybrid)
+            editorSettings.enable(.legacy)
 
-            XCTAssertFalse(editorSettings.isEnabled(.legacy))
-            XCTAssertTrue(editorSettings.isEnabled(.hybrid))
+            XCTAssertTrue(editorSettings.isEnabled(.legacy))
             XCTAssertFalse(editorSettings.isEnabled(.aztec))
 
             // This simulates a second launch
             let secondEditorSettings = EditorSettings(database: database)
 
-            XCTAssertFalse(secondEditorSettings.isEnabled(.legacy))
-            XCTAssertTrue(secondEditorSettings.isEnabled(.hybrid))
+            XCTAssertTrue(secondEditorSettings.isEnabled(.legacy))
             XCTAssertFalse(secondEditorSettings.isEnabled(.aztec))
         }
 
