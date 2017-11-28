@@ -5,17 +5,17 @@ import AVFoundation
 
 extension NSURL: ExportableAsset {
 
-    func originalUTI() -> String? {
+    public func originalUTI() -> String? {
         return typeIdentifier
     }
 
-    var defaultThumbnailUTI: String {
+    public var defaultThumbnailUTI: String {
         get {
             return kUTTypeJPEG as String
         }
     }
 
-    var assetMediaType: MediaType {
+    public var assetMediaType: MediaType {
         get {
             if isImage {
                 return .image
@@ -142,7 +142,7 @@ extension NSURL: ExportableAsset {
         return error
     }
 
-    var mediaName: String? {
+    public var mediaName: String? {
         return lastPathComponent
     }
 

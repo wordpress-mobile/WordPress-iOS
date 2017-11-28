@@ -1,6 +1,6 @@
 import Foundation
 
-@objc protocol ExportableAsset: NSObjectProtocol {
+@objc public protocol ExportableAsset: NSObjectProtocol {
 
     func originalUTI() -> String?
 
