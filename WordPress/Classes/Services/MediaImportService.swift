@@ -49,7 +49,7 @@ open class MediaImportService: LocalCoreDataService {
                     self.`import`(url, to: media, onCompletion: onCompletion, onError: onError)
                 default:
                     onError(NSError())
-            }            
+            }
         }
     }
 

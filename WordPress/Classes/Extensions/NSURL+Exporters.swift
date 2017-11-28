@@ -16,5 +16,5 @@ extension NSURL: ExportableAsset {
             return .document
         }
     }
-    
+
 }
