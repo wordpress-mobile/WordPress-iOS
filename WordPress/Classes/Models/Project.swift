@@ -9,14 +9,14 @@ class Project: AbstractPost {
         let date = date_created_gmt ?? Date()
         return date.toStringForPageSections()
     }
-    
+
     /// Section identifier for the project, using the last modification date.
     ///
     @objc func sectionIdentifierWithDateModified() -> String {
         let date = dateModified ?? Date()
         return date.toStringForPageSections()
     }
-    
+
     /// Returns the selector string to use as a sectionNameKeyPath, depending on the given keyPath.
     ///
     @objc static func sectionIdentifier(dateKeyPath: String) -> String {
@@ -30,4 +30,3 @@ class Project: AbstractPost {
         }
     }
 }
-

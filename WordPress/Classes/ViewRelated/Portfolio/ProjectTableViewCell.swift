@@ -6,36 +6,36 @@ class ProjectTableViewCell: BasePageListCell {
     @IBOutlet var featuredImageView: UIImageView!
     @IBOutlet var featuredImageWidthConstraint: NSLayoutConstraint!
     @IBOutlet var featuredImageHeightConstraint: NSLayoutConstraint!
-    
+
     override var post: AbstractPost? {
         didSet {
             configureTitle()
             configureImage()
         }
     }
-    
+
     // MARK: - Life Cycle
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+
         applyStyles()
 
         featuredImageView.clipsToBounds = true
         featuredImageView.contentMode = .scaleAspectFill
     }
-    
+
     // MARK: - Configuration
-    
+
     func applyStyles() {
         WPStyleGuide.applyPageTitleStyle(titleLabel)
     }
-    
+
     func configureTitle() {
         guard let post = self.post else {
             return
         }
-        
+
         let rightPost = getRightPost(from: post)
         let str = rightPost.titleForDisplay() ?? ""
         titleLabel.attributedText = NSAttributedString(string: str, attributes: WPStyleGuide.pageCellTitleAttributes() as? [NSAttributedStringKey: Any])
@@ -45,14 +45,14 @@ class ProjectTableViewCell: BasePageListCell {
         guard let post = self.post else {
             return
         }
-        
+
         let rightPost = getRightPost(from: post)
 
         if let featuredImagePath = rightPost.pathForDisplayImage, let featuredImageURL = URL(string: featuredImagePath) {
-            if (post.blog.isHostedAtWPcom) {
+            if post.blog.isHostedAtWPcom {
                 let desiredWidth = featuredImageWidthConstraint.constant
                 let desiredHeight = featuredImageHeightConstraint.constant
-                if (post.isPrivate()) {
+                if post.isPrivate() {
                     let scale = UIScreen.main.scale
                     let scaledSize = CGSize(width: desiredWidth * scale, height: desiredHeight * scale)
                     let url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: featuredImageURL)
