@@ -52,6 +52,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
+        textView.font = Fonts.regular
 
         let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
                                                             .foregroundColor: Colors.aztecLinkColor]
@@ -101,6 +102,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
+        textView.font = Fonts.monospace
 
         textView.isHidden = true
         textView.delegate = self
@@ -694,7 +696,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
-        textView.font = Fonts.regular
         textView.keyboardDismissMode = .interactive
         textView.textColor = UIColor.darkText
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -3491,6 +3492,7 @@ extension AztecPostViewController {
         static let blogPicker               = Fonts.semiBold
         static let mediaPickerInsert        = WPFontManager.systemMediumFont(ofSize: 15.0)
         static let mediaOverlay             = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
+        static let monospace                = UIFont(name: "Menlo-Regular", size: 16.0)!
     }
 
     struct Restoration {
