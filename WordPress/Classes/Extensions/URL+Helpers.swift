@@ -55,7 +55,7 @@ extension URL {
     static func fileExtensionForUTType(_ type: String) -> String? {
         let fileExtension = UTTypeCopyPreferredTagWithClass(type as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue()
         return fileExtension as String?
-    }    
+    }
 
     var pixelSize: CGSize {
         get {
