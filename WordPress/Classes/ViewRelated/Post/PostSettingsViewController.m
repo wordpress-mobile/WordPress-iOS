@@ -1382,7 +1382,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (MediaNoResultsView *)noResultsView
 {
     if (!_noResultsView) {
-        _noResultsView = [MediaNoResultsView view];
+        _noResultsView = [[MediaNoResultsView alloc] init];
     }
     return _noResultsView;
 }
@@ -1418,11 +1418,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return;
     }
 
-    BOOL isSearching = ![self.mediaDataSource.searchQuery isEmpty];
+    NSString *searchQuery = self.mediaDataSource.searchQuery;
+    BOOL isSearching = (searchQuery != nil) && ![searchQuery isEmpty];
     BOOL hasAsset = [self.mediaDataSource numberOfAssets] > 0;
 
     if (hasAsset || isSearching) {
         [picker showSearchBar];
+        if (self.mediaDataSource.dataSourceType == MediaPickerDataSourceTypeMediaLibrary) {
+            [WPStyleGuide configureSearchBar:picker.searchBar];
+        }
     } else {
         [picker hideSearchBar];
     }
@@ -1467,9 +1471,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)mediaPickerControllerWillBeginLoadingData:(WPMediaPickerViewController *)picker
 {
-    if (self.mediaDataSource.dataSourceType == MediaPickerDataSourceTypeMediaLibrary) {
-        [WPStyleGuide configureSearchBar:picker.searchBar];
-    }
     [self updateSearchBarForPicker:picker];
     [self.noResultsView updateForFetching];
 }

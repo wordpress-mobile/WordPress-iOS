@@ -3,11 +3,14 @@ import Foundation
 
 class MediaNoResultsView: WPNoResultsView {
 
-    @objc(view)
-    class func makeView() -> MediaNoResultsView {
-        let noResultView = MediaNoResultsView()
-        noResultView.updateForNoAssets(userCanUploadMedia: false)
-        return noResultView
+    init() {
+        super.init(frame: .zero)
+        updateForNoAssets(userCanUploadMedia: false)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        updateForNoAssets(userCanUploadMedia: false)
     }
 
     @objc func updateForNoSearchResult(with searchQuery: String) {
