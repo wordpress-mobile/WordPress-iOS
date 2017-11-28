@@ -50,7 +50,6 @@
 #import "RotationAwareNavigationViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
-#import "WPPostViewController.h"
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 #import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
@@ -301,7 +300,7 @@ int ddLogLevel = DDLogLevelInfo;
     if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
         UIViewController *firstViewController = [navController.viewControllers firstObject];
-        if ([firstViewController isKindOfClass:[WPPostViewController class]]) {
+        if ([firstViewController isKindOfClass:[AztecPostViewController class]]) {
             return @"Post Editor";
         } else if ([firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
             return @"Login View";
