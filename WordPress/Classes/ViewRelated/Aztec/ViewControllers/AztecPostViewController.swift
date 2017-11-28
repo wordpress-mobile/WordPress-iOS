@@ -52,7 +52,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
-        textView.font = Fonts.regular
 
         let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
                                                             .foregroundColor: Colors.aztecLinkColor]
@@ -91,7 +90,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Raw HTML Editor
     ///
     fileprivate(set) lazy var htmlTextView: UITextView = {
-        let storage = HTMLStorage(defaultFont: Fonts.regular)
+        let storage = HTMLStorage(defaultFont: Fonts.monospace)
         let layoutManager = NSLayoutManager()
         let container = NSTextContainer()
 
@@ -102,7 +101,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let accessibilityLabel = NSLocalizedString("HTML Content", comment: "Post HTML content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
-        textView.font = Fonts.monospace
 
         textView.isHidden = true
         textView.delegate = self
