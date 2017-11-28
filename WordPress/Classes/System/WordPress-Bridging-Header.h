@@ -94,6 +94,7 @@
 
 #import "Theme.h"
 #import "ThemeService.h"
+#import "TodayExtensionService.h"
 
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
