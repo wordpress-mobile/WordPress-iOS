@@ -20,7 +20,6 @@ import CocoaLumberjack
     var isOpenedDirectlyForPhotoPost: Bool { get set }
 }
 
-extension WPPostViewController: PostEditor {}
 extension WPLegacyEditPostViewController: PostEditor {
     /// Whether the editor should open directly to the media picker.
     ///
