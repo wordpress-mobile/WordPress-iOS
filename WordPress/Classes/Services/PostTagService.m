@@ -68,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)getTopTagsForBlog:(Blog *)blog
-                  success:(nullable void (^)(NSArray <NSString *> *tags))success
+                  success:(nullable void (^)(NSArray <PostTag *> *tags))success
                   failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
@@ -79,8 +79,8 @@ NS_ASSUME_NONNULL_BEGIN
     [remote getTagsWithPaging:paging
                       success:^(NSArray <RemotePostTag *> *remoteTags) {
                           [self.managedObjectContext performBlock:^{
-                              NSArray *tags = [remoteTags wp_map:^NSString *(RemotePostTag *remoteTag) {
-                                  return remoteTag.name;
+                              NSArray *tags = [remoteTags wp_map:^PostTag *(RemotePostTag *remoteTag) {
+                                  return [self tagFromRemoteTag:remoteTag blog:blog];
                               }];
                               if (success) {
                                   success(tags);
