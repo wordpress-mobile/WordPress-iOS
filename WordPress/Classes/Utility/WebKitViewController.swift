@@ -4,7 +4,7 @@ import UIKit
 import WebKit
 
 class WebKitViewController: UIViewController {
-    @objc let webView = WKWebView()
+    @objc let webView: WKWebView
     @objc let progressView = WebProgressView()
     @objc let titleView = NavigationTitleView()
 
@@ -22,6 +22,7 @@ class WebKitViewController: UIViewController {
     @objc var customTitle: String?
 
     @objc init(configuration: WebViewControllerConfiguration) {
+        webView = WKWebView()
         url = configuration.url
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
@@ -29,7 +30,19 @@ class WebKitViewController: UIViewController {
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
+        super.init(nibName: nil, bundle: nil)
+        hidesBottomBarWhenPushed = true
+    }
 
+    fileprivate init(url: URL, parent: WebKitViewController) {
+        webView = WKWebView(frame: .zero, configuration: parent.webView.configuration)
+        self.url = url
+        customOptionsButton = parent.customOptionsButton
+        secureInteraction = parent.secureInteraction
+        addsWPComReferrer = parent.addsWPComReferrer
+        customTitle = parent.customTitle
+        authenticator = parent.authenticator
+        navigationDelegate = parent.navigationDelegate
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
     }
@@ -65,6 +78,7 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
+        webView.uiDelegate = self
 
         loadWebViewRequest()
     }
@@ -249,5 +263,21 @@ extension WebKitViewController: WKNavigationDelegate {
             return
         }
         decisionHandler(.allow)
+    }
+}
+
+extension WebKitViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil,
+            let url = navigationAction.request.url {
+            let controller = WebKitViewController(url: url, parent: self)
+            let navController = UINavigationController(rootViewController: controller)
+            present(navController, animated: true, completion: nil)
+        }
+        return nil
+    }
+
+    func webViewDidClose(_ webView: WKWebView) {
+        dismiss(animated: true, completion: nil)
     }
 }
