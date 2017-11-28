@@ -5,28 +5,24 @@ import AVFoundation
 
 extension PHAsset: ExportableAsset {
 
-    var defaultThumbnailUTI: String {
+    public var defaultThumbnailUTI: String {
         get {
             return kUTTypeJPEG as String
         }
     }
 
-    var assetMediaType: MediaType {
+    public var assetMediaType: MediaType {
         get {
             if self.mediaType == .image {
                 return .image
             } else if self.mediaType == .video {
-                /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
-                 because we have an exception on the server for mobile that allows video uploads event
-                 if videopress is not enabled.
-                 */
                 return .video
             }
             return .document
         }
-    }
+     }
 
-    func originalUTI() -> String? {
+    public func originalUTI() -> String? {
         let resources = PHAssetResource.assetResources(for: self)
         var types: [PHAssetResourceType.RawValue] = []
         if mediaType == PHAssetMediaType.image {
@@ -58,7 +54,7 @@ extension PHAsset: ExportableAsset {
         return nil
     }
 
-    var mediaName: String? {
+    public var mediaName: String? {
         return originalFilename()
     }
 }
