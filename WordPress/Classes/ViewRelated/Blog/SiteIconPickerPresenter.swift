@@ -18,7 +18,7 @@ class SiteIconPickerPresenter: NSObject {
 
     /// MARK: - Private Properties
 
-    fileprivate let noResultsView = MediaNoResultsView.makeView()
+    fileprivate let noResultsView = MediaNoResultsView()
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
     /// Media Library Data Source
@@ -149,6 +149,9 @@ class SiteIconPickerPresenter: NSObject {
 
         if mediaLibraryDataSource.dataSourceType == .mediaLibrary && (isSearching || hasAssets) {
             mediaPicker.showSearchBar()
+            if let searchBar = mediaPicker.searchBar {
+                WPStyleGuide.configureSearchBar(searchBar)
+            }
         } else {
             mediaPicker.hideSearchBar()
         }
@@ -158,11 +161,6 @@ class SiteIconPickerPresenter: NSObject {
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
-        if mediaLibraryDataSource.dataSourceType == .mediaLibrary {
-            if let searchBar = picker.searchBar {
-                WPStyleGuide.configureSearchBar(searchBar)
-            }
-        }
         updateSearchBar(mediaPicker: picker)
         noResultsView.updateForFetching()
     }
