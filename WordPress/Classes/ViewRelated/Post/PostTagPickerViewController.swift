@@ -123,7 +123,7 @@ private extension PostTagPickerViewController {
     func loadTags() {
         dataSource = LoadingDataSource()
         let context = ContextManager.sharedInstance().mainContext
-        let service = PostTagService(managedObjectContext: context)        
+        let service = PostTagService(managedObjectContext: context)
         service.getTopTags(
             for: blog,
             success: { [weak self] tags in
