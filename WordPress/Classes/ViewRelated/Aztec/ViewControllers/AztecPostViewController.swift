@@ -2652,7 +2652,9 @@ extension AztecPostViewController {
     }
 
     private func imageAttachmentWithPlaceholder() -> ImageAttachment {
-        return richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        attachment.size = .full
+        return attachment
     }
 
     private func videoAttachmentWithPlaceholder() -> VideoAttachment {
