@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -66,21 +67,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mbc-am-NUw">
-                            <size key="itemSize" width="50" height="50"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="mbc-am-NUw">
+                            <size key="itemSize" width="250" height="241"/>
                             <size key="headerReferenceSize" width="50" height="100"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="7" minY="10" maxX="7" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionCell" id="HF2-sv-crL">
-                                <rect key="frame" x="0.0" y="100" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionCell" id="HF2-sv-crL" customClass="SelectThemeCell" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="62.5" y="110" width="250" height="250"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rAp-jA-mv9">
+                                            <rect key="frame" x="1" y="1" width="248" height="186"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="rAp-jA-mv9" secondAttribute="height" multiplier="4:3" id="HKP-lu-CF6"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Theme Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjI-aj-gDc" userLabel="Theme Title Label">
+                                            <rect key="frame" x="20" y="207" width="225" height="23"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </view>
-                                <color key="backgroundColor" red="0.45138680930000002" green="0.99309605359999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="rAp-jA-mv9" firstAttribute="top" secondItem="HF2-sv-crL" secondAttribute="top" constant="1" id="4Xs-de-rT3"/>
+                                    <constraint firstAttribute="bottom" secondItem="vjI-aj-gDc" secondAttribute="bottom" constant="20" id="7Dn-dV-h89"/>
+                                    <constraint firstItem="vjI-aj-gDc" firstAttribute="top" secondItem="rAp-jA-mv9" secondAttribute="bottom" constant="20" id="7xb-Sc-mzS"/>
+                                    <constraint firstAttribute="trailing" secondItem="vjI-aj-gDc" secondAttribute="trailing" constant="5" id="9pW-gu-zUU"/>
+                                    <constraint firstAttribute="trailing" secondItem="rAp-jA-mv9" secondAttribute="trailing" constant="1" id="Lpn-og-pU9"/>
+                                    <constraint firstItem="rAp-jA-mv9" firstAttribute="leading" secondItem="HF2-sv-crL" secondAttribute="leading" constant="1" id="SMT-Oy-4ve"/>
+                                    <constraint firstItem="vjI-aj-gDc" firstAttribute="leading" secondItem="HF2-sv-crL" secondAttribute="leading" constant="20" id="u6w-6N-eJg"/>
+                                </constraints>
+                                <size key="customSize" width="250" height="250"/>
+                                <connections>
+                                    <outlet property="themeImageView" destination="rAp-jA-mv9" id="hdF-mI-1i3"/>
+                                    <outlet property="themeTitleLabel" destination="vjI-aj-gDc" id="nVA-Rt-XTk"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionHeader" id="qdf-QZ-T0P" customClass="ThemeSelectionHeaderView" customModule="WordPress" customModuleProvider="target">
@@ -125,7 +155,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4WT-ER-Rej" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="302" y="82"/>
+            <point key="canvasLocation" x="301.60000000000002" y="81.409295352323838"/>
         </scene>
     </scenes>
 </document>

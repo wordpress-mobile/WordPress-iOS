@@ -91,12 +91,15 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         tableView.deselectSelectedRowWithAnimation(true)
 
+        guard let themeVC = segue.destination as? ThemeSelectionViewController else {
+            return
+        }
+
         guard let tableRow = sender as? SiteTypeRow else {
             return
         }
 
-        let selectedType = tableRow.siteType
-        // TODO: send to destination controller
+        themeVC.siteType = tableRow.siteType
     }
 
     // MARK: - Misc
