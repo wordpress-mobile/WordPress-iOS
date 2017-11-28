@@ -87,15 +87,8 @@ class AppSettingsViewController: UITableViewController {
             accessibilityIdentifier: "mediaClearCacheButton")
 
         let editorSettings = EditorSettings()
-        let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
+        let _ = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         var editorRows = [ImmuTableRow]()
-
-        let textEditor = CheckmarkRow(
-            title: NSLocalizedString("Plain Text", comment: "Option to enable the plain text (legacy) editor"),
-            checked: editorSettings.isEnabled(.legacy),
-            action: enableEditor(.legacy)
-        )
-        editorRows.append(textEditor)
 
         let nativeEditor = CheckmarkRow(
             title: NSLocalizedString("Visual", comment: "Option to enable the Aztec editor."),
@@ -132,10 +125,6 @@ class AppSettingsViewController: UITableViewController {
                     mediaCacheRow,
                     mediaClearCacheRow
                 ],
-                footerText: nil),
-            ImmuTableSection(
-                headerText: editorHeader,
-                rows: editorRows,
                 footerText: nil),
             ImmuTableSection(
                 headerText: usageTrackingHeader,
