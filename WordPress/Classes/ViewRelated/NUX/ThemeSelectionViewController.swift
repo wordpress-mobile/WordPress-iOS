@@ -114,6 +114,9 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     }
 
     private func themesPredicate() -> NSPredicate? {
+
+        // TODO: replace with new endpoint.
+
         let blogThemes = ["Independent Publisher 2", "Penscratch 2", "Intergalactic 2", "Libre 2"]
         let websiteThemes = ["Radcliffe 2", "Karuna", "Dara", "Twenty Seventeen"]
         let portfolioThemes = ["Altofocus", "Rebalance", "Sketch", "Lodestar"]
