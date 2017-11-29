@@ -282,7 +282,7 @@ private extension ShareViewController {
         uploadMediaOp.groupID = groupIdentifier
         uploadMediaOp.created = NSDate()
         uploadMediaOp.currentStatus = status
-        uploadMediaOp.siteID = siteID.int32Value
+        uploadMediaOp.siteID = siteID.int64Value
         coreDataStack.saveContext()
         return uploadMediaOp.objectID
     }
