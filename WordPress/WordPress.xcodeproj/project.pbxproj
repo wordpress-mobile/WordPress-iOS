@@ -3905,8 +3905,8 @@
 			children = (
 				982BED991FBCF976000B848E /* SiteCreationNavigationController.swift */,
 				985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */,
-				98B4A6551FCCCEEE0085EA23 /* ThemeSelectionViewController.swift */,
 				98B4A6571FCCD0AE0085EA23 /* ThemeSelectionHeaderView.swift */,
+				98B4A6551FCCCEEE0085EA23 /* ThemeSelectionViewController.swift */,
 			);
 			name = "Create Site";
 			sourceTree = "<group>";
@@ -5180,8 +5180,8 @@
 		E6417B951CA07AFE0084050A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				982A65261FCCE2F0008236BA /* Select Theme */,
 				98DED29B1FC38DBE00015AE4 /* Select Site Type */,
+				982A65261FCCE2F0008236BA /* Select Theme */,
 				436269631ECD0726008692C7 /* LoginButton.swift */,
 				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				43FB3F441EC1020600FC8A62 /* LoginEpilogueSectionHeader.swift */,
