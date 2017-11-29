@@ -74,7 +74,7 @@
                                failure:[OCMArg isNotNil]]);
 
     [self.service syncTagsForBlog:self.blog
-                          success:^{}
+                          success:^(NSArray<PostTag *> * _Nonnull tags) {}
                           failure:^(NSError * _Nonnull error) {}];
 }
 
