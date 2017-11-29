@@ -2,7 +2,7 @@ import UIKit
 
 class ThemeSelectionHeaderView: UICollectionReusableView {
 
-    // MARK - Properties
+    // MARK: - Properties
 
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var stepDescrLabel: UILabel!
