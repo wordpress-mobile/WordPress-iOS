@@ -999,11 +999,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (NSString *)getTagsCountPresentableString:(NSInteger)tagCount
 {
-    NSString *format;    
+    NSString *format = NSLocalizedString(@"%@ Tags", @"The number of tags in the writting settings. Plural. %@ is a placeholder for the number");
+    
     if (tagCount == 1) {
         format = NSLocalizedString(@"%@ Tag", @"The number of tags in the writting settings. Singular. %@ is a placeholder for the number");
-    } else {
-        format = NSLocalizedString(@"%@ Tags", @"The number of tags in the writting settings. Plural. %@ is a placeholder for the number");
     }
     
     NSString *numberOfTags = [NSString stringWithFormat: format, @(tagCount)];
