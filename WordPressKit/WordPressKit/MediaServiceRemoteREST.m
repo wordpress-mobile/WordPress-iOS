@@ -22,7 +22,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     [self.wordPressComRestApi GET:requestUrl parameters:parameters success:^(id responseObject, NSHTTPURLResponse *response) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
-            success([self remoteMediaFromJSONDictionary:response]);
+            success([MediaServiceRemoteREST remoteMediaFromJSONDictionary:response]);
         }
     } failure:^(NSError *error, NSHTTPURLResponse *response) {
         if (failure) {
@@ -62,7 +62,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(id responseObject, NSHTTPURLResponse *response) {
               NSArray *mediaItems = responseObject[@"media"];
-              NSArray *pageItems = [self remoteMediaFromJSONArray:mediaItems];
+              NSArray *pageItems = [MediaServiceRemoteREST remoteMediaFromJSONArray:mediaItems];
               if (pageItems.count) {
                   [media addObjectsFromArray:pageItems];
               }
@@ -131,7 +131,6 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         parameters[@"attrs[0][parent_id]"] = media.postID;
     }
     FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:media.localURL filename:filename mimeType:type];
-    __weak __typeof(self) weakSelf = self;
     [self.wordPressComRestApi multipartPOST:requestUrl
                                  parameters:parameters
                                   fileParts:@[filePart]
@@ -144,7 +143,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         NSArray * errorList = response[@"errors"];
         NSArray * mediaList = response[@"media"];
         if (mediaList.count > 0){
-            RemoteMedia * remoteMedia = [weakSelf remoteMediaFromJSONDictionary:mediaList[0]];
+            RemoteMedia * remoteMedia = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:mediaList[0]];
             if (success) {
                 success(remoteMedia);
             }
@@ -193,7 +192,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         NSArray * errorList = response[@"errors"];
         NSArray * mediaList = response[@"media"];
         if (mediaList.count > 0){
-            RemoteMedia * remoteMedia = [self remoteMediaFromJSONDictionary:mediaList[0]];
+            RemoteMedia * remoteMedia = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:mediaList[0]];
             if (success) {
                 success(remoteMedia);
             }            
@@ -234,7 +233,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     [self.wordPressComRestApi POST:requestUrl
         parameters:parameters
            success:^(id responseObject, NSHTTPURLResponse *response) {
-               RemoteMedia *media = [self remoteMediaFromJSONDictionary:responseObject];
+               RemoteMedia *media = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:responseObject];
                if (success) {
                    success(media);
                }
@@ -314,14 +313,14 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                            }];
 }
 
-- (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
++ (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
 {
     return [jsonMedia wp_map:^id(NSDictionary *json) {
         return [self remoteMediaFromJSONDictionary:json];
     }];
 }
 
-- (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
++ (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
 {
     RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];
     remoteMedia.mediaID =  [jsonMedia numberForKey:@"ID"];

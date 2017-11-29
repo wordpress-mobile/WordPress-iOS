@@ -4,7 +4,9 @@
 
 @interface MediaServiceRemoteREST : SiteServiceRemoteWordPressComREST <MediaServiceRemote>
 
-- (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia;
++ (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia;
+
++ (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia;
 
 /**
  *  @brief      Upload a single media item to the remote site.
