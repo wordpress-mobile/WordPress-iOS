@@ -46,14 +46,6 @@ class MediaCellProgressView: UIView {
         }
     }
 
-    override var isHidden: Bool {
-        didSet {
-            if isHidden {
-                progressIndicator.state = .stopped
-            }
-        }
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
 
