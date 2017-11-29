@@ -11,6 +11,7 @@ class SelectThemeCell: UICollectionViewCell {
     @IBOutlet weak var themeImageView: UIImageView!
     @IBOutlet weak var themeTitleLabel: UILabel!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
+    @IBOutlet weak var infoBar: UIView!
 
     var displayTheme: Theme? {
         didSet {
@@ -22,6 +23,7 @@ class SelectThemeCell: UICollectionViewCell {
 
     override open func awakeFromNib() {
         super.awakeFromNib()
+        configureColors()
     }
 
     override open func prepareForReuse() {
@@ -29,6 +31,15 @@ class SelectThemeCell: UICollectionViewCell {
     }
 
     // MARK: - Display
+
+    private func configureColors() {
+        themeTitleLabel.font = Styles.cellNameFont
+        themeTitleLabel.textColor = Styles.inactiveCellNameColor
+        layer.borderWidth = 1
+        infoBar.layer.borderWidth = 1
+        layer.borderColor = Styles.inactiveCellBorderColor.cgColor
+        infoBar.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
+    }
 
     private func updateTheme() {
         guard let displayTheme = displayTheme else {

@@ -84,17 +84,17 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rAp-jA-mv9">
-                                            <rect key="frame" x="0.5" y="1" width="248" height="186"/>
+                                            <rect key="frame" x="0.5" y="1" width="248.5" height="186.5"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="rAp-jA-mv9" secondAttribute="height" multiplier="4:3" id="HKP-lu-CF6"/>
                                             </constraints>
                                         </imageView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Unq-YL-iSZ" userLabel="Info Bar">
-                                            <rect key="frame" x="0.0" y="187" width="250" height="55"/>
+                                            <rect key="frame" x="1" y="187.5" width="248" height="61.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Theme Title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjI-aj-gDc" userLabel="Theme Title Label">
-                                                    <rect key="frame" x="20" y="19" width="210" height="17"/>
+                                                    <rect key="frame" x="20" y="22.5" width="208" height="17"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -104,7 +104,6 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="vjI-aj-gDc" firstAttribute="centerY" secondItem="Unq-YL-iSZ" secondAttribute="centerY" id="7i8-ZZ-AIZ"/>
-                                                <constraint firstAttribute="height" constant="55" id="94G-iW-HGn"/>
                                                 <constraint firstAttribute="trailing" secondItem="vjI-aj-gDc" secondAttribute="trailing" constant="20" id="Ybf-jQ-Dnc"/>
                                                 <constraint firstItem="vjI-aj-gDc" firstAttribute="leading" secondItem="Unq-YL-iSZ" secondAttribute="leading" constant="20" id="qRA-TF-1Ab"/>
                                             </constraints>
@@ -119,15 +118,17 @@
                                     <constraint firstItem="Unq-YL-iSZ" firstAttribute="top" secondItem="rAp-jA-mv9" secondAttribute="bottom" id="2vU-eF-c16"/>
                                     <constraint firstItem="rAp-jA-mv9" firstAttribute="top" secondItem="HF2-sv-crL" secondAttribute="top" constant="1" id="4Xs-de-rT3"/>
                                     <constraint firstAttribute="trailing" secondItem="rAp-jA-mv9" secondAttribute="trailing" constant="1" id="Lpn-og-pU9"/>
+                                    <constraint firstAttribute="bottom" secondItem="Unq-YL-iSZ" secondAttribute="bottom" constant="1" id="P0E-xX-6mP"/>
                                     <constraint firstItem="rAp-jA-mv9" firstAttribute="leading" secondItem="HF2-sv-crL" secondAttribute="leading" constant="1" id="SMT-Oy-4ve"/>
-                                    <constraint firstItem="Unq-YL-iSZ" firstAttribute="leading" secondItem="HF2-sv-crL" secondAttribute="leading" id="Z5F-I9-cj3"/>
+                                    <constraint firstItem="Unq-YL-iSZ" firstAttribute="leading" secondItem="HF2-sv-crL" secondAttribute="leading" constant="1" id="Z5F-I9-cj3"/>
                                     <constraint firstItem="Z6d-1M-hux" firstAttribute="centerY" secondItem="rAp-jA-mv9" secondAttribute="centerY" id="aX3-WN-hWe"/>
-                                    <constraint firstAttribute="trailing" secondItem="Unq-YL-iSZ" secondAttribute="trailing" id="sfs-fD-wzo"/>
+                                    <constraint firstAttribute="trailing" secondItem="Unq-YL-iSZ" secondAttribute="trailing" constant="1" id="sfs-fD-wzo"/>
                                     <constraint firstItem="Z6d-1M-hux" firstAttribute="centerX" secondItem="rAp-jA-mv9" secondAttribute="centerX" id="waK-al-6xi"/>
                                 </constraints>
                                 <size key="customSize" width="250" height="250"/>
                                 <connections>
                                     <outlet property="activityView" destination="Z6d-1M-hux" id="IXG-Wm-QsK"/>
+                                    <outlet property="infoBar" destination="Unq-YL-iSZ" id="90p-N3-o62"/>
                                     <outlet property="themeImageView" destination="rAp-jA-mv9" id="hdF-mI-1i3"/>
                                     <outlet property="themeTitleLabel" destination="vjI-aj-gDc" id="nVA-Rt-XTk"/>
                                 </connections>
