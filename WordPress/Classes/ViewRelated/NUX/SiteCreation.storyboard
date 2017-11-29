@@ -50,7 +50,9 @@
                             <outlet property="delegate" destination="mo3-wG-DI8" id="aP9-Wp-rHU"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="HkE-UK-N9v"/>
+                    <navigationItem key="navigationItem" id="HkE-UK-N9v">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="UmO-Jq-NPz"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="Pmx-K5-Xl9" kind="show" identifier="showThemeSelection" id="nrg-iO-ltb"/>
                     </connections>
