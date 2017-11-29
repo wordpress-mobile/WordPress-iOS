@@ -362,15 +362,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)configureTagsCell
 {
-    [self.tagsCell setTextValue: NSLocalizedString(@"Loading...", @"Loading. Verb")];
-    
-    __weak __typeof__(self) weakSelf = self;
-    PostTagService *postTagService = [[PostTagService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [postTagService syncTagsForBlog:self.blog success:^(NSArray<PostTag *> * _Nonnull tags) {
-        [weakSelf.tagsCell setTextValue: [weakSelf getTagsCountPresentableString:tags.count]];
-    } failure:^(NSError * _Nonnull error) {
-        [weakSelf.tagsCell setTextValue: NSLocalizedString(@"Error Loading Tags", @"Text displayed when load tags fails")];
-    }];
+    NSInteger tagCount = self.blog.tags.allObjects.count;
+    [self.tagsCell setTextValue: [self getTagsCountPresentableString:tagCount]];
 }
 
 - (void)configureDefaultPostFormatCell
