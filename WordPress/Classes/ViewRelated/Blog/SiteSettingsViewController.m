@@ -782,7 +782,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:postCategoriesViewController animated:YES];
 }
 
-- (void) showTagList
+- (void)showTagList
 {
     NSLog(@"navigating away to tags list");
 }
