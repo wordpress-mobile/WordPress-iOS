@@ -334,7 +334,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             case .richText:
                 richTextView.becomeFirstResponder()
             }
-            
+
             updateFormatBar()
 
             refreshEditorVisibility()
@@ -940,7 +940,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 // MARK: - Format Bar Updating
 
 extension AztecPostViewController {
-    
+
     func updateFormatBar() {
         switch mode {
         case .html:
@@ -949,36 +949,36 @@ extension AztecPostViewController {
             updateFormatBarForVisualMode()
         }
     }
-    
+
     /// Updates the format bar for HTML mode.
     ///
     private func updateFormatBarForHTMLMode() {
         assert(mode == .html)
-        
+
         guard let toolbar = richTextView.inputAccessoryView as? Aztec.FormatBar else {
             return
         }
-        
+
         toolbar.selectItemsMatchingIdentifiers([FormattingIdentifier.sourcecode.rawValue])
     }
-    
+
     /// Updates the format bar for visual mode.
     ///
     private func updateFormatBarForVisualMode() {
         assert(mode == .richText)
-        
+
         guard let toolbar = richTextView.inputAccessoryView as? Aztec.FormatBar else {
             return
         }
-        
+
         var identifiers = [FormattingIdentifier]()
-        
+
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
             identifiers = richTextView.formatIdentifiersForTypingAttributes()
         }
-        
+
         toolbar.selectItemsMatchingIdentifiers(identifiers.map({ $0.rawValue }))
     }
 }
@@ -1412,9 +1412,9 @@ extension AztecPostViewController: UITextViewDelegate {
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         textView.textAlignment = .natural
-        
+
         let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })!
-        
+
         switch textView {
         case titleTextField:
             formatBar.enabled = false
@@ -1425,9 +1425,9 @@ extension AztecPostViewController: UITextViewDelegate {
         default:
             break
         }
-        
+
         htmlButton.isEnabled = true
-        
+
         if mediaPickerInputViewController == nil {
             textView.inputAccessoryView = formatBar
         }
