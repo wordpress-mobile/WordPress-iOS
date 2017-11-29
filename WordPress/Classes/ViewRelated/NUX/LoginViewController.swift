@@ -1,6 +1,5 @@
 import Foundation
 import Gridicons
-import ActionKit
 
 protocol LoginWithLogoAndHelpViewController {
     func addWordPressLogoToNavController()
@@ -31,8 +30,7 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
         let helpButton = UIButton(type: .custom)
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
-        helpButton.addControlEvent(.touchUpInside) { [weak self](control: UIControl) in
-
+        helpButton.on(.touchUpInside) { [weak self](control: UIControl) in
             guard let helpButton = control as? UIButton else {
                 return
             }

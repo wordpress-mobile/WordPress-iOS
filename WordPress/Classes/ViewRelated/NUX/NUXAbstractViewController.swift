@@ -106,7 +106,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
         helpButton.setImage(UIImage(named: "btn-help"), for: UIControlState())
         helpButton.sizeToFit()
         helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
-        helpButton.addControlEvent(.touchUpInside) { [weak self](control: UIControl) in
+        helpButton.on(.touchUpInside) { [weak self](control: UIControl) in
             guard let helpButton = control as? UIButton else {
                 return
             }
