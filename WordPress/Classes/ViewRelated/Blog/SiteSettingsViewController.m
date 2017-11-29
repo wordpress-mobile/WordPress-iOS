@@ -782,6 +782,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:postCategoriesViewController animated:YES];
 }
 
+- (void) showTagList
+{
+    NSLog(@"navigating away to tags list");
+}
+
 - (void)showPostFormatSelector
 {
     NSArray *titles = self.blog.sortedPostFormatNames;
@@ -830,6 +835,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     switch (row) {
         case SiteSettingsWritingDefaultCategory:
             [self showDefaultCategorySelector];
+            break;
+            
+        case SiteSettingsWritingTags:
+            [self showTagList];
             break;
 
         case SiteSettingsWritingDefaultPostFormat:
