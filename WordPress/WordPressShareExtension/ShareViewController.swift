@@ -194,8 +194,8 @@ class ShareViewController: SLComposeServiceViewController {
     }
 }
 
-/// ShareViewController Extension: Encapsulates all of the Action Helpers.
-///
+// MARK: - ShareViewController Extension: Encapsulates all of the Action Helpers.
+
 private extension ShareViewController {
     func dismissIfNeeded() {
         guard oauth2Token == nil else {
@@ -238,8 +238,8 @@ private extension ShareViewController {
     }
 }
 
-/// ShareViewController Extension: Encapsulates private helpers
-///
+// MARK: - ShareViewController Extension: Encapsulates private helpers
+
 private extension ShareViewController {
     func loadContent(extensionContext: NSExtensionContext) {
         ShareExtractor(extensionContext: extensionContext)
@@ -285,6 +285,17 @@ private extension ShareViewController {
         uploadMediaOp.siteID = siteID.int64Value
         coreDataStack.saveContext()
         return uploadMediaOp.objectID
+    }
+
+    func updateMediaOperation(status: UploadOperation.UploadStatus, remoteMediaID: Int64, remoteURL: String, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
+        guard let uploadMediaOp = (try? managedContext.existingObject(with: uploadOpObjectID)) as? UploadOperation else {
+            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+            return
+        }
+        uploadMediaOp.currentStatus = status
+        uploadMediaOp.remoteMediaID = remoteMediaID
+        uploadMediaOp.remoteURL = remoteURL
+        coreDataStack.saveContext()
     }
 
     func savePostOperation(_ remotePost: RemotePost,  with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
@@ -402,8 +413,9 @@ private extension ShareViewController {
                                       backgroundSessionIdentifier: backgroundSessionIdentifier,
                                       sharedContainerIdentifier: WPAppGroupName)
 
-        // The success and error blocks should never get called here, but let's add them just in case. The remaining
-        // upload operations will be handled in the container (WPiOS) app after the background session completes.
+        // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
+        // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
+        // post share here.
         let remote = MediaServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         remote.uploadMedia(remoteMedia, requestEnqueued: { taskID in
             self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadMediaOpID)
@@ -411,8 +423,15 @@ private extension ShareViewController {
                 self.updateTaskID(taskID, forUploadOpWithObjectID: uploadMediaOpID)
             }
             requestEnqueued()
-        }, success: {_ in
-            self.updateStatus(.Complete, forUploadOpWithObjectID: uploadMediaOpID)
+        }, success: { remoteMedia in
+            guard let remoteMedia = remoteMedia,
+                let remoteMediaID = remoteMedia.mediaID?.int64Value,
+                let remoteMediaURLString = remoteMedia.url?.absoluteString else {
+                DDLogError("Error creating post in share extension. RemoteMedia info not returned from server.")
+                return
+            }
+
+            self.updateMediaOperation(status: .Complete, remoteMediaID: remoteMediaID, remoteURL: remoteMediaURLString, forUploadOpWithObjectID: uploadMediaOpID)
             ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
         }) { error in
             guard let error = error as NSError? else {
