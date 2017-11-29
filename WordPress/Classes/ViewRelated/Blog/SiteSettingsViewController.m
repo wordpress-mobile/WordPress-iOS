@@ -365,14 +365,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.tagsCell setTextValue: NSLocalizedString(@"Loading...", @"Loading. Verb")];
     
     __weak __typeof__(self) weakSelf = self;
-    
     PostTagService *postTagService = [[PostTagService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postTagService getTopTagsForBlog:self.blog success:^(NSArray<PostTag *> * _Nonnull tags) {
-        NSString *format = [NSString stringWithFormat:@"%@", @(tags.count)];
-        [weakSelf.tagsCell setTextValue: format];
+        [weakSelf.tagsCell setTextValue: [weakSelf getTagsCountPresentableString:tags.count]];
     } failure:^(NSError * _Nonnull error) {
         [weakSelf.tagsCell setTextValue: NSLocalizedString(@"Error Loading Tags", @"Text displayed when load tags fails")];
-    }];    
+    }];
 }
 
 - (void)configureDefaultPostFormatCell
@@ -1004,6 +1002,14 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"Error title when updating the account password fails") message:message];
     }
+}
+
+- (NSString *)getTagsCountPresentableString:(NSInteger)tagCount
+{
+    NSString *format = tagCount == 1 ? NSLocalizedString(@"%@ Tag", @"The number of tags in the writting settings. Singular.") : NSLocalizedString(@"%@ Tags", @"The number of tags in the writting settings. Plural.");
+    NSString *numberOfTags = [NSString stringWithFormat: format, @(tagCount)];
+    
+    return numberOfTags;
 }
 
 #pragma mark - Saving methods
