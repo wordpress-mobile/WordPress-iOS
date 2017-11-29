@@ -66,6 +66,21 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         return Styles.themeMargins
     }
 
+    // MARK: - UICollectionViewDelegate
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let theme = themeAtIndexPath(indexPath) else {
+            return
+        }
+
+        let message = "'\(theme.name!)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle("OK")
+        self.present(alertController, animated: true, completion: nil)
+    }
+
     // MARK: - Theme Fetching
 
     private func createThemesFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
