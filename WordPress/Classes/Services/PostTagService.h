@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
  Sync an initial batch of tags for blog via default remote parameters and responses.
  */
 - (void)syncTagsForBlog:(Blog *)blog
-                success:(nullable void (^)(void))success
+                success:(nullable void (^)(NSArray <PostTag *> *tags))success
                 failure:(nullable void (^)(NSError *error))failure;
 
 /**
