@@ -31,7 +31,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
         guard let asset = asset as? PHAsset else {
             return
         }
-        let mediaID = UUID().uuidString
+
         mediaProgressCoordinator.track(numberOfItems: 1)
         let context = ContextManager.sharedInstance().mainContext
         let service = MediaService(managedObjectContext: context)
@@ -42,6 +42,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
                                 guard let media = media else {
                                     return
                                 }
+
                                 self.begin(media)
 
                                 var progress: Progress? = nil
@@ -50,13 +51,21 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
                                                     success: {
                                                         self.end(media)
                                 }, failure: { error in
-                                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
                                     self.end(media)
                                 })
                                 if let taskProgress = progress {
-                                    self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: mediaID)
+                                    self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: media.uploadID)
                                 }
         })
+    }
+
+    // MARK: - Progress
+
+    /// - returns: The current progress for the specified media object.
+    ///
+    func progress(for media: Media) -> Progress? {
+        return mediaProgressCoordinator.progress(forMediaID: media.uploadID)
     }
 
     // MARK: - Observing
@@ -195,5 +204,11 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
 
+    }
+}
+
+extension Media {
+    var uploadID: String {
+        return objectID.uriRepresentation().absoluteString
     }
 }
