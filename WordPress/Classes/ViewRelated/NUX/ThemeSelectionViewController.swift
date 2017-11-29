@@ -32,6 +32,14 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.collectionView?.collectionViewLayout.invalidateLayout()
+        })
+    }
+
     // MARK: - UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
