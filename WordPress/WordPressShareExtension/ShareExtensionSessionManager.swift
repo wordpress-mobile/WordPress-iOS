@@ -100,12 +100,10 @@ import CoreData
 
 extension ShareExtensionSessionManager: URLSessionDelegate {
 
-    /*
-        If an application has received an -application:handleEventsForBackgroundURLSession:completionHandler: message,
-        the session delegate will receive this message to indicate that all messages previously enqueued for this
-        session have been delivered. At this time it is safe to invoke the previously stored completion handler,
-        or to begin any internal updates that will result in invoking the completion handler.
-     */
+    // If an application has received an -application:handleEventsForBackgroundURLSession:completionHandler: message,
+    // the session delegate will receive this message to indicate that all messages previously enqueued for this
+    // session have been delivered. At this time it is safe to invoke the previously stored completion handler,
+    // or to begin any internal updates that will result in invoking the completion handler.
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         if let completionHandler = backgroundSessionCompletionBlock {
             backgroundSessionCompletionBlock = nil
@@ -116,12 +114,10 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
         DDLogInfo("Completed background media uploading for session \(session).")
     }
 
-    /*
-        Tells the URL session that the session has been invalidated. If you invalidate a session by calling its
-        finishTasksAndInvalidate() method, the session waits until after the final task in the session finishes or
-        fails before calling this delegate method. If you call the invalidateAndCancel() method, the session calls
-        this delegate method immediately.
-     */
+    // Tells the URL session that the session has been invalidated. If you invalidate a session by calling its
+    // finishTasksAndInvalidate() method, the session waits until after the final task in the session finishes or
+    // fails before calling this delegate method. If you call the invalidateAndCancel() method, the session calls
+    // this delegate method immediately.
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         if let error = error {
             DDLogError("Background session invalidated with error. Session:\(session) Error:\(error).")
@@ -153,9 +149,11 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
 
         if let uploadOp = fetchSessionUploadOp(taskID: task.taskIdentifier) {
             uploadOp.currentStatus = .Complete
+            coreDataStack.saveContext()
+
             // TODO: embed the media into the post content and then upload in another bg session
             // var remotePost = fetchSessionPost(with: uploadOp.groupID)
-            coreDataStack.saveContext()
+
             if let fileName = uploadOp.fileName {
                 ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
             }
@@ -165,3 +163,29 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
     }
 }
 
+// MARK: - URLSessionDataDelegate
+
+extension ShareExtensionSessionManager: URLSessionDataDelegate {
+
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        DDLogDebug("Received server response data for task:\(dataTask.debugDescription).")
+        guard let object = try? JSONSerialization.jsonObject(with: data, options: []),
+            let response = object as? [String: AnyObject],
+            let media = response["media"] as? [[String: AnyObject]],
+            let mediaDict = media.first else {
+                DDLogError("Error parsing server response data. Task:\(dataTask.debugDescription)")
+                return
+        }
+
+        if let uploadOp = fetchSessionUploadOp(taskID: dataTask.taskIdentifier) {
+            if let remoteMediaID = mediaDict["ID"] as? NSNumber {
+                uploadOp.remoteMediaID = remoteMediaID.int64Value
+            }
+
+            if let remoteMediaUrlString  = mediaDict["URL"] as? String, !remoteMediaUrlString.isEmpty {
+                uploadOp.remoteURL = remoteMediaUrlString
+            }
+            coreDataStack.saveContext()
+        }
+    }
+}

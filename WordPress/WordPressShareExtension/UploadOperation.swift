@@ -16,23 +16,11 @@ public class UploadOperation: NSManagedObject {
     }
     @NSManaged private var uploadStatus: Int32
 
-    /// Site ID for this upload op
-    ///
-    @NSManaged public var siteID: Int32
-
-    /// Post ID for this upload op
-    ///
-    @NSManaged public var postID: Int32
-
-    /// True if this upload operation involves media; False if it is a post
-    ///
-    @NSManaged public var isMedia: Bool
-
-    /// ID which is unique to a group of upload operations
+    /// ID which is unique to a group of upload operations within WPiOS (and its extensions)
     ///
     @NSManaged public var groupID: String
 
-    /// NSURL background session task ID assigned to this upload op
+    /// NSURL background session task ID assigned to this upload op. Unique within a given session.
     ///
     @NSManaged public var backgroundSessionTaskID: Int32
 
@@ -40,27 +28,47 @@ public class UploadOperation: NSManagedObject {
     ///
     @NSManaged public var backgroundSessionIdentifier: String?
 
-    /// Name of the file in this upload op (Media only)
+    /// Site ID for this upload op
+    ///
+    @NSManaged public var siteID: Int64
+
+    /// True if this upload operation involves media; False if it is a post
+    ///
+    @NSManaged public var isMedia: Bool
+
+    /// Remote post ID for this upload op.
+    ///
+    @NSManaged public var remotePostID: Int64
+
+    /// Remote media ID for this upload op. (Not used if `isMedia` is False)
+    ///
+    @NSManaged public var remoteMediaID: Int64
+
+    /// Name of the file in this upload op (Not used if `isMedia` is False)
     ///
     @NSManaged public var fileName: String?
 
-    /// Complete local URL (including filename) for this upload op (Media only)
+    /// Complete local URL, including filename for this upload op (Not used if `isMedia` is False)
     ///
     @NSManaged public var localURL: String?
 
-    /// MIME Type for the media involved in this network op (Media only)
+    /// Complete remote URL, including filename for this upload op (Not used if `isMedia` is False)
+    ///
+    @NSManaged public var remoteURL: String?
+
+    /// MIME Type for the media involved in this network op (Not used if `isMedia` is False)
     ///
     @NSManaged public var mimeType: String?
 
-    /// Post subject for this upload op (Post only)
+    /// Post subject for this upload op (Not used if `isMedia` is True)
     ///
     @NSManaged public var postTitle: String?
 
-    /// Post content for this upload op (Post only)
+    /// Post content for this upload op (Not used if `isMedia` is True)
     ///
     @NSManaged public var postContent: String?
 
-    /// Post status for this upload op — e.g. "Draft" or "Publish" (Post only)
+    /// Post status for this upload op — e.g. "Draft" or "Publish" (Not used if `isMedia` is True)
     ///
     @NSManaged public var postStatus: String?
 
@@ -70,7 +78,7 @@ public class UploadOperation: NSManagedObject {
 }
 
 // MARK: - Computed Properties
-//
+
 extension UploadOperation {
     /// Returns a RemotePost object based on this UploadOperation
     ///
@@ -82,7 +90,7 @@ extension UploadOperation {
         let remotePost: RemotePost = {
             let post = RemotePost()
             post.siteID = NSNumber(value: siteID)
-            post.postID = NSNumber(value: postID)
+            post.postID = NSNumber(value: remotePostID)
             post.content = postContent
             post.title = postTitle
             post.status = postStatus
@@ -101,8 +109,13 @@ extension UploadOperation {
 
         let remoteMedia: RemoteMedia = {
             let media = RemoteMedia()
-            media.file = fileName
+            media.mediaID = NSNumber(value: remoteMediaID)
+            media.postID = NSNumber(value: remotePostID)
             media.mimeType = mimeType
+            media.file = fileName
+            if let remoteURL = remoteURL {
+                media.url = URL(string: remoteURL)
+            }
             if let localURL = localURL {
                 media.localURL = URL(fileURLWithPath: localURL)
             }
@@ -120,7 +133,11 @@ extension UploadOperation {
     ///
     func updateWithMedia(remote: RemoteMedia) {
         isMedia = true
+        if let mediaId = remote.mediaID?.int64Value {
+            remoteMediaID = mediaId
+        }
         localURL = remote.localURL?.absoluteString
+        remoteURL = remote.url?.absoluteString
         fileName = remote.file
         mimeType = remote.mimeType
     }
@@ -129,7 +146,12 @@ extension UploadOperation {
     ///
     func updateWithPost(remote: RemotePost) {
         isMedia = false
-        siteID = remote.siteID.int32Value
+        if let postId = remote.postID?.int64Value {
+            remotePostID = postId
+        }
+        if let siteId = remote.siteID?.int64Value {
+            siteID = siteId
+        }
         postTitle = remote.title
         postContent = remote.content
         postStatus = remote.status
