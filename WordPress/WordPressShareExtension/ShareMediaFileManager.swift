@@ -70,12 +70,11 @@ import Foundation
         }
     }
 
-    /// Removes a specific file from the Media upload directory if it exists
+    /// Removes a specific file from the Media upload directory *if* it exists
     ///
-    /// - Parameters:
-    ///     - fileName: Name of file to remove
+    /// - Parameter fileName: fileName: Name of file to remove
     ///
-    func removeFromUploadDirectory(fileName: String) {
+    @objc func removeFromUploadDirectory(fileName: String) {
         guard let mediaDirectory = mediaUploadDirectoryURL, fileName.isEmpty == false else {
             return
         }
