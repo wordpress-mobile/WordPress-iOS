@@ -440,12 +440,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (SettingTableViewCell *)timeZoneTextCell
 {
-    if (_timeZoneTextCell) {
-        return _timeZoneTextCell;
+    if (!_timeZoneTextCell) {
+        _timeZoneTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Time Zone", @"Label for the time zone setting")
+                                                               editable:self.blog.isAdmin
+                                                        reuseIdentifier:nil];;
     }
-    _timeZoneTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Time Zone", @"Label for the time zone setting")
-                                                           editable:self.blog.isAdmin
-                                                    reuseIdentifier:nil];
     return _timeZoneTextCell;
 }
 
@@ -503,8 +502,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                 } else {
                     gmtOffset = [self.blog getOptionValue:@"gmt_offset"];
                 }
-                long hoursUTC = gmtOffset.integerValue;
-                long minutesUTC = fabs(([gmtOffset doubleValue] - hoursUTC) * 60);
+                NSInteger hoursUTC = gmtOffset.integerValue;
+                NSInteger minutesUTC = fabs(([gmtOffset doubleValue] - hoursUTC) * 60);
                 NSString *utcString;
                 if (minutesUTC == 0) {
                     utcString = [NSString stringWithFormat:@"UTC %+ld", hoursUTC];
@@ -682,12 +681,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
 - (void)showTimeZoneSelector
 {
-    TimeZoneSelectorViewController *vc = [[TimeZoneSelectorViewController alloc] init];
-    vc.usersCurrentTimeZone = self.blog.settings.timeZoneString;
-    vc.usersManualOffset = self.blog.settings.gmtOffset;
     __weak __typeof__(self) weakSelf = self;
-
-    vc.onChange = ^(NSString * _Nonnull timezoneString, NSNumber * _Nullable manualOffset){
+    void (^onChange)(NSString * _Nonnull, NSNumber * _Nullable) = ^(NSString * _Nonnull timezoneString, NSNumber * _Nullable manualOffset){
         if (manualOffset == nil) {
             weakSelf.blog.settings.timeZoneString = timezoneString;
         } else {
@@ -696,6 +691,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         weakSelf.blog.settings.gmtOffset = manualOffset;
         [weakSelf saveSettings];
     };
+    TimeZoneSelectorViewController *vc = [[TimeZoneSelectorViewController alloc] initWithTimeZoneString:self.blog.settings.timeZoneString manualOffset:self.blog.settings.gmtOffset onChange:onChange];
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 

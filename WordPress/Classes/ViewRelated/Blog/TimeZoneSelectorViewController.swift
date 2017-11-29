@@ -2,15 +2,15 @@ import UIKit
 
 class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter {
 
-    /// users current timezone passed by SiteSettingsVC, if empty means manual offset is to be used
-    @objc var usersCurrentTimeZone: String?
-    /// users manual offset passed by SiteSettingsVC
-    @objc var usersManualOffset: NSNumber?
+    /// The blog's current timezone. If no timezone string is set, then the manual offset value will be used.
+    private var usersCurrentTimeZone: String?
+    /// The blog's manual GMT offset. If timezone string is set, this value will be nil
+    private var usersManualOffset: NSNumber?
 
     /// timezoneString will be set to a non empty string
     /// if user selects anything other than Manual Offset section
     /// manualOffset will be set if users selects anything from Manual Offset section
-    @objc var onChange: ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?
+    private var onChange: ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)!
 
     /// ImmuTableViewHandler, takes over the datasource, delegate from this VC
     private lazy var handler: ImmuTableViewHandler = {
@@ -43,12 +43,14 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
     /// used to show an intermittent loading state
     private let noResultsView = WPNoResultsView()
 
-    override init(style: UITableViewStyle) {
-        super.init(style: .grouped)
-    }
+    @objc public convenience init(timeZoneString: String?,
+                     manualOffset: NSNumber?,
+                     onChange: @escaping ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)) {
+        self.init(style: .grouped)
+        self.usersCurrentTimeZone = timeZoneString
+        self.usersManualOffset = manualOffset
+        self.onChange = onChange
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
 
     override func viewDidLoad() {
@@ -75,7 +77,7 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
         }
     }
 
-    /// helper method to call API and save the data to DB
+    /// Helper method to call API and save the data to DB
     private func loadDataFromAPIAndSaveToDB() {
         let api = ServiceRemoteWordPressComREST.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress())!
         let remoteService = BlogServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: 0))
