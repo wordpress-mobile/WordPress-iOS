@@ -37,6 +37,7 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
+    SiteSettingsWritingTags,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingCount,
@@ -79,6 +80,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
+@property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 #pragma mark - Discussion Section
@@ -284,6 +286,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _defaultCategoryCell;
 }
 
+- (SettingTableViewCell *)tagsCell
+{
+    if (_tagsCell){
+        return _tagsCell;
+    }
+    _tagsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tags", @"Label for selecting the blogs tags")
+                                                              editable: self.blog.isAdmin
+                                                       reuseIdentifier:nil];
+    return _tagsCell;
+}
+
 - (SettingTableViewCell *)defaultPostFormatCell
 {
     if (_defaultPostFormatCell){
@@ -347,6 +360,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
 }
 
+- (void)configureTagsCell
+{
+    [self.tagsCell setTextValue: @"I am a temporary placeholder"];
+}
+
 - (void)configureDefaultPostFormatCell
 {
     [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
@@ -358,6 +376,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case (SiteSettingsWritingDefaultCategory):
             [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;
+            
+        case (SiteSettingsWritingTags):
+            [self configureTagsCell];
+            return self.tagsCell;
 
         case (SiteSettingsWritingDefaultPostFormat):
             [self configureDefaultPostFormatCell];
