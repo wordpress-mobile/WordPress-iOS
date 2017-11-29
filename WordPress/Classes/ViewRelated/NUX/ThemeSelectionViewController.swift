@@ -126,10 +126,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         case .blog: themes = blogThemes
         case .website: themes = websiteThemes
         case .portfolio: themes = portfolioThemes
-        case .none:
-            return nil
-        case .some(_):
-            return nil
+        default: themes = blogThemes
         }
 
         var predicates = [NSPredicate]()
