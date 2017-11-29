@@ -1,5 +1,6 @@
 import Foundation
 import Gridicons
+import ActionKit
 
 protocol LoginWithLogoAndHelpViewController {
     func addWordPressLogoToNavController()
@@ -21,14 +22,22 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
         let helpBadgeSize = CGSize(width: 12, height: 10)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in
+            self?.handleHelpshiftUnreadCountUpdated(notification)
+        }
 
         let customView = UIView(frame: helpButtonContainerFrame)
 
         let helpButton = UIButton(type: .custom)
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
-        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
+        helpButton.addControlEvent(.touchUpInside) { [weak self](control: UIControl) in
+
+            guard let helpButton = control as? UIButton else {
+                return
+            }
+            self?.handleHelpButtonTapped(helpButton)
+        }
 
         customView.addSubview(helpButton)
         helpButton.translatesAutoresizingMaskIntoConstraints = false

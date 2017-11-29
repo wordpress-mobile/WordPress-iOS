@@ -8,7 +8,6 @@ import WordPressShared
 ///
 
 class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithLogoAndHelpViewController {
-
     @objc var helpBadge: WPNUXHelpBadgeLabel!
     @objc var helpButton: UIButton!
     @objc var loginFields = LoginFields()
@@ -97,6 +96,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Sets up the help button and the helpshift conversation badge.
     ///
+    /// - Note: this is only used in the old single-page signup screen and can be removed once that screen is gone.
     @objc func setupHelpButtonAndBadge() {
         NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
 
@@ -106,7 +106,12 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
         helpButton.setImage(UIImage(named: "btn-help"), for: UIControlState())
         helpButton.sizeToFit()
         helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
-        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
+        helpButton.addControlEvent(.touchUpInside) { [weak self](control: UIControl) in
+            guard let helpButton = control as? UIButton else {
+                return
+            }
+            self?.handleHelpButtonTapped(helpButton)
+        }
 
         customView.addSubview(helpButton)
         helpButton.translatesAutoresizingMaskIntoConstraints = false
@@ -226,7 +231,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     // Handle the help button being tapped
     //
-    @objc func handleHelpButtonTapped(_ sender: UIButton) {
+    func handleHelpButtonTapped(_ sender: AnyObject) {
         displaySupportViewController(sourceTag: sourceTag)
     }
 }
