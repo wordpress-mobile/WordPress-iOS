@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PostTagService
 
 - (void)syncTagsForBlog:(Blog *)blog
-                success:(nullable void (^)(void))success
+                success:(nullable void (^)(NSArray <PostTag *> *tags))success
                 failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
@@ -27,11 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
                 return;
             }
             
-            [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+            NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             
             if (success) {
-                success();
+                success(tags);
             }
         }];
     } failure:failure];
