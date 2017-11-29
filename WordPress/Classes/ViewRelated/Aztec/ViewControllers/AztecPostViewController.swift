@@ -452,6 +452,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         return AztecVerificationPromptHelper(account: self.post.blog.account)
     }()
 
+    /// The view to show when media picker has no assets to show.
+    ///
+    fileprivate let noResultsView = MediaNoResultsView()
+
+    fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
 
     // MARK: - Initializers
 
@@ -868,6 +874,42 @@ class AztecPostViewController: UIViewController, PostEditor {
         var blogPickerSize = hasHorizontallyCompactView() ? Constants.blogPickerCompactSize : Constants.blogPickerRegularSize
         blogPickerSize.width = min(blogPickerSize.width, blogPickerButton.frame.width)
         blogPickerButton.frame.size = blogPickerSize
+    }
+
+    fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
+        let isSearching = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+        let hasAssets = mediaLibraryDataSource.totalAssetCount > 0
+
+        if isSearching || hasAssets {
+            mediaPicker.showSearchBar()
+            if let searchBar = mediaPicker.searchBar {
+                WPStyleGuide.configureSearchBar(searchBar)
+            }
+        } else {
+            mediaPicker.hideSearchBar()
+        }
+    }
+
+    fileprivate func registerChangeObserver(forPicker picker: WPMediaPickerViewController) {
+        assert(mediaLibraryChangeObserverKey == nil)
+        mediaLibraryChangeObserverKey = mediaLibraryDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+
+            self?.updateSearchBar(mediaPicker: picker)
+
+            let isNotSearching = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 == 0
+            let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
+
+            if isNotSearching && hasNoAssets {
+                self?.noResultsView.updateForNoAssets(userCanUploadMedia: false)
+            }
+        })
+    }
+
+    fileprivate func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            mediaLibraryDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
+        }
+        mediaLibraryChangeObserverKey = nil
     }
 
 
@@ -1871,6 +1913,7 @@ extension AztecPostViewController {
         options.showMostRecentFirst = true
         options.filter = [.all]
         options.allowCaptureOfMedia = false
+        options.showSearchBar = true
 
         let picker = WPNavigationMediaPickerViewController()
 
@@ -1881,6 +1924,7 @@ extension AztecPostViewController {
             picker.startOnGroupSelector = false
             picker.showGroupSelector = false
             picker.dataSource = mediaLibraryDataSource
+            registerChangeObserver(forPicker: picker.mediaPicker)
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
@@ -3298,14 +3342,41 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 //
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        if picker != mediaPickerInputViewController?.mediaPicker {
+            return noResultsView
+        }
+        return nil
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
+        if let searchQuery = mediaLibraryDataSource.searchQuery {
+            noResultsView.updateForNoSearchResult(with: searchQuery)
+        }
+    }
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        updateSearchBar(mediaPicker: picker)
+        noResultsView.updateForFetching()
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        updateSearchBar(mediaPicker: picker)
+        noResultsView.updateForNoAssets(userCanUploadMedia: false)
+    }
+
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         if picker != mediaPickerInputViewController?.mediaPicker {
+            unregisterChangeObserver()
+            mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
         }
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
+            unregisterChangeObserver()
+            mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
             selectedMediaOrigin = .fullScreenPicker
         } else {
@@ -3342,10 +3413,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
         updateFormatBarInsertAssetCount()
-    }
-
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        return nil
     }
 
     private func updateFormatBarInsertAssetCount() {
