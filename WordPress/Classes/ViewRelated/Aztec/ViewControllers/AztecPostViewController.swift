@@ -2672,7 +2672,7 @@ extension AztecPostViewController {
 
             switch expected {
             case .image:
-                newAttachment = imageAttachmentWithPlaceholder()
+                newAttachment = insertImageAttachment()
                 newStatType = .editorAddedPhotoViaOtherApps
             case .video:
                 newAttachment = videoAttachmentWithPlaceholder()
@@ -2708,9 +2708,10 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceImage(phAsset: PHAsset) {
-        let attachment = imageAttachmentWithPlaceholder()
+        let attachment = insertImageAttachment()
         let uploadID = attachment.identifier
         attachment.uploadID = uploadID
+
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
                                  forPost: post.objectID,
@@ -2753,12 +2754,14 @@ extension AztecPostViewController {
         }
     }
 
-    private func imageAttachmentWithPlaceholder() -> ImageAttachment {
-        return richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+    private func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) -> ImageAttachment {
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
+        attachment.size = .full
+        return attachment
     }
 
     private func videoAttachmentWithPlaceholder() -> VideoAttachment {
-        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, posterURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: Constants.placeholderMediaLink, posterURL: Constants.placeholderMediaLink, placeHolderImage: Assets.defaultMissingImage)
     }
 
     private func handleThumbnailURL(_ thumbnailURL: URL, attachment: MediaAttachment) {
@@ -2799,7 +2802,7 @@ extension AztecPostViewController {
         }
         switch media.mediaType {
         case .image:
-            let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
+            let attachment = insertImageAttachment(with: remoteURL)
             attachment.alt = media.alt
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         case .video:
@@ -2824,13 +2827,13 @@ extension AztecPostViewController {
 
     fileprivate func insertLocalSiteMediaLibrary(media: Media) {
 
-        var tempMediaURL = URL(string: "placeholder://")!
+        var tempMediaURL = Constants.placeholderMediaLink
         if let absoluteURL = media.absoluteLocalURL {
             tempMediaURL = absoluteURL
         }
         var attachment: MediaAttachment?
         if media.mediaType == .image {
-            attachment = self.richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: tempMediaURL, placeHolderImage: Assets.defaultMissingImage)
+            attachment = insertImageAttachment(with: tempMediaURL)
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
@@ -3555,6 +3558,7 @@ extension AztecPostViewController {
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
+        static let placeholderMediaLink = URL(string: "placeholder://")!
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
