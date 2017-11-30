@@ -12,6 +12,7 @@ final class SiteTagsViewController: UITableViewController {
     private let blog: Blog
     private let tagsService: PostTagService
     
+    @objc
     public init(blog: Blog, tagsService: PostTagService) {
         self.blog = blog
         self.tagsService = tagsService
