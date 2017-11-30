@@ -25,9 +25,15 @@ final class SiteTagsViewController: UITableViewController {
     
     override func viewDidLoad() {
         setAccessibilityIdentifier()
+        applyStyleGuide()
     }
     
     private func setAccessibilityIdentifier() {
         tableView.accessibilityIdentifier = "SiteTagsList"
+    }
+    
+    private func applyStyleGuide() {
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 }
