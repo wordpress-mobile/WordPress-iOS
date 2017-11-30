@@ -77,8 +77,8 @@ final class SiteTagsViewController: UITableViewController {
     }
     
     private func initializeData() {
-        refreshNoResultsView()
         tags = blog.tags?.flatMap{ return $0 as? PostTag }.sorted() ?? []
+        refreshNoResultsView()
         tableView.reloadData()
         
         tagsService.syncTags(for: blog, success: { [weak self] tags in
