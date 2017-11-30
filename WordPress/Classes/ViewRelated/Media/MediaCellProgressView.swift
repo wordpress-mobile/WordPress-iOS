@@ -59,6 +59,25 @@ class MediaCellProgressView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        setRetryContainerDimmed(true)
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        setRetryContainerDimmed(false)
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        setRetryContainerDimmed(false)
+    }
+
+    fileprivate func setRetryContainerDimmed(_ dimmed: Bool) {
+        retryContainer.alpha = (dimmed) ? 0.5 : 1.0
+    }
+
     private func addProgressIndicator() {
         addSubview(progressIndicator)
         progressIndicator.translatesAutoresizingMaskIntoConstraints = false
