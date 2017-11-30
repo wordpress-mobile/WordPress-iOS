@@ -9,6 +9,9 @@
 import Foundation
 
 final class SiteTagsViewController: UITableViewController {
+    private struct TableConstants {
+        static let cellIdentifier = "TagsAdminCell"
+    }
     private let blog: Blog
     private let tagsService: PostTagService
     
@@ -26,6 +29,8 @@ final class SiteTagsViewController: UITableViewController {
     override func viewDidLoad() {
         setAccessibilityIdentifier()
         applyStyleGuide()
+        applyTitle()
+        initializeTable()
     }
     
     private func setAccessibilityIdentifier() {
@@ -35,5 +40,28 @@ final class SiteTagsViewController: UITableViewController {
     private func applyStyleGuide() {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+    }
+    
+    private func applyTitle() {
+        title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
+    }
+    
+    private func initializeTable() {
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.register(WPTableViewCell.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
+        setupRefreshControl()
+    }
+    
+    private func setupRefreshControl() {
+        if refreshControl == nil {
+            refreshControl = UIRefreshControl()
+            refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        }
+    }
+    
+    @objc
+    private func refreshTags() {
+        print("refreshing")
+        refreshControl?.endRefreshing()
     }
 }
