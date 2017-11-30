@@ -15,7 +15,7 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
     private let tagsService: PostTagService
-    private var tags: [PostTag]?
+    private var tags: [PostTag] = []
     
     fileprivate let noResultsView = WPNoResultsView()
     
@@ -78,7 +78,7 @@ final class SiteTagsViewController: UITableViewController {
     
     private func initializeData() {
         refreshNoResultsView()
-        tags = blog.tags?.flatMap{ return $0 as? PostTag }.sorted()
+        tags = blog.tags?.flatMap{ return $0 as? PostTag }.sorted() ?? []
         tableView.reloadData()
         
         tagsService.syncTags(for: blog, success: { [weak self] tags in
@@ -92,7 +92,7 @@ final class SiteTagsViewController: UITableViewController {
     }
     
     private func refreshNoResultsView() {
-        guard tags?.count == 0 else {
+        guard tags.count == 0 else {
             noResultsView.removeFromSuperview()
             return
         }
@@ -117,14 +117,13 @@ extension SiteTagsViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tags?.count ?? 0
+        return tags.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath)
-        if let tag = tags?[indexPath.row] {
-            cell.textLabel?.text = tag.name
-        }
+
+        cell.textLabel?.text = tags[indexPath.row].name
         
         return cell
     }
