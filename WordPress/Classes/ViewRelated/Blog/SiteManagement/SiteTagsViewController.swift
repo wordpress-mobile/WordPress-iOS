@@ -85,7 +85,8 @@ final class SiteTagsViewController: UITableViewController {
     
     @objc
     private func createTag() {
-        print("navigate to TagDetails")
+        let emptyTag = PostTag()
+        navigate(to: emptyTag)
     }
     
     private func initializeData() {
@@ -140,5 +141,19 @@ extension SiteTagsViewController {
         cell.textLabel?.text = tags[indexPath.row].name
         
         return cell
+    }
+}
+
+extension SiteTagsViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedTag = tags[indexPath.row]        
+        navigate(to: selectedTag)
+    }
+}
+
+extension SiteTagsViewController {
+    fileprivate func navigate(to tag: PostTag) {
+        let singleTag = SiteTagViewController(blog: blog, tag: tag, tagsService: tagsService)
+        navigationController?.pushViewController(singleTag, animated: true)
     }
 }
