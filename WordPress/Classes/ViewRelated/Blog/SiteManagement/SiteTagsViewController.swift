@@ -17,6 +17,8 @@ final class SiteTagsViewController: UITableViewController {
     private let tagsService: PostTagService
     private var tags: [PostTag]?
     
+    fileprivate let noResultsView = WPNoResultsView()
+    
     @objc
     public init(blog: Blog, tagsService: PostTagService) {
         self.blog = blog
@@ -76,11 +78,29 @@ final class SiteTagsViewController: UITableViewController {
     }
     
     private func initializeData() {
+        tags = blog.tags?.flatMap{ return $0 as? PostTag }
+        tableView.reloadData()
         tagsService.syncTags(for: blog, success: { [weak self] tags in
+            self?.tableView.dataSource = self
             self?.tags = tags
+            self?.refreshNoResultsView()
             self?.tableView.reloadData()
         }) { error in
             print("there was an error")
+        }
+    }
+    
+    private func refreshNoResultsView() {
+        guard tags?.count == 0 else {
+            noResultsView.removeFromSuperview()
+            return
+        }
+        
+        noResultsView.titleText = NSLocalizedString("No  Yet",
+            comment: "Empty state message (People Management). Please, do not translate the \\(filter.title) part!")
+        
+        if noResultsView.superview == nil {
+            tableView.addSubview(withFadeAnimation: noResultsView)
         }
     }
 }
