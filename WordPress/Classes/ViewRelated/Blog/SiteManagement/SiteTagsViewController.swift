@@ -14,6 +14,7 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
     private let tagsService: PostTagService
+    private var tags: [PostTag]?
     
     @objc
     public init(blog: Blog, tagsService: PostTagService) {
@@ -27,10 +28,18 @@ final class SiteTagsViewController: UITableViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         setAccessibilityIdentifier()
         applyStyleGuide()
         applyTitle()
         initializeTable()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        initializeData()
     }
     
     private func setAccessibilityIdentifier() {
@@ -63,5 +72,13 @@ final class SiteTagsViewController: UITableViewController {
     private func refreshTags() {
         print("refreshing")
         refreshControl?.endRefreshing()
+    }
+    
+    private func initializeData() {
+        tagsService.syncTags(for: blog, success: { [weak self] tags in
+            self?.tags = tags
+        }) { error in
+            print("there was an error")
+        }
     }
 }
