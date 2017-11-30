@@ -1,6 +1,5 @@
 import UIKit
 
-
 final class SiteTagsViewController: UITableViewController {
     private struct TableConstants {
         static let cellIdentifier = "TagsAdminCell"
