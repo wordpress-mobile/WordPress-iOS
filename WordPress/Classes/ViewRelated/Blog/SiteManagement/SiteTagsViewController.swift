@@ -11,6 +11,7 @@ import Foundation
 final class SiteTagsViewController: UITableViewController {
     private struct TableConstants {
         static let cellIdentifier = "TagsAdminCell"
+        static let numberOfSections = 1
     }
     private let blog: Blog
     private let tagsService: PostTagService
@@ -81,5 +82,24 @@ final class SiteTagsViewController: UITableViewController {
         }) { error in
             print("there was an error")
         }
+    }
+}
+
+extension SiteTagsViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return TableConstants.numberOfSections
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tags?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath)
+        if let tag = tags?[indexPath.row] {
+            cell.textLabel?.text = tag.name
+        }
+        
+        return cell
     }
 }
