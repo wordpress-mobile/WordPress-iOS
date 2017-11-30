@@ -7,3 +7,18 @@
 //
 
 import Foundation
+
+final class SiteTagsViewController: UITableViewController {
+    private let blog: Blog
+    private let tagsService: PostTagService
+    
+    init(blog: Blog, tagsService: PostTagService) {
+        self.blog = blog
+        self.tagsService = tagsService
+        super.init(style: .grouped)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
