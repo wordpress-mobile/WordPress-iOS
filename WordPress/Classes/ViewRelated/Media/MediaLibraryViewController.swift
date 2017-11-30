@@ -239,7 +239,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 if progress < MediaLibraryViewController.uploadCompleteProgress {
                     overlayView.state = .progress(progress)
                 } else {
-                    overlayView.progressIndicator.state = .indeterminate
+                    overlayView.state = .indeterminate
                 }
             }
         }
@@ -248,7 +248,15 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     private func showUploadingStateForCell(for media: Media) {
         visibleCells(for: media).forEach { cell in
             if let overlayView = cell.overlayView as? MediaCellProgressView {
-                overlayView.progressIndicator.state = .indeterminate
+                overlayView.state = .indeterminate
+            }
+        }
+    }
+
+    private func showFailedStateForCell(for media: Media) {
+        visibleCells(for: media).forEach { cell in
+            if let overlayView = cell.overlayView as? MediaCellProgressView {
+                overlayView.state = .retry
             }
         }
     }
@@ -439,6 +447,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 self?.showUploadingStateForCell(for: media)
             case .ended:
                 self?.reloadCell(for: media)
+            case .failed:
+                self?.showFailedStateForCell(for: media)
             }
             }, for: nil)
     }
