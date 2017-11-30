@@ -107,7 +107,6 @@ final class SiteTagsViewController: UITableViewController {
     
     func tagsFailedLoading(error: Error) {
         DDLogError("Tag management. Error loading tags for \(String(describing: blog.url)): \(error)")
-        //dataSource = FailureDataSource()
     }
 }
 
