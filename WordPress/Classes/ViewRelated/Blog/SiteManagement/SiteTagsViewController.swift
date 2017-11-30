@@ -96,8 +96,8 @@ final class SiteTagsViewController: UITableViewController {
             return
         }
         
-        noResultsView.titleText = NSLocalizedString("No  Yet",
-            comment: "Empty state message (People Management). Please, do not translate the \\(filter.title) part!")
+        noResultsView.titleText = NSLocalizedString("No Tags Yet",
+            comment: "Empty state. Tags management (Settings > Writing > Tags)")
         
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
