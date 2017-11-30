@@ -78,14 +78,10 @@ final class SiteTagsViewController: UITableViewController {
     
     private func initializeData() {
         let savedTags = blog.tags?.flatMap{ return $0 as? PostTag } ?? []
-        assing(savedTags)
-        refreshNoResultsView()
+        assing(savedTags)        
         
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.assing(tags)
-            self?.refreshControl?.endRefreshing()
-            self?.refreshNoResultsView()
-            self?.tableView.reloadData()
         }) { [weak self] error in
             self?.tagsFailedLoading(error: error)
         }
@@ -93,6 +89,9 @@ final class SiteTagsViewController: UITableViewController {
     
     private func assing(_ data: [PostTag]) {
         tags = data.sorted()
+        refreshControl?.endRefreshing()
+        refreshNoResultsView()
+        tableView.reloadData()
     }
     
     private func refreshNoResultsView() {
