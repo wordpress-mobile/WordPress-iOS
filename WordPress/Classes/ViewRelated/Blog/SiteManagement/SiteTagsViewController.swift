@@ -85,8 +85,8 @@ final class SiteTagsViewController: UITableViewController {
             self?.refreshControl?.endRefreshing()
             self?.refreshNoResultsView()
             self?.tableView.reloadData()
-        }) { error in
-            print("there was an error")
+        }) { [weak self] error in
+            self?.tagsFailedLoading(error: error)
         }
     }
     
@@ -102,6 +102,11 @@ final class SiteTagsViewController: UITableViewController {
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
         }
+    }
+    
+    func tagsFailedLoading(error: Error) {
+        DDLogError("Error loading tags for \(String(describing: blog.url)): \(error)")
+        //dataSource = FailureDataSource()
     }
 }
 
