@@ -55,7 +55,7 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 #import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
 
-int ddLogLevel = DDLogLevelInfo;
+DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
@@ -518,21 +518,6 @@ int ddLogLevel = DDLogLevelInfo;
     return [controller isKindOfClass:[NUXAbstractViewController class]] || [controller isKindOfClass:[LoginPrologueViewController class]];
 }
 
-- (BOOL)noWordPressDotComAccount
-{
-    return [AccountHelper isDotcomAvailable] == false;
-}
-
-- (BOOL)noSelfHostedBlogs
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
-    NSInteger blogCount = [blogService blogCountSelfHosted];
-    return blogCount == 0;
-}
-
-
 - (void)customizeAppearance
 {
     self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];
@@ -734,100 +719,11 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"End keychain fixing");
 }
 
-#pragma mark - Debugging
+#pragma mark - Log Level
 
-- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions
++ (void)setLogLevel:(DDLogLevel)logLevel
 {
-    UIDevice *device = [UIDevice currentDevice];
-    NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
-    NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
-    NSString *currentLanguage = [languages objectAtIndex:0];
-    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSArray *blogs = [blogService blogsForAllAccounts];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    
-    DDLogInfo(@"===========================================================================");
-    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle bundleForClass:[self class]] detailedVersionNumber]);
-    DDLogInfo(@"Crash count:       %d", crashCount);
-#ifdef DEBUG
-    DDLogInfo(@"Debug mode:  Debug");
-#else
-    DDLogInfo(@"Debug mode:  Production");
-#endif
-    DDLogInfo(@"Extra debug: %@", extraDebug ? @"YES" : @"NO");
-    DDLogInfo(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
-    DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
-    DDLogInfo(@"Language:  %@", currentLanguage);
-    DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [[PushNotificationsManager shared] deviceToken]);
-    DDLogInfo(@"Launch options: %@", launchOptions);
-    NSString *verificationTag = @"";
-    if (account.verificationStatus) {
-        verificationTag = [NSString stringWithFormat:@" (%@)", account.verificationStatus];
-    }
-    DDLogInfo(@"wp.com account: %@ (ID: %@)%@", account.username, account.userID, verificationTag);
-    
-    if (blogs.count > 0) {
-        DDLogInfo(@"All blogs on device:");
-        for (Blog *blog in blogs) {
-            DDLogInfo(@"%@", [blog logDescription]);
-        }
-    } else {
-        DDLogInfo(@"No blogs configured on device.");
-    }
-    
-    DDLogInfo(@"===========================================================================");
-}
-
-- (void)removeCredentialsForDebug
-{
-#if DEBUG
-    /*
-     A dictionary containing the credentials for all available protection spaces.
-     The dictionary has keys corresponding to the NSURLProtectionSpace objects.
-     The values for the NSURLProtectionSpace keys consist of dictionaries where the keys are user name strings, and the value is the corresponding NSURLCredential object.
-     */
-    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
-        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
-            DDLogVerbose(@"Removing credential %@ for %@", [credential user], [ps host]);
-            [[NSURLCredentialStorage sharedCredentialStorage] removeCredential:credential forProtectionSpace:ps];
-        }];
-    }];
-#endif
-}
-
-- (void)toggleExtraDebuggingIfNeeded
-{
-    if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
-        // When there are no blogs in the app the settings screen is unavailable.
-        // In this case, enable extra_debugging by default to help troubleshoot any issues.
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
-            return; // Already saved. Don't save again or we could loose the original value.
-        }
-
-        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
-        [[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
-        ddLogLevel = DDLogLevelVerbose;
-        [NSUserDefaults resetStandardUserDefaults];
-    } else {
-        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
-        if (origExtraDebug == nil) {
-            return;
-        }
-
-        // Restore the original setting and remove orig_extra_debug.
-        [[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
-        [NSUserDefaults resetStandardUserDefaults];
-
-        if ([origExtraDebug boolValue]) {
-            ddLogLevel = DDLogLevelVerbose;
-        }
-    }
+    ddLogLevel = logLevel;
 }
 
 @end
