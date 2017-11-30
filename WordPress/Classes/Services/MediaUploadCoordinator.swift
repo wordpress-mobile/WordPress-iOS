@@ -32,32 +32,49 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
             return
         }
 
-        mediaProgressCoordinator.track(numberOfItems: 1)
         let context = ContextManager.sharedInstance().mainContext
         let service = MediaService(managedObjectContext: context)
         service.createMedia(with: asset,
                             forBlogObjectID: blog.objectID,
                             thumbnailCallback: nil,
-                            completion: { media, error in
+                            completion: { [weak self] media, error in
                                 guard let media = media else {
                                     return
                                 }
 
-                                self.begin(media)
-
-                                var progress: Progress? = nil
-                                service.uploadMedia(media,
-                                                    progress: &progress,
-                                                    success: {
-                                                        self.end(media)
-                                }, failure: { error in
-                                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
-                                    self.fail(media)
-                                })
-                                if let taskProgress = progress {
-                                    self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: media.uploadID)
-                                }
+                                self?.uploadMedia(media)
         })
+    }
+
+    func retryMedia(_ media: Media) {
+        guard media.remoteStatus == .failed else {
+            DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
+            return
+        }
+
+        uploadMedia(media)
+    }
+
+    private func uploadMedia(_ media: Media) {
+        mediaProgressCoordinator.track(numberOfItems: 1)
+
+        begin(media)
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = MediaService(managedObjectContext: context)
+
+        var progress: Progress? = nil
+        service.uploadMedia(media,
+                            progress: &progress,
+                            success: {
+                                self.end(media)
+        }, failure: { error in
+            self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            self.fail(media)
+        })
+        if let taskProgress = progress {
+            self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: media.uploadID)
+        }
     }
 
     // MARK: - Progress
