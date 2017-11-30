@@ -778,6 +778,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 - (void)showTagList
 {
     NSLog(@"navigating away to tags list");
+    PostTagService *tagsService = [[PostTagService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    SiteTagsViewController *tagsAdmin = [[SiteTagsViewController alloc] initWithBlog:self.blog tagsService:tagsService];
+    [self.navigationController pushViewController:tagsAdmin animated:YES];
 }
 
 - (void)showPostFormatSelector
