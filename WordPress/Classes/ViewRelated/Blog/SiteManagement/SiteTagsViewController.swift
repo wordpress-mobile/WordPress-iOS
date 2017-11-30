@@ -37,6 +37,7 @@ final class SiteTagsViewController: UITableViewController {
         applyStyleGuide()
         applyTitle()
         initializeTable()
+        initializeNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +75,17 @@ final class SiteTagsViewController: UITableViewController {
     @objc
     private func refreshTags() {
         initializeData()
+    }
+    
+    private func initializeNavigationBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                            target: self,
+                                                            action: #selector(createTag))
+    }
+    
+    @objc
+    private func createTag() {
+        print("navigate to TagDetails")
     }
     
     private func initializeData() {
