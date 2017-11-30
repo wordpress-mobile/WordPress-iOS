@@ -168,7 +168,16 @@ class ShareViewController: SLComposeServiceViewController {
                                     self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
             })
         } else {
-            uploadPost(subject: subject, body: body, status: postStatus, siteID: siteID, requestEnqueued: {
+            let remotePost: RemotePost = {
+                let post = RemotePost()
+                post.siteID = NSNumber(value: siteID)
+                post.status = postStatus
+                post.title = subject
+                post.content = body
+                return post
+            }()
+            let uploadPostOpID = savePostOperation(remotePost, with: .InProgress)
+            uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
                 self.tracks.trackExtensionPosted(self.postStatus)
                 self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
             })
@@ -308,6 +317,16 @@ private extension ShareViewController {
         return uploadPostOp.objectID
     }
 
+    func updatePostOperation(status: UploadOperation.UploadStatus, remotePostID: Int64, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
+        guard let uploadPostOp = (try? managedContext.existingObject(with: uploadOpObjectID)) as? UploadOperation else {
+            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+            return
+        }
+        uploadPostOp.currentStatus = status
+        uploadPostOp.remotePostID = remotePostID
+        coreDataStack.saveContext()
+    }
+
     func updateStatus(_ status: UploadOperation.UploadStatus, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
         var uploadOp: UploadOperation?
         do {
@@ -331,42 +350,54 @@ private extension ShareViewController {
         uploadOp?.backgroundSessionTaskID = taskID.int32Value
         coreDataStack.saveContext()
     }
+
+    func fetchPostUploadOp(withObjectID uploadOpObjectID: NSManagedObjectID) -> UploadOperation? {
+        var uploadOp: UploadOperation?
+        do {
+            uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
+        } catch {
+            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+        }
+        return uploadOp
+    }
 }
 
 // MARK: - ShareViewController Extension: Backend Interaction
 
 private extension ShareViewController {
 
-    func uploadPost(subject: String, body: String, status: String, siteID: Int, requestEnqueued: @escaping () -> ()) {
+    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, requestEnqueued: @escaping () -> ()) {
+        guard let postUploadOp = fetchPostUploadOp(withObjectID: uploadOpObjectID),
+            let remotePost = postUploadOp.remotePost else {
+                DDLogError("Error uploading post in share extension — could not fetch saved post.")
+                requestEnqueued()
+                return
+        }
+
         // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads so set it false
         let api = WordPressComRestApi(oAuthToken: oauth2Token,
                                       userAgent: nil,
                                       backgroundUploads: false,
                                       backgroundSessionIdentifier: backgroundSessionIdentifier,
                                       sharedContainerIdentifier: WPAppGroupName)
-        let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
-        let remotePost: RemotePost = {
-            let post = RemotePost()
-            post.siteID = NSNumber(value: siteID)
-            post.status = status
-            post.title = subject
-            post.content = body
-            return post
-        }()
-        let uploadPostOpID = savePostOperation(remotePost, with: .InProgress)
-
+        let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
         remote.createPost(remotePost, success: { post in
             if let post = post {
-                DDLogInfo("Post #\(post.postID) was shared.")
+                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
+                if let postID = post.postID {
+                    self.updatePostOperation(status: .Complete, remotePostID: postID.int64Value, forUploadOpWithObjectID: uploadOpObjectID)
+                } else {
+                    self.updateStatus(.Complete, forUploadOpWithObjectID: uploadOpObjectID)
+                }
             }
-            self.updateStatus(.Complete, forUploadOpWithObjectID: uploadPostOpID)
             requestEnqueued()
         }, failure: { error in
+            var errorString = "Error creating post in share extension"
             if let error = error as NSError? {
-                DDLogError("Error creating post in share extension: \(error.localizedDescription)")
-                self.tracks.trackExtensionError(error)
+                errorString += ": \(error.localizedDescription)"
             }
-            self.updateStatus(.Error, forUploadOpWithObjectID: uploadPostOpID)
+            DDLogError(errorString)
+            self.updateStatus(.Error, forUploadOpWithObjectID: uploadOpObjectID)
             requestEnqueued()
         })
     }
@@ -386,7 +417,7 @@ private extension ShareViewController {
             post.content = body
             return post
         }()
-        _ = savePostOperation(remotePost, with: .Pending)
+        let uploadPostOpID = savePostOperation(remotePost, with: .Pending)
 
         let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
         let fullPath = mediaDirectory.appendingPathComponent(fileName)
@@ -415,7 +446,7 @@ private extension ShareViewController {
 
         // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
         // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
-        // post share here.
+        // post share here as well as WPiOS.
         let remote = MediaServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         remote.uploadMedia(remoteMedia, requestEnqueued: { taskID in
             self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadMediaOpID)
@@ -433,6 +464,9 @@ private extension ShareViewController {
 
             self.updateMediaOperation(status: .Complete, remoteMediaID: remoteMediaID, remoteURL: remoteMediaURLString, forUploadOpWithObjectID: uploadMediaOpID)
             ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
+
+            // Now upload the post
+            self.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {})
         }) { error in
             guard let error = error as NSError? else {
                 return

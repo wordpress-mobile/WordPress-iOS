@@ -127,14 +127,17 @@ import CoreData
                                       backgroundSessionIdentifier: backgroundSessionIdentifier,
                                       sharedContainerIdentifier: WPAppGroupName)
         let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
-        updateStatus(.Error, forUploadOpWithObjectID: postUploadOpID)
+        updateStatus(.InProgress, forUploadOpWithObjectID: postUploadOpID)
 
         remote.createPost(postUploadOp.remotePost, success: { post in
             if let post = post {
                 DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
-                postUploadOp.remotePostID = post.postID.int64Value
+                if let postID = post.postID {
+                    self.updatePostOperation(status: .Complete, remotePostID: postID.int64Value, forUploadOpWithObjectID: postUploadOpID)
+                } else {
+                    self.updateStatus(.Complete, forUploadOpWithObjectID: postUploadOpID)
+                }
             }
-            self.updateStatus(.Complete, forUploadOpWithObjectID: postUploadOpID)
         }, failure: { error in
             var errorString = "Error creating post"
             if let error = error as NSError? {
@@ -186,6 +189,16 @@ private extension ShareExtensionSessionManager {
         if let remoteUrlString = remoteURL, !remoteUrlString.isEmpty {
             uploadMediaOp.remoteURL = remoteUrlString
         }
+        coreDataStack.saveContext()
+    }
+
+    func updatePostOperation(status: UploadOperation.UploadStatus, remotePostID: Int64, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
+        guard let uploadPostOp = (try? coreDataStack.managedContext.existingObject(with: uploadOpObjectID)) as? UploadOperation else {
+            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+            return
+        }
+        uploadPostOp.currentStatus = status
+        uploadPostOp.remotePostID = remotePostID
         coreDataStack.saveContext()
     }
 
