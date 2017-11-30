@@ -360,11 +360,37 @@ private extension ShareViewController {
         }
         return uploadOp
     }
+
+    func fetchMediaUploadOpsForGroup(_ groupID: String) -> [UploadOperation]? {
+        var mediaUploadOps: [UploadOperation]
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "UploadOperation")
+        request.predicate = NSPredicate(format: "(groupID == %@ AND isMedia == true)", groupID)
+        do {
+            mediaUploadOps = try managedContext.fetch(request) as! [UploadOperation]
+        } catch {
+            fatalError("Failed to fetch UploadOperations: \(error)")
+        }
+
+        return mediaUploadOps
+    }
 }
 
 // MARK: - ShareViewController Extension: Backend Interaction
 
 private extension ShareViewController {
+    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
+        guard let postUploadOp = fetchPostUploadOp(withObjectID: uploadPostOpID),
+            let mediaUploadOps = fetchMediaUploadOpsForGroup(postUploadOp.groupID) else {
+                return
+        }
+
+        let remoteURLText = mediaUploadOps.flatMap({ $0.remoteURL }).map({ "".stringByPrependingMediaURL($0) }).joined()
+        let content = postUploadOp.postContent ?? ""
+        postUploadOp.postContent = content + remoteURLText
+        coreDataStack.saveContext()
+
+        self.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {})
+    }
 
     func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, requestEnqueued: @escaping () -> ()) {
         guard let postUploadOp = fetchPostUploadOp(withObjectID: uploadOpObjectID),
@@ -466,7 +492,7 @@ private extension ShareViewController {
             ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
 
             // Now upload the post
-            self.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {})
+            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID)
         }) { error in
             guard let error = error as NSError? else {
                 return
