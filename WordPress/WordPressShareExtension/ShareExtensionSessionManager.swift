@@ -70,19 +70,6 @@ import CoreData
         updateStatus(.Error, forUploadOpWithObjectID: uploadOpObjectID)
     }
 
-    /// Nukes all media files associated with the current NSURLSession. *Be careful* with this one because
-    /// some of the upload operations could still be in flight or errored out (which means you
-    /// may want to retry another time).
-    ///
-    fileprivate func removeAllMediaFilesForCurrentSession() {
-        let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@ AND isMedia == true)", backgroundSessionIdentifier)
-        for uploadOp in coreDataStack.managedContext.allObjects(ofType: UploadOperation.self, matching: predicate) {
-            if let fileName = uploadOp.fileName {
-                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
-            }
-        }
-    }
-
     /// Appends all of the remote media URLs to the post's content poperty.
     /// For the provided group ID:
     ///   1. Find the (not completed) post upload op (there should be one one)
@@ -127,16 +114,17 @@ import CoreData
                                       backgroundSessionIdentifier: backgroundSessionIdentifier,
                                       sharedContainerIdentifier: WPAppGroupName)
         let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
-        updateStatus(.InProgress, forUploadOpWithObjectID: postUploadOpID)
+        postUploadOp.currentStatus = .InProgress
+        coreDataStack.saveContext()
 
         remote.createPost(postUploadOp.remotePost, success: { post in
             if let post = post {
-                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
                 if let postID = post.postID {
-                    self.updatePostOperation(status: .Complete, remotePostID: postID.int64Value, forUploadOpWithObjectID: postUploadOpID)
-                } else {
-                    self.updateStatus(.Complete, forUploadOpWithObjectID: postUploadOpID)
+                    DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
+                    postUploadOp.remotePostID = postID.int64Value
                 }
+                postUploadOp.currentStatus = .Complete
+                self.coreDataStack.saveContext()
             }
         }, failure: { error in
             var errorString = "Error creating post"
@@ -189,16 +177,6 @@ private extension ShareExtensionSessionManager {
         if let remoteUrlString = remoteURL, !remoteUrlString.isEmpty {
             uploadMediaOp.remoteURL = remoteUrlString
         }
-        coreDataStack.saveContext()
-    }
-
-    func updatePostOperation(status: UploadOperation.UploadStatus, remotePostID: Int64, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
-        guard let uploadPostOp = (try? coreDataStack.managedContext.existingObject(with: uploadOpObjectID)) as? UploadOperation else {
-            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
-            return
-        }
-        uploadPostOp.currentStatus = status
-        uploadPostOp.remotePostID = remotePostID
         coreDataStack.saveContext()
     }
 
