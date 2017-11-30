@@ -73,8 +73,7 @@ final class SiteTagsViewController: UITableViewController {
     
     @objc
     private func refreshTags() {
-        print("refreshing")
-        refreshControl?.endRefreshing()
+        initializeData()
     }
     
     private func initializeData() {
@@ -83,6 +82,7 @@ final class SiteTagsViewController: UITableViewController {
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.tableView.dataSource = self
             self?.tags = tags.sorted()
+            self?.refreshControl?.endRefreshing()
             self?.refreshNoResultsView()
             self?.tableView.reloadData()
         }) { error in
