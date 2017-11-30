@@ -77,6 +77,7 @@ final class SiteTagsViewController: UITableViewController {
     private func initializeData() {
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.tags = tags
+            self?.tableView.reloadData()
         }) { error in
             print("there was an error")
         }
