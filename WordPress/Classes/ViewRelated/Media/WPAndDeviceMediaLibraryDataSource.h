@@ -12,6 +12,7 @@ typedef NS_ENUM(NSUInteger, MediaPickerDataSourceType) {
 @interface WPAndDeviceMediaLibraryDataSource : NSObject <WPMediaCollectionDataSource>
 
 @property (nonatomic) MediaPickerDataSourceType dataSourceType;
+@property (nonatomic, readonly, copy) NSString *searchQuery;
 
 - (instancetype)initWithBlog:(Blog *)blog;
 - (instancetype)initWithBlog:(Blog *)blog
