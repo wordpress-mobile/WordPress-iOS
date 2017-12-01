@@ -164,11 +164,8 @@ enum TimezoneSelectorViewModel {
             let dict = data.1[self.MANUAL_OFFSET] {
             let hoursUTC = manualOffset.intValue
             let minutesUTC = abs(Int((manualOffset.doubleValue - Double(hoursUTC)) * 60))
-            let utcString: String
-            if minutesUTC == 0 {
-                utcString = String(format: "UTC%+d", hoursUTC)
-            } else {
-                utcString = String(format: "UTC%+d:%d", hoursUTC, minutesUTC)
+            guard let utcString: String = TimeZoneSettingHelper.getFormattedString(prefix: "UTC", hours: hoursUTC, minutes: minutesUTC) else {
+                return nil
             }
             if let index = dict.index(where: { $0.0 == utcString }) {
                 let row = dict.distance(from: dict.startIndex, to: index)
