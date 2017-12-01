@@ -19,7 +19,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     var alignment = ImageAttachment.Alignment.none
     var linkURL: URL?
-    var size = ImageAttachment.Size.full
+    var size = ImageAttachment.Size.none
     @objc var alt: String?
 
     var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?) -> Void)?
@@ -160,7 +160,7 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func displaySizeSelector(row: ImmuTableRow) {
-        let values: [ImageAttachment.Size] = [.thumbnail, .medium, .large, .full]
+        let values: [ImageAttachment.Size] = [.thumbnail, .medium, .large, .full, .none]
 
         let titles = values.map { (value) in
             return value.localizedString
@@ -239,7 +239,8 @@ extension ImageAttachment.Size {
         case .thumbnail: return NSLocalizedString("Thumbnail", comment: "Thumbnail image size. Should be the same as in core WP.")
         case .medium: return NSLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP.")
         case .large: return NSLocalizedString("Large", comment: "Large image size. Should be the same as in core WP.")
-        case .none, .full: return NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
+        case .full: return NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
+        case .none: return NSLocalizedString("None", comment: "No size class defined for the image. Should be the same as in core WP.")
         }
     }
 }
