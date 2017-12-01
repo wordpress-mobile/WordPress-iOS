@@ -90,7 +90,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     /// Raw HTML Editor
     ///
     fileprivate(set) lazy var htmlTextView: UITextView = {
-        let storage = HTMLStorage(defaultFont: Fonts.regular)
+        let storage = HTMLStorage(defaultFont: Fonts.monospace)
         let layoutManager = NSLayoutManager()
         let container = NSTextContainer()
 
@@ -335,6 +335,8 @@ class AztecPostViewController: UIViewController, PostEditor {
                 richTextView.becomeFirstResponder()
             }
 
+            updateFormatBar()
+
             refreshEditorVisibility()
             refreshPlaceholderVisibility()
             refreshTitlePosition()
@@ -451,6 +453,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var verificationPromptHelper: AztecVerificationPromptHelper? = {
         return AztecVerificationPromptHelper(account: self.post.blog.account)
     }()
+
+    /// The view to show when media picker has no assets to show.
+    ///
+    fileprivate let noResultsView = MediaNoResultsView()
+
+    fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
 
     // MARK: - Initializers
@@ -694,7 +702,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
-        textView.font = Fonts.regular
         textView.keyboardDismissMode = .interactive
         textView.textColor = UIColor.darkText
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -870,6 +877,42 @@ class AztecPostViewController: UIViewController, PostEditor {
         blogPickerButton.frame.size = blogPickerSize
     }
 
+    fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
+        let isSearching = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+        let hasAssets = mediaLibraryDataSource.totalAssetCount > 0
+
+        if isSearching || hasAssets {
+            mediaPicker.showSearchBar()
+            if let searchBar = mediaPicker.searchBar {
+                WPStyleGuide.configureSearchBar(searchBar)
+            }
+        } else {
+            mediaPicker.hideSearchBar()
+        }
+    }
+
+    fileprivate func registerChangeObserver(forPicker picker: WPMediaPickerViewController) {
+        assert(mediaLibraryChangeObserverKey == nil)
+        mediaLibraryChangeObserverKey = mediaLibraryDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+
+            self?.updateSearchBar(mediaPicker: picker)
+
+            let isNotSearching = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 == 0
+            let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
+
+            if isNotSearching && hasNoAssets {
+                self?.noResultsView.updateForNoAssets(userCanUploadMedia: false)
+            }
+        })
+    }
+
+    fileprivate func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            mediaLibraryDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
+        }
+        mediaLibraryChangeObserverKey = nil
+    }
+
 
     // MARK: - Keyboard Handling
 
@@ -934,13 +977,44 @@ class AztecPostViewController: UIViewController, PostEditor {
         richTextView.scrollIndicatorInsets = scrollInsets
         richTextView.contentInset = contentInsets
     }
+}
+
+// MARK: - Format Bar Updating
+
+extension AztecPostViewController {
 
     func updateFormatBar() {
+        switch mode {
+        case .html:
+            updateFormatBarForHTMLMode()
+        case .richText:
+            updateFormatBarForVisualMode()
+        }
+    }
+
+    /// Updates the format bar for HTML mode.
+    ///
+    private func updateFormatBarForHTMLMode() {
+        assert(mode == .html)
+
+        guard let toolbar = richTextView.inputAccessoryView as? Aztec.FormatBar else {
+            return
+        }
+
+        toolbar.selectItemsMatchingIdentifiers([FormattingIdentifier.sourcecode.rawValue])
+    }
+
+    /// Updates the format bar for visual mode.
+    ///
+    private func updateFormatBarForVisualMode() {
+        assert(mode == .richText)
+
         guard let toolbar = richTextView.inputAccessoryView as? Aztec.FormatBar else {
             return
         }
 
         var identifiers = [FormattingIdentifier]()
+
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
@@ -1380,6 +1454,9 @@ extension AztecPostViewController: UITextViewDelegate {
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         textView.textAlignment = .natural
+
+        let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })!
+
         switch textView {
         case titleTextField:
             formatBar.enabled = false
@@ -1387,13 +1464,12 @@ extension AztecPostViewController: UITextViewDelegate {
             formatBar.enabled = true
         case htmlTextView:
             formatBar.enabled = false
-
-            // Disable the bar, except for the source code button
-            let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
-            htmlButton?.isEnabled = true
         default:
             break
         }
+
+        htmlButton.isEnabled = true
+
         if mediaPickerInputViewController == nil {
             textView.inputAccessoryView = formatBar
         }
@@ -1871,6 +1947,7 @@ extension AztecPostViewController {
         options.showMostRecentFirst = true
         options.filter = [.all]
         options.allowCaptureOfMedia = false
+        options.showSearchBar = true
 
         let picker = WPNavigationMediaPickerViewController()
 
@@ -1881,6 +1958,7 @@ extension AztecPostViewController {
             picker.startOnGroupSelector = false
             picker.showGroupSelector = false
             picker.dataSource = mediaLibraryDataSource
+            registerChangeObserver(forPicker: picker.mediaPicker)
         }
 
         picker.selectionActionTitle = Constants.mediaPickerInsertText
@@ -2594,7 +2672,7 @@ extension AztecPostViewController {
 
             switch expected {
             case .image:
-                newAttachment = imageAttachmentWithPlaceholder()
+                newAttachment = insertImageAttachment()
                 newStatType = .editorAddedPhotoViaOtherApps
             case .video:
                 newAttachment = videoAttachmentWithPlaceholder()
@@ -2630,9 +2708,10 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceImage(phAsset: PHAsset) {
-        let attachment = imageAttachmentWithPlaceholder()
+        let attachment = insertImageAttachment()
         let uploadID = attachment.identifier
         attachment.uploadID = uploadID
+
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
                                  forPost: post.objectID,
@@ -2675,12 +2754,14 @@ extension AztecPostViewController {
         }
     }
 
-    private func imageAttachmentWithPlaceholder() -> ImageAttachment {
-        return richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+    private func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) -> ImageAttachment {
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
+        attachment.size = .full
+        return attachment
     }
 
     private func videoAttachmentWithPlaceholder() -> VideoAttachment {
-        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: URL(string: "placeholder://")!, posterURL: URL(string: "placeholder://")!, placeHolderImage: Assets.defaultMissingImage)
+        return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: Constants.placeholderMediaLink, posterURL: Constants.placeholderMediaLink, placeHolderImage: Assets.defaultMissingImage)
     }
 
     private func handleThumbnailURL(_ thumbnailURL: URL, attachment: MediaAttachment) {
@@ -2721,7 +2802,7 @@ extension AztecPostViewController {
         }
         switch media.mediaType {
         case .image:
-            let attachment = richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: remoteURL, placeHolderImage: Assets.defaultMissingImage)
+            let attachment = insertImageAttachment(with: remoteURL)
             attachment.alt = media.alt
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         case .video:
@@ -2746,13 +2827,13 @@ extension AztecPostViewController {
 
     fileprivate func insertLocalSiteMediaLibrary(media: Media) {
 
-        var tempMediaURL = URL(string: "placeholder://")!
+        var tempMediaURL = Constants.placeholderMediaLink
         if let absoluteURL = media.absoluteLocalURL {
             tempMediaURL = absoluteURL
         }
         var attachment: MediaAttachment?
         if media.mediaType == .image {
-            attachment = self.richTextView.replaceWithImage(at: richTextView.selectedRange, sourceURL: tempMediaURL, placeHolderImage: Assets.defaultMissingImage)
+            attachment = insertImageAttachment(with: tempMediaURL)
             WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
@@ -3298,14 +3379,41 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 //
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        if picker != mediaPickerInputViewController?.mediaPicker {
+            return noResultsView
+        }
+        return nil
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
+        if let searchQuery = mediaLibraryDataSource.searchQuery {
+            noResultsView.updateForNoSearchResult(with: searchQuery)
+        }
+    }
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        updateSearchBar(mediaPicker: picker)
+        noResultsView.updateForFetching()
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        updateSearchBar(mediaPicker: picker)
+        noResultsView.updateForNoAssets(userCanUploadMedia: false)
+    }
+
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         if picker != mediaPickerInputViewController?.mediaPicker {
+            unregisterChangeObserver()
+            mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
         }
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         if picker != mediaPickerInputViewController?.mediaPicker {
+            unregisterChangeObserver()
+            mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
             selectedMediaOrigin = .fullScreenPicker
         } else {
@@ -3342,10 +3450,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
         updateFormatBarInsertAssetCount()
-    }
-
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        return nil
     }
 
     private func updateFormatBarInsertAssetCount() {
@@ -3454,6 +3558,7 @@ extension AztecPostViewController {
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
+        static let placeholderMediaLink = URL(string: "placeholder://")!
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
@@ -3491,6 +3596,7 @@ extension AztecPostViewController {
         static let blogPicker               = Fonts.semiBold
         static let mediaPickerInsert        = WPFontManager.systemMediumFont(ofSize: 15.0)
         static let mediaOverlay             = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
+        static let monospace                = UIFont(name: "Menlo-Regular", size: 16.0)!
     }
 
     struct Restoration {
