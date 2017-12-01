@@ -21,7 +21,7 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
         let helpBadgeSize = CGSize(width: 12, height: 10)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in
+        NotificationCenter.default.addObserver(forName: .HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in
             self?.handleHelpshiftUnreadCountUpdated(notification)
         }
 
@@ -30,10 +30,7 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
         let helpButton = UIButton(type: .custom)
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
-        helpButton.on(.touchUpInside) { [weak self](control: UIControl) in
-            guard let helpButton = control as? UIButton else {
-                return
-            }
+        helpButton.on(.touchUpInside) { [weak self] control in
             self?.handleHelpButtonTapped(helpButton)
         }
 
