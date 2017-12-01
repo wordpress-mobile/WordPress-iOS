@@ -36,7 +36,9 @@ public class RemoteBlogSettings: NSObject {
     ///
     @objc public var defaultPostFormat: String?
 
-
+    /// Represents whether the Portfolio feature is enabled or not
+    ///
+    @objc public var portfolioEnabled: NSNumber?
 
     // MARK: - Discussion
 
