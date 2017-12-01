@@ -5,8 +5,8 @@ import UIKit
 /// A type that represents the information we can extract from an extension context
 ///
 struct ExtractedShare {
-    let text: String
-    let image: UIImage?
+    var text: String
+    var images: [UIImage]
 }
 
 /// A type that represents the information we can extract from an extension context
@@ -42,7 +42,7 @@ struct ShareExtractor {
         self.extensionContext = extensionContext
     }
 
-    /// Loads the content asynchronously.
+    /// Loads the content.
     ///
     /// - Important: This method will only call completion if it can successfully extract content.
     /// - Parameters:
@@ -50,9 +50,10 @@ struct ShareExtractor {
     ///
     func loadShare(completion: @escaping (ExtractedShare) -> Void) {
         extractText { text in
-            self.extractImage { image in
-                let text = text ?? ""
-                completion(ExtractedShare(text: text, image: image))
+            let returnedText = text ?? ""
+            self.extractImages { images in
+                let returnedImages = images ?? [UIImage]()
+                completion(ExtractedShare(text: returnedText, images: returnedImages))
             }
         }
     }
@@ -66,7 +67,6 @@ struct ShareExtractor {
     var validContent: Bool {
         return textExtractor != nil || imageExtractor != nil
     }
-
 }
 
 
@@ -96,25 +96,35 @@ private extension ShareExtractor {
             completion(nil)
             return
         }
-        textExtractor.extract(context: extensionContext) { share in
-            completion(share?.text)
+        textExtractor.extract(context: extensionContext) { extractedItems in
+            guard extractedItems.count > 0 else {
+                completion(nil)
+                return
+            }
+            let combinedText = extractedItems.flatMap({ $0.text }).map({ $0 + " " }).joined()
+            completion(combinedText)
         }
     }
 
-    func extractImage(completion: @escaping (UIImage?) -> Void) {
+    func extractImages(completion: @escaping ([UIImage]?) -> Void) {
         guard let imageExtractor = imageExtractor else {
             completion(nil)
             return
         }
-        imageExtractor.extract(context: extensionContext) { share in
-            completion(share?.image)
+        imageExtractor.extract(context: extensionContext) { extractedItems in
+            guard extractedItems.count > 0 else {
+                completion(nil)
+                return
+            }
+            let images = extractedItems.flatMap({ $0.image })
+            completion(images)
         }
     }
 }
 
 private protocol ExtensionContentExtractor {
     func canHandle(context: NSExtensionContext) -> Bool
-    func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void)
+    func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void)
 }
 
 private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor {
@@ -128,19 +138,26 @@ private extension TypeBasedExtensionContentExtractor {
         return !context.itemProviders(ofType: acceptedType).isEmpty
     }
 
-    func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void) {
-        guard let provider = context.itemProviders(ofType: acceptedType).first else {
-            DispatchQueue.main.async {
-                completion(nil)
-            }
-            return
-        }
-        provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
-            let payload = payload as? Payload
-            let result = payload.flatMap(self.convert(payload:))
+    func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
+        var results = [ExtractedItem]()
+        var itemsToLoad = 0
+        for provider in context.itemProviders(ofType: acceptedType) {
+            itemsToLoad += 1
+            // Remember, this is an async call....
+            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
+                let payload = payload as? Payload
+                let result = payload.flatMap(self.convert(payload:))
+                if let result = result {
+                    results.append(result)
+                }
+                itemsToLoad -= 1
 
-            DispatchQueue.main.async {
-                completion(result)
+                // This only gets called when all of the items are loaded
+                if itemsToLoad == 0 {
+                    DispatchQueue.main.async {
+                        completion(results)
+                    }
+                }
             }
         }
     }
