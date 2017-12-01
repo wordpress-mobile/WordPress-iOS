@@ -3,7 +3,10 @@ import Gridicons
 
 protocol LoginWithLogoAndHelpViewController {
     func addWordPressLogoToNavController()
+    func handleHelpButtonTapped(_ sender: AnyObject)
     func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel)
+    func displaySupportViewController(sourceTag: SupportSourceTag)
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification)
 }
 
 extension LoginWithLogoAndHelpViewController where Self: UIViewController {
@@ -12,19 +15,24 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
         let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
     }
+
     func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel) {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
         let helpBadgeSize = CGSize(width: 12, height: 10)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+        NotificationCenter.default.addObserver(forName: .HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in
+            self?.handleHelpshiftUnreadCountUpdated(notification)
+        }
 
         let customView = UIView(frame: helpButtonContainerFrame)
 
         let helpButton = UIButton(type: .custom)
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
-        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
+        helpButton.on(.touchUpInside) { [weak self] control in
+            self?.handleHelpButtonTapped(helpButton)
+        }
 
         customView.addSubview(helpButton)
         helpButton.translatesAutoresizingMaskIntoConstraints = false
@@ -50,9 +58,22 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
 
         return (helpButton, helpBadge)
     }
+
+    /// Displays the support vc.
+    ///
+    func displaySupportViewController(sourceTag: SupportSourceTag) {
+        let controller = SupportViewController()
+        controller.sourceTag = sourceTag
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.navigationBar.isTranslucent = false
+        navController.modalPresentationStyle = .formSheet
+
+        navigationController?.present(navController, animated: true, completion: nil)
+    }
 }
 
-class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewController {
+class LoginViewController: NUXAbstractViewController {
     @IBOutlet var instructionLabel: UILabel?
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
