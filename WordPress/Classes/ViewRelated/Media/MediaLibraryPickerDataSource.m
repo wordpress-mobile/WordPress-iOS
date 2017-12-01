@@ -84,6 +84,23 @@
 
 #pragma mark - WPMediaCollectionDataSource
 
+- (void)searchFor:(NSString *)searchText
+{
+    if (![_searchQuery isEqualToString:searchText]) {
+        _searchQuery = [searchText copy];
+
+        _fetchController = nil;
+        [self.fetchController performFetch:nil];
+    }
+}
+
+- (void)searchCancelled
+{
+    _searchQuery = nil;
+    _fetchController = nil;
+    [self.fetchController performFetch:nil];
+}
+
 -(NSInteger)numberOfAssets
 {
     if ([[self.fetchController sections] count] > 0) {
