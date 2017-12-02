@@ -49,33 +49,31 @@ final class SiteTagsViewController: UITableViewController {
     private func applyTitle() {
         title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
     }
-    
+
     private func configureTable() {
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(WPTableViewCell.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
         setupRefreshControl()
     }
-    
+
     private func setupRefreshControl() {
         if refreshControl == nil {
             refreshControl = UIRefreshControl()
             refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
         }
     }
-    
-    @objc
-    private func refreshTags() {
+
+    @objc private func refreshTags() {
         initializeData()
     }
-    
+
     private func configureNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(createTag))
     }
-    
-    @objc
-    private func createTag() {
+
+    @objc private func createTag() {
         let emptyTag = PostTag()
         navigate(to: emptyTag)
     }
@@ -91,7 +89,7 @@ final class SiteTagsViewController: UITableViewController {
             self?.tagsFailedLoading(error: error)
         }
     }
-    
+
     private func assign(_ data: [PostTag]) {
         tags = data.sorted()
         refreshControl?.endRefreshing()
