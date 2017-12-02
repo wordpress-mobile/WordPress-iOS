@@ -3,6 +3,7 @@ import UIKit
 final class SiteTagsViewController: UITableViewController {
     private struct TableConstants {
         static let cellIdentifier = "TagsAdminCell"
+        static let accesibilityIdentifier = "SiteTagsList"
         static let numberOfSections = 1
     }
     private let blog: Blog
@@ -26,8 +27,8 @@ final class SiteTagsViewController: UITableViewController {
         setAccessibilityIdentifier()
         applyStyleGuide()
         applyTitle()
-        initializeTable()
-        initializeNavigationBar()
+        configureTable()
+        configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,7 +38,7 @@ final class SiteTagsViewController: UITableViewController {
     }
     
     private func setAccessibilityIdentifier() {
-        tableView.accessibilityIdentifier = "SiteTagsList"
+        tableView.accessibilityIdentifier = TableConstants.accesibilityIdentifier
     }
     
     private func applyStyleGuide() {
@@ -49,7 +50,7 @@ final class SiteTagsViewController: UITableViewController {
         title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
     }
     
-    private func initializeTable() {
+    private func configureTable() {
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(WPTableViewCell.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
         setupRefreshControl()
@@ -67,7 +68,7 @@ final class SiteTagsViewController: UITableViewController {
         initializeData()
     }
     
-    private func initializeNavigationBar() {
+    private func configureNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(createTag))
