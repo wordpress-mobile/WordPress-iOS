@@ -4,7 +4,7 @@ extension PostTag: Comparable {
         guard let lhsName = lhs.name, let rhsName = rhs.name else {
             return false
         }
-        
+
         return lhsName < rhsName
     }
 }

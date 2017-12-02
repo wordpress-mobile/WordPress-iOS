@@ -8,19 +8,19 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
     private var tags: [PostTag] = []
-    
+
     fileprivate let noResultsView = WPNoResultsView()
-    
+
     @objc
     public init(blog: Blog) {
         self.blog = blog
         super.init(style: .grouped)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -81,7 +81,7 @@ final class SiteTagsViewController: UITableViewController {
     private func initializeData() {
         let savedTags = blog.tags?.flatMap { return $0 as? PostTag } ?? []
         assign(savedTags)
-        
+
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.assign(tags)
