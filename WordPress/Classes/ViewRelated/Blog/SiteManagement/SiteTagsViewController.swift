@@ -23,29 +23,29 @@ final class SiteTagsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setAccessibilityIdentifier()
         applyStyleGuide()
         applyTitle()
         configureTable()
         configureNavigationBar()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         initializeData()
     }
-    
+
     private func setAccessibilityIdentifier() {
         tableView.accessibilityIdentifier = TableConstants.accesibilityIdentifier
     }
-    
+
     private func applyStyleGuide() {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
-    
+
     private func applyTitle() {
         title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
     }
@@ -77,11 +77,11 @@ final class SiteTagsViewController: UITableViewController {
         let emptyTag = PostTag()
         navigate(to: emptyTag)
     }
-    
+
     private func initializeData() {
         let savedTags = blog.tags?.flatMap { return $0 as? PostTag } ?? []
         assign(savedTags)
-        
+
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.assign(tags)
