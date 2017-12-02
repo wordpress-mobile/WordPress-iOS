@@ -20,6 +20,7 @@
 @property (nonatomic, assign, readonly) BOOL runningInBackground;
 @property (nonatomic, strong, readonly) WPUserAgent *userAgent;
 
+@property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, assign, readwrite) BOOL connectionAvailable;
 
