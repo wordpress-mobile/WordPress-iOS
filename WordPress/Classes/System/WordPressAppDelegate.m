@@ -13,10 +13,6 @@
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
 #endif
 
-
-// Analytics & crash logging
-#import "WPCrashlytics.h"
-
 // Data model
 #import "Blog.h"
 
@@ -51,7 +47,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
@@ -561,23 +556,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     }];
 }
 
-#pragma mark - Crashlytics configuration
-
-- (void)configureCrashlytics
-{
-#if defined(DEBUG)
-    return;
-#endif
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-    NSString* apiKey = [ApiCredentials crashlyticsApiKey];
-    
-    if (apiKey) {
-        self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
-    }
-#pragma clang diagnostic pop
-}
 #pragma mark - Keychain
 
 + (void)fixKeychainAccess
