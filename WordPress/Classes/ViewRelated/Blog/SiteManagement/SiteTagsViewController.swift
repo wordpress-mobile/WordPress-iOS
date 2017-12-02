@@ -81,17 +81,17 @@ final class SiteTagsViewController: UITableViewController {
     
     private func initializeData() {
         let savedTags = blog.tags?.flatMap{ return $0 as? PostTag } ?? []
-        assing(savedTags)
+        assign(savedTags)
         
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
-            self?.assing(tags)
+            self?.assign(tags)
         }) { [weak self] error in
             self?.tagsFailedLoading(error: error)
         }
     }
     
-    private func assing(_ data: [PostTag]) {
+    private func assign(_ data: [PostTag]) {
         tags = data.sorted()
         refreshControl?.endRefreshing()
         refreshNoResultsView()
