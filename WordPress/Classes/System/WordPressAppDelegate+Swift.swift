@@ -12,6 +12,17 @@ extension WordPressAppDelegate {
         })
     }
 
+
+    @objc func configureCrashlytics() {
+        #if DEBUG
+            return
+        #else
+            if let apiKey = ApiCredentials.crashlyticsApiKey() {
+                crashlytics = WPCrashlytics(APIKey: apiKey)
+            }
+        #endif
+    }
+
     @objc func configureHockeySDK() {
         hockey = HockeyManager()
         hockey.configure()
