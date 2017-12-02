@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <Reachability/Reachability.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressShared/UIImage+Util.h>
 
@@ -59,10 +58,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
-@property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
-@property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
@@ -90,7 +87,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [WordPressAppDelegate fixKeychainAccess];
 
     // Basic networking setup
-    [self setupReachability];
+    [self configureReachability];
     
     // Set the main window up
     [self.window makeKeyAndVisible];
@@ -621,32 +618,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     self.hockey = [HockeyManager new];
     [self.hockey configure];
 }
-
-#pragma mark - Networking setup
-
-- (void)setupReachability
-{
-    // Setup Reachability
-    self.internetReachability = [Reachability reachabilityForInternetConnection];
-
-    __weak __typeof(self) weakSelf = self;
-    
-    void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
-        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
-        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
-
-        DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
-        weakSelf.connectionAvailable = reach.isReachable;
-    };
-    self.internetReachability.reachableBlock = internetReachabilityBlock;
-    self.internetReachability.unreachableBlock = internetReachabilityBlock;
-
-    // Start the Notifier
-    [self.internetReachability startNotifier];
-    
-    self.connectionAvailable = [self.internetReachability isReachable];
-}
-
 
 #pragma mark - Keychain
 

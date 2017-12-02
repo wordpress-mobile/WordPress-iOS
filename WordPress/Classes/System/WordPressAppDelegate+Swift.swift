@@ -1,6 +1,34 @@
 import Foundation
-import UIDeviceIdentifier
 import CocoaLumberjack
+import Reachability
+import UIDeviceIdentifier
+
+// MARK: - Utility Configuration
+
+extension WordPressAppDelegate {
+    @objc func configureReachability() {
+        internetReachability = Reachability.forInternetConnection()
+
+        let reachabilityBlock: NetworkReachable = { [weak self] reachability in
+            guard let reachability = reachability else {
+                return
+            }
+
+            let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
+            let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
+
+            DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
+            self?.connectionAvailable = reachability.isReachable()
+        }
+
+        internetReachability.reachableBlock = reachabilityBlock
+        internetReachability.unreachableBlock = reachabilityBlock
+
+        internetReachability.startNotifier()
+
+        connectionAvailable = internetReachability.isReachable()
+    }
+}
 
 // MARK: - Helpers
 
