@@ -12,6 +12,19 @@ extension WordPressAppDelegate {
         })
     }
 
+    @objc func configureAppRatingUtility() {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            fatalError("No CFBundleShortVersionString found in Info.plist")
+        }
+
+        let utility = AppRatingUtility.shared
+        utility.register(section: "notifications", significantEventCount: 5)
+        utility.systemWideSignificantEventCountRequiredForPrompt = 10
+        utility.setVersion(version)
+        utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
+            DDLogError("Was unable to retrieve data about throttling")
+        })
+    }
 
     @objc func configureCrashlytics() {
         #if DEBUG
