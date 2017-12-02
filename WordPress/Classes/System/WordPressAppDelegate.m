@@ -33,7 +33,6 @@
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
-#import "HockeyManager.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
 
@@ -58,7 +57,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
-@property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
@@ -612,13 +610,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     }
 #pragma clang diagnostic pop
 }
-
-- (void)configureHockeySDK
-{
-    self.hockey = [HockeyManager new];
-    [self.hockey configure];
-}
-
 #pragma mark - Keychain
 
 + (void)fixKeychainAccess

@@ -6,6 +6,12 @@ import UIDeviceIdentifier
 // MARK: - Utility Configuration
 
 extension WordPressAppDelegate {
+
+    @objc func configureHockeySDK() {
+        hockey = HockeyManager()
+        hockey.configure()
+    }
+
     @objc func configureReachability() {
         internetReachability = Reachability.forInternetConnection()
 
