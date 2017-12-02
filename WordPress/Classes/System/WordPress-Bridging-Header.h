@@ -32,6 +32,7 @@
 #import <FLAnimatedImage/FLAnimatedImage.h>
 
 #import "HelpshiftUtils.h"
+#import "HockeyManager.h"
 
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"

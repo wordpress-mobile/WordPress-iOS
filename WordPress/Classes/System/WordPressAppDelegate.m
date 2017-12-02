@@ -15,10 +15,7 @@
 
 
 // Analytics & crash logging
-#import "WPAppAnalytics.h"
 #import "WPCrashlytics.h"
-
-// Categories & extensions
 
 // Data model
 #import "Blog.h"
@@ -54,7 +51,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
@@ -278,23 +274,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
             }
         });
     }];
-}
-
-- (NSString *)currentlySelectedScreen
-{
-    // Check if the post editor or login view is up
-    UIViewController *rootViewController = self.window.rootViewController;
-    if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
-        UIViewController *firstViewController = [navController.viewControllers firstObject];
-        if ([firstViewController isKindOfClass:[AztecPostViewController class]]) {
-            return @"Post Editor";
-        } else if ([firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
-            return @"Login View";
-        }
-    }
-
-    return [[WPTabBarController sharedInstance] currentlySelectedScreen];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -566,17 +545,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     if (![self isLoggedIn]) {
         [WPAnalytics track:WPAnalyticsStatLogout];
     }
-}
-
-#pragma mark - Analytics
-
-- (void)configureAnalytics
-{
-    __weak __typeof(self) weakSelf = self;
- 
-    self.analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString*{
-        return [weakSelf currentlySelectedScreen];
-    }];
 }
 
 #pragma mark - App Rating
