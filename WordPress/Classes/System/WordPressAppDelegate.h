@@ -1,12 +1,13 @@
-@class Reachability;
-@class ReaderPostsViewController;
-@class NotificationsViewController;
-@class BlogListViewController;
-@class NotificationsViewController;
 @class AbstractPost;
 @class Blog;
+@class BlogListViewController;
+@class NotificationsViewController;
+@class HockeyManager;
+@class Reachability;
+@class ReaderPostsViewController;
 @class WPUserAgent;
 @class WPAppAnalytics;
+@class WPCrashlytics;
 @class WPLogger;
 
 @import CocoaLumberjack;
@@ -16,11 +17,11 @@
 @property (nonatomic, strong, readonly) WPAppAnalytics *analytics;
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong, readonly) WPLogger *logger;
-@property (nonatomic, strong, readonly) Reachability *internetReachability;
-@property (nonatomic, strong, readonly) Reachability *wpcomReachability;
-@property (nonatomic, assign, readonly) BOOL connectionAvailable;
 @property (nonatomic, assign, readonly) BOOL runningInBackground;
 @property (nonatomic, strong, readonly) WPUserAgent *userAgent;
+
+@property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
+@property (nonatomic, assign, readwrite) BOOL connectionAvailable;
 
 + (WordPressAppDelegate *)sharedInstance;
 
