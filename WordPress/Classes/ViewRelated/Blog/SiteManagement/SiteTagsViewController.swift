@@ -124,11 +124,11 @@ extension SiteTagsViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return TableConstants.numberOfSections
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tags.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath)
 
