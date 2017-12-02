@@ -59,6 +59,20 @@ import CoreData
 
     // MARK: - Private Functions
 
+    /// Clean up the session manager and end things gracefully (run the stored completion block, etc). Run
+    /// this after all the session tasks are completed.
+    ///
+    fileprivate func cleanupSessionAndTerminate() {
+        // Run the stored completetion block for the session
+        if let completionHandler = backgroundSessionCompletionBlock {
+            backgroundSessionCompletionBlock = nil
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
+        DDLogInfo("Completed processing post and media upload for session \(backgroundSessionIdentifier).")
+    }
+
     /// Logs the error and updates the upload op's status with `Error`
     ///
     /// - Parameters:
@@ -133,6 +147,7 @@ import CoreData
                 }
                 postUploadOp.currentStatus = .Complete
                 self.coreDataStack.saveContext()
+                self.cleanupSessionAndTerminate()
             }
         }, failure: { error in
             var errorString = "Error creating post"
@@ -140,6 +155,7 @@ import CoreData
                 errorString += ": \(error.localizedDescription)"
             }
             self.logError(errorString: errorString, uploadOpObjectIDs: postUploadOpID)
+            self.cleanupSessionAndTerminate()
         })
     }
 }
@@ -187,21 +203,6 @@ private extension ShareExtensionSessionManager {
         }
         if let remoteUrlString = remoteURL {
             uploadMediaOp.remoteURL = remoteUrlString
-        }
-        coreDataStack.saveContext()
-    }
-
-    /// Update *all* upload ops associated with the provided group ID with a given status.
-    ///
-    /// - Parameters:
-    ///   - status: status to set
-    ///   - groupID: group ID for a set of upload ops
-    ///
-    func markAllUploadOperationsWith(_ status: UploadOperation.UploadStatus, for groupID: String) {
-        // Mark the items as complete in the shared core data instance
-        let predicate = NSPredicate(format: "(groupID == %@)", groupID)
-        for uploadOp in coreDataStack.managedContext.allObjects(ofType: UploadOperation.self, matching: predicate) {
-            uploadOp.currentStatus = status
         }
         coreDataStack.saveContext()
     }
@@ -282,8 +283,6 @@ private extension ShareExtensionSessionManager {
 
 extension ShareExtensionSessionManager: URLSessionDelegate {
 
-    // The session delegate will receive this message to indicate that all messages previously enqueued for this
-    // session have been delivered.
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         guard let groupID = fetchGroupID(for: self.backgroundSessionIdentifier), !groupID.isEmpty else {
             DDLogError("Unable to find the Group ID for session with ID \(self.backgroundSessionIdentifier).")
@@ -296,16 +295,8 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
 
         // Now the media is all uploaded, let's append it to the post and upload
         uploadPost(postUploadOp: postUploadOp)
-        if let completionHandler = backgroundSessionCompletionBlock {
-            backgroundSessionCompletionBlock = nil
-            DispatchQueue.main.async {
-                completionHandler()
-            }
-        }
-        DDLogInfo("Completed processing post and media upload for session \(session).")
     }
 
-    // Tells the delegate that the session has been invalidated.
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         if let error = error {
             DDLogError("Background session invalidated by the system. Session:\(session) Error:\(error).")
@@ -319,14 +310,11 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
 // MARK: - ShareExtensionSessionManager Extension: URLSessionTaskDelegate
 
 extension ShareExtensionSessionManager: URLSessionTaskDelegate {
-    
-    // Periodically informs the delegate of the progress of sending body content to the server.
+
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
         DDLogDebug("didSendBodyData [session:\(session) task:\(task.debugDescription) bytesSent:\(bytesSent) totalBytesSent:\(totalBytesSent) totalBytesExpectedToSend:\(totalBytesExpectedToSend)]")
     }
 
-    // Tells the delegate that the task finished transferring data. Server errors are not reported through the
-    // error parameter.
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let uploadOps = fetchSessionUploadOpsForTask(taskIdentifier: task.taskIdentifier) else {
             DDLogError("Background session tasks were not found in shared database. Session:\(session) Task:\(task.debugDescription).")
@@ -354,7 +342,6 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
 
 extension ShareExtensionSessionManager: URLSessionDataDelegate {
 
-    // Tells the delegate that the data task has received some of the expected data.
     func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         guard let object = try? JSONSerialization.jsonObject(with: data, options: []),
             let response = object as? [String: AnyObject],
