@@ -343,7 +343,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self initializeAppRatingUtility];
+    [self configureAppRatingUtility];
     
     // Analytics
     [self configureAnalytics];
@@ -540,20 +540,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     if (![self isLoggedIn]) {
         [WPAnalytics track:WPAnalyticsStatLogout];
     }
-}
-
-#pragma mark - App Rating
-
-- (void)initializeAppRatingUtility
-{
-    AppRatingUtility *utility = [AppRatingUtility shared];
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [utility registerSection:@"notifications" withSignificantEventCount:5];
-    utility.systemWideSignificantEventCountRequiredForPrompt = 10;
-    [utility setVersion:version];
-    [utility checkIfAppReviewPromptsHaveBeenDisabledWithSuccess:nil failure:^{
-        DDLogError(@"Was unable to retrieve data about throttling");
-    }];
 }
 
 #pragma mark - Keychain
