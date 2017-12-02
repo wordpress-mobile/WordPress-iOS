@@ -102,9 +102,10 @@ final class SiteTagsViewController: UITableViewController {
             noResultsView.removeFromSuperview()
             return
         }
-        
-        noResultsView.titleText = noResultsTitle()
+
         noResultsView.accessoryView = noResultsAccessoryView()
+        noResultsView.titleText = noResultsTitle()
+        noResultsView.messageText = noResultsMessage()
         noResultsView.buttonTitle = noResultsButtonTitle()
         noResultsView.button.addTarget(self, action: #selector(createTag), for: .touchUpInside)
 
@@ -118,6 +119,7 @@ final class SiteTagsViewController: UITableViewController {
     }
 }
 
+// MARK: - Table view datasource
 extension SiteTagsViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return TableConstants.numberOfSections
@@ -136,6 +138,7 @@ extension SiteTagsViewController {
     }
 }
 
+// MARK: - Table view delegate
 extension SiteTagsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedTag = tags[indexPath.row]        
@@ -143,6 +146,7 @@ extension SiteTagsViewController {
     }
 }
 
+// MARK: - Navigation
 extension SiteTagsViewController {
     fileprivate func navigate(to tag: PostTag) {
         let singleTag = SiteTagViewController(blog: blog, tag: tag)
@@ -150,9 +154,14 @@ extension SiteTagsViewController {
     }
 }
 
+// MARK: - Empty state placeholder
 extension SiteTagsViewController {
     fileprivate func noResultsTitle() -> String {
         return NSLocalizedString("No Tags Yet", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+    }
+
+    fileprivate func noResultsMessage() -> String {
+        return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views tags in blog settings and there are no tags")
     }
 
     fileprivate func noResultsAccessoryView() -> UIView {
