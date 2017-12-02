@@ -14,12 +14,12 @@
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
-@property (nonatomic, strong, readonly) WPAppAnalytics *analytics;
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong, readonly) WPLogger *logger;
 @property (nonatomic, assign, readonly) BOOL runningInBackground;
 @property (nonatomic, strong, readonly) WPUserAgent *userAgent;
 
+@property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, assign, readwrite) BOOL connectionAvailable;

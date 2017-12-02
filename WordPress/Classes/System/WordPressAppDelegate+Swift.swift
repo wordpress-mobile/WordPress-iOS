@@ -6,6 +6,11 @@ import UIDeviceIdentifier
 // MARK: - Utility Configuration
 
 extension WordPressAppDelegate {
+    @objc func configureAnalytics() {
+        analytics = WPAppAnalytics(lastVisibleScreenBlock: { [weak self] in
+            return self?.currentlySelectedScreen
+        })
+    }
 
     @objc func configureHockeySDK() {
         hockey = HockeyManager()
@@ -48,6 +53,21 @@ extension WordPressAppDelegate {
 
     @objc var noWordPressDotComAccount: Bool {
         return !AccountHelper.isDotcomAvailable()
+    }
+
+    @objc var currentlySelectedScreen: String {
+        // Check if the post editor or login view is up
+        let rootViewController = window.rootViewController
+        if let navigationController = rootViewController?.presentedViewController as? UINavigationController,
+            let first = navigationController.viewControllers.first {
+            if first is AztecPostViewController {
+                return "Post Editor"
+            } else if first is NUXAbstractViewController {
+                return "Login View"
+            }
+        }
+
+        return WPTabBarController.sharedInstance().currentlySelectedScreen()
     }
 }
 
