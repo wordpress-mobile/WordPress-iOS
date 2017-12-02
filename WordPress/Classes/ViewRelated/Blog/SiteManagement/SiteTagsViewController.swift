@@ -80,7 +80,7 @@ final class SiteTagsViewController: UITableViewController {
     }
     
     private func initializeData() {
-        let savedTags = blog.tags?.flatMap{ return $0 as? PostTag } ?? []
+        let savedTags = blog.tags?.flatMap { return $0 as? PostTag } ?? []
         assign(savedTags)
         
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
