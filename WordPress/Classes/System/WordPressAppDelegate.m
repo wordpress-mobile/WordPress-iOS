@@ -117,18 +117,12 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
-    [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
 
     return YES;
-}
-
-- (void)setupStoreKit
-{
-    [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
 }
 
 - (void)setupBuddyBuild
