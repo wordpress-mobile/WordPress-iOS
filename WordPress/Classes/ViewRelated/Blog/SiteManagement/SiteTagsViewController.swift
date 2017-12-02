@@ -6,15 +6,13 @@ final class SiteTagsViewController: UITableViewController {
         static let numberOfSections = 1
     }
     private let blog: Blog
-    private let tagsService: PostTagService
     private var tags: [PostTag] = []
     
     fileprivate let noResultsView = WPNoResultsView()
     
     @objc
-    public init(blog: Blog, tagsService: PostTagService) {
+    public init(blog: Blog) {
         self.blog = blog
-        self.tagsService = tagsService
         super.init(style: .grouped)
     }
     
@@ -83,8 +81,9 @@ final class SiteTagsViewController: UITableViewController {
     
     private func initializeData() {
         let savedTags = blog.tags?.flatMap{ return $0 as? PostTag } ?? []
-        assing(savedTags)        
+        assing(savedTags)
         
+        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.assing(tags)
         }) { [weak self] error in
@@ -145,7 +144,7 @@ extension SiteTagsViewController {
 
 extension SiteTagsViewController {
     fileprivate func navigate(to tag: PostTag) {
-        let singleTag = SiteTagViewController(blog: blog, tag: tag, tagsService: tagsService)
+        let singleTag = SiteTagViewController(blog: blog, tag: tag)
         navigationController?.pushViewController(singleTag, animated: true)
     }
 }
