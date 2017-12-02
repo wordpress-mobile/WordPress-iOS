@@ -107,7 +107,7 @@ final class SiteTagsViewController: UITableViewController {
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.buttonTitle = noResultsButtonTitle()
         noResultsView.button.addTarget(self, action: #selector(createTag), for: .touchUpInside)
-        
+
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
         }
