@@ -103,14 +103,15 @@ final class SiteTagsViewController: UITableViewController {
             return
         }
         
-        noResultsView.titleText = NSLocalizedString("No Tags Yet",
-            comment: "Empty state. Tags management (Settings > Writing > Tags)")
+        noResultsView.titleText = noResultsTitle()
+        noResultsView.accessoryView = noResultsAccessoryView()
+        noResultsView.buttonTitle = noResultsButtonTitle()
         
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
         }
     }
-    
+
     func tagsFailedLoading(error: Error) {
         DDLogError("Tag management. Error loading tags for \(String(describing: blog.url)): \(error)")
     }
@@ -145,5 +146,19 @@ extension SiteTagsViewController {
     fileprivate func navigate(to tag: PostTag) {
         let singleTag = SiteTagViewController(blog: blog, tag: tag)
         navigationController?.pushViewController(singleTag, animated: true)
+    }
+}
+
+extension SiteTagsViewController {
+    fileprivate func noResultsTitle() -> String {
+        return NSLocalizedString("No Tags Yet", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+    }
+
+    fileprivate func noResultsAccessoryView() -> UIView {
+        return UIImageView(image: UIImage(named: "illustration-posts"))
+    }
+
+    fileprivate func noResultsButtonTitle() -> String {
+        return NSLocalizedString("Add New Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
     }
 }
