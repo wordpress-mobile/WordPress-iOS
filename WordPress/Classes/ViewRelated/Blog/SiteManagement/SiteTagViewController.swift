@@ -2,13 +2,11 @@ import UIKit
 
 final class SiteTagViewController: UITableViewController {
     private let blog: Blog
-    private let tagsService: PostTagService
     private let tag: PostTag
     
-    public init(blog: Blog, tag: PostTag, tagsService: PostTagService) {
+    public init(blog: Blog, tag: PostTag) {
         self.blog = blog
         self.tag = tag
-        self.tagsService = tagsService
         super.init(style: .grouped)
     }
     
