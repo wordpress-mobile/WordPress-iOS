@@ -1,15 +1,36 @@
 import UIKit
 
-final class SiteTagsViewController: UITableViewController {
+final class SiteTagsViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     private struct TableConstants {
         static let cellIdentifier = "TagsAdminCell"
         static let accesibilityIdentifier = "SiteTagsList"
         static let numberOfSections = 1
     }
     private let blog: Blog
-    private var tags: [PostTag] = []
 
     fileprivate let noResultsView = WPNoResultsView()
+
+    fileprivate lazy var context: NSManagedObjectContext = {
+        return ContextManager.sharedInstance().newMainContextChildContext()
+    }()
+
+    fileprivate lazy var predicate: NSPredicate = {
+        return NSPredicate(format: "blog.blogID = %@", blog.dotComID!)
+    }()
+
+    fileprivate var sortDescriptors: [NSSortDescriptor] {
+        return [NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
+    }
+
+    fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
+        request.predicate = self.predicate
+        request.sortDescriptors = self.sortDescriptors
+
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
 
     @objc
     public init(blog: Blog) {
@@ -33,8 +54,9 @@ final class SiteTagsViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        initializeData()
+        refreshNoResultsView()
+        //initializeData()
+        refreshResultsController()
     }
 
     private func setAccessibilityIdentifier() {
@@ -59,12 +81,20 @@ final class SiteTagsViewController: UITableViewController {
     private func setupRefreshControl() {
         if refreshControl == nil {
             refreshControl = UIRefreshControl()
-            refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+            refreshControl?.addTarget(self, action: #selector(refreshResultsController), for: .valueChanged)
         }
     }
 
-    @objc private func refreshTags() {
-        initializeData()
+    @objc private func refreshResultsController() {
+        resultsController.fetchRequest.predicate = predicate
+        resultsController.fetchRequest.sortDescriptors = sortDescriptors
+        do {
+            try resultsController.performFetch()
+
+            tableView.reloadData()
+        } catch {
+            DDLogError("Error fetching PostTags: \(error)")
+        }
     }
 
     private func configureNavigationBar() {
@@ -78,27 +108,30 @@ final class SiteTagsViewController: UITableViewController {
         navigate(to: emptyTag)
     }
 
-    private func initializeData() {
-        let savedTags = blog.tags?.flatMap { return $0 as? PostTag } ?? []
-        assign(savedTags)
+//    private func initializeData() {
+//        let savedTags = blog.tags?.flatMap { return $0 as? PostTag } ?? []
+//        assign(savedTags)
+//
+//        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+//        tagsService.syncTags(for: blog, success: { [weak self] tags in
+//            self?.assign(tags)
+//        }) { [weak self] error in
+//            self?.tagsFailedLoading(error: error)
+//        }
+//    }
 
-        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.syncTags(for: blog, success: { [weak self] tags in
-            self?.assign(tags)
-        }) { [weak self] error in
-            self?.tagsFailedLoading(error: error)
-        }
-    }
+//    private func assign(_ data: [PostTag]) {
+//        tags = data.sorted()
+//        refreshControl?.endRefreshing()
+//        refreshNoResultsView()
+//        tableView.reloadData()
+//    }
 
-    private func assign(_ data: [PostTag]) {
-        tags = data.sorted()
-        refreshControl?.endRefreshing()
-        refreshNoResultsView()
-        tableView.reloadData()
-    }
-    
     private func refreshNoResultsView() {
-        guard tags.count == 0 else {
+        print("results " , resultsController)
+        print("fetchedObjects " , resultsController.fetchedObjects)
+        print("count " , resultsController.fetchedObjects?.count)
+        guard resultsController.fetchedObjects?.count == 0 else {
             noResultsView.removeFromSuperview()
             return
         }
@@ -122,26 +155,43 @@ final class SiteTagsViewController: UITableViewController {
 // MARK: - Table view datasource
 extension SiteTagsViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return TableConstants.numberOfSections
+        return resultsController.sections?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tags.count
+        print("===== number of tags " , resultsController.sections?[section].numberOfObjects)
+        return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath)
 
-        cell.textLabel?.text = tags[indexPath.row].name
+        guard let tag = tagAtIndexPath(indexPath) else {
+            return UITableViewCell()
+        }
+
+        cell.textLabel?.text = tag.name
         
         return cell
+    }
+
+    fileprivate func tagAtIndexPath(_ indexPath: IndexPath) -> PostTag? {
+        return resultsController.object(at: indexPath) as? PostTag
+    }
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        refreshNoResultsView()
+        //tableView.reloadData()
     }
 }
 
 // MARK: - Table view delegate
 extension SiteTagsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedTag = tags[indexPath.row]        
+        guard let selectedTag = tagAtIndexPath(indexPath) else {
+            return
+        }
+
         navigate(to: selectedTag)
     }
 }
