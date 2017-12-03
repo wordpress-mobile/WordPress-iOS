@@ -54,8 +54,9 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshNoResultsView()
         refreshResultsController()
+        refreshTags()
+        refreshNoResultsView()
     }
 
     private func setAccessibilityIdentifier() {
@@ -80,7 +81,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     private func setupRefreshControl() {
         if refreshControl == nil {
             refreshControl = UIRefreshControl()
-            refreshControl?.addTarget(self, action: #selector(refreshResultsController), for: .valueChanged)
+            refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
         }
     }
 
@@ -96,6 +97,16 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         }
     }
 
+    @objc private func refreshTags() {
+        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        refreshControl?.beginRefreshing()
+        tagsService.syncTags(for: blog, success: { [weak self] tags in
+            self?.refreshControl?.endRefreshing()
+        }) { [weak self] error in
+            self?.tagsFailedLoading(error: error)
+        }
+    }
+
     private func configureNavigationBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
@@ -108,10 +119,19 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     private func refreshNoResultsView() {
-        guard resultsController.fetchedObjects?.count == 0 else {
+
+        print(" fecthedObjects ", resultsController.fetchedObjects)
+        print(" count " , resultsController.fetchedObjects?.count)
+
+        if resultsController.fetchedObjects != nil && resultsController.fetchedObjects?.count != 0 {
             noResultsView.removeFromSuperview()
             return
         }
+
+//        if resultsController.fetchedObjects?.count != 0 {
+//            noResultsView.removeFromSuperview()
+//            return
+//        }
 
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.titleText = noResultsTitle()
