@@ -119,19 +119,10 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     private func refreshNoResultsView() {
-
-        print(" fecthedObjects ", resultsController.fetchedObjects)
-        print(" count " , resultsController.fetchedObjects?.count)
-
-        if resultsController.fetchedObjects != nil && resultsController.fetchedObjects?.count != 0 {
+        guard resultsController.fetchedObjects?.count == 0 else {
             noResultsView.removeFromSuperview()
             return
         }
-
-//        if resultsController.fetchedObjects?.count != 0 {
-//            noResultsView.removeFromSuperview()
-//            return
-//        }
 
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.titleText = noResultsTitle()
