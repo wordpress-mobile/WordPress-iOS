@@ -55,7 +55,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshNoResultsView()
-        //initializeData()
         refreshResultsController()
     }
 
@@ -108,29 +107,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         navigate(to: emptyTag)
     }
 
-//    private func initializeData() {
-//        let savedTags = blog.tags?.flatMap { return $0 as? PostTag } ?? []
-//        assign(savedTags)
-//
-//        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-//        tagsService.syncTags(for: blog, success: { [weak self] tags in
-//            self?.assign(tags)
-//        }) { [weak self] error in
-//            self?.tagsFailedLoading(error: error)
-//        }
-//    }
-
-//    private func assign(_ data: [PostTag]) {
-//        tags = data.sorted()
-//        refreshControl?.endRefreshing()
-//        refreshNoResultsView()
-//        tableView.reloadData()
-//    }
-
     private func refreshNoResultsView() {
-        print("results " , resultsController)
-        print("fetchedObjects " , resultsController.fetchedObjects)
-        print("count " , resultsController.fetchedObjects?.count)
         guard resultsController.fetchedObjects?.count == 0 else {
             noResultsView.removeFromSuperview()
             return
@@ -159,7 +136,6 @@ extension SiteTagsViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("===== number of tags " , resultsController.sections?[section].numberOfObjects)
         return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
