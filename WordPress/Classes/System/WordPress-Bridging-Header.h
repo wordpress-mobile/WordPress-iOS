@@ -98,7 +98,6 @@
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
 #import "UIImage+Resize.h"
-#import "UIImageView+Gravatar.h"
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
