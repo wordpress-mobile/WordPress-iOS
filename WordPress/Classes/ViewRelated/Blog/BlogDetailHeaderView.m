@@ -1,6 +1,6 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
-#import "UIImageView+Gravatar.h"
+//#import "UIImageView+Gravatar.h"
 #import "WordPress-Swift.h"
 
 
