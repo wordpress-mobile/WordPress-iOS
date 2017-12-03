@@ -147,7 +147,7 @@ extension SiteTagsViewController {
         }
 
         cell.textLabel?.text = tag.name
-        
+
         return cell
     }
 
