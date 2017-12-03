@@ -3,9 +3,9 @@ import UIKit
 class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter {
 
     /// The blog's current timezone. If no timezone string is set, then the manual offset value will be used.
-    private var usersCurrentTimeZone: String?
+    private var initialTimeZone: String?
     /// The blog's manual GMT offset. If timezone string is set, this value will be nil
-    private var usersManualOffset: NSNumber?
+    private var initialManualOffset: NSNumber?
 
     /// timezoneString will be set to a non empty string
     /// if user selects anything other than Manual Offset section
@@ -47,8 +47,8 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
                      manualOffset: NSNumber?,
                      onChange: @escaping ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)) {
         self.init(style: .grouped)
-        self.usersCurrentTimeZone = timeZoneString
-        self.usersManualOffset = manualOffset
+        self.initialTimeZone = timeZoneString
+        self.initialManualOffset = manualOffset
         self.onChange = onChange
 
     }
@@ -73,7 +73,7 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
         if allTimezones.count == 0 {
             self.loadDataFromAPIAndSaveToDB()
         } else {
-            self.viewModel = .ready(allTimezones, self.usersCurrentTimeZone, self.usersManualOffset, self.action)
+            self.viewModel = .ready(allTimezones, self.initialTimeZone, self.initialManualOffset, self.action)
         }
     }
 

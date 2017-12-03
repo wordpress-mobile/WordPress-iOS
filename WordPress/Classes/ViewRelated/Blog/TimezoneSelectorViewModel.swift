@@ -5,10 +5,10 @@ import CoreData
 enum TimezoneSelectorViewModel {
     case loading
     /**
-     - parameters
-        - first param: - all TimeZoneInfo objects from DB
-        - second param: - usersCurrentTimeZoneString passed from TimezoneSelectorVC
-        - third param: - usersCurrentManualGMTOffset passed from TimezoneSelectorVC
+     - Parameters
+        - first param: - all TimeZoneInfo objects
+        - second param: - initialTimeZoneString
+        - third param: - initialManualGMTOffset
         - fourth param: - action block to be executed when user clicks on a cell
     */
     case ready([TimeZoneInfo], String?, NSNumber?, ImmuTableAction)
