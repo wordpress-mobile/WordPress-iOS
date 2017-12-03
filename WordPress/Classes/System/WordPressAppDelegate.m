@@ -50,10 +50,8 @@
 #import "RotationAwareNavigationViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
-#import "WPPostViewController.h"
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
-#import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
 
 int ddLogLevel = DDLogLevelInfo;
 
@@ -99,7 +97,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self.window makeKeyAndVisible];
 
     // Local Notifications
-    [self listenLocalNotifications];
+    [self addNotificationObservers];
 
     WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
@@ -301,7 +299,7 @@ int ddLogLevel = DDLogLevelInfo;
     if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
         UIViewController *firstViewController = [navController.viewControllers firstObject];
-        if ([firstViewController isKindOfClass:[WPPostViewController class]]) {
+        if ([firstViewController isKindOfClass:[AztecPostViewController class]]) {
             return @"Post Editor";
         } else if ([firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
             return @"Login View";
@@ -558,8 +556,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[UIColor darkGrayColor]];
-    
-    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [WPEditorViewController class] ]] setBarTintColor:[UIColor whiteColor]];
 
     // Search
     [WPStyleGuide configureSearchBarAppearance];
@@ -572,7 +568,6 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Media Picker styles
     UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateNormal];
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
 
@@ -580,10 +575,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderBackgroundColor:[WPStyleGuide darkGrey]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderTintColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setCellTintColor:[WPStyleGuide wordPressBlue]];
-
-    [[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
-    [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
-    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
 
     // Customize the appearence of the text elements
     [self customizeAppearanceForTextElements];
@@ -828,96 +819,6 @@ int ddLogLevel = DDLogLevelInfo;
             ddLogLevel = DDLogLevelVerbose;
         }
     }
-}
-
-#pragma mark - Local Notifications Helpers
-
-- (void)listenLocalNotifications
-{
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleDefaultAccountChangedNote:)
-                               name:WPAccountDefaultWordPressComAccountChangedNotification
-                             object:nil];
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleLowMemoryWarningNote:)
-                               name:UIApplicationDidReceiveMemoryWarningNotification
-                             object:nil];
-
-    [notificationCenter addObserver:self
-                           selector:@selector(handleUIContentSizeCategoryDidChangeNotification:)
-                               name:UIContentSizeCategoryDidChangeNotification
-                             object:nil];
-}
-
-- (void)handleDefaultAccountChangedNote:(NSNotification *)notification
-{
-    // If the notification object is not nil, then it's a login
-    if (notification.object) {
-        [self setupShareExtensionToken];
-    } else {
-        [self trackLogoutIfNeeded];
-        [self removeTodayWidgetConfiguration];
-        [self removeShareExtensionConfiguration];
-        [self showWelcomeScreenIfNeededAnimated:NO];
-    }
-
-    [self toggleExtraDebuggingIfNeeded];
-    
-    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
-}
-
-- (void)handleLowMemoryWarningNote:(NSNotification *)notification
-{
-    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
-}
-
-- (void)handleUIContentSizeCategoryDidChangeNotification:(NSNotification *)notification
-{
-    [self customizeAppearanceForTextElements];
-}
-
-#pragma mark - Extensions
-
-- (void)setupWordPressExtensions
-{
-    // Default Account
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    [accountService setupAppExtensionsWithDefaultAccount];
-
-    // Settings
-    NSInteger maxImageSize = [[MediaSettings new] maxImageSizeSetting];
-    [ShareExtensionService configureShareExtensionMaximumMediaDimension:maxImageSize];
-}
-
-
-#pragma mark - Today Extension
-
-- (void)removeTodayWidgetConfiguration
-{
-    TodayExtensionService *service = [TodayExtensionService new];
-    [service removeTodayWidgetConfiguration];
-}
-
-
-#pragma mark - Share Extension
-
-- (void)setupShareExtensionToken
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account              = [accountService defaultWordPressComAccount];
-    
-    [ShareExtensionService configureShareExtensionToken:account.authToken];
-    [ShareExtensionService configureShareExtensionUsername:account.username];
-}
-
-- (void)removeShareExtensionConfiguration
-{
-    [ShareExtensionService removeShareExtensionConfiguration];
 }
 
 @end

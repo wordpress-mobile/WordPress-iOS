@@ -136,6 +136,7 @@ private extension WebViewAuthenticator {
         if let password = password {
             parameters.append(URLQueryItem(name: "pwd", value: password))
         }
+        parameters.append(URLQueryItem(name: "rememberme", value: "true"))
         parameters.append(URLQueryItem(name: "redirect_to", value: redirectedUrl))
         var components = URLComponents()
         components.queryItems = parameters
