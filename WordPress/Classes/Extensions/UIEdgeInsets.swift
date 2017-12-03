@@ -1,7 +1,7 @@
 import UIKit
 
 extension UIEdgeInsets {
-    func flippedForRightToLeftLayoutDirection() -> UIEdgeInsets {
+    fileprivate func flippedForRightToLeftLayoutDirection() -> UIEdgeInsets {
         return UIEdgeInsets(top: top, left: right, bottom: bottom, right: left)
     }
 }
