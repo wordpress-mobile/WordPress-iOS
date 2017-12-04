@@ -40,6 +40,8 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         returnValue.delegate = self
         returnValue.searchResultsUpdater = self
         self.definesPresentationContext = true
+
+        //WPStyleGuide.configureSearchBar(returnValue.searchBar)
         return returnValue
     }()
 
@@ -130,7 +132,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     private func configureSearchBar() {
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
-            navigationItem.hidesSearchBarWhenScrolling = false
+            navigationItem.hidesSearchBarWhenScrolling = true
         } else {
             tableView.tableHeaderView = searchController.searchBar
         }
