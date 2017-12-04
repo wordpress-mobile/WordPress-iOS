@@ -182,6 +182,7 @@ extension SiteTagsViewController {
         }
 
         cell.name = tag.name
+
         if let count = tag.postCount?.intValue, count > 0 {
             cell.count = count
         }
@@ -195,6 +196,22 @@ extension SiteTagsViewController {
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         refreshNoResultsView()
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard let selectedTag = tagAtIndexPath(indexPath) else {
+            return
+        }
+
+        delete(selectedTag)
+    }
+
+    private func delete(_ tag: PostTag) {
+        // Not implemented yet. Here, I'll attack the service, and delete this tag
     }
 }
 
