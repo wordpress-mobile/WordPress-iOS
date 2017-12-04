@@ -260,13 +260,12 @@ extension SiteTagsViewController: UISearchResultsUpdating {
         guard let text = searchController.searchBar.text, text != "" else {
             predicate = NSPredicate(format: "blog.blogID = %@", blog.dotComID!)
             refreshResultsController()
-            tableView.reloadData()
+
             return
         }
 
         predicate = NSPredicate(format: "blog.blogID = %@ AND name contains [cd] %@", blog.dotComID!, text)
         refreshResultsController()
-        tableView.reloadData()
     }
 }
 
