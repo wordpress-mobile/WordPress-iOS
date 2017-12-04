@@ -10,7 +10,7 @@ import UIKit
 
 final class TitleBadgeDisclosureCell: WPTableViewCell {
     @IBOutlet weak var tagName: UILabel!
-    @IBOutlet weak var tagCount: UILabel!
+    @IBOutlet weak var tagCount: BadgeLabel!
 
     var name: String? {
         didSet {
@@ -44,6 +44,9 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
         tagCount.textColor = WPStyleGuide.grey()
         tagCount.textAlignment = .right
         tagCount.text = ""
+        tagCount.horizontalPadding = 4
+        tagCount.borderColor = WPStyleGuide.wordPressBlue()
+        tagCount.borderWidth = 1
     }
 
     override func prepareForReuse() {
