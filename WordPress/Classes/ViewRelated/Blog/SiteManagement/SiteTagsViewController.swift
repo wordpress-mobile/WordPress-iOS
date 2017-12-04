@@ -33,14 +33,13 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     fileprivate lazy var searchController: UISearchController = {
         let returnValue = UISearchController(searchResultsController: nil)
-        //returnValue.searchBar.delegate = self
         returnValue.hidesNavigationBarDuringPresentation = false
         returnValue.dimsBackgroundDuringPresentation = false
         returnValue.delegate = self
         returnValue.searchResultsUpdater = self
         self.definesPresentationContext = true
 
-        //WPStyleGuide.configureSearchBar(returnValue.searchBar)
+        WPStyleGuide.configureSearchBar(returnValue.searchBar)
         return returnValue
     }()
 
