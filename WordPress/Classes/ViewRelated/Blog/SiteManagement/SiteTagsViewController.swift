@@ -14,7 +14,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         return ContextManager.sharedInstance().newMainContextChildContext()
     }()
 
-    fileprivate lazy var predicate: NSPredicate = {
+    fileprivate lazy var defaultPredicate: NSPredicate = {
         return NSPredicate(format: "blog.blogID = %@", blog.dotComID!)
     }()
 
@@ -23,8 +23,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
-        request.predicate = self.predicate
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")        
         request.sortDescriptors = self.sortDescriptors
 
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
@@ -67,7 +66,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshResultsController()
+        refreshResultsController(predicate: defaultPredicate)
         refreshTags()
         refreshNoResultsView()
     }
@@ -98,7 +97,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         refreshControl = control
     }
 
-    @objc private func refreshResultsController() {
+    @objc private func refreshResultsController(predicate: NSPredicate) {
         resultsController.fetchRequest.predicate = predicate
         resultsController.fetchRequest.sortDescriptors = sortDescriptors
         do {
@@ -258,14 +257,13 @@ extension SiteTagsViewController {
 extension SiteTagsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, text != "" else {
-            predicate = NSPredicate(format: "blog.blogID = %@", blog.dotComID!)
-            refreshResultsController()
+            refreshResultsController(predicate: defaultPredicate)
 
             return
         }
 
-        predicate = NSPredicate(format: "blog.blogID = %@ AND name contains [cd] %@", blog.dotComID!, text)
-        refreshResultsController()
+        let filterPredicate = NSPredicate(format: "blog.blogID = %@ AND name contains [cd] %@", blog.dotComID!, text)
+        refreshResultsController(predicate: filterPredicate)
     }
 }
 
