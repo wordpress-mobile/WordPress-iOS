@@ -87,7 +87,9 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     private func configureTable() {
         tableView.tableFooterView = UIView(frame: .zero)
-        tableView.register(PostTagSettingsCell.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
+//        tableView.register(PostTagSettingsCell.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
+        let nibName = UINib(nibName: "SiteTagCell", bundle: nil)
+        tableView.register(nibName, forCellReuseIdentifier: TableConstants.cellIdentifier)
         setupRefreshControl()
     }
 
@@ -176,13 +178,13 @@ extension SiteTagsViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath) as? PostTagSettingsCell, let tag = tagAtIndexPath(indexPath) else {
-            return PostTagSettingsCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath) as? SiteTagCell, let tag = tagAtIndexPath(indexPath) else {
+            return SiteTagCell()
         }
 
-        cell.textLabel?.text = tag.name
+        cell.tagName?.text = tag.name
         //cell.badgeCount = tag.postCount?.intValue ?? 0
-        cell.badgeCount = 9
+        cell.tagCount.text = String(99)
 
         return cell
     }
