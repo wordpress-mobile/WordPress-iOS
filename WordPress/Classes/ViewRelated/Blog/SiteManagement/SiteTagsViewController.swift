@@ -39,7 +39,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         returnValue.dimsBackgroundDuringPresentation = false
         returnValue.delegate = self
         returnValue.searchResultsUpdater = self
-
+        self.definesPresentationContext = true
         return returnValue
     }()
 
@@ -118,7 +118,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     private func configureNavigationBar() {
         configureRightButton()
-        //configureSearchBar()
+        configureSearchBar()
     }
 
     private func configureRightButton() {
