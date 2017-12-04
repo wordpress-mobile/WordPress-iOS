@@ -13,4 +13,8 @@ final class SiteTagViewController: UITableViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func viewDidLoad() {
+        print("Editing tag ", tag.name)
+    }
 }
