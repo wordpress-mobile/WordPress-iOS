@@ -20,7 +20,7 @@ extension WordPressAppDelegate {
 // MARK: - Debugging
 
 extension WordPressAppDelegate {
-    @objc func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) {
+    @objc func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) {
         let unknown = "Unknown"
 
         let device = UIDevice.current
@@ -85,7 +85,7 @@ extension WordPressAppDelegate {
             // In this case, enable extra_debugging by default to help troubleshoot any issues.
             guard UserDefaults.standard.object(forKey: "orig_extra_debug") == nil else {
                 // Already saved. Don't save again or we could loose the original value.
-                return;
+                return
             }
 
             let origExtraDebug = UserDefaults.standard.bool(forKey: "extra_debug") ? "YES" : "NO"
@@ -105,7 +105,7 @@ extension WordPressAppDelegate {
             UserDefaults.standard.removeObject(forKey: "orig_extra_debug")
             UserDefaults.resetStandardUserDefaults()
 
-            if (origExtraDebugValue) {
+            if origExtraDebugValue {
                 WordPressAppDelegate.setLogLevel(.verbose)
             }
         }
