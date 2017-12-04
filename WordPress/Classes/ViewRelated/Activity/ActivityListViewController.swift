@@ -5,11 +5,17 @@ import WordPressShared
 
 class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
-    @objc let siteID: Int
-    @objc let service: ActivityServiceRemote
+    let siteID: Int
+    let service: ActivityServiceRemote
 
-    fileprivate var restoreStatusCheckTimer: Timer?
-    fileprivate var restoreStatusCheckAttempt: Int = 0
+    enum Configuration {
+        /// Sequence of increasing delays to apply to the fetch restore status mechanism (in seconds)
+        ///
+        static let delaySequence = [1, 5, 10, 15, 20, 25, 30]
+    }
+    fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
+    fileprivate var delayedRetry: DispatchDelayedAction?
+
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -27,7 +33,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Constructors
 
-    @objc init(siteID: Int, service: ActivityServiceRemote) {
+    init(siteID: Int, service: ActivityServiceRemote) {
         self.siteID = siteID
         self.service = service
         super.init(style: .grouped)
@@ -52,7 +58,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     deinit {
-        restoreStatusCheckTimer?.invalidate()
+        delayedRetry?.cancel()
     }
 
     // MARK: - View lifecycle
@@ -80,6 +86,10 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         })
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        SVProgressHUD.dismiss()
+    }
+
     func refreshModel() {
         handler.viewModel = viewModel.tableViewModel(presenter: self)
         updateNoResults()
@@ -102,7 +112,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
 
-    @objc func hideNoResults() {
+    func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
 
@@ -160,38 +170,22 @@ extension ActivityListViewController {
         tableView.isUserInteractionEnabled = false
         service.restoreSite(siteID, rewindID: rewindID, success: { (restoreID) in
             self.showRestoringMessage()
-            self.restoreStatusCheckAttempt = 0
-            self.restoreStatusCheckTimer = Timer.scheduledTimer(timeInterval: RestoreStatusCheck.pollingInterval,
-                                                                target: self as Any,
-                                                                selector: #selector(self.checkStatusForRestoreID(timer:)),
-                                                                userInfo: restoreID,
-                                                                repeats: true)
+            self.checkStatusDelayedForRestoreID(restoreID)
         }) { (error) in
             self.tableView.isUserInteractionEnabled = true
             self.showErrorRestoringMessage()
         }
     }
 
-    @objc fileprivate func checkStatusForRestoreID(timer: Timer!) {
-        guard let restoreID = timer.userInfo as? String else {
-            self.restoreStatusCheckTimer?.invalidate()
-            return
-        }
-
-        if self.restoreStatusCheckAttempt == RestoreStatusCheck.maxRetries {
-            self.restoreStatusCheckTimer?.invalidate()
-        } else {
-            self.restoreStatusCheckAttempt = self.restoreStatusCheckAttempt + 1
-        }
-
+    fileprivate func checkStatusDelayedForRestoreID(_ restoreID: String) {
         service.restoreStatusForSite(siteID, restoreID: restoreID, success: { (restoreStatus) in
             switch restoreStatus.status {
             case .running, .queued:
-                if self.restoreStatusCheckAttempt < RestoreStatusCheck.maxRetries {
-                    self.showRestoringMessage(Float(restoreStatus.percent) / 100.0)
-                } else {
-                    self.showErrorFetchingRestoreStatus()
+                self.showRestoringMessage(Float(restoreStatus.percent) / 100.0)
+                self.delayedRetry = DispatchDelayedAction(delay: .seconds(self.delay.current)) { [weak self] in
+                    self?.checkStatusDelayedForRestoreID(restoreID)
                 }
+                self.delay.increment()
             case .finished:
                 self.restoreCompleted()
             case .fail:
@@ -218,16 +212,16 @@ extension ActivityListViewController {
     }
 
     fileprivate func restoreCompleted() {
+        delay.reset()
         tableView.isUserInteractionEnabled = true
-        restoreStatusCheckTimer?.invalidate()
         SVProgressHUD.showDismissibleSuccess(withStatus: NSLocalizedString("Restore completed",
                                                                            comment: "Text displayed in HUD when the site restore is completed."))
         refreshModel()
     }
 
     fileprivate func restoreFailed() {
+        delay.reset()
         tableView.isUserInteractionEnabled = true
-        restoreStatusCheckTimer?.invalidate()
         showErrorRestoringMessage()
     }
 
