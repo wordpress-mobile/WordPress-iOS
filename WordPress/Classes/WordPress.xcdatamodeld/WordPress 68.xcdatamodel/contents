@@ -404,6 +404,11 @@
         <attribute name="userID" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="PortfolioProject" representedClassName="PortfolioProject" parentEntity="AbstractPost">
+        <attribute name="projectTags" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="projectTypes" optional="YES" attributeType="String" syncable="YES"/>
+        <userInfo/>
+    </entity>
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
         <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="disabledPublicizeConnections" optional="YES" attributeType="Transformable">
@@ -676,5 +681,6 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
+        <element name="PortfolioProject" positionX="27" positionY="153" width="128" height="75"/>
     </elements>
 </model>
