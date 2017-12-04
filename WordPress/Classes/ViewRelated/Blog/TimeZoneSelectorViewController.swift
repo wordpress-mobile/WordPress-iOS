@@ -56,7 +56,7 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = estimatedRowHeight
 
-        title = NSLocalizedString("Time Zone", comment: "Title for the timezone selector")
+        title = NSLocalizedString("Site Timezone", comment: "Title for the timezone selector")
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([TimezoneListRow.self], tableView: tableView)
         handler.viewModel = viewModel.tableViewModel
