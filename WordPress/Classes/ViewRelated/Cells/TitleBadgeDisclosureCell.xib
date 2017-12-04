@@ -48,8 +48,8 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="tagCount" destination="w1Y-xN-3cQ" id="Bpt-lD-KJW"/>
-                <outlet property="tagName" destination="ML5-iW-nUY" id="0Ra-0B-7wQ"/>
+                <outlet property="cellBadge" destination="w1Y-xN-3cQ" id="Bpt-lD-KJW"/>
+                <outlet property="cellTitle" destination="ML5-iW-nUY" id="0Ra-0B-7wQ"/>
             </connections>
         </tableViewCell>
     </objects>

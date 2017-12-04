@@ -9,19 +9,19 @@
 import UIKit
 
 final class TitleBadgeDisclosureCell: WPTableViewCell {
-    @IBOutlet weak var tagName: UILabel!
-    @IBOutlet weak var tagCount: BadgeLabel!
+    @IBOutlet weak var cellTitle: UILabel!
+    @IBOutlet weak var cellBadge: BadgeLabel!
 
     var name: String? {
         didSet {
-            tagName.text = name
+            cellTitle.text = name
         }
     }
 
     var count: Int = 0 {
         didSet {
             if count > 0 {
-                tagCount.text = String(count)
+                cellBadge.text = String(count)
             }
         }
     }
@@ -36,21 +36,21 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
     }
 
     private func customizeTagName() {
-        tagName.font = WPStyleGuide.tableviewTextFont()
+        cellTitle.font = WPStyleGuide.tableviewTextFont()
     }
 
     private func customizeTagCount() {
-        tagCount.font = WPStyleGuide.tableviewTextFont()
-        tagCount.textColor = WPStyleGuide.grey()
-        tagCount.textAlignment = .right
-        tagCount.text = ""
-        tagCount.horizontalPadding = 4
-        tagCount.borderColor = WPStyleGuide.wordPressBlue()
-        tagCount.borderWidth = 1
+        cellBadge.font = WPStyleGuide.tableviewTextFont()
+        cellBadge.textColor = WPStyleGuide.grey()
+        cellBadge.textAlignment = .right
+        cellBadge.text = ""
+        cellBadge.horizontalPadding = 4
+        cellBadge.borderColor = WPStyleGuide.wordPressBlue()
+        cellBadge.borderWidth = 1
     }
 
     override func prepareForReuse() {
-        tagName.text = ""
-        tagCount.text = ""
+        cellTitle.text = ""
+        cellBadge.text = ""
     }    
 }
