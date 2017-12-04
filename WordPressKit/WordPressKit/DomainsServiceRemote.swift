@@ -1,6 +1,26 @@
 import Foundation
 import CocoaLumberjack
 
+struct DomainSuggestion {
+    let name: String
+    let isFree: Bool
+
+    init(json: [String: AnyObject]) throws {
+        // name
+        guard let domain_name = json["domain_name"] as? String else {
+            throw DomainsServiceRemote.ResponseError.decodingFailed
+        }
+        name = domain_name
+
+        // isFree
+        if let is_free = json["is_free"] as? Int {
+            isFree = is_free == 1
+        } else {
+            isFree = false
+        }
+    }
+}
+
 public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
     public enum ResponseError: Error {
         case decodingFailed
@@ -69,7 +89,47 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
  193            "cost": "$18.00"
  194        }
  195    ]'
- */
+     /// an actual response
+(
+        {
+        cost = Free;
+        "domain_name" = "testsuggest.wordpress.com";
+        "is_free" = 1;
+    },
+        {
+        cost = "C$29.15";
+        "domain_name" = "testsuggest.blog";
+        "product_id" = 76;
+        "product_slug" = "dotblog_domain";
+        relevance = 1;
+        "supports_privacy" = 1;
+    },
+        {
+        cost = "C$24.00";
+        "domain_name" = "testsuggest.com";
+        "product_id" = 6;
+        "product_slug" = "domain_reg";
+        relevance = 1;
+        "supports_privacy" = 1;
+    },
+        {
+        cost = "C$24.00";
+        "domain_name" = "testsuggest.ca";
+        "product_id" = 83;
+        "product_slug" = "dotca_domain";
+        relevance = 1;
+        "supports_privacy" = 0;
+    },
+        {
+        cost = "C$29.15";
+        "domain_name" = "demosuggest.blog";
+        "product_id" = 76;
+        "product_slug" = "dotblog_domain";
+        relevance = "0.968";
+        "supports_privacy" = 1;
+    }
+)
+    */
     public func getDomainSuggestions(base query: String, success: @escaping ([String]) -> Void, failure: @escaping (Error) -> Void) {
         let endPoint = "domains/suggestions"
         let servicePath = path(forEndpoint: endPoint, withVersion: ._1_1)
@@ -81,7 +141,11 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
                                 success: {
                                     response, _ in
                                     do {
-                                        try success(["in dev"])
+                                        let suggestions = try map(suggestions: response)
+                                        let domains = suggestions.map { suggestion -> String in
+                                            return suggestion.name
+                                        }
+                                        success(domains)
                                     } catch {
                                         DDLogError("Error parsing domains response (\(error)): \(response)")
                                         failure(error)
@@ -91,6 +155,20 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
             failure(error)
         })
     }
+}
+
+private func map(suggestions response: AnyObject) throws -> [DomainSuggestion] {
+    guard let jsonSuggestions = response as? [[String: AnyObject]] else {
+        throw DomainsServiceRemote.ResponseError.decodingFailed
+    }
+    var suggestions: [DomainSuggestion] = []
+    for jsonSuggestion in jsonSuggestions {
+        do {
+            let suggestion = try DomainSuggestion(json: jsonSuggestion)
+            suggestions.append(suggestion)
+        }
+    }
+    return suggestions
 }
 
 private func mapDomainsResponse(_ response: AnyObject) throws -> [RemoteDomain] {
