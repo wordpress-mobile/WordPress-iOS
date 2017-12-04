@@ -226,7 +226,9 @@ private extension ShareViewController {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
                 self?.textView.text = share.text
-                if let image = share.image {
+
+                // Just using the first image for now.
+                if let image = share.images.first {
                     self?.imageLoaded(image: image)
                 }
         }
