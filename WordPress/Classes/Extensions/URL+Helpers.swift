@@ -5,7 +5,7 @@ extension URL {
 
     /// The URLResource fileSize of the file at the URL in bytes, if available.
     ///
-    var resourceFileSize: Int? {
+    var fileSize: Int? {
         guard isFileURL else {
             return nil
         }
@@ -15,13 +15,13 @@ extension URL {
 
     /// The URLResource uniform type identifier for the file at the URL, if available.
     ///
-    var resourceTypeIdentifier: String? {
+    var typeIdentifier: String? {
         let values = try? resourceValues(forKeys: [.typeIdentifierKey])
         return values?.typeIdentifier
     }
 
-    var resourceTypeIdentifierFileExtension: String? {
-        guard let type = resourceTypeIdentifier else {
+    var typeIdentifierFileExtension: String? {
+        guard let type = typeIdentifier else {
             return nil
         }
         return URL.fileExtensionForUTType(type)
@@ -76,21 +76,6 @@ extension URL {
                 }
             }
             return CGSize.zero
-        }
-    }
-
-    var typeIdentifier: String? {
-        guard isFileURL else { return nil }
-        do {
-            let data = try bookmarkData(options: NSURL.BookmarkCreationOptions.minimalBookmark, includingResourceValuesForKeys: [URLResourceKey.typeIdentifierKey], relativeTo: nil)
-            guard
-                let resourceValues = NSURL.resourceValues(forKeys: [URLResourceKey.typeIdentifierKey], fromBookmarkData: data),
-                let typeIdentifier = resourceValues[URLResourceKey.typeIdentifierKey] as? String else {
-                    return nil
-            }
-            return typeIdentifier
-        } catch {
-            return nil
         }
     }
 
