@@ -676,8 +676,8 @@
 		C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56636E71868D0CE00226AAB /* StatsViewController.m */; };
 		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
-		D8329F001FD523C600BED1BD /* SiteTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8329EFE1FD523C600BED1BD /* SiteTagCell.swift */; };
-		D8329F011FD523C600BED1BD /* SiteTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8329EFF1FD523C600BED1BD /* SiteTagCell.xib */; };
+		D8329F001FD523C600BED1BD /* TitleBadgeDisclosureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8329EFE1FD523C600BED1BD /* TitleBadgeDisclosureCell.swift */; };
+		D8329F011FD523C600BED1BD /* TitleBadgeDisclosureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8329EFF1FD523C600BED1BD /* TitleBadgeDisclosureCell.xib */; };
 		D8C673DB1FCFA5CC00490F59 /* SiteTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C673DA1FCFA5CC00490F59 /* SiteTagsViewController.swift */; };
 		D8C673DD1FCFB40100490F59 /* PostTag+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C673DC1FCFB40100490F59 /* PostTag+Comparable.swift */; };
 		D8C673DF1FCFDEC200490F59 /* SiteTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C673DE1FCFDEC200490F59 /* SiteTagViewController.swift */; };
@@ -2024,8 +2024,8 @@
 		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
 		D61CEAC1CB25AE65B26BDC68 /* Pods-WordPressShareExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		D81E41DE1FCBF03C00B3F090 /* WordPress 68.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 68.xcdatamodel"; sourceTree = "<group>"; };
-		D8329EFE1FD523C600BED1BD /* SiteTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTagCell.swift; sourceTree = "<group>"; };
-		D8329EFF1FD523C600BED1BD /* SiteTagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteTagCell.xib; sourceTree = "<group>"; };
+		D8329EFE1FD523C600BED1BD /* TitleBadgeDisclosureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleBadgeDisclosureCell.swift; sourceTree = "<group>"; };
+		D8329EFF1FD523C600BED1BD /* TitleBadgeDisclosureCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleBadgeDisclosureCell.xib; sourceTree = "<group>"; };
 		D8C673DA1FCFA5CC00490F59 /* SiteTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTagsViewController.swift; sourceTree = "<group>"; };
 		D8C673DC1FCFB40100490F59 /* PostTag+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostTag+Comparable.swift"; sourceTree = "<group>"; };
 		D8C673DE1FCFDEC200490F59 /* SiteTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTagViewController.swift; sourceTree = "<group>"; };
@@ -3513,8 +3513,8 @@
 				8370D10811FA499A009D650F /* WPTableViewActivityCell.h */,
 				8370D10911FA499A009D650F /* WPTableViewActivityCell.m */,
 				1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */,
-				D8329EFE1FD523C600BED1BD /* SiteTagCell.swift */,
-				D8329EFF1FD523C600BED1BD /* SiteTagCell.xib */,
+				D8329EFE1FD523C600BED1BD /* TitleBadgeDisclosureCell.swift */,
+				D8329EFF1FD523C600BED1BD /* TitleBadgeDisclosureCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -5759,7 +5759,7 @@
 				08D499671CDD20450004809A /* Menus.storyboard in Resources */,
 				5D4C8A001AB88F58007464B3 /* PostCardImageCell.xib in Resources */,
 				93F2E53B1E9E596A0050D489 /* HSThemes in Resources */,
-				D8329F011FD523C600BED1BD /* SiteTagCell.xib in Resources */,
+				D8329F011FD523C600BED1BD /* TitleBadgeDisclosureCell.xib in Resources */,
 				93F2E53C1E9E596A0050D489 /* HsUIResourceBundle.bundle in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
@@ -6335,7 +6335,7 @@
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
 				B5015C581D4FDBB300C9449E /* NotificationActionsService.swift in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
-				D8329F001FD523C600BED1BD /* SiteTagCell.swift in Sources */,
+				D8329F001FD523C600BED1BD /* TitleBadgeDisclosureCell.swift in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				E10520581F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel in Sources */,
