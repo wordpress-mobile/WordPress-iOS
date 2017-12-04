@@ -211,7 +211,8 @@ extension SiteTagsViewController {
     }
 
     private func delete(_ tag: PostTag) {
-        // Not implemented yet. Here, I'll attack the service, and delete this tag
+        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        tagsService.delete(tag, for: blog)
     }
 }
 
