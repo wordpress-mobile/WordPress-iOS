@@ -42,7 +42,7 @@ struct ShareExtractor {
         self.extensionContext = extensionContext
     }
 
-    /// Loads the content.
+    /// Loads the content asynchronously.
     ///
     /// - Important: This method will only call completion if it can successfully extract content.
     /// - Parameters:
@@ -50,8 +50,8 @@ struct ShareExtractor {
     ///
     func loadShare(completion: @escaping (ExtractedShare) -> Void) {
         extractText { text in
-            let returnedText = text ?? ""
             self.extractImages { images in
+                let returnedText = text ?? ""
                 let returnedImages = images ?? [UIImage]()
                 completion(ExtractedShare(text: returnedText, images: returnedImages))
             }
@@ -77,7 +77,8 @@ private extension ShareExtractor {
         return [
             SharePostExtractor(),
             PropertyListExtractor(),
-            URLExtractor()
+            URLExtractor(),
+            PlainTextExtractor()
         ]
     }
 
@@ -139,9 +140,18 @@ private extension TypeBasedExtensionContentExtractor {
     }
 
     func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
+        let itemProviders = context.itemProviders(ofType: acceptedType)
+        guard itemProviders.count > 0 else {
+            DispatchQueue.main.async {
+                completion([ExtractedItem]())
+            }
+            return
+        }
+
+        // There 1 or more valid item providers here, lets work through them
         var results = [ExtractedItem]()
         var itemsToLoad = 0
-        for provider in context.itemProviders(ofType: acceptedType) {
+        for provider in itemProviders {
             itemsToLoad += 1
             // Remember, this is an async call....
             provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
@@ -152,7 +162,7 @@ private extension TypeBasedExtensionContentExtractor {
                 }
                 itemsToLoad -= 1
 
-                // This only gets called when all of the items are loaded
+                // This only gets called when _all_ of the items are loaded
                 if itemsToLoad == 0 {
                     DispatchQueue.main.async {
                         completion(results)
@@ -220,9 +230,21 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
     func string(in dictionary: [String: Any], forKey key: String) -> String? {
         guard let value = dictionary[key] as? String,
             !value.isEmpty else {
-            return nil
+                return nil
         }
         return value
+    }
+}
+
+private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
+    typealias Payload = String
+    let acceptedType = kUTTypePlainText as String
+
+    func convert(payload: String) -> ExtractedItem? {
+        guard !payload.isEmpty else {
+            return nil
+        }
+        return .text(payload)
     }
 }
 
