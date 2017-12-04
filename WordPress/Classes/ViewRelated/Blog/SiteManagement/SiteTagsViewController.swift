@@ -181,7 +181,8 @@ extension SiteTagsViewController {
         }
 
         cell.textLabel?.text = tag.name
-        cell.badgeCount = tag.postCount?.intValue ?? 0
+        //cell.badgeCount = tag.postCount?.intValue ?? 0
+        cell.badgeCount = 9
 
         return cell
     }
