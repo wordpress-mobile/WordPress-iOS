@@ -32,6 +32,17 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         return frc
     }()
 
+    fileprivate lazy var searchController: UISearchController = {
+        let returnValue = UISearchController(searchResultsController: nil)
+        //returnValue.searchBar.delegate = self
+        returnValue.hidesNavigationBarDuringPresentation = false
+        returnValue.dimsBackgroundDuringPresentation = false
+        returnValue.delegate = self
+        returnValue.searchResultsUpdater = self
+
+        return returnValue
+    }()
+
     @objc
     public init(blog: Blog) {
         self.blog = blog
@@ -79,11 +90,9 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     private func setupRefreshControl() {
-        if refreshControl == nil {
-            refreshControl = UIRefreshControl()
-            refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-            tableView.refreshControl = refreshControl
-        }
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        refreshControl = control
     }
 
     @objc private func refreshResultsController() {
@@ -100,7 +109,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     @objc private func refreshTags() {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        refreshControl?.beginRefreshing()
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.refreshControl?.endRefreshing()
         }) { [weak self] error in
@@ -109,9 +117,23 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     private func configureNavigationBar() {
+        configureRightButton()
+        //configureSearchBar()
+    }
+
+    private func configureRightButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(createTag))
+    }
+
+    private func configureSearchBar() {
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else {
+            tableView.tableHeaderView = searchController.searchBar
+        }
     }
 
     @objc private func createTag() {
@@ -209,4 +231,16 @@ extension SiteTagsViewController {
     fileprivate func noResultsButtonTitle() -> String {
         return NSLocalizedString("Add New Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
     }
+}
+
+// MARK: - SearchResultsUpdater
+
+extension SiteTagsViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        print("update search results")
+    }
+}
+
+extension SiteTagsViewController: UISearchControllerDelegate {
+
 }
