@@ -12,6 +12,20 @@ final class SiteTagCell: WPTableViewCell {
     @IBOutlet weak var tagName: UILabel!
     @IBOutlet weak var tagCount: UILabel!
 
+    var name: String? {
+        didSet {
+            tagName.text = name
+        }
+    }
+
+    var count: Int = 0 {
+        didSet {
+            if count > 0 {
+                tagCount.text = String(count)
+            }
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         accessoryType = .disclosureIndicator
@@ -29,9 +43,7 @@ final class SiteTagCell: WPTableViewCell {
         tagCount.font = WPStyleGuide.tableviewTextFont()
         tagCount.textColor = WPStyleGuide.grey()
         tagCount.textAlignment = .right
-
-        tagCount.layer.borderColor = WPStyleGuide.wordPressBlue().cgColor
-        tagCount.layer.borderWidth = 2
+        tagCount.text = ""
     }
 
     override func prepareForReuse() {

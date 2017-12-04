@@ -182,9 +182,10 @@ extension SiteTagsViewController {
             return SiteTagCell()
         }
 
-        cell.tagName?.text = tag.name
-        //cell.badgeCount = tag.postCount?.intValue ?? 0
-        cell.tagCount.text = String(99)
+        cell.name = tag.name
+        if let count = tag.postCount?.intValue, count > 0 {
+            cell.count = count
+        }
 
         return cell
     }
