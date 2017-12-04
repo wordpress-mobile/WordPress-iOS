@@ -11,7 +11,7 @@ import UIKit
 final class SiteTagCell: WPTableViewCell {
     @IBOutlet weak var tagName: UILabel!
     @IBOutlet weak var tagCount: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         accessoryType = .disclosureIndicator
@@ -29,6 +29,9 @@ final class SiteTagCell: WPTableViewCell {
         tagCount.font = WPStyleGuide.tableviewTextFont()
         tagCount.textColor = WPStyleGuide.grey()
         tagCount.textAlignment = .right
+
+        tagCount.layer.borderColor = WPStyleGuide.wordPressBlue().cgColor
+        tagCount.layer.borderWidth = 2
     }
 
     override func prepareForReuse() {
