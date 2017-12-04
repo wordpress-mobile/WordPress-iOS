@@ -88,3 +88,15 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
         return badgeSize.height / 2
     }
 }
+
+class WPTableViewCellBadgeDisclosure: WPTableViewCellBadge {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .value2, reuseIdentifier: reuseIdentifier)
+        self.accessoryType = .disclosureIndicator
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.accessoryType = .disclosureIndicator
+    }
+}
