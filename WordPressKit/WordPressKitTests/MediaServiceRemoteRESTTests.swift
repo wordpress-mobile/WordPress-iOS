@@ -81,6 +81,31 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(errorDescription, response["errors"]![0])
     }
 
+    func testCreateMultipleMedia() {
+
+        let response = ["media": [["ID": 1],["ID": 1]]]
+        let media = [mockRemoteMedia(), mockRemoteMedia()]
+        var remoteMedia: [RemoteMedia]?
+        mediaServiceRemote.uploadMedia(media, requestEnqueued: { _ in }, success: {
+            remoteMedia = $0 as? [RemoteMedia]
+        }, failure: { _ in })
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+        XCTAssertEqual(media[0].mediaID, remoteMedia?[0].mediaID)
+        XCTAssertEqual(media[1].mediaID, remoteMedia?[1].mediaID)
+    }
+
+    func testCreateMultipleMediaError() {
+
+        let response = ["errors": ["some error"]]
+        let media = [mockRemoteMedia(), mockRemoteMedia()]
+        var errorDescription = ""
+        mediaServiceRemote.uploadMedia(media, requestEnqueued: { _ in }, success: { _ in }, failure: {
+            errorDescription = $0.localizedDescription
+        })
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+        XCTAssertEqual(errorDescription, response["errors"]![0])
+    }
+
     func testUpdateMediaPath() {
 
         let media = mockRemoteMedia()
