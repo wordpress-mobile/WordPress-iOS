@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class SiteTagCell: WPTableViewCell {
+final class TitleBadgeDisclosureCell: WPTableViewCell {
     @IBOutlet weak var tagName: UILabel!
     @IBOutlet weak var tagCount: UILabel!
 

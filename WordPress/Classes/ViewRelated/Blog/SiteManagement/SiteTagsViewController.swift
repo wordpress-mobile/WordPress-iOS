@@ -2,7 +2,7 @@ import UIKit
 
 final class SiteTagsViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     private struct TableConstants {
-        static let cellIdentifier = "TagsAdminCell"
+        static let cellIdentifier = "TitleBadgeDisclosureCell"
         static let accesibilityIdentifier = "SiteTagsList"
         static let numberOfSections = 1
     }
@@ -87,8 +87,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     private func configureTable() {
         tableView.tableFooterView = UIView(frame: .zero)
-//        tableView.register(PostTagSettingsCell.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
-        let nibName = UINib(nibName: "SiteTagCell", bundle: nil)
+        let nibName = UINib(nibName: TableConstants.cellIdentifier, bundle: nil)
         tableView.register(nibName, forCellReuseIdentifier: TableConstants.cellIdentifier)
         setupRefreshControl()
     }
@@ -178,8 +177,8 @@ extension SiteTagsViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath) as? SiteTagCell, let tag = tagAtIndexPath(indexPath) else {
-            return SiteTagCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath) as? TitleBadgeDisclosureCell, let tag = tagAtIndexPath(indexPath) else {
+            return TitleBadgeDisclosureCell()
         }
 
         cell.name = tag.name
