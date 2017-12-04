@@ -11,11 +11,12 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     enum Configuration {
         /// Sequence of increasing delays to apply to the fetch restore status mechanism (in seconds)
         ///
-        static let delaySequence = [1, 5, 10, 15, 20, 25, 30]
+        static let delaySequence = [1, 5]
+        static let maxRetries = 12
     }
     fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
     fileprivate var delayedRetry: DispatchDelayedAction?
-
+    fileprivate var delayedRetryAttempt: Int = 0
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -161,15 +162,11 @@ extension ActivityListViewController: ActivityRewindPresenter {
 
 extension ActivityListViewController {
 
-    struct RestoreStatusCheck {
-        static let maxRetries = 12
-        static let pollingInterval = 5.0
-    }
-
     fileprivate func restoreSiteToRewindID(_ rewindID: String) {
         tableView.isUserInteractionEnabled = false
         service.restoreSite(siteID, rewindID: rewindID, success: { (restoreID) in
             self.showRestoringMessage()
+            self.delayedRetryAttempt = 0
             self.checkStatusDelayedForRestoreID(restoreID)
         }) { (error) in
             self.tableView.isUserInteractionEnabled = true
@@ -178,6 +175,12 @@ extension ActivityListViewController {
     }
 
     fileprivate func checkStatusDelayedForRestoreID(_ restoreID: String) {
+        delayedRetryAttempt = delayedRetryAttempt + 1
+        guard delayedRetryAttempt < Configuration.maxRetries else {
+            delay.reset()
+            showErrorFetchingRestoreStatus()
+            return
+        }
         service.restoreStatusForSite(siteID, restoreID: restoreID, success: { (restoreStatus) in
             switch restoreStatus.status {
             case .running, .queued:
