@@ -21,11 +21,11 @@ struct DomainsService {
         })
     }
 
-    func getDomainSuggestions(base: String) {
+    func getDomainSuggestions(base: String, success: @escaping ([String]) -> Void, failure: @escaping (Error) -> Void) {
         remote.getDomainSuggestions(base: base, success: { suggestions in
-            print(suggestions)
+            success(suggestions)
         }) { error in
-            // deal w it here
+            failure(error)
         }
     }
 
