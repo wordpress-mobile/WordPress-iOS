@@ -79,18 +79,6 @@ extension WordPressAppDelegate {
         DDLogInfo("===========================================================================")
     }
 
-    @objc func removeCredentialsForDebug() {
-        #if DEBUG
-            URLCredentialStorage.shared.allCredentials.forEach { protectionSpace, credentials in
-                credentials.forEach { key, credential in
-                    let user = credential.user ?? "Unknown"
-                    DDLogVerbose("Removing credential \(user) for \(protectionSpace.host)")
-                    URLCredentialStorage.shared.remove(credential, for: protectionSpace)
-                }
-            }
-        #endif
-    }
-
     @objc func toggleExtraDebuggingIfNeeded() {
         if noSelfHostedBlogs && noWordPressDotComAccount {
             // When there are no blogs in the app the settings screen is unavailable.

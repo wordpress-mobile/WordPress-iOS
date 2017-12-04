@@ -8,7 +8,6 @@
 #import <Crashlytics/Crashlytics.h>
 #import <Reachability/Reachability.h>
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressShared/UIImage+Util.h>
 
 #ifdef BUDDYBUILD_ENABLED
@@ -391,7 +390,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
-    [self removeCredentialsForDebug];
 #if DEBUG
     [KeychainTools processKeychainDebugArguments];
 #endif
