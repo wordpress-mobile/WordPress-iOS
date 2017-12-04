@@ -157,6 +157,7 @@ extension ActivityListViewController {
     }
 
     fileprivate func restoreSiteToRewindID(_ rewindID: String) {
+        tableView.isUserInteractionEnabled = false
         service.restoreSite(siteID, rewindID: rewindID, success: { (restoreID) in
             self.showRestoringMessage()
             self.restoreStatusCheckAttempt = 0
@@ -166,6 +167,7 @@ extension ActivityListViewController {
                                                                 userInfo: restoreID,
                                                                 repeats: true)
         }) { (error) in
+            self.tableView.isUserInteractionEnabled = true
             self.showErrorRestoringMessage()
         }
     }
@@ -216,16 +218,17 @@ extension ActivityListViewController {
     }
 
     fileprivate func restoreCompleted() {
-        self.restoreStatusCheckTimer?.invalidate()
+        tableView.isUserInteractionEnabled = true
+        restoreStatusCheckTimer?.invalidate()
         SVProgressHUD.showDismissibleSuccess(withStatus: NSLocalizedString("Restore completed",
                                                                            comment: "Text displayed in HUD when the site restore is completed."))
         refreshModel()
     }
 
     fileprivate func restoreFailed() {
-        self.restoreStatusCheckTimer?.invalidate()
-        self.showErrorRestoringMessage()
+        tableView.isUserInteractionEnabled = true
+        restoreStatusCheckTimer?.invalidate()
+        showErrorRestoringMessage()
     }
-
 
 }
