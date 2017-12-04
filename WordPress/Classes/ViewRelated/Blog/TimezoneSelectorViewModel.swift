@@ -1,7 +1,6 @@
 import Foundation
 import CoreData
 
-/// Model for TimezoneSelectorViewController's ImmuTablePresenter
 enum TimezoneSelectorViewModel {
     case loading
     /**
@@ -19,7 +18,7 @@ enum TimezoneSelectorViewModel {
     typealias ContinentsAndTimezones = ([String], [String: [(String, String)]])
 
     /// constant used in the functions below
-    var MANUAL_OFFSET: String { return "Manual Offsets" }
+    static let manualOffsetSectionName: String = "Manual Offsets"
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
         case .loading:
@@ -48,13 +47,13 @@ enum TimezoneSelectorViewModel {
         }
     }
 
-    func tableViewModel() -> ImmuTable {
+    var tableViewModel: ImmuTable {
         switch self {
         case .loading, .error:
             return .Empty
         case .ready(let timezoneInfoArray, let usersTimezoneString, let usersManualOffset, let action):
-            let (continents, continentToTimezones) = self.setupVariables(with: timezoneInfoArray)
-            let indexPathToHighlight = self.getIndexPathToHighlight(timezoneString: usersTimezoneString, manualOffset: usersManualOffset, data: (continents, continentToTimezones), allTimezones: timezoneInfoArray)
+            let (continents, continentToTimezones) = setupVariables(with: timezoneInfoArray)
+            let indexPathToHighlight = getIndexPathToHighlight(timezoneString: usersTimezoneString, manualOffset: usersManualOffset, data: (continents, continentToTimezones), allTimezones: timezoneInfoArray)
             var sections: [ImmuTableSection] = []
             for (sectionIndex, continent) in continents.enumerated() {
                 guard let allTimezones = continentToTimezones[continent] else {
@@ -97,7 +96,7 @@ enum TimezoneSelectorViewModel {
     }
 
     /// Helper method to fetch all TimeZoneInfo objects from DB
-    func loadDataFromDB() -> [TimeZoneInfo] {
+    func fetchTimezones() -> [TimeZoneInfo] {
         let fetchRequest = NSFetchRequest<TimeZoneInfo>(entityName: "TimeZoneInfo")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "continent", ascending: true),
                                         NSSortDescriptor(key: "label", ascending: true)]
@@ -116,15 +115,15 @@ enum TimezoneSelectorViewModel {
         }).sorted()
 
         // remove manual offset's from it's sorted position and push it to the bottom
-        if let manualOffsetIndex = continentNames.index(of: self.MANUAL_OFFSET) {
+        if let manualOffsetIndex = continentNames.index(of: TimezoneSelectorViewModel.manualOffsetSectionName) {
             continentNames.remove(at: manualOffsetIndex)
-            continentNames.append(self.MANUAL_OFFSET)
+            continentNames.append(TimezoneSelectorViewModel.manualOffsetSectionName)
         }
         var timezoneNamesSortedByContinent: [String: [(String, String)]] = [:]
         for continent in continentNames {
             let allTimezonesInContinent = result.filter({ $0.continent == continent })
 
-            if continent == self.MANUAL_OFFSET {
+            if continent == TimezoneSelectorViewModel.manualOffsetSectionName {
                 // sort the UTC strings
                 let allLabelsAndValues = allTimezonesInContinent.map({ (label: $0.label, value: $0.value) })
                 timezoneNamesSortedByContinent[continent] = allLabelsAndValues.sorted(by: { (left, right) -> Bool in
@@ -160,8 +159,8 @@ enum TimezoneSelectorViewModel {
                 return indexPath
             }
         } else if let manualOffset = manualOffset,
-            let section = data.0.index(of: self.MANUAL_OFFSET),
-            let dict = data.1[self.MANUAL_OFFSET] {
+            let section = data.0.index(of: TimezoneSelectorViewModel.manualOffsetSectionName),
+            let dict = data.1[TimezoneSelectorViewModel.manualOffsetSectionName] {
             let hoursUTC = manualOffset.intValue
             let minutesUTC = abs(Int((manualOffset.doubleValue - Double(hoursUTC)) * 60))
             guard let utcString: String = TimeZoneSettingHelper.getFormattedString(prefix: "UTC", hours: hoursUTC, minutes: minutesUTC) else {
@@ -177,7 +176,7 @@ enum TimezoneSelectorViewModel {
     }
 }
 
-/// Cell model used in TimezoneSelectorVC to display timezones
+/// Cell model to display timezones
 struct TimezoneListRow: ImmuTableRow {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.class(UITableViewCell.self)

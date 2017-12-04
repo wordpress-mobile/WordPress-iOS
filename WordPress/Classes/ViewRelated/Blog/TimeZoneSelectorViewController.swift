@@ -18,30 +18,29 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
     }()
 
     /// common action passed to TimezoneListRow cells, executed on select of a cell
-    private lazy var action: ImmuTableAction = { [weak self] (aRow) -> Void in
+    private lazy var action: ImmuTableAction = { [weak self] (aRow) in
         self?.navigationController?.popViewController(animated: true)
         let timezoneValue: String = (aRow as? TimezoneListRow)?.timezoneValue ?? ""
-        var timezoneString: String = ""
-        var manualOffset: NSNumber?
         if let numberString = timezoneValue.components(separatedBy: "UTC").last,
             let floatVal = Float(numberString) {
-            let manualOffsetNumber: NSNumber = NSNumber(value: floatVal)
-            manualOffset = manualOffsetNumber
+            let manualOffset: NSNumber = NSNumber(value: floatVal)
+            self?.onChange?("", manualOffset)
         } else {
-            timezoneString = timezoneValue
+            self?.onChange?(timezoneValue, nil)
         }
-        self?.onChange?(timezoneString, manualOffset)
     }
 
     private var viewModel: TimezoneSelectorViewModel = .loading {
         didSet {
-            handler.viewModel = viewModel.tableViewModel()
+            handler.viewModel = viewModel.tableViewModel
             updateNoResults()
         }
     }
 
-    /// used to show an intermittent loading state
+    /// Show an intermittent loading state
     private let noResultsView = WPNoResultsView()
+
+    private let estimatedRowHeight: CGFloat = 45.0
 
     @objc public convenience init(timeZoneString: String?,
                      manualOffset: NSNumber?,
@@ -54,39 +53,39 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
     }
 
     override func viewDidLoad() {
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 45.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = estimatedRowHeight
 
         title = NSLocalizedString("Time Zone", comment: "Title for the timezone selector")
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows([TimezoneListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModel()
+        handler.viewModel = viewModel.tableViewModel
         updateNoResults()
-        loadAndShowData()
+        loadData()
     }
 
     // MARK: Helper methods
     /// If no data exists in DB, make an API call to fetch and save the data, then display
     /// otherwise fetch data from DB and display
-    private func loadAndShowData() {
-        let allTimezones = self.viewModel.loadDataFromDB()
+    private func loadData() {
+        let allTimezones = viewModel.fetchTimezones()
         if allTimezones.count == 0 {
-            self.loadDataFromAPIAndSaveToDB()
+            refreshData()
         } else {
-            self.viewModel = .ready(allTimezones, self.initialTimeZone, self.initialManualOffset, self.action)
+            viewModel = .ready(allTimezones, initialTimeZone, initialManualOffset, action)
         }
     }
 
     /// Helper method to call API and save the data to DB
-    private func loadDataFromAPIAndSaveToDB() {
+    private func refreshData() {
         let api = ServiceRemoteWordPressComREST.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress())!
         let remoteService = BlogServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: 0))
         remoteService.fetchTimeZoneList(success: { [weak self] (resultsDict) in
             self?.viewModel.insertDataToDB(resultsDict: resultsDict)
-            self?.loadAndShowData()
-            }, failure: { (error) in
+            self?.loadData()
+            }, failure: { [weak self] (error) in
                 DDLogError("Error loading timezones: \(error)")
-                self.viewModel = .error(String(describing: error))
+                self?.viewModel = .error(String(describing: error))
         })
     }
 
