@@ -82,6 +82,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         if refreshControl == nil {
             refreshControl = UIRefreshControl()
             refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+            tableView.refreshControl = refreshControl
         }
     }
 
