@@ -106,7 +106,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
             tableView.reloadData()
         } catch {
-            DDLogError("Error fetching PostTags: \(error)")
+            tagsFailedLoading(error: error)
         }
     }
 
