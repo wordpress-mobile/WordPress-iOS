@@ -87,7 +87,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     private func configureTable() {
         tableView.tableFooterView = UIView(frame: .zero)
-        tableView.register(WPTableViewCellBadgeDisclosure.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
+        tableView.register(PostTagSettingsCell.classForCoder(), forCellReuseIdentifier: TableConstants.cellIdentifier)
         setupRefreshControl()
     }
 
@@ -176,8 +176,8 @@ extension SiteTagsViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath) as? WPTableViewCellBadgeDisclosure, let tag = tagAtIndexPath(indexPath) else {
-            return WPTableViewCellBadgeDisclosure()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableConstants.cellIdentifier, for: indexPath) as? PostTagSettingsCell, let tag = tagAtIndexPath(indexPath) else {
+            return PostTagSettingsCell()
         }
 
         cell.textLabel?.text = tag.name
