@@ -18,12 +18,12 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         return NSPredicate(format: "blog.blogID = %@", blog.dotComID!)
     }()
 
-    fileprivate var sortDescriptors: [NSSortDescriptor] {
+    private let sortDescriptors: [NSSortDescriptor] = {
         return [NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
-    }
+    }()
 
     fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
         request.sortDescriptors = self.sortDescriptors
 
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
