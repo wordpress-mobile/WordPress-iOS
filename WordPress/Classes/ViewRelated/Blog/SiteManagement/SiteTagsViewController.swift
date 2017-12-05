@@ -23,7 +23,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }()
 
     fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: PostTag.entityName())
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
         request.sortDescriptors = self.sortDescriptors
 
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
@@ -133,7 +133,9 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func createTag() {
-        let emptyTag = PostTag()
+        guard let emptyTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
+            return
+        }
         navigate(to: emptyTag)
     }
 
