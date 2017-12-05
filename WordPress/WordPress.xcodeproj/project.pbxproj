@@ -664,6 +664,17 @@
 		BE1071FC1BC75E7400906AFF /* WPStyleGuide+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1071FB1BC75E7400906AFF /* WPStyleGuide+Blog.swift */; };
 		BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1071FE1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift */; };
 		BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13B3E51B2B58D800A4211D /* BlogListViewController.m */; };
+		BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */; };
+		BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
+		BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
+		BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */; };
+		BE6DD3261FD66C2900E55192 /* SignupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3251FD66C2900E55192 /* SignupScreen.swift */; };
+		BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */; };
+		BE6DD32A1FD6708900E55192 /* LinkOrPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */; };
+		BE6DD32C1FD6782A00E55192 /* LoginEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */; };
+		BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */; };
+		BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */; };
+		BE6DD3321FD6803700E55192 /* MeTabScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3311FD6803700E55192 /* MeTabScreen.swift */; };
 		BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87E19F1BD4054F0075D45B /* WP3DTouchShortcutCreator.swift */; };
 		BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */; };
 		BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */; };
@@ -1985,6 +1996,17 @@
 		BE1071FE1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "WPStyleGuide+BlogTests.swift"; path = "ViewRelated/Blog/Style/WPStyleGuide+BlogTests.swift"; sourceTree = "<group>"; };
 		BE13B3E41B2B58D800A4211D /* BlogListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogListViewController.h; sourceTree = "<group>"; };
 		BE13B3E51B2B58D800A4211D /* BlogListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogListViewController.m; sourceTree = "<group>"; };
+		BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
+		BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
+		BE2B4EA11FD6654A007AE3E4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEmailScreen.swift; sourceTree = "<group>"; };
+		BE6DD3251FD66C2900E55192 /* SignupScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupScreen.swift; sourceTree = "<group>"; };
+		BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordScreen.swift; sourceTree = "<group>"; };
+		BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkOrPasswordScreen.swift; sourceTree = "<group>"; };
+		BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEpilogueScreen.swift; sourceTree = "<group>"; };
+		BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySitesScreen.swift; sourceTree = "<group>"; };
+		BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavComponent.swift; sourceTree = "<group>"; };
+		BE6DD3311FD6803700E55192 /* MeTabScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeTabScreen.swift; sourceTree = "<group>"; };
 		BE87E19F1BD4054F0075D45B /* WP3DTouchShortcutCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutCreator.swift; path = 3DTouch/WP3DTouchShortcutCreator.swift; sourceTree = "<group>"; };
 		BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutHandler.swift; path = 3DTouch/WP3DTouchShortcutHandler.swift; sourceTree = "<group>"; };
 		BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutCreatorTests.swift; path = System/3DTouch/WP3DTouchShortcutCreatorTests.swift; sourceTree = "<group>"; };
@@ -4659,6 +4681,31 @@
 			name = System;
 			sourceTree = "<group>";
 		};
+		BE2B4E991FD6640E007AE3E4 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				BE6DD3251FD66C2900E55192 /* SignupScreen.swift */,
+				BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */,
+				BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */,
+				BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */,
+				BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */,
+				BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */,
+				BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */,
+				BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */,
+				BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */,
+				BE6DD3311FD6803700E55192 /* MeTabScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		BE2B4EA01FD6653E007AE3E4 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				BE2B4EA11FD6654A007AE3E4 /* Logger.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		BE6AB7FB1BC62E0B00D980FC /* Style */ = {
 			isa = PBXGroup;
 			children = (
@@ -5370,6 +5417,8 @@
 		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
 			isa = PBXGroup;
 			children = (
+				BE2B4EA01FD6653E007AE3E4 /* Utils */,
+				BE2B4E991FD6640E007AE3E4 /* Screens */,
 				FF27169B1CAAF3190006E2D4 /* gencredentials.rb */,
 				FF2716911CAAC87B0006E2D4 /* LoginTests.swift */,
 				FFA0B7D61CAC1F9F00533B9D /* MainNavigationTests.swift */,
@@ -7007,9 +7056,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */,
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
+				BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */,
 				FF27169F1CAAF5060006E2D4 /* WordPressTestCredentials.swift in Sources */,
+				BE6DD32C1FD6782A00E55192 /* LoginEpilogueScreen.swift in Sources */,
+				BE6DD3321FD6803700E55192 /* MeTabScreen.swift in Sources */,
+				BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */,
 				FF2716921CAAC87B0006E2D4 /* LoginTests.swift in Sources */,
+				BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */,
+				BE6DD32A1FD6708900E55192 /* LinkOrPasswordScreen.swift in Sources */,
+				BE6DD3261FD66C2900E55192 /* SignupScreen.swift in Sources */,
+				BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */,
+				BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */,
+				BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */,
 				FF2716A11CABC7D40006E2D4 /* XCTest+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
