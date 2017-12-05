@@ -1,6 +1,6 @@
 import UIKit
 
-class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout {
+class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 
     // MARK: - Properties
 
@@ -8,6 +8,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     private typealias Styles = WPStyleGuide.Themes
 
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+    private var themesSyncHelper: WPContentSyncHelper!
 
     private lazy var themesController: NSFetchedResultsController<NSFetchRequestResult> = {
         return self.createThemesFetchedResultsController()
@@ -24,6 +25,8 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
 
         configureView()
         fetchThemes()
+        setupThemesSyncHelper()
+        syncContent()
     }
 
     private func configureView() {
@@ -135,6 +138,58 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         }
 
         return NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+    }
+
+    // MARK: - Theme Syncing
+
+    fileprivate func setupThemesSyncHelper() {
+        themesSyncHelper = WPContentSyncHelper()
+        themesSyncHelper.delegate = self
+    }
+
+    private func syncContent() {
+        themesSyncHelper.syncContent()
+    }
+
+    fileprivate func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+        assert(page > 0)
+        let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount()
+
+        // TODO: replace with new endpoint.
+
+        _ = themeService.getThemesFor(account,
+                                      page: page,
+                                      success: { (_, _, _) in
+        },
+                                      failure: { (error) in
+                                        DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                                        if let failure = failure,
+                                            let error = error {
+                                            failure(error as NSError)
+                                        }
+        })
+    }
+
+    // MARK: - WPContentSyncHelperDelegate
+
+    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+        if syncHelper == themesSyncHelper {
+            syncThemePage(1, success: success, failure: failure)
+        }
+    }
+
+    func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+        // Nothing to be done here. There will only be one page.
+    }
+
+    // MARK: - NSFetchedResultsControllerDelegate
+
+    open func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        updateResults()
+    }
+
+    private func updateResults() {
+        collectionView?.reloadData()
     }
 
     // MARK: - Helpers
