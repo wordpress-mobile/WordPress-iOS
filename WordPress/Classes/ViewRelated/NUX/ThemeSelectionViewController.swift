@@ -126,7 +126,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
 
         let blogThemes = ["Independent Publisher 2", "Penscratch 2", "Intergalactic 2", "Libre 2"]
         let websiteThemes = ["Radcliffe 2", "Karuna", "Dara", "Twenty Seventeen"]
-        let portfolioThemes = ["Altofocus", "Rebalance", "Sketch", "Lodestar"]
+        let portfolioThemes = ["AltoFocus", "Rebalance", "Sketch", "Lodestar"]
 
         var themes: [String]
         switch siteType {
