@@ -91,7 +91,7 @@ class MediaCellProgressView: UIView {
     private func addRetryViews() {
         retryContainer.axis = .vertical
         retryContainer.alignment = .center
-        retryContainer.spacing = 3.0
+        retryContainer.spacing = RetryContainerAppearance.verticalSpacing
         retryContainer.distribution = .fillProportionally
 
         let retryIconView = UIImageView(image: Gridicon.iconOfType(.refresh))
@@ -99,20 +99,28 @@ class MediaCellProgressView: UIView {
         retryContainer.addArrangedSubview(retryIconView)
 
         let retryLabel = UILabel()
-        retryLabel.font = UIFont.systemFont(ofSize: 14.0)
+        retryLabel.font = UIFont.systemFont(ofSize: RetryContainerAppearance.fontSize)
         retryLabel.textColor = .white
         retryLabel.textAlignment = .center
         retryLabel.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
+        retryLabel.numberOfLines = 2
         retryContainer.addArrangedSubview(retryLabel)
 
         addSubview(retryContainer)
         retryContainer.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            retryContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-            retryContainer.centerYAnchor.constraint(equalTo: centerYAnchor)
+            retryContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
+            retryContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: RetryContainerAppearance.horizontalPadding),
+            retryContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -RetryContainerAppearance.horizontalPadding)
             ])
 
         retryContainer.isHidden = true
+    }
+
+    enum RetryContainerAppearance {
+        static let horizontalPadding: CGFloat = 4.0
+        static let verticalSpacing: CGFloat = 3.0
+        static let fontSize: CGFloat = 14.0
     }
 }
 
