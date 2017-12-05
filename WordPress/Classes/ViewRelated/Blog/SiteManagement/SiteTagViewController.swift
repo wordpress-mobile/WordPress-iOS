@@ -56,8 +56,8 @@ final class SiteTagViewController: UITableViewController {
         return self.textField()
     }()
 
-    private lazy var descriptionTextField: UITextField = {
-        return self.textField()
+    private lazy var descriptionTextField: UITextView = {
+        return self.textView()
     }()
 
     public init(blog: Blog, tag: PostTag) {
@@ -103,13 +103,21 @@ final class SiteTagViewController: UITableViewController {
     private func textField() -> UITextField {
         let returnValue = UITextField(frame: .zero)
         returnValue.translatesAutoresizingMaskIntoConstraints = false
-        returnValue.clearButtonMode = .always
         returnValue.font = WPStyleGuide.tableviewTextFont()
         returnValue.textColor = WPStyleGuide.darkGrey()
         returnValue.returnKeyType = .done
         returnValue.keyboardType = .default
 
         returnValue.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+
+        return returnValue
+    }
+
+    private func textView() -> UITextView {
+        let returnValue = UITextView(frame: .zero, textContainer: nil)
+        returnValue.translatesAutoresizingMaskIntoConstraints = false
+        returnValue.font = WPStyleGuide.tableviewTextFont()
+        returnValue.textColor = WPStyleGuide.darkGrey()
 
         return returnValue
     }
