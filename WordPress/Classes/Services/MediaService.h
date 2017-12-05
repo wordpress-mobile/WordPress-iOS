@@ -3,8 +3,10 @@
 #import <Photos/Photos.h>
 #import "LocalCoreDataService.h"
 
+
 @class Media;
 @class Blog;
+@protocol ExportableAsset;
 
 @interface MediaService : LocalCoreDataService
 
@@ -16,57 +18,16 @@
 /**
  Create a media object using the url provided as the source of media.
 
- @param url a file url pointing to a file with the media data
- @param postObjectID the post object ID to associate the media
+ @param exportable an object that implements the exportable interface
+ @param objectID the post or blog object ID to associate to the media
  @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
  @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
  */
-- (void)createMediaWithURL:(nonnull NSURL *)url
-           forPostObjectID:(nonnull NSManagedObjectID *)postObjectID
-         thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion NS_SWIFT_NAME(createMedia(url:forPost:thumbnailCallback:completion:));
+- (void)createMediaWith:(nonnull id<ExportableAsset>)exportable
+               objectID:(nonnull NSManagedObjectID *)objectID              
+      thumbnailCallback:(nullable void (^)(NSURL * __nonnull thumbnailURL))thumbnailCallback
+             completion:(nullable void (^)(Media * __nullable media, NSError * __nullable error))completion;
 
-/**
- Create a media object using the url provided as the source of media.
- 
- @param url a file url pointing to a file with the media data
- @param blogObjectID the blog object ID to associate the media
- @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
- @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
- */
-- (void)createMediaWithURL:(nonnull NSURL *)url
-           forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
-         thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion NS_SWIFT_NAME(createMedia(url:forBlog:thumbnailCallback:completion:));
-
-/**
- Create a Media object using the asset as the source and making it a child of the post with postObjectId.
- 
- @param asset
- @param postObjectID
- @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
- @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
- */
-- (void)createMediaWithPHAsset:(nonnull PHAsset *)asset
-             forPostObjectID:(nonnull NSManagedObjectID *)postObjectID
-           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                    completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
-
-- (void)createMediaWithImage:(nonnull UIImage *)image
-                 withMediaID:(nonnull NSString *)mediaID
-             forPostObjectID:(nonnull NSManagedObjectID *)postObjectID
-           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                  completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
-
-- (void)createMediaWithPHAsset:(nonnull PHAsset *)asset
-               forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
-             thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                    completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
-
-- (void)createMediaWithImage:(nonnull UIImage *)image
-             forBlogObjectID:(nonnull NSManagedObjectID *)blogObjectID
-           thumbnailCallback:(nullable void (^)(NSURL * _Nonnull thumbnailURL))thumbnailCallback
-                  completion:(nullable void (^)(Media * _Nullable media, NSError * _Nullable error))completion;
 
 /**
  Get the Media object from the server using the blog and the mediaID as the identifier of the resource
