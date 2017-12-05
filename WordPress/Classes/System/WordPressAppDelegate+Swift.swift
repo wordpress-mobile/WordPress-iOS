@@ -31,7 +31,7 @@ extension WordPressAppDelegate {
             return
         #else
             if let apiKey = ApiCredentials.crashlyticsApiKey() {
-                crashlytics = WPCrashlytics(APIKey: apiKey)
+                crashlytics = WPCrashlytics(apiKey: apiKey)
             }
         #endif
     }
