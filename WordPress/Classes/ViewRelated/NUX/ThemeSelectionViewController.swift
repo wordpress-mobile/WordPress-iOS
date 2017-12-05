@@ -77,6 +77,10 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         return Styles.themeMargins
     }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: 0, height: ThemeSelectionHeaderView.height)
+    }
+
     // MARK: - UICollectionViewDelegate
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
