@@ -1,1 +1,2 @@
-Inga nya fantastiska funktioner denna gång, utan bara en rad små förbättringar för att ge dig en snabbare och stabilare app. Allt är inte guld som glimmar: Ibland kan det vara programkod!
+Nya prestandaförbättringar i redigeraren och felrättningar.
+Läsaren: Nu är kommentarer på Jetpack-webbplatser tillgängliga.

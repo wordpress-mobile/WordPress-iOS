@@ -102,6 +102,15 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
         themeVC.siteType = tableRow.siteType
     }
 
+    // MARK: - LoginWithLogoAndHelpViewController methods
+
+    func handleHelpButtonTapped(_ sender: AnyObject) {
+        displaySupportViewController(sourceTag: .wpComLogin)
+    }
+
+    // this VC isn't setup to handle the badge count. Should be fixed when NUXAbstractViewController and LoginViewController are refactored
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) { }
+
     // MARK: - Misc
 
     override func didReceiveMemoryWarning() {

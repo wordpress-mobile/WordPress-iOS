@@ -389,14 +389,10 @@
         fetchRequest.predicate = filterPredicate;
     }
 
-    NSPredicate *statusPredicate;
-    if (self.includeUnsyncedMedia) {
-        statusPredicate = [NSPredicate predicateWithFormat:@"%K != %@", @"remoteStatusNumber", @(MediaRemoteStatusFailed)];
-    } else {
-        statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
+    if (!self.includeUnsyncedMedia) {
+        NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
+        fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
     }
-
-    fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
     fetchRequest.sortDescriptors = @[sortDescriptor];
