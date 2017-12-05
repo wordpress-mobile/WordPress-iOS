@@ -59,8 +59,8 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         setAccessibilityIdentifier()
         applyStyleGuide()
         applyTitle()
-        configureTable()
-        configureNavigationBar()
+        setupTable()
+        setupNavigationBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +83,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         title = NSLocalizedString("Tags", comment: "Label for the Tags Section in the Blog Settings")
     }
 
-    private func configureTable() {
+    private func setupTable() {
         tableView.tableFooterView = UIView(frame: .zero)
         let nibName = UINib(nibName: TableConstants.cellIdentifier, bundle: nil)
         tableView.register(nibName, forCellReuseIdentifier: TableConstants.cellIdentifier)
@@ -117,7 +117,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         }
     }
 
-    private func configureNavigationBar() {
+    private func setupNavigationBar() {
         configureRightButton()
         configureSearchBar()
     }
