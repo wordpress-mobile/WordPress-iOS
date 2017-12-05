@@ -33,6 +33,15 @@ final class SiteTagViewController: UITableViewController {
                 return NSLocalizedString("Description", comment: "Section header for tag name in Tag Details View.").uppercased()
             }
         }
+
+        var height: CGFloat {
+            switch self {
+            case .name:
+                return 44.0
+            case .description:
+                return 132.0
+            }
+        }
     }
 
     private lazy var nameCell: WPTableViewCell = {
@@ -132,6 +141,11 @@ extension SiteTagViewController {
             descriptionTextField.text = tag.tagDescription
             return descriptionCell
         }
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let sectionForIndexPath = Sections.section(for: indexPath.section)
+        return sectionForIndexPath.height
     }
 }
 
