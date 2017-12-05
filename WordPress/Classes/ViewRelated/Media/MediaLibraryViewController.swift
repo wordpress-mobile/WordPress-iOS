@@ -237,9 +237,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         visibleCells(for: media).forEach { cell in
             if let overlayView = cell.overlayView as? MediaCellProgressView {
                 if progress < MediaLibraryViewController.uploadCompleteProgress {
-                    overlayView.progressIndicator.state = .progress(progress)
+                    overlayView.state = .progress(progress)
                 } else {
-                    overlayView.progressIndicator.state = .indeterminate
+                    overlayView.state = .indeterminate
                 }
             }
         }
@@ -248,7 +248,15 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     private func showUploadingStateForCell(for media: Media) {
         visibleCells(for: media).forEach { cell in
             if let overlayView = cell.overlayView as? MediaCellProgressView {
-                overlayView.progressIndicator.state = .indeterminate
+                overlayView.state = .indeterminate
+            }
+        }
+    }
+
+    private func showFailedStateForCell(for media: Media) {
+        visibleCells(for: media).forEach { cell in
+            if let overlayView = cell.overlayView as? MediaCellProgressView {
+                overlayView.state = .retry
             }
         }
     }
@@ -383,6 +391,22 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         })
     }
 
+    fileprivate func presentRetryOptions(for media: Media) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
+            let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            service.deleteMedia([media], progress: nil, success: nil, failure: nil)
+        }
+
+        alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
+            MediaUploadCoordinator.shared.retryMedia(media)
+        }
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+
+        present(alertController, animated: true, completion: nil)
+    }
+
     override var isEditing: Bool {
         didSet {
             updateNavigationItemButtons(for: pickerDataSource.totalAssetCount)
@@ -439,6 +463,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 self?.showUploadingStateForCell(for: media)
             case .ended:
                 self?.reloadCell(for: media)
+            case .failed:
+                self?.showFailedStateForCell(for: media)
             }
             }, for: nil)
     }
@@ -629,8 +655,16 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {
         if let overlayView = overlayView as? MediaCellProgressView,
             let media = asset as? Media {
-            if media.remoteStatus == .processing {
-                overlayView.progressIndicator.state = .indeterminate
+            switch media.remoteStatus {
+            case .processing:
+                overlayView.state = .indeterminate
+            case .pushing:
+                if let progress = MediaUploadCoordinator.shared.progress(for: media) {
+                    overlayView.state = .progress(progress.fractionCompleted)
+                }
+            case .failed:
+                overlayView.state = .retry
+            default: break
             }
         }
     }
@@ -647,17 +681,37 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor asset: WPMediaAsset) -> UIViewController? {
         guard picker == self else { return WPAssetViewController(asset: asset) }
 
+        guard let media = asset as? Media,
+            media.remoteStatus == .sync else {
+                return nil
+        }
+
         WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
         return mediaItemViewController(for: asset)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldSelect asset: WPMediaAsset) -> Bool {
-        guard picker == self else { return true }
-        guard !isEditing else { return true }
+        guard picker == self else {
+            return true
+        }
 
-        if let viewController = mediaItemViewController(for: asset) {
-            WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
-            navigationController?.pushViewController(viewController, animated: true)
+        guard let media = asset as? Media else {
+            return false
+        }
+
+        guard !isEditing else {
+            return media.remoteStatus == .sync
+        }
+
+        switch media.remoteStatus {
+        case .failed:
+            presentRetryOptions(for: media)
+        case .sync:
+            if let viewController = mediaItemViewController(for: asset) {
+                WPAppAnalytics.track(.mediaLibraryPreviewedItem, with: blog)
+                navigationController?.pushViewController(viewController, animated: true)
+            }
+        default: break
         }
 
         return false
