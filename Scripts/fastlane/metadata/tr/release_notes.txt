@@ -1,1 +1,2 @@
-Yeni ziller ve ıslıklar yok, sadece size daha hızlı, daha istikrarlı bir uygulama sunmak için artan iyileştirmeler. Parlayan her şey altın değildir, bazen bu koddur!
+Yeni metin editörü performans iyileştirmeleri ve hata gidermeleri.
+Okuyucu: Jetpack sitelerindeki yorumlar artık uygun.
