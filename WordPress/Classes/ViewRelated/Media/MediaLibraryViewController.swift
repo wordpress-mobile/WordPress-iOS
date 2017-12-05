@@ -554,8 +554,8 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
 
     private func makeAndUploadMediaWithURL(_ url: URL) {
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.createMedia(url: url,
-                            forBlog: blog.objectID,
+        service.createMedia(with: url as NSURL,
+                            objectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
                                 self?.uploadMedia(media, error: error, mediaID: url.lastPathComponent)
@@ -702,7 +702,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     @objc func makeAndUploadMediaWith(_ asset: PHAsset) {
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createMedia(with: asset,
-                            forBlogObjectID: blog.objectID,
+                            objectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
                                 self?.uploadMedia(media, error: error, mediaID: asset.identifier())
