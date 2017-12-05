@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 
 /// Progress view displayed in cells in the media library to indicate that an
@@ -7,10 +8,40 @@ import WordPressShared
 class MediaCellProgressView: UIView {
     let progressIndicator = ProgressIndicatorView()
 
-    override var isHidden: Bool {
+    private let retryContainer = UIStackView()
+
+    enum State: Equatable {
+        case stopped
+        case retry
+        case indeterminate
+        case progress(Double)
+
+        static func ==(lhs: State, rhs: State) -> Bool {
+            switch (lhs, rhs) {
+            case (.stopped, .stopped): return true
+            case (.retry, .retry): return true
+            case (.indeterminate, .indeterminate): return true
+            case let (.progress(l), .progress(r)): return l == r
+            default: return false
+            }
+        }
+    }
+
+    var state: State = .stopped {
         didSet {
-            if isHidden {
+            switch state {
+            case .stopped:
                 progressIndicator.state = .stopped
+                retryContainer.isHidden = true
+            case .retry:
+                progressIndicator.state = .stopped
+                retryContainer.isHidden = false
+            case .indeterminate:
+                progressIndicator.state = .indeterminate
+                retryContainer.isHidden = true
+            case .progress:
+                progressIndicator.state = state
+                retryContainer.isHidden = true
             }
         }
     }
@@ -19,12 +50,32 @@ class MediaCellProgressView: UIView {
         super.init(frame: frame)
 
         addProgressIndicator()
+        addRetryViews()
 
         backgroundColor = WPStyleGuide.darkGrey()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        setRetryContainerDimmed(true)
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        setRetryContainerDimmed(false)
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        setRetryContainerDimmed(false)
+    }
+
+    fileprivate func setRetryContainerDimmed(_ dimmed: Bool) {
+        retryContainer.alpha = (dimmed) ? 0.5 : 1.0
     }
 
     private func addProgressIndicator() {
@@ -35,6 +86,41 @@ class MediaCellProgressView: UIView {
             progressIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
             progressIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
             ])
+    }
+
+    private func addRetryViews() {
+        retryContainer.axis = .vertical
+        retryContainer.alignment = .center
+        retryContainer.spacing = RetryContainerAppearance.verticalSpacing
+        retryContainer.distribution = .fillProportionally
+
+        let retryIconView = UIImageView(image: Gridicon.iconOfType(.refresh))
+        retryIconView.tintColor = .white
+        retryContainer.addArrangedSubview(retryIconView)
+
+        let retryLabel = UILabel()
+        retryLabel.font = UIFont.systemFont(ofSize: RetryContainerAppearance.fontSize)
+        retryLabel.textColor = .white
+        retryLabel.textAlignment = .center
+        retryLabel.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
+        retryLabel.numberOfLines = 2
+        retryContainer.addArrangedSubview(retryLabel)
+
+        addSubview(retryContainer)
+        retryContainer.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            retryContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
+            retryContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: RetryContainerAppearance.horizontalPadding),
+            retryContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -RetryContainerAppearance.horizontalPadding)
+            ])
+
+        retryContainer.isHidden = true
+    }
+
+    enum RetryContainerAppearance {
+        static let horizontalPadding: CGFloat = 4.0
+        static let verticalSpacing: CGFloat = 3.0
+        static let fontSize: CGFloat = 14.0
     }
 }
 
@@ -61,22 +147,7 @@ class ProgressIndicatorView: UIView {
         static let strokeBeginTime: TimeInterval = 0.5
     }
 
-    enum State: Equatable {
-        case stopped
-        case indeterminate
-        case progress(Double)
-
-        static func ==(lhs: State, rhs: State) -> Bool {
-            switch (lhs, rhs) {
-            case (.stopped, .stopped): return true
-            case (.indeterminate, .indeterminate): return true
-            case let (.progress(l), .progress(r)): return l == r
-            default: return false
-            }
-        }
-    }
-
-    var state: State = .stopped {
+    var state: MediaCellProgressView.State = .stopped {
         didSet {
             stateDidChange()
         }
@@ -142,6 +213,7 @@ class ProgressIndicatorView: UIView {
             stopAnimating()
             updateProgressLayer(with: progress)
             break
+        default: break
         }
     }
 
