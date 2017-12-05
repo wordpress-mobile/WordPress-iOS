@@ -20,7 +20,7 @@
  */
 - (void)createPost:(RemotePost *)post
          withMedia:(RemoteMedia *)media
-   requestEnqueued:(void (^)(void))requestEnqueued
+   requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure;
 
