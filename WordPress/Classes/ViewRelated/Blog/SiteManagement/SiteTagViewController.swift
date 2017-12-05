@@ -126,8 +126,10 @@ extension SiteTagViewController {
         let sectionForIndexPath = Sections.section(for: indexPath.section)
         switch sectionForIndexPath {
         case .name:
+            nameTextField.text = tag.name
             return nameCell
         case .description:
+            descriptionTextField.text = tag.tagDescription
             return descriptionCell
         }
     }
