@@ -129,12 +129,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     private func configureSearchBar() {
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-            navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            tableView.tableHeaderView = searchController.searchBar
-        }
+       tableView.tableHeaderView = searchController.searchBar
     }
 
     @objc private func createTag() {
