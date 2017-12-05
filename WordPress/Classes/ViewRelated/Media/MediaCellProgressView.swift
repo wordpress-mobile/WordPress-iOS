@@ -39,7 +39,7 @@ class MediaCellProgressView: UIView {
             case .indeterminate:
                 progressIndicator.state = .indeterminate
                 retryContainer.isHidden = true
-            case .progress(_):
+            case .progress:
                 progressIndicator.state = state
                 retryContainer.isHidden = true
             }
