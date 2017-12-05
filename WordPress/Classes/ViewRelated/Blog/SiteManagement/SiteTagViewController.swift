@@ -137,6 +137,10 @@ final class SiteTagViewController: UITableViewController {
         return returnValue
     }
 
+    @objc private func deleteTag() {
+        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        tagsService.delete(tag, for: blog)
+    }
 }
 
 // MARK: - Table view datasource
@@ -176,11 +180,5 @@ extension SiteTagViewController {
     fileprivate func textChanged(_ textField: UITextField) {
         tag.name = textField.text
         setupTitle()
-    }
-}
-
-extension SiteTagViewController {
-    @objc private func deleteTag() {
-        print("deleting tag command")
     }
 }
