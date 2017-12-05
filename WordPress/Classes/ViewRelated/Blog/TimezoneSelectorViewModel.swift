@@ -10,7 +10,7 @@ enum TimezoneSelectorViewModel {
         - third param: - initialManualGMTOffset
         - fourth param: - action block to be executed when user clicks on a cell
     */
-    case ready([TimeZoneInfo], String?, NSNumber?, ImmuTableAction)
+    case ready([TimeZoneInfo], String?, NSNumber?, ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?)
     case error(String)
 
     /// the first param is a list of all continents, used as section headers
@@ -51,7 +51,7 @@ enum TimezoneSelectorViewModel {
         switch self {
         case .loading, .error:
             return .Empty
-        case .ready(let timezoneInfoArray, let usersTimezoneString, let usersManualOffset, let action):
+        case .ready(let timezoneInfoArray, let usersTimezoneString, let usersManualOffset, let onChange):
             let (continents, continentToTimezones) = setupVariables(with: timezoneInfoArray)
             let indexPathToHighlight = getIndexPathToHighlight(timezoneString: usersTimezoneString, manualOffset: usersManualOffset, data: (continents, continentToTimezones), allTimezones: timezoneInfoArray)
             var sections: [ImmuTableSection] = []
@@ -59,15 +59,20 @@ enum TimezoneSelectorViewModel {
                 guard let allTimezones = continentToTimezones[continent] else {
                     continue
                 }
-                var rows: [TimezoneListRow] = []
+                var rows: [CheckmarkRow] = []
                 if let highlightedIndexPath = indexPathToHighlight,
                     highlightedIndexPath.section == sectionIndex {
                     for (rowIndex, timezoneInfo) in allTimezones.enumerated() {
                         let isHighlighted: Bool = rowIndex == highlightedIndexPath.row
-                        rows.append(TimezoneListRow(timezoneLabel: timezoneInfo.0, timezoneValue: timezoneInfo.1, action: action, highlighted: isHighlighted))
+                        let action = self.action(timeZoneValue: timezoneInfo.1, onChange: onChange)
+                        rows.append(CheckmarkRow(title: timezoneInfo.0, checked: isHighlighted, action: action))
                     }
                 } else {
-                    rows = allTimezones.map({ TimezoneListRow(timezoneLabel: $0.0, timezoneValue: $0.1, action: action, highlighted: false) })
+                    rows = allTimezones.map({
+                        let action = self.action(timeZoneValue: $0.1, onChange: onChange)
+                        return CheckmarkRow(title: $0.0, checked: false, action: action)
+
+                    })
                 }
                 let section = ImmuTableSection(headerText: continent, rows: rows)
                 sections.append(section)
@@ -77,6 +82,18 @@ enum TimezoneSelectorViewModel {
     }
 
     // MARK: Helper methods
+
+    private func action(timeZoneValue: String, onChange: ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?) -> ImmuTableAction {
+        return { (row) in
+            if let numberString = timeZoneValue.components(separatedBy: "UTC").last,
+                let floatVal = Float(numberString) {
+                let manualOffset: NSNumber = NSNumber(value: floatVal)
+                onChange?("", manualOffset)
+            } else {
+                onChange?(timeZoneValue, nil)
+            }
+        }
+    }
 
     /// Save API data to core data DB
     func insertDataToDB(resultsDict: [String: [String: String]]) {
@@ -173,27 +190,5 @@ enum TimezoneSelectorViewModel {
             }
         }
         return nil
-    }
-}
-
-/// Cell model to display timezones
-struct TimezoneListRow: ImmuTableRow {
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.class(UITableViewCell.self)
-    }()
-
-    let timezoneLabel: String
-    let timezoneValue: String
-    let action: ImmuTableAction?
-    let highlighted: Bool
-
-    func configureCell(_ cell: UITableViewCell) {
-        cell.textLabel?.text = timezoneLabel
-        if highlighted {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
-        cell.selectionStyle = .none
     }
 }

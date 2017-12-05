@@ -17,19 +17,6 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    /// common action passed to TimezoneListRow cells, executed on select of a cell
-    private lazy var action: ImmuTableAction = { [weak self] (aRow) in
-        self?.navigationController?.popViewController(animated: true)
-        let timezoneValue: String = (aRow as? TimezoneListRow)?.timezoneValue ?? ""
-        if let numberString = timezoneValue.components(separatedBy: "UTC").last,
-            let floatVal = Float(numberString) {
-            let manualOffset: NSNumber = NSNumber(value: floatVal)
-            self?.onChange?("", manualOffset)
-        } else {
-            self?.onChange?(timezoneValue, nil)
-        }
-    }
-
     private var viewModel: TimezoneSelectorViewModel = .loading {
         didSet {
             handler.viewModel = viewModel.tableViewModel
@@ -58,7 +45,7 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
 
         title = NSLocalizedString("Site Timezone", comment: "Title for the timezone selector")
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
-        ImmuTable.registerRows([TimezoneListRow.self], tableView: tableView)
+        ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
         handler.viewModel = viewModel.tableViewModel
         updateNoResults()
         loadData()
@@ -72,7 +59,7 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
         if allTimezones.count == 0 {
             refreshData()
         } else {
-            viewModel = .ready(allTimezones, initialTimeZone, initialManualOffset, action)
+            viewModel = .ready(allTimezones, initialTimeZone, initialManualOffset, onChange)
         }
     }
 

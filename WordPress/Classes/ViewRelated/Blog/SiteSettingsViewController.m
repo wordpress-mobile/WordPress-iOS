@@ -657,6 +657,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     __weak __typeof__(self) weakSelf = self;
     void (^onChange)(NSString * _Nonnull, NSNumber * _Nullable) = ^(NSString * _Nonnull timezoneString, NSNumber * _Nullable manualOffset){
+        [weakSelf.navigationController popViewControllerAnimated:true];
         if (manualOffset == nil) {
             weakSelf.blog.settings.timeZoneString = timezoneString;
         } else {
