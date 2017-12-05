@@ -71,15 +71,15 @@ final class SiteTagViewController: UITableViewController {
     }
 
     override func viewDidLoad() {
-        configureTitle(text: tag.name)
-        configureTable()
+        setupTitle(text: tag.name)
+        setupTable()
     }
 
-    private func configureTitle(text: String?) {
+    private func setupTitle(text: String?) {
         navigationItem.title = text
     }
 
-    private func configureTable() {
+    private func setupTable() {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.tableFooterView = UIView(frame: .zero)
     }
