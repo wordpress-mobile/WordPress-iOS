@@ -6,7 +6,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MediaServiceRemoteREST : SiteServiceRemoteWordPressComREST <MediaServiceRemote>
 
+/**
+ Populates a RemoteMedia instance using values from a json dict returned
+ from the endpoint.
+
+ @param jsonMedia Media dictionary returned from the remote endpoint
+ @return A RemoteMedia instance
+ */
 + (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia;
+
+
+/**
+ Populates a array of RemoteMedia instances using an array of json dicts returned
+ from the endpoint.
+
+ @param jsonMedia An array of media dicts returned from the remote endpoint
+ @return A array of RemoteMedia instances
+ */
 + (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia;
 
 /**
