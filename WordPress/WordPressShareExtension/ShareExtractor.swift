@@ -141,18 +141,18 @@ private extension TypeBasedExtensionContentExtractor {
 
     func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
         let itemProviders = context.itemProviders(ofType: acceptedType)
+        var results = [ExtractedItem]()
         guard itemProviders.count > 0 else {
             DispatchQueue.main.async {
-                completion([ExtractedItem]())
+                completion(results)
             }
             return
         }
 
         // There 1 or more valid item providers here, lets work through them
-        var results = [ExtractedItem]()
-        var itemsToLoad = 0
+        let syncGroup = DispatchGroup()
         for provider in itemProviders {
-            itemsToLoad += 1
+            syncGroup.enter()
             // Remember, this is an async call....
             provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
                 let payload = payload as? Payload
@@ -160,15 +160,13 @@ private extension TypeBasedExtensionContentExtractor {
                 if let result = result {
                     results.append(result)
                 }
-                itemsToLoad -= 1
-
-                // This only gets called when _all_ of the items are loaded
-                if itemsToLoad == 0 {
-                    DispatchQueue.main.async {
-                        completion(results)
-                    }
-                }
+                syncGroup.leave()
             }
+        }
+
+        // Call the completion handler after all of the provider items are loaded
+        syncGroup.notify(queue: DispatchQueue.main) {
+            completion(results)
         }
     }
 }
