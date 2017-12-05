@@ -5,8 +5,6 @@ final class SiteTagViewController: UITableViewController {
     private let blog: Blog
     private let tag: PostTag
 
-    private let cellIdentifier = "TagEditorCell"
-
     fileprivate enum Sections: Int, CustomStringConvertible {
         case name
         case description
