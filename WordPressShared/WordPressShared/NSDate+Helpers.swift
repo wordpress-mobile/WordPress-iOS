@@ -167,14 +167,14 @@ extension Date {
 
         if interval > 0 {
             return NSLocalizedString("later", comment: "A date in the future")
+        } else if interval >= -2 * day {
+            return NSLocalizedString("recent", comment: "A recent date, no more than 2 days ago")
         } else if interval > -7 * day {
-            return NSLocalizedString("recent", comment: "A recent date, no more than 7 days ago")
-        } else if interval > -14 * day {
-            return NSLocalizedString("last week", comment: "A date between 7 and 14 days ago")
+            return NSLocalizedString("last 7 days", comment: "A date no more than 7 days ago")
         } else if interval > -30 * day {
-            return NSLocalizedString("last month", comment: "A date no more than 30 days ago")
+            return NSLocalizedString("last 30 days", comment: "A date no more than 30 days ago")
         } else {
-            return NSLocalizedString("before", comment: "A date older than 30 days ago")
+            return NSLocalizedString("earlier", comment: "A date earlier than 30 days ago")
         }
     }
 }
