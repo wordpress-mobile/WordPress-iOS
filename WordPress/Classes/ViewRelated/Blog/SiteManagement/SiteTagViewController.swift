@@ -17,8 +17,10 @@ final class SiteTagViewController: UITableViewController {
 
         static func section(for index: Int) -> Sections {
             guard index < sectionCount.rawValue else {
+                print("returning alway name" )
                 return .name
             }
+            print("returning something new" )
             return Sections(rawValue: index)!
         }
 
@@ -34,35 +36,51 @@ final class SiteTagViewController: UITableViewController {
         }
     }
 
-    private lazy var textFieldCell: WPTableViewCell = {
-        let returnValue = WPTableViewCell(style: .default, reuseIdentifier: nil)
-        returnValue.selectionStyle = .none
-        returnValue.contentView.addSubview(self.textField)
+//    private lazy var textFieldCell: WPTableViewCell = {
+//        let returnValue = WPTableViewCell(style: .default, reuseIdentifier: nil)
+//        returnValue.selectionStyle = .none
+//        returnValue.contentView.addSubview(self.textField)
+//
+//        let readableGuide = returnValue.contentView.readableContentGuide
+//        NSLayoutConstraint.activate([
+//            self.textField.leadingAnchor.constraint(equalTo: readableGuide.leadingAnchor),
+//            self.textField.trailingAnchor.constraint(equalTo: readableGuide.trailingAnchor),
+//            self.textField.topAnchor.constraint(equalTo: readableGuide.topAnchor),
+//            self.textField.bottomAnchor.constraint(equalTo: readableGuide.bottomAnchor)
+//            ])
+//
+//        return returnValue
+//    }()
 
-        let readableGuide = returnValue.contentView.readableContentGuide
-        NSLayoutConstraint.activate([
-            self.textField.leadingAnchor.constraint(equalTo: readableGuide.leadingAnchor),
-            self.textField.trailingAnchor.constraint(equalTo: readableGuide.trailingAnchor),
-            self.textField.topAnchor.constraint(equalTo: readableGuide.topAnchor),
-            self.textField.bottomAnchor.constraint(equalTo: readableGuide.bottomAnchor)
-            ])
-
-        return returnValue
+    private lazy var nameCell: WPTableViewCell = {
+        return self.cell(content: self.nameTextField)
     }()
 
-    private lazy var textField: UITextField = {
-        let returnValue = UITextField(frame: .zero)
-        returnValue.translatesAutoresizingMaskIntoConstraints = false
-        returnValue.clearButtonMode = .always
-        returnValue.font = WPStyleGuide.tableviewTextFont()
-        returnValue.textColor = WPStyleGuide.darkGrey()
-        //returnValue.text = self.tag.name
-        returnValue.returnKeyType = .done
-        returnValue.keyboardType = .default
-        returnValue.delegate = self
-        //returnValue.autocorrectionType =
+    private lazy var descriptionCell: WPTableViewCell = {
+        return self.cell(content: self.descriptionTextField)
+    }()
 
-        return returnValue
+//    private lazy var nameText: UITextField = {
+//        let returnValue = UITextField(frame: .zero)
+//        returnValue.translatesAutoresizingMaskIntoConstraints = false
+//        returnValue.clearButtonMode = .always
+//        returnValue.font = WPStyleGuide.tableviewTextFont()
+//        returnValue.textColor = WPStyleGuide.darkGrey()
+//        //returnValue.text = self.tag.name
+//        returnValue.returnKeyType = .done
+//        returnValue.keyboardType = .default
+//        returnValue.delegate = self
+//        //returnValue.autocorrectionType =
+//
+//        return returnValue
+//    }()
+
+    private lazy var nameTextField: UITextField = {
+        return self.textField()
+    }()
+
+    private lazy var descriptionTextField: UITextField = {
+        return self.textField()
     }()
 
     public init(blog: Blog, tag: PostTag) {
@@ -89,6 +107,37 @@ final class SiteTagViewController: UITableViewController {
         tableView.tableFooterView = UIView(frame: .zero)
     }
 
+    private func cell(content: UIView) -> WPTableViewCell {
+        let returnValue = WPTableViewCell(style: .default, reuseIdentifier: nil)
+        returnValue.selectionStyle = .none
+        returnValue.contentView.addSubview(content)
+
+        let readableGuide = returnValue.contentView.readableContentGuide
+        NSLayoutConstraint.activate([
+            content.leadingAnchor.constraint(equalTo: readableGuide.leadingAnchor),
+            content.trailingAnchor.constraint(equalTo: readableGuide.trailingAnchor),
+            content.topAnchor.constraint(equalTo: readableGuide.topAnchor),
+            content.bottomAnchor.constraint(equalTo: readableGuide.bottomAnchor)
+            ])
+
+        return returnValue
+    }
+
+    private func textField() -> UITextField {
+        let returnValue = UITextField(frame: .zero)
+        returnValue.translatesAutoresizingMaskIntoConstraints = false
+        returnValue.clearButtonMode = .always
+        returnValue.font = WPStyleGuide.tableviewTextFont()
+        returnValue.textColor = WPStyleGuide.darkGrey()
+        //returnValue.text = self.tag.name
+        returnValue.returnKeyType = .done
+        returnValue.keyboardType = .default
+        returnValue.delegate = self
+        //returnValue.autocorrectionType =
+
+        return returnValue
+    }
+
 }
 
 // MARK: - Table view datasource
@@ -106,15 +155,13 @@ extension SiteTagViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let sectionForIndexPath = Sections.section(for: indexPath.row)
-
+        let sectionForIndexPath = Sections.section(for: indexPath.section)
+        print("section \(sectionForIndexPath) for index path \(indexPath)" )
         switch sectionForIndexPath {
         case .name:
-            let cell = textFieldCell
-            return textFieldCell
+            return nameCell
         case .description:
-            let cell = textFieldCell
-            return textFieldCell
+            return descriptionCell
         case .sectionCount:
             return UITableViewCell()
         }
