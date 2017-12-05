@@ -82,11 +82,10 @@ extension WordPressAppDelegate {
     @objc var currentlySelectedScreen: String {
         // Check if the post editor or login view is up
         let rootViewController = window.rootViewController
-        if let navigationController = rootViewController?.presentedViewController as? UINavigationController,
-            let first = navigationController.viewControllers.first {
-            if first is AztecPostViewController {
+        if let presentedViewController = rootViewController?.presentedViewController {
+            if presentedViewController is EditPostViewController {
                 return "Post Editor"
-            } else if first is NUXAbstractViewController {
+            } else if presentedViewController is LoginNavigationController {
                 return "Login View"
             }
         }
