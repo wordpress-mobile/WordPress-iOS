@@ -138,8 +138,22 @@ final class SiteTagViewController: UITableViewController {
     }
 
     @objc private func deleteTag() {
-        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.delete(tag, for: blog)
+        let title =  NSLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
+        let message = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
+        let actionTitle = NSLocalizedString("Delete", comment: "Delete")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alertController.addCancelActionWithTitle(cancelTitle)
+        alertController.addDefaultActionWithTitle(actionTitle) { _ in
+            let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            tagsService.delete(self.tag, for: self.blog)
+            self.navigateBack()
+        }
+    }
+
+    private func navigateBack() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
