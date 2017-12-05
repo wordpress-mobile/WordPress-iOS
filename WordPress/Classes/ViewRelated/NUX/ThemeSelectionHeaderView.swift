@@ -4,6 +4,7 @@ class ThemeSelectionHeaderView: UICollectionReusableView {
 
     // MARK: - Properties
 
+    open static let height = 120
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var stepDescrLabel: UILabel!
 
@@ -16,6 +17,7 @@ class ThemeSelectionHeaderView: UICollectionReusableView {
 
         stepLabel.text = NSLocalizedString("STEP 2 OF 4", comment: "Step for view.")
         stepDescrLabel.text = NSLocalizedString("Get started fast with one of our popular themes. Once your site is created, you can browse and choose from hundreds more.", comment: "Site theme instruction.")
+        stepDescrLabel.sizeToFit()
     }
 
     override open func prepareForReuse() {
