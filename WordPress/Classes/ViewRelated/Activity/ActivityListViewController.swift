@@ -177,8 +177,7 @@ extension ActivityListViewController {
     fileprivate func checkStatusDelayedForRestoreID(_ restoreID: String) {
         delayedRetryAttempt = delayedRetryAttempt + 1
         guard delayedRetryAttempt < Configuration.maxRetries else {
-            delay.reset()
-            showErrorFetchingRestoreStatus()
+            restoreTimedout()
             return
         }
         service.restoreStatusForSite(siteID, restoreID: restoreID, success: { (restoreStatus) in
@@ -228,4 +227,9 @@ extension ActivityListViewController {
         showErrorRestoringMessage()
     }
 
+    fileprivate func restoreTimedout() {
+        delay.reset()
+        tableView.isUserInteractionEnabled = true
+        showErrorFetchingRestoreStatus()
+    }
 }
