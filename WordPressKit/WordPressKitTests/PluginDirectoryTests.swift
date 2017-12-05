@@ -16,9 +16,10 @@ class PluginDirectoryTests: XCTestCase {
     func testPluginDirectoryEntryDecodingJetpack() {
         let jetpackMockPath = Bundle(for: type(of: self)).path(forResource: "plugin-directory-jetpack", ofType: "json")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: jetpackMockPath))
-        let decoder = JSONDecoder()
+        let remote = PluginDirectoryServiceRemote()
+
         do {
-            let plugin = try decoder.decode(PluginDirectoryEntry.self, from: data)
+            let plugin = try remote.pluginEntry(fromData: data)
             XCTAssertEqual(plugin.name, "Jetpack by WordPress.com")
             XCTAssertEqual(plugin.slug, "jetpack")
             XCTAssertEqual(plugin.version, "5.5.1")
@@ -31,9 +32,10 @@ class PluginDirectoryTests: XCTestCase {
     func testPluginDirectoryEntryDecodingRenameXmlrpc() {
         let jetpackMockPath = Bundle(for: type(of: self)).path(forResource: "plugin-directory-rename-xml-rpc", ofType: "json")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: jetpackMockPath))
-        let decoder = JSONDecoder()
+        let remote = PluginDirectoryServiceRemote()
+
         do {
-            let plugin = try decoder.decode(PluginDirectoryEntry.self, from: data)
+            let plugin = try remote.pluginEntry(fromData: data)
             XCTAssertEqual(plugin.name, "Rename XMLRPC")
             XCTAssertEqual(plugin.slug, "rename-xml-rpc")
             XCTAssertEqual(plugin.version, "1.1")
