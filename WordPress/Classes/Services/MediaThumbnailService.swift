@@ -178,14 +178,18 @@ class MediaThumbnailService: LocalCoreDataService {
                 onCompletion(nil)
                 return
             }
-            WPImageSource.shared().downloadImage(for: imageURL,
-                                                 authToken: authToken,
-                                                 withSuccess: inContextImageHandler,
-                                                 failure: inContextErrorHandler)
+            DispatchQueue.main.async {
+                WPImageSource.shared().downloadImage(for: imageURL,
+                                                     authToken: authToken,
+                                                     withSuccess: inContextImageHandler,
+                                                     failure: inContextErrorHandler)
+            }
         } else {
-            WPImageSource.shared().downloadImage(for: imageURL,
-                                                 withSuccess: inContextImageHandler,
-                                                 failure: inContextErrorHandler)
+            DispatchQueue.main.async {
+                WPImageSource.shared().downloadImage(for: imageURL,
+                                                     withSuccess: inContextImageHandler,
+                                                     failure: inContextErrorHandler)
+            }
         }
     }
 
