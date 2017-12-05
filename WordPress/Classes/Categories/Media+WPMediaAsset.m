@@ -8,12 +8,16 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] newDerivedContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
     mediaService.concurrentThumbnailGeneration = YES;
     [mediaService thumbnailImageForMedia:self
                            preferredSize:size
-                              completion:completionHandler];
+                              completion:^(UIImage *image, NSError *error){
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      completionHandler(image, error);
+                                  });
+                              }];
 
     return [self.mediaID intValue];
 }
