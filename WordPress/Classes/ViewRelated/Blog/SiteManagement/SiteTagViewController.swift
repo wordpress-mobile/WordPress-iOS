@@ -106,11 +106,10 @@ final class SiteTagViewController: UITableViewController {
         returnValue.clearButtonMode = .always
         returnValue.font = WPStyleGuide.tableviewTextFont()
         returnValue.textColor = WPStyleGuide.darkGrey()
-        //returnValue.text = self.tag.name
         returnValue.returnKeyType = .done
         returnValue.keyboardType = .default
-        returnValue.delegate = self
-        //returnValue.autocorrectionType =
+
+        returnValue.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
         return returnValue
     }
@@ -149,6 +148,9 @@ extension SiteTagViewController {
     }
 }
 
-extension SiteTagViewController: UITextFieldDelegate {
-
+extension SiteTagViewController {
+    @objc
+    fileprivate func textChanged(_ textField: UITextField) {
+        setupTitle(text: textField.text)
+    }
 }
