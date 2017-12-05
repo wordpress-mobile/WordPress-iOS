@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 final class SiteTagViewController: UITableViewController {
     private let blog: Blog
@@ -71,12 +72,26 @@ final class SiteTagViewController: UITableViewController {
     }
 
     override func viewDidLoad() {
-        setupTitle(text: tag.name)
+        setupNavigationBar()
+        setupTitle()
         setupTable()
     }
 
-    private func setupTitle(text: String?) {
-        navigationItem.title = text
+    private func setupNavigationBar() {
+        guard let name = tag.name, name.count > 0 else {
+            return
+        }
+
+        navigationItem.rightBarButtonItem = deleteButton()
+    }
+
+    private func deleteButton() -> UIBarButtonItem {
+        let trashIcon = Gridicon.iconOfType(.trash)
+        return UIBarButtonItem(image: trashIcon, style: .plain, target: self, action: #selector(deleteTag))
+    }
+
+    private func setupTitle() {
+        navigationItem.title = tag.name
     }
 
     private func setupTable() {
@@ -159,6 +174,13 @@ extension SiteTagViewController {
 extension SiteTagViewController {
     @objc
     fileprivate func textChanged(_ textField: UITextField) {
-        setupTitle(text: textField.text)
+        tag.name = textField.text
+        setupTitle()
+    }
+}
+
+extension SiteTagViewController {
+    @objc private func deleteTag() {
+        print("deleting tag command")
     }
 }
