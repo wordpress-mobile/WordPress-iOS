@@ -72,7 +72,9 @@ extension XCTestCase {
             if error != nil {
                 let message = "Failed to find \(element) after \(timeoutValue) seconds."
                 self.recordFailure(withDescription: message,
-                                                  inFile: file, atLine: line, expected: true)
+                                   inFile: file,
+                                   atLine: line,
+                                   expected: true)
             }
         }
     }
@@ -90,7 +92,7 @@ extension XCTestCase {
             return
         }
         MySitesScreen.init().tabBar.gotoMeScreen().logout()
-        
+
 //        let app = XCUIApplication()
 //        let isLoggedIn = !app.buttons[elementStringIDs.createSite].exists
 //            // || (!app.textFields[ elementStringIDs.loginUsernameField ].exists
@@ -157,7 +159,7 @@ extension XCTestCase {
 
         let removeButton = app.tables.cells[ elementStringIDs.removeSiteButton ]
         let mySitesTabButton = app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ]
-        let siteNameField = app.tables.staticTexts[ WordPressTestCredentials.selfHostedSiteName ]
+        let siteNameField = app.tables.staticTexts[ WPUITestCredentials.selfHostedSiteName ]
 
         // Tap the My Sites button twice to be sure that we're on the All Sites list
         mySitesTabButton.tap()

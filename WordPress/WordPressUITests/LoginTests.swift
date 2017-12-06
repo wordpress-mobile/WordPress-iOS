@@ -24,19 +24,19 @@ class LoginTests: XCTestCase {
 
     func testSimpleLoginLogout() {
         let welcomeScreen = WelcomeScreen.init().login()
-            .proceedWith(email: Config.user1.email)
+            .proceedWith(email: WPUITestCredentials.testUserEmail)
             .proceedWithPassword()
-            .proceedWith(password: Config.user1.password)
+            .proceedWith(password: WPUITestCredentials.testUserPassword)
             .continueWithSelectedSite()
             .tabBar.gotoMeScreen()
             .logout()
-        
+
         XCTAssert(welcomeScreen.isLoaded())
     }
 
     func testUnsuccessfulLogin() {
         _ = WelcomeScreen.init().login()
-            .proceedWith(email: Config.user1.email)
+            .proceedWith(email: WPUITestCredentials.testUserEmail)
             .proceedWithPassword()
             .tryProceed(password: "invalidPswd")
             .verifyLoginError()

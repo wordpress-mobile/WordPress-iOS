@@ -6,7 +6,7 @@ class MySitesScreen: BaseScreen {
     init() {
         let navBar = XCUIApplication().navigationBars.element(boundBy: 0)
         tabBar = TabNavComponent.init()
-        
+
         super.init(element: navBar)
     }
 }

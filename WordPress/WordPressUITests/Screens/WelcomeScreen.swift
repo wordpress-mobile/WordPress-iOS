@@ -4,7 +4,7 @@ import XCTest
 class WelcomeScreen: BaseScreen {
     let logInButton: XCUIElement
     let createNewSiteButton: XCUIElement
-    
+
     init() {
         logInButton = XCUIApplication().buttons["Log In"]
         createNewSiteButton = XCUIApplication().buttons["nextButton"]
@@ -21,7 +21,7 @@ class WelcomeScreen: BaseScreen {
         createNewSiteButton.tap()
         return SignupScreen.init()
     }
-    
+
     static func isLoaded() -> Bool {
         return XCUIApplication().buttons["nextButton"].exists
     }

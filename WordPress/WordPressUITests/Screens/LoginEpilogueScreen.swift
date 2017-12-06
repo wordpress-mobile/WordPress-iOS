@@ -9,22 +9,22 @@ class LoginEpilogueScreen: BaseScreen {
 //        app.alerts["“WordPress” Would Like to Send You Notifications"].buttons["Allow"].tap()
 //        app.buttons["Connect another site"].tap()
 //        app.buttons["Continue"].tap()
-    let continueButton : XCUIElement
+    let continueButton: XCUIElement
     let connectSiteButton: XCUIElement
     init() {
         let app = XCUIApplication()
         let headerElement = app.otherElements["LOGGED IN AS"]
         connectSiteButton = app.buttons["Connect another site"]
         continueButton = app.buttons["Continue"]
-        
+
         super.init(element: headerElement)
     }
-    
+
     func continueWithSelectedSite() -> MySitesScreen {
         continueButton.tap()
         return MySitesScreen.init()
     }
-    
+
     func connectSite() {
         connectSiteButton.tap()
     }

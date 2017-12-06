@@ -21,7 +21,7 @@ class BaseScreen {
         Logger.log(message: "Page \(self) is loaded", event: .i)
         return self
     }
-    
+
     // predicate: "isEnabled == true"
     func waitFor(predicate: String, element: XCUIElement, timeout: Int? = 5) {
         let pred = NSPredicate(format: predicate)

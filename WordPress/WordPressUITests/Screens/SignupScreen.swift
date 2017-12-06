@@ -8,4 +8,3 @@ class SignupScreen: BaseScreen {
         super.init(element: navBar)
     }
 }
-
