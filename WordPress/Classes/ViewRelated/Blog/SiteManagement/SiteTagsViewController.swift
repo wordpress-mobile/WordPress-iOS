@@ -242,7 +242,18 @@ extension SiteTagsViewController {
 extension SiteTagsViewController {
     fileprivate func navigate(to details: PostTag?) {
         let data = SettingsTitleSubtitleController.Data(title: details?.name, subtitle: details?.tagDescription)
-        let singleTag = SettingsTitleSubtitleController(data: data)
+
+        let confirmationTitle = NSLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
+        let confirmationSubtitle = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
+        let actionTitle = NSLocalizedString("Delete", comment: "Delete")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+
+        let confirmation = SettingsTitleSubtitleController.Confirmation(title: confirmationTitle,
+                                                                        subtitle: confirmationSubtitle,
+                                                                        actionTitle: actionTitle,
+                                                                        cancelTitle: cancelTitle)
+        
+        let singleTag = SettingsTitleSubtitleController(data: data, confirmation: confirmation)
         singleTag.setAction { updatedData in
             print("data to delete ", updatedData)
             self.navigationController?.popViewController(animated: true)
