@@ -1,6 +1,8 @@
 import UIKit
 import Gridicons
 
+typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Data) -> Void)
+
 final class SettingsTitleSubtitleController: UITableViewController {
     final class Data {
         var title: String?
@@ -67,10 +69,20 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }()
 
     private let data: SettingsTitleSubtitleController.Data
+    private var action: SettingsTitleSubtitleAction?
+    private var update: SettingsTitleSubtitleAction?
 
     public init(data: SettingsTitleSubtitleController.Data) {
         self.data = data
         super.init(style: .grouped)
+    }
+
+    func setAction(_ closure: @escaping SettingsTitleSubtitleAction) {
+        action = closure
+    }
+
+    func setUpdate(_ closure: @escaping SettingsTitleSubtitleAction) {
+        update = closure
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -81,6 +93,11 @@ final class SettingsTitleSubtitleController: UITableViewController {
         setupNavigationBar()
         setupTitle()
         setupTable()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        validateData()
     }
 
     private func setupNavigationBar() {
@@ -153,14 +170,16 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelTitle)
         alertController.addDefaultActionWithTitle(actionTitle) { _ in
-//            let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-//            tagsService.delete(self.tag, for: self.blog)
-            self.navigateBack()
+            self.action?(self.data)
         }
     }
 
-    private func navigateBack() {
-        navigationController?.popViewController(animated: true)
+    private func validateData() {
+        guard let name = data.title, let subtitle = data.subtitle, name.count > 0, subtitle.count > 0 else {
+            return
+        }
+
+        update?(data)
     }
 }
 
