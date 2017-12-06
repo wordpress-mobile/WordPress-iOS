@@ -11,9 +11,9 @@ open class TimeZoneService {
         }
         // fetch from API
         let api = TimeZoneRemoteREST.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress())!
-        TimeZoneRemoteREST(wordPressComRestApi: api).fetchTimeZoneList({ (resultsDict) in
+        TimeZoneRemoteREST(wordPressComRestApi: api).fetchTimeZoneList({ (resultsArray) in
             // no weak self here, as it's deallocated if we don't keep a strong reference
-            self.insertDataToDB(resultsDict: resultsDict)
+            self.saveData(resultsArray)
             success(self.loadData())
             }, failure: { (error) in
                 DDLogError("Error loading timezones: \(String(describing: error))")
@@ -22,16 +22,16 @@ open class TimeZoneService {
     }
 
     /// Save API data to core data DB
-    private func insertDataToDB(resultsDict: [String: [String: String]]) {
+    private func saveData(_ resultsArray: [TimeZoneGroupInfo]) {
         let manager = ContextManager.sharedInstance()
         let context = manager.newDerivedContext()
         context.performAndWait {
-            for (continent, timezonesInContinent) in resultsDict {
-                for (key, val) in timezonesInContinent {
+            for groupInfo in resultsArray {
+                for (key, val) in groupInfo.labelValueDict {
                     let timezoneInfo = NSEntityDescription.insertNewObject(forEntityName: "TimeZoneInfo", into: context) as! TimeZoneInfo
                     timezoneInfo.label = key
                     timezoneInfo.value = val
-                    timezoneInfo.continent = continent
+                    timezoneInfo.continent = groupInfo.name
                 }
             }
             manager.saveContextAndWait(context)
