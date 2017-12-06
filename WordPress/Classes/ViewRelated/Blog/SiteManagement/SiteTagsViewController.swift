@@ -148,6 +148,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         guard resultsController.fetchedObjects?.count == 0 else {
             noResultsView.removeFromSuperview()
             setupSearchBar()
+            tableView.reloadData()
             return
         }
 
