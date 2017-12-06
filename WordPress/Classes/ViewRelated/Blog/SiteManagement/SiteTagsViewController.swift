@@ -11,7 +11,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     fileprivate let noResultsView = WPNoResultsView()
 
     fileprivate lazy var context: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().newMainContextChildContext()
+        return ContextManager.sharedInstance().mainContext
     }()
 
     fileprivate lazy var defaultPredicate: NSPredicate = {
@@ -23,7 +23,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }()
 
     fileprivate lazy var resultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: PostTag.entityName())
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
         request.sortDescriptors = self.sortDescriptors
 
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.context, sectionNameKeyPath: nil, cacheName: nil)
