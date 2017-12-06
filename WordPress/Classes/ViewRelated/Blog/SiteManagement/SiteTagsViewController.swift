@@ -245,6 +245,15 @@ extension SiteTagsViewController {
 extension SiteTagsViewController {
     fileprivate func navigate(to details: SettingsTitleSubtitleController.Data) {
         let singleTag = SettingsTitleSubtitleController(data: details)
+        singleTag.setAction { data in
+            print("data to delete " , data)
+            self.navigationController?.popViewController(animated: true)
+        }
+
+        singleTag.setUpdate { data in
+            print("data to update ", data)
+        }
+
         navigationController?.pushViewController(singleTag, animated: true)
     }
 }
