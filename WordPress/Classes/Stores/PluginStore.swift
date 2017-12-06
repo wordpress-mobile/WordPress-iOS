@@ -9,6 +9,8 @@ enum PluginAction: Action {
     case remove(id: String, site: JetpackSiteRef)
     case receivePlugins(site: JetpackSiteRef, plugins: SitePlugins)
     case receivePluginsFailed(site: JetpackSiteRef, error: Error)
+    case receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry)
+    case receivePluginDirectoryEntryFailed(slug: String, error: Error)
 }
 
 enum PluginQuery {
@@ -22,10 +24,38 @@ enum PluginQuery {
     }
 }
 
+enum PluginDirectoryEntryState {
+    case unknown
+    case missing(Date)
+    case present(PluginDirectoryEntry)
+
+    var entry: PluginDirectoryEntry? {
+        switch self {
+        case .present(let entry):
+            return entry
+        case .missing, .unknown:
+            return nil
+        }
+    }
+
+    var lastUpdated: Date {
+        switch self {
+        case .unknown:
+            return .distantPast
+        case .missing(let date):
+            return date
+        case .present(let entry):
+            return entry.lastUpdated
+        }
+    }
+}
+
 struct PluginStoreState {
     var plugins = [JetpackSiteRef: SitePlugins]()
     var fetching = [JetpackSiteRef: Bool]()
     var lastFetch = [JetpackSiteRef: Date]()
+    var directoryEntries = [String: PluginDirectoryEntryState]()
+    var fetchingDirectoryEntry = [String: Bool]()
 }
 
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
@@ -78,6 +108,10 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             receivePlugins(site: site, plugins: plugins)
         case .receivePluginsFailed(let site, _):
             state.fetching[site] = false
+        case .receivePluginDirectoryEntry(let slug, let entry):
+            receivePluginDirectoryEntry(slug: slug, entry: entry)
+        case .receivePluginDirectoryEntryFailed(let slug, let error):
+            receivePluginDirectoryEntryFailed(slug: slug, error: error)
         }
     }
 }
@@ -92,10 +126,21 @@ extension PluginStore {
         return getPlugins(site: site)?.plugins.first(where: { $0.id == id })
     }
 
+    func getPluginIcon(slug: String) -> URL? {
+        return state.directoryEntries[slug]?.entry?.icon
+    }
+
     func shouldFetch(site: JetpackSiteRef) -> Bool {
         let lastFetch = state.lastFetch[site, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
         let isFetching = state.fetching[site, default: false]
+        return needsRefresh && !isFetching
+    }
+
+    func shouldFetchDirectory(slug: String) -> Bool {
+        let lastFetch = state.directoryEntries[slug, default: .unknown].lastUpdated
+        let needsRefresh = lastFetch + refreshInterval < Date()
+        let isFetching = state.fetchingDirectoryEntry[slug, default: false]
         return needsRefresh && !isFetching
     }
 }
@@ -208,6 +253,7 @@ private extension PluginStore {
             state.fetching[site] = false
             state.lastFetch[site] = Date()
         }
+        fetchPluginDirectoryEntries(site: site)
     }
 
     func receivePluginsFailed(site: JetpackSiteRef) {
@@ -215,6 +261,38 @@ private extension PluginStore {
             state.fetching[site] = false
             state.lastFetch[site] = Date()
         }
+    }
+
+    func fetchPluginDirectoryEntries(site: JetpackSiteRef) {
+        state.plugins[site]?.plugins
+            .map({ $0.slug })
+            .filter(shouldFetchDirectory(slug:))
+            .forEach(fetchPluginDirectoryEntry(slug:))
+    }
+
+    func fetchPluginDirectoryEntry(slug: String) {
+        let remote = PluginDirectoryServiceRemote()
+        state.fetchingDirectoryEntry[slug] = true
+        remote.getPluginInformation(
+            slug: slug,
+            success: { [actionDispatcher] (entry) in
+                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntry(slug: slug, entry: entry))
+            },
+            failure: { [actionDispatcher] (error) in
+                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntryFailed(slug: slug, error: error))
+        })
+    }
+
+    func receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry) {
+        transaction { (state) in
+            state.directoryEntries[slug] = .present(entry)
+            state.fetchingDirectoryEntry[slug] = false
+        }
+    }
+
+    func receivePluginDirectoryEntryFailed(slug: String, error: Error) {
+        // TODO: mark entry as missing if not found
+        state.fetchingDirectoryEntry[slug] = false
     }
 
     func remote(site: JetpackSiteRef) -> PluginServiceRemote? {
