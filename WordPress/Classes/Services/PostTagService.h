@@ -45,6 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteTag:(PostTag*)tag
           forBlog:(Blog *)blog;
 
+/**
+ Commits a tag assigned to a blog
+ */
+- (void)commitTag:(PostTag*)tag
+          forBlog:(Blog *)blog;
+
 @end
 
 NS_ASSUME_NONNULL_END
