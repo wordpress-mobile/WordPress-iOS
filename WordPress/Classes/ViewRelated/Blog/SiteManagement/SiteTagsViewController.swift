@@ -42,6 +42,8 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         return returnValue
     }()
 
+    private var isSyncing = false
+
     @objc
     public init(blog: Blog) {
         self.blog = blog
@@ -108,8 +110,10 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func refreshTags() {
+        isSyncing = true
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
+            self?.isSyncing = false
             self?.refreshControl?.endRefreshing()
             self?.refreshNoResultsView()
         }) { [weak self] error in
@@ -143,15 +147,30 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
             return
         }
 
+        if isSyncing {
+            setupLoadingView()
+        } else {
+            setupEmptyResultsView()
+        }
+
+        if noResultsView.superview == nil {
+            tableView.addSubview(withFadeAnimation: noResultsView)
+        }
+    }
+
+    private func setupLoadingView() {
+        noResultsView.accessoryView = nil
+        noResultsView.titleText = loadingMessage()
+        noResultsView.messageText = ""
+        noResultsView.buttonTitle = ""
+    }
+
+    private func setupEmptyResultsView() {
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.buttonTitle = noResultsButtonTitle()
         noResultsView.button.addTarget(self, action: #selector(createTag), for: .touchUpInside)
-
-        if noResultsView.superview == nil {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
     }
 
     func tagsFailedLoading(error: Error) {
@@ -244,6 +263,10 @@ extension SiteTagsViewController {
 
     fileprivate func noResultsButtonTitle() -> String {
         return NSLocalizedString("Add New Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
+    }
+
+    fileprivate func loadingMessage() -> String {
+        return NSLocalizedString("Loading...", comment: "Loading tags.")
     }
 }
 
