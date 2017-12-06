@@ -11,7 +11,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     fileprivate let noResultsView = WPNoResultsView()
 
     fileprivate lazy var context: NSManagedObjectContext = {
-        return ContextManager.sharedInstance().newMainContextChildContext()
+        return ContextManager.sharedInstance().mainContext
     }()
 
     fileprivate lazy var defaultPredicate: NSPredicate = {

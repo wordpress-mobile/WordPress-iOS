@@ -1,10 +1,3 @@
-//
-//  SiteTagCell.swift
-//  WordPress
-//
-//  Created by Cesar Tardaguila Moro on 2017-12-04.
-//  Copyright © 2017 WordPress. All rights reserved.
-//
 
 import UIKit
 
@@ -13,9 +6,9 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
     @IBOutlet weak var cellBadge: BadgeLabel!
 
     private struct BadgeConstants {
-        static let padding: CGFloat = 6
-        static let radius: CGFloat = 9
-        static let border: CGFloat = 1
+        static let padding: CGFloat = 6.0
+        static let radius: CGFloat = 9.0
+        static let border: CGFloat = 1.0
     }
 
     var name: String? {
