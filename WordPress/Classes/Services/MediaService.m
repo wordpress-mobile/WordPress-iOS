@@ -556,12 +556,8 @@
         [self.thumbnailService thumbnailURLForMedia:media
                                       preferredSize:preferredSize
                                        onCompletion:^(NSURL *url) {
-                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-                                               UIImage *image = [UIImage imageWithContentsOfFile:url.path];
-                                               [self.managedObjectContext performBlock:^{
-                                                   completion(image, nil);
-                                               }];
-                                           });
+                                           UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+                                           completion(image, nil);
                                        }
                                             onError:^(NSError *error) {
                                                 completion(nil, error);
