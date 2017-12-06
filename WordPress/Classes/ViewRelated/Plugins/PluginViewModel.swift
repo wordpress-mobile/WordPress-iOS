@@ -2,7 +2,7 @@ import Foundation
 import WordPressFlux
 
 class PluginViewModel: Observable {
-    var plugin: PluginState {
+    var plugin: Plugin {
         didSet {
             changeDispatcher.dispatch()
         }
@@ -12,7 +12,7 @@ class PluginViewModel: Observable {
     var storeReceipt: Receipt?
     let changeDispatcher = Dispatcher<Void>()
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
         self.capabilities = capabilities
         self.site = site
@@ -30,17 +30,17 @@ class PluginViewModel: Observable {
 
     var tableViewModel: ImmuTable {
         var versionRow: ImmuTableRow?
-        if let version = plugin.version {
+        if let version = plugin.state.version {
             versionRow = TextRow(
                 title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
                 value: version)
         }
 
         var activeRow: ImmuTableRow?
-        if plugin.deactivateAllowed {
+        if plugin.state.deactivateAllowed {
             activeRow = SwitchRow(
                 title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
-                value: plugin.active,
+                value: plugin.state.active,
                 onChange: { [unowned self] (active) in
                     self.setActive(active)
                 }
@@ -51,7 +51,7 @@ class PluginViewModel: Observable {
         if capabilities.autoupdate {
             autoupdatesRow = SwitchRow(
                 title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
-                value: plugin.autoupdate,
+                value: plugin.state.autoupdate,
                 onChange: { [unowned self] (autoupdate) in
                     self.setAutoupdate(autoupdate)
                 }
@@ -59,7 +59,7 @@ class PluginViewModel: Observable {
         }
 
         var removeRow: ImmuTableRow?
-        if capabilities.modify && plugin.deactivateAllowed {
+        if capabilities.modify && plugin.state.deactivateAllowed {
             removeRow = DestructiveButtonRow(
                 title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
                 action: { [unowned self] _ in
@@ -70,7 +70,7 @@ class PluginViewModel: Observable {
         }
 
         var homeLink: ImmuTableRow?
-        if let homeURL = plugin.homeURL {
+        if let homeURL = plugin.state.homeURL {
             homeLink = NavigationItemRow(
                 title: NSLocalizedString("Plugin homepage", comment: "Link to a plugin's home page"),
                 action: { [unowned self] _ in
@@ -97,7 +97,7 @@ class PluginViewModel: Observable {
             ])
     }
 
-    private func confirmRemovalAlert(plugin: PluginState) -> UIAlertController {
+    private func confirmRemovalAlert(plugin: Plugin) -> UIAlertController {
         let message: String
         if let siteTitle = getSiteTitle() {
             let messageTemplate = NSLocalizedString("Are you sure you want to remove %1$@ from %2$@? This will deactivate the plugin and delete all associated files and data.", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title.")
