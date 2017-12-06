@@ -93,7 +93,7 @@ class MediaLibraryPickerDataSourceTests: XCTestCase {
 
         let mediaService = MediaService(managedObjectContext: context)
         let expect = self.expectation(description: "Media should be create with success")
-        mediaService.createMedia(url: url, forPost: post.objectID, thumbnailCallback: { (url) in
+        mediaService.createMedia(with: url as NSURL, objectID: post.objectID, thumbnailCallback: { (url) in
         }, completion: { (media, error) in
             expect.fulfill()
             if let _ = error {

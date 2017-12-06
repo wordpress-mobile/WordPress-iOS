@@ -99,7 +99,7 @@ class SiteIconPickerPresenter: NSObject {
                         return
                     }
                     mediaService.createMedia(with: image,
-                                             forBlogObjectID: blogId,
+                                             objectID: blogId,
                                              thumbnailCallback: nil,
                                              completion: { (media, error) in
                         guard let media = media, error == nil else {
@@ -198,13 +198,29 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         case let phAsset as PHAsset:
             showLoadingMessage()
             originalMedia = nil
-            phAsset.exportMaximumSizeImage { [weak self] (image, info) in
-                guard let image = image else {
+            let exporter = MediaAssetExporter()
+            exporter.imageOptions = MediaImageExporter.Options()
+
+            exporter.exportData(forAsset: phAsset, onCompletion: { [weak self](assetExport) in
+                var url: URL?
+                switch assetExport {
+                case .exportedImage(let export):
+                    url = export.url
+                case .exportedGIF(let export):
+                    url = export.url
+                default:
+                    self?.showErrorLoadingImageMessage()
+                    return
+                }
+                guard let imageURL = url, let image = UIImage(contentsOfFile: imageURL.path) else {
                     self?.showErrorLoadingImageMessage()
                     return
                 }
                 self?.showImageCropViewController(image)
-            }
+
+            }, onError: { [weak self](error) in
+                self?.showErrorLoadingImageMessage()
+            })
         case let media as Media:
             showLoadingMessage()
             originalMedia = media

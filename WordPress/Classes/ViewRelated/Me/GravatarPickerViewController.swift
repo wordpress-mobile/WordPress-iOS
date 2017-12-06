@@ -46,9 +46,25 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
             return
         }
 
-        asset.exportMaximumSizeImage { (image, info) in
-            guard let rawGravatar = image else {
-                self.onCompletion?(nil)
+        let exporter = MediaAssetExporter()
+        exporter.imageOptions = MediaImageExporter.Options()
+
+        exporter.exportData(forAsset: asset, onCompletion: { [weak self](assetExport) in
+            guard let strongSelf = self else {
+                return
+            }
+            var url: URL?
+            switch assetExport {
+            case .exportedImage(let export):
+                url = export.url
+            case .exportedGIF(let export):
+                url = export.url
+            default:
+                strongSelf.onCompletion?(nil)
+                return
+            }
+            guard let imageURL = url, let rawGravatar = UIImage(contentsOfFile: imageURL.path) else {
+                strongSelf.onCompletion?(nil)
                 return
             }
 
@@ -56,9 +72,12 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
             WPAppAnalytics.track(.gravatarCropped)
 
             // Proceed Cropping
-            let imageCropViewController = self.newImageCropViewController(rawGravatar)
-            self.mediaPickerViewController.show(after: imageCropViewController)
-        }
+            let imageCropViewController = strongSelf.newImageCropViewController(rawGravatar)
+            strongSelf.mediaPickerViewController.show(after: imageCropViewController)
+
+            }, onError: { [weak self](error) in
+                self?.onCompletion?(nil)
+        })
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {

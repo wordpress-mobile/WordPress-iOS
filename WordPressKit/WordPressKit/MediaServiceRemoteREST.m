@@ -114,11 +114,10 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
           }];
 }
 
-
-- (void)uploadMultipleMedia:(NSArray *)mediaItems
-            requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
-                    success:(void (^)(NSArray *remoteMedia))success
-                    failure:(void (^)(NSError *error))failure
+- (void)uploadMedia:(NSArray *)mediaItems
+    requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
+            success:(void (^)(NSArray *remoteMedia))success
+            failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(mediaItems);
 
@@ -127,7 +126,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{}];
     NSMutableArray *fileParts = [NSMutableArray array];
-    
+
     for (RemoteMedia *remoteMedia in mediaItems) {
         NSString *type = remoteMedia.mimeType;
         NSString *filename = remoteMedia.file;
@@ -145,93 +144,40 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                                 if (requestEnqueued) {
                                     requestEnqueued(taskID);
                                 }
-    } success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        NSArray *errorList = response[@"errors"];
-        NSArray *mediaList = response[@"media"];
-        NSMutableArray *returnedRemoteMedia = [NSMutableArray array];
+                            } success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
+                                NSDictionary *response = (NSDictionary *)responseObject;
+                                NSArray *errorList = response[@"errors"];
+                                NSArray *mediaList = response[@"media"];
+                                NSMutableArray *returnedRemoteMedia = [NSMutableArray array];
 
-        if (mediaList.count > 0) {
-            for (NSDictionary *returnedMediaDict in mediaList) {
-                RemoteMedia *remoteMedia = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:returnedMediaDict];
-                [returnedRemoteMedia addObject:remoteMedia];
-            }
+                                if (mediaList.count > 0) {
+                                    for (NSDictionary *returnedMediaDict in mediaList) {
+                                        RemoteMedia *remoteMedia = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:returnedMediaDict];
+                                        [returnedRemoteMedia addObject:remoteMedia];
+                                    }
 
-            if (success) {
-                success(returnedRemoteMedia);
-            }
-        } else {
-            DDLogDebug(@"Error uploading multiple media files: %@", errorList);
-            NSError * error = nil;
-            if (errorList.count > 0){
-                NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
-                error = [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUploadFailed userInfo:errorDictionary];
-            }
-            if (failure) {
-                failure(error);
-            }
-        }
-    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-        DDLogDebug(@"Error uploading multiple media files: %@", [error localizedDescription]);
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-}
-
-
-- (void)uploadMedia:(RemoteMedia *)media
-    requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
-            success:(void (^)(RemoteMedia *remoteMedia))success
-            failure:(void (^)(NSError *error))failure
-{
-    NSString *type = media.mimeType;
-    NSString *filename = media.file;
-
-    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", self.siteID];
-    NSString *requestUrl = [self pathForEndpoint:apiPath
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{}];
-    if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
-        parameters[@"attrs[0][parent_id]"] = media.postID;
-    }
-    FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:media.localURL filename:filename mimeType:type];
-    [self.wordPressComRestApi multipartPOST:requestUrl
-                                 parameters:parameters
-                                  fileParts:@[filePart]
-                            requestEnqueued:^(NSNumber *taskID) {
-                                if (requestEnqueued) {
-                                    requestEnqueued(taskID);
+                                    if (success) {
+                                        success(returnedRemoteMedia);
+                                    }
+                                } else {
+                                    DDLogDebug(@"Error uploading multiple media files: %@", errorList);
+                                    NSError * error = nil;
+                                    if (errorList.count > 0){
+                                        NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
+                                        error = [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUploadFailed userInfo:errorDictionary];
+                                    }
+                                    if (failure) {
+                                        failure(error);
+                                    }
                                 }
-    } success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        NSArray * errorList = response[@"errors"];
-        NSArray * mediaList = response[@"media"];
-        if (mediaList.count > 0){
-            RemoteMedia * remoteMedia = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:mediaList[0]];
-            if (success) {
-                success(remoteMedia);
-            }
-        } else {
-            DDLogDebug(@"Error uploading file: %@", errorList);
-            NSError * error = nil;
-            if (errorList.count > 0){
-                NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
-                error = [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUploadFailed userInfo:errorDictionary];
-            }
-            if (failure) {
-                failure(error);
-            }
-        }
-    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-        DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
+                            } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                DDLogDebug(@"Error uploading multiple media files: %@", [error localizedDescription]);
+                                if (failure) {
+                                    failure(error);
+                                }
+                            }];
 
+}
 
 - (void)uploadMedia:(RemoteMedia *)media
            progress:(NSProgress **)progress
@@ -250,36 +196,36 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }
     FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:media.localURL filename:filename mimeType:type];
     __block NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
-                                                    parameters:parameters
-                                                     fileParts:@[filePart]
-                                               requestEnqueued:nil
-                                                       success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        NSArray * errorList = response[@"errors"];
-        NSArray * mediaList = response[@"media"];
-        if (mediaList.count > 0){
-            RemoteMedia * remoteMedia = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:mediaList[0]];
-            if (success) {
-                success(remoteMedia);
-            }            
-        } else {
-            DDLogDebug(@"Error uploading file: %@", errorList);
-            NSError * error = nil;
-            if (errorList.count > 0){
-                NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
-                error = [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUploadFailed userInfo:errorDictionary];
-            }
-            if (failure) {
-                failure(error);
-            }
-        }
-        
-    } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-        DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
-        if (failure) {
-            failure(error);
-        }
-    }];
+                                                                     parameters:parameters
+                                                                      fileParts:@[filePart]
+                                                                requestEnqueued:nil
+                                                                        success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
+                                                                            NSDictionary *response = (NSDictionary *)responseObject;
+                                                                            NSArray * errorList = response[@"errors"];
+                                                                            NSArray * mediaList = response[@"media"];
+                                                                            if (mediaList.count > 0){
+                                                                                RemoteMedia * remoteMedia = [MediaServiceRemoteREST remoteMediaFromJSONDictionary:mediaList[0]];
+                                                                                if (success) {
+                                                                                    success(remoteMedia);
+                                                                                }
+                                                                            } else {
+                                                                                DDLogDebug(@"Error uploading file: %@", errorList);
+                                                                                NSError * error = nil;
+                                                                                if (errorList.count > 0){
+                                                                                    NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
+                                                                                    error = [NSError errorWithDomain:WordPressComRestApiErrorDomain code:WordPressComRestApiErrorUploadFailed userInfo:errorDictionary];
+                                                                                }
+                                                                                if (failure) {
+                                                                                    failure(error);
+                                                                                }
+                                                                            }
+
+                                                                        } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                                                                            DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
+                                                                            if (failure) {
+                                                                                failure(error);
+                                                                            }
+                                                                        }];
 
     *progress = localProgress;
 }
