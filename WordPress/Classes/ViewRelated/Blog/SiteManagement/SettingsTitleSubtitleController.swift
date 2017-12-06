@@ -204,7 +204,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func validateData() {
-        guard let name = data.title, let subtitle = data.subtitle, name.count > 0, subtitle.count > 0 else {
+        guard let name = data.title, name.count > 0 else {
             return
         }
 
