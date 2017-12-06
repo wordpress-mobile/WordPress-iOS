@@ -12,6 +12,9 @@ public struct PluginDirectoryServiceRemote {
         return formatter
     }()
 
+    public init() {
+    }
+
     public func getPluginInformation(slug: String, success: @escaping (PluginDirectoryEntry) -> Void, failure: @escaping (Error) -> Void) {
         let url = baseURL
             .appendingPathComponent(slug)
