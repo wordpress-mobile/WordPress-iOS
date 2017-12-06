@@ -106,7 +106,7 @@ class MediaThumbnailExporter: MediaExporter {
         guard let thumbnail = try? thumbnailURL(withIdentifier: identifier) else {
             return nil
         }
-        guard let type = thumbnail.resourceTypeIdentifier, UTTypeConformsTo(type as CFString, options.thumbnailImageType as CFString) else {
+        guard let type = thumbnail.typeIdentifier, UTTypeConformsTo(type as CFString, options.thumbnailImageType as CFString) else {
             return nil
         }
         return thumbnail
