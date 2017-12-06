@@ -256,7 +256,7 @@ extension SiteTagsViewController {
         let data = SettingsTitleSubtitleController.Data(title: details?.name, subtitle: details?.tagDescription)
         let confirmationStrings = confirmation()
         let singleTag = SettingsTitleSubtitleController(data: data, confirmation: confirmationStrings)
-        
+
         singleTag.setAction { updatedData in
             self.navigationController?.popViewController(animated: true)
 
