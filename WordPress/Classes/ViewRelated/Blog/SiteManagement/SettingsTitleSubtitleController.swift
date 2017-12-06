@@ -14,6 +14,13 @@ final class SettingsTitleSubtitleController: UITableViewController {
         }
     }
 
+    struct Confirmation {
+        let title: String
+        let subtitle: String
+        let actionTitle: String
+        let cancelTitle: String
+    }
+
     fileprivate enum Sections: Int, CustomStringConvertible {
         case name
         case description
@@ -69,12 +76,15 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }()
 
     private let data: SettingsTitleSubtitleController.Data
+    private let confirmation: SettingsTitleSubtitleController.Confirmation?
+
     private var action: SettingsTitleSubtitleAction?
     private var update: SettingsTitleSubtitleAction?
     private var isTriggeringAction = false
 
-    public init(data: SettingsTitleSubtitleController.Data) {
+    public init(data: SettingsTitleSubtitleController.Data, confirmation: SettingsTitleSubtitleController.Confirmation? = nil) {
         self.data = data
+        self.confirmation = confirmation
         super.init(style: .grouped)
     }
 
@@ -168,20 +178,29 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     @objc private func deleteContent() {
-        let title =  NSLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
-        let message = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
-        let actionTitle = NSLocalizedString("Delete", comment: "Delete")
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        guard let confirmation = confirmation else {
+            executeAction()
+            return
+        }
+
+        let title =  confirmation.title
+        let message = confirmation.subtitle
+        let actionTitle = confirmation.actionTitle
+        let cancelTitle = confirmation.cancelTitle
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelTitle)
         alertController.addDefaultActionWithTitle(actionTitle) { _ in
-            self.isTriggeringAction = true
-            self.action?(self.data)
+            self.executeAction()
         }
 
         alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(alertController, animated: true, completion: nil)
+    }
+
+    private func executeAction() {
+        isTriggeringAction = true
+        action?(data)
     }
 
     private func validateData() {
