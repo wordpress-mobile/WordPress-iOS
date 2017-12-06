@@ -243,7 +243,7 @@ extension SiteTagsViewController {
     }
 }
 
-// MARK: - Navigation
+// MARK: - Navigation to Tag details
 extension SiteTagsViewController {
     fileprivate func navigate(to details: PostTag?) {
         let data = SettingsTitleSubtitleController.Data(title: details?.name, subtitle: details?.tagDescription)
@@ -271,7 +271,7 @@ extension SiteTagsViewController {
 
         singleTag.setUpdate { updatedData in
             guard let tag = details else {
-                print("Create a tag")
+                self.addTag(data: updatedData)
                 return
             }
 
@@ -282,6 +282,17 @@ extension SiteTagsViewController {
         }
 
         navigationController?.pushViewController(singleTag, animated: true)
+    }
+
+    private func addTag(data: SettingsTitleSubtitleController.Data) {
+        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
+            return
+        }
+
+        newTag.name = data.title
+        newTag.tagDescription = data.subtitle
+
+        self.save(newTag)
     }
 }
 
