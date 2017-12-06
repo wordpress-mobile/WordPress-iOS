@@ -112,14 +112,14 @@ enum TimezoneSelectorViewModel {
             if group == TimezoneSelectorViewModel.manualOffsetSectionName {
                 // sort the UTC strings
                 let allLabelsAndValues = allTimezonesInGroup.map({ (label: $0.label, value: $0.value) })
-                timezoneNamesSortedByGroup[group] = allLabelsAndValues.sorted(by: { (left, right) -> Bool in
-                    guard let leftNumString = left.value.components(separatedBy: "UTC").last,
-                        let rightNumString = right.value.components(separatedBy: "UTC").last,
-                        let floatLeftNum = Float(leftNumString),
-                        let floatRightNum = Float(rightNumString) else {
+                timezoneNamesSortedByGroup[group] = allLabelsAndValues.sorted(by: { (leftHours, rightHours) -> Bool in
+                    guard let leftHoursValue = leftHours.value.components(separatedBy: "UTC").last,
+                        let rightHoursValue = rightHours.value.components(separatedBy: "UTC").last,
+                        let floatLeftHoursValue = Float(leftHoursValue),
+                        let floatRightHoursValue = Float(rightHoursValue) else {
                             return false
                     }
-                    return floatLeftNum > floatRightNum
+                    return floatLeftHoursValue > floatRightHoursValue
                 })
             } else {
                 timezoneNamesSortedByGroup[group] = allTimezonesInGroup.sorted(by: { (timezone1, timezone2) -> Bool in
