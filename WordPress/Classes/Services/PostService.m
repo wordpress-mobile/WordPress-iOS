@@ -652,8 +652,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         Page *pagePost = (Page *)post;
         remotePost.parentID = pagePost.parentID;
         remotePost.type = @"page";
-    }
-    if ([post isKindOfClass:[Post class]]) {
+    } else if ([post isKindOfClass:[PortfolioProject class]]) {
+        PortfolioProject *projectPost = (PortfolioProject *)post;
+        remotePost.projectTags = [projectPost.projectTags componentsSeparatedByString:@","];
+        remotePost.projectTypes = [projectPost.projectTypes componentsSeparatedByString:@","];
+    } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         remotePost.format = postPost.postFormat;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
