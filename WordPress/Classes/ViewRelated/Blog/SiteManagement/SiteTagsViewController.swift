@@ -123,7 +123,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     private func setupNavigationBar() {
         configureRightButton()
-        configureSearchBar()
     }
 
     private func configureRightButton() {
@@ -132,8 +131,12 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
                                                             action: #selector(createTag))
     }
 
-    private func configureSearchBar() {
+    private func setupSearchBar() {
        tableView.tableHeaderView = searchController.searchBar
+    }
+
+    private func removeSearchBar() {
+        tableView.tableHeaderView = nil
     }
 
     @objc private func createTag() {
@@ -144,6 +147,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     private func refreshNoResultsView() {
         guard resultsController.fetchedObjects?.count == 0 else {
             noResultsView.removeFromSuperview()
+            setupSearchBar()
             return
         }
 
@@ -156,6 +160,8 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
         }
+
+        removeSearchBar()
     }
 
     private func setupLoadingView() {
