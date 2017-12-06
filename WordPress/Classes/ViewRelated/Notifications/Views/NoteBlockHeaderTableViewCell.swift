@@ -16,7 +16,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     @IBOutlet private var headerDetailsLabel: UILabel!
 
     // MARK: - Public Properties
-    var headerTitle: String? {
+    @objc var headerTitle: String? {
         set {
             headerTitleLabel.text  = newValue
         }
@@ -25,7 +25,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         }
     }
 
-    var attributedHeaderTitle: NSAttributedString? {
+    @objc var attributedHeaderTitle: NSAttributedString? {
         set {
             headerTitleLabel.attributedText  = newValue
         }
@@ -34,7 +34,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         }
     }
 
-    var headerDetails: String? {
+    @objc var headerDetails: String? {
         set {
             headerDetailsLabel.text = newValue
         }

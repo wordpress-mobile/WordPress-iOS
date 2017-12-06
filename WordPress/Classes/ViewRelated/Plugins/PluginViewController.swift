@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 class PluginViewController: UITableViewController {
     var plugin: PluginState {
@@ -14,12 +15,12 @@ class PluginViewController: UITableViewController {
     }()
 
     fileprivate let viewModel: PluginViewModel
+    var viewModelReceipt: Receipt?
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, service: PluginServiceRemote) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
         self.plugin = plugin
-        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, siteID: siteID, service: service)
+        viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, site: site)
         super.init(style: .grouped)
-        viewModel.onModelChange = bindViewModel
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
         }
@@ -40,6 +41,9 @@ class PluginViewController: UITableViewController {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginViewModel.immutableRows, tableView: tableView)
+        viewModelReceipt = viewModel.onChange { [weak self] in
+            self?.bindViewModel()
+        }
         bindViewModel()
     }
 

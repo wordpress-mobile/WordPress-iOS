@@ -10,7 +10,7 @@ open class MediaImportService: LocalCoreDataService {
 
     private static let defaultImportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
-    public lazy var importQueue: DispatchQueue = {
+    @objc public lazy var importQueue: DispatchQueue = {
         return MediaImportService.defaultImportQueue
     }()
 
@@ -18,7 +18,7 @@ open class MediaImportService: LocalCoreDataService {
     ///
     /// - Note: This value may or may not be honored, depending on the export implementation and underlying data.
     ///
-    static let preferredImageCompressionQuality = 0.9
+    @objc static let preferredImageCompressionQuality = 0.9
 
     /// Completion handler for a created Media object.
     ///
@@ -32,30 +32,50 @@ open class MediaImportService: LocalCoreDataService {
 
     /// Imports media from a PHAsset to the Media object, asynchronously.
     ///
+    /// - parameter exportable: the exportable resource where data will be read from.
+    /// - parameter media: the media object to where media will be imported to.
+    /// - parameter onCompletion: Called if the Media was successfully created and the asset's data imported to the absoluteLocalURL.
+    /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
+    ///
+    @objc(importResource:toMedia:onCompletion:onError:)
+    public func `import`(_ exportable: ExportableAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+        importQueue.async {
+            switch exportable {
+                case let asset as PHAsset:
+                    self.`import`(asset, to: media, onCompletion: onCompletion, onError: onError)
+                case let image as UIImage:
+                    self.`import`(image, to: media, onCompletion: onCompletion, onError: onError)
+                case let url as URL:
+                    self.`import`(url, to: media, onCompletion: onCompletion, onError: onError)
+                default:
+                    onError(NSError())
+            }
+        }
+    }
+
+    /// Imports media from a PHAsset to the Media object, asynchronously.
+    ///
     /// - parameter asset: the PHAsset media where data will be read from.
     /// - parameter media: the media object to where media will be imported to.
     /// - parameter onCompletion: Called if the Media was successfully created and the asset's data imported to the absoluteLocalURL.
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     @objc(importAsset:toMedia:onCompletion:onError:)
-    public func `import`(_ asset: PHAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        importQueue.async {
+    private func `import`(_ asset: PHAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+        let exporter = MediaAssetExporter()
+        exporter.imageOptions = self.exporterImageOptions
+        exporter.videoOptions = self.exporterVideoOptions
 
-            let exporter = MediaAssetExporter()
-            exporter.imageOptions = self.exporterImageOptions
-            exporter.videoOptions = self.exporterVideoOptions
-
-            exporter.exportData(forAsset: asset, onCompletion: { (assetExport) in
-                self.managedObjectContext.perform {
-                    self.configureMedia(media, withExport: assetExport)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                        onCompletion(media)
-                    })
-                }
-            }, onError: { (error) in
-                self.handleExportError(error, errorHandler: onError)
-            })
-        }
+        exporter.exportData(forAsset: asset, onCompletion: { (assetExport) in
+            self.managedObjectContext.perform {
+                self.configureMedia(media, withExport: assetExport)
+                ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    onCompletion(media)
+                })
+            }
+        }, onError: { (error) in
+            self.handleExportError(error, errorHandler: onError)
+        })
     }
 
     /// Imports media from a UIImage to the Media object, asynchronously.
@@ -68,23 +88,20 @@ open class MediaImportService: LocalCoreDataService {
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     @objc(importImage:toMedia:onCompletion:onError:)
-    public func `import`(_ image: UIImage, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        importQueue.async {
+    private func `import`(_ image: UIImage, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+        let exporter = MediaImageExporter()
+        exporter.options = self.exporterImageOptions
 
-            let exporter = MediaImageExporter()
-            exporter.options = self.exporterImageOptions
-
-            exporter.exportImage(image, fileName: nil, onCompletion: { (imageExport) in
-                self.managedObjectContext.perform {
-                    self.configureMedia(media, withExport: imageExport)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                        onCompletion(media)
-                    })
-                }
-            }, onError: { (error) in
-                self.handleExportError(error, errorHandler: onError)
-            })
-        }
+        exporter.exportImage(image, fileName: nil, onCompletion: { (imageExport) in
+            self.managedObjectContext.perform {
+                self.configureMedia(media, withExport: imageExport)
+                ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    onCompletion(media)
+                })
+            }
+        }, onError: { (error) in
+            self.handleExportError(error, errorHandler: onError)
+        })
     }
 
     /// Imports media from a URL to the Media object, asynchronously.
@@ -97,24 +114,21 @@ open class MediaImportService: LocalCoreDataService {
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     @objc(importURL:toMedia:onCompletion:onError:)
-    public func `import`(_ url: URL, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        importQueue.async {
+    private func `import`(_ url: URL, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
+        let exporter = MediaURLExporter()
+        exporter.imageOptions = self.exporterImageOptions
+        exporter.videoOptions = self.exporterVideoOptions
 
-            let exporter = MediaURLExporter()
-            exporter.imageOptions = self.exporterImageOptions
-            exporter.videoOptions = self.exporterVideoOptions
-
-            exporter.exportURL(fileURL: url, onCompletion: { (urlExport) in
-                self.managedObjectContext.perform {
-                    self.configureMedia(media, withExport: urlExport)
-                    ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
-                        onCompletion(media)
-                    })
-                }
-            }, onError: { (error) in
-                self.handleExportError(error, errorHandler: onError)
-            })
-        }
+        exporter.exportURL(fileURL: url, onCompletion: { (urlExport) in
+            self.managedObjectContext.perform {
+                self.configureMedia(media, withExport: urlExport)
+                ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
+                    onCompletion(media)
+                })
+            }
+        }, onError: { (error) in
+            self.handleExportError(error, errorHandler: onError)
+        })
     }
 
     // MARK: - Helpers
