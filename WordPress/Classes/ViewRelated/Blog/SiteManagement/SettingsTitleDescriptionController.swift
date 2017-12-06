@@ -5,7 +5,12 @@ final class SettingsTitleDescriptionController: UITableViewController {
     private let tag: PostTag
     final class Data {
         var title: String?
-        var extendedDescription: String?
+        var subtitle: String?
+
+        init(title: String, subtitle: String) {
+            self.title = title
+            self.subtitle = subtitle
+        }
     }
 
     fileprivate enum Sections: Int, CustomStringConvertible {
