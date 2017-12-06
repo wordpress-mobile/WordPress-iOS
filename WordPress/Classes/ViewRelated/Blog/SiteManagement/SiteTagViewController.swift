@@ -36,9 +36,9 @@ final class SiteTagViewController: UITableViewController {
         var height: CGFloat {
             switch self {
             case .name:
-                return 44.0
+                return WPTableViewDefaultRowHeight
             case .description:
-                return 132.0
+                return WPTableViewDefaultRowHeight * 3
             }
         }
     }
