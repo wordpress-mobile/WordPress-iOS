@@ -6,6 +6,7 @@
 @class Blog;
 @class Post;
 @class Page;
+@class PortfolioProject;
 @class RemotePost;
 
 
@@ -17,6 +18,7 @@ typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
 typedef NSString * PostServiceType NS_TYPED_ENUM;
 extern PostServiceType const PostServiceTypePost;
 extern PostServiceType const PostServiceTypePage;
+extern PostServiceType const PostServiceTypePortfolio;
 extern PostServiceType const PostServiceTypeAny;
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
@@ -25,6 +27,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
+- (PortfolioProject *)createDraftPortfolioProjectForBlog:(Blog *)blog;
 
 - (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog;
 
