@@ -962,6 +962,7 @@
 		E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */; };
 		E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */; };
 		F01A93441FD2089700A46EB8 /* TimeZoneSettingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01A93431FD2089700A46EB8 /* TimeZoneSettingHelper.swift */; };
+		F038058D1FD652F300AEDC3C /* TimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F038058C1FD652F300AEDC3C /* TimeZoneService.swift */; };
 		F0A95B8E1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A95B8D1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift */; };
 		F0AE52301FC4957100838D52 /* TimezoneSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0AE522F1FC4957100838D52 /* TimezoneSelectorViewModel.swift */; };
 		F0FB891B1FBEA3090057C478 /* TimeZoneInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FB89191FBEA3090057C478 /* TimeZoneInfo.swift */; };
@@ -2433,6 +2434,7 @@
 		E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarProfile.swift; sourceTree = "<group>"; };
 		EF379F0A70B6AC45330EE287 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
 		F01A93431FD2089700A46EB8 /* TimeZoneSettingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSettingHelper.swift; sourceTree = "<group>"; };
+		F038058C1FD652F300AEDC3C /* TimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneService.swift; sourceTree = "<group>"; };
 		F0A95B8C1FB640E600CDF031 /* WordPress 68.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 68.xcdatamodel"; sourceTree = "<group>"; };
 		F0A95B8D1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewController.swift; sourceTree = "<group>"; };
 		F0AE522F1FC4957100838D52 /* TimezoneSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneSelectorViewModel.swift; sourceTree = "<group>"; };
@@ -3900,6 +3902,7 @@
 				E14836301C6DF942005ACF53 /* InAppPurchaseStore.swift */,
 				59A9AB331B4C33A500A433DC /* ThemeService.h */,
 				59A9AB341B4C33A500A433DC /* ThemeService.m */,
+				F038058C1FD652F300AEDC3C /* TimeZoneService.swift */,
 				93DEB88019E5BF7100F9546D /* TodayExtensionService.h */,
 				93DEB88119E5BF7100F9546D /* TodayExtensionService.m */,
 				E6311C401EC9FF4A00122529 /* UsersService.swift */,
@@ -6476,6 +6479,7 @@
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
+				F038058D1FD652F300AEDC3C /* TimeZoneService.swift in Sources */,
 				E15644E91CE0E47C00D96E64 /* RoundedButton.swift in Sources */,
 				FFC6ADD41B56F295002F3C84 /* AboutViewController.swift in Sources */,
 				08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */,

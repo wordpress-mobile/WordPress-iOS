@@ -52,28 +52,12 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
     }
 
     // MARK: Helper methods
-    /// If no data exists in DB, make an API call to fetch and save the data, then display
-    /// otherwise fetch data from DB and display
     private func loadData() {
-        let allTimezones = viewModel.fetchTimezones()
-        if allTimezones.count == 0 {
-            refreshData()
-        } else {
-            viewModel = .ready(allTimezones, initialTimeZone, initialManualOffset, onChange)
+        TimeZoneService().fetchTimeZoneList(success: { [weak self] (allTimezones) in
+            self?.viewModel = .ready(allTimezones, self?.initialTimeZone, self?.initialManualOffset, self?.onChange)
+        }) { [weak self] (error) in
+            self?.viewModel = .error(String(describing: error))
         }
-    }
-
-    /// Helper method to call API and save the data to DB
-    private func refreshData() {
-        let api = ServiceRemoteWordPressComREST.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress())!
-        let remoteService = BlogServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: 0))
-        remoteService.fetchTimeZoneList(success: { [weak self] (resultsDict) in
-            self?.viewModel.insertDataToDB(resultsDict: resultsDict)
-            self?.loadData()
-            }, failure: { [weak self] (error) in
-                DDLogError("Error loading timezones: \(error)")
-                self?.viewModel = .error(String(describing: error))
-        })
     }
 
     // MARK: NoResultsView methods

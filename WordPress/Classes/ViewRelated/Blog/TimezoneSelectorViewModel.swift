@@ -17,7 +17,6 @@ enum TimezoneSelectorViewModel {
     /// the second param is a mapping from continent to timezones in that continent
     typealias ContinentsAndTimezones = ([String], [String: [(String, String)]])
 
-    /// constant used in the functions below
     static let manualOffsetSectionName: String = "Manual Offsets"
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
@@ -92,36 +91,6 @@ enum TimezoneSelectorViewModel {
             } else {
                 onChange?(timeZoneValue, nil)
             }
-        }
-    }
-
-    /// Save API data to core data DB
-    func insertDataToDB(resultsDict: [String: [String: String]]) {
-        let manager = ContextManager.sharedInstance()
-        let context = manager.newDerivedContext()
-        context.performAndWait {
-            for (continent, timezonesInContinent) in resultsDict {
-                for (key, val) in timezonesInContinent {
-                    let timezoneInfo = NSEntityDescription.insertNewObject(forEntityName: "TimeZoneInfo", into: context) as! TimeZoneInfo
-                    timezoneInfo.label = key
-                    timezoneInfo.value = val
-                    timezoneInfo.continent = continent
-                }
-            }
-            manager.saveContextAndWait(context)
-        }
-    }
-
-    /// Helper method to fetch all TimeZoneInfo objects from DB
-    func fetchTimezones() -> [TimeZoneInfo] {
-        let fetchRequest = NSFetchRequest<TimeZoneInfo>(entityName: "TimeZoneInfo")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "continent", ascending: true),
-                                        NSSortDescriptor(key: "label", ascending: true)]
-        do {
-            return try ContextManager.sharedInstance().mainContext.fetch(fetchRequest)
-        } catch {
-            print(error)
-            return []
         }
     }
 
