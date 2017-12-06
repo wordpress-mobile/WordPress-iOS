@@ -157,6 +157,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     private func textField() -> UITextField {
         let returnValue = UITextField(frame: .zero)
         returnValue.translatesAutoresizingMaskIntoConstraints = false
+        returnValue.clearButtonMode = .whileEditing
         returnValue.font = WPStyleGuide.tableviewTextFont()
         returnValue.textColor = WPStyleGuide.darkGrey()
         returnValue.returnKeyType = .done
