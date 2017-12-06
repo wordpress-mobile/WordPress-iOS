@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-final class SettingsTitleDescriptionController: UITableViewController {
+final class SettingsTitleSubtitleController: UITableViewController {
     private let tag: PostTag
     final class Data {
         var title: String?
@@ -164,7 +164,7 @@ final class SettingsTitleDescriptionController: UITableViewController {
 }
 
 // MARK: - Table view datasource
-extension SettingsTitleDescriptionController {
+extension SettingsTitleSubtitleController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return Sections.count
     }
@@ -197,7 +197,7 @@ extension SettingsTitleDescriptionController {
 
 
 // MARK: - Tag name updates
-extension SettingsTitleDescriptionController {
+extension SettingsTitleSubtitleController {
     @objc
     fileprivate func textChanged(_ textField: UITextField) {
         tag.name = textField.text
@@ -207,7 +207,7 @@ extension SettingsTitleDescriptionController {
 
 
 // MARK: - Tag description updates
-extension SettingsTitleDescriptionController: UITextViewDelegate {
+extension SettingsTitleSubtitleController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         tag.tagDescription = textView.text
     }
