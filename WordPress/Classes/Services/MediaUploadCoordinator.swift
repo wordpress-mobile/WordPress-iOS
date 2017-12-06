@@ -35,7 +35,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
         let context = ContextManager.sharedInstance().mainContext
         let service = MediaService(managedObjectContext: context)
         service.createMedia(with: asset,
-                            forBlogObjectID: blog.objectID,
+                            objectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
                                 guard let media = media else {
