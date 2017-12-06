@@ -76,6 +76,7 @@ class PluginListViewModel: Observable {
                 return PluginListRow(
                     name: pluginState.name,
                     state: pluginState.stateDescription,
+                    iconURL: nil,
                     action: { [weak presenter] (row) in
                         presenter?.present(plugin: pluginState, capabilities: sitePlugins.capabilities)
                 })
