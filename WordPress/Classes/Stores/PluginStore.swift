@@ -58,6 +58,28 @@ struct PluginStoreState {
     var fetchingDirectoryEntry = [String: Bool]()
 }
 
+struct Plugin {
+    let state: PluginState
+    let directoryEntry: PluginDirectoryEntry?
+
+    var id: String {
+        return state.id
+    }
+
+    var slug: String {
+        return state.slug
+    }
+
+    var name: String {
+        return state.name
+    }
+}
+
+struct Plugins {
+    let plugins: [Plugin]
+    let capabilities: SitePluginCapabilities
+}
+
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
 
@@ -71,6 +93,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             transaction({ (state) in
                 state.plugins = [:]
                 state.lastFetch = [:]
+                state.directoryEntries = [:]
             })
             return
         }
@@ -118,16 +141,25 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
 
 // MARK: - Selectors
 extension PluginStore {
-    func getPlugins(site: JetpackSiteRef) -> SitePlugins? {
-        return state.plugins[site]
+    func getPlugins(site: JetpackSiteRef) -> Plugins? {
+        return state.plugins[site].map({ (sitePlugins) in
+            let plugins = sitePlugins.plugins.map({ (state) -> Plugin in
+                let entry = getPluginDirectoryEntry(slug: state.slug)
+                return Plugin(state: state, directoryEntry: entry)
+            })
+            return Plugins(
+                plugins: plugins,
+                capabilities: sitePlugins.capabilities
+            )
+        })
     }
 
-    func getPlugin(id: String, site: JetpackSiteRef) -> PluginState? {
+    func getPlugin(id: String, site: JetpackSiteRef) -> Plugin? {
         return getPlugins(site: site)?.plugins.first(where: { $0.id == id })
     }
 
-    func getPluginIcon(slug: String) -> URL? {
-        return state.directoryEntries[slug]?.entry?.icon
+    func getPluginDirectoryEntry(slug: String) -> PluginDirectoryEntry? {
+        return state.directoryEntries[slug]?.entry
     }
 
     func shouldFetch(site: JetpackSiteRef) -> Bool {
