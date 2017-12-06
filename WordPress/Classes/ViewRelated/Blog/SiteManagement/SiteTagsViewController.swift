@@ -35,7 +35,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         let returnValue = UISearchController(searchResultsController: nil)
         returnValue.hidesNavigationBarDuringPresentation = false
         returnValue.dimsBackgroundDuringPresentation = false
-        returnValue.delegate = self
         returnValue.searchResultsUpdater = self
         self.definesPresentationContext = true
 
@@ -111,6 +110,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     @objc private func refreshTags() {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
+            print("tags ", tags)
             self?.refreshControl?.endRefreshing()
         }) { [weak self] error in
             self?.tagsFailedLoading(error: error)
@@ -259,8 +259,4 @@ extension SiteTagsViewController: UISearchResultsUpdating {
         let filterPredicate = NSPredicate(format: "blog.blogID = %@ AND name contains [cd] %@", blog.dotComID!, text)
         refreshResultsController(predicate: filterPredicate)
     }
-}
-
-extension SiteTagsViewController: UISearchControllerDelegate {
-
 }
