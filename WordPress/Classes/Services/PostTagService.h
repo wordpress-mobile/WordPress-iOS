@@ -38,6 +38,13 @@ NS_ASSUME_NONNULL_BEGIN
                    success:(nullable void (^)(NSArray <PostTag *> *tags))success
                    failure:(nullable void (^)(NSError *error))failure;
 
+
+/**
+ Deletes a tag assigned to a blog
+ */
+- (void)deleteTag:(PostTag*)tag
+          forBlog:(Blog *)blog;
+
 @end
 
 NS_ASSUME_NONNULL_END
