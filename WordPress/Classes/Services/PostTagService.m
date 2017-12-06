@@ -120,6 +120,14 @@ NS_ASSUME_NONNULL_BEGIN
           forBlog:(Blog *)blog
 {
     //Not implemented yet
+    NSLog(@"Delete tag %@ for blog %@", tag, blog);
+}
+
+- (void)commitTag:(PostTag*)tag
+          forBlog:(Blog *)blog
+{
+    //Not implemented yet
+    NSLog(@"Commit tag %@ for blog %@", tag, blog);
 }
 
 #pragma mark - helpers
