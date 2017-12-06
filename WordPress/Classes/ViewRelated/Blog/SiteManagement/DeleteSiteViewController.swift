@@ -47,12 +47,20 @@ open class DeleteSiteViewController: UITableViewController {
         title = NSLocalizedString("Delete Site", comment: "Title of settings page for deleting a site")
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 200.0
+        tableView.estimatedRowHeight = 500.0
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         setupHeaderSection()
         setupListSection()
         setupMainBodySection()
         setupDeleteButton()
+    }
+
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+        })
     }
 
     // MARK: - Configuration
