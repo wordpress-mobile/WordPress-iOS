@@ -16,27 +16,45 @@ public struct PluginDirectoryServiceRemote {
     }
 
     public func getPluginInformation(slug: String, success: @escaping (PluginDirectoryEntry) -> Void, failure: @escaping (Error) -> Void) {
-        let url = baseURL
-            .appendingPathComponent(slug)
-            .appendingPathExtension("json")
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            do {
-                if let error = error {
-                    throw error
-                } else if let data = data {
-                    success(try self.pluginEntry(fromData: data))
-                } else {
-                    throw Errors.noData
+        do {
+            let url = try pluginInformationURL(forSlug: slug)
+            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+                do {
+                    if let error = error {
+                        throw error
+                    } else if let data = data {
+                        let entry = try self.pluginEntry(fromData: data)
+                        DispatchQueue.main.async {
+                            success(entry)
+                        }
+                    } else {
+                        throw Errors.noData
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        failure(error)
+                    }
                 }
-            } catch {
-                failure(error)
             }
+            task.resume()
+        } catch {
+            failure(error)
         }
-        task.resume()
     }
 }
 
 extension PluginDirectoryServiceRemote {
+    func pluginInformationURL(forSlug slug: String) throws -> URL {
+        let endpoint = baseURL
+            .appendingPathComponent(slug)
+            .appendingPathExtension("json")
+        var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "fields", value: "icons")
+        ]
+        return try components.asURL()
+    }
+
     func pluginEntry(fromData data: Data) throws -> PluginDirectoryEntry {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(PluginDirectoryServiceRemote.dateFormatter)
