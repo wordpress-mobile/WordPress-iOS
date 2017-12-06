@@ -131,6 +131,7 @@ final class SiteTagViewController: UITableViewController {
         returnValue.translatesAutoresizingMaskIntoConstraints = false
         returnValue.font = WPStyleGuide.tableviewTextFont()
         returnValue.textColor = WPStyleGuide.darkGrey()
+        returnValue.delegate = self
 
         return returnValue
     }
@@ -187,10 +188,20 @@ extension SiteTagViewController {
     }
 }
 
+
+// MARK: - Tag name updates
 extension SiteTagViewController {
     @objc
     fileprivate func textChanged(_ textField: UITextField) {
         tag.name = textField.text
         setupTitle()
+    }
+}
+
+
+// MARK: - Tag description updates
+extension SiteTagViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        tag.tagDescription = textView.text
     }
 }
