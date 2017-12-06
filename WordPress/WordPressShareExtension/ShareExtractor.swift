@@ -102,7 +102,7 @@ private extension ShareExtractor {
                 completion(nil)
                 return
             }
-            let combinedText = extractedItems.flatMap({ $0.text }).map({ $0 + " " }).joined()
+            let combinedText = extractedItems.flatMap({ $0.text }).joined(separator: " ")
             completion(combinedText)
         }
     }

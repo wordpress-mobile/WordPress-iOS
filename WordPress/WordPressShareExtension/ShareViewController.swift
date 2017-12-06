@@ -483,7 +483,7 @@ private extension ShareViewController {
         // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
         // post share here as well as WPiOS.
         let remote = MediaServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
-        remote.uploadMultipleMedia(allRemoteMedia, requestEnqueued: { taskID in
+        remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadMediaOpID)
                 if let taskID = taskID {
