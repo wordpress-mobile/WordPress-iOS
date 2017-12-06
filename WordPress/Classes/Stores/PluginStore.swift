@@ -58,28 +58,6 @@ struct PluginStoreState {
     var fetchingDirectoryEntry = [String: Bool]()
 }
 
-struct Plugin {
-    let state: PluginState
-    let directoryEntry: PluginDirectoryEntry?
-
-    var id: String {
-        return state.id
-    }
-
-    var slug: String {
-        return state.slug
-    }
-
-    var name: String {
-        return state.name
-    }
-}
-
-struct Plugins {
-    let plugins: [Plugin]
-    let capabilities: SitePluginCapabilities
-}
-
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
 
