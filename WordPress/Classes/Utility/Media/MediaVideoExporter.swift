@@ -78,13 +78,13 @@ class MediaVideoExporter: MediaExporter {
         do {
             var outputType = options.preferredExportVideoType ?? supportedExportFileTypes.first!
             // Check if the exportFileType is one of the supported types for the exportSession.
-            if session.supportedFileTypes.contains(outputType) == false {
+            if session.supportedFileTypes.contains(AVFileType(rawValue: outputType)) == false {
                 /* 
                  If it is not supported by the session, try and find one
                  of the exporter's own supported types within the session's.
                  Ideally we return the first type, as an order of preference from supportedExportFileTypes.
                 */
-                guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains($0) }) else {
+                guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains(AVFileType(rawValue: $0)) }) else {
                     // No supported types available, throw an error.
                     throw VideoExportError.videoExportSessionDoesNotSupportVideoOutputType
                 }
@@ -95,7 +95,7 @@ class MediaVideoExporter: MediaExporter {
             let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
                                                                     fileExtension: URL.fileExtensionForUTType(outputType))
             session.outputURL = mediaURL
-            session.outputFileType = outputType
+            session.outputFileType = AVFileType(rawValue: outputType)
             session.shouldOptimizeForNetworkUse = true
 
             // Configure metadata filter for sharing, if we need to remove location data.
@@ -112,7 +112,7 @@ class MediaVideoExporter: MediaExporter {
                     return
                 }
                 onCompletion(MediaVideoExport(url: mediaURL,
-                                              fileSize: mediaURL.resourceFileSize,
+                                              fileSize: mediaURL.fileSize,
                                               duration: session.asset.duration.seconds))
             }
         } catch {

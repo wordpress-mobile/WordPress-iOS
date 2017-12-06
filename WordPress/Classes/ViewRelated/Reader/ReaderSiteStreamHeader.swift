@@ -45,7 +45,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyStyles()
     }
 
-    func applyStyles() {
+    @objc func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
@@ -58,7 +58,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     // MARK: - Configuration
 
-    open func configureHeader(_ topic: ReaderAbstractTopic) {
+    @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         assert(topic.isKind(of: ReaderSiteTopic.self), "Topic must be a site topic")
 
         let siteTopic = topic as! ReaderSiteTopic
@@ -81,7 +81,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    func configureHeaderImage(_ siteBlavatar: String?) {
+    @objc func configureHeaderImage(_ siteBlavatar: String?) {
         let placeholder = UIImage(named: defaultBlavatar)
 
         var path = ""
@@ -97,7 +97,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
+    @objc func formattedFollowerCountForTopic(_ topic: ReaderSiteTopic) -> String {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         let count = numberFormatter.string(from: topic.subscriberCount)
@@ -106,11 +106,11 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         return str
     }
 
-    func attributedSiteDescriptionForTopic(_ topic: ReaderSiteTopic) -> NSAttributedString {
+    @objc func attributedSiteDescriptionForTopic(_ topic: ReaderSiteTopic) -> NSAttributedString {
         return NSAttributedString(string: topic.siteDescription, attributes: WPStyleGuide.readerStreamHeaderDescriptionAttributes())
     }
 
-    open func enableLoggedInFeatures(_ enable: Bool) {
+    @objc open func enableLoggedInFeatures(_ enable: Bool) {
         followButton.isHidden = !enable
     }
 

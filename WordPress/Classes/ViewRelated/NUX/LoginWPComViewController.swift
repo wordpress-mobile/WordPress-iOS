@@ -8,7 +8,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet weak var forgotPasswordButton: UIButton?
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
-    var onePasswordButton: UIButton!
+    @objc var onePasswordButton: UIButton!
     @IBOutlet var emailLabel: UILabel?
     @IBOutlet var emailStackView: UIStackView?
 
@@ -69,7 +69,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Sets up a 1Password button if 1Password is available.
     /// - note: this could move into NUXAbstractViewController or LoginViewController for better reuse
-    func setupOnePasswordButtonIfNeeded() {
+    @objc func setupOnePasswordButtonIfNeeded() {
         guard let emailStackView = emailStackView else { return }
         WPStyleGuide.configureOnePasswordButtonForStackView(emailStackView,
                                                             target: self,
@@ -104,7 +104,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
-    func configureViewForEditingIfNeeded() {
+    @objc func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editiing state should be assumed.
         // Check the helper to determine whether an editiing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
@@ -113,13 +113,13 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         }
     }
 
-    func configureTextFields() {
+    @objc func configureTextFields() {
         passwordField?.text = loginFields.password
         passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailLabel?.text = loginFields.username
     }
 
-    func localizeControls() {
+    @objc func localizeControls() {
         if let service = loginFields.meta.socialService, service == SocialServiceName.google {
             instructionLabel?.text = NSLocalizedString("To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once.", comment: "")
         } else {
@@ -146,7 +146,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
-    func validateForm() {
+    @objc func validateForm() {
         validateFormAndLogin()
     }
 
@@ -171,7 +171,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         WPAppAnalytics.track(.loginForgotPasswordClicked)
     }
 
-    func handleOnePasswordButtonTapped(_ sender: UIButton) {
+    @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
@@ -197,11 +197,11 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
 
     // MARK: - Keyboard Notifications
 
-    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
-    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 
@@ -211,7 +211,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
 
     // MARK: Keyboard Events
 
-    func signinFormVerticalOffset() -> CGFloat {
+    @objc func signinFormVerticalOffset() -> CGFloat {
         // the stackview-based layout shifts fine with this adjustment
         return 0
     }

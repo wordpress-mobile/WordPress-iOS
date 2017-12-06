@@ -29,7 +29,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 @objc(Post)
 class Post: AbstractPost {
-    static let typeDefaultIdentifier = "post"
+    @objc static let typeDefaultIdentifier = "post"
 
     struct Constants {
         static let publicizeIdKey = "id"
@@ -44,7 +44,7 @@ class Post: AbstractPost {
 
     // MARK: - NSManagedObject
 
-    override class var entityName: String {
+    override class func entityName() -> String {
         return "Post"
     }
 
@@ -75,11 +75,11 @@ class Post: AbstractPost {
 
     // MARK: - Format
 
-    func postFormatText() -> String? {
+    @objc func postFormatText() -> String? {
         return blog.postFormatText(fromSlug: postFormat)
     }
 
-    func setPostFormatText(_ postFormatText: String) {
+    @objc func setPostFormatText(_ postFormatText: String) {
 
         assert(blog.postFormats is [String: String])
         guard let postFormats = blog.postFormats as? [String: String] else {
@@ -103,7 +103,7 @@ class Post: AbstractPost {
 
     /// Returns categories as a comma-separated list
     ///
-    func categoriesText() -> String {
+    @objc func categoriesText() -> String {
 
         guard let allStrings = categories?.map({ return $0.categoryName as String }) else {
             return ""
@@ -122,7 +122,7 @@ class Post: AbstractPost {
     /// - Parameter categoryNames: a `NSArray` with the names of the categories for this post. If
     ///                     a given category name doesn't exist it's ignored.
     ///
-    func setCategoriesFromNames(_ categoryNames: [String]) {
+    @objc func setCategoriesFromNames(_ categoryNames: [String]) {
 
         var newCategories = Set<PostCategory>()
 
@@ -146,17 +146,17 @@ class Post: AbstractPost {
 
     // MARK: - Sharing
 
-    func canEditPublicizeSettings() -> Bool {
+    @objc func canEditPublicizeSettings() -> Bool {
         return !self.hasRemote() || self.status != .publish
     }
 
     // MARK: - PublicizeConnections
 
-    func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
+    @objc func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
         return disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
     }
 
-    func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+    @objc func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         guard var connection = disabledPublicizeConnections?[keyringID] else {
             return
         }
@@ -170,7 +170,7 @@ class Post: AbstractPost {
         disabledPublicizeConnections?[keyringID] = connection
     }
 
-    func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
+    @objc func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         if let _ = disabledPublicizeConnections?[keyringID] {
             disabledPublicizeConnections![keyringID]![Constants.publicizeValueKey] = Constants.publicizeDisabledValue
         } else {
@@ -183,13 +183,13 @@ class Post: AbstractPost {
 
     // MARK: - Comments
 
-    func numberOfComments() -> Int {
+    @objc func numberOfComments() -> Int {
         return commentCount?.intValue ?? 0
     }
 
     // MARK: - Likes
 
-    func numberOfLikes() -> Int {
+    @objc func numberOfLikes() -> Int {
         return likeCount?.intValue ?? 0
     }
 

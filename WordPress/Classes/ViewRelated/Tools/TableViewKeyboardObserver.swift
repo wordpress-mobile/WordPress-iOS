@@ -1,13 +1,13 @@
 import UIKit
 
 class TableViewKeyboardObserver: NSObject {
-    weak var tableView: UITableView? {
+    @objc weak var tableView: UITableView? {
         didSet {
             originalInset = tableView?.contentInset ?? .zero
         }
     }
 
-    var originalInset: UIEdgeInsets = .zero
+    @objc var originalInset: UIEdgeInsets = .zero
 
     override init() {
         super.init()
@@ -15,7 +15,7 @@ class TableViewKeyboardObserver: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(TableViewKeyboardObserver.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
 
-    func keyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func keyboardWillShow(_ notification: Foundation.Notification) {
         guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {
             return
         }
@@ -29,7 +29,7 @@ class TableViewKeyboardObserver: NSObject {
         tableView?.contentInset = inset
     }
 
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         tableView?.contentInset = originalInset
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
     /// URL for the Media upload directory in the shared container. Can return nil.
     ///
-    var mediaUploadDirectoryURL: URL? {
+    @objc var mediaUploadDirectoryURL: URL? {
         let fileManager = FileManager.default
         guard let sharedContainerRootURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: WPAppGroupName) else {
             return nil
@@ -32,14 +32,14 @@ import Foundation
 
     // MARK: - Singleton
 
-    static let shared: ShareMediaFileManager = ShareMediaFileManager()
+    @objc static let shared: ShareMediaFileManager = ShareMediaFileManager()
     private override init() {}
 
     // MARK: - Instance methods
 
     /// Removes all files from the Media upload directory.
     ///
-    func purgeUploadDirectory() {
+    @objc func purgeUploadDirectory() {
         guard let mediaDirectory = mediaUploadDirectoryURL else {
             return
         }
