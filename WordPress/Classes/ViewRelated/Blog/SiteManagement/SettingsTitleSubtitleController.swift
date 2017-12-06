@@ -71,6 +71,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     private let data: SettingsTitleSubtitleController.Data
     private var action: SettingsTitleSubtitleAction?
     private var update: SettingsTitleSubtitleAction?
+    private var isTriggeringAction = false
 
     public init(data: SettingsTitleSubtitleController.Data) {
         self.data = data
@@ -98,6 +99,11 @@ final class SettingsTitleSubtitleController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         validateData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        isTriggeringAction = false
     }
 
     private func setupNavigationBar() {
@@ -170,12 +176,20 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelTitle)
         alertController.addDefaultActionWithTitle(actionTitle) { _ in
+            self.isTriggeringAction = true
             self.action?(self.data)
         }
+
+        alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(alertController, animated: true, completion: nil)
     }
 
     private func validateData() {
         guard let name = data.title, let subtitle = data.subtitle, name.count > 0, subtitle.count > 0 else {
+            return
+        }
+
+        guard isTriggeringAction == false else {
             return
         }
 
