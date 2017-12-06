@@ -244,7 +244,7 @@ extension SiteTagsViewController {
 // MARK: - Navigation
 extension SiteTagsViewController {
     fileprivate func navigate(to tag: PostTag) {
-        let singleTag = SettingsTitleDescriptionController(tag: tag)
+        let singleTag = SettingsTitleSubtitleController(tag: tag)
         navigationController?.pushViewController(singleTag, animated: true)
     }
 }
