@@ -61,7 +61,7 @@ class MediaCoordinator: NSObject {
         mediaProgressCoordinator.track(numberOfItems: 1)
 
         begin(media)
-        
+
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
