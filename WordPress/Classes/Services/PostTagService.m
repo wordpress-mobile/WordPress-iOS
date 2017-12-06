@@ -116,6 +116,12 @@ NS_ASSUME_NONNULL_BEGIN
                        } failure:failure];
 }
 
+- (void)deleteTag:(PostTag*)tag
+          forBlog:(Blog *)blog
+{
+    //Not implemented yet
+}
+
 #pragma mark - helpers
 
 - (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
