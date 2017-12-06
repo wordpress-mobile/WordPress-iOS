@@ -116,7 +116,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
 
     private func deleteButton() -> UIBarButtonItem {
         let trashIcon = Gridicon.iconOfType(.trash)
-        return UIBarButtonItem(image: trashIcon, style: .plain, target: self, action: #selector(deleteTag))
+        return UIBarButtonItem(image: trashIcon, style: .plain, target: self, action: #selector(deleteContent))
     }
 
     private func setupTitle() {
@@ -167,7 +167,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         return returnValue
     }
 
-    @objc private func deleteTag() {
+    @objc private func deleteContent() {
         let title =  NSLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
         let message = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
         let actionTitle = NSLocalizedString("Delete", comment: "Delete")
