@@ -112,7 +112,7 @@ class MediaVideoExporter: MediaExporter {
                     return
                 }
                 onCompletion(MediaVideoExport(url: mediaURL,
-                                              fileSize: mediaURL.resourceFileSize,
+                                              fileSize: mediaURL.fileSize,
                                               duration: session.asset.duration.seconds))
             }
         } catch {
