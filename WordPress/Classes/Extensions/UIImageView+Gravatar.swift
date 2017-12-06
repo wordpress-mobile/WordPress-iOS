@@ -4,8 +4,10 @@ import Foundation
 ///
 extension UIImageView {
     /// Default name string for the blavatar
-    private static let BlavatarDefault = "blavatar-default"
-    private static let BlavatarDefaultSize: Int = 40
+    struct Blavatar {
+        static let defaultImageName = "blavatar-default"
+        static let defaultSize = 40
+    }
 
     /// Helper Enum that specifies all of the available Gravatar Image Ratings
     /// TODO: Convert into a pure Swift String Enum. It's done this way to maintain ObjC Compatibility
@@ -128,8 +130,8 @@ extension UIImageView {
     ///  - siteIcon: string description of the site's icon
     ///
     @objc func setImageWithSiteIcon(_ siteIcon: String) {
-        let blavatarDefaultImage = UIImage(named: UIImageView.BlavatarDefault)
-        self.setImageWithSiteIcon(siteIcon, placeholderImage: blavatarDefaultImage)
+        let blavatarDefaultImage = UIImage(named: Blavatar.defaultImageName)
+        setImageWithSiteIcon(siteIcon, placeholderImage: blavatarDefaultImage)
     }
 
     /// Sets the provided icon as content
@@ -139,20 +141,20 @@ extension UIImageView {
     ///  - placeholderImage: the image to be used as a placeholder
     ///
     @objc func setImageWithSiteIcon(_ siteIcon: String, placeholderImage: UIImage?) {
-        let url = URLWithSiteIcon(siteIcon)
-
-        if url != nil {
-            self.setImageWith(url!, placeholderImage: placeholderImage)
+        guard let url = URLWithSiteIcon(siteIcon) else {
+            return
         }
+
+        setImageWith(url, placeholderImage: placeholderImage)
     }
 
     /// Sets the blog's icon as content
     ///
     /// Parameters:
     ///  - blog: reference to the source blog
-    @objc func setImageWithSiteIconForBlog(_ blog: Blog) {
-        let blavatarDefaultImage = UIImage(named: UIImageView.BlavatarDefault)
-        self.setImageWithSiteIconForBlog(blog, placeholderImage: blavatarDefaultImage)
+    @objc func setImageWithSiteIcon(for blog: Blog) {
+        let blavatarDefaultImage = UIImage(named: Blavatar.defaultImageName)
+        setImageWithSiteIcon(for: blog, placeholderImage: blavatarDefaultImage)
     }
 
     /// Sets the blog's icon as content
@@ -160,17 +162,17 @@ extension UIImageView {
     /// Parameters:
     ///  - blog: reference to the source blog
     ///  - placeholderImage: the placeholder
-    @objc func setImageWithSiteIconForBlog(_ blog: Blog, placeholderImage: UIImage?) {
+    @objc func setImageWithSiteIcon(for blog: Blog, placeholderImage: UIImage?) {
         if blog.isHostedAtWPcom && blog.isPrivate() {
-            self.setImageWithPrivateSiteIcon(siteIcon: blog.icon, placeholderImage: placeholderImage)
+            setImageWithPrivateSiteIcon(siteIcon: blog.icon, placeholderImage: placeholderImage)
         } else {
-            self.setImageWithSiteIcon(blog.icon!, placeholderImage: placeholderImage)
+            setImageWithSiteIcon(blog.icon!, placeholderImage: placeholderImage)
         }
     }
 
     /// Sets the content with the default blavatar image
     @objc func setDefaultSiteIconImage() {
-        self.image = UIImage(named: UIImageView.BlavatarDefault)
+        image = UIImage(named: Blavatar.defaultImageName)
     }
     // MARK: - Private Helpers
 
@@ -215,13 +217,15 @@ extension UIImageView {
     /// Parameters:
     ///  - siteIcon: the icon's path
     fileprivate func URLWithSiteIcon(_ siteIcon: String) -> URL? {
-        if self.isPhotonURL(siteIcon) || self.isWordPressComFilesURL(siteIcon) {
-            return self.siteIconURLForSiteIconUrl(siteIcon)
-        } else if self.isBlavatarURL(siteIcon) {
-            return self.blavatarURLForBlavatarURL(siteIcon)
-        } else {
-            return self.URLForResizedImageURL(siteIcon)
+        if isPhotonURL(siteIcon) || self.isWordPressComFilesURL(siteIcon) {
+            return siteIconURLForSiteIconUrl(siteIcon)
         }
+
+        if isBlavatarURL(siteIcon) {
+            return blavatarURLForBlavatarURL(siteIcon)
+        }
+
+        return URLForResizedImageURL(siteIcon)
     }
 
     /// Returs the download URL for a square icon with a size of sizeForBlavatarDownload
@@ -229,8 +233,8 @@ extension UIImageView {
     /// Parameters:
     ///  - path: the icon's path
     fileprivate func siteIconURLForSiteIconUrl(_ path: String) -> URL? {
-        let size = self.sizeForBlavatarDownload()
-        return self.urlForUrlWithFormat(path, format: String(format: "w=%d&h=%d", size, size))
+        let size = sizeForBlavatarDownload()
+        return urlForUrlWithFormat(path, format: String(format: "w=%d&h=%d", size, size))
     }
 
     /// Sets the blog's icon as content, for private blogs
@@ -239,11 +243,15 @@ extension UIImageView {
     ///  - siteIcon: the icon's path
     ///  - placeholderImage: the placeholder
     fileprivate func setImageWithPrivateSiteIcon(siteIcon: String?, placeholderImage: UIImage?) {
-        if siteIcon == nil {
+        guard let icon = siteIcon else {
             return
         }
-        let imageRequest = PrivateSiteURLProtocol.requestForPrivateSite(from: self.URLWithSiteIcon(siteIcon!))
-        self.setImageWith(imageRequest!, placeholderImage: placeholderImage, success: nil, failure: nil)
+
+        guard let imageRequest = PrivateSiteURLProtocol.requestForPrivateSite(from: URLWithSiteIcon(icon)) else {
+            return
+        }
+
+        setImageWith(imageRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
 
     // MARK: - Private Photon Helpers
@@ -252,9 +260,8 @@ extension UIImageView {
     /// Parameters:
     ///  - urlString: source URL
     fileprivate func URLForResizedImageURL(_ urlString: String) -> URL? {
-        let size = CGSize(width: UIImageView.BlavatarDefaultSize, height: UIImageView.BlavatarDefaultSize)
-        let url = URL(string: urlString)
-        if url == nil {
+        let size = CGSize(width: Blavatar.defaultSize, height: Blavatar.defaultSize)
+        guard let url = URL(string: urlString) else {
             return nil
         }
         return PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
@@ -262,7 +269,7 @@ extension UIImageView {
 
     // Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
     fileprivate func isPhotonURL(_ path: String) -> Bool {
-        return path.range(of: ".wp.com") != nil
+        return path.contains(".wp.com")
     }
 
     // MARK: - Blavatar Private Methods
@@ -271,13 +278,13 @@ extension UIImageView {
     /// Parameters:
     ///  - path: source icon path
     fileprivate func blavatarURLForBlavatarURL(_ path: String) -> URL? {
-        let size = self.sizeForBlavatarDownload()
-        return self.urlForUrlWithFormat(path, format: String(format: "d=404&s=%d", size))
+        let size = sizeForBlavatarDownload()
+        return urlForUrlWithFormat(path, format: String(format: "d=404&s=%d", size))
     }
 
     /// Returns the download size for a blavatar
     fileprivate func sizeForBlavatarDownload() -> Int {
-        var size = UIImageView.BlavatarDefaultSize
+        var size = Blavatar.defaultSize
         size *= Int(UIScreen.main.scale)
 
         return size
@@ -289,16 +296,15 @@ extension UIImageView {
     }
 
     fileprivate func isBlavatarURL(_ path: String) -> Bool {
-        return path.range(of: "gravatar.com/blavatar") != nil
+        return path.contains("gravatar.com/blavatar")
     }
 
     fileprivate func urlForUrlWithFormat(_ path: String, format: String) -> URL? {
-        var urlComponents = URLComponents(string: path)
-        if urlComponents == nil {
+        guard var urlComponents = URLComponents(string: path) else {
             return nil
         }
 
-        urlComponents!.query = format
-        return urlComponents!.url
+        urlComponents.query = format
+        return urlComponents.url
     }
 }
