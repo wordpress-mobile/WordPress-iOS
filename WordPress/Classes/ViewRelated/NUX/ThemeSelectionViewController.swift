@@ -7,6 +7,9 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     var siteType: SiteType!
     private typealias Styles = WPStyleGuide.Themes
 
+    private var helpBadge: WPNUXHelpBadgeLabel!
+    private var helpButton: UIButton!
+
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var themesSyncHelper: WPContentSyncHelper!
 
@@ -31,7 +34,9 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
 
     private func configureView() {
         WPStyleGuide.configureColors(for: view, collectionView: collectionView)
-        _ = addHelpButtonToNavController()
+        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
+        helpButton = helpButtonResult
+        helpBadge = helpBadgeResult
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
     }
 
@@ -194,6 +199,18 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
 
     private func updateResults() {
         collectionView?.reloadData()
+    }
+
+    // MARK: - LoginWithLogoAndHelpViewController
+
+    func handleHelpButtonTapped(_ sender: AnyObject) {
+        displaySupportViewController(sourceTag: .wpComCreateSiteTheme)
+    }
+
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
+        let count = HelpshiftUtils.unreadNotificationCount()
+        helpBadge.text = "\(count)"
+        helpBadge.isHidden = (count == 0)
     }
 
     // MARK: - Helpers
