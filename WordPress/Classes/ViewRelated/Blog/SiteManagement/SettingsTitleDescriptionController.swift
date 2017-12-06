@@ -2,7 +2,6 @@ import UIKit
 import Gridicons
 
 final class SettingsTitleDescriptionController: UITableViewController {
-    private let blog: Blog
     private let tag: PostTag
 
     fileprivate enum Sections: Int, CustomStringConvertible {
@@ -59,8 +58,7 @@ final class SettingsTitleDescriptionController: UITableViewController {
         return self.textView()
     }()
 
-    public init(blog: Blog, tag: PostTag) {
-        self.blog = blog
+    public init(tag: PostTag) {
         self.tag = tag
         super.init(style: .grouped)
     }
@@ -145,8 +143,8 @@ final class SettingsTitleDescriptionController: UITableViewController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelTitle)
         alertController.addDefaultActionWithTitle(actionTitle) { _ in
-            let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            tagsService.delete(self.tag, for: self.blog)
+//            let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+//            tagsService.delete(self.tag, for: self.blog)
             self.navigateBack()
         }
     }
