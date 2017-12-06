@@ -110,8 +110,8 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     @objc private func refreshTags() {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
-            print("tags ", tags)
             self?.refreshControl?.endRefreshing()
+            self?.refreshNoResultsView()
         }) { [weak self] error in
             self?.tagsFailedLoading(error: error)
         }
