@@ -3,6 +3,10 @@ import Gridicons
 
 final class SettingsTitleDescriptionController: UITableViewController {
     private let tag: PostTag
+    final class Data {
+        var title: String?
+        var extendedDescription: String?
+    }
 
     fileprivate enum Sections: Int, CustomStringConvertible {
         case name
