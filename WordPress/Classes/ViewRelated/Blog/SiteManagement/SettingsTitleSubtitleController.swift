@@ -151,6 +151,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
             content.bottomAnchor.constraint(equalTo: readableGuide.bottomAnchor)
             ])
 
+        WPStyleGuide.configureTableViewActionCell(returnValue)
         return returnValue
     }
 
