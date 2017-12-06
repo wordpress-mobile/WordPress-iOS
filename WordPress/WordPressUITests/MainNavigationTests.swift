@@ -45,7 +45,7 @@ class MainNavigationTests: XCTestCase {
         self.waitForElementToAppear(element: app.navigationBars["Notifications"])
 
         mainNavigationTabBar.buttons["Write"].tap()
-        app.navigationBars["WPPostView"].buttons["Close"].tap()
+        app.buttons["Close"].tap()
     }
 
 }

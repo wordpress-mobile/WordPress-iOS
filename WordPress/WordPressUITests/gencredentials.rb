@@ -11,7 +11,7 @@ end
 
 def get_file()
   # rawpath = ENV['WPUITEST_CONFIG']  
-  rawpath = "~/.wp_test_credentials" # Since we use buddybuild_prebuild.sh to cp these files
+  rawpath = "~/.wpcom_test_credentials" # Since we use buddybuild_prebuild.sh to cp these files
   path = File.expand_path(rawpath)
   unless File.exist?(path)
     $stderr.puts "error: file #{path} not found"
