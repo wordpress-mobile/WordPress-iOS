@@ -31,7 +31,7 @@ open class TimeZoneService {
                     let timezoneInfo = NSEntityDescription.insertNewObject(forEntityName: "TimeZoneInfo", into: context) as! TimeZoneInfo
                     timezoneInfo.label = key
                     timezoneInfo.value = val
-                    timezoneInfo.continent = groupInfo.name
+                    timezoneInfo.group = groupInfo.name
                 }
             }
             manager.saveContextAndWait(context)
@@ -40,7 +40,7 @@ open class TimeZoneService {
 
     private func loadData() -> [TimeZoneInfo] {
         let fetchRequest = NSFetchRequest<TimeZoneInfo>(entityName: "TimeZoneInfo")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "continent", ascending: true),
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "group", ascending: true),
                                         NSSortDescriptor(key: "label", ascending: true)]
         do {
             return try ContextManager.sharedInstance().mainContext.fetch(fetchRequest)

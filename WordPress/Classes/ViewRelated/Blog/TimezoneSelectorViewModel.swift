@@ -13,9 +13,9 @@ enum TimezoneSelectorViewModel {
     case ready([TimeZoneInfo], String?, NSNumber?, ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?)
     case error(String)
 
-    /// the first param is a list of all continents, used as section headers
-    /// the second param is a mapping from continent to timezones in that continent
-    typealias ContinentsAndTimezones = ([String], [String: [(String, String)]])
+    /// the first param is a list of all groups, used as section headers
+    /// the second param is a mapping from group to timezones in that group
+    typealias GroupsAndTimezones = ([String], [String: [(String, String)]])
 
     static let manualOffsetSectionName: String = "Manual Offsets"
     var noResultsViewModel: WPNoResultsView.Model? {
@@ -51,11 +51,11 @@ enum TimezoneSelectorViewModel {
         case .loading, .error:
             return .Empty
         case .ready(let timezoneInfoArray, let usersTimezoneString, let usersManualOffset, let onChange):
-            let (continents, continentToTimezones) = setupVariables(with: timezoneInfoArray)
-            let indexPathToHighlight = getIndexPathToHighlight(timezoneString: usersTimezoneString, manualOffset: usersManualOffset, data: (continents, continentToTimezones), allTimezones: timezoneInfoArray)
+            let (groups, groupToTimezones) = setupVariables(with: timezoneInfoArray)
+            let indexPathToHighlight = getIndexPathToHighlight(timezoneString: usersTimezoneString, manualOffset: usersManualOffset, data: (groups, groupToTimezones), allTimezones: timezoneInfoArray)
             var sections: [ImmuTableSection] = []
-            for (sectionIndex, continent) in continents.enumerated() {
-                guard let allTimezones = continentToTimezones[continent] else {
+            for (sectionIndex, group) in groups.enumerated() {
+                guard let allTimezones = groupToTimezones[group] else {
                     continue
                 }
                 var rows: [CheckmarkRow] = []
@@ -73,7 +73,7 @@ enum TimezoneSelectorViewModel {
 
                     })
                 }
-                let section = ImmuTableSection(headerText: continent, rows: rows)
+                let section = ImmuTableSection(headerText: group, rows: rows)
                 sections.append(section)
             }
             return ImmuTable(sections: sections)
@@ -94,25 +94,25 @@ enum TimezoneSelectorViewModel {
         }
     }
 
-    /// Returns a sorted list of continents and timezones mapped to a continent
-    private func setupVariables(with result: [TimeZoneInfo]) -> ContinentsAndTimezones {
-        var continentNames = result.reduce(into: Set<String>(), { (mySet, timezone) in
-            mySet.insert(timezone.continent)
+    /// Returns a sorted list of groups and timezones mapped to a group
+    private func setupVariables(with result: [TimeZoneInfo]) -> GroupsAndTimezones {
+        var groupNames = result.reduce(into: Set<String>(), { (mySet, timezone) in
+            mySet.insert(timezone.group)
         }).sorted()
 
         // remove manual offset's from it's sorted position and push it to the bottom
-        if let manualOffsetIndex = continentNames.index(of: TimezoneSelectorViewModel.manualOffsetSectionName) {
-            continentNames.remove(at: manualOffsetIndex)
-            continentNames.append(TimezoneSelectorViewModel.manualOffsetSectionName)
+        if let manualOffsetIndex = groupNames.index(of: TimezoneSelectorViewModel.manualOffsetSectionName) {
+            groupNames.remove(at: manualOffsetIndex)
+            groupNames.append(TimezoneSelectorViewModel.manualOffsetSectionName)
         }
-        var timezoneNamesSortedByContinent: [String: [(String, String)]] = [:]
-        for continent in continentNames {
-            let allTimezonesInContinent = result.filter({ $0.continent == continent })
+        var timezoneNamesSortedByGroup: [String: [(String, String)]] = [:]
+        for group in groupNames {
+            let allTimezonesInGroup = result.filter({ $0.group == group })
 
-            if continent == TimezoneSelectorViewModel.manualOffsetSectionName {
+            if group == TimezoneSelectorViewModel.manualOffsetSectionName {
                 // sort the UTC strings
-                let allLabelsAndValues = allTimezonesInContinent.map({ (label: $0.label, value: $0.value) })
-                timezoneNamesSortedByContinent[continent] = allLabelsAndValues.sorted(by: { (left, right) -> Bool in
+                let allLabelsAndValues = allTimezonesInGroup.map({ (label: $0.label, value: $0.value) })
+                timezoneNamesSortedByGroup[group] = allLabelsAndValues.sorted(by: { (left, right) -> Bool in
                     guard let leftNumString = left.value.components(separatedBy: "UTC").last,
                         let rightNumString = right.value.components(separatedBy: "UTC").last,
                         let floatLeftNum = Float(leftNumString),
@@ -122,26 +122,26 @@ enum TimezoneSelectorViewModel {
                     return floatLeftNum > floatRightNum
                 })
             } else {
-                timezoneNamesSortedByContinent[continent] = allTimezonesInContinent.sorted(by: { (timezone1, timezone2) -> Bool in
+                timezoneNamesSortedByGroup[group] = allTimezonesInGroup.sorted(by: { (timezone1, timezone2) -> Bool in
                     return timezone1.label < timezone2.label
                 }).map({ ($0.label, $0.value) })
             }
         }
-        return (headerNames: continentNames, sortedNamesByContinent: timezoneNamesSortedByContinent)
+        return (headerNames: groupNames, sortedNamesByGroup: timezoneNamesSortedByGroup)
     }
 
     /// returns an IndexPath, which is the user's current selection
-    private func getIndexPathToHighlight(timezoneString: String?, manualOffset: NSNumber?, data: ContinentsAndTimezones, allTimezones: [TimeZoneInfo]) -> IndexPath? {
+    private func getIndexPathToHighlight(timezoneString: String?, manualOffset: NSNumber?, data: GroupsAndTimezones, allTimezones: [TimeZoneInfo]) -> IndexPath? {
         if let usersTimeZone = timezoneString, !usersTimeZone.isEmpty {
-            for (continentIndex, continent) in data.0.enumerated() {
-                let allTimezonesInContinent = allTimezones.filter({ $0.continent == continent })
-                guard let keyValPair = allTimezonesInContinent.first(where: { $0.value == usersTimeZone }),
-                    let index = data.1[continent]?.index(where: { (labelValPair) -> Bool in
+            for (groupIndex, group) in data.0.enumerated() {
+                let allTimezonesInGroup = allTimezones.filter({ $0.group == group })
+                guard let keyValPair = allTimezonesInGroup.first(where: { $0.value == usersTimeZone }),
+                    let index = data.1[group]?.index(where: { (labelValPair) -> Bool in
                         return labelValPair.0 == keyValPair.label
                     }) else {
                         continue
                 }
-                let indexPath = IndexPath(row: index, section: continentIndex)
+                let indexPath = IndexPath(row: index, section: groupIndex)
                 return indexPath
             }
         } else if let manualOffset = manualOffset,
