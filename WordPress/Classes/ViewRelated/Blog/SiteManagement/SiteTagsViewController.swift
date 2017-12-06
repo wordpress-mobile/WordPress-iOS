@@ -225,6 +225,11 @@ extension SiteTagsViewController {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.delete(tag, for: blog)
     }
+
+    private func save(_ tag: PostTag) {
+        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        tagsService.commit(tag, for: blog)
+    }
 }
 
 // MARK: - Table view delegate
@@ -252,15 +257,28 @@ extension SiteTagsViewController {
                                                                         subtitle: confirmationSubtitle,
                                                                         actionTitle: actionTitle,
                                                                         cancelTitle: cancelTitle)
-        
+
         let singleTag = SettingsTitleSubtitleController(data: data, confirmation: confirmation)
         singleTag.setAction { updatedData in
-            print("data to delete ", updatedData)
             self.navigationController?.popViewController(animated: true)
+
+            guard let tag = details else {
+                return
+            }
+
+            self.delete(tag)
         }
 
         singleTag.setUpdate { updatedData in
-            print("data to update ", updatedData)
+            guard let tag = details else {
+                print("Create a tag")
+                return
+            }
+
+            tag.name = updatedData.title
+            tag.tagDescription = updatedData.subtitle
+
+            self.save(tag)
         }
 
         navigationController?.pushViewController(singleTag, animated: true)
