@@ -137,8 +137,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func createTag() {
-        let data = SettingsTitleSubtitleController.Data(title: nil, subtitle: nil)
-        navigate(to: data)
+        navigate(to: nil)
     }
 
     private func refreshNoResultsView() {
@@ -235,23 +234,22 @@ extension SiteTagsViewController {
             return
         }
 
-        let data = SettingsTitleSubtitleController.Data(title: selectedTag.name, subtitle: selectedTag.tagDescription)
-
-        navigate(to: data)
+        navigate(to: selectedTag)
     }
 }
 
 // MARK: - Navigation
 extension SiteTagsViewController {
-    fileprivate func navigate(to details: SettingsTitleSubtitleController.Data) {
-        let singleTag = SettingsTitleSubtitleController(data: details)
-        singleTag.setAction { data in
-            print("data to delete " , data)
+    fileprivate func navigate(to details: PostTag?) {
+        let data = SettingsTitleSubtitleController.Data(title: details?.name, subtitle: details?.tagDescription)
+        let singleTag = SettingsTitleSubtitleController(data: data)
+        singleTag.setAction { updatedData in
+            print("data to delete ", updatedData)
             self.navigationController?.popViewController(animated: true)
         }
 
-        singleTag.setUpdate { data in
-            print("data to update ", data)
+        singleTag.setUpdate { updatedData in
+            print("data to update ", updatedData)
         }
 
         navigationController?.pushViewController(singleTag, animated: true)
