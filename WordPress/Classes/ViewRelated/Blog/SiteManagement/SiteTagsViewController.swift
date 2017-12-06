@@ -137,10 +137,8 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func createTag() {
-        guard let emptyTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
-            return
-        }
-        navigate(to: emptyTag)
+        let data = SettingsTitleSubtitleController.Data(title: nil, subtitle: nil)
+        navigate(to: data)
     }
 
     private func refreshNoResultsView() {
@@ -237,14 +235,16 @@ extension SiteTagsViewController {
             return
         }
 
-        navigate(to: selectedTag)
+        let data = SettingsTitleSubtitleController.Data(title: selectedTag.name, subtitle: selectedTag.tagDescription)
+
+        navigate(to: data)
     }
 }
 
 // MARK: - Navigation
 extension SiteTagsViewController {
-    fileprivate func navigate(to tag: PostTag) {
-        let singleTag = SettingsTitleSubtitleController(tag: tag)
+    fileprivate func navigate(to details: SettingsTitleSubtitleController.Data) {
+        let singleTag = SettingsTitleSubtitleController(data: details)
         navigationController?.pushViewController(singleTag, animated: true)
     }
 }

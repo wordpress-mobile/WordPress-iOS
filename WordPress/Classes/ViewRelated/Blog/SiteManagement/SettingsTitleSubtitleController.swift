@@ -2,12 +2,11 @@ import UIKit
 import Gridicons
 
 final class SettingsTitleSubtitleController: UITableViewController {
-    private let tag: PostTag
     final class Data {
         var title: String?
         var subtitle: String?
 
-        init(title: String, subtitle: String) {
+        init(title: String?, subtitle: String?) {
             self.title = title
             self.subtitle = subtitle
         }
@@ -67,8 +66,10 @@ final class SettingsTitleSubtitleController: UITableViewController {
         return self.textView()
     }()
 
-    public init(tag: PostTag) {
-        self.tag = tag
+    private let data: SettingsTitleSubtitleController.Data
+
+    public init(data: SettingsTitleSubtitleController.Data) {
+        self.data = data
         super.init(style: .grouped)
     }
 
@@ -83,7 +84,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func setupNavigationBar() {
-        guard let name = tag.name, name.count > 0 else {
+        guard let title = data.title, title.count > 0 else {
             return
         }
 
@@ -96,7 +97,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func setupTitle() {
-        navigationItem.title = tag.name
+        navigationItem.title = data.title
     }
 
     private func setupTable() {
@@ -181,10 +182,10 @@ extension SettingsTitleSubtitleController {
         let sectionForIndexPath = Sections.section(for: indexPath.section)
         switch sectionForIndexPath {
         case .name:
-            nameTextField.text = tag.name
+            nameTextField.text = data.title
             return nameCell
         case .description:
-            descriptionTextField.text = tag.tagDescription
+            descriptionTextField.text = data.subtitle
             return descriptionCell
         }
     }
@@ -195,20 +196,18 @@ extension SettingsTitleSubtitleController {
     }
 }
 
-
 // MARK: - Tag name updates
 extension SettingsTitleSubtitleController {
     @objc
     fileprivate func textChanged(_ textField: UITextField) {
-        tag.name = textField.text
+        data.title = textField.text
         setupTitle()
     }
 }
 
-
 // MARK: - Tag description updates
 extension SettingsTitleSubtitleController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        tag.tagDescription = textView.text
+        data.subtitle = textView.text
     }
 }
