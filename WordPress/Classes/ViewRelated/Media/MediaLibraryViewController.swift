@@ -399,7 +399,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
 
         alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
-            MediaUploadCoordinator.shared.retryMedia(media)
+            MediaCoordinator.shared.retryMedia(media)
         }
 
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
@@ -454,7 +454,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             return
         }
 
-        uploadObserverUUID = MediaUploadCoordinator.shared.addObserver({ [weak self] (media, state) in
+        uploadObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (media, state) in
             switch state {
             case .progress(let progress) :
                 self?.updateCellProgress(progress, for: media)
@@ -471,7 +471,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func unregisterUploadCoordinatorObserver() {
         if let uuid = uploadObserverUUID {
-            MediaUploadCoordinator.shared.removeObserver(withUUID: uuid)
+            MediaCoordinator.shared.removeObserver(withUUID: uuid)
         }
     }
 
@@ -632,7 +632,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             useUploadCoordinator = false
 
             for asset in assets {
-                MediaUploadCoordinator.shared.addMedia(from: asset, to: blog)
+                MediaCoordinator.shared.addMedia(from: asset, to: blog)
             }
 
             return
@@ -659,7 +659,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             case .processing:
                 overlayView.state = .indeterminate
             case .pushing:
-                if let progress = MediaUploadCoordinator.shared.progress(for: media) {
+                if let progress = MediaCoordinator.shared.progress(for: media) {
                     overlayView.state = .progress(progress.fractionCompleted)
                 }
             case .failed:
