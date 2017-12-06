@@ -24,6 +24,10 @@ static NSString * const RemoteOptionValueOrderByTitle = @"title";
 static NSString * const RemoteOptionValueOrderByCommentCount = @"comment_count";
 static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 
+static NSString * const RemotePostJSONKeyTerms = @"terms";
+static NSString * const RemotePostJSONKeyProjectTags = @"jetpack-portfolio-tag";
+static NSString * const RemotePostJSONKeyProjectTypes = @"jetpack-portfolio-type";
+
 @implementation PostServiceRemoteREST
 
 - (void)getPostWithID:(NSNumber *)postID
@@ -386,6 +390,16 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         if (!post.pathForDisplayImage) {
             post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
         }
+    }
+
+    // PortfolioProject-related
+    NSDictionary *terms = jsonPost[RemotePostJSONKeyTerms];
+    if (terms[RemotePostJSONKeyProjectTags]) {
+        post.projectTags = [self tagNamesFromJSONDictionary:terms[RemotePostJSONKeyProjectTags]];
+    }
+
+    if (terms[RemotePostJSONKeyProjectTypes]) {
+        post.projectTypes = [self tagNamesFromJSONDictionary:terms[RemotePostJSONKeyProjectTypes]];
     }
 
     return post;
