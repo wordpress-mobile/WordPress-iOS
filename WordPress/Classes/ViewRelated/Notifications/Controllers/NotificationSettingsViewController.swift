@@ -230,7 +230,7 @@ open class NotificationSettingsViewController: UIViewController {
             cell.accessoryType              = .disclosureIndicator
 
             if let blog = settings.blog {
-                cell.imageView?.setImageWithSiteIconForBlog(blog)
+                cell.imageView?.setImageWithSiteIcon(for: blog)
             } else {
                 cell.imageView?.image = WPStyleGuide.Notifications.blavatarPlaceholderImage
             }
