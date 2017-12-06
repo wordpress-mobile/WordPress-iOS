@@ -6,11 +6,11 @@ import WordPressShared
 /// related to sharing.
 ///
 @objc class SharingButtonsViewController: UITableViewController {
-    let buttonSectionIndex = 0
-    let moreSectionIndex = 1
+    @objc let buttonSectionIndex = 0
+    @objc let moreSectionIndex = 1
 
-    let blog: Blog
-    var buttons = [SharingButton]()
+    @objc let blog: Blog
+    @objc var buttons = [SharingButton]()
     var sections = [SharingButtonsSection]()
     var buttonsSection: SharingButtonsSection {
         return sections[buttonSectionIndex]
@@ -24,24 +24,24 @@ import WordPressShared
         return sections.last!
     }
 
-    let buttonStyles = [
+    @objc let buttonStyles = [
         "icon-text": NSLocalizedString("Icon & Text", comment: "Title of a button style"),
         "icon": NSLocalizedString("Icon Only", comment: "Title of a button style"),
         "text": NSLocalizedString("Text Only", comment: "Title of a button style"),
         "official": NSLocalizedString("Official Buttons", comment: "Title of a button style")
     ]
 
-    let buttonStyleTitle = NSLocalizedString("Button Style", comment: "Title for a list of different button styles.")
-    let labelTitle = NSLocalizedString("Label", comment: "Noun. Title for the setting to edit the sharing label text.")
-    let twitterUsernameTitle = NSLocalizedString("Twitter Username", comment: "Title for the setting to edit the twitter username used when sharing to twitter.")
-    let twitterServiceID = "twitter"
-    let managedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
+    @objc let buttonStyleTitle = NSLocalizedString("Button Style", comment: "Title for a list of different button styles.")
+    @objc let labelTitle = NSLocalizedString("Label", comment: "Noun. Title for the setting to edit the sharing label text.")
+    @objc let twitterUsernameTitle = NSLocalizedString("Twitter Username", comment: "Title for the setting to edit the twitter username used when sharing to twitter.")
+    @objc let twitterServiceID = "twitter"
+    @objc let managedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
 
     // MARK: - LifeCycle Methods
 
 
-    init(blog: Blog) {
+    @objc init(blog: Blog) {
         self.blog = blog
 
         super.init(style: .grouped)
@@ -86,7 +86,7 @@ import WordPressShared
     /// Configures the table view. The table view is set to edit mode to allow
     /// rows in the buttons and more sections to be reordered.
     ///
-    func configureTableView() {
+    @objc func configureTableView() {
         tableView.register(SettingTableViewCell.self, forCellReuseIdentifier: SharingCellIdentifiers.SettingsCellIdentifier)
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: SharingCellIdentifiers.SortableSwitchCellIdentifier)
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: SharingCellIdentifiers.SwitchCellIdentifier)
@@ -99,7 +99,7 @@ import WordPressShared
 
     /// Sets up the sections for the table view and configures their starting state.
     ///
-    func setupSections() {
+    @objc func setupSections() {
         sections.append(setupButtonSection()) // buttons section should be section idx 0
         sections.append(setupMoreSection()) // more section should be section idx 1
         sections.append(setupShareLabelSection())
@@ -265,7 +265,7 @@ import WordPressShared
     /// the section header is empty, and there are no rows.  When the twitter button
     /// is enabled. the section header and the row is shown.
     ///
-    func configureTwitterNameSection() {
+    @objc func configureTwitterNameSection() {
         if !shouldShowTwitterSection() {
             twitterSection.footerText = " "
             twitterSection.rows.removeAll()
@@ -368,7 +368,7 @@ import WordPressShared
     ///     - cell: The SwitchTableViewCell cell to configure
     ///     - button: The sharing button that the row will represent.
     ///
-    func configureSortableSwitchCellAppearance(_ cell: SwitchTableViewCell, button: SharingButton) {
+    @objc func configureSortableSwitchCellAppearance(_ cell: SwitchTableViewCell, button: SharingButton) {
         cell.editingAccessoryView = cell.accessoryView
         cell.editingAccessoryType = cell.accessoryType
         cell.imageView?.image = self.iconForSharingButton(button)
@@ -381,7 +381,7 @@ import WordPressShared
     /// all buttons are shown with switch cells. When the section is not editing,
     /// only enabled and visible buttons are shown and the rows are sortable.
     ///
-    func configureButtonRows() {
+    @objc func configureButtonRows() {
         var rows = [SharingButtonsRow]()
 
         let row = SharingSwitchRow()
@@ -424,7 +424,7 @@ import WordPressShared
     /// all buttons are shown with switch cells. When the section is not editing,
     /// only enabled and hidden buttons are shown and the rows are sortable.
     ///
-    func configureMoreRows() {
+    @objc func configureMoreRows() {
         var rows = [SharingButtonsRow]()
 
         let row = SharingSwitchRow()
@@ -466,7 +466,7 @@ import WordPressShared
     /// Refreshes the rows for but button section (also the twitter section if
     /// needed) and reloads the section.
     ///
-    func refreshButtonsSection() {
+    @objc func refreshButtonsSection() {
         configureButtonRows()
         configureTwitterNameSection()
 
@@ -478,7 +478,7 @@ import WordPressShared
     /// Refreshes the rows for but more section (also the twitter section if
     /// needed) and reloads the section.
     ///
-    func refreshMoreSection() {
+    @objc func refreshMoreSection() {
         configureMoreRows()
         configureTwitterNameSection()
 
@@ -493,7 +493,7 @@ import WordPressShared
     ///
     /// - Returns: The UIImage for the icon
     ///
-    func iconForSharingButton(_ button: SharingButton) -> UIImage {
+    @objc func iconForSharingButton(_ button: SharingButton) -> UIImage {
         return WPStyleGuide.iconForService(button.buttonID as NSString)
     }
 
@@ -505,7 +505,7 @@ import WordPressShared
     ///
     /// - Returns: true if the twitter section should be shown. False otherwise.
     ///
-    func shouldShowTwitterSection() -> Bool {
+    @objc func shouldShowTwitterSection() -> Bool {
         for button in buttons {
             if button.buttonID == twitterServiceID {
                 return button.enabled
@@ -520,7 +520,7 @@ import WordPressShared
     ///
     /// - Parameter refresh: True if the tableview should be reloaded.
     ///
-    func saveBlogSettingsChanges(_ refresh: Bool) {
+    @objc func saveBlogSettingsChanges(_ refresh: Bool) {
         if refresh {
             tableView.reloadData()
         }
@@ -544,7 +544,7 @@ import WordPressShared
     /// Syncs sharing buttons from the user's blog and reloads the button sections
     /// when finished.  Fails silently if there is an error.
     ///
-    func syncSharingButtons() {
+    @objc func syncSharingButtons() {
         let service = SharingService(managedObjectContext: managedObjectContext)
         service.syncSharingButtonsForBlog(self.blog,
             success: { [weak self] in
@@ -559,7 +559,7 @@ import WordPressShared
     /// Sync sharing settings from the user's blog and reloads the setting sections
     /// when finished.  Fails silently if there is an error.
     ///
-    func syncSharingSettings() {
+    @objc func syncSharingSettings() {
         let service = BlogService(managedObjectContext: managedObjectContext)
         service.syncSettings(for: blog, success: { [weak self] in
                 self?.reloadSettingsSections()
@@ -573,7 +573,7 @@ import WordPressShared
 
     /// Reloads the sections for different button settings.
     ///
-    func reloadSettingsSections() {
+    @objc func reloadSettingsSections() {
         let settingsSections = NSMutableIndexSet()
         for i in 0..<sections.count {
             if i <= buttonSectionIndex {
@@ -590,7 +590,7 @@ import WordPressShared
 
     /// Updates rows after editing.
     ///
-    func updateButtonOrderAfterEditing() {
+    @objc func updateButtonOrderAfterEditing() {
         let buttonsForButtonSection = buttons.filter { (btn) -> Bool in
             return btn.enabled && btn.visible
         }
@@ -624,7 +624,7 @@ import WordPressShared
     ///
     /// - Parameter refreshAfterSync: If true buttons are reloaded when the sync completes.
     ///
-    func saveButtonChanges(_ refreshAfterSync: Bool) {
+    @objc func saveButtonChanges(_ refreshAfterSync: Bool) {
         let context = ContextManager.sharedInstance().mainContext
         ContextManager.sharedInstance().save(context) { [weak self] in
             self?.reloadButtons()
@@ -636,7 +636,7 @@ import WordPressShared
     /// Retrives a fresh copy of the SharingButtons from core data, updating the
     /// `buttons` property and refreshes the button section and the more section.
     ///
-    func reloadButtons() {
+    @objc func reloadButtons() {
         let service = SharingService(managedObjectContext: managedObjectContext)
         buttons = service.allSharingButtonsForBlog(blog)
 
@@ -649,7 +649,7 @@ import WordPressShared
     ///
     /// - Parameter refresh: True if the tableview sections should be reloaded.
     ///
-    func syncButtonChangesToBlog(_ refresh: Bool) {
+    @objc func syncButtonChangesToBlog(_ refresh: Bool) {
         let service = SharingService(managedObjectContext: managedObjectContext)
         service.updateSharingButtonsForBlog(blog,
             sharingButtons: buttons,
@@ -670,7 +670,7 @@ import WordPressShared
     ///
     /// - Parameter error: An NSError object.
     ///
-    func showErrorSyncingMessage(_ error: NSError?) {
+    @objc func showErrorSyncingMessage(_ error: NSError?) {
         let title = NSLocalizedString("Could Not Save Changes", comment: "Title of an prompt letting the user know there was a problem saving.")
         var message = NSLocalizedString("There was a problem saving changes to sharing management.", comment: "A short error message shown in a prompt.")
         if let error = error {
@@ -689,7 +689,7 @@ import WordPressShared
     /// Called when the user taps the label row. Shows a controller to change the
     /// edit label text.
     ///
-    func handleEditLabel() {
+    @objc func handleEditLabel() {
         let text = blog.settings!.sharingLabel
         let placeholder = NSLocalizedString("Type a label", comment: "A placeholder for the sharing label.")
         let hint = NSLocalizedString("Change the text of the sharing buttons' label. This text won't appear until you add at least one sharing button.", comment: "Instructions for editing the sharing label.")
@@ -711,7 +711,7 @@ import WordPressShared
     /// Called when the user taps the button style row.  Shows a controller to
     /// choose from available button styles.
     ///
-    func handleEditButtonStyle() {
+    @objc func handleEditButtonStyle() {
         var titles = [String]()
         var values = [String]()
         _ = buttonStyles.map({ (k: String, v: String) in
@@ -748,7 +748,7 @@ import WordPressShared
     /// Called when the user taps the twitter name row. Shows a controller to change
     /// the twitter name text.
     ///
-    func handleEditTwitterName() {
+    @objc func handleEditTwitterName() {
         let text = blog.settings!.sharingTwitterName
         let placeholder = NSLocalizedString("Username", comment: "A placeholder for the twitter username")
         let hint = NSLocalizedString("This will be included in tweets when people share using the Twitter button.", comment: "Information about the twitter sharing feature.")

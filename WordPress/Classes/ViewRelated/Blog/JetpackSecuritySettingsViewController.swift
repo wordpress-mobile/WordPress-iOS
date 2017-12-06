@@ -29,7 +29,7 @@ open class JetpackSecuritySettingsViewController: UITableViewController {
 
     // MARK: - Initializer
 
-    public convenience init(blog: Blog) {
+    @objc public convenience init(blog: Blog) {
         self.init(style: .grouped)
         self.blog = blog
         self.service = BlogJetpackSettingsService(managedObjectContext: settings.managedObjectContext!)

@@ -1,1 +1,2 @@
-Pas de grandes nouveautés mais quelques améliorations pour vous offrir une app plus rapide et plus stable. Tout ce qui brille n’est pas or, parfois c'est du code !
+Nouvelles améliorations des performances de l'éditeur et corrections de bogues. 
+ Lecteur : les commentaires sur les sites Jetpack sont maintenant disponibles. 

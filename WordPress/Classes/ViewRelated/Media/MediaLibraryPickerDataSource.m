@@ -84,6 +84,23 @@
 
 #pragma mark - WPMediaCollectionDataSource
 
+- (void)searchFor:(NSString *)searchText
+{
+    if (![_searchQuery isEqualToString:searchText]) {
+        _searchQuery = [searchText copy];
+
+        _fetchController = nil;
+        [self.fetchController performFetch:nil];
+    }
+}
+
+- (void)searchCancelled
+{
+    _searchQuery = nil;
+    _fetchController = nil;
+    [self.fetchController performFetch:nil];
+}
+
 -(NSInteger)numberOfAssets
 {
     if ([[self.fetchController sections] count] > 0) {
@@ -238,7 +255,7 @@
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWithPHAsset:asset forPostObjectID:objectID thumbnailCallback:nil completion:^(Media *media, NSError *error) {
+    [mediaService createMediaWith:asset objectID:objectID thumbnailCallback:nil completion:^(Media *media, NSError *error) {
         [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {
@@ -257,8 +274,8 @@
         objectID = [self.blog objectID];
     }
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWithURL:url
-                     forPostObjectID:objectID
+    [mediaService createMediaWith:url
+                     objectID:objectID
                    thumbnailCallback:nil
                           completion:^(Media *media, NSError *error) {
         [self loadDataWithOptions:WPMediaLoadOptionsAssets success:^{
@@ -372,14 +389,10 @@
         fetchRequest.predicate = filterPredicate;
     }
 
-    NSPredicate *statusPredicate;
-    if (self.includeUnsyncedMedia) {
-        statusPredicate = [NSPredicate predicateWithFormat:@"%K != %@", @"remoteStatusNumber", @(MediaRemoteStatusFailed)];
-    } else {
-        statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
+    if (!self.includeUnsyncedMedia) {
+        NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
+        fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
     }
-
-    fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
     fetchRequest.sortDescriptors = @[sortDescriptor];
