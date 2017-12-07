@@ -230,12 +230,13 @@ extension SiteTagsViewController {
 
     private func delete(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.delete(tag, for: blog)
+        tagsService.delete(tag, for: blog, success: nil, failure: nil)
+        
     }
 
     private func save(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.commit(tag, for: blog)
+        tagsService.commit(tag, for: blog, success: nil, failure: nil)
     }
 }
 

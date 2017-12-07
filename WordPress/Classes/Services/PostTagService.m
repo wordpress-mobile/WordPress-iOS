@@ -120,6 +120,8 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 - (void)deleteTag:(PostTag*)tag
           forBlog:(Blog *)blog
+          success:(nullable void (^)(NSArray <PostTag *> *tags))success
+          failure:(nullable void (^)(NSError *error))failure
 {
     //Not implemented yet
     NSLog(@"Delete tag %@ for blog %@", tag, blog);
@@ -127,11 +129,19 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 - (void)commitTag:(PostTag*)tag
           forBlog:(Blog *)blog
+          success:(nullable void (^)(NSArray <PostTag *> *tags))success
+          failure:(nullable void (^)(NSError *error))failure
 {
     if (tag.tagID.integerValue == PostTagIdDefaultValue) {
-        [self saveNewTag:tag blog:blog];
+        [self saveNewTag:tag
+                    blog:blog
+                 success:success
+                 failure:failure];
     } else {
-        [self updateExistingTag:tag blog:blog];
+        [self updateExistingTag:tag
+                           blog:blog
+                        success:success
+                        failure:failure];
     }
 }
 
@@ -200,14 +210,41 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 - (void)saveNewTag:(PostTag *)tag
               blog:(Blog *)blog
+           success:(nullable void (^)(NSArray <PostTag *> *tags))success
+           failure:(nullable void (^)(NSError *error))failure
 {
     NSLog(@"this is a new tag");
 }
 
 - (void)updateExistingTag:(PostTag *)tag
                      blog:(Blog *)blog
+                  success:(nullable void (^)(NSArray <PostTag *> *tags))success
+                  failure:(nullable void (^)(NSError *error))failure
 {
     NSLog(@"this is a tag to be updated");
+
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+
+    //TODO. Commit the tag locally first
+    RemotePostTag *remoteTag = [self remoteTagWith:tag];
+
+    [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
+        // Do something?
+    } failure:^(NSError * _Nonnull error) {
+        [self handleError:error forBlog:blog withFailure:failure];
+    }];
+}
+
+- (RemotePostTag*)remoteTagWith:(PostTag *)tag
+{
+    RemotePostTag *remoteTag = [[RemotePostTag alloc] init];
+    remoteTag.tagID = tag.tagID;
+    remoteTag.name = tag.name;
+    remoteTag.slug = tag.slug;
+    remoteTag.tagDescription = tag.tagDescription;
+    remoteTag.postCount = tag.postCount;
+
+    return remoteTag;
 }
 
 - (void)handleError:(nullable NSError *)error forBlog:(nullable Blog *)blog withFailure:(nullable void(^)(NSError *error))failure
