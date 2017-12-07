@@ -52,26 +52,28 @@ enum TimezoneSelectorViewModel {
             return .Empty
         case .ready(let timezoneInfoArray, let usersTimezoneString, let usersManualOffset, let onChange):
             let (groups, groupToTimezones) = setupVariables(with: timezoneInfoArray)
-            let indexPathToHighlight = getIndexPathToHighlight(timezoneString: usersTimezoneString, manualOffset: usersManualOffset, data: (groups, groupToTimezones), allTimezones: timezoneInfoArray)
+            /// The selected Label string used to show a checkmark in a row
+            var selectedCellLabel: String?
+            if let timeZoneString = usersTimezoneString, !timeZoneString.isEmpty {
+                selectedCellLabel = timeZoneString
+            } else if let manualOffset = usersManualOffset {
+                let utcString: String = String(format: "UTC%+g", manualOffset.floatValue)
+                selectedCellLabel = utcString
+            }
+
             var sections: [ImmuTableSection] = []
-            for (sectionIndex, group) in groups.enumerated() {
+            for group in groups {
                 guard let allTimezones = groupToTimezones[group] else {
                     continue
                 }
                 var rows: [CheckmarkRow] = []
-                if let highlightedIndexPath = indexPathToHighlight,
-                    highlightedIndexPath.section == sectionIndex {
-                    for (rowIndex, timezoneInfo) in allTimezones.enumerated() {
-                        let isHighlighted: Bool = rowIndex == highlightedIndexPath.row
-                        let action = self.action(timeZoneValue: timezoneInfo.1, onChange: onChange)
-                        rows.append(CheckmarkRow(title: timezoneInfo.0, checked: isHighlighted, action: action))
+                for timezoneInfo in allTimezones {
+                    var isHighlighted: Bool = false
+                    if let selectedCellLabelUnwrapped = selectedCellLabel {
+                        isHighlighted = (selectedCellLabelUnwrapped == timezoneInfo.1)
                     }
-                } else {
-                    rows = allTimezones.map({
-                        let action = self.action(timeZoneValue: $0.1, onChange: onChange)
-                        return CheckmarkRow(title: $0.0, checked: false, action: action)
-
-                    })
+                    let action = self.action(timeZoneValue: timezoneInfo.1, onChange: onChange)
+                    rows.append(CheckmarkRow(title: timezoneInfo.0, checked: isHighlighted, action: action))
                 }
                 let section = ImmuTableSection(headerText: group, rows: rows)
                 sections.append(section)
@@ -128,36 +130,5 @@ enum TimezoneSelectorViewModel {
             }
         }
         return (headerNames: groupNames, sortedNamesByGroup: timezoneNamesSortedByGroup)
-    }
-
-    /// returns an IndexPath, which is the user's current selection
-    private func getIndexPathToHighlight(timezoneString: String?, manualOffset: NSNumber?, data: GroupsAndTimezones, allTimezones: [TimeZoneInfo]) -> IndexPath? {
-        if let usersTimeZone = timezoneString, !usersTimeZone.isEmpty {
-            for (groupIndex, group) in data.0.enumerated() {
-                let allTimezonesInGroup = allTimezones.filter({ $0.group == group })
-                guard let keyValPair = allTimezonesInGroup.first(where: { $0.value == usersTimeZone }),
-                    let index = data.1[group]?.index(where: { (labelValPair) -> Bool in
-                        return labelValPair.0 == keyValPair.label
-                    }) else {
-                        continue
-                }
-                let indexPath = IndexPath(row: index, section: groupIndex)
-                return indexPath
-            }
-        } else if let manualOffset = manualOffset,
-            let section = data.0.index(of: TimezoneSelectorViewModel.manualOffsetSectionName),
-            let dict = data.1[TimezoneSelectorViewModel.manualOffsetSectionName] {
-            let hoursUTC = manualOffset.intValue
-            let minutesUTC = abs(Int((manualOffset.doubleValue - Double(hoursUTC)) * 60))
-            guard let utcString: String = TimeZoneSettingHelper.getFormattedString(prefix: "UTC", hours: hoursUTC, minutes: minutesUTC) else {
-                return nil
-            }
-            if let index = dict.index(where: { $0.0 == utcString }) {
-                let row = dict.distance(from: dict.startIndex, to: index)
-                let indexPath = IndexPath(row: row, section: section)
-                return indexPath
-            }
-        }
-        return nil
     }
 }
