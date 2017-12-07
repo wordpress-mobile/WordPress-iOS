@@ -3,16 +3,6 @@ import XCTest
 
 class PluginDirectoryTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-
     func testPluginDirectoryEntryDecodingJetpack() {
         let jetpackMockPath = Bundle(for: type(of: self)).path(forResource: "plugin-directory-jetpack", ofType: "json")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: jetpackMockPath))
@@ -42,6 +32,17 @@ class PluginDirectoryTests: XCTestCase {
             XCTAssertNil(plugin.icon)
         } catch {
             XCTFail("Failed decoding plugin \(error)")
+        }
+    }
+
+    func testPluginInformationRequest() {
+        let remote = PluginDirectoryServiceRemote()
+        do {
+            let request = try remote.pluginInformationURLRequest(forSlug: "jetpack")
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(request.url?.absoluteString, "https://api.wordpress.org/plugins/info/1.0/jetpack.json?fields=icons")
+        } catch {
+            XCTFail(error.localizedDescription)
         }
     }
 
