@@ -51,7 +51,7 @@ class MediaVideoExporter: MediaExporter {
     public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) {
 
     }
-    
+
     /// Exports a known video at a URL asynchronously.
     ///
     func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
