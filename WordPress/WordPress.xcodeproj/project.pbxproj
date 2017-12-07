@@ -127,6 +127,7 @@
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1724DDCB1C6121D00099D273 /* Plans.storyboard */; };
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
+		172E27D31FD98135003EA321 /* InAppNotificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172E27D21FD98135003EA321 /* InAppNotificationPresenter.swift */; };
 		1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */; };
 		1731BCD11DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1731BCD01DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist */; };
 		1731BCD31DDA01AF009FE3AE /* HelpshiftPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */; };
@@ -1231,6 +1232,7 @@
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		1724DDCB1C6121D00099D273 /* Plans.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Plans.storyboard; sourceTree = "<group>"; };
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
+		172E27D21FD98135003EA321 /* InAppNotificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppNotificationPresenter.swift; sourceTree = "<group>"; };
 		1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemTableViewCells.swift; sourceTree = "<group>"; };
 		1731BCD01DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftCustomConfig.plist; sourceTree = "<group>"; };
 		1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpshiftPresenter.swift; sourceTree = "<group>"; };
@@ -3657,6 +3659,7 @@
 				B5F641B21E37C36700B7819F /* AdaptiveNavigationController.swift */,
 				171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */,
 				1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */,
+				172E27D21FD98135003EA321 /* InAppNotificationPresenter.swift */,
 				E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */,
 				E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */,
 				FFA9148D1BA6E5170068F8BF /* RotationAwareNavigationViewController.h */,
@@ -6717,6 +6720,7 @@
 				B587797F19B799D800E57C5A /* UIImageView+Networking.swift in Sources */,
 				FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */,
 				B54075D41D3D7D5B0095C318 /* IntrinsicTableView.swift in Sources */,
+				172E27D31FD98135003EA321 /* InAppNotificationPresenter.swift in Sources */,
 				B538F3841EF45B13001003D5 /* OptionsTableView.swift in Sources */,
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
