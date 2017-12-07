@@ -303,8 +303,12 @@ private extension PluginStore {
     }
 
     func receivePluginDirectoryEntryFailed(slug: String, error: Error) {
-        // TODO: mark entry as missing if not found
-        state.fetchingDirectoryEntry[slug] = false
+        transaction { (state) in
+            if (error as? PluginDirectoryServiceRemote.Error) == .pluginNotFound {
+                state.directoryEntries[slug] = .missing(Date())
+            }
+            state.fetchingDirectoryEntry[slug] = false
+        }
     }
 
     func remote(site: JetpackSiteRef) -> PluginServiceRemote? {
