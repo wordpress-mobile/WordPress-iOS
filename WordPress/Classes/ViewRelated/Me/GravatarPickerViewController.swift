@@ -52,7 +52,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         exporter.export(onCompletion: { [weak self](assetExport) in
             guard let strongSelf = self else {
                 return
-            }            
+            }
             guard let rawGravatar = UIImage(contentsOfFile: assetExport.url.path) else {
                 strongSelf.onCompletion?(nil)
                 return

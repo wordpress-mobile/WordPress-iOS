@@ -90,7 +90,7 @@ class MediaImageExporter: MediaExporter {
             exportImage(atFile: url, onCompletion: onCompletion, onError: onError)
         }
     }
-    
+
     /// Exports and writes a UIImage to a local Media URL.
     ///
     /// A PNG or JPEG is expected but not necessarily required. Exporting will fail if a PNG or JPEG cannot

@@ -125,7 +125,7 @@ class MediaURLExporter: NSObject, MediaExporter {
             onCompletion(MediaExport(url: mediaURL,
                                     fileSize: mediaURL.fileSize,
                                     width: mediaURL.pixelSize.width,
-                                    height: mediaURL.pixelSize.height,                                    
+                                    height: mediaURL.pixelSize.height,
                                     duration: nil))
         } catch {
             onError(exporterErrorWith(error: error))
