@@ -5,6 +5,10 @@ import CocoaLumberjack
 // MARK: - Helpers
 
 extension WordPressAppDelegate {
+    @objc func configureInAppNotificationPresenter() {
+        let _ = InAppNotificationPresenter.shared
+    }
+
     @objc var noSelfHostedBlogs: Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
