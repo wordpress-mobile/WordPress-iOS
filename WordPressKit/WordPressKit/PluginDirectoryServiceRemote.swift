@@ -1,8 +1,9 @@
 import Foundation
+import Alamofire
 
 public struct PluginDirectoryServiceRemote {
-    enum Errors: Error {
-        case noData
+    public enum Error: Swift.Error {
+        case pluginNotFound
     }
 
     let baseURL = URL(string: "https://api.wordpress.org/plugins/info/1.0/")!
@@ -15,44 +16,51 @@ public struct PluginDirectoryServiceRemote {
     public init() {
     }
 
-    public func getPluginInformation(slug: String, success: @escaping (PluginDirectoryEntry) -> Void, failure: @escaping (Error) -> Void) {
+    public func getPluginInformation(slug: String, completion: @escaping (Result<PluginDirectoryEntry>) -> Void) {
         do {
-            let url = try pluginInformationURL(forSlug: slug)
-            let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-                do {
-                    if let error = error {
-                        throw error
-                    } else if let data = data {
-                        let entry = try self.pluginEntry(fromData: data)
-                        DispatchQueue.main.async {
-                            success(entry)
-                        }
-                    } else {
-                        throw Errors.noData
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        failure(error)
-                    }
-                }
-            }
-            task.resume()
+            let request = try pluginInformationURLRequest(forSlug: slug)
+
+            Alamofire
+                .request(request)
+                .validate()
+                .validateNotNullJSON()
+                .responseData(completionHandler: { (response) in
+                    let result = response.result
+                        .flatMap({ return try self.pluginEntry(fromData: $0) })
+                    completion(result)
+                })
         } catch {
-            failure(error)
+            completion(.failure(error))
         }
     }
 }
 
+private extension DataRequest {
+    // api.wordpress.org has an odd way of responding to plugin info requests for
+    // plugins not in the directory: it will return `null` with an HTTP 200 OK.
+    // This adds a custom validate step to turn that into a `.pluginNotFound` error.
+    func validateNotNullJSON() -> Self {
+        return validate({ (_, response, data) -> Request.ValidationResult in
+            if response.statusCode == 200,
+                let data = data,
+                data.count == 4,
+                String(data: data, encoding: .utf8) == "null" {
+                return .failure(PluginDirectoryServiceRemote.Error.pluginNotFound)
+            } else {
+                return .success
+            }
+        })
+    }
+}
+
 extension PluginDirectoryServiceRemote {
-    func pluginInformationURL(forSlug slug: String) throws -> URL {
-        let endpoint = baseURL
+    func pluginInformationURLRequest(forSlug slug: String) throws -> URLRequest {
+        let url = baseURL
             .appendingPathComponent(slug)
             .appendingPathExtension("json")
-        var components = URLComponents(url: endpoint, resolvingAgainstBaseURL: false)!
-        components.queryItems = [
-            URLQueryItem(name: "fields", value: "icons")
-        ]
-        return try components.asURL()
+        let request = URLRequest(url: url)
+        let encodedRequest = try URLEncoding.default.encode(request, with: ["fields": "icons"])
+        return encodedRequest
     }
 
     func pluginEntry(fromData data: Data) throws -> PluginDirectoryEntry {
