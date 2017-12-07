@@ -106,7 +106,7 @@ class MediaImageExporterTests: XCTestCase {
         let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export without stripping GPS")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaImageExporter(url : url)
+        let exporter = MediaImageExporter(url: url)
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = false
         exporter.export(onCompletion: { (imageExport) in

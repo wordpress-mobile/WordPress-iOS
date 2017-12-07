@@ -8,7 +8,7 @@ class MockMediaExporter: MediaExporter {
     var mediaDirectoryType: MediaDirectory = .temporary
 
     func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
-        
+
     }
 }
 

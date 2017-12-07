@@ -141,7 +141,7 @@ class MediaThumbnailExporter: MediaExporter {
             onCompletion(export)
         }, onError: onError)
     }
-    
+
     /// Export a thumbnail image for a file at the URL, with an expected type of an image or video.
     ///
     /// - Note: GIFs are currently unsupported and throw the .gifThumbnailsUnsupported error.

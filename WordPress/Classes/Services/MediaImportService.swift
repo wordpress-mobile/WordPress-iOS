@@ -64,7 +64,7 @@ open class MediaImportService: LocalCoreDataService {
             let exporter = MediaAssetExporter(asset: asset)
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
-            return exporter;
+            return exporter
         case let image as UIImage:
             let exporter = MediaImageExporter(image: image, filename: nil)
             exporter.options = self.exporterImageOptions
@@ -142,7 +142,7 @@ open class MediaImportService: LocalCoreDataService {
             return CGFloat(maxUploadSize)
         }
         return nil
-    }    
+    }
 
     /// Configure Media with a MediaExport.
     ///
