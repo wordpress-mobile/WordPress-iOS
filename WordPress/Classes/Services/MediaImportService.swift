@@ -41,8 +41,7 @@ open class MediaImportService: LocalCoreDataService {
     func `import`(_ exportable: ExportableAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
         importQueue.async {
             guard let exporter = self.makeExporter(for: exportable) else {
-                onError(NSError())
-                return
+                preconditionFailure("An exporter needs to be availale")
             }
             exporter.export(onCompletion: { export in
                 self.managedObjectContext.perform {
