@@ -285,12 +285,14 @@ private extension PluginStore {
         state.fetchingDirectoryEntry[slug] = true
         remote.getPluginInformation(
             slug: slug,
-            success: { [actionDispatcher] (entry) in
-                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntry(slug: slug, entry: entry))
-            },
-            failure: { [actionDispatcher] (error) in
-                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntryFailed(slug: slug, error: error))
-        })
+            completion: { [actionDispatcher] (result) in
+                switch result {
+                case .success(let entry):
+                    actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntry(slug: slug, entry: entry))
+                case .failure(let error):
+                    actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntryFailed(slug: slug, error: error))
+                }
+            })
     }
 
     func receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry) {
