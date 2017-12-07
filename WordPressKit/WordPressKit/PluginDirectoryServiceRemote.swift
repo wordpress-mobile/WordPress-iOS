@@ -1,60 +1,25 @@
 import Foundation
 import Alamofire
 
-public struct PluginDirectoryServiceRemote {
-    public enum Error: Swift.Error {
-        case pluginNotFound
-    }
-
-    let baseURL = URL(string: "https://api.wordpress.org/plugins/info/1.0/")!
+public struct PluginDirectoryGetInformationEndpoint: Endpoint {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "YYYY-MM-dd h:mma z"
         return formatter
     }()
 
-    public init() {
+    public enum Error: Swift.Error {
+        case pluginNotFound
     }
 
-    public func getPluginInformation(slug: String, completion: @escaping (Result<PluginDirectoryEntry>) -> Void) {
-        do {
-            let request = try pluginInformationURLRequest(forSlug: slug)
-
-            Alamofire
-                .request(request)
-                .validate()
-                .validateNotNullJSON()
-                .responseData(completionHandler: { (response) in
-                    let result = response.result
-                        .flatMap({ return try self.pluginEntry(fromData: $0) })
-                    completion(result)
-                })
-        } catch {
-            completion(.failure(error))
-        }
+    let slug: String
+    public init(slug: String) {
+        self.slug = slug
     }
-}
 
-private extension DataRequest {
-    // api.wordpress.org has an odd way of responding to plugin info requests for
-    // plugins not in the directory: it will return `null` with an HTTP 200 OK.
-    // This adds a custom validate step to turn that into a `.pluginNotFound` error.
-    func validateNotNullJSON() -> Self {
-        return validate({ (_, response, data) -> Request.ValidationResult in
-            if response.statusCode == 200,
-                let data = data,
-                data.count == 4,
-                String(data: data, encoding: .utf8) == "null" {
-                return .failure(PluginDirectoryServiceRemote.Error.pluginNotFound)
-            } else {
-                return .success
-            }
-        })
-    }
-}
+    public func buildRequest() throws -> URLRequest {
+        let baseURL = URL(string: "https://api.wordpress.org/plugins/info/1.0/")!
 
-extension PluginDirectoryServiceRemote {
-    func pluginInformationURLRequest(forSlug slug: String) throws -> URLRequest {
         let url = baseURL
             .appendingPathComponent(slug)
             .appendingPathExtension("json")
@@ -63,9 +28,29 @@ extension PluginDirectoryServiceRemote {
         return encodedRequest
     }
 
-    func pluginEntry(fromData data: Data) throws -> PluginDirectoryEntry {
+    public func parseResponse(data: Data) throws -> PluginDirectoryEntry {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(PluginDirectoryServiceRemote.dateFormatter)
+        decoder.dateDecodingStrategy = .formatted(PluginDirectoryGetInformationEndpoint.dateFormatter)
         return try decoder.decode(PluginDirectoryEntry.self, from: data)
+    }
+
+    public func validate(request: URLRequest?, response: HTTPURLResponse, data: Data?) throws {
+        // api.wordpress.org has an odd way of responding to plugin info requests for
+        // plugins not in the directory: it will return `null` with an HTTP 200 OK.
+        // This turns that case into a `.pluginNotFound` error.
+        if response.statusCode == 200,
+            let data = data,
+            data.count == 4,
+            String(data: data, encoding: .utf8) == "null" {
+                throw Error.pluginNotFound
+        }
+    }
+}
+
+public struct PluginDirectoryServiceRemote {
+    public init() {}
+
+    public func getPluginInformation(slug: String, completion: @escaping (Result<PluginDirectoryEntry>) -> Void) {
+        PluginDirectoryGetInformationEndpoint(slug: slug).request(completion: completion)
     }
 }

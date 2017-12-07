@@ -350,6 +350,7 @@
 		E13EE1491F332B8500C15787 /* site-plugins-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E13EE1481F332B8500C15787 /* site-plugins-success.json */; };
 		E13EE14C1F332C4400C15787 /* PluginServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13EE14B1F332C4400C15787 /* PluginServiceRemoteTests.swift */; };
 		E14694031F344F71004052C8 /* site-plugins-error.json in Resources */ = {isa = PBXBuildFile; fileRef = E14694021F344F71004052C8 /* site-plugins-error.json */; };
+		E182BF6A1FD961810001D850 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182BF691FD961810001D850 /* Endpoint.swift */; };
 		E194CB731FBDEF6500B0A8B8 /* PluginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E194CB721FBDEF6400B0A8B8 /* PluginState.swift */; };
 		E1A6605F1FD694ED00BAC339 /* PluginDirectoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A6605E1FD694ED00BAC339 /* PluginDirectoryEntry.swift */; };
 		E1BD95151FD5A2B800CD5CE3 /* PluginDirectoryServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BD95141FD5A2B800CD5CE3 /* PluginDirectoryServiceRemote.swift */; };
@@ -729,6 +730,7 @@
 		E13EE1481F332B8500C15787 /* site-plugins-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-plugins-success.json"; sourceTree = "<group>"; };
 		E13EE14B1F332C4400C15787 /* PluginServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginServiceRemoteTests.swift; sourceTree = "<group>"; };
 		E14694021F344F71004052C8 /* site-plugins-error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-plugins-error.json"; sourceTree = "<group>"; };
+		E182BF691FD961810001D850 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		E194CB721FBDEF6400B0A8B8 /* PluginState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginState.swift; sourceTree = "<group>"; };
 		E1A6605E1FD694ED00BAC339 /* PluginDirectoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryEntry.swift; sourceTree = "<group>"; };
 		E1BD95141FD5A2B800CD5CE3 /* PluginDirectoryServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryServiceRemote.swift; sourceTree = "<group>"; };
@@ -1092,6 +1094,7 @@
 				93F50A361F226B9300B5BEBA /* WordPressComServiceRemote.m */,
 				9368C7A11EC62F800092CE8E /* WPStatsServiceRemote.h */,
 				9368C7A21EC62F800092CE8E /* WPStatsServiceRemote.m */,
+				E182BF691FD961810001D850 /* Endpoint.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1899,6 +1902,7 @@
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
 				74D67F081F15BEB70010C5ED /* RemotePerson.swift in Sources */,
 				74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */,
+				E182BF6A1FD961810001D850 /* Endpoint.swift in Sources */,
 				74BA04F41F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m in Sources */,
 				74C473AC1EF2F75E009918F2 /* SiteManagementServiceRemote.swift in Sources */,
 				938CF3D81EF1BE3800AF838E /* CocoaLumberjack.swift in Sources */,
