@@ -3,7 +3,7 @@ import CocoaLumberjack
 
 /// Type of the local Media directory URL in implementation.
 ///
-@objc enum MediaDirectory: Int {
+enum MediaDirectory {
     /// Default, system Documents directory, for persisting media files for upload.
     case uploads
     /// System Caches directory, for creating discardable media files, such as thumbnails.
