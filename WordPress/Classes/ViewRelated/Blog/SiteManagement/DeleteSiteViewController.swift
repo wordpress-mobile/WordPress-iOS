@@ -47,12 +47,20 @@ open class DeleteSiteViewController: UITableViewController {
         title = NSLocalizedString("Delete Site", comment: "Title of settings page for deleting a site")
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 200.0
+        tableView.estimatedRowHeight = 500.0
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         setupHeaderSection()
         setupListSection()
         setupMainBodySection()
         setupDeleteButton()
+    }
+
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+        })
     }
 
     // MARK: - Configuration
@@ -61,10 +69,10 @@ open class DeleteSiteViewController: UITableViewController {
     ///
     fileprivate func setupHeaderSection() {
         let warningIcon = Gridicon.iconOfType(.notice, withSize: CGSize(width: 48.0, height: 48.0))
-
         warningImage.image = warningIcon
         warningImage.tintColor = WPStyleGuide.warningYellow()
         siteTitleLabel.textColor = WPStyleGuide.darkGrey()
+        siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         siteTitleLabel.text = blog.displayURL as String?
         siteTitleSubText.textColor = WPStyleGuide.darkGrey()
         siteTitleSubText.text = NSLocalizedString("will be unavailable in the future.",
@@ -75,6 +83,7 @@ open class DeleteSiteViewController: UITableViewController {
     ///
     fileprivate func setupListSection() {
         sectionTwoHeader.textColor = WPStyleGuide.grey()
+        sectionTwoHeader.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         sectionTwoColumnItems.forEach({ $0.textColor = WPStyleGuide.darkGrey() })
 
         sectionTwoHeader.text = NSLocalizedString("these items will be deleted:",
@@ -114,10 +123,10 @@ open class DeleteSiteViewController: UITableViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
 
-        let attributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 17.0),
+        let attributes: [NSAttributedStringKey: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                         .foregroundColor: WPStyleGuide.darkGrey(),
                                                         .paragraphStyle: paragraphStyle ]
-        let htmlAttributes: StyledHTMLAttributes = [ .BodyAttribute: attributes]
+        let htmlAttributes: StyledHTMLAttributes = [.BodyAttribute: attributes]
 
         let attributedText1 = NSAttributedString.attributedStringWithHTML(paragraph1, attributes: htmlAttributes)
         let attributedText2 = NSAttributedString(string: paragraph2, attributes: attributes)
@@ -127,12 +136,14 @@ open class DeleteSiteViewController: UITableViewController {
         combinedAttributedString.append(NSAttributedString(string: "\n\r", attributes: attributes))
         combinedAttributedString.append(attributedText2)
         sectionThreeBody.attributedText = combinedAttributedString
+        sectionThreeBody.textColor = WPStyleGuide.darkGrey()
 
-        let contactButtonAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 17.0),
-                                                                     .foregroundColor: WPStyleGuide.wordPressBlue(),
+        let contactButtonAttributes: [NSAttributedStringKey: Any] = [.foregroundColor: WPStyleGuide.wordPressBlue(),
                                                                      .underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
-        supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support", comment: "Button label for contacting support"), attributes: contactButtonAttributes),
-                                         for: .normal)
+        supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support",
+                                                            comment: "Button label for contacting support"),
+                                                            attributes: contactButtonAttributes),
+                                                            for: .normal)
     }
 
     /// One time setup of fourth section (delete button)
@@ -142,6 +153,7 @@ open class DeleteSiteViewController: UITableViewController {
         deleteSiteButton.setTitle(NSLocalizedString("Delete Site", comment: "Button label for deleting the current site"), for: .normal)
         deleteSiteButton.tintColor = WPStyleGuide.errorRed()
         deleteSiteButton.setImage(trashIcon, for: .normal)
+        deleteSiteButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
     }
 
     // MARK: - Actions
