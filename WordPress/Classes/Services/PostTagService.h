@@ -43,13 +43,17 @@ NS_ASSUME_NONNULL_BEGIN
  Deletes a tag assigned to a blog
  */
 - (void)deleteTag:(PostTag*)tag
-          forBlog:(Blog *)blog;
+          forBlog:(Blog *)blog
+          success:(nullable void (^)(NSArray <PostTag *> *tags))success
+          failure:(nullable void (^)(NSError *error))failure;
 
 /**
  Commits a tag assigned to a blog
  */
 - (void)commitTag:(PostTag*)tag
-          forBlog:(Blog *)blog;
+          forBlog:(Blog *)blog
+          success:(nullable void (^)(NSArray <PostTag *> *tags))success
+          failure:(nullable void (^)(NSError *error))failure;
 
 @end
 
