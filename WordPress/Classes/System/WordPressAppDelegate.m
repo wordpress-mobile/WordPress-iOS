@@ -421,6 +421,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self.shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
+
+    [self configureInAppNotificationPresenter];
 }
 
 #pragma mark - Push Notification delegate
