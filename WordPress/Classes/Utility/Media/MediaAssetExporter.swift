@@ -10,18 +10,6 @@ class MediaAssetExporter: MediaExporter {
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
 
-    /// Enumerable type value for an AssetExport, typed according to the resulting export of the asset.
-    ///
-    public enum AssetExport {
-        case exportedImage(MediaImageExport)
-        case exportedVideo(MediaVideoExport)
-        case exportedGIF(MediaGIFExport)
-    }
-
-    /// Completion block with an AssetExport.
-    ///
-    typealias OnAssetExport = (AssetExport) -> Void
-
     public enum AssetExportError: MediaExportError {
         case unsupportedPHAssetMediaType
         case expectedPHAssetImageType
@@ -56,9 +44,13 @@ class MediaAssetExporter: MediaExporter {
         return PHImageManager.default()
     }()
 
-    /// Helper method encapsulating exporting either an image or video.
-    ///
-    func exportData(forAsset asset: PHAsset, onCompletion: @escaping OnAssetExport, onError: @escaping OnExportError) {
+    let asset: PHAsset
+
+    init(asset: PHAsset) {
+        self.asset = asset
+    }
+
+    public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) {
         switch asset.mediaType {
         case .image:
             exportImage(forAsset: asset, onCompletion: onCompletion, onError: onError)
@@ -69,7 +61,7 @@ class MediaAssetExporter: MediaExporter {
         }
     }
 
-    fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping OnAssetExport, onError: @escaping (MediaExportError) -> Void) {
+    fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) {
         do {
             guard asset.mediaType == .image else {
                 throw AssetExportError.expectedPHAssetImageType
@@ -123,17 +115,15 @@ class MediaAssetExporter: MediaExporter {
                                         return
                                     }
                                     // Hand off the image export to a shared image writer.
-                                    let exporter = MediaImageExporter()
+                                    let exporter = MediaImageExporter(image: image, filename: resource.originalFilename)
                                     exporter.mediaDirectoryType = self.mediaDirectoryType
                                     if let options = self.imageOptions {
                                         exporter.options = options
                                     }
-                                    exporter.exportImage(image,
-                                                         fileName: resource.originalFilename,
-                                                         onCompletion: { (imageExport) in
-                                                            onCompletion(AssetExport.exportedImage(imageExport))
+                                    exporter.export(onCompletion: { (imageExport) in
+                                        onCompletion(imageExport)
                                     },
-                                                         onError: onError)
+                                                    onError: onError)
             })
         } catch {
             onError(exporterErrorWith(error: error))
@@ -145,7 +135,7 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping OnAssetExport, onError: @escaping OnExportError) {
+    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
         do {
             guard asset.mediaType == .video else {
                 throw AssetExportError.expectedPHAssetVideoType
@@ -186,7 +176,7 @@ class MediaAssetExporter: MediaExporter {
                                                 videoExporter.exportVideo(with: session,
                                                                           filename: originalFilename,
                                                                           onCompletion: { (videoExport) in
-                                                                            onCompletion(AssetExport.exportedVideo(videoExport))
+                                                                            onCompletion(videoExport)
                                                 },
                                                                           onError: onError)
             })
@@ -200,7 +190,7 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping OnAssetExport, onError: @escaping OnExportError) {
+    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
         do {
             guard UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) else {
                 throw AssetExportError.expectedPHAssetGIFType
@@ -218,8 +208,11 @@ class MediaAssetExporter: MediaExporter {
                                     onError(self.exporterErrorWith(error: error))
                                     return
                                 }
-                                onCompletion(AssetExport.exportedGIF(MediaGIFExport(url: url,
-                                                                                    fileSize: url.fileSize)))
+                                onCompletion(MediaExport(url: url,
+                                                        fileSize: url.fileSize,
+                                                        width: url.pixelSize.width,
+                                                        height: url.pixelSize.height,
+                                                        duration: 0))
             })
         } catch {
             onError(exporterErrorWith(error: error))
