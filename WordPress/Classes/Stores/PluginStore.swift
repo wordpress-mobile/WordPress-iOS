@@ -304,7 +304,7 @@ private extension PluginStore {
 
     func receivePluginDirectoryEntryFailed(slug: String, error: Error) {
         transaction { (state) in
-            if (error as? PluginDirectoryServiceRemote.Error) == .pluginNotFound {
+            if (error as? PluginDirectoryGetInformationEndpoint.Error) == .pluginNotFound {
                 state.directoryEntries[slug] = .missing(Date())
             }
             state.fetchingDirectoryEntry[slug] = false
