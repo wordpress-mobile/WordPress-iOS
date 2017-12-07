@@ -6,6 +6,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static const NSInteger PostTagIdDefaultValue = -1;
+
 @interface PostTagService ()
 
 @end
@@ -126,8 +128,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)commitTag:(PostTag*)tag
           forBlog:(Blog *)blog
 {
-    //Not implemented yet
-    NSLog(@"Commit tag %@ for blog %@", tag, blog);
+    if (tag.tagID.integerValue == PostTagIdDefaultValue) {
+        [self saveNewTag:tag blog:blog];
+    } else {
+        [self updateExistingTag:tag blog:blog];
+    }
 }
 
 #pragma mark - helpers
@@ -191,6 +196,18 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return [tags firstObject];
+}
+
+- (void)saveNewTag:(PostTag *)tag
+              blog:(Blog *)blog
+{
+    NSLog(@"this is a new tag");
+}
+
+- (void)updateExistingTag:(PostTag *)tag
+                     blog:(Blog *)blog
+{
+    NSLog(@"this is a tag to be updated");
 }
 
 - (void)handleError:(nullable NSError *)error forBlog:(nullable Blog *)blog withFailure:(nullable void(^)(NSError *error))failure
