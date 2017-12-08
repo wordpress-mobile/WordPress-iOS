@@ -2,7 +2,7 @@ import Foundation
 
 /// The MediaExport class represents the result of an MediaExporter.
 ///
-@objc class MediaExport: NSObject {
+class MediaExport {
     /// The resulting file URL of an export.
     ///
     let url: URL
