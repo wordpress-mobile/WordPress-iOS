@@ -33,15 +33,15 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
         accessoryType = .disclosureIndicator
         accessoryView = nil
 
-        setupTagName()
-        setupTagCount()
+        setupCellTitle()
+        setupCellBadge()
     }
 
-    private func setupTagName() {
+    private func setupCellTitle() {
         cellTitle.font = WPStyleGuide.tableviewTextFont()
     }
 
-    private func setupTagCount() {
+    private func setupCellBadge() {
         cellBadge.font = WPStyleGuide.tableviewTextFont()
         cellBadge.textColor = WPStyleGuide.wordPressBlue()
         cellBadge.textAlignment = .center
@@ -50,6 +50,7 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
         cellBadge.borderColor = WPStyleGuide.wordPressBlue()
         cellBadge.borderWidth = BadgeConstants.border
         cellBadge.cornerRadius = BadgeConstants.radius
+
     }
 
     override func prepareForReuse() {
