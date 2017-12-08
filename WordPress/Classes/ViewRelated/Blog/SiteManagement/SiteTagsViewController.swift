@@ -328,7 +328,7 @@ extension SiteTagsViewController {
 
         let postList = PostListViewController.controllerWithBlog(blog)
         let matchingTagPredicated = NSPredicate(format: "tags contains %@", tagName)
-        let decoratedFilters = DecoratedPostListFilterSettings(blog: blog, postType: .post, predicate: NSPredicate())
+        let decoratedFilters = DecoratedPostListFilterSettings(blog: blog, postType: .post, predicate: matchingTagPredicated)
         postList.filterSettings = decoratedFilters
         navigationController?.pushViewController(postList, animated: true)
     }

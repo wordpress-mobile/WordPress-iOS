@@ -193,8 +193,6 @@ final class DecoratedPostListFilterSettings: PostListFilterSettings {
 
 
     override func availablePostListFilters() -> [PostListFilter] {
-        print("returning the decorated filters")
-
         let originalFilters = super.availablePostListFilters()
 
         var returnValue = [PostListFilter]()
