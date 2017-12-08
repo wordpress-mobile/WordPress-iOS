@@ -77,6 +77,7 @@ class PluginListViewModel: Observable {
                     name: plugin.name,
                     state: plugin.state.stateDescription,
                     iconURL: plugin.directoryEntry?.icon,
+                    availableUpdate: plugin.state.availableUpdate != nil,
                     action: { [weak presenter] (row) in
                         presenter?.present(plugin: plugin, capabilities: plugins.capabilities)
                 })

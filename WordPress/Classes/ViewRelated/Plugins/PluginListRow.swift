@@ -5,6 +5,7 @@ struct PluginListRow: ImmuTableRow {
     let name: String
     let state: String
     let iconURL: URL?
+    let availableUpdate: Bool
     let action: ImmuTableAction?
     private let iconSize = CGSize(width: 40, height: 40)
 
@@ -15,6 +16,10 @@ struct PluginListRow: ImmuTableRow {
         let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: iconSize)
         cell.imageView?.downloadResizedImage(iconURL, placeholderImage: iconPlaceholder, pointSize: iconSize)
         cell.selectionStyle = .default
-        cell.accessoryType = .disclosureIndicator
+        if availableUpdate {
+            cell.accessoryView = UIImageView(image: UIImage(named: "gridicon-sync-circled"))
+        } else {
+            cell.accessoryType = .disclosureIndicator
+        }
     }
 }
