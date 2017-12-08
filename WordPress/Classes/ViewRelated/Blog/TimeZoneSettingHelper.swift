@@ -5,10 +5,9 @@ class TimeZoneSettingHelper: NSObject {
     /// Returns a formatted 'prefix hour:min' string using DateComponentsFormatter
     ///
     /// Parameters
-    /// - prefix: Prefix(if any) to be added to the resulting string
     /// - hours: The hours to be formatted
     /// - minutes: The minutes to be formatted, if 0, the minutes are ommitted in the formatted string
-    @objc static func getFormattedString(prefix: String, hours: NSInteger, minutes: NSInteger) -> String? {
+    @objc static func getFormattedString(hours: NSInteger, minutes: NSInteger) -> String? {
         precondition(minutes >= 0 && minutes <= 60, "Minutes should range between 0 and 60")
         precondition(hours >= -12 && hours <= +14, "Hours should range between -12 and +14")
         let dateFormatter = DateComponentsFormatter()
@@ -21,11 +20,17 @@ class TimeZoneSettingHelper: NSObject {
         dateComponents.minute = minutes
         let formatString: String
         if hours >= 0 {
-            formatString = "\(prefix)+%@"
+            formatString = "\(TimeZoneSettingHelper.UTCString) +%@"
         } else {
-            formatString = "\(prefix)-%@"
+            formatString = "\(TimeZoneSettingHelper.UTCString) -%@"
         }
         let dateComponentString = dateFormatter.string(from: dateComponents)!
         return String(format: formatString, dateComponentString)
     }
+
+    static func getDecimalBasedTimeZone(from manualOffset: NSNumber) -> String {
+        return String(format: "\(TimeZoneSettingHelper.UTCString)%+g", manualOffset.floatValue)
+    }
+
+    @objc static let UTCString: String = "UTC"
 }

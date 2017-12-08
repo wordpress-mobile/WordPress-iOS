@@ -225,7 +225,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         }
         NSInteger hoursUTC = gmtOffset.integerValue;
         NSInteger minutesUTC = fabs(([gmtOffset doubleValue] - hoursUTC) * 60);
-        NSString *utcString = [TimeZoneSettingHelper getFormattedStringWithPrefix:@"UTC " hours:hoursUTC minutes:minutesUTC];
+        NSString *utcString = [TimeZoneSettingHelper getFormattedStringWithHours:hoursUTC minutes:minutesUTC];
         return utcString;
     } else {
         return timeZoneString;

@@ -57,7 +57,7 @@ enum TimezoneSelectorViewModel {
             if let timeZoneString = siteTimezoneString, !timeZoneString.isEmpty {
                 selectedCellLabel = timeZoneString
             } else if let manualOffset = siteManualOffset {
-                let utcString: String = String(format: "UTC%+g", manualOffset.floatValue)
+                let utcString: String = TimeZoneSettingHelper.getDecimalBasedTimeZone(from: manualOffset)
                 selectedCellLabel = utcString
             }
 
@@ -86,7 +86,7 @@ enum TimezoneSelectorViewModel {
 
     private func action(timeZoneValue: String, onChange: ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?) -> ImmuTableAction {
         return { (row) in
-            if let numberString = timeZoneValue.components(separatedBy: "UTC").last,
+            if let numberString = timeZoneValue.components(separatedBy: TimeZoneSettingHelper.UTCString).last,
                 let floatVal = Float(numberString) {
                 let manualOffset: NSNumber = NSNumber(value: floatVal)
                 onChange?("", manualOffset)
@@ -115,8 +115,8 @@ enum TimezoneSelectorViewModel {
                 // sort the UTC strings
                 let allLabelsAndValues = allTimezonesInGroup.map({ (label: $0.label, value: $0.value) })
                 timezoneNamesSortedByGroup[group] = allLabelsAndValues.sorted(by: { (leftHours, rightHours) -> Bool in
-                    guard let leftHoursValue = leftHours.value.components(separatedBy: "UTC").last,
-                        let rightHoursValue = rightHours.value.components(separatedBy: "UTC").last,
+                    guard let leftHoursValue = leftHours.value.components(separatedBy: TimeZoneSettingHelper.UTCString).last,
+                        let rightHoursValue = rightHours.value.components(separatedBy: TimeZoneSettingHelper.UTCString).last,
                         let floatLeftHoursValue = Float(leftHoursValue),
                         let floatRightHoursValue = Float(rightHoursValue) else {
                             return false
