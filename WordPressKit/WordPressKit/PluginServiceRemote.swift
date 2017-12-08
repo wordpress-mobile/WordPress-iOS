@@ -30,6 +30,25 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         })
     }
 
+    public func updatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        guard let escapedPluginID = encoded(pluginID: pluginID) else {
+            return
+        }
+        let endpoint = "sites/\(siteID)/plugins/\(escapedPluginID)/update"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)!
+        let parameters = [String: AnyObject]()
+
+        wordPressComRestApi.POST(
+            path,
+            parameters: parameters,
+            success: { _,_  in
+                success()
+        },
+            failure: { (error, _) in
+                failure(error)
+        })
+    }
+
     public func activatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "active": "true"
