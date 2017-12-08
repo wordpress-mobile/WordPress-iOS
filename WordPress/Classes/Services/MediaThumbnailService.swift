@@ -53,6 +53,8 @@ class MediaThumbnailService: LocalCoreDataService {
             // If we already set an identifier before let's reuse it
             if let identifier = media.localThumbnailIdentifier {
                 exporter.options.identifier = identifier
+            } else {
+                exporter.options.identifier = media.objectID.uriRepresentation().lastPathComponent
             }
 
             // Configure a handler for any thumbnail exports
