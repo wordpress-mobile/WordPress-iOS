@@ -50,13 +50,13 @@ enum TimezoneSelectorViewModel {
         switch self {
         case .loading, .error:
             return .Empty
-        case .ready(let timezoneInfoArray, let usersTimezoneString, let usersManualOffset, let onChange):
+        case .ready(let timezoneInfoArray, let siteTimezoneString, let siteManualOffset, let onChange):
             let (groups, groupToTimezones) = setupVariables(with: timezoneInfoArray)
             /// The selected Label string used to show a checkmark in a row
             var selectedCellLabel: String?
-            if let timeZoneString = usersTimezoneString, !timeZoneString.isEmpty {
+            if let timeZoneString = siteTimezoneString, !timeZoneString.isEmpty {
                 selectedCellLabel = timeZoneString
-            } else if let manualOffset = usersManualOffset {
+            } else if let manualOffset = siteManualOffset {
                 let utcString: String = String(format: "UTC%+g", manualOffset.floatValue)
                 selectedCellLabel = utcString
             }
