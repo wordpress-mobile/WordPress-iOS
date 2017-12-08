@@ -289,7 +289,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 /**
  * @brief   Sanitize an NSError so we're not tracking unnecessary or usless information.
  */
-+ (NSError *)sanitizedErrorFromError:(NSError * _Nonnull)error
++ (NSError * _Nonnull)sanitizedErrorFromError:(NSError * _Nonnull)error
 {
     // WordPressOrgXMLRPCApi will, in certain circumstances, store an entire HTTP response in this key.
     // The information is generally unhelpful.
