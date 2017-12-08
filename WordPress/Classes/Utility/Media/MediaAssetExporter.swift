@@ -219,7 +219,7 @@ class MediaAssetExporter: MediaExporter {
                                     return
                                 }
                                 onCompletion(AssetExport.exportedGIF(MediaGIFExport(url: url,
-                                                                                    fileSize: url.resourceFileSize)))
+                                                                                    fileSize: url.fileSize)))
             })
         } catch {
             onError(exporterErrorWith(error: error))

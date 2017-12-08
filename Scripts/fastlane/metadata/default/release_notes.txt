@@ -1,1 +1,2 @@
-No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!
+New editor performance improvements and bug fixes.
+Reader: Comments on Jetpack sites are now available.

@@ -51,7 +51,7 @@ class MediaURLExporter: MediaExporter {
         guard fileURL.isFileURL else {
             throw URLExportError.invalidFileURL
         }
-        guard let typeIdentifier = fileURL.resourceTypeIdentifier as CFString? else {
+        guard let typeIdentifier = fileURL.typeIdentifier as CFString? else {
             throw URLExportError.unknownFileUTI
         }
         if UTTypeEqual(typeIdentifier, kUTTypeGIF) {
@@ -125,7 +125,7 @@ class MediaURLExporter: MediaExporter {
                                                                     fileExtension: "gif")
             try fileManager.copyItem(at: url, to: mediaURL)
             onCompletion(URLExport.exportedGIF(MediaGIFExport(url: mediaURL,
-                                                              fileSize: mediaURL.resourceFileSize)))
+                                                              fileSize: mediaURL.fileSize)))
         } catch {
             onError(exporterErrorWith(error: error))
         }
