@@ -2,13 +2,13 @@ import WordPressKit
 import WordPressFlux
 
 protocol PluginPresenter: class {
-    func present(plugin: PluginState, capabilities: SitePluginCapabilities)
+    func present(plugin: Plugin, capabilities: SitePluginCapabilities)
 }
 
 class PluginListViewModel: Observable {
     enum State {
         case loading
-        case ready(SitePlugins)
+        case ready(Plugins)
         case error(String)
     }
 
@@ -71,13 +71,14 @@ class PluginListViewModel: Observable {
         switch state {
         case .loading, .error:
             return .Empty
-        case .ready(let sitePlugins):
-            let rows = sitePlugins.plugins.map({ pluginState in
+        case .ready(let plugins):
+            let rows = plugins.plugins.map({ plugin in
                 return PluginListRow(
-                    name: pluginState.name,
-                    state: pluginState.stateDescription,
+                    name: plugin.name,
+                    state: plugin.state.stateDescription,
+                    iconURL: plugin.directoryEntry?.icon,
                     action: { [weak presenter] (row) in
-                        presenter?.present(plugin: pluginState, capabilities: sitePlugins.capabilities)
+                        presenter?.present(plugin: plugin, capabilities: plugins.capabilities)
                 })
             })
             return ImmuTable(sections: [
