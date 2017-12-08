@@ -197,4 +197,3 @@ final class FilteredByTagPostListFilterSettings: PostListFilterSettings {
         })
     }
 }
-
