@@ -62,20 +62,25 @@ enum TimezoneSelectorViewModel {
             }
 
             var sections: [ImmuTableSection] = []
-            for group in groups {
-                guard let allTimezones = groupToTimezones[group] else {
+            for groupName in groups {
+                guard let allTimezones = groupToTimezones[groupName] else {
                     continue
                 }
                 var rows: [CheckmarkRow] = []
                 for timezoneInfo in allTimezones {
-                    var isHighlighted: Bool = false
+                    var isSelected: Bool = false
                     if let selectedCellLabelUnwrapped = selectedCellLabel {
-                        isHighlighted = (selectedCellLabelUnwrapped == timezoneInfo.1)
+                        isSelected = (selectedCellLabelUnwrapped == timezoneInfo.1)
                     }
                     let action = self.action(timeZoneValue: timezoneInfo.1, onChange: onChange)
-                    rows.append(CheckmarkRow(title: timezoneInfo.0, checked: isHighlighted, action: action))
+                    rows.append(CheckmarkRow(title: timezoneInfo.0, checked: isSelected, action: action))
                 }
-                let section = ImmuTableSection(headerText: group, rows: rows)
+                var headerText: String = groupName
+                if groupName == TimezoneSelectorViewModel.manualOffsetSectionName {
+                    // localize Manual Offsets
+                    headerText = NSLocalizedString("Manual Offsets", comment: "Section name for manual offsets in TimeZone selector")
+                }
+                let section = ImmuTableSection(headerText: headerText, rows: rows)
                 sections.append(section)
             }
             return ImmuTable(sections: sections)
