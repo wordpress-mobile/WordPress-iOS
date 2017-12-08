@@ -26,7 +26,7 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
         }
     }
 
-    var badgeTap: BadgeTapBlock?
+    private var badgeTap: BadgeTapBlock?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,5 +68,9 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
     override func prepareForReuse() {
         cellTitle.text = ""
         cellBadge.text = ""
+    }
+
+    func setBadgeTap(_ block: @escaping BadgeTapBlock) {
+        badgeTap = block
     }
 }

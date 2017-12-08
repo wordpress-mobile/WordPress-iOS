@@ -205,11 +205,19 @@ extension SiteTagsViewController {
             cell.count = count
         }
 
+        cell.setBadgeTap { [weak self] in
+            self?.showPostList(indexPath)
+        }
+
         return cell
     }
 
     fileprivate func tagAtIndexPath(_ indexPath: IndexPath) -> PostTag? {
         return resultsController.object(at: indexPath) as? PostTag
+    }
+
+    private func showPostList(_ indexPath: IndexPath) {
+        print("showing post list for index path ", indexPath)
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
