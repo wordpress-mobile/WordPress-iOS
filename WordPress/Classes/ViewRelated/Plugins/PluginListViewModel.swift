@@ -6,10 +6,23 @@ protocol PluginPresenter: class {
 }
 
 class PluginListViewModel: Observable {
-    enum State {
+    enum State: Equatable {
         case loading
         case ready(Plugins)
         case error(String)
+
+        static func ==(lhs: PluginListViewModel.State, rhs: PluginListViewModel.State) -> Bool {
+            switch (lhs, rhs) {
+            case (.loading, .loading):
+                return true
+            case (.ready(let lhsValue), .ready(let rhsValue)):
+                return lhsValue == rhsValue
+            case (.error(let lhsValue), .error(let rhsValue)):
+                return lhsValue == rhsValue
+            default:
+                return false
+            }
+        }
     }
 
     let site: JetpackSiteRef
