@@ -193,17 +193,11 @@ final class DecoratedPostListFilterSettings: PostListFilterSettings {
 
 
     override func availablePostListFilters() -> [PostListFilter] {
-        let originalFilters = super.availablePostListFilters()
-
-        var returnValue = [PostListFilter]()
-        for filter in originalFilters {
-            let newFilter = NSCompoundPredicate(andPredicateWithSubpredicates: [filter.predicateForFetchRequest, predicate])
-            filter.predicateForFetchRequest = newFilter
-            returnValue.append(filter)
-        }
-
-        return returnValue
+        return super.availablePostListFilters().map({ originalFilter in
+            let newPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [originalFilter.predicateForFetchRequest, predicate])
+            originalFilter.predicateForFetchRequest = newPredicate
+            return originalFilter
+        })
     }
-
 }
 
