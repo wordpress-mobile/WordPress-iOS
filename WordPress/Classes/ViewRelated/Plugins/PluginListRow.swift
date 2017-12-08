@@ -17,7 +17,7 @@ struct PluginListRow: ImmuTableRow {
         cell.imageView?.downloadResizedImage(iconURL, placeholderImage: iconPlaceholder, pointSize: iconSize)
         cell.selectionStyle = .default
         if availableUpdate {
-            cell.accessoryView = UIImageView(image: UIImage(named: "gridicon-sync-circled"))
+            cell.accessoryView = UIImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
         } else {
             cell.accessoryType = .disclosureIndicator
         }
