@@ -140,7 +140,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func createTag() {
-        navigate(to: nil)
+        navigate(toTag: nil)
     }
 
     private func refreshNoResultsView() {
@@ -254,13 +254,13 @@ extension SiteTagsViewController {
             return
         }
 
-        navigate(to: selectedTag)
+        navigate(toTag: selectedTag)
     }
 }
 
 // MARK: - Navigation to Tag details
 extension SiteTagsViewController {
-    fileprivate func navigate(to details: PostTag?) {
+    fileprivate func navigate(toTag details: PostTag?) {
         let data = SettingsTitleSubtitleController.Data(title: details?.name, subtitle: details?.tagDescription)
         let confirmationStrings = confirmation()
         let singleTag = SettingsTitleSubtitleController(data: data, confirmation: confirmationStrings)
