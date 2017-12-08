@@ -27,7 +27,7 @@ open class TimeZoneService {
         let context = manager.newDerivedContext()
         context.performAndWait {
             for groupInfo in resultsArray {
-                for (key, val) in groupInfo.labelValueDict {
+                for (key, val) in groupInfo.labelsAndValues {
                     let timezoneInfo = NSEntityDescription.insertNewObject(forEntityName: "TimeZoneInfo", into: context) as! TimeZoneInfo
                     timezoneInfo.label = key
                     timezoneInfo.value = val

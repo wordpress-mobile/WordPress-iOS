@@ -13,10 +13,6 @@ enum TimezoneSelectorViewModel {
     case ready([TimeZoneInfo], String?, NSNumber?, ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?)
     case error(String)
 
-    /// the first param is a list of all groups, used as section headers
-    /// the second param is a mapping from group to timezones in that group
-    typealias GroupsAndTimezones = ([String], [String: [(String, String)]])
-
     static let manualOffsetSectionName: String = "Manual Offsets"
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
@@ -51,7 +47,8 @@ enum TimezoneSelectorViewModel {
         case .loading, .error:
             return .Empty
         case .ready(let timezoneInfoArray, let siteTimezoneString, let siteManualOffset, let onChange):
-            let (groups, groupToTimezones) = setupVariables(with: timezoneInfoArray)
+            let allTimeZoneGroups = getGroupedTimeZones(with: timezoneInfoArray)
+            let groupNames = allTimeZoneGroups.map({ $0.name })
             /// The selected Label string used to show a checkmark in a row
             var selectedCellLabel: String?
             if let timeZoneString = siteTimezoneString, !timeZoneString.isEmpty {
@@ -62,18 +59,18 @@ enum TimezoneSelectorViewModel {
             }
 
             var sections: [ImmuTableSection] = []
-            for groupName in groups {
-                guard let allTimezones = groupToTimezones[groupName] else {
+            for groupName in groupNames {
+                guard let allTimezones = allTimeZoneGroups.first(where: { $0.name == groupName })?.labelsAndValues else {
                     continue
                 }
                 var rows: [CheckmarkRow] = []
-                for timezoneInfo in allTimezones {
+                for (timeZoneDisplayLabel, timeZoneInternalValue) in allTimezones {
                     var isSelected: Bool = false
                     if let selectedCellLabelUnwrapped = selectedCellLabel {
-                        isSelected = (selectedCellLabelUnwrapped == timezoneInfo.1)
+                        isSelected = (selectedCellLabelUnwrapped == timeZoneInternalValue)
                     }
-                    let action = self.action(timeZoneValue: timezoneInfo.1, onChange: onChange)
-                    rows.append(CheckmarkRow(title: timezoneInfo.0, checked: isSelected, action: action))
+                    let action = self.action(timeZoneValue: timeZoneInternalValue, onChange: onChange)
+                    rows.append(CheckmarkRow(title: timeZoneDisplayLabel, checked: isSelected, action: action))
                 }
                 var headerText: String = groupName
                 if groupName == TimezoneSelectorViewModel.manualOffsetSectionName {
@@ -102,7 +99,7 @@ enum TimezoneSelectorViewModel {
     }
 
     /// Returns a sorted list of groups and timezones mapped to a group
-    private func setupVariables(with result: [TimeZoneInfo]) -> GroupsAndTimezones {
+    private func getGroupedTimeZones(with result: [TimeZoneInfo]) -> [TimeZoneGroupInfo] {
         var groupNames = result.reduce(into: Set<String>(), { (mySet, timezone) in
             mySet.insert(timezone.group)
         }).sorted()
@@ -112,14 +109,14 @@ enum TimezoneSelectorViewModel {
             groupNames.remove(at: manualOffsetIndex)
             groupNames.append(TimezoneSelectorViewModel.manualOffsetSectionName)
         }
-        var timezoneNamesSortedByGroup: [String: [(String, String)]] = [:]
+        var allTimeZoneGroups: [TimeZoneGroupInfo] = []
         for group in groupNames {
             let allTimezonesInGroup = result.filter({ $0.group == group })
-
+            let sortedTimeZones: [(String, String)]
             if group == TimezoneSelectorViewModel.manualOffsetSectionName {
                 // sort the UTC strings
                 let allLabelsAndValues = allTimezonesInGroup.map({ (label: $0.label, value: $0.value) })
-                timezoneNamesSortedByGroup[group] = allLabelsAndValues.sorted(by: { (leftHours, rightHours) -> Bool in
+                sortedTimeZones = allLabelsAndValues.sorted(by: { (leftHours, rightHours) -> Bool in
                     guard let leftHoursValue = leftHours.value.components(separatedBy: TimeZoneSettingHelper.UTCString).last,
                         let rightHoursValue = rightHours.value.components(separatedBy: TimeZoneSettingHelper.UTCString).last,
                         let floatLeftHoursValue = Float(leftHoursValue),
@@ -129,11 +126,11 @@ enum TimezoneSelectorViewModel {
                     return floatLeftHoursValue > floatRightHoursValue
                 })
             } else {
-                timezoneNamesSortedByGroup[group] = allTimezonesInGroup.sorted(by: { (timezone1, timezone2) -> Bool in
-                    return timezone1.label < timezone2.label
-                }).map({ ($0.label, $0.value) })
+                sortedTimeZones = allTimezonesInGroup.map({ ($0.label, $0.value) }).sorted(by: { return $0.0 < $1.0 })
             }
+            let timeZoneGroupInfo = TimeZoneGroupInfo(name: group, labelsAndValues: sortedTimeZones)
+            allTimeZoneGroups.append(timeZoneGroupInfo)
         }
-        return (headerNames: groupNames, sortedNamesByGroup: timezoneNamesSortedByGroup)
+        return allTimeZoneGroups
     }
 }
