@@ -50,7 +50,19 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
         cellBadge.borderColor = WPStyleGuide.wordPressBlue()
         cellBadge.borderWidth = BadgeConstants.border
         cellBadge.cornerRadius = BadgeConstants.radius
+        cellBadge.isUserInteractionEnabled = true
 
+        setupCellBadgeTap()
+    }
+
+    private func setupCellBadgeTap() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(badgeTapped))
+        cellBadge.addGestureRecognizer(tapGesture)
+    }
+
+    @objc
+    private func badgeTapped() {
+        badgeTap?()
     }
 
     override func prepareForReuse() {
