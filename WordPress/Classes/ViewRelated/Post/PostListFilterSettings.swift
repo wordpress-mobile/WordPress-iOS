@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 
+
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)
 /// - Note: previously found within `AbstractPostListViewController`
 class PostListFilterSettings: NSObject {
@@ -176,5 +177,23 @@ class PostListFilterSettings: NSObject {
         }
 
         return properties
+    }
+}
+
+final class FilteredByTagPostListFilterSettings: PostListFilterSettings {
+    private let predicate: NSPredicate
+
+    init(blog: Blog, postType: PostServiceType, predicate: NSPredicate) {
+        self.predicate = predicate
+        super.init(blog: blog, postType: postType)
+    }
+
+
+    override func availablePostListFilters() -> [PostListFilter] {
+        return super.availablePostListFilters().map({ originalFilter in
+            let newPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [originalFilter.predicateForFetchRequest, predicate])
+            originalFilter.predicateForFetchRequest = newPredicate
+            return originalFilter
+        })
     }
 }

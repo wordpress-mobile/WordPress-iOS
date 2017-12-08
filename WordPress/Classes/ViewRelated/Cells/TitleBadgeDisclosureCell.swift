@@ -2,6 +2,7 @@
 import UIKit
 
 final class TitleBadgeDisclosureCell: WPTableViewCell {
+    typealias BadgeTapBlock = () -> Void
     @IBOutlet weak var cellTitle: UILabel!
     @IBOutlet weak var cellBadge: BadgeLabel!
 
@@ -25,20 +26,22 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
         }
     }
 
+    private var badgeTap: BadgeTapBlock?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         accessoryType = .disclosureIndicator
         accessoryView = nil
 
-        customizeTagName()
-        customizeTagCount()
+        setupCellTitle()
+        setupCellBadge()
     }
 
-    private func customizeTagName() {
+    private func setupCellTitle() {
         cellTitle.font = WPStyleGuide.tableviewTextFont()
     }
 
-    private func customizeTagCount() {
+    private func setupCellBadge() {
         cellBadge.font = WPStyleGuide.tableviewTextFont()
         cellBadge.textColor = WPStyleGuide.wordPressBlue()
         cellBadge.textAlignment = .center
@@ -47,10 +50,27 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
         cellBadge.borderColor = WPStyleGuide.wordPressBlue()
         cellBadge.borderWidth = BadgeConstants.border
         cellBadge.cornerRadius = BadgeConstants.radius
+        cellBadge.isUserInteractionEnabled = true
+
+        setupCellBadgeTap()
+    }
+
+    private func setupCellBadgeTap() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(badgeTapped))
+        cellBadge.addGestureRecognizer(tapGesture)
+    }
+
+    @objc
+    private func badgeTapped() {
+        badgeTap?()
     }
 
     override func prepareForReuse() {
         cellTitle.text = ""
         cellBadge.text = ""
+    }
+
+    func setBadgeTap(_ block: @escaping BadgeTapBlock) {
+        badgeTap = block
     }
 }

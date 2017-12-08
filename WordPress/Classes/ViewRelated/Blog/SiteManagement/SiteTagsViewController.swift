@@ -140,8 +140,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func createTag() {
-        let emptyTag = PostTag()
-        navigate(to: emptyTag)
+        navigate(toTag: nil)
     }
 
     private func refreshNoResultsView() {
@@ -206,11 +205,24 @@ extension SiteTagsViewController {
             cell.count = count
         }
 
+        cell.setBadgeTap { [weak self] in
+            self?.showPostList(indexPath)
+        }
+
         return cell
     }
 
     fileprivate func tagAtIndexPath(_ indexPath: IndexPath) -> PostTag? {
         return resultsController.object(at: indexPath) as? PostTag
+    }
+
+    private func showPostList(_ indexPath: IndexPath) {
+        print("showing post list for index path ", indexPath)
+        guard let tag = tagAtIndexPath(indexPath) else {
+            return
+        }
+
+        navigate(toPosts: tag)
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -233,6 +245,11 @@ extension SiteTagsViewController {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.delete(tag, for: blog)
     }
+
+    private func save(_ tag: PostTag) {
+        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        tagsService.commit(tag, for: blog)
+    }
 }
 
 // MARK: - Table view delegate
@@ -242,15 +259,78 @@ extension SiteTagsViewController {
             return
         }
 
-        navigate(to: selectedTag)
+        navigate(toTag: selectedTag)
     }
 }
 
-// MARK: - Navigation
+// MARK: - Navigation to Tag details
 extension SiteTagsViewController {
-    fileprivate func navigate(to tag: PostTag) {
-        let singleTag = SiteTagViewController(blog: blog, tag: tag)
+    fileprivate func navigate(toTag details: PostTag?) {
+        let data = SettingsTitleSubtitleController.Data(title: details?.name, subtitle: details?.tagDescription)
+        let confirmationStrings = confirmation()
+        let singleTag = SettingsTitleSubtitleController(data: data, confirmation: confirmationStrings)
+
+        singleTag.setAction { updatedData in
+            self.navigationController?.popViewController(animated: true)
+
+            guard let tag = details else {
+                return
+            }
+
+            self.delete(tag)
+        }
+
+        singleTag.setUpdate { updatedData in
+            guard let tag = details else {
+                self.addTag(data: updatedData)
+                return
+            }
+
+            tag.name = updatedData.title
+            tag.tagDescription = updatedData.subtitle
+
+            self.save(tag)
+        }
+
         navigationController?.pushViewController(singleTag, animated: true)
+    }
+
+    private func addTag(data: SettingsTitleSubtitleController.Data) {
+        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
+            return
+        }
+
+        newTag.name = data.title
+        newTag.tagDescription = data.subtitle
+
+        self.save(newTag)
+    }
+
+    private func confirmation() -> SettingsTitleSubtitleController.Confirmation {
+        let confirmationTitle = NSLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
+        let confirmationSubtitle = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
+        let actionTitle = NSLocalizedString("Delete", comment: "Delete")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+
+        return SettingsTitleSubtitleController.Confirmation(title: confirmationTitle,
+                                                            subtitle: confirmationSubtitle,
+                                                            actionTitle: actionTitle,
+                                                            cancelTitle: cancelTitle)
+    }
+}
+
+// MARK: - Navigate to post list
+extension SiteTagsViewController {
+    fileprivate func navigate(toPosts tag: PostTag?) {
+        guard let tag = tag, let tagName = tag.name else {
+            return
+        }
+
+        let postList = PostListViewController.controllerWithBlog(blog)
+        let matchingTagPredicated = NSPredicate(format: "tags contains %@", tagName)
+        let decoratedFilters = FilteredByTagPostListFilterSettings(blog: blog, postType: .post, predicate: matchingTagPredicated)
+        postList.filterSettings = decoratedFilters
+        navigationController?.pushViewController(postList, animated: true)
     }
 }
 
