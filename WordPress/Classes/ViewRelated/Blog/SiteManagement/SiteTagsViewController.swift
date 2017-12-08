@@ -218,6 +218,11 @@ extension SiteTagsViewController {
 
     private func showPostList(_ indexPath: IndexPath) {
         print("showing post list for index path ", indexPath)
+        guard let tag = tagAtIndexPath(indexPath) else {
+            return
+        }
+
+        navigate(toPosts: tag)
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -311,6 +316,16 @@ extension SiteTagsViewController {
                                                             subtitle: confirmationSubtitle,
                                                             actionTitle: actionTitle,
                                                             cancelTitle: cancelTitle)
+    }
+}
+
+// MARK: - Navigate to post list
+extension SiteTagsViewController {
+    fileprivate func navigate(toPosts tag: PostTag?) {
+        //print("navigating to posts ", tag)
+
+        let postList = PostListViewController.controllerWithBlog(blog)
+        navigationController?.pushViewController(postList, animated: true)
     }
 }
 
