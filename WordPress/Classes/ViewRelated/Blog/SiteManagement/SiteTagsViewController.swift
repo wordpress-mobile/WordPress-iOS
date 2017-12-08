@@ -322,12 +322,12 @@ extension SiteTagsViewController {
 // MARK: - Navigate to post list
 extension SiteTagsViewController {
     fileprivate func navigate(toPosts tag: PostTag?) {
-        guard let tag = tag else {
+        guard let tag = tag, let tagName = tag.name else {
             return
         }
 
         let postList = PostListViewController.controllerWithBlog(blog)
-        let matchingTagPredicated = NSPredicate(format: "%@ IN tags", tag.tagID.intValue)
+        let matchingTagPredicated = NSPredicate(format: "tags contains %@", tagName)
         let decoratedFilters = DecoratedPostListFilterSettings(blog: blog, postType: .post, predicate: NSPredicate())
         postList.filterSettings = decoratedFilters
         navigationController?.pushViewController(postList, animated: true)
