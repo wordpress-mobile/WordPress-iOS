@@ -187,7 +187,7 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     fileprivate func exportImageThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaImageExporter(url: url)
-        exporter.mediaDirectoryType = .cache
+        exporter.mediaDirectoryType = .temporary
         exporter.options = imageExporterOptions
         exporter.export(onCompletion: { (export) in
             self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
@@ -199,7 +199,7 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     fileprivate func exportVideoThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaVideoExporter()
-        exporter.mediaDirectoryType = .cache
+        exporter.mediaDirectoryType = .temporary
         exporter.exportPreviewImageForVideo(atURL: url,
                                             imageOptions: imageExporterOptions,
                                             onCompletion: { (export) in
@@ -242,6 +242,7 @@ class MediaThumbnailExporter: MediaExporter {
             let thumbnail = try thumbnailURL(withIdentifier: identifier)
             let fileManager = FileManager.default
             // Move the exported file at the url to the new URL.
+            try? fileManager.removeItem(at: thumbnail)
             try fileManager.moveItem(at: export.url, to: thumbnail)
             // Configure with the new URL
             let thumbnailExport = MediaExport(url: thumbnail,
