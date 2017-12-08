@@ -60,7 +60,7 @@ class SharedCoreDataStack {
 
     /// Commit unsaved changes (if any exist) using the main queue's managed context
     ///
-    func saveContext()  {
+    func saveContext() {
         guard managedContext.hasChanges else {
             return
         }
