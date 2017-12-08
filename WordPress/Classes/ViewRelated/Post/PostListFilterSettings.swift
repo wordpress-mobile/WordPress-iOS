@@ -1,9 +1,6 @@
 import Foundation
 import WordPressShared
 
-//@objc protocol AvailableFilters {
-//    func availablePostListFilters() -> [PostListFilter]
-//}
 
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)
 /// - Note: previously found within `AbstractPostListViewController`
