@@ -7,7 +7,9 @@ struct PluginListRow: ImmuTableRow {
     let iconURL: URL?
     let updateState: PluginState.UpdateState
     let action: ImmuTableAction?
+
     private let iconSize = CGSize(width: 40, height: 40)
+    private let spinningAnimationKey = "spinning"
 
     func configureCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
@@ -20,10 +22,20 @@ struct PluginListRow: ImmuTableRow {
         case .available(_):
             cell.accessoryView = UIImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
         case .updating(_):
-            // It woudld be nice to show the image spinning while updating
-            cell.accessoryView = UIImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
+            cell.accessoryView = spinningImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
         case .updated:
             cell.accessoryType = .disclosureIndicator
         }
+    }
+
+    private func spinningImageView(image: UIImage?) -> UIImageView {
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
+        animation.duration = 1
+        animation.repeatCount = Float.infinity
+        animation.fromValue = 0.0
+        animation.toValue = Float(Float.pi * 2.0)
+        let imageView = UIImageView(image: image)
+        imageView.layer.add(animation, forKey: spinningAnimationKey)
+        return imageView
     }
 }
