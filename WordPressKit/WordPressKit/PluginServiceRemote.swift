@@ -30,7 +30,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         })
     }
 
-    public func updatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    public func updatePlugin(pluginID: String, siteID: Int, success: @escaping (PluginState) -> Void, failure: @escaping (Error) -> Void) {
         guard let escapedPluginID = encoded(pluginID: pluginID) else {
             return
         }
@@ -41,8 +41,17 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(
             path,
             parameters: parameters,
-            success: { _,_  in
-                success()
+            success: { (responseObject,_)  in
+                guard let response = responseObject as? [String: AnyObject] else {
+                    failure(ResponseError.decodingFailure)
+                    return
+                }
+                do {
+                    let pluginState = try self.pluginState(response: response)
+                    success(pluginState)
+                } catch {
+                    failure(self.errorFromResponse(response))
+                }
         },
             failure: { (error, _) in
                 failure(error)
@@ -143,14 +152,15 @@ fileprivate extension PluginServiceRemote {
                 throw ResponseError.decodingFailure
         }
         let version = (response["version"] as? String)?.nonEmptyString()
-        let availableUpdate = (response["update"] as? [String: String])?["new_version"]
         let url = (response["plugin_url"] as? String).flatMap(URL.init(string:))
+        let availableUpdate = (response["update"] as? [String: String])?["new_version"]
+        let updateState: PluginState.UpdateState = availableUpdate.map({ .available($0) }) ?? .updated
         return PluginState(id: id,
                            slug: slug,
                            active: active,
                            name: name,
                            version: version,
-                           availableUpdate: availableUpdate,
+                           updateState: updateState,
                            autoupdate: autoupdate,
                            url: url)
 

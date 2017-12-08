@@ -1,12 +1,17 @@
 import Foundation
 
 public struct PluginState {
+    public enum UpdateState {
+        case updated
+        case available(String)
+        case updating(String)
+    }
     public let id: String
     public let slug: String
     public var active: Bool
     public let name: String
     public let version: String?
-    public let availableUpdate: String?
+    public var updateState: UpdateState
     public var autoupdate: Bool
     public let url: URL?
 }
