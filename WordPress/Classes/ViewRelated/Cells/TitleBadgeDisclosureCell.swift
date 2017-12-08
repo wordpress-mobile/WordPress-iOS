@@ -2,6 +2,7 @@
 import UIKit
 
 final class TitleBadgeDisclosureCell: WPTableViewCell {
+    typealias BadgeTapBlock = () -> Void
     @IBOutlet weak var cellTitle: UILabel!
     @IBOutlet weak var cellBadge: BadgeLabel!
 
@@ -24,6 +25,8 @@ final class TitleBadgeDisclosureCell: WPTableViewCell {
             }
         }
     }
+
+    var badgeTap: BadgeTapBlock?
 
     override func awakeFromNib() {
         super.awakeFromNib()
