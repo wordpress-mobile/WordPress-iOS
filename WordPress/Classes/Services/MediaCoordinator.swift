@@ -1,12 +1,15 @@
 import Foundation
 
-/// MediaUploadCoordinator is responsible for creating and uploading new media
+/// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
 /// via the `shared` singleton.
 ///
-class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
+class MediaCoordinator: NSObject {
 
-    static let shared = MediaUploadCoordinator()
+    @objc static let shared = MediaCoordinator()
+
+    private(set) var backgroundContext = ContextManager.sharedInstance().newDerivedContext()
+    private let mainContext = ContextManager.sharedInstance().mainContext
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
@@ -17,7 +20,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
     }()
 
     // Init marked private to ensure use of shared singleton.
-    private init() {}
+    private override init() {}
 
     // MARK: - Adding Media
 
@@ -31,32 +34,56 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
         guard let asset = asset as? PHAsset else {
             return
         }
-        let mediaID = UUID().uuidString
-        mediaProgressCoordinator.track(numberOfItems: 1)
-        let context = ContextManager.sharedInstance().mainContext
-        let service = MediaService(managedObjectContext: context)
+
+        let service = MediaService(managedObjectContext: backgroundContext)
         service.createMedia(with: asset,
-                            forBlogObjectID: blog.objectID,
+                            objectID: blog.objectID,
                             thumbnailCallback: nil,
-                            completion: { media, error in
+                            completion: { [weak self] media, error in
                                 guard let media = media else {
                                     return
                                 }
-                                self.begin(media)
 
-                                var progress: Progress? = nil
-                                service.uploadMedia(media,
-                                                    progress: &progress,
-                                                    success: {
-                                                        self.end(media)
-                                }, failure: { error in
-                                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
-                                    self.end(media)
-                                })
-                                if let taskProgress = progress {
-                                    self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: mediaID)
-                                }
+                                self?.uploadMedia(media)
         })
+    }
+
+    func retryMedia(_ media: Media) {
+        guard media.remoteStatus == .failed else {
+            DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
+            return
+        }
+
+        uploadMedia(media)
+    }
+
+    private func uploadMedia(_ media: Media) {
+        mediaProgressCoordinator.track(numberOfItems: 1)
+
+        begin(media)
+
+        let service = MediaService(managedObjectContext: backgroundContext)
+
+        var progress: Progress? = nil
+        service.uploadMedia(media,
+                            progress: &progress,
+                            success: {
+                                self.end(media)
+        }, failure: { error in
+            self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            self.fail(media)
+        })
+        if let taskProgress = progress {
+            self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: media.uploadID)
+        }
+    }
+
+    // MARK: - Progress
+
+    /// - returns: The current progress for the specified media object.
+    ///
+    func progress(for media: Media) -> Progress? {
+        return mediaProgressCoordinator.progress(forMediaID: media.uploadID)
     }
 
     // MARK: - Observing
@@ -103,6 +130,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
     enum MediaState: CustomDebugStringConvertible {
         case uploading
         case ended
+        case failed
         case progress(value: Double)
 
         var debugDescription: String {
@@ -111,6 +139,8 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
                 return "Uploading"
             case .ended:
                 return "Ended"
+            case .failed:
+                return "Failed"
             case .progress(let value):
                 return "Progress: \(value)"
             }
@@ -143,40 +173,51 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
     /// Notifies observers that a media item has begun uploading.
     ///
     func begin(_ media: Media) {
-        queue.async {
-            self.observersForMedia(media).forEach({ observer in
-                DispatchQueue.main.sync {
-                    observer.onUpdate(media, .uploading)
-                }
-            })
-        }
+        notifyObserversForMedia(media, ofStateChange: .uploading)
     }
 
     /// Notifies observers that a media item has ended uploading.
     ///
     func end(_ media: Media) {
-        queue.async {
-            self.observersForMedia(media).forEach({ observer in
-                DispatchQueue.main.sync {
-                    observer.onUpdate(media, .ended)
-                }
-            })
-        }
+        notifyObserversForMedia(media, ofStateChange: .ended)
+    }
+
+    /// Notifies observers that a media item has failed to upload.
+    ///
+    func fail(_ media: Media) {
+        notifyObserversForMedia(media, ofStateChange: .failed)
     }
 
     /// Notifies observers that a media item has ended uploading.
     ///
     func progress(_ value: Double, media: Media) {
+        notifyObserversForMedia(media, ofStateChange: .progress(value: value))
+    }
+
+    func notifyObserversForMedia(_ media: Media, ofStateChange state: MediaState) {
         queue.async {
             self.observersForMedia(media).forEach({ observer in
                 DispatchQueue.main.sync {
-                    observer.onUpdate(media, .progress(value: value))
+                    if let media = self.mainContext.object(with: media.objectID) as? Media {
+                        observer.onUpdate(media, state)
+                    }
                 }
             })
         }
     }
 
-    // MARK: - MediaProgressCoordinatorDelegate
+    /// Sync the specified blog media library.
+    ///
+    /// - parameter blog: The blog from where to sync the media library from.
+    ///
+    @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.syncMediaLibrary(for: blog, success: success, failure: failure)
+    }
+}
+
+// MARK: - MediaProgressCoordinatorDelegate
+extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Double) {
         for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
@@ -195,5 +236,11 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
 
+    }
+}
+
+extension Media {
+    var uploadID: String {
+        return objectID.uriRepresentation().absoluteString
     }
 }

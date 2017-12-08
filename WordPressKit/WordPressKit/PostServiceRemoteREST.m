@@ -125,7 +125,7 @@ static NSString * const RemotePostJSONKeyProjectTypes = @"jetpack-portfolio-type
 
 - (void)createPost:(RemotePost *)post
          withMedia:(RemoteMedia *)media
-   requestEnqueued:(void (^)(void))requestEnqueued
+   requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
@@ -145,9 +145,9 @@ static NSString * const RemotePostJSONKeyProjectTypes = @"jetpack-portfolio-type
     [self.wordPressComRestApi multipartPOST:requestUrl
                                  parameters:parameters
                                   fileParts:@[filePart]
-                            requestEnqueued:^{
+                            requestEnqueued:^(NSNumber *taskID) {
                                 if (requestEnqueued) {
-                                    requestEnqueued();
+                                    requestEnqueued(taskID);
                                 }
     } success:^(id  _Nonnull responseObject, NSHTTPURLResponse * _Nullable httpResponse) {
         RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
