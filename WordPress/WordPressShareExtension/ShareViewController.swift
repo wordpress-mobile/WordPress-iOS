@@ -306,7 +306,7 @@ private extension ShareViewController {
         return uploadMediaOp.objectID
     }
 
-    func savePostOperation(_ remotePost: RemotePost,  with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
+    func savePostOperation(_ remotePost: RemotePost, with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
         let uploadPostOp = UploadOperation(context: managedContext)
         uploadPostOp.updateWithPost(remote: remotePost)
         uploadPostOp.groupID = groupIdentifier
