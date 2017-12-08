@@ -39,7 +39,11 @@ class PluginViewModel: Observable {
         var availableUpdateRow: ImmuTableRow?
         if let availableUpdate = plugin.state.availableUpdate {
             let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), availableUpdate)
-            availableUpdateRow = TextRow(title: message, value: nil)
+            availableUpdateRow = TextWithButtonRow(title: message,
+                                                   actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
+                                                   action: { [plugin] (_) in
+                                                    print("Update \(plugin.name)")
+            })
         }
 
         var activeRow: ImmuTableRow?
@@ -154,6 +158,6 @@ class PluginViewModel: Observable {
     }
 
     static var immutableRows: [ImmuTableRow.Type] {
-        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self]
+        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self]
     }
 }

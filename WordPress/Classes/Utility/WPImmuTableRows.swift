@@ -78,7 +78,7 @@ struct TextRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
-    let value: String?
+    let value: String
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -163,6 +163,26 @@ struct DestructiveButtonRow: ImmuTableRow {
         cell.textLabel?.numberOfLines = 0
         cell.textLabel?.lineBreakMode = .byWordWrapping
         WPStyleGuide.configureTableViewDestructiveActionCell(cell)
+    }
+}
+
+struct TextWithButtonRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(TextWithAccessoryButtonCell.self)
+
+    let title: String
+    let actionLabel: String
+    let action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! TextWithAccessoryButtonCell
+
+        cell.textLabel?.text = title
+        cell.buttonText = actionLabel
+        cell.onButtonPressed = action.map({ action in
+            return {
+                action(self)
+            }
+        })
     }
 }
 
