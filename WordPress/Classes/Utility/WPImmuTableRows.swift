@@ -78,7 +78,7 @@ struct TextRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
     let title: String
-    let value: String
+    let value: String?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
