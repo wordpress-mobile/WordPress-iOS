@@ -183,7 +183,7 @@ class PostListFilterSettings: NSObject {
     }
 }
 
-final class DecoratedPostListFilterSettings: PostListFilterSettings {
+final class FilteredByTagPostListFilterSettings: PostListFilterSettings {
     private let predicate: NSPredicate
 
     init(blog: Blog, postType: PostServiceType, predicate: NSPredicate) {
