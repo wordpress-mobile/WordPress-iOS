@@ -6,6 +6,7 @@ public struct PluginState {
     public var active: Bool
     public let name: String
     public let version: String?
+    public let availableUpdate: String?
     public var autoupdate: Bool
     public let url: URL?
 }
