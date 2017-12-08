@@ -34,28 +34,28 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         let parameters = [
             "active": "true"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
     @objc public func deactivatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "active": "false"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
     @objc public func enableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "autoupdate": "true"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
     @objc public func disableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "autoupdate": "false"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
     @objc public func remove(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
@@ -76,7 +76,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         )
     }
 
-    private func updatePlugin(parameters: [String: AnyObject], pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    private func modifyPlugin(parameters: [String: AnyObject], pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         guard let escapedPluginID = encoded(pluginID: pluginID) else {
             return
         }
