@@ -36,6 +36,12 @@ class PluginViewModel: Observable {
                 value: version)
         }
 
+        var availableUpdateRow: ImmuTableRow?
+        if let availableUpdate = plugin.state.availableUpdate {
+            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), availableUpdate)
+            availableUpdateRow = TextRow(title: message, value: nil)
+        }
+
         var activeRow: ImmuTableRow?
         if plugin.state.deactivateAllowed {
             activeRow = SwitchRow(
@@ -82,7 +88,8 @@ class PluginViewModel: Observable {
 
         return ImmuTable(optionalSections: [
             ImmuTableSection(optionalRows: [
-                versionRow
+                versionRow,
+                availableUpdateRow
                 ]),
             ImmuTableSection(optionalRows: [
                 activeRow,
