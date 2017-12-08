@@ -6,6 +6,7 @@ enum PluginAction: Action {
     case deactivate(id: String, site: JetpackSiteRef)
     case enableAutoupdates(id: String, site: JetpackSiteRef)
     case disableAutoupdates(id: String, site: JetpackSiteRef)
+    case update(id: String, site: JetpackSiteRef)
     case remove(id: String, site: JetpackSiteRef)
     case receivePlugins(site: JetpackSiteRef, plugins: SitePlugins)
     case receivePluginsFailed(site: JetpackSiteRef, error: Error)
@@ -56,6 +57,19 @@ struct PluginStoreState {
     var lastFetch = [JetpackSiteRef: Date]()
     var directoryEntries = [String: PluginDirectoryEntryState]()
     var fetchingDirectoryEntry = [String: Bool]()
+    var updatesInProgress = [JetpackSiteRef: Set<String>]()
+}
+
+extension PluginStoreState {
+    mutating func modifyPlugin(id: String, site: JetpackSiteRef, change: (inout PluginState) -> Void) {
+        guard let sitePlugins = plugins[site],
+            let index = sitePlugins.plugins.index(where: { $0.id == id }) else {
+                return
+        }
+        var plugin = sitePlugins.plugins[index]
+        change(&plugin)
+        plugins[site]?.plugins[index] = plugin
+    }
 }
 
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
@@ -103,6 +117,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             enableAutoupdatesPlugin(pluginID: pluginID, site: site)
         case .disableAutoupdates(let pluginID, let site):
             disableAutoupdatesPlugin(pluginID: pluginID, site: site)
+        case .update(let pluginID, let site):
+            updatePlugin(pluginID: pluginID, site: site)
         case .remove(let pluginID, let site):
             removePlugin(pluginID: pluginID, site: site)
         case .receivePlugins(let site, let plugins):
@@ -158,7 +174,7 @@ extension PluginStore {
 // MARK: - Action handlers
 private extension PluginStore {
     func activatePlugin(pluginID: String, site: JetpackSiteRef) {
-        modifyPlugin(id: pluginID, site: site) { (plugin) in
+        state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = true
         }
         remote(site: site)?.activatePlugin(
@@ -166,14 +182,14 @@ private extension PluginStore {
             siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
+                self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = false
                 })
         })
     }
 
     func deactivatePlugin(pluginID: String, site: JetpackSiteRef) {
-        modifyPlugin(id: pluginID, site: site) { (plugin) in
+        state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = false
         }
         remote(site: site)?.deactivatePlugin(
@@ -181,14 +197,14 @@ private extension PluginStore {
             siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
+                self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = true
                 })
         })
     }
 
     func enableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
-        modifyPlugin(id: pluginID, site: site) { (plugin) in
+        state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = true
         }
         remote(site: site)?.enableAutoupdates(
@@ -196,14 +212,14 @@ private extension PluginStore {
             siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
+                self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = false
                 })
         })
     }
 
     func disableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
-        modifyPlugin(id: pluginID, site: site) { (plugin) in
+        state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = false
         }
         remote(site: site)?.disableAutoupdates(
@@ -211,9 +227,43 @@ private extension PluginStore {
             siteID: site.siteID,
             success: {},
             failure: { [weak self] _ in
-                self?.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
+                self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = true
                 })
+        })
+    }
+
+    func updatePlugin(pluginID: String, site: JetpackSiteRef) {
+        guard !state.updatesInProgress[site, default: Set()].contains(pluginID),
+            let plugin = getPlugin(id: pluginID, site: site),
+            case let .available(version) = plugin.state.updateState else {
+            return
+        }
+        transaction { (state) in
+            state.updatesInProgress[site, default: Set()].insert(pluginID)
+            state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
+                plugin.updateState = .updating(version)
+            })
+        }
+        remote(site: site)?.updatePlugin(
+            pluginID: pluginID,
+            siteID: site.siteID,
+            success: { [weak self] (plugin) in
+                self?.transaction({ (state) in
+                    state.modifyPlugin(id: pluginID, site: site, change: { (updatedPlugin) in
+                        updatedPlugin = plugin
+                    })
+                    state.updatesInProgress[site]?.remove(pluginID)
+                })
+            },
+            failure: { [weak self] (error) in
+                self?.transaction({ (state) in
+                    state.modifyPlugin(id: pluginID, site: site, change: { (updatedPlugin) in
+                        updatedPlugin.updateState = .available(version)
+                    })
+                    state.updatesInProgress[site]?.remove(pluginID)
+                })
+                print("Error updating plugin: \(error)")
         })
     }
 
@@ -232,16 +282,6 @@ private extension PluginStore {
         })
     }
 
-    func modifyPlugin(id: String, site: JetpackSiteRef, change: (inout PluginState) -> Void) {
-        guard let sitePlugins = state.plugins[site],
-            let index = sitePlugins.plugins.index(where: { $0.id == id }) else {
-                return
-        }
-        var plugin = sitePlugins.plugins[index]
-        change(&plugin)
-        state.plugins[site]?.plugins[index] = plugin
-    }
-
     func fetchPlugins(site: JetpackSiteRef) {
         guard let remote = remote(site: site) else {
             return
@@ -258,6 +298,17 @@ private extension PluginStore {
     }
 
     func receivePlugins(site: JetpackSiteRef, plugins: SitePlugins) {
+        var plugins = plugins
+        if let updatesForSite = state.updatesInProgress[site].map(Set.init(_:)) {
+            plugins.plugins = plugins.plugins.map({ (plugin) in
+                var plugin = plugin
+                if case let .available(version) = plugin.updateState,
+                    updatesForSite.contains(plugin.id) {
+                    plugin.updateState = .updating(version)
+                }
+                return plugin
+            })
+        }
         transaction { (state) in
             state.plugins[site] = plugins
             state.fetching[site] = false
