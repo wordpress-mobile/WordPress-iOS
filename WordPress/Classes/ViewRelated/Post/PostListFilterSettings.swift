@@ -1,6 +1,10 @@
 import Foundation
 import WordPressShared
 
+//@objc protocol AvailableFilters {
+//    func availablePostListFilters() -> [PostListFilter]
+//}
+
 /// `PostListFilterSettings` manages settings for filtering posts (by author or status)
 /// - Note: previously found within `AbstractPostListViewController`
 class PostListFilterSettings: NSObject {
@@ -178,3 +182,23 @@ class PostListFilterSettings: NSObject {
         return properties
     }
 }
+
+final class DecoratedPostListFilterSettings: PostListFilterSettings {
+    private let predicate: NSPredicate
+
+    init(blog: Blog, postType: PostServiceType, predicate: NSPredicate) {
+        self.predicate = predicate
+        super.init(blog: blog, postType: postType)
+    }
+
+
+    override func availablePostListFilters() -> [PostListFilter] {
+        print("returning the decorated filters")
+
+        return super.availablePostListFilters().map({ postListFilter in
+            return postListFilter.predicateForFetchRequest = NSCompoundPredicate(andPredicateWithSubpredicates: [postListFilter.predicateForFetchRequest, predicate])
+        })
+    }
+
+}
+
