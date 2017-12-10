@@ -279,6 +279,10 @@ extension SiteTagsViewController {
                 return
             }
 
+            guard let wasUpdated = self?.tagWasUpdated(tag: tag, updatedTag: updatedData), wasUpdated == true else {
+                return
+            }
+
             tag.name = updatedData.title
             tag.tagDescription = updatedData.subtitle
 
@@ -286,6 +290,14 @@ extension SiteTagsViewController {
         }
 
         navigationController?.pushViewController(tagDetailsView, animated: true)
+    }
+
+    private func tagWasUpdated(tag: PostTag, updatedTag: SettingsTitleSubtitleController.Content) -> Bool {
+        if tag.name == updatedTag.title && tag.tagDescription == updatedTag.subtitle {
+            return false
+        }
+
+        return true
     }
 
     private func addTag(data: SettingsTitleSubtitleController.Content) {
