@@ -123,8 +123,8 @@ NS_ASSUME_NONNULL_BEGIN
     NSLog(@"Delete tag %@ for blog %@", tag, blog);
 }
 
-- (void)commitTag:(PostTag*)tag
-          forBlog:(Blog *)blog
+- (void)saveTag:(PostTag*)tag
+        forBlog:(Blog *)blog
 {
     //Not implemented yet
     NSLog(@"Commit tag %@ for blog %@", tag, blog);
