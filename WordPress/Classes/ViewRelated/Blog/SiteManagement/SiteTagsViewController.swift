@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 final class SiteTagsViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     private struct TableConstants {
@@ -259,8 +260,8 @@ extension SiteTagsViewController {
                                                               subtitle: details?.tagDescription,
                                                               titleHeader: titleSectionHeader,
                                                               subtitleHeader: subtitleSectionHeader)
-        let confirmationStrings = confirmation()
-        let singleTag = SettingsTitleSubtitleController(content: content, confirmation: confirmationStrings)
+        let confirmationContent = confirmation()
+        let singleTag = SettingsTitleSubtitleController(content: content, confirmation: confirmationContent)
 
         singleTag.setAction { updatedData in
             self.navigationController?.popViewController(animated: true)
@@ -303,11 +304,13 @@ extension SiteTagsViewController {
         let confirmationSubtitle = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
         let actionTitle = NSLocalizedString("Delete", comment: "Delete")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        let trashIcon = Gridicon.iconOfType(.trash)
 
         return SettingsTitleSubtitleController.Confirmation(title: confirmationTitle,
                                                             subtitle: confirmationSubtitle,
                                                             actionTitle: actionTitle,
-                                                            cancelTitle: cancelTitle)
+                                                            cancelTitle: cancelTitle,
+                                                            icon: trashIcon)
     }
 }
 
