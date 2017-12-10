@@ -128,9 +128,9 @@ static const NSInteger PostTagIdDefaultValue = -1;
 }
 
 - (void)saveTag:(PostTag*)tag
-          forBlog:(Blog *)blog
-          success:(nullable void (^)(NSArray <PostTag *> *tags))success
-          failure:(nullable void (^)(NSError *error))failure
+        forBlog:(Blog *)blog
+        success:(nullable void (^)(PostTag *tag))success
+        failure:(nullable void (^)(NSError *error))failure
 {
     if (tag.tagID.integerValue == PostTagIdDefaultValue) {
         [self saveNewTag:tag
@@ -210,7 +210,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 - (void)saveNewTag:(PostTag *)tag
               blog:(Blog *)blog
-           success:(nullable void (^)(NSArray <PostTag *> *tags))success
+           success:(nullable void (^)(PostTag *tag))success
            failure:(nullable void (^)(NSError *error))failure
 {
     NSLog(@"this is a new tag");
@@ -218,7 +218,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 - (void)updateExistingTag:(PostTag *)tag
                      blog:(Blog *)blog
-                  success:(nullable void (^)(NSArray <PostTag *> *tags))success
+                  success:(nullable void (^)(PostTag *tag))success
                   failure:(nullable void (^)(NSError *error))failure
 {
     NSLog(@"this is a tag to be updated");
@@ -230,7 +230,8 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
     [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
         if (success) {
-            success(tag);
+            PostTag *localTag = [self tagFromRemoteTag:tag blog:blog];
+            success(localTag);
         }
     } failure:^(NSError * _Nonnull error) {
         [self handleError:error forBlog:blog withFailure:failure];
