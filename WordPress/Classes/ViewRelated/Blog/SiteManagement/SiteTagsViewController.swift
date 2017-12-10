@@ -253,7 +253,12 @@ extension SiteTagsViewController {
 // MARK: - Navigation to Tag details
 extension SiteTagsViewController {
     fileprivate func navigate(to details: PostTag?) {
-        let content = SettingsTitleSubtitleController.Content(title: details?.name, subtitle: details?.tagDescription)
+        let titleSectionHeader = NSLocalizedString("Tag", comment: "Section header for tag name in Tag Details View.")
+        let subtitleSectionHeader = NSLocalizedString("Description", comment: "Section header for tag name in Tag Details View.")
+        let content = SettingsTitleSubtitleController.Content(title: details?.name,
+                                                              subtitle: details?.tagDescription,
+                                                              titleHeader: titleSectionHeader,
+                                                              subtitleHeader: subtitleSectionHeader)
         let confirmationStrings = confirmation()
         let singleTag = SettingsTitleSubtitleController(content: content, confirmation: confirmationStrings)
 
