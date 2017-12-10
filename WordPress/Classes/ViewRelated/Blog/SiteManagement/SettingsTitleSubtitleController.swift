@@ -3,7 +3,7 @@ import Gridicons
 
 
 /// Types the closures than can be provided as completion blocks
-typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Data) -> Void)
+typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Content) -> Void)
 
 
 /**
@@ -11,8 +11,8 @@ typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Data) 
 */
 final class SettingsTitleSubtitleController: UITableViewController {
 
-    /// The data to be presented on screen (i.e. title and subtitle).
-    final class Data {
+    /// The content to be presented on screen (i.e. title and subtitle).
+    final class Content {
         var title: String?
         var subtitle: String?
 
@@ -85,15 +85,15 @@ final class SettingsTitleSubtitleController: UITableViewController {
         return self.textView()
     }()
 
-    private let data: SettingsTitleSubtitleController.Data
+    private let content: SettingsTitleSubtitleController.Content
     private let confirmation: SettingsTitleSubtitleController.Confirmation?
 
     private var action: SettingsTitleSubtitleAction?
     private var update: SettingsTitleSubtitleAction?
     private var isTriggeringAction = false
 
-    public init(data: SettingsTitleSubtitleController.Data, confirmation: SettingsTitleSubtitleController.Confirmation? = nil) {
-        self.data = data
+    public init(content: SettingsTitleSubtitleController.Content, confirmation: SettingsTitleSubtitleController.Confirmation? = nil) {
+        self.content = content
         self.confirmation = confirmation
         super.init(style: .grouped)
     }
@@ -133,7 +133,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func setupNavigationBar() {
-        guard let title = data.title, title.count > 0 else {
+        guard let title = content.title, title.count > 0 else {
             return
         }
 
@@ -146,7 +146,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func setupTitle() {
-        navigationItem.title = data.title
+        navigationItem.title = content.title
     }
 
     private func setupTable() {
@@ -218,11 +218,11 @@ final class SettingsTitleSubtitleController: UITableViewController {
 
     private func executeAction() {
         isTriggeringAction = true
-        action?(data)
+        action?(content)
     }
 
     private func validateData() {
-        guard let name = data.title, name.count > 0 else {
+        guard let name = content.title, name.count > 0 else {
             return
         }
 
@@ -230,7 +230,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
             return
         }
 
-        update?(data)
+        update?(content)
     }
 }
 
@@ -252,10 +252,10 @@ extension SettingsTitleSubtitleController {
         let sectionForIndexPath = Sections.section(for: indexPath.section)
         switch sectionForIndexPath {
         case .name:
-            nameTextField.text = data.title
+            nameTextField.text = content.title
             return nameCell
         case .description:
-            descriptionTextField.text = data.subtitle
+            descriptionTextField.text = content.subtitle
             return descriptionCell
         }
     }
@@ -270,7 +270,7 @@ extension SettingsTitleSubtitleController {
 extension SettingsTitleSubtitleController {
     @objc
     fileprivate func textChanged(_ textField: UITextField) {
-        data.title = textField.text
+        content.title = textField.text
         setupTitle()
     }
 }
@@ -278,6 +278,6 @@ extension SettingsTitleSubtitleController {
 // MARK: - Tag subtitle updates
 extension SettingsTitleSubtitleController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        data.subtitle = textView.text
+        content.subtitle = textView.text
     }
 }
