@@ -1,6 +1,4 @@
 import UIKit
-import Gridicons
-
 
 /// Types the closures than can be provided as completion blocks
 typealias SettingsTitleSubtitleAction = ((SettingsTitleSubtitleController.Content) -> Void)
@@ -33,6 +31,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let subtitle: String
         let actionTitle: String
         let cancelTitle: String
+        let icon: UIImage
     }
 
     fileprivate enum Sections: Int {
@@ -136,7 +135,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private func deleteButton() -> UIBarButtonItem {
-        let trashIcon = Gridicon.iconOfType(.trash)
+        let trashIcon = confirmation?.icon
         return UIBarButtonItem(image: trashIcon, style: .plain, target: self, action: #selector(deleteContent))
     }
 
