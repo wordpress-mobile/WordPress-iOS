@@ -15,10 +15,14 @@ final class SettingsTitleSubtitleController: UITableViewController {
     final class Content {
         var title: String?
         var subtitle: String?
+        var titleHeader: String?
+        var subtitleHeader: String?
 
-        init(title: String?, subtitle: String?) {
+        init(title: String?, subtitle: String?, titleHeader: String? = nil, subtitleHeader: String? = nil) {
             self.title = title
             self.subtitle = subtitle
+            self.titleHeader = titleHeader
+            self.subtitleHeader = subtitleHeader
         }
     }
 
@@ -31,7 +35,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let cancelTitle: String
     }
 
-    fileprivate enum Sections: Int, CustomStringConvertible {
+    fileprivate enum Sections: Int {
         case name
         case description
 
@@ -48,15 +52,6 @@ final class SettingsTitleSubtitleController: UITableViewController {
                 return .name
             }
             return Sections(rawValue: index)!
-        }
-
-        var description: String {
-            switch self {
-            case .name:
-                return NSLocalizedString("Tag", comment: "Section header for tag name in Tag Details View.").uppercased()
-            case .description:
-                return NSLocalizedString("Description", comment: "Section header for tag name in Tag Details View.").uppercased()
-            }
         }
 
         var height: CGFloat {
@@ -245,7 +240,17 @@ extension SettingsTitleSubtitleController {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Sections.section(for: section).description
+        let contentSection = Sections.section(for: section)
+        return titleForHeader(section: contentSection)
+    }
+
+    private func titleForHeader(section: Sections) -> String? {
+        switch section {
+        case .name:
+            return content.titleHeader?.uppercased()
+        case .description:
+            return content.subtitleHeader?.uppercased()
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
