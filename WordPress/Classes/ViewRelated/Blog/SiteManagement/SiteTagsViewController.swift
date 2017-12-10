@@ -235,7 +235,7 @@ extension SiteTagsViewController {
 
     private func save(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.commit(tag, for: blog)
+        tagsService.save(tag, for: blog)
     }
 }
 

@@ -48,8 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Commits a tag assigned to a blog
  */
-- (void)commitTag:(PostTag*)tag
-          forBlog:(Blog *)blog;
+- (void)saveTag:(PostTag*)tag
+        forBlog:(Blog *)blog;
 
 @end
 
