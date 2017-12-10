@@ -136,7 +136,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
 
     private func actionButton() -> UIBarButtonItem {
         let trashIcon = confirmation?.icon
-        return UIBarButtonItem(image: trashIcon, style: .plain, target: self, action: #selector(deleteContent))
+        return UIBarButtonItem(image: trashIcon, style: .plain, target: self, action: #selector(actionButtonTapped))
     }
 
     private func setupTitle() {
@@ -189,7 +189,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         return returnValue
     }
 
-    @objc private func deleteContent() {
+    @objc private func actionButtonTapped() {
         guard let confirmation = confirmation else {
             executeAction()
             return
