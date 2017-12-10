@@ -229,7 +229,9 @@ static const NSInteger PostTagIdDefaultValue = -1;
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
 
     [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
-        // Do something?
+        if (success) {
+            success(tag);
+        }
     } failure:^(NSError * _Nonnull error) {
         [self handleError:error forBlog:blog withFailure:failure];
     }];
