@@ -214,6 +214,19 @@ static const NSInteger PostTagIdDefaultValue = -1;
            failure:(nullable void (^)(NSError *error))failure
 {
     NSLog(@"this is a new tag");
+
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+
+    RemotePostTag *remoteTag = [self remoteTagWith:tag];
+
+    [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
+        if (success) {
+            PostTag *localTag = [self tagFromRemoteTag:tag blog:blog];
+            success(localTag);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        [self handleError:error forBlog:blog withFailure:failure];
+    }];
 }
 
 - (void)updateExistingTag:(PostTag *)tag
@@ -223,6 +236,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
 {
     NSLog(@"this is a tag to be updated");
 
+    /*
     NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
 
     //TODO. Commit the tag locally first
@@ -236,6 +250,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
     } failure:^(NSError * _Nonnull error) {
         [self handleError:error forBlog:blog withFailure:failure];
     }];
+    */
 }
 
 - (RemotePostTag*)remoteTagWith:(PostTag *)tag
