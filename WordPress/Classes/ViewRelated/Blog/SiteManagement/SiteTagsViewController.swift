@@ -263,26 +263,26 @@ extension SiteTagsViewController {
         let confirmationContent = confirmation()
         let tagDetailsView = SettingsTitleSubtitleController(content: content, confirmation: confirmationContent)
 
-        tagDetailsView.setAction { updatedData in
-            self.navigationController?.popViewController(animated: true)
+        tagDetailsView.setAction { [weak self] updatedData in
+            self?.navigationController?.popViewController(animated: true)
 
             guard let tag = tag else {
                 return
             }
 
-            self.delete(tag)
+            self?.delete(tag)
         }
 
-        tagDetailsView.setUpdate { updatedData in
+        tagDetailsView.setUpdate { [weak self] updatedData in
             guard let tag = tag else {
-                self.addTag(data: updatedData)
+                self?.addTag(data: updatedData)
                 return
             }
 
             tag.name = updatedData.title
             tag.tagDescription = updatedData.subtitle
 
-            self.save(tag)
+            self?.save(tag)
         }
 
         navigationController?.pushViewController(tagDetailsView, animated: true)
