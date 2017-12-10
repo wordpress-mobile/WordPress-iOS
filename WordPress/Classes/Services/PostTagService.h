@@ -50,11 +50,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Commits a tag assigned to a blog
  */
-- (void)commitTag:(PostTag*)tag
+- (void)saveTag:(PostTag*)tag
           forBlog:(Blog *)blog
           success:(nullable void (^)(NSArray <PostTag *> *tags))success
           failure:(nullable void (^)(NSError *error))failure;
-
 @end
 
 NS_ASSUME_NONNULL_END

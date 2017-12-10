@@ -127,7 +127,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
     NSLog(@"Delete tag %@ for blog %@", tag, blog);
 }
 
-- (void)commitTag:(PostTag*)tag
+- (void)saveTag:(PostTag*)tag
           forBlog:(Blog *)blog
           success:(nullable void (^)(NSArray <PostTag *> *tags))success
           failure:(nullable void (^)(NSError *error))failure
