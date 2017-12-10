@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)saveTag:(PostTag*)tag
           forBlog:(Blog *)blog
-          success:(nullable void (^)(NSArray <PostTag *> *tags))success
+          success:(nullable void (^)(PostTag *tag))success
           failure:(nullable void (^)(NSError *error))failure;
 @end
 
