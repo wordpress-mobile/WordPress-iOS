@@ -261,9 +261,9 @@ extension SiteTagsViewController {
                                                               titleHeader: titleSectionHeader,
                                                               subtitleHeader: subtitleSectionHeader)
         let confirmationContent = confirmation()
-        let singleTag = SettingsTitleSubtitleController(content: content, confirmation: confirmationContent)
+        let tagDetailsView = SettingsTitleSubtitleController(content: content, confirmation: confirmationContent)
 
-        singleTag.setAction { updatedData in
+        tagDetailsView.setAction { updatedData in
             self.navigationController?.popViewController(animated: true)
 
             guard let tag = tag else {
@@ -273,7 +273,7 @@ extension SiteTagsViewController {
             self.delete(tag)
         }
 
-        singleTag.setUpdate { updatedData in
+        tagDetailsView.setUpdate { updatedData in
             guard let tag = tag else {
                 self.addTag(data: updatedData)
                 return
@@ -285,7 +285,7 @@ extension SiteTagsViewController {
             self.save(tag)
         }
 
-        navigationController?.pushViewController(singleTag, animated: true)
+        navigationController?.pushViewController(tagDetailsView, animated: true)
     }
 
     private func addTag(data: SettingsTitleSubtitleController.Content) {
