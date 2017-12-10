@@ -237,7 +237,11 @@ extension SiteTagsViewController {
 
     private func save(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.save(tag, for: blog, success: nil, failure: nil)
+        refreshControl?.beginRefreshing()
+        tagsService.save(tag, for: blog, success: { [weak self] tag in
+            self?.refreshControl?.endRefreshing()
+            self?.tableView.reloadData()
+        }, failure: nil)
     }
 }
 
