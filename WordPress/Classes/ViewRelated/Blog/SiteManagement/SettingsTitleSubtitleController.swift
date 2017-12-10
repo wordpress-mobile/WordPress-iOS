@@ -131,10 +131,10 @@ final class SettingsTitleSubtitleController: UITableViewController {
             return
         }
 
-        navigationItem.rightBarButtonItem = deleteButton()
+        navigationItem.rightBarButtonItem = actionButton()
     }
 
-    private func deleteButton() -> UIBarButtonItem {
+    private func actionButton() -> UIBarButtonItem {
         let trashIcon = confirmation?.icon
         return UIBarButtonItem(image: trashIcon, style: .plain, target: self, action: #selector(deleteContent))
     }
