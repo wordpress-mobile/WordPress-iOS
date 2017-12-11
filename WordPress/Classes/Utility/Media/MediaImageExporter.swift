@@ -60,25 +60,23 @@ class MediaImageExporter: MediaExporter {
     private let url: URL?
     private let filename: String?
 
-    init(image: UIImage, filename: String?) {
+    private init(image: UIImage?, filename: String?, data: Data?, url: URL?) {
         self.image = image
         self.filename = filename
-        self.data = nil
-        self.url = nil
-    }
-
-    init(url: URL) {
-        self.url = url
-        self.image = nil
-        self.filename = nil
-        self.data = nil
-    }
-
-    init(data: Data, filename: String?) {
         self.data = data
-        self.filename = filename
-        self.url = nil
-        self.image = nil
+        self.url = url
+    }
+
+    convenience init(image: UIImage, filename: String?) {
+        self.init(image: image, filename: filename, data: nil, url: nil)
+    }
+
+    convenience init(url: URL) {
+        self.init(image: nil, filename: nil, data: nil, url: url)
+    }
+
+    convenience init(data: Data, filename: String?) {
+        self.init(image: nil, filename: filename, data: data, url: nil)
     }
 
     public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) {
