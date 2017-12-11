@@ -47,6 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
           failure:(nullable void (^)(NSError *error))failure;
 
 /**
+ Delete a tag with the site.
+ */
+- (void)deleteTag:(RemotePostTag *)tag
+		  success:(nullable void (^)(RemotePostTag *tag))success
+		  failure:(nullable void (^)(NSError *error))failure;
+
+/**
  Fetch a list of tags associated with the site.
  Note: Requests no paging parameters via the API defaulting the response.
  */
