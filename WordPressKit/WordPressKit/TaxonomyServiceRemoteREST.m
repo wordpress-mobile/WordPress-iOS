@@ -107,6 +107,22 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
                          } failure:failure];
 }
 
+- (void)deleteTag:(RemotePostTag *)tag
+		  success:(nullable void (^)(RemotePostTag *tag))success
+		  failure:(nullable void (^)(NSError *error))failure
+{
+	NSParameterAssert(tag.name.length > 0);
+
+	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+	parameters[TaxonomyRESTSlugParameter] = tag.slug;
+
+	[self deleteTaxonomyWithType:TaxonomyRESTTagIdentifier parameters:parameters success:^(NSDictionary * _Nonnull responseObject) {
+		if (success) {
+			success(tag);
+		}
+	} failure:failure];
+}
+
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
                    failure:(nullable void (^)(NSError *error))failure
 {
@@ -189,6 +205,32 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
                   failure(error);
               }
           }];
+}
+
+- (void)deleteTaxonomyWithType:(NSString *)typeIdentifier
+					parameters:(nullable NSDictionary *)parameters
+					   success:(void (^)(NSDictionary *responseObject))success
+					   failure:(nullable void (^)(NSError *error))failure
+{
+	NSString *path = [NSString stringWithFormat:@"sites/%@/%@/slug:%@/delete?context=edit", self.siteID, typeIdentifier, parameters[TaxonomyRESTSlugParameter]];
+	NSString *requestUrl = [self pathForEndpoint:path
+									 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+
+	[self.wordPressComRestApi POST:requestUrl
+						parameters:nil
+						   success:^(id _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
+							   if (![responseObject isKindOfClass:[NSDictionary class]]) {
+								   NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+								   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
+								   return;
+							   }
+							   success(responseObject);
+						   } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
+							   if (failure) {
+								   failure(error);
+							   }
+						   }];
+
 }
 
 #pragma mark - helpers
