@@ -655,7 +655,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        if post.isWPCom && !shouldHideComments {
+        if (post.isWPCom || post.isJetpack) && !shouldHideComments {
             let commentCount = post.commentCount?.intValue ?? 0
             if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 configureCommentActionButton()
