@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
           failure:(nullable void (^)(NSError *error))failure;
 
 /**
- Commits a tag assigned to a blog
+ Saves a tag assigned to a blog
  */
 - (void)saveTag:(PostTag*)tag
           forBlog:(Blog *)blog
