@@ -15,7 +15,7 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
     private var helpButton: UIButton!
 
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-    private var themesSyncHelper: WPContentSyncHelper!
+    private var themesSyncHelper: WPContentSyncHelper?
 
     private lazy var themesController: NSFetchedResultsController<NSFetchRequestResult> = {
         return self.createThemesFetchedResultsController()
@@ -61,13 +61,13 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Theme.entityName())
         fetchRequest.fetchBatchSize = 4
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                             managedObjectContext: self.themeService.managedObjectContext,
-                                             sectionNameKeyPath: nil,
-                                             cacheName: nil)
-        frc.delegate = self
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                  managedObjectContext: self.themeService.managedObjectContext,
+                                                                  sectionNameKeyPath: nil,
+                                                                  cacheName: nil)
+        fetchedResultsController.delegate = self
 
-        return frc
+        return fetchedResultsController
     }
 
     private func fetchThemes() {
@@ -86,21 +86,20 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         guard let siteType = siteType else {
             return NSPredicate()
         }
-        
-        let blogThemes = ["Independent Publisher 2", "Penscratch 2", "Intergalactic 2", "Libre 2"]
-        let websiteThemes = ["Radcliffe 2", "Karuna", "Dara", "Twenty Seventeen"]
-        let portfolioThemes = ["AltoFocus", "Rebalance", "Sketch", "Lodestar"]
 
-        var themes: [String]
-        switch siteType {
-        case .blog: themes = blogThemes
-        case .website: themes = websiteThemes
-        case .portfolio: themes = portfolioThemes
-        }
+        let themeCollections: [SiteType: [String]] = [
+            .blog: ["Independent Publisher 2", "Penscratch 2", "Intergalactic 2", "Libre 2"],
+            .website: ["Radcliffe 2", "Karuna", "Dara", "Twenty Seventeen"],
+            .portfolio: ["AltoFocus", "Rebalance", "Sketch", "Lodestar"]
+        ]
+        let themes = themeCollections[siteType]
 
         var predicates = [NSPredicate]()
-        for themeName in themes {
-            predicates.append(NSPredicate(format: "name = %@", themeName))
+
+        if let themes = themes {
+            for themeName in themes {
+                predicates.append(NSPredicate(format: "name = %@", themeName))
+            }
         }
 
         return NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
@@ -110,11 +109,11 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
 
     fileprivate func setupThemesSyncHelper() {
         themesSyncHelper = WPContentSyncHelper()
-        themesSyncHelper.delegate = self
+        themesSyncHelper?.delegate = self
     }
 
     private func syncContent() {
-        themesSyncHelper.syncContent()
+        themesSyncHelper?.syncContent()
     }
 
     fileprivate func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
