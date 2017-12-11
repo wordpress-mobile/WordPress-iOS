@@ -102,9 +102,13 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                          } failure:failure];
 }
 
-/**
- Delete a tag with the site.
- */
+- (void)updateTag:(RemotePostTag *)tag
+		  success:(nullable void (^)(RemotePostTag *tag))success
+		  failure:(nullable void (^)(NSError *error))failure
+{
+	
+}
+
 - (void)deleteTag:(RemotePostTag *)tag
 		  success:(nullable void (^)(RemotePostTag *tag))success
 		  failure:(nullable void (^)(NSError *error))failure
