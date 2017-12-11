@@ -2691,7 +2691,7 @@ extension AztecPostViewController {
                                         self?.handleNewMedia(media, error: error, attachment: attachment, statType: statType)
             })
         } catch {
-            print(MediaURLExporter().exporterErrorWith(error: error))
+            print(MediaURLExporter(url: url).exporterErrorWith(error: error))
             return
         }
     }
