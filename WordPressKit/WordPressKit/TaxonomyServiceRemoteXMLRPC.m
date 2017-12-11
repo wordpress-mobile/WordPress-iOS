@@ -102,6 +102,25 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                          } failure:failure];
 }
 
+/**
+ Delete a tag with the site.
+ */
+- (void)deleteTag:(RemotePostTag *)tag
+		  success:(nullable void (^)(RemotePostTag *tag))success
+		  failure:(nullable void (^)(NSError *error))failure
+{
+	NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+	[extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
+
+	[self deleteTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+					  parameters:extraParameters success:^(NSString * _Nonnull responseString) {
+						  if (success) {
+							  success(tag);
+						  }
+					  } failure:failure];
+	
+}
+
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
                    failure:(nullable void (^)(NSError *))failure
 {
@@ -191,6 +210,35 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                          failure(error);
                      }
                  }];
+}
+
+- (void)deleteTaxonomyWithType:(NSString *)typeIdentifier
+					parameters:(nullable NSDictionary *)parameters
+					   success:(void (^)(NSString *responseString))success
+					   failure:(nullable void (^)(NSError *error))failure
+{
+	NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
+	NSArray *xmlrpcParameters = nil;
+	if (parameters.count) {
+		[mutableParametersDict addEntriesFromDictionary:parameters];
+	}
+
+	xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
+
+	[self.api callMethod:@"wp.deleteTerm"
+			  parameters:xmlrpcParameters
+				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+					 if (![responseObject respondsToSelector:@selector(numericValue)]) {
+						 NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+						 [self handleResponseErrorWithMessage:message method:@"wp.newTerm" failure:failure];
+						 return;
+					 }
+					 success(responseObject);
+				 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+					 if (failure) {
+						 failure(error);
+					 }
+				 }];
 }
 
 #pragma mark - helpers

@@ -230,7 +230,6 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 								   failure(error);
 							   }
 						   }];
-
 }
 
 #pragma mark - helpers
