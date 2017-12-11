@@ -41,7 +41,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(
             path,
             parameters: parameters,
-            success: { (responseObject,_)  in
+            success: { (responseObject, _)  in
                 guard let response = responseObject as? [String: AnyObject] else {
                     failure(ResponseError.decodingFailure)
                     return
