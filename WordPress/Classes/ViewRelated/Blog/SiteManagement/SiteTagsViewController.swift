@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 final class SiteTagsViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     private struct TableConstants {
@@ -140,8 +141,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func createTag() {
-        let emptyTag = PostTag()
-        navigate(to: emptyTag)
+        navigate(to: nil)
     }
 
     private func refreshNoResultsView() {
@@ -233,6 +233,11 @@ extension SiteTagsViewController {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.delete(tag, for: blog)
     }
+
+    private func save(_ tag: PostTag) {
+        let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        tagsService.save(tag, for: blog)
+    }
 }
 
 // MARK: - Table view delegate
@@ -246,11 +251,78 @@ extension SiteTagsViewController {
     }
 }
 
-// MARK: - Navigation
+// MARK: - Navigation to Tag details
 extension SiteTagsViewController {
-    fileprivate func navigate(to tag: PostTag) {
-        let singleTag = SiteTagViewController(blog: blog, tag: tag)
-        navigationController?.pushViewController(singleTag, animated: true)
+    fileprivate func navigate(to tag: PostTag?) {
+        let titleSectionHeader = NSLocalizedString("Tag", comment: "Section header for tag name in Tag Details View.")
+        let subtitleSectionHeader = NSLocalizedString("Description", comment: "Section header for tag name in Tag Details View.")
+        let content = SettingsTitleSubtitleController.Content(title: tag?.name,
+                                                              subtitle: tag?.tagDescription,
+                                                              titleHeader: titleSectionHeader,
+                                                              subtitleHeader: subtitleSectionHeader)
+        let confirmationContent = confirmation()
+        let tagDetailsView = SettingsTitleSubtitleController(content: content, confirmation: confirmationContent)
+
+        tagDetailsView.setAction { [weak self] updatedData in
+            self?.navigationController?.popViewController(animated: true)
+
+            guard let tag = tag else {
+                return
+            }
+
+            self?.delete(tag)
+        }
+
+        tagDetailsView.setUpdate { [weak self] updatedData in
+            guard let tag = tag else {
+                self?.addTag(data: updatedData)
+                return
+            }
+
+            guard self?.tagWasUpdated(tag: tag, updatedTag: updatedData) == true else {
+                return
+            }
+
+            tag.name = updatedData.title
+            tag.tagDescription = updatedData.subtitle
+
+            self?.save(tag)
+        }
+
+        navigationController?.pushViewController(tagDetailsView, animated: true)
+    }
+
+    private func tagWasUpdated(tag: PostTag, updatedTag: SettingsTitleSubtitleController.Content) -> Bool {
+        if tag.name == updatedTag.title && tag.tagDescription == updatedTag.subtitle {
+            return false
+        }
+
+        return true
+    }
+
+    private func addTag(data: SettingsTitleSubtitleController.Content) {
+        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
+            return
+        }
+
+        newTag.name = data.title
+        newTag.tagDescription = data.subtitle
+
+        self.save(newTag)
+    }
+
+    private func confirmation() -> SettingsTitleSubtitleController.Confirmation {
+        let confirmationTitle = NSLocalizedString("Delete this tag", comment: "Delete Tag confirmation action title")
+        let confirmationSubtitle = NSLocalizedString("Are you sure you want to delete this tag?", comment: "Message asking for confirmation on tag deletion")
+        let actionTitle = NSLocalizedString("Delete", comment: "Delete")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        let trashIcon = Gridicon.iconOfType(.trash)
+
+        return SettingsTitleSubtitleController.Confirmation(title: confirmationTitle,
+                                                            subtitle: confirmationSubtitle,
+                                                            actionTitle: actionTitle,
+                                                            cancelTitle: cancelTitle,
+                                                            icon: trashIcon)
     }
 }
 
