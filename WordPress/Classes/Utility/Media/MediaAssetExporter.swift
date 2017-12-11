@@ -82,12 +82,20 @@ class MediaAssetExporter: MediaExporter {
         }
 
         // Configure the options for requesting the image.
+        let progress = Progress.discreteProgress(totalUnitCount: 100)
+        progress.isCancellable = true
         let options = PHImageRequestOptions()
         options.version = .current
         options.deliveryMode = .highQualityFormat
         options.resizeMode = .exact
         options.isNetworkAccessAllowed = true
         options.isSynchronous = true
+        options.progressHandler = { (progressValue, error, stop, info) in
+            progress.completedUnitCount = Int64(progressValue * 100)
+            if progress.isCancelled {
+                stop.pointee = true
+            }
+        }
 
         // Configure the targetSize for PHImageManager to resize to.
         let targetSize: CGSize
