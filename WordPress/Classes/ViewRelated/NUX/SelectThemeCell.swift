@@ -21,7 +21,7 @@ class SelectThemeCell: UICollectionViewCell {
 
     // MARK: - Init
 
-    override open func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         configureColors()
     }
