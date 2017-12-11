@@ -422,7 +422,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
 
-    [self configureInAppNotificationPresenter];
+    [self configureNoticePresenter];
 }
 
 #pragma mark - Push Notification delegate
