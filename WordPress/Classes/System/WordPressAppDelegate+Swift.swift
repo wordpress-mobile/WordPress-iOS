@@ -5,8 +5,8 @@ import CocoaLumberjack
 // MARK: - Helpers
 
 extension WordPressAppDelegate {
-    @objc func configureInAppNotificationPresenter() {
-        let _ = InAppNotificationPresenter.shared
+    @objc func configureNoticePresenter() {
+        let _ = NoticePresenter.shared
     }
 
     @objc var noSelfHostedBlogs: Bool {

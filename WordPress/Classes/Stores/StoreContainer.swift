@@ -6,5 +6,5 @@ class StoreContainer {
     private init() {}
 
     let plugin = PluginStore()
-    let notification = InAppNotificationStore()
+    let notice = NoticeStore()
 }

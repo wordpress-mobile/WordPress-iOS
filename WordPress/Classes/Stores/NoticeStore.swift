@@ -1,7 +1,7 @@
 import Foundation
 import WordPressFlux
 
-struct InAppNotification {
+struct Notice {
     let title: String
     let message: String?
     let actionTitle: String?
@@ -16,53 +16,53 @@ struct InAppNotification {
 }
 
 
-enum InAppNotificationAction: Action {
-    case notify(InAppNotification)
-    case dismiss(InAppNotification)
+enum NoticeAction: Action {
+    case post(Notice)
+    case dismiss(Notice)
 }
 
 
-struct InAppNotificationStoreState {
-    fileprivate var notifications = Queue<InAppNotification>()
+struct NoticeStoreState {
+    fileprivate var notices = Queue<Notice>()
 }
 
 
-class InAppNotificationStore: StatefulStore<InAppNotificationStoreState> {
+class NoticeStore: StatefulStore<NoticeStoreState> {
 
     init(dispatcher: ActionDispatcher = .global) {
-        super.init(initialState: InAppNotificationStoreState(), dispatcher: dispatcher)
+        super.init(initialState: NoticeStoreState(), dispatcher: dispatcher)
     }
 
     override func onDispatch(_ action: Action) {
-        guard let action = action as? InAppNotificationAction else {
+        guard let action = action as? NoticeAction else {
             return
         }
         switch action {
-        case .notify(let notification):
-            enqueueNotification(notification)
-        case .dismiss(let notification):
-            dequeueNotification(notification)
+        case .post(let notice):
+            enqueueNotice(notice)
+        case .dismiss(let notice):
+            dequeueNotice(notice)
         }
     }
 
     // MARK: - Accessors
 
-    var nextNotification: InAppNotification? {
-        return state.notifications.first
+    var nextNotice: Notice? {
+        return state.notices.first
     }
 
-    var notifications: [InAppNotification] {
-        return state.notifications.elements
+    var notices: [Notice] {
+        return state.notices.elements
     }
 
     // MARK: - Action handlers
 
-    private func enqueueNotification(_ notification: InAppNotification) {
-        state.notifications.push(notification)
+    private func enqueueNotice(_ notice: Notice) {
+        state.notices.push(notice)
     }
 
-    private func dequeueNotification(_ notification: InAppNotification) {
-        state.notifications.pop()
+    private func dequeueNotice(_ notice: Notice) {
+        state.notices.pop()
     }
 }
 

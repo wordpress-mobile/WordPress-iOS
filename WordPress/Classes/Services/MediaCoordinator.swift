@@ -236,13 +236,12 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled,
-            let notification = self.notification(for: mediaProgressCoordinator) {
-                ActionDispatcher.dispatch(InAppNotificationAction.notify(notification))
+        if let notice = self.notice(for: mediaProgressCoordinator) {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
 
-    private func notification(for mediaProgressCoordinator: MediaProgressCoordinator) -> InAppNotification? {
+    private func notice(for mediaProgressCoordinator: MediaProgressCoordinator) -> Notice? {
         guard !mediaProgressCoordinator.isRunning,
             let progress = mediaProgressCoordinator.mediaGlobalProgress else {
             return nil
@@ -254,10 +253,10 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         let completedUnits = progress.completedUnitCount
         let title = String.localizedStringWithFormat("Media uploaded (%ld files)", completedUnits)
-        return InAppNotification(title: title,
-                                 message: nil,
-                                 actionTitle: NSLocalizedString("Write Post", comment: "Button title for media notification. Opens the post editor."),
-                                 actionHandler: {})
+        return Notice(title: title,
+                      message: nil,
+                      actionTitle: NSLocalizedString("Write Post", comment: "Button title for media notification. Opens the post editor."),
+                      actionHandler: {})
     }
 }
 
