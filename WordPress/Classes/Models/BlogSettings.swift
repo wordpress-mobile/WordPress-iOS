@@ -44,7 +44,9 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var defaultPostFormat: String?
 
-
+    /// Represents whether the Portfolio feature is enabled or not
+    ///
+    @NSManaged var portfolioEnabled: Bool
 
     // MARK: - Discussion
 

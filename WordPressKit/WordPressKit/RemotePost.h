@@ -41,6 +41,9 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, strong) NSString *pathForDisplayImage;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
+@property (nonatomic, strong) NSArray *projectTags;
+@property (nonatomic, strong) NSArray *projectTypes;
+
 /**
  Array of custom fields. Each value is a dictionary containing {ID, key, value}
  */

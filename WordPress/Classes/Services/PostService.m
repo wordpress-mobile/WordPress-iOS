@@ -12,6 +12,7 @@
 
 PostServiceType const PostServiceTypePost = @"post";
 PostServiceType const PostServiceTypePage = @"page";
+PostServiceType const PostServiceTypePortfolio = @"jetpack-portfolio";
 PostServiceType const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
@@ -20,7 +21,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 @implementation PostService
 
 - (Post *)createPostForBlog:(Blog *)blog {
-    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
+    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the same as the service's");
     Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Post class]) inManagedObjectContext:self.managedObjectContext];
     post.blog = blog;
     post.remoteStatus = AbstractPostRemoteStatusSync;
@@ -48,7 +49,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (Page *)createPageForBlog:(Blog *)blog {
-    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
+    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the same as the service's");
     Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Page class]) inManagedObjectContext:self.managedObjectContext];
     page.blog = blog;
     page.date_created_gmt = [NSDate date];
@@ -60,6 +61,21 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     Page *page = [self createPageForBlog:blog];
     [self initializeDraft:page];
     return page;
+}
+
+- (PortfolioProject *)createPortfolioProjectForBlog:(Blog *)blog {
+    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the same as the service's");
+    PortfolioProject *project = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([PortfolioProject class]) inManagedObjectContext:self.managedObjectContext];
+    project.blog = blog;
+    project.date_created_gmt = [NSDate date];
+    project.remoteStatus = AbstractPostRemoteStatusSync;
+    return project;
+}
+
+- (PortfolioProject *)createDraftPortfolioProjectForBlog:(Blog *)blog {
+    PortfolioProject *project = [self createPortfolioProjectForBlog:blog];
+    [self initializeDraft:project];
+    return project;
 }
 
 - (void)getPostWithID:(NSNumber *)postID
@@ -437,6 +453,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
                 post = [self createPageForBlog:blog];
+            } else if ([remotePost.type isEqualToString:PostServiceTypePortfolio]) {
+                // Create a PortfolioProject entity for posts with a remote type of "jetpack-portfolio"
+                post = [self createPortfolioProjectForBlog:blog];
             } else {
                 // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
                 post = [self createPostForBlog:blog];
@@ -465,8 +484,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         } else if ([syncPostType isEqualToString:PostServiceTypePage]) {
             // If syncing "page" posts, set up the fetch for any Page entities.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
+        } else if ([syncPostType isEqualToString:PostServiceTypePortfolio]) {
+            // If syncing "jetpack-portfolio" posts, set up the fetch for any PortfolioProject entities.
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([PortfolioProject class])];
         } else {
-            // If not syncing "page" or "any" post, use the Post entity.
+            // If not syncing "page", "jetpack-portfolio", or "any" post, use the Post entity.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
             // Include the postType attribute in the predicate.
             NSPredicate *postTypePredicate = [NSPredicate predicateWithFormat:@"postType = %@", syncPostType];
@@ -549,6 +571,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
+    } else if ([post isKindOfClass:[PortfolioProject class]]) {
+        PortfolioProject *projectPost = (PortfolioProject *)post;
+        projectPost.projectTags = [remotePost.projectTags componentsJoinedByString:@","];
+        projectPost.projectTypes = [remotePost.projectTypes componentsJoinedByString:@","];
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         postPost.commentCount = remotePost.commentCount;
@@ -626,8 +652,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         Page *pagePost = (Page *)post;
         remotePost.parentID = pagePost.parentID;
         remotePost.type = @"page";
-    }
-    if ([post isKindOfClass:[Post class]]) {
+    } else if ([post isKindOfClass:[PortfolioProject class]]) {
+        PortfolioProject *projectPost = (PortfolioProject *)post;
+        remotePost.projectTags = [projectPost.projectTags componentsSeparatedByString:@","];
+        remotePost.projectTypes = [projectPost.projectTypes componentsSeparatedByString:@","];
+    } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         remotePost.format = postPost.postFormat;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
