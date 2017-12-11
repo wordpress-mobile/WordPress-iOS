@@ -3,7 +3,7 @@ import MobileCoreServices
 
 /// Media export handling of URLs.
 ///
-class MediaURLExporter: NSObject, MediaExporter {
+class MediaURLExporter: MediaExporter {
 
     var mediaDirectoryType: MediaDirectory = .uploads
 
