@@ -44,7 +44,7 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
 
         stepLabel.text = NSLocalizedString("STEP 2 OF 4", comment: "Step for view.")
-        stepDescrLabel.text = NSLocalizedString("Get started fast with one of our popular themes. Once your site is created, you can browse and choose from hundreds more.", comment: "Site theme instruction.")
+        stepDescrLabel.text = NSLocalizedString("Get started fast with one of our popular themes. Once your site is created, you can browse and choose from hundreds more.", comment: "Shown during the theme selection step of the site creation flow.")
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
