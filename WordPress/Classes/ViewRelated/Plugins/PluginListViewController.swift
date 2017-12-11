@@ -65,7 +65,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     func refreshModel(change: PluginListViewModel.StateChange) {
-        updateNoResults()
         tableViewModel = viewModel.tableViewModel(presenter: self)
         switch change {
         case .replace:
@@ -74,6 +73,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
             let indexPaths = changedRows.map({ IndexPath(row: $0, section: 0) })
             tableView.reloadRows(at: indexPaths, with: .none)
         }
+        updateNoResults()
     }
 }
 
