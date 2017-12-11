@@ -1,8 +1,12 @@
 import UIKit
 
-class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
+class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, WPContentSyncHelperDelegate {
 
     // MARK: - Properties
+
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var stepLabel: UILabel!
+    @IBOutlet weak var stepDescrLabel: UILabel!
 
     var siteType: SiteType!
     private typealias Styles = WPStyleGuide.Themes
@@ -38,6 +42,9 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         helpButton = helpButtonResult
         helpBadge = helpBadgeResult
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
+
+        stepLabel.text = NSLocalizedString("STEP 2 OF 4", comment: "Step for view.")
+        stepDescrLabel.text = NSLocalizedString("Get started fast with one of our popular themes. Once your site is created, you can browse and choose from hundreds more.", comment: "Site theme instruction.")
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -46,59 +53,6 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         coordinator.animate(alongsideTransition: { _ in
             self.collectionView?.collectionViewLayout.invalidateLayout()
         })
-    }
-
-    // MARK: - UICollectionViewDataSource
-
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeSelectionHeaderView.reuseIdentifier, for: indexPath) as! ThemeSelectionHeaderView
-        }
-        return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
-    }
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return themeCount
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectThemeCell.reuseIdentifier, for: indexPath) as! SelectThemeCell
-        cell.displayTheme = themeAtIndexPath(indexPath)
-        return cell
-    }
-
-    // MARK: - UICollectionViewDelegateFlowLayout
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return Styles.cellSizeForFrameWidth(collectionView.frame.size.width)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return Styles.themeMargins
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: 0, height: ThemeSelectionHeaderView.height)
-    }
-
-    // MARK: - UICollectionViewDelegate
-
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let theme = themeAtIndexPath(indexPath) else {
-            return
-        }
-
-        let message = "'\(theme.name!)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - Theme Fetching
@@ -224,6 +178,63 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension ThemeSelectionViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let theme = themeAtIndexPath(indexPath) else {
+            return
+        }
+
+        let message = "'\(theme.name!)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle("OK")
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension ThemeSelectionViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var size = Styles.cellSizeForFrameWidth(collectionView.frame.size.width)
+        size.width *= 0.95
+        size.height *= 0.95
+        return size
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return Styles.themeMargins
+    }
+
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension ThemeSelectionViewController: UICollectionViewDataSource {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return themeCount
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectThemeCell.reuseIdentifier, for: indexPath) as! SelectThemeCell
+        cell.displayTheme = themeAtIndexPath(indexPath)
+        return cell
     }
 
 }
