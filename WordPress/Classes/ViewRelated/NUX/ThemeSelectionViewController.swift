@@ -107,7 +107,7 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
 
     // MARK: - Theme Syncing
 
-    fileprivate func setupThemesSyncHelper() {
+    private func setupThemesSyncHelper() {
         themesSyncHelper = WPContentSyncHelper()
         themesSyncHelper?.delegate = self
     }
@@ -116,7 +116,7 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         themesSyncHelper?.syncContent()
     }
 
-    fileprivate func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    private func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         assert(page > 0)
         let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount()
 
@@ -149,7 +149,7 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
 
     // MARK: - NSFetchedResultsControllerDelegate
 
-    open func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         updateResults()
     }
 
