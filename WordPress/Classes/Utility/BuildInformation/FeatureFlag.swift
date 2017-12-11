@@ -11,6 +11,7 @@ enum FeatureFlag: Int {
     case asyncUploadsInMediaLibrary
     case activity
     case siteCreation
+    case notices
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -32,6 +33,8 @@ enum FeatureFlag: Int {
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreation:
+            return BuildConfiguration.current == .localDeveloper
+        case .notices:
             return BuildConfiguration.current == .localDeveloper
         }
     }
