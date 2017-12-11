@@ -8,7 +8,7 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var stepDescrLabel: UILabel!
 
-    var siteType: SiteType!
+    var siteType: SiteType?
     private typealias Styles = WPStyleGuide.Themes
 
     private var helpBadge: WPNUXHelpBadgeLabel!
@@ -83,6 +83,10 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
 
         // TODO: replace with new endpoint.
 
+        guard let siteType = siteType else {
+            return NSPredicate()
+        }
+        
         let blogThemes = ["Independent Publisher 2", "Penscratch 2", "Intergalactic 2", "Libre 2"]
         let websiteThemes = ["Radcliffe 2", "Karuna", "Dara", "Twenty Seventeen"]
         let portfolioThemes = ["AltoFocus", "Rebalance", "Sketch", "Lodestar"]
@@ -92,7 +96,6 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         case .blog: themes = blogThemes
         case .website: themes = websiteThemes
         case .portfolio: themes = portfolioThemes
-        default: themes = blogThemes
         }
 
         var predicates = [NSPredicate]()
