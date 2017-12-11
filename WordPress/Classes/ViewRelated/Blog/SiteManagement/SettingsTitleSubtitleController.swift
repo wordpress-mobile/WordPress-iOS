@@ -246,9 +246,9 @@ extension SettingsTitleSubtitleController {
     private func titleForHeader(section: Sections) -> String? {
         switch section {
         case .name:
-            return content.titleHeader?.uppercased()
+            return content.titleHeader?.localizedUppercase
         case .description:
-            return content.subtitleHeader?.uppercased()
+            return content.subtitleHeader?.localizedUppercase
         }
     }
 
