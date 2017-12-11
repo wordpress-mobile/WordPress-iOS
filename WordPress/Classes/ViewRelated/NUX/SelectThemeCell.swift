@@ -4,9 +4,9 @@ class SelectThemeCell: UICollectionViewCell {
 
     // MARK: - Properties
 
-    open static let reuseIdentifier = "themeSelectionCell"
-    fileprivate var placeholderImage = UIImage(named: "theme-loading")
-    fileprivate typealias Styles = WPStyleGuide.Themes
+    static let reuseIdentifier = "themeSelectionCell"
+    private var placeholderImage = UIImage(named: "theme-loading")
+    private typealias Styles = WPStyleGuide.Themes
 
     @IBOutlet weak var themeImageView: UIImageView!
     @IBOutlet weak var themeTitleLabel: UILabel!
@@ -26,17 +26,13 @@ class SelectThemeCell: UICollectionViewCell {
         configureColors()
     }
 
-    override open func prepareForReuse() {
-        super.prepareForReuse()
-    }
-
     // MARK: - Display
 
     private func configureColors() {
         themeTitleLabel.font = Styles.cellNameFont
         themeTitleLabel.textColor = Styles.inactiveCellNameColor
-        layer.borderWidth = 1
-        infoBar.layer.borderWidth = 1
+        layer.borderWidth = Styles.cellBorderWidth
+        infoBar.layer.borderWidth = Styles.cellBorderWidth
         layer.borderColor = Styles.inactiveCellBorderColor.cgColor
         infoBar.layer.borderColor = Styles.inactiveCellDividerColor.cgColor
     }
@@ -49,13 +45,13 @@ class SelectThemeCell: UICollectionViewCell {
         themeTitleLabel.text = displayTheme.name
 
         if let imageUrl = displayTheme.screenshotUrl, !imageUrl.isEmpty {
-            refreshScreenshotImage(imageUrl)
+            refreshScreenshot(url: imageUrl)
         } else {
             showPlaceholder()
         }
     }
 
-    private func refreshScreenshotImage(_ imageUrl: String) {
+    private func refreshScreenshot(url imageUrl: String) {
         themeImageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
         themeImageView.downloadImage(URL(string: imageUrl),

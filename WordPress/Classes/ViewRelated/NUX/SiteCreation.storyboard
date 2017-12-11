@@ -95,7 +95,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionCell" id="olk-w0-1NM" customClass="SelectThemeCell" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="52.5" y="10" width="250" height="250"/>
+                                        <rect key="frame" x="62.5" y="10" width="250" height="250"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
