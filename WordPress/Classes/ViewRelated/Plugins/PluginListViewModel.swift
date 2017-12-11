@@ -5,7 +5,12 @@ protocol PluginPresenter: class {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities)
 }
 
-class PluginListViewModel: Observable {
+class PluginListViewModel {
+    enum StateChange {
+        case replace
+        case selective([Int])
+    }
+
     enum State: Equatable {
         case loading
         case ready(Plugins)
@@ -23,13 +28,26 @@ class PluginListViewModel: Observable {
                 return false
             }
         }
+
+        static func changed(from: State, to: State) -> StateChange {
+            switch (from, to) {
+            case (.ready(let oldValue), .ready(let newValue)):
+                guard oldValue.plugins.count == newValue.plugins.count else {
+                    return .replace
+                }
+                return .selective(oldValue.plugins.differentIndices(newValue.plugins))
+            default:
+                return .replace
+            }
+        }
     }
 
     let site: JetpackSiteRef
     let changeDispatcher = Dispatcher<Void>()
+    let stateChangeDispatcher = Dispatcher<StateChange>()
     private var state: State = .loading {
         didSet {
-            changeDispatcher.dispatch()
+            stateChangeDispatcher.dispatch(State.changed(from: oldValue, to: state))
         }
     }
 
@@ -53,6 +71,10 @@ class PluginListViewModel: Observable {
         }
         queryReceipt = store.query(.all(site: site))
         refreshPlugins()
+    }
+
+    func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
+        return stateChangeDispatcher.subscribe(handler)
     }
 
     var noResultsViewModel: WPNoResultsView.Model? {
