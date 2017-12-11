@@ -59,22 +59,25 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
     }
 
     private func createRowFor(_ siteType: SiteType) -> SiteTypeRow {
-        let descr: String = {
-            switch siteType {
-            case .blog:
-                return "To share your ideas, stories and photographs with your followers."
-            case .website:
-                return "To promote your business or brand, and connect with your audience."
-            case .portfolio:
-                return "To present your creative projects in a visual showcase."
-            }
-        }()
 
-        let typeTitle = NSLocalizedString("Start with a \(siteType.rawValue.capitalized)", comment: "Start with site type.")
-        let typeDescr = NSLocalizedString(descr, comment: "Site type description.")
+        var typeDescription: String
+        var typeTitle: String
+
+        switch siteType {
+        case .blog:
+            typeDescription = NSLocalizedString("To share your ideas, stories and photographs with your followers.", comment: "Site type description.")
+            typeTitle = NSLocalizedString("Start with a Blog", comment: "Start with site type.")
+        case .website:
+            typeDescription = NSLocalizedString("To promote your business or brand, and connect with your audience.", comment: "Site type description.")
+            typeTitle = NSLocalizedString("Start with a Website", comment: "Start with site type.")
+        case .portfolio:
+            typeDescription = NSLocalizedString("To present your creative projects in a visual showcase.", comment: "Site type description.")
+            typeTitle = NSLocalizedString("Start with a Portfolio", comment: "Start with site type.")
+        }
+
         let typeImage = UIImage(named: "site-creation-\(siteType)")
 
-        return SiteTypeRow(siteType: siteType, startWith: typeTitle, typeDescr: typeDescr, typeImage: typeImage, action: siteTypeRowSelected())
+        return SiteTypeRow(siteType: siteType, startWith: typeTitle, typeDescr: typeDescription, typeImage: typeImage, action: siteTypeRowSelected())
     }
 
 
