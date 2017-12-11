@@ -7,11 +7,11 @@ import WordPressShared.WPStyleGuide
 class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
     // MARK: - Private
-    private var gravatarURL: URL?
+    private var authorAvatarURL: URL?
     private typealias Style = WPStyleGuide.Notifications
 
     // MARK: - IBOutlets
-    @IBOutlet private var gravatarImageView: UIImageView!
+    @IBOutlet private var authorAvatarImageView: UIImageView!
     @IBOutlet private var headerTitleLabel: UILabel!
     @IBOutlet private var headerDetailsLabel: UILabel!
 
@@ -45,19 +45,29 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
 
     // MARK: - Public Methods
-    @objc func downloadGravatar(with url: URL?) {
-        guard url != gravatarURL else {
+
+    @objc(downloadAuthorAvatarWithURL:)
+    func downloadAuthorAvatar(with url: URL?) {
+        guard url != authorAvatarURL else {
             return
         }
 
-        if let siteIconUrl = url?.absoluteString {
-            gravatarImageView.setImageWithSiteIcon(siteIconUrl, placeholderImage: Style.gravatarPlaceholderImage)
+        authorAvatarURL = url
+
+        guard let url = url else {
+            authorAvatarImageView.image = Style.gravatarPlaceholderImage
+            return
         }
 
-        gravatarURL = url
+        if let gravatar = Gravatar(url) {
+            authorAvatarImageView.downloadGravatar(gravatar, placeholder: Style.gravatarPlaceholderImage, animate: true)
+        } else {
+            authorAvatarImageView.setImageWithSiteIcon(url.absoluteString)
+        }
     }
 
     // MARK: - View Methods
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -68,7 +78,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         headerTitleLabel.textColor = Style.headerTitleColor
         headerDetailsLabel.font = Style.headerDetailsRegularFont
         headerDetailsLabel.textColor = Style.headerDetailsColor
-        gravatarImageView.image = Style.gravatarPlaceholderImage
+        authorAvatarImageView.image = Style.gravatarPlaceholderImage
     }
 
     // MARK: - Overriden Methods

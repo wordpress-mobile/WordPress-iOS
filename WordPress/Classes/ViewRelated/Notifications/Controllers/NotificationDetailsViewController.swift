@@ -574,7 +574,7 @@ private extension NotificationDetailsViewController {
 
         // Download the Gravatar
         let mediaURL = gravatarBlock?.media.first?.mediaURL
-        cell.downloadGravatar(with: mediaURL)
+        cell.downloadAuthorAvatar(with: mediaURL)
     }
 
     func setupFooterCell(_ cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
