@@ -51,9 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
  Saves a tag assigned to a blog
  */
 - (void)saveTag:(PostTag*)tag
-          forBlog:(Blog *)blog
-          success:(nullable void (^)(PostTag *tag))success
-          failure:(nullable void (^)(NSError *error))failure;
+        forBlog:(Blog *)blog
+        success:(nullable void (^)(PostTag *tag))success
+        failure:(nullable void (^)(NSError *error))failure;
 @end
 
 NS_ASSUME_NONNULL_END
