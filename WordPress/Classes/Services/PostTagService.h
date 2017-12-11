@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)deleteTag:(PostTag*)tag
           forBlog:(Blog *)blog
-          success:(nullable void (^)(NSArray <PostTag *> *tags))success
+          success:(nullable void (^)(void))success
           failure:(nullable void (^)(NSError *error))failure;
 
 /**

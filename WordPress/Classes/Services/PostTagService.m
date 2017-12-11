@@ -120,11 +120,21 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 - (void)deleteTag:(PostTag*)tag
           forBlog:(Blog *)blog
-          success:(nullable void (^)(NSArray <PostTag *> *tags))success
+          success:(nullable void (^)(void))success
           failure:(nullable void (^)(NSError *error))failure
 {
-    //Not implemented yet
-    NSLog(@"Delete tag %@ for blog %@", tag, blog);
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+
+    RemotePostTag *remoteTag = [self remoteTagWith:tag];
+
+    [remote deleteTag:remoteTag success:^(RemotePostTag * _Nonnull remoteTag) {
+        NSLog(@"The tag was actually deleted");
+        [self.managedObjectContext deleteObject:tag];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (success) {
+            success();
+        }
+    } failure:failure];
 }
 
 - (void)saveTag:(PostTag*)tag
