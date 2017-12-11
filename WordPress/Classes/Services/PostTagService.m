@@ -223,15 +223,13 @@ static const NSInteger PostTagIdDefaultValue = -1;
            success:(nullable void (^)(PostTag *tag))success
            failure:(nullable void (^)(NSError *error))failure
 {
-    NSLog(@"this is a new tag");
-
-    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
-
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
 
     [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
         if (success) {
             PostTag *localTag = [self tagFromRemoteTag:tag blog:blog];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             success(localTag);
         }
     } failure:^(NSError * _Nonnull error) {
@@ -244,23 +242,16 @@ static const NSInteger PostTagIdDefaultValue = -1;
                   success:(nullable void (^)(PostTag *tag))success
                   failure:(nullable void (^)(NSError *error))failure
 {
-    NSLog(@"this is a tag to be updated");
-
-    /*
-    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
-
-    //TODO. Commit the tag locally first
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
-
-    [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+    [remote updateTag:remoteTag success:^(RemotePostTag * _Nonnull remoteTag) {
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         if (success) {
-            PostTag *localTag = [self tagFromRemoteTag:tag blog:blog];
-            success(localTag);
+            success(tag);
         }
     } failure:^(NSError * _Nonnull error) {
         [self handleError:error forBlog:blog withFailure:failure];
     }];
-    */
 }
 
 - (RemotePostTag*)remoteTagWith:(PostTag *)tag

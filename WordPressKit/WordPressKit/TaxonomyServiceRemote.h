@@ -47,6 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
           failure:(nullable void (^)(NSError *error))failure;
 
 /**
+ Update a tag with the site.
+ */
+- (void)updateTag:(RemotePostTag *)tag
+		  success:(nullable void (^)(RemotePostTag *tag))success
+		  failure:(nullable void (^)(NSError *error))failure;
+
+/**
  Delete a tag with the site.
  */
 - (void)deleteTag:(RemotePostTag *)tag
