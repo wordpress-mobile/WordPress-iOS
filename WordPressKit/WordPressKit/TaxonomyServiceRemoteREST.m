@@ -115,6 +115,8 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 
 	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 	parameters[TaxonomyRESTSlugParameter] = tag.slug;
+	parameters[TaxonomyRESTNameParameter] = tag.name;
+	parameters[TaxonomyRESTDescriptionParameter] = tag.tagDescription;
 
 	[self updateTaxonomyWithType:TaxonomyRESTTagIdentifier
 					  parameters:parameters success:^(NSDictionary * _Nonnull responseObject) {
@@ -260,7 +262,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 									 withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
 	[self.wordPressComRestApi POST:requestUrl
-						parameters:nil
+						parameters:parameters
 						   success:^(id _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
 							   if (![responseObject isKindOfClass:[NSDictionary class]]) {
 								   NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
