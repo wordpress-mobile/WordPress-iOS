@@ -279,7 +279,7 @@ extension SiteTagsViewController {
                 return
             }
 
-            guard let wasUpdated = self?.tagWasUpdated(tag: tag, updatedTag: updatedData), wasUpdated == true else {
+            guard self?.tagWasUpdated(tag: tag, updatedTag: updatedData) == true else {
                 return
             }
 
