@@ -19,9 +19,9 @@ struct PluginListRow: ImmuTableRow {
         cell.imageView?.downloadResizedImage(iconURL, placeholderImage: iconPlaceholder, pointSize: iconSize)
         cell.selectionStyle = .default
         switch updateState {
-        case .available(_):
+        case .available:
             cell.accessoryView = UIImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
-        case .updating(_):
+        case .updating:
             cell.accessoryView = spinningImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
         case .updated:
             cell.accessoryType = .disclosureIndicator
