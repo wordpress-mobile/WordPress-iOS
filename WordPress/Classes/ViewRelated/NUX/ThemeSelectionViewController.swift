@@ -208,10 +208,7 @@ extension ThemeSelectionViewController: UICollectionViewDelegate {
 extension ThemeSelectionViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = Styles.cellSizeForFrameWidth(collectionView.frame.size.width)
-        size.width *= 0.95
-        size.height *= 0.95
-        return size
+        return Styles.selectionCellSizeForFrameWidth(collectionView.frame.size.width)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
