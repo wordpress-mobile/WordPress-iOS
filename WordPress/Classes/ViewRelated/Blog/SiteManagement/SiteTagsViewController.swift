@@ -231,8 +231,11 @@ extension SiteTagsViewController {
 
     private func delete(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.delete(tag, for: blog, success: nil, failure: nil)
-        
+        refreshControl?.beginRefreshing()
+        tagsService.delete(tag, for: blog, success: {
+            self.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }, failure: nil)
     }
 
     private func save(_ tag: PostTag) {
