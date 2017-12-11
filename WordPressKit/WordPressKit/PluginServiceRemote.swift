@@ -30,35 +30,35 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         })
     }
 
-    @objc public func activatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    public func activatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "active": "true"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
-    @objc public func deactivatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+     public func deactivatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "active": "false"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
-    @objc public func enableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+     public func enableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "autoupdate": "true"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
-    @objc public func disableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+     public func disableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "autoupdate": "false"
             ] as [String: AnyObject]
-        updatePlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
-    @objc public func remove(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+     public func remove(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         guard let escapedPluginID = encoded(pluginID: pluginID) else {
             return
         }
@@ -76,7 +76,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         )
     }
 
-    private func updatePlugin(parameters: [String: AnyObject], pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+    private func modifyPlugin(parameters: [String: AnyObject], pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         guard let escapedPluginID = encoded(pluginID: pluginID) else {
             return
         }
@@ -124,12 +124,14 @@ fileprivate extension PluginServiceRemote {
                 throw ResponseError.decodingFailure
         }
         let version = (response["version"] as? String)?.nonEmptyString()
+        let availableUpdate = (response["update"] as? [String: String])?["new_version"]
         let url = (response["plugin_url"] as? String).flatMap(URL.init(string:))
         return PluginState(id: id,
                            slug: slug,
                            active: active,
                            name: name,
                            version: version,
+                           availableUpdate: availableUpdate,
                            autoupdate: autoupdate,
                            url: url)
 
