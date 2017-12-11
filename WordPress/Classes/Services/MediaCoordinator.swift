@@ -1,12 +1,15 @@
 import Foundation
 
-/// MediaUploadCoordinator is responsible for creating and uploading new media
+/// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
 /// via the `shared` singleton.
 ///
-class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
+class MediaCoordinator: NSObject {
 
-    static let shared = MediaUploadCoordinator()
+    @objc static let shared = MediaCoordinator()
+
+    private(set) var backgroundContext = ContextManager.sharedInstance().newDerivedContext()
+    private let mainContext = ContextManager.sharedInstance().mainContext
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
@@ -17,7 +20,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
     }()
 
     // Init marked private to ensure use of shared singleton.
-    private init() {}
+    private override init() {}
 
     // MARK: - Adding Media
 
@@ -32,8 +35,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
             return
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = MediaService(managedObjectContext: context)
+        let service = MediaService(managedObjectContext: backgroundContext)
         service.createMedia(with: asset,
                             objectID: blog.objectID,
                             thumbnailCallback: nil,
@@ -60,8 +62,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
 
         begin(media)
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = MediaService(managedObjectContext: context)
+        let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
         service.uploadMedia(media,
@@ -197,13 +198,26 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
         queue.async {
             self.observersForMedia(media).forEach({ observer in
                 DispatchQueue.main.sync {
-                    observer.onUpdate(media, state)
+                    if let media = self.mainContext.object(with: media.objectID) as? Media {
+                        observer.onUpdate(media, state)
+                    }
                 }
             })
         }
     }
 
-    // MARK: - MediaProgressCoordinatorDelegate
+    /// Sync the specified blog media library.
+    ///
+    /// - parameter blog: The blog from where to sync the media library from.
+    ///
+    @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.syncMediaLibrary(for: blog, success: success, failure: failure)
+    }
+}
+
+// MARK: - MediaProgressCoordinatorDelegate
+extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Double) {
         for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
