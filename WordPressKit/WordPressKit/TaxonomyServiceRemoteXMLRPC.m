@@ -98,9 +98,6 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                              RemotePostTag *newTag = [RemotePostTag new];
                              NSString *tagID = responseString;
                              newTag.tagID = [tagID numericValue];
-							 newTag.name = tag.name;
-							 newTag.tagDescription = tag.tagDescription;
-							 newTag.slug = tag.slug;
                              if (success) {
                                  success(newTag);
                              }
@@ -122,7 +119,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 	[extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
 
 	[self deleteTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
-					  parameters:extraParameters success:^(NSString * _Nonnull responseString) {
+					  parameters:extraParameters success:^(BOOL response) {
 						  if (success) {
 							  success(tag);
 						  }
@@ -223,7 +220,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 - (void)deleteTaxonomyWithType:(NSString *)typeIdentifier
 					parameters:(nullable NSDictionary *)parameters
-					   success:(void (^)(NSString *responseString))success
+					   success:(void (^)(BOOL response))success
 					   failure:(nullable void (^)(NSError *error))failure
 {
 	NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
@@ -237,12 +234,12 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 	[self.api callMethod:@"wp.deleteTerm"
 			  parameters:xmlrpcParameters
 				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-					 if (![responseObject respondsToSelector:@selector(numericValue)]) {
+					 if (![responseObject respondsToSelector:@selector(boolValue)]) {
 						 NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
 						 [self handleResponseErrorWithMessage:message method:@"wp.deleteTerm" failure:failure];
 						 return;
 					 }
-					 success(responseObject);
+					 success([responseObject boolValue]);
 				 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
 					 if (failure) {
 						 failure(error);
