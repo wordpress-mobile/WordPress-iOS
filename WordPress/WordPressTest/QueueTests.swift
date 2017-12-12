@@ -14,7 +14,7 @@ class QueueTests: XCTestCase {
         let item = queue.pop()
         XCTAssertNil(item)
     }
-    
+
     func testSingleItemAddedToQueue() {
         queue.push(1)
         let item = queue.pop()
