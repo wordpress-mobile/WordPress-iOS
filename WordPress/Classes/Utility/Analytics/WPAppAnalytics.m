@@ -8,6 +8,7 @@
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
 #import "AbstractPost.h"
+#import "WordPress-Swift.h"
 
 NSString * const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
 NSString * const WPAppAnalyticsKeyBlogID = @"blog_id";
@@ -276,13 +277,33 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 }
 
 + (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
+    NSError *err = [self sanitizedErrorFromError:error];
     NSDictionary *properties = @{
-                                 @"error_code": [@(error.code) stringValue],
-                                 @"error_domain": error.domain,
-                                 @"error_description": error.description
+                                 @"error_code": [@(err.code) stringValue],
+                                 @"error_domain": err.domain,
+                                 @"error_description": err.description
     };
     [self track:stat withProperties: properties];
 }
+
+/**
+ * @brief   Sanitize an NSError so we're not tracking unnecessary or usless information.
+ */
++ (NSError * _Nonnull)sanitizedErrorFromError:(NSError * _Nonnull)error
+{
+    // WordPressOrgXMLRPCApi will, in certain circumstances, store an entire HTTP response in this key.
+    // The information is generally unhelpful.
+    // We'll truncate the string to avoid tracking garbage but still allow for some context.
+    NSString *dataString = [[error userInfo] stringForKey:WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyDataString];
+    NSUInteger threshold = 100;
+    if ([dataString length] > threshold) {
+        NSMutableDictionary *dict = [[error userInfo] mutableCopy];
+        [dict setObject:[dataString substringToIndex:threshold] forKey:WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyDataString];
+        return [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:dict];
+    }
+    return error;
+}
+
 
 #pragma mark - Usage tracking initialization
 
