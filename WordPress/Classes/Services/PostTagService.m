@@ -243,7 +243,11 @@ static const NSInteger PostTagIdDefaultValue = -1;
 {
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
     NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
-    [remote updateTag:remoteTag success:^(RemotePostTag * _Nonnull remoteTag) {
+    [remote updateTag:remoteTag success:^(RemotePostTag * _Nonnull updatedTag) {
+        tag.tagID = updatedTag.tagID;
+        tag.tagDescription = updatedTag.tagDescription;
+        tag.slug= updatedTag.slug;
+        tag.name = updatedTag.name;
         [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
         if (success) {
             success(tag);
