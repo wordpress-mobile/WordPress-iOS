@@ -1,12 +1,8 @@
 import UIKit
 
-class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, WPContentSyncHelperDelegate {
+class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 
     // MARK: - Properties
-
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var stepLabel: UILabel!
-    @IBOutlet weak var stepDescrLabel: UILabel!
 
     var siteType: SiteType?
     private typealias Styles = WPStyleGuide.Themes
@@ -42,9 +38,6 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         helpButton = helpButtonResult
         helpBadge = helpBadgeResult
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
-
-        stepLabel.text = NSLocalizedString("STEP 2 OF 4", comment: "Step for view.")
-        stepDescrLabel.text = NSLocalizedString("Get started fast with one of our popular themes. Once your site is created, you can browse and choose from hundreds more.", comment: "Shown during the theme selection step of the site creation flow.")
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -55,6 +48,85 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         })
     }
 
+    // MARK: - UICollectionViewDataSource
+
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionElementKindSectionHeader {
+            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeSelectionHeaderView.reuseIdentifier, for: indexPath) as! ThemeSelectionHeaderView
+        }
+        return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
+    }
+
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return themeCount
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectThemeCell.reuseIdentifier, for: indexPath) as! SelectThemeCell
+        cell.displayTheme = themeAtIndexPath(indexPath)
+        return cell
+    }
+
+    // MARK: - UICollectionViewDelegateFlowLayout
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return Styles.cellSizeForFrameWidth(collectionView.frame.size.width)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return Styles.themeMargins
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+
+        // To get the header to layout correctly for dynamic text,
+        // calculate the header size based on what the labels will be.
+
+        let stackViewWidthMargins: CGFloat = 40 // stack view total width constraints
+
+        let stepLabel = UILabel(frame: CGRect(x: 0, y: 0,
+                                              width: collectionView.frame.width - stackViewWidthMargins,
+                                              height: view.frame.height))
+        stepLabel.numberOfLines = 1
+        stepLabel.lineBreakMode = NSLineBreakMode.byTruncatingTail
+        stepLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
+        stepLabel.text = ThemeSelectionHeaderView.stepLabelText
+        stepLabel.sizeToFit()
+
+        let stepDescrLabel = UILabel(frame: CGRect(x: 0, y: 0,
+                                                   width: collectionView.frame.width - stackViewWidthMargins,
+                                                   height: view.frame.height))
+        stepDescrLabel.numberOfLines = 0
+        stepDescrLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+        stepDescrLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
+        stepDescrLabel.text = ThemeSelectionHeaderView.stepDescrLabelText
+        stepDescrLabel.sizeToFit()
+
+        let stackViewHeightMargins: CGFloat = 25 // stack view total height constraints
+        let height = stepLabel.frame.height + stepDescrLabel.frame.height + stackViewHeightMargins
+
+        return CGSize(width: 0, height: height)
+    }
+
+    // MARK: - UICollectionViewDelegate
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let theme = themeAtIndexPath(indexPath) else {
+            return
+        }
+
+        let message = "'\(theme.name!)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle("OK")
+        self.present(alertController, animated: true, completion: nil)
+    }
+
     // MARK: - Theme Fetching
 
     private func createThemesFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
@@ -62,9 +134,9 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
         fetchRequest.fetchBatchSize = 4
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                                  managedObjectContext: self.themeService.managedObjectContext,
-                                                                  sectionNameKeyPath: nil,
-                                                                  cacheName: nil)
+                                             managedObjectContext: self.themeService.managedObjectContext,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
         fetchedResultsController.delegate = self
 
         return fetchedResultsController
@@ -180,60 +252,6 @@ class ThemeSelectionViewController: UIViewController, LoginWithLogoAndHelpViewCo
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension ThemeSelectionViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let theme = themeAtIndexPath(indexPath) else {
-            return
-        }
-
-        let message = "'\(theme.name!)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        self.present(alertController, animated: true, completion: nil)
-    }
-
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension ThemeSelectionViewController: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return Styles.selectionCellSizeForFrameWidth(collectionView.frame.size.width)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return Styles.themeMargins
-    }
-
-}
-
-// MARK: - UICollectionViewDataSource
-
-extension ThemeSelectionViewController: UICollectionViewDataSource {
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return themeCount
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectThemeCell.reuseIdentifier, for: indexPath) as! SelectThemeCell
-        cell.displayTheme = themeAtIndexPath(indexPath)
-        return cell
     }
 
 }
