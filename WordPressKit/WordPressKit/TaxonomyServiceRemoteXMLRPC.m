@@ -249,7 +249,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 - (void)editTaxonomyWithType:(NSString *)typeIdentifier
 				  parameters:(nullable NSDictionary *)parameters
-					 success:(void (^)(NSString *responseString))success
+					 success:(void (^)(BOOL response))success
 					 failure:(nullable void (^)(NSError *error))failure
 {
 	NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
@@ -263,12 +263,12 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 	[self.api callMethod:@"wp.editTerm"
 			  parameters:xmlrpcParameters
 				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-					 if (![responseObject respondsToSelector:@selector(numericValue)]) {
+					 if (![responseObject respondsToSelector:@selector(boolValue)]) {
 						 NSString *message = [NSString stringWithFormat:@"Invalid response editing taxonomy of type: %@", typeIdentifier];
 						 [self handleResponseErrorWithMessage:message method:@"wp.editTerm" failure:failure];
 						 return;
 					 }
-					 success(responseObject);
+					 success([responseObject boolValue]);
 				 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
 					 if (failure) {
 						 failure(error);
