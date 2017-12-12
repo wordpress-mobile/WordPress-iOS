@@ -37,7 +37,7 @@ class NoticePresenter {
     private func dismiss(_ notice: Notice) {
         isPresenting = false
 
-        ActionDispatcher.dispatch(NoticeAction.dismiss(notice))
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 
     private func alert(from notice: Notice) -> UIAlertController {
