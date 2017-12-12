@@ -222,7 +222,6 @@ static const NSInteger PostTagIdDefaultValue = -1;
            success:(nullable void (^)(PostTag *tag))success
            failure:(nullable void (^)(NSError *error))failure
 {
-    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
     NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
     [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
