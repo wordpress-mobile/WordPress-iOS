@@ -40,12 +40,10 @@ class MediaCoordinator: NSObject {
                             objectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
-                                guard let media = media else {
+                                guard let media = media, !media.isDeleted else {
                                     return
                                 }
-                                if !media.isDeleted {
-                                    self?.uploadMedia(media)
-                                }
+                                self?.uploadMedia(media)
         })
     }
 
