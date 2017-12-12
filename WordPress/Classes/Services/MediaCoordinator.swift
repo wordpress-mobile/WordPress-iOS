@@ -215,6 +215,9 @@ class MediaCoordinator: NSObject {
         service.syncMediaLibrary(for: blog, success: success, failure: failure)
     }
 
+    /// This method check the status of all media objects and updates them to the correct status if needed.
+    /// The main cause of wrong status is the app being killed while uploads of media are happening.
+    ///
     @objc func refreshMediaStatus() {
         let service = MediaService(managedObjectContext: backgroundContext)
         service.refreshMediaStatus(onCompletion: nil, onError: nil)

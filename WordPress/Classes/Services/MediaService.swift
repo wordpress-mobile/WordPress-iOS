@@ -2,7 +2,14 @@ import Foundation
 
 extension MediaService {
 
-    func refreshMediaStatus(onCompletion: (() -> Void)?, onError: ((Error) -> Void)?) {
+    /// /// This method check the status of all media objects and updates them to the correct status if needed.
+    /// The main cause of wrong status is the app being killed while uploads of media are happening.
+    ///
+    /// - Parameters:
+    ///   - onCompletion: block to invoke when status update is finished.
+    ///   - onError: block to invoke if any error occurs while the update is being made.
+    ///
+    func refreshMediaStatus(onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
         self.managedObjectContext.perform {
             let fetch = NSFetchRequest<Media>(entityName: Media.classNameWithoutNamespaces())
             fetch.predicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: MediaRemoteStatus.pushing.rawValue))
@@ -20,11 +27,9 @@ extension MediaService {
 
             } catch {
                 DDLogError("Error while attempting to clean local media: \(error.localizedDescription)")
-                if let onError = onError {
                     DispatchQueue.main.async {
-                        onError(error)
+                        onError?(error)
                     }
-                }
             }
         }
     }
