@@ -394,12 +394,13 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate func presentRetryOptions(for media: Media) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
-            let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            service.deleteMedia([media], progress: nil, success: nil, failure: nil)
+            MediaCoordinator.shared.cancelUploadAndDeleteMedia(media)            
         }
 
-        alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
-            MediaCoordinator.shared.retryMedia(media)
+        if media.remoteStatus == .failed {
+            alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
+                MediaCoordinator.shared.retryMedia(media)
+            }
         }
 
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
@@ -704,7 +705,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         }
 
         switch media.remoteStatus {
-        case .failed:
+        case .failed, .pushing:
             presentRetryOptions(for: media)
         case .sync:
             if let viewController = mediaItemViewController(for: asset) {

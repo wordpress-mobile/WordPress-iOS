@@ -43,8 +43,9 @@ class MediaCoordinator: NSObject {
                                 guard let media = media else {
                                     return
                                 }
-
-                                self?.uploadMedia(media)
+                                if !media.isDeleted {
+                                    self?.uploadMedia(media)
+                                }
         })
     }
 
@@ -55,6 +56,32 @@ class MediaCoordinator: NSObject {
         }
 
         uploadMedia(media)
+    }
+
+    /// Cancels any ongoing upload of the Media and deletes it.
+    ///
+    /// - Parameter media: the object to cancel and delete
+    ///
+    func cancelUploadAndDeleteMedia(_ media: Media) {
+        cancelUpload(of: media)
+        delete(media: media)
+    }
+
+    /// Cancels any ongoing upload for the media object
+    ///
+    /// - Parameter media: the media object to cancel the upload
+    ///
+    func cancelUpload(of media: Media) {
+        mediaProgressCoordinator.cancelAndStopTrack(of: media.uploadID)
+    }
+
+    /// Deletes a media object from the storage
+    ///
+    /// - Parameter media: the media object to delete
+    ///
+    func delete(media: Media){
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.delete(media, success: nil, failure: nil)
     }
 
     private func uploadMedia(_ media: Media) {
