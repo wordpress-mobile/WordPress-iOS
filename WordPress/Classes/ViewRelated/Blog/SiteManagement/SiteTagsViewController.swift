@@ -44,7 +44,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }()
 
     private var isPerformingInitialSync = false
-    //private var isSyncing = false
 
     @objc
     public init(blog: Blog) {
@@ -64,13 +63,13 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         applyTitle()
         setupTable()
         setupNavigationBar()
+
+        refreshTags()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("===== refresh results view controller =====")
         refreshResultsController(predicate: defaultPredicate)
-        refreshTags()
         refreshNoResultsView()
     }
 
@@ -105,7 +104,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         resultsController.fetchRequest.sortDescriptors = sortDescriptors
         do {
             try resultsController.performFetch()
-            print("==== reloading data 1")
             tableView.reloadData()
         } catch {
             tagsFailedLoading(error: error)
@@ -114,7 +112,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
 
     @objc private func refreshTags() {
         isPerformingInitialSync = true
-        print("===== refresh tags =====")
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
             self?.isPerformingInitialSync = false
