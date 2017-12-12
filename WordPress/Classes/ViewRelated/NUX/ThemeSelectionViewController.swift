@@ -115,16 +115,13 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     // MARK: - UICollectionViewDelegate
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let theme = themeAtIndexPath(indexPath) else {
+
+        // TODO: save selected Theme for site creation step.
+        guard let _ = themeAtIndexPath(indexPath) else {
             return
         }
 
-        let message = "'\(theme.name!)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        self.present(alertController, animated: true, completion: nil)
+        performSegue(withIdentifier: "showSiteDetails", sender: nil)
     }
 
     // MARK: - Theme Fetching
@@ -239,6 +236,14 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         let count = HelpshiftUtils.unreadNotificationCount()
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let backButton = UIBarButtonItem()
+        backButton.title = NSLocalizedString("Back", comment: "Back button title.")
+        navigationItem.backBarButtonItem = backButton
     }
 
     // MARK: - Helpers
