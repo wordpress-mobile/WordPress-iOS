@@ -2,20 +2,23 @@ import Foundation
 import UIKit
 import WordPressFlux
 
-class NoticePresenter {
-    static let shared = NoticePresenter()
-
+class NoticePresenter: NSObject {
     private let store: NoticeStore
     private var storeReceipt: Receipt?
 
     private var isPresenting = false
 
-    private init(store: NoticeStore = StoreContainer.shared.notice) {
+    private init(store: NoticeStore) {
         self.store = store
+        super.init()
 
         storeReceipt = store.onChange { [weak self] in
             self?.presentNextNoticeIfAvailable()
         }
+    }
+
+    override convenience init() {
+        self.init(store: StoreContainer.shared.notice)
     }
 
     private func presentNextNoticeIfAvailable() {
