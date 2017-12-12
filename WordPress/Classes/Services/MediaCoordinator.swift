@@ -214,6 +214,11 @@ class MediaCoordinator: NSObject {
         let service = MediaService(managedObjectContext: backgroundContext)
         service.syncMediaLibrary(for: blog, success: success, failure: failure)
     }
+
+    @objc func refreshMediaStatus() {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.refreshMediaStatus(onCompletion: nil, onError: nil)
+    }
 }
 
 // MARK: - MediaProgressCoordinatorDelegate
