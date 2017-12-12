@@ -20,6 +20,6 @@
 + (void)registerPrivateSiteURLProtocol;
 + (void)unregisterPrivateSiteURLProtocol;
 
-+ (NSURLRequest *)requestForPrivateSiteFromURL:(NSURL *)url;
++ (nonnull NSURLRequest *)requestForPrivateSiteFromURL:(nonnull NSURL *)url;
 
 @end
