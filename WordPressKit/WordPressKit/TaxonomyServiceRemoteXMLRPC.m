@@ -239,7 +239,36 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
 					 if (![responseObject respondsToSelector:@selector(numericValue)]) {
 						 NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
-						 [self handleResponseErrorWithMessage:message method:@"wp.newTerm" failure:failure];
+						 [self handleResponseErrorWithMessage:message method:@"wp.deleteTerm" failure:failure];
+						 return;
+					 }
+					 success(responseObject);
+				 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+					 if (failure) {
+						 failure(error);
+					 }
+				 }];
+}
+
+- (void)editTaxonomyWithType:(NSString *)typeIdentifier
+				  parameters:(nullable NSDictionary *)parameters
+					 success:(void (^)(NSString *responseString))success
+					 failure:(nullable void (^)(NSError *error))failure
+{
+	NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
+	NSArray *xmlrpcParameters = nil;
+	if (parameters.count) {
+		[mutableParametersDict addEntriesFromDictionary:parameters];
+	}
+
+	xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
+
+	[self.api callMethod:@"wp.editTerm"
+			  parameters:xmlrpcParameters
+				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+					 if (![responseObject respondsToSelector:@selector(numericValue)]) {
+						 NSString *message = [NSString stringWithFormat:@"Invalid response editing taxonomy of type: %@", typeIdentifier];
+						 [self handleResponseErrorWithMessage:message method:@"wp.editTerm" failure:failure];
 						 return;
 					 }
 					 success(responseObject);
