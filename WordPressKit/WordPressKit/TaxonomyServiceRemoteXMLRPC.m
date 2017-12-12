@@ -238,7 +238,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 			  parameters:xmlrpcParameters
 				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
 					 if (![responseObject respondsToSelector:@selector(numericValue)]) {
-						 NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+						 NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
 						 [self handleResponseErrorWithMessage:message method:@"wp.newTerm" failure:failure];
 						 return;
 					 }
