@@ -193,7 +193,7 @@
     _createCategoryCell.textField.keyboardType = UIKeyboardTypeDefault;
     _createCategoryCell.textField.secureTextEntry = NO;
     _createCategoryCell.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    _createCategoryCell.textField.delegate = self;    
+    _createCategoryCell.textField.delegate = self;
     
     return _createCategoryCell;
 }
