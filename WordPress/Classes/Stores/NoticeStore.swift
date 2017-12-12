@@ -18,16 +18,17 @@ struct Notice {
 
 enum NoticeAction: Action {
     case post(Notice)
-    case dismiss(Notice)
+    case dismiss
 }
 
 
 struct NoticeStoreState {
-    fileprivate var notices = Queue<Notice>()
+    fileprivate var notice: Notice?
 }
 
 
 class NoticeStore: StatefulStore<NoticeStoreState> {
+    private var pending = Queue<Notice>()
 
     init(dispatcher: ActionDispatcher = .global) {
         super.init(initialState: NoticeStoreState(), dispatcher: dispatcher)
@@ -44,58 +45,28 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
         switch action {
         case .post(let notice):
             enqueueNotice(notice)
-        case .dismiss(let notice):
-            dequeueNotice(notice)
+        case .dismiss:
+            dequeueNotice()
         }
     }
 
     // MARK: - Accessors
 
     var nextNotice: Notice? {
-        return state.notices.first
-    }
-
-    var notices: [Notice] {
-        return state.notices.elements
+        return state.notice
     }
 
     // MARK: - Action handlers
 
     private func enqueueNotice(_ notice: Notice) {
-        state.notices.push(notice)
-    }
-
-    private func dequeueNotice(_ notice: Notice) {
-        state.notices.pop()
-    }
-}
-
-private struct Queue<T>: ExpressibleByArrayLiteral {
-    typealias ArrayLiteralElement = T
-
-    private(set) var elements: Array<T> = []
-
-    init(arrayLiteral elements: T...) {
-        self.elements = elements
-    }
-
-    mutating func push(_ value: T) {
-        elements.append(value)
-    }
-
-    @discardableResult mutating func pop() -> T? {
-        guard !isEmpty else {
-            return nil
+        if state.notice == nil {
+            state.notice = notice
+        } else {
+            pending.push(notice)
         }
-
-        return elements.removeFirst()
     }
 
-    var isEmpty: Bool {
-        return elements.isEmpty
-    }
-
-    var first: T? {
-        return elements.first
+    private func dequeueNotice() {
+        state.notice = pending.pop()
     }
 }
