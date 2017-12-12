@@ -102,7 +102,9 @@ private extension UIImageView {
     ///
     private func optimizedDotcomURL(from siteIconPath: String) -> URL? {
         let size = BlavatarDefaults.imageSizeInPixels
-        return URLComponents.parseURL(path: siteIconPath, query: String(format: "w=%d&h=%d", size, size))
+        let query = String(format: "w=%d&h=%d", size, size)
+
+        return URLComponents.parseURL(path: siteIconPath, query: query)
     }
 
 
@@ -112,7 +114,9 @@ private extension UIImageView {
     ///
     private func optimizedBlavatarURL(from siteIconPath: String) -> URL? {
         let size = BlavatarDefaults.imageSizeInPixels
-        return URLComponents.parseURL(path: siteIconPath, query: String(format: "d=404&s=%d", size))
+        let query = String(format: "d=404&s=%d", size)
+
+        return URLComponents.parseURL(path: siteIconPath, query: query)
     }
 
 
