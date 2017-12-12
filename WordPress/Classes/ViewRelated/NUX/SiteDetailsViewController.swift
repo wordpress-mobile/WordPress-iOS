@@ -1,7 +1,12 @@
 import UIKit
 
-class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewController {
-
+class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
+    
+    // MARK: - SigninKeyboardResponder properties
+    
+    var bottomContentConstraint: NSLayoutConstraint?
+    var verticalCenterConstraint: NSLayoutConstraint?
+    
     // MARK: - Properties
 
     @IBOutlet weak var stepLabel: UILabel!
@@ -11,9 +16,6 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
     @IBOutlet weak var taglineField: LoginTextField!
     @IBOutlet weak var tagDescrLabel: UILabel!
     @IBOutlet weak var nextButton: LoginButton!
-
-    private var helpBadge: WPNUXHelpBadgeLabel!
-    private var helpButton: UIButton!
 
     // MARK: - View
 
@@ -45,29 +47,6 @@ class SiteDetailsViewController: UIViewController, LoginWithLogoAndHelpViewContr
         taglineField.placeholder = NSLocalizedString("Optional tagline", comment: "Site tagline placeholder.")
         tagDescrLabel.text = NSLocalizedString("The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines.", comment: "Tagline description.")
         nextButton.titleLabel?.text = NSLocalizedString("Next", comment: "Next button title.")
-    }
-
-    // MARK: - TapGestureRecognizer
-
-    private func setupBackgroundTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SiteDetailsViewController.handleBackgroundTapGesture(_:)))
-        view.addGestureRecognizer(tapGestureRecognizer)
-    }
-
-    @objc private func handleBackgroundTapGesture(_ tgr: UITapGestureRecognizer) {
-        view.endEditing(true)
-    }
-
-    // MARK: - LoginWithLogoAndHelpViewController
-
-    func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComCreateSiteDetails)
-    }
-
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
-        helpBadge.text = "\(count)"
-        helpBadge.isHidden = (count == 0)
     }
 
     // MARK: - Button Handling
