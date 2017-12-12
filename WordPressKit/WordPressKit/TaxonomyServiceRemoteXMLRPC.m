@@ -14,6 +14,7 @@ static NSString * const TaxonomyXMLRPCTagIdentifier = @"post_tag";
 static NSString * const TaxonomyXMLRPCIDParameter = @"term_id";
 static NSString * const TaxonomyXMLRPCSlugParameter = @"slug";
 static NSString * const TaxonomyXMLRPCNameParameter = @"name";
+static NSString * const TaxonomyXMLRPCDescriptionParameter = @"description";
 static NSString * const TaxonomyXMLRPCParentParameter = @"parent";
 static NSString * const TaxonomyXMLRPCSearchParameter = @"search";
 static NSString * const TaxonomyXMLRPCOrderParameter = @"order";
@@ -89,6 +90,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 {
     NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
     [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
+	[extraParameters setObject:tag.description ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
     
     [self createTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
                       parameters:extraParameters
@@ -96,6 +98,9 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                              RemotePostTag *newTag = [RemotePostTag new];
                              NSString *tagID = responseString;
                              newTag.tagID = [tagID numericValue];
+							 newTag.name = tag.name;
+							 newTag.tagDescription = tag.tagDescription;
+							 newTag.slug = tag.slug;
                              if (success) {
                                  success(newTag);
                              }
