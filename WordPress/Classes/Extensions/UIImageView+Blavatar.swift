@@ -21,10 +21,12 @@ extension UIImageView {
     }
 
 
-    /// Downloads the Blavatar hosted at the specified siteIcon Path.
+    /// Downloads the Blavatar Image, hosted at the specified path. This method will attempt to optimize the URL, so that
+    /// the download Image Size matches `BlavatarDefaults.imageSize`.
     ///
-    /// - Parameter path: Site Icon's Path.
-    /// - TODO: This is a convenience method. Nuke me once we're all swifted.
+    /// TODO: This is a convenience method. Nuke me once we're all swifted.
+    ///
+    /// - Parameter path: Blavatar's url (string encoded) to be downloaded.
     ///
     @objc
     func downloadBlavatar(at path: String) {
@@ -32,10 +34,11 @@ extension UIImageView {
     }
 
 
-    /// Downloads the Blavatar hosted at the specified siteIcon Path.
+    /// Downloads the Blavatar Image, hosted at the specified path. This method will attempt to optimize the URL, so that
+    /// the download Image Size matches `BlavatarDefaults.imageSize`.
     ///
     /// - Parameters:
-    ///     - path: Site Icon's Path.
+    ///     - path: Blavatar's url (string encoded) to be downloaded.
     ///     - placeholderImage: the image to be used as a placeholder
     ///
     @objc
@@ -48,7 +51,8 @@ extension UIImageView {
     }
 
 
-    /// Downloads a Blavatar Image associated to the specified Blog.
+    /// Downloads the Blavatar Image, associated to a given Blog. This method will attempt to optimize the URL, so that
+    /// the download Image Size matches `BlavatarDefaults.imageSize`.
     ///
     /// Parameters:
     ///  - blog: reference to the source blog
@@ -76,8 +80,8 @@ private extension UIImageView {
     /// Downloads the Private Site Icon, hosted at the indicated path.
     ///
     /// - Parameters:
-    ///     - path: the icon's path
-    ///     - placeholderImage: the placeholder
+    ///     - path: Blavatar's url (string encoded) to be downloaded.
+    ///     - placeholderImage: Image Placeholder.
     ///
     func downloadPrivateBlavatar(at path: String, placeholderImage: UIImage?) {
         guard let iconURL = optimizedURL(for: path),
@@ -112,9 +116,9 @@ private extension UIImageView {
 
     // MARK: - Private Helpers
 
-    /// Returns the download URL for a square icon with a size of sizeForBlavatarDownload
+    /// Returns the download URL for a square icon with a size of `BlavatarDefaults.imageSizeInPixels`
     ///
-    /// - Parameter path: the icon's path
+    /// - Parameter path: Blavatar URL (string encoded).
     ///
     private func optimizedDotcomURL(from siteIconPath: String) -> URL? {
         let size = BlavatarDefaults.imageSizeInPixels
@@ -124,7 +128,7 @@ private extension UIImageView {
 
     /// Returns the icon URL corresponding to the provided path
     ///
-    /// - Parameter path: source icon path
+    /// - Parameter path: Blavatar URL (string encoded).
     ///
     private func optimizedBlavatarURL(from siteIconPath: String) -> URL? {
         let size = BlavatarDefaults.imageSizeInPixels
@@ -134,10 +138,10 @@ private extension UIImageView {
 
     /// Returs the photon URL for the provided path
     ///
-    /// - Parameter urlString: source URL
+    /// - Parameter siteIconPath: Blavatar URL (string encoded).
     ///
-    private func optimizedPhotonURL(from urlString: String) -> URL? {
-        guard let url = URL(string: urlString) else {
+    private func optimizedPhotonURL(from siteIconPath: String) -> URL? {
+        guard let url = URL(string: siteIconPath) else {
             return nil
         }
 
