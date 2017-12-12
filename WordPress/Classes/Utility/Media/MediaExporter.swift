@@ -83,7 +83,7 @@ protocol MediaExporter {
     /// - Parameters:
     ///   - onCompletion: a callback to invoke when the export finish with success.
     ///   - onError: a callback to invoke when the export fails.
-    func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError)
+    @discardableResult func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress?
 }
 
 /// Extension providing generic helper implementation particular to MediaExporters.
