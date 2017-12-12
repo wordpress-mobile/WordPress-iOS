@@ -113,8 +113,6 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 {
 	NSParameterAssert(tag.name.length > 0);
 
-	NSLog(@"=== will update tag with id %@", tag.tagID);
-
 	NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
 	parameters[TaxonomyRESTSlugParameter] = tag.slug;
 	parameters[TaxonomyRESTNameParameter] = tag.name;
