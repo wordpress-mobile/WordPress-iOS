@@ -39,15 +39,15 @@ extension UIImageView {
     ///
     /// - Parameters:
     ///     - path: Blavatar's url (string encoded) to be downloaded.
-    ///     - placeholderImage: the image to be used as a placeholder
+    ///     - placeholderImage: Yes. It's the "place holder image".
     ///
     @objc
     func downloadBlavatar(at path: String, placeholderImage: UIImage?) {
-        guard let url = optimizedURL(for: path) else {
+        guard let blavatarURL = optimizedURL(for: path) else {
             return
         }
 
-        setImageWith(url, placeholderImage: placeholderImage)
+        setImageWith(blavatarURL, placeholderImage: placeholderImage)
     }
 
 
@@ -56,40 +56,20 @@ extension UIImageView {
     ///
     /// Parameters:
     ///  - blog: reference to the source blog
-    ///  - placeholderImage: the placeholder
+    ///     - placeholderImage: Yes. It's the "place holder image".
     ///
     @objc
     func downloadBlavatar(for blog: Blog, placeholderImage: UIImage? = .blavatarPlaceholderImage) {
-        guard let siteIconPath = blog.icon else {
+        guard let blavatarPath = blog.icon, let blavatarURL = optimizedURL(for: blavatarPath) else {
             return
         }
 
-        if blog.isHostedAtWPcom && blog.isPrivate() {
-            downloadPrivateBlavatar(at: siteIconPath, placeholderImage: placeholderImage)
-        } else {
-            downloadBlavatar(at: siteIconPath, placeholderImage: placeholderImage)
-        }
-    }
-}
-
-
-// MARK: - Private Site Blavatar Support
-//
-private extension UIImageView {
-
-    /// Downloads the Private Site Icon, hosted at the indicated path.
-    ///
-    /// - Parameters:
-    ///     - path: Blavatar's url (string encoded) to be downloaded.
-    ///     - placeholderImage: Image Placeholder.
-    ///
-    func downloadPrivateBlavatar(at path: String, placeholderImage: UIImage?) {
-        guard let iconURL = optimizedURL(for: path),
-            let request = PrivateSiteURLProtocol.requestForPrivateSite(from: iconURL)
-        else {
+        guard blog.isHostedAtWPcom && blog.isPrivate() else {
+            setImageWith(blavatarURL, placeholderImage: placeholderImage)
             return
         }
 
+        let request = PrivateSiteURLProtocol.requestForPrivateSite(from: blavatarURL)
         setImageWith(request, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
 }
