@@ -43,6 +43,11 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         refreshModel(change: .replace)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refreshModel(change: .replace)
+    }
+
     func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
