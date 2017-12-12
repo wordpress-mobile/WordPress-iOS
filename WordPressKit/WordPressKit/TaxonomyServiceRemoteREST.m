@@ -242,7 +242,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 						parameters:nil
 						   success:^(id _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
 							   if (![responseObject isKindOfClass:[NSDictionary class]]) {
-								   NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+								   NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
 								   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
 								   return;
 							   }
@@ -267,7 +267,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 						parameters:parameters
 						   success:^(id _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
 							   if (![responseObject isKindOfClass:[NSDictionary class]]) {
-								   NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+								   NSString *message = [NSString stringWithFormat:@"Invalid response updating taxonomy of type: %@", typeIdentifier];
 								   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
 								   return;
 							   }
