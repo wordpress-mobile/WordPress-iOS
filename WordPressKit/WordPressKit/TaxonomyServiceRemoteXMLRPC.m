@@ -108,7 +108,16 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 		  success:(nullable void (^)(RemotePostTag *tag))success
 		  failure:(nullable void (^)(NSError *error))failure
 {
-	
+	NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+	[extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
+	[extraParameters setObject:tag.description ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
+
+	[self editTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+					parameters:extraParameters success:^(BOOL response) {
+						if (success) {
+							success(tag);
+						}
+					} failure:failure];
 }
 
 - (void)deleteTag:(RemotePostTag *)tag
