@@ -210,10 +210,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="di8-K1-SEI" userLabel="Text Fields Stack View">
-                                <rect key="frame" x="0.0" y="166" width="375" height="42"/>
+                                <rect key="frame" x="0.0" y="166" width="375" height="88"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8CU-ee-CNI" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="21"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -227,7 +227,7 @@
                                         </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional tagline" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="21" width="375" height="21"/>
+                                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -243,13 +243,13 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGJ-Lt-fd3">
-                                <rect key="frame" x="20" y="218" width="335" height="26.5"/>
+                                <rect key="frame" x="20" y="264" width="335" height="26.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yYd-Ij-EZ1" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="319" y="294.5" width="36" height="34"/>
+                                <rect key="frame" x="319" y="340.5" width="36" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="RGs-QP-jLB"/>
                                 </constraints>
