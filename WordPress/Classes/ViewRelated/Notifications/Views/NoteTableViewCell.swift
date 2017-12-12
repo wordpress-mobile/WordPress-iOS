@@ -139,7 +139,7 @@ class NoteTableViewCell: MGSwipeTableCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        iconImageView.image = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        iconImageView.image = .gravatarPlaceholderImage
 
         noticonContainerView.layer.cornerRadius = Settings.noticonContainerRadius
 

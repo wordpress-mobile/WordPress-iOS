@@ -232,7 +232,7 @@ open class NotificationSettingsViewController: UIViewController {
             if let blog = settings.blog {
                 cell.imageView?.setImageWithSiteIcon(for: blog)
             } else {
-                cell.imageView?.image = WPStyleGuide.Notifications.blavatarPlaceholderImage
+                cell.imageView?.image = .blavatarPlaceholderImage
             }
 
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
