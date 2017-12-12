@@ -79,7 +79,7 @@ class MediaCoordinator: NSObject {
     ///
     /// - Parameter media: the media object to delete
     ///
-    func delete(media: Media){
+    func delete(media: Media) {
         let service = MediaService(managedObjectContext: backgroundContext)
         service.delete(media, success: nil, failure: nil)
     }
