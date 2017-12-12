@@ -854,7 +854,6 @@
 		E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1EBC3741C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib */; };
 		E1ECE34F1FA88DA2007FA37A /* StoreContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ECE34E1FA88DA2007FA37A /* StoreContainer.swift */; };
 		E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */; };
-		E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */; };
 		E1F8E1231B0B411E0073E628 /* JetpackService.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F8E1221B0B411E0073E628 /* JetpackService.m */; };
 		E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */; };
 		E1FFA9DC1E3FA84500CED178 /* CustomCellMarginBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FFA9DB1E3FA84500CED178 /* CustomCellMarginBehavior.swift */; };
@@ -2301,8 +2300,6 @@
 		E1EEFAD91CC4CC5700126533 /* Confirmable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Confirmable.h; sourceTree = "<group>"; };
 		E1F5A1BA1771C90A00E0495F /* WPTableImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableImageSource.h; sourceTree = "<group>"; };
 		E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSource.m; sourceTree = "<group>"; };
-		E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Gravatar.h"; sourceTree = "<group>"; };
-		E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Gravatar.m"; sourceTree = "<group>"; };
 		E1F8E1211B0B411E0073E628 /* JetpackService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackService.h; sourceTree = "<group>"; };
 		E1F8E1221B0B411E0073E628 /* JetpackService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackService.m; sourceTree = "<group>"; };
 		E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsService.swift; sourceTree = "<group>"; };
@@ -4773,8 +4770,6 @@
 				834CAE9E122D56B1003DDF49 /* UIImage+RoundedCorner.m */,
 				5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */,
 				5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */,
-				E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */,
-				E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */,
 				5DF59C091770AE3A00171208 /* UILabel+SuggestSize.h */,
 				5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */,
 				5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */,
@@ -6505,7 +6500,6 @@
 				E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */,
 				598DD1711B97985700146967 /* ThemeBrowserCell.swift in Sources */,
 				B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */,
-				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 				E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */,
 				E6374DC01C444D8B00F24720 /* PublicizeConnection.swift in Sources */,
 				0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */,
