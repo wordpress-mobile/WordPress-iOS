@@ -382,9 +382,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             let options = self.options.copy() as! WPMediaPickerOptions
             options.allowMultipleSelection = isEditing
             self.options = options
-            if isEditing {
-                clearSelectedAssets(true)
-            }
+            clearSelectedAssets(false)
         }
     }
 
