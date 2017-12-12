@@ -142,8 +142,10 @@ extension SiteDetailsViewController: UITextFieldDelegate {
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
-        nextButton.isEnabled = stringHasValue(updatedString)
+        if textField == siteTitleField {
+            let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
+            nextButton.isEnabled = stringHasValue(updatedString)
+        }
         return true
     }
 
