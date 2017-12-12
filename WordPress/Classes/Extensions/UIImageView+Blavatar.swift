@@ -44,6 +44,7 @@ extension UIImageView {
     @objc
     func downloadBlavatar(at path: String, placeholderImage: UIImage?) {
         guard let blavatarURL = optimizedURL(for: path) else {
+            image = placeholderImage
             return
         }
 
@@ -61,6 +62,7 @@ extension UIImageView {
     @objc
     func downloadBlavatar(for blog: Blog, placeholderImage: UIImage? = .blavatarPlaceholderImage) {
         guard let blavatarPath = blog.icon, let blavatarURL = optimizedURL(for: blavatarPath) else {
+            image = placeholderImage
             return
         }
 
