@@ -37,9 +37,8 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
             return
         }
 
-        let placeholderImage = Style.gravatarPlaceholderImage
         let gravatar = url.flatMap { Gravatar($0) }
-        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
+        gravatarImageView.downloadGravatar(gravatar, placeholder: .gravatarPlaceholderImage, animate: true)
 
         gravatarURL = url
     }
@@ -55,7 +54,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         headerTitleLabel.textColor = Style.headerTitleColor
         headerDetailsLabel.font = Style.headerDetailsRegularFont
         headerDetailsLabel.textColor = Style.headerDetailsColor
-        gravatarImageView.image = Style.gravatarPlaceholderImage
+        gravatarImageView.image = .gravatarPlaceholderImage
     }
 
     // MARK: - Overriden Methods
