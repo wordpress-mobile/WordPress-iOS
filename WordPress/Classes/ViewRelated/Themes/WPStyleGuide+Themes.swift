@@ -114,11 +114,7 @@ extension WPStyleGuide {
             let cellWidth = cellWidthForFrameWidth(width)
             return cellWidth - cellImageInset
         }
-        public static func selectionCellSizeForFrameWidth(_ width: CGFloat) -> CGSize {
-            let cellWidth = cellWidthForFrameWidth(width) * 0.95
-            let cellHeight = cellHeightForCellWidth(cellWidth) * 0.95
-            return CGSize(width: cellWidth, height: cellHeight)
-        }
+
         public static let footerHeight: CGFloat = 50
 
         public static let themeMargins = UIEdgeInsets(top: rowMargin, left: columnMargin, bottom: rowMargin, right: columnMargin)
