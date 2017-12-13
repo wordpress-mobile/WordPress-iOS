@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 public struct TimeZoneGroupInfo {
     public let name: String
@@ -30,7 +31,9 @@ public class TimeZoneRemoteREST: ServiceRemoteWordPressComREST {
 
         let endpoint = "timezones"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
-        wordPressComRestApi.GET(path!, parameters: nil, success: { (response, _) in
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
+        let parameters: [String: AnyObject] = ["_locale": locale as AnyObject]
+        wordPressComRestApi.GET(path!, parameters: parameters, success: { (response, _) in
             let dict = response as? [String: AnyObject]
             let timezonesByContinentDict = dict?["timezones_by_continent"] as? [String: AnyObject]
             var resultsArray: [TimeZoneGroupInfo] = []
