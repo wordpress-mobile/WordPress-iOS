@@ -66,7 +66,7 @@ class MediaVideoExporter: MediaExporter {
         self.init(url: nil, session: session, filename: filename)
     }
 
-    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress? {
+    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
         if let url = url {
             return exportVideo(atURL: url, onCompletion: onCompletion, onError: onError)
         } else if let session = session {
@@ -77,15 +77,15 @@ class MediaVideoExporter: MediaExporter {
 
     /// Exports a known video at a URL asynchronously.
     ///
-    @discardableResult func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    @discardableResult func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         let asset = AVURLAsset(url: url)
         guard asset.isExportable else {
             onError(exporterErrorWith(error: VideoExportError.videoAssetWasDetectedAsNotExportable))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         guard let session = AVAssetExportSession(asset: asset, presetName: options.exportPreset) else {
             onError(exporterErrorWith(error: VideoExportError.failedToInitializeVideoExportSession))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         return exportVideo(with: session,
                     filename: url.lastPathComponent,
@@ -95,7 +95,7 @@ class MediaVideoExporter: MediaExporter {
 
     /// Configures an AVAssetExportSession and exports the video asynchronously.
     ///
-    @discardableResult func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    @discardableResult func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         var outputType = options.preferredExportVideoType ?? supportedExportFileTypes.first!
         // Check if the exportFileType is one of the supported types for the exportSession.
         if session.supportedFileTypes.contains(AVFileType(rawValue: outputType)) == false {
@@ -107,7 +107,7 @@ class MediaVideoExporter: MediaExporter {
             guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains(AVFileType(rawValue: $0)) }) else {
                 // No supported types available, throw an error.
                 onError(exporterErrorWith(error: VideoExportError.videoExportSessionDoesNotSupportVideoOutputType))
-                return nil
+                return Progress.discreteCompletedProgress()
             }
             outputType = supportedType
         }
@@ -119,7 +119,7 @@ class MediaVideoExporter: MediaExporter {
                                                                 fileExtension: URL.fileExtensionForUTType(outputType))
         } catch {
             onError(exporterErrorWith(error: error))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         session.outputURL = mediaURL
         session.outputFileType = AVFileType(rawValue: outputType)
@@ -153,11 +153,11 @@ class MediaVideoExporter: MediaExporter {
     ///
     /// - imageOptions: ImageExporter options for the generated thumbnail image.
     ///
-    func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         let asset = AVURLAsset(url: url)
         guard asset.isExportable else {
             onError(exporterErrorWith(error:VideoExportError.videoAssetWasDetectedAsNotExportable))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         let generator = AVAssetImageGenerator(asset: asset)
         if let imageOptions = imageOptions, let maxSize = imageOptions.maximumImageSize {
@@ -182,11 +182,10 @@ class MediaVideoExporter: MediaExporter {
                                                         exporter.options = imageOptions
                                                     }
                                                     exporter.mediaDirectoryType = self.mediaDirectoryType
-                                                    if let imageProgress = exporter.export(
+                                                    let imageProgress = exporter.export(
                                                                          onCompletion: onCompletion,
-                                                                         onError: onError) {
-                                                        progress.addChild(imageProgress, withPendingUnitCount: 1)
-                                                    }
+                                                                         onError: onError)
+                                                    progress.addChild(imageProgress, withPendingUnitCount: 1)
         })
         return progress
     }

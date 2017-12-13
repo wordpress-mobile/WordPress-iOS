@@ -50,7 +50,7 @@ class MediaAssetExporter: MediaExporter {
         self.asset = asset
     }
 
-    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress? {
+    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
         switch asset.mediaType {
         case .image:
             return exportImage(forAsset: asset, onCompletion: onCompletion, onError: onError)
@@ -59,21 +59,21 @@ class MediaAssetExporter: MediaExporter {
         default:
             onError(AssetExportError.unsupportedPHAssetMediaType)
         }
-        return nil
+        return Progress.discreteCompletedProgress()
     }
 
-    @discardableResult fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress? {
+    @discardableResult fileprivate func exportImage(forAsset asset: PHAsset, onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
 
         guard asset.mediaType == .image else {
             onError(exporterErrorWith(error: AssetExportError.expectedPHAssetImageType))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
 
         // Get the resource matching the type, to export.
         let resources = PHAssetResource.assetResources(for: asset).filter({ $0.type == .photo })
         guard let resource = resources.first else {
             onError(exporterErrorWith(error: AssetExportError.unavailablePHAssetImageResource))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
 
         if UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) {
@@ -143,16 +143,16 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    fileprivate func exportVideo(forAsset asset: PHAsset, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         guard asset.mediaType == .video else {
             onError(exporterErrorWith(error: AssetExportError.expectedPHAssetVideoType))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         // Get the resource matching the type, to export.
         let resources = PHAssetResource.assetResources(for: asset).filter({ $0.type == .video })
         guard let videoResource = resources.first else {
             onError(exporterErrorWith(error: AssetExportError.unavailablePHAssetVideoResource))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
 
         // Configure a video exporter to handle an export session.
@@ -203,11 +203,11 @@ class MediaAssetExporter: MediaExporter {
     /// - parameter onCompletion: Called on successful export, with the local file URL of the exported asset.
     /// - parameter onError: Called if an error was encountered during export.
     ///
-    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    fileprivate func exportGIF(forAsset asset: PHAsset, resource: PHAssetResource, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
 
         guard UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) else {
             onError(exporterErrorWith(error: AssetExportError.expectedPHAssetGIFType))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         let url: URL
         do {
@@ -215,7 +215,7 @@ class MediaAssetExporter: MediaExporter {
                                                          fileExtension: "gif")
         } catch {
             onError(exporterErrorWith(error: error))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         let options = PHAssetResourceRequestOptions()
         options.isNetworkAccessAllowed = true
