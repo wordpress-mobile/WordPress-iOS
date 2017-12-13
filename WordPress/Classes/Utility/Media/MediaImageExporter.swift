@@ -79,7 +79,7 @@ class MediaImageExporter: MediaExporter {
         self.init(image: nil, filename: filename, data: data, url: nil)
     }
 
-    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress? {
+    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
         if let image = image {
             return exportImage(image, fileName: filename, onCompletion: onCompletion, onError: onError)
         } else if let data = data {
@@ -87,7 +87,7 @@ class MediaImageExporter: MediaExporter {
         } else if let url = url {
             return exportImage(atFile: url, onCompletion: onCompletion, onError: onError)
         }
-        return nil
+        return Progress.discreteCompletedProgress()
     }
 
     /// Exports and writes a UIImage to a local Media URL.
@@ -100,7 +100,7 @@ class MediaImageExporter: MediaExporter {
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
     ///
-    func exportImage(_ image: UIImage, fileName: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    func exportImage(_ image: UIImage, fileName: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         var data: Data?
         var hint: String?
         // If the exportImageType is targeting a PNG, try to init PNG data.
@@ -116,7 +116,7 @@ class MediaImageExporter: MediaExporter {
         // Ensure that we do indeed have image data.
         guard let imageData = data else {
             onError(exporterErrorWith(error: ImageExportError.imageDataRepresentationFailed))
-            return nil
+            return Progress.discreteCompletedProgress()
         }
         return exportImage(withData: imageData,
                     fileName: fileName,
@@ -133,7 +133,7 @@ class MediaImageExporter: MediaExporter {
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
     ///
-    func exportImage(withData data: Data, fileName: String?, typeHint: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    func exportImage(withData data: Data, fileName: String?, typeHint: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
             let hint = typeHint ?? kUTTypeJPEG as String
             let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: hint as CFString]
@@ -151,7 +151,7 @@ class MediaImageExporter: MediaExporter {
         } catch {
             onError(exporterErrorWith(error: error))
         }
-        return nil
+        return Progress.discreteCompletedProgress()
     }
 
     /// Exports and writes image data located at a file URL, to a local Media URL.
@@ -164,7 +164,7 @@ class MediaImageExporter: MediaExporter {
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
     ///
-    func exportImage(atFile url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress? {
+    func exportImage(atFile url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
             let identifierHint = url.typeIdentifierFileExtension ?? kUTTypeJPEG as String
             let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: identifierHint as CFString]
@@ -182,7 +182,7 @@ class MediaImageExporter: MediaExporter {
         } catch {
             onError(exporterErrorWith(error: error))
         }
-        return nil
+        return Progress.discreteCompletedProgress()
     }
 
     /// Exports and writes an image source, to a local Media URL.
@@ -192,7 +192,7 @@ class MediaImageExporter: MediaExporter {
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
     ///
-    func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping OnMediaExport, onError: OnExportError) -> Progress? {
+    func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping OnMediaExport, onError: OnExportError) -> Progress {
         do {
             let filename = filename ?? defaultImageFilename
             // Make a new URL within the local Media directory
@@ -215,7 +215,7 @@ class MediaImageExporter: MediaExporter {
         } catch {
             onError(exporterErrorWith(error: error))
         }
-        return nil
+        return Progress.discreteCompletedProgress()
     }
 
     /// Configurable struct for writing an image to a URL from a CGImageSource, via CGImageDestination, particular to the needs of a MediaImageExporter.
