@@ -127,9 +127,10 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
     RemotePostTag *remoteTag = [self remoteTagWith:tag];
 
+    [self.managedObjectContext deleteObject:tag];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
     [remote deleteTag:remoteTag success:^(void) {
-        [self.managedObjectContext deleteObject:tag];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         if (success) {
             success();
         }
