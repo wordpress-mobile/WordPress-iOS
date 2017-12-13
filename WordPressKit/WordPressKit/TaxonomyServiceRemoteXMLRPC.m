@@ -98,6 +98,9 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                              RemotePostTag *newTag = [RemotePostTag new];
                              NSString *tagID = responseString;
                              newTag.tagID = [tagID numericValue];
+                             newTag.name = tag.name;
+                             newTag.tagDescription = tag.tagDescription;
+                             newTag.slug = tag.slug;
                              if (success) {
                                  success(newTag);
                              }
