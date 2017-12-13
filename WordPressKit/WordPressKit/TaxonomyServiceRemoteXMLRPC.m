@@ -90,7 +90,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 {
     NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
     [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
-	[extraParameters setObject:tag.description ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
+    [extraParameters setObject:tag.description ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
     
     [self createTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
                       parameters:extraParameters
@@ -105,36 +105,36 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 }
 
 - (void)updateTag:(RemotePostTag *)tag
-		  success:(nullable void (^)(RemotePostTag *tag))success
-		  failure:(nullable void (^)(NSError *error))failure
+          success:(nullable void (^)(RemotePostTag *tag))success
+          failure:(nullable void (^)(NSError *error))failure
 {
-	NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
-	[extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
-	[extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
-	[extraParameters setObject:tag.description ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
-
-	[self editTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
-					parameters:extraParameters success:^(BOOL response) {
-						if (success) {
-							success(tag);
-						}
-					} failure:failure];
+    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+    [extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
+    [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
+    [extraParameters setObject:tag.description ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
+    
+    [self editTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+                    parameters:extraParameters success:^(BOOL response) {
+                        if (success) {
+                            success(tag);
+                        }
+                    } failure:failure];
 }
 
 - (void)deleteTag:(RemotePostTag *)tag
-		  success:(nullable void (^)(void))success
-		  failure:(nullable void (^)(NSError *error))failure
+          success:(nullable void (^)(void))success
+          failure:(nullable void (^)(NSError *error))failure
 {
-	NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
-	[extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
-
-	[self deleteTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
-					  parameters:extraParameters success:^(BOOL response) {
-						  if (success) {
-							  success();
-						  }
-					  } failure:failure];
-	
+    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+    [extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
+    
+    [self deleteTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+                      parameters:extraParameters success:^(BOOL response) {
+                          if (success) {
+                              success();
+                          }
+                      } failure:failure];
+    
 }
 
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
@@ -229,61 +229,61 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 }
 
 - (void)deleteTaxonomyWithType:(NSString *)typeIdentifier
-					parameters:(nullable NSDictionary *)parameters
-					   success:(void (^)(BOOL response))success
-					   failure:(nullable void (^)(NSError *error))failure
+                    parameters:(nullable NSDictionary *)parameters
+                       success:(void (^)(BOOL response))success
+                       failure:(nullable void (^)(NSError *error))failure
 {
-	NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
-	NSArray *xmlrpcParameters = nil;
-	if (parameters.count) {
-		[mutableParametersDict addEntriesFromDictionary:parameters];
-	}
-
-	xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
-
-	[self.api callMethod:@"wp.deleteTerm"
-			  parameters:xmlrpcParameters
-				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-					 if (![responseObject respondsToSelector:@selector(boolValue)]) {
-						 NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
-						 [self handleResponseErrorWithMessage:message method:@"wp.deleteTerm" failure:failure];
-						 return;
-					 }
-					 success([responseObject boolValue]);
-				 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-					 if (failure) {
-						 failure(error);
-					 }
-				 }];
+    NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
+    NSArray *xmlrpcParameters = nil;
+    if (parameters.count) {
+        [mutableParametersDict addEntriesFromDictionary:parameters];
+    }
+    
+    xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
+    
+    [self.api callMethod:@"wp.deleteTerm"
+              parameters:xmlrpcParameters
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                     if (![responseObject respondsToSelector:@selector(boolValue)]) {
+                         NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
+                         [self handleResponseErrorWithMessage:message method:@"wp.deleteTerm" failure:failure];
+                         return;
+                     }
+                     success([responseObject boolValue]);
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 
 - (void)editTaxonomyWithType:(NSString *)typeIdentifier
-				  parameters:(nullable NSDictionary *)parameters
-					 success:(void (^)(BOOL response))success
-					 failure:(nullable void (^)(NSError *error))failure
+                  parameters:(nullable NSDictionary *)parameters
+                     success:(void (^)(BOOL response))success
+                     failure:(nullable void (^)(NSError *error))failure
 {
-	NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
-	NSArray *xmlrpcParameters = nil;
-	if (parameters.count) {
-		[mutableParametersDict addEntriesFromDictionary:parameters];
-	}
-
-	xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
-
-	[self.api callMethod:@"wp.editTerm"
-			  parameters:xmlrpcParameters
-				 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-					 if (![responseObject respondsToSelector:@selector(boolValue)]) {
-						 NSString *message = [NSString stringWithFormat:@"Invalid response editing taxonomy of type: %@", typeIdentifier];
-						 [self handleResponseErrorWithMessage:message method:@"wp.editTerm" failure:failure];
-						 return;
-					 }
-					 success([responseObject boolValue]);
-				 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-					 if (failure) {
-						 failure(error);
-					 }
-				 }];
+    NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
+    NSArray *xmlrpcParameters = nil;
+    if (parameters.count) {
+        [mutableParametersDict addEntriesFromDictionary:parameters];
+    }
+    
+    xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
+    
+    [self.api callMethod:@"wp.editTerm"
+              parameters:xmlrpcParameters
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                     if (![responseObject respondsToSelector:@selector(boolValue)]) {
+                         NSString *message = [NSString stringWithFormat:@"Invalid response editing taxonomy of type: %@", typeIdentifier];
+                         [self handleResponseErrorWithMessage:message method:@"wp.editTerm" failure:failure];
+                         return;
+                     }
+                     success([responseObject boolValue]);
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
 }
 
 #pragma mark - helpers
