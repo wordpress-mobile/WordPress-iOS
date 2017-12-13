@@ -2,7 +2,7 @@ import Foundation
 
 extension MediaService {
 
-    /// /// This method check the status of all media objects and updates them to the correct status if needed.
+    /// This method checks the status of all media objects and updates them to the correct status if needed.
     /// The main cause of wrong status is the app being killed while uploads of media are happening.
     ///
     /// - Parameters:
