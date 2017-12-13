@@ -253,10 +253,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         let completedUnits = progress.completedUnitCount
         let title = String.localizedStringWithFormat("Media uploaded (%ld files)", completedUnits)
-        return Notice(title: title,
-                      message: nil,
-                      actionTitle: NSLocalizedString("Write Post", comment: "Button title for media notification. Opens the post editor."),
-                      actionHandler: {})
+        return Notice(title: title)
     }
 }
 

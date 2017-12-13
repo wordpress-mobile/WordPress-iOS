@@ -7,7 +7,14 @@ struct Notice {
     let actionTitle: String?
     let actionHandler: (() -> Void)?
 
-    init(title: String, message: String? = nil, actionTitle: String? = nil, actionHandler: (() -> Void)? = nil) {
+    init(title: String, message: String? = nil) {
+        self.title = title
+        self.message = message
+        self.actionTitle = nil
+        self.actionHandler = nil
+    }
+
+    init(title: String, message: String? = nil, actionTitle: String, actionHandler: @escaping (() -> Void)) {
         self.title = title
         self.message = message
         self.actionTitle = actionTitle
