@@ -109,6 +109,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 		  failure:(nullable void (^)(NSError *error))failure
 {
 	NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+	[extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
 	[extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
 	[extraParameters setObject:tag.description ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
 
