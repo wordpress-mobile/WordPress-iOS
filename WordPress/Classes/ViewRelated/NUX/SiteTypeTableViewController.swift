@@ -32,6 +32,10 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     // MARK: - Cancel Button Action
 
     @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
