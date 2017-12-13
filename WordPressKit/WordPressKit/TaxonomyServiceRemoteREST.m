@@ -120,8 +120,8 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 
 	[self updateTaxonomyWithType:TaxonomyRESTTagIdentifier
 					  parameters:parameters success:^(NSDictionary * _Nonnull responseObject) {
-						  RemotePostTag *receivedTag = [self remoteTagWithJSONDictionary:responseObject];
 						  if (success) {
+							  RemotePostTag *receivedTag = [self remoteTagWithJSONDictionary:responseObject];
 							  success(receivedTag);
 						  }
 					  } failure:failure];
