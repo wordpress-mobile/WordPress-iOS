@@ -13,7 +13,6 @@ enum TimezoneSelectorViewModel {
     case ready([TimeZoneGroupInfo], String?, NSNumber?, ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?)
     case error(String)
 
-    static let manualOffsetSectionName: String = "Manual Offsets"
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
         case .loading:
@@ -71,12 +70,7 @@ enum TimezoneSelectorViewModel {
                     let action = self.action(timeZoneValue: timeZoneInternalValue, onChange: onChange)
                     rows.append(CheckmarkRow(title: timeZoneDisplayLabel, checked: isSelected, action: action))
                 }
-                var headerText: String = groupName
-                if groupName == TimezoneSelectorViewModel.manualOffsetSectionName {
-                    // localize Manual Offsets
-                    headerText = NSLocalizedString("Manual Offsets", comment: "Section name for manual offsets in TimeZone selector")
-                }
-                let section = ImmuTableSection(headerText: headerText, rows: rows)
+                let section = ImmuTableSection(headerText: groupName, rows: rows)
                 sections.append(section)
             }
             return ImmuTable(sections: sections)

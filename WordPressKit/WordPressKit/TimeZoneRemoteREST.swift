@@ -55,7 +55,8 @@ public class TimeZoneRemoteREST: ServiceRemoteWordPressComREST {
         resultsArray.append(utcOnlyGroup)
 
         let manualUTCDict = dict?["manual_utc_offsets"] as? [[String: String]]
-        let manualOffsetInfo = TimeZoneGroupInfo(name: "Manual Offsets", labelsAndValues: getLabelValDict(from: manualUTCDict))
+        let manualOffsetText: String = NSLocalizedString("Manual Offsets", comment: "Section name for manual offsets in TimeZone selector")
+        let manualOffsetInfo = TimeZoneGroupInfo(name: manualOffsetText, labelsAndValues: getLabelValDict(from: manualUTCDict))
         resultsArray.append(manualOffsetInfo)
         return resultsArray
     }
