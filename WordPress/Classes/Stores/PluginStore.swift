@@ -8,6 +8,7 @@ enum PluginAction: Action {
     case disableAutoupdates(id: String, site: JetpackSiteRef)
     case update(id: String, site: JetpackSiteRef)
     case remove(id: String, site: JetpackSiteRef)
+    case refreshPlugins(site: JetpackSiteRef)
     case receivePlugins(site: JetpackSiteRef, plugins: SitePlugins)
     case receivePluginsFailed(site: JetpackSiteRef, error: Error)
     case receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry)
@@ -121,6 +122,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             updatePlugin(pluginID: pluginID, site: site)
         case .remove(let pluginID, let site):
             removePlugin(pluginID: pluginID, site: site)
+        case .refreshPlugins(let site):
+            refreshPlugins(site: site)
         case .receivePlugins(let site, let plugins):
             receivePlugins(site: site, plugins: plugins)
         case .receivePluginsFailed(let site, _):
@@ -156,10 +159,14 @@ extension PluginStore {
         return state.directoryEntries[slug]?.entry
     }
 
+    func isFetchingPlugins(site: JetpackSiteRef) -> Bool {
+        return state.fetching[site, default: false]
+    }
+
     func shouldFetch(site: JetpackSiteRef) -> Bool {
         let lastFetch = state.lastFetch[site, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let isFetching = state.fetching[site, default: false]
+        let isFetching = isFetchingPlugins(site: site)
         return needsRefresh && !isFetching
     }
 
@@ -280,6 +287,14 @@ private extension PluginStore {
             failure: { [weak self] _ in
                 _ = self?.getPlugins(site: site)
         })
+    }
+
+    func refreshPlugins(site: JetpackSiteRef) {
+        guard !isFetchingPlugins(site: site) else {
+            assertionFailure("Plugin refresh triggered while one was in progress")
+            return
+        }
+        fetchPlugins(site: site)
     }
 
     func fetchPlugins(site: JetpackSiteRef) {

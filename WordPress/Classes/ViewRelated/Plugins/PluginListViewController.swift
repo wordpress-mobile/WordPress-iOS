@@ -9,7 +9,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var tableViewModel = ImmuTable.Empty
 
     fileprivate let noResultsView = WPNoResultsView()
-    var viewModelReceipt: Receipt?
+    var viewModelStateChangeReceipt: Receipt?
+    var viewModelChangeReceipt: Receipt?
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.site = site
@@ -19,6 +20,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
         title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
         noResultsView.delegate = self
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -37,8 +40,23 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
-        viewModelReceipt = viewModel.onStateChange { [weak self] (change) in
+        viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] (change) in
             self?.refreshModel(change: change)
+        }
+        viewModelChangeReceipt = viewModel.onChange { [weak self] in
+            guard let refreshControl = self?.refreshControl,
+                let refreshing = self?.viewModel.refreshing else {
+                    return
+            }
+
+            switch (refreshing, refreshControl.isRefreshing) {
+            case (true, false):
+                refreshControl.beginRefreshing()
+            case (false, true):
+                refreshControl.endRefreshing()
+            default:
+                break
+            }
         }
         refreshModel(change: .replace)
     }
@@ -46,6 +64,10 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshModel(change: .replace)
+    }
+
+    @objc func refresh() {
+        ActionDispatcher.dispatch(PluginAction.refreshPlugins(site: site))
     }
 
     func updateNoResults() {
