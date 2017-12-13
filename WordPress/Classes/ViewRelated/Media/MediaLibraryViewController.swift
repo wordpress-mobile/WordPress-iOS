@@ -329,12 +329,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     @objc private func editTapped() {
         isEditing = !isEditing
-
-        let options = self.options.copy() as! WPMediaPickerOptions
-        options.allowMultipleSelection = isEditing
-        self.options = options
-
-        clearSelectedAssets(true)
     }
 
     @objc private func trashTapped() {
@@ -372,12 +366,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         // Initialize the progress HUD before we start
         updateProgress(nil)
-
+        isEditing = false
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.deleteMedia(assets, progress: updateProgress, success: { [weak self] () in
             WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-            self?.isEditing = false
         }, failure: { () in
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
@@ -386,6 +379,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     override var isEditing: Bool {
         didSet {
             updateNavigationItemButtons(for: pickerDataSource.totalAssetCount)
+            let options = self.options.copy() as! WPMediaPickerOptions
+            options.allowMultipleSelection = isEditing
+            self.options = options
+            clearSelectedAssets(false)
         }
     }
 
