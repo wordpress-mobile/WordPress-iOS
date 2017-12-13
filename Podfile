@@ -71,7 +71,6 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
-    pod 'WordPress-Aztec-iOS', '1.0.0-beta.15'
   end
 
   target 'WordPressTodayWidget' do
