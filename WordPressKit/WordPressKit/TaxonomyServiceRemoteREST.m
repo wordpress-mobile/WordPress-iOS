@@ -128,7 +128,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 }
 
 - (void)deleteTag:(RemotePostTag *)tag
-		  success:(nullable void (^)(RemotePostTag *tag))success
+		  success:(nullable void (^)(void))success
 		  failure:(nullable void (^)(NSError *error))failure
 {
 	NSParameterAssert(tag.name.length > 0);
@@ -138,7 +138,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
 
 	[self deleteTaxonomyWithType:TaxonomyRESTTagIdentifier parameters:parameters success:^(NSDictionary * _Nonnull responseObject) {
 		if (success) {
-			success(tag);
+			success();
 		}
 	} failure:failure];
 }
