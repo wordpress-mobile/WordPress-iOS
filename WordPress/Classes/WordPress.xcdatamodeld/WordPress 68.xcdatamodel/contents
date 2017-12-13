@@ -640,11 +640,6 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <entity name="TimeZoneInfo" representedClassName=".TimeZoneInfo" syncable="YES">
-        <attribute name="group" attributeType="String" syncable="YES"/>
-        <attribute name="label" attributeType="String" syncable="YES"/>
-        <attribute name="value" attributeType="String" syncable="YES"/>
-    </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
@@ -682,6 +677,5 @@
         <element name="SharingButton" positionX="0" positionY="0" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="0" positionY="0" width="128" height="225"/>
         <element name="Theme" positionX="0" positionY="0" width="128" height="360"/>
-        <element name="TimeZoneInfo" positionX="0" positionY="0" width="128" height="90"/>
     </elements>
 </model>

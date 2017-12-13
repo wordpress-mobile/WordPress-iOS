@@ -5,7 +5,6 @@ data model as well as any custom migrations.
 
 ## WordPress 68
 - @asifmohd 2017-11-20
-- Added `TimeZoneInfo` entity.
 - `BlogSettings` added `gmtOffset` Float property, and `timeZoneString` String property. Stores the timezone setting of a blog.
 
 ## WordPress 67
