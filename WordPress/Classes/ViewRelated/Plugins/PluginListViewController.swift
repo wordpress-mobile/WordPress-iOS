@@ -20,8 +20,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
         title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
         noResultsView.delegate = self
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -38,27 +36,20 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
         viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] (change) in
             self?.refreshModel(change: change)
         }
         viewModelChangeReceipt = viewModel.onChange { [weak self] in
-            guard let refreshControl = self?.refreshControl,
-                let refreshing = self?.viewModel.refreshing else {
-                    return
-            }
-
-            switch (refreshing, refreshControl.isRefreshing) {
-            case (true, false):
-                refreshControl.beginRefreshing()
-            case (false, true):
-                refreshControl.endRefreshing()
-            default:
-                break
-            }
+            self?.updateRefreshControl()
         }
         refreshModel(change: .replace)
+        updateRefreshControl()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -101,6 +92,21 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
             tableView.reloadRows(at: indexPaths, with: .none)
         }
         updateNoResults()
+    }
+
+    func updateRefreshControl() {
+        guard let refreshControl = refreshControl else {
+                return
+        }
+
+        switch (viewModel.refreshing, refreshControl.isRefreshing) {
+        case (true, false):
+            refreshControl.beginRefreshing()
+        case (false, true):
+            refreshControl.endRefreshing()
+        default:
+            break
+        }
     }
 }
 
