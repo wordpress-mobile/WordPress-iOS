@@ -357,19 +357,6 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     }
 }
 
-#pragma mark - XML-RPC parameters
-- (NSArray *)XMLRPCArgumentsWithExtraDefault:(id)extraDefault andExtra:(id)extra {
-    NSMutableArray *result = [[self defaultXMLRPCArguments] mutableCopy];
-    [result addObject:extraDefault];
-    if ([extra isKindOfClass:[NSArray class]]) {
-        [result addObjectsFromArray:extra];
-    } else if (extra != nil) {
-        [result addObject:extra];
-    }
-
-    return [NSArray arrayWithArray:result];
-}
-
 @end
 
 NS_ASSUME_NONNULL_END
