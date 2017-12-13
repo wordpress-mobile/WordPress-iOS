@@ -112,11 +112,11 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
           failure:(nullable void (^)(NSError *error))failure
 {
     NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
-    [extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
     [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
     [extraParameters setObject:tag.tagDescription ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
     
     [self editTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+                        termId:tag.tagID
                     parameters:extraParameters success:^(BOOL response) {
                         if (success) {
                             success(tag);
@@ -261,6 +261,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 }
 
 - (void)editTaxonomyWithType:(NSString *)typeIdentifier
+                      termId:(NSNumber *)termId
                   parameters:(nullable NSDictionary *)parameters
                      success:(void (^)(BOOL response))success
                      failure:(nullable void (^)(NSError *error))failure
@@ -270,8 +271,8 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     if (parameters.count) {
         [mutableParametersDict addEntriesFromDictionary:parameters];
     }
-    
-    xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
+
+    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefault:termId andExtra:mutableParametersDict];
     
     [self.api callMethod:@"wp.editTerm"
               parameters:xmlrpcParameters
@@ -356,6 +357,19 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     if (failure) {
         failure(error);
     }
+}
+
+#pragma mark - XML-RPC parameters
+- (NSArray *)XMLRPCArgumentsWithExtraDefault:(id)extraDefault andExtra:(id)extra {
+    NSMutableArray *result = [[self defaultXMLRPCArguments] mutableCopy];
+    [result addObject:extraDefault];
+    if ([extra isKindOfClass:[NSArray class]]) {
+        [result addObjectsFromArray:extra];
+    } else if (extra != nil) {
+        [result addObject:extra];
+    }
+
+    return [NSArray arrayWithArray:result];
 }
 
 @end
