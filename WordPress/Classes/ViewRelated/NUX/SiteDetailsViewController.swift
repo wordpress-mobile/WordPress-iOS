@@ -54,9 +54,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     }
 
     private func configureView() {
-        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
-        helpButton = helpButtonResult
-        helpBadge = helpBadgeResult
+        _ = addHelpButtonToNavController()
 
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
