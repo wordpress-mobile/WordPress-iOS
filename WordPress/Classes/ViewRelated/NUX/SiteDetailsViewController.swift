@@ -1,12 +1,12 @@
 import UIKit
 
 class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
-    
-    // MARK: - SigninKeyboardResponder properties
-    
-    var bottomContentConstraint: NSLayoutConstraint?
-    var verticalCenterConstraint: NSLayoutConstraint?
-    
+
+    // MARK: - SigninKeyboardResponder Properties
+
+    @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
+    @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
+
     // MARK: - Properties
 
     @IBOutlet weak var stepLabel: UILabel!
@@ -23,30 +23,68 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         super.viewDidLoad()
         configureView()
         setLabelText()
-        setupBackgroundTapGestureRecognizer()
+        setupNextButton()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureViewForEditingIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unregisterForKeyboardEvents()
+    }
+
+    /// Configure the view for an editing state. Should only be called from viewWillAppear
+    /// as this method skips animating any change in height.
+    ///
+    func configureViewForEditingIfNeeded() {
+        // Check the helper to determine whether an editiing state should be assumed.
+        adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
+        if SigninEditingState.signinEditingStateActive {
+            siteTitleField.becomeFirstResponder()
+        }
     }
 
     private func configureView() {
-        navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
         helpButton = helpButtonResult
         helpBadge = helpBadgeResult
+
+        navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         tagDescrLabel.textColor = WPStyleGuide.greyDarken20()
         nextButton.isEnabled = false
-        siteTitleField.becomeFirstResponder()
-        siteTitleField.textInsets.left = 20
-        taglineField.textInsets.left = 20
+        siteTitleField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        taglineField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     private func setLabelText() {
         stepLabel.text = NSLocalizedString("STEP 3 OF 4", comment: "Step for view.")
         stepDescrLabel1.text = NSLocalizedString("Tell us more about the site you're creating.", comment: "Shown during the site details step of the site creation flow.")
         stepDescrLabel2.text = NSLocalizedString("What's the title and tagline?", comment: "Prompts the user for Site details information.")
+
         siteTitleField.placeholder = NSLocalizedString("Add title", comment: "Site title placeholder.")
+        siteTitleField.accessibilityIdentifier = "Site title"
+
         taglineField.placeholder = NSLocalizedString("Optional tagline", comment: "Site tagline placeholder.")
+        taglineField.accessibilityIdentifier = "Site tagline"
+
         tagDescrLabel.text = NSLocalizedString("The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines.", comment: "Tagline description.")
-        nextButton.titleLabel?.text = NSLocalizedString("Next", comment: "Next button title.")
+    }
+
+    private func setupNextButton() {
+        let nextButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
+        nextButton?.setTitle(nextButtonTitle, for: UIControlState())
+        nextButton?.setTitle(nextButtonTitle, for: .highlighted)
+        nextButton?.accessibilityIdentifier = "Next Button"
     }
 
     // MARK: - Button Handling
@@ -56,7 +94,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     }
 
     private func validateForm() {
-        if !stringHasValue(siteTitleField.text) {
+        if siteTitleField.nonNilTrimmedText().isEmpty {
             showSiteTitleError()
         }
         else {
@@ -71,7 +109,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     private func toggleNextButton(_ textField: UITextField) {
         if textField == siteTitleField {
-            nextButton.isEnabled = stringHasValue(textField.text)
+            nextButton.isEnabled = !textField.nonNilTrimmedText().isEmpty
         }
     }
 
@@ -85,15 +123,14 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         view.addSubview(overlayView)
     }
 
-    // MARK: - Helpers
+    // MARK: - Keyboard Notifications
 
-    private func stringHasValue(_ textString: String?) -> Bool {
+    @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+        keyboardWillShow(notification)
+    }
 
-        guard let textString = textString else {
-            return false
-        }
-
-        return textString.trim().count > 0
+    @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+        keyboardWillHide(notification)
     }
 
     // MARK: - Misc
@@ -123,7 +160,7 @@ extension SiteDetailsViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == siteTitleField {
             let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
-            nextButton.isEnabled = stringHasValue(updatedString)
+            nextButton.isEnabled = !updatedString.trim().isEmpty
         }
         return true
     }
