@@ -83,9 +83,7 @@ class PostListFilterSettings: NSObject {
 
     @objc func keyForCurrentListStatusFilter() -> String {
         switch postType {
-        case .page:
-            return type(of: self).currentPageListStatusFilterKey
-        case .post:
+        case .page, .post, .project:
             return type(of: self).currentPageListStatusFilterKey
         default:
             return ""

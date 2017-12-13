@@ -17,6 +17,7 @@ typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
 typedef NSString * PostServiceType NS_TYPED_ENUM;
 extern PostServiceType const PostServiceTypePost;
 extern PostServiceType const PostServiceTypePage;
+extern PostServiceType const PostServiceTypeProject;
 extern PostServiceType const PostServiceTypeAny;
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
@@ -47,7 +48,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  NSManagedObjectContext supplied when the PostService was initialized, and may not
  run on the main thread.
 
- @param postType The type (post or page) of post to sync
+ @param postType The type (post, page, or project) of post to sync
  @param blog The blog that has the posts.
  @param success A success block
  @param failure A failure block
@@ -63,7 +64,7 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
  NSManagedObjectContext supplied when the PostService was initialized, and may not
  run on the main thread.
  
- @param postType The type (post or page) of post to sync
+ @param postType The type (post, page, or project) of post to sync
  @param options Sync options for specific request parameters.
  @param blog The blog that has the posts.
  @param success A success block

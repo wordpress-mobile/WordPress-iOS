@@ -12,6 +12,7 @@
 
 PostServiceType const PostServiceTypePost = @"post";
 PostServiceType const PostServiceTypePage = @"page";
+PostServiceType const PostServiceTypeProject = @"jetpack-portfolio";
 PostServiceType const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
@@ -60,6 +61,21 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     Page *page = [self createPageForBlog:blog];
     [self initializeDraft:page];
     return page;
+}
+
+- (Project *)createProjectForBlog:(Blog *)blog {
+    NSAssert(self.managedObjectContext == blog.managedObjectContext, @"Blog's context should be the the same as the service's");
+    Project *project = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Project class]) inManagedObjectContext:self.managedObjectContext];
+    project.blog = blog;
+    project.date_created_gmt = [NSDate date];
+    project.remoteStatus = AbstractPostRemoteStatusSync;
+    return project;
+}
+
+- (Project *)createDraftProjectForBlog:(Blog *)blog {
+    Project *project = [self createProjectForBlog:blog];
+    [self initializeDraft:project];
+    return project;
 }
 
 - (void)getPostWithID:(NSNumber *)postID
@@ -437,6 +453,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
                 post = [self createPageForBlog:blog];
+            } else if ([remotePost.type isEqualToString:PostServiceTypeProject]) {
+                // Create a Project entity for posts with a remote type of "project"
+                post = [self createProjectForBlog:blog];
             } else {
                 // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
                 post = [self createPostForBlog:blog];
@@ -465,8 +484,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         } else if ([syncPostType isEqualToString:PostServiceTypePage]) {
             // If syncing "page" posts, set up the fetch for any Page entities.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
+        } else if ([syncPostType isEqualToString:PostServiceTypeProject]) {
+            // If syncing "project" posts, set up the fetch for any Project entities.
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Project class])];
         } else {
-            // If not syncing "page" or "any" post, use the Post entity.
+            // If not syncing "page", "project", or "any" post, use the Post entity.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
             // Include the postType attribute in the predicate.
             NSPredicate *postTypePredicate = [NSPredicate predicateWithFormat:@"postType = %@", syncPostType];

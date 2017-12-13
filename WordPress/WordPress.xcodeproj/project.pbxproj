@@ -319,6 +319,13 @@
 		5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DFA7EC61AF814E40072023B /* PageListTableViewCell.xib */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		722F5726ACB4A276B0CF3C83 /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
+		723395DB1FC31D9B002E0215 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723395DA1FC31D9B002E0215 /* ProjectTableViewCell.swift */; };
+		723395DD1FC32392002E0215 /* ProjectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 723395DC1FC32392002E0215 /* ProjectTableViewCell.xib */; };
+		723395DF1FC326F2002E0215 /* RestoreProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723395DE1FC326F2002E0215 /* RestoreProjectTableViewCell.swift */; };
+		723395E11FC3289D002E0215 /* RestoreProjectTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 723395E01FC3289D002E0215 /* RestoreProjectTableViewCell.xib */; };
+		723395E41FC34A7E002E0215 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723395E31FC34A7E002E0215 /* Project.swift */; };
+		724E30FD1FBB4F4E00F72604 /* PortfolioListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724E30FC1FBB4F4E00F72604 /* PortfolioListViewController.swift */; };
+		724E30FF1FBB546A00F72604 /* Portfolio.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 724E30FE1FBB546A00F72604 /* Portfolio.storyboard */; };
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
 		7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
@@ -1525,6 +1532,14 @@
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		7059CD1F0F332B6500A0660B /* WPCategoryTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = WPCategoryTree.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPCategoryTree.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		723395DA1FC31D9B002E0215 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
+		723395DC1FC32392002E0215 /* ProjectTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectTableViewCell.xib; sourceTree = "<group>"; };
+		723395DE1FC326F2002E0215 /* RestoreProjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreProjectTableViewCell.swift; sourceTree = "<group>"; };
+		723395E01FC3289D002E0215 /* RestoreProjectTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreProjectTableViewCell.xib; sourceTree = "<group>"; };
+		723395E31FC34A7E002E0215 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		723395E61FC47455002E0215 /* WordPress 68.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 68.xcdatamodel"; sourceTree = "<group>"; };
+		724E30FC1FBB4F4E00F72604 /* PortfolioListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioListViewController.swift; sourceTree = "<group>"; };
+		724E30FE1FBB546A00F72604 /* Portfolio.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Portfolio.storyboard; sourceTree = "<group>"; };
 		740BD8331A0D4C3600F04D18 /* WPUploadStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusButton.h; sourceTree = "<group>"; };
 		740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusButton.m; sourceTree = "<group>"; };
 		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
@@ -3034,7 +3049,6 @@
 				E1E89C6B1FD80E74006E7A33 /* Plugin.swift */,
 				591AA4FF1CEF9BF20074934F /* Post.swift */,
 				591AA5001CEF9BF20074934F /* Post+CoreDataProperties.swift */,
-				E148362E1C6DF7D8005ACF53 /* Product.swift */,
 				833AF259114575A50016DE8F /* PostAnnotation.h */,
 				833AF25A114575A50016DE8F /* PostAnnotation.m */,
 				E125445412BF5B3900D87A0A /* PostCategory.h */,
@@ -3043,6 +3057,8 @@
 				082AB9DC1C4F035E000CA523 /* PostTag.m */,
 				08B6D6F01C8F7DCE0052C52B /* PostType.h */,
 				08B6D6F11C8F7DCE0052C52B /* PostType.m */,
+				E148362E1C6DF7D8005ACF53 /* Product.swift */,
+				723395E31FC34A7E002E0215 /* Project.swift */,
 				E6374DBD1C444D8B00F24720 /* PublicizeConnection.swift */,
 				E6374DBE1C444D8B00F24720 /* PublicizeService.swift */,
 				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
@@ -3447,6 +3463,35 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		723395D71FC31D3F002E0215 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				724E30FC1FBB4F4E00F72604 /* PortfolioListViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		723395D91FC31D56002E0215 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				723395DA1FC31D9B002E0215 /* ProjectTableViewCell.swift */,
+				723395DC1FC32392002E0215 /* ProjectTableViewCell.xib */,
+				723395DE1FC326F2002E0215 /* RestoreProjectTableViewCell.swift */,
+				723395E01FC3289D002E0215 /* RestoreProjectTableViewCell.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		724E30FA1FBB4EB900F72604 /* Portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				723395D71FC31D3F002E0215 /* Controllers */,
+				723395D91FC31D56002E0215 /* Views */,
+				724E30FE1FBB546A00F72604 /* Portfolio.storyboard */,
+			);
+			path = Portfolio;
+			sourceTree = "<group>";
+		};
 		7430C4471F97F0DA00E2673E /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -3589,6 +3634,7 @@
 				E1B9127F1BB00EF1003C25B9 /* People */,
 				E1389AD91C59F78500FB2466 /* Plans */,
 				E14694041F3459A9004052C8 /* Plugins */,
+				724E30FA1FBB4EB900F72604 /* Portfolio */,
 				AC3439790E11434600E5D79B /* Post */,
 				8298F38D1EEF2B15008EB7F0 /* Ratings */,
 				CCB3A03814C8DD5100D43C3F /* Reader */,
@@ -5783,12 +5829,15 @@
 				E60C2ED51DE5048200488630 /* ReaderCommentCell.xib in Resources */,
 				E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */,
 				B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */,
+				723395E11FC3289D002E0215 /* RestoreProjectTableViewCell.xib in Resources */,
 				17D1C22F1EFBFB6C0076734A /* FancyAlerts.storyboard in Resources */,
+				723395DD1FC32392002E0215 /* ProjectTableViewCell.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */,
 				1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */,
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
+				724E30FF1FBB546A00F72604 /* Portfolio.storyboard in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
 				5D6C4AFF1B603CE9005E3C43 /* EditCommentViewController.xib in Resources */,
 				B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */,
@@ -6249,6 +6298,7 @@
 				B53971521D537B22006135EC /* NotificationBlock.swift in Sources */,
 				0807CB721CE670A800CDBDAC /* WPContentSearchHelper.swift in Sources */,
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
+				723395DF1FC326F2002E0215 /* RestoreProjectTableViewCell.swift in Sources */,
 				59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */,
 				B5ECA6CA1DBAA0020062D7E0 /* CoreDataHelper.swift in Sources */,
 				FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */,
@@ -6396,6 +6446,7 @@
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				FFDA7E501B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m in Sources */,
+				723395DB1FC31D9B002E0215 /* ProjectTableViewCell.swift in Sources */,
 				438A809E1EA5DC31005D4651 /* LoginWPComViewController.swift in Sources */,
 				FF70A3221FD5840500BC270D /* PHAsset+Metadata.swift in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
@@ -6448,6 +6499,7 @@
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
 				E15644ED1CE0E4FE00D96E64 /* PlanListRow.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
+				724E30FD1FBB4F4E00F72604 /* PortfolioListViewController.swift in Sources */,
 				B5AC00681BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift in Sources */,
 				834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */,
 				B584758A1D51078C006734CE /* NotificationDeletion.swift in Sources */,
@@ -6550,6 +6602,7 @@
 				FFA9148F1BA6E5170068F8BF /* RotationAwareNavigationViewController.m in Sources */,
 				5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Posts.m in Sources */,
 				5D17530F1A97D2CA0031A082 /* PostCardTableViewCell.m in Sources */,
+				723395E41FC34A7E002E0215 /* Project.swift in Sources */,
 				08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
@@ -8868,6 +8921,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				723395E61FC47455002E0215 /* WordPress 68.xcdatamodel */,
 				F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */,
 				82FFBF4E1F45E03D00F4573F /* WordPress 66.xcdatamodel */,
 				820ADD751F3CCD70002D7F93 /* WordPress 65.xcdatamodel */,
@@ -8936,7 +8990,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */;
+			currentVersion = 723395E61FC47455002E0215 /* WordPress 68.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

@@ -974,6 +974,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
     settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
+    settings.portfolioEnabled = [remoteSettings.portfolioEnabled boolValue];
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
@@ -1034,6 +1035,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Writing
     remoteSettings.defaultCategoryID = settings.defaultCategoryID;
     remoteSettings.defaultPostFormat = settings.defaultPostFormat;
+    remoteSettings.portfolioEnabled = @(settings.portfolioEnabled);
 
     // Discussion
     remoteSettings.commentsAllowed = @(settings.commentsAllowed);

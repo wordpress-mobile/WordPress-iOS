@@ -99,6 +99,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isSyncingMedia;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastPostsSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastPagesSync;
+@property (nonatomic, strong, readwrite, nullable) NSDate *lastProjectsSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastStatsSync;
 @property (nonatomic, strong, readwrite, nullable) NSString *lastUpdateWarning;
