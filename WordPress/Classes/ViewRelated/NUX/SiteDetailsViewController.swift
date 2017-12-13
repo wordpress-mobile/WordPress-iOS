@@ -95,7 +95,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     private func validateForm() {
         if siteTitleField.nonNilTrimmedText().isEmpty {
-            showSiteTitleError()
+            displayErrorAlert(NSLocalizedString("Site Title must have a value.", comment: "Error shown when Site Title does not have a value."), sourceTag: .wpComCreateSiteDetails)
         }
         else {
             let message = "Title: '\(siteTitleField.text!)'\nTagline: '\(taglineField.text ?? "")'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
@@ -113,16 +113,6 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         }
     }
 
-    private func showSiteTitleError() {
-        let overlayView = WPWalkthroughOverlayView(frame: view.bounds)
-        overlayView.overlayTitle = NSLocalizedString("Error", comment: "Title of Error alert.")
-        overlayView.overlayDescription = NSLocalizedString("Site Title must have a value.", comment: "Error shown when Site Title does not have a value.")
-        overlayView.dismissCompletionBlock = { overlayView in
-            overlayView?.dismiss()
-        }
-        view.addSubview(overlayView)
-    }
-
     // MARK: - Keyboard Notifications
 
     @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
@@ -131,6 +121,14 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
+    }
+
+    // MARK: - LoginWithLogoAndHelpViewController
+
+    /// Override this to use the appropriate sourceTag.
+    ///
+    override func handleHelpButtonTapped(_ sender: AnyObject) {
+        displaySupportViewController(sourceTag: .wpComCreateSiteDetails)
     }
 
     // MARK: - Misc
