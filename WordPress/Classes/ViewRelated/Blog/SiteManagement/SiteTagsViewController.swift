@@ -235,7 +235,9 @@ extension SiteTagsViewController {
         tagsService.delete(tag, for: blog, success: {
             self.refreshControl?.endRefreshing()
             self.tableView.reloadData()
-        }, failure: nil)
+        }, failure: { error in
+            self.refreshControl?.endRefreshing()
+        })
     }
 
     private func save(_ tag: PostTag) {
@@ -244,7 +246,9 @@ extension SiteTagsViewController {
         tagsService.save(tag, for: blog, success: { [weak self] tag in
             self?.refreshControl?.endRefreshing()
             self?.tableView.reloadData()
-        }, failure: nil)
+        }, failure: { error in
+                self.refreshControl?.endRefreshing()
+        })
     }
 }
 
