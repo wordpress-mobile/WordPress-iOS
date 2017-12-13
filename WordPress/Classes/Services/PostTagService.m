@@ -133,7 +133,9 @@ static const NSInteger PostTagIdDefaultValue = -1;
         if (success) {
             success();
         }
-    } failure:failure];
+    } failure:^(NSError * _Nonnull error) {
+        [self handleError:error forBlog:blog withFailure:failure];
+    }];
 }
 
 - (void)saveTag:(PostTag*)tag
