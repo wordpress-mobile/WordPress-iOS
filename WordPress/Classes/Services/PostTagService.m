@@ -194,6 +194,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
                                                              inManagedObjectContext:self.managedObjectContext];
         tag = [[PostTag alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
         tag.tagID = remoteTag.tagID;
+        tag.tagDescription = remoteTag.tagDescription;
         tag.blog = blog;
     }
     

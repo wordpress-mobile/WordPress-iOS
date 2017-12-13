@@ -96,6 +96,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[TaxonomyRESTNameParameter] = tag.name;
+	parameters[TaxonomyRESTDescriptionParameter] = tag.tagDescription;
     
     [self createTaxonomyWithType:TaxonomyRESTTagIdentifier
                       parameters:parameters
