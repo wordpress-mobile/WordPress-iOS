@@ -36,6 +36,25 @@ class PluginViewModel: Observable {
                 value: version)
         }
 
+        var availableUpdateRow: ImmuTableRow?
+        switch plugin.state.updateState {
+        case .updated:
+            break
+        case .available(let version):
+            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), version)
+            availableUpdateRow = TextWithButtonRow(
+                title: message,
+                actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
+                action: { [unowned self] (_) in
+                    ActionDispatcher.dispatch(PluginAction.update(id: self.plugin.id, site: self.site))
+                }
+            )
+        case .updating(let version):
+            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), version)
+            availableUpdateRow = TextRow(title: message,
+                                         value: NSLocalizedString("Updating", comment: "Text to show when a plugin is updating."))
+        }
+
         var activeRow: ImmuTableRow?
         if plugin.state.deactivateAllowed {
             activeRow = SwitchRow(
@@ -82,7 +101,8 @@ class PluginViewModel: Observable {
 
         return ImmuTable(optionalSections: [
             ImmuTableSection(optionalRows: [
-                versionRow
+                versionRow,
+                availableUpdateRow
                 ]),
             ImmuTableSection(optionalRows: [
                 activeRow,
@@ -147,6 +167,6 @@ class PluginViewModel: Observable {
     }
 
     static var immutableRows: [ImmuTableRow.Type] {
-        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self]
+        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self]
     }
 }
