@@ -72,6 +72,7 @@ class MediaVideoExporter: MediaExporter {
         } else if let session = session {
             return exportVideo(with: session, filename: filename, onCompletion: onCompletion, onError: onError)
         }
+        return Progress.discreteCompletedProgress()
     }
 
     /// Exports a known video at a URL asynchronously.
@@ -143,6 +144,7 @@ class MediaVideoExporter: MediaExporter {
                                           height: mediaURL.pixelSize.height,
                                           duration: session.asset.duration.seconds))
         }
+        return Progress.discreteCompletedProgress()
     }
 
     /// Generate and export a preview image for a known video at the URL, local file or remote resource.
