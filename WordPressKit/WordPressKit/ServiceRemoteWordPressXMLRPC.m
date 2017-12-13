@@ -53,4 +53,16 @@
     return [NSArray arrayWithArray:result];
 }
 
+- (NSArray *)XMLRPCArgumentsWithExtraDefault:(id)extraDefault andExtra:(id)extra {
+    NSMutableArray *result = [[self defaultXMLRPCArguments] mutableCopy];
+    [result addObject:extraDefault];
+    if ([extra isKindOfClass:[NSArray class]]) {
+        [result addObjectsFromArray:extra];
+    } else if (extra != nil) {
+        [result addObject:extra];
+    }
+
+    return [NSArray arrayWithArray:result];
+}
+
 @end
