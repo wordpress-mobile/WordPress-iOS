@@ -2,6 +2,13 @@ import Foundation
 import UIKit
 import WordPressFlux
 
+/// NoticePresenter monitors the NoticeStore and is responsible for displaying
+/// notices to the user. If the NoticeStore contains multiple notices, each
+/// one will be displayed in turn.
+///
+/// Other than intializing it, you should not need to interact with the
+/// NoticePresenter directly.
+///
 class NoticePresenter: NSObject {
     private let store: NoticeStore
     private var storeReceipt: Receipt?
