@@ -191,103 +191,116 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STEP 3 OF 4" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tc3-Bo-Atj">
-                                <rect key="frame" x="20" y="84" width="335" height="16"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us more about the site you're creating." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKm-Si-GCs">
-                                <rect key="frame" x="20" y="105" width="335" height="18"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's the title and tagline?" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zht-l9-NH1">
-                                <rect key="frame" x="20" y="128" width="335" height="18"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="di8-K1-SEI" userLabel="Text Fields Stack View">
-                                <rect key="frame" x="0.0" y="166" width="375" height="88"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zB1-MJ-ir0">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8CU-ee-CNI" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STEP 3 OF 4" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tc3-Bo-Atj">
+                                        <rect key="frame" x="20" y="20" width="335" height="16"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us more about the site you're creating." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKm-Si-GCs">
+                                        <rect key="frame" x="20" y="41" width="335" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's the title and tagline?" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zht-l9-NH1">
+                                        <rect key="frame" x="20" y="64" width="335" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="di8-K1-SEI" userLabel="Text Fields Stack View">
+                                        <rect key="frame" x="0.0" y="102" width="375" height="88"/>
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8CU-ee-CNI" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="delegate" destination="aP4-2B-Ezc" id="Nm0-3X-Dd8"/>
+                                                </connections>
+                                            </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional tagline" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="delegate" destination="aP4-2B-Ezc" id="q0C-AK-G9M"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGJ-Lt-fd3">
+                                        <rect key="frame" x="20" y="200" width="335" height="26.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yYd-Ij-EZ1" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="319" y="539" width="36" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="RGs-QP-jLB"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                        <state key="normal" title="Next">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <outlet property="delegate" destination="aP4-2B-Ezc" id="Nm0-3X-Dd8"/>
+                                            <action selector="nextButtonPressed:" destination="aP4-2B-Ezc" eventType="touchUpInside" id="Szu-jb-pyo"/>
                                         </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional tagline" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <outlet property="delegate" destination="aP4-2B-Ezc" id="q0C-AK-G9M"/>
-                                        </connections>
-                                    </textField>
+                                    </button>
                                 </subviews>
-                            </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGJ-Lt-fd3">
-                                <rect key="frame" x="20" y="264" width="335" height="26.5"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yYd-Ij-EZ1" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="319" y="340.5" width="36" height="34"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="RGs-QP-jLB"/>
+                                    <constraint firstItem="di8-K1-SEI" firstAttribute="top" secondItem="zht-l9-NH1" secondAttribute="bottom" constant="20" id="13H-4a-kF5"/>
+                                    <constraint firstItem="pKm-Si-GCs" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="3Lo-5n-vT3"/>
+                                    <constraint firstItem="Tc3-Bo-Atj" firstAttribute="top" secondItem="zB1-MJ-ir0" secondAttribute="top" constant="20" id="A40-dZ-fIT"/>
+                                    <constraint firstItem="di8-K1-SEI" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" id="EXH-dl-LqC"/>
+                                    <constraint firstItem="cGJ-Lt-fd3" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="Ha0-7P-AAa"/>
+                                    <constraint firstAttribute="trailing" secondItem="yYd-Ij-EZ1" secondAttribute="trailing" constant="20" id="Lzk-1x-H42"/>
+                                    <constraint firstAttribute="trailing" secondItem="zht-l9-NH1" secondAttribute="trailing" constant="20" id="OML-0J-8m2"/>
+                                    <constraint firstAttribute="trailing" secondItem="pKm-Si-GCs" secondAttribute="trailing" constant="20" id="OVj-o5-yjp"/>
+                                    <constraint firstItem="pKm-Si-GCs" firstAttribute="top" secondItem="Tc3-Bo-Atj" secondAttribute="bottom" constant="5" id="QBy-01-ICe"/>
+                                    <constraint firstAttribute="trailing" secondItem="cGJ-Lt-fd3" secondAttribute="trailing" constant="20" id="WYn-AJ-hfc"/>
+                                    <constraint firstItem="zht-l9-NH1" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="XQm-Hj-HCN"/>
+                                    <constraint firstItem="Tc3-Bo-Atj" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="cxj-Lq-w7O"/>
+                                    <constraint firstAttribute="trailing" secondItem="Tc3-Bo-Atj" secondAttribute="trailing" constant="20" id="eBM-Le-ZX6"/>
+                                    <constraint firstItem="cGJ-Lt-fd3" firstAttribute="top" secondItem="di8-K1-SEI" secondAttribute="bottom" constant="10" id="fID-sb-lHc"/>
+                                    <constraint firstItem="zht-l9-NH1" firstAttribute="top" secondItem="pKm-Si-GCs" secondAttribute="bottom" constant="5" id="fap-5E-pFG"/>
+                                    <constraint firstAttribute="bottom" secondItem="yYd-Ij-EZ1" secondAttribute="bottom" constant="20" id="hsR-hB-L3m"/>
+                                    <constraint firstAttribute="trailing" secondItem="di8-K1-SEI" secondAttribute="trailing" id="vII-Gs-ndb"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <state key="normal" title="Next">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="nextButtonPressed:" destination="aP4-2B-Ezc" eventType="touchUpInside" id="Szu-jb-pyo"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Tc3-Bo-Atj" firstAttribute="top" secondItem="K6o-Rj-11g" secondAttribute="top" constant="20" id="0nw-xU-q1k"/>
-                            <constraint firstItem="K6o-Rj-11g" firstAttribute="trailing" secondItem="Tc3-Bo-Atj" secondAttribute="trailing" constant="20" id="18L-Lg-XOs"/>
-                            <constraint firstItem="pKm-Si-GCs" firstAttribute="top" secondItem="Tc3-Bo-Atj" secondAttribute="bottom" constant="5" id="2d4-Ip-hdb"/>
-                            <constraint firstItem="zht-l9-NH1" firstAttribute="top" secondItem="pKm-Si-GCs" secondAttribute="bottom" constant="5" id="Cuy-Wu-s1y"/>
-                            <constraint firstItem="Tc3-Bo-Atj" firstAttribute="leading" secondItem="K6o-Rj-11g" secondAttribute="leading" constant="20" id="Cz4-Xa-o4A"/>
-                            <constraint firstItem="di8-K1-SEI" firstAttribute="leading" secondItem="K6o-Rj-11g" secondAttribute="leading" id="F7I-KF-deh"/>
-                            <constraint firstItem="K6o-Rj-11g" firstAttribute="trailing" secondItem="cGJ-Lt-fd3" secondAttribute="trailing" constant="20" id="Fdl-iL-HOW"/>
-                            <constraint firstItem="cGJ-Lt-fd3" firstAttribute="top" secondItem="di8-K1-SEI" secondAttribute="bottom" constant="10" id="Jat-O8-pGY"/>
-                            <constraint firstItem="K6o-Rj-11g" firstAttribute="trailing" secondItem="di8-K1-SEI" secondAttribute="trailing" id="M0Y-sj-qb9"/>
-                            <constraint firstItem="K6o-Rj-11g" firstAttribute="trailing" secondItem="yYd-Ij-EZ1" secondAttribute="trailing" constant="20" id="OdT-S7-YD0"/>
-                            <constraint firstItem="K6o-Rj-11g" firstAttribute="trailing" secondItem="zht-l9-NH1" secondAttribute="trailing" constant="20" id="Ody-2Y-Jat"/>
-                            <constraint firstItem="cGJ-Lt-fd3" firstAttribute="leading" secondItem="K6o-Rj-11g" secondAttribute="leading" constant="20" id="P32-MK-XAX"/>
-                            <constraint firstItem="yYd-Ij-EZ1" firstAttribute="top" secondItem="cGJ-Lt-fd3" secondAttribute="bottom" constant="50" id="Rtn-u1-5ed"/>
-                            <constraint firstItem="di8-K1-SEI" firstAttribute="top" secondItem="zht-l9-NH1" secondAttribute="bottom" constant="20" id="baF-Ow-1h6"/>
-                            <constraint firstItem="zht-l9-NH1" firstAttribute="leading" secondItem="K6o-Rj-11g" secondAttribute="leading" constant="20" id="gMN-cL-H13"/>
-                            <constraint firstItem="pKm-Si-GCs" firstAttribute="leading" secondItem="K6o-Rj-11g" secondAttribute="leading" constant="20" id="jkh-ht-ORf"/>
-                            <constraint firstItem="K6o-Rj-11g" firstAttribute="trailing" secondItem="pKm-Si-GCs" secondAttribute="trailing" constant="20" id="mSq-ay-Yil"/>
+                            <constraint firstItem="K6o-Rj-11g" firstAttribute="bottom" secondItem="zB1-MJ-ir0" secondAttribute="bottom" id="Jd9-Lq-GXT"/>
+                            <constraint firstItem="K6o-Rj-11g" firstAttribute="trailing" secondItem="zB1-MJ-ir0" secondAttribute="trailing" id="LNc-Zp-ZGF"/>
+                            <constraint firstItem="zB1-MJ-ir0" firstAttribute="leading" secondItem="K6o-Rj-11g" secondAttribute="leading" id="SY9-4H-eOz"/>
+                            <constraint firstItem="zB1-MJ-ir0" firstAttribute="top" secondItem="K6o-Rj-11g" secondAttribute="top" id="u4x-fN-4Ba"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="K6o-Rj-11g"/>
                     </view>
                     <connections>
+                        <outlet property="bottomContentConstraint" destination="Jd9-Lq-GXT" id="OwN-Ug-4Xv"/>
                         <outlet property="nextButton" destination="yYd-Ij-EZ1" id="IZ7-df-4EX"/>
                         <outlet property="siteTitleField" destination="8CU-ee-CNI" id="9EB-4V-NEy"/>
                         <outlet property="stepDescrLabel1" destination="pKm-Si-GCs" id="G7I-BS-2SV"/>
@@ -299,7 +312,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuO-m2-AGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1042" y="100"/>
+            <point key="canvasLocation" x="1040.8" y="99.400299850074973"/>
         </scene>
     </scenes>
 </document>
