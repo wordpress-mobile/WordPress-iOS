@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  Delete a tag with the site.
  */
 - (void)deleteTag:(RemotePostTag *)tag
-		  success:(nullable void (^)(RemotePostTag *tag))success
+		  success:(nullable void (^)(void))success
 		  failure:(nullable void (^)(NSError *error))failure;
 
 /**
