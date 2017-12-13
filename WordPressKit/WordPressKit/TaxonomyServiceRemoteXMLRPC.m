@@ -128,16 +128,13 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
           success:(nullable void (^)(void))success
           failure:(nullable void (^)(NSError *error))failure
 {
-    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
-    [extraParameters setObject:tag.tagID ?: [NSNull null] forKey:TaxonomyXMLRPCIDParameter];
-    
     [self deleteTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
-                      parameters:extraParameters success:^(BOOL response) {
+                          termId:tag.tagID
+                      parameters:nil success:^(BOOL response) {
                           if (success) {
                               success();
                           }
                       } failure:failure];
-    
 }
 
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
@@ -232,6 +229,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 }
 
 - (void)deleteTaxonomyWithType:(NSString *)typeIdentifier
+                        termId:(NSNumber *)termId
                     parameters:(nullable NSDictionary *)parameters
                        success:(void (^)(BOOL response))success
                        failure:(nullable void (^)(NSError *error))failure
@@ -242,7 +240,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
         [mutableParametersDict addEntriesFromDictionary:parameters];
     }
     
-    xmlrpcParameters = [self XMLRPCArgumentsWithExtra:mutableParametersDict];
+    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefault:termId andExtra:mutableParametersDict];
     
     [self.api callMethod:@"wp.deleteTerm"
               parameters:xmlrpcParameters
