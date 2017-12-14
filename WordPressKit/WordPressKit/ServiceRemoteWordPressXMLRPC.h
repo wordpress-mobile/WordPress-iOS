@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray *)defaultXMLRPCArguments;
 - (NSArray *)XMLRPCArgumentsWithExtra:(_Nullable id)extra;
-- (NSArray *)XMLRPCArgumentsWithExtraDefault:(id)extraDefault andExtra:(id)extra;
+- (NSArray *)XMLRPCArgumentsWithExtraDefaults:(id)extraDefaults andExtra:(_Nullable id)extra;
 
 @end
 
