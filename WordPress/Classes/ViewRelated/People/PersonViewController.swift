@@ -41,11 +41,11 @@ final class PersonViewController: UITableViewController {
 
     /// Blog to which the Person belongs
     ///
-    var blog: Blog!
+    @objc var blog: Blog!
 
     /// Core Data Context that should be used
     ///
-    var context: NSManagedObjectContext!
+    @objc var context: NSManagedObjectContext!
 
     /// Person to be displayed
     ///
@@ -215,7 +215,6 @@ final class PersonViewController: UITableViewController {
 // MARK: - Private Helpers: Actions
 //
 private extension PersonViewController {
-
     func roleWasPressed() {
         performSegue(withIdentifier: roleSegueIdentifier, sender: nil)
     }
@@ -223,28 +222,8 @@ private extension PersonViewController {
     func removeWasPressed() {
         let titleFormat = NSLocalizedString("Remove @%@", comment: "Remove Person Alert Title")
         let titleText = String(format: titleFormat, person.username)
-
         let name = person.firstName?.nonEmptyString() ?? person.username
-
-        var messageFirstLine: String
-        switch screenMode {
-        case .User:
-            messageFirstLine = NSLocalizedString( "If you remove " + name + ", that user will no longer be able to access this site, " +
-                                                  "but any content that was created by " + name + " will remain on the site.",
-                                                  comment: "First line of remove user warning")
-        case .Follower:
-            messageFirstLine = NSLocalizedString( "If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
-                                                  comment: "First line of remove follower warning")
-        case .Viewer:
-            messageFirstLine = NSLocalizedString( "If you remove this viewer, he or she will not be able to visit this site.",
-                                                  comment: "First line of remove viewer warning")
-        }
-
-        let messageSecondLineFormat = NSLocalizedString("Would you still like to remove this %@?", comment: "Second line of Remove user/follower/viewer confirmation. ")
-        let messageSecondLineText = String(format: messageSecondLineFormat, screenMode.name)
-
-        let message = messageFirstLine + "\n\n" + messageSecondLineText
-
+        let message = warningTextForRemovingPerson(name)
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Action")
         let removeTitle = NSLocalizedString("Remove", comment: "Remove Action")
 
@@ -269,6 +248,27 @@ private extension PersonViewController {
         }
 
         alert.presentFromRootViewController()
+    }
+
+    func warningTextForRemovingPerson(_ name: String) -> String {
+        var messageFirstLine: String
+        switch screenMode {
+        case .User:
+            let text = NSLocalizedString("If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site.",
+                                         comment: "First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string.")
+            messageFirstLine = String.localizedStringWithFormat(text, name, name)
+        case .Follower:
+            messageFirstLine = NSLocalizedString("If removed, this follower will stop receiving notifications about this site, unless they re-follow.",
+                                                 comment: "First line of remove follower warning in confirmation dialog.")
+        case .Viewer:
+            messageFirstLine = NSLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
+                                                 comment: "First line of remove viewer warning in confirmation dialog.")
+        }
+
+        let messageSecondLineText = NSLocalizedString("Would you still like to remove this person?",
+                                                      comment: "Second line of Remove user/follower/viewer warning in confirmation dialog.")
+
+        return messageFirstLine + "\n\n" + messageSecondLineText
     }
 
     func deleteUser() {

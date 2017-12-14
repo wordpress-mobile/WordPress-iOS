@@ -15,7 +15,7 @@ extension Role {
 }
 
 extension Role {
-    var color: UIColor {
+    @objc var color: UIColor {
         switch slug {
         case .some("super-admin"):
             return WPStyleGuide.People.superAdminColor

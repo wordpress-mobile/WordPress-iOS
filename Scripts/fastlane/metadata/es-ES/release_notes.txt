@@ -1,3 +1,2 @@
-Acceso social: Esta versión incluye compatibilidad con acceso social a través d Google
-Editor Aztec: Ahora es el editor por defecto.
-Editor Aztec: Ahora puede importar medios de otras aplicaciones.
+Nuevas mejoras de rendimiento y soluciones a fallos en el editor.
+Lector: Ahora están disponibles los comentarios en los sitios Jetpack.

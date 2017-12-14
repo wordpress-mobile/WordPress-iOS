@@ -1,3 +1,2 @@
-Inloggning via sociala nät: Denna version innehåller stöd för inloggning via Google
-Aztec-redigeraren: Nu är den standardredigeraren.
-Aztec-redigeraren: Kan nu importera media från andra appar.
+Nya prestandaförbättringar i redigeraren och felrättningar.
+Läsaren: Nu är kommentarer på Jetpack-webbplatser tillgängliga.

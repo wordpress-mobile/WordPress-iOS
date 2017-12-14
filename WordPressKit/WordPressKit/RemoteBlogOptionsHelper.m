@@ -27,6 +27,7 @@
                                           @"gmt_offset",
                                           @"allowed_file_types",
                                           @"frame_nonce",
+                                          @"jetpack_version",
                                           @"blog_public"
                                           ];
 

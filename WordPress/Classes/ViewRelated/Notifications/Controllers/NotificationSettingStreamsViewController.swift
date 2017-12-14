@@ -185,7 +185,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
 
 
     // MARK: - Disabled Push Notifications Helpers
-    func refreshPushAuthorizationStatus() {
+    @objc func refreshPushAuthorizationStatus() {
         PushNotificationsManager.shared.loadAuthorizationStatus { authorized in
             self.pushNotificationsAuthorized = authorized
         }
