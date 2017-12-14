@@ -43,7 +43,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         return returnValue
     }()
 
-    private var isSyncing = false
+    private var isPerformingInitialSync = false
 
     @objc
     public init(blog: Blog) {
@@ -63,12 +63,13 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         applyTitle()
         setupTable()
         setupNavigationBar()
+
+        refreshTags()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshResultsController(predicate: defaultPredicate)
-        refreshTags()
         refreshNoResultsView()
     }
 
@@ -103,7 +104,6 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         resultsController.fetchRequest.sortDescriptors = sortDescriptors
         do {
             try resultsController.performFetch()
-
             tableView.reloadData()
         } catch {
             tagsFailedLoading(error: error)
@@ -111,10 +111,10 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     @objc private func refreshTags() {
-        isSyncing = true
+        isPerformingInitialSync = true
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         tagsService.syncTags(for: blog, success: { [weak self] tags in
-            self?.isSyncing = false
+            self?.isPerformingInitialSync = false
             self?.refreshControl?.endRefreshing()
             self?.refreshNoResultsView()
         }) { [weak self] error in
@@ -152,7 +152,7 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
             return
         }
 
-        if isSyncing {
+        if isPerformingInitialSync {
             setupLoadingView()
         } else {
             setupEmptyResultsView()
@@ -231,12 +231,24 @@ extension SiteTagsViewController {
 
     private func delete(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.delete(tag, for: blog)
+        refreshControl?.beginRefreshing()
+        tagsService.delete(tag, for: blog, success: {
+            self.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }, failure: { error in
+            self.refreshControl?.endRefreshing()
+        })
     }
 
     private func save(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        tagsService.save(tag, for: blog)
+        refreshControl?.beginRefreshing()
+        tagsService.save(tag, for: blog, success: { [weak self] tag in
+            self?.refreshControl?.endRefreshing()
+            self?.tableView.reloadData()
+        }, failure: { error in
+                self.refreshControl?.endRefreshing()
+        })
     }
 }
 
