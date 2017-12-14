@@ -20,7 +20,7 @@ enum FeatureFlag: Int {
         case .iCloudFilesSupport:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .pluginManagement:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .googleLogin:
             return true
         case .socialSignup:
