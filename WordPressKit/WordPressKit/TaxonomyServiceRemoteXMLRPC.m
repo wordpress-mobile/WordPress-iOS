@@ -114,7 +114,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
     [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
     [extraParameters setObject:tag.tagDescription ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
-    
+
     [self editTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
                         termId:tag.tagID
                     parameters:extraParameters success:^(BOOL response) {
@@ -319,6 +319,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     tag.tagID = [xmlrpcDictionary numberForKey:TaxonomyXMLRPCIDParameter];
     tag.name = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCNameParameter];
     tag.slug = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCSlugParameter];
+    tag.tagDescription = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCDescriptionParameter];
     return tag;
 }
 
