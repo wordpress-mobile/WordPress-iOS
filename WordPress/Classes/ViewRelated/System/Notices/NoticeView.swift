@@ -4,7 +4,8 @@ class NoticeView: UIView {
     private let backgroundView =  UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
     private let actionBackgroundView = UIView()
 
-    private let descriptionLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let messageLabel = UILabel()
     private let actionLabel = UILabel()
 
     var dismissHandler: (() -> Void)?
@@ -52,11 +53,19 @@ class NoticeView: UIView {
     }
 
     private func configureLabels() {
+        let labelStackView = UIStackView()
+        labelStackView.alignment = .leading
+        labelStackView.axis = .vertical
+        labelStackView.spacing = Appearance.labelLineSpacing
+        labelStackView.isBaselineRelativeArrangement = true
+        labelStackView.addArrangedSubview(titleLabel)
+        labelStackView.addArrangedSubview(messageLabel)
+
         actionBackgroundView.addSubview(actionLabel)
-        backgroundView.contentView.addSubview(descriptionLabel)
+        backgroundView.contentView.addSubview(labelStackView)
 
         actionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        labelStackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             actionLabel.leadingAnchor.constraint(equalTo: actionBackgroundView.layoutMarginsGuide.leadingAnchor),
@@ -66,21 +75,24 @@ class NoticeView: UIView {
             ])
 
         NSLayoutConstraint.activate([
-            descriptionLabel.leadingAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.leadingAnchor),
-            descriptionLabel.trailingAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.trailingAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.topAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.bottomAnchor)
+            labelStackView.leadingAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.leadingAnchor),
+            labelStackView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: actionBackgroundView.leadingAnchor),
+            labelStackView.topAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.topAnchor),
+            labelStackView.bottomAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.bottomAnchor)
             ])
 
         actionLabel.font = Appearance.actionLabelFont
-        descriptionLabel.font = Appearance.actionButtonFont
+        titleLabel.font = Appearance.titleLabelFont
+        messageLabel.font = Appearance.messageLabelFont
 
         actionLabel.textColor = WPStyleGuide.mediumBlue()
-        descriptionLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = WPStyleGuide.darkGrey()
+        messageLabel.textColor = WPStyleGuide.darkGrey()
     }
 
     private func configureForNotice(_ notice: Notice) {
-        descriptionLabel.text = notice.title
+        titleLabel.text = notice.title
+        messageLabel.text = notice.message
 
         if let actionTitle = notice.actionTitle {
             actionLabel.text = actionTitle
@@ -105,6 +117,8 @@ class NoticeView: UIView {
         static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         static let actionBackgroundColor = UIColor.white.withAlphaComponent(0.5)
         static let actionLabelFont = UIFont.systemFont(ofSize: 14.0)
-        static let actionButtonFont = UIFont.systemFont(ofSize: 14.0)
+        static let titleLabelFont = UIFont.boldSystemFont(ofSize: 14.0)
+        static let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
+        static let labelLineSpacing: CGFloat = 18.0
     }
 }
