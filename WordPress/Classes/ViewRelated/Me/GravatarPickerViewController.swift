@@ -8,7 +8,7 @@ import Photos
 class GravatarPickerViewController: UIViewController, WPMediaPickerViewControllerDelegate {
     // MARK: - Public Properties
 
-    var onCompletion: ((UIImage?) -> Void)?
+    @objc var onCompletion: ((UIImage?) -> Void)?
 
     // MARK: - Private Properties
 
@@ -46,9 +46,15 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
             return
         }
 
-        asset.exportMaximumSizeImage { (image, info) in
-            guard let rawGravatar = image else {
-                self.onCompletion?(nil)
+        let exporter = MediaAssetExporter(asset: asset)
+        exporter.imageOptions = MediaImageExporter.Options()
+
+        exporter.export(onCompletion: { [weak self](assetExport) in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let rawGravatar = UIImage(contentsOfFile: assetExport.url.path) else {
+                strongSelf.onCompletion?(nil)
                 return
             }
 
@@ -56,15 +62,21 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
             WPAppAnalytics.track(.gravatarCropped)
 
             // Proceed Cropping
-            let imageCropViewController = self.newImageCropViewController(rawGravatar)
-            self.mediaPickerViewController.show(after: imageCropViewController)
-        }
+            let imageCropViewController = strongSelf.newImageCropViewController(rawGravatar)
+            strongSelf.mediaPickerViewController.show(after: imageCropViewController)
+
+            }, onError: { [weak self](error) in
+                self?.onCompletion?(nil)
+        })
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         onCompletion?(nil)
     }
 
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        return MediaNoResultsView()
+    }
 
     // MARK: - Private Methods
 

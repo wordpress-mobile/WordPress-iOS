@@ -31,10 +31,6 @@ class MediaVideoExporter: MediaExporter {
         var stripsGeoLocationIfNeeded = false
     }
 
-    /// Completion block with a MediaVideoExport.
-    ///
-    typealias OnVideoExport = (MediaVideoExport) -> Void
-
     public enum VideoExportError: MediaExportError {
         case videoAssetWasDetectedAsNotExportable
         case videoExportSessionDoesNotSupportVideoOutputType
@@ -52,9 +48,13 @@ class MediaVideoExporter: MediaExporter {
         }
     }
 
+    public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) {
+
+    }
+
     /// Exports a known video at a URL asynchronously.
     ///
-    func exportVideo(atURL url: URL, onCompletion: @escaping OnVideoExport, onError: @escaping OnExportError) {
+    func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
         do {
             let asset = AVURLAsset(url: url)
             guard asset.isExportable else {
@@ -74,17 +74,17 @@ class MediaVideoExporter: MediaExporter {
 
     /// Configures an AVAssetExportSession and exports the video asynchronously.
     ///
-    func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnVideoExport, onError: @escaping OnExportError) {
+    func exportVideo(with session: AVAssetExportSession, filename: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
         do {
             var outputType = options.preferredExportVideoType ?? supportedExportFileTypes.first!
             // Check if the exportFileType is one of the supported types for the exportSession.
-            if session.supportedFileTypes.contains(outputType) == false {
+            if session.supportedFileTypes.contains(AVFileType(rawValue: outputType)) == false {
                 /* 
                  If it is not supported by the session, try and find one
                  of the exporter's own supported types within the session's.
                  Ideally we return the first type, as an order of preference from supportedExportFileTypes.
                 */
-                guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains($0) }) else {
+                guard let supportedType = supportedExportFileTypes.first(where: { session.supportedFileTypes.contains(AVFileType(rawValue: $0)) }) else {
                     // No supported types available, throw an error.
                     throw VideoExportError.videoExportSessionDoesNotSupportVideoOutputType
                 }
@@ -95,7 +95,7 @@ class MediaVideoExporter: MediaExporter {
             let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: filename ?? "video",
                                                                     fileExtension: URL.fileExtensionForUTType(outputType))
             session.outputURL = mediaURL
-            session.outputFileType = outputType
+            session.outputFileType = AVFileType(rawValue: outputType)
             session.shouldOptimizeForNetworkUse = true
 
             // Configure metadata filter for sharing, if we need to remove location data.
@@ -111,8 +111,10 @@ class MediaVideoExporter: MediaExporter {
                     }
                     return
                 }
-                onCompletion(MediaVideoExport(url: mediaURL,
-                                              fileSize: mediaURL.resourceFileSize,
+                onCompletion(MediaExport(url: mediaURL,
+                                              fileSize: mediaURL.fileSize,
+                                              width: mediaURL.pixelSize.width,
+                                              height: mediaURL.pixelSize.height,
                                               duration: session.asset.duration.seconds))
             }
         } catch {
@@ -126,7 +128,7 @@ class MediaVideoExporter: MediaExporter {
     ///
     /// - imageOptions: ImageExporter options for the generated thumbnail image.
     ///
-    func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping MediaImageExporter.OnImageExport, onError: @escaping OnExportError) {
+    func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
         do {
             let asset = AVURLAsset(url: url)
             guard asset.isExportable else {
@@ -144,13 +146,12 @@ class MediaVideoExporter: MediaExporter {
                                                             return
                                                         }
                                                         let image = UIImage(cgImage: cgImage)
-                                                        let exporter = MediaImageExporter()
+                                                        let exporter = MediaImageExporter(image: image, filename: UUID().uuidString)
                                                         if let imageOptions = imageOptions {
                                                             exporter.options = imageOptions
                                                         }
                                                         exporter.mediaDirectoryType = self.mediaDirectoryType
-                                                        exporter.exportImage(image,
-                                                                             fileName: UUID().uuidString,
+                                                        exporter.export(
                                                                              onCompletion: onCompletion,
                                                                              onError: onError)
             })
