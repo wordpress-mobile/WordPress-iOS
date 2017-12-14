@@ -61,16 +61,20 @@ class NoticePresenter: NSObject {
             view.layoutIfNeeded()
         }
 
-        animatePresentation(fromState: fromState, toState: toState, completion: {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay) {
-                guard noticeView.superview != nil else {
-                    return
-                }
-
-                self.animatePresentation(fromState: {}, toState: fromState, completion: {
-                    self.dismiss()
-                })
+        let dismiss = {
+            guard noticeView.superview != nil else {
+                return
             }
+
+            self.animatePresentation(fromState: {}, toState: fromState, completion: {
+                self.dismiss()
+            })
+        }
+
+        noticeView.dismissHandler = dismiss
+
+        animatePresentation(fromState: fromState, toState: toState, completion: {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
     }
 
