@@ -226,7 +226,9 @@ private extension ShareViewController {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
                 self?.textView.text = share.text
-                if let image = share.image {
+
+                // Just using the first image for now.
+                if let image = share.images.first {
                     self?.imageLoaded(image: image)
                 }
         }
@@ -327,9 +329,10 @@ private extension ShareViewController {
             return
         }
 
-        // The success and error blocks will probably never get called here, but let's add them just in case. Shared
-        // container cleanup will most likely occur in the container (WPiOS) app after the background session completes.
-        remote.createPost(remotePost, with: remoteMedia, requestEnqueued: {
+        // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
+        // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
+        // post share here as well as WPiOS.
+        remote.createPost(remotePost, with: remoteMedia, requestEnqueued: { task in
             requestEnqueued()
         }, success: {_ in
             ShareMediaFileManager.shared.purgeUploadDirectory()
