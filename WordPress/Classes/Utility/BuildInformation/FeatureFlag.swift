@@ -4,13 +4,13 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case iCloudFilesSupport
-    case pluginManagement
     case googleLogin
     case socialSignup
     case jetpackDisconnect
     case asyncUploadsInMediaLibrary
     case activity
     case siteCreation
+    case notices
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -19,8 +19,6 @@ enum FeatureFlag: Int {
             return true
         case .iCloudFilesSupport:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .pluginManagement:
-            return BuildConfiguration.current == .localDeveloper
         case .googleLogin:
             return true
         case .socialSignup:
@@ -32,6 +30,8 @@ enum FeatureFlag: Int {
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .siteCreation:
+            return BuildConfiguration.current == .localDeveloper
+        case .notices:
             return BuildConfiguration.current == .localDeveloper
         }
     }

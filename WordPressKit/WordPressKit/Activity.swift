@@ -20,6 +20,10 @@ public class Activity {
         guard let id = dictionary["activity_id"] as? String else {
             throw Error.missingActivityId
         }
+        guard let summaryDictionary = dictionary["summary"] as? [String: AnyObject],
+              let text = summaryDictionary["text"] as? String else {
+            throw Error.missingSummaryText
+        }
         guard let publishedString = dictionary["published"] as? String else {
             throw Error.missingPublishedDate
         }
@@ -28,8 +32,8 @@ public class Activity {
             throw Error.incorrectPusblishedDateFormat
         }
         activityID = id
+        summary = text
         published = publishedDate
-        summary = dictionary["summary"] as? String ?? ""
         name = dictionary["name"] as? String ?? ""
         type = dictionary["type"] as? String ?? ""
         gridicon = dictionary["gridicon"] as? String ?? ""
@@ -73,6 +77,7 @@ public class Activity {
 private extension Activity {
     enum Error: Swift.Error {
         case missingActivityId
+        case missingSummaryText
         case missingPublishedDate
         case incorrectPusblishedDateFormat
     }
