@@ -12,7 +12,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     var onCompletion: ((UIImage, Bool) -> Void)?
     var onCancel: (() -> Void)?
     var maskShape: ImageCropOverlayMaskShape = .circle
-    var shouldShowCancelButton: Bool = false
+    var shouldShowCancelButton = false
 
     // MARK: - Public Initializers
 

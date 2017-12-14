@@ -415,19 +415,17 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self?.presentGravatarPicker()
         }
         headerView.onDroppedImage = { [weak self] image in
-            let imageCropViewController = ImageCropViewController.init(image: image!)
+            let imageCropViewController = ImageCropViewController(image: image!)
             imageCropViewController.maskShape = .square
             imageCropViewController.shouldShowCancelButton = true
 
-            imageCropViewController.onCancel = { () -> Void in
+            imageCropViewController.onCancel = { _ in
                 self?.dismiss(animated: true, completion: nil)
                 self?.gravatarUploadInProgress = false
             }
-            imageCropViewController.onCompletion = { (UIImage, Bool) -> Void in
+            imageCropViewController.onCompletion = { [weak self] image, _ in
                 self?.dismiss(animated: true, completion: nil)
-                if let updatedGravatarImage = image {
-                    self?.uploadGravatarImage(updatedGravatarImage)
-                }
+                self?.uploadGravatarImage(image)
             }
 
             let navController = UINavigationController(rootViewController: imageCropViewController)
