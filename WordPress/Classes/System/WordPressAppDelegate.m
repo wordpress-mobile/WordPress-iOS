@@ -66,6 +66,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
+@property (nonatomic, strong, readwrite) NoticePresenter                *noticePresenter;
 
 @end
 
@@ -164,6 +165,11 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)setupBackgroundRefresh:(UIApplication *)application {
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+}
+
+- (void)configureNoticePresenter
+{
+    self.noticePresenter = [NoticePresenter new];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -422,6 +428,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self.shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
+
+    [self configureNoticePresenter];
 }
 
 #pragma mark - Push Notification delegate

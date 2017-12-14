@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 /// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
@@ -268,7 +269,24 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+        if let notice = self.notice(for: mediaProgressCoordinator) {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
+    }
 
+    private func notice(for mediaProgressCoordinator: MediaProgressCoordinator) -> Notice? {
+        guard !mediaProgressCoordinator.isRunning,
+            let progress = mediaProgressCoordinator.mediaGlobalProgress else {
+            return nil
+        }
+
+        guard !mediaProgressCoordinator.hasFailedMedia else {
+            return nil
+        }
+
+        let completedUnits = progress.completedUnitCount
+        let title = String.localizedStringWithFormat("Media uploaded (%ld files)", completedUnits)
+        return Notice(title: title)
     }
 }
 
