@@ -36,7 +36,6 @@ class NoticePresenter: NSObject {
 
         let noticeView = NoticeView(notice: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
-        noticeView.alpha = WPAlphaZero
 
         addNoticeViewToPresentingViewController(noticeView)
 
@@ -47,19 +46,36 @@ class NoticePresenter: NSObject {
             noticeView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
             bottomConstraint
         ])
-        view.layoutIfNeeded()
 
-        UIView.animate(withDuration: Animations.appearanceDuration,
-                       delay: 0,
-                       usingSpringWithDamping: Animations.appearanceSpringDamping,
-                       initialSpringVelocity: Animations.appearanceSpringVelocity,
-                       options: [],
-                       animations: {
+        let fromState = {
+            noticeView.alpha = WPAlphaZero
+            bottomConstraint.constant = 0
+
+            view.layoutIfNeeded()
+        }
+
+        let toState = {
             noticeView.alpha = WPAlphaFull
             bottomConstraint.constant = -self.presentingViewBottomMargin
 
             view.layoutIfNeeded()
-        }, completion: nil)
+        }
+
+        animatePresentation(fromState: fromState, toState: toState, completion: {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay) {
+                guard noticeView.superview != nil else {
+                    return
+                }
+
+                self.animatePresentation(fromState: {}, toState: fromState, completion: {
+                    self.dismiss()
+                })
+            }
+        })
+    }
+
+    private func dismiss() {
+        ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 
     private func addNoticeViewToPresentingViewController(_ noticeView: NoticeView) {
@@ -80,13 +96,26 @@ class NoticePresenter: NSObject {
         }
     }
 
-    private func dismiss() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+    typealias AnimationBlock = () -> Void
+
+    private func animatePresentation(fromState: AnimationBlock, toState: @escaping AnimationBlock, completion: @escaping AnimationBlock) {
+        fromState()
+
+        UIView.animate(withDuration: Animations.appearanceDuration,
+                       delay: 0,
+                       usingSpringWithDamping: Animations.appearanceSpringDamping,
+                       initialSpringVelocity: Animations.appearanceSpringVelocity,
+                       options: [],
+                       animations: toState,
+                       completion: { _ in
+                        completion()
+        })
     }
 
     private enum Animations {
         static let appearanceDuration: TimeInterval = 1.0
         static let appearanceSpringDamping: CGFloat = 0.7
         static let appearanceSpringVelocity: CGFloat = 0.0
+        static let dismissDelay: TimeInterval = 3.0
     }
 }
