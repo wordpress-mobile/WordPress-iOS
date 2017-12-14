@@ -7,6 +7,8 @@ class NoticeView: UIView {
     private let descriptionLabel = UILabel()
     private let actionLabel = UILabel()
 
+    var dismissHandler: (() -> Void)?
+
     init(notice: Notice) {
         super.init(frame: .zero)
 
@@ -16,6 +18,7 @@ class NoticeView: UIView {
         configureBackgroundViews()
         configureLabels()
         configureForNotice(notice)
+        configureDismissRecognizer()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -84,6 +87,17 @@ class NoticeView: UIView {
         } else {
             actionBackgroundView.isHidden = true
         }
+    }
+
+    private func configureDismissRecognizer() {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        addGestureRecognizer(recognizer)
+    }
+
+    // MARK: - Action handlers
+
+    @objc private func viewTapped() {
+        dismissHandler?()
     }
 
     enum Appearance {
