@@ -215,6 +215,11 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 }
 
 #pragma mark - Drop Interaction Handler
+- (void)dropInteraction:(UIDropInteraction *)interaction
+        sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.blavatarImageView depressSpringAnimation:nil];
+}
 
 - (BOOL)dropInteraction:(UIDropInteraction *)interaction
        canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
@@ -242,11 +247,18 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)dropInteraction:(UIDropInteraction *)interaction
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
+    [self.blavatarImageView normalizeSpringAnimation:nil];
     [self setUpdatingIcon:YES];
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
         UIImage *image = [images firstObject];
         [self.delegate siteIconReceivedDroppedImage:image];
     }];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidExit:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.blavatarImageView normalizeSpringAnimation:nil];
 }
 
 @end
