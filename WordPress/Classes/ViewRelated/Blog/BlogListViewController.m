@@ -35,6 +35,7 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) NoSitesView *noSitesView;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
@@ -154,6 +155,7 @@ static NSInteger HideSearchMinSites = 3;
 
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
+    [self configureNoSitesView];
     [self configureNoResultsView];
 
     [self registerForAccountChangeNotification];
@@ -245,9 +247,26 @@ static NSInteger HideSearchMinSites = 3;
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
         [self showNoResultsViewForAllSitesHidden];
     } else {
-        [self showNoResultsViewForSiteCount:count];
+        if ([Feature enabled:FeatureFlagSiteCreation]) {
+            [self showNoSitesViewForSiteCount:count];
+        }
+        else {
+            [self showNoResultsViewForSiteCount:count];
+        }
+        
         [self updateSplitViewAppearanceForSiteCount:count];
     }
+}
+
+- (void)showNoSitesViewForSiteCount:(NSUInteger)siteCount
+{
+    // If we've gone from no results to having just one site, the user has
+    // added a new site so we should auto-select it
+    if (!self.noSitesView.hidden && siteCount == 1) {
+        [self bypassBlogListViewController];
+    }
+    
+    self.noSitesView.hidden = siteCount > 0;
 }
 
 - (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
@@ -431,6 +450,16 @@ static NSInteger HideSearchMinSites = 3;
     self.searchBar.delegate = self;
 
     [WPStyleGuide configureSearchBar:self.searchBar];
+}
+
+- (void)configureNoSitesView
+{
+    self.noSitesView = [NoSitesView instanceFromNib];
+    [self.noSitesView configureViewForFrame:self.view.frame];
+    [self.view addSubview:self.noSitesView];
+    [self.noSitesView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view pinSubviewAtCenter:self.noSitesView];
+    self.noSitesView.hidden = YES;
 }
 
 - (void)configureNoResultsView
@@ -783,6 +812,7 @@ static NSInteger HideSearchMinSites = 3;
         self.firstHide = nil;
         self.hideCount = 0;
         self.noResultsView.hidden = YES;
+        self.noSitesView.hidden = YES;
     }
     else {
         self.tableView.tableHeaderView = nil;
