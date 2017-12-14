@@ -18,14 +18,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="G4e-dB-lxv">
-                    <rect key="frame" x="55" y="20" width="350" height="219"/>
+                    <rect key="frame" x="55" y="-30" width="350" height="219.5"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="G4e-dB-lxv" secondAttribute="height" multiplier="8:5" id="4VW-jo-3yu"/>
                         <constraint firstAttribute="width" constant="350" id="K6h-zU-akj"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kNA-hM-Nl4">
-                    <rect key="frame" x="20" y="209" width="420" height="94"/>
+                    <rect key="frame" x="20" y="159.5" width="420" height="143.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -49,7 +49,7 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="TN9-gF-7ik" secondAttribute="bottom" id="3o0-sK-2a5"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kNA-hM-Nl4" secondAttribute="trailing" constant="20" id="6HF-Vq-Baa"/>
                 <constraint firstItem="G4e-dB-lxv" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Zpp-hn-0cs"/>
-                <constraint firstItem="G4e-dB-lxv" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="b6V-mf-GGH"/>
+                <constraint firstItem="G4e-dB-lxv" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="-50" id="b6V-mf-GGH"/>
                 <constraint firstItem="TN9-gF-7ik" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="bxr-C3-MkT"/>
                 <constraint firstItem="kNA-hM-Nl4" firstAttribute="top" secondItem="G4e-dB-lxv" secondAttribute="bottom" constant="-30" id="dij-y6-K9w"/>
                 <constraint firstItem="TN9-gF-7ik" firstAttribute="top" secondItem="kNA-hM-Nl4" secondAttribute="bottom" constant="30" id="m66-WZ-YNY"/>
