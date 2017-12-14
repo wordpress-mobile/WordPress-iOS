@@ -455,9 +455,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)configureNoSitesView
 {
     self.noSitesView = [NoSitesView instanceFromNib];
-    [self.noSitesView configureViewForFrame:self.view.frame];
     [self.view addSubview:self.noSitesView];
-    [self.noSitesView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view pinSubviewAtCenter:self.noSitesView];
     self.noSitesView.hidden = YES;
 }
