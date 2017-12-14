@@ -10,32 +10,47 @@ import UIKit
 
     // MARK: - Init
 
-     @objc class func instanceFromNib() -> NoSitesView {
+    @objc class func instanceFromNib() -> NoSitesView {
         return UINib(nibName: "NoSitesView", bundle: nil).instantiate(withOwner: nil, options: nil).first as! NoSitesView
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+
+        super.init(coder: aDecoder)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(NoSitesView.orientationChanged),
+                                               name: NSNotification.Name.UIDeviceOrientationDidChange,
+                                               object: nil)
+    }
+
+    // MARK: - De-init
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Configuration
 
-    @objc func configureViewForFrame(_ viewFrame: CGRect) {
+    func configureViewForFrame(_ viewFrame: CGRect) {
 
         configureElements()
 
+        translatesAutoresizingMaskIntoConstraints = false
+
         let frameWidth = viewFrame.size.width
         let frameHeight = viewFrame.size.height
+        noSitesTitle.preferredMaxLayoutWidth = frameWidth - 40
 
         var newFrame = viewFrame
 
         if frameHeight > frameWidth {
-            newFrame.size.width = frameWidth
             newFrame.size.height = frameWidth
         }
         else {
-            newFrame.size.width = frameHeight
-            newFrame.size.height = frameHeight
+            newFrame.size.height = frameHeight/2
         }
 
         frame = newFrame
-        noSitesTitle.preferredMaxLayoutWidth = frame.size.width - 40
     }
 
     func configureElements() {
@@ -44,6 +59,14 @@ import UIKit
         addSiteButton?.setTitle(buttonTitle, for: UIControlState())
         addSiteButton?.setTitle(buttonTitle, for: .highlighted)
         addSiteButton?.accessibilityIdentifier = "Add New Site Button"
+    }
+
+    // MARK: - Orientation Handling
+
+    @objc func orientationChanged() {
+        if let superview = superview {
+            configureViewForFrame(superview.frame)
+        }
     }
 
 }
