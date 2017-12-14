@@ -7,7 +7,7 @@ import WordPressShared
 /// Displays an image preview and metadata for a single Media asset.
 ///
 class MediaItemViewController: UITableViewController {
-    let media: Media
+    @objc let media: Media
 
     fileprivate var viewModel: ImmuTable!
     fileprivate var mediaMetadata: MediaMetadata {
@@ -16,7 +16,7 @@ class MediaItemViewController: UITableViewController {
         }
     }
 
-    init(media: Media) {
+    @objc init(media: Media) {
         self.media = media
 
         self.mediaMetadata = MediaMetadata(media: media)

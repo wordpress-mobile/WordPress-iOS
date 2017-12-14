@@ -6,11 +6,11 @@ import UIKit
 /// visual issues working with larger views.
 ///
 class ConfettiView: UIView {
-    let colors: [UIColor]
+    @objc let colors: [UIColor]
 
     /// - parameter: colors An array of colors to use for the confetti particles
     ///
-    init(colors: [UIColor]) {
+    @objc init(colors: [UIColor]) {
         self.colors = colors
 
         super.init(frame: .zero)
@@ -37,7 +37,7 @@ class ConfettiView: UIView {
 
     /// Stop the confetti effect
     ///
-    func stop() {
+    @objc func stop() {
         emitterLayer?.birthRate = 0
     }
 

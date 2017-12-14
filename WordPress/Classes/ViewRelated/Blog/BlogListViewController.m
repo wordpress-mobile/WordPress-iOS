@@ -1,6 +1,5 @@
 #import "BlogListViewController.h"
 #import "WordPressAppDelegate.h"
-#import "UIImageView+Gravatar.h"
 #import "BlogDetailsViewController.h"
 #import "WPBlogTableViewCell.h"
 #import "ContextManager.h"
@@ -847,8 +846,19 @@ static NSInteger HideSearchMinSites = 3;
 - (void)showAddNewWordPressController
 {
     [self setEditing:NO animated:NO];
-    CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
-    [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
+    
+    if ([Feature enabled:FeatureFlagSiteCreation]) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
+        SiteTypeTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteType"];
+        SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
+                                                           initWithRootViewController:controller];
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+    
+    else {
+        CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
+        [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
+    }
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite

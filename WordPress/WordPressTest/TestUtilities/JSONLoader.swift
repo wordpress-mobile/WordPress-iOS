@@ -13,7 +13,7 @@ import Foundation
     */
     open func loadFile(_ name: String, type: String) -> JSONDictionary? {
 
-        let path = Bundle(for: type(of: self)).path(forResource: name, ofType: type)
+        let path = Bundle(for: Swift.type(of: self)).path(forResource: name, ofType: type)
 
         if let unwrappedPath = path {
             return loadFile(unwrappedPath)

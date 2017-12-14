@@ -27,7 +27,7 @@ class WebViewAuthenticator: NSObject {
         self.credentials = credentials
     }
 
-    convenience init?(account: WPAccount) {
+    @objc convenience init?(account: WPAccount) {
         guard let username = account.username,
             let token = account.authToken else {
                 return nil
@@ -35,7 +35,7 @@ class WebViewAuthenticator: NSObject {
         self.init(credentials: .dotCom(username: username, authToken: token))
     }
 
-    convenience init?(blog: Blog) {
+    @objc convenience init?(blog: Blog) {
         if let account = blog.account {
             self.init(account: account)
         } else if let username = blog.usernameForSite,
@@ -63,7 +63,7 @@ class WebViewAuthenticator: NSObject {
     ///     - completion: this will be called with either the request for
     ///     authentication, or a request for the original URL.
     ///
-    func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
+    @objc func request(url: URL, cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
         cookieJar.hasCookie(url: loginURL, username: username) { [weak self] (hasCookie) in
             guard let authenticator = self else {
                 return
@@ -86,7 +86,7 @@ class WebViewAuthenticator: NSObject {
     /// - Returns: a request to be loaded instead. If `nil`, the original
     /// request should continue loading.
     ///
-    func interceptRedirect(request: URLRequest) -> URLRequest? {
+    @objc func interceptRedirect(request: URLRequest) -> URLRequest? {
         guard let url = request.url,
             let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
             components.scheme == "https",
@@ -136,6 +136,7 @@ private extension WebViewAuthenticator {
         if let password = password {
             parameters.append(URLQueryItem(name: "pwd", value: password))
         }
+        parameters.append(URLQueryItem(name: "rememberme", value: "true"))
         parameters.append(URLQueryItem(name: "redirect_to", value: redirectedUrl))
         var components = URLComponents()
         components.queryItems = parameters
@@ -144,10 +145,12 @@ private extension WebViewAuthenticator {
     }
 
     func redirectUrl(url: String) -> String? {
-        guard case .dotCom = credentials else {
+        guard case .dotCom = credentials,
+            let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
             return url
         }
-        return self.url(string: "https://wordpress.com/", parameters: [WebViewAuthenticator.redirectParameter: url])?.absoluteString
+
+        return self.url(string: "https://wordpress.com/", parameters: [WebViewAuthenticator.redirectParameter: escapedUrl])?.absoluteString
     }
 
     func url(string: String, parameters: [String: String]) -> URL? {
