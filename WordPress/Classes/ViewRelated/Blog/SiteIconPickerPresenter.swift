@@ -18,6 +18,9 @@ class SiteIconPickerPresenter: NSObject {
 
     /// MARK: - Private Properties
 
+    fileprivate let noResultsView = MediaNoResultsView()
+    fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
+
     /// Media Library Data Source
     ///
     fileprivate lazy var mediaLibraryDataSource: WPAndDeviceMediaLibraryDataSource = {
@@ -31,6 +34,7 @@ class SiteIconPickerPresenter: NSObject {
         options.showMostRecentFirst = true
         options.filter = [.image]
         options.allowMultipleSelection = false
+        options.showSearchBar = true
 
         let pickerViewController = WPNavigationMediaPickerViewController(options: options)
 
@@ -53,10 +57,15 @@ class SiteIconPickerPresenter: NSObject {
         super.init()
     }
 
+    deinit {
+        unregisterChangeObserver()
+    }
+
     /// Presents a new WPMediaPickerViewController instance.
     ///
     @objc func presentPickerFrom(_ viewController: UIViewController) {
         viewController.present(mediaPickerViewController, animated: true)
+        registerChangeObserver(forPicker: mediaPickerViewController.mediaPicker)
     }
 
     /// MARK: - Private Methods
@@ -90,7 +99,7 @@ class SiteIconPickerPresenter: NSObject {
                         return
                     }
                     mediaService.createMedia(with: image,
-                                             forBlogObjectID: blogId,
+                                             objectID: blogId,
                                              thumbnailCallback: nil,
                                              completion: { (media, error) in
                         guard let media = media, error == nil else {
@@ -111,20 +120,75 @@ class SiteIconPickerPresenter: NSObject {
             self.mediaPickerViewController.show(after: imageCropViewController)
         }
     }
+
+    fileprivate func registerChangeObserver(forPicker picker: WPMediaPickerViewController) {
+        assert(mediaLibraryChangeObserverKey == nil)
+        mediaLibraryChangeObserverKey = mediaLibraryDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+
+            self?.updateSearchBar(mediaPicker: picker)
+
+            let isNotSearching = self?.mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+            let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
+
+            if isNotSearching && hasNoAssets {
+                self?.noResultsView.updateForNoAssets(userCanUploadMedia: false)
+            }
+        })
+    }
+
+    fileprivate func unregisterChangeObserver() {
+        if let mediaLibraryChangeObserverKey = mediaLibraryChangeObserverKey {
+            mediaLibraryDataSource.unregisterChangeObserver(mediaLibraryChangeObserverKey)
+        }
+        mediaLibraryChangeObserverKey = nil
+    }
+
+    fileprivate func updateSearchBar(mediaPicker: WPMediaPickerViewController) {
+        let isSearching = mediaLibraryDataSource.searchQuery?.count ?? 0 != 0
+        let hasAssets = mediaLibraryDataSource.numberOfAssets() > 0
+
+        if mediaLibraryDataSource.dataSourceType == .mediaLibrary && (isSearching || hasAssets) {
+            mediaPicker.showSearchBar()
+            if let searchBar = mediaPicker.searchBar {
+                WPStyleGuide.configureSearchBar(searchBar)
+            }
+        } else {
+            mediaPicker.hideSearchBar()
+        }
+    }
 }
 
 extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
+
+    func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
+        updateSearchBar(mediaPicker: picker)
+        noResultsView.updateForFetching()
+    }
+
+    func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
+        noResultsView.updateForNoAssets(userCanUploadMedia: false)
+        updateSearchBar(mediaPicker: picker)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
+        if let searchQuery = mediaLibraryDataSource.searchQuery {
+            noResultsView.updateForNoSearchResult(with: searchQuery)
+        }
+    }
+
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShow asset: WPMediaAsset) -> Bool {
         return asset.isKind(of: PHAsset.self)
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
+        mediaLibraryDataSource.searchCancelled()
         onCompletion?(nil, nil)
     }
 
     /// Retrieves the chosen image and triggers the ImageCropViewController display.
     ///
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
+        mediaLibraryDataSource.searchCancelled()
         if assets.isEmpty {
             return
         }
@@ -134,13 +198,19 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         case let phAsset as PHAsset:
             showLoadingMessage()
             originalMedia = nil
-            phAsset.exportMaximumSizeImage { [weak self] (image, info) in
-                guard let image = image else {
+            let exporter = MediaAssetExporter(asset: phAsset)
+            exporter.imageOptions = MediaImageExporter.Options()
+
+            exporter.export(onCompletion: { [weak self](assetExport) in
+                guard let image = UIImage(contentsOfFile: assetExport.url.path) else {
                     self?.showErrorLoadingImageMessage()
                     return
                 }
                 self?.showImageCropViewController(image)
-            }
+
+            }, onError: { [weak self](error) in
+                self?.showErrorLoadingImageMessage()
+            })
         case let media as Media:
             showLoadingMessage()
             originalMedia = media
@@ -160,6 +230,6 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
     }
 
     func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        return nil
+        return noResultsView
     }
 }
