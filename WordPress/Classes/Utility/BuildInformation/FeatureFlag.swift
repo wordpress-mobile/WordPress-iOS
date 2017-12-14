@@ -4,7 +4,6 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case iCloudFilesSupport
-    case pluginManagement
     case googleLogin
     case socialSignup
     case jetpackDisconnect
@@ -19,8 +18,6 @@ enum FeatureFlag: Int {
             return true
         case .iCloudFilesSupport:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .pluginManagement:
-            return true
         case .googleLogin:
             return true
         case .socialSignup:
