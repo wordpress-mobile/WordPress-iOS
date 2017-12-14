@@ -1,12 +1,16 @@
 import Foundation
+import WordPressFlux
 
-/// MediaUploadCoordinator is responsible for creating and uploading new media
+/// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
 /// via the `shared` singleton.
 ///
-class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
+class MediaCoordinator: NSObject {
 
-    static let shared = MediaUploadCoordinator()
+    @objc static let shared = MediaCoordinator()
+
+    private(set) var backgroundContext = ContextManager.sharedInstance().newDerivedContext()
+    private let mainContext = ContextManager.sharedInstance().mainContext
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
@@ -17,7 +21,7 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
     }()
 
     // Init marked private to ensure use of shared singleton.
-    private init() {}
+    private override init() {}
 
     // MARK: - Adding Media
 
@@ -32,16 +36,14 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
             return
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = MediaService(managedObjectContext: context)
+        let service = MediaService(managedObjectContext: backgroundContext)
         service.createMedia(with: asset,
                             objectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
-                                guard let media = media else {
+                                guard let media = media, !media.isDeleted else {
                                     return
                                 }
-
                                 self?.uploadMedia(media)
         })
     }
@@ -55,13 +57,38 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
         uploadMedia(media)
     }
 
+    /// Cancels any ongoing upload of the Media and deletes it.
+    ///
+    /// - Parameter media: the object to cancel and delete
+    ///
+    func cancelUploadAndDeleteMedia(_ media: Media) {
+        cancelUpload(of: media)
+        delete(media: media)
+    }
+
+    /// Cancels any ongoing upload for the media object
+    ///
+    /// - Parameter media: the media object to cancel the upload
+    ///
+    func cancelUpload(of media: Media) {
+        mediaProgressCoordinator.cancelAndStopTrack(of: media.uploadID)
+    }
+
+    /// Deletes a media object from the storage
+    ///
+    /// - Parameter media: the media object to delete
+    ///
+    func delete(media: Media) {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.delete(media, success: nil, failure: nil)
+    }
+
     private func uploadMedia(_ media: Media) {
         mediaProgressCoordinator.track(numberOfItems: 1)
 
         begin(media)
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = MediaService(managedObjectContext: context)
+        let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
         service.uploadMedia(media,
@@ -197,13 +224,34 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
         queue.async {
             self.observersForMedia(media).forEach({ observer in
                 DispatchQueue.main.sync {
-                    observer.onUpdate(media, state)
+                    if let media = self.mainContext.object(with: media.objectID) as? Media {
+                        observer.onUpdate(media, state)
+                    }
                 }
             })
         }
     }
 
-    // MARK: - MediaProgressCoordinatorDelegate
+    /// Sync the specified blog media library.
+    ///
+    /// - parameter blog: The blog from where to sync the media library from.
+    ///
+    @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.syncMediaLibrary(for: blog, success: success, failure: failure)
+    }
+
+    /// This method checks the status of all media objects and updates them to the correct status if needed.
+    /// The main cause of wrong status is the app being killed while uploads of media are happening.
+    ///
+    @objc func refreshMediaStatus() {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.refreshMediaStatus()
+    }
+}
+
+// MARK: - MediaProgressCoordinatorDelegate
+extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
     func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Double) {
         for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
@@ -221,7 +269,24 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+        if let notice = self.notice(for: mediaProgressCoordinator) {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
+    }
 
+    private func notice(for mediaProgressCoordinator: MediaProgressCoordinator) -> Notice? {
+        guard !mediaProgressCoordinator.isRunning,
+            let progress = mediaProgressCoordinator.mediaGlobalProgress else {
+            return nil
+        }
+
+        guard !mediaProgressCoordinator.hasFailedMedia else {
+            return nil
+        }
+
+        let completedUnits = progress.completedUnitCount
+        let title = String.localizedStringWithFormat("Media uploaded (%ld files)", completedUnits)
+        return Notice(title: title)
     }
 }
 

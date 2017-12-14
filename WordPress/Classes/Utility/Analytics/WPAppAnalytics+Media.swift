@@ -52,7 +52,7 @@ public extension WPAppAnalytics {
             properties[MediaProperties.durationSeconds] = media.length
         }
         if let filesize = media.filesize {
-            properties[MediaProperties.bytes] = filesize.intValue * 1024
+            properties[MediaProperties.bytes] = filesize.int64Value * 1024
         }
         return properties
     }
