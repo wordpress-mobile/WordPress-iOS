@@ -30,29 +30,35 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F56-bI-e1g" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="185.5" y="333" width="89" height="44"/>
+                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TN9-gF-7ik" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="180.5" y="333" width="99" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="eCJ-N5-PoQ"/>
+                        <constraint firstAttribute="height" constant="44" id="1Ip-Te-zAW"/>
                     </constraints>
-                    <state key="normal" title="Add new site"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                    <state key="normal" title="Add new site">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="TN9-gF-7ik" secondAttribute="bottom" id="3o0-sK-2a5"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kNA-hM-Nl4" secondAttribute="trailing" constant="20" id="6HF-Vq-Baa"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="F56-bI-e1g" secondAttribute="bottom" id="JDo-82-Qw4"/>
-                <constraint firstItem="F56-bI-e1g" firstAttribute="top" secondItem="kNA-hM-Nl4" secondAttribute="bottom" constant="30" id="UUx-oY-9So"/>
                 <constraint firstItem="G4e-dB-lxv" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Zpp-hn-0cs"/>
                 <constraint firstItem="G4e-dB-lxv" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="b6V-mf-GGH"/>
+                <constraint firstItem="TN9-gF-7ik" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="bxr-C3-MkT"/>
                 <constraint firstItem="kNA-hM-Nl4" firstAttribute="top" secondItem="G4e-dB-lxv" secondAttribute="bottom" constant="-30" id="dij-y6-K9w"/>
-                <constraint firstItem="F56-bI-e1g" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="o6U-lM-8xx"/>
+                <constraint firstItem="TN9-gF-7ik" firstAttribute="top" secondItem="kNA-hM-Nl4" secondAttribute="bottom" constant="30" id="m66-WZ-YNY"/>
                 <constraint firstItem="kNA-hM-Nl4" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="yXz-vG-evI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
-                <outlet property="addSiteButton" destination="F56-bI-e1g" id="iZH-P0-zgS"/>
+                <outlet property="addSiteButton" destination="TN9-gF-7ik" id="gbO-0C-3si"/>
                 <outlet property="noSitesImage" destination="G4e-dB-lxv" id="gj5-vP-Xqi"/>
                 <outlet property="noSitesTitle" destination="kNA-hM-Nl4" id="DfZ-3B-KnU"/>
             </connections>
