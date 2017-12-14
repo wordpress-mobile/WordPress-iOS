@@ -415,7 +415,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self?.presentGravatarPicker()
         }
         headerView.onDroppedImage = { [weak self] image in
-            let imageCropViewController = ImageCropViewController(image: image!)
+            let imageCropViewController = ImageCropViewController(image: image)
             imageCropViewController.maskShape = .square
             imageCropViewController.shouldShowCancelButton = true
 
