@@ -265,7 +265,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
         [mutableParametersDict addEntriesFromDictionary:parameters];
     }
 
-    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefaults:termId andExtra:mutableParametersDict];
+    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefaults:@[termId] andExtra:mutableParametersDict];
     
     [self.api callMethod:@"wp.editTerm"
               parameters:xmlrpcParameters
