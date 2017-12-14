@@ -69,7 +69,7 @@ public extension PluginState {
     }
 
     var deactivateAllowed: Bool {
-        return !isJetpack
+        return !isJetpack && !automanaged
     }
 
     var isJetpack: Bool {
