@@ -1455,7 +1455,7 @@ extension AztecPostViewController: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         textView.textAlignment = .natural
 
-        let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })!
+        let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
 
         switch textView {
         case titleTextField:
@@ -1468,7 +1468,7 @@ extension AztecPostViewController: UITextViewDelegate {
             break
         }
 
-        htmlButton.isEnabled = true
+        htmlButton?.isEnabled = true
 
         if mediaPickerInputViewController == nil {
             textView.inputAccessoryView = formatBar
@@ -2691,7 +2691,7 @@ extension AztecPostViewController {
                                         self?.handleNewMedia(media, error: error, attachment: attachment, statType: statType)
             })
         } catch {
-            print(MediaURLExporter().exporterErrorWith(error: error))
+            print(MediaURLExporter(url: url).exporterErrorWith(error: error))
             return
         }
     }
