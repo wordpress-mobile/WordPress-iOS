@@ -234,13 +234,8 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                        success:(void (^)(BOOL response))success
                        failure:(nullable void (^)(NSError *error))failure
 {
-    NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
-    NSArray *xmlrpcParameters = nil;
-    if (parameters.count) {
-        [mutableParametersDict addEntriesFromDictionary:parameters];
-    }
-    
-    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefault:termId andExtra:mutableParametersDict];
+    NSArray *xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefaults:@[typeIdentifier, termId]
+                                                              andExtra:nil];
     
     [self.api callMethod:@"wp.deleteTerm"
               parameters:xmlrpcParameters
@@ -270,7 +265,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
         [mutableParametersDict addEntriesFromDictionary:parameters];
     }
 
-    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefault:termId andExtra:mutableParametersDict];
+    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefaults:termId andExtra:mutableParametersDict];
     
     [self.api callMethod:@"wp.editTerm"
               parameters:xmlrpcParameters
