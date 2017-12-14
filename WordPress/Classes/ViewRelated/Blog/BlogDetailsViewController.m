@@ -495,7 +495,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      }]];
     }
 
-    if ([Feature enabled:FeatureFlagPluginManagement] && [self.blog supports:BlogFeaturePluginManagement]) {
+    if ([self.blog supports:BlogFeaturePluginManagement]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plugins", @"Noun. Title. Links to the plugin management feature.")
                                                         image:[Gridicon iconOfType:GridiconTypePlugins]
                                                      callback:^{
