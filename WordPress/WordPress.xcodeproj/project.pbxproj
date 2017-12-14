@@ -479,6 +479,8 @@
 		985554311FBF78C9002D6D12 /* SiteTypeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */; };
 		985554331FBF86F4002D6D12 /* SiteTypeTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985554321FBF86F4002D6D12 /* SiteTypeTableViewCells.swift */; };
 		985554351FBF88A3002D6D12 /* InstructionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 985554341FBF88A3002D6D12 /* InstructionTableViewCell.xib */; };
+		986DDCC01FE1DBFE007DBED4 /* NoSitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 986DDCBF1FE1DBFE007DBED4 /* NoSitesView.swift */; };
+		986DDCC21FE1DC1A007DBED4 /* NoSitesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 986DDCC11FE1DC1A007DBED4 /* NoSitesView.xib */; };
 		98B4A6561FCCCEEE0085EA23 /* ThemeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B4A6551FCCCEEE0085EA23 /* ThemeSelectionViewController.swift */; };
 		98C58E3B1FE03FE9005D738D /* ThemeSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C58E3A1FE03FE9005D738D /* ThemeSelectionHeaderView.swift */; };
 		98ED49921FBFA5C200DF9180 /* SiteTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */; };
@@ -1777,6 +1779,8 @@
 		985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTypeTableViewController.swift; sourceTree = "<group>"; };
 		985554321FBF86F4002D6D12 /* SiteTypeTableViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTypeTableViewCells.swift; sourceTree = "<group>"; };
 		985554341FBF88A3002D6D12 /* InstructionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstructionTableViewCell.xib; sourceTree = "<group>"; };
+		986DDCBF1FE1DBFE007DBED4 /* NoSitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSitesView.swift; sourceTree = "<group>"; };
+		986DDCC11FE1DC1A007DBED4 /* NoSitesView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoSitesView.xib; sourceTree = "<group>"; };
 		98B4A6551FCCCEEE0085EA23 /* ThemeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSelectionViewController.swift; sourceTree = "<group>"; };
 		98C58E3A1FE03FE9005D738D /* ThemeSelectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeSelectionHeaderView.swift; sourceTree = "<group>"; };
 		98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteTypeTableViewCell.xib; sourceTree = "<group>"; };
@@ -3921,6 +3925,15 @@
 			name = "Create Site";
 			sourceTree = "<group>";
 		};
+		986DDCBE1FE1DBD6007DBED4 /* No Sites */ = {
+			isa = PBXGroup;
+			children = (
+				986DDCBF1FE1DBFE007DBED4 /* NoSitesView.swift */,
+				986DDCC11FE1DC1A007DBED4 /* NoSitesView.xib */,
+			);
+			name = "No Sites";
+			sourceTree = "<group>";
+		};
 		98DED29B1FC38DBE00015AE4 /* Select Site Type */ = {
 			isa = PBXGroup;
 			children = (
@@ -5200,6 +5213,7 @@
 		E6417B951CA07AFE0084050A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				986DDCBE1FE1DBD6007DBED4 /* No Sites */,
 				98DED29B1FC38DBE00015AE4 /* Select Site Type */,
 				982A65261FCCE2F0008236BA /* Select Theme */,
 				436269631ECD0726008692C7 /* LoginButton.swift */,
@@ -5722,6 +5736,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				986DDCC21FE1DC1A007DBED4 /* NoSitesView.xib in Resources */,
 				E6ED090B1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib in Resources */,
 				93F2E53A1E9E596A0050D489 /* HsLocalization.bundle in Resources */,
 				B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */,
@@ -6346,6 +6361,7 @@
 				B538F37F1EF44017001003D5 /* VideoAttachment+WordPress.swift in Sources */,
 				822D60B91F4CCC7A0016C46D /* BlogJetpackSettingsService.swift in Sources */,
 				08216FD51CDBF96000304BA7 /* MenuItemTypeViewController.m in Sources */,
+				986DDCC01FE1DBFE007DBED4 /* NoSitesView.swift in Sources */,
 				B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */,
 				82FC61271FA8ADAD00A1757E /* WPStyleGuide+Activity.swift in Sources */,
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
