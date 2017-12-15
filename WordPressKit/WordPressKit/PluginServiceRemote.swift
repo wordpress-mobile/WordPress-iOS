@@ -162,6 +162,7 @@ fileprivate extension PluginServiceRemote {
                            version: version,
                            updateState: updateState,
                            autoupdate: autoupdate,
+                           automanaged: false,
                            url: url)
 
     }
