@@ -162,6 +162,7 @@
 {
     RemotePostTag *tag = OCMStrictClassMock([RemotePostTag class]);
     OCMStub([tag name]).andReturn(@"name");
+    OCMStub([tag tagDescription]).andReturn(@"description");
 
     NSString *endpoint = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.service.siteID, @"tags"];
     NSString *url = [self.service pathForEndpoint:endpoint
