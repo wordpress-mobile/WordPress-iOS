@@ -252,6 +252,7 @@ private extension PluginStore {
                 plugin.updateState = .updating(version)
             })
         }
+        WPAppAnalytics.track(.pluginUpdated, withBlogID: site.siteID as NSNumber)
         remote(site: site)?.updatePlugin(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -280,6 +281,7 @@ private extension PluginStore {
                 return
         }
         state.plugins[site]?.plugins.remove(at: index)
+        WPAppAnalytics.track(.pluginRemoved, withBlogID: site.siteID as NSNumber)
         remote(site: site)?.remove(
             pluginID: pluginID,
             siteID: site.siteID,
