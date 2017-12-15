@@ -360,12 +360,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
 }
 
-- (void)configureTagsCell
-{
-    NSInteger tagCount = self.blog.tags.allObjects.count;
-    [self.tagsCell setTextValue: [self getTagsCountPresentableString:tagCount]];
-}
-
 - (void)configureDefaultPostFormatCell
 {
     [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
@@ -379,7 +373,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             return self.defaultCategoryCell;
             
         case (SiteSettingsWritingTags):
-            [self configureTagsCell];
             return self.tagsCell;
 
         case (SiteSettingsWritingDefaultPostFormat):
