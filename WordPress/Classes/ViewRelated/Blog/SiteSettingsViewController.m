@@ -189,9 +189,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionGeneral:
         {
             NSInteger rowCount = SiteSettingsGeneralCount;
-            
+
             // NOTE: Sergio Estevao (2015.08.25): Hide Privacy because of lack of support in .org
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+                --rowCount;
+                // NOTE: Mohd Asif (2017.12.15): Hide TimeZone setting because of lack of support in .org
                 --rowCount;
             }
             
