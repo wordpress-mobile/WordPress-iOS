@@ -164,7 +164,14 @@
         return YES;
     }
 
-    if (navigationType == UIWebViewNavigationTypeLinkClicked || navigationType == UIWebViewNavigationTypeFormSubmitted) {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        // Open the link
+        UIApplication *application = [UIApplication sharedApplication];
+        [application openURL:[request URL] options:@{} completionHandler:nil];
+        return NO;
+    }
+    
+    if (navigationType == UIWebViewNavigationTypeFormSubmitted) {
         return NO;
     }
     return YES;
