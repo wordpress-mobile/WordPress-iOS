@@ -303,8 +303,8 @@
                         <outlet property="bottomContentConstraint" destination="Jd9-Lq-GXT" id="OwN-Ug-4Xv"/>
                         <outlet property="nextButton" destination="yYd-Ij-EZ1" id="IZ7-df-4EX"/>
                         <outlet property="siteTitleField" destination="8CU-ee-CNI" id="9EB-4V-NEy"/>
-                        <outlet property="stepDescrLabel1" destination="pKm-Si-GCs" id="G7I-BS-2SV"/>
-                        <outlet property="stepDescrLabel2" destination="zht-l9-NH1" id="4Ar-0Y-HUA"/>
+                        <outlet property="stepDescriptionLabel1" destination="pKm-Si-GCs" id="gL6-Dh-XuK"/>
+                        <outlet property="stepDescriptionLabel2" destination="zht-l9-NH1" id="J8L-e0-ZiK"/>
                         <outlet property="stepLabel" destination="Tc3-Bo-Atj" id="CeA-dj-Ky4"/>
                         <outlet property="tagDescrLabel" destination="cGJ-Lt-fd3" id="czK-OZ-Trp"/>
                         <outlet property="taglineField" destination="MyF-yC-tG6" id="XYN-dQ-9Pt"/>

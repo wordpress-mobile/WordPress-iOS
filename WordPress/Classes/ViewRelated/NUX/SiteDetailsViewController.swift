@@ -10,8 +10,8 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     // MARK: - Properties
 
     @IBOutlet weak var stepLabel: UILabel!
-    @IBOutlet weak var stepDescrLabel1: UILabel!
-    @IBOutlet weak var stepDescrLabel2: UILabel!
+    @IBOutlet weak var stepDescriptionLabel1: UILabel!
+    @IBOutlet weak var stepDescriptionLabel2: UILabel!
     @IBOutlet weak var siteTitleField: LoginTextField!
     @IBOutlet weak var taglineField: LoginTextField!
     @IBOutlet weak var tagDescrLabel: UILabel!
@@ -66,8 +66,8 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     private func setLabelText() {
         stepLabel.text = NSLocalizedString("STEP 3 OF 4", comment: "Step for view.")
-        stepDescrLabel1.text = NSLocalizedString("Tell us more about the site you're creating.", comment: "Shown during the site details step of the site creation flow.")
-        stepDescrLabel2.text = NSLocalizedString("What's the title and tagline?", comment: "Prompts the user for Site details information.")
+        stepDescriptionLabel1.text = NSLocalizedString("Tell us more about the site you're creating.", comment: "Shown during the site details step of the site creation flow.")
+        stepDescriptionLabel2.text = NSLocalizedString("What's the title and tagline?", comment: "Prompts the user for Site details information.")
 
         siteTitleField.placeholder = NSLocalizedString("Add title", comment: "Site title placeholder.")
         siteTitleField.accessibilityIdentifier = "Site title"
