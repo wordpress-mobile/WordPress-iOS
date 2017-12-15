@@ -32,130 +32,9 @@ public class UploadOperation: NSManagedObject {
     ///
     @NSManaged public var siteID: Int64
 
-    /// True if this upload operation involves media; False if it is a post
-    ///
-    @NSManaged public var isMedia: Bool
-
-    /// Remote post ID for this upload op.
-    ///
-    @NSManaged public var remotePostID: Int64
-
-    /// Remote media ID for this upload op. (Not used if `isMedia` is False)
-    ///
-    @NSManaged public var remoteMediaID: Int64
-
-    /// Name of the file in this upload op (Not used if `isMedia` is False)
-    ///
-    @NSManaged public var fileName: String?
-
-    /// Complete local URL, including filename for this upload op (Not used if `isMedia` is False)
-    ///
-    @NSManaged public var localURL: String?
-
-    /// Complete remote URL, including filename for this upload op (Not used if `isMedia` is False)
-    ///
-    @NSManaged public var remoteURL: String?
-
-    /// MIME Type for the media involved in this network op (Not used if `isMedia` is False)
-    ///
-    @NSManaged public var mimeType: String?
-
-    /// Post subject for this upload op (Not used if `isMedia` is True)
-    ///
-    @NSManaged public var postTitle: String?
-
-    /// Post content for this upload op (Not used if `isMedia` is True)
-    ///
-    @NSManaged public var postContent: String?
-
-    /// Post status for this upload op — e.g. "Draft" or "Publish" (Not used if `isMedia` is True)
-    ///
-    @NSManaged public var postStatus: String?
-
     /// Date this upload op was created
     ///
     @NSManaged public var created: NSDate?
-}
-
-// MARK: - Computed Properties
-
-extension UploadOperation {
-    /// Returns a RemotePost object based on this UploadOperation
-    ///
-    var remotePost: RemotePost? {
-        guard isMedia == false else {
-            return nil
-        }
-
-        let remotePost: RemotePost = {
-            let post = RemotePost()
-            post.siteID = NSNumber(value: siteID)
-            post.postID = NSNumber(value: remotePostID)
-            post.content = postContent
-            post.title = postTitle
-            post.status = postStatus
-            return post
-        }()
-
-        return remotePost
-    }
-
-    /// Returns a RemoteMedia object based on this UploadOperation
-    ///
-    var remoteMedia: RemoteMedia? {
-        guard isMedia == true else {
-            return nil
-        }
-
-        let remoteMedia: RemoteMedia = {
-            let media = RemoteMedia()
-            media.mediaID = NSNumber(value: remoteMediaID)
-            media.postID = NSNumber(value: remotePostID)
-            media.mimeType = mimeType
-            media.file = fileName
-            if let remoteURL = remoteURL {
-                media.url = URL(string: remoteURL)
-            }
-            if let localURL = localURL {
-                media.localURL = URL(fileURLWithPath: localURL)
-            }
-            return media
-        }()
-
-        return remoteMedia
-    }
-}
-
-// MARK: - Update Helpers
-
-extension UploadOperation {
-    /// Updates the local fields with the new values stored in a given RemoteMedia
-    ///
-    func updateWithMedia(remote: RemoteMedia) {
-        isMedia = true
-        if let mediaId = remote.mediaID?.int64Value {
-            remoteMediaID = mediaId
-        }
-        localURL = remote.localURL?.absoluteString
-        remoteURL = remote.url?.absoluteString
-        fileName = remote.file
-        mimeType = remote.mimeType
-    }
-
-    /// Updates the local fields with the new values stored in a given RemotePost
-    ///
-    func updateWithPost(remote: RemotePost) {
-        isMedia = false
-        if let postId = remote.postID?.int64Value {
-            remotePostID = postId
-        }
-        if let siteId = remote.siteID?.int64Value {
-            siteID = siteId
-        }
-        postTitle = remote.title
-        postContent = remote.content
-        postStatus = remote.status
-    }
 }
 
 // MARK: - UploadOperation Types
@@ -166,26 +45,26 @@ extension UploadOperation {
     enum UploadStatus: Int {
         /// Upload has been queued, but not started
         ///
-        case Pending
+        case pending
 
         /// Upload has been initiated, but is not complete
         ///
-        case InProgress
+        case inProgress
 
         /// Upload has completed successfully
         ///
-        case Complete
+        case complete
 
         /// Upload has completed with an error
         ///
-        case Error
+        case error
 
         func stringValue() -> String {
             switch self {
-            case .Pending:      return "Pending"
-            case .InProgress:   return "In Progress"
-            case .Complete:     return "Complete"
-            case .Error:        return "Error"
+            case .pending:      return "Pending"
+            case .inProgress:   return "In Progress"
+            case .complete:     return "Complete"
+            case .error:        return "Error"
             }
         }
     }
