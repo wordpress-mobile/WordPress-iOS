@@ -36,18 +36,22 @@ class MediaCoordinator: NSObject {
         }
         let service = MediaService(managedObjectContext: backgroundContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: 10)
-        let createProgress = service.createMedia(with: asset,
+        var creationProgress: Progress? = nil
+        let media = service.createMedia(with: asset,
                             objectID: blog.objectID,
+                            progress: &creationProgress,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
                                 guard let strongSelf = self, let media = media, !media.isDeleted else {
                                     return
                                 }
                                 let uploadProgress = strongSelf.uploadMedia(media)
-                                totalProgress.addChild(uploadProgress, withPendingUnitCount: 8);
+                                totalProgress.addChild(uploadProgress, withPendingUnitCount: 5);
         })
-        totalProgress.addChild(createProgress, withPendingUnitCount: 2)
-        self.mediaProgressCoordinator.track(progress: taskProgresss, of: media, withIdentifier: media.uploadID)
+        if let creationProgress = creationProgress {
+            totalProgress.addChild(creationProgress, withPendingUnitCount: 5)
+            self.mediaProgressCoordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
+        }
     }
 
     func retryMedia(_ media: Media) {
