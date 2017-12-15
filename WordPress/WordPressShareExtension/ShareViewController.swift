@@ -379,7 +379,8 @@ private extension ShareViewController {
 private extension ShareViewController {
     func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
         guard let postUploadOp = fetchPostUploadOp(withObjectID: uploadPostOpID),
-            let mediaUploadOps = fetchMediaUploadOpsForGroup(postUploadOp.groupID) else {
+            let groupID = postUploadOp.groupID,
+            let mediaUploadOps = fetchMediaUploadOpsForGroup(groupID) else {
                 return
         }
 
@@ -406,7 +407,7 @@ private extension ShareViewController {
                                       backgroundUploads: false,
                                       backgroundSessionIdentifier: backgroundSessionIdentifier,
                                       sharedContainerIdentifier: WPAppGroupName)
-        let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
+        let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
         remote.createPost(remotePost, success: { post in
             if let post = post {
                 DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
