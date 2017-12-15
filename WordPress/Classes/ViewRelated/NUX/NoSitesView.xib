@@ -17,7 +17,7 @@
             <rect key="frame" x="0.0" y="0.0" width="460" height="377"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="G4e-dB-lxv">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="G4e-dB-lxv" userLabel="No Sites Image">
                     <rect key="frame" x="55" y="-30" width="350" height="219"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="G4e-dB-lxv" secondAttribute="height" multiplier="8:5" id="4VW-jo-3yu"/>
@@ -62,7 +62,6 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="addSiteButton" destination="TN9-gF-7ik" id="gbO-0C-3si"/>
-                <outlet property="noSitesImage" destination="G4e-dB-lxv" id="gj5-vP-Xqi"/>
                 <outlet property="noSitesTitle" destination="ofN-jE-Mju" id="TYP-bF-hKC"/>
                 <outlet property="titleLeadingConstraint" destination="3JW-Wy-mfD" id="EkL-c6-HlJ"/>
                 <outlet property="titleTrailingConstraint" destination="J8o-sK-kBH" id="heS-I7-Wr6"/>
