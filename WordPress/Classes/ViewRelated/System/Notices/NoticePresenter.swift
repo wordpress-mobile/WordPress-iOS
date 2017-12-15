@@ -128,7 +128,7 @@ class NoticePresenter: NSObject {
         static let appearanceDuration: TimeInterval = 1.0
         static let appearanceSpringDamping: CGFloat = 0.7
         static let appearanceSpringVelocity: CGFloat = 0.0
-        static let dismissDelay: TimeInterval = 3.0
+        static let dismissDelay: TimeInterval = 5.0
     }
 }
 
