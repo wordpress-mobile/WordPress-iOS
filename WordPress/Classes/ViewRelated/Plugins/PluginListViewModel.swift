@@ -5,7 +5,7 @@ protocol PluginPresenter: class {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities)
 }
 
-class PluginListViewModel {
+class PluginListViewModel: Observable {
     enum StateChange {
         case replace
         case selective([Int])
@@ -47,7 +47,17 @@ class PluginListViewModel {
     let stateChangeDispatcher = Dispatcher<StateChange>()
     private var state: State = .loading {
         didSet {
+            guard state != oldValue else {
+                return
+            }
             stateChangeDispatcher.dispatch(State.changed(from: oldValue, to: state))
+        }
+    }
+    private(set) var refreshing = false {
+        didSet {
+            if refreshing != oldValue {
+                emitChange()
+            }
         }
     }
 
@@ -60,7 +70,7 @@ class PluginListViewModel {
         self.site = site
         self.store = store
         storeReceipt = store.onChange { [weak self] in
-            self?.refreshPlugins()
+            self?.refreshState()
         }
         actionReceipt = ActionDispatcher.global.subscribe { [weak self] (action) in
             guard case PluginAction.receivePluginsFailed(let receivedSite, let error) = action,
@@ -70,7 +80,7 @@ class PluginListViewModel {
             self?.state = .error(error.localizedDescription)
         }
         queryReceipt = store.query(.all(site: site))
-        refreshPlugins()
+        refreshState()
     }
 
     func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
@@ -127,7 +137,8 @@ class PluginListViewModel {
         return [PluginListRow.self]
     }
 
-    private func refreshPlugins() {
+    private func refreshState() {
+        refreshing = store.isFetchingPlugins(site: site)
         guard let plugins = store.getPlugins(site: site) else {
             return
         }
