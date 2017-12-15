@@ -59,10 +59,6 @@ class NoticeStore: StatefulStore<NoticeStoreState> {
     }
 
     override func onDispatch(_ action: Action) {
-        guard FeatureFlag.notices.enabled else {
-            return
-        }
-
         guard let action = action as? NoticeAction else {
             return
         }
