@@ -309,6 +309,15 @@ private extension PluginStore {
                 return plugin
             })
         }
+        if isAutomatedTransfer(site: site) {
+            plugins.plugins = plugins.plugins.map({ (plugin) in
+                var plugin = plugin
+                if ["akismet", "jetpack", "vaultpress"].contains(plugin.slug) {
+                    plugin.automanaged = true
+                }
+                return plugin
+            })
+        }
         transaction { (state) in
             state.plugins[site] = plugins
             state.fetching[site] = false
@@ -360,6 +369,13 @@ private extension PluginStore {
             }
             state.fetchingDirectoryEntry[slug] = false
         }
+    }
+
+    func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let predicate = NSPredicate(format: "blogID = %i AND account.username = %@", site.siteID, site.username)
+        let blog = context.firstObject(ofType: Blog.self, matching: predicate)
+        return blog?.jetpack?.automatedTransfer ?? false
     }
 
     func remote(site: JetpackSiteRef) -> PluginServiceRemote? {
