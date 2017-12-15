@@ -8,7 +8,7 @@ extern NSString * const SettingsSelectionValuesKey;
 extern NSString * const SettingsSelectionHintsKey;
 extern NSString * const SettingsSelectionDefaultValueKey;
 extern NSString * const SettingsSelectionCurrentValueKey;
-
+extern NSString * const SettingsSelectionEditableIndexKey;
 
 /**
  *  @class      SettingsSelectionViewController
@@ -24,6 +24,7 @@ extern NSString * const SettingsSelectionCurrentValueKey;
 @property (nonatomic, strong) NSArray<NSString *>   *hints;
 @property (nonatomic, strong) NSObject              *defaultValue;
 @property (nonatomic, strong) NSObject              *currentValue;
+@property (nonatomic, assign) NSInteger             editableIndex;
 @property (nonatomic,   copy) void                  (^onItemSelected)(id);
 @property (nonatomic,   copy) void                  (^onRefresh)(UIRefreshControl *refreshControl);
 @property (nonatomic,   copy) void                  (^onCancel)(void);
