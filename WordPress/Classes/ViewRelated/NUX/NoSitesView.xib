@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,14 +18,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="G4e-dB-lxv" userLabel="No Sites Image">
-                    <rect key="frame" x="55" y="-30" width="350" height="219"/>
+                    <rect key="frame" x="55" y="-60" width="350" height="219"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="G4e-dB-lxv" secondAttribute="height" multiplier="8:5" id="4VW-jo-3yu"/>
                         <constraint firstAttribute="width" constant="350" id="K6h-zU-akj"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofN-jE-Mju">
-                    <rect key="frame" x="20" y="159" width="420" height="144"/>
+                    <rect key="frame" x="10" y="109" width="440" height="204"/>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                     <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -49,14 +49,22 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="ofN-jE-Mju" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="3JW-Wy-mfD"/>
+                <constraint firstItem="ofN-jE-Mju" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="3JW-Wy-mfD">
+                    <variation key="heightClass=compact" constant="10"/>
+                </constraint>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="TN9-gF-7ik" secondAttribute="bottom" id="3o0-sK-2a5"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ofN-jE-Mju" secondAttribute="trailing" constant="20" id="J8o-sK-kBH"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ofN-jE-Mju" secondAttribute="trailing" constant="20" id="J8o-sK-kBH">
+                    <variation key="heightClass=compact" constant="10"/>
+                </constraint>
                 <constraint firstItem="G4e-dB-lxv" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Zpp-hn-0cs"/>
-                <constraint firstItem="G4e-dB-lxv" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="-50" id="b6V-mf-GGH"/>
+                <constraint firstItem="G4e-dB-lxv" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="-60" id="b6V-mf-GGH"/>
                 <constraint firstItem="TN9-gF-7ik" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="bxr-C3-MkT"/>
-                <constraint firstItem="ofN-jE-Mju" firstAttribute="top" secondItem="G4e-dB-lxv" secondAttribute="bottom" constant="-30" id="dbC-wC-Oob"/>
-                <constraint firstItem="TN9-gF-7ik" firstAttribute="top" secondItem="ofN-jE-Mju" secondAttribute="bottom" constant="30" id="epL-QN-XvF"/>
+                <constraint firstItem="ofN-jE-Mju" firstAttribute="top" secondItem="G4e-dB-lxv" secondAttribute="bottom" constant="-30" id="dbC-wC-Oob">
+                    <variation key="heightClass=compact" constant="-50"/>
+                </constraint>
+                <constraint firstItem="TN9-gF-7ik" firstAttribute="top" secondItem="ofN-jE-Mju" secondAttribute="bottom" constant="30" id="epL-QN-XvF">
+                    <variation key="heightClass=compact" constant="20"/>
+                </constraint>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
