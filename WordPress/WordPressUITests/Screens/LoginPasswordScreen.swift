@@ -13,12 +13,12 @@ class LoginPasswordScreen: BaseScreen {
 
     func proceedWith(password: String) -> LoginEpilogueScreen {
         _ = tryProceed(password: password)
-        
+
         let alertModal = XCUIApplication().alerts["“WordPress” Would Like to Send You Notifications"]
         if alertModal.waitForExistence(timeout: 3) {
             alertModal.buttons["Don’t Allow"].tap()
         }
-        
+
         return LoginEpilogueScreen.init()
     }
 
