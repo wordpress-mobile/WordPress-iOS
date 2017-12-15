@@ -38,12 +38,13 @@ open class MediaImportService: LocalCoreDataService {
     /// - parameter onError: Called if an error was encountered during creation, error convertible to NSError with a localized description.
     ///
     @objc(importResource:toMedia:onCompletion:onError:)
-    func `import`(_ exportable: ExportableAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) {
-        importQueue.async {
+    func `import`(_ exportable: ExportableAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) -> Progress? {
+        let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        importQueue.sync {
             guard let exporter = self.makeExporter(for: exportable) else {
                 preconditionFailure("An exporter needs to be availale")
             }
-            exporter.export(onCompletion: { export in
+            let exportProgress = exporter.export(onCompletion: { export in
                 self.managedObjectContext.perform {
                     self.configureMedia(media, withExport: export)
                     ContextManager.sharedInstance().save(self.managedObjectContext, withCompletionBlock: {
@@ -54,7 +55,9 @@ open class MediaImportService: LocalCoreDataService {
                 self.handleExportError(mediaExportError, errorHandler: onError)
             }
             )
+            progress.addChild(exportProgress, withPendingUnitCount: 1)
         }
+        return progress
     }
 
     func makeExporter(for exportable: ExportableAsset) -> MediaExporter? {
