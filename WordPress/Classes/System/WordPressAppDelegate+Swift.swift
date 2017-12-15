@@ -14,7 +14,8 @@ extension WordPressAppDelegate {
 
     @objc func configureAppRatingUtility() {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
-            fatalError("No CFBundleShortVersionString found in Info.plist")
+            DDLogError("No CFBundleShortVersionString found in Info.plist")
+            return
         }
 
         let utility = AppRatingUtility.shared
