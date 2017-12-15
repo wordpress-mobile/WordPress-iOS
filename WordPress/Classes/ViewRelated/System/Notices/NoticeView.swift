@@ -125,6 +125,7 @@ class NoticeView: UIView {
 
     @objc private func actionButtonTapped() {
         notice.actionHandler?()
+        dismissHandler?()
     }
 
     enum Appearance {
