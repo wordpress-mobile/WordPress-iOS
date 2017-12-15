@@ -241,6 +241,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 } else {
                     overlayView.state = .indeterminate
                 }
+                if media.localThumbnailURL != nil {
+                    overlayView.backgroundColor = overlayView.backgroundColor?.withAlphaComponent(0.5)
+                } else {
+                    overlayView.backgroundColor = overlayView.backgroundColor?.withAlphaComponent(1)
+                }
             }
         }
     }
