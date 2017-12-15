@@ -14,7 +14,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     @IBOutlet weak var stepDescriptionLabel2: UILabel!
     @IBOutlet weak var siteTitleField: LoginTextField!
     @IBOutlet weak var taglineField: LoginTextField!
-    @IBOutlet weak var tagDescrLabel: UILabel!
+    @IBOutlet weak var tagDescriptionLabel: UILabel!
     @IBOutlet weak var nextButton: LoginButton!
 
     // MARK: - View
@@ -58,7 +58,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
-        tagDescrLabel.textColor = WPStyleGuide.greyDarken20()
+        tagDescriptionLabel.textColor = WPStyleGuide.greyDarken20()
         nextButton.isEnabled = false
         siteTitleField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         taglineField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
@@ -75,7 +75,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         taglineField.placeholder = NSLocalizedString("Optional tagline", comment: "Site tagline placeholder.")
         taglineField.accessibilityIdentifier = "Site tagline"
 
-        tagDescrLabel.text = NSLocalizedString("The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines.", comment: "Tagline description.")
+        tagDescriptionLabel.text = NSLocalizedString("The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines.", comment: "Tagline description.")
     }
 
     private func setupNextButton() {

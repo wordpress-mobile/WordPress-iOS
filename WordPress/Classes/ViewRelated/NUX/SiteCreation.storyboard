@@ -306,7 +306,7 @@
                         <outlet property="stepDescriptionLabel1" destination="pKm-Si-GCs" id="gL6-Dh-XuK"/>
                         <outlet property="stepDescriptionLabel2" destination="zht-l9-NH1" id="J8L-e0-ZiK"/>
                         <outlet property="stepLabel" destination="Tc3-Bo-Atj" id="CeA-dj-Ky4"/>
-                        <outlet property="tagDescrLabel" destination="cGJ-Lt-fd3" id="czK-OZ-Trp"/>
+                        <outlet property="tagDescriptionLabel" destination="cGJ-Lt-fd3" id="mge-CL-Pan"/>
                         <outlet property="taglineField" destination="MyF-yC-tG6" id="XYN-dQ-9Pt"/>
                     </connections>
                 </viewController>
