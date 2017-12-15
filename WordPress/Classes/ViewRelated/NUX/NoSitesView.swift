@@ -46,23 +46,12 @@ import UIKit
 
         translatesAutoresizingMaskIntoConstraints = false
 
-        var newFrame = superview.frame
-
-        // If horizontal compact, limit the height so the view isn't stretched out.
-        if traitCollection.horizontalSizeClass == .compact {
-            newFrame.size.height = superview.frame.size.width
-        }
-        // If vertical compact, reduce the height.
-        else if traitCollection.verticalSizeClass == .compact {
-            newFrame.size.height = superview.frame.size.height/2
-        }
-
         // Set the width on the label so it wraps properly.
-        noSitesTitle.preferredMaxLayoutWidth = newFrame.size.width -
+        noSitesTitle.preferredMaxLayoutWidth = superview.frame.size.width -
             titleLeadingConstraint.constant -
             titleTrailingConstraint.constant
 
-        frame = newFrame
+        frame = superview.frame
     }
 
     // MARK: - Button Handling
