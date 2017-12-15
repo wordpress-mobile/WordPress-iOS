@@ -1,27 +1,23 @@
 import UIKit
 import WordPressKit
+import WordPressFlux
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
-    let siteID: Int
-    let service: PluginServiceRemote
+    let site: JetpackSiteRef
 
-    fileprivate lazy var handler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
-    }()
-
-    fileprivate var viewModel: PluginListViewModel = .loading {
-        didSet {
-            handler.viewModel = viewModel.tableViewModel(presenter: self)
-            updateNoResults()
-        }
-    }
+    fileprivate var viewModel: PluginListViewModel
+    fileprivate var tableViewModel = ImmuTable.Empty
 
     fileprivate let noResultsView = WPNoResultsView()
+    var viewModelStateChangeReceipt: Receipt?
+    var viewModelChangeReceipt: Receipt?
 
-    init(siteID: Int, service: PluginServiceRemote) {
-        self.siteID = siteID
-        self.service = service
+    init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        self.site = site
+        viewModel = PluginListViewModel(site: site, store: store)
+
         super.init(style: .grouped)
+
         title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
         noResultsView.delegate = self
     }
@@ -30,33 +26,39 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    convenience init?(blog: Blog) {
-        precondition(blog.dotComID != nil)
-        guard let api = blog.wordPressComRestApi(),
-            let service = PluginServiceRemote(wordPressComRestApi: api) else {
-                return nil
+    @objc convenience init?(blog: Blog) {
+        guard let site = JetpackSiteRef(blog: blog) else {
+            return nil
         }
 
-        self.init(siteID: Int(blog.dotComID!), service: service)
+        self.init(site: site)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
-        ImmuTable.registerRows([PluginListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModel(presenter: self)
-        updateNoResults()
+        ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
+        viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] (change) in
+            self?.refreshModel(change: change)
+        }
+        viewModelChangeReceipt = viewModel.onChange { [weak self] in
+            self?.updateRefreshControl()
+        }
+        refreshModel(change: .replace)
+        updateRefreshControl()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        refreshModel(change: .replace)
+    }
 
-        service.getPlugins(siteID: siteID, success: { (plugins, capabilities) in
-            self.viewModel = .ready(plugins, capabilities)
-        }, failure: { error in
-            DDLogError("Error loading plugins: \(error)")
-            self.viewModel = .error(String(describing: error))
-        })
+    @objc func refresh() {
+        ActionDispatcher.dispatch(PluginAction.refreshPlugins(site: site))
     }
 
     func updateNoResults() {
@@ -79,6 +81,61 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
+
+    func refreshModel(change: PluginListViewModel.StateChange) {
+        tableViewModel = viewModel.tableViewModel(presenter: self)
+        switch change {
+        case .replace:
+            tableView.reloadData()
+        case .selective(let changedRows):
+            let indexPaths = changedRows.map({ IndexPath(row: $0, section: 0) })
+            tableView.reloadRows(at: indexPaths, with: .none)
+        }
+        updateNoResults()
+    }
+
+    func updateRefreshControl() {
+        guard let refreshControl = refreshControl else {
+                return
+        }
+
+        switch (viewModel.refreshing, refreshControl.isRefreshing) {
+        case (true, false):
+            refreshControl.beginRefreshing()
+        case (false, true):
+            refreshControl.endRefreshing()
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - Table View Data Source
+extension PluginListViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return tableViewModel.sections.count
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableViewModel.sections[section].rows.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
+
+        row.configureCell(cell)
+
+        return cell
+    }
+}
+
+// MARK: - Table View Delegate
+extension PluginListViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        row.action?(row)
+    }
 }
 
 // MARK: - WPNoResultsViewDelegate
@@ -93,8 +150,8 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 // MARK: - PluginPresenter
 
 extension PluginListViewController: PluginPresenter {
-    func present(plugin: PluginState, capabilities: SitePluginCapabilities) {
-        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, siteID: siteID, service: service)
+    func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
+        let controller = PluginViewController(plugin: plugin, capabilities: capabilities, site: site)
         navigationController?.pushViewController(controller, animated: true)
     }
 }

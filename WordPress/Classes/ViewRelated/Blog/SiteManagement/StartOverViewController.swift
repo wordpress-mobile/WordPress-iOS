@@ -9,18 +9,18 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
     /// The blog whose content we want to remove
     ///
-    var blog: Blog!
+    @objc var blog: Blog!
 
     // MARK: - Properties: table content
 
-    let headerView: TableViewHeaderDetailView = {
+    @objc let headerView: TableViewHeaderDetailView = {
         let header = NSLocalizedString("Let Us Help", comment: "Heading for instructions on Start Over settings page")
         let detail = NSLocalizedString("If you want a site but don't want any of the posts and pages you have now, our support team can delete your posts, pages, media, and comments for you.\n\nThis will keep your site and URL active, but give you a fresh start on your content creation. Just contact us to have your current content cleared out.", comment: "Detail for instructions on Start Over settings page")
 
        return TableViewHeaderDetailView(title: header, detail: detail)
     }()
 
-    let contactCell: UITableViewCell = {
+    @objc let contactCell: UITableViewCell = {
         let contactTitle = NSLocalizedString("Contact Support", comment: "Button to contact support on Start Over settings page")
 
         let actionCell = WPTableViewCellDefault(style: .value1, reuseIdentifier: nil)
@@ -37,7 +37,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
     ///
     /// - Parameter blog: The Blog currently at the site
     ///
-    convenience init(blog: Blog) {
+    @objc convenience init(blog: Blog) {
         self.init(style: .grouped)
         self.blog = blog
     }
@@ -98,29 +98,29 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
     // Mark - Email handling
 
-    let mailRecipient = "help@wordpress.com"
+    @objc let mailRecipient = "help@wordpress.com"
 
-    var mailSubject: String {
+    @objc var mailSubject: String {
         guard let displayURL = self.blog.displayURL else {
             return "Start over"
         }
         return "Start over with site \(displayURL)"
     }
 
-    var mailBody: String {
+    @objc var mailBody: String {
         guard let siteURL = self.blog.url else {
             return "I want to start over"
         }
         return "I want to start over with the site \(siteURL)"
     }
 
-    var googleMailURL: URL? {
+    @objc var googleMailURL: URL? {
         let googleMailString = "googlegmail:///co?to=\(mailRecipient)"
             + "&subject=\(mailSubject)&body=\(mailBody)"
         return URL(string: googleMailString.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!)
     }
 
-    func showAppleMailComposer() {
+    @objc func showAppleMailComposer() {
         let mailComposeController = MFMailComposeViewController()
         mailComposeController.mailComposeDelegate = self
         mailComposeController.setToRecipients([mailRecipient])
@@ -129,11 +129,11 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
         present(mailComposeController, animated: true, completion: nil)
     }
 
-    func showGoogleMailComposerForURL(_ url: URL ) {
+    @objc func showGoogleMailComposerForURL(_ url: URL ) {
         UIApplication.shared.open(url)
     }
 
-    func showAlertToSendEmail() {
+    @objc func showAlertToSendEmail() {
         let title = String(format: NSLocalizedString("Contact us at %@", comment: "Alert title for contact us alert, placeholder for help email address, inserted at run time."), mailRecipient)
         let message = NSLocalizedString("\nPlease send us an email to have your content cleared out.", comment: "Message to ask the user to send us an email to clear their content.")
 

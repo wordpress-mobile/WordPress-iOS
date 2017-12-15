@@ -6,6 +6,10 @@ public struct elementStringIDs {
     static var mainNavigationMeButton = "meTabButton"
     static var mainNavigationMySitesButton = "mySitesTabButton"
 
+    // Welcome page
+    static var loginButton = "Log in"
+    static var createSite = "Create a WordPress site"
+
     // Login page
     static var loginUsernameField = "Email or username"
     static var loginPasswordField = "Password"
@@ -68,7 +72,9 @@ extension XCTestCase {
             if error != nil {
                 let message = "Failed to find \(element) after \(timeoutValue) seconds."
                 self.recordFailure(withDescription: message,
-                                                  inFile: file, atLine: line, expected: true)
+                                   inFile: file,
+                                   atLine: line,
+                                   expected: true)
             }
         }
     }
@@ -80,15 +86,25 @@ extension XCTestCase {
 
     // Need to add attempt to sign out of self-hosted as well
     public func logoutIfNeeded() {
-        let app = XCUIApplication()
-        if !app.textFields[ elementStringIDs.loginUsernameField ].exists && !app.textFields[ elementStringIDs.nuxUsernameField ].exists {
-            app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMeButton ].tap()
-            app.tables.element(boundBy: 0).swipeUp()
-            app.tables.cells[ elementStringIDs.logOutFromWPcomButton ].tap()
-            app.alerts.buttons.element(boundBy: 1).tap()
-            //Give some time to everything get proper saved.
-            sleep(2)
+        if WelcomeScreen.isLoaded() ||
+            LoginPasswordScreen.isLoaded() ||
+            LoginEmailScreen.isLoaded() {
+            return
         }
+        MySitesScreen.init().tabBar.gotoMeScreen().logout()
+
+//        let app = XCUIApplication()
+//        let isLoggedIn = !app.buttons[elementStringIDs.createSite].exists
+//            // || (!app.textFields[ elementStringIDs.loginUsernameField ].exists
+//            // && !app.textFields[ elementStringIDs.nuxUsernameField ].exists)
+//        if isLoggedIn {
+//            app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMeButton ].tap()
+//            app.tables.element(boundBy: 0).swipeUp()
+//            app.tables.cells[ elementStringIDs.logOutFromWPcomButton ].tap()
+//            app.alerts.buttons.element(boundBy: 1).tap()
+//            //Give some time to everything get proper saved.
+//            sleep(2)
+//        }
     }
 
     public func simpleLogin(username: String, password: String) {
@@ -143,7 +159,7 @@ extension XCTestCase {
 
         let removeButton = app.tables.cells[ elementStringIDs.removeSiteButton ]
         let mySitesTabButton = app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMySitesButton ]
-        let siteNameField = app.tables.staticTexts[ WordPressTestCredentials.selfHostedSiteName ]
+        let siteNameField = app.tables.staticTexts[ WPUITestCredentials.selfHostedSiteName ]
 
         // Tap the My Sites button twice to be sure that we're on the All Sites list
         mySitesTabButton.tap()

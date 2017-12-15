@@ -13,7 +13,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     @IBOutlet var forgotPasswordButton: WPNUXSecondaryButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
-    var onePasswordButton: UIButton!
+    @objc var onePasswordButton: UIButton!
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -31,7 +31,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
-    var blog: Blog?
+    @objc var blog: Blog?
 
 
     // MARK: - Lifecycle Methods
@@ -91,7 +91,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
-    func localizeControls() {
+    @objc func localizeControls() {
         usernameField.placeholder = NSLocalizedString("Username", comment: "Username placeholder")
         passwordField.placeholder = NSLocalizedString("Password", comment: "Password placeholder")
 
@@ -108,7 +108,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Sets up a 1Password button if 1Password is available.
     ///
-    func setupOnePasswordButtonIfNeeded() {
+    @objc func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
                                                             target: self,
                                                             selector: #selector(handleOnePasswordButtonTapped(_:)))
@@ -117,7 +117,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
-    func configureTextFields() {
+    @objc func configureTextFields() {
         usernameField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         usernameField.text = loginFields.username
@@ -127,7 +127,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Configures the appearance and state of the forgot password button.
     ///
-    func configureForgotPasswordButton() {
+    @objc func configureForgotPasswordButton() {
         forgotPasswordButton.isEnabled = enableSubmit(animating: false)
     }
 
@@ -162,7 +162,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
-    func configureViewForEditingIfNeeded() {
+    @objc func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editiing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
@@ -173,7 +173,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Configure the site header.
     ///
-    func configureHeader() {
+    @objc func configureHeader() {
         if let siteInfo = loginFields.meta.siteInfo {
             configureBlogDetailHeaderView(siteInfo: siteInfo)
         } else {
@@ -184,7 +184,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Configure the site header to show the BlogDetailsHeaderView
     ///
-    func configureBlogDetailHeaderView(siteInfo: SiteInfo) {
+    @objc func configureBlogDetailHeaderView(siteInfo: SiteInfo) {
         siteAddressStackView.isHidden = true
         siteHeaderView.isHidden = false
 
@@ -197,7 +197,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Configure the site header to show the site address label.
     ///
-    func configureSiteAddressHeader() {
+    @objc func configureSiteAddressHeader() {
         siteAddressStackView.isHidden = false
         siteHeaderView.isHidden = true
 
@@ -207,7 +207,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Sanitize and format the site address we show to users.
     ///
-    func sanitizedSiteAddress(siteAddress: String) -> String {
+    @objc func sanitizedSiteAddress(siteAddress: String) -> String {
         let baseSiteUrl = SigninHelpers.baseSiteURL(string: siteAddress) as NSString
         if let str = baseSiteUrl.components(separatedBy: "://").last {
             return str
@@ -229,14 +229,14 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
-    func validateForm() {
+    @objc func validateForm() {
         validateFormAndLogin()
     }
 
 
     /// Advances to the epilogue view controller once the self-hosted site has been added.
     ///
-    func showEpilogue() {
+    @objc func showEpilogue() {
         configureViewLoading(false)
         performSegue(withIdentifier: .showEpilogue, sender: self)
     }
@@ -271,7 +271,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     /// Fetches the user's profile data from their blog. If success, it next queries
     /// the user's gravatar profile data passing the completion block.
     ///
-    func fetchUserProfileInfo(blog: Blog, completion: @escaping (() -> Void )) {
+    @objc func fetchUserProfileInfo(blog: Blog, completion: @escaping (() -> Void )) {
         let service = UsersService()
         service.fetchProfile(blog: blog, success: { [weak self] (profile) in
             self?.userProfile = profile
@@ -284,7 +284,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
     /// Queries the user's gravatar profile data. On success calls completion.
     ///
-    func fetchGravatarProfileInfo(email: String, completion: @escaping (() -> Void )) {
+    @objc func fetchGravatarProfileInfo(email: String, completion: @escaping (() -> Void )) {
         let service = GravatarService()
         service.fetchProfile(email, success: { [weak self] (profile) in
             self?.gravatarProfile = profile
@@ -312,7 +312,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     }
 
 
-    func handleOnePasswordButtonTapped(_ sender: UIButton) {
+    @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
@@ -332,12 +332,12 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
 
-    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 }

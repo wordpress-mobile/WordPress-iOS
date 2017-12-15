@@ -1488,12 +1488,12 @@
 				TargetAttributes = {
 					931CFFC71EBCB016005E6BB4 = {
 						CreatedOnToolsVersion = 8.3.2;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 					931CFFD01EBCB016005E6BB4 = {
 						CreatedOnToolsVersion = 8.3.2;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -2151,7 +2151,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2172,7 +2172,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2188,7 +2188,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2203,7 +2203,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2277,7 +2277,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Internal";
 		};
@@ -2292,7 +2292,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Internal";
 		};
@@ -2366,7 +2366,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Alpha";
 		};
@@ -2381,7 +2381,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressComStatsiOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressComStatsiOSTests/WordPressComStatsiOSTests-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Alpha";
 		};

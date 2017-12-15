@@ -6,7 +6,7 @@ import Aztec
 //
 extension VideoAttachment {
 
-    var videoPressID: String? {
+    @objc var videoPressID: String? {
         get {
             return extraAttributes[VideoShortcodeProcessor.videoPressHTMLAttribute]
         }
