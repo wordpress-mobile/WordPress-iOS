@@ -37,32 +37,33 @@ class NoticePresenter: NSObject {
         let noticeView = NoticeView(notice: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
-        addNoticeViewToPresentingViewController(noticeView)
+        let noticeContainerView = NoticeContainerView(noticeView: noticeView)
+        addNoticeContainerToPresentingViewController(noticeContainerView)
 
-        let bottomConstraint = noticeView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        let bottomConstraint = makeBottomConstraintForNoticeContainer(noticeContainerView)
 
         NSLayoutConstraint.activate([
-            noticeView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            noticeView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            noticeContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomConstraint
         ])
 
         let fromState = {
             noticeView.alpha = WPAlphaZero
-            bottomConstraint.constant = 0
+            bottomConstraint.constant = self.offscreenBottomOffset
 
             view.layoutIfNeeded()
         }
 
         let toState = {
             noticeView.alpha = WPAlphaFull
-            bottomConstraint.constant = -self.presentingViewBottomMargin
+            bottomConstraint.constant = 0
 
             view.layoutIfNeeded()
         }
 
         let dismiss = {
-            guard noticeView.superview != nil else {
+            guard noticeContainerView.superview != nil else {
                 return
             }
 
@@ -82,21 +83,28 @@ class NoticePresenter: NSObject {
         ActionDispatcher.dispatch(NoticeAction.dismiss)
     }
 
-    private func addNoticeViewToPresentingViewController(_ noticeView: NoticeView) {
+    private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
         if let tabBarController = presentingViewController as? UITabBarController {
-            tabBarController.view.insertSubview(noticeView, belowSubview: tabBarController.tabBar)
+            tabBarController.view.insertSubview(noticeContainer, belowSubview: tabBarController.tabBar)
         } else {
-            presentingViewController.view.addSubview(noticeView)
+            presentingViewController.view.addSubview(noticeContainer)
         }
     }
 
-    private var presentingViewBottomMargin: CGFloat {
-        let bottomMargin: CGFloat = 16.0
-
+    private func makeBottomConstraintForNoticeContainer(_ container: UIView) -> NSLayoutConstraint {
         if let tabBarController = presentingViewController as? UITabBarController {
-            return bottomMargin + tabBarController.tabBar.bounds.height
+            return container.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor)
+        }
+
+        // Force unwrapping, as the calling method has already guarded against a nil view
+        return container.bottomAnchor.constraint(equalTo: presentingViewController.view!.bottomAnchor)
+    }
+
+    private var offscreenBottomOffset: CGFloat {
+        if let tabBarController = presentingViewController as? UITabBarController {
+            return tabBarController.tabBar.bounds.height
         } else {
-            return bottomMargin
+            return 0
         }
     }
 
@@ -121,5 +129,70 @@ class NoticePresenter: NSObject {
         static let appearanceSpringDamping: CGFloat = 0.7
         static let appearanceSpringVelocity: CGFloat = 0.0
         static let dismissDelay: TimeInterval = 3.0
+    }
+}
+
+/// Small wrapper view that ensures a notice remains centered and at a maximum
+/// width when displayed in a regular size class.
+///
+private class NoticeContainerView: UIView {
+    let containerMargin: CGFloat = 16.0
+
+    let noticeView: NoticeView
+
+    init(noticeView: NoticeView) {
+        self.noticeView = noticeView
+
+        super.init(frame: .zero)
+
+        translatesAutoresizingMaskIntoConstraints = false
+
+        layoutMargins = UIEdgeInsets(top: containerMargin,
+                                     left: containerMargin,
+                                     bottom: containerMargin,
+                                     right: containerMargin)
+
+        // Padding views on either side, of equal width to ensure centering
+        let leftPaddingView = UIView()
+        let rightPaddingView = UIView()
+        rightPaddingView.translatesAutoresizingMaskIntoConstraints = false
+        leftPaddingView.translatesAutoresizingMaskIntoConstraints = false
+
+        let stackView = UIStackView(arrangedSubviews: [leftPaddingView, noticeView, rightPaddingView])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 0
+
+        let paddingWidthConstraint = leftPaddingView.widthAnchor.constraint(equalToConstant: 0)
+        paddingWidthConstraint.priority = .defaultLow
+
+        addSubview(stackView)
+
+        NSLayoutConstraint.activate([
+            paddingWidthConstraint,
+            leftPaddingView.widthAnchor.constraint(equalTo: rightPaddingView.widthAnchor),
+            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+            ])
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    lazy var noticeWidthConstraint: NSLayoutConstraint = {
+        // At regular width, the notice shouldn't be any wider than 1/2 the app's width
+        return noticeView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.5)
+    }()
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let isRegularWidth = traitCollection.containsTraits(in: UITraitCollection(horizontalSizeClass: .regular))
+        noticeWidthConstraint.isActive = isRegularWidth
+
+        layoutIfNeeded()
     }
 }
