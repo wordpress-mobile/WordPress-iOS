@@ -10,7 +10,7 @@ class MainNavigationTests: XCTestCase {
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         XCUIApplication().launch()
         BaseScreen.testCase = self
-        
+
         // Logout first if needed
         logoutIfNeeded()
     }
