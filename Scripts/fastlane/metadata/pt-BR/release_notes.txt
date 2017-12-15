@@ -1,3 +1,0 @@
-Login social: esta versão inclui suporte para login social através do Google
-Editor Aztec: tornou-se o editor padrão.
-Editor Aztec: agora é possível importar mídia de outros aplicativos.

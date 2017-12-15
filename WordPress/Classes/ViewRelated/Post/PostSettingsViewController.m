@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 
 static CGFloat CellHeight = 44.0f;
 static NSInteger RowIndexForDatePicker = 0;
+static NSInteger RowIndexForPassword = 3;
 static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
@@ -75,6 +76,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 @property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
 @property (nonatomic, strong) WPTableViewCell *setGeoLocationCell;
+
+@property (nonatomic, strong) MediaNoResultsView *noResultsView;
+@property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
 
 #pragma mark - Properties: Services
 
@@ -514,6 +518,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (sectionId == PostSettingsSectionMeta) {
         if (indexPath.row == RowIndexForDatePicker && self.datePicker) {
             return CGRectGetHeight(self.datePicker.frame);
+        } else if (indexPath.row == RowIndexForPassword) {
+            return CellHeight;
         }
     }
 
@@ -1241,11 +1247,14 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     options.showMostRecentFirst = YES;
     options.allowMultipleSelection = NO;
     options.filter = WPMediaTypeImage;
+    options.showSearchBar = YES;
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
     self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
                                                              initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
     picker.dataSource = self.mediaDataSource;
     picker.delegate = self;
+    [self registerChangeObserverForPicker:picker.mediaPicker];
+
     picker.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -1309,8 +1318,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     self.featuredImageProgress = convertingProgress;
     __weak __typeof(self) weakSelf = self;
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [mediaService createMediaWithPHAsset:asset
-                         forPostObjectID:self.apost.objectID
+    [mediaService createMediaWith:asset
+                         objectID:self.apost.objectID
                        thumbnailCallback:nil
                               completion:^(Media *media, NSError * error) {
         if (!weakSelf) {
@@ -1370,6 +1379,59 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
 }
 
+- (MediaNoResultsView *)noResultsView
+{
+    if (!_noResultsView) {
+        _noResultsView = [[MediaNoResultsView alloc] init];
+    }
+    return _noResultsView;
+}
+
+- (void)registerChangeObserverForPicker:(WPMediaPickerViewController *)picker
+{
+    NSAssert(self.mediaLibraryChangeObserverKey == nil, nil);
+    __weak PostSettingsViewController * weakSelf = self;
+    self.mediaLibraryChangeObserverKey = [self.mediaDataSource registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet * _Nonnull removed, NSIndexSet * _Nonnull inserted, NSIndexSet * _Nonnull changed, NSArray<id<WPMediaMove>> * _Nonnull moves) {
+
+        [weakSelf updateSearchBarForPicker:picker];
+        BOOL isNotSearching = [weakSelf.mediaDataSource.searchQuery isEmpty];
+        BOOL hasNoAsset = [weakSelf.mediaDataSource numberOfAssets] == 0;
+
+        if (hasNoAsset && isNotSearching) {
+            [weakSelf.noResultsView updateForNoMediaAssetsShowingUploadMediaButton:NO];
+        }
+    }];
+}
+
+- (void)unregisterChangeObserver
+{
+    if (self.mediaLibraryChangeObserverKey) {
+        [self.mediaDataSource unregisterChangeObserver:self.mediaLibraryChangeObserverKey];
+        self.mediaLibraryChangeObserverKey = nil;
+    }
+}
+
+- (void)updateSearchBarForPicker:(WPMediaPickerViewController *)picker
+{
+    if (self.mediaDataSource.dataSourceType != MediaPickerDataSourceTypeMediaLibrary) {
+        [picker hideSearchBar];
+        return;
+    }
+
+    NSString *searchQuery = self.mediaDataSource.searchQuery;
+    BOOL isSearching = (searchQuery != nil) && ![searchQuery isEmpty];
+    BOOL hasAsset = [self.mediaDataSource numberOfAssets] > 0;
+
+    if (hasAsset || isSearching) {
+        [picker showSearchBar];
+        if (self.mediaDataSource.dataSourceType == MediaPickerDataSourceTypeMediaLibrary) {
+            [WPStyleGuide configureSearchBar:picker.searchBar];
+        }
+    } else {
+        [picker hideSearchBar];
+    }
+}
+
 #pragma mark - WPPickerView Delegate
 
 - (void)pickerView:(WPPickerView *)pickerView didChangeValue:(id)value
@@ -1402,12 +1464,39 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods
 
+- (UIView *)emptyViewForMediaPickerController:(WPMediaPickerViewController *)picker
+{
+    return self.noResultsView;
+}
+
+- (void)mediaPickerControllerWillBeginLoadingData:(WPMediaPickerViewController *)picker
+{
+    [self updateSearchBarForPicker:picker];
+    [self.noResultsView updateForFetching];
+}
+
+- (void)mediaPickerControllerDidEndLoadingData:(WPMediaPickerViewController *)picker
+{
+    [self updateSearchBarForPicker:picker];
+    [self.noResultsView updateForNoMediaAssetsShowingUploadMediaButton:NO];
+}
+
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount
+{
+    if (self.mediaDataSource.searchQuery) {
+        [self.noResultsView updateForNoSearchResultWith:self.mediaDataSource.searchQuery];
+    }
+}
+
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     if (assets.count == 0 ){
         return;
     }
-    
+
+    [self unregisterChangeObserver];
+    [self.mediaDataSource searchCancelled];
+
     if ([[assets firstObject] isKindOfClass:[PHAsset class]]){
         PHAsset *asset = [assets firstObject];
         self.isUploadingMedia = YES;
@@ -1432,6 +1521,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 }
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
+    [self unregisterChangeObserver];
+    [self.mediaDataSource searchCancelled];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 

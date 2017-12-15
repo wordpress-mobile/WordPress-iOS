@@ -5,7 +5,7 @@ import QuartzCore
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
 
-    static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
+    @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
 
     // Structs for Constants
 
@@ -59,14 +59,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var titleBottomPaddingView: UIView!
     @IBOutlet fileprivate weak var bylineBottomPaddingView: UIView!
 
-    open var shouldHideComments = false
+    @objc open var shouldHideComments = false
     fileprivate var didBumpStats = false
     fileprivate var didBumpPageViews = false
     fileprivate var footerViewHeightConstraintConstant = CGFloat(0.0)
 
     fileprivate let sharingController = PostSharingController()
 
-    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
+    @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
         }
@@ -76,7 +76,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         return currentPreferredStatusBarStyle
     }
 
-    open var post: ReaderPost? {
+    @objc open var post: ReaderPost? {
         didSet {
             oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
             oldValue?.inUse = false
@@ -109,7 +109,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     ///
     /// - Return: A ReaderListViewController instance.
     ///
-    open class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
+    @objc open class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
         controller.post = post
@@ -118,7 +118,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    open class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
+    @objc open class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
         controller.setupWithPostID(postID, siteID: siteID)
@@ -271,14 +271,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Multitasking Splitview Support
 
-    func handleApplicationDidBecomeActive(_ notification: Foundation.Notification) {
+    @objc func handleApplicationDidBecomeActive(_ notification: Foundation.Notification) {
         view.layoutIfNeeded()
     }
 
 
     // MARK: - Setup
 
-    open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber) {
+    @objc open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber) {
         let title = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
         textView.alpha = 0.0
@@ -532,7 +532,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             attribute: .width,
             multiplier: ratio,
             constant: 0)
-        constraint.priority = UILayoutPriorityDefaultHigh
+        constraint.priority = .defaultHigh
         featuredImageView.addConstraint(constraint)
         featuredImageView.setNeedsUpdateConstraints()
         featuredImageView.image = image
@@ -655,7 +655,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        if post.isWPCom && !shouldHideComments {
+        if (post.isWPCom || post.isJetpack) && !shouldHideComments {
             let commentCount = post.commentCount?.intValue ?? 0
             if (ReaderHelpers.isLoggedIn() && post.commentsOpen) || commentCount > 0 {
                 configureCommentActionButton()
@@ -796,7 +796,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Instance Methods
 
-    func presentWebViewControllerWithURL(_ url: URL) {
+    @objc func presentWebViewControllerWithURL(_ url: URL) {
         var url = url
         if url.host == nil {
             if let postURLString = post?.permaLink {
@@ -813,7 +813,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func previewSite() {
+    @objc func previewSite() {
         let controller = ReaderStreamViewController.controllerWithSiteID(post!.siteID, isFeed: post!.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
@@ -821,7 +821,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
     }
 
-    func setBarsHidden(_ hidden: Bool, animated: Bool = true) {
+    @objc func setBarsHidden(_ hidden: Bool, animated: Bool = true) {
         if navigationController?.isNavigationBarHidden == hidden {
             return
         }
@@ -861,7 +861,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func isScrollViewAtBottom() -> Bool {
+    @objc func isScrollViewAtBottom() -> Bool {
         return textView.contentOffset.y + textView.frame.height == textView.contentSize.height
     }
 
@@ -956,7 +956,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
+    @objc func didTapHeaderAvatar(_ gesture: UITapGestureRecognizer) {
         if gesture.state != .ended {
             return
         }
@@ -974,7 +974,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
+    @objc func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
         if gesture.state != .ended {
             return
         }
@@ -986,7 +986,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func didTapDiscoverAttribution() {
+    @objc func didTapDiscoverAttribution() {
         if post?.sourceAttribution == nil {
             return
         }
@@ -1010,12 +1010,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    func didTapShareButton(_ sender: UIButton) {
+    @objc func didTapShareButton(_ sender: UIButton) {
         sharingController.shareReaderPost(post!, fromView: sender, inViewController: self)
     }
 
 
-    func handleBlockSiteNotification(_ notification: Foundation.Notification) {
+    @objc func handleBlockSiteNotification(_ notification: Foundation.Notification) {
         if let userInfo = notification.userInfo, let aPost = userInfo["post"] as? NSObject {
             if aPost == post! {
                 _ = navigationController?.popViewController(animated: true)

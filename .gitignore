@@ -59,6 +59,7 @@ WordPress/InfoPlist-alpha.h
 WordPress/InfoPlist-internal.h
 # coverage.py
 */CoverageData/*
+WordPress/Images.xcassets/AppIcon-Internal.appiconset
 
 # Bundler
 /vendor/bundle/
@@ -67,3 +68,6 @@ WordPress/InfoPlist-internal.h
 # Dependencies
 /vendor/
 Scripts/fastlane/Preview.html
+
+# TestConfig
+WordPress/WordPressUITests/Config.swift

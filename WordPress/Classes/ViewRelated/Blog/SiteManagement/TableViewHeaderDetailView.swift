@@ -6,7 +6,7 @@ import WordPressShared
 open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
     /// Title is displayed in standard section header style
     ///
-    open var title: String = "" {
+    @objc open var title: String = "" {
         didSet {
             if title != oldValue {
                 titleLabel.text = title.localizedUppercase
@@ -17,7 +17,7 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
 
     /// Detail is displayed in standard section footer style
     ///
-    open var detail: String = "" {
+    @objc open var detail: String = "" {
         didSet {
             if detail != oldValue {
                 detailLabel.text = detail
@@ -73,7 +73,7 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
     ///     - title: String displayed in standard section header style
     ///     - detail: String displayed in standard section footer style
     ///
-    convenience public init(title: String?, detail: String?) {
+    @objc convenience public init(title: String?, detail: String?) {
         self.init(reuseIdentifier: nil)
         defer {
             self.title = title ?? ""

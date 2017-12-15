@@ -7,7 +7,7 @@ import WordPressKit
 /// connections, and keyring connections.
 ///
 open class SharingService: LocalCoreDataService {
-    let SharingAPIErrorNotFound = "not_found"
+    @objc let SharingAPIErrorNotFound = "not_found"
 
     // MARK: - Publicize Related Methods
 
@@ -19,7 +19,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    open func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func syncPublicizeServicesForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         guard let remote = remoteForBlog(blog) else {
             return
         }
@@ -39,7 +39,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting an array of `KeyringConnection` objects
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    open func fetchKeyringConnectionsForBlog(_ blog: Blog, success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func fetchKeyringConnectionsForBlog(_ blog: Blog, success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
         guard let remote = remoteForBlog(blog) else {
             return
         }
@@ -58,7 +58,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    open func syncPublicizeConnectionsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func syncPublicizeConnectionsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
@@ -82,7 +82,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting a `PublicizeConnection` parameter.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    open func createPublicizeConnectionForBlog(_ blog: Blog,
+    @objc open func createPublicizeConnectionForBlog(_ blog: Blog,
         keyring: KeyringConnection,
         externalUserID: String?,
         success: ((PublicizeConnection) -> Void)?,
@@ -127,7 +127,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    open func updateSharedForBlog(_ blog: Blog,
+    @objc open func updateSharedForBlog(_ blog: Blog,
         shared: Bool,
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
@@ -186,7 +186,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    open func updateExternalID(_ externalID: String,
+    @objc open func updateExternalID(_ externalID: String,
         forBlog blog: Blog,
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
@@ -230,7 +230,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    open func deletePublicizeConnectionForBlog(_ blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func deletePublicizeConnectionForBlog(_ blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         // optimistically delete the connection locally.
         let siteID = pubConn.siteID
         managedObjectContext.delete(pubConn)
@@ -272,7 +272,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: The requested `PublicizeService` or nil.
     ///
-    open func findPublicizeServiceNamed(_ name: String) -> PublicizeService? {
+    @objc open func findPublicizeServiceNamed(_ name: String) -> PublicizeService? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeService.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "serviceID = %@", name)
 
@@ -292,7 +292,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: An array of `PublicizeService`.  The array is empty if no objects are cached.
     ///
-    open func allPublicizeServices() -> [PublicizeService] {
+    @objc open func allPublicizeServices() -> [PublicizeService] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeService.classNameWithoutNamespaces())
         let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
         request.sortDescriptors = [sortDescriptor]
@@ -380,7 +380,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: The requested `PublicizeConnection` or nil.
     ///
-    open func findPublicizeConnectionByID(_ connectionID: NSNumber) -> PublicizeConnection? {
+    @objc open func findPublicizeConnectionByID(_ connectionID: NSNumber) -> PublicizeConnection? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeConnection.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "connectionID = %@", connectionID)
 
@@ -403,7 +403,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: An array of `PublicizeConnection`.  The array is empty if no objects are cached.
     ///
-    open func allPublicizeConnectionsForBlog(_ blog: Blog) -> [PublicizeConnection] {
+    @objc open func allPublicizeConnectionsForBlog(_ blog: Blog) -> [PublicizeConnection] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeConnection.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "blog = %@", blog)
 
@@ -531,7 +531,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    open func syncSharingButtonsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func syncSharingButtonsForBlog(_ blog: Blog, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
             return
@@ -553,7 +553,7 @@ open class SharingService: LocalCoreDataService {
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    open func updateSharingButtonsForBlog(_ blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func updateSharingButtonsForBlog(_ blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
 
         let blogObjectID = blog.objectID
         guard let remote = remoteForBlog(blog) else {
@@ -618,7 +618,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: An array of `SharingButton`s.  The array is empty if no objects are cached.
     ///
-    open func allSharingButtonsForBlog(_ blog: Blog) -> [SharingButton] {
+    @objc open func allSharingButtonsForBlog(_ blog: Blog) -> [SharingButton] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: SharingButton.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "blog = %@", blog)
         request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
@@ -694,7 +694,7 @@ open class SharingService: LocalCoreDataService {
     ///
     /// - Returns: The requested `SharingButton` or nil.
     ///
-    open func findSharingButtonByID(_ buttonID: String, blog: Blog) -> SharingButton? {
+    @objc open func findSharingButtonByID(_ buttonID: String, blog: Blog) -> SharingButton? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: SharingButton.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "buttonID = %@ AND blog = %@", buttonID, blog)
 
