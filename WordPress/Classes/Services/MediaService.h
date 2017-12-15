@@ -23,10 +23,11 @@
  @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
  @param completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
  */
-- (nonnull NSProgress *)createMediaWith:(nonnull id<ExportableAsset>)exportable
-               objectID:(nonnull NSManagedObjectID *)objectID              
-      thumbnailCallback:(nullable void (^)(NSURL * __nonnull thumbnailURL))thumbnailCallback
-             completion:(nullable void (^)(Media * __nullable media, NSError * __nullable error))completion;
+- (nonnull Media *)createMediaWith:(nonnull id<ExportableAsset>)exportable
+                          objectID:(nonnull NSManagedObjectID *)objectID
+                          progress:(NSProgress * __nullable __autoreleasing * __nullable)progress
+                 thumbnailCallback:(nullable void (^)(NSURL * __nonnull thumbnailURL))thumbnailCallback
+                        completion:(nullable void (^)(Media * __nullable media, NSError * __nullable error))completion;
 
 
 /**

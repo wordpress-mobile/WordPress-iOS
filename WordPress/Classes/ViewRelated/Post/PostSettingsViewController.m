@@ -1320,6 +1320,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [mediaService createMediaWith:asset
                          objectID:self.apost.objectID
+                         progress:nil
                        thumbnailCallback:nil
                               completion:^(Media *media, NSError * error) {
         if (!weakSelf) {
