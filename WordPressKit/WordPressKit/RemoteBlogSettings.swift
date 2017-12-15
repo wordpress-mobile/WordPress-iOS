@@ -36,6 +36,21 @@ public class RemoteBlogSettings: NSObject {
     ///
     @objc public var defaultPostFormat: String?
 
+    /// The blog's date format setting.
+    ///
+    @objc public var dateFormat: String?
+
+    /// The blog's time format setting
+    ///
+    @objc public var timeFormat: String?
+
+    /// The blog's chosen day to start the week setting
+    ///
+    @objc public var startOfWeek: String?
+
+    /// Numbers of posts per page
+    ///
+    @objc public var postsPerPage: NSNumber?
 
 
     // MARK: - Discussion
@@ -131,6 +146,15 @@ public class RemoteBlogSettings: NSObject {
     ///
     @objc public var relatedPostsShowThumbnails: NSNumber?
 
+    // MARK: - AMP
+
+    /// Indicates if AMP is supported on the site
+    ///
+    @objc public var ampSupported: NSNumber?
+
+    /// Indicates if AMP is enabled on the site
+    ///
+    @objc public var ampEnabled: NSNumber?
 
     // MARK: - Sharing
 

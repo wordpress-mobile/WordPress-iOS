@@ -9,7 +9,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var tableViewModel = ImmuTable.Empty
 
     fileprivate let noResultsView = WPNoResultsView()
-    var viewModelReceipt: Receipt?
+    var viewModelStateChangeReceipt: Receipt?
+    var viewModelChangeReceipt: Receipt?
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.site = site
@@ -35,17 +36,29 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
-        viewModelReceipt = viewModel.onStateChange { [weak self] (change) in
+        viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] (change) in
             self?.refreshModel(change: change)
         }
+        viewModelChangeReceipt = viewModel.onChange { [weak self] in
+            self?.updateRefreshControl()
+        }
         refreshModel(change: .replace)
+        updateRefreshControl()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshModel(change: .replace)
+    }
+
+    @objc func refresh() {
+        ActionDispatcher.dispatch(PluginAction.refreshPlugins(site: site))
     }
 
     func updateNoResults() {
@@ -79,6 +92,21 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
             tableView.reloadRows(at: indexPaths, with: .none)
         }
         updateNoResults()
+    }
+
+    func updateRefreshControl() {
+        guard let refreshControl = refreshControl else {
+                return
+        }
+
+        switch (viewModel.refreshing, refreshControl.isRefreshing) {
+        case (true, false):
+            refreshControl.beginRefreshing()
+        case (false, true):
+            refreshControl.endRefreshing()
+        default:
+            break
+        }
     }
 }
 
