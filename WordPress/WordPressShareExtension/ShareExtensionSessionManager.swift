@@ -76,20 +76,21 @@ import CoreData
     /// Logs the error and updates the upload op's status with `Error`
     ///
     /// - Parameters:
-    ///   - uploadOpObjectIDs: Array of object IDs
     ///   - errorString: Error string to log
+    ///   - uploadOpObjectIDs: Array of object IDs
     ///
-    fileprivate func logError(errorString: String, uploadOpObjectIDs: [NSManagedObjectID]) {
-        if uploadOpObjectIDs.count > 0 {
-            DDLogError(errorString)
-            for uploadOpObjectID in uploadOpObjectIDs {
-                updateStatus(.Error, forUploadOpWithObjectID: uploadOpObjectID)
-            }
+    fileprivate func logError(_ errorString: String, uploadOpObjectIDs: [NSManagedObjectID]) {
+        guard uploadOpObjectIDs.count > 0 else {
+            return
+        }
+        DDLogError(errorString)
+        for uploadOpObjectID in uploadOpObjectIDs {
+            updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
         }
     }
 
-    fileprivate func logError(errorString: String, uploadOpObjectIDs: NSManagedObjectID...) {
-        logError(errorString: errorString, uploadOpObjectIDs: uploadOpObjectIDs)
+    fileprivate func logError(_ errorString: String, uploadOpObjectIDs: NSManagedObjectID...) {
+        logError(errorString, uploadOpObjectIDs: uploadOpObjectIDs)
     }
 
     /// Appends all of the remote media URLs to the post's content poperty.
@@ -100,9 +101,9 @@ import CoreData
     ///   4. Save the post upload op and return it
     ///
     /// - Parameter groupID: Group ID representing all of the media upload ops and single post upload op
-    /// - Returns: The updated post UploadOperation or nil
+    /// - Returns: The updated post PostUploadOperation or nil
     ///
-    fileprivate func combinePostAndMediaContentForGroupID(_ groupID: String) -> UploadOperation? {
+    fileprivate func combinePostAndMediaContentForGroupID(_ groupID: String) -> PostUploadOperation? {
         guard let postUploadOp = fetchPostUploadOpForGroup(groupID),
             let mediaUploadOps = fetchMediaUploadOpsForGroup(groupID) else {
                 return nil
@@ -119,14 +120,14 @@ import CoreData
     ///
     /// - Parameter postUploadOp: The UploadOperation that represents a post
     ///
-    fileprivate func uploadPost(postUploadOp: UploadOperation) {
+    fileprivate func uploadPost(postUploadOp: PostUploadOperation) {
         let postUploadOpID = postUploadOp.objectID
         guard let oauth2Token = ShareExtensionService.retrieveShareExtensionToken() else {
-            logError(errorString: "Error creating post: OAuth token is not defined.", uploadOpObjectIDs: postUploadOpID)
+            logError("Error creating post: OAuth token is not defined.", uploadOpObjectIDs: postUploadOpID)
             return
         }
         guard postUploadOp.siteID > 0 else {
-            logError(errorString: "Error creating post: site ID was missing.", uploadOpObjectIDs: postUploadOpID)
+            logError("Error creating post: site ID was missing.", uploadOpObjectIDs: postUploadOpID)
             return
         }
 
@@ -136,7 +137,7 @@ import CoreData
                                       backgroundSessionIdentifier: backgroundSessionIdentifier,
                                       sharedContainerIdentifier: WPAppGroupName)
         let remote = PostServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
-        postUploadOp.currentStatus = .InProgress
+        postUploadOp.currentStatus = .inProgress
         coreDataStack.saveContext()
 
         remote.createPost(postUploadOp.remotePost, success: { post in
@@ -145,7 +146,7 @@ import CoreData
                     DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
                     postUploadOp.remotePostID = postID.int64Value
                 }
-                postUploadOp.currentStatus = .Complete
+                postUploadOp.currentStatus = .complete
                 self.coreDataStack.saveContext()
                 self.cleanupSessionAndTerminate()
             }
@@ -154,7 +155,7 @@ import CoreData
             if let error = error as NSError? {
                 errorString += ": \(error.localizedDescription)"
             }
-            self.logError(errorString: errorString, uploadOpObjectIDs: postUploadOpID)
+            self.logError(errorString, uploadOpObjectIDs: postUploadOpID)
             self.cleanupSessionAndTerminate()
         })
     }
@@ -193,16 +194,16 @@ private extension ShareExtensionSessionManager {
     ///   - remoteMediaID: remote media ID. Can be nil.
     ///   - remoteURL: remote media URL string. Can be nil.
     func updateMediaOperationForFileName(_ fileName: String, remoteMediaID: Int64?, remoteURL: String?) {
-        guard let uploadMediaOp = fetchUploadOpForFileName(fileName) else {
+        guard let mediaUploadOp = fetchMediaUploadOpForFileName(fileName) else {
             DDLogError("Error loading UploadOperation Object with File Name: \(fileName)")
             return
         }
 
         if let remoteID = remoteMediaID {
-            uploadMediaOp.remoteMediaID = remoteID
+            mediaUploadOp.remoteMediaID = remoteID
         }
         if let remoteUrlString = remoteURL {
-            uploadMediaOp.remoteURL = remoteUrlString
+            mediaUploadOp.remoteURL = remoteUrlString
         }
         coreDataStack.saveContext()
     }
@@ -210,12 +211,12 @@ private extension ShareExtensionSessionManager {
     /// Fetch an upload op in the current that matches the provided filename
     ///
     /// - Parameter fileName: the name of the local (and remote) file associated with a upload op
-    /// - Returns: UploadOperation or nil
+    /// - Returns: MediaUploadOperation or nil
     ///
-    func fetchUploadOpForFileName(_ fileName: String) -> UploadOperation? {
-        var uploadOp: UploadOperation?
+    func fetchMediaUploadOpForFileName(_ fileName: String) -> MediaUploadOperation? {
+        var uploadOp: MediaUploadOperation?
         let predicate = NSPredicate(format: "(fileName == %@ AND backgroundSessionIdentifier == %@)", fileName, backgroundSessionIdentifier)
-        uploadOp = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
+        uploadOp = coreDataStack.managedContext.firstObject(ofType: MediaUploadOperation.self, matching: predicate)
 
         return uploadOp
     }
@@ -225,16 +226,15 @@ private extension ShareExtensionSessionManager {
     /// NOTE: There will only ever be one post associated with a group of upload ops.
     ///
     /// - Parameter groupID: group ID for a set of upload ops
-    /// - Returns: post UploadOperation or nil
+    /// - Returns: post PostUploadOperation or nil
     ///
-    func fetchPostUploadOpForGroup(_ groupID: String) -> UploadOperation? {
-        var uploadOp: UploadOperation?
-        let predicate = NSPredicate(format: "(groupID == %@ AND isMedia == false)", groupID)
-        uploadOp = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
+    func fetchPostUploadOpForGroup(_ groupID: String) -> PostUploadOperation? {
+        var uploadOp: PostUploadOperation?
+        let predicate = NSPredicate(format: "(groupID == %@)", groupID)
+        uploadOp = coreDataStack.managedContext.firstObject(ofType: PostUploadOperation.self, matching: predicate)
 
         return uploadOp
     }
-
 
     /// Fetch the post and media upload ops for a given URLSession taskIdentifier.
     ///
@@ -255,12 +255,12 @@ private extension ShareExtensionSessionManager {
     /// Fetch all of the media upload ops for the provided group id
     ///
     /// - Parameter groupID: group ID for a set of media upload ops
-    /// - Returns: An array of UploadOperations or nil
+    /// - Returns: An array of MediaUploadOperations or nil
     ///
-    func fetchMediaUploadOpsForGroup(_ groupID: String) -> [UploadOperation]? {
-        var mediaUploadOps: [UploadOperation]?
-        let predicate = NSPredicate(format: "(groupID == %@ AND isMedia == true)", groupID)
-        mediaUploadOps = coreDataStack.managedContext.allObjects(ofType: UploadOperation.self, matching: predicate)
+    func fetchMediaUploadOpsForGroup(_ groupID: String) -> [MediaUploadOperation]? {
+        var mediaUploadOps: [MediaUploadOperation]?
+        let predicate = NSPredicate(format: "(groupID == %@)", groupID)
+        mediaUploadOps = coreDataStack.managedContext.allObjects(ofType: MediaUploadOperation.self, matching: predicate)
 
         return mediaUploadOps
     }
@@ -322,17 +322,17 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
         }
 
         if let error = error {
-            logError(errorString: "Background session task completed with error. Session:\(session) Task:\(task.debugDescription) Error:\(error).",
+            logError("Background session task completed with error. Session:\(session) Task:\(task.debugDescription) Error:\(error).",
                 uploadOpObjectIDs: uploadOps.map({ $0.objectID }))
             WPAppAnalytics.track(.shareExtensionError, error: error)
             return
         }
 
         uploadOps.forEach { uploadOp in
-            if let fileName = uploadOp.fileName {
+            if let mediaUploadOp = uploadOp as? MediaUploadOperation, let fileName = mediaUploadOp.fileName {
                 ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
             }
-            updateStatus(.Complete, forUploadOpWithObjectID: uploadOp.objectID)
+            updateStatus(.complete, forUploadOpWithObjectID: uploadOp.objectID)
         }
         DDLogInfo("Background session task completed. Session:\(session) Task:\(task.debugDescription).")
     }

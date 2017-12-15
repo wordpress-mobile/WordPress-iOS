@@ -181,7 +181,7 @@ class ShareViewController: SLComposeServiceViewController {
                 post.content = body
                 return post
             }()
-            let uploadPostOpID = savePostOperation(remotePost, with: .InProgress)
+            let uploadPostOpID = savePostOperation(remotePost, with: .inProgress)
             uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
                 self.tracks.trackExtensionPosted(self.postStatus)
                 self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
@@ -295,34 +295,34 @@ private extension ShareViewController {
 
 private extension ShareViewController {
     func saveMediaOperation(_ remoteMedia: RemoteMedia, with status: UploadOperation.UploadStatus, siteID: NSNumber) -> NSManagedObjectID {
-        let uploadMediaOp = UploadOperation(context: managedContext)
-        uploadMediaOp.updateWithMedia(remote: remoteMedia)
-        uploadMediaOp.backgroundSessionIdentifier = backgroundSessionIdentifier
-        uploadMediaOp.groupID = groupIdentifier
-        uploadMediaOp.created = NSDate()
-        uploadMediaOp.currentStatus = status
-        uploadMediaOp.siteID = siteID.int64Value
+        let mediaUploadOp = MediaUploadOperation(context: managedContext)
+        mediaUploadOp.updateWithMedia(remote: remoteMedia)
+        mediaUploadOp.backgroundSessionIdentifier = backgroundSessionIdentifier
+        mediaUploadOp.groupID = groupIdentifier
+        mediaUploadOp.created = NSDate()
+        mediaUploadOp.currentStatus = status
+        mediaUploadOp.siteID = siteID.int64Value
         coreDataStack.saveContext()
-        return uploadMediaOp.objectID
+        return mediaUploadOp.objectID
     }
 
     func savePostOperation(_ remotePost: RemotePost, with status: UploadOperation.UploadStatus) -> NSManagedObjectID {
-        let uploadPostOp = UploadOperation(context: managedContext)
-        uploadPostOp.updateWithPost(remote: remotePost)
-        uploadPostOp.groupID = groupIdentifier
-        uploadPostOp.created = NSDate()
-        uploadPostOp.currentStatus = status
+        let postUploadOp = PostUploadOperation(context: managedContext)
+        postUploadOp.updateWithPost(remote: remotePost)
+        postUploadOp.groupID = groupIdentifier
+        postUploadOp.created = NSDate()
+        postUploadOp.currentStatus = status
         coreDataStack.saveContext()
-        return uploadPostOp.objectID
+        return postUploadOp.objectID
     }
 
-    func updatePostOperation(status: UploadOperation.UploadStatus, remotePostID: Int64, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
-        guard let uploadPostOp = (try? managedContext.existingObject(with: uploadOpObjectID)) as? UploadOperation else {
-            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+    func updatePostOperation(status: UploadOperation.UploadStatus, remotePostID: Int64, forPostUploadOpWithObjectID postUploadOpObjectID: NSManagedObjectID) {
+        guard let postUploadOp = (try? managedContext.existingObject(with: postUploadOpObjectID)) as? PostUploadOperation else {
+            DDLogError("Error loading PostUploadOperation Object with ID: \(postUploadOpObjectID)")
             return
         }
-        uploadPostOp.currentStatus = status
-        uploadPostOp.remotePostID = remotePostID
+        postUploadOp.currentStatus = status
+        postUploadOp.remotePostID = remotePostID
         coreDataStack.saveContext()
     }
 
@@ -350,24 +350,24 @@ private extension ShareViewController {
         coreDataStack.saveContext()
     }
 
-    func fetchPostUploadOp(withObjectID uploadOpObjectID: NSManagedObjectID) -> UploadOperation? {
-        var uploadOp: UploadOperation?
+    func fetchPostUploadOp(withObjectID postUploadOpObjectID: NSManagedObjectID) -> PostUploadOperation? {
+        var postUploadOp: PostUploadOperation?
         do {
-            uploadOp = try managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
+            postUploadOp = try managedContext.existingObject(with: postUploadOpObjectID) as? PostUploadOperation
         } catch {
-            DDLogError("Error loading UploadOperation Object with ID: \(uploadOpObjectID)")
+            DDLogError("Error loading PostUploadOperation Object with ID: \(postUploadOpObjectID)")
         }
-        return uploadOp
+        return postUploadOp
     }
 
-    func fetchMediaUploadOpsForGroup(_ groupID: String) -> [UploadOperation]? {
-        var mediaUploadOps: [UploadOperation]
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "UploadOperation")
-        request.predicate = NSPredicate(format: "(groupID == %@ AND isMedia == true)", groupID)
+    func fetchMediaUploadOpsForGroup(_ groupID: String) -> [MediaUploadOperation]? {
+        var mediaUploadOps: [MediaUploadOperation]
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MediaUploadOperation")
+        request.predicate = NSPredicate(format: "(groupID == %@)", groupID)
         do {
-            mediaUploadOps = try managedContext.fetch(request) as! [UploadOperation]
+            mediaUploadOps = try managedContext.fetch(request) as! [MediaUploadOperation]
         } catch {
-            fatalError("Failed to fetch UploadOperations: \(error)")
+            fatalError("Failed to fetch MediaUploadOperation: \(error)")
         }
 
         return mediaUploadOps
@@ -392,12 +392,13 @@ private extension ShareViewController {
     }
 
     func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, requestEnqueued: @escaping () -> ()) {
-        guard let postUploadOp = fetchPostUploadOp(withObjectID: uploadOpObjectID),
-            let remotePost = postUploadOp.remotePost else {
+        guard let postUploadOp = fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
                 DDLogError("Error uploading post in share extension — could not fetch saved post.")
                 requestEnqueued()
                 return
         }
+
+        let remotePost = postUploadOp.remotePost
 
         // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads so set it false
         let api = WordPressComRestApi(oAuthToken: oauth2Token,
@@ -410,9 +411,9 @@ private extension ShareViewController {
             if let post = post {
                 DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
                 if let postID = post.postID {
-                    self.updatePostOperation(status: .Complete, remotePostID: postID.int64Value, forUploadOpWithObjectID: uploadOpObjectID)
+                    self.updatePostOperation(status: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
                 } else {
-                    self.updateStatus(.Complete, forUploadOpWithObjectID: uploadOpObjectID)
+                    self.updateStatus(.complete, forUploadOpWithObjectID: uploadOpObjectID)
                 }
             }
             requestEnqueued()
@@ -422,7 +423,7 @@ private extension ShareViewController {
                 errorString += ": \(error.localizedDescription)"
             }
             DDLogError(errorString)
-            self.updateStatus(.Error, forUploadOpWithObjectID: uploadOpObjectID)
+            self.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
             requestEnqueued()
         })
     }
@@ -444,7 +445,7 @@ private extension ShareViewController {
             post.content = body
             return post
         }()
-        let uploadPostOpID = savePostOperation(remotePost, with: .Pending)
+        let uploadPostOpID = savePostOperation(remotePost, with: .pending)
 
         // Now process all of the media items and create their upload ops
         var uploadMediaOpIDs = [NSManagedObjectID]()
@@ -468,7 +469,7 @@ private extension ShareViewController {
                 DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
                 return
             }
-            let uploadMediaOpID = saveMediaOperation(remoteMedia, with: .Pending, siteID: NSNumber(value: siteID))
+            let uploadMediaOpID = saveMediaOperation(remoteMedia, with: .pending, siteID: NSNumber(value: siteID))
             uploadMediaOpIDs.append(uploadMediaOpID)
         }
 
@@ -485,7 +486,7 @@ private extension ShareViewController {
         let remote = MediaServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
-                self.updateStatus(.InProgress, forUploadOpWithObjectID: uploadMediaOpID)
+                self.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
                 if let taskID = taskID {
                     self.updateTaskID(taskID, forUploadOpWithObjectID: uploadMediaOpID)
                 }
@@ -509,7 +510,7 @@ private extension ShareViewController {
                         if localFileName.lowercased().trim() == remoteFileName.lowercased().trim() {
                             mediaUploadOp.remoteURL = remoteMediaURLString
                             mediaUploadOp.remoteMediaID = remoteMediaID
-                            mediaUploadOp.currentStatus = .Complete
+                            mediaUploadOp.currentStatus = .complete
                             ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: localFileName)
                         }
                     }
@@ -525,7 +526,7 @@ private extension ShareViewController {
             }
             DDLogError("Error creating post in share extension: \(error.localizedDescription)")
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
-                self.updateStatus(.Error, forUploadOpWithObjectID: uploadMediaOpID)
+                self.updateStatus(.error, forUploadOpWithObjectID: uploadMediaOpID)
             })
             self.tracks.trackExtensionError(error)
         }
