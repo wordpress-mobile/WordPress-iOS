@@ -62,6 +62,7 @@ import UIKit
         let buttonTitle = NSLocalizedString("Add new site", comment: "Title of button to add a new site.")
         addSiteButton?.setTitle(buttonTitle, for: UIControlState())
         addSiteButton?.setTitle(buttonTitle, for: .highlighted)
+        addSiteButton?.titleLabel?.adjustsFontForContentSizeCategory = true
         addSiteButton?.accessibilityIdentifier = "Add New Site Button"
     }
 
