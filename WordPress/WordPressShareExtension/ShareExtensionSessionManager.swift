@@ -85,7 +85,7 @@ import CoreData
         }
         DDLogError(errorString)
         for uploadOpObjectID in uploadOpObjectIDs {
-            updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
+            coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
         }
     }
 
@@ -104,8 +104,8 @@ import CoreData
     /// - Returns: The updated post PostUploadOperation or nil
     ///
     fileprivate func combinePostAndMediaContent(for groupID: String) -> PostUploadOperation? {
-        guard let postUploadOp = fetchPostUploadOp(for: groupID),
-            let mediaUploadOps = fetchMediaUploadOps(for: groupID) else {
+        guard let postUploadOp = coreDataStack.fetchPostUploadOp(for: groupID),
+            let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
                 return nil
         }
         let remoteURLText = mediaUploadOps.flatMap({ $0.remoteURL }).map({ "".stringByPrependingMediaURL($0) }).joined()
@@ -163,129 +163,13 @@ import CoreData
     }
 }
 
-// MARK: - ShareExtensionSessionManager Extension: Persistence Helpers
-
-private extension ShareExtensionSessionManager {
-
-    /// Updates the status using the given uploadOp's ObjectID.
-    ///
-    /// - Parameters:
-    ///   - status: New status
-    ///   - uploadOpObjectID: Managed object ID for a given upload op
-    ///
-    func updateStatus(_ status: UploadOperation.UploadStatus, forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID) {
-        var uploadOp: UploadOperation?
-        do {
-            uploadOp = try coreDataStack.managedContext.existingObject(with: uploadOpObjectID) as? UploadOperation
-        } catch {
-            DDLogError("Error setting \(status.stringValue) status for UploadOperation Object with ID: \(uploadOpObjectID) — could not fetch object.")
-            return
-        }
-        uploadOp?.currentStatus = status
-        coreDataStack.saveContext()
-    }
-
-    /// Updates the remote media URL and remote media ID on an upload op that corresponds with the provided
-    /// file name. If a parameter is nil, that specific param will not be updated.
-    ///
-    /// Note: We are searching for the upload op using a filename because a given task ID can have
-    /// multiple files associated with it.
-    ///
-    /// - Parameters:
-    ///   - fileName: the fileName from a URLSessionTask
-    ///   - remoteMediaID: remote media ID.
-    ///   - remoteURL: remote media URL string.
-    func updateMediaOperation(for fileName: String, remoteMediaID: Int64?, remoteURL: String?) {
-        guard let mediaUploadOp = fetchMediaUploadOp(for: fileName) else {
-            DDLogError("Error loading UploadOperation Object with File Name: \(fileName)")
-            return
-        }
-
-        if let remoteMediaID = remoteMediaID {
-            mediaUploadOp.remoteMediaID = remoteMediaID
-        }
-        mediaUploadOp.remoteURL = remoteURL
-        coreDataStack.saveContext()
-    }
-
-    /// Fetch an upload op in the current that matches the provided filename
-    ///
-    /// - Parameter fileName: the name of the local (and remote) file associated with a upload op
-    /// - Returns: MediaUploadOperation or nil
-    ///
-    func fetchMediaUploadOp(for fileName: String) -> MediaUploadOperation? {
-        var uploadOp: MediaUploadOperation?
-        let predicate = NSPredicate(format: "(fileName == %@ AND backgroundSessionIdentifier == %@)", fileName, backgroundSessionIdentifier)
-        uploadOp = coreDataStack.managedContext.firstObject(ofType: MediaUploadOperation.self, matching: predicate)
-
-        return uploadOp
-    }
-
-    /// Fetch the upload op that represents a post for a given group ID.
-    ///
-    /// NOTE: There will only ever be one post associated with a group of upload ops.
-    ///
-    /// - Parameter groupID: group ID for a set of upload ops
-    /// - Returns: post PostUploadOperation or nil
-    ///
-    func fetchPostUploadOp(for groupID: String) -> PostUploadOperation? {
-        var uploadOp: PostUploadOperation?
-        let predicate = NSPredicate(format: "(groupID == %@)", groupID)
-        uploadOp = coreDataStack.managedContext.firstObject(ofType: PostUploadOperation.self, matching: predicate)
-
-        return uploadOp
-    }
-
-    /// Fetch the post and media upload ops for a given URLSession taskIdentifier.
-    ///
-    /// NOTE: Because the WP API allows us to upload multiple media files in a single request, there
-    /// will most likely be multiple upload ops for a given task id.
-    ///
-    /// - Parameter taskIdentifier: the taskIdentifier from a URLSessionTask
-    /// - Returns: An array of UploadOperations or nil
-    ///
-    func fetchSessionUploadOps(for taskIdentifier: Int) -> [UploadOperation]? {
-        var uploadOps: [UploadOperation]?
-        let predicate = NSPredicate(format: "(backgroundSessionTaskID == %d AND backgroundSessionIdentifier == %@)", taskIdentifier, backgroundSessionIdentifier)
-        uploadOps = coreDataStack.managedContext.allObjects(ofType: UploadOperation.self, matching: predicate)
-
-        return uploadOps
-    }
-
-    /// Fetch all of the media upload ops for the provided group id
-    ///
-    /// - Parameter groupID: group ID for a set of media upload ops
-    /// - Returns: An array of MediaUploadOperations or nil
-    ///
-    func fetchMediaUploadOps(for groupID: String) -> [MediaUploadOperation]? {
-        var mediaUploadOps: [MediaUploadOperation]?
-        let predicate = NSPredicate(format: "(groupID == %@)", groupID)
-        mediaUploadOps = coreDataStack.managedContext.allObjects(ofType: MediaUploadOperation.self, matching: predicate)
-
-        return mediaUploadOps
-    }
-
-    /// Fetches the group ID for the provided session ID.
-    ///
-    /// - Parameter sessionID: the session ID
-    /// - Returns: group ID or nil if session does not have an associated group
-    ///
-    func fetchGroupID(for sessionID: String) -> String? {
-        var uploadOp: UploadOperation?
-        let predicate = NSPredicate(format: "(backgroundSessionIdentifier == %@)", sessionID)
-        uploadOp = coreDataStack.managedContext.firstObject(ofType: UploadOperation.self, matching: predicate)
-
-        return uploadOp?.groupID
-    }
-}
-
 // MARK: - ShareExtensionSessionManager Extension: URLSessionTaskDelegate
 
 extension ShareExtensionSessionManager: URLSessionDelegate {
 
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        guard let groupID = fetchGroupID(for: self.backgroundSessionIdentifier), !groupID.isEmpty else {
-            DDLogError("Unable to find the Group ID for session with ID \(self.backgroundSessionIdentifier).")
+        guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
+            DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
             return
         }
         guard let postUploadOp = combinePostAndMediaContent(for: groupID) else {
@@ -316,7 +200,7 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
     }
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let uploadOps = fetchSessionUploadOps(for: task.taskIdentifier) else {
+        guard let uploadOps = coreDataStack.fetchSessionUploadOps(for: task.taskIdentifier, with: backgroundSessionIdentifier) else {
             DDLogError("Background session tasks were not found in shared database. Session:\(session) Task:\(task.debugDescription).")
             return
         }
@@ -332,7 +216,7 @@ extension ShareExtensionSessionManager: URLSessionTaskDelegate {
             if let mediaUploadOp = uploadOp as? MediaUploadOperation, let fileName = mediaUploadOp.fileName {
                 ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
             }
-            updateStatus(.complete, forUploadOpWithObjectID: uploadOp.objectID)
+            coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOp.objectID)
         }
         DDLogInfo("Background session task completed. Session:\(session) Task:\(task.debugDescription).")
     }
@@ -364,7 +248,7 @@ extension ShareExtensionSessionManager: URLSessionDataDelegate {
             if let remoteMediaUrlString  = mediaDict["URL"] as? String, !remoteMediaUrlString.isEmpty {
                 urlString = remoteMediaUrlString
             }
-            updateMediaOperation(for: remoteFilenameString, remoteMediaID: mediaID, remoteURL: urlString)
+            coreDataStack.updateMediaOperation(for: remoteFilenameString, with: backgroundSessionIdentifier, remoteMediaID: mediaID, remoteURL: urlString)
         }
     }
 }
