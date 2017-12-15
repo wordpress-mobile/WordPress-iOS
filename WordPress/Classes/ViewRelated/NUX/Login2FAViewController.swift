@@ -11,7 +11,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
-    var pasteboardBeforeBackground: String? = nil
+    @objc var pasteboardBeforeBackground: String? = nil
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -29,7 +29,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         localizeControls()
         configureTextFields()
         configureSubmitButton(animating: false)
-        configureSendCodeButton()
     }
 
 
@@ -71,7 +70,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
-    func localizeControls() {
+    @objc func localizeControls() {
         instructionLabel?.text = NSLocalizedString("Almost there! Please enter the verification code from your authenticator app.", comment: "Instructions for users with two-factor authentication enabled.")
 
         verificationCodeField.placeholder = NSLocalizedString("Verification code", comment: "two factor code placeholder")
@@ -87,20 +86,9 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
 
     /// configures the text fields
     ///
-    func configureTextFields() {
+    @objc func configureTextFields() {
         verificationCodeField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
-
-    /// Hides the send code button when appropriate
-    ///
-    func configureSendCodeButton() {
-        guard let _ = loginFields.nonceInfo else {
-            return
-        }
-        sendCodeButton.isEnabled = false
-        sendCodeButton.setTitle("", for: .normal)
-    }
-
 
     /// Configures the appearance and state of the submit button.
     ///
@@ -133,7 +121,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
-    func configureViewForEditingIfNeeded() {
+    @objc func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editiing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
@@ -145,7 +133,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     // MARK: - Instance Methods
 
 
-    func showEpilogue() {
+    @objc func showEpilogue() {
         performSegue(withIdentifier: .showEpilogue, sender: self)
     }
 
@@ -153,7 +141,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
-    func validateForm() {
+    @objc func validateForm() {
         if let nonce = loginFields.nonceInfo {
             loginWithNonce(info: nonce)
             return
@@ -225,7 +213,12 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
         SVProgressHUD.showDismissibleSuccess(withStatus: message)
 
-        loginFacade.requestOneTimeCode(with: loginFields)
+        if let _ = loginFields.nonceInfo {
+            // social login
+            loginFacade.requestSocial2FACode(with: loginFields)
+        } else {
+            loginFacade.requestOneTimeCode(with: loginFields)
+        }
     }
 
 
@@ -233,12 +226,12 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     // MARK: - Handle application state changes.
 
 
-    func applicationBecameInactive() {
+    @objc func applicationBecameInactive() {
         pasteboardBeforeBackground = UIPasteboard.general.string
     }
 
 
-    func applicationBecameActive() {
+    @objc func applicationBecameActive() {
         let emptyField = verificationCodeField.text?.isEmpty ?? true
         guard emptyField,
             let pasteString = UIPasteboard.general.string,
@@ -258,12 +251,12 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
 
-    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 }

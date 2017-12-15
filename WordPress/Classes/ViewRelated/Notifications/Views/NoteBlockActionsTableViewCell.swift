@@ -38,39 +38,39 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Handler to be executed on Reply event
     ///
-    var onReplyClick: EventHandler?
+    @objc var onReplyClick: EventHandler?
 
     /// Handler to be executed on Like event
     ///
-    var onLikeClick: EventHandler?
+    @objc var onLikeClick: EventHandler?
 
     /// Handler to be executed on Unlike event
     ///
-    var onUnlikeClick: EventHandler?
+    @objc var onUnlikeClick: EventHandler?
 
     /// Handler to be executed on Approve event
     ///
-    var onApproveClick: EventHandler?
+    @objc var onApproveClick: EventHandler?
 
     /// Handler to be executed on Unapprove event
     ///
-    var onUnapproveClick: EventHandler?
+    @objc var onUnapproveClick: EventHandler?
 
     /// Handler to be executed on Trash event
     ///
-    var onTrashClick: EventHandler?
+    @objc var onTrashClick: EventHandler?
 
     /// Handler to be executed on Spam event
     ///
-    var onSpamClick: EventHandler?
+    @objc var onSpamClick: EventHandler?
 
     // Handler to be executed on Edition event
     //
-    var onEditClick: EventHandler?
+    @objc var onEditClick: EventHandler?
 
     /// Indicates whether the Reply Action is enabled, or not
     ///
-    var isReplyEnabled: Bool = false {
+    @objc var isReplyEnabled: Bool = false {
         didSet {
             toggleAction(button: btnReply, hidden: !isReplyEnabled)
         }
@@ -78,7 +78,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Indicates whether the Like Action is enabled, or not
     ///
-    var isLikeEnabled: Bool = false {
+    @objc var isLikeEnabled: Bool = false {
         didSet {
             toggleAction(button: btnLike, hidden: !isLikeEnabled)
         }
@@ -86,7 +86,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Indicates whether the Approve Action is enabled, or not
     ///
-    var isApproveEnabled: Bool = false {
+    @objc var isApproveEnabled: Bool = false {
         didSet {
             toggleAction(button: btnApprove, hidden: !isApproveEnabled)
         }
@@ -94,7 +94,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Indicates whether the Trash Action is enabled, or not
     ///
-    var isTrashEnabled: Bool = false {
+    @objc var isTrashEnabled: Bool = false {
         didSet {
             toggleAction(button: btnTrash, hidden: !isTrashEnabled)
         }
@@ -102,7 +102,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Indicates whether the Spam Action is enabled, or not
     ///
-    var isSpamEnabled: Bool = false {
+    @objc var isSpamEnabled: Bool = false {
         didSet {
             toggleAction(button: btnSpam, hidden: !isSpamEnabled)
         }
@@ -110,7 +110,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Indicates whether the Edit Action is enabled, or not
     ///
-    var isEditEnabled: Bool = false {
+    @objc var isEditEnabled: Bool = false {
         didSet {
             toggleAction(button: btnEdit, hidden: !isEditEnabled)
         }
@@ -118,7 +118,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Indicates whether Like is in it's "Selected" state, or not
     ///
-    var isLikeOn: Bool {
+    @objc var isLikeOn: Bool {
         set {
             btnLike.isSelected = newValue
             btnLike.accessibilityLabel = likeAccesibilityLabel
@@ -133,7 +133,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
     /// Indicates whether Approve is in it's "Selected" state, or not
     ///
-    var isApproveOn: Bool {
+    @objc var isApproveOn: Bool {
         set {
             btnApprove.isSelected = newValue
             btnApprove.accessibilityLabel = approveAccesibilityLabel

@@ -13,7 +13,7 @@ class PostTests: XCTestCase {
     }
 
     fileprivate func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName, into: context) as! Post
+        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: context) as! Post
     }
 
     fileprivate func newTestPostCategory() -> PostCategory {

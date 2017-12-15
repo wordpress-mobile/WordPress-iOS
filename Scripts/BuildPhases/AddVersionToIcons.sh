@@ -1,4 +1,6 @@
 #!/bin/sh
+# Based on Krzysztof Zablocki Boostrap library - https://github.com/krzysztofzablocki/Bootstrap
+
 convertPath=`which convert`
 echo ${convertPath}
 if [[ ! -f ${convertPath} || -z ${convertPath} ]]; then
@@ -22,15 +24,29 @@ function abspath() { pushd . > /dev/null; if [ -d "$1" ]; then cd "$1"; dirs -l 
 
 function processIcon() {
     base_file=$1
+    temp_path=$2
+    dest_path=$3
+
+    if [[ ! -e $base_file ]]; then
+        echo "error: file does not exist: ${base_file}"
+        exit -1;
+    fi
+
+    if [[ -z $temp_path ]]; then
+        echo "error: temp_path does not exist: ${temp_path}"
+        exit -1;
+    fi
+
+    if [[ -z $dest_path ]]; then
+        echo "error: dest_path does not exist: ${dest_path}"
+        exit -1;
+    fi
+
     file_name=$(basename "$base_file")
-    base_path=$2
-    base_destination_path=$3
-    
-    target_path="${base_path}/${file_name}"
-    final_file_path="${base_destination_path}/${file_name}"
+    final_file_path="${dest_path}/${file_name}"
     
     base_tmp_normalizedFileName="${file_name%.*}-normalized.${file_name##*.}"
-    base_tmp_normalizedFilePath="${base_path}/${base_tmp_normalizedFileName}"
+    base_tmp_normalizedFilePath="${temp_path}/${base_tmp_normalizedFileName}"
     
     # Normalize
     echo "Reverting optimized PNG to normal"
@@ -64,9 +80,7 @@ function processIcon() {
     # compose final image
     #
     filename=New"${base_file}"
-    convert /tmp/temp.png /tmp/labels-base.png -geometry +0+$band_position -composite /tmp/labels.png -geometry +0+$text_position -geometry +${w}-${h} -composite -alpha remove "${target_path}"
-    
-    cp "${target_path}" "${final_file_path}"
+    convert /tmp/temp.png /tmp/labels-base.png -geometry +0+$band_position -composite /tmp/labels.png -geometry +0+$text_position -geometry +${w}-${h} -composite -alpha remove "${final_file_path}"
     
     # clean up
     rm /tmp/temp.png
@@ -79,12 +93,27 @@ function processIcon() {
 
 # Process all app icons and create the corresponding internal icons
 # icons_dir="${SRCROOT}/Images.xcassets/AppIcon.appiconset"
-icons_dir="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}"
-icons_tmp_dir="${TEMP_DIR}/ModifiedIcons"
-icons_dest_dir="${TARGET_BUILD_DIR}/${CONTENTS_FOLDER_PATH}"
-mkdir "${icons_tmp_dir}"
+icons_path="${PROJECT_DIR}/Images.xcassets/AppIcon.appiconset"
+icons_dest_path="${PROJECT_DIR}/Images.xcassets/AppIcon-Internal.appiconset"
+icons_set=`basename "${icons_path}"`
+tmp_path="${TEMP_DIR}/IconVersioning"
 
-for icon in "${icons_dir}"/AppIcon*.png;
-do
-    processIcon "${icon}" "${icons_tmp_dir}" "${icons_dest_dir}"
+echo "icons_path: ${icons_path}"
+echo "icons_dest_path: ${icons_dest_path}"
+
+mkdir -p "${tmp_path}"
+
+if [[ $icons_dest_path == "\\" ]]; then
+    echo "error: destination file path can't be the root directory"
+    exit -1;
+fi
+
+rm -rf "${icons_dest_path}"
+cp -rf "${icons_path}" "${icons_dest_path}"
+
+# Reference: https://askubuntu.com/a/343753
+find "${icons_path}" -type f -name "*.png" -print0 | 
+while IFS= read -r -d '' file; do
+    echo "$file"
+    processIcon "${file}" "${tmp_path}" "${icons_dest_path}"
 done
