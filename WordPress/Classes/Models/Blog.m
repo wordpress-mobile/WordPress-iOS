@@ -662,6 +662,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
     }
     _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
+    _jetpack.automatedTransfer = [[[self getOptionValue:@"is_automated_transfer"] numericValue] boolValue];
     return _jetpack;
 }
 
