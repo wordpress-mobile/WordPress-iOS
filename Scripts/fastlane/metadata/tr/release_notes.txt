@@ -1,2 +1,0 @@
-Yeni metin editörü performans iyileştirmeleri ve hata gidermeleri.
-Okuyucu: Jetpack sitelerindeki yorumlar artık uygun.
