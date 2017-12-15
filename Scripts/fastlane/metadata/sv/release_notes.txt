@@ -1,2 +1,0 @@
-Nya prestandaförbättringar i redigeraren och felrättningar.
-Läsaren: Nu är kommentarer på Jetpack-webbplatser tillgängliga.
