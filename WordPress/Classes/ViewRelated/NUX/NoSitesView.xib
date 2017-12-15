@@ -61,6 +61,8 @@
                 <outlet property="addSiteButton" destination="TN9-gF-7ik" id="gbO-0C-3si"/>
                 <outlet property="noSitesImage" destination="G4e-dB-lxv" id="gj5-vP-Xqi"/>
                 <outlet property="noSitesTitle" destination="ofN-jE-Mju" id="TYP-bF-hKC"/>
+                <outlet property="titleLeadingConstraint" destination="3JW-Wy-mfD" id="EkL-c6-HlJ"/>
+                <outlet property="titleTrailingConstraint" destination="J8o-sK-kBH" id="heS-I7-Wr6"/>
             </connections>
             <point key="canvasLocation" x="-462" y="-130.5"/>
         </view>
