@@ -19,10 +19,6 @@ public class PostUploadOperation: UploadOperation {
     /// Post status for this upload op — e.g. "Draft" or "Publish" (Not used if `isMedia` is True)
     ///
     @NSManaged public var postStatus: String?
-
-    /// Corresponding upload operation for this post
-    ///
-    @NSManaged public var uploadOperation: UploadOperation?
 }
 
 // MARK: - Computed Properties

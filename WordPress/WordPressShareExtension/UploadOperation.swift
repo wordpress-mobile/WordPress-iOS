@@ -18,7 +18,7 @@ public class UploadOperation: NSManagedObject {
 
     /// ID which is unique to a group of upload operations within WPiOS (and its extensions)
     ///
-    @NSManaged public var groupID: String
+    @NSManaged public var groupID: String?
 
     /// NSURL background session task ID assigned to this upload op. Unique within a given session.
     ///
@@ -59,7 +59,7 @@ extension UploadOperation {
         ///
         case error
 
-        func stringValue() -> String {
+        var stringValue: String {
             switch self {
             case .pending:      return "Pending"
             case .inProgress:   return "In Progress"
