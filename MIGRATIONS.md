@@ -6,6 +6,8 @@ data model as well as any custom migrations.
 ## WordPress 68
 - @ctarda 2017-11-27
 - `PostTag` added `tagDescription`  string property and `postCount` integer property. Store an optional description and the number of posts a tag has been used in.
+- @elibud 2017-12-12
+- `BlogSettings` added the following string properties: `dateFormat`, `timeFormat`, `startOfWeek`, the following boolean properties `ampSupported`, `ampEnabled` and an int_32 `postsPerPage` property.
 
 ## WordPress 67
 - @3vangelos 2017-09-26
