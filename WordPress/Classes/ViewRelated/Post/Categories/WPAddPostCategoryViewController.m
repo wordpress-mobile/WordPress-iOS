@@ -16,7 +16,6 @@
 
 @property (nonatomic, strong) PostCategory *parentCategory;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) UITextField *categoryTextField;
 @property (nonatomic, strong) WPTextFieldTableViewCell *createCategoryCell;
 @property (nonatomic, strong) WPTableViewCell *parentCategoryCell;
 @property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
@@ -59,7 +58,7 @@
 
 - (void)clearUI
 {
-    self.categoryTextField.text = @"";
+    self.createCategoryCell.textField.text = @"";
     self.parentCategoryCell.textLabel.text = @"";
 }
 
@@ -86,13 +85,13 @@
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:context];
-    NSString *catName = [self.categoryTextField.text trim];
+    NSString *catName = [self.createCategoryCell.textField.text trim];
 
     if (!catName ||[catName length] == 0) {
         NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
         NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
         [WPError showAlertWithTitle:title message:message withSupportButton:NO];
-        self.categoryTextField.text = @""; // To clear whitespace that was trimed.
+        self.createCategoryCell.textField.text = @""; // To clear whitespace that was trimed.
 
         return;
     }
