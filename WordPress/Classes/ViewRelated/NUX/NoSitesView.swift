@@ -7,6 +7,8 @@ import UIKit
     @IBOutlet weak var noSitesImage: UIImageView!
     @IBOutlet weak var noSitesTitle: UILabel!
     @IBOutlet weak var addSiteButton: LoginButton!
+    @IBOutlet weak var titleLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleTrailingConstraint: NSLayoutConstraint!
 
     // MARK: - Init
 
@@ -39,7 +41,9 @@ import UIKit
 
         let frameWidth = viewFrame.size.width
         let frameHeight = viewFrame.size.height
-        noSitesTitle.preferredMaxLayoutWidth = frameWidth - 40
+        noSitesTitle.preferredMaxLayoutWidth = frameWidth -
+                                               titleLeadingConstraint.constant -
+                                               titleTrailingConstraint.constant
 
         var newFrame = viewFrame
 
