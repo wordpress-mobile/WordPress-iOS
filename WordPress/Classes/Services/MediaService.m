@@ -32,11 +32,12 @@
 
 #pragma mark - Creating media
 
-- (void)createMediaWith:(id<ExportableAsset>)exportable
+- (NSProgress *)createMediaWith:(id<ExportableAsset>)exportable
                objectID:(NSManagedObjectID *)objectID              
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
              completion:(void (^)(Media *media, NSError *error))completion
 {
+    NSProgress *progress = [NSProgress discreteProgressWithTotalUnitCount:1];
     [self.managedObjectContext performBlock:^{
         AbstractPost *post = nil;
         Blog *blog = nil;
@@ -80,8 +81,10 @@
 
         // Export based on the type of the exportable.
         MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
+        NSProgress *importProgress = [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
+        [progress addChild:importProgress withPendingUnitCount:1];
     }];
+    return progress;
 }
 
 /**
