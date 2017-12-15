@@ -270,6 +270,8 @@ private extension PluginStore {
                         updatedPlugin.updateState = .available(version)
                     })
                     state.updatesInProgress[site]?.remove(pluginID)
+                    let message = String(format: NSLocalizedString("Error updating %@.", comment: "There was an error updating a plugin, placeholder is the plugin name"), plugin.name)
+                    ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
                 })
                 print("Error updating plugin: \(error)")
         })
