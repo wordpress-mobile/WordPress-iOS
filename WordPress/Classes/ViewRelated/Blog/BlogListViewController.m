@@ -28,6 +28,7 @@ static NSInteger HideSearchMinSites = 3;
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
                                         WPNoResultsViewDelegate,
+                                        NoSitesViewDelegate,
                                         WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) UIStackView *stackView;
@@ -457,6 +458,7 @@ static NSInteger HideSearchMinSites = 3;
     self.noSitesView = [NoSitesView instanceFromNib];
     [self.view addSubview:self.noSitesView];
     [self.view pinSubviewAtCenter:self.noSitesView];
+    self.noSitesView.delegate = self;
     self.noSitesView.hidden = YES;
 }
 
@@ -946,6 +948,12 @@ static NSInteger HideSearchMinSites = 3;
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
+}
+
+#pragma mark - NoSitesViewDelegate
+
+- (void)addSiteButtonPressed {
+    [self addSite];
 }
 
 #pragma mark - WPNoResultsViewDelegate
