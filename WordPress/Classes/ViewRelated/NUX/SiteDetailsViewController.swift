@@ -58,7 +58,6 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
-        tagDescriptionLabel.textColor = WPStyleGuide.greyDarken20()
         nextButton.isEnabled = false
         siteTitleField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         taglineField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
