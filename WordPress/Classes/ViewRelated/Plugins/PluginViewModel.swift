@@ -67,7 +67,7 @@ class PluginViewModel: Observable {
         }
 
         var autoupdatesRow: ImmuTableRow?
-        if capabilities.autoupdate {
+        if capabilities.autoupdate && !plugin.state.automanaged {
             autoupdatesRow = SwitchRow(
                 title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
                 value: plugin.state.autoupdate,
