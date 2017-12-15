@@ -1,2 +1,0 @@
-New editor 성능 향상 및 버그 수정 and bug fixes.
-Reader: Jetpack 사이트의 댓글 사용 가능

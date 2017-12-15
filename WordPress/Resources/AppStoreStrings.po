@@ -43,9 +43,7 @@ msgid ""
 "Aztec Editor: Clearer distinction between visual and HTML editing modes.\n"
 "Aztec Editor: Improve automatic link detection.\n"
 "Aztec Editor: Adds support for editing posts while uploading media.\n"
-'Aztec Editor: Allow Media Search From Post.\n"
-"Hybrid Editor: We've removed the hybrid editor from the App.\n"
-"Legacy Editor: We've removed the legacy editor from the App.\n"
+"Aztec Editor: Allow Media Search From Post.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
