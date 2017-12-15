@@ -419,7 +419,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             imageCropViewController.maskShape = .square
             imageCropViewController.shouldShowCancelButton = true
 
-            imageCropViewController.onCancel = { _ in
+            imageCropViewController.onCancel = { () -> Void in
                 self?.dismiss(animated: true, completion: nil)
                 self?.gravatarUploadInProgress = false
             }

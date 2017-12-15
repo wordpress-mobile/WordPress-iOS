@@ -10,9 +10,9 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     /// Will be invoked with the cropped and scaled image and a boolean indicating
     /// whether or not the original image was modified
     @objc var onCompletion: ((UIImage, Bool) -> Void)?
-    var onCancel: (() -> Void)?
-    var maskShape: ImageCropOverlayMaskShape = .circle
-    var shouldShowCancelButton = false
+    @objc var onCancel: (() -> Void)?
+    @objc var maskShape: ImageCropOverlayMaskShape = .circle
+    @objc var shouldShowCancelButton = false
 
     // MARK: - Public Initializers
 
