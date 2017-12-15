@@ -10,7 +10,6 @@ import UIKit
 
     @objc weak var delegate: NoSitesViewDelegate?
 
-    @IBOutlet weak var noSitesImage: UIImageView!
     @IBOutlet weak var noSitesTitle: UILabel!
     @IBOutlet weak var addSiteButton: LoginButton!
     @IBOutlet weak var titleLeadingConstraint: NSLayoutConstraint!
@@ -19,51 +18,14 @@ import UIKit
     // MARK: - Init
 
     @objc class func instanceFromNib() -> NoSitesView {
-        return UINib(nibName: "NoSitesView", bundle: nil).instantiate(withOwner: nil, options: nil).first as! NoSitesView
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-
-        super.init(coder: aDecoder)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(NoSitesView.orientationChanged),
-                                               name: NSNotification.Name.UIDeviceOrientationDidChange,
-                                               object: nil)
-    }
-
-    // MARK: - De-init
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+        let view = UINib(nibName: "NoSitesView", bundle: nil).instantiate(withOwner: nil, options: nil).first as! NoSitesView
+        view.configureElements()
+        return view
     }
 
     // MARK: - Configuration
 
-    func configureViewForFrame(_ viewFrame: CGRect) {
-
-        configureElements()
-
-        translatesAutoresizingMaskIntoConstraints = false
-
-        let frameWidth = viewFrame.size.width
-        let frameHeight = viewFrame.size.height
-        noSitesTitle.preferredMaxLayoutWidth = frameWidth -
-                                               titleLeadingConstraint.constant -
-                                               titleTrailingConstraint.constant
-
-        var newFrame = viewFrame
-
-        if frameHeight > frameWidth {
-            newFrame.size.height = frameWidth
-        }
-        else {
-            newFrame.size.height = frameHeight/2
-        }
-
-        frame = newFrame
-    }
-
-    func configureElements() {
+    private func configureElements() {
         noSitesTitle.text = NSLocalizedString("Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", comment: "Text shown when the account has no sites.")
         let buttonTitle = NSLocalizedString("Add new site", comment: "Title of button to add a new site.")
         addSiteButton?.setTitle(buttonTitle, for: UIControlState())
@@ -74,10 +36,33 @@ import UIKit
 
     // MARK: - Orientation Handling
 
-    @objc func orientationChanged() {
-        if let superview = superview {
-            configureViewForFrame(superview.frame)
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let superview = superview else {
+            return
         }
+
+        translatesAutoresizingMaskIntoConstraints = false
+
+        var newFrame = superview.frame
+
+        // If horizontal compact, limit the height so the view isn't stretched out.
+        if traitCollection.horizontalSizeClass == .compact {
+            newFrame.size.height = superview.frame.size.width
+        }
+        // If vertical compact, reduce the height.
+        else if traitCollection.verticalSizeClass == .compact {
+            newFrame.size.height = superview.frame.size.height/2
+        }
+
+        // Set the width on the label so it wraps properly.
+        noSitesTitle.preferredMaxLayoutWidth = newFrame.size.width -
+            titleLeadingConstraint.constant -
+            titleTrailingConstraint.constant
+
+        frame = newFrame
     }
 
     // MARK: - Button Handling
