@@ -2,7 +2,6 @@
 #import <XCTest/XCTest.h>
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemotePostTag.h"
-#import "RemoteTaxonomyPaging.h"
 @import WordPressKit;
 
 @interface TaxonomyServiceRemoteRESTTests : XCTestCase
