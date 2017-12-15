@@ -3488,8 +3488,8 @@
 			isa = PBXGroup;
 			children = (
 				741E22441FC0CC55007967AB /* UploadOperation.swift */,
-				74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */,
 				74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */,
+				74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */,
 				746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */,
 				74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */,
 			);
