@@ -91,20 +91,7 @@ extension XCTestCase {
             LoginEmailScreen.isLoaded() {
             return
         }
-        MySitesScreen.init().tabBar.gotoMeScreen().logout()
-
-//        let app = XCUIApplication()
-//        let isLoggedIn = !app.buttons[elementStringIDs.createSite].exists
-//            // || (!app.textFields[ elementStringIDs.loginUsernameField ].exists
-//            // && !app.textFields[ elementStringIDs.nuxUsernameField ].exists)
-//        if isLoggedIn {
-//            app.tabBars[ elementStringIDs.mainNavigationBar ].buttons[ elementStringIDs.mainNavigationMeButton ].tap()
-//            app.tables.element(boundBy: 0).swipeUp()
-//            app.tables.cells[ elementStringIDs.logOutFromWPcomButton ].tap()
-//            app.alerts.buttons.element(boundBy: 1).tap()
-//            //Give some time to everything get proper saved.
-//            sleep(2)
-//        }
+        _ = MySitesScreen.init().tabBar.gotoMeScreen().logout()
     }
 
     public func simpleLogin(username: String, password: String) {
