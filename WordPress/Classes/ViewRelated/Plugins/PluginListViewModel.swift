@@ -2,21 +2,52 @@ import WordPressKit
 import WordPressFlux
 
 protocol PluginPresenter: class {
-    func present(plugin: PluginState, capabilities: SitePluginCapabilities)
+    func present(plugin: Plugin, capabilities: SitePluginCapabilities)
 }
 
-class PluginListViewModel: Observable {
-    enum State {
+class PluginListViewModel {
+    enum StateChange {
+        case replace
+        case selective([Int])
+    }
+
+    enum State: Equatable {
         case loading
-        case ready(SitePlugins)
+        case ready(Plugins)
         case error(String)
+
+        static func ==(lhs: PluginListViewModel.State, rhs: PluginListViewModel.State) -> Bool {
+            switch (lhs, rhs) {
+            case (.loading, .loading):
+                return true
+            case (.ready(let lhsValue), .ready(let rhsValue)):
+                return lhsValue == rhsValue
+            case (.error(let lhsValue), .error(let rhsValue)):
+                return lhsValue == rhsValue
+            default:
+                return false
+            }
+        }
+
+        static func changed(from: State, to: State) -> StateChange {
+            switch (from, to) {
+            case (.ready(let oldValue), .ready(let newValue)):
+                guard oldValue.plugins.count == newValue.plugins.count else {
+                    return .replace
+                }
+                return .selective(oldValue.plugins.differentIndices(newValue.plugins))
+            default:
+                return .replace
+            }
+        }
     }
 
     let site: JetpackSiteRef
     let changeDispatcher = Dispatcher<Void>()
+    let stateChangeDispatcher = Dispatcher<StateChange>()
     private var state: State = .loading {
         didSet {
-            changeDispatcher.dispatch()
+            stateChangeDispatcher.dispatch(State.changed(from: oldValue, to: state))
         }
     }
 
@@ -40,6 +71,10 @@ class PluginListViewModel: Observable {
         }
         queryReceipt = store.query(.all(site: site))
         refreshPlugins()
+    }
+
+    func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
+        return stateChangeDispatcher.subscribe(handler)
     }
 
     var noResultsViewModel: WPNoResultsView.Model? {
@@ -71,13 +106,15 @@ class PluginListViewModel: Observable {
         switch state {
         case .loading, .error:
             return .Empty
-        case .ready(let sitePlugins):
-            let rows = sitePlugins.plugins.map({ pluginState in
+        case .ready(let plugins):
+            let rows = plugins.plugins.map({ plugin in
                 return PluginListRow(
-                    name: pluginState.name,
-                    state: pluginState.stateDescription,
+                    name: plugin.name,
+                    state: plugin.state.stateDescription,
+                    iconURL: plugin.directoryEntry?.icon,
+                    updateState: plugin.state.updateState,
                     action: { [weak presenter] (row) in
-                        presenter?.present(plugin: pluginState, capabilities: sitePlugins.capabilities)
+                        presenter?.present(plugin: plugin, capabilities: plugins.capabilities)
                 })
             })
             return ImmuTable(sections: [

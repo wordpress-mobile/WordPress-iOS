@@ -1,1 +1,2 @@
-Nada de parafernalia, solo mejoras relevantes para ofrecerte una aplicación más rápida y estable. No todo lo que brilla es oro - ¡a veces es código!
+Nuevas mejoras de rendimiento y soluciones a fallos en el editor.
+Lector: Ahora están disponibles los comentarios en los sitios Jetpack.

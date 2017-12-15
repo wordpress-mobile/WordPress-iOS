@@ -5,11 +5,8 @@ import WordPressFlux
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let site: JetpackSiteRef
 
-    fileprivate lazy var handler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
-    }()
-
     fileprivate var viewModel: PluginListViewModel
+    fileprivate var tableViewModel = ImmuTable.Empty
 
     fileprivate let noResultsView = WPNoResultsView()
     var viewModelReceipt: Receipt?
@@ -40,10 +37,15 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
-        viewModelReceipt = viewModel.onChange { [weak self] in
-            self?.refreshModel()
+        viewModelReceipt = viewModel.onStateChange { [weak self] (change) in
+            self?.refreshModel(change: change)
         }
-        refreshModel()
+        refreshModel(change: .replace)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        refreshModel(change: .replace)
     }
 
     func updateNoResults() {
@@ -67,9 +69,44 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         noResultsView.removeFromSuperview()
     }
 
-    func refreshModel() {
-        handler.viewModel = viewModel.tableViewModel(presenter: self)
+    func refreshModel(change: PluginListViewModel.StateChange) {
+        tableViewModel = viewModel.tableViewModel(presenter: self)
+        switch change {
+        case .replace:
+            tableView.reloadData()
+        case .selective(let changedRows):
+            let indexPaths = changedRows.map({ IndexPath(row: $0, section: 0) })
+            tableView.reloadRows(at: indexPaths, with: .none)
+        }
         updateNoResults()
+    }
+}
+
+// MARK: - Table View Data Source
+extension PluginListViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return tableViewModel.sections.count
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableViewModel.sections[section].rows.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
+
+        row.configureCell(cell)
+
+        return cell
+    }
+}
+
+// MARK: - Table View Delegate
+extension PluginListViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        row.action?(row)
     }
 }
 
@@ -85,7 +122,7 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 // MARK: - PluginPresenter
 
 extension PluginListViewController: PluginPresenter {
-    func present(plugin: PluginState, capabilities: SitePluginCapabilities) {
+    func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
         let controller = PluginViewController(plugin: plugin, capabilities: capabilities, site: site)
         navigationController?.pushViewController(controller, animated: true)
     }

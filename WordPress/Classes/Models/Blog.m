@@ -482,7 +482,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePluginManagement:
-            return [self supportsRestApi] && ![self isHostedAtWPcom];
+            return [self supportsPluginManagement];
         case BlogFeatureJetpackSettings:
             return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePushNotifications:
@@ -561,6 +561,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 - (BOOL)supportsPushNotifications
 {
     return [self accountIsDefaultAccount];
+}
+
+- (BOOL)supportsPluginManagement
+{
+    NSString *requiredJetpackVersion = @"5.6";
+    return [self supportsRestApi]
+        && ![self isHostedAtWPcom]
+        && [self.jetpack.version compare:requiredJetpackVersion options:NSNumericSearch] != NSOrderedAscending;
 }
 
 - (BOOL)accountIsDefaultAccount
