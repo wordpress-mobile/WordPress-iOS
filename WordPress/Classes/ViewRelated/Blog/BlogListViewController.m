@@ -102,8 +102,6 @@ static NSInteger HideSearchMinSites = 3;
                                                                                    target:self
                                                                                    action:@selector(addSite)];
 
-    self.navigationItem.rightBarButtonItem = self.addSiteButton;
-
     self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
 
@@ -176,7 +174,7 @@ static NSInteger HideSearchMinSites = 3;
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
     [self syncBlogs];
-
+    [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
 }
 
@@ -801,7 +799,6 @@ static NSInteger HideSearchMinSites = 3;
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
     self.dataSource.editing = editing;
-    [self toggleRightBarButtonItems:!editing];
 
     if (editing) {
         [self.searchBar removeFromSuperview];
@@ -821,10 +818,13 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
-- (void)toggleRightBarButtonItems:(BOOL)enabled
+- (void)setAddSiteBarButtonItem
 {
-    for (UIBarButtonItem *buttonItem in self.navigationItem.rightBarButtonItems) {
-        buttonItem.enabled = enabled;
+    if ([Feature enabled:FeatureFlagSiteCreation] && self.dataSource.allBlogsCount == 0) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = self.addSiteButton;
     }
 }
 
