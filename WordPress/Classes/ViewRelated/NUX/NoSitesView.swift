@@ -1,8 +1,14 @@
 import UIKit
 
+@objc protocol NoSitesViewDelegate {
+    func addSiteButtonPressed()
+}
+
 @objc class NoSitesView: UIView {
 
     // MARK: - Properties
+
+    @objc weak var delegate: NoSitesViewDelegate?
 
     @IBOutlet weak var noSitesImage: UIImageView!
     @IBOutlet weak var noSitesTitle: UILabel!
@@ -72,6 +78,12 @@ import UIKit
         if let superview = superview {
             configureViewForFrame(superview.frame)
         }
+    }
+
+    // MARK: - Button Handling
+
+    @IBAction func addSiteButtonPressed(_ sender: Any) {
+        delegate?.addSiteButtonPressed()
     }
 
 }

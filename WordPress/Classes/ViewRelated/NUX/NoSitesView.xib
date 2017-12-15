@@ -42,6 +42,9 @@
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="addSiteButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="WDU-57-U5x"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
