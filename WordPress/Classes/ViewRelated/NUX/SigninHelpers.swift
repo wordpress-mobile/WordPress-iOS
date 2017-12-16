@@ -514,16 +514,10 @@ import WordPressShared
             })
         })
     }
-
-
-    // MARK: - Notification Helperes
-
-    @objc class func loginCancelledNotificationName() -> NSNotification.Name {
-        return .WPLoginCancelledNotification;
-    }
 }
 
 
 extension NSNotification.Name {
-    static let WPLoginCancelledNotification = Foundation.Notification.Name(rawValue: "WPLoginCancelledNotification")
+    static let WPLoginCancelled = Foundation.Notification.Name(rawValue: "WPLoginCancelled")
+    static let WPLoginFinishedSyncingSites = Foundation.Notification.Name(rawValue: "WPLoginFinishedSyncingSites")
 }
