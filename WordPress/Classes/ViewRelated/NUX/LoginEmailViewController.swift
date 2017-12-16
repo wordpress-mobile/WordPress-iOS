@@ -129,8 +129,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Add the log in with Google button to the view
     @objc func addGoogleButton() {
-        guard Feature.enabled(.googleLogin),
-            let instructionLabel = instructionLabel,
+        guard let instructionLabel = instructionLabel,
             let stackView = inputStack else {
             return
         }
