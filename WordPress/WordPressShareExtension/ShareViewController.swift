@@ -301,7 +301,9 @@ private extension ShareViewController {
                 return
         }
 
-        let remoteURLText = mediaUploadOps.flatMap({ $0.remoteURL }).map({ "".stringByPrependingMediaURL($0) }).joined()
+        let remoteURLText = mediaUploadOps.flatMap({ $0 })
+            .map({ "".stringByAppendingMediaURL(remoteURL: $0.remoteURL, remoteID: $0.remoteMediaID, height: $0.height, width: $0.width) })
+            .joined()
         let content = postUploadOp.postContent ?? ""
         postUploadOp.postContent = content + remoteURLText
         coreDataStack.saveContext()
@@ -430,9 +432,12 @@ private extension ShareViewController {
                             mediaUploadOp.remoteMediaID = remoteMediaID
                             mediaUploadOp.currentStatus = .complete
 
-                            //TODO: Finish this!!!!!!!!
-                            mediaUploadOp.width = remoteMedia.width?.int32Value
-                            mediaUploadOp.height = remoteMedia.height?.int32Value
+                            if let width = remoteMedia.width?.int32Value,
+                                let height = remoteMedia.width?.int32Value {
+                                mediaUploadOp.width = width
+                                mediaUploadOp.height = height
+                            }
+
                             ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: localFileName)
                         }
                     }
