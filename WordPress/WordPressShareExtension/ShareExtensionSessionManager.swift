@@ -116,6 +116,14 @@ import CoreData
         return postUploadOp
     }
 
+    fileprivate func createWPImageURL(remoteURL: String, height: String, width: String, id: String) -> String {
+        var returnURL: String?
+        
+
+
+        return returnURL ?? remoteURL
+    }
+
     /// Uploads a post to the server
     ///
     /// - Parameter postUploadOp: The UploadOperation that represents a post
@@ -241,6 +249,8 @@ extension ShareExtensionSessionManager: URLSessionDataDelegate {
             }
 
             var mediaID: Int64?
+            var width: Int32?
+            var height: Int32?
             var urlString: String?
             if let remoteMediaID = mediaDict["ID"] as? NSNumber {
                 mediaID = remoteMediaID.int64Value
@@ -248,7 +258,18 @@ extension ShareExtensionSessionManager: URLSessionDataDelegate {
             if let remoteMediaUrlString  = mediaDict["URL"] as? String, !remoteMediaUrlString.isEmpty {
                 urlString = remoteMediaUrlString
             }
-            coreDataStack.updateMediaOperation(for: remoteFilenameString, with: backgroundSessionIdentifier, remoteMediaID: mediaID, remoteURL: urlString)
+            if let remoteMediaWidth = mediaDict["width"] as? NSNumber {
+                width = remoteMediaWidth.int32Value
+            }
+            if let remoteMediaHeight = mediaDict["height"] as? NSNumber {
+                height = remoteMediaHeight.int32Value
+            }
+            coreDataStack.updateMediaOperation(for: remoteFilenameString,
+                                               with: backgroundSessionIdentifier,
+                                               remoteMediaID: mediaID,
+                                               remoteURL: urlString,
+                                               width: width,
+                                               height: height)
         }
     }
 }

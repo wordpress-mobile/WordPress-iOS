@@ -237,7 +237,7 @@ extension SharedCoreDataStack {
     ///   - remoteMediaID: remote media ID
     ///   - remoteURL: remote media URL string
     ///
-    func updateMediaOperation(for fileName: String, with sessionID: String, remoteMediaID: Int64?, remoteURL: String?) {
+    func updateMediaOperation(for fileName: String, with sessionID: String, remoteMediaID: Int64?, remoteURL: String?, width: Int32?, height: Int32?) {
         guard let mediaUploadOp = fetchMediaUploadOp(for: fileName, with: sessionID) else {
             DDLogError("Error loading UploadOperation Object with File Name: \(fileName)")
             return
@@ -245,6 +245,12 @@ extension SharedCoreDataStack {
 
         if let remoteMediaID = remoteMediaID {
             mediaUploadOp.remoteMediaID = remoteMediaID
+        }
+        if let width = width {
+            mediaUploadOp.width = width
+        }
+        if let height = height {
+            mediaUploadOp.height = height
         }
         mediaUploadOp.remoteURL = remoteURL
         saveContext()
