@@ -12,6 +12,7 @@ protocol SigninWPComSyncHandler: class {
     func dismiss()
     func displayError(_ error: NSError, sourceTag: SupportSourceTag)
     func updateSafariCredentialsIfNeeded()
+    func sendLoginFinishedNotification()
 
     func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
     func handleSyncSuccess(_ requiredMultifactor: Bool)
@@ -60,7 +61,7 @@ extension SigninWPComSyncHandler {
         configureStatusLabel("")
         configureViewLoading(false)
 
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
+        sendLoginFinishedNotification()
 
         dismiss()
 

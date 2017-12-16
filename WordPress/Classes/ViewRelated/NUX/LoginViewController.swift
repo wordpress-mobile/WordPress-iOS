@@ -257,4 +257,16 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
     @objc func loginDismissal() {
         self.performSegue(withIdentifier: .showEpilogue, sender: self)
     }
+
+    func sendLoginFinishedNotification() {
+        if loginFields.meta.jetpackLogin {
+            // Currenty the WPTabBarController listens for the `WPSigninDidFinishNotification` notification.
+            // When received it destroy's and recreates its view controllers.
+            // We want to preserve the view hierarcy (for stats) when logging in
+            // to Jetpack so do not send the notification.
+            // 2017.12.16 - aerych
+            return
+        }
+        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
+    }
 }
