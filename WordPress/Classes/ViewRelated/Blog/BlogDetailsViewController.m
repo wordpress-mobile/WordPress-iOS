@@ -962,7 +962,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self showDetailViewController:controller sender:self];
 }
 
-- (void)presentStatsViewController
+- (void)showStats
 {
     [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlog:self.blog];
     StatsViewController *statsView = [StatsViewController new];
@@ -979,49 +979,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     } else {
         [self showDetailViewController:statsView sender:self];
     }
-}
-
-- (void)showStats
-{
-    // if user is logged in, show stats. Else, login then show stats
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    if ([service defaultWordPressComAccount]) {
-        [self presentStatsViewController];
-        return;
-    }
-
-    [SigninHelpers showLoginForJustWPComFromPresenter:self forJetpack:YES];
-
-    [self observeLoginNotifications:YES];
-}
-
-- (void)observeLoginNotifications:(BOOL)observe
-{
-    if (!observe) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:[SigninHelpers loginCancelledNotificationName] object:nil];
-        return;
-    }
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleJetpackLogin:)
-                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleLoginCancelled:)
-                                                 name:[SigninHelpers loginCancelledNotificationName]
-                                               object:nil];
-}
-
-
-- (void)handleLoginCancelled:(NSNotification *)notification
-{
-    [self observeLoginNotifications:NO];
-}
-
-- (void)handleJetpackLogin:(NSNotification *)notification
-{
-    [self showStats];
-    [self observeLoginNotifications:NO];
 }
 
 - (void)showActivity
