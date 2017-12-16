@@ -108,20 +108,15 @@ import CoreData
             let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
                 return nil
         }
-        let remoteURLText = mediaUploadOps.flatMap({ $0.remoteURL }).map({ "".stringByPrependingMediaURL($0) }).joined()
+        let remoteURLText = mediaUploadOps.flatMap({ $0 })
+            .map({ "".stringByAppendingMediaURL(remoteURL: $0.remoteURL, remoteID: $0.remoteMediaID, height: $0.height, width: $0.width) })
+            .joined()
+
         let content = postUploadOp.postContent ?? ""
         postUploadOp.postContent = content + remoteURLText
         coreDataStack.saveContext()
 
         return postUploadOp
-    }
-
-    fileprivate func createWPImageURL(remoteURL: String, height: String, width: String, id: String) -> String {
-        var returnURL: String?
-        
-
-
-        return returnURL ?? remoteURL
     }
 
     /// Uploads a post to the server
