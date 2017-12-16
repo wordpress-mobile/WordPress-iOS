@@ -1,11 +1,66 @@
 import Foundation
 import UIKit
+import MobileCoreServices
+import WordPressKit
 import Aztec
 import Gridicons
 import WordPressShared
 
 
 class ShareExtensionViewController: UIViewController {
+
+    // MARK: - Private Constants
+
+    fileprivate let defaultMaxDimension = 3000
+    fileprivate let postStatuses = [
+        // TODO: This should eventually be moved into WordPressComKit
+        "draft": NSLocalizedString("Draft", comment: "Draft post status"),
+        "publish": NSLocalizedString("Publish", comment: "Publish post status")
+    ]
+
+    fileprivate enum MediaSettings {
+        static let filename = "image.jpg"
+        static let mimeType = "image/jpeg"
+    }
+
+    // MARK: - Private Properties
+
+    /// WordPress.com Username
+    ///
+    fileprivate lazy var wpcomUsername: String? = {
+        ShareExtensionService.retrieveShareExtensionUsername()
+    }()
+
+    /// WordPress.com OAuth Token
+    ///
+    fileprivate lazy var oauth2Token: String? = {
+        ShareExtensionService.retrieveShareExtensionToken()
+    }()
+
+    /// Selected Site's ID
+    ///
+    fileprivate lazy var selectedSiteID: Int? = {
+        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
+    }()
+
+    /// Selected Site's Name
+    ///
+    fileprivate lazy var selectedSiteName: String? = {
+        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteName
+    }()
+
+    /// Maximum Image Size
+    ///
+    fileprivate lazy var maximumImageSize: CGSize = {
+        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? self.defaultMaxDimension
+        return CGSize(width: dimension, height: dimension)
+    }()
+
+    /// Tracks Instance
+    ///
+    fileprivate lazy var tracks: Tracks = {
+        Tracks(appGroupName: WPAppGroupName)
+    }()
 
     /// Format Bar
     ///
@@ -36,6 +91,7 @@ class ShareExtensionViewController: UIViewController {
 
         textView.delegate = self
         textView.formattingDelegate = self
+        textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
         textView.linkTextAttributes = NSAttributedStringKey.convertToRaw(attributes: linkAttributes)
         textView.textAlignment = .natural
@@ -135,6 +191,12 @@ class ShareExtensionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Tracker
+        tracks.wpcomUsername = wpcomUsername
+        title = NSLocalizedString("WordPress", comment: "Application title")
+
+        loadContent(extensionContext: extensionContext)
+
         // TODO: Fix the warnings triggered by this one!
         WPFontManager.loadNotoFontFamily()
 
@@ -144,6 +206,13 @@ class ShareExtensionViewController: UIViewController {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        tracks.trackExtensionLaunched(oauth2Token != nil)
+        dismissIfNeeded()
     }
 
     override func viewDidLayoutSubviews() {
@@ -484,7 +553,6 @@ extension ShareExtensionViewController {
 //        })
     }
 
-
     @objc func toggleBlockquote() {
         richTextView.toggleBlockquote(range: richTextView.selectedRange)
     }
@@ -510,7 +578,6 @@ extension ShareExtensionViewController {
         return nil
     }
 
-
     @objc func toggleLink() {
         var linkTitle = ""
         var linkURL: URL? = nil
@@ -524,7 +591,6 @@ extension ShareExtensionViewController {
         linkTitle = richTextView.attributedText.attributedSubstring(from: linkRange).string
         showLinkDialog(forURL: linkURL, title: linkTitle, range: linkRange)
     }
-
 
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
 
@@ -780,6 +846,104 @@ extension ShareExtensionViewController {
 extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
     func textViewCommandToggledAStyle() {
         updateFormatBar()
+    }
+}
+
+// MARK: - TextViewAttachmentDelegate Conformance
+//
+extension ShareExtensionViewController: TextViewAttachmentDelegate {
+    func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
+        // TODO: Implement me!
+    }
+
+    func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
+        // TODO: Implement me!
+        return nil
+    }
+
+    func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
+        // TODO: Implement me!
+    }
+
+    func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
+        // TODO: Implement me!
+    }
+
+    func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
+        // TODO: Implement me!
+    }
+
+    func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
+        // TODO: Implement me!
+    }
+
+    func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
+        return Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
+    }
+}
+
+// Encapsulates all of the Action Helpers.
+
+private extension ShareExtensionViewController {
+    func dismissIfNeeded() {
+        guard oauth2Token == nil else {
+            return
+        }
+
+        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
+        let message = NSLocalizedString("Launch the WordPress app and log into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
+        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+
+        alertController.addAction(alertAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
+
+// Encapsulates private helpers
+
+private extension ShareExtensionViewController {
+    func loadContent(extensionContext: NSExtensionContext?) {
+        guard let extensionContext = extensionContext else {
+            return
+        }
+        ShareExtractor(extensionContext: extensionContext)
+            .loadShare { [weak self] share in
+                self?.richTextView.text = share.text
+
+                share.images.forEach({ image in
+                    if let fileURL = self?.saveImageToSharedContainer(image) {
+                        self?.insertImageAttachment(with: fileURL)
+                    }
+                })
+        }
+    }
+
+    func saveImageToSharedContainer(_ image: UIImage) -> URL? {
+        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
+            let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+            return nil
+        }
+
+        let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
+        let fullPath = mediaDirectory.appendingPathComponent(fileName)
+        do {
+            try encodedMedia.write(to: fullPath, options: [.atomic])
+        } catch {
+            DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
+            return nil
+        }
+        return fullPath
+    }
+
+    func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) {
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
+        attachment.size = .full
+        richTextView.refresh(attachment)
     }
 }
 
