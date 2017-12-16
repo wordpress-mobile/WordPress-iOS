@@ -990,8 +990,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         return;
     }
 
-    // TODO: Needs to be the jp varient
-    [SigninHelpers showLoginForJustWPComFromPresenter:self];
+    [SigninHelpers showLoginForJustWPComFromPresenter:self forJetpack:YES];
 
     [self observeLoginNotifications:YES];
 }

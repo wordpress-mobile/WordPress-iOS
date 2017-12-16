@@ -26,7 +26,7 @@ import WordPressShared
     }
 
     /// Used to present the new wpcom-only login flow from the app delegate
-    @objc class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController) {
+    @objc class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController, forJetpack jetpack: Bool) {
         defer {
             trackOpenedLogin()
         }
@@ -36,6 +36,7 @@ import WordPressShared
             return
         }
         controller.restrictToWPCom = true
+        controller.loginFields.meta.jetpackLogin = jetpack
 
         let navController = LoginNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
