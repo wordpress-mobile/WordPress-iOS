@@ -10,6 +10,7 @@ class LoginEpilogueViewController: UIViewController {
     @IBOutlet var continueButton: UIButton?
     @objc var tableViewController: LoginEpilogueTableView?
     var epilogueUserInfo: LoginEpilogueUserInfo?
+    var jetpackLogin = false
 
     // MARK: - Lifecycle Methods
 
@@ -75,6 +76,9 @@ class LoginEpilogueViewController: UIViewController {
         continueButton?.accessibilityIdentifier = "Continue"
         connectButton?.setTitle(connectTitle, for: .normal)
 
+        if jetpackLogin {
+            connectButton?.isHidden = true
+        }
     }
 
     @objc func colorPanelBasedOnTableViewContents() {
