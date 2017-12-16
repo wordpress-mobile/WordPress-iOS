@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="16G1036" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C88" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -161,6 +161,8 @@
         <userInfo/>
     </entity>
     <entity name="BlogSettings" representedClassName=".BlogSettings" syncable="YES">
+        <attribute name="ampEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="ampSupported" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsBlacklistKeys" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -176,12 +178,13 @@
         <attribute name="commentsSortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsThreadingDepth" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsThreadingEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="dateFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="defaultCategoryID" optional="YES" attributeType="Integer 32" defaultValueString="1" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="defaultPostFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO">
             <userInfo/>
         </attribute>
-        <attribute name="gmtOffset" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="gmtOffset" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="iconMediaID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackBlockMaliciousLoginAttempts" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackLoginWhiteListedIPAddresses" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -195,6 +198,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pingbackInboundEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="pingbackOutboundEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="postsPerPage" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="privacy" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="relatedPostsAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="relatedPostsEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -206,7 +210,9 @@
         <attribute name="sharingDisabledReblogs" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="sharingLabel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sharingTwitterName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startOfWeek" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeZoneString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="settings" inverseEntity="Blog" syncable="YES"/>
     </entity>
@@ -643,39 +649,39 @@
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="150"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="AccountSettings" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="675"/>
-        <element name="BlogSettings" positionX="0" positionY="0" width="128" height="735"/>
+        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="825"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Comment" positionX="0" positionY="0" width="128" height="345"/>
-        <element name="Domain" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
+        <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="390"/>
-        <element name="Menu" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="MenuItem" positionX="0" positionY="0" width="128" height="255"/>
-        <element name="MenuLocation" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Notification" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
+        <element name="MenuItem" positionX="45" positionY="180" width="128" height="255"/>
+        <element name="MenuLocation" positionX="54" positionY="189" width="128" height="120"/>
+        <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Person" positionX="0" positionY="0" width="128" height="225"/>
+        <element name="Person" positionX="18" positionY="153" width="128" height="225"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="PostTag" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="PostType" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="PublicizeConnection" positionX="0" positionY="0" width="128" height="330"/>
-        <element name="PublicizeService" positionX="0" positionY="0" width="128" height="195"/>
-        <element name="ReaderAbstractTopic" positionX="0" positionY="0" width="128" height="180"/>
-        <element name="ReaderCrossPostMeta" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="ReaderDefaultTopic" positionX="0" positionY="0" width="128" height="45"/>
-        <element name="ReaderGapMarker" positionX="0" positionY="0" width="128" height="45"/>
-        <element name="ReaderListTopic" positionX="0" positionY="0" width="128" height="135"/>
+        <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
+        <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
+        <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
+        <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
+        <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
+        <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
+        <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="660"/>
-        <element name="ReaderSearchSuggestion" positionX="0" positionY="0" width="128" height="75"/>
-        <element name="ReaderSearchTopic" positionX="0" positionY="0" width="128" height="45"/>
-        <element name="ReaderSiteTopic" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="ReaderTagTopic" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="ReaderTeamTopic" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Role" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="SharingButton" positionX="0" positionY="0" width="128" height="165"/>
-        <element name="SourcePostAttribution" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="Theme" positionX="0" positionY="0" width="128" height="360"/>
+        <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
+        <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
+        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="210"/>
+        <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
+        <element name="ReaderTeamTopic" positionX="27" positionY="153" width="128" height="60"/>
+        <element name="Role" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
+        <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
     </elements>
 </model>

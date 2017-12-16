@@ -4,6 +4,8 @@ This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
 ## WordPress 68
+- @elibud 2017-12-12
+- `BlogSettings` added the following string properties: `dateFormat`, `timeFormat`, `startOfWeek`, the following boolean properties `ampSupported`, `ampEnabled` and an int_32 `postsPerPage` property.
 - @asifmohd 2017-11-20
 - `BlogSettings` added `gmtOffset` Float property, and `timeZoneString` String property. Stores the timezone setting of a blog.
 

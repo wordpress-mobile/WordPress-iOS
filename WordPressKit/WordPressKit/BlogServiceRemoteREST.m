@@ -19,6 +19,10 @@ static NSString * const RemoteBlogTimeZoneStringKey                         = @"
 static NSString * const RemoteBlogSettingsKey                               = @"settings";
 static NSString * const RemoteBlogDefaultCategoryKey                        = @"default_category";
 static NSString * const RemoteBlogDefaultPostFormatKey                      = @"default_post_format";
+static NSString * const RemoteBlogDateFormatKey                             = @"date_format";
+static NSString * const RemoteBlogTimeFormatKey                             = @"time_format";
+static NSString * const RemoteBlogStartOfWeekKey                            = @"start_of_week";
+static NSString * const RemoteBlogPostsPerPageKey                           = @"posts_per_page";
 static NSString * const RemoteBlogCommentsAllowedKey                        = @"default_comment_status";
 static NSString * const RemoteBlogCommentsBlacklistKeys                     = @"blacklist_keys";
 static NSString * const RemoteBlogCommentsCloseAutomaticallyKey             = @"close_comments_for_old_posts";
@@ -40,6 +44,8 @@ static NSString * const RemoteBlogRelatedPostsAllowedKey                    = @"
 static NSString * const RemoteBlogRelatedPostsEnabledKey                    = @"jetpack_relatedposts_enabled";
 static NSString * const RemoteBlogRelatedPostsShowHeadlineKey               = @"jetpack_relatedposts_show_headline";
 static NSString * const RemoteBlogRelatedPostsShowThumbnailsKey             = @"jetpack_relatedposts_show_thumbnails";
+static NSString * const RemoteBlogAmpSupportedKey                           = @"amp_is_supported";
+static NSString * const RemoteBlogAmpEnabledKey                             = @"amp_is_enabled";
 
 static NSString * const RemoteBlogSharingButtonStyle                        = @"sharing_button_style";
 static NSString * const RemoteBlogSharingLabel                              = @"sharing_label";
@@ -339,7 +345,11 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     } else {
         settings.defaultPostFormat = [rawSettings stringForKey:RemoteBlogDefaultPostFormatKey];
     }
-    
+    settings.dateFormat = [rawSettings stringForKey:RemoteBlogDateFormatKey];
+    settings.timeFormat = [rawSettings stringForKey:RemoteBlogTimeFormatKey];
+    settings.startOfWeek = [rawSettings stringForKey:RemoteBlogStartOfWeekKey];
+    settings.postsPerPage = [rawSettings numberForKey:RemoteBlogPostsPerPageKey];
+
     // Discussion
     settings.commentsAllowed = [rawSettings numberForKey:RemoteBlogCommentsAllowedKey];
     settings.commentsBlacklistKeys = [rawSettings stringForKey:RemoteBlogCommentsBlacklistKeys];
@@ -364,6 +374,10 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     settings.relatedPostsEnabled = [rawSettings numberForKey:RemoteBlogRelatedPostsEnabledKey];
     settings.relatedPostsShowHeadline = [rawSettings numberForKey:RemoteBlogRelatedPostsShowHeadlineKey];
     settings.relatedPostsShowThumbnails = [rawSettings numberForKey:RemoteBlogRelatedPostsShowThumbnailsKey];
+
+    // AMP
+    settings.ampSupported = [rawSettings numberForKey:RemoteBlogAmpSupportedKey];
+    settings.ampEnabled = [rawSettings numberForKey:RemoteBlogAmpEnabledKey];
 
     // Sharing
     settings.sharingButtonStyle = [rawSettings stringForKey:RemoteBlogSharingButtonStyle];
@@ -395,7 +409,11 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
 
     [parameters setValueIfNotNil:settings.defaultCategoryID forKey:RemoteBlogDefaultCategoryKey];
     [parameters setValueIfNotNil:settings.defaultPostFormat forKey:RemoteBlogDefaultPostFormatKey];
-    
+    [parameters setValueIfNotNil:settings.dateFormat forKey:RemoteBlogDateFormatKey];
+    [parameters setValueIfNotNil:settings.timeFormat forKey:RemoteBlogTimeFormatKey];
+    [parameters setValueIfNotNil:settings.startOfWeek forKey:RemoteBlogStartOfWeekKey];
+    [parameters setValueIfNotNil:settings.postsPerPage forKey:RemoteBlogPostsPerPageKey];
+
     [parameters setValueIfNotNil:settings.commentsAllowed forKey:RemoteBlogCommentsAllowedKey];
     [parameters setValueIfNotNil:settings.commentsBlacklistKeys forKey:RemoteBlogCommentsBlacklistKeys];
     [parameters setValueIfNotNil:settings.commentsCloseAutomatically forKey:RemoteBlogCommentsCloseAutomaticallyKey];
@@ -418,6 +436,8 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     [parameters setValueIfNotNil:settings.relatedPostsEnabled forKey:RemoteBlogRelatedPostsEnabledKey];
     [parameters setValueIfNotNil:settings.relatedPostsShowHeadline forKey:RemoteBlogRelatedPostsShowHeadlineKey];
     [parameters setValueIfNotNil:settings.relatedPostsShowThumbnails forKey:RemoteBlogRelatedPostsShowThumbnailsKey];
+
+    [parameters setValueIfNotNil:settings.ampEnabled forKey:RemoteBlogAmpEnabledKey];
 
     // Sharing
     [parameters setValueIfNotNil:settings.sharingButtonStyle forKey:RemoteBlogSharingButtonStyle];
