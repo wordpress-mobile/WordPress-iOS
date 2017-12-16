@@ -52,9 +52,35 @@ extension String {
         return (firstLineOfText, restOfText)
     }
 
-    /// Returns the current string, preceded by an IMG embed pointing to the given URL
+    /// Creates a WP friendly <img> string based on the provided parameters
     ///
-    func stringByPrependingMediaURL(_ url: String) -> String {
-        return "<img src='\(url)' /><br/><br/>" + self
+    /// NOTE: Height and width must both be provided in order for them to be inserted into the returned string.
+    ///
+    /// - Parameters:
+    ///   - remoteURL: Complete URL string to the remote image
+    ///   - remoteID: Remote image ID
+    ///   - height: Height of image. Can be nil unless width is provided
+    ///   - width: Width of image. Can be nil unless height is provided
+    /// - Returns: <img> element appended to the current string otherwise the current string if the remoteURL param is nil or empty
+    ///
+    func stringByAppendingMediaURL(remoteURL: String?, remoteID: Int64?, height: Int32?, width: Int32?) -> String {
+        guard let remoteURL = remoteURL, !remoteURL.isEmpty else {
+            return self
+        }
+
+        var returnURLString = "<img class='alignnone size-full"
+
+        if let remoteID = remoteID, remoteID > 0 {
+            returnURLString.append(contentsOf: " wp-image-\(remoteID)")
+        }
+        returnURLString.append(contentsOf: "' src='\(remoteURL)'")
+
+        if let height = height, height > 0,
+            let width = width, width > 0 {
+            returnURLString.append(contentsOf: " width='\(width)' height='\(height)'")
+        }
+        returnURLString.append(contentsOf: " />")
+
+        return self + returnURLString + "<br/><br/>"
     }
 }

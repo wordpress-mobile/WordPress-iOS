@@ -3477,8 +3477,8 @@
 			children = (
 				B50248C51C96FFE800AFBDED /* MainInterface.storyboard */,
 				B542DEB91D11967E004CA6AE /* MediaView.swift */,
-				B50248B11C96FF8400AFBDED /* ShareViewController.swift */,
 				B50248B01C96FF8400AFBDED /* PostStatusPickerViewController.swift */,
+				B50248B11C96FF8400AFBDED /* ShareViewController.swift */,
 				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
 			);
 			name = UI;
