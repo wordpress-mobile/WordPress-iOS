@@ -61,6 +61,13 @@ extension SigninWPComSyncHandler {
         configureStatusLabel("")
         configureViewLoading(false)
 
+        // HACK: An alternative notification to LoginFinished that is specific to
+        // sync completion. Observe this instead of `WPSigninDidFinishNotification`
+        // for Jetpack logins.  When WPTabViewController no longer destroy's
+        // and rebuilds the view hierarchy this alternate notification can be
+        // removed.
+        NotificationCenter.default.post(name: .WPLoginFinishedSyncingSites, object: nil)
+
         sendLoginFinishedNotification()
 
         dismiss()
