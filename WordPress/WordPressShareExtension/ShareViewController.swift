@@ -401,7 +401,7 @@ private extension ShareViewController {
         // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
         // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
         // post share here as well as WPiOS.
-        let remote = MediaServiceRemoteREST.init(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
+        let remote = MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
@@ -429,6 +429,10 @@ private extension ShareViewController {
                             mediaUploadOp.remoteURL = remoteMediaURLString
                             mediaUploadOp.remoteMediaID = remoteMediaID
                             mediaUploadOp.currentStatus = .complete
+
+                            //TODO: Finish this!!!!!!!!
+                            mediaUploadOp.width = remoteMedia.width?.int32Value
+                            mediaUploadOp.height = remoteMedia.height?.int32Value
                             ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: localFileName)
                         }
                     }
