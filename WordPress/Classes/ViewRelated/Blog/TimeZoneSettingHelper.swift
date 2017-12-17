@@ -7,7 +7,7 @@ enum TimeZoneSelected {
 
 class TimeZoneSettingHelper: NSObject {
 
-    /// Returns a formatted 'prefix hour:min' string using DateComponentsFormatter
+    /// Returns a formatted 'UTC hour:min' string using DateComponentsFormatter
     ///
     /// Parameters
     /// - hours: The hours to be formatted
@@ -37,5 +37,5 @@ class TimeZoneSettingHelper: NSObject {
         return String(format: "\(TimeZoneSettingHelper.UTCString)%+g", manualOffset.floatValue)
     }
 
-    @objc static let UTCString: String = "UTC"
+    static let UTCString: String = "UTC"
 }
