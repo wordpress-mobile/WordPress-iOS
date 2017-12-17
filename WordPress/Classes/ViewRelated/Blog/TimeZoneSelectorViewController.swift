@@ -2,14 +2,11 @@ import UIKit
 
 class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter {
 
-    /// The blog's current timezone. If no timezone string is set, then the manual offset value will be used.
-    private var initialTimeZone: String?
-    /// The blog's manual GMT offset. If timezone string is set, this value will be nil
-    private var initialManualOffset: NSNumber?
-
-    /// timezoneString will be set to a non empty string
+    /// The blog's current timezone
+    private var timeZoneSelected: TimeZoneSelected?
+    /// case .timezoneString will be set to a non empty string
     /// if user selects anything other than Manual Offset section
-    /// manualOffset will be set if users selects anything from Manual Offset section
+    /// case .manualOffset will be set if users selects anything from Manual Offset section
     private var onChange: ((TimeZoneSelected) -> Void)!
 
     /// ImmuTableViewHandler, takes over the datasource, delegate from this VC
@@ -29,12 +26,10 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
 
     private let estimatedRowHeight: CGFloat = 45.0
 
-    public convenience init(timeZoneString: String?,
-                     manualOffset: NSNumber?,
+    public convenience init(timeZoneSelected: TimeZoneSelected?,
                      onChange: @escaping ((TimeZoneSelected) -> Void)) {
         self.init(style: .grouped)
-        self.initialTimeZone = timeZoneString
-        self.initialManualOffset = manualOffset
+        self.timeZoneSelected = timeZoneSelected
         self.onChange = onChange
 
     }
@@ -54,7 +49,8 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
     // MARK: Helper methods
     private func loadData() {
         TimeZoneService().fetchTimeZoneList(success: { [weak self] (allTimezones) in
-            self?.viewModel = .ready(allTimezones, self?.initialTimeZone, self?.initialManualOffset, self?.onChange)
+
+            self?.viewModel = .ready(allTimezones, self?.timeZoneSelected, self?.onChange)
         }) { [weak self] (error) in
             self?.viewModel = .error(String(describing: error))
         }

@@ -3,6 +3,32 @@ import Foundation
 enum TimeZoneSelected {
     case timeZoneString(String)
     case manualOffset(NSNumber)
+
+    var selectedLabel: String? {
+        let selectedCellLabel: String?
+        switch self {
+        case .timeZoneString(let timeZoneString):
+            if !timeZoneString.isEmpty {
+                selectedCellLabel = timeZoneString
+            } else {
+                selectedCellLabel = nil
+            }
+        case .manualOffset(let offset):
+            let utcString: String = TimeZoneSettingHelper.getDecimalBasedTimeZone(from: offset)
+            selectedCellLabel = utcString
+        }
+        return selectedCellLabel
+    }
+
+    init?(timeZoneString: String?, manualOffset: NSNumber?) {
+        if let timeZoneString = timeZoneString, !timeZoneString.isEmpty {
+            self = .timeZoneString(timeZoneString)
+        } else if let offset = manualOffset {
+            self = .manualOffset(offset)
+        } else {
+            return nil
+        }
+    }
 }
 
 class TimeZoneSettingHelper: NSObject {

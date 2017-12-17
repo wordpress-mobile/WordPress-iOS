@@ -5,11 +5,10 @@ enum TimezoneSelectorViewModel {
     /**
      - Parameters
         - first param: - all TimeZoneInfo objects
-        - second param: - initialTimeZoneString
-        - third param: - initialManualGMTOffset
-        - fourth param: - action block to be executed when user clicks on a cell
+        - second param: - a TimeZoneSelected enum with either timeZoneString or manualOffset case
+        - third param: - action block to be executed when user clicks on a cell
     */
-    case ready([TimeZoneGroupInfo], String?, NSNumber?, ((TimeZoneSelected) -> Void)?)
+    case ready([TimeZoneGroupInfo], TimeZoneSelected?, ((TimeZoneSelected) -> Void)?)
     case error(String)
 
     var noResultsViewModel: WPNoResultsView.Model? {
@@ -44,16 +43,10 @@ enum TimezoneSelectorViewModel {
         switch self {
         case .loading, .error:
             return .Empty
-        case .ready(let timezoneInfoArray, let siteTimezoneString, let siteManualOffset, let onChange):
+        case .ready(let timezoneInfoArray, let siteTimeZone, let onChange):
             let groupNames = timezoneInfoArray.map({ $0.name })
             /// The selected Label string used to show a checkmark in a row
-            var selectedCellLabel: String?
-            if let timeZoneString = siteTimezoneString, !timeZoneString.isEmpty {
-                selectedCellLabel = timeZoneString
-            } else if let manualOffset = siteManualOffset {
-                let utcString: String = TimeZoneSettingHelper.getDecimalBasedTimeZone(from: manualOffset)
-                selectedCellLabel = utcString
-            }
+            let selectedCellLabel: String? = siteTimeZone?.selectedLabel
 
             var sections: [ImmuTableSection] = []
             for groupName in groupNames {
@@ -77,7 +70,6 @@ enum TimezoneSelectorViewModel {
     }
 
     // MARK: Helper methods
-
     private func action(timeZoneValue: String, onChange: ((TimeZoneSelected) -> Void)?) -> ImmuTableAction {
         return { (row) in
             let result: TimeZoneSelected

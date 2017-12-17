@@ -15,8 +15,9 @@ extension SiteSettingsViewController {
             }
             self?.saveSettings()
         }
-        let vc = TimeZoneSelectorViewController(timeZoneString: self.blog.settings?.timeZoneString as String?,
-                                                manualOffset: self.blog.settings?.gmtOffset,
+        let selectedTimeZone = TimeZoneSelected.init(timeZoneString: self.blog.settings?.timeZoneString as String?,
+                                                     manualOffset: self.blog.settings?.gmtOffset)
+        let vc = TimeZoneSelectorViewController(timeZoneSelected: selectedTimeZone,
                                                 onChange: onChange)
         self.navigationController?.pushViewController(vc, animated: true)
     }
