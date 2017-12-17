@@ -3,6 +3,12 @@ import Foundation
 /// UIImageView Helper Methods that allow us to download a Gravatar, given the User's Email
 ///
 extension UIImageView {
+    /// Default name string for the blavatar
+    struct Blavatar {
+        static let defaultImageName = "blavatar-default"
+        static let defaultSize = 40
+    }
+
     /// Helper Enum that specifies all of the available Gravatar Image Ratings
     /// TODO: Convert into a pure Swift String Enum. It's done this way to maintain ObjC Compatibility
     ///
@@ -118,6 +124,56 @@ extension UIImageView {
         sessionConfiguration?.urlCache?.removeAllCachedResponses()
     }
 
+    /// Sets the provided icon as content
+    ///
+    /// Parameters:
+    ///  - siteIcon: string description of the site's icon
+    ///
+    @objc func setImageWithSiteIcon(_ siteIcon: String) {
+        let blavatarDefaultImage = UIImage(named: Blavatar.defaultImageName)
+        setImageWithSiteIcon(siteIcon, placeholderImage: blavatarDefaultImage)
+    }
+
+    /// Sets the provided icon as content
+    ///
+    /// Parameters:
+    ///  - siteIcon: string description of the site's icon
+    ///  - placeholderImage: the image to be used as a placeholder
+    ///
+    @objc func setImageWithSiteIcon(_ siteIcon: String, placeholderImage: UIImage?) {
+        guard let url = URLWithSiteIcon(siteIcon) else {
+            return
+        }
+
+        setImageWith(url, placeholderImage: placeholderImage)
+    }
+
+    /// Sets the blog's icon as content
+    ///
+    /// Parameters:
+    ///  - blog: reference to the source blog
+    @objc func setImageWithSiteIcon(for blog: Blog) {
+        let blavatarDefaultImage = UIImage(named: Blavatar.defaultImageName)
+        setImageWithSiteIcon(for: blog, placeholderImage: blavatarDefaultImage)
+    }
+
+    /// Sets the blog's icon as content
+    ///
+    /// Parameters:
+    ///  - blog: reference to the source blog
+    ///  - placeholderImage: the placeholder
+    @objc func setImageWithSiteIcon(for blog: Blog, placeholderImage: UIImage?) {
+        if blog.isHostedAtWPcom && blog.isPrivate() {
+            setImageWithPrivateSiteIcon(siteIcon: blog.icon, placeholderImage: placeholderImage)
+        } else {
+            setImageWithSiteIcon(blog.icon!, placeholderImage: placeholderImage)
+        }
+    }
+
+    /// Sets the content with the default blavatar image
+    @objc func setDefaultSiteIconImage() {
+        image = UIImage(named: Blavatar.defaultImageName)
+    }
     // MARK: - Private Helpers
 
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
@@ -154,5 +210,101 @@ extension UIImageView {
         static let placeholderImage = UIImage(named: "gravatar.png")!
         static let imageSize = 80
         static let rating = GravatarRatings.g
+    }
+
+    /// Returs the proper download URL for the provided icon
+    ///
+    /// Parameters:
+    ///  - siteIcon: the icon's path
+    fileprivate func URLWithSiteIcon(_ siteIcon: String) -> URL? {
+        if isPhotonURL(siteIcon) || self.isWordPressComFilesURL(siteIcon) {
+            return siteIconURLForSiteIconUrl(siteIcon)
+        }
+
+        if isBlavatarURL(siteIcon) {
+            return blavatarURLForBlavatarURL(siteIcon)
+        }
+
+        return URLForResizedImageURL(siteIcon)
+    }
+
+    /// Returs the download URL for a square icon with a size of sizeForBlavatarDownload
+    ///
+    /// Parameters:
+    ///  - path: the icon's path
+    fileprivate func siteIconURLForSiteIconUrl(_ path: String) -> URL? {
+        let size = sizeForBlavatarDownload()
+        return urlForUrlWithFormat(path, format: String(format: "w=%d&h=%d", size, size))
+    }
+
+    /// Sets the blog's icon as content, for private blogs
+    ///
+    /// Parameters:
+    ///  - siteIcon: the icon's path
+    ///  - placeholderImage: the placeholder
+    fileprivate func setImageWithPrivateSiteIcon(siteIcon: String?, placeholderImage: UIImage?) {
+        guard let icon = siteIcon else {
+            return
+        }
+
+        guard let imageRequest = PrivateSiteURLProtocol.requestForPrivateSite(from: URLWithSiteIcon(icon)) else {
+            return
+        }
+
+        setImageWith(imageRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
+    }
+
+    // MARK: - Private Photon Helpers
+    /// Returs the photon URL for the provided path
+    ///
+    /// Parameters:
+    ///  - urlString: source URL
+    fileprivate func URLForResizedImageURL(_ urlString: String) -> URL? {
+        let size = CGSize(width: Blavatar.defaultSize, height: Blavatar.defaultSize)
+        guard let url = URL(string: urlString) else {
+            return nil
+        }
+        return PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
+    }
+
+    // Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
+    fileprivate func isPhotonURL(_ path: String) -> Bool {
+        return path.contains(".wp.com")
+    }
+
+    // MARK: - Blavatar Private Methods
+    /// Returs the icon URL corresponding to the provided path
+    ///
+    /// Parameters:
+    ///  - path: source icon path
+    fileprivate func blavatarURLForBlavatarURL(_ path: String) -> URL? {
+        let size = sizeForBlavatarDownload()
+        return urlForUrlWithFormat(path, format: String(format: "d=404&s=%d", size))
+    }
+
+    /// Returns the download size for a blavatar
+    fileprivate func sizeForBlavatarDownload() -> Int {
+        var size = Blavatar.defaultSize
+        size *= Int(UIScreen.main.scale)
+
+        return size
+    }
+
+    // MARK: - Other helpers
+    fileprivate func isWordPressComFilesURL(_ path: String) -> Bool {
+        return path.contains(".files.wordpress.com")
+    }
+
+    fileprivate func isBlavatarURL(_ path: String) -> Bool {
+        return path.contains("gravatar.com/blavatar")
+    }
+
+    fileprivate func urlForUrlWithFormat(_ path: String, format: String) -> URL? {
+        guard var urlComponents = URLComponents(string: path) else {
+            return nil
+        }
+
+        urlComponents.query = format
+        return urlComponents.url
     }
 }

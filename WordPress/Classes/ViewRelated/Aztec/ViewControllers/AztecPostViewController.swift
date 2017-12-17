@@ -1455,7 +1455,7 @@ extension AztecPostViewController: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         textView.textAlignment = .natural
 
-        let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })!
+        let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
 
         switch textView {
         case titleTextField:
@@ -1468,7 +1468,7 @@ extension AztecPostViewController: UITextViewDelegate {
             break
         }
 
-        htmlButton.isEnabled = true
+        htmlButton?.isEnabled = true
 
         if mediaPickerInputViewController == nil {
             textView.inputAccessoryView = formatBar
@@ -2683,7 +2683,7 @@ extension AztecPostViewController {
             guard let attachment = newAttachment, let statType = newStatType else { return }
             attachment.uploadID = attachment.identifier
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.createMedia(url: url, forPost: post.objectID,
+            mediaService.createMedia(with: url as NSURL, objectID: post.objectID,
                                      thumbnailCallback: { [weak self](thumbnailURL) in
                                         self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
                 },
@@ -2691,7 +2691,7 @@ extension AztecPostViewController {
                                         self?.handleNewMedia(media, error: error, attachment: attachment, statType: statType)
             })
         } catch {
-            print(MediaURLExporter().exporterErrorWith(error: error))
+            print(MediaURLExporter(url: url).exporterErrorWith(error: error))
             return
         }
     }
@@ -2714,7 +2714,7 @@ extension AztecPostViewController {
 
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
-                                 forPost: post.objectID,
+                                 objectID: post.objectID,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
                                     if let attachment = self?.findAttachment(withUploadID: uploadID) {
                                         self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
@@ -2733,7 +2733,7 @@ extension AztecPostViewController {
         attachment.uploadID = uploadID
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
-                                 forPost: post.objectID,
+                                 objectID: post.objectID,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
                                     if let attachment = self?.findAttachment(withUploadID: uploadID) {
                                         self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
@@ -2852,7 +2852,7 @@ extension AztecPostViewController {
         }
         mediaProgressCoordinator.track(numberOfItems: 1)
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: image, withMediaID: "CopyPasteImage", forPost: post.objectID, thumbnailCallback: { (thumbnailURL) in
+        mediaService.createMedia(with: image, objectID: post.objectID, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
                     imageAttachment.updateURL(thumbnailURL)

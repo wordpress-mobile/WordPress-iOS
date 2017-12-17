@@ -52,6 +52,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
+@property (nonatomic, strong, readwrite) NoticePresenter                *noticePresenter;
 
 @end
 
@@ -144,6 +145,11 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)setupBackgroundRefresh:(UIApplication *)application {
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+}
+
+- (void)configureNoticePresenter
+{
+    self.noticePresenter = [NoticePresenter new];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -326,7 +332,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
     // is no need to inspect the identifier beyond the simple check here.
     if ([identifier containsString:WPAppGroupName]) {
-        DDLogInfo(@"Rejoining session with identifier: %@ with application in state: %@", identifier, application.applicationState);
         ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
         sessionManager.backgroundSessionCompletionBlock = ^{
             dispatch_async(dispatch_get_main_queue(), completionHandler);
@@ -376,6 +381,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [MediaCoordinator.shared refreshMediaStatus];
         [MediaFileManager clearUnusedMediaUploadFilesOnCompletion:nil onError:nil];
     });
     
@@ -385,6 +391,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self.shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
+
+    [self configureNoticePresenter];
 }
 
 #pragma mark - Push Notification delegate

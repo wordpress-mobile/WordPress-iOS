@@ -1,2 +1,0 @@
-Nuevas mejoras de rendimiento y soluciones a fallos en el editor.
-Lector: Ahora están disponibles los comentarios en los sitios Jetpack.
