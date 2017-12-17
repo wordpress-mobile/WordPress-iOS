@@ -10,7 +10,7 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
     /// timezoneString will be set to a non empty string
     /// if user selects anything other than Manual Offset section
     /// manualOffset will be set if users selects anything from Manual Offset section
-    private var onChange: ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)!
+    private var onChange: ((TimeZoneSelected) -> Void)!
 
     /// ImmuTableViewHandler, takes over the datasource, delegate from this VC
     private lazy var handler: ImmuTableViewHandler = {
@@ -29,9 +29,9 @@ class TimeZoneSelectorViewController: UITableViewController, ImmuTablePresenter 
 
     private let estimatedRowHeight: CGFloat = 45.0
 
-    @objc public convenience init(timeZoneString: String?,
+    public convenience init(timeZoneString: String?,
                      manualOffset: NSNumber?,
-                     onChange: @escaping ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)) {
+                     onChange: @escaping ((TimeZoneSelected) -> Void)) {
         self.init(style: .grouped)
         self.initialTimeZone = timeZoneString
         self.initialManualOffset = manualOffset

@@ -10,7 +10,7 @@ enum TimezoneSelectorViewModel {
         - third param: - initialManualGMTOffset
         - fourth param: - action block to be executed when user clicks on a cell
     */
-    case ready([TimeZoneGroupInfo], String?, NSNumber?, ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?)
+    case ready([TimeZoneGroupInfo], String?, NSNumber?, ((TimeZoneSelected) -> Void)?)
     case error(String)
 
     var noResultsViewModel: WPNoResultsView.Model? {
@@ -79,15 +79,17 @@ enum TimezoneSelectorViewModel {
 
     // MARK: Helper methods
 
-    private func action(timeZoneValue: String, onChange: ((_ timezoneString: String, _ manualOffset: NSNumber?) -> Void)?) -> ImmuTableAction {
+    private func action(timeZoneValue: String, onChange: ((TimeZoneSelected) -> Void)?) -> ImmuTableAction {
         return { (row) in
+            let result: TimeZoneSelected
             if let numberString = timeZoneValue.components(separatedBy: TimeZoneSettingHelper.UTCString).last,
                 let floatVal = Float(numberString) {
                 let manualOffset: NSNumber = NSNumber(value: floatVal)
-                onChange?("", manualOffset)
+                result = TimeZoneSelected.manualOffset(manualOffset)
             } else {
-                onChange?(timeZoneValue, nil)
+                result = TimeZoneSelected.timeZoneString(timeZoneValue)
             }
+            onChange?(result)
         }
     }
 }

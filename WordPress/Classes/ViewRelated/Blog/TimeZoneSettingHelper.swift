@@ -1,5 +1,10 @@
 import Foundation
 
+enum TimeZoneSelected {
+    case timeZoneString(String)
+    case manualOffset(NSNumber)
+}
+
 class TimeZoneSettingHelper: NSObject {
 
     /// Returns a formatted 'prefix hour:min' string using DateComponentsFormatter
