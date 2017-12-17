@@ -655,24 +655,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showTimeZoneSelector
-{
-    __weak __typeof__(self) weakSelf = self;
-    void (^onChange)(NSString * _Nonnull, NSNumber * _Nullable) = ^(NSString * _Nonnull timezoneString, NSNumber * _Nullable manualOffset){
-        [weakSelf.navigationController popViewControllerAnimated:true];
-        if (manualOffset == nil) {
-            weakSelf.blog.settings.timeZoneString = timezoneString;
-        } else {
-            weakSelf.blog.settings.timeZoneString = @"";
-        }
-        weakSelf.blog.settings.gmtOffset = manualOffset;
-        [weakSelf saveSettings];
-    };
-    TimeZoneSelectorViewController *vc = [[TimeZoneSelectorViewController alloc] initWithTimeZoneString:self.blog.settings.timeZoneString manualOffset:self.blog.settings.gmtOffset onChange:onChange];
-
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)showLanguageSelectorForBlog:(Blog *)blog
 {
     NSParameterAssert(blog);

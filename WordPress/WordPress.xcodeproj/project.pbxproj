@@ -979,6 +979,7 @@
 		E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */; };
 		E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */; };
 		F01A93441FD2089700A46EB8 /* TimeZoneSettingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01A93431FD2089700A46EB8 /* TimeZoneSettingHelper.swift */; };
+		F01AF01E1FE67D9400E7592E /* SiteSettingsViewController+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01AF01D1FE67D9400E7592E /* SiteSettingsViewController+Swift.swift */; };
 		F038058D1FD652F300AEDC3C /* TimeZoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F038058C1FD652F300AEDC3C /* TimeZoneService.swift */; };
 		F0A95B8E1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A95B8D1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift */; };
 		F0AE52301FC4957100838D52 /* TimezoneSelectorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0AE522F1FC4957100838D52 /* TimezoneSelectorViewModel.swift */; };
@@ -2464,8 +2465,8 @@
 		E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarProfile.swift; sourceTree = "<group>"; };
 		EF379F0A70B6AC45330EE287 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
 		F01A93431FD2089700A46EB8 /* TimeZoneSettingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSettingHelper.swift; sourceTree = "<group>"; };
+		F01AF01D1FE67D9400E7592E /* SiteSettingsViewController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+Swift.swift"; sourceTree = "<group>"; };
 		F038058C1FD652F300AEDC3C /* TimeZoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneService.swift; sourceTree = "<group>"; };
-		F0A95B8C1FB640E600CDF031 /* WordPress 68.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 68.xcdatamodel"; sourceTree = "<group>"; };
 		F0A95B8D1FB6502F00CDF031 /* TimeZoneSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewController.swift; sourceTree = "<group>"; };
 		F0AE522F1FC4957100838D52 /* TimezoneSelectorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimezoneSelectorViewModel.swift; sourceTree = "<group>"; };
 		F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalypsoProcessorOut.swift; sourceTree = "<group>"; };
@@ -4036,6 +4037,7 @@
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
 				83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */,
+				F01AF01D1FE67D9400E7592E /* SiteSettingsViewController+Swift.swift */,
 				FFDA7E4E1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.h */,
 				FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */,
 				B54346951C6A707D0010B3AD /* LanguageViewController.swift */,
@@ -6876,6 +6878,7 @@
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */,
 				43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */,
+				F01AF01E1FE67D9400E7592E /* SiteSettingsViewController+Swift.swift in Sources */,
 				E64E17661CA8518800BE7744 /* NUXSubmitButton.swift in Sources */,
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
