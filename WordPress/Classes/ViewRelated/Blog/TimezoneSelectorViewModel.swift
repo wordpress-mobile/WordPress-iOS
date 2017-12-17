@@ -1,5 +1,4 @@
 import Foundation
-import CoreData
 
 enum TimezoneSelectorViewModel {
     case loading
