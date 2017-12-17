@@ -2,7 +2,7 @@ import Foundation
 import WordPressFlux
 
 class PluginViewController: UITableViewController {
-    var plugin: PluginState {
+    var plugin: Plugin {
         didSet {
             viewModel.plugin = plugin
         }
@@ -17,7 +17,7 @@ class PluginViewController: UITableViewController {
     fileprivate let viewModel: PluginViewModel
     var viewModelReceipt: Receipt?
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
+    init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
         self.plugin = plugin
         viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, site: site)
         super.init(style: .grouped)

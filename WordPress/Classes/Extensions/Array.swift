@@ -19,3 +19,21 @@ extension Array where Element: Hashable {
         return Array(Set(self))
     }
 }
+
+extension Array where Element: Equatable {
+    /// Returns an array of indices for the elements that are different than the
+    /// corresponding element in the given array.
+    ///
+    public func differentIndices(_ other: [Element]) -> [Int] {
+        return enumerated().flatMap({ (offset, value) -> Int? in
+            guard offset < other.endIndex else {
+                return offset
+            }
+            if value != other[offset] {
+                return offset
+            } else {
+                return nil
+            }
+        })
+    }
+}

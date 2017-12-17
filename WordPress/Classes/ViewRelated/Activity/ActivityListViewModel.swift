@@ -1,3 +1,7 @@
+protocol ActivityRewindPresenter {
+    func presentRewindFor(activity: Activity)
+}
+
 enum ActivityListViewModel {
     case loading
     case ready([Activity])
@@ -31,14 +35,18 @@ enum ActivityListViewModel {
         }
     }
 
-    func tableViewModel() -> ImmuTable {
+    func tableViewModel(presenter: ActivityRewindPresenter) -> ImmuTable {
         switch self {
         case .loading, .error:
             return .Empty
         case .ready(let activities):
             let rows = activities.map({ activity in
-                return ActivityListRow(activity: activity,
-                                       action: nil)
+                return ActivityListRow(
+                    activity: activity,
+                    action: { (row) in
+                        presenter.presentRewindFor(activity: activity)
+                    }
+                )
             })
             return ImmuTable(sections: [
                 ImmuTableSection(rows: rows)
