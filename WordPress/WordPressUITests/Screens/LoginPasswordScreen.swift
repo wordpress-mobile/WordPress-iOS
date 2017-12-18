@@ -2,9 +2,9 @@ import Foundation
 import XCTest
 
 class LoginPasswordScreen: BaseScreen {
-
     let passwordTextField: XCUIElement
     let loginButton: XCUIElement
+
     init() {
         passwordTextField = XCUIApplication().secureTextFields["Password"]
         loginButton = XCUIApplication().buttons["Log In Button"]
@@ -33,8 +33,10 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     func verifyLoginError() -> LoginPasswordScreen {
-        sleep(1) // Give some time for error text to appear
-        XCTAssertTrue(XCUIApplication().staticTexts["pswdErrorLabel"].exists)
+        let errorLabel = XCUIApplication().staticTexts["pswdErrorLabel"]
+        _ = errorLabel.waitForExistence(timeout: 2)
+
+        XCTAssertTrue(errorLabel.exists)
         return self
     }
 
