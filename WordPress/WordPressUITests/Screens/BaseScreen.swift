@@ -8,8 +8,6 @@ class BaseScreen {
     public static var testCase: XCTestCase!
 
     init(element: XCUIElement) {
-//        testCase = XCTestCase.init()
-
         app = XCUIApplication()
         expectedElement = element
         waitTimeout = 20
@@ -23,7 +21,6 @@ class BaseScreen {
     }
 
     // predicate: "isEnabled == true"
-
     func waitFor(element: XCUIElement, predicate: String, timeout: Int? = nil) {
         let timeoutValue = timeout ?? 5
 
@@ -31,37 +28,14 @@ class BaseScreen {
         _ = XCTWaiter.wait(for: [elementPredicate], timeout: TimeInterval(timeoutValue))
     }
 
-    func waitFor2(element: XCUIElement, predicate: String,
-                                       file: String = #file, line: UInt = #line, timeout: Int? = nil) {
-        let nsPredicate = NSPredicate(format: predicate)
-        BaseScreen.testCase.expectation(for: nsPredicate,
-                    evaluatedWith: element, handler: nil)
-
-        let timeoutValue = timeout ?? 5
-
-        BaseScreen.testCase.waitForExpectations(timeout: TimeInterval(timeoutValue)) { (error) -> Void in
-            if error != nil {
-                let message = "Failed to find \(element) after \(timeoutValue) seconds."
-                BaseScreen.testCase.recordFailure(withDescription: message,
-                                   inFile: file,
-                                   atLine: line,
-                                   expected: true)
-            }
-        }
-    }
-
     func isLoaded() -> Bool {
         return expectedElement.exists
     }
 
     class func waitForLoadingIndicatorToDisappear(within timeout: TimeInterval) {
-        #if os(tvOS)
-            return
-        #endif
-
         let networkLoadingIndicator = XCUIApplication().otherElements.deviceStatusBars.networkLoadingIndicators.element
         let networkLoadingIndicatorDisappeared = XCTNSPredicateExpectation(predicate: NSPredicate(format: "exists == false"), object: networkLoadingIndicator)
-        XCTWaiter.wait(for: [networkLoadingIndicatorDisappeared], timeout: timeout)
+        _ = XCTWaiter.wait(for: [networkLoadingIndicatorDisappeared], timeout: timeout)
     }
 }
 
