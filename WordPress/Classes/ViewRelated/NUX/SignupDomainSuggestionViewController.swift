@@ -38,9 +38,8 @@ class SignupDomainSuggestionViewController: UITableViewController {
         }
 
         isSearching = true
-        let moc = NSManagedObjectContext()
         let api = WordPressComRestApi(oAuthToken: "")
-        let service = DomainsService(managedObjectContext: moc, remote: DomainsServiceRemote(wordPressComRestApi: api))
+        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         service.getDomainSuggestions(base: "test suggest", success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.siteTitleSuggestions = suggestions
@@ -199,9 +198,8 @@ extension SignupDomainSuggestionViewController: SiteCreationDomainSearchTableVie
 
         isSearching = true
 
-        let moc = NSManagedObjectContext()
         let api = WordPressComRestApi(oAuthToken: "")
-        let service = DomainsService(managedObjectContext: moc, remote: DomainsServiceRemote(wordPressComRestApi: api))
+        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .top)
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
