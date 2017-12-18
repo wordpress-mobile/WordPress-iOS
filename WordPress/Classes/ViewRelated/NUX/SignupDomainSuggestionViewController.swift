@@ -14,21 +14,21 @@ class SignupDomainSuggestionViewController: UITableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
+        tableView.register(UINib(nibName: "SiteCreationDomainsActivityTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-
-
+        view.backgroundColor = WPStyleGuide.greyLighten30()
+        
         isSearching = true
         let moc = NSManagedObjectContext()
         let api = WordPressComRestApi(oAuthToken: "")
         let service = DomainsService(managedObjectContext: moc, remote: DomainsServiceRemote(wordPressComRestApi: api))
         service.getDomainSuggestions(base: "test suggest", success: { [weak self] (suggestions) in
-            self?.siteTitleSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integer: Sections.siteTitleSuggestions.rawValue), with: .top)
             self?.isSearching = false
+            self?.siteTitleSuggestions = suggestions
+            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.siteTitleSuggestions.rawValue), with: .top)
         }) { [weak self] (error) in
             self?.isSearching = false
             // do nothing atm
@@ -59,9 +59,17 @@ extension SignupDomainSuggestionViewController {
         case Sections.titleAndDescription.rawValue:
             return 1
         case Sections.searchField.rawValue:
-            return 1
+            if siteTitleSuggestions.count == 0 && searchSuggestions.count == 0 {
+                return 0
+            } else {
+                return 1
+            }
         case Sections.searchSuggestions.rawValue:
-            return searchSuggestions.count
+            if isSearching {
+                return 1
+            } else {
+                return searchSuggestions.count
+            }
         case Sections.siteTitleSuggestions.rawValue:
             return siteTitleSuggestions.count
         default:
@@ -77,7 +85,11 @@ extension SignupDomainSuggestionViewController {
         case Sections.searchField.rawValue:
             cell = searchFieldCell()
         case Sections.searchSuggestions.rawValue:
-            cell = searchButtonCell(index: indexPath.row)
+            if isSearching {
+                cell = activityCell()
+            } else {
+                cell = searchButtonCell(index: indexPath.row)
+            }
         case Sections.siteTitleSuggestions.rawValue:
             fallthrough
         default:
@@ -87,17 +99,35 @@ extension SignupDomainSuggestionViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == Sections.siteTitleSuggestions.rawValue || section == Sections.searchField.rawValue else {
+            return nil
+        }
         let footer = UIView()
         footer.backgroundColor = WPStyleGuide.greyLighten20()
         return footer
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == Sections.siteTitleSuggestions.rawValue || section == Sections.searchField.rawValue else {
+            return 0.0
+        }
         return 0.5
     }
 
+    private func activityCell() -> SiteCreationDomainsActivityTableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier) as? SiteCreationDomainsActivityTableViewCell else {
+            let newCell = SiteCreationDomainsActivityTableViewCell(style: .default, reuseIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier)
+            newCell.activitySpinner?.startAnimating()
+            return newCell
+        }
+        cell.activitySpinner?.startAnimating()
+        return cell
+    }
+
     private func titleAndDescriptionCell() -> UITableViewCell {
-        return LoginSocialErrorCell(title: "title", description: "description")
+        let title = NSLocalizedString("Step 4 of 4", comment: "Title for last step in the site creation process.").localizedUppercase
+        let description = NSLocalizedString("Pick an available \"yourname.wordpress.com\" address to let people find you on the web.", comment: "Description of how to pick a domain name during the site creation process")
+        return LoginSocialErrorCell(title: title, description: description)
     }
 
     private func searchFieldCell() -> SiteCreationDomainSearchTableViewCell {
@@ -142,6 +172,7 @@ extension SignupDomainSuggestionViewController: SiteCreationDomainSearchTableVie
         let moc = NSManagedObjectContext()
         let api = WordPressComRestApi(oAuthToken: "")
         let service = DomainsService(managedObjectContext: moc, remote: DomainsServiceRemote(wordPressComRestApi: api))
+        tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .top)
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.searchSuggestions = suggestions
