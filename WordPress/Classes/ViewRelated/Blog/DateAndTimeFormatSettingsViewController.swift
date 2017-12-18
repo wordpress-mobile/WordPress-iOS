@@ -178,8 +178,8 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     func pressedStartOfWeek() -> ImmuTableAction {
         return { [unowned self] row in
             let settingsViewController = SettingsSelectionViewController(style: .grouped)
-            settingsViewController.title = NSLocalizedString("Time Format",
-                                                             comment: "Writing Time Format Settings Title")
+            settingsViewController.title = NSLocalizedString("Week starts on",
+                                                             comment: "Blog Writing Settings: Weeks starts on")
             settingsViewController.currentValue = self.settings.startOfWeek as NSObject!
             settingsViewController.titles = DaysOfTheWeek.allTitles
             settingsViewController.values = DaysOfTheWeek.allValues
