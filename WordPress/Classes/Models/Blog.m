@@ -206,6 +206,32 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
+- (NSString *)getTimeZoneString
+{
+    NSString *timeZoneString;
+    if (self.settings.timeZoneString != nil) {
+        timeZoneString = self.settings.timeZoneString;
+    } else {
+        // timeZoneString is nil, so that means we can't fetch settings for this blog
+        // so instead we'll use the blog options to get the timezone
+        timeZoneString = [self getOptionValue:@"timezone"];
+    }
+    if ([timeZoneString isEqualToString:@""]) {
+        NSNumber *gmtOffset;
+        if (self.settings.gmtOffset != nil) {
+            gmtOffset = self.settings.gmtOffset;
+        } else {
+            gmtOffset = [self getOptionValue:@"gmt_offset"];
+        }
+        NSInteger hoursUTC = gmtOffset.integerValue;
+        NSInteger minutesUTC = fabs(([gmtOffset doubleValue] - hoursUTC) * 60);
+        NSString *utcString = [TimeZoneSettingHelper getFormattedStringWithHours:hoursUTC minutes:minutesUTC];
+        return utcString;
+    } else {
+        return timeZoneString;
+    }
+}
+
 - (NSUInteger)numberOfPendingComments
 {
     NSUInteger pendingComments = 0;

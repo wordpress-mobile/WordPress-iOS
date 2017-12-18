@@ -118,7 +118,6 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
                                      failure(error)
                                  })
     }
-
 }
 
 private extension BlogJetpackSettingsServiceRemote {

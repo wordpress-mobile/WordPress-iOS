@@ -24,6 +24,7 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
+    SiteSettingsGeneralTimeZone,
     SiteSettingsGeneralPrivacy,
     SiteSettingsGeneralLanguage,
     SiteSettingsGeneralCount,
@@ -74,6 +75,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
 @property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
 @property (nonatomic, strong) SettingTableViewCell *languageTextCell;
+@property (nonatomic, strong) SettingTableViewCell *timeZoneTextCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
@@ -187,9 +189,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionGeneral:
         {
             NSInteger rowCount = SiteSettingsGeneralCount;
-            
+
             // NOTE: Sergio Estevao (2015.08.25): Hide Privacy because of lack of support in .org
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+                --rowCount;
+                // NOTE: Mohd Asif (2017.12.15): Hide TimeZone setting because of lack of support in .org
                 --rowCount;
             }
             
@@ -430,10 +434,20 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (_languageTextCell) {
         return _languageTextCell;
     }
-    _languageTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Language", @"Label for the privacy setting")
+    _languageTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Language", @"Label for the Language setting")
                                                            editable:self.blog.isAdmin
                                                     reuseIdentifier:nil];
     return _languageTextCell;
+}
+
+- (SettingTableViewCell *)timeZoneTextCell
+{
+    if (!_timeZoneTextCell) {
+        _timeZoneTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Time Zone", @"Label for the time zone setting")
+                                                               editable:self.blog.isAdmin
+                                                        reuseIdentifier:nil];;
+    }
+    return _timeZoneTextCell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
@@ -472,6 +486,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             
             [self.languageTextCell setTextValue:name];
             return self.languageTextCell;
+        }
+        case SiteSettingsGeneralTimeZone:
+        {
+            [self.timeZoneTextCell setTextValue:[self.blog getTimeZoneString]];
+            return self.timeZoneTextCell;
         }
     }
 
@@ -672,6 +691,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             
         case SiteSettingsGeneralLanguage:
             [self showLanguageSelectorForBlog:self.blog];
+            break;
+
+        case SiteSettingsGeneralTimeZone:
+            [self showTimeZoneSelector];
             break;
     }
 }

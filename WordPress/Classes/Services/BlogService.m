@@ -970,6 +970,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.privacy = remoteSettings.privacy ?: settings.privacy;
     settings.languageID = remoteSettings.languageID ?: settings.languageID;
     settings.iconMediaID = remoteSettings.iconMediaID;
+    settings.gmtOffset = remoteSettings.gmtOffset;
+    settings.timeZoneString = remoteSettings.timeZoneString;
     
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
@@ -1038,6 +1040,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.privacy = settings.privacy;
     remoteSettings.languageID = settings.languageID;
     remoteSettings.iconMediaID = settings.iconMediaID;
+    remoteSettings.timeZoneString = settings.timeZoneString;
+    remoteSettings.gmtOffset = settings.gmtOffset;
     
     // Writing
     remoteSettings.defaultCategoryID = settings.defaultCategoryID;

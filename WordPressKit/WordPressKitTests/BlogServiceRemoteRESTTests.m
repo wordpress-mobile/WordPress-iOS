@@ -152,6 +152,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
         XCTAssertEqualObjects(settings.tagline, @"Definitely, the best blog out there", @"");
         XCTAssertEqualObjects(settings.privacy, @(1), @"Invalid Privacy Value");
         XCTAssertEqualObjects(settings.languageID, @(31337), @"Invalid Language ID");
+        XCTAssertEqualObjects(settings.gmtOffset, @(0), @"Invalid GMT offset");
+        XCTAssertEqualObjects(settings.timeZoneString, @(""), @"Invalid Time zone string");
         
         // Writing
         XCTAssertEqualObjects(settings.defaultCategoryID, @(8), @"");

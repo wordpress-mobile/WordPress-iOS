@@ -184,6 +184,7 @@
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO">
             <userInfo/>
         </attribute>
+        <attribute name="gmtOffset" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="iconMediaID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackBlockMaliciousLoginAttempts" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="jetpackLoginWhiteListedIPAddresses" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -212,6 +213,7 @@
         <attribute name="startOfWeek" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timeFormat" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeZoneString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="settings" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="PostCategory">
@@ -650,7 +652,7 @@
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="675"/>
-        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="795"/>
+        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="825"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
