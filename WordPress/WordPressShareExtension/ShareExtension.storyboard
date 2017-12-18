@@ -23,7 +23,7 @@
                     <navigationItem key="navigationItem" id="bcT-W4-zS9">
                         <barButtonItem key="rightBarButtonItem" title="Next" id="KVd-Ci-0k4">
                             <connections>
-                                <segue destination="0No-kr-FU1" kind="show" id="Y7u-MB-cML"/>
+                                <segue destination="0No-kr-FU1" kind="show" id="bdh-h6-UaV"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -42,14 +42,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="bmJ-U4-P8s"/>
                     </view>
+                    <navigationItem key="navigationItem" id="Yzs-U8-9QS">
+                        <barButtonItem key="rightBarButtonItem" title="Publish" id="Y8v-AF-0Wk"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9PA-ns-m4y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="950" y="108"/>
+            <point key="canvasLocation" x="978" y="107"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Hmy-jm-PHS">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U2i-Ey-4d2" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController modalPresentationStyle="overCurrentContext" id="1Kl-6M-uIe" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="cLJ-zS-XGv">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -59,7 +63,6 @@
                         <segue destination="u7b-jW-v8f" kind="relationship" relationship="rootViewController" id="7Hg-0t-nVh"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="U2i-Ey-4d2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-680" y="109"/>
         </scene>
