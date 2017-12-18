@@ -16,7 +16,7 @@
         "totalItems": 19,
         "orderedItems": [
                          {
-                         "summary": {"text": "activity002 logged in successfully"},
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -49,7 +49,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 logged in successfully"},
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -82,7 +82,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 published Post scheduled from wp-admin"},
+                         "content": {"text": "activity002 published Post scheduled from wp-admin"},
                          "name": "post__published",
                          "actor": {
                          "type": "Person",
@@ -116,7 +116,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 updated Post scheduled from wp-admin"},
+                         "content": {"text": "activity002 updated Post scheduled from wp-admin"},
                          "name": "post__updated",
                          "actor": {
                          "type": "Person",
@@ -150,7 +150,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 published Post scheduled post"},
+                         "content": {"text": "activity002 published Post scheduled post"},
                          "name": "post__published",
                          "actor": {
                          "type": "Person",
@@ -184,7 +184,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 updated Post scheduled post"},
+                         "content": {"text": "activity002 updated Post scheduled post"},
                          "name": "post__updated",
                          "actor": {
                          "type": "Person",
@@ -218,7 +218,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 updated Post scheduled post"},
+                         "content": {"text": "activity002 updated Post scheduled post"},
                          "name": "post__updated",
                          "actor": {
                          "type": "Person",
@@ -252,7 +252,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 added user elibud to site."},
+                         "content": {"text": "activity002 added user elibud to site."},
                          "name": "user__registered",
                          "actor": {
                          "type": "Person",
@@ -285,7 +285,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 removed Elisa from site and reassigned their content to ."},
+                         "content": {"text": "activity002 removed Elisa from site and reassigned their content to ."},
                          "name": "user__deleted",
                          "actor": {
                          "type": "Person",
@@ -325,7 +325,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 modified user Elisa"},
+                         "content": {"text": "activity002 modified user Elisa"},
                          "name": "user__updated",
                          "actor": {
                          "type": "Person",
@@ -358,7 +358,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 logged in successfully"},
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -391,7 +391,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 logged out"},
+                         "content": {"text": "activity002 logged out"},
                          "name": "user__logout",
                          "actor": {
                          "type": "Person",
@@ -424,7 +424,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 added user  to site."},
+                         "content": {"text": "activity002 added user  to site."},
                          "name": "user__registered",
                          "actor": {
                          "type": "Person",
@@ -457,7 +457,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 logged in successfully"},
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -490,7 +490,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 logged in successfully"},
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -523,7 +523,7 @@
                          }
                          },
                          {
-                         "summary": {"text": " published post What would you do with\\u2026"},
+                         "content": {"text": " published post What would you do with\\u2026"},
                          "name": "post__published",
                          "actor": {
                          "type": "Person",
@@ -557,7 +557,7 @@
                          }
                          },
                          {
-                         "summary": {"text": "Jurewicz72 logged in successfully"},
+                         "content": {"text": "Jurewicz72 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -590,7 +590,7 @@
                          }
                          },
                          {
-                         "summary": {"text": " published post RT @photomatt: Upload Once, Blog\\u2026"},
+                         "content": {"text": " published post RT @photomatt: Upload Once, Blog\\u2026"},
                          "name": "post__published",
                          "actor": {
                          "type": "Person",
@@ -624,7 +624,7 @@
                          }
                          },
                          {
-                         "summary": {"text": " updated post RT @Lunarbaboon: New comic about\\u2026"},
+                         "content": {"text": " updated post RT @Lunarbaboon: New comic about\\u2026"},
                          "name": "post__updated",
                          "actor": {
                          "type": "Person",

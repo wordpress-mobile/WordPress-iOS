@@ -20,7 +20,7 @@ public class Activity {
         guard let id = dictionary["activity_id"] as? String else {
             throw Error.missingActivityId
         }
-        guard let summaryDictionary = dictionary["summary"] as? [String: AnyObject],
+        guard let summaryDictionary = dictionary["content"] as? [String: AnyObject],
               let text = summaryDictionary["text"] as? String else {
             throw Error.missingSummaryText
         }
