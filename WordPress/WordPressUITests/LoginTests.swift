@@ -39,20 +39,4 @@ class LoginTests: XCTestCase {
             .tryProceed(password: "invalidPswd")
             .verifyLoginError()
     }
-
-//    func testSelfHostedLoginWithoutJetPack() {
-//        loginSelfHosted(username: WordPressTestCredentials.selfHostedUser, password: WordPressTestCredentials.selfHostedPassword, url: WordPressTestCredentials.selfHostedSiteURL)
-//
-//        waitForElementToAppear(element: XCUIApplication().tabBars[ elementStringIDs.mainNavigationBar ], timeout: 10)
-//
-//        logoutSelfHosted()
-//    }
-//
-//    func testCreateAccount() {
-//        let username = "\(WordPressTestCredentials.oneStepUser)\(arc4random())"
-//        let email = WordPressTestCredentials.nuxEmailPrefix + username + WordPressTestCredentials.nuxEmailSuffix
-//
-//        createAccount(email: email, username: username, password: WordPressTestCredentials.oneStepPassword)
-//        waitForElementToAppear(element: XCUIApplication().tabBars[ elementStringIDs.mainNavigationBar ], timeout: 20)
-//    }
 }
