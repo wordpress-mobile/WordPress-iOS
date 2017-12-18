@@ -12,6 +12,8 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var stepDescriptionLabel1: UILabel!
     @IBOutlet weak var stepDescriptionLabel2: UILabel!
+    @IBOutlet weak var siteTitleLabel: UILabel!
+    @IBOutlet weak var taglineLabel: UILabel!
     @IBOutlet weak var siteTitleField: LoginTextField!
     @IBOutlet weak var taglineField: LoginTextField!
     @IBOutlet weak var tagDescriptionLabel: UILabel!
@@ -68,10 +70,10 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         stepDescriptionLabel1.text = NSLocalizedString("Tell us more about the site you're creating.", comment: "Shown during the site details step of the site creation flow.")
         stepDescriptionLabel2.text = NSLocalizedString("What's the title and tagline?", comment: "Prompts the user for Site details information.")
 
-        siteTitleField.placeholder = NSLocalizedString("Add title", comment: "Site title placeholder.")
+        siteTitleLabel.text = NSLocalizedString("Add title", comment: "Site title placeholder.")
         siteTitleField.accessibilityIdentifier = "Site title"
 
-        taglineField.placeholder = NSLocalizedString("Optional tagline", comment: "Site tagline placeholder.")
+        taglineLabel.text = NSLocalizedString("Optional tagline", comment: "Site tagline placeholder.")
         taglineField.accessibilityIdentifier = "Site tagline"
 
         tagDescriptionLabel.text = NSLocalizedString("The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines.", comment: "Tagline description.")
