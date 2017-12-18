@@ -1,0 +1,57 @@
+import Foundation
+import CoreData
+import WordPressKit
+
+@objc(PostUploadOperation)
+public class PostUploadOperation: UploadOperation {
+    /// Remote post ID for this upload op.
+    ///
+    @NSManaged public var remotePostID: Int64
+
+    /// Post subject for this upload op (Not used if `isMedia` is True)
+    ///
+    @NSManaged public var postTitle: String?
+
+    /// Post content for this upload op (Not used if `isMedia` is True)
+    ///
+    @NSManaged public var postContent: String?
+
+    /// Post status for this upload op — e.g. "Draft" or "Publish" (Not used if `isMedia` is True)
+    ///
+    @NSManaged public var postStatus: String?
+}
+
+// MARK: - Computed Properties
+
+extension PostUploadOperation {
+    /// Returns a RemotePost object based on this PostUploadOperation
+    ///
+    var remotePost: RemotePost {
+        let remotePost = RemotePost()
+        remotePost.postID = NSNumber(value: remotePostID)
+        remotePost.content = postContent
+        remotePost.title = postTitle
+        remotePost.status = postStatus
+        remotePost.siteID = NSNumber(value: siteID)
+        return remotePost
+    }
+}
+
+// MARK: - Update Helpers
+
+extension PostUploadOperation {
+    /// Updates the local fields with the new values stored in a given RemotePost
+    ///
+    func updateWithPost(remote: RemotePost) {
+
+        if let postId = remote.postID?.int64Value {
+            remotePostID = postId
+        }
+        if let siteId = remote.siteID?.int64Value {
+            siteID = siteId
+        }
+        postTitle = remote.title
+        postContent = remote.content
+        postStatus = remote.status
+    }
+}
