@@ -5,7 +5,6 @@ protocol SiteCreationDomainSearchTableViewCellDelegate {
 }
 
 class SiteCreationDomainSearchTableViewCell: UITableViewCell {
-
     @IBOutlet var textField: LoginTextField?
     private var placeholder: String
     public static let cellIdentifier = "SiteCreationDomainSearchTableViewCell"
