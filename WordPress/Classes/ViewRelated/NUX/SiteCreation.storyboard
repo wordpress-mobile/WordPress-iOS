@@ -212,39 +212,99 @@
                                         <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="di8-K1-SEI" userLabel="Text Fields Stack View">
-                                        <rect key="frame" x="0.0" y="102" width="375" height="88"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jk0-Rv-hIx" userLabel="Separator Line">
+                                        <rect key="frame" x="0.0" y="101.5" width="375" height="0.5"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="CFC-sP-cfB"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzj-vV-csj" userLabel="Title View">
+                                        <rect key="frame" x="0.0" y="102" width="375" height="43.5"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8CU-ee-CNI" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="8CU-ee-CNI" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="291" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="delegate" destination="aP4-2B-Ezc" id="Nm0-3X-Dd8"/>
                                                 </connections>
                                             </textField>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional tagline" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="44" width="375" height="44"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-JQ-uX5">
+                                                <rect key="frame" x="291" y="0.0" width="64" height="43.5"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <color key="textColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Fd2-JQ-uX5" secondAttribute="bottom" id="0HN-n1-PHP"/>
+                                            <constraint firstItem="Fd2-JQ-uX5" firstAttribute="leading" secondItem="8CU-ee-CNI" secondAttribute="trailing" id="5rf-ii-f0A"/>
+                                            <constraint firstItem="8CU-ee-CNI" firstAttribute="leading" secondItem="dzj-vV-csj" secondAttribute="leading" id="5yW-Kl-zAK"/>
+                                            <constraint firstAttribute="bottom" secondItem="8CU-ee-CNI" secondAttribute="bottom" id="CGP-Ia-oRQ"/>
+                                            <constraint firstItem="8CU-ee-CNI" firstAttribute="top" secondItem="dzj-vV-csj" secondAttribute="top" id="Cu5-Ee-NHA"/>
+                                            <constraint firstItem="Fd2-JQ-uX5" firstAttribute="top" secondItem="dzj-vV-csj" secondAttribute="top" id="OWH-Lw-EIu"/>
+                                            <constraint firstAttribute="trailing" secondItem="Fd2-JQ-uX5" secondAttribute="trailing" constant="20" id="Pea-ym-78x"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IaW-BS-zlj" userLabel="Separator Line">
+                                        <rect key="frame" x="0.0" y="145.5" width="375" height="0.5"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Jwd-7O-xxH"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qh3-nA-H9v" userLabel="Tagline View">
+                                        <rect key="frame" x="0.0" y="146" width="375" height="44"/>
+                                        <subviews>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="234.5" height="44"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="NO"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="delegate" destination="aP4-2B-Ezc" id="q0C-AK-G9M"/>
                                                 </connections>
                                             </textField>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Optional tagline" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5F-j9-fdg">
+                                                <rect key="frame" x="234.5" y="0.0" width="120.5" height="43.5"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <color key="textColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
-                                    </stackView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="MyF-yC-tG6" firstAttribute="leading" secondItem="qh3-nA-H9v" secondAttribute="leading" id="7ae-aK-cwM"/>
+                                            <constraint firstAttribute="trailing" secondItem="a5F-j9-fdg" secondAttribute="trailing" constant="20" id="Ec0-XZ-Lvg"/>
+                                            <constraint firstItem="a5F-j9-fdg" firstAttribute="top" secondItem="qh3-nA-H9v" secondAttribute="top" id="IOt-yD-RSZ"/>
+                                            <constraint firstItem="MyF-yC-tG6" firstAttribute="top" secondItem="qh3-nA-H9v" secondAttribute="top" id="R2G-z2-Puz"/>
+                                            <constraint firstAttribute="bottom" secondItem="MyF-yC-tG6" secondAttribute="bottom" id="cF5-Q4-gKi"/>
+                                            <constraint firstAttribute="bottom" secondItem="a5F-j9-fdg" secondAttribute="bottom" id="gl9-8n-Z1J"/>
+                                            <constraint firstItem="a5F-j9-fdg" firstAttribute="leading" secondItem="MyF-yC-tG6" secondAttribute="trailing" id="oHz-wK-YVW"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-4I-TFT" userLabel="Separator Line">
+                                        <rect key="frame" x="0.0" y="190" width="375" height="0.5"/>
+                                        <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="1yt-CV-1KF"/>
+                                        </constraints>
+                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGJ-Lt-fd3">
                                         <rect key="frame" x="20" y="200" width="335" height="26.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
@@ -270,23 +330,35 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="di8-K1-SEI" firstAttribute="top" secondItem="zht-l9-NH1" secondAttribute="bottom" constant="20" id="13H-4a-kF5"/>
+                                    <constraint firstAttribute="trailing" secondItem="jk0-Rv-hIx" secondAttribute="trailing" id="1pt-qr-fvf"/>
+                                    <constraint firstItem="qh3-nA-H9v" firstAttribute="top" secondItem="IaW-BS-zlj" secondAttribute="bottom" id="3L1-y6-e70"/>
                                     <constraint firstItem="pKm-Si-GCs" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="3Lo-5n-vT3"/>
                                     <constraint firstItem="Tc3-Bo-Atj" firstAttribute="top" secondItem="zB1-MJ-ir0" secondAttribute="top" constant="20" id="A40-dZ-fIT"/>
-                                    <constraint firstItem="di8-K1-SEI" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" id="EXH-dl-LqC"/>
+                                    <constraint firstItem="dzj-vV-csj" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" id="EuJ-3D-bKC"/>
+                                    <constraint firstItem="jk0-Rv-hIx" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" id="HQB-BZ-J8v"/>
+                                    <constraint firstAttribute="trailing" secondItem="qh3-nA-H9v" secondAttribute="trailing" id="HXJ-bs-vcD"/>
                                     <constraint firstItem="cGJ-Lt-fd3" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="Ha0-7P-AAa"/>
+                                    <constraint firstItem="uLJ-4I-TFT" firstAttribute="top" secondItem="qh3-nA-H9v" secondAttribute="bottom" id="Hut-Pz-wn7"/>
                                     <constraint firstAttribute="trailing" secondItem="yYd-Ij-EZ1" secondAttribute="trailing" constant="20" id="Lzk-1x-H42"/>
                                     <constraint firstAttribute="trailing" secondItem="zht-l9-NH1" secondAttribute="trailing" constant="20" id="OML-0J-8m2"/>
                                     <constraint firstAttribute="trailing" secondItem="pKm-Si-GCs" secondAttribute="trailing" constant="20" id="OVj-o5-yjp"/>
+                                    <constraint firstAttribute="trailing" secondItem="IaW-BS-zlj" secondAttribute="trailing" id="Oah-9S-psV"/>
                                     <constraint firstItem="pKm-Si-GCs" firstAttribute="top" secondItem="Tc3-Bo-Atj" secondAttribute="bottom" constant="5" id="QBy-01-ICe"/>
+                                    <constraint firstItem="IaW-BS-zlj" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" id="QR7-OA-bYF"/>
+                                    <constraint firstItem="jk0-Rv-hIx" firstAttribute="top" secondItem="zht-l9-NH1" secondAttribute="bottom" constant="20" id="QmM-es-yIf"/>
                                     <constraint firstAttribute="trailing" secondItem="cGJ-Lt-fd3" secondAttribute="trailing" constant="20" id="WYn-AJ-hfc"/>
                                     <constraint firstItem="zht-l9-NH1" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="XQm-Hj-HCN"/>
+                                    <constraint firstItem="qh3-nA-H9v" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" id="bMu-NK-L5o"/>
                                     <constraint firstItem="Tc3-Bo-Atj" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" constant="20" id="cxj-Lq-w7O"/>
                                     <constraint firstAttribute="trailing" secondItem="Tc3-Bo-Atj" secondAttribute="trailing" constant="20" id="eBM-Le-ZX6"/>
-                                    <constraint firstItem="cGJ-Lt-fd3" firstAttribute="top" secondItem="di8-K1-SEI" secondAttribute="bottom" constant="10" id="fID-sb-lHc"/>
+                                    <constraint firstItem="dzj-vV-csj" firstAttribute="top" secondItem="jk0-Rv-hIx" secondAttribute="bottom" id="fEv-Hf-Eb3"/>
                                     <constraint firstItem="zht-l9-NH1" firstAttribute="top" secondItem="pKm-Si-GCs" secondAttribute="bottom" constant="5" id="fap-5E-pFG"/>
+                                    <constraint firstItem="IaW-BS-zlj" firstAttribute="top" secondItem="dzj-vV-csj" secondAttribute="bottom" id="fzR-EG-1LM"/>
+                                    <constraint firstItem="cGJ-Lt-fd3" firstAttribute="top" secondItem="uLJ-4I-TFT" secondAttribute="bottom" constant="10" id="hk8-pP-AlE"/>
                                     <constraint firstAttribute="bottom" secondItem="yYd-Ij-EZ1" secondAttribute="bottom" constant="20" id="hsR-hB-L3m"/>
-                                    <constraint firstAttribute="trailing" secondItem="di8-K1-SEI" secondAttribute="trailing" id="vII-Gs-ndb"/>
+                                    <constraint firstAttribute="trailing" secondItem="dzj-vV-csj" secondAttribute="trailing" id="l7j-jW-rmk"/>
+                                    <constraint firstItem="uLJ-4I-TFT" firstAttribute="leading" secondItem="zB1-MJ-ir0" secondAttribute="leading" id="u0N-W7-McN"/>
+                                    <constraint firstAttribute="trailing" secondItem="uLJ-4I-TFT" secondAttribute="trailing" id="yEh-To-kRT"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -303,11 +375,13 @@
                         <outlet property="bottomContentConstraint" destination="Jd9-Lq-GXT" id="OwN-Ug-4Xv"/>
                         <outlet property="nextButton" destination="yYd-Ij-EZ1" id="IZ7-df-4EX"/>
                         <outlet property="siteTitleField" destination="8CU-ee-CNI" id="9EB-4V-NEy"/>
+                        <outlet property="siteTitleLabel" destination="Fd2-JQ-uX5" id="FHF-qD-Rgt"/>
                         <outlet property="stepDescriptionLabel1" destination="pKm-Si-GCs" id="gL6-Dh-XuK"/>
                         <outlet property="stepDescriptionLabel2" destination="zht-l9-NH1" id="J8L-e0-ZiK"/>
                         <outlet property="stepLabel" destination="Tc3-Bo-Atj" id="CeA-dj-Ky4"/>
                         <outlet property="tagDescriptionLabel" destination="cGJ-Lt-fd3" id="mge-CL-Pan"/>
                         <outlet property="taglineField" destination="MyF-yC-tG6" id="XYN-dQ-9Pt"/>
+                        <outlet property="taglineLabel" destination="a5F-j9-fdg" id="Ddr-IX-QjZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuO-m2-AGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
