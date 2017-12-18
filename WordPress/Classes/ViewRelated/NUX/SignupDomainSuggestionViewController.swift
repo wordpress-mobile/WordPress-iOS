@@ -1,6 +1,8 @@
 import UIKit
 
 class SignupDomainSuggestionViewController: UITableViewController {
+    var helpBadge: WPNUXHelpBadgeLabel!
+    var helpButton: UIButton!
 
     var service: DomainsService?
     private var siteTitleSuggestions: [String] = []
@@ -17,10 +19,24 @@ class SignupDomainSuggestionViewController: UITableViewController {
         tableView.register(UINib(nibName: "SiteCreationDomainsActivityTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = WPStyleGuide.greyLighten30()
+
+        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
+        helpButton = helpButtonResult
+        helpBadge = helpBadgeResult
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.backgroundColor = WPStyleGuide.greyLighten30()
-        
+
+        // only procede with initial search if we don't have site title suggestions yet (hopefully only the first time)
+        guard siteTitleSuggestions.count < 1 else {
+            return
+        }
+
         isSearching = true
         let moc = NSManagedObjectContext()
         let api = WordPressComRestApi(oAuthToken: "")
@@ -33,6 +49,20 @@ class SignupDomainSuggestionViewController: UITableViewController {
             self?.isSearching = false
             // do nothing atm
         }
+    }
+}
+
+// MARK: - LoginWithLogoAndHelpViewController methods
+
+extension SignupDomainSuggestionViewController: LoginWithLogoAndHelpViewController {
+    func handleHelpButtonTapped(_ sender: AnyObject) {
+        displaySupportViewController(sourceTag: .wpComLogin)
+    }
+
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
+        let count = HelpshiftUtils.unreadNotificationCount()
+        helpBadge.text = "\(count)"
+        helpBadge.isHidden = (count == 0)
     }
 }
 
