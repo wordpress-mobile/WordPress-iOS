@@ -43,7 +43,7 @@ class SignupDomainSuggestionViewController: UITableViewController {
         service.getDomainSuggestions(base: "test suggest", success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.siteTitleSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.siteTitleSuggestions.rawValue), with: .top)
+            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.siteTitleSuggestions.rawValue), with: .automatic)
         }) { [weak self] (error) in
             self?.isSearching = false
             // do nothing atm
@@ -204,7 +204,7 @@ extension SignupDomainSuggestionViewController: SiteCreationDomainSearchTableVie
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.searchSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .top)
+            self?.tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .automatic)
         }) { [weak self] (error) in
             self?.isSearching = false
         }
