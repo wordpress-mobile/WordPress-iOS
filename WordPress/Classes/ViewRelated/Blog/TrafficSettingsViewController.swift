@@ -32,28 +32,14 @@ class TrafficSettingsViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         title = NSLocalizedString("Traffic", comment: "Title for Traffic settings")
         ImmuTable.registerRows([SwitchRow.self], tableView: tableView)
-
-        // setup the viewModel
-        let isAMPEnabled = self.blog.settings?.ampEnabled ?? false
-        handler.viewModel = TrafficSettingsViewModel.ready(isAMPEnabled, self.onChange).tableViewModel()
+        handler.viewModel = self.tableViewModel()
     }
-}
 
-enum TrafficSettingsViewModel {
-    /**
-     - Parameters
-     - First param: - Indicates if AMP is enabled for the site
-     - Second param: - Action block to be executed when user toggles the Switch.
-     */
-    case ready(Bool, ((Bool) -> Void))
-
-    func tableViewModel() -> ImmuTable {
-        switch self {
-        case .ready(let isAMPEnabled, let action):
-            let switchTitle: String = NSLocalizedString("Accelerated Mobile Pages (AMP)", comment: "Label for AMP toggle")
-            let row = SwitchRow(title: switchTitle, value: isAMPEnabled, onChange: action)
-            let section = ImmuTableSection(rows: [row])
-            return ImmuTable(sections: [section])
-        }
+    private func tableViewModel() -> ImmuTable {
+        let isAMPEnabled = self.blog.settings?.ampEnabled ?? false
+        let switchTitle: String = NSLocalizedString("Accelerated Mobile Pages (AMP)", comment: "Label for AMP toggle")
+        let row = SwitchRow(title: switchTitle, value: isAMPEnabled, onChange: self.onChange)
+        let section = ImmuTableSection(rows: [row])
+        return ImmuTable(sections: [section])
     }
 }
