@@ -156,7 +156,9 @@ extension SignupDomainSuggestionViewController {
     private func titleAndDescriptionCell() -> UITableViewCell {
         let title = NSLocalizedString("Step 4 of 4", comment: "Title for last step in the site creation process.").localizedUppercase
         let description = NSLocalizedString("Pick an available \"yourname.wordpress.com\" address to let people find you on the web.", comment: "Description of how to pick a domain name during the site creation process")
-        return LoginSocialErrorCell(title: title, description: description)
+        let cell = LoginSocialErrorCell(title: title, description: description)
+        cell.selectionStyle = .none
+        return cell
     }
 
     private func searchFieldCell() -> SiteCreationDomainSearchTableViewCell {
@@ -164,6 +166,7 @@ extension SignupDomainSuggestionViewController {
             return SiteCreationDomainSearchTableViewCell(placeholder: "")
         }
         cell.delegate = self
+        cell.selectionStyle = .none
         return cell
     }
 
@@ -185,6 +188,30 @@ extension SignupDomainSuggestionViewController {
         cell.textLabel?.text = suggestion
         cell.textLabel?.textColor = WPStyleGuide.darkGrey()
         return cell
+    }
+}
+
+// MARK: UITableViewDelegate
+
+extension SignupDomainSuggestionViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedDomain: String
+        switch indexPath.section {
+        case Sections.searchSuggestions.rawValue:
+            selectedDomain = searchSuggestions[indexPath.row]
+        case Sections.siteTitleSuggestions.rawValue:
+            selectedDomain = siteTitleSuggestions[indexPath.row]
+        default:
+            return
+        }
+
+        tableView.deselectSelectedRowWithAnimation(true)
+        let message = "'\(selectedDomain)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle("OK")
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 
