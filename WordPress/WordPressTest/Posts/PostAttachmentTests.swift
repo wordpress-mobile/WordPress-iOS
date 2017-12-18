@@ -116,18 +116,16 @@ class PostAttachmentTests: XCTestCase {
         controller.attachment = attachment
         controller.linkURL = linkURLValue
         controller.onUpdate = { (_, _, linkURL, _) in
-            richTextView.edit(attachment) { updated in
-                if let linkURL = linkURL {
-                    updated.linkURL = linkURL
-                }
-                expect.fulfill()
+            if let url = linkURL, let range = richTextView.textStorage.ranges(forAttachment: attachment).first {
+                richTextView.setLink(url, inRange: range)
             }
+            expect.fulfill()
         }
         controller.handleDoneButtonTapped(sender: UIBarButtonItem())
 
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\"></a></p>")
+        XCTAssertEqual(html,"<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\"></a></p>")
     }
 }
