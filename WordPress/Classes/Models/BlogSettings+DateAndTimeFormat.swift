@@ -91,9 +91,9 @@ extension BlogSettings {
         // MARK: - Private Properties
 
         fileprivate static let descriptionMap = [
-            ampmLowercase.rawValue: NSLocalizedString("5:46 pm", comment: "5:46 pm as in a time of day, only the 'pm' part needs translation"),
-            ampmUppercase.rawValue: NSLocalizedString("5:46 PM", comment: "5:46 PM as in a time of day, only the 'PM' part needs translation"),
-            twentyFourHours.rawValue: NSLocalizedString("17:46", comment: "No translation required"),
+            ampmLowercase.rawValue: "5:46 " + Calendar.current.pmSymbol.lowercased(),
+            ampmUppercase.rawValue: "5:46 " + Calendar.current.pmSymbol.uppercased(),
+            twentyFourHours.rawValue: "17:46",
         ]
     }
 
@@ -135,14 +135,20 @@ extension BlogSettings {
 
         // MARK: - Private Properties
 
+        fileprivate static var weekdays: [String] {
+            var calendar = Calendar.init(identifier: .gregorian)
+            calendar.locale = Locale.current
+            return calendar.weekdaySymbols
+        }
+
         fileprivate static let descriptionMap = [
-            Sunday.rawValue: NSLocalizedString("Sunday", comment: "Sunday, the day of the week."),
-            Monday.rawValue: NSLocalizedString("Monday", comment: "Monday, the day of the week."),
-            Tuesday.rawValue: NSLocalizedString("Tuesday", comment: "Tuesday, the day of the week."),
-            Wednesday.rawValue: NSLocalizedString("Wednesday", comment: "Wednesday, the day of the week."),
-            Thursday.rawValue: NSLocalizedString("Thursday", comment: "Thursday, the day of the week."),
-            Friday.rawValue: NSLocalizedString("Friday", comment: "Friday, the day of the week."),
-            Saturday.rawValue: NSLocalizedString("Saturday", comment: "Saturday, the day of the week.")
+            Sunday.rawValue: weekdays[0],
+            Monday.rawValue: weekdays[1],
+            Tuesday.rawValue: weekdays[2],
+            Wednesday.rawValue: weekdays[3],
+            Thursday.rawValue: weekdays[4],
+            Friday.rawValue: weekdays[5],
+            Saturday.rawValue: weekdays[6]
         ]
     }
 
