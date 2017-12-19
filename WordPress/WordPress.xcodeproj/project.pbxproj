@@ -140,6 +140,7 @@
 		1751E5931CE23801000CA08D /* NSAttributedString+StyledHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */; };
 		1759F1701FE017BF0003EC81 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F16F1FE017BF0003EC81 /* Queue.swift */; };
 		1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1711FE017F20003EC81 /* QueueTests.swift */; };
+		1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F17F1FE1460C0003EC81 /* NoticeView.swift */; };
 		176579F71C63A40F0000978E /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176579F61C63A40F0000978E /* PurchaseButton.swift */; };
 		1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1767494D1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift */; };
 		176DEEE91D4615FE00331F30 /* WPSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176DEEE81D4615FE00331F30 /* WPSplitViewController.swift */; };
@@ -1274,6 +1275,7 @@
 		1751E5921CE23801000CA08D /* NSAttributedString+StyledHTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+StyledHTML.swift"; sourceTree = "<group>"; };
 		1759F16F1FE017BF0003EC81 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
+		1759F17F1FE1460C0003EC81 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
 		176579F61C63A40F0000978E /* PurchaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseButton.swift; sourceTree = "<group>"; };
 		1767494D1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSearchHeaderView.swift; sourceTree = "<group>"; };
 		176DEEE81D4615FE00331F30 /* WPSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPSplitViewController.swift; sourceTree = "<group>"; };
@@ -2901,6 +2903,15 @@
 			path = Domains;
 			sourceTree = "<group>";
 		};
+		1759F17E1FE145F90003EC81 /* Notices */ = {
+			isa = PBXGroup;
+			children = (
+				172E27D21FD98135003EA321 /* NoticePresenter.swift */,
+				1759F17F1FE1460C0003EC81 /* NoticeView.swift */,
+			);
+			path = Notices;
+			sourceTree = "<group>";
+		};
 		17D433581EFD2ED500CAB602 /* Fancy Alerts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3725,11 +3736,11 @@
 		8584FDB619243AC40019C02E /* System */ = {
 			isa = PBXGroup;
 			children = (
+				1759F17E1FE145F90003EC81 /* Notices */,
 				17D433581EFD2ED500CAB602 /* Fancy Alerts */,
 				B5F641B21E37C36700B7819F /* AdaptiveNavigationController.swift */,
 				171795821D1C65E8002F1EB2 /* FlingableViewHandler.swift */,
 				1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */,
-				172E27D21FD98135003EA321 /* NoticePresenter.swift */,
 				E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */,
 				E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */,
 				FFA9148D1BA6E5170068F8BF /* RotationAwareNavigationViewController.h */,
@@ -6341,6 +6352,7 @@
 				B50C0C621EF42AF200372C65 /* TextList+WordPress.swift in Sources */,
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				B53971501D537763006135EC /* NotificationBlockGroup.swift in Sources */,
+				1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */,
 				B53971521D537B22006135EC /* NotificationBlock.swift in Sources */,
 				0807CB721CE670A800CDBDAC /* WPContentSearchHelper.swift in Sources */,
 				74AF4D7C1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
