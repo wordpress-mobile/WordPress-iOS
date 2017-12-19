@@ -819,6 +819,7 @@
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
                                                 <rect key="frame" x="20" y="340" width="343" height="18"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="pswdErrorLabel"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1161,6 +1162,7 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTC-PV-ffk">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="connectSite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="cSh-Lw-mAl"/>
                                                 </constraints>
@@ -1174,6 +1176,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
                                                 <rect key="frame" x="0.0" y="64" width="343" height="44"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
                                                 </constraints>
@@ -1254,6 +1257,7 @@
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ONy-ZJ-GTI">
                                             <rect key="frame" x="0.0" y="109.5" width="383" height="18"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="username"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="UkN-Od-n0K"/>
                                             </constraints>
@@ -1760,8 +1764,8 @@
         <image name="login-magic-link" width="160" height="160"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gAE-di-Wyf"/>
-        <segue reference="kRR-qz-Hu2"/>
-        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="7lv-19-h36"/>
+        <segue reference="qLI-qX-rkG"/>
+        <segue reference="0ao-yi-yZI"/>
     </inferredMetricsTieBreakers>
 </document>

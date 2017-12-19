@@ -47,50 +47,68 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
         let instr2 = NSLocalizedString("Choose an option below:", comment: "Choose site type prompt.")
         let instructionRow = InstructionRow(step: step, instr1: instr1, instr2: instr2, action: nil)
 
-        let blog = NSLocalizedString("Start with a Blog", comment: "Start with site type.")
-        let blogDescr = NSLocalizedString("To share your ideas, stories and photographs with your followers.", comment: "Site type description.")
-        let blogImage = UIImage(named: "site-creation-blog")
-        let blogRow = SiteTypeRow(startWith: blog, typeDescr: blogDescr, typeImage: blogImage, action: siteTypeRowSelected("Blog"))
-
-        let website = NSLocalizedString("Start with a Website", comment: "Start with site type.")
-        let websiteDescr = NSLocalizedString("To promote your business or brand, and connect with your audience.", comment: "Site type description.")
-        let websiteImage = UIImage(named: "site-creation-website")
-        let websiteRow = SiteTypeRow(startWith: website, typeDescr: websiteDescr, typeImage: websiteImage, action: siteTypeRowSelected("Website"))
-
-        let portfolio = NSLocalizedString("Start with a Portfolio", comment: "Start with site type.")
-        let portfolioDescr = NSLocalizedString("To present your creative projects in a visual showcase.", comment: "Site type description.")
-        let portfolioImage = UIImage(named: "site-creation-portfolio")
-        let portfolioRow = SiteTypeRow(startWith: portfolio, typeDescr: portfolioDescr, typeImage: portfolioImage, action: siteTypeRowSelected("Portfolio"))
-
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
                     instructionRow,
-                    blogRow,
-                    websiteRow,
-                    portfolioRow
+                    createRowFor(.blog),
+                    createRowFor(.website),
+                    createRowFor(.portfolio)
                 ])
             ])
     }
 
+    private func createRowFor(_ siteType: SiteType) -> SiteTypeRow {
+
+        var typeDescription: String
+        var typeTitle: String
+
+        switch siteType {
+        case .blog:
+            typeDescription = NSLocalizedString("To share your ideas, stories and photographs with your followers.", comment: "Site type description.")
+            typeTitle = NSLocalizedString("Start with a Blog", comment: "Start with site type.")
+        case .website:
+            typeDescription = NSLocalizedString("To promote your business or brand, and connect with your audience.", comment: "Site type description.")
+            typeTitle = NSLocalizedString("Start with a Website", comment: "Start with site type.")
+        case .portfolio:
+            typeDescription = NSLocalizedString("To present your creative projects in a visual showcase.", comment: "Site type description.")
+            typeTitle = NSLocalizedString("Start with a Portfolio", comment: "Start with site type.")
+        }
+
+        let typeImage = UIImage(named: "site-creation-\(siteType)")
+
+        return SiteTypeRow(siteType: siteType, startWith: typeTitle, typeDescr: typeDescription, typeImage: typeImage, action: siteTypeRowSelected())
+    }
+
+
     // MARK: - Row Handler
 
-    func siteTypeRowSelected(_ siteType: String) -> ImmuTableAction {
+    private func siteTypeRowSelected() -> ImmuTableAction {
         return { [unowned self] row in
-            self.tableView.deselectSelectedRowWithAnimation(true)
-            let message = "'\(siteType)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-            let alertController = UIAlertController(title: nil,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle("OK")
-            self.present(alertController, animated: true, completion: nil)
+            self.performSegue(withIdentifier: "showThemeSelection", sender: row)
         }
+    }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        tableView.deselectSelectedRowWithAnimation(true)
+
+        guard let themeVC = segue.destination as? ThemeSelectionViewController else {
+            return
+        }
+
+        guard let tableRow = sender as? SiteTypeRow else {
+            return
+        }
+
+        themeVC.siteType = tableRow.siteType
     }
 
     // MARK: - LoginWithLogoAndHelpViewController methods
 
     func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComLogin)
+        displaySupportViewController(sourceTag: .wpComCreateSiteCategory)
     }
 
     // this VC isn't setup to handle the badge count. Should be fixed when NUXAbstractViewController and LoginViewController are refactored

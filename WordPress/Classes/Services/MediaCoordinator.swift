@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 /// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
@@ -40,10 +41,9 @@ class MediaCoordinator: NSObject {
                             objectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
-                                guard let media = media else {
+                                guard let media = media, !media.isDeleted else {
                                     return
                                 }
-
                                 self?.uploadMedia(media)
         })
     }
@@ -55,6 +55,32 @@ class MediaCoordinator: NSObject {
         }
 
         uploadMedia(media)
+    }
+
+    /// Cancels any ongoing upload of the Media and deletes it.
+    ///
+    /// - Parameter media: the object to cancel and delete
+    ///
+    func cancelUploadAndDeleteMedia(_ media: Media) {
+        cancelUpload(of: media)
+        delete(media: media)
+    }
+
+    /// Cancels any ongoing upload for the media object
+    ///
+    /// - Parameter media: the media object to cancel the upload
+    ///
+    func cancelUpload(of media: Media) {
+        mediaProgressCoordinator.cancelAndStopTrack(of: media.uploadID)
+    }
+
+    /// Deletes a media object from the storage
+    ///
+    /// - Parameter media: the media object to delete
+    ///
+    func delete(media: Media) {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.delete(media, success: nil, failure: nil)
     }
 
     private func uploadMedia(_ media: Media) {
@@ -214,6 +240,14 @@ class MediaCoordinator: NSObject {
         let service = MediaService(managedObjectContext: backgroundContext)
         service.syncMediaLibrary(for: blog, success: success, failure: failure)
     }
+
+    /// This method checks the status of all media objects and updates them to the correct status if needed.
+    /// The main cause of wrong status is the app being killed while uploads of media are happening.
+    ///
+    @objc func refreshMediaStatus() {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.refreshMediaStatus()
+    }
 }
 
 // MARK: - MediaProgressCoordinatorDelegate
@@ -235,7 +269,30 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+        if let notice = self.notice(for: mediaProgressCoordinator) {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
+    }
 
+    private func notice(for mediaProgressCoordinator: MediaProgressCoordinator) -> Notice? {
+        guard !mediaProgressCoordinator.isRunning,
+            let progress = mediaProgressCoordinator.mediaGlobalProgress else {
+            return nil
+        }
+
+        guard !mediaProgressCoordinator.hasFailedMedia else {
+            return nil
+        }
+
+        let title: String
+        let completedUnits = progress.completedUnitCount
+        if completedUnits == 1 {
+            title = NSLocalizedString("Media uploaded (%ld file)", comment: "Alert displayed to the user when a single media item has uploaded successfully.")
+        } else {
+            title = NSLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully.")
+        }
+
+        return Notice(title: String.localizedStringWithFormat(title, completedUnits))
     }
 }
 
