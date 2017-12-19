@@ -683,6 +683,7 @@
 		BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
 		BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA11FD6654A007AE3E4 /* Logger.swift */; };
 		BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */; };
+		BE3848C11FE895CC005801B0 /* SitePickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3848C01FE895CC005801B0 /* SitePickerTableViewController.swift */; };
 		BE6DD3261FD66C2900E55192 /* SignupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3251FD66C2900E55192 /* SignupScreen.swift */; };
 		BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */; };
 		BE6DD32A1FD6708900E55192 /* LinkOrPasswordScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */; };
@@ -2028,6 +2029,7 @@
 		BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseScreen.swift; sourceTree = "<group>"; };
 		BE2B4EA11FD6654A007AE3E4 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginEmailScreen.swift; sourceTree = "<group>"; };
+		BE3848C01FE895CC005801B0 /* SitePickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitePickerTableViewController.swift; sourceTree = "<group>"; };
 		BE6DD3251FD66C2900E55192 /* SignupScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupScreen.swift; sourceTree = "<group>"; };
 		BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordScreen.swift; sourceTree = "<group>"; };
 		BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkOrPasswordScreen.swift; sourceTree = "<group>"; };
@@ -3497,6 +3499,7 @@
 				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
 				74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */,
 				74F5CD391FE0653500764E7C /* ShareExtensionViewController.swift */,
+				BE3848C01FE895CC005801B0 /* SitePickerTableViewController.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -6991,6 +6994,7 @@
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
 				74F5CD3A1FE0653500764E7C /* ShareExtensionViewController.swift in Sources */,
+				BE3848C11FE895CC005801B0 /* SitePickerTableViewController.swift in Sources */,
 				B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */,
 				B50248B71C96FF8400AFBDED /* UIImageView+Extensions.swift in Sources */,
 				B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */,
