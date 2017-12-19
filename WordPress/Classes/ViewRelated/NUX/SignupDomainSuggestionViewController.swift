@@ -40,13 +40,26 @@ class SignupDomainSuggestionViewController: UITableViewController {
             return
         }
 
-        isSearching = true
-        let api = WordPressComRestApi(oAuthToken: "")
-        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
-        service.getDomainSuggestions(base: nameToSearch, success: { [weak self] (suggestions) in
-            self?.isSearching = false
+        suggestDomains(for: nameToSearch) { [weak self] (suggestions) in
             self?.siteTitleSuggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.siteTitleSuggestions.rawValue), with: .automatic)
+        }
+    }
+
+    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [String]) ->()) {
+        guard !isSearching else {
+            return
+        }
+
+        isSearching = true
+
+        let api = WordPressComRestApi(oAuthToken: "")
+        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
+        tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .top)
+        service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
+            self?.isSearching = false
+            addSuggestions(suggestions)
+            self?.tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .automatic)
         }) { [weak self] (error) in
             self?.isSearching = false
         }
@@ -145,6 +158,8 @@ extension SignupDomainSuggestionViewController {
         return 0.5
     }
 
+    // MARK: table view cells
+
     private func activityCell() -> SiteCreationDomainsActivityTableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier) as? SiteCreationDomainsActivityTableViewCell else {
             let newCell = SiteCreationDomainsActivityTableViewCell(style: .default, reuseIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier)
@@ -221,21 +236,9 @@ extension SignupDomainSuggestionViewController {
 
 extension SignupDomainSuggestionViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
-        guard !isSearching else {
-            return
-        }
-
-        isSearching = true
-
-        let api = WordPressComRestApi(oAuthToken: "")
-        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
-        tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .top)
-        service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
-            self?.isSearching = false
+        suggestDomains(for: searchTerm) { [weak self] (suggestions) in
             self?.searchSuggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .automatic)
-        }) { [weak self] (error) in
-            self?.isSearching = false
         }
     }
 }
