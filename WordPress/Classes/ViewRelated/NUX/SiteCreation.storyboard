@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2dM-ub-12g">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2dM-ub-12g">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13770"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -308,11 +308,12 @@
                         <outlet property="stepLabel" destination="Tc3-Bo-Atj" id="CeA-dj-Ky4"/>
                         <outlet property="tagDescriptionLabel" destination="cGJ-Lt-fd3" id="mge-CL-Pan"/>
                         <outlet property="taglineField" destination="MyF-yC-tG6" id="XYN-dQ-9Pt"/>
+                        <segue destination="pd3-Be-itM" kind="show" identifier="showDomains" id="0st-cX-Udd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuO-m2-AGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1040.8" y="99.400299850074973"/>
+            <point key="canvasLocation" x="1041" y="95"/>
         </scene>
         <!--Signup Domain Suggestion View Controller-->
         <scene sceneID="CAl-vn-1Ma">
@@ -340,7 +341,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5UC-ph-sIZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="844" y="93"/>
+            <point key="canvasLocation" x="1945" y="95"/>
         </scene>
     </scenes>
 </document>
