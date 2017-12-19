@@ -32,6 +32,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         let actionTitle: String
         let cancelTitle: String
         let icon: UIImage
+        let isDestructiveAction: Bool
     }
 
     fileprivate enum Sections: Int {
@@ -202,10 +203,15 @@ final class SettingsTitleSubtitleController: UITableViewController {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelTitle)
-        alertController.addDefaultActionWithTitle(actionTitle) { _ in
-            self.executeAction()
+        if confirmation.isDestructiveAction {
+            alertController.addDestructiveActionWithTitle(actionTitle) { _ in
+                self.executeAction()
+            }
+        } else {
+            alertController.addDefaultActionWithTitle(actionTitle) { _ in
+                self.executeAction()
+            }
         }
-
         alertController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(alertController, animated: true, completion: nil)
     }
