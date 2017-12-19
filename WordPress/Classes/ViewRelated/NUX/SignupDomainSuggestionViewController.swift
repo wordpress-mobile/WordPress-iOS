@@ -4,6 +4,8 @@ class SignupDomainSuggestionViewController: UITableViewController {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
 
+    open var siteName: String?
+
     var service: DomainsService?
     private var siteTitleSuggestions: [String] = []
     private var searchSuggestions: [String] = []
@@ -33,20 +35,20 @@ class SignupDomainSuggestionViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         // only procede with initial search if we don't have site title suggestions yet (hopefully only the first time)
-        guard siteTitleSuggestions.count < 1 else {
+        guard siteTitleSuggestions.count < 1,
+            let nameToSearch = siteName else {
             return
         }
 
         isSearching = true
         let api = WordPressComRestApi(oAuthToken: "")
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
-        service.getDomainSuggestions(base: "test suggest", success: { [weak self] (suggestions) in
+        service.getDomainSuggestions(base: nameToSearch, success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.siteTitleSuggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.siteTitleSuggestions.rawValue), with: .automatic)
         }) { [weak self] (error) in
             self?.isSearching = false
-            // do nothing atm
         }
     }
 }
