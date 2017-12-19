@@ -1,7 +1,5 @@
 import Foundation
 
-typealias Action = () -> Void
-
 /// A delayed action implemented using GCD
 ///
 /// This class will perform the given action after the given delay, unless it is

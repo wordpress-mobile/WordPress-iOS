@@ -7,8 +7,8 @@ class PagedViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var pageControl: UIPageControl!
 
-    let viewControllers: [UIViewController]
-    var currentIndex: Int = 0 {
+    @objc let viewControllers: [UIViewController]
+    @objc var currentIndex: Int = 0 {
         didSet {
             if currentIndex != oldValue {
                 updateForCurrentIndex()
@@ -16,7 +16,7 @@ class PagedViewController: UIViewController {
         }
     }
 
-    init(viewControllers: [UIViewController], initialIndex: Int) {
+    @objc init(viewControllers: [UIViewController], initialIndex: Int) {
         precondition(viewControllers.indices.contains(initialIndex))
 
         self.viewControllers = viewControllers

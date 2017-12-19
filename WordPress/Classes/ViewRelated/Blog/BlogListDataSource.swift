@@ -80,38 +80,38 @@ class BlogListDataSource: NSObject {
 
     // MARK: - Configuration
 
-    let recentSitesMinCount = 11
+    @objc let recentSitesMinCount = 11
 
     // MARK: - Inputs
 
     // Pass to the LoggedInDataSource to match a specifc blog.
-    var blog: Blog?
+    @objc var blog: Blog?
 
-    var editing: Bool = false {
+    @objc var editing: Bool = false {
         didSet {
             updateMode()
         }
     }
 
-    var searching: Bool = false {
+    @objc var searching: Bool = false {
         didSet {
             updateMode()
         }
     }
 
-    var searchQuery: String = "" {
+    @objc var searchQuery: String = "" {
         didSet {
             updateMode()
         }
     }
 
-    var loggedIn: Bool = false {
+    @objc var loggedIn: Bool = false {
         didSet {
             updateMode()
         }
     }
 
-    var selecting: Bool = false {
+    @objc var selecting: Bool = false {
         didSet {
             if selecting != oldValue {
                 dataChanged?()
@@ -119,7 +119,7 @@ class BlogListDataSource: NSObject {
         }
     }
 
-    var selectedBlogId: NSManagedObjectID? = nil {
+    @objc var selectedBlogId: NSManagedObjectID? = nil {
         didSet {
             if selectedBlogId != oldValue {
                 dataChanged?()
@@ -127,7 +127,7 @@ class BlogListDataSource: NSObject {
         }
     }
 
-    var account: WPAccount? = nil {
+    @objc var account: WPAccount? = nil {
         didSet {
             if account != oldValue {
                 cachedSections = nil
@@ -138,9 +138,9 @@ class BlogListDataSource: NSObject {
 
     // MARK: - Outputs
 
-    var dataChanged: (() -> Void)?
+    @objc var dataChanged: (() -> Void)?
 
-    var visibilityChanged: ((Blog, Bool) -> Void)?
+    @objc var visibilityChanged: ((Blog, Bool) -> Void)?
 
     @objc(blogAtIndexPath:)
     func blog(at indexPath: IndexPath) -> Blog {
@@ -159,17 +159,17 @@ class BlogListDataSource: NSObject {
         return nil
     }
 
-    var allBlogsCount: Int {
+    @objc var allBlogsCount: Int {
         return allBlogs.count
     }
 
-    var displayedBlogsCount: Int {
+    @objc var displayedBlogsCount: Int {
         return sections.reduce(0, { result, section in
             result + section.count
         })
     }
 
-    var visibleBlogsCount: Int {
+    @objc var visibleBlogsCount: Int {
         return allBlogs.filter({ $0.visible }).count
     }
 

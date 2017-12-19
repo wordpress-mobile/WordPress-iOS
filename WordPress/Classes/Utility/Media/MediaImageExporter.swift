@@ -137,7 +137,7 @@ class MediaImageExporter: MediaExporter {
     ///
     func exportImage(atFile url: URL, onCompletion: @escaping OnImageExport, onError: @escaping OnExportError) {
         do {
-            let identifierHint = url.resourceTypeIdentifierFileExtension ?? kUTTypeJPEG as String
+            let identifierHint = url.typeIdentifierFileExtension ?? kUTTypeJPEG as String
             let sourceOptions: [String: Any] = [kCGImageSourceTypeIdentifierHint as String: identifierHint as CFString]
             guard let source = CGImageSourceCreateWithURL(url as CFURL, sourceOptions as CFDictionary)  else {
                 throw ImageExportError.imageSourceCreationWithURLFailed
@@ -178,7 +178,7 @@ class MediaImageExporter: MediaExporter {
             writer.nullifyGPSData = options.stripsGeoLocationIfNeeded
             let result = try writer.writeImageSource(source)
             onCompletion(MediaImageExport(url: url,
-                                          fileSize: url.resourceFileSize,
+                                          fileSize: url.fileSize,
                                           width: result.width,
                                           height: result.height))
         } catch {

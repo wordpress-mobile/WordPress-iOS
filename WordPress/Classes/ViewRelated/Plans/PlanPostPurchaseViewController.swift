@@ -14,7 +14,7 @@ class PlanPostPurchaseViewController: UIViewController {
     fileprivate weak var scrollView: UIScrollView!
 
     var pageTypes: [PlanPostPurchasePageType]!
-    var pages = [PlanPostPurchasePageViewController]()
+    @objc var pages = [PlanPostPurchasePageViewController]()
     var plan: Plan
 
     lazy fileprivate var cancelXButton: UIBarButtonItem = {
@@ -153,7 +153,7 @@ class PlanPostPurchaseViewController: UIViewController {
         scrollToPage(targetPage, animated: true)
     }
 
-    func closeTapped() {
+    @objc func closeTapped() {
         dismiss(animated: true, completion: nil)
     }
 }
@@ -235,7 +235,7 @@ class PlanPostPurchasePageViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
 
-    let purchaseCompleteImageViewSize: CGFloat = 90
+    @objc let purchaseCompleteImageViewSize: CGFloat = 90
 
     var plan: Plan?
     var pageType: PlanPostPurchasePageType? = nil {
@@ -253,14 +253,14 @@ class PlanPostPurchasePageViewController: UIViewController {
         view.shouldGroupAccessibilityChildren = true
     }
 
-    class func controller() -> PlanPostPurchasePageViewController {
+    @objc class func controller() -> PlanPostPurchasePageViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: NSStringFromClass(self)) as! PlanPostPurchasePageViewController
 
         return controller
     }
 
-    func setDescriptionText(_ text: String) {
+    @objc func setDescriptionText(_ text: String) {
         let lineHeight: CGFloat = 21
 
         let paragraphStyle = NSMutableParagraphStyle()
@@ -268,11 +268,11 @@ class PlanPostPurchasePageViewController: UIViewController {
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.alignment = .center
 
-        let attributedText = NSMutableAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName: descriptionLabel.font])
+        let attributedText = NSMutableAttributedString(string: text, attributes: [.paragraphStyle: paragraphStyle, .font: descriptionLabel.font])
         descriptionLabel.attributedText = attributedText
     }
 
-    func populateViews() {
+    @objc func populateViews() {
         guard let pageType = pageType else { return }
 
         switch pageType {

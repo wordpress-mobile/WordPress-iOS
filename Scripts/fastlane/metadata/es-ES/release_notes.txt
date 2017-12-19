@@ -1,1 +1,4 @@
-Nada de parafernalia, solo mejoras relevantes para ofrecerte una aplicación más rápida y estable. No todo lo que brilla es oro - ¡a veces es código!
+Editor Aztec: Distinción más clara entre los modos de edición visual y HTML.
+Editor Aztec: Mejoras en la detección automática de enlaces.
+Editor Aztec: Añadida compatibilidad con la edición de entradas mientras se suben medios.
+Editor Aztec: Se permite la búsqueda de medios desde las entradas.

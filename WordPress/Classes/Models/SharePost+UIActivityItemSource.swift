@@ -6,9 +6,9 @@ extension SharePost: UIActivityItemSource {
         return url as Any
     }
 
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType) -> Any? {
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
         switch activityType {
-        case SharePost.activityType:
+        case SharePost.activityType?:
             return data
         default:
             return url

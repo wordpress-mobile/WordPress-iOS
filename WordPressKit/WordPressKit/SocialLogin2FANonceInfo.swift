@@ -2,12 +2,12 @@ import Foundation
 
 @objc
 public class SocialLogin2FANonceInfo: NSObject {
-    var nonceSMS = ""
-    var nonceBackup = ""
-    var nonceAuthenticator = ""
-    var supportedAuthTypes = [String]() // backup|authenticator|sms
-    var notificationSent = "" // none|sms
-    var phoneNumber = "" // The last two digits of the phone number to which an SMS was sent.
+    @objc public var nonceSMS = ""
+    @objc var nonceBackup = ""
+    @objc var nonceAuthenticator = ""
+    @objc var supportedAuthTypes = [String]() // backup|authenticator|sms
+    @objc var notificationSent = "" // none|sms
+    @objc var phoneNumber = "" // The last two digits of the phone number to which an SMS was sent.
 
     private enum Constants {
         static let lastUsedPlaceholder = "last_used_placeholder"
@@ -38,7 +38,7 @@ public class SocialLogin2FANonceInfo: NSObject {
         return typeNoncePair
     }
 
-    public func updateNonce(with newNonce: String) {
+    @objc public func updateNonce(with newNonce: String) {
         switch Constants.lastUsedPlaceholder {
         case nonceSMS:
             nonceSMS = newNonce

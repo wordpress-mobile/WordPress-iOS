@@ -30,21 +30,28 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe">
-                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="39"/>
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrp-Wr-ZBq">
-                                        <rect key="frame" x="0.0" y="-4" width="0.0" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="-4" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="dIK-tl-nW4">
-                                        <rect key="frame" x="0.0" y="18.5" width="0.0" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="-2" width="0.0" height="20"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bDl-id-9M7">
-                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y5k-AN-EkG">
+                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="29r-hs-lYX"/>
+                                                    <constraint firstAttribute="width" constant="20" id="kuB-hl-2yM"/>
+                                                </constraints>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5iU-3C-qKY">
+                                                <rect key="frame" x="0.0" y="2" width="0.0" height="16"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -79,13 +86,15 @@
             <connections>
                 <outlet property="borderView" destination="1pA-bu-D5A" id="5LJ-HS-4Q4"/>
                 <outlet property="gravatarImageView" destination="0Gm-n3-CNm" id="GXM-xm-h6r"/>
+                <outlet property="statusImageView" destination="Y5k-AN-EkG" id="9QX-d6-gFL"/>
                 <outlet property="summaryLabel" destination="Wrp-Wr-ZBq" id="avY-5i-4By"/>
-                <outlet property="timestampLabel" destination="bDl-id-9M7" id="sk9-hl-b6r"/>
+                <outlet property="timestampLabel" destination="5iU-3C-qKY" id="u6u-Kr-Oyh"/>
             </connections>
             <point key="canvasLocation" x="34" y="56"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="gravatar" width="85" height="85"/>
+        <image name="icon-jetpack-gray" width="72" height="72"/>
     </resources>
 </document>

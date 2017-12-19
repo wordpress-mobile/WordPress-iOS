@@ -11,9 +11,9 @@ enum ImageCropOverlayMaskShape {
 //
 class ImageCropOverlayView: UIView {
     // MARK: - Public Properties
-    var borderWidth = CGFloat(3)
-    var borderColor: UIColor?
-    var outerColor: UIColor?
+    @objc var borderWidth = CGFloat(3)
+    @objc var borderColor: UIColor?
+    @objc var outerColor: UIColor?
     var maskShape: ImageCropOverlayMaskShape = .circle
 
     // MARK: - Overriden Methods

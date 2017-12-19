@@ -6,7 +6,7 @@ import Foundation
 ///
 @objc open class PushAuthenticationService: LocalCoreDataService {
 
-    open var authenticationServiceRemote: PushAuthenticationServiceRemote?
+    @objc open var authenticationServiceRemote: PushAuthenticationServiceRemote?
 
     /// Designated Initializer
     ///
@@ -24,7 +24,7 @@ import Foundation
     ///     - token: The Token sent over by the backend, via Push Notifications.
     ///     - completion: The completion block to be executed when the remote call finishes.
     ///
-    open func authorizeLogin(_ token: String, completion: @escaping ((Bool) -> ())) {
+    @objc open func authorizeLogin(_ token: String, completion: @escaping ((Bool) -> ())) {
         if self.authenticationServiceRemote == nil {
             return
         }

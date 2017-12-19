@@ -98,7 +98,7 @@ class WPRichTextFormatterTests: XCTestCase {
         let formatter = WPRichTextFormatter()
         mattrStr = formatter.fixBlockquoteIndentation(mattrStr)
 
-        let pStyle = mattrStr.attribute(NSParagraphStyleAttributeName, at: 0, longestEffectiveRange: nil, in: NSRange(location: 0, length: mattrStr.length)) as! NSParagraphStyle
+        let pStyle = mattrStr.attribute(.paragraphStyle, at: 0, longestEffectiveRange: nil, in: NSRange(location: 0, length: mattrStr.length)) as! NSParagraphStyle
 
         XCTAssert(pStyle.firstLineHeadIndent == formatter.blockquoteIndentation)
         XCTAssert(pStyle.headIndent == formatter.blockquoteIndentation)

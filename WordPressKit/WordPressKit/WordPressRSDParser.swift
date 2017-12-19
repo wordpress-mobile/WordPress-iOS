@@ -7,7 +7,7 @@ open class WordPressRSDParser: NSObject, XMLParserDelegate {
     fileprivate let parser: XMLParser
     fileprivate var endpoint: String?
 
-    init?(xmlString: String) {
+    @objc init?(xmlString: String) {
         guard let data = xmlString.data(using: String.Encoding.utf8) else {
             return nil
         }

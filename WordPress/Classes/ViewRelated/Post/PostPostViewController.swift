@@ -12,8 +12,8 @@ import Gridicons
 
 class PostPostViewController: UIViewController {
 
-    private(set) var post: Post?
-    var revealPost = false
+    @objc private(set) var post: Post?
+    @objc var revealPost = false
     private var hasAnimated = false
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var postStatusLabel: UILabel!
@@ -30,9 +30,9 @@ class PostPostViewController: UIViewController {
     @IBOutlet var shareButtonWidth: NSLayoutConstraint!
     @IBOutlet var editButtonWidth: NSLayoutConstraint!
     @IBOutlet var viewButtonWidth: NSLayoutConstraint!
-    var onClose: (() -> ())?
-    var reshowEditor: (() -> ())?
-    var preview: (() -> ())?
+    @objc var onClose: (() -> ())?
+    @objc var reshowEditor: (() -> ())?
+    @objc var preview: (() -> ())?
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -76,7 +76,7 @@ class PostPostViewController: UIViewController {
         super.viewDidAppear(animated)
     }
 
-    func animatePostPost() {
+    @objc func animatePostPost() {
         guard !hasAnimated else {
             return
         }
@@ -129,7 +129,7 @@ class PostPostViewController: UIViewController {
         }) { (context) in }
     }
 
-    func setup(post: Post) {
+    @objc func setup(post: Post) {
         guard let blogSettings = post.blog.settings else {
             return
         }

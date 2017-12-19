@@ -7,7 +7,7 @@ import Foundation
         return "team"
     }
 
-    open var icon: UIImage? {
+    @objc open var icon: UIImage? {
         guard bundledTeamIcons.contains(slug) else {
             return nil
         }

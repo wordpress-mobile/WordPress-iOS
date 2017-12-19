@@ -9,6 +9,8 @@
 @class WPAppAnalytics;
 @class WPLogger;
 
+@import CocoaLumberjack;
+
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong, readonly) WPAppAnalytics *analytics;
@@ -27,5 +29,9 @@
 ///-----------
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor;
+- (void)trackLogoutIfNeeded;
+- (void)customizeAppearanceForTextElements;
+
++ (void)setLogLevel:(DDLogLevel)logLevel;
 
 @end

@@ -5,15 +5,15 @@ import UIKit
 /// An NSTextAttachment for representing remote HTML content such as images, iframes and video.
 ///
 open class WPTextAttachment: NSTextAttachment {
-    fileprivate(set) open var identifier: String
-    fileprivate(set) open var tagName: String
-    fileprivate(set) open var src: String
-    open var maxSize = CGSize.zero
+    @objc fileprivate(set) open var identifier: String
+    @objc fileprivate(set) open var tagName: String
+    @objc fileprivate(set) open var src: String
+    @objc open var maxSize = CGSize.zero
 
-    internal(set) open var attributes: [String: String]?
-    internal(set) open var html: String?
-    internal(set) open var width = CGFloat(0)
-    internal(set) open var height = CGFloat(0)
+    @objc internal(set) open var attributes: [String: String]?
+    @objc internal(set) open var html: String?
+    @objc internal(set) open var width = CGFloat(0)
+    @objc internal(set) open var height = CGFloat(0)
 
     // Keys used for NSCoding
     fileprivate let identifierKey = "identifier"
@@ -33,7 +33,7 @@ open class WPTextAttachment: NSTextAttachment {
     ///     - identifier: A string to use as the attachment's identifier. It should be unique in the context of its NSAttributedString.s
     ///     - src: The URL pointing to the remote content represented by the attachment.
     ///
-    public init(tagName: String, identifier: String, src: String) {
+    @objc public init(tagName: String, identifier: String, src: String) {
         self.identifier = identifier
         self.tagName = tagName
         self.src = src

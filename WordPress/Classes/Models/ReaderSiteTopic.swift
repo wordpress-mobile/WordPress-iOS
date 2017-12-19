@@ -17,7 +17,7 @@ import Foundation
         return "site"
     }
 
-    open var isExternal: Bool {
+    @objc open var isExternal: Bool {
         get {
             return siteID.intValue == 0
         }

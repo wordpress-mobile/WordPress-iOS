@@ -8,15 +8,15 @@ import WordPressShared
 ///
 open class SettingsListEditorViewController: UITableViewController {
     // MARK: - Public Properties
-    open var footerText: String?
-    open var emptyText: String?
-    open var insertTitle: String?
-    open var editTitle: String?
-    open var onChange: ((Set<String>) -> Void)?
+    @objc open var footerText: String?
+    @objc open var emptyText: String?
+    @objc open var insertTitle: String?
+    @objc open var editTitle: String?
+    @objc open var onChange: ((Set<String>) -> Void)?
 
 
     // MARK: - Initialiers
-    public convenience init(collection: Set<String>?) {
+    @objc public convenience init(collection: Set<String>?) {
         self.init(style: .grouped)
 
         emptyText = NSLocalizedString("No Items", comment: "List Editor Empty State Message")

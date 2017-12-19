@@ -6,10 +6,10 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = (() -> Void)
 
     // MARK: - Public Properties
-    var onFollowClick: EventHandler?
-    var onUnfollowClick: EventHandler?
+    @objc var onFollowClick: EventHandler?
+    @objc var onUnfollowClick: EventHandler?
 
-    var isFollowEnabled: Bool {
+    @objc var isFollowEnabled: Bool {
         set {
             if newValue {
                 innerStackView.addArrangedSubview(btnFollow)
@@ -21,7 +21,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
             return btnFollow.superview != nil
         }
     }
-    var isFollowOn: Bool {
+    @objc var isFollowOn: Bool {
         set {
             btnFollow.isSelected = newValue
         }
@@ -30,7 +30,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         }
     }
 
-    var name: String? {
+    @objc var name: String? {
         set {
             nameLabel.text  = newValue
         }
@@ -38,7 +38,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
             return nameLabel.text
         }
     }
-    var blogTitle: String? {
+    @objc var blogTitle: String? {
         set {
             blogLabel.text  = newValue
         }
@@ -48,7 +48,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     }
 
     // MARK: - Public Methods
-    func downloadGravatarWithURL(_ url: URL?) {
+    @objc func downloadGravatarWithURL(_ url: URL?) {
         if url == gravatarURL {
             return
         }

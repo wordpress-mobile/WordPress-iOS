@@ -8,7 +8,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     /// Team's Blog
     ///
-    open var blog: Blog?
+    @objc open var blog: Blog?
 
     /// Mode: Users / Followers
     ///
@@ -422,7 +422,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     // MARK: - Static Helpers
 
-    open class func controllerWithBlog(_ blog: Blog) -> PeopleViewController? {
+    @objc open class func controllerWithBlog(_ blog: Blog) -> PeopleViewController? {
         let storyboard = UIStoryboard(name: "People", bundle: nil)
         guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
             return nil

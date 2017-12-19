@@ -22,7 +22,7 @@ private class PromptContainerViewController: UIViewController {
         stopListeningToProperties(childViewController)
     }
 
-    init(viewController: UIViewController) {
+    @objc init(viewController: UIViewController) {
         // You stay with us, sir
         childViewController = viewController
 

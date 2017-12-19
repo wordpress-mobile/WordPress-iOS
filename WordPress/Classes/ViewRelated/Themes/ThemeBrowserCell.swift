@@ -70,7 +70,7 @@ public enum ThemeAction {
 open class ThemeBrowserCell: UICollectionViewCell {
     // MARK: - Constants
 
-    open static let reuseIdentifier = "ThemeBrowserCell"
+    @objc open static let reuseIdentifier = "ThemeBrowserCell"
 
     // MARK: - Private Aliases
 
@@ -88,13 +88,13 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
     // MARK: - Properties
 
-    open var theme: Theme? {
+    @objc open var theme: Theme? {
         didSet {
             refreshGUI()
         }
     }
 
-    open var showPriceInformation: Bool = false
+    @objc open var showPriceInformation: Bool = false
     open weak var presenter: ThemePresenter?
 
     fileprivate var placeholderImage = UIImage(named: "theme-loading")

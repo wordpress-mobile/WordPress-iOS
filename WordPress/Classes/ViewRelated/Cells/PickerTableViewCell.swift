@@ -10,12 +10,12 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
 
     /// Closure, to be executed on selection change
     ///
-    open var onChange : ((_ newValue: Int) -> ())?
+    @objc open var onChange : ((_ newValue: Int) -> ())?
 
 
     /// String Format, to be applied to the Row Titles
     ///
-    open var textFormat: String? {
+    @objc open var textFormat: String? {
         didSet {
             picker.reloadAllComponents()
         }
@@ -33,7 +33,7 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
 
     /// Specifies the Minimum Possible Value
     ///
-    open var minimumValue: Int = 0 {
+    @objc open var minimumValue: Int = 0 {
         didSet {
             picker.reloadAllComponents()
         }
@@ -41,7 +41,7 @@ open class PickerTableViewCell: WPTableViewCell, UIPickerViewDelegate, UIPickerV
 
     /// Specifies the Maximum Possible Value
     ///
-    open var maximumValue: Int = 0 {
+    @objc open var maximumValue: Int = 0 {
         didSet {
             picker.reloadAllComponents()
         }

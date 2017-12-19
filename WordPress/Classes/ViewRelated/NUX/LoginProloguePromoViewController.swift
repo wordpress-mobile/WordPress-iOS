@@ -119,16 +119,16 @@ class LoginProloguePromoViewController: UIViewController {
             stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Constants.stackHeightMultiplier)
         ])
 
-        headingLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
-        headingLabel.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        headingLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
+        headingLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         headingLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             headingLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.labelMinHeight),
             headingLabel.widthAnchor.constraint(lessThanOrEqualToConstant: Constants.labelMaxWidth)
         ])
 
-        animationHolder.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .vertical)
-        animationHolder.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, for: .vertical)
+        animationHolder.setContentHuggingPriority(.defaultLow, for: .vertical)
+        animationHolder.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         animationHolder.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             animationHolder.widthAnchor.constraint(greaterThanOrEqualTo: animationHolder.heightAnchor, multiplier: Constants.animationWidthHeightRatio)

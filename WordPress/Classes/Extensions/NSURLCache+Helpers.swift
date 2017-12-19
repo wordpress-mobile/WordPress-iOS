@@ -22,7 +22,7 @@ extension URLCache {
     ///     - image: the image that should be stored on top of (whatever) is currently cached
     ///     - request: the request that should produce the given image
     ///
-    func cacheImage(_ image: UIImage, forRequest request: URLRequest) {
+    @objc func cacheImage(_ image: UIImage, forRequest request: URLRequest) {
         guard let URL = request.url,
             let responseData = UIImagePNGRepresentation(image) else {
             return

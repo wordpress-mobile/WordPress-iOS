@@ -10,7 +10,7 @@ class AztecVerificationPromptHelper: NSObject {
 
     typealias AztecVerificationPromptCompletion = (Bool) -> ()
 
-    init?(account: WPAccount?) {
+    @objc init?(account: WPAccount?) {
         guard let passedAccount = account,
               let managedObjectContext = account?.managedObjectContext else {
                 return nil
@@ -50,7 +50,7 @@ class AztecVerificationPromptHelper: NSObject {
     /// - parameter presentingViewController: UIViewController that the prompt should be presented from.
     /// - parameter then: Completion callback to be called after the user dismisses the prompt.
     /// **Note**: The callback fires only when the user tapped "OK" or we silently verified the account in background. It isn't fired when user attempts to resend the verification email.
-    func displayVerificationPrompt(from presentingViewController: UIViewController,
+    @objc func displayVerificationPrompt(from presentingViewController: UIViewController,
                                    then: AztecVerificationPromptCompletion?) {
 
         let fancyAlert = FancyAlertViewController.verificationPromptController { [weak self] in
@@ -70,7 +70,7 @@ class AztecVerificationPromptHelper: NSObject {
         completionBlock = then
     }
 
-    func updateVerificationStatus() {
+    @objc func updateVerificationStatus() {
         accountService.updateUserDetails(for: wpComAccount,
                                          success: { [weak self] in
 

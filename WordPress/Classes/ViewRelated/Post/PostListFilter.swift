@@ -9,12 +9,12 @@ import Foundation
         case trashed
     }
 
-    var hasMore: Bool
+    @objc var hasMore: Bool
     var filterType: Status
-    var oldestPostDate: Date?
-    var predicateForFetchRequest: NSPredicate
+    @objc var oldestPostDate: Date?
+    @objc var predicateForFetchRequest: NSPredicate
     var statuses: [BasePost.Status]
-    var title: String
+    @objc var title: String
 
     /// For Obj-C compatibility only
     @objc(statuses)
@@ -45,7 +45,7 @@ import Foundation
         }
     }
 
-    var sortAscending: Bool {
+    @objc var sortAscending: Bool {
         switch filterType {
         case .scheduled:
             return true
@@ -54,16 +54,16 @@ import Foundation
         }
     }
 
-    var sortDescriptors: [NSSortDescriptor] {
+    @objc var sortDescriptors: [NSSortDescriptor] {
         let dateDescriptor = NSSortDescriptor(key: sortField.keyPath, ascending: sortAscending)
         return [dateDescriptor]
     }
 
-    class func postListFilters() -> [PostListFilter] {
+    @objc class func postListFilters() -> [PostListFilter] {
         return [publishedFilter(), draftFilter(), scheduledFilter(), trashedFilter()]
     }
 
-    class func publishedFilter() -> PostListFilter {
+    @objc class func publishedFilter() -> PostListFilter {
         let filterType: Status = .published
         let statuses: [BasePost.Status] = [.publish, .publishPrivate]
         let predicate = NSPredicate(format: "status IN %@ AND remoteStatusNumber <> %d", statuses.strings, AbstractPostRemoteStatus.local.rawValue)
@@ -72,7 +72,7 @@ import Foundation
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
     }
 
-    class func draftFilter() -> PostListFilter {
+    @objc class func draftFilter() -> PostListFilter {
         let filterType: Status = .draft
         let statuses: [BasePost.Status] = [.draft, .pending]
         let statusesExcluded: [BasePost.Status] = [.publish, .publishPrivate, .scheduled, .trash]
@@ -82,7 +82,7 @@ import Foundation
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
     }
 
-    class func scheduledFilter() -> PostListFilter {
+    @objc class func scheduledFilter() -> PostListFilter {
         let filterType: Status = .scheduled
         let statuses: [BasePost.Status] = [.scheduled]
         let predicate = NSPredicate(format: "status IN %@", statuses.strings)
@@ -91,7 +91,7 @@ import Foundation
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
     }
 
-    class func trashedFilter() -> PostListFilter {
+    @objc class func trashedFilter() -> PostListFilter {
         let filterType: Status = .trashed
         let statuses: [BasePost.Status] = [.trash]
         let predicate = NSPredicate(format: "status IN %@", statuses.strings)

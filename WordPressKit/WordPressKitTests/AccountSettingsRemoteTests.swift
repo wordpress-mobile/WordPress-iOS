@@ -129,7 +129,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeEmailSuccessMockFilename, contentType: .ApplicationJSON)
         let change = AccountSettingsChange.email(changedEmail)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -143,7 +143,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Revert account email success")
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsRevertEmailSuccessMockFilename, contentType: .ApplicationJSON)
-        remote.updateSetting(.emailRevertPendingChange, success: { something in
+        remote.updateSetting(.emailRevertPendingChange, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -158,7 +158,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeSiteSuccessMockFilename, contentType: .ApplicationJSON)
         let change = AccountSettingsChange.primarySite(changedSiteID)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -173,7 +173,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeWebAddressSuccessMockFilename, contentType: .ApplicationJSON)
         let change = AccountSettingsChange.webAddress(changedUserURL)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -188,7 +188,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeAboutMeSuccessMockFilename, contentType: .ApplicationJSON)
         let change = AccountSettingsChange.aboutMe(changedAboutMe)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -203,7 +203,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeFirstNameSuccessMockFilename, contentType: .ApplicationJSON)
         let change = AccountSettingsChange.firstName(changedFirstName)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -218,7 +218,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeLastNameSuccessMockFilename, contentType: .ApplicationJSON)
         let change = AccountSettingsChange.lastName(changedLastName)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -233,7 +233,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeDisplayNameSuccessMockFilename, contentType: .ApplicationJSON)
         let change = AccountSettingsChange.displayName(changedDisplayName)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             expect.fulfill()
         }, failure: { error in
             XCTFail("This callback shouldn't get called")
@@ -248,7 +248,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, data: Data(), contentType: .NoContentType, status: 500)
         let change = AccountSettingsChange.displayName(changedDisplayName)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -266,7 +266,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsChangeDisplayNameBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
         let change = AccountSettingsChange.displayName(changedDisplayName)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -281,7 +281,7 @@ class AccountSettingsRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(meSettingsEndpoint, filename: updateSettingsInvalidInputFailureMockFilename, contentType: .ApplicationJSON, status: 400)
         let change = AccountSettingsChange.displayName(changedDisplayName)
-        remote.updateSetting(change, success: { something in
+        remote.updateSetting(change, success: { () in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in

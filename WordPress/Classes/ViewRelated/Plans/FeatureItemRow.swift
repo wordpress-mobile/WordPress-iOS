@@ -34,7 +34,7 @@ struct FeatureItemRow: ImmuTableRow {
         paragraphStyle.maximumLineHeight = lineHeight
         paragraphStyle.minimumLineHeight = lineHeight
 
-        let attributedText = NSMutableAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName: font])
+        let attributedText = NSMutableAttributedString(string: text, attributes: [.paragraphStyle: paragraphStyle, .font: font])
         return attributedText
     }
 }

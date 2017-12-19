@@ -56,7 +56,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Convenience constructors
 
-    class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
+    @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
 
         let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
         let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
@@ -351,7 +351,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         editPost(apost: post)
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
         if let windowlessCell = dequeCellForWindowlessLoadingIfNeeded(tableView) {
             return windowlessCell
         }
@@ -561,7 +561,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return UIImageView(image: UIImage(named: "illustration-posts"))
     }
 
-    func noResultsButtonTitle() -> String {
+    @objc func noResultsButtonTitle() -> String {
         if syncHelper.isSyncing == true || isSearching() {
             return ""
         }
@@ -576,7 +576,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    func noResultsTitle() -> String {
+    @objc func noResultsTitle() -> String {
         if syncHelper.isSyncing == true {
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         }
@@ -588,7 +588,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return title ?? ""
     }
 
-    func noResultsMessage() -> String {
+    @objc func noResultsMessage() -> String {
         if syncHelper.isSyncing == true || isSearching() {
             return ""
         }

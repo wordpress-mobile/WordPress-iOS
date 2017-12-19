@@ -5,6 +5,7 @@
 typedef NS_ENUM(NSInteger, SettingsTextModes) {
     SettingsTextModesText,
     SettingsTextModesLowerCaseText,
+    SettingsTextModesURL,
     SettingsTextModesEmail,
     SettingsTextModesPassword
 };
@@ -59,6 +60,8 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 /// Sets the Text Input Mode:
 ///
 /// - SettingsTextModesText: Default mode
+/// - SettingsTextModesLowerCaseText: Lower case text
+/// - SettingsTextModesURL: Uses URL keyboard type, lower case text, no autocorrection
 /// - SettingsTextModesEmail: Will perform Email validation before hitting the callback.
 /// - SettingsTextModesPassword: Secure Text Entry is enabled.
 ///

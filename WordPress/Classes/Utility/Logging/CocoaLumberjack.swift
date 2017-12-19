@@ -93,10 +93,18 @@ public func DDLogError(_ message: @autoclosure () -> String, level: DDLogLevel =
 public func CurrentFileName(_ fileName: StaticString = #file) -> String {
     var str = String(describing: fileName)
     if let idx = str.range(of: "/", options: .backwards)?.upperBound {
+#if swift(>=4.0)
+        str = String(str[idx...])
+#else
         str = str.substring(from: idx)
+#endif
     }
     if let idx = str.range(of: ".", options: .backwards)?.lowerBound {
+#if swift(>=4.0)
+        str = String(str.prefix(upTo: idx))
+#else
         str = str.substring(to: idx)
+#endif
     }
     return str
 }

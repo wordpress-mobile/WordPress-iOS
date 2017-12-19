@@ -27,7 +27,7 @@ class PlanDetailViewController: UIViewController {
 
     fileprivate let noResultsView = WPNoResultsView()
 
-    func updateNoResults() {
+    @objc func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         } else {
@@ -44,7 +44,7 @@ class PlanDetailViewController: UIViewController {
         }
     }
 
-    func hideNoResults() {
+    @objc func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
 

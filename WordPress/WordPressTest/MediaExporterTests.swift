@@ -45,7 +45,7 @@ class MediaExporterTests: XCTestCase {
             return
         }
         let url = URL(fileURLWithPath: mediaPath)
-        guard let size = url.resourceFileSize else {
+        guard let size = url.fileSize else {
             XCTAssert(false, "Error: failed getting a size of the test image file")
             return
         }

@@ -8,7 +8,7 @@ import WordPressShared
 open class LanguageViewController: UITableViewController, LanguageSelectorDelegate {
     /// Callback to be executed whenever the Blog's selected language changes.
     ///
-    var onChange: ((NSNumber) -> Void)?
+    @objc var onChange: ((NSNumber) -> Void)?
 
 
 
@@ -16,7 +16,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
     ///
     /// - Parameter Blog: The blog for which we wanna display the languages picker
     ///
-    public convenience init(blog: Blog) {
+    @objc public convenience init(blog: Blog) {
         self.init(style: .grouped)
         self.blog = blog
     }
@@ -95,7 +95,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
     }
 
 
-    func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int) {
+    @objc func languageSelector(_ selector: LanguageSelectorViewController, didSelect languageId: Int) {
         _ = navigationController?.popToViewController(self, animated: true)
         onChange?(languageId as NSNumber)
     }

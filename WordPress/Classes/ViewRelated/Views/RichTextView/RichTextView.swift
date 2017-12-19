@@ -11,8 +11,8 @@ import Foundation
 
 
 @objc open class RichTextView: UIView, UITextViewDelegate {
-    open var dataSource: RichTextViewDataSource?
-    open var delegate: RichTextViewDelegate?
+    @objc open var dataSource: RichTextViewDataSource?
+    @objc open var delegate: RichTextViewDelegate?
 
 
     // MARK: - Initializers
@@ -32,7 +32,7 @@ import Foundation
 
 
     // MARK: - Properties
-    open var contentInset: UIEdgeInsets {
+    @objc open var contentInset: UIEdgeInsets {
         set {
             textView.contentInset = newValue
         }
@@ -41,7 +41,7 @@ import Foundation
         }
     }
 
-    open var textContainerInset: UIEdgeInsets {
+    @objc open var textContainerInset: UIEdgeInsets {
         set {
             textView.textContainerInset = newValue
         }
@@ -50,7 +50,7 @@ import Foundation
         }
     }
 
-    open var attributedText: NSAttributedString! {
+    @objc open var attributedText: NSAttributedString! {
         set {
             textView.attributedText = newValue
             invalidateIntrinsicContentSize()
@@ -61,7 +61,7 @@ import Foundation
         }
     }
 
-    open var editable: Bool {
+    @objc open var editable: Bool {
         set {
             textView.isEditable = newValue
         }
@@ -70,7 +70,7 @@ import Foundation
         }
     }
 
-    open var selectable: Bool {
+    @objc open var selectable: Bool {
         set {
             textView.isSelectable = newValue
         }
@@ -79,7 +79,7 @@ import Foundation
         }
     }
 
-    open var dataDetectorTypes: UIDataDetectorTypes {
+    @objc open var dataDetectorTypes: UIDataDetectorTypes {
         set {
             textView.dataDetectorTypes = newValue
         }
@@ -94,16 +94,16 @@ import Foundation
         }
     }
 
-    open var linkTextAttributes: [AnyHashable: Any]! {
+    @objc open var linkTextAttributes: [String: Any]! {
         set {
-            textView.linkTextAttributes = newValue as! [String: AnyObject]
+            textView.linkTextAttributes = newValue
         }
         get {
             return textView.linkTextAttributes
         }
     }
 
-    open var scrollsToTop: Bool {
+    @objc open var scrollsToTop: Bool {
         set {
             textView.scrollsToTop = newValue
         }
@@ -120,19 +120,19 @@ import Foundation
 
 
     // MARK: - TextKit Getters
-    open var layoutManager: NSLayoutManager {
+    @objc open var layoutManager: NSLayoutManager {
         get {
             return textView.layoutManager
         }
     }
 
-    open var textStorage: NSTextStorage {
+    @objc open var textStorage: NSTextStorage {
         get {
             return textView.textStorage
         }
     }
 
-    open var textContainer: NSTextContainer {
+    @objc open var textContainer: NSTextContainer {
         get {
             return textView.textContainer
         }
@@ -205,7 +205,7 @@ import Foundation
 
 
     // MARK: - UITapGestureRecognizer Helpers
-    open func handleTextViewTap(_ recognizer: UITapGestureRecognizer) {
+    @objc open func handleTextViewTap(_ recognizer: UITapGestureRecognizer) {
 
         // NOTE: Why do we need this?
         // Because this mechanism allows us to disable DataDetectors, and yet, detect taps on links.
@@ -224,7 +224,7 @@ import Foundation
         }
 
         // Load the NSURL instance, if any
-        let rawURL = textStorage.attribute(NSLinkAttributeName, at: characterIndex, effectiveRange: nil) as? URL
+        let rawURL = textStorage.attribute(.link, at: characterIndex, effectiveRange: nil) as? URL
         if let unwrappedURL = rawURL {
             delegate?.textView?(textView, didPressLink: unwrappedURL)
         }

@@ -32,93 +32,8 @@
 
 #pragma mark - Creating media
 
-- (void)createMediaWithURL:(NSURL *)url
-           forPostObjectID:(NSManagedObjectID *)postObjectID
-         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                completion:(void (^)(Media *media, NSError *error))completion
-{
-    NSString *mediaName = [[url pathComponents] lastObject];
-    [self createMediaWith:url
-                 objectID:postObjectID
-                mediaName:mediaName
-        thumbnailCallback:thumbnailCallback
-               completion:completion
-     ];
-}
-
-- (void)createMediaWithURL:(NSURL *)url
-           forBlogObjectID:(NSManagedObjectID *)blogObjectID
-         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                completion:(void (^)(Media *media, NSError *error))completion
-{
-    NSString *mediaName = [[url pathComponents] lastObject];
-    [self createMediaWith:url
-                 objectID:blogObjectID
-                mediaName:mediaName
-        thumbnailCallback:thumbnailCallback
-               completion:completion
-     ];
-}
-
-- (void)createMediaWithImage:(UIImage *)image
-                 withMediaID:(NSString *)mediaID
-             forPostObjectID:(NSManagedObjectID *)postObjectID
-           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                  completion:(void (^)(Media *media, NSError *error))completion
-{
-    [self createMediaWith:image
-                 objectID:postObjectID
-                mediaName:mediaID
-        thumbnailCallback:thumbnailCallback
-               completion:completion
-     ];
-}
-
-- (void)createMediaWithPHAsset:(PHAsset *)asset
-               forPostObjectID:(NSManagedObjectID *)postObjectID
-             thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                    completion:(void (^)(Media *media, NSError *error))completion
-{
-    NSString *mediaName = [asset originalFilename];
-    [self createMediaWith:asset
-                 objectID:postObjectID
-                mediaName:mediaName
-        thumbnailCallback:thumbnailCallback
-               completion:completion
-     ];
-}
-
-- (void)createMediaWithPHAsset:(PHAsset *)asset
-               forBlogObjectID:(NSManagedObjectID *)blogObjectID
-             thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                    completion:(void (^)(Media *media, NSError *error))completion
-{
-    NSString *mediaName = [asset originalFilename];
-    [self createMediaWith:asset
-                 objectID:blogObjectID
-                mediaName:mediaName
-        thumbnailCallback:thumbnailCallback
-               completion:completion
-     ];
-}
-
-- (void)createMediaWithImage:(UIImage *)image
-             forBlogObjectID:(NSManagedObjectID *)blogObjectID
-           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                  completion:(void (^)(Media *media, NSError *error))completion
-{
-    [self createMediaWith:image
-                 objectID:blogObjectID
-                mediaName:[[NSUUID UUID] UUIDString]
-        thumbnailCallback:thumbnailCallback
-               completion:completion];
-}
-
-#pragma mark - Private exporting
-
 - (void)createMediaWith:(id<ExportableAsset>)exportable
-               objectID:(NSManagedObjectID *)objectID
-              mediaName:(NSString *)mediaName
+               objectID:(NSManagedObjectID *)objectID              
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
              completion:(void (^)(Media *media, NSError *error))completion
 {
@@ -146,7 +61,8 @@
     } else {
         media = [Media makeMediaWithBlog:blog];
     }
-
+    media.mediaType = exportable.assetMediaType;
+    
     // Setup completion handlers
     void(^completionWithMedia)(Media *) = ^(Media *media) {
         // Pre-generate a thumbnail image, see the method notes.
@@ -164,24 +80,7 @@
 
     // Export based on the type of the exportable.
     MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    if ([exportable isKindOfClass:[PHAsset class]]) {
-        [importService importAsset:(PHAsset *)exportable
-                           toMedia:media
-                      onCompletion:completionWithMedia
-                           onError:completionWithError];
-    } else if ([exportable isKindOfClass:[UIImage class]]) {
-        [importService importImage:(UIImage *)exportable
-                           toMedia:media
-                      onCompletion:completionWithMedia
-                           onError:completionWithError];
-    } else if ([exportable isKindOfClass:[NSURL class]]) {
-        [importService importURL:(NSURL *)exportable
-                         toMedia:media
-                    onCompletion:completionWithMedia
-                         onError:completionWithError];
-    } else {
-        completionWithError(nil);
-    }
+    [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
 }
 
 /**
@@ -752,34 +651,6 @@
     if (completion) {
         completion();
     }
-}
-
-- (void)updateMedia:(Media *)media withRemoteMedia:(RemoteMedia *)remoteMedia
-{
-    media.mediaID =  remoteMedia.mediaID;
-    media.remoteURL = [remoteMedia.url absoluteString];
-    if (remoteMedia.date) {
-        media.creationDate = remoteMedia.date;
-    }
-    media.filename = remoteMedia.file;
-    if (remoteMedia.mimeType.length > 0) {
-        [media setMediaTypeForMimeType:remoteMedia.mimeType];
-    } else if (remoteMedia.extension.length > 0) {
-        [media setMediaTypeForExtension:remoteMedia.extension];
-    }
-    media.title = remoteMedia.title;
-    media.caption = remoteMedia.caption;
-    media.desc = remoteMedia.descriptionText;
-    media.alt = remoteMedia.alt;
-    media.height = remoteMedia.height;
-    media.width = remoteMedia.width;
-    media.shortcode = remoteMedia.shortcode;
-    media.videopressGUID = remoteMedia.videopressGUID;
-    media.length = remoteMedia.length;
-    media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
-    media.postID = remoteMedia.postID;
-
-    media.remoteStatus = MediaRemoteStatusSync;
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media

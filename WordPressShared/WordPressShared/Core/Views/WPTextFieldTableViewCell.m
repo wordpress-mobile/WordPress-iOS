@@ -57,12 +57,14 @@ CGFloat const TextFieldPadding = 15.0f;
 {
 	[super layoutSubviews];
 
-
-	UIEdgeInsets textMargins = UIEdgeInsetsZero;
-	CGSize labelSize = [self.textLabel.text sizeWithAttributes:@{NSFontAttributeName:self.textLabel.font}];
-	textMargins.left = ceilf(labelSize.width) + TextFieldPadding;
-	WPCellTextField *textField = (WPCellTextField *)self.textField;
-	textField.textMargins = textMargins;
+    UIEdgeInsets textMargins = UIEdgeInsetsZero;
+    // Sergio Estevao: If there is a label with content we need to adjust the text Margin on the cell in order to not override the label
+    if (self.textLabel.text.length != 0) {
+        CGSize labelSize = [self.textLabel.text sizeWithAttributes:@{NSFontAttributeName:self.textLabel.font}];
+        textMargins.left = ceilf(labelSize.width) + TextFieldPadding;
+    }
+    WPCellTextField *textField = (WPCellTextField *)self.textField;
+    textField.textMargins = textMargins;
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

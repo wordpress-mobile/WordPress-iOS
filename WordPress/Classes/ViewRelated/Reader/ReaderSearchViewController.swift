@@ -7,8 +7,8 @@ import Gridicons
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
 @objc open class ReaderSearchViewController: UIViewController, UIViewControllerRestoration {
-    static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
-    static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
+    @objc static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
+    @objc static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
 
 
     // MARK: - Properties
@@ -28,7 +28,7 @@ import Gridicons
     ///
     /// - Returns: An instance of the controller.
     ///
-    open class func controller() -> ReaderSearchViewController {
+    @objc open class func controller() -> ReaderSearchViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderSearchViewController") as! ReaderSearchViewController
         return controller
@@ -131,7 +131,7 @@ import Gridicons
     // MARK: - Analytics
 
 
-    func bumpStats() {
+    @objc func bumpStats() {
         if didBumpStats {
             return
         }
@@ -143,10 +143,10 @@ import Gridicons
     // MARK: - Configuration
 
 
-    func setupSearchBar() {
+    @objc func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
         let placeholderText = NSLocalizedString("Search WordPress.com", comment: "Placeholder text for the Reader search feature.")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey())
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
@@ -156,14 +156,15 @@ import Gridicons
     }
 
 
-    func configureLabel() {
+    @objc func configureLabel() {
         let text = NSLocalizedString("What would you like to find?", comment: "A short message that is a call to action for the Reader's Search feature.")
-        let attributes = WPNUXUtility.titleAttributes(with: WPStyleGuide.greyDarken20()) as! [String: AnyObject]
-        label.attributedText = NSAttributedString(string: text, attributes: attributes)
+        let rawAttributes = WPNUXUtility.titleAttributes(with: WPStyleGuide.greyDarken20()) as! [String: Any]
+        let swiftedAttributes = NSAttributedStringKey.convertFromRaw(attributes: rawAttributes)
+        label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)
     }
 
 
-    func configureBackgroundTapRecognizer() {
+    @objc func configureBackgroundTapRecognizer() {
         backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ReaderSearchViewController.handleBackgroundTap(_:)))
         backgroundTapRecognizer.cancelsTouchesInView = true
         backgroundTapRecognizer.isEnabled = false
@@ -172,7 +173,7 @@ import Gridicons
     }
 
 
-    func configureForRestoredTopic() {
+    @objc func configureForRestoredTopic() {
         guard let topic = restoredSearchTopic else {
             return
         }
@@ -185,7 +186,7 @@ import Gridicons
     // MARK: - Actions
 
 
-    func endSearch() {
+    @objc func endSearch() {
         searchBar.resignFirstResponder()
     }
 
@@ -193,7 +194,7 @@ import Gridicons
     /// Constructs a ReaderSearchTopic from the search phrase and sets the
     /// embedded stream to the topic.
     ///
-    func performSearch() {
+    @objc func performSearch() {
         guard let streamController = streamController else {
             return
         }
@@ -221,7 +222,7 @@ import Gridicons
     }
 
 
-    func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
+    @objc func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
         endSearch()
     }
 
@@ -231,7 +232,7 @@ import Gridicons
 
     /// Display the search suggestions view
     ///
-    func presentAutoCompleteView() {
+    @objc func presentAutoCompleteView() {
         let controller = ReaderSearchSuggestionsViewController.controller()
         controller.delegate = self
         addChildViewController(controller)
@@ -277,7 +278,7 @@ import Gridicons
 
     /// Remove the search suggestions view.
     ///
-    func dismissAutoCompleteView() {
+    @objc func dismissAutoCompleteView() {
         guard let controller = suggestionsController else {
             return
         }
@@ -345,7 +346,7 @@ extension ReaderSearchViewController: UISearchBarDelegate {
 
 extension ReaderSearchViewController: ReaderSearchSuggestionsDelegate {
 
-    func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String) {
+    @objc func searchSuggestionsController(_ controller: ReaderSearchSuggestionsViewController, selectedItem: String) {
         searchBar.text = selectedItem
         performSearch()
     }

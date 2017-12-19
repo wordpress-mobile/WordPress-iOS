@@ -253,7 +253,7 @@ class MediaImageExporterTests: XCTestCase {
         exporter.exportImage(image,
                              fileName: nil,
                              onCompletion: { (imageExport) in
-                                XCTAssert(UTTypeEqual(kUTTypePNG, imageExport.url.resourceTypeIdentifier! as CFString), "Unexpected image format when trying to target a PNG format from a JPEG.")
+                                XCTAssert(UTTypeEqual(kUTTypePNG, imageExport.url.typeIdentifier! as CFString), "Unexpected image format when trying to target a PNG format from a JPEG.")
                                 MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
                                 MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
                                 expect.fulfill()

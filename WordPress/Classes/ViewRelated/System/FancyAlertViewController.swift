@@ -62,7 +62,7 @@ class FancyAlertViewController: UIViewController {
     private struct Constants {
         static let cornerRadius: CGFloat = 15.0
         static let buttonFont = WPStyleGuide.fontForTextStyle(.headline)
-        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: UIFontWeightSemibold)
+        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
@@ -168,7 +168,7 @@ class FancyAlertViewController: UIViewController {
         topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
         bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
 
-        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: UIFontWeightSemibold)
+        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: .semibold)
         titleLabel.textColor = WPStyleGuide.darkGrey()
         WPStyleGuide.configureLabel(bodyLabel, textStyle: .body)
         bodyLabel.textColor = WPStyleGuide.darkGrey()
@@ -309,7 +309,7 @@ class FancyAlertViewController: UIViewController {
 
     // MARK: - Animation
 
-    func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
+    @objc func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Constants.fadeAnimationDuration, animations: {
             self.contentViews.forEach({ $0.alpha = (visible) ? WPAlphaFull : WPAlphaZero })
             animation?(self)

@@ -12,7 +12,9 @@ protocol LoginSocialErrorViewControllerDelegate {
 class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHelpViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
-    var delegate: LoginSocialErrorViewControllerDelegate?
+    var helpBadge: WPNUXHelpBadgeLabel!
+    var helpButton: UIButton!
+    @objc var delegate: LoginSocialErrorViewControllerDelegate?
 
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
@@ -34,7 +36,7 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
     /// - Parameters:
     ///   - title: The title that will be shown on the error VC
     ///   - description: A brief explination of what failed during social login
-    init(title: String, description: String) {
+    @objc init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
 
@@ -52,7 +54,9 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
         super.viewDidLoad()
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
-        _ = addHelpButtonToNavController()
+        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
+        helpButton = helpButtonResult
+        helpBadge = helpBadgeResult
         addWordPressLogoToNavController()
     }
 
@@ -72,6 +76,18 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
         default:
             delegate.retryAsSignup()
         }
+    }
+
+    // MARK: - LoginWithLogoAndHelpViewController methods
+
+    func handleHelpButtonTapped(_ sender: AnyObject) {
+        displaySupportViewController(sourceTag: .wpComLogin)
+    }
+
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
+        let count = HelpshiftUtils.unreadNotificationCount()
+        helpBadge.text = "\(count)"
+        helpBadge.isHidden = (count == 0)
     }
 }
 

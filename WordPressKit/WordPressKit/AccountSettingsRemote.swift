@@ -3,11 +3,11 @@ import WordPressShared
 import CocoaLumberjack
 
 public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
-    public static let remotes = NSMapTable<AnyObject, AnyObject>(keyOptions: NSPointerFunctions.Options(), valueOptions: NSPointerFunctions.Options.weakMemory)
+    @objc public static let remotes = NSMapTable<AnyObject, AnyObject>(keyOptions: NSPointerFunctions.Options(), valueOptions: NSPointerFunctions.Options.weakMemory)
 
     /// Returns an AccountSettingsRemote with the given api, reusing a previous
     /// remote if it exists.
-    public static func remoteWithApi(_ api: WordPressComRestApi) -> AccountSettingsRemote {
+    @objc public static func remoteWithApi(_ api: WordPressComRestApi) -> AccountSettingsRemote {
         // We're hashing on the authToken because we don't want duplicate api
         // objects for the same account.
         //

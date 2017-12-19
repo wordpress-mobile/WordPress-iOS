@@ -24,21 +24,21 @@ import WordPressShared
 }
 
 open class WordPressComRestApi: NSObject {
-    open static let ErrorKeyResponseData: String = AFNetworkingOperationFailingURLResponseDataErrorKey
-    open static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
-    open static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
+    @objc open static let ErrorKeyResponseData: String = AFNetworkingOperationFailingURLResponseDataErrorKey
+    @objc open static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
+    @objc open static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
 
     public typealias RequestEnqueuedBlock = () -> Void
     public typealias SuccessResponseBlock = (_ responseObject: AnyObject, _ httpResponse: HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
-    open static let apiBaseURLString: String = "https://public-api.wordpress.com/"
+    @objc open static let apiBaseURLString: String = "https://public-api.wordpress.com/"
     
-    open static let defaultBackgroundSessionIdentifier = "org.wordpress.wpcomrestapi"
+    @objc open static let defaultBackgroundSessionIdentifier = "org.wordpress.wpcomrestapi"
     
-    open let backgroundSessionIdentifier: String
+    @objc open let backgroundSessionIdentifier: String
 
-    open let sharedContainerIdentifier: String?
+    @objc open let sharedContainerIdentifier: String?
     
     fileprivate let backgroundUploads: Bool
 
@@ -50,7 +50,7 @@ open class WordPressComRestApi: NSObject {
     /**
      Configure whether or not the user's preferred language locale should be appended. Defaults to true.
      */
-    open var appendsPreferredLanguageLocale = true
+    @objc open var appendsPreferredLanguageLocale = true
 
     fileprivate lazy var sessionManager: AFHTTPSessionManager = {
         let sessionConfiguration = URLSessionConfiguration.default
@@ -85,7 +85,7 @@ open class WordPressComRestApi: NSObject {
         return sessionManager
     }
     
-    convenience public init(oAuthToken: String? = nil, userAgent: String? = nil) {
+    @objc convenience public init(oAuthToken: String? = nil, userAgent: String? = nil) {
         self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier)
     }
     
@@ -103,7 +103,7 @@ open class WordPressComRestApi: NSObject {
     ///   after the app is killed by the system and the system will retried them until they are done. If the background session is initiated from an app extension, you *must* provide a value
     ///   for the sharedContainerIdentifier.
     ///
-    public init(oAuthToken: String? = nil, userAgent: String? = nil,
+    @objc public init(oAuthToken: String? = nil, userAgent: String? = nil,
                 backgroundUploads: Bool = false,
                 backgroundSessionIdentifier: String = WordPressComRestApi.defaultBackgroundSessionIdentifier,
                 sharedContainerIdentifier: String? = nil) {
@@ -123,7 +123,7 @@ open class WordPressComRestApi: NSObject {
     /**
      Cancels all ongoing taks and makes the session invalid so the object will not fullfil any more request
      */
-    open func invalidateAndCancelTasks() {
+    @objc open func invalidateAndCancelTasks() {
         sessionManager.invalidateSessionCancelingTasks(true)
         uploadSessionManager.invalidateSessionCancelingTasks(true)
     }
@@ -142,7 +142,7 @@ open class WordPressComRestApi: NSObject {
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    @discardableResult open func GET(_ URLString: String,
+    @objc @discardableResult open func GET(_ URLString: String,
                      parameters: [String: AnyObject]?,
                      success: @escaping SuccessResponseBlock,
                      failure: @escaping FailureReponseBlock) -> Progress? {
@@ -186,7 +186,7 @@ open class WordPressComRestApi: NSObject {
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    @discardableResult open func POST(_ URLString: String,
+    @objc @discardableResult open func POST(_ URLString: String,
                      parameters: [String: AnyObject]?,
                      success: @escaping SuccessResponseBlock,
                      failure: @escaping FailureReponseBlock) -> Progress? {
@@ -232,7 +232,7 @@ open class WordPressComRestApi: NSObject {
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    @discardableResult open func multipartPOST(_ URLString: String,
+    @objc @discardableResult open func multipartPOST(_ URLString: String,
                               parameters: [String: AnyObject]?,
                               fileParts: [FilePart],
                               requestEnqueued: RequestEnqueuedBlock? = nil,
@@ -326,7 +326,7 @@ open class WordPressComRestApi: NSObject {
         }
     }
 
-    open func hasCredentials() -> Bool {
+    @objc open func hasCredentials() -> Bool {
         guard let authToken = oAuthToken else {
             return false
         }
@@ -344,9 +344,9 @@ open class WordPressComRestApi: NSObject {
         return WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
     }
 
-    open static let WordPressComRestCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
+    @objc open static let WordPressComRestCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
 
-    public func temporaryFileURL(withExtension fileExtension: String) -> URL {
+    @objc public func temporaryFileURL(withExtension fileExtension: String) -> URL {
         assert(!fileExtension.isEmpty, "file Extension cannot be empty")
         let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.\(fileExtension)"
         let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
@@ -356,12 +356,12 @@ open class WordPressComRestApi: NSObject {
 
 /// FilePart represents the infomartion needed to encode a file on a multipart form request
 public final class FilePart: NSObject {
-    let parameterName: String
-    let url: URL
-    let filename: String
-    let mimeType: String
+    @objc let parameterName: String
+    @objc let url: URL
+    @objc let filename: String
+    @objc let mimeType: String
 
-    public init(parameterName: String, url: URL, filename: String, mimeType: String) {
+    @objc public init(parameterName: String, url: URL, filename: String, mimeType: String) {
         self.parameterName = parameterName
         self.url = url
         self.filename = filename
@@ -424,7 +424,7 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer {
         userInfo[NSLocalizedDescriptionKey] =  errorDescription
         error?.pointee = NSError(domain: nserror.domain,
                                code: nserror.code,
-                               userInfo: userInfo
+                               userInfo: userInfo as? [String : Any]
             )
         return responseObject as AnyObject?
     }
@@ -432,7 +432,7 @@ final class WordPressComRestAPIResponseSerializer: AFJSONResponseSerializer {
 
 extension WordPressComRestApi {
     /// Returns an Api object without an oAuthtoken defined and with the userAgent set for the WordPress App user agent
-    class public func anonymousApi(userAgent: String) -> WordPressComRestApi {
+    @objc class public func anonymousApi(userAgent: String) -> WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent)
     }
 
@@ -444,7 +444,7 @@ extension WordPressComRestApi {
     ///
     /// - Returns: The path with the locale appended, or the original path if it already had a locale param.
     ///
-    class public func pathByAppendingPreferredLanguageLocale(_ path: String) -> String {
+    @objc class public func pathByAppendingPreferredLanguageLocale(_ path: String) -> String {
         let localeKey = WordPressComRestApi.localeKey
         if path.isEmpty || path.contains("\(localeKey)=") {
             return path

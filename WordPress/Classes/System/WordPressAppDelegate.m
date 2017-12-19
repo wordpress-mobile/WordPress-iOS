@@ -8,7 +8,6 @@
 #import <Crashlytics/Crashlytics.h>
 #import <Reachability/Reachability.h>
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressShared/UIImage+Util.h>
 
 #ifdef BUDDYBUILD_ENABLED
@@ -50,12 +49,10 @@
 #import "RotationAwareNavigationViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
-#import "WPPostViewController.h"
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
-#import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
 
-int ddLogLevel = DDLogLevelInfo;
+DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
@@ -99,7 +96,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self.window makeKeyAndVisible];
 
     // Local Notifications
-    [self listenLocalNotifications];
+    [self addNotificationObservers];
 
     WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
@@ -301,7 +298,7 @@ int ddLogLevel = DDLogLevelInfo;
     if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
         UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
         UIViewController *firstViewController = [navController.viewControllers firstObject];
-        if ([firstViewController isKindOfClass:[WPPostViewController class]]) {
+        if ([firstViewController isKindOfClass:[AztecPostViewController class]]) {
             return @"Post Editor";
         } else if ([firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
             return @"Login View";
@@ -366,7 +363,6 @@ int ddLogLevel = DDLogLevelInfo;
     // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
     // is no need to inspect the identifier beyond the simple check here.
     if ([identifier containsString:WPAppGroupName]) {
-        DDLogInfo(@"Rejoining session with identifier: %@ with application in state: %@", identifier, application.applicationState);
         ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
         sessionManager.backgroundSessionCompletionBlock = ^{
             dispatch_async(dispatch_get_main_queue(), completionHandler);
@@ -391,7 +387,6 @@ int ddLogLevel = DDLogLevelInfo;
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
-    [self removeCredentialsForDebug];
 #if DEBUG
     [KeychainTools processKeychainDebugArguments];
 #endif
@@ -518,21 +513,6 @@ int ddLogLevel = DDLogLevelInfo;
     return [controller isKindOfClass:[NUXAbstractViewController class]] || [controller isKindOfClass:[LoginPrologueViewController class]];
 }
 
-- (BOOL)noWordPressDotComAccount
-{
-    return [AccountHelper isDotcomAvailable] == false;
-}
-
-- (BOOL)noSelfHostedBlogs
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    
-    NSInteger blogCount = [blogService blogCountSelfHosted];
-    return blogCount == 0;
-}
-
-
 - (void)customizeAppearance
 {
     self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];
@@ -558,8 +538,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[UIColor darkGrayColor]];
-    
-    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [WPEditorViewController class] ]] setBarTintColor:[UIColor whiteColor]];
 
     // Search
     [WPStyleGuide configureSearchBarAppearance];
@@ -572,7 +550,6 @@ int ddLogLevel = DDLogLevelInfo;
     
     // Media Picker styles
     UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateNormal];
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
 
@@ -580,10 +557,6 @@ int ddLogLevel = DDLogLevelInfo;
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderBackgroundColor:[WPStyleGuide darkGrey]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderTintColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setCellTintColor:[WPStyleGuide wordPressBlue]];
-
-    [[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[UIColor colorWithHexString:@"F9FBFC"]];
-    [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
-    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
 
     // Customize the appearence of the text elements
     [self customizeAppearanceForTextElements];
@@ -596,6 +569,13 @@ int ddLogLevel = DDLogLevelInfo;
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
     [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
+}
+
+- (void)trackLogoutIfNeeded
+{
+    if (![self isLoggedIn]) {
+        [WPAnalytics track:WPAnalyticsStatLogout];
+    }
 }
 
 #pragma mark - Analytics
@@ -727,193 +707,11 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"End keychain fixing");
 }
 
-#pragma mark - Debugging
+#pragma mark - Log Level
 
-- (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions
++ (void)setLogLevel:(DDLogLevel)logLevel
 {
-    UIDevice *device = [UIDevice currentDevice];
-    NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
-    NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
-    NSString *currentLanguage = [languages objectAtIndex:0];
-    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSArray *blogs = [blogService blogsForAllAccounts];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    
-    DDLogInfo(@"===========================================================================");
-    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle bundleForClass:[self class]] detailedVersionNumber]);
-    DDLogInfo(@"Crash count:       %d", crashCount);
-#ifdef DEBUG
-    DDLogInfo(@"Debug mode:  Debug");
-#else
-    DDLogInfo(@"Debug mode:  Production");
-#endif
-    DDLogInfo(@"Extra debug: %@", extraDebug ? @"YES" : @"NO");
-    DDLogInfo(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
-    DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
-    DDLogInfo(@"Language:  %@", currentLanguage);
-    DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [[PushNotificationsManager shared] deviceToken]);
-    DDLogInfo(@"Launch options: %@", launchOptions);
-    NSString *verificationTag = @"";
-    if (account.verificationStatus) {
-        verificationTag = [NSString stringWithFormat:@" (%@)", account.verificationStatus];
-    }
-    DDLogInfo(@"wp.com account: %@ (ID: %@)%@", account.username, account.userID, verificationTag);
-    
-    if (blogs.count > 0) {
-        DDLogInfo(@"All blogs on device:");
-        for (Blog *blog in blogs) {
-            DDLogInfo(@"%@", [blog logDescription]);
-        }
-    } else {
-        DDLogInfo(@"No blogs configured on device.");
-    }
-    
-    DDLogInfo(@"===========================================================================");
-}
-
-- (void)removeCredentialsForDebug
-{
-#if DEBUG
-    /*
-     A dictionary containing the credentials for all available protection spaces.
-     The dictionary has keys corresponding to the NSURLProtectionSpace objects.
-     The values for the NSURLProtectionSpace keys consist of dictionaries where the keys are user name strings, and the value is the corresponding NSURLCredential object.
-     */
-    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
-        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
-            DDLogVerbose(@"Removing credential %@ for %@", [credential user], [ps host]);
-            [[NSURLCredentialStorage sharedCredentialStorage] removeCredential:credential forProtectionSpace:ps];
-        }];
-    }];
-#endif
-}
-
-- (void)toggleExtraDebuggingIfNeeded
-{
-    if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
-        // When there are no blogs in the app the settings screen is unavailable.
-        // In this case, enable extra_debugging by default to help troubleshoot any issues.
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
-            return; // Already saved. Don't save again or we could loose the original value.
-        }
-
-        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
-        [[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
-        ddLogLevel = DDLogLevelVerbose;
-        [NSUserDefaults resetStandardUserDefaults];
-    } else {
-        NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
-        if (origExtraDebug == nil) {
-            return;
-        }
-
-        // Restore the original setting and remove orig_extra_debug.
-        [[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
-        [NSUserDefaults resetStandardUserDefaults];
-
-        if ([origExtraDebug boolValue]) {
-            ddLogLevel = DDLogLevelVerbose;
-        }
-    }
-}
-
-#pragma mark - Local Notifications Helpers
-
-- (void)listenLocalNotifications
-{
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleDefaultAccountChangedNote:)
-                               name:WPAccountDefaultWordPressComAccountChangedNotification
-                             object:nil];
-    
-    [notificationCenter addObserver:self
-                           selector:@selector(handleLowMemoryWarningNote:)
-                               name:UIApplicationDidReceiveMemoryWarningNotification
-                             object:nil];
-
-    [notificationCenter addObserver:self
-                           selector:@selector(handleUIContentSizeCategoryDidChangeNotification:)
-                               name:UIContentSizeCategoryDidChangeNotification
-                             object:nil];
-}
-
-- (void)handleDefaultAccountChangedNote:(NSNotification *)notification
-{
-    // If the notification object is not nil, then it's a login
-    if (notification.object) {
-        [self setupShareExtensionToken];
-    } else {
-        if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
-            [WPAnalytics track:WPAnalyticsStatLogout];
-        }
-
-        [self removeTodayWidgetConfiguration];
-        [self removeShareExtensionConfiguration];
-        [self showWelcomeScreenIfNeededAnimated:NO];
-    }
-
-    [self toggleExtraDebuggingIfNeeded];
-    
-    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
-}
-
-- (void)handleLowMemoryWarningNote:(NSNotification *)notification
-{
-    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
-}
-
-- (void)handleUIContentSizeCategoryDidChangeNotification:(NSNotification *)notification
-{
-    [self customizeAppearanceForTextElements];
-}
-
-#pragma mark - Extensions
-
-- (void)setupWordPressExtensions
-{
-    // Default Account
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    [accountService setupAppExtensionsWithDefaultAccount];
-
-    // Settings
-    NSInteger maxImageSize = [[MediaSettings new] maxImageSizeSetting];
-    [ShareExtensionService configureShareExtensionMaximumMediaDimension:maxImageSize];
-}
-
-
-#pragma mark - Today Extension
-
-- (void)removeTodayWidgetConfiguration
-{
-    TodayExtensionService *service = [TodayExtensionService new];
-    [service removeTodayWidgetConfiguration];
-}
-
-
-#pragma mark - Share Extension
-
-- (void)setupShareExtensionToken
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account              = [accountService defaultWordPressComAccount];
-    
-    [ShareExtensionService configureShareExtensionToken:account.authToken];
-    [ShareExtensionService configureShareExtensionUsername:account.username];
-}
-
-- (void)removeShareExtensionConfiguration
-{
-    [ShareExtensionService removeShareExtensionConfiguration];
+    ddLogLevel = logLevel;
 }
 
 @end

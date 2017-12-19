@@ -9,7 +9,7 @@ public extension SiteSettingsViewController {
 
     /// Presents confirmation alert for Export Content
     ///
-    public func confirmExportContent() {
+    @objc public func confirmExportContent() {
         tableView.deselectSelectedRowWithAnimation(true)
 
         WPAppAnalytics.track(.siteSettingsExportSiteAccessed, with: self.blog)
@@ -72,7 +72,7 @@ public extension SiteSettingsViewController {
 
     /// Requests site purchases to determine whether site is deletable
     ///
-    public func checkSiteDeletable() {
+    @objc public func checkSiteDeletable() {
         tableView.deselectSelectedRowWithAnimation(true)
 
         let status = NSLocalizedString("Checking purchases…", comment: "Overlay message displayed while checking if site has premium purchases")

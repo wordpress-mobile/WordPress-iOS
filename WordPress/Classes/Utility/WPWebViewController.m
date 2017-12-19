@@ -204,7 +204,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [self loadRequest:request];
         return;
     }
-    id<CookieJar> cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    id<CookieJar> cookieJar = (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage];
     [self.authenticator requestWithUrl:self.url
                              cookieJar:cookieJar
                             completion:^(NSURLRequest * _Nonnull request) {

@@ -64,7 +64,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
-    func localizeControls() {
+    @objc func localizeControls() {
         instructionLabel?.text = NSLocalizedString("Enter the address of your WordPress site you'd like to connect.", comment: "Instruction text on the login's site addresss screen.")
 
         siteURLField.placeholder = NSLocalizedString("example.wordpress.com", comment: "Site Address placeholder")
@@ -83,7 +83,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
-    func configureTextFields() {
+    @objc func configureTextFields() {
         siteURLField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         siteURLField.text = loginFields.siteAddress
     }
@@ -115,7 +115,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
-    func configureViewForEditingIfNeeded() {
+    @objc func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
@@ -130,7 +130,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
-    func validateForm() {
+    @objc func validateForm() {
         view.endEditing(true)
         displayError(message: "")
         guard SigninHelpers.validateSiteForSignin(loginFields) else {
@@ -179,7 +179,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 
 
-    func fetchSiteInfo() {
+    @objc func fetchSiteInfo() {
         let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteAddress) as NSString
         if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
 
@@ -197,7 +197,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 
 
-    func originalErrorOrError(error: NSError) -> NSError {
+    @objc func originalErrorOrError(error: NSError) -> NSError {
         guard let err = error.userInfo[XMLRPCOriginalErrorKey] as? NSError else {
             return error
         }
@@ -205,7 +205,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 
 
-    func errorDiscoveringJetpackSite(error: NSError) -> Bool {
+    @objc func errorDiscoveringJetpackSite(error: NSError) -> Bool {
         if let _ = error.userInfo[WordPressOrgXMLRPCValidator.UserInfoHasJetpackKey] {
             return true
         }
@@ -214,7 +214,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     }
 
 
-    func showSelfHostedUsernamePassword() {
+    @objc func showSelfHostedUsernamePassword() {
         configureViewLoading(false)
         performSegue(withIdentifier: .showURLUsernamePassword, sender: self)
     }
@@ -222,7 +222,7 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
 
     /// Whether the form can be submitted.
     ///
-    func canSubmit() -> Bool {
+    @objc func canSubmit() -> Bool {
         return SigninHelpers.validateSiteForSignin(loginFields)
     }
 
@@ -257,12 +257,12 @@ class LoginSiteAddressViewController: LoginViewController, SigninKeyboardRespond
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
 
-    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 }

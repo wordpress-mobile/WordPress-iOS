@@ -7,7 +7,7 @@ extension UIEdgeInsets {
 }
 
 extension UIButton {
-    func flipInsetsForRightToLeftLayoutDirection() {
+    @objc func flipInsetsForRightToLeftLayoutDirection() {
         guard userInterfaceLayoutDirection() == .rightToLeft else {
             return
         }
@@ -22,7 +22,7 @@ extension UIButton {
 // 🙄
 @objc(InsetsHelper)
 class _InsetsHelper: NSObject {
-    static func flipForRightToLeftLayoutDirection(_ insets: UIEdgeInsets) -> UIEdgeInsets {
+    @objc static func flipForRightToLeftLayoutDirection(_ insets: UIEdgeInsets) -> UIEdgeInsets {
         return insets.flippedForRightToLeftLayoutDirection()
     }
 }

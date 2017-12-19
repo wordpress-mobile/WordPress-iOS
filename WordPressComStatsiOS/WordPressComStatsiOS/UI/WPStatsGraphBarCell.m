@@ -144,9 +144,7 @@ CGFloat const BottomMarginUnderYAxis = 20.0f;
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.frame), 17.0f)];
     label.text = text;
     label.textAlignment = NSTextAlignmentCenter;
-    label.adjustsFontSizeToFitWidth = YES;
-    label.minimumScaleFactor = 0.5;
-    label.font = [WPStyleGuide axisLabelFont];
+    label.font = [[WPStyleGuide axisLabelFont] fontWithSize:self.barNameFontSize];
     
     if (self.selected) {
         label.textColor = [WPStyleGuide jazzyOrange];

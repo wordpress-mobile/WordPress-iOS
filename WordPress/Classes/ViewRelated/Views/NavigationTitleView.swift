@@ -3,8 +3,8 @@ import UIKit
 import WordPressShared.WPFontManager
 
 open class NavigationTitleView: UIView {
-    open let titleLabel       = UILabel(frame: defaultTitleFrame)
-    open let subtitleLabel    = UILabel(frame: defaultSubtitleFrame)
+    @objc open let titleLabel       = UILabel(frame: defaultTitleFrame)
+    @objc open let subtitleLabel    = UILabel(frame: defaultSubtitleFrame)
 
 
     // MARK: - UIView's Methods
@@ -12,7 +12,7 @@ open class NavigationTitleView: UIView {
         self.init(frame: NavigationTitleView.defaultViewFrame)
     }
 
-    convenience init(title: String?, subtitle: String?) {
+    @objc convenience init(title: String?, subtitle: String?) {
         self.init()
         titleLabel.text     = title ?? String()
         subtitleLabel.text  = subtitle ?? String()

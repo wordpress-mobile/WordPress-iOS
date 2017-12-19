@@ -9,8 +9,6 @@
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
-#import "WPPostViewController.h"
-#import "WPLegacyEditPageViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
 #import <WordPressShared/WPDeviceIdentification.h>

@@ -1,23 +1,30 @@
 import Foundation
+import WordPressFlux
 
-class PluginViewModel {
+class PluginViewModel: Observable {
     var plugin: PluginState {
         didSet {
-            onModelChange?()
+            changeDispatcher.dispatch()
         }
     }
     let capabilities: SitePluginCapabilities
-    let service: PluginServiceRemote
-    let siteID: Int
+    let site: JetpackSiteRef
+    var storeReceipt: Receipt?
+    let changeDispatcher = Dispatcher<Void>()
 
-    init(plugin: PluginState, capabilities: SitePluginCapabilities, siteID: Int, service: PluginServiceRemote) {
+    init(plugin: PluginState, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
         self.capabilities = capabilities
-        self.siteID = siteID
-        self.service = service
+        self.site = site
+        storeReceipt = store.onChange { [weak self] in
+            guard let plugin = store.getPlugin(id: plugin.id, site: site) else {
+                self?.dismiss?()
+                return
+            }
+            self?.plugin = plugin
+        }
     }
 
-    var onModelChange: (() -> Void)?
     var present: ((UIViewController) -> Void)?
     var dismiss: (() -> Void)?
 
@@ -106,69 +113,32 @@ class PluginViewModel {
         alert.addDestructiveActionWithTitle(
             NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
-                self.dismiss?()
-                self.service.remove(
-                    pluginID: self.plugin.id,
-                    siteID: self.siteID,
-                    success: {},
-                    failure: { error in
-                        DDLogError("Error removing plugin: \(error)")
-                    })
+                ActionDispatcher.dispatch(PluginAction.remove(id: self.plugin.id, site: self.site))
             }
         )
         return alert
     }
 
     private func setActive(_ active: Bool) {
-        plugin.active = active
         if active {
-            service.activatePlugin(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error activating plugin: \(error)")
-                    self?.plugin.active = !active
-            })
+            ActionDispatcher.dispatch(PluginAction.activate(id: plugin.id, site: site))
         } else {
-            service.deactivatePlugin(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error deactivating plugin: \(error)")
-                    self?.plugin.active = !active
-            })
+            ActionDispatcher.dispatch(PluginAction.deactivate(id: plugin.id, site: site))
         }
     }
 
     private func setAutoupdate(_ autoupdate: Bool) {
-        plugin.autoupdate = autoupdate
         if autoupdate {
-            service.enableAutoupdates(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error enabling autoupdates for plugin: \(error)")
-                    self?.plugin.autoupdate = !autoupdate
-            })
+            ActionDispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, site: site))
         } else {
-            service.disableAutoupdates(
-                pluginID: plugin.id,
-                siteID: siteID,
-                success: { _ in },
-                failure: { [weak self] (error) in
-                    DDLogError("Error disabling autoupdates for plugin: \(error)")
-                    self?.plugin.autoupdate = !autoupdate
-            })
+            ActionDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, site: site))
         }
     }
 
     private func getSiteTitle() -> String? {
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
-        let blog = service.blog(byBlogId: siteID as NSNumber)
+        let blog = service.blog(byBlogId: site.siteID as NSNumber)
         return blog?.settings?.name?.nonEmptyString()
     }
 

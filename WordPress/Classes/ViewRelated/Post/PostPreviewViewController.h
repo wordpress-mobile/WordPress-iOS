@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "WPPostViewController.h"
 
+@class AbstractPost;
 
 NS_ASSUME_NONNULL_BEGIN
 

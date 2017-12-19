@@ -10,14 +10,14 @@ import MobileCoreServices
 /// its own UTI data type.
 ///
 @objc class SharePost: NSObject, NSSecureCoding {
-    static let typeIdentifier = "org.wordpress.share-post"
-    static let activityType = UIActivityType(rawValue: "org.wordpress.WordPressShare")
+    @objc static let typeIdentifier = "org.wordpress.share-post"
+    @objc static let activityType = UIActivityType(rawValue: "org.wordpress.WordPressShare")
 
-    let title: String?
-    let summary: String?
-    let url: URL?
+    @objc let title: String?
+    @objc let summary: String?
+    @objc let url: URL?
 
-    init(title: String?, summary: String?, url: String?) {
+    @objc init(title: String?, summary: String?, url: String?) {
         self.title = title
         self.summary = summary
         self.url = url.flatMap(URL.init(string:))
@@ -31,7 +31,7 @@ import MobileCoreServices
         self.init(title: title, summary: summary, url: url)
     }
 
-    convenience init?(data: Data) {
+    @objc convenience init?(data: Data) {
         let decoder = NSKeyedUnarchiver(forReadingWith: data)
         self.init(coder: decoder)
     }
@@ -46,7 +46,7 @@ import MobileCoreServices
         return true
     }
 
-    var content: String {
+    @objc var content: String {
         var content = ""
         if let title = title {
             content.append("\(title)\n\n")
@@ -57,7 +57,7 @@ import MobileCoreServices
         return content
     }
 
-    var data: Data {
+    @objc var data: Data {
         let data = NSMutableData()
         let encoder = NSKeyedArchiver(forWritingWith: data)
         encode(with: encoder)

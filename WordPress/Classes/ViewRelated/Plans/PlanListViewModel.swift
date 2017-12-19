@@ -57,10 +57,10 @@ enum PlanListViewModel {
         // Non-breaking space entity prevents an orphan word if the text wraps
         let tos = NSLocalizedString("By checking out, you agree to our <a>fascinating terms and&nbsp;conditions</a>.", comment: "Terms of Service link displayed when a user is making a purchase. Text inside <a> tags will be highlighted.")
 
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ NSFontAttributeName: UIFont.systemFont(ofSize: 12),
-                                                                   NSForegroundColorAttributeName: bodyColor ],
-                                                 .ATagAttribute: [ NSUnderlineStyleAttributeName: NSUnderlineStyle.styleNone.rawValue as AnyObject,
-                                                                   NSForegroundColorAttributeName: linkColor] ]
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: UIFont.systemFont(ofSize: 12),
+                                                                   .foregroundColor: bodyColor ],
+                                                 .ATagAttribute: [ .underlineStyle: NSUnderlineStyle.styleNone.rawValue,
+                                                                   .foregroundColor: linkColor] ]
 
         let attributedTos = NSAttributedString.attributedStringWithHTML(tos, attributes: attributes)
 

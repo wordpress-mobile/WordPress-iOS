@@ -24,7 +24,7 @@ class AdaptiveNavigationController: UINavigationController {
     ///
     ///  - Parameter presentingView: UIView instance from which the popover will be shown
     ///
-    func configurePopoverPresentationStyle(from sourceView: UIView) {
+    @objc func configurePopoverPresentationStyle(from sourceView: UIView) {
         modalPresentationStyle = .popover
 
         guard let presentationController = popoverPresentationController else {

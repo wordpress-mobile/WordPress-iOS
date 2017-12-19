@@ -18,10 +18,10 @@ protocol MediaSizeModel {
 
 class MediaSizeSliderCell: WPTableViewCell {
 
-    static let height: Float = 108.0
+    @objc static let height: Float = 108.0
 
     // MARK: - Public interface
-    var value: Int {
+    @objc var value: Int {
         get {
             return model.value
         }
@@ -30,7 +30,7 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 
-    var minValue: Int {
+    @objc var minValue: Int {
         get {
             return model.minValue
         }
@@ -39,7 +39,7 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 
-    var maxValue: Int {
+    @objc var maxValue: Int {
         get {
             return model.maxValue
         }
@@ -48,7 +48,7 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 
-    var step: Int {
+    @objc var step: Int {
         get {
             return model.step
         }
@@ -57,7 +57,7 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 
-    var title: String? {
+    @objc var title: String? {
         get {
             return titleLabel.text
         }
@@ -66,7 +66,7 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 
-    var onChange: ((Int) -> Void)?
+    @objc var onChange: ((Int) -> Void)?
 
     // MARK: - Private properties
     var model: MediaSizeModel = ImageSizeModel.default {
@@ -75,7 +75,7 @@ class MediaSizeSliderCell: WPTableViewCell {
         }
     }
 
-    func updateSubviews() {
+    @objc func updateSubviews() {
         slider.minimumValue = model.sliderMinimumValue
         slider.maximumValue = model.sliderMaximumValue
         slider.value = model.sliderValue
@@ -83,7 +83,7 @@ class MediaSizeSliderCell: WPTableViewCell {
         valueLabel.text = model.valueText
     }
 
-    func customizeAppearance() {
+    @objc func customizeAppearance() {
         titleLabel.font = WPStyleGuide.tableviewTextFont()
         titleLabel.textColor = WPStyleGuide.darkGrey()
         valueLabel.font = WPStyleGuide.tableviewSubtitleFont()

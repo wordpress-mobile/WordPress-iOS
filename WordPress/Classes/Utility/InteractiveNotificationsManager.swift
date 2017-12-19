@@ -10,17 +10,17 @@ final class InteractiveNotificationsManager: NSObject {
 
     /// Returns the shared InteractiveNotificationsManager instance.
     ///
-    static let shared = InteractiveNotificationsManager()
+    @objc static let shared = InteractiveNotificationsManager()
 
     /// Returns the Core Data main context.
     ///
-    var context: NSManagedObjectContext {
+    @objc var context: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
 
     /// Returns a CommentService instance.
     ///
-    var commentService: CommentService {
+    @objc var commentService: CommentService {
         return CommentService(managedObjectContext: context)
     }
 
@@ -35,7 +35,7 @@ final class InteractiveNotificationsManager: NSObject {
     ///
     /// This method should be called once during the app initialization process.
     ///
-    func registerForUserNotifications() {
+    @objc func registerForUserNotifications() {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.delegate = self
         notificationCenter.setNotificationCategories(supportedNotificationCategories())
@@ -46,9 +46,9 @@ final class InteractiveNotificationsManager: NSObject {
     /// The first time this method is called it will ask the user for permission to show notifications.
     /// Because of this, this should be called only when we know we will need to show notifications (for instance, after login).
     ///
-    func requestAuthorization() {
+    @objc func requestAuthorization() {
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { _ in })
+        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (_, _)  in })
     }
 
     /// Handle an action taken from a remote notification
@@ -59,7 +59,7 @@ final class InteractiveNotificationsManager: NSObject {
     ///
     /// - Returns: True on success
     ///
-    @discardableResult
+    @objc @discardableResult
     func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
         guard AccountHelper.isDotcomAvailable(),
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,

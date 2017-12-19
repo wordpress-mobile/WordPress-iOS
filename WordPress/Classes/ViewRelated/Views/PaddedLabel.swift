@@ -7,7 +7,7 @@ class PaddedLabel: UIView {
         }
     }
 
-    let label = UILabel()
+    @objc let label = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)

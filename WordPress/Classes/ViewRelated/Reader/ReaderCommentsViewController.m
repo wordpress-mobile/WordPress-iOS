@@ -476,7 +476,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     _post = post;
 
-    if (_post.isWPCom) {
+    if (_post.isWPCom || _post.isJetpack) {
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }

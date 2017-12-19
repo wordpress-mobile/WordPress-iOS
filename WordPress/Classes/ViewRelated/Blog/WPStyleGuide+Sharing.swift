@@ -10,7 +10,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: A UIImageView
     ///
-    public class func sharingCellWarningAccessoryImageView() -> UIImageView {
+    @objc public class func sharingCellWarningAccessoryImageView() -> UIImageView {
 
         let imageSize = 20.0
         let horizontalPadding = 8.0
@@ -30,7 +30,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: A template UIImage that can be tinted by a UIImageView's tintColor property.
     ///
-    public class func iconForService(_ service: NSString) -> UIImage {
+    @objc public class func iconForService(_ service: NSString) -> UIImage {
         let name = service.lowercased.replacingOccurrences(of: "_", with: "-")
         var iconName: String
 
@@ -63,7 +63,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: The tint color for the service, or the default color.
     ///
-    public class func tintColorForConnectedService(_ service: String) -> UIColor {
+    @objc public class func tintColorForConnectedService(_ service: String) -> UIColor {
         guard let name = SharingServiceNames(rawValue: service) else {
             return WPStyleGuide.wordPressBlue()
         }

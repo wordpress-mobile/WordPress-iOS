@@ -7,14 +7,14 @@ import UIKit
 class WPContentSearchHelper: NSObject {
 
     /// The current searchText set on the helper.
-    var searchText: String? = nil
+    @objc var searchText: String? = nil
 
     // MARK: - Methods for configuring the timing of search callbacks.
 
     fileprivate var observers = [WPContentSearchObserver]()
     fileprivate let defaultDeferredSearchObservationInterval = TimeInterval(0.30)
 
-    func configureImmediateSearch(_ handler: @escaping ()->Void) {
+    @objc func configureImmediateSearch(_ handler: @escaping ()->Void) {
         let observer = WPContentSearchObserver()
         observer.interval = 0.0
         observer.completion = handler
@@ -22,7 +22,7 @@ class WPContentSearchHelper: NSObject {
     }
 
     /// Add a search callback configured as a common deferred search.
-    func configureDeferredSearch(_ handler: @escaping ()->Void) {
+    @objc func configureDeferredSearch(_ handler: @escaping ()->Void) {
         let observer = WPContentSearchObserver()
         observer.interval = defaultDeferredSearchObservationInterval
         observer.completion = handler
@@ -30,7 +30,7 @@ class WPContentSearchHelper: NSObject {
     }
 
     /// Remove any current configuration, such as local and remote search callbacks.
-    func resetConfiguration() {
+    @objc func resetConfiguration() {
         stopAllObservers()
         observers.removeAll()
     }
@@ -38,7 +38,7 @@ class WPContentSearchHelper: NSObject {
     // MARK: - Methods for updating the search.
 
     /// Update the current search text, ideally in real-time along with user input.
-    func searchUpdated(_ text: String?) {
+    @objc func searchUpdated(_ text: String?) {
         stopAllObservers()
         searchText = text
         for observer in observers {
@@ -52,7 +52,7 @@ class WPContentSearchHelper: NSObject {
     }
 
     /// Cancel the current search and any pending callbacks.
-    func searchCanceled() {
+    @objc func searchCanceled() {
         stopAllObservers()
     }
 
@@ -72,9 +72,9 @@ class WPContentSearchHelper: NSObject {
 /// Object encapsulating the callback and timing information.
 private class WPContentSearchObserver: NSObject {
 
-    var interval = TimeInterval(0.0)
-    var timer: Timer?
-    var completion = {}
+    @objc var interval = TimeInterval(0.0)
+    @objc var timer: Timer?
+    @objc var completion = {}
 
     @objc func timerFired() {
         completion()

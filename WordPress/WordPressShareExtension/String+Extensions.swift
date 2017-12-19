@@ -35,8 +35,19 @@ extension String {
     ///
     func splitContentTextIntoSubjectAndBody() -> (subject: String, body: String) {
         let indexOfFirstNewline = rangeOfCharacter(from: CharacterSet.newlines)
+
+#if swift(>=4.0)
+        var firstLineOfText = self
+        var restOfText = String()
+
+        if let indexOfFirstNewline = indexOfFirstNewline {
+            firstLineOfText = String(prefix(upTo: indexOfFirstNewline.lowerBound))
+            restOfText = String(self[indexOfFirstNewline.upperBound...])
+        }
+#else
         let firstLineOfText = indexOfFirstNewline != nil ? substring(to: indexOfFirstNewline!.lowerBound) : self
         let restOfText = indexOfFirstNewline != nil ? substring(from: indexOfFirstNewline!.upperBound) : ""
+#endif
 
         return (firstLineOfText, restOfText)
     }

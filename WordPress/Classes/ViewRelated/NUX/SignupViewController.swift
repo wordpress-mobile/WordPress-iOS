@@ -19,20 +19,20 @@ import WordPressShared
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @IBOutlet var topLayoutGuideAdjustmentConstraint: NSLayoutConstraint!
     @IBOutlet var formTopMarginConstraint: NSLayoutConstraint!
-    var onePasswordButton: UIButton!
-    var didCorrectEmailOnce: Bool = false
-    var userDefinedSiteAddress: Bool = false
-    let operationQueue = OperationQueue()
-    var account: WPAccount?
+    @objc var onePasswordButton: UIButton!
+    @objc var didCorrectEmailOnce: Bool = false
+    @objc var userDefinedSiteAddress: Bool = false
+    @objc let operationQueue = OperationQueue()
+    @objc var account: WPAccount?
 
-    let LanguageIDKey = "lang_id"
-    let BlogDetailsKey = "blog_details"
-    let BlogNameLowerCaseNKey = "blogname"
-    let BlogNameUpperCaseNKey = "blogName"
-    let XMLRPCKey = "xmlrpc"
-    let BlogIDKey = "blogid"
-    let URLKey = "url"
-    let nonAlphanumericCharacterSet = NSCharacterSet.alphanumerics.inverted
+    @objc let LanguageIDKey = "lang_id"
+    @objc let BlogDetailsKey = "blog_details"
+    @objc let BlogNameLowerCaseNKey = "blogname"
+    @objc let BlogNameUpperCaseNKey = "blogName"
+    @objc let XMLRPCKey = "xmlrpc"
+    @objc let BlogIDKey = "blogid"
+    @objc let URLKey = "url"
+    @objc let nonAlphanumericCharacterSet = NSCharacterSet.alphanumerics.inverted
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -42,7 +42,7 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
-    class func controller() -> SignupViewController {
+    @objc class func controller() -> SignupViewController {
         let storyboard = UIStoryboard(name: "Login", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as! SignupViewController
         return controller
@@ -100,7 +100,7 @@ import WordPressShared
 
     /// Adjust the layout for smaller screens, specifically the iPhone 4s
     ///
-    func configureLayoutForSmallScreensIfNeeded() {
+    @objc func configureLayoutForSmallScreensIfNeeded() {
         if !shouldAdjustLayoutForSmallScreen() {
             return
         }
@@ -118,7 +118,7 @@ import WordPressShared
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
-    func localizeControls() {
+    @objc func localizeControls() {
         titleLabel.text = NSLocalizedString("Create an account on WordPress.com", comment: "Title of a screen")
         emailField.placeholder = NSLocalizedString("Email Address", comment: "Email address placeholder")
         usernameField.placeholder = NSLocalizedString("Username", comment: "Username placeholder")
@@ -133,7 +133,7 @@ import WordPressShared
 
     /// Sets up a 1Password button if 1Password is available.
     ///
-    func setupOnePasswordButtonIfNeeded() {
+    @objc func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
                                                             target: self,
                                                             selector: #selector(SignupViewController.handleOnePasswordButtonTapped(_:)))
@@ -142,12 +142,12 @@ import WordPressShared
 
     /// Configures the appearance of the Terms button.
     ///
-    func configureTermsButtonText() {
+    @objc func configureTermsButtonText() {
         let string = NSLocalizedString("By creating an account you agree to the fascinating <u>Terms of Service</u>.",
                                        comment: "Message displayed when a verification code is needed")
-        let options: [String: Any] = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html.rawValue,
+            .characterEncoding: String.Encoding.utf8.rawValue
         ]
 
         let styledString = "<style>body {font-family: -apple-system, sans-serif; font-size:13px; color: #ffffff; text-align:center;}</style>" + string
@@ -174,7 +174,7 @@ import WordPressShared
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
+    @objc func configureSubmitButton(animating: Bool) {
         submitButton.showActivityIndicator(animating)
 
         submitButton.isEnabled = (
@@ -192,7 +192,7 @@ import WordPressShared
     /// - Parameters:
     ///     - loading: True if the form should be configured to a "loading" state.
     ///
-    func configureLoading(_ loading: Bool) {
+    @objc func configureLoading(_ loading: Bool) {
         emailField.isEnabled = !loading
         usernameField.isEnabled = !loading
         passwordField.isEnabled = !loading
@@ -206,7 +206,7 @@ import WordPressShared
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
-    func configureViewForEditingIfNeeded() {
+    @objc func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editiing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
@@ -218,7 +218,7 @@ import WordPressShared
     // MARK: - Instance Methods
 
     /// Sets up the view's colors and style
-    open func setupStyles() {
+    @objc open func setupStyles() {
         WPStyleGuide.configureColorsForSigninView(view)
     }
 
@@ -227,7 +227,7 @@ import WordPressShared
     /// - Returns true if the window height matches the height of the iPhone 4s (480px).
     /// NOTE: NUX layout assumes a portrait orientation only.
     ///
-    func shouldAdjustLayoutForSmallScreen() -> Bool {
+    @objc func shouldAdjustLayoutForSmallScreen() -> Bool {
         guard let window = UIApplication.shared.keyWindow else {
             return false
         }
@@ -238,7 +238,7 @@ import WordPressShared
 
     /// Displays an alert prompting that a site address is needed before 1Password can be used.
     ///
-    func displayOnePasswordEmptySiteAlert() {
+    @objc func displayOnePasswordEmptySiteAlert() {
         let message = NSLocalizedString("A site address is required before 1Password can be used.",
                                         comment: "Error message displayed when the user is Signing into a self hosted site and tapped the 1Password Button before typing his siteURL")
 
@@ -254,7 +254,7 @@ import WordPressShared
     /// - Parameters:
     ///     - message: The message to display
     ///
-    func displayLoginMessage(_ message: String!) {
+    @objc func displayLoginMessage(_ message: String!) {
         statusLabel.text = message
     }
 
@@ -266,7 +266,7 @@ import WordPressShared
     ///
     /// - Returns: the generated username
     ///
-    func generateSiteTitleFromUsername(_ username: String) -> String {
+    @objc func generateSiteTitleFromUsername(_ username: String) -> String {
         // Currently, we set the title of a new site to the username of the account.
         // Another possibility would be to name the site "username's blog", which is
         // why this has been placed in a separate method.
@@ -276,7 +276,7 @@ import WordPressShared
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
-    func validateForm() {
+    @objc func validateForm() {
         view.endEditing(true)
 
         // Is everything filled out?
@@ -318,7 +318,7 @@ import WordPressShared
     ///
     /// - Returns: The offset to apply to the form
     ///
-    func signinFormVerticalOffset() -> CGFloat {
+    @objc func signinFormVerticalOffset() -> CGFloat {
         if shouldAdjustLayoutForSmallScreen() {
             return DefaultSigninFormVerticalOffset
         }
@@ -328,7 +328,7 @@ import WordPressShared
 
     /// Create the account and the site. Call this after everything passes validation.
     ///
-    func createAccountAndSite() {
+    @objc func createAccountAndSite() {
         let statusBlock = { (status: SignupStatus) in
             self.displayLoginMessageForStatus(status)
         }
@@ -414,7 +414,7 @@ import WordPressShared
     }
 
 
-    func handleOnePasswordButtonTapped(_ sender: UIButton) {
+    @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
         OnePasswordFacade().createLogin(forURLString: WPOnePasswordWordPressComURL,
@@ -460,12 +460,12 @@ import WordPressShared
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
     }
 
 
-    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
 }

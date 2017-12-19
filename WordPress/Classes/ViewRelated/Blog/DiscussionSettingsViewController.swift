@@ -8,7 +8,7 @@ import WordPressShared
 ///
 open class DiscussionSettingsViewController: UITableViewController {
     // MARK: - Initializers / Deinitializers
-    public convenience init(blog: Blog) {
+    @objc public convenience init(blog: Blog) {
         self.init(style: .grouped)
         self.blog = blog
     }
@@ -90,7 +90,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         })
     }
 
-    open func handleContextDidChange(_ note: Foundation.Notification) {
+    @objc open func handleContextDidChange(_ note: Foundation.Notification) {
         guard let context = note.object as? NSManagedObjectContext else {
             return
         }

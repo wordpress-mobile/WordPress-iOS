@@ -9,11 +9,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @IBOutlet var inputStack: UIStackView?
-    var onePasswordButton: UIButton!
-    var googleLoginButton: UIButton?
+    @objc var onePasswordButton: UIButton!
+    @objc var googleLoginButton: UIButton?
 
-    var didFindSafariSharedCredentials = false
-    var didRequestSafariSharedCredentials = false
+    @objc var didFindSafariSharedCredentials = false
+    @objc var didRequestSafariSharedCredentials = false
     fileprivate var awaitingGoogle = false
     override var restrictToWPCom: Bool {
         didSet {
@@ -88,7 +88,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Hides the self-hosted login option.
     ///
-    func configureForWPComOnlyIfNeeded() {
+    @objc func configureForWPComOnlyIfNeeded() {
         if restrictToWPCom {
             selfHostedSigninButton.isEnabled = false
             selfHostedSigninButton.alpha = 0.0
@@ -101,7 +101,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
-    func localizeControls() {
+    @objc func localizeControls() {
         instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email addresss screen.")
 
         emailTextField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
@@ -121,14 +121,14 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Sets up a 1Password button if 1Password is available.
     ///
-    func setupOnePasswordButtonIfNeeded() {
+    @objc func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(emailTextField,
                                                             target: self,
                                                             selector: #selector(handleOnePasswordButtonTapped(_:)))
     }
 
     /// Add the log in with Google button to the view
-    func addGoogleButton() {
+    @objc func addGoogleButton() {
         guard Feature.enabled(.googleLogin),
             let instructionLabel = instructionLabel,
             let stackView = inputStack else {
@@ -156,7 +156,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         googleLoginButton = button
     }
 
-    func googleLoginTapped() {
+    @objc func googleLoginTapped() {
         awaitingGoogle = true
         configureViewLoading(true)
 
@@ -180,7 +180,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Configures the email text field, updating its text based on what's stored
     /// in `loginFields`.
     ///
-    func configureEmailField() {
+    @objc func configureEmailField() {
         emailTextField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailTextField.text = loginFields.username
     }
@@ -188,7 +188,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Configures whether appearance of the submit button.
     ///
-    func configureSubmitButton() {
+    @objc func configureSubmitButton() {
         submitButton?.isEnabled = canSubmit()
     }
 
@@ -209,7 +209,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
-    func configureViewForEditingIfNeeded() {
+    @objc func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editiing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
@@ -223,7 +223,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Makes the call to retrieve Safari shared credentials if they exist.
     ///
-    func fetchSharedWebCredentialsIfAvailable() {
+    @objc func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
         SigninHelpers.requestSharedWebCredentials { [weak self] (found, username, password) in
             self?.handleFetchedWebCredentials(found, username: username, password: password)
@@ -238,7 +238,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///     - username: The selected username or nil.
     ///     - password: The selected password or nil.
     ///
-    func handleFetchedWebCredentials(_ found: Bool, username: String?, password: String?) {
+    @objc func handleFetchedWebCredentials(_ found: Bool, username: String?, password: String?) {
         didFindSafariSharedCredentials = found
 
         guard let username = username, let password = password else {
@@ -265,7 +265,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///     - immediately: True if the newly loaded controller should immedately attempt
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
-    func loginWithUsernamePassword(immediately: Bool = false) {
+    @objc func loginWithUsernamePassword(immediately: Bool = false) {
         if immediately {
             validateFormAndLogin()
         } else {
@@ -276,7 +276,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Displays the self-hosted sign in form.
     ///
-    func loginToSelfHostedSite() {
+    @objc func loginToSelfHostedSite() {
         performSegue(withIdentifier: .showSelfHostedLogin, sender: self)
     }
 
@@ -284,7 +284,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Proceeds along the "magic link" sign-in flow, showing a form that let's
     /// the user request a magic link.
     ///
-    func requestLink() {
+    @objc func requestLink() {
         performSegue(withIdentifier: .startMagicLinkFlow, sender: self)
     }
 
@@ -293,7 +293,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// proceeds with the submit action. Empties loginFields.meta.socialService as
     /// social signin does not require form validation.
     ///
-    func validateForm() {
+    @objc func validateForm() {
         loginFields.meta.socialService = nil
         displayError(message: "")
         guard EmailFormatValidator.validate(string: loginFields.username) else {
@@ -359,7 +359,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     /// Whether the form can be submitted.
     ///
-    func canSubmit() -> Bool {
+    @objc func canSubmit() -> Bool {
         return EmailFormatValidator.validate(string: loginFields.username)
     }
 
@@ -379,7 +379,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     }
 
 
-    func handleOnePasswordButtonTapped(_ sender: UIButton) {
+    @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
@@ -410,20 +410,20 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     // MARK: - Keyboard Notifications
 
 
-    func handleKeyboardWillShow(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
 
         adjustGoogleButtonVisibility(true)
     }
 
 
-    func handleKeyboardWillHide(_ notification: Foundation.Notification) {
+    @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
 
         adjustGoogleButtonVisibility(false)
     }
 
-    func adjustGoogleButtonVisibility(_ visible: Bool) {
+    @objc func adjustGoogleButtonVisibility(_ visible: Bool) {
         let errorLength = errorLabel?.text?.count ?? 0
         let keyboardTallEnough = SigninEditingState.signinLastKeyboardHeightDelta > Constants.keyboardThreshold
         let keyboardVisible = visible && keyboardTallEnough

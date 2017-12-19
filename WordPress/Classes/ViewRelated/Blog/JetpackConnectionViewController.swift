@@ -19,11 +19,11 @@ open class JetpackConnectionViewController: UITableViewController {
 
     // MARK: - Public Properties
 
-    var delegate: JetpackConnectionDelegate?
+    @objc var delegate: JetpackConnectionDelegate?
 
     // MARK: - Initializer
 
-    public convenience init(blog: Blog) {
+    @objc public convenience init(blog: Blog) {
         self.init(style: .grouped)
         self.blog = blog
         self.service = BlogJetpackSettingsService(managedObjectContext: blog.managedObjectContext!)
@@ -88,7 +88,7 @@ open class JetpackConnectionViewController: UITableViewController {
         }
     }
 
-    func disconnectJetpack() {
+    @objc func disconnectJetpack() {
         self.service.disconnectJetpackFromBlog(self.blog,
                                                success: { [weak self] in
                                                    if let blog = self?.blog {
@@ -113,7 +113,7 @@ open class JetpackConnectionViewController: UITableViewController {
                                                })
     }
 
-    func dismiss() {
+    @objc func dismiss() {
         if isModal() {
             dismiss(animated: true, completion: nil)
         } else {

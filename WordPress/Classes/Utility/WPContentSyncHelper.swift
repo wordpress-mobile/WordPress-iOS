@@ -13,10 +13,10 @@ import CocoaLumberjack
 
 class WPContentSyncHelper: NSObject {
 
-    weak var delegate: WPContentSyncHelperDelegate?
-    var isSyncing: Bool = false
-    var isLoadingMore: Bool = false
-    var hasMoreContent: Bool = true {
+    @objc weak var delegate: WPContentSyncHelperDelegate?
+    @objc var isSyncing: Bool = false
+    @objc var isLoadingMore: Bool = false
+    @objc var hasMoreContent: Bool = true {
         didSet {
             if hasMoreContent == oldValue {
                 return
@@ -30,17 +30,17 @@ class WPContentSyncHelper: NSObject {
 
     // MARK: - Syncing
 
-    @discardableResult func syncContent() -> Bool {
+    @objc @discardableResult func syncContent() -> Bool {
         return syncContentWithUserInteraction(false)
     }
 
 
-    @discardableResult func syncContentWithUserInteraction() -> Bool {
+    @objc @discardableResult func syncContentWithUserInteraction() -> Bool {
         return syncContentWithUserInteraction(true)
     }
 
 
-    @discardableResult func syncContentWithUserInteraction(_ userInteraction: Bool) -> Bool {
+    @objc @discardableResult func syncContentWithUserInteraction(_ userInteraction: Bool) -> Bool {
         if isSyncing {
             return false
         }
@@ -64,7 +64,7 @@ class WPContentSyncHelper: NSObject {
     }
 
 
-    @discardableResult func syncMoreContent() -> Bool {
+    @objc @discardableResult func syncMoreContent() -> Bool {
         if isSyncing {
             return false
         }
@@ -89,7 +89,7 @@ class WPContentSyncHelper: NSObject {
         return true
     }
 
-    func backgroundSync(success: (() -> Void)?, failure: ((_ error: NSError?) -> Void)?) {
+    @objc func backgroundSync(success: (() -> Void)?, failure: ((_ error: NSError?) -> Void)?) {
         if isSyncing {
             success?()
             return

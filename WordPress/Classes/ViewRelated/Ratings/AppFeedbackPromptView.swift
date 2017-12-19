@@ -12,11 +12,11 @@ protocol AppFeedbackPromptViewDelegate: class {
 }
 
 class AppFeedbackPromptView: UIView {
-    let container = UIView(frame: containerFrame)
-    let label = UILabel(frame: labelFrame)
-    let leftButton = UIButton(type: .custom)
-    let rightButton = UIButton(type: .custom)
-    var onRequestingFeedback: Bool = false
+    @objc let container = UIView(frame: containerFrame)
+    @objc let label = UILabel(frame: labelFrame)
+    @objc let leftButton = UIButton(type: .custom)
+    @objc let rightButton = UIButton(type: .custom)
+    @objc var onRequestingFeedback: Bool = false
 
     weak var delegate: AppFeedbackPromptViewDelegate?
 
@@ -76,7 +76,7 @@ class AppFeedbackPromptView: UIView {
         container.addSubview(rightButton)
     }
 
-    func leftButtonTouched() {
+    @objc func leftButtonTouched() {
         if onRequestingFeedback {
             delegate?.gatherFeedback()
         } else {
@@ -91,7 +91,7 @@ class AppFeedbackPromptView: UIView {
         }
     }
 
-    func rightButtonTouched() {
+    @objc func rightButtonTouched() {
         if onRequestingFeedback {
             delegate?.dismissPrompt()
         } else {

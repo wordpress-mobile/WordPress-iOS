@@ -4,10 +4,17 @@ import Foundation
 /// items, independently of a specific view controller. It should be accessed
 /// via the `shared` singleton.
 ///
-class MediaUploadCoordinator {
+class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
+
     static let shared = MediaUploadCoordinator()
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
+
+    private lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
+        let coordinator = MediaProgressCoordinator()
+        coordinator.delegate = self
+        return coordinator
+    }()
 
     // Init marked private to ensure use of shared singleton.
     private init() {}
@@ -24,17 +31,17 @@ class MediaUploadCoordinator {
         guard let asset = asset as? PHAsset else {
             return
         }
-
+        let mediaID = UUID().uuidString
+        mediaProgressCoordinator.track(numberOfItems: 1)
         let context = ContextManager.sharedInstance().mainContext
         let service = MediaService(managedObjectContext: context)
         service.createMedia(with: asset,
-                            forBlogObjectID: blog.objectID,
+                            objectID: blog.objectID,
                             thumbnailCallback: nil,
                             completion: { media, error in
                                 guard let media = media else {
                                     return
                                 }
-
                                 self.begin(media)
 
                                 var progress: Progress? = nil
@@ -42,9 +49,13 @@ class MediaUploadCoordinator {
                                                     progress: &progress,
                                                     success: {
                                                         self.end(media)
-                                }, failure: { _ in
+                                }, failure: { error in
+                                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
                                     self.end(media)
                                 })
+                                if let taskProgress = progress {
+                                    self.mediaProgressCoordinator.track(progress: taskProgress, of: media, withIdentifier: mediaID)
+                                }
         })
     }
 
@@ -92,6 +103,7 @@ class MediaUploadCoordinator {
     enum MediaState: CustomDebugStringConvertible {
         case uploading
         case ended
+        case progress(value: Double)
 
         var debugDescription: String {
             switch self {
@@ -99,6 +111,8 @@ class MediaUploadCoordinator {
                 return "Uploading"
             case .ended:
                 return "Ended"
+            case .progress(let value):
+                return "Progress: \(value)"
             }
         }
     }
@@ -148,5 +162,38 @@ class MediaUploadCoordinator {
                 }
             })
         }
+    }
+
+    /// Notifies observers that a media item has ended uploading.
+    ///
+    func progress(_ value: Double, media: Media) {
+        queue.async {
+            self.observersForMedia(media).forEach({ observer in
+                DispatchQueue.main.sync {
+                    observer.onUpdate(media, .progress(value: value))
+                }
+            })
+        }
+    }
+
+    // MARK: - MediaProgressCoordinatorDelegate
+
+    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Double) {
+        for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
+            guard let media = mediaProgressCoordinator.media(withIdentifier: mediaID) else {
+                continue
+            }
+            if media.remoteStatus == .pushing {
+                progress(mediaProgress.fractionCompleted, media: media)
+            }
+        }
+    }
+
+    func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+
+    }
+
+    func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+
     }
 }

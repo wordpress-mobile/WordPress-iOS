@@ -505,12 +505,12 @@
 				TargetAttributes = {
 					829DD13D1EC9EED200AB8C12 = {
 						CreatedOnToolsVersion = 8.3;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 					829DD1461EC9EED200AB8C12 = {
 						CreatedOnToolsVersion = 8.3;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -803,7 +803,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShared;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Internal";
 		};
@@ -819,7 +819,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressSharedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressSharedTests/WordPressSharedTests-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Internal";
 		};
@@ -896,7 +896,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShared;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Alpha";
 		};
@@ -912,7 +912,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressSharedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressSharedTests/WordPressSharedTests-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = "Release-Alpha";
 		};
@@ -1048,7 +1048,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1072,7 +1072,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShared;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1089,7 +1089,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressSharedTests/WordPressSharedTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1105,7 +1105,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressSharedTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressSharedTests/WordPressSharedTests-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

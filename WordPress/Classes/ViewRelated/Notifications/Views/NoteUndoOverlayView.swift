@@ -14,7 +14,7 @@ class NoteUndoOverlayView: UIView {
 
     /// Legend Text
     ///
-    var legendText: String? {
+    @objc var legendText: String? {
         get {
             return legendLabel.text
         }
@@ -25,7 +25,7 @@ class NoteUndoOverlayView: UIView {
 
     /// Action Button Text
     ///
-    var buttonText: String? {
+    @objc var buttonText: String? {
         get {
             return undoButton.title(for: UIControlState())
         }

@@ -6,10 +6,11 @@ import Aztec
 
 class AztecAttachmentViewController: UITableViewController {
 
-    var attachment: ImageAttachment? {
+    @objc var attachment: ImageAttachment? {
         didSet {
             if let attachment = attachment {
                 alignment = attachment.alignment
+                linkURL = attachment.linkURL
                 size = attachment.size
                 alt = attachment.alt
             }
@@ -17,10 +18,12 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     var alignment = ImageAttachment.Alignment.none
-    var size = ImageAttachment.Size.full
-    var alt: String?
+    var linkURL: URL?
+    var size = ImageAttachment.Size.none
+    @objc var alt: String?
 
-    var onUpdate: ((ImageAttachment.Alignment, ImageAttachment.Size, String?) -> Void)?
+    var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?) -> Void)?
+    @objc var onCancel: (() -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
 
@@ -74,6 +77,11 @@ class AztecAttachmentViewController: UITableViewController {
             value: alignment.localizedString,
             action: displayAlignmentSelector)
 
+        let linkToRow = EditableTextRow(
+            title: NSLocalizedString("Link To", comment: "Image link option title."),
+            value: linkURL?.absoluteString ?? "",
+            action: displayLinkTextfield)
+
         let sizeRow = EditableTextRow(
             title: NSLocalizedString("Size", comment: "Image size option title."),
             value: size.localizedString,
@@ -89,6 +97,7 @@ class AztecAttachmentViewController: UITableViewController {
                 headerText: displaySettingsHeader,
                 rows: [
                     alignmentRow,
+                    linkToRow,
                     sizeRow,
                     altRow
                 ],
@@ -102,10 +111,19 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
-        self.pushSettingsController(for: editableRow, hint: hint, onValueChanged: { value in
+        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { value in
             self.alt = value
             self.tableView.reloadData()
-        })
+        }
+    }
+
+    private func displayLinkTextfield(row: ImmuTableRow) {
+        let editableRow = row as! EditableTextRow
+        let hint = NSLocalizedString("Image Link", comment: "Hint for image link on image settings.")
+        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { value in
+            self.linkURL = URL(string: value)
+            self.tableView.reloadData()
+        }
     }
 
     func displayAlignmentSelector(row: ImmuTableRow) {
@@ -142,7 +160,7 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     func displaySizeSelector(row: ImmuTableRow) {
-        let values: [ImageAttachment.Size] = [.thumbnail, .medium, .large, .full]
+        let values: [ImageAttachment.Size] = [.thumbnail, .medium, .large, .full, .none]
 
         let titles = values.map { (value) in
             return value.localizedString
@@ -175,24 +193,27 @@ class AztecAttachmentViewController: UITableViewController {
 
     // MARK: - Helper methods
 
-    func handleCancelButtonTapped(sender: UIBarButtonItem) {
+    @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
+        onCancel?()
         dismiss(animated: true, completion: nil)
     }
 
-    func handleDoneButtonTapped(sender: UIBarButtonItem) {
+    @objc func handleDoneButtonTapped(sender: UIBarButtonItem) {
         let checkedAlt = alt == "" ? nil : alt
-        onUpdate?(alignment, size, checkedAlt)
+        onUpdate?(alignment, size, linkURL, checkedAlt)
         dismiss(animated: true, completion: nil)
     }
 
     private func pushSettingsController(for row: EditableTextRow,
                                         hint: String? = nil,
+                                        settingsTextMode: SettingsTextModes,
                                         onValueChanged: @escaping SettingsTextChanged) {
         let title = row.title
         let value = row.value
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
 
         controller.title = title
+        controller.mode = settingsTextMode
         controller.onValueChanged = onValueChanged
 
         navigationController?.pushViewController(controller, animated: true)
@@ -219,6 +240,7 @@ extension ImageAttachment.Size {
         case .medium: return NSLocalizedString("Medium", comment: "Medium image size. Should be the same as in core WP.")
         case .large: return NSLocalizedString("Large", comment: "Large image size. Should be the same as in core WP.")
         case .full: return NSLocalizedString("Full Size", comment: "Full size image. (default). Should be the same as in core WP.")
+        case .none: return NSLocalizedString("None", comment: "No size class defined for the image. Should be the same as in core WP.")
         }
     }
 }

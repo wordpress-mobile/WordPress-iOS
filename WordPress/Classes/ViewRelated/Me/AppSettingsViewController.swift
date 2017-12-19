@@ -87,25 +87,11 @@ class AppSettingsViewController: UITableViewController {
             accessibilityIdentifier: "mediaClearCacheButton")
 
         let editorSettings = EditorSettings()
-        let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
+        let _ = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         var editorRows = [ImmuTableRow]()
 
-        let textEditor = CheckmarkRow(
-            title: NSLocalizedString("Plain Text", comment: "Option to enable the plain text (legacy) editor"),
-            checked: editorSettings.isEnabled(.legacy),
-            action: enableEditor(.legacy)
-        )
-        editorRows.append(textEditor)
-
-        let visualEditor = CheckmarkRow(
-            title: NSLocalizedString("Visual", comment: "Option to enable the hybrid visual editor"),
-            checked: editorSettings.isEnabled(.hybrid),
-            action: enableEditor(.hybrid)
-        )
-        editorRows.append(visualEditor)
-
         let nativeEditor = CheckmarkRow(
-            title: NSLocalizedString("Visual 2.0", comment: "Option to enable the beta native editor (Aztec)"),
+            title: NSLocalizedString("Visual", comment: "Option to enable the Aztec editor."),
             checked: editorSettings.isEnabled(.aztec),
             action: enableEditor(.aztec)
         )
@@ -139,10 +125,6 @@ class AppSettingsViewController: UITableViewController {
                     mediaCacheRow,
                     mediaClearCacheRow
                 ],
-                footerText: nil),
-            ImmuTableSection(
-                headerText: editorHeader,
-                rows: editorRows,
                 footerText: nil),
             ImmuTableSection(
                 headerText: usageTrackingHeader,
@@ -255,7 +237,7 @@ class AppSettingsViewController: UITableViewController {
 
     // MARK: - Actions
 
-    func imageSizeChanged() -> (Int) -> Void {
+    @objc func imageSizeChanged() -> (Int) -> Void {
         return { value in
             MediaSettings().maxImageSizeSetting = value
             ShareExtensionService.configureShareExtensionMaximumMediaDimension(value)
@@ -302,7 +284,7 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func mediaRemoveLocationChanged() -> (Bool) -> Void {
+    @objc func mediaRemoveLocationChanged() -> (Bool) -> Void {
         return { value in
             MediaSettings().removeLocationSetting = value
             WPAnalytics.track(.appSettingsMediaRemoveLocationChanged, withProperties: ["enabled": value as AnyObject])
@@ -316,7 +298,7 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    func usageTrackingChanged() -> (Bool) -> Void {
+    @objc func usageTrackingChanged() -> (Bool) -> Void {
         return { enabled in
             let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
             appAnalytics?.setTrackingUsage(enabled)

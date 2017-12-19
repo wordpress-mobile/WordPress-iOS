@@ -7,23 +7,23 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
 
     // MARK: Properties
 
-    var fixedHeight: CGFloat = 0.0
-    var attachmentSize = CGSize.zero
-    var documentSize: CGSize {
+    @objc var fixedHeight: CGFloat = 0.0
+    @objc var attachmentSize = CGSize.zero
+    @objc var documentSize: CGSize {
         get {
             var contentSize = webView.scrollView.contentSize
             if let heightStr = webView.stringByEvaluatingJavaScript(from: "document.documentElement.scrollHeight") {
-                if let height = NumberFormatter().number(from: heightStr) {
-                    contentSize.height = CGFloat(height)
+                if let height = NumberFormatter().number(from: heightStr) as? CGFloat {
+                    contentSize.height = height
                 }
             }
             return contentSize
         }
     }
-    var success: successBlock?
+    @objc var success: successBlock?
     var linkURL: URL?
     var contentURL: URL?
-    var webView: UIWebView
+    @objc var webView: UIWebView
 
     override var frame: CGRect {
         didSet {
@@ -69,7 +69,7 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
 
     // MARK: Configuration
 
-    func configureWebView() {
+    @objc func configureWebView() {
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.scrollView.isScrollEnabled = false
         webView.scalesPageToFit = true
@@ -112,7 +112,7 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
         return 0.0
     }
 
-    func loadContentURL(_ url: URL) {
+    @objc func loadContentURL(_ url: URL) {
         var url = url
         if var components = URLComponents(string: url.absoluteString) {
                 if components.scheme == nil {
@@ -129,13 +129,13 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
         webView.loadRequest(request)
     }
 
-    func loadHTMLString(_ html: NSString) {
+    @objc func loadHTMLString(_ html: NSString) {
         let htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
 
-    func checkIfDoneLoading() {
+    @objc func checkIfDoneLoading() {
         if webView.isLoading {
             return
         }

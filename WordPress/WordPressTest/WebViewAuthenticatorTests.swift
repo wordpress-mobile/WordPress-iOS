@@ -9,17 +9,6 @@ private extension URLRequest {
     }
 }
 
-private class MockCookieJar: CookieJar {
-    let implementation: (URL, String) -> Bool
-    init(_ implementation: @escaping (URL, String) -> Bool) {
-        self.implementation = implementation
-    }
-
-    func hasCookie(url: URL, username: String, completion: @escaping (Bool) -> Void) {
-        completion(implementation(url, username))
-    }
-}
-
 class WebViewAuthenticatorTests: XCTestCase {
     let dotComLoginURL = URL(string: "https://wordpress.com/wp-login.php")!
     let dotComUser = "comuser"
@@ -42,9 +31,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         let url = URL(string: "http://example.com/some-page/?preview=true&preview_nonce=7ad6fc")!
         let authenticator = siteAuthenticator
 
-        let cookieJar = MockCookieJar({ (url, username) in
-            return false
-        })
+        let cookieJar = MockCookieJar()
         var authenticatedRequest: URLRequest? = nil
         authenticator.request(url: url, cookieJar: cookieJar) {
             authenticatedRequest = $0
@@ -57,7 +44,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         XCTAssertEqual(request.url, siteLoginURL)
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/x-www-form-urlencoded")
         XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
-        XCTAssertEqual(request.httpBodyString, "log=\(siteUser)&pwd=\(sitePasswordEncoded)&redirect_to=\(expectedRedirect)")
+        XCTAssertEqual(request.httpBodyString, "log=\(siteUser)&pwd=\(sitePasswordEncoded)&rememberme=true&redirect_to=\(expectedRedirect)")
     }
 
     func testAuthenticatedDotComRequestWithoutCookie() {
@@ -65,9 +52,7 @@ class WebViewAuthenticatorTests: XCTestCase {
         let url = URL(string: "https://example.wordpress.com/some-page/")!
         let authenticator = dotComAuthenticator
 
-        let cookieJar = MockCookieJar({ (url, username) in
-            return false
-        })
+        let cookieJar = MockCookieJar()
         var authenticatedRequest: URLRequest? = nil
         authenticator.request(url: url, cookieJar: cookieJar) {
             authenticatedRequest = $0
@@ -79,16 +64,15 @@ class WebViewAuthenticatorTests: XCTestCase {
         XCTAssertEqual(request.url, dotComLoginURL)
         XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/x-www-form-urlencoded")
         XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer \(dotComToken)")
-        XCTAssertEqual(request.httpBodyString, "log=\(dotComUser)&redirect_to=\(expectedRedirect)")
+        XCTAssertEqual(request.httpBodyString, "log=\(dotComUser)&rememberme=true&redirect_to=\(expectedRedirect)")
     }
 
     func testUnauthenticatedDotComRequestWithCookie() {
         let url = URL(string: "https://example.wordpress.com/some-page/")!
         let authenticator = dotComAuthenticator
 
-        let cookieJar = MockCookieJar({ (url, username) in
-            return url.host == "wordpress.com"
-        })
+        let cookieJar = MockCookieJar()
+        cookieJar.setWordPressComCookie(username: dotComUser)
         var authenticatedRequest: URLRequest? = nil
         authenticator.request(url: url, cookieJar: cookieJar) {
             authenticatedRequest = $0

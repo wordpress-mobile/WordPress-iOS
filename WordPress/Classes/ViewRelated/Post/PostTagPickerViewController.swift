@@ -4,11 +4,11 @@ import WordPressShared
 
 class PostTagPickerViewController: UIViewController {
     private let originalTags: [String]
-    var onValueChanged: ((String) -> Void)?
-    let blog: Blog
-    let keyboardObserver = TableViewKeyboardObserver()
+    @objc var onValueChanged: ((String) -> Void)?
+    @objc let blog: Blog
+    @objc let keyboardObserver = TableViewKeyboardObserver()
 
-    init(tags: String, blog: Blog) {
+    @objc init(tags: String, blog: Blog) {
         originalTags = PostTagPickerViewController.extractTags(from: tags)
 
         self.blog = blog
@@ -302,10 +302,10 @@ private protocol PostTagPickerDataSource: UITableViewDataSource {
 }
 
 private class LoadingDataSource: NSObject, PostTagPickerDataSource {
-    var selectedTags = [String]()
-    var searchQuery = ""
+    @objc var selectedTags = [String]()
+    @objc var searchQuery = ""
 
-    static let cellIdentifier = "Loading"
+    @objc static let cellIdentifier = "Loading"
     typealias Cell = UITableViewCell
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -326,10 +326,10 @@ private class LoadingDataSource: NSObject, PostTagPickerDataSource {
 }
 
 private class FailureDataSource: NSObject, PostTagPickerDataSource {
-    var selectedTags = [String]()
-    var searchQuery = ""
+    @objc var selectedTags = [String]()
+    @objc var searchQuery = ""
 
-    static let cellIdentifier = "Failure"
+    @objc static let cellIdentifier = "Failure"
     typealias Cell = UITableViewCell
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -349,24 +349,24 @@ private class FailureDataSource: NSObject, PostTagPickerDataSource {
 }
 
 private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
-    static let cellIdentifier = "Default"
-    let suggestions: [String]
+    @objc static let cellIdentifier = "Default"
+    @objc let suggestions: [String]
 
-    init(suggestions: [String], selectedTags: [String], searchQuery: String) {
+    @objc init(suggestions: [String], selectedTags: [String], searchQuery: String) {
         self.suggestions = suggestions
         self.selectedTags = selectedTags
         self.searchQuery = searchQuery
         super.init()
     }
 
-    var selectedTags: [String]
-    var searchQuery: String
+    @objc var selectedTags: [String]
+    @objc var searchQuery: String
 
-    var availableSuggestions: [String] {
+    @objc var availableSuggestions: [String] {
         return suggestions.filter({ !selectedTags.contains($0) })
     }
 
-    var matchedSuggestions: [String] {
+    @objc var matchedSuggestions: [String] {
         guard !searchQuery.isEmpty else {
             return availableSuggestions
         }
@@ -389,16 +389,14 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
         return cell
     }
 
-    func highlight(_ search: String, in string: String) -> NSAttributedString {
+    @objc func highlight(_ search: String, in string: String) -> NSAttributedString {
         let highlighted = NSMutableAttributedString(string: string)
         let range = (string as NSString).localizedStandardRange(of: search)
         guard range.location != NSNotFound else {
             return highlighted
         }
-        let font = UIFont.systemFont(ofSize: WPStyleGuide.tableviewTextFont().pointSize, weight: UIFontWeightBold)
-        highlighted.setAttributes([
-            NSFontAttributeName: font,
-            ], range: range)
+        let font = UIFont.systemFont(ofSize: WPStyleGuide.tableviewTextFont().pointSize, weight: .bold)
+        highlighted.setAttributes([.font: font], range: range)
         return highlighted
     }
 }
@@ -406,7 +404,7 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
 // MARK: - Style
 
 extension WPStyleGuide {
-    static func configureTableViewSuggestionCell(_ cell: UITableViewCell) {
+    @objc static func configureTableViewSuggestionCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewCell(cell)
         cell.textLabel?.textColor = WPStyleGuide.greyDarken30()
         cell.backgroundColor = WPStyleGuide.greyLighten30()
