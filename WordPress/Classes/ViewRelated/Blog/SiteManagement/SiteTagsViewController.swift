@@ -351,7 +351,8 @@ extension SiteTagsViewController {
                                                             subtitle: confirmationSubtitle,
                                                             actionTitle: actionTitle,
                                                             cancelTitle: cancelTitle,
-                                                            icon: trashIcon)
+                                                            icon: trashIcon,
+                                                            isDestructiveAction: true)
     }
 }
 
