@@ -3143,9 +3143,10 @@ extension AztecPostViewController {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         var oldURL: URL?
+
         if let linkRange = richTextView.linkFullRange(forRange: attachmentRange),
             let url = richTextView.linkURL(forRange: attachmentRange),
-            attachmentRange == linkRange {
+            NSIntersectionRange(attachmentRange, linkRange) == attachmentRange {
             oldURL = url
             controller.linkURL = url
         }
