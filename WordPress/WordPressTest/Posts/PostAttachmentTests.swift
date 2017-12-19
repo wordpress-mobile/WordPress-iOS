@@ -126,6 +126,6 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssertEqual(html,"<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\"></a></p>")
+        XCTAssertEqual(html, "<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\"></a></p>")
     }
 }
