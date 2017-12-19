@@ -103,9 +103,9 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     ///
     @objc func localizeControls() {
         if loginFields.meta.jetpackLogin {
-            instructionLabel?.text = NSLocalizedString("To view your stats, log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email addresss screen.")
+            instructionLabel?.text = NSLocalizedString("To view your stats, log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email address screen.")
         } else {
-            instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email addresss screen.")
+            instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email address screen.")
         }
         emailTextField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
         emailTextField.accessibilityIdentifier = "Email address"
