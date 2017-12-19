@@ -159,7 +159,8 @@ final class SiteTagsViewController: UITableViewController {
     }
 
     private func refreshNoResultsView() {
-        guard resultsController.fetchedObjects?.count == 0 else {
+        if let count = resultsController.fetchedObjects?.count,
+            count > 0 || searchController.isActive {
             noResultsView.removeFromSuperview()
             setupSearchBar()
             tableView.reloadData()
