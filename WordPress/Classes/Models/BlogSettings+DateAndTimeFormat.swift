@@ -34,20 +34,8 @@ extension BlogSettings {
 
         // MARK: - Private Properties
 
-        /// Use system date formatter to get translations for free
-        ///
-        fileprivate static var longDate: String {
-            let yearMonthDateFormatter = DateFormatter()
-            yearMonthDateFormatter.dateFormat = "yyyy/MM/dd"
-            let theDate = yearMonthDateFormatter.date(from: "2017/12/17")
-
-            let longFormatter = DateFormatter()
-            longFormatter.dateStyle = .long
-            return longFormatter.string(from: theDate!)
-        }
-
         fileprivate static let descriptionMap = [
-            MonthDY.rawValue: longDate,
+            MonthDY.rawValue: NSLocalizedString("December 17, 2017", comment: "Only December needs to be translated"),
             YMD.rawValue: "2017-12-17",
             MDY.rawValue: "12/17/2017",
             DMY.rawValue: "17/12/2017"
@@ -91,8 +79,8 @@ extension BlogSettings {
         // MARK: - Private Properties
 
         fileprivate static let descriptionMap = [
-            ampmLowercase.rawValue: "5:46 " + Calendar.current.pmSymbol.lowercased(),
-            ampmUppercase.rawValue: "5:46 " + Calendar.current.pmSymbol.uppercased(),
+            ampmLowercase.rawValue: "5:46 pm",
+            ampmUppercase.rawValue: "5:46 PM",
             twentyFourHours.rawValue: "17:46",
         ]
     }
