@@ -1,7 +1,7 @@
 import Foundation
 
 
-/// UIImageView Helper Methods that allow us to download a Gravatar, given the User's Email
+/// UIImageView Helper Methods that allow us to download a Blavatar, given a website's "Icon Path"
 ///
 extension UIImageView {
 
@@ -39,7 +39,7 @@ extension UIImageView {
     ///
     /// - Parameters:
     ///     - path: Blavatar's url (string encoded) to be downloaded.
-    ///     - placeholderImage: Yes. It's the "place holder image".
+    ///     - placeholderImage: Yes. It's the "place holder image", Sherlock.
     ///
     @objc
     func downloadBlavatar(at path: String, placeholderImage: UIImage?) {
@@ -55,8 +55,8 @@ extension UIImageView {
     /// Downloads the Blavatar Image, associated to a given Blog. This method will attempt to optimize the URL, so that
     /// the download Image Size matches `BlavatarDefaults.imageSize`.
     ///
-    /// Parameters:
-    ///  - blog: reference to the source blog
+    /// - Parameters:
+    ///     - blog: reference to the source blog
     ///     - placeholderImage: Yes. It's the "place holder image".
     ///
     @objc
@@ -102,11 +102,11 @@ private extension UIImageView {
     ///
     /// - Parameter path: Blavatar URL (string encoded).
     ///
-    private func optimizedDotcomURL(from siteIconPath: String) -> URL? {
+    private func optimizedDotcomURL(from path: String) -> URL? {
         let size = BlavatarDefaults.imageSizeInPixels
         let query = String(format: "w=%d&h=%d", size, size)
 
-        return URLComponents.parseURL(path: siteIconPath, query: query)
+        return URLComponents.parseURL(path: path, query: query)
     }
 
 
@@ -114,11 +114,11 @@ private extension UIImageView {
     ///
     /// - Parameter path: Blavatar URL (string encoded).
     ///
-    private func optimizedBlavatarURL(from siteIconPath: String) -> URL? {
+    private func optimizedBlavatarURL(from path: String) -> URL? {
         let size = BlavatarDefaults.imageSizeInPixels
         let query = String(format: "d=404&s=%d", size)
 
-        return URLComponents.parseURL(path: siteIconPath, query: query)
+        return URLComponents.parseURL(path: path, query: query)
     }
 
 
@@ -126,8 +126,8 @@ private extension UIImageView {
     ///
     /// - Parameter siteIconPath: Blavatar URL (string encoded).
     ///
-    private func optimizedPhotonURL(from siteIconPath: String) -> URL? {
-        guard let url = URL(string: siteIconPath) else {
+    private func optimizedPhotonURL(from path: String) -> URL? {
+        guard let url = URL(string: path) else {
             return nil
         }
 
