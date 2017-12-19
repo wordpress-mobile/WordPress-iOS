@@ -100,7 +100,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let media = [mockRemoteMedia(), mockRemoteMedia()]
         var errorDescription = ""
         mediaServiceRemote.uploadMedia(media, requestEnqueued: { _ in }, success: { _ in }, failure: {
-            errorDescription = $0.localizedDescription
+            errorDescription = ($0?.localizedDescription)!
         })
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
         XCTAssertEqual(errorDescription, response["errors"]![0])
@@ -245,19 +245,19 @@ class MediaServiceRemoteRESTTests: XCTestCase {
                                                       "width": width]
 
         let remoteMedia = MediaServiceRemoteREST.remoteMedia(fromJSONDictionary: jsonDictionary)
-        XCTAssertEqual(remoteMedia.mediaID?.intValue, id)
-        XCTAssertEqual(remoteMedia.url?.absoluteString, url)
-        XCTAssertEqual(remoteMedia.guid?.absoluteString, guid)
-        XCTAssertEqual(remoteMedia.date, Date.dateWithISO8601String(date)!)
-        XCTAssertEqual(remoteMedia.postID?.intValue, postID)
-        XCTAssertEqual(remoteMedia.file, file)
-        XCTAssertEqual(remoteMedia.mimeType, mimeType)
-        XCTAssertEqual(remoteMedia.title, title)
-        XCTAssertEqual(remoteMedia.caption, caption)
-        XCTAssertEqual(remoteMedia.descriptionText, description)
-        XCTAssertEqual(remoteMedia.alt, alt)
-        XCTAssertEqual(remoteMedia.height?.intValue, height)
-        XCTAssertEqual(remoteMedia.width?.intValue, width)
+        XCTAssertEqual(remoteMedia?.mediaID?.intValue, id)
+        XCTAssertEqual(remoteMedia?.url?.absoluteString, url)
+        XCTAssertEqual(remoteMedia?.guid?.absoluteString, guid)
+        XCTAssertEqual(remoteMedia?.date, Date.dateWithISO8601String(date)!)
+        XCTAssertEqual(remoteMedia?.postID?.intValue, postID)
+        XCTAssertEqual(remoteMedia?.file, file)
+        XCTAssertEqual(remoteMedia?.mimeType, mimeType)
+        XCTAssertEqual(remoteMedia?.title, title)
+        XCTAssertEqual(remoteMedia?.caption, caption)
+        XCTAssertEqual(remoteMedia?.descriptionText, description)
+        XCTAssertEqual(remoteMedia?.alt, alt)
+        XCTAssertEqual(remoteMedia?.height?.intValue, height)
+        XCTAssertEqual(remoteMedia?.width?.intValue, width)
     }
 
     func testRemoteMediaJSONArrayParsing() {
