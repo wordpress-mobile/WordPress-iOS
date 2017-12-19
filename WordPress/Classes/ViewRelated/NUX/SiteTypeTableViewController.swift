@@ -12,8 +12,6 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
         super.viewWillAppear(animated)
         setupTable()
         setupNavBar()
-
-        performSegue(withIdentifier: "showDomains", sender: self)
     }
 
     func setupTable() {
