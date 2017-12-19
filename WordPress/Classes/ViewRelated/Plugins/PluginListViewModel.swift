@@ -6,17 +6,58 @@ protocol PluginPresenter: class {
 }
 
 class PluginListViewModel: Observable {
-    enum State {
+    enum StateChange {
+        case replace
+        case selective([Int])
+    }
+
+    enum State: Equatable {
         case loading
         case ready(Plugins)
         case error(String)
+
+        static func ==(lhs: PluginListViewModel.State, rhs: PluginListViewModel.State) -> Bool {
+            switch (lhs, rhs) {
+            case (.loading, .loading):
+                return true
+            case (.ready(let lhsValue), .ready(let rhsValue)):
+                return lhsValue == rhsValue
+            case (.error(let lhsValue), .error(let rhsValue)):
+                return lhsValue == rhsValue
+            default:
+                return false
+            }
+        }
+
+        static func changed(from: State, to: State) -> StateChange {
+            switch (from, to) {
+            case (.ready(let oldValue), .ready(let newValue)):
+                guard oldValue.plugins.count == newValue.plugins.count else {
+                    return .replace
+                }
+                return .selective(oldValue.plugins.differentIndices(newValue.plugins))
+            default:
+                return .replace
+            }
+        }
     }
 
     let site: JetpackSiteRef
     let changeDispatcher = Dispatcher<Void>()
+    let stateChangeDispatcher = Dispatcher<StateChange>()
     private var state: State = .loading {
         didSet {
-            changeDispatcher.dispatch()
+            guard state != oldValue else {
+                return
+            }
+            stateChangeDispatcher.dispatch(State.changed(from: oldValue, to: state))
+        }
+    }
+    private(set) var refreshing = false {
+        didSet {
+            if refreshing != oldValue {
+                emitChange()
+            }
         }
     }
 
@@ -29,7 +70,7 @@ class PluginListViewModel: Observable {
         self.site = site
         self.store = store
         storeReceipt = store.onChange { [weak self] in
-            self?.refreshPlugins()
+            self?.refreshState()
         }
         actionReceipt = ActionDispatcher.global.subscribe { [weak self] (action) in
             guard case PluginAction.receivePluginsFailed(let receivedSite, let error) = action,
@@ -39,7 +80,11 @@ class PluginListViewModel: Observable {
             self?.state = .error(error.localizedDescription)
         }
         queryReceipt = store.query(.all(site: site))
-        refreshPlugins()
+        refreshState()
+    }
+
+    func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
+        return stateChangeDispatcher.subscribe(handler)
     }
 
     var noResultsViewModel: WPNoResultsView.Model? {
@@ -92,7 +137,8 @@ class PluginListViewModel: Observable {
         return [PluginListRow.self]
     }
 
-    private func refreshPlugins() {
+    private func refreshState() {
+        refreshing = store.isFetchingPlugins(site: site)
         guard let plugins = store.getPlugins(site: site) else {
             return
         }

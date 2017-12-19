@@ -1,11 +1,19 @@
 import Foundation
 
-public struct PluginDirectoryEntry {
+public struct PluginDirectoryEntry: Equatable {
     public let name: String
     public let slug: String
     public let version: String
     public let lastUpdated: Date
     public let icon: URL?
+
+    public static func ==(lhs: PluginDirectoryEntry, rhs: PluginDirectoryEntry) -> Bool {
+        return lhs.name == rhs.name
+            && lhs.slug == rhs.slug
+            && lhs.version == rhs.version
+            && lhs.lastUpdated == rhs.lastUpdated
+            && lhs.icon == rhs.icon
+    }
 }
 
 extension PluginDirectoryEntry: Decodable {
