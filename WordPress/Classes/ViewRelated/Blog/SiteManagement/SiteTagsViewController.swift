@@ -37,7 +37,6 @@ final class SiteTagsViewController: UITableViewController {
         returnValue.hidesNavigationBarDuringPresentation = false
         returnValue.dimsBackgroundDuringPresentation = false
         returnValue.searchResultsUpdater = self
-        self.definesPresentationContext = true
 
         WPStyleGuide.configureSearchBar(returnValue.searchBar)
         return returnValue
@@ -71,7 +70,18 @@ final class SiteTagsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        searchController.searchBar.isHidden = false
         refreshNoResultsView()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // HACK: Normally, to hide the scroll bars we'd define a presentation context.
+        // This is impacting layout when navigating back from a detail. As a work
+        // around we can simply hide the search bar.
+        if searchController.isActive {
+            searchController.searchBar.isHidden = true
+        }
     }
 
     private func setAccessibilityIdentifier() {
