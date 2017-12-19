@@ -265,11 +265,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qh3-nA-H9v" userLabel="Tagline View">
                                         <rect key="frame" x="0.0" y="147" width="375" height="44"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Tagline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5F-j9-fdg">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Tagline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iol-Va-cKN">
                                                 <rect key="frame" x="20" y="0.0" width="88" height="44"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional tagline" textAlignment="right" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
@@ -290,12 +290,12 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="MyF-yC-tG6" firstAttribute="leading" secondItem="a5F-j9-fdg" secondAttribute="trailing" id="1sq-Sz-pQf"/>
-                                            <constraint firstItem="a5F-j9-fdg" firstAttribute="top" secondItem="qh3-nA-H9v" secondAttribute="top" id="31u-MT-Bli"/>
-                                            <constraint firstItem="a5F-j9-fdg" firstAttribute="leading" secondItem="qh3-nA-H9v" secondAttribute="leading" constant="20" id="If7-ht-WyL"/>
-                                            <constraint firstAttribute="bottom" secondItem="a5F-j9-fdg" secondAttribute="bottom" id="TTM-tz-2Hw"/>
+                                            <constraint firstItem="MyF-yC-tG6" firstAttribute="leading" secondItem="iol-Va-cKN" secondAttribute="trailing" id="FTX-CA-cdY"/>
+                                            <constraint firstItem="iol-Va-cKN" firstAttribute="top" secondItem="qh3-nA-H9v" secondAttribute="top" id="XhU-5M-4nN"/>
                                             <constraint firstItem="MyF-yC-tG6" firstAttribute="top" secondItem="qh3-nA-H9v" secondAttribute="top" id="azZ-9s-uKX"/>
+                                            <constraint firstItem="iol-Va-cKN" firstAttribute="leading" secondItem="qh3-nA-H9v" secondAttribute="leading" constant="20" id="dsX-Cj-bqp"/>
                                             <constraint firstAttribute="bottom" secondItem="MyF-yC-tG6" secondAttribute="bottom" id="jZV-Up-Sfd"/>
+                                            <constraint firstAttribute="bottom" secondItem="iol-Va-cKN" secondAttribute="bottom" id="m24-Rm-p40"/>
                                             <constraint firstAttribute="trailing" secondItem="MyF-yC-tG6" secondAttribute="trailing" id="m35-og-wvb"/>
                                         </constraints>
                                     </view>
@@ -382,7 +382,7 @@
                         <outlet property="stepLabel" destination="Tc3-Bo-Atj" id="CeA-dj-Ky4"/>
                         <outlet property="tagDescriptionLabel" destination="cGJ-Lt-fd3" id="mge-CL-Pan"/>
                         <outlet property="taglineField" destination="MyF-yC-tG6" id="XYN-dQ-9Pt"/>
-                        <outlet property="taglineLabel" destination="a5F-j9-fdg" id="Ddr-IX-QjZ"/>
+                        <outlet property="taglineLabel" destination="iol-Va-cKN" id="HJg-xM-3PT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuO-m2-AGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
