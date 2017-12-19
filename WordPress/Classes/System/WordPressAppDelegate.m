@@ -149,7 +149,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)configureNoticePresenter
 {
-    self.noticePresenter = [NoticePresenter new];
+    self.noticePresenter = [[NoticePresenter alloc] initWithPresentingViewController:self.window.rootViewController];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -333,9 +333,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // is no need to inspect the identifier beyond the simple check here.
     if ([identifier containsString:WPAppGroupName]) {
         ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
-        sessionManager.backgroundSessionCompletionBlock = ^{
-            dispatch_async(dispatch_get_main_queue(), completionHandler);
-        };
+        sessionManager.backgroundSessionCompletionBlock = completionHandler;
         [sessionManager startBackgroundSession];
     }
 }
