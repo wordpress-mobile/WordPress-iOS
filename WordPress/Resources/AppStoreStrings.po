@@ -38,12 +38,10 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.0-whats-new"
+msgctxt "v9.1-whats-new"
 msgid ""
-"Aztec Editor: Clearer distinction between visual and HTML editing modes.\n"
-"Aztec Editor: Improve automatic link detection.\n"
-"Aztec Editor: Adds support for editing posts while uploading media.\n"
-"Aztec Editor: Allow Media Search From Post.\n"
+"Plugins: You can now manage your plugins in the app, find it on your site's details -> Plugins.\n"
+"Editor: Resolved some issues with Chinese characters.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
