@@ -13,6 +13,7 @@ protocol SigninWPComSyncHandler: class {
     func displayError(_ error: NSError, sourceTag: SupportSourceTag)
     func updateSafariCredentialsIfNeeded()
     func sendLoginFinishedNotification()
+    func shouldSetDefaultAccount() -> Bool
 
     func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
     func handleSyncSuccess(_ requiredMultifactor: Bool)
@@ -36,8 +37,9 @@ extension SigninWPComSyncHandler {
 
         let accountFacade = AccountServiceFacade()
         let account = accountFacade.createOrUpdateWordPressComAccount(withUsername: username, authToken: authToken)
-        accountFacade.setDefaultWordPressComAccount(account)
-
+        if shouldSetDefaultAccount() {
+            accountFacade.setDefaultWordPressComAccount(account)
+        }
         BlogSyncFacade().syncBlogs(for: account, success: { [weak self] in
                 accountFacade.updateUserDetails(for: account, success: { [weak self] in
                 self?.handleSyncSuccess(requiredMultifactor)
