@@ -1,7 +1,7 @@
 import UIKit
 import Gridicons
 
-final class SiteTagsViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+final class SiteTagsViewController: UITableViewController {
     private struct TableConstants {
         static let cellIdentifier = "TitleBadgeDisclosureCell"
         static let accesibilityIdentifier = "SiteTagsList"
@@ -65,11 +65,12 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
         setupNavigationBar()
 
         refreshTags()
+        refreshResultsController(predicate: defaultPredicate)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshResultsController(predicate: defaultPredicate)
+
         refreshNoResultsView()
     }
 
@@ -133,6 +134,9 @@ final class SiteTagsViewController: UITableViewController, NSFetchedResultsContr
     }
 
     private func setupSearchBar() {
+        guard tableView.tableHeaderView == nil else {
+            return
+        }
        tableView.tableHeaderView = searchController.searchBar
     }
 
@@ -200,7 +204,7 @@ extension SiteTagsViewController {
             return TitleBadgeDisclosureCell()
         }
 
-        cell.name = tag.name
+        cell.name = tag.name?.stringByDecodingXMLCharacters()
 
         if let count = tag.postCount?.intValue, count > 0 {
             cell.count = count
@@ -211,10 +215,6 @@ extension SiteTagsViewController {
 
     fileprivate func tagAtIndexPath(_ indexPath: IndexPath) -> PostTag? {
         return resultsController.object(at: indexPath) as? PostTag
-    }
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        refreshNoResultsView()
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -232,11 +232,11 @@ extension SiteTagsViewController {
     private func delete(_ tag: PostTag) {
         let tagsService = PostTagService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         refreshControl?.beginRefreshing()
-        tagsService.delete(tag, for: blog, success: {
-            self.refreshControl?.endRefreshing()
-            self.tableView.reloadData()
-        }, failure: { error in
-            self.refreshControl?.endRefreshing()
+        tagsService.delete(tag, for: blog, success: { [weak self] in
+            self?.refreshControl?.endRefreshing()
+            self?.tableView.reloadData()
+        }, failure: { [weak self] error in
+            self?.refreshControl?.endRefreshing()
         })
     }
 
@@ -260,6 +260,13 @@ extension SiteTagsViewController {
         }
 
         navigate(to: selectedTag)
+    }
+}
+
+// MARK: - Fetched results delegate
+extension SiteTagsViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        refreshNoResultsView()
     }
 }
 
