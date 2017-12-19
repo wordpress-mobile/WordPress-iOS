@@ -974,6 +974,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
     settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
+    settings.dateFormat = remoteSettings.dateFormat;
+    settings.timeFormat = remoteSettings.timeFormat;
+    settings.startOfWeek = remoteSettings.startOfWeek;
+    settings.postsPerPage = remoteSettings.postsPerPage;
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
@@ -1006,6 +1010,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.relatedPostsShowHeadline = [remoteSettings.relatedPostsShowHeadline boolValue];
     settings.relatedPostsShowThumbnails = [remoteSettings.relatedPostsShowThumbnails boolValue];
 
+    // AMP
+    settings.ampSupported = [remoteSettings.ampSupported boolValue];
+    settings.ampEnabled = [remoteSettings.ampEnabled boolValue];
+
     // Sharing
     settings.sharingButtonStyle = remoteSettings.sharingButtonStyle;
     settings.sharingLabel = remoteSettings.sharingLabel;
@@ -1034,6 +1042,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Writing
     remoteSettings.defaultCategoryID = settings.defaultCategoryID;
     remoteSettings.defaultPostFormat = settings.defaultPostFormat;
+    remoteSettings.dateFormat = settings.dateFormat;
+    remoteSettings.timeFormat = settings.timeFormat;
+    remoteSettings.startOfWeek = settings.startOfWeek;
+    remoteSettings.postsPerPage = settings.postsPerPage;
 
     // Discussion
     remoteSettings.commentsAllowed = @(settings.commentsAllowed);
@@ -1059,6 +1071,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     
     remoteSettings.pingbackInboundEnabled = @(settings.pingbackInboundEnabled);
     remoteSettings.pingbackOutboundEnabled = @(settings.pingbackOutboundEnabled);
+
+    // AMP
+    remoteSettings.ampEnabled = @(settings.ampEnabled);
     
     // Related Posts
     remoteSettings.relatedPostsAllowed = @(settings.relatedPostsAllowed);
