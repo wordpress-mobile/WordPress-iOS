@@ -6,7 +6,7 @@ import WordPressKit
 /// This class presents a list of Sites, and allows the user to select one from the list. Works
 /// absolutely detached from the Core Data Model, since it was designed for Extension usage.
 ///
-class SitePickerViewOldController: UITableViewController {
+class SitePickerViewController: UITableViewController {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()

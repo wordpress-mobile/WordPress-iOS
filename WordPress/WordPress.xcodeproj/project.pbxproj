@@ -508,7 +508,7 @@
 		B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */; };
 		B50248B41C96FF8400AFBDED /* PostStatusPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248B01C96FF8400AFBDED /* PostStatusPickerViewController.swift */; };
 		B50248B51C96FF8400AFBDED /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248B11C96FF8400AFBDED /* ShareViewController.swift */; };
-		B50248B61C96FF8400AFBDED /* SitePickerViewOldController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248B21C96FF8400AFBDED /* SitePickerViewOldController.swift */; };
+		B50248B61C96FF8400AFBDED /* SitePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */; };
 		B50248B71C96FF8400AFBDED /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50248B31C96FF8400AFBDED /* UIImageView+Extensions.swift */; };
 		B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */; };
 		B5032DDD1F02B30B00D946DC /* CalypsoProcessorIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5032DDC1F02B30B00D946DC /* CalypsoProcessorIn.swift */; };
@@ -1836,7 +1836,7 @@
 		B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "WPStyleGuide+Share.swift"; path = "WordPressShareExtension/WPStyleGuide+Share.swift"; sourceTree = SOURCE_ROOT; };
 		B50248B01C96FF8400AFBDED /* PostStatusPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PostStatusPickerViewController.swift; path = WordPressShareExtension/PostStatusPickerViewController.swift; sourceTree = SOURCE_ROOT; };
 		B50248B11C96FF8400AFBDED /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareViewController.swift; path = WordPressShareExtension/ShareViewController.swift; sourceTree = SOURCE_ROOT; };
-		B50248B21C96FF8400AFBDED /* SitePickerViewOldController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SitePickerViewOldController.swift; path = WordPressShareExtension/SitePickerViewOldController.swift; sourceTree = SOURCE_ROOT; };
+		B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SitePickerViewController.swift; path = WordPressShareExtension/SitePickerViewController.swift; sourceTree = SOURCE_ROOT; };
 		B50248B31C96FF8400AFBDED /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+Extensions.swift"; path = "WordPressShareExtension/UIImageView+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		B50248B81C96FFB000AFBDED /* WordPressShare-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "WordPressShare-Bridging-Header.h"; path = "WordPressShareExtension/WordPressShare-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		B50248B91C96FFCC00AFBDED /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WordPressShareExtension/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -3494,7 +3494,7 @@
 			children = (
 				B50248B11C96FF8400AFBDED /* ShareViewController.swift */,
 				B50248B01C96FF8400AFBDED /* PostStatusPickerViewController.swift */,
-				B50248B21C96FF8400AFBDED /* SitePickerViewOldController.swift */,
+				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
 				74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */,
 				74F5CD391FE0653500764E7C /* ShareExtensionViewController.swift */,
 			);
@@ -6996,7 +6996,7 @@
 				B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */,
 				74D06FEB1FE0788500AF1788 /* TextList+WordPress.swift in Sources */,
 				B52937E01C94A2B100940C1C /* WPReusableTableViewCells.swift in Sources */,
-				B50248B61C96FF8400AFBDED /* SitePickerViewOldController.swift in Sources */,
+				B50248B61C96FF8400AFBDED /* SitePickerViewController.swift in Sources */,
 				74D06FEC1FE0869D00AF1788 /* NSAttributedStringKey+Conversion.swift in Sources */,
 				E125F1E51E8E596200320B67 /* SharePost.swift in Sources */,
 				B5D7A0EC1CCFD1FC003C375D /* UIImage+RoundedCorner.m in Sources */,
