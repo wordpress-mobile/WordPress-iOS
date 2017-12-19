@@ -2,12 +2,12 @@ import Foundation
 @testable import WordPressKit
 
 class MockWordPressComRestApi: WordPressComRestApi {
-    var getMethodCalled = false
-    var postMethodCalled = false
-    var URLStringPassedIn: String?
-    var parametersPassedIn: AnyObject?
-    var successBlockPassedIn: ((AnyObject, HTTPURLResponse?) -> Void)?
-    var failureBlockPassedIn: ((NSError, HTTPURLResponse?) -> Void)?
+    @objc var getMethodCalled = false
+    @objc var postMethodCalled = false
+    @objc var URLStringPassedIn: String?
+    @objc var parametersPassedIn: AnyObject?
+    @objc var successBlockPassedIn: ((AnyObject, HTTPURLResponse?) -> Void)?
+    @objc var failureBlockPassedIn: ((NSError, HTTPURLResponse?) -> Void)?
 
     override func GET(_ URLString: String?, parameters: [String: AnyObject]?, success: @escaping ((AnyObject, HTTPURLResponse?) -> Void), failure: @escaping ((NSError, HTTPURLResponse?) -> Void)) -> Progress? {
         getMethodCalled = true
@@ -44,7 +44,7 @@ class MockWordPressComRestApi: WordPressComRestApi {
         return Progress()
     }
 
-    func methodCalled() -> String {
+    @objc func methodCalled() -> String {
 
         var method = "Unknown"
         if getMethodCalled {

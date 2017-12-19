@@ -33,19 +33,19 @@ extension Blog {
 
     /// Returns true if the current user is allowed to list a Blog's Users
     ///
-    public func isListingUsersAllowed() -> Bool {
+    @objc public func isListingUsersAllowed() -> Bool {
         return isUserCapableOf(.ListUsers)
     }
 
     /// Returns true if the current user is allowed to publish to the Blog
     ///
-    public func isPublishingPostsAllowed() -> Bool {
+    @objc public func isPublishingPostsAllowed() -> Bool {
         return isUserCapableOf(.PublishPosts)
     }
 
     /// Returns true if the current user is allowed to upload files to the Blog
     ///
-    public func isUploadingFilesAllowed() -> Bool {
+    @objc public func isUploadingFilesAllowed() -> Bool {
         return isUserCapableOf(.UploadFiles)
     }
 }

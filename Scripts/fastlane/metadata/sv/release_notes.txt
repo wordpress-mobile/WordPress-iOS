@@ -1,1 +1,4 @@
-Inga nya fantastiska funktioner denna gång, utan bara en rad små förbättringar för att ge dig en snabbare och stabilare app. Allt är inte guld som glimmar: Ibland kan det vara programkod!
+Aztec-redigeraren: Större skillnad mellan visuellt och html-redigeringsläge.
+Aztec-redigeraren: Förbättrad automatisk länkdetektering.
+Aztec-redigeraren: Lägger till stöd för redigering av inlägg medan mediauppladdning pågår.
+Aztec-redigeraren: Gör det möjligt att söka media från inlägg.

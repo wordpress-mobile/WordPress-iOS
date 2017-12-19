@@ -29,6 +29,12 @@
 /// contain the search query.
 @property (nonatomic, copy) NSString *searchQuery;
 
+/// Defaults to `NO`.
+/// By default, the data source will only show media that has been synced to the
+/// remote. Set this to `YES` to include local-only media, or media that is
+/// currently being processed or uploaded.
+@property (nonatomic) BOOL includeUnsyncedMedia;
+
 /// The total asset account, ignoring the current search query if there is one.
 @property (nonatomic, readonly) NSInteger totalAssetCount;
 

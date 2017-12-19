@@ -3,24 +3,24 @@ import WordPressShared
 
 class NoteBlockTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
-    var isBadge: Bool = false {
+    @objc var isBadge: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    var isLastRow: Bool = false {
+    @objc var isLastRow: Bool = false {
         didSet {
             refreshSeparators()
         }
     }
-    var readableSeparatorInsets: UIEdgeInsets {
+    @objc var readableSeparatorInsets: UIEdgeInsets {
         var insets = UIEdgeInsets.zero
         let readableLayoutFrame = readableContentGuide.layoutFrame
         insets.left = readableLayoutFrame.origin.x
         insets.right = frame.size.width - (readableLayoutFrame.origin.x + readableLayoutFrame.size.width)
         return insets
     }
-    var separatorsView = SeparatorsView()
+    @objc var separatorsView = SeparatorsView()
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -28,7 +28,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
     }
 
     // MARK: - Public Methods
-    func refreshSeparators() {
+    @objc func refreshSeparators() {
         // Exception: Badges require no separators
         if isBadge {
             separatorsView.bottomVisible = false
@@ -39,7 +39,7 @@ class NoteBlockTableViewCell: WPTableViewCell {
         separatorsView.bottomInsets = isLastRow ? fullSeparatorInsets : readableSeparatorInsets
         separatorsView.bottomVisible = true
     }
-    class func reuseIdentifier() -> String {
+    @objc class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
 

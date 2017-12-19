@@ -1,0 +1,11 @@
+{
+    "ok": true,
+    "error": "",
+    "restore_status": {
+        "status": "finished",
+        "percent": 100,
+        "message": "",
+        "error_code": "",
+        "failure_reason": ""
+    }
+}

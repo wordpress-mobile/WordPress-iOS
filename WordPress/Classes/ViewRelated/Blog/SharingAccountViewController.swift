@@ -6,17 +6,17 @@ import WordPressShared
 /// forge a publicize connection.
 ///
 @objc open class SharingAccountViewController: UITableViewController {
-    var publicizeService: PublicizeService
-    var keyringConnections: [KeyringConnection]
-    var existingPublicizeConnections: [PublicizeConnection]?
-    var immutableHandler: ImmuTableViewHandler!
-    var delegate: SharingAccountSelectionDelegate?
+    @objc var publicizeService: PublicizeService
+    @objc var keyringConnections: [KeyringConnection]
+    @objc var existingPublicizeConnections: [PublicizeConnection]?
+    @objc var immutableHandler: ImmuTableViewHandler!
+    @objc var delegate: SharingAccountSelectionDelegate?
 
 
     // MARK: - Lifecycle Methods
 
 
-    init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
+    @objc init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
         publicizeService = service
         keyringConnections = connections
         existingPublicizeConnections = existingConnections
@@ -239,7 +239,7 @@ import WordPressShared
     ///
     /// - Parameter sender: The close button that was tapped.
     ///
-    func handleCloseTapped(_ sender: UIBarButtonItem) {
+    @objc func handleCloseTapped(_ sender: UIBarButtonItem) {
         delegate?.didDismissSharingAccountViewController(self)
     }
 

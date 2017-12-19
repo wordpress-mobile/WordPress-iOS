@@ -14,7 +14,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     fileprivate let noResultsView = WPNoResultsView()
 
-    func updateNoResults() {
+    @objc func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         } else {
@@ -31,25 +31,27 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
 
-    func hideNoResults() {
+    @objc func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
 
-    static let restorationIdentifier = "PlanList"
+    @objc static let restorationIdentifier = "PlanList"
     /// Reference to the blog object if initialized with a blog. Used for state restoration only.
     fileprivate var restorationBlogURL: URL? = nil
 
-    convenience init?(blog: Blog) {
+    @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
-        guard let service = PlanService(blog: blog, store: StoreKitStore()) else {
+        guard let service = PlanService(blog: blog, store: StoreKitStore()),
+            let siteID = blog.dotComID?.intValue
+        else {
             return nil
         }
 
-        self.init(siteID: Int(blog.dotComID!), service: service)
+        self.init(siteID: siteID, service: service)
         restorationBlogURL = blog.objectID.uriRepresentation()
     }
 
-    let siteID: Int
+    @objc let siteID: Int
     let service: PlanService<StoreKitStore>
     init(siteID: Int, service: PlanService<StoreKitStore>) {
         self.siteID = siteID
@@ -94,7 +96,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         return {
             [unowned self] in
             let controller = controllerGenerator($0)
-            self.present(controller, animated: true, completion: { _ in
+            self.present(controller, animated: true, completion: { () in
                 // When the detail view is displayed as a modal on iPad, we don't receive
                 // view did/will appear/disappear. Because of this, the selected row in the list
                 // is never deselected. So we'll do it manually.

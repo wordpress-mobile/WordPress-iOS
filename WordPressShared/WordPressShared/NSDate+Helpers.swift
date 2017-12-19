@@ -36,6 +36,14 @@ extension Date {
             return formatter
         }()
 
+        static let mediumUTCDateTime: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return formatter
+        }()
+
         static let shortDateTime: DateFormatter = {
             let formatter = DateFormatter()
             formatter.doesRelativeDateFormatting = true
@@ -120,6 +128,14 @@ extension Date {
         return DateFormatters.mediumDateTime.string(from: self)
     }
 
+    /// Formats the current date as (non relattive) medium date/time in UTC.
+    ///
+    /// - Example: Jan 28, 2017, 1:51 PM
+    ///
+    public func mediumStringWithUTCTime() -> String {
+        return DateFormatters.mediumUTCDateTime.string(from: self)
+    }
+
     /// Formats the current date as a short relative date/time.
     ///
     /// - Example: Tomorrow, 6:45 AM
@@ -144,7 +160,7 @@ extension Date {
 }
 
 extension NSDate {
-    public static func dateWithISO8601String(_ string: String) -> NSDate? {
+    @objc public static func dateWithISO8601String(_ string: String) -> NSDate? {
         return Date.DateFormatters.iso8601.date(from: string) as NSDate?
     }
 
@@ -157,7 +173,7 @@ extension NSDate {
     /// - Example: 2 days ago
     /// - Example: Jan 22, 2017
     ///
-    public func mediumString() -> String {
+    @objc public func mediumString() -> String {
         return (self as Date).mediumString()
     }
 
@@ -169,7 +185,7 @@ extension NSDate {
     /// - Example: Jan 28, 2017, 1:51 PM
     /// - Example: Jan 22, 2017, 2:18 AM
     ///
-    public func mediumStringWithTime() -> String {
+    @objc public func mediumStringWithTime() -> String {
         return (self as Date).mediumStringWithTime()
     }
 
@@ -181,11 +197,11 @@ extension NSDate {
     /// - Example: 1/28/17, 1:51 PM
     /// - Example: 1/22/17, 2:18 AM
     ///
-    public func shortStringWithTime() -> String {
+    @objc public func shortStringWithTime() -> String {
         return (self as Date).shortStringWithTime()
     }
 
-    public func toStringForPageSections() -> String {
+    @objc public func toStringForPageSections() -> String {
         return (self as Date).toStringForPageSections()
     }
 }

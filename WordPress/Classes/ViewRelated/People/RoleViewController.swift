@@ -12,11 +12,11 @@ class RoleViewController: UITableViewController {
 
     /// Currently Selected Role
     ///
-    var selectedRole: String!
+    @objc var selectedRole: String!
 
     /// Closure to be executed whenever the selected role changes.
     ///
-    var onChange: ((String) -> Void)?
+    @objc var onChange: ((String) -> Void)?
 
     /// Activity Spinner, to be animated during Backend Interaction
     ///

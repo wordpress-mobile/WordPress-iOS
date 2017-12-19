@@ -27,10 +27,10 @@ PODS:
   - CocoaLumberjack/Default (3.2.1)
   - CocoaLumberjack/Extensions (3.2.1):
     - CocoaLumberjack/Default
-  - Crashlytics (3.8.6):
-    - Fabric (~> 1.6.3)
+  - Crashlytics (3.9.3):
+    - Fabric (~> 1.7.2)
   - Expecta (1.0.6)
-  - Fabric (1.6.13)
+  - Fabric (1.7.2)
   - FLAnimatedImage (1.0.12)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
@@ -48,7 +48,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.3)
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
-  - Gridicons (0.10)
+  - Gridicons (0.13)
   - GTMOAuth2 (1.1.5):
     - GTMSessionFetcher (~> 1.1)
   - GTMSessionFetcher (1.1.12):
@@ -60,7 +60,7 @@ PODS:
     - HockeySDK/DefaultLib (= 5.0.0)
   - HockeySDK/DefaultLib (5.0.0)
   - lottie-ios (1.5.1)
-  - MGSwipeTableCell (1.6.1)
+  - MGSwipeTableCell (1.6.6)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
     - MRProgress/Blur (= 0.8.3)
@@ -92,32 +92,29 @@ PODS:
   - Nimble (7.0.2)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
-  - OCMock (3.4)
-  - OHHTTPStubs (6.0.0):
-    - OHHTTPStubs/Default (= 6.0.0)
-  - OHHTTPStubs/Core (6.0.0)
-  - OHHTTPStubs/Default (6.0.0):
+  - OCMock (3.4.1)
+  - OHHTTPStubs (6.1.0):
+    - OHHTTPStubs/Default (= 6.1.0)
+  - OHHTTPStubs/Core (6.1.0)
+  - OHHTTPStubs/Default (6.1.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (6.0.0):
+  - OHHTTPStubs/JSON (6.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (6.0.0):
+  - OHHTTPStubs/NSURLSession (6.1.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (6.0.0)
-  - OHHTTPStubs/Swift (6.0.0):
+  - OHHTTPStubs/OHPathHelpers (6.1.0)
+  - OHHTTPStubs/Swift (6.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
   - Specta (1.0.7)
   - Starscream (3.0.2)
-  - SVProgressHUD (2.2.1)
+  - SVProgressHUD (2.2.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.14.1)
-  - WordPress-iOS-Editor (1.9.7):
-    - CocoaLumberjack (~> 3.2.0)
-    - NSObject-SafeExpectations (~> 0.0.2)
-  - WPMediaPicker (0.24)
+  - WordPress-Aztec-iOS (1.0.0-beta.15)
+  - WPMediaPicker (0.25)
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
@@ -127,30 +124,29 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.1`)
   - BuddyBuildSDK (= 1.0.16)
   - CocoaLumberjack (= 3.2.1)
-  - Crashlytics (= 3.8.6)
+  - Crashlytics (= 3.9.3)
   - Expecta (= 1.0.6)
   - FLAnimatedImage (= 1.0.12)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - GoogleSignIn (= 4.1.0)
-  - Gridicons (= 0.10)
+  - Gridicons (= 0.13)
   - HockeySDK (= 5.0.0)
   - lottie-ios (= 1.5.1)
-  - MGSwipeTableCell (= 1.6.1)
+  - MGSwipeTableCell (= 1.6.6)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.0.2)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (~> 3.4)
-  - OHHTTPStubs
-  - OHHTTPStubs/Swift
+  - OHHTTPStubs (= 6.1.0)
+  - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
   - Specta (= 1.0.7)
   - Starscream (= 3.0.2)
-  - SVProgressHUD (= 2.2.1)
+  - SVProgressHUD (= 2.2.2)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.14.1)
-  - WordPress-iOS-Editor (= 1.9.7)
-  - WPMediaPicker (= 0.24)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.15)
+  - WPMediaPicker (= 0.25)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -170,35 +166,34 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: edc4365d31602490af88dbed181b0b666cbdcf75
   BuddyBuildSDK: 2c5469eee2981a3365386e46393e97068d75e4f4
   CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
-  Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
+  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  Fabric: 2fb5676bc811af011a04513451f463dac6803206
+  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   GoogleSignIn: 8c599fc10d25b2af86a3f82fd9631e863f2b1400
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
-  Gridicons: e661b35e7d4f0ca79e8b2a2072c0081b91b5d1e0
+  Gridicons: f4125fa1e07b26e140f791d36f339973a8575261
   GTMOAuth2: be83fd28d63ae3087e7d351b1f39c1a7e24ab6e7
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   HockeySDK: 82bf8dcbe1af3c87c24dc98924fcf2e2ba5be8c4
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
-  MGSwipeTableCell: 19a1d65dcc1ceaea42eb44bb2adae32101904514
+  MGSwipeTableCell: c3bc6e261e7bc06c112909fe3fb8205de286082c
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
-  OCMock: 35ae71d6a8fcc1b59434d561d1520b9dd4f15765
-  OHHTTPStubs: 752f9b11fd810a15162d50f11c06ff94f8e012eb
+  OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
+  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Starscream: b512c62f6706421221b5ceb2ba01a9f58aca5bea
-  SVProgressHUD: db27c54e6e18bc903341661fc9feb55e04905cc4
+  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 281a7d3dca4ce121b74c0ccac5fa14c860bef048
-  WordPress-iOS-Editor: 03b3bc631a31520ccf78e665548286c6d12c17f4
-  WPMediaPicker: 5e2db7fd30d8ca497d91b26fbf61e94d6660f1c6
+  WordPress-Aztec-iOS: 8004dec8c4449372b4eeaa7492811a85aa70cfa3
+  WPMediaPicker: 80c7401edd8ca05d4277f43afc691662f3a26614
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 8ec98bffaf1cfb2d2ecc7d0e306658c1b30cb017
+PODFILE CHECKSUM: a0d7bca19843aaa04df590cfebcf526b00e6537a
 
 COCOAPODS: 1.3.1

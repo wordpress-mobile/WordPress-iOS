@@ -11,7 +11,7 @@ open class SiteManagementServiceRemote: ServiceRemoteWordPressComREST {
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
-    open func deleteSite(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
+    @objc open func deleteSite(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         let endpoint = "sites/\(siteID)/delete"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
@@ -48,7 +48,7 @@ open class SiteManagementServiceRemote: ServiceRemoteWordPressComREST {
     ///    - success: Optional success block with no parameters
     ///    - failure: Optional failure block with NSError
     ///
-    open func exportContent(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
+    @objc open func exportContent(_ siteID: NSNumber, success: (() -> Void)?, failure: ((NSError) -> Void)?) {
         let endpoint = "sites/\(siteID)/exports/start"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
@@ -82,7 +82,7 @@ open class SiteManagementServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional success block with array of purchases (if any)
     ///     - failure: Optional failure block with NSError
     ///
-    open func getActivePurchases(_ siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
+    @objc open func getActivePurchases(_ siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
         let endpoint = "sites/\(siteID)/purchases"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 

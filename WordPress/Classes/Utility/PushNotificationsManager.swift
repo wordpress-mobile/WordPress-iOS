@@ -12,12 +12,12 @@ final public class PushNotificationsManager: NSObject {
 
     /// Returns the shared PushNotificationsManager instance.
     ///
-    static let shared = PushNotificationsManager()
+    @objc static let shared = PushNotificationsManager()
 
 
     /// Stores the Apple's Push Notifications Token
     ///
-    var deviceToken: String? {
+    @objc var deviceToken: String? {
         get {
             return UserDefaults.standard.string(forKey: Device.tokenKey) ?? String()
         }
@@ -30,7 +30,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Stores the WordPress.com Device identifier
     ///
-    var deviceId: String? {
+    @objc var deviceId: String? {
         get {
             return UserDefaults.standard.string(forKey: Device.idKey) ?? String()
         }
@@ -43,21 +43,21 @@ final public class PushNotificationsManager: NSObject {
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
-    var sharedApplication: UIApplication {
+    @objc var sharedApplication: UIApplication {
         return UIApplication.shared
     }
 
 
     /// Returns the Application Execution State. This is meant for Unit Testing purposes.
     ///
-    var applicationState: UIApplicationState {
+    @objc var applicationState: UIApplicationState {
         return sharedApplication.applicationState
     }
 
 
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
-    func registerForRemoteNotifications() {
+    @objc func registerForRemoteNotifications() {
         sharedApplication.registerForRemoteNotifications()
     }
 
@@ -65,7 +65,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Checks asynchronously if Notifications are enabled in the Device's Settings, or not.
     ///
-    func loadAuthorizationStatus(completion: @escaping ((_ authorized: Bool) -> Void)) {
+    @objc func loadAuthorizationStatus(completion: @escaping ((_ authorized: Bool) -> Void)) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 let enabled = settings.authorizationStatus == .authorized
@@ -81,7 +81,7 @@ final public class PushNotificationsManager: NSObject {
     ///
     /// - Note: Helpshift will also be initialized. The token will be persisted across App Sessions.
     ///
-    func registerDeviceToken(_ tokenData: Data) {
+    @objc func registerDeviceToken(_ tokenData: Data) {
         if HelpshiftUtils.isHelpshiftEnabled() {
             // We want to register Helpshift regardless so that way if a user isn't logged in
             // they can still get push notifications that we replied to their support ticket.
@@ -120,7 +120,7 @@ final public class PushNotificationsManager: NSObject {
     ///
     /// - Parameter error: Details the reason of failure
     ///
-    func registrationDidFail(_ error: NSError) {
+    @objc func registrationDidFail(_ error: NSError) {
         DDLogError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
@@ -128,7 +128,7 @@ final public class PushNotificationsManager: NSObject {
 
     /// Unregister the device from WordPress.com notifications
     ///
-    func unregisterDeviceToken() {
+    @objc func unregisterDeviceToken() {
         guard let knownDeviceId = deviceId else {
             return
         }
@@ -154,7 +154,7 @@ final public class PushNotificationsManager: NSObject {
     ///     - userInfo: The Notification's Payload
     ///     - completionHandler: A callback, to be executed on completion
     ///
-    func handleNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
+    @objc func handleNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) {
         DDLogVerbose("Received push notification:\nPayload: \(userInfo)\n")
         DDLogVerbose("Current Application state: \(applicationState.rawValue)")
 
@@ -201,7 +201,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleHelpshiftNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleHelpshiftNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard let origin = userInfo.string(forKey: Notification.originKey), origin == Helpshift.originValue else {
             return false
         }
@@ -230,7 +230,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleAuthenticationNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleAuthenticationNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         // WordPress.com Push Authentication Notification
         // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
         // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
@@ -262,7 +262,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleInactiveNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleInactiveNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard applicationState == .inactive else {
             return false
         }
@@ -289,7 +289,7 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    func handleBackgroundNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+    @objc func handleBackgroundNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
         guard userInfo.number(forKey: Notification.identifierKey)?.stringValue != nil else {
             return false
         }

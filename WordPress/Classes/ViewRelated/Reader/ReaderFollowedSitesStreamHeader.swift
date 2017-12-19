@@ -22,7 +22,7 @@ import WordPressShared.WPStyleGuide
     }
 
 
-    func applyStyles() {
+    @objc func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
@@ -42,12 +42,12 @@ import WordPressShared.WPStyleGuide
     // MARK: - Configuration
 
 
-    open func configureHeader(_ topic: ReaderAbstractTopic) {
+    @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         // no op
     }
 
 
-    open func enableLoggedInFeatures(_ enable: Bool) {
+    @objc open func enableLoggedInFeatures(_ enable: Bool) {
         // no op
     }
 

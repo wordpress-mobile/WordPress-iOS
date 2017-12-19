@@ -10,9 +10,9 @@ extension WPStyleGuide {
         // NoteTableViewHeader
         public static let sectionHeaderBackgroundColor  = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
 
-        public static let sectionHeaderRegularStyle = [ NSParagraphStyleAttributeName: sectionHeaderParagraph,
-                                                        NSFontAttributeName: sectionHeaderFont,
-                                                        NSForegroundColorAttributeName: sectionHeaderTextColor ]
+        public static let sectionHeaderRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: sectionHeaderParagraph,
+                                                                                     .font: sectionHeaderFont,
+                                                                                     .foregroundColor: sectionHeaderTextColor ]
 
         // NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
@@ -36,26 +36,26 @@ extension WPStyleGuide {
         public static let noteUndoTextFont          = subjectRegularFont
 
         // Subject Text
-        public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName: subjectParagraph,
-                                                        NSFontAttributeName: subjectRegularFont,
-                                                        NSForegroundColorAttributeName: subjectTextColor ]
+        public static let subjectRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: subjectParagraph,
+                                                                               .font: subjectRegularFont,
+                                                                               .foregroundColor: subjectTextColor]
 
-        public static let subjectBoldStyle          = [ NSParagraphStyleAttributeName: subjectParagraph,
-                                                        NSFontAttributeName: subjectBoldFont ]
+        public static let subjectBoldStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: subjectParagraph,
+                                                                            .font: subjectBoldFont ]
 
-        public static let subjectItalicsStyle       = [ NSParagraphStyleAttributeName: subjectParagraph,
-                                                        NSFontAttributeName: subjectItalicsFont ]
+        public static let subjectItalicsStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: subjectParagraph,
+                                                                               .font: subjectItalicsFont ]
 
-        public static let subjectNoticonStyle       = [ NSParagraphStyleAttributeName: subjectParagraph,
-                                                        NSFontAttributeName: subjectNoticonFont!,
-                                                        NSForegroundColorAttributeName: subjectNoticonColor ]
+        public static let subjectNoticonStyle: [NSAttributedStringKey: Any] = [ .paragraphStyle: subjectParagraph,
+                                                                                .font: subjectNoticonFont!,
+                                                                                .foregroundColor: subjectNoticonColor ]
 
-        public static let subjectQuotedStyle        = blockQuotedStyle
+        public static let subjectQuotedStyle = blockQuotedStyle
 
         // Subject Snippet
-        public static let snippetRegularStyle       = [ NSParagraphStyleAttributeName: snippetParagraph,
-                                                        NSFontAttributeName: subjectRegularFont,
-                                                        NSForegroundColorAttributeName: snippetColor ]
+        public static let snippetRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: snippetParagraph,
+                                                                               .font: subjectRegularFont,
+                                                                               .foregroundColor: snippetColor ]
 
         // MARK: - Styles used by NotificationDetailsViewController
         //
@@ -67,27 +67,27 @@ extension WPStyleGuide {
         public static let headerDetailsColor        = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
         public static let headerDetailsRegularFont  = blockRegularFont
 
-        public static let headerTitleRegularStyle   = [ NSFontAttributeName: headerTitleRegularFont,
-                                                        NSForegroundColorAttributeName: headerTitleColor]
+        public static let headerTitleRegularStyle: [NSAttributedStringKey: Any] = [.font: headerTitleRegularFont,
+                                                                                   .foregroundColor: headerTitleColor]
 
-        public static let headerTitleBoldStyle      =  [ NSFontAttributeName: headerTitleBoldFont,
-                                                        NSForegroundColorAttributeName: headerTitleColor]
+        public static let headerTitleBoldStyle: [NSAttributedStringKey: Any] =  [.font: headerTitleBoldFont,
+                                                                                 .foregroundColor: headerTitleColor]
 
-        public static let headerTitleContextStyle   = [ NSFontAttributeName: headerTitleItalicsFont,
-                                                        NSForegroundColorAttributeName: headerTitleContextColor]
+        public static let headerTitleContextStyle: [NSAttributedStringKey: Any] = [.font: headerTitleItalicsFont,
+                                                                                   .foregroundColor: headerTitleContextColor]
 
         // Footer
-        public static let footerRegularStyle        = [ NSParagraphStyleAttributeName: blockParagraph,
-                                                        NSFontAttributeName: blockRegularFont,
-                                                        NSForegroundColorAttributeName: footerTextColor]
+        public static let footerRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: blockParagraph,
+                                                                              .font: blockRegularFont,
+                                                                              .foregroundColor: footerTextColor]
 
         // Badges
         public static let badgeBackgroundColor      = UIColor.clear
         public static let badgeLinkColor            = blockLinkColor
 
-        public static let badgeRegularStyle         = [ NSParagraphStyleAttributeName: badgeParagraph,
-                                                        NSFontAttributeName: blockRegularFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
+        public static let badgeRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: badgeParagraph,
+                                                                             .font: blockRegularFont,
+                                                                             .foregroundColor: blockTextColor]
 
         public static let badgeBoldStyle            = blockBoldStyle
         public static let badgeItalicsStyle         = blockItalicsStyle
@@ -113,49 +113,49 @@ extension WPStyleGuide {
         public static let blockUnapprovedTextColor  = WPStyleGuide.alertRedDarker()
         public static let blockUnapprovedLinkColor  = WPStyleGuide.mediumBlue()
 
-        public static let contentBlockRegularStyle  = [ NSParagraphStyleAttributeName: contentBlockParagraph,
-                                                        NSFontAttributeName: contentBlockRegularFont,
-                                                        NSForegroundColorAttributeName: blockTextColor ]
+        public static let contentBlockRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: contentBlockParagraph,
+                                                                                    .font: contentBlockRegularFont,
+                                                                                    .foregroundColor: blockTextColor ]
 
-        public static let contentBlockBoldStyle     = [ NSParagraphStyleAttributeName: contentBlockParagraph,
-                                                        NSFontAttributeName: contentBlockBoldFont,
-                                                        NSForegroundColorAttributeName: blockTextColor ]
+        public static let contentBlockBoldStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: contentBlockParagraph,
+                                                                                 .font: contentBlockBoldFont,
+                                                                                 .foregroundColor: blockTextColor ]
 
-        public static let contentBlockItalicStyle   = [ NSParagraphStyleAttributeName: contentBlockParagraph,
-                                                        NSFontAttributeName: contentBlockItalicFont,
-                                                        NSForegroundColorAttributeName: blockTextColor ]
+        public static let contentBlockItalicStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: contentBlockParagraph,
+                                                                                   .font: contentBlockItalicFont,
+                                                                                   .foregroundColor: blockTextColor ]
 
-        public static let contentBlockQuotedStyle   = [ NSParagraphStyleAttributeName: contentBlockParagraph,
-                                                        NSFontAttributeName: contentBlockItalicFont,
-                                                        NSForegroundColorAttributeName: blockQuotedColor ]
+        public static let contentBlockQuotedStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: contentBlockParagraph,
+                                                                                   .font: contentBlockItalicFont,
+                                                                                   .foregroundColor: blockQuotedColor ]
 
-        public static let contentBlockMatchStyle    = [ NSParagraphStyleAttributeName: contentBlockParagraph,
-                                                        NSFontAttributeName: contentBlockRegularFont,
-                                                        NSForegroundColorAttributeName: blockLinkColor ]
+        public static let contentBlockMatchStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: contentBlockParagraph,
+                                                                                  .font: contentBlockRegularFont,
+                                                                                  .foregroundColor: blockLinkColor ]
 
-        public static let blockRegularStyle         = [ NSParagraphStyleAttributeName: blockParagraph,
-                                                        NSFontAttributeName: blockRegularFont,
-                                                        NSForegroundColorAttributeName: blockTextColor ]
+        public static let blockRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: blockParagraph,
+                                                                             .font: blockRegularFont,
+                                                                             .foregroundColor: blockTextColor ]
 
-        public static let blockBoldStyle            = [ NSParagraphStyleAttributeName: blockParagraph,
-                                                        NSFontAttributeName: blockBoldFont,
-                                                        NSForegroundColorAttributeName: blockTextColor ]
+        public static let blockBoldStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: blockParagraph,
+                                                                          .font: blockBoldFont,
+                                                                          .foregroundColor: blockTextColor ]
 
-        public static let blockItalicsStyle         = [ NSParagraphStyleAttributeName: blockParagraph,
-                                                        NSFontAttributeName: blockItalicsFont,
-                                                        NSForegroundColorAttributeName: blockTextColor ]
+        public static let blockItalicsStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: blockParagraph,
+                                                                             .font: blockItalicsFont,
+                                                                             .foregroundColor: blockTextColor ]
 
-        public static let blockQuotedStyle          = [ NSParagraphStyleAttributeName: blockParagraph,
-                                                        NSFontAttributeName: blockItalicsFont,
-                                                        NSForegroundColorAttributeName: blockQuotedColor ]
+        public static let blockQuotedStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: blockParagraph,
+                                                                            .font: blockItalicsFont,
+                                                                            .foregroundColor: blockQuotedColor ]
 
-        public static let blockMatchStyle           = [ NSParagraphStyleAttributeName: blockParagraph,
-                                                        NSFontAttributeName: blockRegularFont,
-                                                        NSForegroundColorAttributeName: blockLinkColor ]
+        public static let blockMatchStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: blockParagraph,
+                                                                           .font: blockRegularFont,
+                                                                           .foregroundColor: blockLinkColor ]
 
-        public static let blockNoticonStyle         = [ NSParagraphStyleAttributeName: blockParagraph,
-                                                        NSFontAttributeName: blockNoticonFont!,
-                                                        NSForegroundColorAttributeName: blockNoticonColor ]
+        public static let blockNoticonStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: blockParagraph,
+                                                                             .font: blockNoticonFont!,
+                                                                             .foregroundColor: blockNoticonColor ]
 
         // Action Buttons
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
@@ -193,7 +193,7 @@ extension WPStyleGuide {
 
         // Filters Helpers
         public static func configureSegmentedControl(_ segmentedControl: UISegmentedControl) {
-            let style = [ NSFontAttributeName: WPFontManager.systemRegularFont(ofSize: 12) ]
+            let style = [ NSAttributedStringKey.font: WPFontManager.systemRegularFont(ofSize: 12) ]
             segmentedControl.setTitleTextAttributes(style, for: UIControlState())
         }
 

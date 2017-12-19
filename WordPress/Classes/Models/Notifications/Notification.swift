@@ -98,7 +98,7 @@ class Notification: NSManagedObject {
             return
         }
 
-        guard type(of: self).cachedAttributes.contains(key) else {
+        guard Swift.type(of: self).cachedAttributes.contains(key) else {
             return
         }
 
@@ -118,7 +118,7 @@ class Notification: NSManagedObject {
     // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
     // Helpful when dealing with transient attributes.
     //
-    func didChangeOverrides() {
+    @objc func didChangeOverrides() {
         let readValue = read
         read = readValue
     }
@@ -160,7 +160,7 @@ extension Notification {
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
-    var isBadge: Bool {
+    @objc var isBadge: Bool {
         let blocks = bodyBlockGroups.flatMap { $0.blocks }
         for block in blocks {
             for media in block.media where media.kind == .Badge {
@@ -173,13 +173,13 @@ extension Notification {
 
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
     ///
-    var isRepliedComment: Bool {
+    @objc var isRepliedComment: Bool {
         return kind == .Comment && metaReplyID != nil
     }
 
     //// Check if this note is a comment and in 'Unapproved' status
     ///
-    var isUnapprovedComment: Bool {
+    @objc var isUnapprovedComment: Bool {
         guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
             return false
         }
@@ -204,31 +204,31 @@ extension Notification {
 
     /// Comment ID, if any.
     ///
-    var metaCommentID: NSNumber? {
+    @objc var metaCommentID: NSNumber? {
         return metaIds?[MetaKeys.Comment] as? NSNumber
     }
 
     /// Post ID, if any.
     ///
-    var metaPostID: NSNumber? {
+    @objc var metaPostID: NSNumber? {
         return metaIds?[MetaKeys.Post] as? NSNumber
     }
 
     /// Comment Reply ID, if any.
     ///
-    var metaReplyID: NSNumber? {
+    @objc var metaReplyID: NSNumber? {
         return metaIds?[MetaKeys.Reply] as? NSNumber
     }
 
     /// Site ID, if any.
     ///
-    var metaSiteID: NSNumber? {
+    @objc var metaSiteID: NSNumber? {
         return metaIds?[MetaKeys.Site] as? NSNumber
     }
 
     /// Icon URL
     ///
-    var iconURL: URL? {
+    @objc var iconURL: URL? {
         guard let rawIconURL = icon, let iconURL = URL(string: rawIconURL) else {
             return nil
         }
@@ -238,7 +238,7 @@ extension Notification {
 
     /// Associated Resource URL
     ///
-    var resourceURL: URL? {
+    @objc var resourceURL: URL? {
         guard let rawURL = url, let resourceURL = URL(string: rawURL) else {
             return nil
         }
@@ -248,7 +248,7 @@ extension Notification {
 
     /// Parse the Timestamp as a Cocoa Date Instance.
     ///
-    var timestampAsDate: Date {
+    @objc var timestampAsDate: Date {
         assert(timestamp != nil, "Notification Timestamp should not be nil [\(notificationId)]")
 
         if let timestampAsDate = cachedTimestampAsDate {

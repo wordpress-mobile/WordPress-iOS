@@ -10,25 +10,25 @@ import WordPressShared
 ///
 open class SettingsPickerViewController: UITableViewController {
     /// Indicates whether a Switch row should be rendered on top, allowing the user to Enable / Disable the picker
-    open var switchVisible = true
+    @objc open var switchVisible = true
 
     /// Specifies the Switch value, to be displayed on the first row (granted that `switchVisible` is set to true)
-    open var switchOn = false
+    @objc open var switchOn = false
 
     /// Text to be displayed by the first row's Switch
-    open var switchText: String!
+    @objc open var switchText: String!
 
     /// Text to be displayed in the "Currently Selected value" row
-    open var selectionText: String!
+    @objc open var selectionText: String!
 
     /// Indicates the format to be used in the "Currently Selected Value" row
-    open var selectionFormat: String?
+    @objc open var selectionFormat: String?
 
     /// Hint Text, to be displayed on top of the Picker
-    open var pickerHint: String?
+    @objc open var pickerHint: String?
 
     /// String format, to be applied over the Picker Rows
-    open var pickerFormat: String?
+    @objc open var pickerFormat: String?
 
     /// Currently selected value.
     open var pickerSelectedValue: Int!
@@ -40,7 +40,7 @@ open class SettingsPickerViewController: UITableViewController {
     open var pickerMaximumValue: Int!
 
     /// Closure to be executed whenever the Switch / Picker is updated
-    open var onChange : ((_ enabled: Bool, _ newValue: Int) -> ())?
+    @objc open var onChange : ((_ enabled: Bool, _ newValue: Int) -> ())?
 
 
 

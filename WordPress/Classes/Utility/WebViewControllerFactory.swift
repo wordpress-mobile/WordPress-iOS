@@ -5,7 +5,7 @@ class WebViewControllerFactory: NSObject {
     override init() {
     }
 
-    static func controller(configuration: WebViewControllerConfiguration) -> UIViewController {
+    @objc static func controller(configuration: WebViewControllerConfiguration) -> UIViewController {
         if #available(iOS 11, *) {
             let controller = WebKitViewController(configuration: configuration)
             return controller
@@ -15,24 +15,24 @@ class WebViewControllerFactory: NSObject {
         }
     }
 
-    static func controller(url: URL) -> UIViewController {
+    @objc static func controller(url: URL) -> UIViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         return controller(configuration: configuration)
     }
 
-    static func controller(url: URL, blog: Blog) -> UIViewController {
+    @objc static func controller(url: URL, blog: Blog) -> UIViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticate(blog: blog)
         return controller(configuration: configuration)
     }
 
-    static func controller(url: URL, account: WPAccount) -> UIViewController {
+    @objc static func controller(url: URL, account: WPAccount) -> UIViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticate(account: account)
         return controller(configuration: configuration)
     }
 
-    static func controllerAuthenticatedWithDefaultAccount(url: URL) -> UIViewController {
+    @objc static func controllerAuthenticatedWithDefaultAccount(url: URL) -> UIViewController {
         let configuration = WebViewControllerConfiguration(url: url)
         configuration.authenticateWithDefaultAccount()
         return controller(configuration: configuration)

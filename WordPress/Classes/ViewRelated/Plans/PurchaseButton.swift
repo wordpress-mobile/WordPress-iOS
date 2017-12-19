@@ -2,7 +2,7 @@ import UIKit
 import MRProgress
 
 class PurchaseButton: RoundedButton {
-    var animatesWhenSelected: Bool = true
+    @objc var animatesWhenSelected: Bool = true
 
     fileprivate var collapseConstraint: NSLayoutConstraint!
     fileprivate lazy var activityIndicatorView: MRActivityIndicatorView = {

@@ -70,11 +70,11 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Previous NavBar Navigation Button
     ///
-    var previousNavigationButton: UIButton!
+    @objc var previousNavigationButton: UIButton!
 
     /// Next NavBar Navigation Button
     ///
-    var nextNavigationButton: UIButton!
+    @objc var nextNavigationButton: UIButton!
 
     /// Arrows Navigation Datasource
     ///
@@ -82,7 +82,7 @@ class NotificationDetailsViewController: UIViewController {
 
     /// Notification to-be-displayed
     ///
-    var note: Notification! {
+    @objc var note: Notification! {
         didSet {
             guard oldValue != note && isViewLoaded else {
                 return
@@ -103,7 +103,7 @@ class NotificationDetailsViewController: UIViewController {
     /// Closure to be executed whenever the notification that's being currently displayed, changes.
     /// This happens due to Navigation Events (Next / Previous)
     ///
-    var onSelectedNoteChange: ((Notification) -> Void)?
+    @objc var onSelectedNoteChange: ((Notification) -> Void)?
 
 
     deinit {
@@ -325,7 +325,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 // MARK: - Setup Helpers
 //
 extension NotificationDetailsViewController {
-    func setupNavigationBar() {
+    @objc func setupNavigationBar() {
         // Don't show the notification title in the next-view's back button
         let backButton = UIBarButtonItem(title: String(),
                                          style: .plain,
@@ -348,11 +348,11 @@ extension NotificationDetailsViewController {
         enableNavigationRightBarButtonItems()
     }
 
-    func setupMainView() {
+    @objc func setupMainView() {
         view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
     }
 
-    func setupTableView() {
+    @objc func setupTableView() {
         tableView.separatorStyle            = .none
         tableView.keyboardDismissMode       = .interactive
         tableView.backgroundColor           = WPStyleGuide.greyLighten30()
@@ -360,7 +360,7 @@ extension NotificationDetailsViewController {
         tableView.backgroundColor           = WPStyleGuide.itsEverywhereGrey()
     }
 
-    func setupTableViewCells() {
+    @objc func setupTableViewCells() {
         let cellClassNames: [NoteBlockTableViewCell.Type] = [
             NoteBlockHeaderTableViewCell.self,
             NoteBlockTextTableViewCell.self,
@@ -378,7 +378,7 @@ extension NotificationDetailsViewController {
         }
     }
 
-    func setupReplyTextView() {
+    @objc func setupReplyTextView() {
         let replyTextView = ReplyTextView(width: view.frame.width)
         replyTextView.placeholder = NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view")
         replyTextView.replyText = NSLocalizedString("Reply", comment: "").localizedUppercase
@@ -391,19 +391,19 @@ extension NotificationDetailsViewController {
             self?.replyCommentWithBlock(block, content: content)
         }
 
-        replyTextView.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .vertical)
+        replyTextView.setContentCompressionResistancePriority(.required, for: .vertical)
 
         self.replyTextView = replyTextView
     }
 
-    func setupSuggestionsView() {
+    @objc func setupSuggestionsView() {
         suggestionsTableView = SuggestionsTableView()
         suggestionsTableView.siteID = note.metaSiteID
         suggestionsTableView.suggestionsDelegate = self
         suggestionsTableView.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func setupKeyboardManager() {
+    @objc func setupKeyboardManager() {
         precondition(replyTextView != nil)
         precondition(bottomLayoutConstraint != nil)
 
@@ -413,7 +413,7 @@ extension NotificationDetailsViewController {
                                                 bottomLayoutConstraint: bottomLayoutConstraint)
     }
 
-    func setupNotificationListeners() {
+    @objc func setupNotificationListeners() {
         let nc = NotificationCenter.default
         nc.addObserver(self,
                        selector: #selector(notificationWasUpdated),
@@ -421,7 +421,7 @@ extension NotificationDetailsViewController {
                        object: note.managedObjectContext)
     }
 
-    func tearDownNotificationListeners() {
+    @objc func tearDownNotificationListeners() {
         let nc = NotificationCenter.default
         nc.removeObserver(self,
                           name: .NSManagedObjectContextObjectsDidChange,
@@ -434,7 +434,7 @@ extension NotificationDetailsViewController {
 // MARK: - Reply View Helpers
 //
 extension NotificationDetailsViewController {
-    func attachReplyViewIfNeeded() {
+    @objc func attachReplyViewIfNeeded() {
         guard shouldAttachReplyView else {
             replyTextView.removeFromSuperview()
             return
@@ -443,7 +443,7 @@ extension NotificationDetailsViewController {
         stackView.addArrangedSubview(replyTextView)
     }
 
-    var shouldAttachReplyView: Bool {
+    @objc var shouldAttachReplyView: Bool {
         // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
         //
         guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
@@ -768,7 +768,7 @@ private extension NotificationDetailsViewController {
 // MARK: - Notification Helpers
 //
 extension NotificationDetailsViewController {
-    func notificationWasUpdated(_ notification: Foundation.Notification) {
+    @objc func notificationWasUpdated(_ notification: Foundation.Notification) {
         let updated   = notification.userInfo?[NSUpdatedObjectsKey]   as? Set<NSManagedObject> ?? Set()
         let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
         let deleted   = notification.userInfo?[NSDeletedObjectsKey]   as? Set<NSManagedObject> ?? Set()
@@ -1253,11 +1253,11 @@ extension NotificationDetailsViewController {
         note = next
     }
 
-    var shouldEnablePreviousButton: Bool {
+    @objc var shouldEnablePreviousButton: Bool {
         return dataSource?.notification(preceding: note) != nil
     }
 
-    var shouldEnableNextButton: Bool {
+    @objc var shouldEnableNextButton: Bool {
         return dataSource?.notification(succeeding: note) != nil
     }
 }

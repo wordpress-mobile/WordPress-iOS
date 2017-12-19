@@ -27,6 +27,24 @@
     return noResultsView;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self commonInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self commonInit];
+    }
+    return self;
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.delegate = nil;
@@ -35,36 +53,41 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        // Title Label
-        _titleLabel                 = [[UILabel alloc] init];
-        _titleLabel.numberOfLines   = 0;
-        
-        // Message Label
-        _messageLabel               = [[UILabel alloc] init];
-        _messageLabel.font          = [WPFontManager systemRegularFontOfSize:14.0];
-        _messageLabel.textColor     = [WPStyleGuide allTAllShadeGrey];
-        _messageLabel.numberOfLines = 0;
-        _messageLabel.textAlignment = NSTextAlignmentCenter;
-        
-        // Button
-        _button                     = [UIButton buttonWithType:UIButtonTypeCustom];
-        _button.titleLabel.font     = [WPStyleGuide subtitleFontBold];
-        _button.hidden              = YES;
-        [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-        [_button setBackgroundImage:[self newButtonBackgroundImage] forState:UIControlStateNormal];
-        
-        // Insert Subviews
-        [self addSubview:_titleLabel];
-        [self addSubview:_messageLabel];
-        [self addSubview:_button];
-        
-        // Listen for orientation changes
-        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [self commonInit];
     }
     
     return self;
+}
+
+- (void)commonInit
+{
+    // Title Label
+    _titleLabel                 = [[UILabel alloc] init];
+    _titleLabel.numberOfLines   = 0;
+
+    // Message Label
+    _messageLabel               = [[UILabel alloc] init];
+    _messageLabel.font          = [WPFontManager systemRegularFontOfSize:14.0];
+    _messageLabel.textColor     = [WPStyleGuide allTAllShadeGrey];
+    _messageLabel.numberOfLines = 0;
+    _messageLabel.textAlignment = NSTextAlignmentCenter;
+
+    // Button
+    _button                     = [UIButton buttonWithType:UIButtonTypeCustom];
+    _button.titleLabel.font     = [WPStyleGuide subtitleFontBold];
+    _button.hidden              = YES;
+    [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [_button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+    [_button setBackgroundImage:[self newButtonBackgroundImage] forState:UIControlStateNormal];
+
+    // Insert Subviews
+    [self addSubview:_titleLabel];
+    [self addSubview:_messageLabel];
+    [self addSubview:_button];
+
+    // Listen for orientation changes
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)didMoveToSuperview {

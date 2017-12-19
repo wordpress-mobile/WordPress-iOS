@@ -3,12 +3,12 @@ import Gridicons
 import WordPressShared
 
 class MediaItemImageTableViewCell: WPTableViewCell {
-    let customImageView = UIImageView()
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-    let activityMaskView = UIView()
-    let videoIconView = PlayIconView()
+    @objc let customImageView = UIImageView()
+    @objc let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    @objc let activityMaskView = UIView()
+    @objc let videoIconView = PlayIconView()
 
-    var isVideo: Bool {
+    @objc var isVideo: Bool {
         set {
             videoIconView.isHidden = !newValue
         }
@@ -32,7 +32,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
         self.init(style: .default, reuseIdentifier: nil)
     }
 
-    func commonInit() {
+    @objc func commonInit() {
         setupImageView()
         setupLoadingViews()
         setupVideoIconView()
@@ -50,7 +50,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
             customImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             ])
 
-        customImageView.setContentHuggingPriority(UILayoutPriorityDefaultLow, for: .horizontal)
+        customImageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
 
     private func setupLoadingViews() {
@@ -81,14 +81,14 @@ class MediaItemImageTableViewCell: WPTableViewCell {
 
     private var aspectRatioConstraint: NSLayoutConstraint? = nil
 
-    var targetAspectRatio: CGFloat {
+    @objc var targetAspectRatio: CGFloat {
         set {
             if let aspectRatioConstraint = aspectRatioConstraint {
                 customImageView.removeConstraint(aspectRatioConstraint)
             }
 
             aspectRatioConstraint = customImageView.heightAnchor.constraint(equalTo: customImageView.widthAnchor, multiplier: newValue, constant: 1.0)
-            aspectRatioConstraint?.priority = UILayoutPriorityDefaultHigh
+            aspectRatioConstraint?.priority = .defaultHigh
             aspectRatioConstraint?.isActive = true
         }
         get {
@@ -129,7 +129,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
 
     // MARK: - Loading
 
-    var isLoading: Bool = false {
+    @objc var isLoading: Bool = false {
         didSet {
             if isLoading {
                 activityMaskView.alpha = 0.5
@@ -143,7 +143,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
 }
 
 class MediaItemDocumentTableViewCell: WPTableViewCell {
-    let customImageView = UIImageView()
+    @objc let customImageView = UIImageView()
 
     // MARK: - Initializers
     public required init?(coder aDecoder: NSCoder) {
@@ -160,7 +160,7 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
         self.init(style: .default, reuseIdentifier: nil)
     }
 
-    func commonInit() {
+    @objc func commonInit() {
         setupImageView()
     }
 
@@ -179,7 +179,7 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
             ])
     }
 
-    func showIconForMedia(_ media: Media) {
+    @objc func showIconForMedia(_ media: Media) {
         let dimension = CGFloat(MediaDocumentRow.customHeight! / 2)
         let size = CGSize(width: dimension, height: dimension)
 

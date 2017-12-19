@@ -1,11 +1,11 @@
 import Foundation
 
 @objc open class RemoteSharingButton: NSObject {
-    open var buttonID = ""
-    open var name = ""
-    open var shortname = ""
-    open var custom = false
-    open var enabled = false
-    open var visibility: String?
-    open var order: NSNumber = 0
+    @objc open var buttonID = ""
+    @objc open var name = ""
+    @objc open var shortname = ""
+    @objc open var custom = false
+    @objc open var enabled = false
+    @objc open var visibility: String?
+    @objc open var order: NSNumber = 0
 }

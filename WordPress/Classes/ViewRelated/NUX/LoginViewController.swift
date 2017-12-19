@@ -3,7 +3,10 @@ import Gridicons
 
 protocol LoginWithLogoAndHelpViewController {
     func addWordPressLogoToNavController()
+    func handleHelpButtonTapped(_ sender: AnyObject)
     func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel)
+    func displaySupportViewController(sourceTag: SupportSourceTag)
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification)
 }
 
 extension LoginWithLogoAndHelpViewController where Self: UIViewController {
@@ -12,19 +15,24 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
         let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
     }
+
     func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel) {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
         let helpBadgeSize = CGSize(width: 12, height: 10)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+        NotificationCenter.default.addObserver(forName: .HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in
+            self?.handleHelpshiftUnreadCountUpdated(notification)
+        }
 
         let customView = UIView(frame: helpButtonContainerFrame)
 
         let helpButton = UIButton(type: .custom)
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
-        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), for: .touchUpInside)
+        helpButton.on(.touchUpInside) { [weak self] control in
+            self?.handleHelpButtonTapped(helpButton)
+        }
 
         customView.addSubview(helpButton)
         helpButton.translatesAutoresizingMaskIntoConstraints = false
@@ -50,15 +58,28 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
 
         return (helpButton, helpBadge)
     }
+
+    /// Displays the support vc.
+    ///
+    func displaySupportViewController(sourceTag: SupportSourceTag) {
+        let controller = SupportViewController()
+        controller.sourceTag = sourceTag
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.navigationBar.isTranslucent = false
+        navController.modalPresentationStyle = .formSheet
+
+        navigationController?.present(navController, animated: true, completion: nil)
+    }
 }
 
-class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewController {
+class LoginViewController: NUXAbstractViewController {
     @IBOutlet var instructionLabel: UILabel?
     @IBOutlet var errorLabel: UILabel?
     @IBOutlet var submitButton: NUXSubmitButton?
-    var errorToPresent: Error?
+    @objc var errorToPresent: Error?
 
-    lazy var loginFacade: LoginFacade = {
+    @objc lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
         facade.delegate = self
         return facade
@@ -83,13 +104,13 @@ class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewCo
 
     /// Places the WordPress logo in the navbar
     ///
-    func setupNavBarIcon() {
+    @objc func setupNavBarIcon() {
         addWordPressLogoToNavController()
     }
 
     /// Configures instruction label font
     ///
-    func styleInstructions() {
+    @objc func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
     }
 
@@ -103,7 +124,7 @@ class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewCo
 
     /// Sets the text of the error label.
     ///
-    func displayError(message: String) {
+    @objc func displayError(message: String) {
         guard message.count > 0 else {
             errorLabel?.isHidden = true
             return
@@ -114,14 +135,14 @@ class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewCo
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
+    @objc func configureSubmitButton(animating: Bool) {
         submitButton?.showActivityIndicator(animating)
         submitButton?.isEnabled = enableSubmit(animating: animating)
     }
 
     /// Determines if the submit button should be enabled. Meant to be overridden in subclasses.
     ///
-    open func enableSubmit(animating: Bool) -> Bool {
+    @objc open func enableSubmit(animating: Bool) -> Bool {
         return !animating
     }
 
@@ -132,7 +153,7 @@ class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewCo
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with login.
     ///
-    func validateFormAndLogin() {
+    @objc func validateFormAndLogin() {
         view.endEditing(true)
         displayError(message: "")
 
@@ -168,7 +189,7 @@ class LoginViewController: NUXAbstractViewController, LoginWithLogoAndHelpViewCo
 }
 
 extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
-    func configureStatusLabel(_ message: String) {
+    @objc func configureStatusLabel(_ message: String) {
         // this is now a no-op, unless status labels return
     }
 
@@ -176,7 +197,7 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
     ///
     /// - Parameter loading: True if the form should be configured to a "loading" state.
     ///
-    func configureViewLoading(_ loading: Bool) {
+    @objc func configureViewLoading(_ loading: Bool) {
         configureSubmitButton(animating: loading)
         navigationItem.hidesBackButton = loading
     }
@@ -229,11 +250,11 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
     // Update safari stored credentials. Call after a successful sign in.
     ///
-    func updateSafariCredentialsIfNeeded() {
+    @objc func updateSafariCredentialsIfNeeded() {
         SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 
-    func loginDismissal() {
+    @objc func loginDismissal() {
         self.performSegue(withIdentifier: .showEpilogue, sender: self)
     }
 }

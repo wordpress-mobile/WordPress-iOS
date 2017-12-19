@@ -10,7 +10,7 @@ class PlayIconView: UIView {
     private let playLayer = CAShapeLayer()
     private let visualEffectsView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
 
-    var isHighlighted: Bool {
+    @objc var isHighlighted: Bool {
         didSet {
             let iconColor = isHighlighted ? .black : WPStyleGuide.darkGrey()
             playLayer.strokeColor = iconColor.cgColor

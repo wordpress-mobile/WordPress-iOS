@@ -257,7 +257,7 @@ extension PingHubManager: PinghubClientDelegate {
             mediator.deleteNote(noteID: String(noteID))
         case .push(let noteID, _, _, _):
             DDLogInfo("PingHub push, syncing note \(noteID)")
-            mediator.syncNote(with: String(noteID), completion: { _ in })
+            mediator.syncNote(with: String(noteID))
         }
     }
 

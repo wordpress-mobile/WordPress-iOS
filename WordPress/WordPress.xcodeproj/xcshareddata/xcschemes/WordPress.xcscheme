@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0900"
+   LastUpgradeVersion = "0910"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -92,6 +92,16 @@
                   Identifier = "RemoteTestCase">
                </Test>
             </SkippedTests>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E16A76E41FC4425000A661E3"
+               BuildableName = "WordPressFluxTests.xctest"
+               BlueprintName = "WordPressFluxTests"
+               ReferencedContainer = "container:../WordPressFlux/WordPressFlux.xcodeproj">
+            </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>

@@ -11,7 +11,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
     fileprivate let userAgent: String?
     fileprivate var backgroundUploads: Bool
     fileprivate var backgroundSessionIdentifier: String
-    open static let defaultBackgroundSessionIdentifier = "org.wordpress.wporgxmlrpcapi"
+    @objc open static let defaultBackgroundSessionIdentifier = "org.wordpress.wporgxmlrpcapi"
 
     fileprivate lazy var sessionManager: Alamofire.SessionManager = {
         let sessionConfiguration = URLSessionConfiguration.default
@@ -56,7 +56,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
     ///   - userAgent: the user agent to use on the connection.
     ///   - backgroundUploads:  If this value is true the API object will use a background session to execute uploads requests when using the `multipartPOST` function. The default value is false.
     ///   - backgroundSessionIdentifier: The session identifier to use for the background session. This must be unique in the system.
-    public init(endpoint: URL, userAgent: String? = nil, backgroundUploads: Bool = false, backgroundSessionIdentifier: String) {
+    @objc public init(endpoint: URL, userAgent: String? = nil, backgroundUploads: Bool = false, backgroundSessionIdentifier: String) {
         self.endpoint = endpoint
         self.userAgent = userAgent
         self.backgroundUploads = backgroundUploads
@@ -69,7 +69,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
     /// - Parameters:
     ///   - endpoint:  the endpoint to connect to the xmlrpc api interface.
     ///   - userAgent: the user agent to use on the connection.
-    convenience public init(endpoint: URL, userAgent: String? = nil) {
+    @objc convenience public init(endpoint: URL, userAgent: String? = nil) {
         self.init(endpoint: endpoint, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressOrgXMLRPCApi.defaultBackgroundSessionIdentifier + "." + endpoint.absoluteString)
     }
 
@@ -81,7 +81,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
     /**
      Cancels all ongoing and makes the session so the object will not fullfil any more request
      */
-    open func invalidateAndCancelTasks() {
+    @objc open func invalidateAndCancelTasks() {
         sessionManager.session.invalidateAndCancel()
         uploadSessionManager.session.invalidateAndCancel()
     }
@@ -95,7 +95,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
      - parameter success:  callback block to be invoked if credentials are valid, the object returned in the block is the options dictionary for the site.
      - parameter failure:  callback block to be invoked is credentials fail
      */
-    open func checkCredentials(_ username: String,
+    @objc open func checkCredentials(_ username: String,
                                  password: String,
                                  success: @escaping SuccessResponseBlock,
                                  failure: @escaping FailureReponseBlock) {
@@ -114,7 +114,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    @discardableResult open func callMethod(_ method: String,
+    @objc @discardableResult open func callMethod(_ method: String,
                            parameters: [AnyObject]?,
                            success: @escaping SuccessResponseBlock,
                            failure: @escaping FailureReponseBlock) -> Progress? {
@@ -162,7 +162,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
      returns nil it's because something happened on the request serialization and the network request was not started, but the failure callback
      will be invoked with the error specificing the serialization issues.
      */
-    @discardableResult open func streamCallMethod(_ method: String,
+    @objc @discardableResult open func streamCallMethod(_ method: String,
                                  parameters: [AnyObject]?,
                                  success: @escaping SuccessResponseBlock,
                                  failure: @escaping FailureReponseBlock) -> Progress? {
@@ -265,15 +265,15 @@ open class WordPressOrgXMLRPCApi: NSObject {
         return responseXML as AnyObject
     }
 
-    open static let WordPressOrgXMLRPCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
-    open static let WordPressOrgXMLRPCApiErrorKeyDataString = "WordPressOrgXMLRPCApiErrorKeyDataString"
+    @objc open static let WordPressOrgXMLRPCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
+    @objc open static let WordPressOrgXMLRPCApiErrorKeyDataString = "WordPressOrgXMLRPCApiErrorKeyDataString"
 
     fileprivate func convertError(_ error: NSError, data: Data?) -> NSError {
         if let data = data {
             var userInfo: [AnyHashable: Any] = error.userInfo
             userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyData] = data
             userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyDataString] = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-            return NSError(domain: error.domain, code: error.code, userInfo: userInfo)
+            return NSError(domain: error.domain, code: error.code, userInfo: userInfo as? [String : Any])
         }
         return error
     }
@@ -281,7 +281,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
 
 extension WordPressOrgXMLRPCApi {
 
-    public func urlSession(_ session: URLSession,
+    @objc public func urlSession(_ session: URLSession,
                            didReceive challenge: URLAuthenticationChallenge,
                            completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         switch challenge.protectionSpace.authenticationMethod {
@@ -306,7 +306,7 @@ extension WordPressOrgXMLRPCApi {
         }
     }
 
-    public func urlSession(_ session: URLSession,
+    @objc public func urlSession(_ session: URLSession,
                            task: URLSessionTask,
                            didReceive challenge: URLAuthenticationChallenge,
                                        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

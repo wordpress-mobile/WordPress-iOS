@@ -214,7 +214,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    public func deleteFollower(_ siteID: Int,
+    @objc public func deleteFollower(_ siteID: Int,
                         userID: Int,
                         success: (() -> Void)? = nil,
                         failure: ((Error) -> Void)? = nil) {
@@ -237,7 +237,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Optional closure to be executed on success
     ///     - failure: Optional closure to be executed on error.
     ///
-    public func deleteViewer(_ siteID: Int,
+    @objc public func deleteViewer(_ siteID: Int,
                       userID: Int,
                       success: (() -> Void)? = nil,
                       failure: ((Error) -> Void)? = nil) {
@@ -290,7 +290,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
-    public func validateInvitation(_ siteID: Int,
+    @objc public func validateInvitation(_ siteID: Int,
                             usernameOrEmail: String,
                             role: String,
                             success: @escaping (() -> Void),
@@ -332,7 +332,7 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: Closure to be executed on success.
     ///     - failure: Closure to be executed on failure. The remote error will be passed on.
     ///
-    public func sendInvitation(_ siteID: Int,
+    @objc public func sendInvitation(_ siteID: Int,
                         usernameOrEmail: String,
                         role: String,
                         message: String,

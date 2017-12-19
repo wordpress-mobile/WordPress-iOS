@@ -11,16 +11,16 @@ class AppRatingUtility: NSObject {
     /// section so as to trigger the review prompt for a fairly active user who
     /// uses the app in a broad fashion.
     ///
-    var systemWideSignificantEventCountRequiredForPrompt: Int = 1
+    @objc var systemWideSignificantEventCountRequiredForPrompt: Int = 1
 
     /// The App Review URL that we send off to UIApplication to open up the app
     /// store review page.
     ///
-    var appReviewUrl: URL = Constants.defaultAppReviewURL
+    @objc var appReviewUrl: URL = Constants.defaultAppReviewURL
 
     /// Sets the number of days that have to pass between AppReview prompts
     /// Since Apple only allows 3 prompts per year, we are settings this number to 122
-    var numberOfDaysToWaitBetweenPrompts: Int = 122
+    @objc var numberOfDaysToWaitBetweenPrompts: Int = 122
 
     private let defaults: UserDefaults
     private var sections = [String: Section]()
@@ -39,9 +39,9 @@ class AppRatingUtility: NSObject {
         return promptingDisabledRemote || promptingDisabledLocal
     }
 
-    static let shared = AppRatingUtility(defaults: UserDefaults.standard)
+    @objc static let shared = AppRatingUtility(defaults: UserDefaults.standard)
 
-    init(defaults: UserDefaults) {
+    @objc init(defaults: UserDefaults) {
         self.defaults = defaults
     }
 
@@ -51,7 +51,7 @@ class AppRatingUtility: NSObject {
     /// - Parameters:
     ///     - version: version number of the app, e.g. CFBundleShortVersionString
     ///
-    func setVersion(_ version: String) {
+    @objc func setVersion(_ version: String) {
         let trackingVersion = defaults.string(forKey: Key.currentVersion) ?? version
         defaults.set(version, forKey: Key.currentVersion)
 
@@ -70,7 +70,7 @@ class AppRatingUtility: NSObject {
     /// This checks if we've disabled app review prompts for a feature or at a
     /// global level
     ///
-    func checkIfAppReviewPromptsHaveBeenDisabled(success: (() -> Void)?, failure: (() -> Void)?) {
+    @objc func checkIfAppReviewPromptsHaveBeenDisabled(success: (() -> Void)?, failure: (() -> Void)?) {
         let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
         let task = session.dataTask(with: Constants.promptDisabledURL) { [weak self] data, _, error in
             guard let this = self else {
@@ -121,7 +121,7 @@ class AppRatingUtility: NSObject {
 
     /// Increments significant events app wide.
     ///
-    func incrementSignificantEvent() {
+    @objc func incrementSignificantEvent() {
         incrementStoredValue(key: Key.significantEventCount)
     }
 
@@ -140,26 +140,26 @@ class AppRatingUtility: NSObject {
     /// Indicates that the user didn't want to review the app or leave feedback
     /// for this version.
     ///
-    func declinedToRateCurrentVersion() {
+    @objc func declinedToRateCurrentVersion() {
         defaults.set(true, forKey: Key.declinedToRateCurrentVersion)
         defaults.set(2, forKey: Key.numberOfVersionsToSkipPrompting)
     }
 
     /// Indicates that the user decided to give feedback for this version.
     ///
-    func gaveFeedbackForCurrentVersion() {
+    @objc func gaveFeedbackForCurrentVersion() {
         defaults.set(true, forKey: Key.gaveFeedbackForCurrentVersion)
     }
 
     /// Indicates that the use rated the current version of the app.
     ///
-    func ratedCurrentVersion() {
+    @objc func ratedCurrentVersion() {
         defaults.set(true, forKey: Key.ratedCurrentVersion)
     }
 
     /// Indicates that the user didn't like the current version of the app.
     ///
-    func dislikedCurrentVersion() {
+    @objc func dislikedCurrentVersion() {
         incrementStoredValue(key: Key.userDislikeCount)
         defaults.set(true, forKey: Key.dislikedCurrentVersion)
         defaults.set(2, forKey: Key.numberOfVersionsToSkipPrompting)
@@ -167,7 +167,7 @@ class AppRatingUtility: NSObject {
 
     /// Indicates the user did like the current version of the app.
     ///
-    func likedCurrentVersion() {
+    @objc func likedCurrentVersion() {
         incrementStoredValue(key: Key.userLikeCount)
         defaults.set(true, forKey: Key.likedCurrentVersion)
         defaults.set(1, forKey: Key.numberOfVersionsToSkipPrompting)
@@ -175,7 +175,7 @@ class AppRatingUtility: NSObject {
 
     /// Indicates whether enough time has passed since we last prompted the user for their opinion.
     ///
-    func enoughTimePassedSinceLastPrompt()-> Bool {
+    @objc func enoughTimePassedSinceLastPrompt()-> Bool {
         if let lastPromptDate = defaults.value(forKeyPath: Key.lastPromptToRateDate),
             let date = lastPromptDate as? Date,
             let days = Calendar.current.dateComponents([.day], from: date, to: Date()).day {
@@ -191,7 +191,7 @@ class AppRatingUtility: NSObject {
     /// Note that this method will check to see if app review prompts on a
     /// global basis have been shut off.
     ///
-    func shouldPromptForAppReview() -> Bool {
+    @objc func shouldPromptForAppReview() -> Bool {
         if !enoughTimePassedSinceLastPrompt()
             || shouldSkipRatingForCurrentVersion()
             || promptingDisabled {
@@ -233,19 +233,19 @@ class AppRatingUtility: NSObject {
 
     /// Records a prompt for a review
     ///
-    func userWasPromptedToReview() {
+    @objc func userWasPromptedToReview() {
         defaults.set(Date(), forKey: Key.lastPromptToRateDate)
     }
 
     /// Checks if the user has ever indicated that they like the app.
     ///
-    func hasUserEverLikedApp() -> Bool {
+    @objc func hasUserEverLikedApp() -> Bool {
         return defaults.integer(forKey: Key.userLikeCount) > 0
     }
 
     /// Checks if the user has ever indicated they dislike the app.
     ///
-    func hasUserEverDislikedApp() -> Bool {
+    @objc func hasUserEverDislikedApp() -> Bool {
         return defaults.integer(forKey: Key.userDislikeCount) > 0
     }
 
@@ -339,13 +339,13 @@ class AppRatingUtility: NSObject {
 
     // Overrides promptingDisabledLocal. For testing purposes only.
     //
-    func _overridePromptingDisabledLocal(_ disabled: Bool) {
+    @objc func _overridePromptingDisabledLocal(_ disabled: Bool) {
         promptingDisabledLocal = disabled
     }
 
     // Overrides lastPromptToRateDate. For testing purposes only.
     //
-    func _overrideLastPromptToRateDate(_ date: Date) {
+    @objc func _overrideLastPromptToRateDate(_ date: Date) {
         defaults.set(date, forKey: Key.lastPromptToRateDate)
     }
 

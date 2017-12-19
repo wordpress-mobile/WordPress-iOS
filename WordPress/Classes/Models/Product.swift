@@ -23,7 +23,7 @@ class MockProduct: NSObject, Product {
     var priceLocale: Locale
     let productIdentifier: String
 
-    init(localizedDescription: String, localizedTitle: String, price: NSDecimalNumber, priceLocale: Locale, productIdentifier: String) {
+    @objc init(localizedDescription: String, localizedTitle: String, price: NSDecimalNumber, priceLocale: Locale, productIdentifier: String) {
         self.localizedDescription = localizedDescription
         self.localizedTitle = localizedTitle
         self.price = price

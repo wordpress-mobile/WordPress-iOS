@@ -195,7 +195,7 @@ class NotificationSyncMediator {
             if let error = error {
                 DDLogError("Error marking note as read: \(error)")
             }
-            self.syncNote(with: noteID) { _ in
+            self.syncNote(with: noteID) { (_, _) in
                 completion?(error)
             }
         }

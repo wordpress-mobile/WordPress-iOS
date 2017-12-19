@@ -27,7 +27,7 @@ class PeopleCell: WPTableViewCell {
         superAdminRoleBadge.backgroundColor = viewModel.superAdminBackgroundColor
     }
 
-    func setAvatarURL(_ avatarURL: URL?) {
+    @objc func setAvatarURL(_ avatarURL: URL?) {
         let gravatar = avatarURL.flatMap { Gravatar($0) }
         let placeholder = UIImage(named: "gravatar")!
         avatarImageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)

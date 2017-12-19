@@ -17,15 +17,15 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
             configureButton()
         }
     }
-    let cornerRadius = CGFloat(5.0)
+    @objc let cornerRadius = CGFloat(5.0)
 
-    var isAnimating: Bool {
+    @objc var isAnimating: Bool {
         get {
             return activityIndicator.isAnimating
         }
     }
 
-    let activityIndicator: UIActivityIndicatorView = {
+    @objc let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         indicator.hidesWhenStopped = true
         return indicator
@@ -73,7 +73,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
     /// Configure the appearance of the configure button.
     ///
-    func configureButton() {
+    @objc func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
         layer.cornerRadius = cornerRadius
@@ -108,7 +108,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
     /// Configures the border color.
     ///
-    func configureBorderColor() {
+    @objc func configureBorderColor() {
         var color: UIColor
         if isEnabled {
             color = isHighlighted ? WPStyleGuide.lightBlue() : UIColor.white

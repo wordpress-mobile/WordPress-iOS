@@ -13,7 +13,7 @@ static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDo
 static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
 
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
-NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
+NSNotificationName const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @implementation AccountService
@@ -102,19 +102,29 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[PushNotificationsManager shared] unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
-    if (account) {
-        [self.managedObjectContext deleteObject:account];
+    if (account == nil) {
+        return;
     }
+    [self.managedObjectContext deleteObject:account];
 
     [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
     
     // Clear WordPress.com cookies
-    NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie *cookie in wpcomCookies) {
-        if (cookie.domain.isWordPressComPath) {
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-        }
+    NSArray<id<CookieJar>> *cookieJars;
+    if (@available(iOS 11.0, *)) {
+        cookieJars = @[
+                       (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage],
+                       (id<CookieJar>)[[WKWebsiteDataStore defaultDataStore] httpCookieStore]
+                       ];
+    } else {
+        cookieJars = @[
+                       (id<CookieJar>)[NSHTTPCookieStorage sharedHTTPCookieStorage]
+                       ];
     }
+    for (id<CookieJar> cookieJar in cookieJars) {
+        [cookieJar removeWordPressComCookiesWithCompletion:^{}];
+    }
+
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     // Remove defaults

@@ -61,7 +61,7 @@ class WPTableViewCellValue2: WPReusableTableViewCell {
 }
 
 class WPTableViewCellBadge: WPTableViewCellDefault {
-    var badgeCount: Int = 0 {
+    @objc var badgeCount: Int = 0 {
         didSet {
             if badgeCount > 0 {
                 badgeLabel.text = String(badgeCount)

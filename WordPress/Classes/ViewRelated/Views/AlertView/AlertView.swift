@@ -16,7 +16,7 @@ open class AlertView: NSObject {
     ///     - message: Message string to be displayed. Note: Bold is supported, **markdown flavor**.
     ///     - completion: A closure to be executed right after the button is pressed.
     ///
-    public init(title: String, message: String, button: String, completion: Completion?) {
+    @objc public init(title: String, message: String, button: String, completion: Completion?) {
         super.init()
 
         Bundle.main.loadNibNamed(AlertView.classNameWithoutNamespaces(), owner: self, options: nil)
@@ -32,7 +32,7 @@ open class AlertView: NSObject {
 
     /// Displays the AlertView in the window.
     ///
-    open func show() {
+    @objc open func show() {
         let targetView = keyView()
 
         // Attach the BackgroundView
@@ -87,7 +87,7 @@ open class AlertView: NSObject {
     ///
     fileprivate func applyBoldStyles(_ message: NSMutableAttributedString) -> NSMutableAttributedString {
         let boldPattern = "(\\*{1,2}).+?\\1"
-        message.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes as [String: AnyObject])
+        message.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes)
         return message
     }
 

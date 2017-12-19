@@ -1,22 +1,22 @@
 import Foundation
 
 @objc open class RemotePublicizeConnection: NSObject {
-    open var connectionID: NSNumber = 0
-    open var dateIssued = Date()
-    open var dateExpires: Date? = nil
-    open var externalID = ""
-    open var externalName = ""
-    open var externalDisplay = ""
-    open var externalProfilePicture = ""
-    open var externalProfileURL = ""
-    open var externalFollowerCount: NSNumber = 0
-    open var keyringConnectionID: NSNumber = 0
-    open var keyringConnectionUserID: NSNumber = 0
-    open var label = ""
-    open var refreshURL = ""
-    open var service = ""
-    open var shared = false
-    open var status = ""
-    open var siteID: NSNumber = 0
-    open var userID: NSNumber = 0
+    @objc open var connectionID: NSNumber = 0
+    @objc open var dateIssued = Date()
+    @objc open var dateExpires: Date? = nil
+    @objc open var externalID = ""
+    @objc open var externalName = ""
+    @objc open var externalDisplay = ""
+    @objc open var externalProfilePicture = ""
+    @objc open var externalProfileURL = ""
+    @objc open var externalFollowerCount: NSNumber = 0
+    @objc open var keyringConnectionID: NSNumber = 0
+    @objc open var keyringConnectionUserID: NSNumber = 0
+    @objc open var label = ""
+    @objc open var refreshURL = ""
+    @objc open var service = ""
+    @objc open var shared = false
+    @objc open var status = ""
+    @objc open var siteID: NSNumber = 0
+    @objc open var userID: NSNumber = 0
 }

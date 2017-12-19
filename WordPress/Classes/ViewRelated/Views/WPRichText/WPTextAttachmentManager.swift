@@ -5,12 +5,12 @@ import UIKit
 /// Wrangles attachment layout and exclusion paths for the specified UITextView.
 ///
 @objc open class WPTextAttachmentManager: NSObject {
-    open var attachments = [WPTextAttachment]()
+    @objc open var attachments = [WPTextAttachment]()
     var attachmentViews = [String: WPTextAttachmentView]()
-    open weak var delegate: WPTextAttachmentManagerDelegate?
-    fileprivate(set) open weak var textView: UITextView?
-    let layoutManager: NSLayoutManager
-    let infiniteFrame = CGRect(x: CGFloat.infinity, y: CGFloat.infinity, width: 0.0, height: 0.0)
+    @objc open weak var delegate: WPTextAttachmentManagerDelegate?
+    @objc fileprivate(set) open weak var textView: UITextView?
+    @objc let layoutManager: NSLayoutManager
+    @objc let infiniteFrame = CGRect(x: CGFloat.infinity, y: CGFloat.infinity, width: 0.0, height: 0.0)
 
 
     /// Designaged initializer.
@@ -19,7 +19,7 @@ import UIKit
     ///     - textView: The UITextView to manage attachment layout.
     ///     - delegate: The delegate who will provide the UIViews used as content represented by WPTextAttachments in the UITextView's NSAttributedString.
     ///
-    public init(textView: UITextView, delegate: WPTextAttachmentManagerDelegate) {
+    @objc public init(textView: UITextView, delegate: WPTextAttachmentManagerDelegate) {
         self.textView = textView
         self.delegate = delegate
         self.layoutManager = textView.layoutManager
@@ -39,7 +39,7 @@ import UIKit
     ///
     /// - Returns: A UIView optional
     ///
-    open func viewForAttachment(_ attachment: WPTextAttachment) -> UIView? {
+    @objc open func viewForAttachment(_ attachment: WPTextAttachment) -> UIView? {
         return attachmentViews[attachment.identifier]?.view
     }
 
@@ -48,7 +48,7 @@ import UIKit
     /// making changes to the alignment or size of an attachment's custom view,
     /// or after updating an attachment's `image` property.
     ///
-    open func layoutAttachmentViews() {
+    @objc open func layoutAttachmentViews() {
         // Guard for paranoia
         guard let textStorage = layoutManager.textStorage else {
             print("Unable to layout attachment views. No NSTextStorage.")
@@ -56,7 +56,7 @@ import UIKit
         }
 
         // Now do the update.
-        textStorage.enumerateAttribute(NSAttachmentAttributeName,
+        textStorage.enumerateAttribute(.attachment,
             in: NSMakeRange(0, textStorage.length),
             options: [],
             using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in
@@ -102,7 +102,7 @@ import UIKit
     /// WPTextAttachments found in textStorage and asks the delegate for a
     /// custom view for the attachment.
     ///
-    func enumerateAttachments() {
+    @objc func enumerateAttachments() {
         resetAttachmentManager()
 
         // Safety new
@@ -110,7 +110,7 @@ import UIKit
             return
         }
 
-        layoutManager.textStorage?.enumerateAttribute(NSAttachmentAttributeName,
+        layoutManager.textStorage?.enumerateAttribute(.attachment,
             in: NSMakeRange(0, textStorage.length),
             options: [],
             using: { (object: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) in

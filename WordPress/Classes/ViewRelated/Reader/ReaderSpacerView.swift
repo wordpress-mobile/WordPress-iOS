@@ -7,7 +7,7 @@ import Foundation
 class ReaderSpacerView: UIView {
 
     // Defined with var instead of let in order to set via User Defined Runtime Attributes in IB if needed.
-    var space: Int = 8 {
+    @objc var space: Int = 8 {
         didSet {
             invalidateIntrinsicContentSize()
         }

@@ -37,7 +37,7 @@ public extension WPAppAnalytics {
      - parameter media: the Media object
      - returns: Dictionary
      */
-    public class func properties(for media: Media) -> Dictionary<String, Any> {
+    @objc public class func properties(for media: Media) -> Dictionary<String, Any> {
         var properties = [String: Any]()
         properties[MediaProperties.mime] = media.mimeType()
         if let fileExtension = media.fileExtension(), !fileExtension.isEmpty {
@@ -52,7 +52,7 @@ public extension WPAppAnalytics {
             properties[MediaProperties.durationSeconds] = media.length
         }
         if let filesize = media.filesize {
-            properties[MediaProperties.bytes] = filesize.intValue * 1024
+            properties[MediaProperties.bytes] = filesize.int64Value * 1024
         }
         return properties
     }

@@ -81,7 +81,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Delete user with bad auth failure")
 
         stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
-        remote.deleteUser(siteID, userID: userID, success: { roles in
+        remote.deleteUser(siteID, userID: userID, success: { () in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -98,7 +98,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Delete user with site owner failure")
 
         stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserSiteOwnerFailureMockFilename, contentType: .ApplicationJSON, status: 403)
-        remote.deleteUser(siteID, userID: userID, success: { roles in
+        remote.deleteUser(siteID, userID: userID, success: { () in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in
@@ -115,7 +115,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Delete user with non site member failure")
 
         stubRemoteResponse(siteUserDeleteEndpoint, filename: deleteUserNonMemberFailureMockFilename, contentType: .ApplicationJSON, status: 400)
-        remote.deleteUser(siteID, userID: userID, success: { roles in
+        remote.deleteUser(siteID, userID: userID, success: { () in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }, failure: { error in

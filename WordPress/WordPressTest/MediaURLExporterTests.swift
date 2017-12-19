@@ -106,7 +106,7 @@ class MediaURLExporterTests: XCTestCase {
         }
         var hasLocationData = false
         for metadata in asset.metadata {
-            if metadata.commonKey == AVMetadataCommonKeyLocation {
+            if metadata.commonKey == AVMetadataKey.commonKeyLocation {
                 hasLocationData = true
                 break
             }

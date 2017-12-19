@@ -164,13 +164,13 @@ class PlansLoadingIndicatorView: UIView {
         animateAfterDelay(Config.Delay.initial)
     }
 
-    func animateAfterDelay(_ delay: TimeInterval) {
+    @objc func animateAfterDelay(_ delay: TimeInterval) {
         DispatchQueue.main.asyncAfter(
             deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: { [weak self] in self?.animate() }
         )
     }
 
-    func animate() {
+    @objc func animate() {
         UIView.performWithoutAnimation {
             self.setInitialPositions()
         }

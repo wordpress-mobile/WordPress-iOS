@@ -50,7 +50,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var viewModel: ImmuTable!
 
     fileprivate var fetchRequest: NSFetchRequest<NSFetchRequestResult> {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ManagedDomain.entityName())
         request.predicate = NSPredicate(format: "%K == %@", ManagedDomain.Relationships.blog, blog)
         request.sortDescriptors = [NSSortDescriptor(key: ManagedDomain.Attributes.isPrimary, ascending: false),
                                    NSSortDescriptor(key: ManagedDomain.Attributes.domainName, ascending: true)]
@@ -58,7 +58,7 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         return request
     }
 
-    var blog: Blog! {
+    @objc var blog: Blog! {
         didSet {
             if let context = blog.managedObjectContext {
                 fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
@@ -73,9 +73,9 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
     var service: DomainsService!
-    var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
+    @objc var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>!
 
-    class func controllerWithBlog(_ blog: Blog) -> DomainsListViewController {
+    @objc class func controllerWithBlog(_ blog: Blog) -> DomainsListViewController {
         let storyboard = UIStoryboard(name: "Domains", bundle: Bundle(for: self))
         let controller = storyboard.instantiateInitialViewController() as! DomainsListViewController
 
@@ -95,8 +95,8 @@ class DomainsListViewController: UITableViewController, ImmuTablePresenter {
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
-        if let dotComID = blog.dotComID {
-            service.refreshDomainsForSite(Int(dotComID)) { _ in }
+        if let dotComID = blog.dotComID?.intValue {
+            service.refreshDomainsForSite(dotComID) { _ in }
         }
     }
 

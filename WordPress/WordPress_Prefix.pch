@@ -44,7 +44,7 @@
 // CocoaLumberjack Default Logging Level
 #ifndef COCOA_LUMBERJACK
 #define COCOA_LUMBERJACK
-extern int ddLogLevel;
+extern DDLogLevel ddLogLevel;
 #endif
 
 #endif

@@ -20,7 +20,7 @@ class PlanComparisonViewController: PagedViewController {
         fetchFeatures()
     }
 
-    let siteID: Int
+    @objc let siteID: Int
     let pricedPlans: [PricedPlan]
     let activePlan: Plan
     let initialPlan: Plan

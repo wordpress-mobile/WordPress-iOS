@@ -2,25 +2,25 @@
 
 @interface RemoteMedia : NSObject
 
-@property (nonatomic, strong) NSNumber *mediaID;
-@property (nonatomic, strong) NSURL *url;
-@property (nonatomic, strong) NSURL *localURL;
-@property (nonatomic, strong) NSURL *guid;
-@property (nonatomic, strong) NSDate *date;
-@property (nonatomic, strong) NSNumber *postID;
-@property (nonatomic, strong) NSString *file;
-@property (nonatomic, strong) NSString *mimeType;
-@property (nonatomic, strong) NSString *extension;
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *caption;
-@property (nonatomic, strong) NSString *descriptionText;
-@property (nonatomic, strong) NSString *alt;
-@property (nonatomic, strong) NSNumber *height;
-@property (nonatomic, strong) NSNumber *width;
-@property (nonatomic, strong) NSString *shortcode;
-@property (nonatomic, strong) NSDictionary *exif;
-@property (nonatomic, strong) NSString *videopressGUID;
-@property (nonatomic, strong) NSNumber *length;
-@property (nonatomic, strong) NSString *remoteThumbnailURL;
+@property (nonatomic, strong, nullable) NSNumber *mediaID;
+@property (nonatomic, strong, nullable) NSURL *url;
+@property (nonatomic, strong, nullable) NSURL *localURL;
+@property (nonatomic, strong, nullable) NSURL *guid;
+@property (nonatomic, strong, nullable) NSDate *date;
+@property (nonatomic, strong, nullable) NSNumber *postID;
+@property (nonatomic, strong, nullable) NSString *file;
+@property (nonatomic, strong, nullable) NSString *mimeType;
+@property (nonatomic, strong, nullable) NSString *extension;
+@property (nonatomic, strong, nullable) NSString *title;
+@property (nonatomic, strong, nullable) NSString *caption;
+@property (nonatomic, strong, nullable) NSString *descriptionText;
+@property (nonatomic, strong, nullable) NSString *alt;
+@property (nonatomic, strong, nullable) NSNumber *height;
+@property (nonatomic, strong, nullable) NSNumber *width;
+@property (nonatomic, strong, nullable) NSString *shortcode;
+@property (nonatomic, strong, nullable) NSDictionary *exif;
+@property (nonatomic, strong, nullable) NSString *videopressGUID;
+@property (nonatomic, strong, nullable) NSNumber *length;
+@property (nonatomic, strong, nullable) NSString *remoteThumbnailURL;
 
 @end

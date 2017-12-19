@@ -51,7 +51,7 @@ class Animator: NSObject {
     ///     - animations: A block object containing the changes to commit to the views.
     ///     - cleanup: A block called after the animations complete if there are no more pending animations.
     ///
-    func animateWithDuration(_ duration: TimeInterval, preamble: (() -> Void)? = nil, animations: @escaping () -> Void, cleanup: (() -> Void)? = nil) {
+    @objc func animateWithDuration(_ duration: TimeInterval, preamble: (() -> Void)? = nil, animations: @escaping () -> Void, cleanup: (() -> Void)? = nil) {
         precondition(Thread.isMainThread, "Animator only works on the main (UI) thread")
 
         if animationsInProgress == 0 {

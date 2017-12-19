@@ -61,8 +61,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     // Layout Constraints
     @IBOutlet fileprivate weak var featuredMediaHeightConstraint: NSLayoutConstraint!
 
-    open weak var delegate: ReaderPostCellDelegate?
-    open weak var contentProvider: ReaderPostContentProvider?
+    @objc open weak var delegate: ReaderPostCellDelegate?
+    @objc open weak var contentProvider: ReaderPostContentProvider?
 
     fileprivate let featuredMediaHeightConstraintConstant = WPDeviceIdentification.isiPad() ? CGFloat(226.0) : CGFloat(100.0)
     fileprivate var featuredImageDesiredWidth = CGFloat()
@@ -73,8 +73,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate var currentLoadedCardImageURL: String?
 
     // MARK: - Accessors
-    open var hidesFollowButton = false
-    open var enableLoggedInFeatures = true
+    @objc open var hidesFollowButton = false
+    @objc open var enableLoggedInFeatures = true
 
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
@@ -92,7 +92,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyHighlightedEffect(highlighted, animated: animated)
     }
 
-    open var headerBlogButtonIsEnabled: Bool {
+    @objc open var headerBlogButtonIsEnabled: Bool {
         get {
             return headerBlogButton.isEnabled
         }
@@ -108,15 +108,15 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
-    fileprivate lazy var readerCardTitleAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardTitleAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardTitleAttributes()
     }()
 
-    fileprivate lazy var readerCardSummaryAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardSummaryAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardSummaryAttributes()
     }()
 
-    fileprivate lazy var readerCardReadingTimeAttributes: [String: AnyObject] = {
+    fileprivate lazy var readerCardReadingTimeAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardReadingTimeAttributes()
     }()
 
@@ -262,7 +262,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         likeActionButton.titleLabel?.backgroundColor = UIColor.white
     }
 
-    open func configureCell(_ contentProvider: ReaderPostContentProvider) {
+    @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
         configureHeader()
@@ -438,7 +438,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom or jetpack (external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        if contentProvider!.isWPCom() || (contentProvider!.isJetpack() && FeatureFlag.jetpackCommentsOnReader.enabled) {
+        if contentProvider!.isWPCom() || contentProvider!.isJetpack() {
             if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().intValue > 0 {
 
                 commentActionButton.tag = CardAction.comment.rawValue
@@ -518,7 +518,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     // MARK: -
 
-    func notifyDelegateHeaderWasTapped() {
+    @objc func notifyDelegateHeaderWasTapped() {
         if headerBlogButtonIsEnabled {
             delegate?.readerCell(self, headerActionForProvider: contentProvider!)
         }

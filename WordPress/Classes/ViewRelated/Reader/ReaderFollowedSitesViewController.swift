@@ -18,13 +18,13 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     fileprivate let cellIdentifier = "CellIdentifier"
 
-    lazy var noResultsView: WPNoResultsView = {
+    @objc lazy var noResultsView: WPNoResultsView = {
         let title = NSLocalizedString("No Sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
         let message = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
         return WPNoResultsView(title: title, message: message, accessoryView: nil, buttonTitle: nil)
     }()
 
-    lazy var loadingView: WPNoResultsView = {
+    @objc lazy var loadingView: WPNoResultsView = {
         let title = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
         return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
     }()
@@ -34,7 +34,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     ///
     /// - Returns: An instance of the controller
     ///
-    class func controller() -> ReaderFollowedSitesViewController {
+    @objc class func controller() -> ReaderFollowedSitesViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderFollowedSitesViewController") as! ReaderFollowedSitesViewController
         return controller
@@ -107,9 +107,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - Configuration
 
 
-    func configureSearchBar() {
+    @objc func configureSearchBar() {
         let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
-        let attributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.grey())
+        let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
@@ -126,7 +126,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
 
-    func configureNoResultsView() {
+    @objc func configureNoResultsView() {
         noResultsView.removeFromSuperview()
         loadingView.removeFromSuperview()
         if let count = tableViewHandler.resultsController.fetchedObjects?.count, count > 0 {
@@ -166,18 +166,18 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
 
-    func handleRefresh(_ sender: AnyObject) {
+    @objc func handleRefresh(_ sender: AnyObject) {
         syncSites()
     }
 
 
-    func refreshFollowedPosts() {
+    @objc func refreshFollowedPosts() {
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.syncPostsForFollowedSites()
     }
 
 
-    func unfollowSiteAtIndexPath(_ indexPath: IndexPath) {
+    @objc func unfollowSiteAtIndexPath(_ indexPath: IndexPath) {
         guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
@@ -195,7 +195,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
 
-    func followSite(_ site: String) {
+    @objc func followSite(_ site: String) {
         guard let url = urlFromString(site) else {
             let title = NSLocalizedString("Please enter a valid URL", comment: "Title of a prompt.")
             promptWithTitle(title, message: "")
@@ -225,13 +225,13 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
 
-    func refreshPostsForFollowedTopic() {
+    @objc func refreshPostsForFollowedTopic() {
         let service = ReaderPostService(managedObjectContext: managedObjectContext())
         service.refreshPostsForFollowedTopic()
     }
 
 
-    func urlFromString(_ str: String) -> URL? {
+    @objc func urlFromString(_ str: String) -> URL? {
         // if the string contains space its not a URL
         if str.contains(" ") {
             return nil
@@ -255,13 +255,13 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 
 
-    func showPostListForSite(_ site: ReaderSiteTopic) {
+    @objc func showPostListForSite(_ site: ReaderSiteTopic) {
         let controller = ReaderStreamViewController.controllerWithTopic(site)
         navigationController?.pushViewController(controller, animated: true)
     }
 
 
-    func promptWithTitle(_ title: String, message: String) {
+    @objc func promptWithTitle(_ title: String, message: String) {
         let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(buttonTitle)

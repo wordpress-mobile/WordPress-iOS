@@ -244,7 +244,7 @@ private func starscreamSocket(url: URL, token: String) -> Socket {
 }
 
 extension WebSocket: Socket {
-    func disconnect() {
+    @objc func disconnect() {
         disconnect(forceTimeout: nil)
     }
 }

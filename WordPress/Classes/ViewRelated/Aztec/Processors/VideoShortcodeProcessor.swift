@@ -26,6 +26,10 @@ public struct VideoShortcodeProcessor {
                 html += "height=\(height) "
             }
 
+            if let uploadID = shortcode.attributes.named[MediaAttachment.uploadKey] {
+                html += "\(MediaAttachment.uploadKey)=\"\(uploadID)\" "
+            }
+
             html += "/>"
 
             return html
@@ -48,6 +52,9 @@ public struct VideoShortcodeProcessor {
             if let height = shortcode.attributes.named["height"] {
                 html += "h=\(height) "
             }
+            if let uploadID = shortcode.attributes.named[MediaAttachment.uploadKey] {
+                html += "\(MediaAttachment.uploadKey)=\"\(uploadID)\" "
+            }
             html += "]"
             return html
         })
@@ -66,6 +73,9 @@ public struct VideoShortcodeProcessor {
             if let poster = shortcode.attributes.named["poster"] {
                 html += "poster=\"\(poster)\" "
             }
+            if let uploadID = shortcode.attributes.named[MediaAttachment.uploadKey] {
+                html += "\(MediaAttachment.uploadKey)=\"\(uploadID)\" "
+            }
             html += "/>"
             return html
         })
@@ -83,6 +93,9 @@ public struct VideoShortcodeProcessor {
             }
             if let poster = shortcode.attributes.named["poster"], let posterURL = URL(string: poster), !posterURL.isFileURL {
                 html += "poster=\"\(poster)\" "
+            }
+            if let uploadID = shortcode.attributes.named[MediaAttachment.uploadKey] {
+                html += "\(MediaAttachment.uploadKey)=\"\(uploadID)\" "
             }
             html += "]"
             return html

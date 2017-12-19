@@ -10,7 +10,7 @@ extension NSAttributedString {
     ///
     /// - Returns: An attributed string with all of the embeds specified, inlined.
     ///
-    func stringByEmbeddingImageAttachments(_ embeds: [NSValue: UIImage]?) -> NSAttributedString {
+    @objc func stringByEmbeddingImageAttachments(_ embeds: [NSValue: UIImage]?) -> NSAttributedString {
         // Allow nil embeds: behave as a simple NO-OP
         if embeds == nil {
             return self
@@ -47,7 +47,7 @@ extension NSAttributedString {
     /// This helper method returns a new NSAttributedString instance, with all of the the leading / trailing newLines
     /// characters removed.
     ///
-    func trimNewlines() -> NSAttributedString {
+    @objc func trimNewlines() -> NSAttributedString {
         guard let trimmed = mutableCopy() as? NSMutableAttributedString else {
             return self
         }

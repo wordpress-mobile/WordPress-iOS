@@ -25,7 +25,7 @@ open class PublicizeConnection: NSManagedObject {
     @NSManaged open var siteID: NSNumber
     @NSManaged open var userID: NSNumber
 
-    open func isBroken() -> Bool {
+    @objc open func isBroken() -> Bool {
         return status == "broken"
     }
 }

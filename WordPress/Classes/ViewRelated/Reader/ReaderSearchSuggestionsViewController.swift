@@ -20,18 +20,18 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     @IBOutlet var borderImageView: UIImageView!
     @IBOutlet var stackViewHeightConstraint: NSLayoutConstraint!
 
-    var phrase = "" {
+    @objc var phrase = "" {
         didSet {
             updatePredicateAndRefresh()
             updateHeightConstraint()
         }
     }
 
-    var tableViewHandler: WPTableViewHandler!
+    @objc var tableViewHandler: WPTableViewHandler!
     var delegate: ReaderSearchSuggestionsDelegate?
-    let cellIdentifier = "CellIdentifier"
-    let rowAndButtonHeight = CGFloat(44.0)
-    var maxTableViewRows: Int {
+    @objc let cellIdentifier = "CellIdentifier"
+    @objc let rowAndButtonHeight = CGFloat(44.0)
+    @objc var maxTableViewRows: Int {
         let height = UIApplication.shared.keyWindow?.frame.size.height ?? 0
         if height == 320 {
             // iPhone 4s, 5, 5s, in landscape orientation
@@ -52,7 +52,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     ///
     /// - Returns: An instance of the controller.
     ///
-    class func controller() -> ReaderSearchSuggestionsViewController {
+    @objc class func controller() -> ReaderSearchSuggestionsViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderSearchSuggestionsViewController") as! ReaderSearchSuggestionsViewController
 
@@ -95,7 +95,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     // MARK: - Instance Methods
 
 
-    func updateHeightConstraint() {
+    @objc func updateHeightConstraint() {
         clearButton.isHidden = suggestionsCount() == 0 || !phrase.isEmpty
 
         let count = suggestionsCount()
@@ -108,12 +108,12 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     }
 
 
-    func suggestionsCount() -> Int {
+    @objc func suggestionsCount() -> Int {
         return tableViewHandler.resultsController.fetchedObjects?.count ?? 0
     }
 
 
-    func predicateForFetchRequest() -> NSPredicate? {
+    @objc func predicateForFetchRequest() -> NSPredicate? {
         if phrase.isEmpty {
             return nil
         }
@@ -121,7 +121,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     }
 
 
-    func updatePredicateAndRefresh() {
+    @objc func updatePredicateAndRefresh() {
         tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
         do {
             try tableViewHandler.resultsController.performFetch()
@@ -132,7 +132,7 @@ class ReaderSearchSuggestionsViewController: UIViewController {
     }
 
 
-    func clearSearchHistory() {
+    @objc func clearSearchHistory() {
         let service = ReaderSearchSuggestionService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.deleteAllSuggestions()
         tableView.reloadData()

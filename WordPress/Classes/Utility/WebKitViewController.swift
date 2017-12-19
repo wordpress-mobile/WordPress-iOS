@@ -4,25 +4,25 @@ import UIKit
 import WebKit
 
 class WebKitViewController: UIViewController {
-    let webView = WKWebView()
-    let progressView = WebProgressView()
-    let toolbar = UIToolbar()
-    let titleView = NavigationTitleView()
+    @objc let webView: WKWebView
+    @objc let progressView = WebProgressView()
+    @objc let titleView = NavigationTitleView()
 
-    var backButton: UIBarButtonItem?
-    var forwardButton: UIBarButtonItem?
-    var shareButton: UIBarButtonItem?
-    var safariButton: UIBarButtonItem?
-    var customOptionsButton: UIBarButtonItem?
+    @objc var backButton: UIBarButtonItem?
+    @objc var forwardButton: UIBarButtonItem?
+    @objc var shareButton: UIBarButtonItem?
+    @objc var safariButton: UIBarButtonItem?
+    @objc var customOptionsButton: UIBarButtonItem?
 
-    let url: URL
-    let authenticator: WebViewAuthenticator?
-    let navigationDelegate: WebNavigationDelegate?
-    var secureInteraction = false
-    var addsWPComReferrer = false
-    var customTitle: String?
+    @objc let url: URL
+    @objc let authenticator: WebViewAuthenticator?
+    @objc let navigationDelegate: WebNavigationDelegate?
+    @objc var secureInteraction = false
+    @objc var addsWPComReferrer = false
+    @objc var customTitle: String?
 
-    init(configuration: WebViewControllerConfiguration) {
+    @objc init(configuration: WebViewControllerConfiguration) {
+        webView = WKWebView()
         url = configuration.url
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
@@ -30,7 +30,19 @@ class WebKitViewController: UIViewController {
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
+        super.init(nibName: nil, bundle: nil)
+        hidesBottomBarWhenPushed = true
+    }
 
+    fileprivate init(url: URL, parent: WebKitViewController) {
+        webView = WKWebView(frame: .zero, configuration: parent.webView.configuration)
+        self.url = url
+        customOptionsButton = parent.customOptionsButton
+        secureInteraction = parent.secureInteraction
+        addsWPComReferrer = parent.addsWPComReferrer
+        customTitle = parent.customTitle
+        authenticator = parent.authenticator
+        navigationDelegate = parent.navigationDelegate
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
     }
@@ -51,9 +63,6 @@ class WebKitViewController: UIViewController {
             progressView,
             webView
             ])
-        if !secureInteraction {
-            stackView.addArrangedSubview(toolbar)
-        }
         stackView.axis = .vertical
         view = stackView
     }
@@ -69,11 +78,12 @@ class WebKitViewController: UIViewController {
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
+        webView.uiDelegate = self
 
         loadWebViewRequest()
     }
 
-    func loadWebViewRequest() {
+    @objc func loadWebViewRequest() {
         guard let authenticator = authenticator,
             #available(iOS 11, *) else {
             load(request: URLRequest(url: url))
@@ -84,7 +94,7 @@ class WebKitViewController: UIViewController {
         }
     }
 
-    func load(request: URLRequest) {
+    @objc func load(request: URLRequest) {
         var request = request
         if addsWPComReferrer {
             request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
@@ -92,7 +102,7 @@ class WebKitViewController: UIViewController {
         webView.load(request)
     }
 
-    func configureNavigation() {
+    @objc func configureNavigation() {
         let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
         closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
 
@@ -131,8 +141,9 @@ class WebKitViewController: UIViewController {
         customOptionsButton?.tintColor = WPStyleGuide.greyLighten10()
     }
 
-    func configureToolbar() {
-        toolbar.barTintColor = UIColor.white
+    @objc func configureToolbar() {
+        navigationController?.isToolbarHidden = secureInteraction
+        navigationController?.toolbar.barTintColor = UIColor.white
 
         backButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
                                      style: .plain,
@@ -156,7 +167,7 @@ class WebKitViewController: UIViewController {
 
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
-        toolbar.items = [
+        let items = [
             backButton!,
             space,
             forwardButton!,
@@ -166,21 +177,26 @@ class WebKitViewController: UIViewController {
             safariButton!
         ]
 
-        toolbar.items?.forEach({ (button) in
+        items.forEach({ (button) in
             button.tintColor = WPStyleGuide.greyLighten10()
         })
+
+        setToolbarItems(items, animated: false)
     }
 
-    func close() {
+    @objc func close() {
         dismiss(animated: true, completion: nil)
     }
 
-    func share() {
+    @objc func share() {
         guard let url = webView.url else {
             return
         }
 
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        activityViewController.modalPresentationStyle = .popover
+        activityViewController.popoverPresentationController?.barButtonItem = shareButton
+
         activityViewController.completionWithItemsHandler = { (type, completed, _, _) in
             if completed, let type = type?.rawValue {
                 WPActivityDefaults.trackActivityType(type)
@@ -190,19 +206,19 @@ class WebKitViewController: UIViewController {
 
     }
 
-    func refresh() {
+    @objc func refresh() {
         webView.reload()
     }
 
-    func goBack() {
+    @objc func goBack() {
         webView.goBack()
     }
 
-    func goForward() {
+    @objc func goForward() {
         webView.goForward()
     }
 
-    func openInSafari() {
+    @objc func openInSafari() {
         guard let url = webView.url else {
             return
         }
@@ -250,5 +266,21 @@ extension WebKitViewController: WKNavigationDelegate {
             return
         }
         decisionHandler(.allow)
+    }
+}
+
+extension WebKitViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        if navigationAction.targetFrame == nil,
+            let url = navigationAction.request.url {
+            let controller = WebKitViewController(url: url, parent: self)
+            let navController = UINavigationController(rootViewController: controller)
+            present(navController, animated: true, completion: nil)
+        }
+        return nil
+    }
+
+    func webViewDidClose(_ webView: WKWebView) {
+        dismiss(animated: true, completion: nil)
     }
 }

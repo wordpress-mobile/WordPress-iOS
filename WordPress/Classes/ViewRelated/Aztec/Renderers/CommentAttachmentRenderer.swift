@@ -88,9 +88,9 @@ private extension CommentAttachmentRenderer {
     }
 
     func messageAttributedString() -> NSAttributedString {
-        let attributes: [String: Any] = [
-            NSForegroundColorAttributeName: textColor,
-            NSFontAttributeName: textFont
+        let attributes: [NSAttributedStringKey: Any] = [
+            .foregroundColor: textColor,
+            .font: textFont
         ]
 
         return NSAttributedString(string: defaultText, attributes: attributes)
@@ -113,7 +113,7 @@ private extension CommentAttachmentRenderer {
         }
 
         let testRange = text.startIndex ..< endIndex
-        let testString = text.substring(with: testRange)
+        let testString = String(text[testRange])
 
         return testString == string
     }
