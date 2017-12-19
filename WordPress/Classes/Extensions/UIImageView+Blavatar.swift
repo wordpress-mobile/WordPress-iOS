@@ -157,4 +157,3 @@ private extension UIImageView {
         return path.contains(".wp.com")
     }
 }
-
