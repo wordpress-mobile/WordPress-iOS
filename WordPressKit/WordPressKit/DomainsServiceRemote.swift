@@ -134,7 +134,8 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
         let endPoint = "domains/suggestions"
         let servicePath = path(forEndpoint: endPoint, withVersion: ._1_1)
         let parameters: [String: AnyObject] = ["query": query as AnyObject,
-                          "include_wordpressdotcom": true as AnyObject]
+                                               "include_wordpressdotcom": true as AnyObject,
+                                               "only_wordpressdotcom": true as AnyObject]
 
         wordPressComRestApi.GET(servicePath!,
                                 parameters: parameters,
