@@ -270,4 +270,12 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
         }
         NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
     }
+
+    // If logging into Jetpack only set the defaultWordPressComAccount if there is not already one set.
+    func shouldSetDefaultAccount() -> Bool {
+        if let _ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount() {
+            return !loginFields.meta.jetpackLogin
+        }
+        return true
+    }
 }
