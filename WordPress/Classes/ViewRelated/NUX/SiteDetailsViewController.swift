@@ -43,7 +43,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? SignupDomainSuggestionViewController {
+        if let destination = segue.destination as? SiteCreationDomainsViewController {
             destination.siteName = siteTitleField.text
         }
     }
