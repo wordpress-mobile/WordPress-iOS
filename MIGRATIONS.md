@@ -5,7 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 68
 - @elibud 2017-12-12
-- `BlogSettings` added the following string properties: `dateFormat`, `timeFormat`, `startOfWeek`, the following boolean properties `ampSupported`, `ampEnabled` and an int_32 `postsPerPage` property.
+- `BlogSettings` added the following string properties: `dateFormat`, `timeFormat`, `startOfWeek`, the following non optional boolean properties `ampSupported`, `ampEnabled` with default value `NO` and an int_32 `postsPerPage` property.
 
 ## WordPress 67
 - @3vangelos 2017-09-26

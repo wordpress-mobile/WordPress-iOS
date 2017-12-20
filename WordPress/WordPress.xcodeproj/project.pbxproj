@@ -993,6 +993,7 @@
 		E6F66D421E00966000F875A5 /* UIImage+Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */; };
 		E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */; };
 		E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B921F5DD9A1F257C792EC225 /* Pods_WordPressTest.framework */; };
+		F042A3AA1FE4E17600C6884B /* TrafficSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F042A3A91FE4E17500C6884B /* TrafficSettingsViewController.swift */; };
 		F1049F331F39FCF9004DF0BB /* CalypsoProcessorOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */; };
 		F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTests.m */; };
@@ -2484,6 +2485,7 @@
 		E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotation.swift"; sourceTree = "<group>"; };
 		E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarProfile.swift; sourceTree = "<group>"; };
 		EF379F0A70B6AC45330EE287 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
+		F042A3A91FE4E17500C6884B /* TrafficSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrafficSettingsViewController.swift; sourceTree = "<group>"; };
 		F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalypsoProcessorOut.swift; sourceTree = "<group>"; };
 		F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 67.xcdatamodel"; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPNavigationMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
@@ -4089,6 +4091,7 @@
 				FF1933FD1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.h */,
 				FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */,
 				82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */,
+				F042A3A91FE4E17500C6884B /* TrafficSettingsViewController.swift */,
 			);
 			path = Blog;
 			sourceTree = "<group>";
@@ -6393,6 +6396,7 @@
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				E1E89C6C1FD80E74006E7A33 /* Plugin.swift in Sources */,
+				F042A3AA1FE4E17600C6884B /* TrafficSettingsViewController.swift in Sources */,
 				E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */,
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
 				594399931B45091000539E21 /* WPAuthTokenIssueSolver.m in Sources */,
