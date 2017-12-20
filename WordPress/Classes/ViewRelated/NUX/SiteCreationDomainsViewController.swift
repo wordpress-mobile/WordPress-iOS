@@ -1,6 +1,6 @@
 import UIKit
 
-class SignupDomainSuggestionViewController: UITableViewController {
+class SiteCreationDomainsViewController: UITableViewController {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
 
@@ -68,7 +68,7 @@ class SignupDomainSuggestionViewController: UITableViewController {
 
 // MARK: - LoginWithLogoAndHelpViewController methods
 
-extension SignupDomainSuggestionViewController: LoginWithLogoAndHelpViewController {
+extension SiteCreationDomainsViewController: LoginWithLogoAndHelpViewController {
     func handleHelpButtonTapped(_ sender: AnyObject) {
         displaySupportViewController(sourceTag: .wpComLogin)
     }
@@ -82,7 +82,7 @@ extension SignupDomainSuggestionViewController: LoginWithLogoAndHelpViewControll
 
 // MARK: UITableViewDataSource
 
-extension SignupDomainSuggestionViewController {
+extension SiteCreationDomainsViewController {
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
         case searchField = 1
@@ -210,7 +210,7 @@ extension SignupDomainSuggestionViewController {
 
 // MARK: UITableViewDelegate
 
-extension SignupDomainSuggestionViewController {
+extension SiteCreationDomainsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedDomain: String
         switch indexPath.section {
@@ -234,7 +234,7 @@ extension SignupDomainSuggestionViewController {
 
 // MARK: SiteCreationDomainSearchTableViewCellDelegate
 
-extension SignupDomainSuggestionViewController: SiteCreationDomainSearchTableViewCellDelegate {
+extension SiteCreationDomainsViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
         suggestDomains(for: searchTerm) { [weak self] (suggestions) in
             self?.searchSuggestions = suggestions
