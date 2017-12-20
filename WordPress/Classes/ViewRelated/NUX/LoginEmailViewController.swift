@@ -112,7 +112,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         submitButton?.setTitle(submitButtonTitle, for: .highlighted)
         submitButton?.accessibilityIdentifier = "Next Button"
 
-        let selfHostedTitle = NSLocalizedString("Log into your site by entering your site address instead.", comment: "A button title.")
+        let selfHostedTitle = NSLocalizedString("Log in to your site by entering your site address instead.", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
         selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
         selfHostedSigninButton.titleLabel?.numberOfLines = 0
