@@ -24,7 +24,7 @@ class SiteCreationDomainsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = WPStyleGuide.greyLighten30()
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
         helpButton = helpButtonResult
