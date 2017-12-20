@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N83-gK-pDm">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Opx-rl-H3d" kind="show" identifier="showEmailEntry" id="TNT-Da-Jqj"/>
+                        <segue destination="Opx-rl-H3d" kind="relationship" relationship="rootViewController" id="27U-6T-jet"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7tA-fy-BPh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -34,11 +34,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HbI-Pt-4Fr" userLabel="Label View">
-                                <rect key="frame" x="0.0" y="20" width="375" height="583"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HbI-Pt-4Fr">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="19Z-ie-Qfz">
-                                        <rect key="frame" x="0.0" y="211.5" width="375" height="102"/>
+                                        <rect key="frame" x="0.0" y="221.5" width="375" height="102"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
                                                 <rect key="frame" x="20" y="0.0" width="335" height="38"/>
@@ -79,43 +79,45 @@
                                             <constraint firstItem="CPF-7g-0y5" firstAttribute="leading" secondItem="19Z-ie-Qfz" secondAttribute="leading" constant="20" id="mTN-63-nso"/>
                                         </constraints>
                                     </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Su-Zc-Omp" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="319" y="539" width="36" height="44"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="6Qa-nw-X83"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <state key="normal" title="Next">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="4Su-Zc-Omp" secondAttribute="bottom" constant="20" id="0UZ-kP-lPt"/>
                                     <constraint firstItem="HTy-KJ-his" firstAttribute="centerY" secondItem="HbI-Pt-4Fr" secondAttribute="centerY" priority="750" id="1zR-lM-3z8"/>
                                     <constraint firstItem="19Z-ie-Qfz" firstAttribute="width" secondItem="HbI-Pt-4Fr" secondAttribute="width" id="CCX-SI-aTN"/>
                                     <constraint firstAttribute="trailing" secondItem="19Z-ie-Qfz" secondAttribute="trailing" id="ZWQ-7M-VyI"/>
                                     <constraint firstItem="19Z-ie-Qfz" firstAttribute="top" relation="greaterThanOrEqual" secondItem="HbI-Pt-4Fr" secondAttribute="top" constant="20" id="nrr-J6-gt4"/>
+                                    <constraint firstAttribute="trailing" secondItem="4Su-Zc-Omp" secondAttribute="trailing" constant="20" id="qh7-FO-uhV"/>
                                     <constraint firstItem="19Z-ie-Qfz" firstAttribute="height" relation="lessThanOrEqual" secondItem="HbI-Pt-4Fr" secondAttribute="height" id="tXo-OY-qJF"/>
                                     <constraint firstItem="19Z-ie-Qfz" firstAttribute="leading" secondItem="HbI-Pt-4Fr" secondAttribute="leading" id="xww-Eo-IRU"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Su-Zc-Omp" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="319" y="603" width="36" height="44"/>
-                                <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="6Qa-nw-X83"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Next">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Z0W-Hy-v8f" firstAttribute="bottom" secondItem="4Su-Zc-Omp" secondAttribute="bottom" constant="20" id="Cbo-2H-EQO"/>
+                            <constraint firstItem="Z0W-Hy-v8f" firstAttribute="bottom" secondItem="HbI-Pt-4Fr" secondAttribute="bottom" id="19J-yr-6lq"/>
                             <constraint firstItem="Z0W-Hy-v8f" firstAttribute="top" secondItem="HbI-Pt-4Fr" secondAttribute="top" id="MVW-YH-9a6"/>
                             <constraint firstItem="HbI-Pt-4Fr" firstAttribute="trailing" secondItem="Z0W-Hy-v8f" secondAttribute="trailing" id="Rgu-Cf-yY4"/>
                             <constraint firstItem="HbI-Pt-4Fr" firstAttribute="leading" secondItem="Z0W-Hy-v8f" secondAttribute="leading" id="um7-h9-tbB"/>
-                            <constraint firstItem="4Su-Zc-Omp" firstAttribute="top" secondItem="HbI-Pt-4Fr" secondAttribute="bottom" id="uv3-hH-FAU"/>
-                            <constraint firstItem="Z0W-Hy-v8f" firstAttribute="trailing" secondItem="4Su-Zc-Omp" secondAttribute="trailing" constant="20" id="wI3-FS-KuN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Z0W-Hy-v8f"/>
                     </view>
+                    <navigationItem key="navigationItem" id="VXH-tU-Kft"/>
                     <connections>
+                        <outlet property="bottomContentConstraint" destination="19J-yr-6lq" id="IOb-ap-rZd"/>
                         <outlet property="emailField" destination="HTy-KJ-his" id="Ckg-fL-mg7"/>
                         <outlet property="errorLabel" destination="CmV-cZ-Whf" id="fT4-Ks-C8E"/>
                         <outlet property="instructionLabel" destination="CPF-7g-0y5" id="SIT-pE-IQm"/>
@@ -124,7 +126,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAN-7g-PQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-890.39999999999998" y="93.103448275862078"/>
+            <point key="canvasLocation" x="-882.39999999999998" y="78.710644677661179"/>
         </scene>
     </scenes>
     <resources>
