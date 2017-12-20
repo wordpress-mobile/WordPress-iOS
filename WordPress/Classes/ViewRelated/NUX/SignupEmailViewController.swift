@@ -1,48 +1,47 @@
 import UIKit
 
-class SignupEmailViewController: UIViewController, LoginWithLogoAndHelpViewController {
+class SignupEmailViewController: NUXAbstractViewController {
 
     // MARK: - Properties
 
-    private var helpBadge: WPNUXHelpBadgeLabel!
-    private var helpButton: UIButton!
+    @IBOutlet weak var instructionLabel: UILabel!
+    @IBOutlet weak var emailField: LoginTextField!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var nextButton: LoginButton!
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
+        configureView()
+        setupNextButton()
     }
 
-    func setupNavBar() {
+    private func setupNavBar() {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
                                            target: self,
                                            action: #selector(handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
-
         addWordPressLogoToNavController()
-
-        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
-        helpButton = helpButtonResult
-        helpBadge = helpBadgeResult
+        _ = addHelpButtonToNavController()
     }
 
-    // MARK: - Cancel Button Action
+    private func configureView() {
+        WPStyleGuide.configureColors(for: view, andTableView: nil)
 
-    @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        instructionLabel.text = NSLocalizedString("To create your new WordPress.com account, please enter your email address.", comment: "Text instructing the user to enter their email address.")
+
+        emailField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
+        emailField.accessibilityIdentifier = "Email address"
     }
 
-    // MARK: - LoginWithLogoAndHelpViewController methods
-
-    func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComSignupEmail)
-    }
-
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
-        helpBadge.text = "\(count)"
-        helpBadge.isHidden = (count == 0)
+    private func setupNextButton() {
+        nextButton.isEnabled = false
+        let nextButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
+        nextButton?.setTitle(nextButtonTitle, for: UIControlState())
+        nextButton?.setTitle(nextButtonTitle, for: .highlighted)
+        nextButton?.accessibilityIdentifier = "Next Button"
     }
 
     // MARK: - Misc
