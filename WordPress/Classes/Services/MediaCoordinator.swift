@@ -284,9 +284,15 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
             return nil
         }
 
+        let title: String
         let completedUnits = progress.completedUnitCount
-        let title = String.localizedStringWithFormat("Media uploaded (%ld files)", completedUnits)
-        return Notice(title: title)
+        if completedUnits == 1 {
+            title = NSLocalizedString("Media uploaded (%ld file)", comment: "Alert displayed to the user when a single media item has uploaded successfully.")
+        } else {
+            title = NSLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully.")
+        }
+
+        return Notice(title: String.localizedStringWithFormat(title, completedUnits))
     }
 }
 
