@@ -50,7 +50,9 @@ class MediaUploadCoordinator: MediaProgressCoordinatorDelegate {
                                                     success: {
                                                         self.end(media)
                                 }, failure: { error in
-                                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                                    if let error = error {
+                                        self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                                    }
                                     self.end(media)
                                 })
                                 if let taskProgress = progress {
