@@ -1,6 +1,70 @@
 import Foundation
-import UIDeviceIdentifier
 import CocoaLumberjack
+import Reachability
+import UIDeviceIdentifier
+
+// MARK: - Utility Configuration
+
+extension WordPressAppDelegate {
+    @objc func configureAnalytics() {
+        analytics = WPAppAnalytics(lastVisibleScreenBlock: { [weak self] in
+            return self?.currentlySelectedScreen
+        })
+    }
+
+    @objc func configureAppRatingUtility() {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            DDLogError("No CFBundleShortVersionString found in Info.plist")
+            return
+        }
+
+        let utility = AppRatingUtility.shared
+        utility.register(section: "notifications", significantEventCount: 5)
+        utility.systemWideSignificantEventCountRequiredForPrompt = 10
+        utility.setVersion(version)
+        utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
+            DDLogError("Was unable to retrieve data about throttling")
+        })
+    }
+
+    @objc func configureCrashlytics() {
+        #if DEBUG
+            return
+        #else
+            if let apiKey = ApiCredentials.crashlyticsApiKey() {
+                crashlytics = WPCrashlytics(apiKey: apiKey)
+            }
+        #endif
+    }
+
+    @objc func configureHockeySDK() {
+        hockey = HockeyManager()
+        hockey.configure()
+    }
+
+    @objc func configureReachability() {
+        internetReachability = Reachability.forInternetConnection()
+
+        let reachabilityBlock: NetworkReachable = { [weak self] reachability in
+            guard let reachability = reachability else {
+                return
+            }
+
+            let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
+            let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
+
+            DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
+            self?.connectionAvailable = reachability.isReachable()
+        }
+
+        internetReachability.reachableBlock = reachabilityBlock
+        internetReachability.unreachableBlock = reachabilityBlock
+
+        internetReachability.startNotifier()
+
+        connectionAvailable = internetReachability.isReachable()
+    }
+}
 
 // MARK: - Helpers
 
@@ -14,6 +78,20 @@ extension WordPressAppDelegate {
 
     @objc var noWordPressDotComAccount: Bool {
         return !AccountHelper.isDotcomAvailable()
+    }
+
+    @objc var currentlySelectedScreen: String {
+        // Check if the post editor or login view is up
+        let rootViewController = window.rootViewController
+        if let presentedViewController = rootViewController?.presentedViewController {
+            if presentedViewController is EditPostViewController {
+                return "Post Editor"
+            } else if presentedViewController is LoginNavigationController {
+                return "Login View"
+            }
+        }
+
+        return WPTabBarController.sharedInstance().currentlySelectedScreen()
     }
 }
 
