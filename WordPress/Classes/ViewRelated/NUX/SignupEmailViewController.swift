@@ -11,7 +11,6 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var emailField: LoginTextField!
-    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var nextButton: LoginButton!
 
     // MARK: - View
@@ -94,11 +93,68 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         displaySupportViewController(sourceTag: .wpComSignupEmail)
     }
 
+    // MARK: - Validation
+
+    private func validateForm() {
+        if !validEmail(emailField.text) {
+            displayErrorAlert(NSLocalizedString("Email address must be valid.", comment: "Error message displayed when the user attempts to continue with an invalid email address."), sourceTag: .wpComSignupEmail)
+        }
+        else {
+            let message = "Email: '\(emailField.text!)'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+            let alertController = UIAlertController(title: nil,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+            alertController.addDefaultActionWithTitle("OK")
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    fileprivate func validEmail(_ email: String?) -> Bool {
+        guard let email = email else {
+            return false
+        }
+        return EmailFormatValidator.validate(string: email)
+    }
+
+    // MARK: - Button Handling
+
+    @IBAction func nextButtonPressed(_ sender: Any) {
+        view.endEditing(true)
+        validateForm()
+    }
+
+    @IBAction func handleEmailSubmit() {
+        if validEmail(emailField.text) {
+            view.endEditing(true)
+            validateForm()
+        }
+    }
+
     // MARK: - Misc
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+}
+
+// MARK: - UITextFieldDelegate
+
+extension SignupEmailViewController: UITextFieldDelegate {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
+        nextButton.isEnabled = validEmail(updatedString)
+        return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        nextButton.isEnabled = validEmail(textField.text)
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+        nextButton.isEnabled = validEmail(textField.text)
     }
 
 }
