@@ -31,7 +31,7 @@ class SiteCreationDomainSearchTableViewCell: UITableViewCell {
         textField?.textInsets = Constants.textInsetsWithIcon
         textField?.placeholder = NSLocalizedString("Type to get more suggestions", comment: "Placeholder text for domain search during site creation.")
         textField?.accessibilityIdentifier = "Domain search field"
-        
+
         if let searchIcon = textField?.leftViewImage {
             textField?.leftViewImage = searchIcon.imageWithTintColor(WPStyleGuide.grey())
         }
