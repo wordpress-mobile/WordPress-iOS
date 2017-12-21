@@ -40,13 +40,13 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="19Z-ie-Qfz">
                                         <rect key="frame" x="0.0" y="221.5" width="375" height="102"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
                                                 <rect key="frame" x="20" y="0.0" width="335" height="38"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTy-KJ-his" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTy-KJ-his" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="58" width="375" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
@@ -64,12 +64,23 @@
                                                     <outlet property="delegate" destination="Opx-rl-H3d" id="K9y-JN-q3S"/>
                                                 </connections>
                                             </textField>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYw-oM-W1K">
+                                                <rect key="frame" x="20" y="102" width="335" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" placeholder="YES" id="li2-jI-jeL"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="HTy-KJ-his" firstAttribute="leading" secondItem="19Z-ie-Qfz" secondAttribute="leading" id="508-gl-CiS"/>
                                             <constraint firstAttribute="trailing" secondItem="HTy-KJ-his" secondAttribute="trailing" id="Cxs-sJ-xIh"/>
                                             <constraint firstAttribute="trailing" secondItem="CPF-7g-0y5" secondAttribute="trailing" constant="20" id="Eo7-wv-aBj"/>
+                                            <constraint firstItem="EYw-oM-W1K" firstAttribute="leading" secondItem="19Z-ie-Qfz" secondAttribute="leading" constant="20" id="csz-Rd-Snn"/>
                                             <constraint firstItem="CPF-7g-0y5" firstAttribute="leading" secondItem="19Z-ie-Qfz" secondAttribute="leading" constant="20" id="mTN-63-nso"/>
+                                            <constraint firstAttribute="trailing" secondItem="EYw-oM-W1K" secondAttribute="trailing" constant="20" id="q6O-HJ-f7f"/>
                                         </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Su-Zc-Omp" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
@@ -115,6 +126,7 @@
                     <connections>
                         <outlet property="bottomContentConstraint" destination="19J-yr-6lq" id="IOb-ap-rZd"/>
                         <outlet property="emailField" destination="HTy-KJ-his" id="Ckg-fL-mg7"/>
+                        <outlet property="errorLabel" destination="EYw-oM-W1K" id="rgf-yQ-g8D"/>
                         <outlet property="instructionLabel" destination="CPF-7g-0y5" id="SIT-pE-IQm"/>
                         <outlet property="nextButton" destination="4Su-Zc-Omp" id="I9u-O7-1aw"/>
                     </connections>

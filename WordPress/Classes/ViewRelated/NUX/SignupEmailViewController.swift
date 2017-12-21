@@ -11,6 +11,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var emailField: LoginTextField!
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var nextButton: LoginButton!
 
     override var sourceTag: SupportSourceTag {
@@ -19,7 +20,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         }
     }
 
-    enum AlertMessage: String {
+    enum ErrorMessage: String {
         case invalidEmail = "invalid_email"
         case availabilityCheckFail = "availability_check_fail"
         case emailUnavailable = "email_unavailable"
@@ -29,7 +30,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
             case .invalidEmail:
                 return NSLocalizedString("Please enter a valid email address.", comment: "Error message displayed when the user attempts use an invalid email address.")
             case .availabilityCheckFail:
-                return NSLocalizedString("An error occurred processing the request. Please try again later.", comment: "Error message displayed when an error occurred checking for email availability.")
+                return NSLocalizedString("Unable to verify the email address. Please try again later.", comment: "Error message displayed when an error occurred checking for email availability.")
             case .emailUnavailable:
                 return NSLocalizedString("Sorry, that email address is already being used!", comment: "Error message displayed when the entered email is not available.")
             }
@@ -114,7 +115,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
         // If the email address is invalid, display appropriate message.
         if !validEmail(emailField.text) {
-            displayErrorAlert(AlertMessage.invalidEmail.description(), sourceTag: sourceTag)
+            displayError(ErrorMessage.invalidEmail.description())
             return
         }
 
@@ -143,7 +144,8 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
         // If cannot get Remote, display generic error message.
         guard let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi(oAuthToken: nil, userAgent: nil)) else {
-            self.displayErrorAlert(AlertMessage.availabilityCheckFail.description(), sourceTag: sourceTag)
+            DDLogError("Error creating AccountServiceRemoteREST instance.")
+            self.displayError(ErrorMessage.availabilityCheckFail.description())
             completion(false)
             return
         }
@@ -151,7 +153,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         remote.isEmailAvailable(emailField.text, success: { available in
             if !available {
                 // If email address is unavailable, display appropriate message.
-                self.displayErrorAlert(AlertMessage.emailUnavailable.description(), sourceTag: self.sourceTag)
+                self.displayError(ErrorMessage.emailUnavailable.description())
             }
             completion(available)
         }, failure: { error in
@@ -159,7 +161,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
                 DDLogError("Error checking email availability: \(error.localizedDescription)")
             }
             // If check failed, display generic error message.
-            self.displayErrorAlert(AlertMessage.availabilityCheckFail.description(), sourceTag: self.sourceTag)
+            self.displayError(ErrorMessage.availabilityCheckFail.description())
             completion(false)
         })
     }
@@ -178,6 +180,15 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         }
     }
 
+    private func displayError(_ message: String) {
+        guard message.count > 0 else {
+            errorLabel?.isHidden = true
+            return
+        }
+        errorLabel?.isHidden = false
+        errorLabel?.text = message
+    }
+
     // MARK: - Misc
 
     override func didReceiveMemoryWarning() {
@@ -192,16 +203,19 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 extension SignupEmailViewController: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        errorLabel?.isHidden = true
         let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
         nextButton.isEnabled = validEmail(updatedString)
         return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        errorLabel?.isHidden = true
         nextButton.isEnabled = validEmail(textField.text)
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+        errorLabel?.isHidden = true
         nextButton.isEnabled = validEmail(textField.text)
     }
 
