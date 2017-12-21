@@ -212,7 +212,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func signIn() {
         observeLoginNotifications(true)
-        SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpack: true, connectedEmail: blog.jetpack?.connectedEmail)
+        SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
     }
 
     // MARK: - Actions
