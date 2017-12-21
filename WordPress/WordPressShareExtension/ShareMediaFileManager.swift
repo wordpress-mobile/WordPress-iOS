@@ -37,7 +37,7 @@ import Foundation
 
     // MARK: - Instance methods
 
-    /// Removes all files from the Media upload directory.
+    /// Removes *all* files from the Media upload directory.
     ///
     @objc func purgeUploadDirectory() {
         guard let mediaDirectory = mediaUploadDirectoryURL else {
@@ -61,12 +61,33 @@ import Foundation
                     try fileManager.removeItem(at: url)
                     removedCount += 1
                 } catch {
-                    DDLogError("Error while removing unused Media at path: \(error.localizedDescription) - \(url.path)")
+                    DDLogError("Error while removing Media at path: \(error.localizedDescription) - \(url.path)")
                 }
             }
         }
         if removedCount > 0 {
             DDLogInfo("Shared container media: removed \(removedCount) file(s) during cleanup.")
+        }
+    }
+
+    /// Removes a specific file from the Media upload directory *if* it exists
+    ///
+    /// - Parameter fileName: fileName: Name of file to remove
+    ///
+    @objc func removeFromUploadDirectory(fileName: String) {
+        guard let mediaDirectory = mediaUploadDirectoryURL, fileName.isEmpty == false else {
+            return
+        }
+        let fileManager = FileManager.default
+        let fullPath = mediaDirectory.appendingPathComponent(fileName, isDirectory: false)
+
+        if fileManager.fileExists(atPath: fullPath.path) {
+            do {
+                try fileManager.removeItem(at: fullPath)
+                DDLogInfo("Shared container media: removed \(fullPath.path) during cleanup.")
+            } catch {
+                DDLogError("Error while removing Media file at path: \(error.localizedDescription) - \(fullPath.path)")
+            }
         }
     }
 }
