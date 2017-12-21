@@ -71,7 +71,7 @@ class SiteCreationDomainsViewController: UITableViewController {
 
 extension SiteCreationDomainsViewController: LoginWithLogoAndHelpViewController {
     func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComLogin)
+        displaySupportViewController(sourceTag: .wpComCreateSiteDomain)
     }
 
     func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
