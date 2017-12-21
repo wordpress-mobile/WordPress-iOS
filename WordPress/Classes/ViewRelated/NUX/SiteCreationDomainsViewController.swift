@@ -227,7 +227,7 @@ extension SiteCreationDomainsViewController: SiteCreationDomainSearchTableViewCe
             tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
             return
         }
-        
+
         suggestDomains(for: searchTerm) { [weak self] (suggestions) in
             self?.searchSuggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
