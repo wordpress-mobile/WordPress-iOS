@@ -6,6 +6,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+static const NSInteger PostTagIdDefaultValue = -1;
+
 @interface PostTagService ()
 
 @end
@@ -13,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation PostTagService
 
 - (void)syncTagsForBlog:(Blog *)blog
-                success:(nullable void (^)(void))success
+                success:(nullable void (^)(NSArray <PostTag *> *tags))success
                 failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
@@ -27,11 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
                 return;
             }
             
-            [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+            NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             
             if (success) {
-                success();
+                success(tags);
             }
         }];
     } failure:failure];
@@ -68,7 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)getTopTagsForBlog:(Blog *)blog
-                  success:(nullable void (^)(NSArray <NSString *> *tags))success
+                  success:(nullable void (^)(NSArray <PostTag *> *tags))success
                   failure:(nullable void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
@@ -79,8 +81,8 @@ NS_ASSUME_NONNULL_BEGIN
     [remote getTagsWithPaging:paging
                       success:^(NSArray <RemotePostTag *> *remoteTags) {
                           [self.managedObjectContext performBlock:^{
-                              NSArray *tags = [remoteTags wp_map:^NSString *(RemotePostTag *remoteTag) {
-                                  return remoteTag.name;
+                              NSArray *tags = [remoteTags wp_map:^PostTag *(RemotePostTag *remoteTag) {
+                                  return [self tagFromRemoteTag:remoteTag blog:blog];
                               }];
                               if (success) {
                                   success(tags);
@@ -114,6 +116,45 @@ NS_ASSUME_NONNULL_BEGIN
                            }
                            
                        } failure:failure];
+}
+
+- (void)deleteTag:(PostTag*)tag
+          forBlog:(Blog *)blog
+          success:(nullable void (^)(void))success
+          failure:(nullable void (^)(NSError *error))failure
+{
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+
+    RemotePostTag *remoteTag = [self remoteTagWith:tag];
+
+    [self.managedObjectContext deleteObject:tag];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    [remote deleteTag:remoteTag success:^(void) {
+        if (success) {
+            success();
+        }
+    } failure:^(NSError * _Nonnull error) {
+        [self handleError:error forBlog:blog withFailure:failure];
+    }];
+}
+
+- (void)saveTag:(PostTag*)tag
+        forBlog:(Blog *)blog
+        success:(nullable void (^)(PostTag *tag))success
+        failure:(nullable void (^)(NSError *error))failure
+{
+    if (tag.tagID.integerValue == PostTagIdDefaultValue) {
+        [self saveNewTag:tag
+                    blog:blog
+                 success:success
+                 failure:failure];
+    } else {
+        [self updateExistingTag:tag
+                           blog:blog
+                        success:success
+                        failure:failure];
+    }
 }
 
 #pragma mark - helpers
@@ -153,11 +194,14 @@ NS_ASSUME_NONNULL_BEGIN
                                                              inManagedObjectContext:self.managedObjectContext];
         tag = [[PostTag alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
         tag.tagID = remoteTag.tagID;
+        tag.tagDescription = remoteTag.tagDescription;
         tag.blog = blog;
     }
     
     tag.name = remoteTag.name;
     tag.slug = remoteTag.slug;
+    tag.tagDescription = remoteTag.tagDescription;
+    tag.postCount = remoteTag.postCount;
     
     return tag;
 }
@@ -175,6 +219,57 @@ NS_ASSUME_NONNULL_BEGIN
     }
     
     return [tags firstObject];
+}
+
+- (void)saveNewTag:(PostTag *)tag
+              blog:(Blog *)blog
+           success:(nullable void (^)(PostTag *tag))success
+           failure:(nullable void (^)(NSError *error))failure
+{
+    RemotePostTag *remoteTag = [self remoteTagWith:tag];
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+    [remote createTag:remoteTag success:^(RemotePostTag * _Nonnull tag) {
+        if (success) {
+            PostTag *localTag = [self tagFromRemoteTag:tag blog:blog];
+            [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+            success(localTag);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        [self handleError:error forBlog:blog withFailure:failure];
+    }];
+}
+
+- (void)updateExistingTag:(PostTag *)tag
+                     blog:(Blog *)blog
+                  success:(nullable void (^)(PostTag *tag))success
+                  failure:(nullable void (^)(NSError *error))failure
+{
+    RemotePostTag *remoteTag = [self remoteTagWith:tag];
+    NSObject<TaxonomyServiceRemote> *remote = [self remoteForBlog:blog];
+    [remote updateTag:remoteTag success:^(RemotePostTag * _Nonnull updatedTag) {
+        tag.tagID = updatedTag.tagID;
+        tag.tagDescription = updatedTag.tagDescription;
+        tag.slug= updatedTag.slug;
+        tag.name = updatedTag.name;
+        [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+        if (success) {
+            success(tag);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        [self handleError:error forBlog:blog withFailure:failure];
+    }];
+}
+
+- (RemotePostTag*)remoteTagWith:(PostTag *)tag
+{
+    RemotePostTag *remoteTag = [[RemotePostTag alloc] init];
+    remoteTag.tagID = tag.tagID;
+    remoteTag.name = tag.name;
+    remoteTag.slug = tag.slug;
+    remoteTag.tagDescription = tag.tagDescription;
+    remoteTag.postCount = tag.postCount;
+
+    return remoteTag;
 }
 
 - (void)handleError:(nullable NSError *)error forBlog:(nullable Blog *)blog withFailure:(nullable void(^)(NSError *error))failure
