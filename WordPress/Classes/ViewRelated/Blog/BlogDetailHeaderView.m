@@ -70,15 +70,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (void)loadImageAtPath:(NSString *)imagePath
 {
-    [self.blavatarImageView downloadBlavatarAt:imagePath];
+    [self.blavatarImageView downloadSiteIconAt:imagePath];
 }
 
 - (void)refreshIconImage
 {
     if (self.blog.hasIcon) {
-        [self.blavatarImageView downloadBlavatarFor:self.blog placeholderImage:nil];
+        [self.blavatarImageView downloadSiteIconFor:self.blog placeholderImage:nil];
     } else {
-        self.blavatarImageView.image = [UIImage blavatarPlaceholderImage];
+        self.blavatarImageView.image = [UIImage siteIconPlaceholderImage];
     }
 }
 
