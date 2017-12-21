@@ -39,8 +39,13 @@ class SiteCreationDomainSearchTableViewCell: UITableViewCell {
 }
 
 extension SiteCreationDomainSearchTableViewCell: UITextFieldDelegate {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        self.delegate?.startSearch(for: "")
+        return true
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let searchText = textField.text, searchText.count > 0 {
+        if let searchText = textField.text {
             self.delegate?.startSearch(for: searchText)
         }
         return false
