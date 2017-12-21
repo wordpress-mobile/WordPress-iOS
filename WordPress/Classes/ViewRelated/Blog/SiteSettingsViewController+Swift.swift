@@ -14,12 +14,12 @@ extension SiteSettingsViewController {
         pickerViewController.selectionText = NSLocalizedString("The number of posts to show per page.",
                                                                comment: "Text above the selection of the number of posts to show per blog page")
         pickerViewController.pickerFormat = NSLocalizedString("%d posts", comment: "Number of posts")
-        pickerViewController.pickerMinimumValue = self.minNumberOfPostPerPage
+        pickerViewController.pickerMinimumValue = minNumberOfPostPerPage
         if let currentValue = blog.settings?.postsPerPage as? Int {
             pickerViewController.pickerSelectedValue = currentValue
-            pickerViewController.pickerMaximumValue = max(currentValue, self.maxNumberOfPostPerPage)
+            pickerViewController.pickerMaximumValue = max(currentValue, maxNumberOfPostPerPage)
         } else {
-            pickerViewController.pickerMaximumValue = self.maxNumberOfPostPerPage
+            pickerViewController.pickerMaximumValue = maxNumberOfPostPerPage
         }
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.blog.settings?.postsPerPage = newValue as NSNumber?
