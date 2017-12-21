@@ -230,9 +230,9 @@ open class NotificationSettingsViewController: UIViewController {
             cell.accessoryType              = .disclosureIndicator
 
             if let blog = settings.blog {
-                cell.imageView?.downloadBlavatar(for: blog)
+                cell.imageView?.downloadSiteIcon(for: blog)
             } else {
-                cell.imageView?.image = .blavatarPlaceholderImage
+                cell.imageView?.image = .siteIconPlaceholderImage
             }
 
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)

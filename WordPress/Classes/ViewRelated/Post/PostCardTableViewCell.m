@@ -237,7 +237,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.authorNameLabel.text = [self.post authorNameForDisplay];
 
     UIImage *placeholder = [UIImage imageNamed:@"post-blavatar-placeholder"];
-    [self.avatarImageView downloadBlavatarFor:self.post.blog placeholderImage:placeholder];
+    [self.avatarImageView downloadSiteIconFor:self.post.blog placeholderImage:placeholder];
 }
 
 - (void)configureCardImage

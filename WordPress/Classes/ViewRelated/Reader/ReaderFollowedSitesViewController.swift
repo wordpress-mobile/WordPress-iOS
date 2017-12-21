@@ -298,7 +298,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         cell.textLabel?.text = site.title
         cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
-        cell.imageView?.downloadBlavatar(at: site.siteBlavatar)
+        cell.imageView?.downloadSiteIcon(at: site.siteBlavatar)
 
 
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
