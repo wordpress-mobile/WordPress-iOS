@@ -147,7 +147,28 @@ class LoginViewController: NUXAbstractViewController {
     }
 
     override func dismiss() {
-        loginDismissal()
+        if shouldShowEpilogue() {
+            self.performSegue(withIdentifier: .showEpilogue, sender: self)
+            return
+        }
+        dismissBlock?(false)
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    fileprivate func shouldShowEpilogue() -> Bool {
+        if !isJetpackLogin() {
+            return true
+        }
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard
+            let objectID = loginFields.meta.jetpackBlogID,
+            let blog = context.object(with: objectID) as? Blog,
+            let account = blog.account
+        else {
+                return false
+        }
+        return accountService.isDefaultWordPressComAccount(account)
     }
 
     /// Validates what is entered in the various form fields and, if valid,
@@ -255,27 +276,7 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
         SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 
-    @objc func loginDismissal() {
-        self.performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-    func sendLoginFinishedNotification() {
-        if loginFields.meta.jetpackLogin {
-            // Currenty the WPTabBarController listens for the `WPSigninDidFinishNotification` notification.
-            // When received it destroy's and recreates its view controllers.
-            // We want to preserve the view hierarcy (for stats) when logging in
-            // to Jetpack so do not send the notification.
-            // 2017.12.16 - aerych
-            return
-        }
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
-    }
-
-    // If logging into Jetpack only set the defaultWordPressComAccount if there is not already one set.
-    func shouldSetDefaultAccount() -> Bool {
-        if let _ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount() {
-            return !loginFields.meta.jetpackLogin
-        }
-        return true
+    func isJetpackLogin() -> Bool {
+        return loginFields.meta.jetpackLogin
     }
 }

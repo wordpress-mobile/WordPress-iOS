@@ -12,8 +12,7 @@ protocol SigninWPComSyncHandler: class {
     func dismiss()
     func displayError(_ error: NSError, sourceTag: SupportSourceTag)
     func updateSafariCredentialsIfNeeded()
-    func sendLoginFinishedNotification()
-    func shouldSetDefaultAccount() -> Bool
+    func isJetpackLogin() -> Bool
 
     func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
     func handleSyncSuccess(_ requiredMultifactor: Bool)
@@ -34,23 +33,32 @@ extension SigninWPComSyncHandler {
         updateSafariCredentialsIfNeeded()
 
         configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
-
         let accountFacade = AccountServiceFacade()
         let account = accountFacade.createOrUpdateWordPressComAccount(withUsername: username, authToken: authToken)
-        if shouldSetDefaultAccount() {
-            accountFacade.setDefaultWordPressComAccount(account)
-        }
-        BlogSyncFacade().syncBlogs(for: account, success: { [weak self] in
-                accountFacade.updateUserDetails(for: account, success: { [weak self] in
+
+        // Create reusable success and failure blocks to share between service calls.
+        let successBlock = { [weak self] in
+            accountFacade.updateUserDetails(for: account, success: { [weak self] in
                 self?.handleSyncSuccess(requiredMultifactor)
 
                 }, failure: { [weak self] (error: Error?) in
                     self?.handleSyncFailure(error as NSError?)
-                })
-
-            }, failure: { [weak self] (error: Error?) in
-                self?.handleSyncFailure(error as NSError?)
             })
+        }
+
+        let failureBlock: (Error?) -> Void = { [weak self] (error: Error?) in
+            self?.handleSyncFailure(error as NSError?)
+        }
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if isJetpackLogin() && !accountService.isDefaultWordPressComAccount(account) {
+            let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            blogService.associateSyncedBlogs(toJetpackAccount: account, success: successBlock, failure: failureBlock)
+
+        } else {
+            accountFacade.setDefaultWordPressComAccount(account)
+            BlogSyncFacade().syncBlogs(for: account, success: successBlock, failure: failureBlock)
+        }
     }
 
 
@@ -63,14 +71,13 @@ extension SigninWPComSyncHandler {
         configureStatusLabel("")
         configureViewLoading(false)
 
-        // HACK: An alternative notification to LoginFinished that is specific to
-        // sync completion. Observe this instead of `WPSigninDidFinishNotification`
+        // HACK: An alternative notification to LoginFinished.
+        // Observe this instead of `WPSigninDidFinishNotification`
         // for Jetpack logins.  When WPTabViewController no longer destroy's
         // and rebuilds the view hierarchy this alternate notification can be
         // removed.
-        NotificationCenter.default.post(name: .WPLoginFinishedSyncingSites, object: nil)
-
-        sendLoginFinishedNotification()
+        let notification = isJetpackLogin() ? .WPLoginFinishedSyncingSites : Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification)
+        NotificationCenter.default.post(name: notification, object: nil)
 
         dismiss()
 
@@ -97,5 +104,4 @@ extension SigninWPComSyncHandler {
         DDLogError("Error while syncing wpcom account and/or blog details after authentiating. \(String(describing: error))")
         dismiss()
     }
-
 }
