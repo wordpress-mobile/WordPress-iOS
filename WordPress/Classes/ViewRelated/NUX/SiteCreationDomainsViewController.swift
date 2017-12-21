@@ -25,6 +25,7 @@ class SiteCreationDomainsViewController: UITableViewController {
         super.viewDidLoad()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
         let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
         helpButton = helpButtonResult
@@ -132,12 +133,14 @@ extension SiteCreationDomainsViewController {
             if isSearching {
                 cell = activityCell()
             } else {
-                cell = searchButtonCell(index: indexPath.row)
+                let suggestion = searchSuggestions[indexPath.row]
+                cell = suggestionCell(domain: suggestion)
             }
         case Sections.siteTitleSuggestions.rawValue:
             fallthrough
         default:
-            cell = buttonCell(index: indexPath.row)
+            let suggestion = siteTitleSuggestions[indexPath.row]
+            cell = suggestionCell(domain: suggestion)
         }
         return cell
     }
@@ -187,24 +190,24 @@ extension SiteCreationDomainsViewController {
         return cell
     }
 
-    private func buttonCell(index: Int) -> UITableViewCell {
+    private func suggestionCell(domain: String) -> UITableViewCell {
         let cell = UITableViewCell()
 
-        let suggestion = siteTitleSuggestions[index]
-
-        cell.textLabel?.text = suggestion
-        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.attributedText = styleDomain(domain)
+        cell.textLabel?.textColor = WPStyleGuide.grey()
+        cell.indentationWidth = 20.0
+        cell.indentationLevel = 1
         return cell
     }
 
-    private func searchButtonCell(index: Int) -> UITableViewCell {
-        let cell = UITableViewCell()
-
-        let suggestion = searchSuggestions[index]
-
-        cell.textLabel?.text = suggestion
-        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
-        return cell
+    private func styleDomain(_ domain: String) -> NSAttributedString {
+        let styledDomain: NSMutableAttributedString = NSMutableAttributedString(string: domain)
+        guard let dotPosition = domain.index(of: ".") else {
+            return styledDomain
+        }
+        styledDomain.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: NSMakeRange(0, dotPosition.encodedOffset))
+        return styledDomain
     }
 }
 

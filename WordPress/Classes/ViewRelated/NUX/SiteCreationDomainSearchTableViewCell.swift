@@ -10,6 +10,10 @@ class SiteCreationDomainSearchTableViewCell: UITableViewCell {
     public static let cellIdentifier = "SiteCreationDomainSearchTableViewCell"
     open var delegate: SiteCreationDomainSearchTableViewCellDelegate?
 
+    private enum Constants {
+        static let textInsetsWithIcon = WPStyleGuide.edgeInsetForLoginTextFields()
+    }
+
     required init?(coder aDecoder: NSCoder) {
         placeholder = ""
         super.init(coder: aDecoder)
@@ -24,6 +28,13 @@ class SiteCreationDomainSearchTableViewCell: UITableViewCell {
         super.awakeFromNib()
         textField?.text = placeholder
         textField?.delegate = self
+        textField?.textInsets = Constants.textInsetsWithIcon
+        textField?.placeholder = NSLocalizedString("Type to get more suggestions", comment: "Placeholder text for domain search during site creation.")
+        textField?.accessibilityIdentifier = "Domain search field"
+        
+        if let searchIcon = textField?.leftViewImage {
+            textField?.leftViewImage = searchIcon.imageWithTintColor(WPStyleGuide.grey())
+        }
     }
 }
 
