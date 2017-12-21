@@ -13,6 +13,29 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
     @IBOutlet weak var emailField: LoginTextField!
     @IBOutlet weak var nextButton: LoginButton!
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComSignupEmail
+        }
+    }
+
+    enum AlertMessage: String {
+        case invalidEmail = "invalid_email"
+        case availabilityCheckFail = "availability_check_fail"
+        case emailUnavailable = "email_unavailable"
+
+        func description() -> String {
+            switch self {
+            case .invalidEmail:
+                return NSLocalizedString("Please enter a valid email address.", comment: "Error message displayed when the user attempts use an invalid email address.")
+            case .availabilityCheckFail:
+                return NSLocalizedString("An error occurred processing the request. Please try again later.", comment: "Error message displayed when an error occurred checking for email availability.")
+            case .emailUnavailable:
+                return NSLocalizedString("Sorry, that email address is already being used!", comment: "Error message displayed when the entered email is not available.")
+            }
+        }
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -85,27 +108,25 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         keyboardWillHide(notification)
     }
 
-    // MARK: - LoginWithLogoAndHelpViewController
-
-    /// Override this to use the appropriate sourceTag.
-    ///
-    override func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComSignupEmail)
-    }
-
-    // MARK: - Validation
+    // MARK: - Email Validation
 
     private func validateForm() {
+
+        // If the email address is invalid, display appropriate message.
         if !validEmail(emailField.text) {
-            displayErrorAlert(NSLocalizedString("Email address must be valid.", comment: "Error message displayed when the user attempts to continue with an invalid email address."), sourceTag: .wpComSignupEmail)
+            displayErrorAlert(AlertMessage.invalidEmail.description(), sourceTag: sourceTag)
+            return
         }
-        else {
-            let message = "Email: '\(emailField.text!)'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-            let alertController = UIAlertController(title: nil,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle("OK")
-            self.present(alertController, animated: true, completion: nil)
+
+        checkEmailAvailability() { available in
+            if available {
+                let message = "Email: '\(self.emailField.text!)'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+                let alertController = UIAlertController(title: nil,
+                                                        message: message,
+                                                        preferredStyle: .alert)
+                alertController.addDefaultActionWithTitle("OK")
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
     }
 
@@ -114,6 +135,33 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
             return false
         }
         return EmailFormatValidator.validate(string: email)
+    }
+
+    // MARK: - Email Availability
+
+    func checkEmailAvailability(completion:@escaping (Bool) -> ()) {
+
+        // If cannot get Remote, display generic error message.
+        guard let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi(oAuthToken: nil, userAgent: nil)) else {
+            self.displayErrorAlert(AlertMessage.availabilityCheckFail.description(), sourceTag: sourceTag)
+            completion(false)
+            return
+        }
+
+        remote.isEmailAvailable(emailField.text, success: { available in
+            if !available {
+                // If email address is unavailable, display appropriate message.
+                self.displayErrorAlert(AlertMessage.emailUnavailable.description(), sourceTag: self.sourceTag)
+            }
+            completion(available)
+        }, failure: { error in
+            if let error = error {
+                DDLogError("Error checking email availability: \(error.localizedDescription)")
+            }
+            // If check failed, display generic error message.
+            self.displayErrorAlert(AlertMessage.availabilityCheckFail.description(), sourceTag: self.sourceTag)
+            completion(false)
+        })
     }
 
     // MARK: - Button Handling
