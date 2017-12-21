@@ -140,17 +140,6 @@ class AppSettingsViewController: UITableViewController {
             ])
     }
 
-    // MARK: - UITableViewDelegate
-
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-
-    @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
-        WPAppAnalytics.track(.editorAztecBetaLink)
-        FancyAlertViewController.presentWhatsNewWebView(from: self)
-    }
-
     // MARK: - Media cache methods
 
     fileprivate enum MediaCacheSettingsStatus {
