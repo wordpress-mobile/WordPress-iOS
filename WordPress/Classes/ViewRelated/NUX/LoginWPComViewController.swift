@@ -205,9 +205,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
         keyboardWillHide(notification)
     }
 
-    override func dismiss() {
-        self.performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
 
     // MARK: Keyboard Events
 
