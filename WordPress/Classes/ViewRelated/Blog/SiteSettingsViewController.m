@@ -37,6 +37,7 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
+    SiteSettingsWritingTags,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingDateAndTimeFormat,
@@ -81,6 +82,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
+@property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 @property (nonatomic, strong) SettingTableViewCell *dateAndTimeFormatCell;
@@ -288,6 +290,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _defaultCategoryCell;
 }
 
+- (SettingTableViewCell *)tagsCell
+{
+    if (_tagsCell){
+        return _tagsCell;
+    }
+    _tagsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tags", @"Label for selecting the blogs tags")
+                                                              editable: self.blog.isAdmin
+                                                       reuseIdentifier:nil];
+    return _tagsCell;
+}
+
 - (SettingTableViewCell *)defaultPostFormatCell
 {
     if (_defaultPostFormatCell){
@@ -389,6 +402,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case (SiteSettingsWritingDefaultCategory):
             [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;
+            
+        case (SiteSettingsWritingTags):
+            return self.tagsCell;
 
         case (SiteSettingsWritingDefaultPostFormat):
             [self configureDefaultPostFormatCell];
@@ -790,6 +806,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:postCategoriesViewController animated:YES];
 }
 
+- (void)showTagList
+{
+    SiteTagsViewController *tagsAdmin = [[SiteTagsViewController alloc] initWithBlog:self.blog];
+    [self.navigationController pushViewController:tagsAdmin animated:YES];
+}
+
 - (void)showPostFormatSelector
 {
     NSArray *titles = self.blog.sortedPostFormatNames;
@@ -838,6 +860,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     switch (row) {
         case SiteSettingsWritingDefaultCategory:
             [self showDefaultCategorySelector];
+            break;
+            
+        case SiteSettingsWritingTags:
+            [self showTagList];
             break;
 
         case SiteSettingsWritingDefaultPostFormat:
@@ -1018,6 +1044,18 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"Error title when updating the account password fails") message:message];
     }
+}
+
+- (NSString *)getTagsCountPresentableString:(NSInteger)tagCount
+{
+    NSString *format = NSLocalizedString(@"%@ Tags", @"The number of tags in the writting settings. Plural. %@ is a placeholder for the number");
+    
+    if (tagCount == 1) {
+        format = NSLocalizedString(@"%@ Tag", @"The number of tags in the writting settings. Singular. %@ is a placeholder for the number");
+    }
+    
+    NSString *numberOfTags = [NSString stringWithFormat: format, @(tagCount)];
+    return numberOfTags;
 }
 
 #pragma mark - Saving methods
