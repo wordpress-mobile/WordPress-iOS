@@ -3964,8 +3964,6 @@
 				985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */,
 				98B4A6551FCCCEEE0085EA23 /* ThemeSelectionViewController.swift */,
 				43D376A81FC76C80005A05CD /* SiteCreationDomainsViewController.swift */,
-				43EACB1C1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.swift */,
-				43EACB1D1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.xib */,
 			);
 			name = "Create Site";
 			sourceTree = "<group>";
@@ -5277,6 +5275,8 @@
 			children = (
 				98DED29B1FC38DBE00015AE4 /* Select Site Type */,
 				982A65261FCCE2F0008236BA /* Select Theme */,
+				43EACB1C1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.swift */,
+				43EACB1D1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.xib */,
 				436269631ECD0726008692C7 /* LoginButton.swift */,
 				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				43FB3F441EC1020600FC8A62 /* LoginEpilogueSectionHeader.swift */,

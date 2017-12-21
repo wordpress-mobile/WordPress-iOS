@@ -46,6 +46,9 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         if let destination = segue.destination as? SiteCreationDomainsViewController {
             destination.siteName = siteTitleField.text
         }
+        let backButton = UIBarButtonItem()
+        backButton.title = NSLocalizedString("Back", comment: "Back button title.")
+        navigationItem.backBarButtonItem = backButton
     }
 
     /// Configure the view for an editing state. Should only be called from viewWillAppear
