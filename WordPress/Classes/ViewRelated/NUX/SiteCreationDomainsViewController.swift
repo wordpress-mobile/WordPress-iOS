@@ -19,6 +19,7 @@ class SiteCreationDomainsViewController: UITableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
+        setupBackgroundTapGestureRecognizer()
     }
 
     override func viewDidLoad() {
@@ -30,6 +31,8 @@ class SiteCreationDomainsViewController: UITableViewController {
         let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
         helpButton = helpButtonResult
         helpBadge = helpBadgeResult
+
+        navigationItem.title = NSLocalizedString("Create New Site", comment: "Title for the site creation flow.")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +67,20 @@ class SiteCreationDomainsViewController: UITableViewController {
         }) { [weak self] (error) in
             self?.isSearching = false
         }
+    }
+
+    // MARK: background gesture recognizer
+
+    /// Sets up a gesture recognizer to detect taps on the view, but not its content.
+    ///
+    @objc func setupBackgroundTapGestureRecognizer() {
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SiteCreationDomainsViewController.handleBackgroundTapGesture(_:)))
+        gestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(gestureRecognizer)
+    }
+
+    @objc func handleBackgroundTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
 }
 
