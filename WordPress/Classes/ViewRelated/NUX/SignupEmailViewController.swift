@@ -63,12 +63,12 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
     }
 
     private func setupNavBar() {
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                           target: self,
-                                           action: #selector(handleCancelButtonTapped))
-        navigationItem.leftBarButtonItem = cancelButton
         addWordPressLogoToNavController()
         _ = addHelpButtonToNavController()
+    }
+
+    override func shouldShowCancelButton() -> Bool {
+        return true
     }
 
     private func configureView() {
@@ -78,6 +78,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
         emailField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
         emailField.accessibilityIdentifier = "Email address"
+        emailField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     private func setupNextButton() {
