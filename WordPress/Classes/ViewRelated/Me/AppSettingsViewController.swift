@@ -7,7 +7,6 @@ import SVProgressHUD
 class AppSettingsViewController: UITableViewController {
     enum Sections: Int {
         case media
-        case editor
         case other
     }
 
@@ -143,35 +142,8 @@ class AppSettingsViewController: UITableViewController {
 
     // MARK: - UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if shouldShowEditorFooterForSection(section) {
-            let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
-                                                                   y: 0.0,
-                                                                   width: tableView.frame.width,
-                                                                   height: AppSettingsViewController.aztecEditorFooterHeight))
-            footer.textLabel?.text = NSLocalizedString("Editor release notes & bug reporting",
-                                                       comment: "Label for button linking to release notes and bug reporting help for the new beta Aztec editor")
-            footer.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
-            footer.textLabel?.isUserInteractionEnabled = true
-
-            let tap = UITapGestureRecognizer(target: self, action: #selector(handleEditorFooterTap(_:)))
-            footer.addGestureRecognizer(tap)
-            return footer
-        }
-
-        return nil
-    }
-
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if shouldShowEditorFooterForSection(section) {
-            return AppSettingsViewController.aztecEditorFooterHeight
-        }
-
         return UITableViewAutomaticDimension
-    }
-
-    private func shouldShowEditorFooterForSection(_ section: Int) -> Bool {
-        return section == Sections.editor.rawValue && EditorSettings().isEnabled(.aztec)
     }
 
     @objc fileprivate func handleEditorFooterTap(_ sender: UITapGestureRecognizer) {
