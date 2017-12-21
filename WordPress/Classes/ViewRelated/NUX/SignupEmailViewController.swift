@@ -170,13 +170,11 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
     // MARK: - Button Handling
 
     @IBAction func nextButtonPressed(_ sender: Any) {
-        view.endEditing(true)
         validateForm()
     }
 
     @IBAction func handleEmailSubmit() {
         if validEmail(emailField.text) {
-            view.endEditing(true)
             validateForm()
         }
     }
