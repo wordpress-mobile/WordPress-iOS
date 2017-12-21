@@ -1,4 +1,5 @@
 import UIKit
+import SVProgressHUD
 
 class SiteCreationDomainsViewController: UITableViewController {
     var helpBadge: WPNUXHelpBadgeLabel!
@@ -18,7 +19,6 @@ class SiteCreationDomainsViewController: UITableViewController {
     override func awakeFromNib() {
         super.awakeFromNib()
         tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
-        tableView.register(UINib(nibName: "SiteCreationDomainsActivityTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier)
     }
 
     override func viewDidLoad() {
@@ -43,7 +43,7 @@ class SiteCreationDomainsViewController: UITableViewController {
 
         suggestDomains(for: nameToSearch) { [weak self] (suggestions) in
             self?.siteTitleSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.siteTitleSuggestions.rawValue), with: .automatic)
+            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue), with: .automatic)
         }
     }
 
@@ -56,11 +56,11 @@ class SiteCreationDomainsViewController: UITableViewController {
 
         let api = WordPressComRestApi(oAuthToken: "")
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
-        tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .top)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
+            SVProgressHUD.dismiss()
             addSuggestions(suggestions)
-            self?.tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .automatic)
         }) { [weak self] (error) in
             self?.isSearching = false
         }
@@ -87,11 +87,10 @@ extension SiteCreationDomainsViewController {
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
         case searchField = 1
-        case searchSuggestions = 2
-        case siteTitleSuggestions = 3
+        case suggestions = 2
 
         static var count: Int {
-            return siteTitleSuggestions.rawValue + 1
+            return suggestions.rawValue + 1
         }
     }
 
@@ -104,19 +103,13 @@ extension SiteCreationDomainsViewController {
         case Sections.titleAndDescription.rawValue:
             return 1
         case Sections.searchField.rawValue:
-            if siteTitleSuggestions.count == 0 && searchSuggestions.count == 0 {
+            if siteTitleSuggestions.count == 0 {
                 return 0
             } else {
                 return 1
             }
-        case Sections.searchSuggestions.rawValue:
-            if isSearching {
-                return 1
-            } else {
-                return searchSuggestions.count
-            }
-        case Sections.siteTitleSuggestions.rawValue:
-            return siteTitleSuggestions.count
+        case Sections.suggestions.rawValue:
+            return searchSuggestions.count > 0 ? searchSuggestions.count : siteTitleSuggestions.count
         default:
             return 0
         }
@@ -129,49 +122,37 @@ extension SiteCreationDomainsViewController {
             cell = titleAndDescriptionCell()
         case Sections.searchField.rawValue:
             cell = searchFieldCell()
-        case Sections.searchSuggestions.rawValue:
-            if isSearching {
-                cell = activityCell()
-            } else {
-                let suggestion = searchSuggestions[indexPath.row]
-                cell = suggestionCell(domain: suggestion)
-            }
-        case Sections.siteTitleSuggestions.rawValue:
+        case Sections.suggestions.rawValue:
             fallthrough
         default:
-            let suggestion = siteTitleSuggestions[indexPath.row]
+            let suggestion: String
+            if searchSuggestions.count > 0 {
+                suggestion = searchSuggestions[indexPath.row]
+            } else {
+                suggestion = siteTitleSuggestions[indexPath.row]
+            }
             cell = suggestionCell(domain: suggestion)
         }
         return cell
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard section == Sections.siteTitleSuggestions.rawValue || section == Sections.searchField.rawValue else {
-            return nil
+        if section == Sections.suggestions.rawValue {
+            let footer = UIView()
+            footer.backgroundColor = WPStyleGuide.greyLighten20()
+            return footer
         }
-        let footer = UIView()
-        footer.backgroundColor = WPStyleGuide.greyLighten20()
-        return footer
+        return nil
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard section == Sections.siteTitleSuggestions.rawValue || section == Sections.searchField.rawValue else {
-            return 0.0
+        if section == Sections.suggestions.rawValue {
+            return 0.5
         }
-        return 0.5
+        return 0
     }
 
     // MARK: table view cells
-
-    private func activityCell() -> SiteCreationDomainsActivityTableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier) as? SiteCreationDomainsActivityTableViewCell else {
-            let newCell = SiteCreationDomainsActivityTableViewCell(style: .default, reuseIdentifier: SiteCreationDomainsActivityTableViewCell.cellIdentifier)
-            newCell.activitySpinner?.startAnimating()
-            return newCell
-        }
-        cell.activitySpinner?.startAnimating()
-        return cell
-    }
 
     private func titleAndDescriptionCell() -> UITableViewCell {
         let title = NSLocalizedString("Step 4 of 4", comment: "Title for last step in the site creation process.").localizedUppercase
@@ -217,10 +198,12 @@ extension SiteCreationDomainsViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedDomain: String
         switch indexPath.section {
-        case Sections.searchSuggestions.rawValue:
-            selectedDomain = searchSuggestions[indexPath.row]
-        case Sections.siteTitleSuggestions.rawValue:
-            selectedDomain = siteTitleSuggestions[indexPath.row]
+        case Sections.suggestions.rawValue:
+            if searchSuggestions.count > 0 {
+                selectedDomain = searchSuggestions[indexPath.row]
+            } else {
+                selectedDomain = siteTitleSuggestions[indexPath.row]
+            }
         default:
             return
         }
@@ -239,9 +222,15 @@ extension SiteCreationDomainsViewController {
 
 extension SiteCreationDomainsViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
+        guard searchTerm.count > 0 else {
+            searchSuggestions = []
+            tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
+            return
+        }
+        
         suggestDomains(for: searchTerm) { [weak self] (suggestions) in
             self?.searchSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integer: Sections.searchSuggestions.rawValue), with: .automatic)
+            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
 }
