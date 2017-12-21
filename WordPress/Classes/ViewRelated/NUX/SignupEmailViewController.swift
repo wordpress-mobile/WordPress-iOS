@@ -122,7 +122,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
         checkEmailAvailability() { available in
             if available {
-                let message = "Email: '\(self.emailField.text!)'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+                let message = "Email: '\(self.emailField.text!)'\nThis is a work in progress. If you need to create an account, disable the socialSignup feature flag."
                 let alertController = UIAlertController(title: nil,
                                                         message: message,
                                                         preferredStyle: .alert)
