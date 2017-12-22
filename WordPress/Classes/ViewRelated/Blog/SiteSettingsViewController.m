@@ -63,6 +63,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
+    SiteSettingsSectionTraffic,
     SiteSettingsSectionJetpackSettings,
     SiteSettingsSectionAdvanced,
 };
@@ -89,6 +90,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *postsPerPageCell;
 #pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Traffic Section
+@property (nonatomic, strong) SwitchTableViewCell *ampSettingCell;
 #pragma mark - Jetpack Settings Section
 @property (nonatomic, strong) SettingTableViewCell *jetpackSecurityCell;
 @property (nonatomic, strong) SettingTableViewCell *jetpackConnectionCell;
@@ -166,6 +169,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
         [sections addObject:@(SiteSettingsSectionDiscussion)];
+        if (self.blog.isHostedAtWPcom && self.blog.settings.ampSupported) {
+            [sections addObject:@(SiteSettingsSectionTraffic)];
+        }
         if ([self.blog supports:BlogFeatureJetpackSettings]) {
             [sections addObject:@(SiteSettingsSectionJetpackSettings)];
         }
@@ -215,6 +221,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion:
+        {
+            return 1;
+        }
+        case SiteSettingsSectionTraffic:
         {
             return 1;
         }
@@ -355,6 +365,24 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                                                  editable:YES
                                                           reuseIdentifier:nil];
     return _discussionSettingsCell;
+}
+
+- (SwitchTableViewCell *)ampSettingCell
+{
+    if (_ampSettingCell) {
+        return _ampSettingCell;
+    }
+
+    _ampSettingCell = [SwitchTableViewCell new];
+    _ampSettingCell.name = NSLocalizedString(@"Accelerated Mobile Pages (AMP)", @"Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting");
+    _ampSettingCell.on = self.blog.settings.ampEnabled;
+    __weak __typeof__(self) weakSelf = self;
+    _ampSettingCell.onChange = ^(BOOL value){
+        weakSelf.blog.settings.ampEnabled = value;
+        [weakSelf saveSettings];
+    };
+
+    return _ampSettingCell;
 }
 
 - (SettingTableViewCell *)jetpackSecurityCell
@@ -603,6 +631,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionDiscussion:
             return self.discussionSettingsCell;
 
+        case SiteSettingsSectionTraffic:
+            return self.ampSettingCell;
+
         case SiteSettingsSectionJetpackSettings:
             return [self tableView:tableView cellForJetpackSettingsAtRow:indexPath.row];
 
@@ -641,6 +672,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            break;
+
+        case SiteSettingsSectionTraffic:
+            headingTitle = NSLocalizedString(@"Traffic", @"Title for the traffic section in site settings screen");
             break;
 
         case SiteSettingsSectionJetpackSettings:
@@ -958,6 +993,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
             break;
     }
+}
+
+- (BOOL)isTrafficSettingsSection:(NSInteger)section {
+    NSInteger settingsSection = [self.tableSections[section] integerValue];
+    return settingsSection == SiteSettingsSectionTraffic;
 }
 
 #pragma mark - Custom methods
