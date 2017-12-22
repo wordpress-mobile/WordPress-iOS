@@ -106,7 +106,7 @@ private extension UIImageView {
         let size = SiteIconDefaults.imageSizeInPixels
         let query = String(format: "w=%d&h=%d", size, size)
 
-        return URLComponents.parseURL(path: path, query: query)
+        return parseURL(path: path, query: query)
     }
 
 
@@ -118,7 +118,7 @@ private extension UIImageView {
         let size = SiteIconDefaults.imageSizeInPixels
         let query = String(format: "d=404&s=%d", size)
 
-        return URLComponents.parseURL(path: path, query: query)
+        return parseURL(path: path, query: query)
     }
 
 
@@ -155,5 +155,18 @@ private extension UIImageView {
     ///
     private func isPhotonURL(_ path: String) -> Bool {
         return path.contains(".wp.com")
+    }
+
+
+    /// Attempts to parse the URL contained within a Path, with a given query. Returns nil on failure.
+    ///
+    private func parseURL(path: String, query: String) -> URL? {
+        guard var components = URLComponents(string: path) else {
+            return nil
+        }
+
+        components.query = query
+
+        return components.url
     }
 }
