@@ -27,9 +27,9 @@ A description of what happens during a standard release taking as an example ver
 
 ## Hot Fix
 
-Sometimes there is a bug or crash that can’t wait two weeks to be fixed. This is how we handle this, for example when a critical issue is uncovered on version `9.0` of the app, currently released.
+Sometimes there is a bug or crash that can’t wait two weeks to be fixed. This is how we handle this, for example when a critical issue is uncovered on version `9.1` of the app, currently released.
 
-- Create a new branch from master called `release/9.0.1`.
+- Create a new branch from master called `release/9.1.1`.
 - Create a PR against that branch.
 - Get approvals, test very very very well, merge.
 - Submit to the store.
