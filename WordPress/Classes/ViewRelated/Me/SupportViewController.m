@@ -32,6 +32,7 @@ SupportSourceTag const SupportSourceTagLoginUsernamePassword = @"origin:login-us
 SupportSourceTag const SupportSourceTagWPComCreateSiteCategory = @"origin:wpcom-create-site-category";
 SupportSourceTag const SupportSourceTagWPComCreateSiteTheme = @"origin:wpcom-create-site-theme";
 SupportSourceTag const SupportSourceTagWPComCreateSiteDetails = @"origin:wpcom-create-site-details";
+SupportSourceTag const SupportSourceTagWPComCreateSiteDomain = @"origin:wpcom-create-site-domain";
 SupportSourceTag const SupportSourceTagWPComSignupEmail = @"origin:wpcom-signup-email-entry";
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
