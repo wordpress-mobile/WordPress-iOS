@@ -235,9 +235,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
     self.authorBlogLabel.text = [self.post blogNameForDisplay];
     self.authorNameLabel.text = [self.post authorNameForDisplay];
-    UIImage *placeholder = [UIImage imageNamed:@"post-blavatar-placeholder"];
 
-    [self.avatarImageView setImageWithSiteIconFor:self.post.blog placeholderImage:placeholder];
+    UIImage *placeholder = [UIImage imageNamed:@"post-blavatar-placeholder"];
+    [self.avatarImageView downloadSiteIconFor:self.post.blog placeholderImage:placeholder];
 }
 
 - (void)configureCardImage
