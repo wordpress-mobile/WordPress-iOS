@@ -279,6 +279,7 @@ private extension PluginStore {
 
     func removePlugin(pluginID: String, site: JetpackSiteRef) {
         guard let sitePlugins = state.plugins[site],
+            let plugin = getPlugin(id: pluginID, site: site),
             let index = sitePlugins.plugins.index(where: { $0.id == pluginID }) else {
                 return
         }
@@ -288,14 +289,17 @@ private extension PluginStore {
             pluginID: pluginID,
             siteID: site.siteID,
             success: {},
-            failure: { [weak self] _ in
-                _ = self?.getPlugins(site: site)
+            failure: { [weak self] (error) in
+                DDLogError("Error removing \(plugin.name): \(error)")
+                let message = String(format: NSLocalizedString("Error removing %@.", comment: "There was an error removing a plugin, placeholder is the plugin name"), plugin.name)
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
+                self?.refreshPlugins(site: site)
         })
     }
 
     func refreshPlugins(site: JetpackSiteRef) {
         guard !isFetchingPlugins(site: site) else {
-            assertionFailure("Plugin refresh triggered while one was in progress")
+            DDLogInfo("Plugin refresh triggered while one was in progress")
             return
         }
         fetchPlugins(site: site)
