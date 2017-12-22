@@ -14,6 +14,7 @@ static NSString * const TaxonomyXMLRPCTagIdentifier = @"post_tag";
 static NSString * const TaxonomyXMLRPCIDParameter = @"term_id";
 static NSString * const TaxonomyXMLRPCSlugParameter = @"slug";
 static NSString * const TaxonomyXMLRPCNameParameter = @"name";
+static NSString * const TaxonomyXMLRPCDescriptionParameter = @"description";
 static NSString * const TaxonomyXMLRPCParentParameter = @"parent";
 static NSString * const TaxonomyXMLRPCSearchParameter = @"search";
 static NSString * const TaxonomyXMLRPCOrderParameter = @"order";
@@ -89,6 +90,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 {
     NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
     [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
+    [extraParameters setObject:tag.tagDescription ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
     
     [self createTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
                       parameters:extraParameters
@@ -96,10 +98,43 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                              RemotePostTag *newTag = [RemotePostTag new];
                              NSString *tagID = responseString;
                              newTag.tagID = [tagID numericValue];
+                             newTag.name = tag.name;
+                             newTag.tagDescription = tag.tagDescription;
+                             newTag.slug = tag.slug;
                              if (success) {
                                  success(newTag);
                              }
                          } failure:failure];
+}
+
+- (void)updateTag:(RemotePostTag *)tag
+          success:(nullable void (^)(RemotePostTag *tag))success
+          failure:(nullable void (^)(NSError *error))failure
+{
+    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionary];
+    [extraParameters setObject:tag.name ?: [NSNull null] forKey:TaxonomyXMLRPCNameParameter];
+    [extraParameters setObject:tag.tagDescription ?: [NSNull null] forKey:TaxonomyXMLRPCDescriptionParameter];
+
+    [self editTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+                        termId:tag.tagID
+                    parameters:extraParameters success:^(BOOL response) {
+                        if (success) {
+                            success(tag);
+                        }
+                    } failure:failure];
+}
+
+- (void)deleteTag:(RemotePostTag *)tag
+          success:(nullable void (^)(void))success
+          failure:(nullable void (^)(NSError *error))failure
+{
+    [self deleteTaxonomyWithType:TaxonomyXMLRPCTagIdentifier
+                          termId:tag.tagID
+                      parameters:nil success:^(BOOL response) {
+                          if (success) {
+                              success();
+                          }
+                      } failure:failure];
 }
 
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
@@ -193,6 +228,61 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                  }];
 }
 
+- (void)deleteTaxonomyWithType:(NSString *)typeIdentifier
+                        termId:(NSNumber *)termId
+                    parameters:(nullable NSDictionary *)parameters
+                       success:(void (^)(BOOL response))success
+                       failure:(nullable void (^)(NSError *error))failure
+{
+    NSArray *xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefaults:@[typeIdentifier, termId]
+                                                              andExtra:nil];
+    
+    [self.api callMethod:@"wp.deleteTerm"
+              parameters:xmlrpcParameters
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                     if (![responseObject respondsToSelector:@selector(boolValue)]) {
+                         NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
+                         [self handleResponseErrorWithMessage:message method:@"wp.deleteTerm" failure:failure];
+                         return;
+                     }
+                     success([responseObject boolValue]);
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+- (void)editTaxonomyWithType:(NSString *)typeIdentifier
+                      termId:(NSNumber *)termId
+                  parameters:(nullable NSDictionary *)parameters
+                     success:(void (^)(BOOL response))success
+                     failure:(nullable void (^)(NSError *error))failure
+{
+    NSMutableDictionary *mutableParametersDict = [NSMutableDictionary dictionaryWithDictionary:@{@"taxonomy": typeIdentifier}];
+    NSArray *xmlrpcParameters = nil;
+    if (parameters.count) {
+        [mutableParametersDict addEntriesFromDictionary:parameters];
+    }
+
+    xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefaults:@[termId] andExtra:mutableParametersDict];
+    
+    [self.api callMethod:@"wp.editTerm"
+              parameters:xmlrpcParameters
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                     if (![responseObject respondsToSelector:@selector(boolValue)]) {
+                         NSString *message = [NSString stringWithFormat:@"Invalid response editing taxonomy of type: %@", typeIdentifier];
+                         [self handleResponseErrorWithMessage:message method:@"wp.editTerm" failure:failure];
+                         return;
+                     }
+                     success([responseObject boolValue]);
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 #pragma mark - helpers
 
 - (NSArray <RemotePostCategory *> *)remoteCategoriesFromXMLRPCArray:(NSArray *)xmlrpcArray
@@ -224,6 +314,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
     tag.tagID = [xmlrpcDictionary numberForKey:TaxonomyXMLRPCIDParameter];
     tag.name = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCNameParameter];
     tag.slug = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCSlugParameter];
+    tag.tagDescription = [xmlrpcDictionary stringForKey:TaxonomyXMLRPCDescriptionParameter];
     return tag;
 }
 
