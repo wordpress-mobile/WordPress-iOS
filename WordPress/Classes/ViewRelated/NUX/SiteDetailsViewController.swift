@@ -44,6 +44,15 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         unregisterForKeyboardEvents()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? SiteCreationDomainsViewController {
+            destination.siteName = siteTitleField.text
+        }
+        let backButton = UIBarButtonItem()
+        backButton.title = NSLocalizedString("Back", comment: "Back button title.")
+        navigationItem.backBarButtonItem = backButton
+    }
+
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
@@ -99,12 +108,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
             displayErrorAlert(NSLocalizedString("Site Title must have a value.", comment: "Error shown when Site Title does not have a value."), sourceTag: .wpComCreateSiteDetails)
         }
         else {
-            let message = "Title: '\(siteTitleField.text!)'\nTagline: '\(taglineField.text ?? "")'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-            let alertController = UIAlertController(title: nil,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle("OK")
-            self.present(alertController, animated: true, completion: nil)
+            performSegue(withIdentifier: .showDomains, sender: self)
         }
     }
 
