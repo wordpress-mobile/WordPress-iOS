@@ -96,7 +96,9 @@ class MediaCoordinator: NSObject {
                             success: {
                                 self.end(media)
         }, failure: { error in
-            self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            if let error = error {
+                self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            }
             self.fail(media)
         })
         if let taskProgress = progress {
