@@ -50,6 +50,15 @@ class SiteCreationDomainsViewController: UITableViewController {
         }
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
+    /// Fetches new domain suggestions based on the provided string
+    ///
+    /// - Parameters:
+    ///   - searchTerm: string to base suggestions on
+    ///   - addSuggestions: function to call when results arrive
     private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [String]) ->()) {
         guard !isSearching else {
             return
