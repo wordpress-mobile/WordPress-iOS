@@ -670,6 +670,8 @@
 		B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DD04731CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift */; };
 		B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */; };
 		B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */; };
+		B5E94D151FE04815000E7C20 /* UIImageView+SiteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */; };
+		B5E94D171FE04964000E7C20 /* UIImage+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E94D161FE04964000E7C20 /* UIImage+Assets.swift */; };
 		B5ECA6CA1DBAA0020062D7E0 /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */; };
 		B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */; };
 		B5EEB19F1CA96D19004B6540 /* ImageCropViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5EEB19E1CA96D19004B6540 /* ImageCropViewController.xib */; };
@@ -2022,6 +2024,8 @@
 		B5DD04731CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFetchedResultsController+Helpers.swift"; sourceTree = "<group>"; };
 		B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSCalendar+Helpers.swift"; sourceTree = "<group>"; };
 		B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableViewCell.xib; sourceTree = "<group>"; };
+		B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+SiteIcon.swift"; sourceTree = "<group>"; };
+		B5E94D161FE04964000E7C20 /* UIImage+Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Assets.swift"; sourceTree = "<group>"; };
 		B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelperTests.swift; sourceTree = "<group>"; };
 		B5EEB19E1CA96D19004B6540 /* ImageCropViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCropViewController.xib; sourceTree = "<group>"; };
@@ -4388,8 +4392,6 @@
 		B587796C19B799D800E57C5A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				FF70A3201FD5840500BC270D /* PHAsset+Metadata.swift */,
-				FF70A3211FD5840500BC270D /* UIImage+Export.swift */,
 				086C4D0C1E81F7920011D960 /* Media */,
 				B587798319B799EB00E57C5A /* Notifications */,
 				B5B84CDA1D9985190058A8FF /* CGAffineTransform+Helpers.swift */,
@@ -4405,11 +4407,15 @@
 				B587797119B799D800E57C5A /* NSParagraphStyle+Helpers.swift */,
 				B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */,
 				B5BE31C31CB825A100BDF770 /* NSURLCache+Helpers.swift */,
+				FF70A3201FD5840500BC270D /* PHAsset+Metadata.swift */,
 				1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */,
 				B587797219B799D800E57C5A /* UIDevice+Helpers.swift */,
 				E1823E6B1E42231C00C19F53 /* UIEdgeInsets.swift */,
+				B5E94D161FE04964000E7C20 /* UIImage+Assets.swift */,
+				FF70A3211FD5840500BC270D /* UIImage+Export.swift */,
 				E6F66D411E00966000F875A5 /* UIImage+Rotation.swift */,
 				E67B30291DD2428B00F2F47B /* UIImage+Tint.swift */,
+				B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */,
 				B57F010D1CB6931900B761B3 /* UIImageView+Gravatar.swift */,
 				B587797419B799D800E57C5A /* UIImageView+Networking.swift */,
 				1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */,
@@ -6748,6 +6754,7 @@
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
 				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
+				B5E94D171FE04964000E7C20 /* UIImage+Assets.swift in Sources */,
 				5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */,
 				43CC1EC01ED898E30097E334 /* LoginTextField.swift in Sources */,
 				7492F78E1F9BD94500B5A04A /* ShareMediaFileManager.swift in Sources */,
@@ -6928,6 +6935,7 @@
 				E6B84DD51F01BDAA00B1B686 /* SiteInfoHeaderView.swift in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
+				B5E94D151FE04815000E7C20 /* UIImageView+SiteIcon.swift in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
 				E61084C01B9B47BA008050C5 /* ReaderListTopic.swift in Sources */,
 				E6374DC11C444D8B00F24720 /* PublicizeService.swift in Sources */,
