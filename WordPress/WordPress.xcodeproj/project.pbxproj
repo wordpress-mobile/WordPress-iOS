@@ -686,6 +686,12 @@
 		BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */; };
 		BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */; };
 		BEC62E2C1BF2F58D007685B2 /* CreateNewBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC62E2B1BF2F58D007685B2 /* CreateNewBlogViewController.m */; };
+		BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D82F1FF11DEF00A11345 /* EditorAztecTests.swift */; };
+		BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
+		BED4D8351FF1208400A11345 /* EditorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8341FF1208400A11345 /* EditorScreen.swift */; };
+		BED4D8371FF1289B00A11345 /* EditorEditLinkScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8361FF1289B00A11345 /* EditorEditLinkScreen.swift */; };
+		BED4D8391FF137FD00A11345 /* EditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8381FF137FD00A11345 /* EditorTests.swift */; };
+		BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */; };
 		BEF950881FD7CCD000ACCB1E /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF27169E1CAAF5060006E2D4 /* WPUITestCredentials.swift */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
@@ -2030,6 +2036,12 @@
 		BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutCreatorTests.swift; path = System/3DTouch/WP3DTouchShortcutCreatorTests.swift; sourceTree = "<group>"; };
 		BEC62E2A1BF2F58D007685B2 /* CreateNewBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateNewBlogViewController.h; path = CreateNewBlog/CreateNewBlogViewController.h; sourceTree = "<group>"; };
 		BEC62E2B1BF2F58D007685B2 /* CreateNewBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateNewBlogViewController.m; path = CreateNewBlog/CreateNewBlogViewController.m; sourceTree = "<group>"; };
+		BED4D82F1FF11DEF00A11345 /* EditorAztecTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorAztecTests.swift; sourceTree = "<group>"; };
+		BED4D8321FF11E3800A11345 /* LoginFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFlow.swift; sourceTree = "<group>"; };
+		BED4D8341FF1208400A11345 /* EditorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorScreen.swift; sourceTree = "<group>"; };
+		BED4D8361FF1289B00A11345 /* EditorEditLinkScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorEditLinkScreen.swift; sourceTree = "<group>"; };
+		BED4D8381FF137FD00A11345 /* EditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTests.swift; sourceTree = "<group>"; };
+		BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPublishEpilogueScreen.swift; sourceTree = "<group>"; };
 		C52812131832E071008931FD /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
@@ -4722,13 +4734,10 @@
 		BE2B4E991FD6640E007AE3E4 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				BED4D83D1FF13C7300A11345 /* Login */,
+				BED4D83C1FF13C6200A11345 /* Editor */,
 				BE6DD3251FD66C2900E55192 /* SignupScreen.swift */,
-				BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */,
 				BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */,
-				BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */,
-				BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */,
-				BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */,
-				BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */,
 				BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */,
 				BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */,
 				BE6DD3311FD6803700E55192 /* MeTabScreen.swift */,
@@ -4739,6 +4748,7 @@
 		BE2B4EA01FD6653E007AE3E4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */,
 				BE2B4EA11FD6654A007AE3E4 /* Logger.swift */,
 			);
 			path = Utils;
@@ -4786,12 +4796,53 @@
 			name = 3DTouch;
 			sourceTree = "<group>";
 		};
+		BEA101B61FF13F0500CE5C7D /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				FF2716911CAAC87B0006E2D4 /* LoginTests.swift */,
+				FFA0B7D61CAC1F9F00533B9D /* MainNavigationTests.swift */,
+				BED4D82F1FF11DEF00A11345 /* EditorAztecTests.swift */,
+				BED4D8381FF137FD00A11345 /* EditorTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		BEC8A3FD1B4BAA08001CB8C3 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
 				BE1071FD1BC75FCF00906AFF /* Style */,
 			);
 			name = Blog;
+			sourceTree = "<group>";
+		};
+		BED4D8311FF11E2B00A11345 /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+				BED4D8321FF11E3800A11345 /* LoginFlow.swift */,
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
+		BED4D83C1FF13C6200A11345 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				BED4D8361FF1289B00A11345 /* EditorEditLinkScreen.swift */,
+				BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */,
+				BED4D8341FF1208400A11345 /* EditorScreen.swift */,
+			);
+			path = Editor;
+			sourceTree = "<group>";
+		};
+		BED4D83D1FF13C7300A11345 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				BE2B4E9A1FD66423007AE3E4 /* WelcomeScreen.swift */,
+				BE2B4EA31FD6659B007AE3E4 /* LoginEmailScreen.swift */,
+				BE6DD3271FD6705200E55192 /* LoginPasswordScreen.swift */,
+				BE6DD3291FD6708900E55192 /* LinkOrPasswordScreen.swift */,
+				BE6DD32B1FD6782A00E55192 /* LoginEpilogueScreen.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		C533CF320E6D3AB3000C3DE8 /* Comments */ = {
@@ -5464,13 +5515,12 @@
 		FF2716901CAAC87B0006E2D4 /* WordPressUITests */ = {
 			isa = PBXGroup;
 			children = (
+				BEA101B61FF13F0500CE5C7D /* Tests */,
+				BED4D8311FF11E2B00A11345 /* Flows */,
 				BE2B4EA01FD6653E007AE3E4 /* Utils */,
 				BE2B4E991FD6640E007AE3E4 /* Screens */,
 				FF27169B1CAAF3190006E2D4 /* gencredentials.rb */,
-				FF2716911CAAC87B0006E2D4 /* LoginTests.swift */,
-				FFA0B7D61CAC1F9F00533B9D /* MainNavigationTests.swift */,
 				FF2716931CAAC87B0006E2D4 /* Info.plist */,
-				FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */,
 			);
 			path = WordPressUITests;
 			sourceTree = "<group>";
@@ -7120,16 +7170,22 @@
 				BE2B4E9B1FD66423007AE3E4 /* WelcomeScreen.swift in Sources */,
 				FFA0B7D71CAC1F9F00533B9D /* MainNavigationTests.swift in Sources */,
 				BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */,
+				BED4D8351FF1208400A11345 /* EditorScreen.swift in Sources */,
 				BE6DD32C1FD6782A00E55192 /* LoginEpilogueScreen.swift in Sources */,
 				BE6DD3321FD6803700E55192 /* MeTabScreen.swift in Sources */,
+				BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */,
 				BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */,
 				FF2716921CAAC87B0006E2D4 /* LoginTests.swift in Sources */,
+				BED4D8391FF137FD00A11345 /* EditorTests.swift in Sources */,
 				BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */,
 				BE6DD32A1FD6708900E55192 /* LinkOrPasswordScreen.swift in Sources */,
 				BE6DD3261FD66C2900E55192 /* SignupScreen.swift in Sources */,
 				BE2B4EA41FD6659B007AE3E4 /* LoginEmailScreen.swift in Sources */,
+				BED4D8371FF1289B00A11345 /* EditorEditLinkScreen.swift in Sources */,
 				BE6DD3281FD6705200E55192 /* LoginPasswordScreen.swift in Sources */,
 				BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */,
+				BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */,
+				BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */,
 				FF2716A11CABC7D40006E2D4 /* XCTest+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

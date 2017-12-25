@@ -28,4 +28,9 @@ class TabNavComponent: BaseScreen {
         mySitesTabButton.tap()
         return MySitesScreen.init()
     }
+
+    func gotoEditorScreen() -> EditorScreen {
+        writeTabButton.tap()
+        return EditorScreen.init(type: "rich")
+    }
 }

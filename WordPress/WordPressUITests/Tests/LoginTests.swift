@@ -7,8 +7,9 @@ class LoginTests: XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        XCUIApplication().launch()
-        BaseScreen.testCase = self
+        let app = XCUIApplication()
+        app.launchArguments = ["NoAnimations"]
+        app.launch()
 
         // Logout first if needed
         logoutIfNeeded()

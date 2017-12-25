@@ -5,7 +5,6 @@ class BaseScreen {
     var app: XCUIApplication!
     var expectedElement: XCUIElement!
     var waitTimeout: Double!
-    public static var testCase: XCTestCase!
 
     init(element: XCUIElement) {
         app = XCUIApplication()

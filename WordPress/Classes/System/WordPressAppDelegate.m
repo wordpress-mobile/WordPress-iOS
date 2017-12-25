@@ -123,6 +123,16 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
+    
+    NSArray *args = [NSProcessInfo processInfo].arguments;
+    
+    for (NSString *arg in args){
+        if ([arg isEqualToString:@"NoAnimations"]){
+            [UIView setAnimationsEnabled:false];
+            application.windows.firstObject.layer.speed = MAXFLOAT;
+            application.keyWindow.layer.speed = MAXFLOAT;
+        }
+    }
 
     return YES;
 }
