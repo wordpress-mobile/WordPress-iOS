@@ -28,15 +28,16 @@ class EditorAztecTests: XCTestCase {
     func testLongTitle() {
         let longTitle = "long title in a galaxy not so far away"
         // Title heigh contains of actual textfield height + bottom line.
-        // 16px - is the height of that bottom line. Its not changing with different font sizes
+        // 16.5px - is the height of that bottom line. Its not changing with different font sizes
         let titleTextView = editorScreen.titleView
-        let titleLineHeight = titleTextView.frame.height - 16
+        let titleLineHeight = titleTextView.frame.height - 16.5
         let oneLineTitleHeight = titleTextView.frame.height
 
         let repeatTimes = isIPhone() ? 6 : 20
         editorScreen.enterTextInTitle(text: String(repeating: "very ", count: repeatTimes) + longTitle)
 
         let twoLineTitleHeight = titleTextView.frame.height
+
         XCTAssert(twoLineTitleHeight - oneLineTitleHeight >= titleLineHeight )
     }
 }
