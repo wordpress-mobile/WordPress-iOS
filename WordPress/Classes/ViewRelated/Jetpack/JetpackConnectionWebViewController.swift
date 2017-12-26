@@ -60,9 +60,11 @@ class JetpackConnectionWebViewController: UIViewController {
 
 extension JetpackConnectionWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else {
-            decisionHandler(.allow)
-            return
+        guard let url = navigationAction.request.url,
+            navigationAction.request.httpMethod == "GET",
+            navigationAction.targetFrame?.isMainFrame ?? false else {
+                decisionHandler(.allow)
+                return
         }
 
         switch url {
