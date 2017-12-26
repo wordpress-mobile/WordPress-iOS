@@ -1,2 +1,4 @@
-New editor performance improvements and bug fixes.
-Reader: Comments on Jetpack sites are now available.
+Aztec Editor: Clearer distinction between visual and HTML editing modes.
+Aztec Editor: Improve automatic link detection.
+Aztec Editor: Adds support for editing posts while uploading media.
+Aztec Editor: Allow Media Search From Post.
