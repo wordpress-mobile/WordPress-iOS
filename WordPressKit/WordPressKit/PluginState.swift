@@ -72,10 +72,6 @@ public extension PluginState {
         return !isJetpack && !automanaged
     }
 
-    var removeAllowed: Bool {
-        return deactivateAllowed && !active
-    }
-
     var isJetpack: Bool {
         return slug == "jetpack"
             || slug == "jetpack-dev"
