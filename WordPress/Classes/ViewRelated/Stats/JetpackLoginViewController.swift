@@ -186,8 +186,10 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func openInstallJetpackURL() {
         WPAppAnalytics.track(.selectedInstallJetpack)
-        let targetURL = blog.adminUrl(withPath: jetpackInstallRelativePath)
-        displayWebView(url: targetURL)
+        let controller = JetpackConnectionWebViewController(blog: blog)
+        controller.delegate = self
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true, completion: nil)
     }
 
     fileprivate func openMoreInformationURL() {
@@ -227,5 +229,23 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchMoreInformationButton(_ sender: Any) {
         openMoreInformationURL()
+    }
+}
+
+extension JetpackLoginViewController: JetpackConnectionWebDelegate {
+    func jetpackConnectionCompleted() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
+        let completion = { [weak self] in
+            self?.reloadInterface()
+            self?.dismiss(animated: true, completion: nil)
+        }
+        service.syncBlog(blog, success: completion, failure: { (_) in
+            completion()
+        })
+    }
+
+    func jetpackConnectionCanceled() {
+        dismiss(animated: true, completion: nil)
     }
 }
