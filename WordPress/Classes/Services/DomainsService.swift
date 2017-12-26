@@ -21,6 +21,14 @@ struct DomainsService {
         })
     }
 
+    func getDomainSuggestions(base: String, success: @escaping ([String]) -> Void, failure: @escaping (Error) -> Void) {
+        remote.getDomainSuggestions(base: base, success: { suggestions in
+            success(suggestions)
+        }) { error in
+            failure(error)
+        }
+    }
+
     fileprivate func mergeDomains(_ domains: [Domain], forSite siteID: Int) {
         let remoteDomains = domains
         let localDomains = domainsForSite(siteID)

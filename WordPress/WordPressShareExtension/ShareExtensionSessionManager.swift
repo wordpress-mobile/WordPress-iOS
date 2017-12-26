@@ -1,10 +1,11 @@
 import Foundation
+import CoreData
 
 /// Manages URLSessions initiated by the share extension
 ///
 @objc class ShareExtensionSessionManager: NSObject {
 
-    /// MARK: - Public Properties
+    // MARK: - Public Properties
 
     typealias ShareExtensionBackgroundCompletionBlock = () -> Void
     @objc var backgroundSessionCompletionBlock: ShareExtensionBackgroundCompletionBlock?
@@ -19,6 +20,10 @@ import Foundation
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         return session
     }()
+
+    /// Core Data stack for application extensions
+    ///
+    fileprivate lazy var coreDataStack = SharedCoreDataStack()
 
     // MARK: - Initializers
 
@@ -51,23 +56,215 @@ import Foundation
     @objc func startBackgroundSession() {
         DDLogInfo("Initializing background session: \(backgroundSession)")
     }
+
+    // MARK: - Private Functions
+
+    /// Clean up the session manager and end things gracefully (run the stored completion block, etc). Run
+    /// this after all the session tasks are completed.
+    ///
+    fileprivate func cleanupSessionAndTerminate() {
+        // Run the stored completetion block for the session
+        if let completionHandler = backgroundSessionCompletionBlock {
+            backgroundSessionCompletionBlock = nil
+            DispatchQueue.main.async {
+                completionHandler()
+            }
+        }
+        DDLogInfo("Completed processing post and media upload for session \(backgroundSessionIdentifier).")
+    }
+
+    /// Logs the error and updates the upload op's status with `Error`
+    ///
+    /// - Parameters:
+    ///   - errorString: Error string to log
+    ///   - uploadOpObjectIDs: Array of object IDs
+    ///
+    fileprivate func logError(_ errorString: String, uploadOpObjectIDs: [NSManagedObjectID]) {
+        guard uploadOpObjectIDs.count > 0 else {
+            return
+        }
+        DDLogError(errorString)
+        for uploadOpObjectID in uploadOpObjectIDs {
+            coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
+        }
+    }
+
+    fileprivate func logError(_ errorString: String, uploadOpObjectIDs: NSManagedObjectID...) {
+        logError(errorString, uploadOpObjectIDs: uploadOpObjectIDs)
+    }
+
+    /// Appends all of the remote media URLs to the post's content property.
+    /// For the provided group ID:
+    ///   1. Find the (not completed) post upload op (there should be one)
+    ///   2. Find all of the completed media upload ops
+    ///   3. Append the media to the postContent property of the post upload op
+    ///   4. Save the post upload op and return it
+    ///
+    /// - Parameter groupID: Group ID representing all of the media upload ops and single post upload op
+    /// - Returns: The updated post PostUploadOperation or nil
+    ///
+    fileprivate func combinePostAndMediaContent(for groupID: String) -> PostUploadOperation? {
+        guard let postUploadOp = coreDataStack.fetchPostUploadOp(for: groupID),
+            let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
+                return nil
+        }
+        let remoteURLText = mediaUploadOps.flatMap({ $0 })
+            .map({ "".stringByAppendingMediaURL(remoteURL: $0.remoteURL, remoteID: $0.remoteMediaID, height: $0.height, width: $0.width) })
+            .joined()
+
+        let content = postUploadOp.postContent ?? ""
+        postUploadOp.postContent = content + remoteURLText
+        coreDataStack.saveContext()
+
+        return postUploadOp
+    }
+
+    /// Uploads a post to the server
+    ///
+    /// - Parameter postUploadOp: The UploadOperation that represents a post
+    ///
+    fileprivate func uploadPost(with postUploadOp: PostUploadOperation) {
+        let postUploadOpID = postUploadOp.objectID
+        guard let oauth2Token = ShareExtensionService.retrieveShareExtensionToken() else {
+            logError("Error creating post: OAuth token is not defined.", uploadOpObjectIDs: postUploadOpID)
+            return
+        }
+        guard postUploadOp.siteID > 0 else {
+            logError("Error creating post: site ID was missing.", uploadOpObjectIDs: postUploadOpID)
+            return
+        }
+
+        let api = WordPressComRestApi(oAuthToken: oauth2Token,
+                                      userAgent: nil,
+                                      backgroundUploads: false,
+                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                      sharedContainerIdentifier: WPAppGroupName)
+        let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
+        postUploadOp.currentStatus = .inProgress
+        coreDataStack.saveContext()
+
+        remote.createPost(postUploadOp.remotePost, success: { post in
+            guard let post = post else {
+                return
+            }
+
+            if let postID = post.postID {
+                DDLogInfo("Post \(post.postID.stringValue) successfully uploaded to site \(post.siteID.stringValue)")
+                postUploadOp.remotePostID = postID.int64Value
+            }
+            postUploadOp.currentStatus = .complete
+            self.coreDataStack.saveContext()
+            self.cleanupSessionAndTerminate()
+        }, failure: { error in
+            var errorString = "Error creating post"
+            if let error = error as NSError? {
+                errorString += ": \(error.localizedDescription)"
+            }
+            self.logError(errorString, uploadOpObjectIDs: postUploadOpID)
+            self.cleanupSessionAndTerminate()
+        })
+    }
 }
 
-extension ShareExtensionSessionManager: URLSessionTaskDelegate {
+// MARK: - ShareExtensionSessionManager Extension: URLSessionTaskDelegate
+
+extension ShareExtensionSessionManager: URLSessionDelegate {
+
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
-        DDLogInfo("Completed background media uploading for session \(session).")
+        guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
+            DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
+            return
+        }
+        guard let postUploadOp = combinePostAndMediaContent(for: groupID) else {
+            DDLogError("Unable to append media to the post for Group ID \(groupID).")
+            return
+        }
 
-        // Cleanup the media directory in the shared container just in case it still contains temp files
-        ShareMediaFileManager.shared.purgeUploadDirectory()
+        // Now the media is all uploaded, let's append it to the post and upload
+        uploadPost(with: postUploadOp)
+    }
 
-        backgroundSessionCompletionBlock?()
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        if let error = error {
+            DDLogError("Background session invalidated by the system. Session:\(session) Error:\(error).")
+            WPAppAnalytics.track(.shareExtensionError, error: error)
+        } else {
+            DDLogError("Background session explicitly invalidated by WPiOS. Session:\(session).")
+        }
+    }
+}
+
+// MARK: - ShareExtensionSessionManager Extension: URLSessionTaskDelegate
+
+extension ShareExtensionSessionManager: URLSessionTaskDelegate {
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        DDLogDebug("didSendBodyData [session:\(session) task:\(task.debugDescription) bytesSent:\(bytesSent) totalBytesSent:\(totalBytesSent) totalBytesExpectedToSend:\(totalBytesExpectedToSend)]")
     }
 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        guard let error = error as NSError? else {
+        guard let uploadOps = coreDataStack.fetchSessionUploadOps(for: task.taskIdentifier, with: backgroundSessionIdentifier) else {
+            DDLogError("Background session tasks were not found in shared database. Session:\(session) Task:\(task.debugDescription).")
             return
         }
-        WPAppAnalytics.track(.shareExtensionError, error: error)
-        DDLogError("Error recieved for share extension media uploading. Session:\(session) Task:\(task) Error:\(error).")
+
+        if let error = error {
+            logError("Background session task completed with error. Session:\(session) Task:\(task.debugDescription) Error:\(error).",
+                uploadOpObjectIDs: uploadOps.map({ $0.objectID }))
+            WPAppAnalytics.track(.shareExtensionError, error: error)
+            return
+        }
+
+        uploadOps.forEach { uploadOp in
+            if let mediaUploadOp = uploadOp as? MediaUploadOperation, let fileName = mediaUploadOp.fileName {
+                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: fileName)
+            }
+            coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOp.objectID)
+        }
+        DDLogInfo("Background session task completed. Session:\(session) Task:\(task.debugDescription).")
+    }
+}
+
+// MARK: - ShareExtensionSessionManager Extension: URLSessionDataDelegate
+
+extension ShareExtensionSessionManager: URLSessionDataDelegate {
+
+    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        guard let object = try? JSONSerialization.jsonObject(with: data, options: []),
+            let response = object as? [String: AnyObject],
+            let media = response["media"] as? [[String: AnyObject]] else {
+                DDLogError("Error parsing server response data. Task:\(dataTask.debugDescription)")
+                return
+        }
+
+        media.forEach { mediaDict in
+            // We need the filename here because multiple media files can be bundled into a single task
+            guard let remoteFilenameString  = mediaDict["file"] as? String, !remoteFilenameString.isEmpty else {
+                return
+            }
+
+            var mediaID: Int64?
+            var width: Int32?
+            var height: Int32?
+            var urlString: String?
+            if let remoteMediaID = mediaDict["ID"] as? NSNumber {
+                mediaID = remoteMediaID.int64Value
+            }
+            if let remoteMediaUrlString  = mediaDict["URL"] as? String, !remoteMediaUrlString.isEmpty {
+                urlString = remoteMediaUrlString
+            }
+            if let remoteMediaWidth = mediaDict["width"] as? NSNumber {
+                width = remoteMediaWidth.int32Value
+            }
+            if let remoteMediaHeight = mediaDict["height"] as? NSNumber {
+                height = remoteMediaHeight.int32Value
+            }
+            coreDataStack.updateMediaOperation(for: remoteFilenameString,
+                                               with: backgroundSessionIdentifier,
+                                               remoteMediaID: mediaID,
+                                               remoteURL: urlString,
+                                               width: width,
+                                               height: height)
+        }
     }
 }
