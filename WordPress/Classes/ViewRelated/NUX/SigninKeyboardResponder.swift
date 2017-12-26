@@ -145,7 +145,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController {
         // If an external keyboard is connected, the ending keyboard frame's maxY
         // will exceed the height of the view controller's view.
         // In these cases, just adjust the height by the amount of the keyboard visible.
-        if keyboardFrame.maxY > view.frame.height {
+        if keyboardFrame.maxY > UIScreen.main.bounds.size.height {
             return view.frame.height - keyboardFrame.minY
         }
         return keyboardFrame.height
