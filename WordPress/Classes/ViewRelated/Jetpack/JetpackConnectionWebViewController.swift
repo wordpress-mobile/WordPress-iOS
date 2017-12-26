@@ -45,7 +45,7 @@ class JetpackConnectionWebViewController: UIViewController {
 
     func startConnectionFlow() {
         guard let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let url = URL(string: "https://wordpress.com/jetpack/connect?url=\(escapedSiteURL)&mobile_redirect=wordpress://jetpack-connection") else {
+            let url = URL(string: "https://wordpress.com/jetpack/connect?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)") else {
                 // FIXME: We should handle this error better
                 preconditionFailure()
         }
@@ -66,7 +66,7 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
         }
 
         switch url {
-        case isMobileRedirect:
+        case mobileRedirectURL:
             decisionHandler(.cancel)
             delegate?.jetpackConnectionCompleted()
         case isSiteLogin:
@@ -100,10 +100,6 @@ private extension URL {
 private extension JetpackConnectionWebViewController {
     var mobileRedirectURL: URL {
         return URL(string: "wordpress://jetpack-connection")!
-    }
-
-    func isMobileRedirect(url: URL) -> Bool {
-        return url == mobileRedirectURL
     }
 
     func isSiteLogin(url: URL) -> Bool {
