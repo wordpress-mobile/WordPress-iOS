@@ -8,4 +8,7 @@
 
 - (instancetype)initWithBlog:(Blog *)blog;
 
+- (void)saveSettings;
+- (BOOL)isTrafficSettingsSection:(NSInteger)section;
+
 @end
