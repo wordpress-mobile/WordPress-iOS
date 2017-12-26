@@ -62,6 +62,7 @@ import WordPressShared
         let context = ContextManager.sharedInstance().mainContext
         let loginFields = LoginFields()
         if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
+            loginFields.emailAddress = account.email
             loginFields.username = account.username
         }
 
@@ -70,6 +71,7 @@ import WordPressShared
             fatalError("unable to create wpcom password screen")
         }
 
+        controller.loginFields = loginFields
         controller.dismissBlock = onDismissed
         return NUXNavigationController(rootViewController: controller)
     }

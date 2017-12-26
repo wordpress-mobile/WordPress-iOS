@@ -194,6 +194,9 @@ class WebKitViewController: UIViewController {
         }
 
         let activityViewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        activityViewController.modalPresentationStyle = .popover
+        activityViewController.popoverPresentationController?.barButtonItem = shareButton
+
         activityViewController.completionWithItemsHandler = { (type, completed, _, _) in
             if completed, let type = type?.rawValue {
                 WPActivityDefaults.trackActivityType(type)

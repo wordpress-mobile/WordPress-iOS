@@ -15,6 +15,8 @@ static NSString * const TaxonomyRESTTagIdentifier = @"tags";
 static NSString * const TaxonomyRESTIDParameter = @"ID";
 static NSString * const TaxonomyRESTNameParameter = @"name";
 static NSString * const TaxonomyRESTSlugParameter = @"slug";
+static NSString * const TaxonomyRESTDescriptionParameter = @"description";
+static NSString * const TaxonomyRESTPostCountParameter = @"post_count";
 static NSString * const TaxonomyRESTParentParameter = @"parent";
 static NSString * const TaxonomyRESTSearchParameter = @"search";
 static NSString * const TaxonomyRESTOrderParameter = @"order";
@@ -94,6 +96,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[TaxonomyRESTNameParameter] = tag.name;
+    parameters[TaxonomyRESTDescriptionParameter] = tag.tagDescription;
     
     [self createTaxonomyWithType:TaxonomyRESTTagIdentifier
                       parameters:parameters
@@ -103,6 +106,42 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
                                  success(receivedTag);
                              }
                          } failure:failure];
+}
+
+- (void)updateTag:(RemotePostTag *)tag
+          success:(nullable void (^)(RemotePostTag *tag))success
+          failure:(nullable void (^)(NSError *error))failure
+{
+    NSParameterAssert(tag.name.length > 0);
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[TaxonomyRESTSlugParameter] = tag.slug;
+    parameters[TaxonomyRESTNameParameter] = tag.name;
+    parameters[TaxonomyRESTDescriptionParameter] = tag.tagDescription;
+    
+    [self updateTaxonomyWithType:TaxonomyRESTTagIdentifier
+                      parameters:parameters success:^(NSDictionary * _Nonnull responseObject) {
+                          if (success) {
+                              RemotePostTag *receivedTag = [self remoteTagWithJSONDictionary:responseObject];
+                              success(receivedTag);
+                          }
+                      } failure:failure];
+}
+
+- (void)deleteTag:(RemotePostTag *)tag
+          success:(nullable void (^)(void))success
+          failure:(nullable void (^)(NSError *error))failure
+{
+    NSParameterAssert(tag.name.length > 0);
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[TaxonomyRESTSlugParameter] = tag.slug;
+    
+    [self deleteTaxonomyWithType:TaxonomyRESTTagIdentifier parameters:parameters success:^(NSDictionary * _Nonnull responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:failure];
 }
 
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
@@ -149,19 +188,19 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     [self.wordPressComRestApi POST:requestUrl
-        parameters:parameters
-           success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
-               if (![responseObject isKindOfClass:[NSDictionary class]]) {
-                   NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
-                   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
-                   return;
-               }
-               success(responseObject);
-           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+                        parameters:parameters
+                           success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                                   NSString *message = [NSString stringWithFormat:@"Invalid response creating taxonomy of type: %@", typeIdentifier];
+                                   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
+                                   return;
+                               }
+                               success(responseObject);
+                           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)getTaxonomyWithType:(NSString *)typeIdentifier
@@ -174,20 +213,72 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     [self.wordPressComRestApi GET:requestUrl
-       parameters:parameters
-          success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
-              if (![responseObject isKindOfClass:[NSDictionary class]]) {
-                  NSString *message = [NSString stringWithFormat:@"Invalid response requesting taxonomy of type: %@", typeIdentifier];
-                  [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
-                  return;
-              }
-              success(responseObject);
-          } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+                       parameters:parameters
+                          success:^(id  _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
+                              if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                                  NSString *message = [NSString stringWithFormat:@"Invalid response requesting taxonomy of type: %@", typeIdentifier];
+                                  [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
+                                  return;
+                              }
+                              success(responseObject);
+                          } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
+                              if (failure) {
+                                  failure(error);
+                              }
+                          }];
 }
+
+- (void)deleteTaxonomyWithType:(NSString *)typeIdentifier
+                    parameters:(nullable NSDictionary *)parameters
+                       success:(void (^)(NSDictionary *responseObject))success
+                       failure:(nullable void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/%@/slug:%@/delete?context=edit", self.siteID, typeIdentifier, parameters[TaxonomyRESTSlugParameter]];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:nil
+                           success:^(id _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                                   NSString *message = [NSString stringWithFormat:@"Invalid response deleting taxonomy of type: %@", typeIdentifier];
+                                   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
+                                   return;
+                               }
+                               success(responseObject);
+                           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
+}
+
+- (void)updateTaxonomyWithType:(NSString *)typeIdentifier
+                    parameters:(nullable NSDictionary *)parameters
+                       success:(void (^)(NSDictionary *responseObject))success
+                       failure:(nullable void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/%@/slug:%@?context=edit", self.siteID, typeIdentifier, parameters[TaxonomyRESTSlugParameter]];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    
+    [self.wordPressComRestApi POST:requestUrl
+                        parameters:parameters
+                           success:^(id _Nonnull responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                                   NSString *message = [NSString stringWithFormat:@"Invalid response updating taxonomy of type: %@", typeIdentifier];
+                                   [self handleResponseErrorWithMessage:message url:requestUrl failure:failure];
+                                   return;
+                               }
+                               success(responseObject);
+                           } failure:^(NSError * _Nonnull error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
+}
+
+
 
 #pragma mark - helpers
 
@@ -220,6 +311,8 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
     tag.tagID = [jsonTag numberForKey:TaxonomyRESTIDParameter];
     tag.name = [jsonTag stringForKey:TaxonomyRESTNameParameter];
     tag.slug = [jsonTag stringForKey:TaxonomyRESTSlugParameter];
+    tag.tagDescription = [jsonTag stringForKey:TaxonomyRESTDescriptionParameter];
+    tag.postCount = [jsonTag numberForKey:TaxonomyRESTPostCountParameter];
     return tag;
 }
 
