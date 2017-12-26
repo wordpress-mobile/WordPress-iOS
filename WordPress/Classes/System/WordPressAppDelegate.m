@@ -6,20 +6,12 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <Reachability/Reachability.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressShared/UIImage+Util.h>
 
 #ifdef BUDDYBUILD_ENABLED
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
 #endif
-
-
-// Analytics & crash logging
-#import "WPAppAnalytics.h"
-#import "WPCrashlytics.h"
-
-// Categories & extensions
 
 // Data model
 #import "Blog.h"
@@ -34,7 +26,6 @@
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
-#import "HockeyManager.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
 
@@ -56,13 +47,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
-@property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
-@property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
-@property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
-@property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
@@ -91,7 +77,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [WordPressAppDelegate fixKeychainAccess];
 
     // Basic networking setup
-    [self setupReachability];
+    [self configureReachability];
     
     // Set the main window up
     [self.window makeKeyAndVisible];
@@ -118,18 +104,12 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
     [self showWelcomeScreenIfNeededAnimated:NO];
-    [self setupStoreKit];
     [self setupBuddyBuild];
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
 
     return YES;
-}
-
-- (void)setupStoreKit
-{
-    [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
 }
 
 - (void)setupBuddyBuild
@@ -169,7 +149,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)configureNoticePresenter
 {
-    self.noticePresenter = [NoticePresenter new];
+    self.noticePresenter = [[NoticePresenter alloc] initWithPresentingViewController:self.window.rootViewController];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
@@ -297,23 +277,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     }];
 }
 
-- (NSString *)currentlySelectedScreen
-{
-    // Check if the post editor or login view is up
-    UIViewController *rootViewController = self.window.rootViewController;
-    if ([rootViewController.presentedViewController isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *navController = (UINavigationController *)rootViewController.presentedViewController;
-        UIViewController *firstViewController = [navController.viewControllers firstObject];
-        if ([firstViewController isKindOfClass:[AztecPostViewController class]]) {
-            return @"Post Editor";
-        } else if ([firstViewController isKindOfClass:[NUXAbstractViewController class]]) {
-            return @"Login View";
-        }
-    }
-
-    return [[WPTabBarController sharedInstance] currentlySelectedScreen];
-}
-
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
@@ -370,9 +333,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // is no need to inspect the identifier beyond the simple check here.
     if ([identifier containsString:WPAppGroupName]) {
         ShareExtensionSessionManager *sessionManager = [[ShareExtensionSessionManager alloc] initWithAppGroup:WPAppGroupName backgroundSessionIdentifier:identifier];
-        sessionManager.backgroundSessionCompletionBlock = ^{
-            dispatch_async(dispatch_get_main_queue(), completionHandler);
-        };
+        sessionManager.backgroundSessionCompletionBlock = completionHandler;
         [sessionManager startBackgroundSession];
     }
 }
@@ -385,7 +346,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self initializeAppRatingUtility];
+    [self configureAppRatingUtility];
     
     // Analytics
     [self configureAnalytics];
@@ -586,81 +547,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         [WPAnalytics track:WPAnalyticsStatLogout];
     }
 }
-
-#pragma mark - Analytics
-
-- (void)configureAnalytics
-{
-    __weak __typeof(self) weakSelf = self;
- 
-    self.analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString*{
-        return [weakSelf currentlySelectedScreen];
-    }];
-}
-
-#pragma mark - App Rating
-
-- (void)initializeAppRatingUtility
-{
-    AppRatingUtility *utility = [AppRatingUtility shared];
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [utility registerSection:@"notifications" withSignificantEventCount:5];
-    utility.systemWideSignificantEventCountRequiredForPrompt = 10;
-    [utility setVersion:version];
-    [utility checkIfAppReviewPromptsHaveBeenDisabledWithSuccess:nil failure:^{
-        DDLogError(@"Was unable to retrieve data about throttling");
-    }];
-}
-
-#pragma mark - Crashlytics configuration
-
-- (void)configureCrashlytics
-{
-#if defined(DEBUG)
-    return;
-#endif
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunreachable-code"
-    NSString* apiKey = [ApiCredentials crashlyticsApiKey];
-    
-    if (apiKey) {
-        self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
-    }
-#pragma clang diagnostic pop
-}
-
-- (void)configureHockeySDK
-{
-    self.hockey = [HockeyManager new];
-    [self.hockey configure];
-}
-
-#pragma mark - Networking setup
-
-- (void)setupReachability
-{
-    // Setup Reachability
-    self.internetReachability = [Reachability reachabilityForInternetConnection];
-
-    __weak __typeof(self) weakSelf = self;
-    
-    void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
-        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
-        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
-
-        DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
-        weakSelf.connectionAvailable = reach.isReachable;
-    };
-    self.internetReachability.reachableBlock = internetReachabilityBlock;
-    self.internetReachability.unreachableBlock = internetReachabilityBlock;
-
-    // Start the Notifier
-    [self.internetReachability startNotifier];
-    
-    self.connectionAvailable = [self.internetReachability isReachable];
-}
-
 
 #pragma mark - Keychain
 

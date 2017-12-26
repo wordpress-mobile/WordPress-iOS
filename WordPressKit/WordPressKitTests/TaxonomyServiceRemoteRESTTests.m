@@ -2,7 +2,6 @@
 #import <XCTest/XCTest.h>
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemotePostTag.h"
-#import "RemoteTaxonomyPaging.h"
 @import WordPressKit;
 
 @interface TaxonomyServiceRemoteRESTTests : XCTestCase
@@ -162,6 +161,7 @@
 {
     RemotePostTag *tag = OCMStrictClassMock([RemotePostTag class]);
     OCMStub([tag name]).andReturn(@"name");
+    OCMStub([tag tagDescription]).andReturn(@"description");
 
     NSString *endpoint = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.service.siteID, @"tags"];
     NSString *url = [self.service pathForEndpoint:endpoint
