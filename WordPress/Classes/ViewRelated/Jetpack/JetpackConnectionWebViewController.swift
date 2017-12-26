@@ -65,10 +65,57 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
             return
         }
 
-        if url.scheme == "wordpress" && url.host == "jetpack-connection" {
+        switch url {
+        case isMobileRedirect:
             decisionHandler(.cancel)
             delegate?.jetpackConnectionCompleted()
+        case isSiteLogin:
+            DDLogDebug("Site login detected")
+            decisionHandler(.allow)
+        case isDotComLogin:
+            DDLogDebug("WordPress.com login detected")
+            decisionHandler(.allow)
+        default:
+            decisionHandler(.allow)
         }
-        decisionHandler(.allow)
+    }
+}
+
+private extension URL {
+    var isHTTP: Bool {
+        return scheme == "http"
+            || scheme == "https"
+    }
+
+    func matchesPath(in other: URL, scheme matchScheme: Bool = true) -> Bool {
+        let matchesScheme = matchScheme
+            ? scheme == other.scheme
+            : isHTTP && other.isHTTP
+        return matchesScheme
+            && host == other.host
+            && path == other.path
+    }
+}
+
+private extension JetpackConnectionWebViewController {
+    var mobileRedirectURL: URL {
+        return URL(string: "wordpress://jetpack-connection")!
+    }
+
+    func isMobileRedirect(url: URL) -> Bool {
+        return url == mobileRedirectURL
+    }
+
+    func isSiteLogin(url: URL) -> Bool {
+        guard let loginURL = URL(string: blog.loginUrl()) else {
+            return false
+        }
+
+        return url.matchesPath(in: loginURL, scheme: false)
+    }
+
+    func isDotComLogin(url: URL) -> Bool {
+        let dotComLoginURL = URL(string: "https://wordpress.com/log-in")!
+        return url.matchesPath(in: dotComLoginURL)
     }
 }
