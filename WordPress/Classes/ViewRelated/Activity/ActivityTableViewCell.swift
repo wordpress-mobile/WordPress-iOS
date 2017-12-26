@@ -22,8 +22,6 @@ open class ActivityTableViewCell: WPTableViewCell {
                                                             attributes: Style.timestampStyle())
         if activity.isFullBackup {
             gravatarImageView.isHidden = true
-            summaryLabel.attributedText = NSAttributedString(string: activity.summary,
-                                                             attributes: Style.summaryBoldStyle())
         } else {
             gravatarImageView.isHidden = false
             if let actor = activity.actor,
@@ -35,9 +33,12 @@ open class ActivityTableViewCell: WPTableViewCell {
             } else {
                 gravatarImageView.image = placeholderImage
             }
-            summaryLabel.attributedText = NSAttributedString(string: activity.summary,
-                                                             attributes: Style.summaryRegularStyle())
         }
+        let summaryAttributed = NSMutableAttributedString(string: activity.summary + ": ",
+                                                          attributes: Style.summaryBoldStyle())
+        summaryAttributed.append(NSAttributedString(string: activity.text,
+                                                    attributes: Style.summaryRegularStyle()))
+        summaryLabel.attributedText = summaryAttributed
 
         if let statusImage = Style.getIconForActivity(activity) {
             statusImageView.image = statusImage
