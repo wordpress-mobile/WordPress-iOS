@@ -62,23 +62,22 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url,
             navigationAction.request.httpMethod == "GET",
-            navigationAction.targetFrame?.isMainFrame ?? false else {
+            navigationAction.targetFrame?.isMainFrame ?? false,
+            let step = flowStep(url: url) else {
                 decisionHandler(.allow)
                 return
         }
 
-        switch url {
-        case mobileRedirectURL:
+        switch step {
+        case .siteAuth(let redirect):
+            DDLogDebug("Site login detected with redirect: \(redirect)")
+            decisionHandler(.allow)
+        case .dotComAuth(let redirect):
+            DDLogDebug("WordPress.com login detected with redirect \(redirect)")
+            decisionHandler(.allow)
+        case .mobileRedirect:
             decisionHandler(.cancel)
             delegate?.jetpackConnectionCompleted()
-        case isSiteLogin:
-            DDLogDebug("Site login detected")
-            decisionHandler(.allow)
-        case isDotComLogin:
-            DDLogDebug("WordPress.com login detected")
-            decisionHandler(.allow)
-        default:
-            decisionHandler(.allow)
         }
     }
 }
@@ -100,6 +99,27 @@ private extension URL {
 }
 
 private extension JetpackConnectionWebViewController {
+    enum FlowStep {
+        case siteAuth(redirect: URL)
+        case dotComAuth(redirect: URL)
+        case mobileRedirect
+    }
+
+    func flowStep(url: URL) -> FlowStep? {
+        switch url {
+        case isSiteLogin:
+            return extractRedirect(url: url)
+                .map(FlowStep.siteAuth)
+        case isDotComLogin:
+            return extractRedirect(url: url)
+                .map(FlowStep.dotComAuth)
+        case mobileRedirectURL:
+            return .mobileRedirect
+        default:
+            return nil
+        }
+    }
+
     var mobileRedirectURL: URL {
         return URL(string: "wordpress://jetpack-connection")!
     }
@@ -115,5 +135,14 @@ private extension JetpackConnectionWebViewController {
     func isDotComLogin(url: URL) -> Bool {
         let dotComLoginURL = URL(string: "https://wordpress.com/log-in")!
         return url.matchesPath(in: dotComLoginURL)
+    }
+
+    func extractRedirect(url: URL) -> URL? {
+        return URLComponents(url: url, resolvingAgainstBaseURL: false)?
+            .queryItems?
+            .first(where: { $0.name == "redirect_to" })?
+            .value?
+            .removingPercentEncoding
+            .flatMap(URL.init(string:))
     }
 }
