@@ -13,6 +13,10 @@ class JetpackConnectionWebViewController: UIViewController {
     let progressView = WebProgressView()
     var delegate: JetpackConnectionWebDelegate?
 
+    // Sometimes wp-login doesn't redirect to the expected URL, so we're storing
+    // it and redirecting manually
+    fileprivate var pendingSiteRedirect: URL?
+
     init(blog: Blog) {
         self.blog = blog
         webView = WKWebView()
@@ -71,13 +75,25 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
         switch step {
         case .siteAuth(let redirect):
             DDLogDebug("Site login detected with redirect: \(redirect)")
-            decisionHandler(.allow)
+            performSiteLogin(redirect: redirect, decisionHandler: decisionHandler)
         case .dotComAuth(let redirect):
             DDLogDebug("WordPress.com login detected with redirect \(redirect)")
             decisionHandler(.allow)
+        case .siteAdmin:
+            if let redirect = pendingSiteRedirect {
+                pendingSiteRedirect = nil
+                decisionHandler(.cancel)
+                webView.load(URLRequest(url: redirect))
+            } else {
+                decisionHandler(.allow)
+            }
         case .mobileRedirect:
+            DDLogDebug("Connection flow finished, detected redirect")
             decisionHandler(.cancel)
             delegate?.jetpackConnectionCompleted()
+        default:
+            DDLogDebug("Detected connection flow step: \(step)")
+            decisionHandler(.allow)
         }
     }
 }
@@ -99,6 +115,10 @@ private extension URL {
 private extension JetpackConnectionWebViewController {
     enum FlowStep {
         case siteAuth(redirect: URL)
+        case sitePluginInstall
+        case sitePluginInstallation
+        case sitePlugins
+        case siteAdmin
         case dotComAuth(redirect: URL)
         case mobileRedirect
     }
@@ -111,6 +131,14 @@ private extension JetpackConnectionWebViewController {
         case isDotComLogin:
             return extractRedirect(url: url)
                 .map(FlowStep.dotComAuth)
+        case isSiteAdmin(path: "plugin-install.php"):
+            return .sitePluginInstall
+        case isSiteAdmin(path: "update.php?action=install-plugin"):
+            return .sitePluginInstallation
+        case isSiteAdmin(path: "plugins.php"):
+            return .sitePlugins
+        case isSiteAdmin(path: ""):
+            return .siteAdmin
         case mobileRedirectURL:
             return .mobileRedirect
         default:
@@ -130,6 +158,15 @@ private extension JetpackConnectionWebViewController {
         return url.matchesPath(in: loginURL)
     }
 
+    func isSiteAdmin(path: String) -> (URL) -> Bool {
+        guard let adminURL = URL(string: blog.adminUrl(withPath: path)) else {
+            return { _ in return false }
+        }
+        return { url in
+            return url.absoluteString.hasPrefix(adminURL.absoluteString)
+        }
+    }
+
     func isDotComLogin(url: URL) -> Bool {
         let dotComLoginURL = URL(string: "https://wordpress.com/log-in")!
         return url.matchesPath(in: dotComLoginURL)
@@ -142,5 +179,17 @@ private extension JetpackConnectionWebViewController {
             .value?
             .removingPercentEncoding
             .flatMap(URL.init(string:))
+    }
+
+    func performSiteLogin(redirect: URL, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let authenticator = WebViewAuthenticator(blog: blog) else {
+                decisionHandler(.allow)
+                return
+        }
+        decisionHandler(.cancel)
+        let request = authenticator.authenticatedRequest(url: redirect)
+        DDLogDebug("Performing site login to \(String(describing: request.url))")
+        pendingSiteRedirect = redirect
+        webView.load(request)
     }
 }
