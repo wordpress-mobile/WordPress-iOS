@@ -23,6 +23,11 @@ class WebViewAuthenticator: NSObject {
 
     fileprivate let credentials: Credentials
 
+    /// If true, the authenticator will assume that redirect URLs are allowed and
+    /// won't use the special WordPress.com redirect URL
+    ///
+    var safeRedirect = false
+
     init(credentials: Credentials) {
         self.credentials = credentials
     }
@@ -153,7 +158,8 @@ private extension WebViewAuthenticator {
 
     func redirectUrl(url: String) -> String? {
         guard case .dotCom = credentials,
-            let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            !safeRedirect else {
             return url
         }
 
