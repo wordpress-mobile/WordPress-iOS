@@ -16,6 +16,7 @@ class JetpackConnectionWebViewController: UIViewController {
     // Sometimes wp-login doesn't redirect to the expected URL, so we're storing
     // it and redirecting manually
     fileprivate var pendingSiteRedirect: URL?
+    fileprivate var pendingDotComRedirect: URL?
 
     init(blog: Blog) {
         self.blog = blog
@@ -211,6 +212,53 @@ private extension JetpackConnectionWebViewController {
         DDLogDebug("Performing site login to \(String(describing: request.url))")
         pendingSiteRedirect = redirect
         webView.load(request)
+    }
+
+    func performDotComLogin(redirect: URL) {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        if let account = service.defaultWordPressComAccount(),
+            let token = account.authToken,
+            let username = account.username {
+            authenticateWithDotCom(username: username, token: token, redirect: redirect)
+        } else {
+            presentDotComLogin(redirect: redirect)
+        }
+    }
+
+    func authenticateWithDotCom(username: String, token: String, redirect: URL) {
+        let authenticator = WebViewAuthenticator(credentials: .dotCom(username: username, authToken: token))
+        let request = authenticator.authenticatedRequest(url: redirect)
+        DDLogDebug("Performing WordPress.com login to \(String(describing: request.url))")
+        webView.load(request)
+    }
+
+    func presentDotComLogin(redirect: URL) {
+        pendingDotComRedirect = redirect
+        SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+    }
+
+    func observeLoginNotifications(_ observe: Bool) {
+        if observe {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .WPLoginFinishedJetpackLogin, object: nil)
+        } else {
+            NotificationCenter.default.removeObserver(self, name: .WPLoginFinishedJetpackLogin, object: nil)
+        }
+    }
+
+    @objc func handleLoginCancelled() {
+        observeLoginNotifications(false)
+        pendingDotComRedirect = nil
+    }
+
+    @objc func handleFinishedJetpackLogin() {
+        observeLoginNotifications(false)
+        defer {
+            pendingDotComRedirect = nil
+        }
+        if let redirect = pendingDotComRedirect {
+            performDotComLogin(redirect: redirect)
+        }
     }
 
     enum Debug {
