@@ -78,9 +78,9 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
 
         Debug.log("🚀🔌 Step: \(step)")
         switch step {
-        case .siteAuth(let redirect):
+        case .siteLoginForm(let redirect):
             performSiteLogin(redirect: redirect, decisionHandler: decisionHandler)
-        case .dotComAuth:
+        case .dotComLoginForm:
             decisionHandler(.allow)
         case .siteAdmin:
             if let redirect = pendingSiteRedirect {
@@ -115,17 +115,17 @@ private extension URL {
 
 private extension JetpackConnectionWebViewController {
     enum FlowStep: CustomStringConvertible {
-        case siteAuth(redirect: URL)
+        case siteLoginForm(redirect: URL)
         case sitePluginDetail
         case sitePluginInstallation
         case sitePlugins
         case siteAdmin
-        case dotComAuth(redirect: URL)
+        case dotComLoginForm(redirect: URL)
         case mobileRedirect
 
         var description: String {
             switch self {
-            case .siteAuth(let redirect):
+            case .siteLoginForm(let redirect):
                 return "Site login form, redirecting to \(redirect)"
             case .sitePluginDetail:
                 return "Plugin detail page"
@@ -135,7 +135,7 @@ private extension JetpackConnectionWebViewController {
                 return "Installed plugins page"
             case .siteAdmin:
                 return "Unknown wp-admin page"
-            case .dotComAuth(let redirect):
+            case .dotComLoginForm(let redirect):
                 return "WordPress.com login, redirecting to \(redirect)"
             case .mobileRedirect:
                 return "Mobile Redirect, end of the connection flow"
@@ -147,10 +147,10 @@ private extension JetpackConnectionWebViewController {
         switch url {
         case isSiteLogin:
             return extractRedirect(url: url)
-                .map(FlowStep.siteAuth)
+                .map(FlowStep.siteLoginForm)
         case isDotComLogin:
             return extractRedirect(url: url)
-                .map(FlowStep.dotComAuth)
+                .map(FlowStep.dotComLoginForm)
         case isSiteAdmin(path: "plugin-install.php"):
             return .sitePluginDetail
         case isSiteAdmin(path: "update.php?action=install-plugin"):
