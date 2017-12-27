@@ -73,7 +73,7 @@ extension WordPressAppDelegate {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
 
-        return blogService.blogCountSelfHosted() == 0
+        return blogService.blogCountSelfHosted() == 0 && blogService.hasAnyJetpackBlogs() == false
     }
 
     @objc var noWordPressDotComAccount: Bool {
