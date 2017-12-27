@@ -19,7 +19,11 @@ class JetpackConnectionWebViewController: UIViewController {
 
     init(blog: Blog) {
         self.blog = blog
-        webView = WKWebView()
+        let configuration = WKWebViewConfiguration()
+        if Debug.enabled {
+            configuration.websiteDataStore = .nonPersistent()
+        }
+        webView = WKWebView(frame: .zero, configuration: configuration)
         super.init(nibName: nil, bundle: nil)
         webView.navigationDelegate = self
         title = NSLocalizedString("Install Jetpack", comment: "Title for the Jetpack Installation")
@@ -72,12 +76,11 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
                 return
         }
 
+        Debug.log("🚀🔌 Step: \(step)")
         switch step {
         case .siteAuth(let redirect):
-            DDLogDebug("Site login detected with redirect: \(redirect)")
             performSiteLogin(redirect: redirect, decisionHandler: decisionHandler)
-        case .dotComAuth(let redirect):
-            DDLogDebug("WordPress.com login detected with redirect \(redirect)")
+        case .dotComAuth:
             decisionHandler(.allow)
         case .siteAdmin:
             if let redirect = pendingSiteRedirect {
@@ -88,11 +91,9 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
                 decisionHandler(.allow)
             }
         case .mobileRedirect:
-            DDLogDebug("Connection flow finished, detected redirect")
             decisionHandler(.cancel)
             delegate?.jetpackConnectionCompleted()
         default:
-            DDLogDebug("Detected connection flow step: \(step)")
             decisionHandler(.allow)
         }
     }
@@ -113,14 +114,33 @@ private extension URL {
 }
 
 private extension JetpackConnectionWebViewController {
-    enum FlowStep {
+    enum FlowStep: CustomStringConvertible {
         case siteAuth(redirect: URL)
-        case sitePluginInstall
+        case sitePluginDetail
         case sitePluginInstallation
         case sitePlugins
         case siteAdmin
         case dotComAuth(redirect: URL)
         case mobileRedirect
+
+        var description: String {
+            switch self {
+            case .siteAuth(let redirect):
+                return "Site login form, redirecting to \(redirect)"
+            case .sitePluginDetail:
+                return "Plugin detail page"
+            case .sitePluginInstallation:
+                return "Plugin installation page"
+            case .sitePlugins:
+                return "Installed plugins page"
+            case .siteAdmin:
+                return "Unknown wp-admin page"
+            case .dotComAuth(let redirect):
+                return "WordPress.com login, redirecting to \(redirect)"
+            case .mobileRedirect:
+                return "Mobile Redirect, end of the connection flow"
+            }
+        }
     }
 
     func flowStep(url: URL) -> FlowStep? {
@@ -132,7 +152,7 @@ private extension JetpackConnectionWebViewController {
             return extractRedirect(url: url)
                 .map(FlowStep.dotComAuth)
         case isSiteAdmin(path: "plugin-install.php"):
-            return .sitePluginInstall
+            return .sitePluginDetail
         case isSiteAdmin(path: "update.php?action=install-plugin"):
             return .sitePluginInstallation
         case isSiteAdmin(path: "plugins.php"):
@@ -191,5 +211,18 @@ private extension JetpackConnectionWebViewController {
         DDLogDebug("Performing site login to \(String(describing: request.url))")
         pendingSiteRedirect = redirect
         webView.load(request)
+    }
+
+    enum Debug {
+        static var enabled: Bool {
+            return CommandLine.arguments.contains("-debugJetpackConnectionFlow")
+        }
+
+        static func log(_ message: String) {
+            guard enabled else {
+                return
+            }
+            DDLogDebug(message)
+        }
     }
 }
