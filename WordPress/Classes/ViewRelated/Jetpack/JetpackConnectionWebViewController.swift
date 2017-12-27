@@ -88,12 +88,10 @@ private extension URL {
             || scheme == "https"
     }
 
-    func matchesPath(in other: URL, scheme matchScheme: Bool = true) -> Bool {
-        let matchesScheme = matchScheme
-            ? scheme == other.scheme
-            : isHTTP && other.isHTTP
-        return matchesScheme
+    func matchesPath(in other: URL) -> Bool {
+        return scheme == other.scheme
             && host == other.host
+            && port == other.port
             && path == other.path
     }
 }
@@ -129,7 +127,7 @@ private extension JetpackConnectionWebViewController {
             return false
         }
 
-        return url.matchesPath(in: loginURL, scheme: false)
+        return url.matchesPath(in: loginURL)
     }
 
     func isDotComLogin(url: URL) -> Bool {
