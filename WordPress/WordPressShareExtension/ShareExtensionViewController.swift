@@ -62,6 +62,20 @@ class ShareExtensionViewController: UIViewController {
         Tracks(appGroupName: WPAppGroupName)
     }()
 
+    /// Next Bar Button
+    ///
+    fileprivate lazy var nextButton: UIBarButtonItem = {
+        let nextTitle = NSLocalizedString("Next", comment: "Next action on share extension editor screen")
+        return UIBarButtonItem(title: nextTitle, style: .plain, target: self, action: #selector(nextWasPressed))
+    }()
+
+    /// Cancel Bar Button
+    ///
+    fileprivate lazy var cancelButton: UIBarButtonItem = {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on share extension editor screen")
+        return UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
+    }()
+
     /// Format Bar
     ///
     fileprivate(set) lazy var formatBar: Aztec.FormatBar = {
@@ -201,6 +215,7 @@ class ShareExtensionViewController: UIViewController {
         WPFontManager.loadNotoFontFamily()
 
         // Setup
+        configureNavigationBar()
         configureView()
         configureSubviews()
 
@@ -260,6 +275,13 @@ class ShareExtensionViewController: UIViewController {
     }
 
     // MARK: - Configuration Methods
+
+    func configureNavigationBar() {
+        title = NSLocalizedString("Share to WordPress", comment: "Title for Share Exte nsion")
+        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = nextButton
+        nextButton.isEnabled = false
+    }
 
     func configureView() {
         edgesForExtendedLayout = UIRectEdge()
@@ -439,6 +461,20 @@ extension ShareExtensionViewController {
     func refreshPlaceholderVisibility() {
         placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
         titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
+    }
+}
+
+// MARK: - Actions
+//
+extension ShareExtensionViewController {
+
+    @IBAction func cancelWasPressed() {
+        tracks.trackExtensionCancelled()
+        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+    }
+
+    @IBAction func nextWasPressed() {
+        // TODO: Next screen
     }
 }
 
@@ -913,7 +949,7 @@ private extension ShareExtensionViewController {
         }
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
-                self?.richTextView.text = share.text
+                self?.richTextView.insertText(share.text)
 
                 share.images.forEach({ image in
                     if let fileURL = self?.saveImageToSharedContainer(image) {
