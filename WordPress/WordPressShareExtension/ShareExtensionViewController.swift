@@ -200,6 +200,10 @@ class ShareExtensionViewController: UIViewController {
         return v
     }()
 
+    /// Options
+    ///
+    fileprivate var optionsViewController: OptionsTableViewController!
+
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
@@ -368,7 +372,6 @@ class ShareExtensionViewController: UIViewController {
         return button
     }
 
-
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
@@ -425,6 +428,21 @@ class ShareExtensionViewController: UIViewController {
             makeToolbarButton(identifier: .horizontalruler),
             makeToolbarButton(identifier: .more),
         ]
+    }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+//
+extension ShareExtensionViewController: UIPopoverPresentationControllerDelegate {
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        if optionsViewController != nil {
+            optionsViewController = nil
+        }
     }
 }
 
@@ -535,16 +553,13 @@ extension ShareExtensionViewController {
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
-
     @objc func toggleItalic() {
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
-
     @objc func toggleUnderline() {
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
-
 
     @objc func toggleStrikethrough() {
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
@@ -560,33 +575,31 @@ extension ShareExtensionViewController {
 
     func toggleList(fromItem item: FormatBarItem) {
 
-        // TODO: Fix!
+        let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
+            let title = NSAttributedString(string: listType.description, attributes: [:])
+            return OptionsTableViewOption(image: listType.iconImage,
+                                          title: title,
+                                          accessibilityLabel: listType.accessibilityLabel)
+        }
 
-//        let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
-//            let title = NSAttributedString(string: listType.description, attributes: [:])
-//            return OptionsTableViewOption(image: listType.iconImage,
-//                                          title: title,
-//                                          accessibilityLabel: listType.accessibilityLabel)
-//        }
-//
-//        var index: Int? = nil
-//        if let listType = listTypeForSelectedText() {
-//            index = Constants.lists.index(of: listType)
-//        }
-//
-//        showOptionsTableViewControllerWithOptions(listOptions,
-//                                                  fromBarItem: item,
-//                                                  selectedRowIndex: index,
-//                                                  onSelect: { [weak self] selected in
-//
-//                                                    let listType = Constants.lists[selected]
-//                                                    switch listType {
-//                                                    case .unordered:
-//                                                        self?.toggleUnorderedList()
-//                                                    case .ordered:
-//                                                        self?.toggleOrderedList()
-//                                                    }
-//        })
+        var index: Int? = nil
+        if let listType = listTypeForSelectedText() {
+            index = Constants.lists.index(of: listType)
+        }
+
+        showOptionsTableViewControllerWithOptions(listOptions,
+                                                  fromBarItem: item,
+                                                  selectedRowIndex: index,
+                                                  onSelect: { [weak self] selected in
+
+                                                    let listType = Constants.lists[selected]
+                                                    switch listType {
+                                                    case .unordered:
+                                                        self?.toggleUnorderedList()
+                                                    case .ordered:
+                                                        self?.toggleOrderedList()
+                                                    }
+        })
     }
 
     @objc func toggleBlockquote() {
@@ -756,6 +769,97 @@ extension ShareExtensionViewController {
             }
         }
         return .none
+    }
+
+    // MARK: - Present Toolbar related VC
+
+    fileprivate func dismissOptionsViewControllerIfNecessary() {
+        guard optionsViewController != nil else {
+            return
+        }
+
+        dismissOptionsViewController()
+    }
+
+    func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
+                                                   fromBarItem barItem: FormatBarItem,
+                                                   selectedRowIndex index: Int?,
+                                                   onSelect: OptionsTableViewController.OnSelectHandler?) {
+        // Hide the input view if we're already showing these options
+        if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
+            self.optionsViewController = nil
+            changeRichTextInputView(to: nil)
+            return
+        }
+
+        optionsViewController = OptionsTableViewController(options: options)
+        optionsViewController.cellDeselectedTintColor = Colors.aztecFormatBarInactiveColor
+        optionsViewController.cellBackgroundColor = Colors.aztecFormatPickerBackgroundColor
+        optionsViewController.cellSelectedBackgroundColor = Colors.aztecFormatPickerSelectedCellBackgroundColor
+        optionsViewController.view.tintColor = Colors.aztecFormatBarActiveColor
+        optionsViewController.onSelect = { [weak self] selected in
+            onSelect?(selected)
+            self?.dismissOptionsViewController()
+        }
+
+        let selectRow = {
+            guard let index = index else {
+                return
+            }
+
+            self.optionsViewController?.selectRow(at: index)
+        }
+
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            presentToolbarViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
+        } else {
+            presentToolbarViewControllerAsInputView(optionsViewController)
+            selectRow()
+        }
+    }
+
+    private func presentToolbarViewController(_ viewController: UIViewController,
+                                              asPopoverFromBarItem barItem: FormatBarItem,
+                                              completion: (() -> Void)? = nil) {
+        viewController.modalPresentationStyle = .popover
+        viewController.popoverPresentationController?.permittedArrowDirections = [.down]
+        viewController.popoverPresentationController?.sourceView = view
+
+        let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
+
+        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
+        optionsViewController.popoverPresentationController?.backgroundColor = Colors.aztecFormatPickerBackgroundColor
+        optionsViewController.popoverPresentationController?.delegate = self
+
+        present(viewController, animated: true, completion: completion)
+    }
+
+    private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
+        self.addChildViewController(viewController)
+        changeRichTextInputView(to: viewController.view)
+        viewController.didMove(toParentViewController: self)
+    }
+
+    private func dismissOptionsViewController() {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            dismiss(animated: true, completion: nil)
+        default:
+            optionsViewController?.removeFromParentViewController()
+            changeRichTextInputView(to: nil)
+        }
+
+        optionsViewController = nil
+    }
+
+
+    func changeRichTextInputView(to: UIView?) {
+        guard richTextView.inputView != to else {
+            return
+        }
+
+        richTextView.inputView = to
+        richTextView.reloadInputViews()
     }
 }
 
