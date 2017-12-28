@@ -189,6 +189,10 @@ class ShareExtensionViewController: UIViewController {
     ///
     fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
 
+    /// Current keyboard rect used to help size the inline media picker
+    ///
+    fileprivate var currentKeyboardFrame: CGRect = .zero
+
     /// Separator View
     ///
     fileprivate(set) lazy var separatorView: UIView = {
@@ -230,6 +234,13 @@ class ShareExtensionViewController: UIViewController {
 
         tracks.trackExtensionLaunched(oauth2Token != nil)
         dismissIfNeeded()
+        startListeningToNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        stopListeningToNotifications()
     }
 
     override func viewDidLayoutSubviews() {
@@ -352,6 +363,18 @@ class ShareExtensionViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    func startListeningToNotifications() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
+    }
+
+    func stopListeningToNotifications() {
+        let nc = NotificationCenter.default
+        nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        nc.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+    }
+
     // MARK: - Toolbar creation
 
     fileprivate func updateToolbar(_ toolbar: Aztec.FormatBar) {
@@ -427,6 +450,41 @@ class ShareExtensionViewController: UIViewController {
             makeToolbarButton(identifier: .horizontalruler),
         ]
     }
+
+    // MARK: - Keyboard Handling
+
+    @objc func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo as? [String: AnyObject],
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            else {
+                return
+        }
+        // Convert the keyboard frame from window base coordinate
+        currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
+        refreshInsets(forKeyboardFrame: keyboardFrame)
+    }
+
+    @objc func keyboardDidHide(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo as? [String: AnyObject],
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            else {
+                return
+        }
+
+        currentKeyboardFrame = .zero
+        refreshInsets(forKeyboardFrame: keyboardFrame)
+    }
+
+    fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
+        let referenceView: UIScrollView = richTextView
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+
+        richTextView.scrollIndicatorInsets = scrollInsets
+        richTextView.contentInset = contentInsets
+    }
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
@@ -473,10 +531,14 @@ extension ShareExtensionViewController {
 
 // MARK: - Private methods
 
-extension ShareExtensionViewController {
+private extension ShareExtensionViewController {
     func refreshPlaceholderVisibility() {
         placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
         titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
+    }
+
+    func closeShareExtensionWithoutSaving() {
+        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
 }
 
@@ -486,7 +548,7 @@ extension ShareExtensionViewController {
 
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
-        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        closeShareExtensionWithoutSaving()
     }
 
     @objc func nextWasPressed() {
@@ -862,7 +924,6 @@ extension ShareExtensionViewController {
         optionsViewController = nil
     }
 
-
     func changeRichTextInputView(to: UIView?) {
         guard richTextView.inputView != to else {
             return
@@ -1046,7 +1107,7 @@ private extension ShareExtensionViewController {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
-            self.dismiss(animated: true, completion: nil)
+            self.closeShareExtensionWithoutSaving()
         }
 
         alertController.addAction(alertAction)
