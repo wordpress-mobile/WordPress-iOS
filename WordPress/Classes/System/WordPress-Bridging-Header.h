@@ -37,8 +37,6 @@
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
 
-#import "JetpackService.h"
-
 #import "LoginFacade.h"
 
 #import "Media.h"
@@ -66,6 +64,7 @@
 #import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PostSettingsViewController.h"
+#import "PostTag.h"
 #import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"
 
