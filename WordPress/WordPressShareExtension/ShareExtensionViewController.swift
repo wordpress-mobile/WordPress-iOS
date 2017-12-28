@@ -214,8 +214,6 @@ class ShareExtensionViewController: UIViewController {
         title = NSLocalizedString("WordPress", comment: "Application title")
 
         loadContent(extensionContext: extensionContext)
-
-        // TODO: Fix the warnings triggered by this one!
         WPFontManager.loadNotoFontFamily()
 
         // Setup
@@ -381,6 +379,7 @@ class ShareExtensionViewController: UIViewController {
         toolbar.disabledTintColor = Colors.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = Colors.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
+        toolbar.overflowToolbar(expand: false)
         updateToolbar(toolbar)
 
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
@@ -485,12 +484,12 @@ extension ShareExtensionViewController {
 //
 extension ShareExtensionViewController {
 
-    @IBAction func cancelWasPressed() {
+    @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
         extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
 
-    @IBAction func nextWasPressed() {
+    @objc func nextWasPressed() {
         // TODO: Next screen
     }
 }
@@ -499,14 +498,11 @@ extension ShareExtensionViewController {
 
 extension ShareExtensionViewController: Aztec.FormatBarDelegate {
     func formatBarTouchesBegan(_ formatBar: FormatBar) {
-        // TODO: Needed?
+        dismissOptionsViewControllerIfNecessary()
     }
 
-    /// Called when the overflow items in the format bar are either shown or hidden
-    /// as a result of the user tapping the toggle button.
-    ///
     func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
-        // TODO: Needed?
+        // Not Used
     }
 }
 
@@ -641,86 +637,82 @@ extension ShareExtensionViewController {
     }
 
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
+        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
+        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
+        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
 
-        //TODO: Implement me!
+        let isInsertingNewLink = (url == nil)
+        var urlToUse = url
 
-//        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
-//        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
-//        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
-//        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
-//
-//        let isInsertingNewLink = (url == nil)
-//        var urlToUse = url
-//
-//        if isInsertingNewLink {
-//            if UIPasteboard.general.hasURLs,
-//                let pastedURL = UIPasteboard.general.url {
-//                urlToUse = pastedURL
-//            }
-//        }
-//
-//        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
-//
-//        let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
-//
-//        // TextField: URL
-//        alertController.addTextField(configurationHandler: { [weak self] textField in
-//            textField.clearButtonMode = .always
-//            textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
-//            textField.text = urlToUse?.absoluteString
-//
-//            textField.addTarget(self,
-//                                action: #selector(AztecPostViewController.alertTextFieldDidChange),
-//                                for: UIControlEvents.editingChanged)
-//        })
-//
-//        // TextField: Link Name
-//        alertController.addTextField(configurationHandler: { textField in
-//            textField.clearButtonMode = .always
-//            textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
-//            textField.isSecureTextEntry = false
-//            textField.autocapitalizationType = .sentences
-//            textField.autocorrectionType = .default
-//            textField.spellCheckingType = .default
-//            textField.text = title
-//        })
-//
-//
-//        // Action: Insert
-//        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
-//            self?.richTextView.becomeFirstResponder()
-//            let linkURLString = alertController.textFields?.first?.text
-//            var linkTitle = alertController.textFields?.last?.text
-//
-//            if linkTitle == nil || linkTitle!.isEmpty {
-//                linkTitle = linkURLString
-//            }
-//
-//            guard let urlString = linkURLString, let url = URL(string: urlString), let title = linkTitle else {
-//                return
-//            }
-//
-//            self?.richTextView.setLink(url, title: title, inRange: range)
-//        }
-//
-//        // Disabled until url is entered into field
-//        insertAction.isEnabled = urlToUse?.absoluteString.isEmpty == false
-//
-//        // Action: Remove
-//        if !isInsertingNewLink {
-//            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
-//                self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
-//                self?.richTextView.becomeFirstResponder()
-//                self?.richTextView.removeLink(inRange: range)
-//            }
-//        }
-//
-//        // Action: Cancel
-//        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
-//            self?.richTextView.becomeFirstResponder()
-//        }
-//
-//        present(alertController, animated: true, completion: nil)
+        if isInsertingNewLink {
+            if UIPasteboard.general.hasURLs,
+                let pastedURL = UIPasteboard.general.url {
+                urlToUse = pastedURL
+            }
+        }
+
+        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
+
+        let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
+
+        // TextField: URL
+        alertController.addTextField(configurationHandler: { [weak self] textField in
+            textField.clearButtonMode = .always
+            textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
+            textField.text = urlToUse?.absoluteString
+
+            textField.addTarget(self,
+                                action: #selector(ShareExtensionViewController.alertTextFieldDidChange),
+                                for: UIControlEvents.editingChanged)
+        })
+
+        // TextField: Link Name
+        alertController.addTextField(configurationHandler: { textField in
+            textField.clearButtonMode = .always
+            textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
+            textField.isSecureTextEntry = false
+            textField.autocapitalizationType = .sentences
+            textField.autocorrectionType = .default
+            textField.spellCheckingType = .default
+            textField.text = title
+        })
+
+
+        // Action: Insert
+        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
+            self?.richTextView.becomeFirstResponder()
+            let linkURLString = alertController.textFields?.first?.text
+            var linkTitle = alertController.textFields?.last?.text
+
+            if linkTitle == nil || linkTitle!.isEmpty {
+                linkTitle = linkURLString
+            }
+
+            guard let urlString = linkURLString, let url = URL(string: urlString), let title = linkTitle else {
+                return
+            }
+
+            self?.richTextView.setLink(url, title: title, inRange: range)
+        }
+
+        // Disabled until url is entered into field
+        insertAction.isEnabled = urlToUse?.absoluteString.isEmpty == false
+
+        // Action: Remove
+        if !isInsertingNewLink {
+            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+                self?.richTextView.becomeFirstResponder()
+                self?.richTextView.removeLink(inRange: range)
+            }
+        }
+
+        // Action: Cancel
+        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
+            self?.richTextView.becomeFirstResponder()
+        }
+
+        present(alertController, animated: true, completion: nil)
     }
 
     @objc func alertTextFieldDidChange(_ textField: UITextField) {
@@ -736,7 +728,30 @@ extension ShareExtensionViewController {
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
-        //TODO: Implement me!
+        let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
+            let attributes: [NSAttributedStringKey: Any] = [
+                .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
+                .foregroundColor: WPStyleGuide.darkGrey()
+            ]
+
+            let title = NSAttributedString(string: headerType.description, attributes: attributes)
+
+            return OptionsTableViewOption(image: headerType.iconImage,
+                                          title: title,
+                                          accessibilityLabel: headerType.accessibilityLabel)
+        }
+
+        let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
+
+        showOptionsTableViewControllerWithOptions(headerOptions,
+                                                  fromBarItem: item,
+                                                  selectedRowIndex: selectedIndex,
+                                                  onSelect: { [weak self] selected in
+                                                    guard let range = self?.richTextView.selectedRange else { return }
+                                                    self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
+                                                    self?.optionsViewController = nil
+                                                    self?.changeRichTextInputView(to: nil)
+        })
     }
 
     func insertHorizontalRuler() {
