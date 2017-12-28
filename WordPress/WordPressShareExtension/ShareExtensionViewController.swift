@@ -426,7 +426,6 @@ class ShareExtensionViewController: UIViewController {
             makeToolbarButton(identifier: .underline),
             makeToolbarButton(identifier: .strikethrough),
             makeToolbarButton(identifier: .horizontalruler),
-            makeToolbarButton(identifier: .more),
         ]
     }
 }
@@ -538,7 +537,7 @@ extension ShareExtensionViewController {
             case .horizontalruler:
                 insertHorizontalRuler()
             case .more:
-                insertMore()
+                break // Not used here
             case .media:
                 break  // Not used here
             case .sourcecode:
@@ -742,10 +741,6 @@ extension ShareExtensionViewController {
 
     func insertHorizontalRuler() {
         richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
-    }
-
-    func insertMore() {
-        richTextView.replace(richTextView.selectedRange, withComment: Constants.moreAttachmentText)
     }
 
     func headerLevelForSelectedText() -> Header.HeaderType {
