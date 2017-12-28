@@ -10,7 +10,7 @@ import WordPressShared
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
     fileprivate enum Constants {
-        static let AuthenticationInfoKey = "AuthenticationInfoKey"
+        static let authenticationInfoKey = "authenticationInfoKey"
         static let jetpackBlogIDURL = "jetpackBlogIDURL"
         static let username = "username"
     }
@@ -358,13 +358,13 @@ import WordPressShared
     /// - Parameter loginFields: The loginFields instance from which to save.
     ///
     class func storeLoginInfoForTokenAuth(_ loginFields: LoginFields) {
-        let dict: NSMutableDictionary = [
+        var dict: [String: String] = [
             Constants.username: loginFields.username
         ]
         if let url = loginFields.meta.jetpackBlogID?.uriRepresentation().absoluteString {
-            dict.setValue(url, forKey: Constants.jetpackBlogIDURL)
+            dict[Constants.jetpackBlogIDURL] = url
         }
-        UserDefaults.standard.set(dict, forKey: Constants.AuthenticationInfoKey)
+        UserDefaults.standard.set(dict, forKey: Constants.authenticationInfoKey)
     }
 
 
@@ -373,7 +373,7 @@ import WordPressShared
     /// - Returns: A loginFields instance or nil.
     ///
     class func retrieveLoginInfoForTokenAuth() -> LoginFields? {
-        guard let dict = UserDefaults.standard.dictionary(forKey: Constants.AuthenticationInfoKey) else {
+        guard let dict = UserDefaults.standard.dictionary(forKey: Constants.authenticationInfoKey) else {
             return nil
         }
 
@@ -396,7 +396,7 @@ import WordPressShared
     /// Removes stored login information from NSUserDefaults
     ///
     class func deleteLoginInfoForTokenAuth() {
-        UserDefaults.standard.removeObject(forKey: Constants.AuthenticationInfoKey)
+        UserDefaults.standard.removeObject(forKey: Constants.authenticationInfoKey)
     }
 
 
