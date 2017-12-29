@@ -1,9 +1,7 @@
 class LoginSocialErrorCell: UITableViewCell {
-    private let errorTitle: String
-    private let errorDescription: String
-    private let titleLabel: UILabel
-    private let descriptionLabel: UILabel
-    private let labelStack: UIStackView
+    private let titleLabel = UILabel()
+    private let descriptionLabel = UILabel()
+    private let labelStack = UIStackView()
 
     private struct Constants {
         static let labelSpacing: CGFloat = 15.0
@@ -12,24 +10,18 @@ class LoginSocialErrorCell: UITableViewCell {
     }
 
     @objc init(title: String, description: String) {
-        errorTitle = title
-        errorDescription = description
-        titleLabel = UILabel()
-        descriptionLabel = UILabel()
-        labelStack = UIStackView()
-
         super.init(style: .default, reuseIdentifier: "LoginSocialErrorCell")
+        titleLabel.text = title
+        descriptionLabel.text = description
+        layoutLabels()
+    }
 
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         layoutLabels()
     }
 
     required init?(coder aDecoder: NSCoder) {
-        errorTitle = aDecoder.value(forKey: "errorTitle") as? String ?? ""
-        errorDescription = aDecoder.value(forKey: "errorDescription") as? String ?? ""
-        titleLabel = UILabel()
-        descriptionLabel = UILabel()
-        labelStack = UIStackView()
-
         super.init(coder: aDecoder)
 
         layoutLabels()
@@ -57,9 +49,11 @@ class LoginSocialErrorCell: UITableViewCell {
             contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: labelStack.trailingAnchor)
             ])
 
+        backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    func configureCell(_ errorTitle: String, errorDescription: String) {
         titleLabel.text = errorTitle.localizedUppercase
         descriptionLabel.text = errorDescription
-
-        backgroundColor = WPStyleGuide.greyLighten30()
     }
 }

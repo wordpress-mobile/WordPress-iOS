@@ -348,7 +348,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
                 errorDescription = error.localizedDescription
             }
 
-            let socialErrorVC = LoginSocialErrorViewController(title: errorTitle, description: errorDescription)
+            let socialErrorVC = LoginSocialErrorViewController(title: errorTitle, description: errorDescription, restrictToWPCom: restrictToWPCom)
             let socialErrorNav = LoginNavigationController(rootViewController: socialErrorVC)
             socialErrorVC.delegate = self
             present(socialErrorNav, animated: true) {}
