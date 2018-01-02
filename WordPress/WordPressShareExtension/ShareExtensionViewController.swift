@@ -204,6 +204,19 @@ class ShareExtensionViewController: UIViewController {
         return v
     }()
 
+    /// Selected Text Attachment
+    ///
+    fileprivate var currentSelectedAttachment: MediaAttachment?
+
+    fileprivate var mediaMessageAttributes: [NSAttributedStringKey: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+
+        return [.font: Fonts.mediaOverlay,
+                .paragraphStyle: paragraphStyle,
+                .foregroundColor: UIColor.white]
+    }
+
     /// Options
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
@@ -212,6 +225,9 @@ class ShareExtensionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // This needs to called first
+        configureMediaAppearance()
 
         // Tracker
         tracks.wpcomUsername = wpcomUsername
@@ -294,6 +310,12 @@ class ShareExtensionViewController: UIViewController {
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = nextButton
         nextButton.isEnabled = false
+    }
+
+    func configureMediaAppearance() {
+        MediaAttachment.defaultAppearance.overlayColor = Colors.mediaProgressOverlay
+        MediaAttachment.defaultAppearance.overlayBorderWidth = Constants.mediaOverlayBorderWidth
+        MediaAttachment.defaultAppearance.overlayBorderColor = Colors.mediaOverlayBorderColor
     }
 
     func configureView() {
@@ -538,7 +560,16 @@ private extension ShareExtensionViewController {
     }
 
     func closeShareExtensionWithoutSaving() {
+        // TODO: Remove temp media files if needed
         extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+    }
+
+    func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
+        if mediaAttachment is ImageAttachment {
+            mediaAttachment.overlayImage = nil
+        }
+        mediaAttachment.message = nil
+        mediaAttachment.shouldHideBorder = false
     }
 }
 
@@ -553,6 +584,37 @@ extension ShareExtensionViewController {
 
     @objc func nextWasPressed() {
         // TODO: Next screen
+    }
+
+    func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
+        let mediaID = attachment.identifier
+        let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
+                                           style: .cancel,
+                                           handler: { (action) in
+                                            if attachment == self.currentSelectedAttachment {
+                                                self.currentSelectedAttachment = nil
+                                                self.resetMediaAttachmentOverlay(attachment)
+                                                self.richTextView.refresh(attachment)
+                                            }
+        })
+        if attachment is ImageAttachment {
+            alertController.addActionWithTitle(NSLocalizedString("Remove", comment: "User action to remove media."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                self.richTextView.remove(attachmentID: mediaID)
+            })
+        }
+
+        alertController.title = title
+        alertController.message = nil
+        alertController.popoverPresentationController?.sourceView = richTextView
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated: true, completion: { () in
+            UIMenuController.shared.setMenuVisible(false, animated: false)
+        })
     }
 }
 
@@ -1064,28 +1126,58 @@ extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
 //
 extension ShareExtensionViewController: TextViewAttachmentDelegate {
     func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        // TODO: Implement me!
+        guard let image = UIImage(contentsOfURL: url) else {
+            failure()
+            return
+        }
+        success(image)
     }
 
     func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
-        // TODO: Implement me!
         return nil
     }
 
     func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
-        // TODO: Implement me!
+        // TODO: Remove temp media file
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
-        // TODO: Implement me!
-    }
+        if !richTextView.isFirstResponder {
+            richTextView.becomeFirstResponder()
+        }
 
-    func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
-        // TODO: Implement me!
+        switch attachment {
+        case let attachment as MediaAttachment:
+            selected(textAttachment: attachment, atPosition: position)
+        default:
+            break
+        }
     }
 
     func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
-        // TODO: Implement me!
+        // If it's a new attachment tapped let's unmark the previous one...
+        if let selectedAttachment = currentSelectedAttachment {
+            self.resetMediaAttachmentOverlay(selectedAttachment)
+            richTextView.refresh(selectedAttachment)
+        }
+
+        // ...and mark the newly tapped attachment
+        let message = ""
+        attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+        attachment.shouldHideBorder = false
+        richTextView.refresh(attachment)
+        currentSelectedAttachment = attachment
+
+        // Display the action sheet right away
+        displayActions(forAttachment: attachment, position: position)
+    }
+
+    func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
+        currentSelectedAttachment = nil
+        if let mediaAttachment = attachment as? MediaAttachment {
+            self.resetMediaAttachmentOverlay(mediaAttachment)
+            richTextView.refresh(mediaAttachment)
+        }
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
@@ -1151,7 +1243,7 @@ private extension ShareExtensionViewController {
         return fullPath
     }
 
-    func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) {
+    func insertImageAttachment(with url: URL) {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
         richTextView.refresh(attachment)
@@ -1176,6 +1268,7 @@ extension ShareExtensionViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight            = CGFloat(44.0)
+        static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
         static let placeholderMediaLink = URL(string: "placeholder://")!
     }
@@ -1184,6 +1277,8 @@ extension ShareExtensionViewController {
         static let title                    = WPStyleGuide.grey()
         static let separator                = WPStyleGuide.greyLighten30()
         static let placeholder              = WPStyleGuide.grey()
+        static let mediaProgressOverlay     = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
+        static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
         static let aztecBackground          = UIColor.clear
         static let aztecLinkColor           = WPStyleGuide.mediumBlue()
         static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
