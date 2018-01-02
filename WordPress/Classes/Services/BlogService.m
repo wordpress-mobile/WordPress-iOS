@@ -590,6 +590,37 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [WPAnalytics refreshMetadata];
 }
 
+- (void)associateSyncedBlogsToJetpackAccount:(WPAccount *)account
+                                     success:(void (^)(void))success
+                                     failure:(void (^)(NSError *error))failure
+{
+    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
+    [remote getBlogsWithSuccess:^(NSArray *remoteBlogs) {
+
+        NSMutableSet *accountBlogIDs = [NSMutableSet new];
+        for (RemoteBlog *remoteBlog in remoteBlogs) {
+            [accountBlogIDs addObject:remoteBlog.blogID];
+        }
+
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+        request.predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
+        NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:nil];
+        blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            Blog *blog = (Blog *)evaluatedObject;
+            NSNumber *jetpackBlogID = blog.jetpack.siteID;
+            return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];
+        }]];
+        [account addBlogs:[NSSet setWithArray:blogs]];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+        success();
+
+    } failure:^(NSError *error) {
+        failure(error);
+
+    }];
+}
+
 #pragma mark - Private methods
 
 - (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)(void))completion
