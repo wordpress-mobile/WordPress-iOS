@@ -221,6 +221,10 @@ class ShareExtensionViewController: UIViewController {
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
 
+    /// Dictionary of images and attachments
+    ///
+    fileprivate var sharedImageDict = [String: URL]()
+
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
@@ -1034,7 +1038,7 @@ extension ShareExtensionViewController: UITextViewDelegate {
 
 extension ShareExtensionViewController {
     func titleTextFieldDidChange(_ textField: UITextField) {
-        // TODO
+        // noop
     }
 }
 
@@ -1062,7 +1066,12 @@ extension ShareExtensionViewController: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
-        // TODO: Remove temp media file
+        // Remove the temp media file associated with the deleted attachment
+        guard let tempMediaFileURL = sharedImageDict[attachmentID], !tempMediaFileURL.pathExtension.isEmpty else {
+            return
+        }
+        ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
+        sharedImageDict.removeValue(forKey: attachmentID)
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
@@ -1149,6 +1158,7 @@ private extension ShareExtensionViewController {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
         richTextView.refresh(attachment)
+        sharedImageDict[attachment.identifier] = url
     }
 
     func refreshPlaceholderVisibility() {
@@ -1175,7 +1185,13 @@ private extension ShareExtensionViewController {
     }
 
     func closeShareExtensionWithoutSaving() {
-        // TODO: Remove temp media files if needed
+        // First, remove the temp media files if needed
+        for tempMediaFileURL in sharedImageDict.values {
+            if !tempMediaFileURL.pathExtension.isEmpty {
+                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
+            }
+        }
+
         extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
 
