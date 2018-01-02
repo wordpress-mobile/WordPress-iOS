@@ -7,7 +7,6 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "JetpackService.h"
 #import "TestContextManager.h"
 #import "ContextManager-Internals.h"
 @import WordPressKit;
@@ -75,66 +74,6 @@
 
 - (void)testJetpackUsername {
     XCTAssertNil(_blog.jetpack.connectedUsername);
-}
-
-- (void)testValidateCredentials {
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/get-user-blogs/1.0?f=json"] &&
-        [[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:@"Basic dGVzdDE6dGVzdDE="]; // test1:test1
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        NSString* fixture = OHPathForFile(@"get-user-blogs_doesnt-have-blog.json", self.class);
-        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
-                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
-    }];
-
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/get-user-blogs/1.0?f=json"] &&
-        [[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:@"Basic dGVzdDI6dGVzdDI="]; // test2:test2
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        NSString* fixture = OHPathForFile(@"get-user-blogs_has-blog.json", self.class);
-        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
-                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
-    }];
-    
-    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
-        return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/oauth2/token"];
-    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        NSString* fixture = OHPathForFile(@"authtoken.json", self.class);
-        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
-                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
-    }];
-    
-    XCTestExpectation *validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
-
-    JetpackService *jetpackService = [[JetpackService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    [jetpackService validateAndLoginWithUsername:@"test1"
-                                        password:@"test1"
-                                 multifactorCode:nil
-                                          siteID:_blog.jetpack.siteID
-                                         success:^(WPAccount *account) {
-                                             XCTFail(@"User test1 shouldn't have access to test.blog");
-                                             [validateJetpackExpectation fulfill];
-                                         } failure:^(NSError *error) {
-                                             XCTAssertEqual(error.domain, JetpackServiceRemoteErrorDomain);
-                                             XCTAssertEqual(error.code, JetpackServiceRemoteErrorNoRecordForBlog);
-                                             [validateJetpackExpectation fulfill];
-                                         }];
-
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-
-    validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
-    [jetpackService validateAndLoginWithUsername:@"test2"
-                                        password:@"test2"
-                                 multifactorCode:nil
-                                          siteID:_blog.jetpack.siteID
-                                         success:^(WPAccount *account) {
-                                             [validateJetpackExpectation fulfill];
-                                         } failure:^(NSError *error) {
-                                             XCTFail(@"User test2 should have access to test.blog");
-                                             [validateJetpackExpectation fulfill];
-                                         }];
-
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 - (void)testJetpackSetupDoesntReplaceDotcomAccount {
