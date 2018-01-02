@@ -28,7 +28,7 @@ static NSInteger HideSearchMinSites = 3;
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
                                         WPNoResultsViewDelegate,
-                                        NoSitesViewDelegate,
+                                        SiteCreationNoSitesViewControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) UIStackView *stackView;
@@ -36,7 +36,7 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
-@property (nonatomic, strong) NoSitesView *noSitesView;
+@property (nonatomic, strong) SiteCreationNoSitesViewController *noSitesViewController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
@@ -154,7 +154,6 @@ static NSInteger HideSearchMinSites = 3;
 
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
-    [self configureNoSitesView];
     [self configureNoResultsView];
 
     [self registerForAccountChangeNotification];
@@ -241,7 +240,10 @@ static NSInteger HideSearchMinSites = 3;
 {
     NSUInteger count = self.dataSource.allBlogsCount;
     NSUInteger visibleSitesCount = self.dataSource.visibleBlogsCount;
-
+    
+    // Ensure No Sites view is not shown. Will be shown later if necessary.
+    [self removeNoSitesView];
+    
     // If the user has sites, but they're all hidden...
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
         [self showNoResultsViewForAllSitesHidden];
@@ -257,15 +259,31 @@ static NSInteger HideSearchMinSites = 3;
     }
 }
 
+- (void)removeNoSitesView
+{
+    if (self.noSitesViewController) {
+        [self.noSitesViewController.view removeFromSuperview];
+        [self.noSitesViewController removeFromParentViewController];
+    }
+}
+
 - (void)showNoSitesViewForSiteCount:(NSUInteger)siteCount
 {
     // If we've gone from no results to having just one site, the user has
     // added a new site so we should auto-select it
-    if (!self.noSitesView.hidden && siteCount == 1) {
+    if (siteCount > 0) {
         [self bypassBlogListViewController];
     }
-    
-    self.noSitesView.hidden = siteCount > 0;
+    else {
+        // If we don't have a No Sites view yet, create one.
+        if (!self.noSitesViewController) {
+            [self configureNoSitesView];
+        }
+        
+        [self addChildViewController:self.noSitesViewController];
+        [self.view addSubview:self.noSitesViewController.view];
+        [self.noSitesViewController didMoveToParentViewController:self];
+    }
 }
 
 - (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
@@ -453,11 +471,9 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)configureNoSitesView
 {
-    self.noSitesView = [NoSitesView instanceFromNib];
-    [self.view addSubview:self.noSitesView];
-    [self.view pinSubviewAtCenter:self.noSitesView];
-    self.noSitesView.delegate = self;
-    self.noSitesView.hidden = YES;
+    UIStoryboard *noSitesSB = [UIStoryboard storyboardWithName:@"SiteCreationNoSites" bundle:nil];
+    self.noSitesViewController = [noSitesSB instantiateViewControllerWithIdentifier:@"SiteCreationNoSites"];
+    self.noSitesViewController.delegate = self;
 }
 
 - (void)configureNoResultsView
@@ -810,7 +826,6 @@ static NSInteger HideSearchMinSites = 3;
         self.firstHide = nil;
         self.hideCount = 0;
         self.noResultsView.hidden = YES;
-        self.noSitesView.hidden = YES;
     }
     else {
         self.tableView.tableHeaderView = nil;
@@ -956,23 +971,30 @@ static NSInteger HideSearchMinSites = 3;
     [self validateBlogDetailsViewController];
 }
 
-#pragma mark - NoSitesViewDelegate
+#pragma mark - NoSitesViewControllerDelegate
 
 - (void)addSiteButtonPressed {
-    [self addSite];
+    [self showAddSiteAlertFromView:self.noSitesViewController.view
+                         andButton:self.noSitesViewController.addSiteButton];
 }
 
 #pragma mark - WPNoResultsViewDelegate
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
+    [self showAddSiteAlertFromView:noResultsView andButton:noResultsView.button];
+}
+
+#pragma mark - View Delegate Helper
+
+- (void)showAddSiteAlertFromView:(UIView *)fromView andButton:(UIButton *)fromButton
+{
     if (self.dataSource.allBlogsCount == 0) {
         UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
         addSiteAlertController.popoverPresentationController.sourceView = self.view;
-        addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:noResultsView.button.frame
-                                                                                        fromView:noResultsView];
+        addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:fromButton.frame fromView:fromView];
         addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-
+        
         [self presentViewController:addSiteAlertController animated:YES completion:nil];
         self.addSiteAlertController = addSiteAlertController;
     } else if (self.dataSource.visibleBlogsCount == 0) {
