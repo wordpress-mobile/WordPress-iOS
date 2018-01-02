@@ -799,6 +799,7 @@ static NSInteger HideSearchMinSites = 3;
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
     self.dataSource.editing = editing;
+    [self toggleAddSiteButton:!editing];
 
     if (editing) {
         [self.searchBar removeFromSuperview];
@@ -816,6 +817,11 @@ static NSInteger HideSearchMinSites = 3;
         [self updateViewsForCurrentSiteCount];
         [self updateSearchVisibility];
     }
+}
+
+- (void)toggleAddSiteButton:(BOOL)enabled
+{
+    self.addSiteButton.enabled = enabled;
 }
 
 - (void)setAddSiteBarButtonItem
