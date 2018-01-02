@@ -67,6 +67,15 @@ class SafariStoredCredentials {
 @objc
 class LoginFieldsMeta: NSObject {
 
+    /// Indicates whether a self-hosted user is attempting to log in to Jetpack
+    @objc var jetpackLogin: Bool {
+        if let _ = self.jetpackBlogID {
+            return true
+        }
+        return false
+    }
+    @objc var jetpackBlogID: NSManagedObjectID?
+
     /// Indicates whether a user is logging in via the wpcom flow or a self-hosted flow.  Used by the
     /// the LoginFacade in its branching logic.
     /// This is a good candidate to refactor out and call the proper login method directly.
