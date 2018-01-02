@@ -510,7 +510,7 @@ class ShareExtensionViewController: UIViewController {
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
-//
+
 extension ShareExtensionViewController: UIPopoverPresentationControllerDelegate {
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
@@ -551,30 +551,8 @@ extension ShareExtensionViewController {
     }
 }
 
-// MARK: - Private methods
-
-private extension ShareExtensionViewController {
-    func refreshPlaceholderVisibility() {
-        placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
-        titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
-    }
-
-    func closeShareExtensionWithoutSaving() {
-        // TODO: Remove temp media files if needed
-        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-    }
-
-    func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
-        if mediaAttachment is ImageAttachment {
-            mediaAttachment.overlayImage = nil
-        }
-        mediaAttachment.message = nil
-        mediaAttachment.shouldHideBorder = false
-    }
-}
-
 // MARK: - Actions
-//
+
 extension ShareExtensionViewController {
 
     @objc func cancelWasPressed() {
@@ -618,19 +596,7 @@ extension ShareExtensionViewController {
     }
 }
 
-// MARK: - FormatBarDelegate Conformance
-
-extension ShareExtensionViewController: Aztec.FormatBarDelegate {
-    func formatBarTouchesBegan(_ formatBar: FormatBar) {
-        dismissOptionsViewControllerIfNecessary()
-    }
-
-    func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
-        // Not Used
-    }
-}
-
-// MARK: FormatBar Actions
+// MARK: - FormatBar Actions
 
 extension ShareExtensionViewController {
     func handleAction(for barItem: FormatBarItem) {
@@ -996,7 +962,19 @@ extension ShareExtensionViewController {
     }
 }
 
-// MARK: - UITextViewDelegate methods
+// MARK: - FormatBarDelegate Conformance
+
+extension ShareExtensionViewController: Aztec.FormatBarDelegate {
+    func formatBarTouchesBegan(_ formatBar: FormatBar) {
+        dismissOptionsViewControllerIfNecessary()
+    }
+
+    func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
+        // Not Used
+    }
+}
+
+// MARK: - UITextViewDelegate Conformance
 
 extension ShareExtensionViewController: UITextViewDelegate {
 
@@ -1050,63 +1028,9 @@ extension ShareExtensionViewController: UITextViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         refreshTitlePosition()
     }
-
-    // MARK: - Title Input Sanitization
-
-    /// Sanitizes an input for insertion in the title text view.
-    ///
-    /// - Parameters:
-    ///     - input: the input for the title text view.
-    ///
-    /// - Returns: the sanitized string
-    ///
-    private func sanitizeInputForTitle(_ input: String) -> String {
-        var sanitizedText = input
-
-        while let range = sanitizedText.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) {
-            sanitizedText = sanitizedText.replacingCharacters(in: range, with: " ")
-        }
-
-        return sanitizedText
-    }
-
-    /// This method performs all necessary checks to verify if the title text can be changed,
-    /// or if some other action should be performed instead.
-    ///
-    /// - Important: this method sanitizes newlines, since they're not allowed in the title.
-    ///
-    /// - Parameters:
-    ///     - range: the range that would be modified.
-    ///     - text: the new text for the specified range.
-    ///
-    /// - Returns: `true` if the modification can take place, `false` otherwise.
-    ///
-    private func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
-
-        guard text.count > 1 else {
-            guard text.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) == nil else {
-                richTextView.becomeFirstResponder()
-                richTextView.selectedRange = NSRange(location: 0, length: 0)
-                return false
-            }
-
-            return true
-        }
-
-        let sanitizedInput = sanitizeInputForTitle(text)
-        let newlinesWereRemoved = sanitizedInput != text
-
-        guard !newlinesWereRemoved else {
-            titleTextField.insertText(sanitizedInput)
-
-            return false
-        }
-
-        return true
-    }
 }
 
-// MARK: - UITextFieldDelegate methods
+// MARK: - UITextFieldDelegate Conformance
 
 extension ShareExtensionViewController {
     func titleTextFieldDidChange(_ textField: UITextField) {
@@ -1114,7 +1038,7 @@ extension ShareExtensionViewController {
     }
 }
 
-// MARK: - TextViewFormattingDelegate methods
+// MARK: - TextViewFormattingDelegate Conformance
 
 extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
     func textViewCommandToggledAStyle() {
@@ -1123,7 +1047,7 @@ extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
 }
 
 // MARK: - TextViewAttachmentDelegate Conformance
-//
+
 extension ShareExtensionViewController: TextViewAttachmentDelegate {
     func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
         guard let image = UIImage(contentsOfURL: url) else {
@@ -1185,29 +1109,7 @@ extension ShareExtensionViewController: TextViewAttachmentDelegate {
     }
 }
 
-// Encapsulates all of the Action Helpers.
-
-private extension ShareExtensionViewController {
-    func dismissIfNeeded() {
-        guard oauth2Token == nil else {
-            return
-        }
-
-        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
-        let message = NSLocalizedString("Launch the WordPress app and log into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
-        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
-
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
-            self.closeShareExtensionWithoutSaving()
-        }
-
-        alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: nil)
-    }
-}
-
-// Encapsulates private helpers
+// MARK: - Private helpers
 
 private extension ShareExtensionViewController {
     func loadContent(extensionContext: NSExtensionContext?) {
@@ -1247,6 +1149,94 @@ private extension ShareExtensionViewController {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
         richTextView.refresh(attachment)
+    }
+
+    func refreshPlaceholderVisibility() {
+        placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
+        titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
+    }
+
+    func dismissIfNeeded() {
+        guard oauth2Token == nil else {
+            return
+        }
+
+        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
+        let message = NSLocalizedString("Launch the WordPress app and log into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
+        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
+            self.closeShareExtensionWithoutSaving()
+        }
+
+        alertController.addAction(alertAction)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func closeShareExtensionWithoutSaving() {
+        // TODO: Remove temp media files if needed
+        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+    }
+
+    func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
+        if mediaAttachment is ImageAttachment {
+            mediaAttachment.overlayImage = nil
+        }
+        mediaAttachment.message = nil
+        mediaAttachment.shouldHideBorder = false
+    }
+
+    /// Sanitizes an input for insertion in the title text view.
+    ///
+    /// - Parameters:
+    ///     - input: the input for the title text view.
+    ///
+    /// - Returns: the sanitized string
+    ///
+    func sanitizeInputForTitle(_ input: String) -> String {
+        var sanitizedText = input
+
+        while let range = sanitizedText.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) {
+            sanitizedText = sanitizedText.replacingCharacters(in: range, with: " ")
+        }
+
+        return sanitizedText
+    }
+
+    /// This method performs all necessary checks to verify if the title text can be changed,
+    /// or if some other action should be performed instead.
+    ///
+    /// - Important: this method sanitizes newlines, since they're not allowed in the title.
+    ///
+    /// - Parameters:
+    ///     - range: the range that would be modified.
+    ///     - text: the new text for the specified range.
+    ///
+    /// - Returns: `true` if the modification can take place, `false` otherwise.
+    ///
+    func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
+
+        guard text.count > 1 else {
+            guard text.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) == nil else {
+                richTextView.becomeFirstResponder()
+                richTextView.selectedRange = NSRange(location: 0, length: 0)
+                return false
+            }
+
+            return true
+        }
+
+        let sanitizedInput = sanitizeInputForTitle(text)
+        let newlinesWereRemoved = sanitizedInput != text
+
+        guard !newlinesWereRemoved else {
+            titleTextField.insertText(sanitizedInput)
+
+            return false
+        }
+
+        return true
     }
 }
 
