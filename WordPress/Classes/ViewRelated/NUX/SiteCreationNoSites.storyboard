@@ -33,13 +33,13 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
-                                        <rect key="frame" x="0.0" y="263.5" width="335" height="64.5"/>
+                                        <rect key="frame" x="0.0" y="253.5" width="335" height="61"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="118" y="348" width="99" height="33"/>
+                                        <rect key="frame" x="118" y="334.5" width="99" height="33"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="ALu-HJ-Bk4"/>
                                         </constraints>
@@ -66,7 +66,7 @@
                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="CPl-cH-d7b" secondAttribute="bottom" id="YIc-mc-NXm"/>
                                     <constraint firstItem="Fwm-rl-dKS" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="cOs-gh-5I5"/>
                                     <constraint firstItem="8BN-gx-7TL" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="-30" id="laq-dc-VLH">
-                                        <variation key="heightClass=compact" constant="0.0"/>
+                                        <variation key="heightClass=compact" constant="-10"/>
                                     </constraint>
                                     <constraint firstItem="CPl-cH-d7b" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="oHJ-eX-SYg"/>
                                     <constraint firstItem="CPl-cH-d7b" firstAttribute="top" secondItem="8BN-gx-7TL" secondAttribute="bottom" constant="30" id="tpK-9i-Gc7">

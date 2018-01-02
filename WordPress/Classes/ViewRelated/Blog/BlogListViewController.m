@@ -974,25 +974,24 @@ static NSInteger HideSearchMinSites = 3;
 #pragma mark - NoSitesViewControllerDelegate
 
 - (void)addSiteButtonPressed {
-    [self showAddSiteAlertFromView:self.noSitesViewController.view
-                         andButton:self.noSitesViewController.addSiteButton];
+    [self showAddSiteAlertFromButton:self.noSitesViewController.addSiteButton];
 }
 
 #pragma mark - WPNoResultsViewDelegate
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    [self showAddSiteAlertFromView:noResultsView andButton:noResultsView.button];
+    [self showAddSiteAlertFromButton:noResultsView.button];
 }
 
 #pragma mark - View Delegate Helper
 
-- (void)showAddSiteAlertFromView:(UIView *)fromView andButton:(UIButton *)fromButton
+- (void)showAddSiteAlertFromButton:(UIButton *)sourceButton
 {
     if (self.dataSource.allBlogsCount == 0) {
         UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
-        addSiteAlertController.popoverPresentationController.sourceView = self.view;
-        addSiteAlertController.popoverPresentationController.sourceRect = [self.view convertRect:fromButton.frame fromView:fromView];
+        addSiteAlertController.popoverPresentationController.sourceView = sourceButton;
+        addSiteAlertController.popoverPresentationController.sourceRect = sourceButton.bounds;
         addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
         
         [self presentViewController:addSiteAlertController animated:YES completion:nil];
