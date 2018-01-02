@@ -228,6 +228,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     @objc func handleCancelButtonTapped(_ sender: UIButton) {
         dismiss(cancelled: true)
+        NotificationCenter.default.post(name: .WPLoginCancelled, object: nil)
     }
 
     // Handle the help button being tapped
