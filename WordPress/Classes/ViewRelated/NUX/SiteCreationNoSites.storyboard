@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Site Creation No Sites View Controller-->
+        <scene sceneID="Lkk-bQ-VGq">
+            <objects>
+                <viewController storyboardIdentifier="SiteCreationNoSites" id="m07-8o-jn8" customClass="SiteCreationNoSitesViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ccg-6y-CMO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Sites View">
+                                <rect key="frame" x="20" y="20" width="335" height="647"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="No Sites Image">
+                                        <rect key="frame" x="-7.5" y="74.5" width="350" height="219"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="8:5" id="AAo-23-ODz"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="350" id="wER-bJ-ebd"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
+                                        <rect key="frame" x="0.0" y="263.5" width="335" height="20.5"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="118" y="314" width="99" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <state key="normal" title="Add new site">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="addSiteButtonPressed:" destination="m07-8o-jn8" eventType="touchUpInside" id="AkW-R7-nCF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Fwm-rl-dKS" firstAttribute="bottom" secondItem="0Ae-eX-ae9" secondAttribute="centerY" constant="-30" id="KvG-0R-a7o"/>
+                                    <constraint firstItem="8BN-gx-7TL" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="Qow-fF-W3M"/>
+                                    <constraint firstAttribute="trailing" secondItem="8BN-gx-7TL" secondAttribute="trailing" id="QwQ-dN-oMV"/>
+                                    <constraint firstItem="Fwm-rl-dKS" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="cOs-gh-5I5"/>
+                                    <constraint firstItem="8BN-gx-7TL" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="-30" id="laq-dc-VLH"/>
+                                    <constraint firstItem="CPl-cH-d7b" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="oHJ-eX-SYg"/>
+                                    <constraint firstItem="CPl-cH-d7b" firstAttribute="top" secondItem="8BN-gx-7TL" secondAttribute="bottom" constant="30" id="tpK-9i-Gc7"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="x31-wL-G0k" firstAttribute="trailing" secondItem="0Ae-eX-ae9" secondAttribute="trailing" constant="20" id="8y0-se-MDj"/>
+                            <constraint firstItem="0Ae-eX-ae9" firstAttribute="top" secondItem="x31-wL-G0k" secondAttribute="top" id="Rkb-im-UaL"/>
+                            <constraint firstItem="0Ae-eX-ae9" firstAttribute="leading" secondItem="x31-wL-G0k" secondAttribute="leading" constant="20" id="Yvc-NG-l0P"/>
+                            <constraint firstItem="x31-wL-G0k" firstAttribute="bottom" secondItem="0Ae-eX-ae9" secondAttribute="bottom" id="rhy-Y0-cCT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="x31-wL-G0k"/>
+                    </view>
+                    <size key="freeformSize" width="375" height="667"/>
+                    <connections>
+                        <outlet property="addSiteButton" destination="CPl-cH-d7b" id="on9-im-Pc1"/>
+                        <outlet property="noSitesTitle" destination="8BN-gx-7TL" id="iBr-AK-JMX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BQd-fS-63Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-242.40000000000001" y="149.77511244377811"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="mysites-nosites" width="400" height="250"/>
+    </resources>
+</document>
