@@ -17,7 +17,7 @@ end
 def shared_with_networking_pods
   pod 'AFNetworking', '3.1.0'
   pod 'wpxmlrpc', '0.8.3'
-  pod 'Alamofire', '4.5.1'
+  pod 'Alamofire', '4.6.0'
 end
 
 def shared_test_pods
@@ -35,18 +35,18 @@ target 'WordPress' do
   # ---------------------
   # Third party libraries
   # ---------------------
-  pod '1PasswordExtension', '1.8.4'
-  pod 'HockeySDK', '5.0.0', :configurations => ['Release-Internal', 'Release-Alpha']
+  pod '1PasswordExtension', '1.8.5'
+  pod 'HockeySDK', '5.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
   pod 'SVProgressHUD', '2.2.2'
   pod 'Crashlytics', '3.9.3'
-  pod 'BuddyBuildSDK', '1.0.16', :configurations => ['Release-Alpha']
+  pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '1.0.12'
   pod 'MGSwipeTableCell', '1.6.6'
   pod 'lottie-ios', '1.5.1'
-  pod 'Starscream', '3.0.2'
-  pod 'GoogleSignIn', '4.1.0'
+  pod 'Starscream', '3.0.3'
+  pod 'GoogleSignIn', '4.1.1'
 
   # --------------------
   # WordPress components
@@ -63,7 +63,7 @@ target 'WordPress' do
     shared_test_pods
     pod 'Specta', '1.0.7'
     pod 'Expecta', '1.0.6'
-    pod 'Nimble', '~> 7.0.2'
+    pod 'Nimble', '~> 7.0.3'
   end
 
   target 'WordPressShareExtension' do
