@@ -1,6 +1,6 @@
 import UIKit
 
-class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardResponder {
+class SignupEmailViewController: LoginViewController, SigninKeyboardResponder {
 
     // MARK: - SigninKeyboardResponder Properties
 
@@ -9,10 +9,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     // MARK: - Properties
 
-    @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var emailField: LoginTextField!
-    @IBOutlet weak var errorLabel: UILabel!
-    @IBOutlet weak var nextButton: LoginButton!
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -20,7 +17,7 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         }
     }
 
-    enum ErrorMessage: String {
+    private enum ErrorMessage: String {
         case invalidEmail = "invalid_email"
         case availabilityCheckFail = "availability_check_fail"
         case emailUnavailable = "email_unavailable"
@@ -41,14 +38,14 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavBar()
-        configureView()
-        setupNextButton()
+        WPStyleGuide.configureColors(for: view, andTableView: nil)
+        localizeControls()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureViewForEditingIfNeeded()
+        configureSubmitButton(animating: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -62,31 +59,21 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         unregisterForKeyboardEvents()
     }
 
-    private func setupNavBar() {
-        addWordPressLogoToNavController()
-        _ = addHelpButtonToNavController()
-    }
-
     override func shouldShowCancelButton() -> Bool {
         return true
     }
 
-    private func configureView() {
-        WPStyleGuide.configureColors(for: view, andTableView: nil)
-
-        instructionLabel.text = NSLocalizedString("To create your new WordPress.com account, please enter your email address.", comment: "Text instructing the user to enter their email address.")
+    private func localizeControls() {
+        instructionLabel?.text = NSLocalizedString("To create your new WordPress.com account, please enter your email address.", comment: "Text instructing the user to enter their email address.")
 
         emailField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
         emailField.accessibilityIdentifier = "Email address"
         emailField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-    }
 
-    private func setupNextButton() {
-        nextButton.isEnabled = false
-        let nextButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        nextButton?.setTitle(nextButtonTitle, for: UIControlState())
-        nextButton?.setTitle(nextButtonTitle, for: .highlighted)
-        nextButton?.accessibilityIdentifier = "Next Button"
+        let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
+        submitButton?.setTitle(submitButtonTitle, for: UIControlState())
+        submitButton?.setTitle(submitButtonTitle, for: .highlighted)
+        submitButton?.accessibilityIdentifier = "Next Button"
     }
 
     /// Configure the view for an editing state. Should only be called from viewWillAppear
@@ -98,6 +85,10 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
         if SigninEditingState.signinEditingStateActive {
             emailField.becomeFirstResponder()
         }
+    }
+
+    override func enableSubmit(animating: Bool) -> Bool {
+        return !animating && validEmail()
     }
 
     // MARK: - Keyboard Notifications
@@ -114,47 +105,49 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     private func validateForm() {
 
+        // Hide the error label.
+        displayError(message: "")
+
         // If the email address is invalid, display appropriate message.
-        if !validEmail(emailField.text) {
-            displayError(ErrorMessage.invalidEmail.description())
+        if !validEmail() {
+            displayError(message: ErrorMessage.invalidEmail.description())
+            configureSubmitButton(animating: false)
             return
         }
 
         checkEmailAvailability() { available in
             if available {
-                let message = "Email: '\(self.emailField.text!)'\nThis is a work in progress. If you need to create an account, disable the socialSignup feature flag."
+                let message = "Email: '\(self.loginFields.emailAddress)'\nThis is a work in progress. If you need to create an account, disable the socialSignup feature flag."
                 let alertController = UIAlertController(title: nil,
                                                         message: message,
                                                         preferredStyle: .alert)
                 alertController.addDefaultActionWithTitle("OK")
                 self.present(alertController, animated: true, completion: nil)
             }
+            self.configureSubmitButton(animating: false)
         }
     }
 
-    fileprivate func validEmail(_ email: String?) -> Bool {
-        guard let email = email else {
-            return false
-        }
-        return EmailFormatValidator.validate(string: email)
+    private func validEmail() -> Bool {
+        return EmailFormatValidator.validate(string: loginFields.emailAddress)
     }
 
     // MARK: - Email Availability
 
-    func checkEmailAvailability(completion:@escaping (Bool) -> ()) {
+    private func checkEmailAvailability(completion:@escaping (Bool) -> ()) {
 
         // If cannot get Remote, display generic error message.
-        guard let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi(oAuthToken: nil, userAgent: nil)) else {
+        guard let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi()) else {
             DDLogError("Error creating AccountServiceRemoteREST instance.")
-            self.displayError(ErrorMessage.availabilityCheckFail.description())
+            self.displayError(message: ErrorMessage.availabilityCheckFail.description())
             completion(false)
             return
         }
 
-        remote.isEmailAvailable(emailField.text, success: { available in
+        remote.isEmailAvailable(loginFields.emailAddress, success: { available in
             if !available {
                 // If email address is unavailable, display appropriate message.
-                self.displayError(ErrorMessage.emailUnavailable.description())
+                self.displayError(message: ErrorMessage.emailUnavailable.description())
             }
             completion(available)
         }, failure: { error in
@@ -162,30 +155,21 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
                 DDLogError("Error checking email availability: \(error.localizedDescription)")
             }
             // If check failed, display generic error message.
-            self.displayError(ErrorMessage.availabilityCheckFail.description())
+            self.displayError(message: ErrorMessage.availabilityCheckFail.description())
             completion(false)
         })
     }
 
-    // MARK: - Button Handling
+    // MARK: - Action Handling
 
-    @IBAction func nextButtonPressed(_ sender: Any) {
+    @IBAction func handleSubmit() {
+        configureSubmitButton(animating: true)
         validateForm()
     }
 
-    @IBAction func handleEmailSubmit() {
-        if validEmail(emailField.text) {
-            validateForm()
-        }
-    }
-
-    private func displayError(_ message: String) {
-        guard message.count > 0 else {
-            errorLabel?.isHidden = true
-            return
-        }
-        errorLabel?.isHidden = false
-        errorLabel?.text = message
+    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
+        loginFields.emailAddress = emailField.nonNilTrimmedText()
+        configureSubmitButton(animating: false)
     }
 
     // MARK: - Misc
@@ -193,29 +177,6 @@ class SignupEmailViewController: NUXAbstractViewController, SigninKeyboardRespon
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-}
-
-// MARK: - UITextFieldDelegate
-
-extension SignupEmailViewController: UITextFieldDelegate {
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        errorLabel?.isHidden = true
-        let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
-        nextButton.isEnabled = validEmail(updatedString)
-        return true
-    }
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        errorLabel?.isHidden = true
-        nextButton.isEnabled = validEmail(textField.text)
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
-        errorLabel?.isHidden = true
-        nextButton.isEnabled = validEmail(textField.text)
     }
 
 }

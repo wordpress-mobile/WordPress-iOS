@@ -60,7 +60,8 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="handleEmailSubmit" destination="Opx-rl-H3d" eventType="primaryActionTriggered" id="t3p-dV-9tw"/>
+                                                    <action selector="handleSubmit" destination="Opx-rl-H3d" eventType="primaryActionTriggered" id="u31-gQ-RwX"/>
+                                                    <action selector="handleTextFieldDidChange:" destination="Opx-rl-H3d" eventType="editingChanged" id="BSX-Mo-FWH"/>
                                                     <outlet property="delegate" destination="Opx-rl-H3d" id="K9y-JN-q3S"/>
                                                 </connections>
                                             </textField>
@@ -97,7 +98,7 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="nextButtonPressed:" destination="Opx-rl-H3d" eventType="touchUpInside" id="mcH-Hh-MwO"/>
+                                            <action selector="handleSubmit" destination="Opx-rl-H3d" eventType="touchUpInside" id="zIP-Hy-eXE"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -126,9 +127,9 @@
                     <connections>
                         <outlet property="bottomContentConstraint" destination="19J-yr-6lq" id="IOb-ap-rZd"/>
                         <outlet property="emailField" destination="HTy-KJ-his" id="Ckg-fL-mg7"/>
-                        <outlet property="errorLabel" destination="EYw-oM-W1K" id="rgf-yQ-g8D"/>
-                        <outlet property="instructionLabel" destination="CPF-7g-0y5" id="SIT-pE-IQm"/>
-                        <outlet property="nextButton" destination="4Su-Zc-Omp" id="I9u-O7-1aw"/>
+                        <outlet property="errorLabel" destination="EYw-oM-W1K" id="P2j-f2-bLo"/>
+                        <outlet property="instructionLabel" destination="CPF-7g-0y5" id="Urr-Xa-YNp"/>
+                        <outlet property="submitButton" destination="4Su-Zc-Omp" id="amJ-9P-tcO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAN-7g-PQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
