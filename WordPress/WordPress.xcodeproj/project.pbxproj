@@ -332,6 +332,9 @@
 		741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
+		742F13B61FFD7FD8000FD2A5 /* MediaAttachment+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7E51091FBDE0C500AD2918 /* MediaAttachment+WordPress.swift */; };
+		742F13B71FFD7FFB000FD2A5 /* ImageAttachment+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0A4FE91F16C9BD00D6CC69 /* ImageAttachment+WordPress.swift */; };
+		742F13B81FFD8421000FD2A5 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7E51051FBDDFA700AD2918 /* ImgUploadProcessor.swift */; };
 		7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */; };
 		743368EF1F914DCE0055224D /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743368F01F914DCE0055224D /* WordPressKit.framework */; };
 		74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */; };
@@ -7113,11 +7116,13 @@
 				B5552D801CD1028C00B26DF6 /* String+Extensions.swift in Sources */,
 				740B0FD41FF5895E00012B58 /* OptionsTableView.swift in Sources */,
 				B50248B51C96FF8400AFBDED /* ShareViewController.swift in Sources */,
+				742F13B71FFD7FFB000FD2A5 /* ImageAttachment+WordPress.swift in Sources */,
 				74AF4D7D1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */,
 				74D06FEA1FE0787400AF1788 /* Header+WordPress.swift in Sources */,
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
 				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
 				74D06FE71FE075A900AF1788 /* CalypsoProcessorOut.swift in Sources */,
+				742F13B81FFD8421000FD2A5 /* ImgUploadProcessor.swift in Sources */,
 				74D06FE81FE076F700AF1788 /* FormatBarItemProviders.swift in Sources */,
 				B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
@@ -7125,6 +7130,7 @@
 				B542DEBC1D119E1F004CA6AE /* MediaView.swift in Sources */,
 				B5D7A0ED1CCFD1FF003C375D /* UIImage+Resize.m in Sources */,
 				B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */,
+				742F13B61FFD7FD8000FD2A5 /* MediaAttachment+WordPress.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
