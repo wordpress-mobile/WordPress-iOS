@@ -39,7 +39,9 @@ class ShareExtensionViewController: UIViewController {
     /// Selected Site's ID
     ///
     fileprivate lazy var selectedSiteID: Int? = {
-        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
+        69078016
+        // FIXME: Uncomment this!
+        //ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
     }()
 
     /// Selected Site's Name
@@ -1183,7 +1185,9 @@ private extension ShareExtensionViewController {
 
     func insertImageAttachment(with url: URL) {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
+        
         attachment.size = .full
+        attachment.uploadID = url.lastPathComponent // Use the filename as the uploadID here.
         richTextView.refresh(attachment)
         sharedImageDict[attachment.identifier] = url
     }
@@ -1308,7 +1312,7 @@ private extension ShareExtensionViewController {
             uploadPostWithMedia(subject: subject,
                                 body: body,
                                 status: postStatus,
-                                siteID: 69078016,  //FIXME: put a real site here
+                                siteID: siteID,
                                 attachedImageData: allEncodedMedia,
                                 requestEnqueued: {
                                     self.tracks.trackExtensionPosted(self.postStatus)
@@ -1317,7 +1321,7 @@ private extension ShareExtensionViewController {
         } else {
             let remotePost: RemotePost = {
                 let post = RemotePost()
-                post.siteID = NSNumber(value: 69078016) //FIXME: put a real site here
+                post.siteID = NSNumber(value: siteID)
                 post.status = postStatus
                 post.title = subject
                 post.content = body
@@ -1335,8 +1339,6 @@ private extension ShareExtensionViewController {
 // MARK: - Backend Interaction
 
 private extension ShareExtensionViewController {
-
-    // FIXME: This combination method needs to be smarter because of user-formatting within Aztec
     func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
@@ -1344,11 +1346,20 @@ private extension ShareExtensionViewController {
                 return
         }
 
-        let remoteURLText = mediaUploadOps.flatMap({ $0 })
-            .map({ "".stringByAppendingMediaURL(remoteURL: $0.remoteURL, remoteID: $0.remoteMediaID, height: $0.height, width: $0.width) })
-            .joined()
-        let content = postUploadOp.postContent ?? ""
-        postUploadOp.postContent = content + remoteURLText
+        mediaUploadOps.forEach { mediaUploadOp in
+            guard let fileName = mediaUploadOp.fileName,
+                let remoteURL = mediaUploadOp.remoteURL else {
+                return
+            }
+
+            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
+                                                            remoteURLString: remoteURL,
+                                                            width: Int(mediaUploadOp.width),
+                                                            height: Int(mediaUploadOp.height))
+            let content = postUploadOp.postContent ?? ""
+            postUploadOp.postContent = imgPostUploadProcessor.process(content)
+        }
+
         coreDataStack.saveContext()
 
         self.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {})
