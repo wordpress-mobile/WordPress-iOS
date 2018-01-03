@@ -275,6 +275,8 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
         if let notice = model?.notice {
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
+
+        mediaProgressCoordinator.stopTrackingOfAllMedia()
     }
 }
 
