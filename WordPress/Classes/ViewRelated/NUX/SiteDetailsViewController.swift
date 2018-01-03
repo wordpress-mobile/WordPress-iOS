@@ -166,13 +166,6 @@ extension SiteDetailsViewController: UITextFieldDelegate {
         return true
     }
 
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        if textField == siteTitleField {
-            nextButton.isEnabled = false
-        }
-        return true
-    }
-
     func textFieldDidBeginEditing(_ textField: UITextField) {
         toggleNextButton(textField)
     }
