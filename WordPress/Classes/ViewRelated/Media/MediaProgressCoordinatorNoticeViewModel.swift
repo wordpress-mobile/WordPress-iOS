@@ -1,3 +1,4 @@
+
 struct MediaProgressCoordinatorNoticeViewModel {
     private let mediaProgressCoordinator: MediaProgressCoordinator
     private let progress: Progress
