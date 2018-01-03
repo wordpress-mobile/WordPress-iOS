@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
+class SiteCreationSiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
 
     // MARK: - SigninKeyboardResponder Properties
 
@@ -145,7 +145,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
 // MARK: - UITextFieldDelegate
 
-extension SiteDetailsViewController: UITextFieldDelegate {
+extension SiteCreationSiteDetailsViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == siteTitleField {
