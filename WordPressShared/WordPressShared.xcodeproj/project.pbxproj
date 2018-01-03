@@ -81,11 +81,6 @@
 		93AB06061EE884C000EF8764 /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AB06051EE884C000EF8764 /* UIAlertController+Helpers.swift */; };
 		93C674F51EE83D4B00BFAF05 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C674F41EE83D4B00BFAF05 /* Languages.swift */; };
 		93C882AD1EEB1E2F00227A59 /* NSDate+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C882AC1EEB1E2F00227A59 /* NSDate+Helpers.swift */; };
-		BE837FE41FFD96E9005F318B /* WPImmuTableRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE837FDF1FFD96E8005F318B /* WPImmuTableRows.swift */; };
-		BE837FE51FFD96E9005F318B /* ImmuTable+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE837FE01FFD96E8005F318B /* ImmuTable+WordPress.swift */; };
-		BE837FE61FFD96E9005F318B /* ImmuTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE837FE11FFD96E8005F318B /* ImmuTable.swift */; };
-		BE837FE71FFD96E9005F318B /* ImmuTable+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE837FE21FFD96E8005F318B /* ImmuTable+Optional.swift */; };
-		BE837FE81FFD96E9005F318B /* ImmuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE837FE31FFD96E8005F318B /* ImmuTableViewController.swift */; };
 		E18EABEA1F0E2C6800BFCB0B /* TestAnalyticsTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EABE81F0E2C6800BFCB0B /* TestAnalyticsTracker.m */; };
 		E18EABEB1F0E2C6800BFCB0B /* WPAnalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EABE91F0E2C6800BFCB0B /* WPAnalyticsTests.m */; };
 		E1A444281F063CAB00F6AA8A /* WPAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = E1A444261F063CAB00F6AA8A /* WPAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -190,11 +185,6 @@
 		94914F79BD25CA900E917965 /* Pods-WordPressShared.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShared.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared.release.xcconfig"; sourceTree = "<group>"; };
 		96D48B9A243CBC56152CC4C9 /* Pods-WordPressSharedTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressSharedTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressSharedTests/Pods-WordPressSharedTests.release.xcconfig"; sourceTree = "<group>"; };
 		BA69813345AE7522E93CC8C7 /* Pods-WordPressSharedTests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressSharedTests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressSharedTests/Pods-WordPressSharedTests.release-alpha.xcconfig"; sourceTree = "<group>"; };
-		BE837FDF1FFD96E8005F318B /* WPImmuTableRows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WPImmuTableRows.swift; path = ImmuTable/WPImmuTableRows.swift; sourceTree = SOURCE_ROOT; };
-		BE837FE01FFD96E8005F318B /* ImmuTable+WordPress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ImmuTable+WordPress.swift"; path = "ImmuTable/ImmuTable+WordPress.swift"; sourceTree = SOURCE_ROOT; };
-		BE837FE11FFD96E8005F318B /* ImmuTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImmuTable.swift; path = ImmuTable/ImmuTable.swift; sourceTree = SOURCE_ROOT; };
-		BE837FE21FFD96E8005F318B /* ImmuTable+Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ImmuTable+Optional.swift"; path = "ImmuTable/ImmuTable+Optional.swift"; sourceTree = SOURCE_ROOT; };
-		BE837FE31FFD96E8005F318B /* ImmuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImmuTableViewController.swift; path = ImmuTable/ImmuTableViewController.swift; sourceTree = SOURCE_ROOT; };
 		D9E4960D1C2D0FF7A5A54617 /* Pods-WordPressShared.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShared.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared.debug.xcconfig"; sourceTree = "<group>"; };
 		E18EABE71F0E2C6800BFCB0B /* TestAnalyticsTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestAnalyticsTracker.h; sourceTree = "<group>"; };
 		E18EABE81F0E2C6800BFCB0B /* TestAnalyticsTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestAnalyticsTracker.m; sourceTree = "<group>"; };
@@ -281,7 +271,6 @@
 		82706FE01ECA32D400155CBF /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				BE837FDE1FFD96C7005F318B /* ImmuTable */,
 				74FA25F21F1FD9640044BC54 /* DateUtils.h */,
 				74FA25F31F1FD9640044BC54 /* DateUtils.m */,
 				740B23CA1F17F1FF00067A2A /* DisplayableImageHelper.h */,
@@ -417,18 +406,6 @@
 			);
 			name = Core;
 			path = "WordPress-iOS-Shared/Core";
-			sourceTree = "<group>";
-		};
-		BE837FDE1FFD96C7005F318B /* ImmuTable */ = {
-			isa = PBXGroup;
-			children = (
-				BE837FE11FFD96E8005F318B /* ImmuTable.swift */,
-				BE837FE21FFD96E8005F318B /* ImmuTable+Optional.swift */,
-				BE837FE01FFD96E8005F318B /* ImmuTable+WordPress.swift */,
-				BE837FE31FFD96E8005F318B /* ImmuTableViewController.swift */,
-				BE837FDF1FFD96E8005F318B /* WPImmuTableRows.swift */,
-			);
-			path = ImmuTable;
 			sourceTree = "<group>";
 		};
 		E1A444251F063CAB00F6AA8A /* Analytics */ = {
@@ -691,12 +668,10 @@
 				827070101ECA43AA00155CBF /* WPImageSource.m in Sources */,
 				93C674F51EE83D4B00BFAF05 /* Languages.swift in Sources */,
 				827070221ECA43C100155CBF /* WPTableViewCell.m in Sources */,
-				BE837FE81FFD96E9005F318B /* ImmuTableViewController.swift in Sources */,
 				8270701B1ECA43C100155CBF /* WPStyleGuide.m in Sources */,
 				8270700C1ECA43AA00155CBF /* WPDeviceIdentification.m in Sources */,
 				827070201ECA43C100155CBF /* WPNUXUtility.m in Sources */,
 				8270701C1ECA43C100155CBF /* WPNoResultsView.m in Sources */,
-				BE837FE51FFD96E9005F318B /* ImmuTable+WordPress.swift in Sources */,
 				93A73ABD1EE9DD7D00C0F2F9 /* WPMapFilterReduce.m in Sources */,
 				74650F7C1F0EA2FA00188EDB /* NSString+Helpers.m in Sources */,
 				7414BD561F13CBE0005759F8 /* String+Helpers.swift in Sources */,
@@ -714,11 +689,8 @@
 				82706FF31ECA438500155CBF /* WPSharedLogging.m in Sources */,
 				93C882AD1EEB1E2F00227A59 /* NSDate+Helpers.swift in Sources */,
 				74650F801F0EA4BD00188EDB /* NSMutableData+Helpers.swift in Sources */,
-				BE837FE41FFD96E9005F318B /* WPImmuTableRows.swift in Sources */,
 				7414BD621F13D084005759F8 /* UIDevice+Helpers.m in Sources */,
 				740B23CD1F17F1FF00067A2A /* DisplayableImageHelper.m in Sources */,
-				BE837FE61FFD96E9005F318B /* ImmuTable.swift in Sources */,
-				BE837FE71FFD96E9005F318B /* ImmuTable+Optional.swift in Sources */,
 				7430C9DB1F1933F40051B8E6 /* RichContentFormatter.swift in Sources */,
 				937BA5881EF1DAC100D301B2 /* CocoaLumberjack.swift in Sources */,
 				93AB06061EE884C000EF8764 /* UIAlertController+Helpers.swift in Sources */,
