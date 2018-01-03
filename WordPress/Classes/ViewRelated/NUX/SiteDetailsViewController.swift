@@ -19,6 +19,12 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     @IBOutlet weak var tagDescriptionLabel: UILabel!
     @IBOutlet weak var nextButton: LoginButton!
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComCreateSiteDetails
+        }
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -105,7 +111,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     private func validateForm() {
         if siteTitleField.nonNilTrimmedText().isEmpty {
-            displayErrorAlert(NSLocalizedString("Site Title must have a value.", comment: "Error shown when Site Title does not have a value."), sourceTag: .wpComCreateSiteDetails)
+            displayErrorAlert(NSLocalizedString("Site Title must have a value.", comment: "Error shown when Site Title does not have a value."), sourceTag: sourceTag)
         }
         else {
             performSegue(withIdentifier: .showDomains, sender: self)
@@ -126,14 +132,6 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
-    }
-
-    // MARK: - LoginWithLogoAndHelpViewController
-
-    /// Override this to use the appropriate sourceTag.
-    ///
-    override func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComCreateSiteDetails)
     }
 
     // MARK: - Misc
