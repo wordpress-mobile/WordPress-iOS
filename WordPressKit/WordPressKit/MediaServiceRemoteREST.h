@@ -2,8 +2,6 @@
 #import "MediaServiceRemote.h"
 #import "SiteServiceRemoteWordPressComREST.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface MediaServiceRemoteREST : SiteServiceRemoteWordPressComREST <MediaServiceRemote>
 
 /**
@@ -39,7 +37,4 @@ NS_ASSUME_NONNULL_BEGIN
     requestEnqueued:(void (^)(NSNumber *taskID))requestEnqueued
             success:(void (^)(NSArray *remoteMedia))success
             failure:(void (^)(NSError *error))failure;
-
 @end
-
-NS_ASSUME_NONNULL_END

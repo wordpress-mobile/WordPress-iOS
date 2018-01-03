@@ -102,8 +102,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     @objc func localizeControls() {
-        instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email addresss screen.")
-
+        if loginFields.meta.jetpackLogin {
+            instructionLabel?.text = NSLocalizedString("To view your stats, log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email address screen.")
+        } else {
+            instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email address screen.")
+        }
         emailTextField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
         emailTextField.accessibilityIdentifier = "Email address"
 
@@ -112,7 +115,7 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
         submitButton?.setTitle(submitButtonTitle, for: .highlighted)
         submitButton?.accessibilityIdentifier = "Next Button"
 
-        let selfHostedTitle = NSLocalizedString("Log into your site by entering your site address instead.", comment: "A button title.")
+        let selfHostedTitle = NSLocalizedString("Log in to your site by entering your site address instead.", comment: "A button title.")
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
         selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
         selfHostedSigninButton.titleLabel?.numberOfLines = 0

@@ -241,7 +241,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 } else {
                     overlayView.state = .indeterminate
                 }
+
+                configureAppearance(for: overlayView, with: media)
             }
+        }
+    }
+
+    private func configureAppearance(for overlayView: MediaCellProgressView, with media: Media) {
+        if media.localThumbnailURL != nil {
+            overlayView.backgroundColor = overlayView.backgroundColor?.withAlphaComponent(0.5)
+        } else {
+            overlayView.backgroundColor = overlayView.backgroundColor?.withAlphaComponent(1)
         }
     }
 
@@ -500,7 +510,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             self?.unpauseDataSource()
             self?.trackUploadFor(media)
             }, failure: { error in
-                self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                if let error = error {
+                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
+                }
                 self.unpauseDataSource()
         })
 
@@ -651,20 +663,22 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {
-        if let overlayView = overlayView as? MediaCellProgressView,
-            let media = asset as? Media {
-            switch media.remoteStatus {
-            case .processing:
-                overlayView.state = .indeterminate
-            case .pushing:
-                if let progress = MediaCoordinator.shared.progress(for: media) {
-                    overlayView.state = .progress(progress.fractionCompleted)
-                }
-            case .failed:
-                overlayView.state = .retry
-            default: break
-            }
+        guard let overlayView = overlayView as? MediaCellProgressView,
+            let media = asset as? Media else {
+            return
         }
+        switch media.remoteStatus {
+        case .processing:
+            overlayView.state = .indeterminate
+        case .pushing:
+            if let progress = MediaCoordinator.shared.progress(for: media) {
+                overlayView.state = .progress(progress.fractionCompleted)
+            }
+        case .failed:
+            overlayView.state = .retry
+        default: break
+        }
+        configureAppearance(for: overlayView, with: media)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
