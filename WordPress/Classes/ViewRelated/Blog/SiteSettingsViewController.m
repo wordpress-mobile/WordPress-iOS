@@ -37,8 +37,11 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
+    SiteSettingsWritingTags,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
+    SiteSettingsWritingDateAndTimeFormat,
+    SiteSettingsPostPerPage,
     SiteSettingsWritingCount,
 };
 
@@ -60,6 +63,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
+    SiteSettingsSectionTraffic,
     SiteSettingsSectionJetpackSettings,
     SiteSettingsSectionAdvanced,
 };
@@ -79,10 +83,15 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
+@property (nonatomic, strong) SettingTableViewCell *tagsCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
+@property (nonatomic, strong) SettingTableViewCell *dateAndTimeFormatCell;
+@property (nonatomic, strong) SettingTableViewCell *postsPerPageCell;
 #pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Traffic Section
+@property (nonatomic, strong) SwitchTableViewCell *ampSettingCell;
 #pragma mark - Jetpack Settings Section
 @property (nonatomic, strong) SettingTableViewCell *jetpackSecurityCell;
 @property (nonatomic, strong) SettingTableViewCell *jetpackConnectionCell;
@@ -160,6 +169,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
         [sections addObject:@(SiteSettingsSectionDiscussion)];
+        if (self.blog.isHostedAtWPcom && self.blog.settings.ampSupported) {
+            [sections addObject:@(SiteSettingsSectionTraffic)];
+        }
         if ([self.blog supports:BlogFeatureJetpackSettings]) {
             [sections addObject:@(SiteSettingsSectionJetpackSettings)];
         }
@@ -209,6 +221,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion:
+        {
+            return 1;
+        }
+        case SiteSettingsSectionTraffic:
         {
             return 1;
         }
@@ -284,6 +300,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _defaultCategoryCell;
 }
 
+- (SettingTableViewCell *)tagsCell
+{
+    if (_tagsCell){
+        return _tagsCell;
+    }
+    _tagsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tags", @"Label for selecting the blogs tags")
+                                                              editable: self.blog.isAdmin
+                                                       reuseIdentifier:nil];
+    return _tagsCell;
+}
+
 - (SettingTableViewCell *)defaultPostFormatCell
 {
     if (_defaultPostFormatCell){
@@ -306,6 +333,28 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _relatedPostsCell;
 }
 
+- (SettingTableViewCell *)dateAndTimeFormatCell
+{
+    if (_dateAndTimeFormatCell) {
+        return _dateAndTimeFormatCell;
+    }
+    _dateAndTimeFormatCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Date and Time Format", @"Label for selecting the date and time settings section")
+                                                                editable:YES
+                                                         reuseIdentifier:nil];
+    return _dateAndTimeFormatCell;
+}
+
+- (SettingTableViewCell *)postsPerPageCell
+{
+    if (_postsPerPageCell) {
+        return _postsPerPageCell;
+    }
+    _postsPerPageCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Posts per page", @"Label for selecting the number of posts per page")
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
+    return _postsPerPageCell;
+}
+
 - (SettingTableViewCell *)discussionSettingsCell
 {
     if (_discussionSettingsCell) {
@@ -316,6 +365,24 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
                                                                  editable:YES
                                                           reuseIdentifier:nil];
     return _discussionSettingsCell;
+}
+
+- (SwitchTableViewCell *)ampSettingCell
+{
+    if (_ampSettingCell) {
+        return _ampSettingCell;
+    }
+
+    _ampSettingCell = [SwitchTableViewCell new];
+    _ampSettingCell.name = NSLocalizedString(@"Accelerated Mobile Pages (AMP)", @"Label for selecting the Accelerated Mobile Pages (AMP) Blog Traffic Setting");
+    _ampSettingCell.on = self.blog.settings.ampEnabled;
+    __weak __typeof__(self) weakSelf = self;
+    _ampSettingCell.onChange = ^(BOOL value){
+        weakSelf.blog.settings.ampEnabled = value;
+        [weakSelf saveSettings];
+    };
+
+    return _ampSettingCell;
 }
 
 - (SettingTableViewCell *)jetpackSecurityCell
@@ -352,12 +419,20 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
 }
 
+- (void)configurePostsPerPageCell
+{
+    [self.postsPerPageCell setTextValue:self.blog.settings.postsPerPage.stringValue];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     switch (row) {
         case (SiteSettingsWritingDefaultCategory):
             [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;
+            
+        case (SiteSettingsWritingTags):
+            return self.tagsCell;
 
         case (SiteSettingsWritingDefaultPostFormat):
             [self configureDefaultPostFormatCell];
@@ -365,6 +440,13 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case (SiteSettingsWritingRelatedPosts):
             return self.relatedPostsCell;
+
+        case (SiteSettingsWritingDateAndTimeFormat):
+            return self.dateAndTimeFormatCell;
+
+        case (SiteSettingsPostPerPage):
+            [self configurePostsPerPageCell];
+            return self.postsPerPageCell;
     }
     return nil;
 }
@@ -549,6 +631,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsSectionDiscussion:
             return self.discussionSettingsCell;
 
+        case SiteSettingsSectionTraffic:
+            return self.ampSettingCell;
+
         case SiteSettingsSectionJetpackSettings:
             return [self tableView:tableView cellForJetpackSettingsAtRow:indexPath.row];
 
@@ -587,6 +672,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            break;
+
+        case SiteSettingsSectionTraffic:
+            headingTitle = NSLocalizedString(@"Traffic", @"Title for the traffic section in site settings screen");
             break;
 
         case SiteSettingsSectionJetpackSettings:
@@ -752,6 +841,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.navigationController pushViewController:postCategoriesViewController animated:YES];
 }
 
+- (void)showTagList
+{
+    SiteTagsViewController *tagsAdmin = [[SiteTagsViewController alloc] initWithBlog:self.blog];
+    [self.navigationController pushViewController:tagsAdmin animated:YES];
+}
+
 - (void)showPostFormatSelector
 {
     NSArray *titles = self.blog.sortedPostFormatNames;
@@ -801,6 +896,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsWritingDefaultCategory:
             [self showDefaultCategorySelector];
             break;
+            
+        case SiteSettingsWritingTags:
+            [self showTagList];
+            break;
 
         case SiteSettingsWritingDefaultPostFormat:
             [self showPostFormatSelector];
@@ -808,6 +907,14 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsWritingRelatedPosts:
             [self showRelatedPostsSettings];
+            break;
+
+        case SiteSettingsWritingDateAndTimeFormat:
+            [self showDateAndTimeFormatSettings];
+            break;
+
+        case SiteSettingsPostPerPage:
+            [self showPostPerPageSetting];
             break;
     }
 }
@@ -886,6 +993,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
             break;
     }
+}
+
+- (BOOL)isTrafficSettingsSection:(NSInteger)section {
+    NSInteger settingsSection = [self.tableSections[section] integerValue];
+    return settingsSection == SiteSettingsSectionTraffic;
 }
 
 #pragma mark - Custom methods
@@ -972,6 +1084,18 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"Error title when updating the account password fails") message:message];
     }
+}
+
+- (NSString *)getTagsCountPresentableString:(NSInteger)tagCount
+{
+    NSString *format = NSLocalizedString(@"%@ Tags", @"The number of tags in the writting settings. Plural. %@ is a placeholder for the number");
+    
+    if (tagCount == 1) {
+        format = NSLocalizedString(@"%@ Tag", @"The number of tags in the writting settings. Singular. %@ is a placeholder for the number");
+    }
+    
+    NSString *numberOfTags = [NSString stringWithFormat: format, @(tagCount)];
+    return numberOfTags;
 }
 
 #pragma mark - Saving methods

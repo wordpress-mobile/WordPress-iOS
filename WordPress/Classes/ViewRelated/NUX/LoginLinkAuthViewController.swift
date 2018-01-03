@@ -1,5 +1,4 @@
 import UIKit
-import SVProgressHUD
 import WordPressShared
 
 /// Handles the final step in the magic link auth process. At this point all the
@@ -42,9 +41,5 @@ class LoginLinkAuthViewController: LoginViewController {
 
     override func updateSafariCredentialsIfNeeded() {
         // Noop
-    }
-
-    override func dismiss() {
-        self.performSegue(withIdentifier: .showEpilogue, sender: self)
     }
 }
