@@ -366,6 +366,7 @@
                                                               inDirectory:directory];
       for (NSString* momdPath in momdPaths)
       {
+         if (url) { continue; }
          url = [bundle URLForResource:modelName
                         withExtension:@"mom"
                          subdirectory:[momdPath lastPathComponent]];

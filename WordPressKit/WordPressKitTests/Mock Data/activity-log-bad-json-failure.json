@@ -16,7 +16,8 @@
         "totalItems": 20,
         "orderedItems": [
                          {
-                         "summary": "activity002 logged in successfully",
+                         "summary": "Login Succeeded",
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",

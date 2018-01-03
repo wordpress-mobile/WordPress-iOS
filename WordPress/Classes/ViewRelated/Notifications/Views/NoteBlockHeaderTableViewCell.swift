@@ -55,14 +55,14 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         authorAvatarURL = url
 
         guard let url = url else {
-            authorAvatarImageView.image = Style.gravatarPlaceholderImage
+            authorAvatarImageView.image = .gravatarPlaceholderImage
             return
         }
 
         if let gravatar = Gravatar(url) {
-            authorAvatarImageView.downloadGravatar(gravatar, placeholder: Style.gravatarPlaceholderImage, animate: true)
+            authorAvatarImageView.downloadGravatar(gravatar, placeholder: .gravatarPlaceholderImage, animate: true)
         } else {
-            authorAvatarImageView.setImageWithSiteIcon(url.absoluteString)
+            authorAvatarImageView.downloadSiteIcon(at: url.absoluteString)
         }
     }
 
@@ -78,7 +78,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         headerTitleLabel.textColor = Style.headerTitleColor
         headerDetailsLabel.font = Style.headerDetailsRegularFont
         headerDetailsLabel.textColor = Style.headerDetailsColor
-        authorAvatarImageView.image = Style.gravatarPlaceholderImage
+        authorAvatarImageView.image = .gravatarPlaceholderImage
     }
 
     // MARK: - Overriden Methods

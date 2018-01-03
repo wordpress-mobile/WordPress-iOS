@@ -28,6 +28,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
         case showLinkMailView
         case show2FA
         case showEpilogue
+        case showDomains
     }
 
     /// The Helpshift tag to track the origin of user conversations
@@ -227,6 +228,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     @objc func handleCancelButtonTapped(_ sender: UIButton) {
         dismiss(cancelled: true)
+        NotificationCenter.default.post(name: .WPLoginCancelled, object: nil)
     }
 
     // Handle the help button being tapped

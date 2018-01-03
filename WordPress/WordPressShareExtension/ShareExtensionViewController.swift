@@ -1,11 +1,11 @@
 import Foundation
 import UIKit
 import MobileCoreServices
-import WordPressKit
+import CoreData
 import Aztec
 import Gridicons
 import WordPressShared
-
+import WordPressKit
 
 class ShareExtensionViewController: UIViewController {
 
@@ -13,7 +13,6 @@ class ShareExtensionViewController: UIViewController {
 
     fileprivate let defaultMaxDimension = 3000
     fileprivate let postStatuses = [
-        // TODO: This should eventually be moved into WordPressComKit
         "draft": NSLocalizedString("Draft", comment: "Draft post status"),
         "publish": NSLocalizedString("Publish", comment: "Publish post status")
     ]
@@ -40,7 +39,9 @@ class ShareExtensionViewController: UIViewController {
     /// Selected Site's ID
     ///
     fileprivate lazy var selectedSiteID: Int? = {
-        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
+        69078016
+        // FIXME: Uncomment this!
+        //ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
     }()
 
     /// Selected Site's Name
@@ -60,6 +61,20 @@ class ShareExtensionViewController: UIViewController {
     ///
     fileprivate lazy var tracks: Tracks = {
         Tracks(appGroupName: WPAppGroupName)
+    }()
+
+    /// Next Bar Button
+    ///
+    fileprivate lazy var nextButton: UIBarButtonItem = {
+        let nextTitle = NSLocalizedString("Post!", comment: "Post action on share extension editor screen")
+        return UIBarButtonItem(title: nextTitle, style: .plain, target: self, action: #selector(nextWasPressed))
+    }()
+
+    /// Cancel Bar Button
+    ///
+    fileprivate lazy var cancelButton: UIBarButtonItem = {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on share extension editor screen")
+        return UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
     }()
 
     /// Format Bar
@@ -175,6 +190,10 @@ class ShareExtensionViewController: UIViewController {
     ///
     fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
 
+    /// Current keyboard rect used to help size the inline media picker
+    ///
+    fileprivate var currentKeyboardFrame: CGRect = .zero
+
     /// Separator View
     ///
     fileprivate(set) lazy var separatorView: UIView = {
@@ -186,21 +205,71 @@ class ShareExtensionViewController: UIViewController {
         return v
     }()
 
+    /// Selected Text Attachment
+    ///
+    fileprivate var currentSelectedAttachment: MediaAttachment?
+
+    fileprivate var mediaMessageAttributes: [NSAttributedStringKey: Any] {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+
+        return [.font: Fonts.mediaOverlay,
+                .paragraphStyle: paragraphStyle,
+                .foregroundColor: UIColor.white]
+    }
+
+    /// Options
+    ///
+    fileprivate var optionsViewController: OptionsTableViewController!
+
+    /// Dictionary of images and attachments
+    ///
+    fileprivate var sharedImageDict = [String: URL]()
+
+    /// Post's Status
+    ///
+    fileprivate var postStatus = "publish"
+
+    /// Unique identifier for background sessions
+    ///
+    fileprivate lazy var backgroundSessionIdentifier: String = {
+        let identifier = WPAppGroupName + "." + UUID().uuidString
+        return identifier
+    }()
+
+    /// Unique identifier a group of upload operations
+    ///
+    fileprivate lazy var groupIdentifier: String = {
+        let groupIdentifier = UUID().uuidString
+        return groupIdentifier
+    }()
+
+    /// Core Data stack for application extensions
+    ///
+    fileprivate lazy var coreDataStack = SharedCoreDataStack()
+    fileprivate var managedContext: NSManagedObjectContext!
+
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // This needs to called first
+        configureMediaAppearance()
+
         // Tracker
         tracks.wpcomUsername = wpcomUsername
         title = NSLocalizedString("WordPress", comment: "Application title")
 
+        // Core Data
+        managedContext = coreDataStack.managedContext
+
+        // Grab the content from the host app
         loadContent(extensionContext: extensionContext)
 
-        // TODO: Fix the warnings triggered by this one!
-        WPFontManager.loadNotoFontFamily()
-
         // Setup
+        WPFontManager.loadNotoFontFamily()
+        configureNavigationBar()
         configureView()
         configureSubviews()
 
@@ -213,6 +282,14 @@ class ShareExtensionViewController: UIViewController {
 
         tracks.trackExtensionLaunched(oauth2Token != nil)
         dismissIfNeeded()
+        startListeningToNotifications()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        coreDataStack.saveContext()
+        stopListeningToNotifications()
     }
 
     override func viewDidLayoutSubviews() {
@@ -260,6 +337,18 @@ class ShareExtensionViewController: UIViewController {
     }
 
     // MARK: - Configuration Methods
+
+    func configureNavigationBar() {
+        title = NSLocalizedString("Share to WordPress", comment: "Title for Share Exte nsion")
+        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = nextButton
+    }
+
+    func configureMediaAppearance() {
+        MediaAttachment.defaultAppearance.overlayColor = Colors.mediaProgressOverlay
+        MediaAttachment.defaultAppearance.overlayBorderWidth = Constants.mediaOverlayBorderWidth
+        MediaAttachment.defaultAppearance.overlayBorderColor = Colors.mediaOverlayBorderColor
+    }
 
     func configureView() {
         edgesForExtendedLayout = UIRectEdge()
@@ -328,6 +417,18 @@ class ShareExtensionViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
 
+    func startListeningToNotifications() {
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
+    }
+
+    func stopListeningToNotifications() {
+        let nc = NotificationCenter.default
+        nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        nc.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+    }
+
     // MARK: - Toolbar creation
 
     fileprivate func updateToolbar(_ toolbar: Aztec.FormatBar) {
@@ -346,7 +447,6 @@ class ShareExtensionViewController: UIViewController {
         return button
     }
 
-
     func createToolbar() -> Aztec.FormatBar {
         let toolbar = Aztec.FormatBar()
 
@@ -356,6 +456,7 @@ class ShareExtensionViewController: UIViewController {
         toolbar.disabledTintColor = Colors.aztecFormatBarDisabledColor
         toolbar.dividerTintColor = Colors.aztecFormatBarDividerColor
         toolbar.overflowToggleIcon = Gridicon.iconOfType(.ellipsis)
+        toolbar.overflowToolbar(expand: false)
         updateToolbar(toolbar)
 
         toolbar.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight)
@@ -401,8 +502,57 @@ class ShareExtensionViewController: UIViewController {
             makeToolbarButton(identifier: .underline),
             makeToolbarButton(identifier: .strikethrough),
             makeToolbarButton(identifier: .horizontalruler),
-            makeToolbarButton(identifier: .more),
         ]
+    }
+
+    // MARK: - Keyboard Handling
+
+    @objc func keyboardWillShow(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo as? [String: AnyObject],
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            else {
+                return
+        }
+        // Convert the keyboard frame from window base coordinate
+        currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
+        refreshInsets(forKeyboardFrame: keyboardFrame)
+    }
+
+    @objc func keyboardDidHide(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo as? [String: AnyObject],
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            else {
+                return
+        }
+
+        currentKeyboardFrame = .zero
+        refreshInsets(forKeyboardFrame: keyboardFrame)
+    }
+
+    fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
+        let referenceView: UIScrollView = richTextView
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+
+        richTextView.scrollIndicatorInsets = scrollInsets
+        richTextView.contentInset = contentInsets
+    }
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+
+extension ShareExtensionViewController: UIPopoverPresentationControllerDelegate {
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        if optionsViewController != nil {
+            optionsViewController = nil
+        }
     }
 }
 
@@ -433,31 +583,53 @@ extension ShareExtensionViewController {
     }
 }
 
-// MARK: - Private methods
+// MARK: - Actions
 
 extension ShareExtensionViewController {
-    func refreshPlaceholderVisibility() {
-        placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
-        titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
+
+    @objc func cancelWasPressed() {
+        tracks.trackExtensionCancelled()
+        closeShareExtensionWithoutSaving()
+    }
+
+    @objc func nextWasPressed() {
+        // TODO: Next screen eventually!
+        savePostToRemoteSite()
+    }
+
+    func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
+        let mediaID = attachment.identifier
+        let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
+                                           style: .cancel,
+                                           handler: { (action) in
+                                            if attachment == self.currentSelectedAttachment {
+                                                self.currentSelectedAttachment = nil
+                                                self.resetMediaAttachmentOverlay(attachment)
+                                                self.richTextView.refresh(attachment)
+                                            }
+        })
+        if attachment is ImageAttachment {
+            alertController.addActionWithTitle(NSLocalizedString("Remove", comment: "User action to remove media."),
+                                               style: .destructive,
+                                               handler: { (action) in
+                                                self.richTextView.remove(attachmentID: mediaID)
+            })
+        }
+
+        alertController.title = title
+        alertController.message = nil
+        alertController.popoverPresentationController?.sourceView = richTextView
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: position, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated: true, completion: { () in
+            UIMenuController.shared.setMenuVisible(false, animated: false)
+        })
     }
 }
 
-// MARK: - FormatBarDelegate Conformance
-
-extension ShareExtensionViewController: Aztec.FormatBarDelegate {
-    func formatBarTouchesBegan(_ formatBar: FormatBar) {
-        // TODO: Needed?
-    }
-
-    /// Called when the overflow items in the format bar are either shown or hidden
-    /// as a result of the user tapping the toggle button.
-    ///
-    func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
-        // TODO: Needed?
-    }
-}
-
-// MARK: FormatBar Actions
+// MARK: - FormatBar Actions
 
 extension ShareExtensionViewController {
     func handleAction(for barItem: FormatBarItem) {
@@ -484,7 +656,7 @@ extension ShareExtensionViewController {
             case .horizontalruler:
                 insertHorizontalRuler()
             case .more:
-                insertMore()
+                break // Not used here
             case .media:
                 break  // Not used here
             case .sourcecode:
@@ -499,16 +671,13 @@ extension ShareExtensionViewController {
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
-
     @objc func toggleItalic() {
         richTextView.toggleItalic(range: richTextView.selectedRange)
     }
 
-
     @objc func toggleUnderline() {
         richTextView.toggleUnderline(range: richTextView.selectedRange)
     }
-
 
     @objc func toggleStrikethrough() {
         richTextView.toggleStrikethrough(range: richTextView.selectedRange)
@@ -524,33 +693,31 @@ extension ShareExtensionViewController {
 
     func toggleList(fromItem item: FormatBarItem) {
 
-        // TODO: Fix!
+        let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
+            let title = NSAttributedString(string: listType.description, attributes: [:])
+            return OptionsTableViewOption(image: listType.iconImage,
+                                          title: title,
+                                          accessibilityLabel: listType.accessibilityLabel)
+        }
 
-//        let listOptions = Constants.lists.map { listType -> OptionsTableViewOption in
-//            let title = NSAttributedString(string: listType.description, attributes: [:])
-//            return OptionsTableViewOption(image: listType.iconImage,
-//                                          title: title,
-//                                          accessibilityLabel: listType.accessibilityLabel)
-//        }
-//
-//        var index: Int? = nil
-//        if let listType = listTypeForSelectedText() {
-//            index = Constants.lists.index(of: listType)
-//        }
-//
-//        showOptionsTableViewControllerWithOptions(listOptions,
-//                                                  fromBarItem: item,
-//                                                  selectedRowIndex: index,
-//                                                  onSelect: { [weak self] selected in
-//
-//                                                    let listType = Constants.lists[selected]
-//                                                    switch listType {
-//                                                    case .unordered:
-//                                                        self?.toggleUnorderedList()
-//                                                    case .ordered:
-//                                                        self?.toggleOrderedList()
-//                                                    }
-//        })
+        var index: Int? = nil
+        if let listType = listTypeForSelectedText() {
+            index = Constants.lists.index(of: listType)
+        }
+
+        showOptionsTableViewControllerWithOptions(listOptions,
+                                                  fromBarItem: item,
+                                                  selectedRowIndex: index,
+                                                  onSelect: { [weak self] selected in
+
+                                                    let listType = Constants.lists[selected]
+                                                    switch listType {
+                                                    case .unordered:
+                                                        self?.toggleUnorderedList()
+                                                    case .ordered:
+                                                        self?.toggleOrderedList()
+                                                    }
+        })
     }
 
     @objc func toggleBlockquote() {
@@ -593,86 +760,82 @@ extension ShareExtensionViewController {
     }
 
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
+        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
+        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
+        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
 
-        //TODO: Implement me!
+        let isInsertingNewLink = (url == nil)
+        var urlToUse = url
 
-//        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
-//        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
-//        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
-//        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
-//
-//        let isInsertingNewLink = (url == nil)
-//        var urlToUse = url
-//
-//        if isInsertingNewLink {
-//            if UIPasteboard.general.hasURLs,
-//                let pastedURL = UIPasteboard.general.url {
-//                urlToUse = pastedURL
-//            }
-//        }
-//
-//        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
-//
-//        let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
-//
-//        // TextField: URL
-//        alertController.addTextField(configurationHandler: { [weak self] textField in
-//            textField.clearButtonMode = .always
-//            textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
-//            textField.text = urlToUse?.absoluteString
-//
-//            textField.addTarget(self,
-//                                action: #selector(AztecPostViewController.alertTextFieldDidChange),
-//                                for: UIControlEvents.editingChanged)
-//        })
-//
-//        // TextField: Link Name
-//        alertController.addTextField(configurationHandler: { textField in
-//            textField.clearButtonMode = .always
-//            textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
-//            textField.isSecureTextEntry = false
-//            textField.autocapitalizationType = .sentences
-//            textField.autocorrectionType = .default
-//            textField.spellCheckingType = .default
-//            textField.text = title
-//        })
-//
-//
-//        // Action: Insert
-//        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
-//            self?.richTextView.becomeFirstResponder()
-//            let linkURLString = alertController.textFields?.first?.text
-//            var linkTitle = alertController.textFields?.last?.text
-//
-//            if linkTitle == nil || linkTitle!.isEmpty {
-//                linkTitle = linkURLString
-//            }
-//
-//            guard let urlString = linkURLString, let url = URL(string: urlString), let title = linkTitle else {
-//                return
-//            }
-//
-//            self?.richTextView.setLink(url, title: title, inRange: range)
-//        }
-//
-//        // Disabled until url is entered into field
-//        insertAction.isEnabled = urlToUse?.absoluteString.isEmpty == false
-//
-//        // Action: Remove
-//        if !isInsertingNewLink {
-//            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
-//                self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
-//                self?.richTextView.becomeFirstResponder()
-//                self?.richTextView.removeLink(inRange: range)
-//            }
-//        }
-//
-//        // Action: Cancel
-//        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
-//            self?.richTextView.becomeFirstResponder()
-//        }
-//
-//        present(alertController, animated: true, completion: nil)
+        if isInsertingNewLink {
+            if UIPasteboard.general.hasURLs,
+                let pastedURL = UIPasteboard.general.url {
+                urlToUse = pastedURL
+            }
+        }
+
+        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
+
+        let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
+
+        // TextField: URL
+        alertController.addTextField(configurationHandler: { [weak self] textField in
+            textField.clearButtonMode = .always
+            textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
+            textField.text = urlToUse?.absoluteString
+
+            textField.addTarget(self,
+                                action: #selector(ShareExtensionViewController.alertTextFieldDidChange),
+                                for: UIControlEvents.editingChanged)
+        })
+
+        // TextField: Link Name
+        alertController.addTextField(configurationHandler: { textField in
+            textField.clearButtonMode = .always
+            textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
+            textField.isSecureTextEntry = false
+            textField.autocapitalizationType = .sentences
+            textField.autocorrectionType = .default
+            textField.spellCheckingType = .default
+            textField.text = title
+        })
+
+
+        // Action: Insert
+        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
+            self?.richTextView.becomeFirstResponder()
+            let linkURLString = alertController.textFields?.first?.text
+            var linkTitle = alertController.textFields?.last?.text
+
+            if linkTitle == nil || linkTitle!.isEmpty {
+                linkTitle = linkURLString
+            }
+
+            guard let urlString = linkURLString, let url = URL(string: urlString), let title = linkTitle else {
+                return
+            }
+
+            self?.richTextView.setLink(url, title: title, inRange: range)
+        }
+
+        // Disabled until url is entered into field
+        insertAction.isEnabled = urlToUse?.absoluteString.isEmpty == false
+
+        // Action: Remove
+        if !isInsertingNewLink {
+            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+                self?.richTextView.becomeFirstResponder()
+                self?.richTextView.removeLink(inRange: range)
+            }
+        }
+
+        // Action: Cancel
+        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
+            self?.richTextView.becomeFirstResponder()
+        }
+
+        present(alertController, animated: true, completion: nil)
     }
 
     @objc func alertTextFieldDidChange(_ textField: UITextField) {
@@ -688,15 +851,34 @@ extension ShareExtensionViewController {
     }
 
     func toggleHeader(fromItem item: FormatBarItem) {
-        //TODO: Implement me!
+        let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
+            let attributes: [NSAttributedStringKey: Any] = [
+                .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
+                .foregroundColor: WPStyleGuide.darkGrey()
+            ]
+
+            let title = NSAttributedString(string: headerType.description, attributes: attributes)
+
+            return OptionsTableViewOption(image: headerType.iconImage,
+                                          title: title,
+                                          accessibilityLabel: headerType.accessibilityLabel)
+        }
+
+        let selectedIndex = Constants.headers.index(of: self.headerLevelForSelectedText())
+
+        showOptionsTableViewControllerWithOptions(headerOptions,
+                                                  fromBarItem: item,
+                                                  selectedRowIndex: selectedIndex,
+                                                  onSelect: { [weak self] selected in
+                                                    guard let range = self?.richTextView.selectedRange else { return }
+                                                    self?.richTextView.toggleHeader(Constants.headers[selected], range: range)
+                                                    self?.optionsViewController = nil
+                                                    self?.changeRichTextInputView(to: nil)
+        })
     }
 
     func insertHorizontalRuler() {
         richTextView.replaceWithHorizontalRuler(at: richTextView.selectedRange)
-    }
-
-    func insertMore() {
-        richTextView.replace(richTextView.selectedRange, withComment: Constants.moreAttachmentText)
     }
 
     func headerLevelForSelectedText() -> Header.HeaderType {
@@ -721,9 +903,111 @@ extension ShareExtensionViewController {
         }
         return .none
     }
+
+    // MARK: - Present Toolbar related VC
+
+    fileprivate func dismissOptionsViewControllerIfNecessary() {
+        guard optionsViewController != nil else {
+            return
+        }
+
+        dismissOptionsViewController()
+    }
+
+    func showOptionsTableViewControllerWithOptions(_ options: [OptionsTableViewOption],
+                                                   fromBarItem barItem: FormatBarItem,
+                                                   selectedRowIndex index: Int?,
+                                                   onSelect: OptionsTableViewController.OnSelectHandler?) {
+        // Hide the input view if we're already showing these options
+        if let optionsViewController = optionsViewController ?? (presentedViewController as? OptionsTableViewController), optionsViewController.options == options {
+            self.optionsViewController = nil
+            changeRichTextInputView(to: nil)
+            return
+        }
+
+        optionsViewController = OptionsTableViewController(options: options)
+        optionsViewController.cellDeselectedTintColor = Colors.aztecFormatBarInactiveColor
+        optionsViewController.cellBackgroundColor = Colors.aztecFormatPickerBackgroundColor
+        optionsViewController.cellSelectedBackgroundColor = Colors.aztecFormatPickerSelectedCellBackgroundColor
+        optionsViewController.view.tintColor = Colors.aztecFormatBarActiveColor
+        optionsViewController.onSelect = { [weak self] selected in
+            onSelect?(selected)
+            self?.dismissOptionsViewController()
+        }
+
+        let selectRow = {
+            guard let index = index else {
+                return
+            }
+
+            self.optionsViewController?.selectRow(at: index)
+        }
+
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            presentToolbarViewController(optionsViewController, asPopoverFromBarItem: barItem, completion: selectRow)
+        } else {
+            presentToolbarViewControllerAsInputView(optionsViewController)
+            selectRow()
+        }
+    }
+
+    private func presentToolbarViewController(_ viewController: UIViewController,
+                                              asPopoverFromBarItem barItem: FormatBarItem,
+                                              completion: (() -> Void)? = nil) {
+        viewController.modalPresentationStyle = .popover
+        viewController.popoverPresentationController?.permittedArrowDirections = [.down]
+        viewController.popoverPresentationController?.sourceView = view
+
+        let frame = barItem.superview?.convert(barItem.frame, to: UIScreen.main.coordinateSpace)
+
+        optionsViewController.popoverPresentationController?.sourceRect = view.convert(frame!, from: UIScreen.main.coordinateSpace)
+        optionsViewController.popoverPresentationController?.backgroundColor = Colors.aztecFormatPickerBackgroundColor
+        optionsViewController.popoverPresentationController?.delegate = self
+
+        present(viewController, animated: true, completion: completion)
+    }
+
+    private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
+        self.addChildViewController(viewController)
+        changeRichTextInputView(to: viewController.view)
+        viewController.didMove(toParentViewController: self)
+    }
+
+    private func dismissOptionsViewController() {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            dismiss(animated: true, completion: nil)
+        default:
+            optionsViewController?.removeFromParentViewController()
+            changeRichTextInputView(to: nil)
+        }
+
+        optionsViewController = nil
+    }
+
+    func changeRichTextInputView(to: UIView?) {
+        guard richTextView.inputView != to else {
+            return
+        }
+
+        richTextView.inputView = to
+        richTextView.reloadInputViews()
+    }
 }
 
-// MARK: - UITextViewDelegate methods
+// MARK: - FormatBarDelegate Conformance
+
+extension ShareExtensionViewController: Aztec.FormatBarDelegate {
+    func formatBarTouchesBegan(_ formatBar: FormatBar) {
+        dismissOptionsViewControllerIfNecessary()
+    }
+
+    func formatBar(_ formatBar: FormatBar, didChangeOverflowState overflowState: FormatBarOverflowState) {
+        // Not Used
+    }
+}
+
+// MARK: - UITextViewDelegate Conformance
 
 extension ShareExtensionViewController: UITextViewDelegate {
 
@@ -777,71 +1061,17 @@ extension ShareExtensionViewController: UITextViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         refreshTitlePosition()
     }
-
-    // MARK: - Title Input Sanitization
-
-    /// Sanitizes an input for insertion in the title text view.
-    ///
-    /// - Parameters:
-    ///     - input: the input for the title text view.
-    ///
-    /// - Returns: the sanitized string
-    ///
-    private func sanitizeInputForTitle(_ input: String) -> String {
-        var sanitizedText = input
-
-        while let range = sanitizedText.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) {
-            sanitizedText = sanitizedText.replacingCharacters(in: range, with: " ")
-        }
-
-        return sanitizedText
-    }
-
-    /// This method performs all necessary checks to verify if the title text can be changed,
-    /// or if some other action should be performed instead.
-    ///
-    /// - Important: this method sanitizes newlines, since they're not allowed in the title.
-    ///
-    /// - Parameters:
-    ///     - range: the range that would be modified.
-    ///     - text: the new text for the specified range.
-    ///
-    /// - Returns: `true` if the modification can take place, `false` otherwise.
-    ///
-    private func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
-
-        guard text.count > 1 else {
-            guard text.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) == nil else {
-                richTextView.becomeFirstResponder()
-                richTextView.selectedRange = NSRange(location: 0, length: 0)
-                return false
-            }
-
-            return true
-        }
-
-        let sanitizedInput = sanitizeInputForTitle(text)
-        let newlinesWereRemoved = sanitizedInput != text
-
-        guard !newlinesWereRemoved else {
-            titleTextField.insertText(sanitizedInput)
-
-            return false
-        }
-
-        return true
-    }
 }
 
-// MARK: - UITextFieldDelegate methods
+// MARK: - UITextFieldDelegate Conformance
 
 extension ShareExtensionViewController {
     func titleTextFieldDidChange(_ textField: UITextField) {
-        // TODO
+        // noop
     }
 }
 
-// MARK: - TextViewFormattingDelegate methods
+// MARK: - TextViewFormattingDelegate Conformance
 
 extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
     func textViewCommandToggledAStyle() {
@@ -850,31 +1080,66 @@ extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
 }
 
 // MARK: - TextViewAttachmentDelegate Conformance
-//
+
 extension ShareExtensionViewController: TextViewAttachmentDelegate {
     func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        // TODO: Implement me!
+        guard let image = UIImage(contentsOfURL: url) else {
+            failure()
+            return
+        }
+        success(image)
     }
 
     func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
-        // TODO: Implement me!
         return nil
     }
 
     func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
-        // TODO: Implement me!
+        // Remove the temp media file associated with the deleted attachment
+        guard let tempMediaFileURL = sharedImageDict[attachmentID], !tempMediaFileURL.pathExtension.isEmpty else {
+            return
+        }
+        ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
+        sharedImageDict.removeValue(forKey: attachmentID)
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
-        // TODO: Implement me!
-    }
+        if !richTextView.isFirstResponder {
+            richTextView.becomeFirstResponder()
+        }
 
-    func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
-        // TODO: Implement me!
+        switch attachment {
+        case let attachment as MediaAttachment:
+            selected(textAttachment: attachment, atPosition: position)
+        default:
+            break
+        }
     }
 
     func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
-        // TODO: Implement me!
+        // If it's a new attachment tapped let's unmark the previous one...
+        if let selectedAttachment = currentSelectedAttachment {
+            self.resetMediaAttachmentOverlay(selectedAttachment)
+            richTextView.refresh(selectedAttachment)
+        }
+
+        // ...and mark the newly tapped attachment
+        let message = ""
+        attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+        attachment.shouldHideBorder = false
+        richTextView.refresh(attachment)
+        currentSelectedAttachment = attachment
+
+        // Display the action sheet right away
+        displayActions(forAttachment: attachment, position: position)
+    }
+
+    func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
+        currentSelectedAttachment = nil
+        if let mediaAttachment = attachment as? MediaAttachment {
+            self.resetMediaAttachmentOverlay(mediaAttachment)
+            richTextView.refresh(mediaAttachment)
+        }
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
@@ -882,29 +1147,7 @@ extension ShareExtensionViewController: TextViewAttachmentDelegate {
     }
 }
 
-// Encapsulates all of the Action Helpers.
-
-private extension ShareExtensionViewController {
-    func dismissIfNeeded() {
-        guard oauth2Token == nil else {
-            return
-        }
-
-        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
-        let message = NSLocalizedString("Launch the WordPress app and log into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
-        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
-
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
-            self.dismiss(animated: true, completion: nil)
-        }
-
-        alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: nil)
-    }
-}
-
-// Encapsulates private helpers
+// MARK: - Private helpers
 
 private extension ShareExtensionViewController {
     func loadContent(extensionContext: NSExtensionContext?) {
@@ -913,7 +1156,7 @@ private extension ShareExtensionViewController {
         }
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
-                self?.richTextView.text = share.text
+                self?.richTextView.insertText(share.text)
 
                 share.images.forEach({ image in
                     if let fileURL = self?.saveImageToSharedContainer(image) {
@@ -940,10 +1183,334 @@ private extension ShareExtensionViewController {
         return fullPath
     }
 
-    func insertImageAttachment(with url: URL = Constants.placeholderMediaLink) {
+    func insertImageAttachment(with url: URL) {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
+        
         attachment.size = .full
+        attachment.uploadID = url.lastPathComponent // Use the filename as the uploadID here.
         richTextView.refresh(attachment)
+        sharedImageDict[attachment.identifier] = url
+    }
+
+    func refreshPlaceholderVisibility() {
+        placeholderLabel.isHidden = richTextView.isHidden || !richTextView.text.isEmpty
+        titlePlaceholderLabel.isHidden = !titleTextField.text.isEmpty
+    }
+
+    func dismissIfNeeded() {
+        guard oauth2Token == nil else {
+            return
+        }
+
+        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
+        let message = NSLocalizedString("Launch the WordPress app and log into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
+        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
+            self.closeShareExtensionWithoutSaving()
+        }
+
+        alertController.addAction(alertAction)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func closeShareExtensionWithoutSaving() {
+        // First, remove the temp media files if needed
+        for tempMediaFileURL in sharedImageDict.values {
+            if !tempMediaFileURL.pathExtension.isEmpty {
+                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
+            }
+        }
+
+        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+    }
+
+    func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
+        if mediaAttachment is ImageAttachment {
+            mediaAttachment.overlayImage = nil
+        }
+        mediaAttachment.message = nil
+        mediaAttachment.shouldHideBorder = false
+    }
+
+    /// Sanitizes an input for insertion in the title text view.
+    ///
+    /// - Parameters:
+    ///     - input: the input for the title text view.
+    ///
+    /// - Returns: the sanitized string
+    ///
+    func sanitizeInputForTitle(_ input: String) -> String {
+        var sanitizedText = input
+
+        while let range = sanitizedText.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) {
+            sanitizedText = sanitizedText.replacingCharacters(in: range, with: " ")
+        }
+
+        return sanitizedText
+    }
+
+    /// This method performs all necessary checks to verify if the title text can be changed,
+    /// or if some other action should be performed instead.
+    ///
+    /// - Important: this method sanitizes newlines, since they're not allowed in the title.
+    ///
+    /// - Parameters:
+    ///     - range: the range that would be modified.
+    ///     - text: the new text for the specified range.
+    ///
+    /// - Returns: `true` if the modification can take place, `false` otherwise.
+    ///
+    func shouldChangeTitleText(in range: NSRange, replacementText text: String) -> Bool {
+
+        guard text.count > 1 else {
+            guard text.rangeOfCharacter(from: CharacterSet.newlines, options: [], range: nil) == nil else {
+                richTextView.becomeFirstResponder()
+                richTextView.selectedRange = NSRange(location: 0, length: 0)
+                return false
+            }
+
+            return true
+        }
+
+        let sanitizedInput = sanitizeInputForTitle(text)
+        let newlinesWereRemoved = sanitizedInput != text
+
+        guard !newlinesWereRemoved else {
+            titleTextField.insertText(sanitizedInput)
+
+            return false
+        }
+
+        return true
+    }
+
+    func savePostToRemoteSite() {
+        guard let _ = oauth2Token, let siteID = selectedSiteID else {
+            fatalError("The view should have been dismissed on viewDidAppear!")
+        }
+
+        // TODO: Save the last used site
+        //        if let siteName = selectedSiteName {
+        //            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: siteName)
+        //        }
+
+        // Proceed uploading the actual post
+        let subject = titleTextField.text ?? ""
+        let body = richTextView.getHTML()
+        let tempMediaFileURLs = sharedImageDict.values
+
+        if tempMediaFileURLs.count > 0 {
+            var allEncodedMedia = [Data?]()
+            tempMediaFileURLs.flatMap({ $0 }).forEach({ mediaURL in
+                if let encodedMedia = UIImage(contentsOfURL: mediaURL) {
+                    allEncodedMedia.append(encodedMedia.JPEGEncoded(1.0)) // Quality was already reduced on temp file save
+                }
+            })
+
+            uploadPostWithMedia(subject: subject,
+                                body: body,
+                                status: postStatus,
+                                siteID: siteID,
+                                attachedImageData: allEncodedMedia,
+                                requestEnqueued: {
+                                    self.tracks.trackExtensionPosted(self.postStatus)
+                                    self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            })
+        } else {
+            let remotePost: RemotePost = {
+                let post = RemotePost()
+                post.siteID = NSNumber(value: siteID)
+                post.status = postStatus
+                post.title = subject
+                post.content = body
+                return post
+            }()
+            let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .inProgress)
+            uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
+                self.tracks.trackExtensionPosted(self.postStatus)
+                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            })
+        }
+    }
+}
+
+// MARK: - Backend Interaction
+
+private extension ShareExtensionViewController {
+    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
+        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
+            let groupID = postUploadOp.groupID,
+            let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
+                return
+        }
+
+        mediaUploadOps.forEach { mediaUploadOp in
+            guard let fileName = mediaUploadOp.fileName,
+                let remoteURL = mediaUploadOp.remoteURL else {
+                return
+            }
+
+            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
+                                                            remoteURLString: remoteURL,
+                                                            width: Int(mediaUploadOp.width),
+                                                            height: Int(mediaUploadOp.height))
+            let content = postUploadOp.postContent ?? ""
+            postUploadOp.postContent = imgPostUploadProcessor.process(content)
+        }
+
+        coreDataStack.saveContext()
+
+        self.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {})
+    }
+
+    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, requestEnqueued: @escaping () -> ()) {
+        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
+            DDLogError("Error uploading post in share extension — could not fetch saved post.")
+            requestEnqueued()
+            return
+        }
+
+        let remotePost = postUploadOp.remotePost
+
+        // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads so set it false
+        let api = WordPressComRestApi(oAuthToken: oauth2Token,
+                                      userAgent: nil,
+                                      backgroundUploads: false,
+                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                      sharedContainerIdentifier: WPAppGroupName)
+        let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
+        remote.createPost(remotePost, success: { post in
+            if let post = post {
+                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
+                if let postID = post.postID {
+                    self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
+                } else {
+                    self.coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOpObjectID)
+                }
+            }
+            requestEnqueued()
+        }, failure: { error in
+            var errorString = "Error creating post in share extension"
+            if let error = error as NSError? {
+                errorString += ": \(error.localizedDescription)"
+            }
+            DDLogError(errorString)
+            self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
+            requestEnqueued()
+        })
+    }
+
+    func uploadPostWithMedia(subject: String, body: String, status: String, siteID: Int, attachedImageData: [Data?]?, requestEnqueued: @escaping () -> ()) {
+        guard let attachedImageData = attachedImageData,
+            let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+                DDLogError("No media is attached to this upload request.")
+                requestEnqueued()
+                return
+        }
+
+        // First create the post upload op
+        let remotePost: RemotePost = {
+            let post = RemotePost()
+            post.siteID = NSNumber(value: siteID)
+            post.status = status
+            post.title = subject
+            post.content = body
+            return post
+        }()
+        let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
+
+        // Now process all of the media items and create their upload ops
+        var uploadMediaOpIDs = [NSManagedObjectID]()
+        var allRemoteMedia = [RemoteMedia]()
+        attachedImageData.flatMap({ $0 }).forEach { imageData in
+            let uniqueString = "image_\(NSDate.timeIntervalSinceReferenceDate)"
+            let fileName = uniqueString.components(separatedBy: ["."]).joined() + ".jpg"
+            let fullPath = mediaDirectory.appendingPathComponent(fileName)
+            let remoteMedia: RemoteMedia = {
+                let media = RemoteMedia()
+                media.file = fileName
+                media.mimeType = MediaSettings.mimeType
+                media.localURL = fullPath
+                return media
+            }()
+            allRemoteMedia.append(remoteMedia)
+
+            do {
+                try imageData.write(to: fullPath, options: [.atomic])
+            } catch {
+                DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
+                return
+            }
+            let uploadMediaOpID = coreDataStack.saveMediaOperation(remoteMedia, sessionID: backgroundSessionIdentifier, groupIdentifier: groupIdentifier, siteID: NSNumber(value: siteID), with: .pending)
+            uploadMediaOpIDs.append(uploadMediaOpID)
+        }
+
+        // Upload the media items
+        let api = WordPressComRestApi(oAuthToken: oauth2Token,
+                                      userAgent: nil,
+                                      backgroundUploads: true,
+                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                      sharedContainerIdentifier: WPAppGroupName)
+
+        // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
+        // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
+        // post share here as well as WPiOS.
+        let remote = MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
+        remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
+            uploadMediaOpIDs.forEach({ uploadMediaOpID in
+                self.coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
+                if let taskID = taskID {
+                    self.coreDataStack.updateTaskID(taskID, forUploadOpWithObjectID: uploadMediaOpID)
+                }
+            })
+            requestEnqueued()
+        }, success: { remoteMedia in
+            guard let returnedMedia = remoteMedia as? [RemoteMedia],
+                returnedMedia.count > 0,
+                let mediaUploadOps = self.coreDataStack.fetchMediaUploadOps(for: self.groupIdentifier) else {
+                    DDLogError("Error creating post in share extension. RemoteMedia info not returned from server.")
+                    return
+            }
+
+            mediaUploadOps.forEach({ mediaUploadOp in
+                returnedMedia.forEach({ remoteMedia in
+                    if let remoteMediaID = remoteMedia.mediaID?.int64Value,
+                        let remoteMediaURLString = remoteMedia.url?.absoluteString,
+                        let localFileName = mediaUploadOp.fileName,
+                        let remoteFileName = remoteMedia.file {
+
+                        if localFileName.lowercased().trim() == remoteFileName.lowercased().trim() {
+                            mediaUploadOp.remoteURL = remoteMediaURLString
+                            mediaUploadOp.remoteMediaID = remoteMediaID
+                            mediaUploadOp.currentStatus = .complete
+
+                            if let width = remoteMedia.width?.int32Value,
+                                let height = remoteMedia.width?.int32Value {
+                                mediaUploadOp.width = width
+                                mediaUploadOp.height = height
+                            }
+
+                            ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: localFileName)
+                        }
+                    }
+                })
+            })
+            self.coreDataStack.saveContext()
+
+            // Now upload the post
+            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID)
+        }) { error in
+            guard let error = error as NSError? else {
+                return
+            }
+            DDLogError("Error creating post in share extension: \(error.localizedDescription)")
+            uploadMediaOpIDs.forEach({ uploadMediaOpID in
+                self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadMediaOpID)
+            })
+            self.tracks.trackExtensionError(error)
+        }
     }
 }
 
@@ -965,6 +1532,7 @@ extension ShareExtensionViewController {
         static let headers                  = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                    = [TextList.Style.unordered, .ordered]
         static let toolbarHeight            = CGFloat(44.0)
+        static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
         static let placeholderMediaLink = URL(string: "placeholder://")!
     }
@@ -973,6 +1541,8 @@ extension ShareExtensionViewController {
         static let title                    = WPStyleGuide.grey()
         static let separator                = WPStyleGuide.greyLighten30()
         static let placeholder              = WPStyleGuide.grey()
+        static let mediaProgressOverlay     = WPStyleGuide.darkGrey().withAlphaComponent(CGFloat(0.6))
+        static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
         static let aztecBackground          = UIColor.clear
         static let aztecLinkColor           = WPStyleGuide.mediumBlue()
         static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
