@@ -114,13 +114,11 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @param      page        Results page to return.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
- *
- *  @returns    A progress object that can be used to track progress and/or cancel the task
  */
-- (NSProgress *)getStartingThemesForCategory:(NSString *)category
-                                        page:(NSInteger)page
-                                     success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                                     failure:(ThemeServiceRemoteFailureBlock)failure;
+- (void)getStartingThemesForCategory:(NSString *)category
+                                page:(NSInteger)page
+                             success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                             failure:(ThemeServiceRemoteFailureBlock)failure;
 
 #pragma mark - Activating themes
 
