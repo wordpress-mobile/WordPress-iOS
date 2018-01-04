@@ -65,9 +65,9 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         selectionStyle = .none
 
         assert(textView != nil)
-        textView.contentInset = UIEdgeInsets.zero
-        textView.textContainerInset = UIEdgeInsets.zero
-        textView.backgroundColor = UIColor.clear
+        textView.contentInset = .zero
+        textView.textContainerInset = .zero
+        textView.backgroundColor = .clear
         textView.editable = false
         textView.selectable = true
         textView.dataDetectorTypes = UIDataDetectorTypes()
