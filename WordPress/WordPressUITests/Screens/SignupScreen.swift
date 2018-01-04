@@ -2,9 +2,12 @@ import Foundation
 import XCTest
 
 class SignupScreen: BaseScreen {
-    //        app.navigationBars["WordPress.SignupView"].buttons["Back"].tap() sas
+    let navBar: XCUIElement
+    let navBackButton: XCUIElement
+
     init() {
-        let navBar = XCUIApplication().navigationBars["WordPress.SignupView"]
+        navBar = XCUIApplication().navigationBars["WordPress.SignupView"]
+        navBackButton = navBar.buttons["Back"]
         super.init(element: navBar)
     }
 }
