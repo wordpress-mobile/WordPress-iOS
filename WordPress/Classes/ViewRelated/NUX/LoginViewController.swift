@@ -147,7 +147,28 @@ class LoginViewController: NUXAbstractViewController {
     }
 
     override func dismiss() {
-        loginDismissal()
+        if shouldShowEpilogue() {
+            self.performSegue(withIdentifier: .showEpilogue, sender: self)
+            return
+        }
+        dismissBlock?(false)
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    fileprivate func shouldShowEpilogue() -> Bool {
+        if !isJetpackLogin() {
+            return true
+        }
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard
+            let objectID = loginFields.meta.jetpackBlogID,
+            let blog = context.object(with: objectID) as? Blog,
+            let account = blog.account
+        else {
+                return false
+        }
+        return accountService.isDefaultWordPressComAccount(account)
     }
 
     /// Validates what is entered in the various form fields and, if valid,
@@ -179,6 +200,7 @@ class LoginViewController: NUXAbstractViewController {
 
         if let destination = segue.destination as? LoginEpilogueViewController {
             destination.dismissBlock = source.dismissBlock
+            destination.jetpackLogin = source.loginFields.meta.jetpackLogin
         } else if let destination = segue.destination as? LoginViewController {
             destination.loginFields = source.loginFields
             destination.restrictToWPCom = source.restrictToWPCom
@@ -254,7 +276,7 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
         SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 
-    @objc func loginDismissal() {
-        self.performSegue(withIdentifier: .showEpilogue, sender: self)
+    func isJetpackLogin() -> Bool {
+        return loginFields.meta.jetpackLogin
     }
 }
