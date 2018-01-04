@@ -1,6 +1,6 @@
 import UIKit
 
-class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
+class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 
     // MARK: - Properties
 
@@ -13,13 +13,8 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var themesSyncHelper: WPContentSyncHelper?
 
-    private lazy var themesController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return self.createThemesFetchedResultsController()
-    }()
-
-    private var themeCount: NSInteger {
-        return themesController.fetchedObjects?.count ?? 0
-    }
+    private var themes: [Theme]?
+    private var themeCount: NSInteger = 0
 
     // MARK: - View
 
@@ -27,7 +22,6 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         super.viewDidLoad()
 
         configureView()
-        fetchThemes()
         setupThemesSyncHelper()
         syncContent()
     }
@@ -128,56 +122,6 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         performSegue(withIdentifier: "showSiteDetails", sender: nil)
     }
 
-    // MARK: - Theme Fetching
-
-    private func createThemesFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Theme.entityName())
-        fetchRequest.fetchBatchSize = 4
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                             managedObjectContext: self.themeService.managedObjectContext,
-                                             sectionNameKeyPath: nil,
-                                             cacheName: nil)
-        fetchedResultsController.delegate = self
-
-        return fetchedResultsController
-    }
-
-    private func fetchThemes() {
-        do {
-            themesController.fetchRequest.predicate = themesPredicate()
-            try themesController.performFetch()
-        } catch {
-            DDLogError("Error fetching themes: \(error)")
-        }
-    }
-
-    private func themesPredicate() -> NSPredicate? {
-
-        // TODO: replace with new endpoint.
-
-        guard let siteType = siteType else {
-            return NSPredicate()
-        }
-
-        let themeCollections: [SiteType: [String]] = [
-            .blog: ["Independent Publisher 2", "Penscratch 2", "Intergalactic 2", "Libre 2"],
-            .website: ["Radcliffe 2", "Karuna", "Dara", "Twenty Seventeen"],
-            .portfolio: ["AltoFocus", "Rebalance", "Sketch", "Lodestar"]
-        ]
-        let themes = themeCollections[siteType]
-
-        var predicates = [NSPredicate]()
-
-        if let themes = themes {
-            for themeName in themes {
-                predicates.append(NSPredicate(format: "name = %@", themeName))
-            }
-        }
-
-        return NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
-    }
-
     // MARK: - Theme Syncing
 
     private func setupThemesSyncHelper() {
@@ -189,45 +133,39 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         themesSyncHelper?.syncContent()
     }
 
-    private func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        assert(page > 0)
-        let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount()
+    private func syncThemePage(page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
 
-        // TODO: replace with new endpoint.
+        guard let siteType = siteType else {
+            return
+        }
 
-        _ = themeService.getThemesFor(account,
-                                      page: page,
-                                      success: { (_, _, _) in
+        _ = themeService.getStartingThemes(forCategory: siteType.rawValue,
+                                           page: page,
+                                           success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
+                                            self?.themes = themes
+                                            self?.themeCount = themeCount
+                                            self?.collectionView?.reloadData()
         },
-                                      failure: { (error) in
-                                        DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
-                                        if let failure = failure,
-                                            let error = error {
-                                            failure(error as NSError)
-                                        }
+                                           failure: { (error) in
+                                            DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                                            if let failure = failure,
+                                                let error = error {
+                                                failure(error as NSError)
+                                            }
         })
     }
 
     // MARK: - WPContentSyncHelperDelegate
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+
         if syncHelper == themesSyncHelper {
-            syncThemePage(1, success: success, failure: failure)
+            syncThemePage(page: 1, success: success, failure: failure)
         }
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         // Nothing to be done here. There will only be one page.
-    }
-
-    // MARK: - NSFetchedResultsControllerDelegate
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        updateResults()
-    }
-
-    private func updateResults() {
-        collectionView?.reloadData()
     }
 
     // MARK: - LoginWithLogoAndHelpViewController
@@ -253,7 +191,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     // MARK: - Helpers
 
     private func themeAtIndexPath(_ indexPath: IndexPath) -> Theme? {
-        return themesController.object(at: IndexPath(row: indexPath.row, section: 0)) as? Theme
+        return themes?[indexPath.row]
     }
 
     // MARK: - Misc
