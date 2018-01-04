@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-
+NS_ASSUME_NONNULL_BEGIN
 @class WPAccount;
 
 /**
@@ -41,5 +41,5 @@
  *  This class handles some basic functions regarding a user's account.
  */
 @interface AccountServiceFacade : NSObject<AccountServiceFacade>
-
+NS_ASSUME_NONNULL_END
 @end

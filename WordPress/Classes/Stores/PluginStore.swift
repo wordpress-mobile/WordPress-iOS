@@ -279,23 +279,45 @@ private extension PluginStore {
 
     func removePlugin(pluginID: String, site: JetpackSiteRef) {
         guard let sitePlugins = state.plugins[site],
+            let plugin = getPlugin(id: pluginID, site: site),
             let index = sitePlugins.plugins.index(where: { $0.id == pluginID }) else {
                 return
         }
         state.plugins[site]?.plugins.remove(at: index)
         WPAppAnalytics.track(.pluginRemoved, withBlogID: site.siteID as NSNumber)
-        remote(site: site)?.remove(
-            pluginID: pluginID,
-            siteID: site.siteID,
-            success: {},
-            failure: { [weak self] _ in
-                _ = self?.getPlugins(site: site)
-        })
+
+        guard let remote = self.remote(site: site) else {
+            return
+        }
+
+        let failure: (Error) -> Void = { [weak self] (error) in
+            DDLogError("Error removing \(plugin.name): \(error)")
+            let message = String(format: NSLocalizedString("Error removing %@.", comment: "There was an error removing a plugin, placeholder is the plugin name"), plugin.name)
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
+            self?.refreshPlugins(site: site)
+        }
+
+        let remove = {
+            remote.remove(
+                pluginID: pluginID,
+                siteID: site.siteID,
+                success: {},
+                failure: failure)
+        }
+
+        if plugin.state.active {
+            remote.deactivatePlugin(pluginID: pluginID,
+                                    siteID: site.siteID,
+                                    success: remove,
+                                    failure: failure)
+        } else {
+            remove()
+        }
     }
 
     func refreshPlugins(site: JetpackSiteRef) {
         guard !isFetchingPlugins(site: site) else {
-            assertionFailure("Plugin refresh triggered while one was in progress")
+            DDLogInfo("Plugin refresh triggered while one was in progress")
             return
         }
         fetchPlugins(site: site)
