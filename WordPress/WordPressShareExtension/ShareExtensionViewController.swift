@@ -63,13 +63,6 @@ class ShareExtensionViewController: UIViewController {
         Tracks(appGroupName: WPAppGroupName)
     }()
 
-    /// Next Bar Button
-    ///
-    fileprivate lazy var nextButton: UIBarButtonItem = {
-        let nextTitle = NSLocalizedString("Post!", comment: "Post action on share extension editor screen")
-        return UIBarButtonItem(title: nextTitle, style: .plain, target: self, action: #selector(nextWasPressed))
-    }()
-
     /// Cancel Bar Button
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
@@ -341,7 +334,6 @@ class ShareExtensionViewController: UIViewController {
     func configureNavigationBar() {
         title = NSLocalizedString("Share to WordPress", comment: "Title for Share Exte nsion")
         navigationItem.leftBarButtonItem = cancelButton
-        navigationItem.rightBarButtonItem = nextButton
     }
 
     func configureMediaAppearance() {
@@ -591,11 +583,6 @@ extension ShareExtensionViewController {
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
         closeShareExtensionWithoutSaving()
-    }
-
-    @objc func nextWasPressed() {
-        // TODO: Next screen eventually!
-        savePostToRemoteSite()
     }
 
     func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
