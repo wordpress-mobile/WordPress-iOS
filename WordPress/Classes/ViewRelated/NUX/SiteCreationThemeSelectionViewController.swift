@@ -1,4 +1,5 @@
 import UIKit
+import SVProgressHUD
 
 class SiteCreationThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 
@@ -130,6 +131,7 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
     }
 
     private func syncContent() {
+        SVProgressHUD.show(withStatus: NSLocalizedString("Loading themes", comment: "Shown while the app waits for the starting themes web service to return during the site creation process."))
         themesSyncHelper?.syncContent()
     }
 
@@ -144,6 +146,7 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
                                        success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                                         self?.themes = themes
                                         self?.themeCount = themeCount
+                                        SVProgressHUD.dismiss()
                                         self?.collectionView?.reloadData()
             },
                                        failure: { (error) in
@@ -152,6 +155,7 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
                                             let error = error {
                                             failure(error as NSError)
                                         }
+                                        SVProgressHUD.dismiss()
         })
     }
 
