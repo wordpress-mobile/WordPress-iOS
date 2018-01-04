@@ -718,6 +718,13 @@ static NSInteger HideSearchMinSites = 3;
         }
     }
 
+    /// Issue #7284:
+    /// Prevents pushing BlogDetailsViewController, if it was already in the hierarchy.
+    ///
+    if ([self.navigationController.viewControllers containsObject:self.blogDetailsViewController]) {
+        return;
+    }
+
     [self.navigationController pushViewController:self.blogDetailsViewController animated:animated];
 }
 
