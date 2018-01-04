@@ -98,8 +98,4 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         onAttachmentClick?(textAttachment)
         return false
     }
-
-
-    // MARK: - Constants
-    private static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
 }
