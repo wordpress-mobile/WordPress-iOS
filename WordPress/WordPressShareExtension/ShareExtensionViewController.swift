@@ -321,7 +321,7 @@ class ShareExtensionViewController: UIViewController {
         var titleWidth = titleTextField.bounds.width
         if titleWidth <= 0 {
             // Use the title text field's width if available, otherwise calculate it.
-            // View's frame minus left and right margins as well as margin between title and beta button
+            // View's frame minus left and right margins
             titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right)
         }
 
@@ -375,6 +375,7 @@ class ShareExtensionViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             titleTextField.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
             titleTopConstraint,
             titleHeightConstraint
             ])
@@ -1041,8 +1042,6 @@ extension ShareExtensionViewController: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         textView.textAlignment = .natural
 
-        let htmlButton = formatBar.items.first(where: { $0.identifier == FormattingIdentifier.sourcecode.rawValue })
-
         switch textView {
         case titleTextField:
             formatBar.enabled = false
@@ -1051,8 +1050,6 @@ extension ShareExtensionViewController: UITextViewDelegate {
         default:
             break
         }
-
-        htmlButton?.isEnabled = true
         textView.inputAccessoryView = formatBar
 
         return true
