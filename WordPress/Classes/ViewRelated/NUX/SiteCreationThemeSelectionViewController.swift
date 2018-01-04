@@ -1,6 +1,6 @@
 import UIKit
 
-class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
+class SiteCreationThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 
     // MARK: - Properties
 
