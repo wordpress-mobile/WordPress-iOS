@@ -619,7 +619,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)siteIconTapped
 {
-    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
+    if (![self siteIconShouldAllowDroppedImages]) {
         // Gracefully ignore the tap for users that can not upload files or
         // blogs that do not have capabilities since those will not support the REST API icon update
         return;
@@ -629,12 +629,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)siteIconReceivedDroppedImage:(UIImage *)image
 {
-    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
+    if (![self siteIconShouldAllowDroppedImages]) {
         // Gracefully ignore the drop for users that can not upload files or
         // blogs that do not have capabilities since those will not support the REST API icon update
+        self.headerView.updatingIcon = NO;
         return;
     }
     [self presentCropViewControllerForDroppedSiteIcon:image];
+}
+
+- (BOOL)siteIconShouldAllowDroppedImages
+{
+    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark Site Icon Update Management
