@@ -274,7 +274,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (WPAccount *)findAccountWithUsername:(NSString *)username
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"username =[c] %@", username]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"username =[c] %@ || email =[c] %@", username, username]];
     [request setIncludesPendingChanges:YES];
 
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];

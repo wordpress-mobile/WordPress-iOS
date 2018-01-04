@@ -3,6 +3,7 @@ import Foundation
 public class Activity {
     public let activityID: String
     public let summary: String
+    public let text: String
     public let name: String
     public let type: String
     public let gridicon: String
@@ -20,9 +21,12 @@ public class Activity {
         guard let id = dictionary["activity_id"] as? String else {
             throw Error.missingActivityId
         }
-        guard let summaryDictionary = dictionary["content"] as? [String: AnyObject],
-              let text = summaryDictionary["text"] as? String else {
-            throw Error.missingSummaryText
+        guard let summaryText = dictionary["summary"] as? String else {
+            throw Error.missingSummary
+        }
+        guard let contentDictionary = dictionary["content"] as? [String: AnyObject],
+              let contentText = contentDictionary["text"] as? String else {
+            throw Error.missingContentText
         }
         guard let publishedString = dictionary["published"] as? String else {
             throw Error.missingPublishedDate
@@ -32,7 +36,8 @@ public class Activity {
             throw Error.incorrectPusblishedDateFormat
         }
         activityID = id
-        summary = text
+        summary = summaryText
+        text = contentText
         published = publishedDate
         name = dictionary["name"] as? String ?? ""
         type = dictionary["type"] as? String ?? ""
@@ -78,7 +83,8 @@ public class Activity {
 private extension Activity {
     enum Error: Swift.Error {
         case missingActivityId
-        case missingSummaryText
+        case missingSummary
+        case missingContentText
         case missingPublishedDate
         case incorrectPusblishedDateFormat
     }
