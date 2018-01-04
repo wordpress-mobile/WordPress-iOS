@@ -42,8 +42,4 @@ class LoginLinkAuthViewController: LoginViewController {
     override func updateSafariCredentialsIfNeeded() {
         // Noop
     }
-
-    override func dismiss() {
-        self.performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
 }

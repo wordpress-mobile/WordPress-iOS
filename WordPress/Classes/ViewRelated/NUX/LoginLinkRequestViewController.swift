@@ -116,7 +116,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
     @objc func didRequestAuthenticationLink() {
         WPAppAnalytics.track(.loginMagicLinkRequested)
-        SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
+        SigninHelpers.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: .showLinkMailView, sender: self)
     }
 
