@@ -64,7 +64,7 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectThemeCell.reuseIdentifier, for: indexPath) as! SelectThemeCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SiteCreationThemeSelectionCell.reuseIdentifier, for: indexPath) as! SiteCreationThemeSelectionCell
         cell.displayTheme = themeAtIndexPath(indexPath)
         return cell
     }
