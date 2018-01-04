@@ -55,7 +55,15 @@ class LoginPrologueViewController: UIViewController {
 
     @IBAction func signupTapped() {
         if Feature.enabled(.socialSignup) {
-            performSegue(withIdentifier: "showSigninV2", sender: self)
+
+            // TODO: replace with Signup Prologue implementation
+
+            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
+            let emailVC = storyboard.instantiateViewController(withIdentifier: "emailEntry")
+            let navController = SignupNavigationController(rootViewController: emailVC)
+            present(navController, animated: true, completion: nil)
+
+
         } else {
             performSegue(withIdentifier: "showSigninV1", sender: self)
         }
