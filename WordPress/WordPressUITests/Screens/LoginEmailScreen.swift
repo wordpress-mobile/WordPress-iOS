@@ -2,18 +2,17 @@ import Foundation
 import XCTest
 
 class LoginEmailScreen: BaseScreen {
-    //        app.navigationBars["WordPress.LoginEmailView"].buttons["Back"].tap()
-//    let emailAddressTextField = app.textFields["Email address"]
-//    emailAddressTextField.typeText("brbrrtest1@gmail.com")
-//
-//    let nextButtonButton = app.buttons["Next Button"]
-//    nextButtonButton.tap()
-
+    let navBar: XCUIElement
+    let navBackButton: XCUIElement
     let emailTextField: XCUIElement
     let nextButton: XCUIElement
+
     init() {
-        emailTextField = XCUIApplication().textFields["Email address"]
-        nextButton = XCUIApplication().buttons["Next Button"]
+        let app = XCUIApplication()
+        navBar = app.navigationBars["WordPress.LoginEmailView"]
+        navBackButton = navBar.buttons["Back"]
+        emailTextField = app.textFields["Email address"]
+        nextButton = app.buttons["Next Button"]
 
         super.init(element: emailTextField)
     }
