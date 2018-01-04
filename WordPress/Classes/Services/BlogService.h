@@ -137,6 +137,16 @@ extern NSString *const WPBlogUpdatedNotification;
                       success:(nullable void (^)(void))success
                       failure:(nullable void (^)(NSError *error))failure;
 
+/**
+ * Associate synced blogs to the specified Jetpack account.
+ *
+ *  @param account the account
+ *  @param success a block that is invoked when the update is successful
+ *  @param failure a block that in invoked when the update fails.
+ */
+- (void)associateSyncedBlogsToJetpackAccount:(WPAccount *)account
+                                     success:(void (^)(void))success
+                                     failure:(void (^)(NSError *error))failure;
 
 /**
  *  Update the password for the blog.
