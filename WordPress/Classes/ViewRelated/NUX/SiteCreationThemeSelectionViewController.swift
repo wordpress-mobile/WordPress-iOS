@@ -50,7 +50,7 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeSelectionHeaderView.reuseIdentifier, for: indexPath) as! ThemeSelectionHeaderView
+            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SiteCreationThemeSelectionHeaderView.reuseIdentifier, for: indexPath) as! SiteCreationThemeSelectionHeaderView
         }
         return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
     }
@@ -92,7 +92,7 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
         stepLabel.numberOfLines = 1
         stepLabel.lineBreakMode = NSLineBreakMode.byTruncatingTail
         stepLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        stepLabel.text = ThemeSelectionHeaderView.stepLabelText
+        stepLabel.text = SiteCreationThemeSelectionHeaderView.stepLabelText
         stepLabel.sizeToFit()
 
         let stepDescrLabel = UILabel(frame: CGRect(x: 0, y: 0,
@@ -101,7 +101,7 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
         stepDescrLabel.numberOfLines = 0
         stepDescrLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         stepDescrLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        stepDescrLabel.text = ThemeSelectionHeaderView.stepDescrLabelText
+        stepDescrLabel.text = SiteCreationThemeSelectionHeaderView.stepDescrLabelText
         stepDescrLabel.sizeToFit()
 
         let stackViewHeightMargins: CGFloat = 25 // stack view total height constraints
