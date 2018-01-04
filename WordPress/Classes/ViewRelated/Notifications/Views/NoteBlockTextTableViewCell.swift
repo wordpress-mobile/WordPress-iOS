@@ -2,7 +2,13 @@ import Foundation
 import WordPressShared
 
 
+// MARK: - NoteBlockTextTableViewCell
+//
 class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource, RichTextViewDelegate {
+
+    // MARK: - IBOutlets
+    @IBOutlet private weak var textView: RichTextView!
+
     // MARK: - Public Properties
     @objc var onUrlClick: ((URL) -> Void)?
     @objc var onAttachmentClick: ((NSTextAttachment) -> Void)?
@@ -95,8 +101,5 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
 
 
     // MARK: - Constants
-    @objc static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
-
-    // MARK: - IBOutlets
-    @IBOutlet fileprivate weak var textView: RichTextView!
+    private static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
 }
