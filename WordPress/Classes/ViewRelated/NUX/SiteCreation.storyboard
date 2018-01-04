@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2dM-ub-12g">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2dM-ub-12g">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13770"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -62,10 +62,10 @@
             </objects>
             <point key="canvasLocation" x="-452" y="95"/>
         </scene>
-        <!--Theme Selection View Controller-->
+        <!--Site Creation Theme Selection View Controller-->
         <scene sceneID="z67-tA-tNh">
             <objects>
-                <collectionViewController id="Po4-wx-4jS" customClass="ThemeSelectionViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="Po4-wx-4jS" customClass="SiteCreationThemeSelectionViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="LQZ-91-7uu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -382,8 +382,8 @@
                         <outlet property="stepLabel" destination="Tc3-Bo-Atj" id="CeA-dj-Ky4"/>
                         <outlet property="tagDescriptionLabel" destination="cGJ-Lt-fd3" id="mge-CL-Pan"/>
                         <outlet property="taglineField" destination="MyF-yC-tG6" id="XYN-dQ-9Pt"/>
-                        <segue destination="pd3-Be-itM" kind="show" identifier="showDomains" id="0st-cX-Udd"/>
                         <outlet property="taglineLabel" destination="iol-Va-cKN" id="HJg-xM-3PT"/>
+                        <segue destination="pd3-Be-itM" kind="show" identifier="showDomains" id="0st-cX-Udd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuO-m2-AGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
