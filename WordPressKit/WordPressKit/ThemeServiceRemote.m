@@ -202,7 +202,7 @@ static NSString* const ThemeRequestPageKey = @"page";
                                  failure:failure];
 }
 
-- (NSProgress *)getStartingThemesForCategory:(NSString *)category
+- (void)getStartingThemesForCategory:(NSString *)category
                                         page:(NSInteger)page
                                      success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                                      failure:(ThemeServiceRemoteFailureBlock)failure
@@ -219,11 +219,11 @@ static NSString* const ThemeRequestPageKey = @"page";
                                  ThemeRequestPageKey: @(page),
                                  };
     
-    return [self getThemesWithRequestUrl:requestUrl
-                                    page:page
-                              parameters:parameters
-                                 success:success
-                                 failure:failure];
+    [self getThemesWithRequestUrl:requestUrl
+                             page:page
+                       parameters:parameters
+                          success:success
+                          failure:failure];
 }
 
 - (NSProgress *)getThemesWithRequestUrl:(NSString *)requestUrl

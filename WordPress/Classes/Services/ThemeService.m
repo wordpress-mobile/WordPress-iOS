@@ -368,7 +368,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                                     } failure:failure];
 }
 
-- (NSProgress *)getStartingThemesForCategory:(NSString *)category
+- (void)getStartingThemesForCategory:(NSString *)category
                                         page:(NSInteger)page
                                      success:(ThemeServiceThemesRequestSuccessBlock)success
                                      failure:(ThemeServiceFailureBlock)failure
@@ -379,17 +379,17 @@ const NSInteger ThemeOrderTrailing = 9999;
     WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithWordPressComRestApi:api];
     
-    return [remote getStartingThemesForCategory:category
-                                           page:page
-                                        success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
-                                            NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                   forBlog:nil];
-                                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                if (success) {
-                                                    success(themes, hasMore, themes.count);
-                                                }
-                                            }];
-                                        } failure:failure];
+    [remote getStartingThemesForCategory:category
+                                    page:page
+                                 success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore, NSInteger totalThemeCount) {
+                                     NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                            forBlog:nil];
+                                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                         if (success) {
+                                             success(themes, hasMore, themes.count);
+                                         }
+                                     }];
+                                 } failure:failure];
 }
 
 #pragma mark - Remote queries: Activating themes
