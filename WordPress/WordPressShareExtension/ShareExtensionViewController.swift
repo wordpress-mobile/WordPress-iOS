@@ -1172,7 +1172,8 @@ private extension ShareExtensionViewController {
             return nil
         }
 
-        let fileName = "image_\(NSDate.timeIntervalSinceReferenceDate).jpg"
+        let uniqueString = "image_\(NSDate.timeIntervalSinceReferenceDate)"
+        let fileName = uniqueString.components(separatedBy: ["."]).joined() + ".jpg"
         let fullPath = mediaDirectory.appendingPathComponent(fileName)
         do {
             try encodedMedia.write(to: fullPath, options: [.atomic])
@@ -1299,21 +1300,12 @@ private extension ShareExtensionViewController {
         // Proceed uploading the actual post
         let subject = titleTextField.text ?? ""
         let body = richTextView.getHTML()
-        let tempMediaFileURLs = sharedImageDict.values
 
-        if tempMediaFileURLs.count > 0 {
-            var allEncodedMedia = [Data?]()
-            tempMediaFileURLs.flatMap({ $0 }).forEach({ mediaURL in
-                if let encodedMedia = UIImage(contentsOfURL: mediaURL) {
-                    allEncodedMedia.append(encodedMedia.JPEGEncoded(1.0)) // Quality was already reduced on temp file save
-                }
-            })
-
+        if sharedImageDict.values.count > 0 {
             uploadPostWithMedia(subject: subject,
                                 body: body,
                                 status: postStatus,
                                 siteID: siteID,
-                                attachedImageData: allEncodedMedia,
                                 requestEnqueued: {
                                     self.tracks.trackExtensionPosted(self.postStatus)
                                     self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
@@ -1402,9 +1394,9 @@ private extension ShareExtensionViewController {
         })
     }
 
-    func uploadPostWithMedia(subject: String, body: String, status: String, siteID: Int, attachedImageData: [Data?]?, requestEnqueued: @escaping () -> ()) {
-        guard let attachedImageData = attachedImageData,
-            let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
+    func uploadPostWithMedia(subject: String, body: String, status: String, siteID: Int, requestEnqueued: @escaping () -> ()) {
+        let tempMediaFileURLs = sharedImageDict.values
+        guard tempMediaFileURLs.count > 0 else {
                 DDLogError("No media is attached to this upload request.")
                 requestEnqueued()
                 return
@@ -1424,26 +1416,18 @@ private extension ShareExtensionViewController {
         // Now process all of the media items and create their upload ops
         var uploadMediaOpIDs = [NSManagedObjectID]()
         var allRemoteMedia = [RemoteMedia]()
-        attachedImageData.flatMap({ $0 }).forEach { imageData in
-            let uniqueString = "image_\(NSDate.timeIntervalSinceReferenceDate)"
-            let fileName = uniqueString.components(separatedBy: ["."]).joined() + ".jpg"
-            let fullPath = mediaDirectory.appendingPathComponent(fileName)
-            let remoteMedia: RemoteMedia = {
-                let media = RemoteMedia()
-                media.file = fileName
-                media.mimeType = MediaSettings.mimeType
-                media.localURL = fullPath
-                return media
-            }()
+        tempMediaFileURLs.forEach { tempFilePath in
+            let remoteMedia = RemoteMedia()
+            remoteMedia.file = tempFilePath.lastPathComponent
+            remoteMedia.mimeType = MediaSettings.mimeType
+            remoteMedia.localURL = tempFilePath
             allRemoteMedia.append(remoteMedia)
 
-            do {
-                try imageData.write(to: fullPath, options: [.atomic])
-            } catch {
-                DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
-                return
-            }
-            let uploadMediaOpID = coreDataStack.saveMediaOperation(remoteMedia, sessionID: backgroundSessionIdentifier, groupIdentifier: groupIdentifier, siteID: NSNumber(value: siteID), with: .pending)
+            let uploadMediaOpID = coreDataStack.saveMediaOperation(remoteMedia,
+                                                                   sessionID: backgroundSessionIdentifier,
+                                                                   groupIdentifier: groupIdentifier,
+                                                                   siteID: NSNumber(value: siteID),
+                                                                   with: .pending)
             uploadMediaOpIDs.append(uploadMediaOpID)
         }
 
