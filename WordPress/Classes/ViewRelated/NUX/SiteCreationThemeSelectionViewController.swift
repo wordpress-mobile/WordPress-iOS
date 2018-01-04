@@ -139,19 +139,19 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
             return
         }
 
-        _ = themeService.getStartingThemes(forCategory: siteType.rawValue,
-                                           page: page,
-                                           success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
-                                            self?.themes = themes
-                                            self?.themeCount = themeCount
-                                            self?.collectionView?.reloadData()
-        },
-                                           failure: { (error) in
-                                            DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
-                                            if let failure = failure,
-                                                let error = error {
-                                                failure(error as NSError)
-                                            }
+        themeService.getStartingThemes(forCategory: siteType.rawValue,
+                                       page: page,
+                                       success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
+                                        self?.themes = themes
+                                        self?.themeCount = themeCount
+                                        self?.collectionView?.reloadData()
+            },
+                                       failure: { (error) in
+                                        DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
+                                        if let failure = failure,
+                                            let error = error {
+                                            failure(error as NSError)
+                                        }
         })
     }
 
