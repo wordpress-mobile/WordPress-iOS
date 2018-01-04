@@ -15,6 +15,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 @property (nonatomic, strong) UILabel *displayNameLabel;
 @property (nonatomic, strong) UILabel *usernameLabel;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic) BOOL isAnimating;
 
 @end
 
@@ -260,7 +261,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)dropInteraction:(UIDropInteraction *)interaction
         sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    [self.gravatarImageView depressSpringAnimation:nil];
+    if (!self.isAnimating) {
+        self.isAnimating = YES;
+        [self.gravatarImageView depressSpringAnimation:nil];
+    }
 }
 
 - (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
@@ -282,7 +286,6 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
     [self setShowsActivityIndicator:YES];
-    [self.gravatarImageView normalizeSpringAnimation:nil];
     
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
         UIImage *image = [images firstObject];
@@ -293,9 +296,21 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
-         sessionDidExit:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+           concludeDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    [self.gravatarImageView normalizeSpringAnimation:nil];
+    if (self.isAnimating) {
+        self.isAnimating = NO;
+        [self.gravatarImageView normalizeSpringAnimation:nil];
+    }
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidEnd:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    if (self.isAnimating) {
+        self.isAnimating = NO;
+        [self.gravatarImageView normalizeSpringAnimation:nil];
+    }
 }
 
 @end
