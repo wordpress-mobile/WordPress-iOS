@@ -12,6 +12,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 @property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 
+@property (nonatomic) BOOL isAnimating;
+
 @end
 
 @implementation BlogDetailHeaderView
@@ -54,6 +56,14 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self setTitleText:title];
     [self setSubtitleText:blog.displayURL];
     [self.labelsStackView setNeedsLayout];
+    
+    if (@available(iOS 11.0, *)) {
+        if ([self.delegate siteIconShouldAllowDroppedImages]) {
+            self.isAnimating = NO;
+            UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+            [self.blavatarImageView addInteraction:dropInteraction];
+        }
+    }
 }
 
 - (void)setTitleText:(NSString *)title
@@ -117,11 +127,6 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                                                                 action:@selector(blavatarImageTapped)];
     singleTap.numberOfTapsRequired = 1;
     [imageView addGestureRecognizer:singleTap];
-    
-    if (@available(iOS 11.0, *)) {
-        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
-        [imageView addInteraction:dropInteraction];
-    }
 
     [_stackView addArrangedSubview:imageView];
 
@@ -217,7 +222,10 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)dropInteraction:(UIDropInteraction *)interaction
         sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    [self.blavatarImageView depressSpringAnimation:nil];
+    if (!self.isAnimating) {
+        self.isAnimating = YES;
+        [self.blavatarImageView depressSpringAnimation:nil];
+    }
 }
 
 - (BOOL)dropInteraction:(UIDropInteraction *)interaction
@@ -246,7 +254,6 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)dropInteraction:(UIDropInteraction *)interaction
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    [self.blavatarImageView normalizeSpringAnimation:nil];
     [self setUpdatingIcon:YES];
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
         UIImage *image = [images firstObject];
@@ -255,9 +262,21 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
-         sessionDidExit:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+           concludeDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    [self.blavatarImageView normalizeSpringAnimation:nil];
+    if (self.isAnimating) {
+        self.isAnimating = NO;
+        [self.blavatarImageView normalizeSpringAnimation:nil];
+    }
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidEnd:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    if (self.isAnimating) {
+        self.isAnimating = NO;
+        [self.blavatarImageView normalizeSpringAnimation:nil];
+    }
 }
 
 @end
