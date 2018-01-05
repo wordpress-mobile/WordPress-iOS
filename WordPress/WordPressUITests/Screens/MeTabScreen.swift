@@ -2,7 +2,6 @@ import Foundation
 import XCTest
 
 class MeTabScreen: BaseScreen {
-
     let navBar: XCUIElement
 
     init() {

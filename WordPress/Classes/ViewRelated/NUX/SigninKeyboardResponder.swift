@@ -148,7 +148,13 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController {
         if keyboardFrame.maxY > UIScreen.main.bounds.size.height {
             return view.frame.height - keyboardFrame.minY
         }
-        return keyboardFrame.height
+
+        // If the safe area has a bottom height, subtract that.
+        var bottomAdjust: CGFloat = 0
+        if #available(iOS 11, *) {
+            bottomAdjust = view.safeAreaInsets.bottom
+        }
+        return keyboardFrame.height - bottomAdjust
     }
 
 }
