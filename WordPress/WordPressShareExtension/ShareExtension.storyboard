@@ -32,10 +32,10 @@
             </objects>
             <point key="canvasLocation" x="118" y="108"/>
         </scene>
-        <!--View Controller-->
+        <!--Share Site Picker View Controller-->
         <scene sceneID="973-d8-sT6">
             <objects>
-                <viewController id="smc-Pp-8Yy" sceneMemberID="viewController">
+                <viewController id="smc-Pp-8Yy" customClass="ShareSitePickerViewController" customModule="WordPressShareExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sVy-D8-YUb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -153,6 +153,11 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ImW-YO-81r"/>
                     </view>
+                    <connections>
+                        <outlet property="modulesTableView" destination="gOG-26-TZs" id="hcY-lV-9VC"/>
+                        <outlet property="sitePickerTableView" destination="Q0P-Qy-Ld4" id="hwG-kA-Z24"/>
+                        <outlet property="summaryLabel" destination="ZOG-G5-xhY" id="KW1-5K-EnX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAr-KI-b8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
