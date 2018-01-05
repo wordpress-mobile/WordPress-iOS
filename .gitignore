@@ -68,6 +68,3 @@ WordPress/Images.xcassets/AppIcon-Internal.appiconset
 # Dependencies
 /vendor/
 Scripts/fastlane/Preview.html
-
-# TestConfig
-WordPress/WordPressUITests/Config.swift
