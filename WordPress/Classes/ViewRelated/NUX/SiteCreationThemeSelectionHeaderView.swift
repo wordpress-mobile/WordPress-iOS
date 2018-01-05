@@ -1,6 +1,6 @@
 import UIKit
 
-class ThemeSelectionHeaderView: UICollectionReusableView {
+class SiteCreationThemeSelectionHeaderView: UICollectionReusableView {
 
     // MARK: - Properties
 
@@ -16,8 +16,8 @@ class ThemeSelectionHeaderView: UICollectionReusableView {
 
     override open func awakeFromNib() {
         super.awakeFromNib()
-        stepLabel.text = ThemeSelectionHeaderView.stepLabelText
-        stepDescrLabel.text = ThemeSelectionHeaderView.stepDescrLabelText
+        stepLabel.text = SiteCreationThemeSelectionHeaderView.stepLabelText
+        stepDescrLabel.text = SiteCreationThemeSelectionHeaderView.stepDescrLabelText
     }
 
 }
