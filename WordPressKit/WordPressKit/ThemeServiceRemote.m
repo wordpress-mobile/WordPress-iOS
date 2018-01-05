@@ -202,6 +202,30 @@ static NSString* const ThemeRequestPageKey = @"page";
                                  failure:failure];
 }
 
+- (void)getStartingThemesForCategory:(NSString *)category
+                                        page:(NSInteger)page
+                                     success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                                     failure:(ThemeServiceRemoteFailureBlock)failure
+{
+    NSParameterAssert(page > 0);
+    NSParameterAssert([category isKindOfClass:[NSString class]]);
+
+    NSString *path = [NSString stringWithFormat:@"themes/?filter=starting-%@", category];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
+    
+    NSDictionary *parameters = @{
+                                 ThemeRequestNumberKey: @(ThemeRequestNumberValue),
+                                 ThemeRequestPageKey: @(page),
+                                 };
+    
+    [self getThemesWithRequestUrl:requestUrl
+                             page:page
+                       parameters:parameters
+                          success:success
+                          failure:failure];
+}
+
 - (NSProgress *)getThemesWithRequestUrl:(NSString *)requestUrl
                                    page:(NSInteger)page
                              parameters:(NSDictionary *)parameters
