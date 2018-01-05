@@ -132,10 +132,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Q0P-Qy-Ld4">
-                                        <rect key="frame" x="67.5" y="475" width="240" height="128"/>
+                                        <rect key="frame" x="0.0" y="475" width="375" height="128"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Q0P-Qy-Ld4" secondAttribute="bottom" id="Fov-KS-0iJ"/>
+                                    <constraint firstItem="Q0P-Qy-Ld4" firstAttribute="top" secondItem="ZOG-G5-xhY" secondAttribute="bottom" id="OXY-j7-tCA"/>
+                                    <constraint firstItem="Q0P-Qy-Ld4" firstAttribute="leading" secondItem="aCi-R7-GFp" secondAttribute="leading" id="Ygg-cy-Peb"/>
+                                    <constraint firstAttribute="trailing" secondItem="Q0P-Qy-Ld4" secondAttribute="trailing" id="xF8-Av-3ou"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
