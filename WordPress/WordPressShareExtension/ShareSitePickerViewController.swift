@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShareSitePickerViewController: UIViewController {
+class ShareSitePickerViewController: UIViewController, UITableViewDelegate {
     @IBOutlet weak var modulesTableView: UITableView!
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var sitePickerTableView: UITableView!
@@ -17,6 +17,7 @@ class ShareSitePickerViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        modulesTableView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
