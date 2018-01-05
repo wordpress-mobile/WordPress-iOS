@@ -17,7 +17,8 @@ class LoginLinkAuthViewController: LoginViewController {
         super.viewDidAppear(animated)
 
         // Gotta have email and token to use this vc
-        assert(!email.isEmpty && !token.isEmpty)
+        assert(!email.isEmpty, "Email cannot be nil")
+        assert(!token.isEmpty, "Email token cannot be nil")
 
         if didSync {
             return

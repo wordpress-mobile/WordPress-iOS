@@ -77,7 +77,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "wpcomPassword") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "LoginWPcomPassword") as? NUXAbstractViewController else {
             fatalError("unable to create wpcom password screen")
         }
 
@@ -132,8 +132,8 @@ import WordPressShared
             }
         }
 
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let loginController = storyboard.instantiateViewController(withIdentifier: "loginLinkAuth") as? LoginLinkAuthViewController else {
+        let storyboard = UIStoryboard(name: "EmailMagicLink", bundle: nil)
+        guard let loginController = storyboard.instantiateViewController(withIdentifier: "LinkAuthView") as? LoginLinkAuthViewController else {
             DDLogInfo("App opened with authentication link but couldn't create login screen.")
             return false
         }
