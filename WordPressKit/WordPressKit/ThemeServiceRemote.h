@@ -104,6 +104,22 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
                                  success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                                  failure:(ThemeServiceRemoteFailureBlock)failure;
 
+/**
+ *  @brief      Gets a list of suggested starter themes for the given site category
+ *              (blog, website, portfolio).
+ *  @details    During the site creation process, a list of suggested mobile-friendly starter
+ *              themes is displayed for the selected category.
+ *
+ *  @param      category    The category for the site being created.  Cannot be nil.
+ *  @param      page        Results page to return.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ */
+- (void)getStartingThemesForCategory:(NSString *)category
+                                page:(NSInteger)page
+                             success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                             failure:(ThemeServiceRemoteFailureBlock)failure;
+
 #pragma mark - Activating themes
 
 /**
