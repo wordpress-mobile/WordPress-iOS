@@ -62,10 +62,10 @@
             </objects>
             <point key="canvasLocation" x="-36" y="95"/>
         </scene>
-        <!--Theme Selection View Controller-->
+        <!--Site Creation Theme Selection View Controller-->
         <scene sceneID="z67-tA-tNh">
             <objects>
-                <collectionViewController id="Po4-wx-4jS" customClass="ThemeSelectionViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="Po4-wx-4jS" customClass="SiteCreationThemeSelectionViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="LQZ-91-7uu">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -77,7 +77,7 @@
                             <inset key="sectionInset" minX="7" minY="10" maxX="7" maxY="10"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionCell" id="lbK-qh-Hdp" customClass="SelectThemeCell" customModule="WordPress" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionCell" id="lbK-qh-Hdp" customClass="SiteCreationThemeSelectionCell" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="62.5" y="120" width="250" height="250"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -135,7 +135,7 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionHeader" id="iCa-cP-ztv" customClass="ThemeSelectionHeaderView" customModule="WordPress" customModuleProvider="target">
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionHeader" id="iCa-cP-ztv" customClass="SiteCreationThemeSelectionHeaderView" customModule="WordPress" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
