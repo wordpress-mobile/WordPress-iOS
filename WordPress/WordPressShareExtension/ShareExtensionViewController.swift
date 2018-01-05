@@ -1414,7 +1414,7 @@ private extension ShareExtensionViewController {
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
                 self?.setTitleText(share.title)
-                self?.richTextView.insertText(share.combinedContentFields)
+                self?.richTextView.setHTML(share.combinedContentHTML)
 
                 share.images.forEach({ image in
                     if let fileURL = self?.saveImageToSharedContainer(image) {

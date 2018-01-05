@@ -11,21 +11,22 @@ struct ExtractedShare {
     var selectedText: String
     var images: [UIImage]
 
-    var combinedContentFields: String {
+    var combinedContentHTML: String {
         var returnString: String
 
         if selectedText.isEmpty {
             if description.isEmpty {
-                returnString = title
+                returnString = "<p>\(title)</p>"
             } else {
-                returnString = description
+                returnString = "<p>\(description)</p>"
             }
         } else {
-            returnString = selectedText
+            returnString = "<blockquote><p>\(selectedText)</p></blockquote>"
         }
 
         if let url = url {
-            returnString.append("\n\(url.absoluteString)")
+            let htmlAnchor = url.absoluteString.stringWithAnchoredLinks()
+            returnString.append("<p>\(htmlAnchor)</p>")
         }
 
         return returnString
