@@ -211,6 +211,7 @@
 		438A809E1EA5DC31005D4651 /* LoginWPComViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */; };
 		43A85B311E9E815B00FA990B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43A85B301E9E815B00FA990B /* Login.storyboard */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
+		43ACC1A21FFFFD6700697F8F /* NUXViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACC1A11FFFFD6700697F8F /* NUXViewController.swift */; };
 		43BD2F681FCF520300864AC7 /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BD2F671FCF520300864AC7 /* UIControl+Helpers.swift */; };
 		43CC1EC01ED898E30097E334 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CC1EBF1ED898E30097E334 /* LoginTextField.swift */; };
 		43CE48B31F103C1F00768B87 /* FancyAlertViewController+LoginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE48B21F103C1F00768B87 /* FancyAlertViewController+LoginError.swift */; };
@@ -1389,6 +1390,7 @@
 		438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWPComViewController.swift; sourceTree = "<group>"; };
 		43A85B301E9E815B00FA990B /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
+		43ACC1A11FFFFD6700697F8F /* NUXViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NUXViewController.swift; sourceTree = "<group>"; };
 		43BD2F671FCF520300864AC7 /* UIControl+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Helpers.swift"; sourceTree = "<group>"; };
 		43C5A3E11F80AED50008BE81 /* LoginSocialErrorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSocialErrorCell.swift; sourceTree = "<group>"; };
 		43CC1EBF1ED898E30097E334 /* LoginTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
@@ -5407,6 +5409,7 @@
 				E6DB765E1CD10D7C0069BC82 /* SignupViewController.swift */,
 				436605E11ECE568800EE8882 /* LoginNavigationController.swift */,
 				43CE48B21F103C1F00768B87 /* FancyAlertViewController+LoginError.swift */,
+				43ACC1A11FFFFD6700697F8F /* NUXViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -6613,6 +6616,7 @@
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				08F8CD391EBD2C970049D0C0 /* MediaURLExporter.swift in Sources */,
 				E1FFA9DC1E3FA84500CED178 /* CustomCellMarginBehavior.swift in Sources */,
+				43ACC1A21FFFFD6700697F8F /* NUXViewController.swift in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
 				17D4335A1EFD2F2900CAB602 /* FancyAlertViewController+AztecWhatsNew.swift in Sources */,
