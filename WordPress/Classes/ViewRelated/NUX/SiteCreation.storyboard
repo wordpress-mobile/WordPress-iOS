@@ -25,7 +25,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qF8-kH-BnU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1142" y="80"/>
+            <point key="canvasLocation" x="-604" y="95"/>
         </scene>
         <!--Site Type Table View Controller-->
         <scene sceneID="WaJ-hH-lw3">
@@ -60,7 +60,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z9e-FE-qu2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-452" y="95"/>
+            <point key="canvasLocation" x="-36" y="95"/>
         </scene>
         <!--Site Creation Theme Selection View Controller-->
         <scene sceneID="z67-tA-tNh">
@@ -181,12 +181,12 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vlR-DZ-wUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="302" y="95"/>
+            <point key="canvasLocation" x="511" y="95"/>
         </scene>
-        <!--Site Details View Controller-->
+        <!--Site Creation Site Details View Controller-->
         <scene sceneID="Co8-mp-gBA">
             <objects>
-                <viewController id="aP4-2B-Ezc" customClass="SiteDetailsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="aP4-2B-Ezc" customClass="SiteCreationSiteDetailsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="b0M-dQ-sgg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -407,7 +407,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5UC-ph-sIZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1945" y="95"/>
+            <point key="canvasLocation" x="1542" y="95"/>
         </scene>
     </scenes>
 </document>
