@@ -5,31 +5,30 @@ import UIKit
 /// A type that represents the information we can extract from an extension context
 ///
 struct ExtractedShare {
-    var text: String
+    var title: String
+    var description: String
+    var url: URL?
+    var selectedText: String
     var images: [UIImage]
-}
 
-/// A type that represents the information we can extract from an extension context
-/// attachment
-///
-enum ExtractedItem {
-    /// Some text
-    case text(String)
-    /// An image
-    case image(UIImage)
+    var combinedContentFields: String {
+        var returnString: String
 
-    var text: String? {
-        guard case let .text(text) = self else {
-            return nil
+        if selectedText.isEmpty {
+            if description.isEmpty {
+                returnString = title
+            } else {
+                returnString = description
+            }
+        } else {
+            returnString = selectedText
         }
-        return text
-    }
 
-    var image: UIImage? {
-        guard case let .image(image) = self else {
-            return nil
+        if let url = url {
+            returnString.append("\n\(url.absoluteString)")
         }
-        return image
+
+        return returnString
     }
 }
 
@@ -49,11 +48,19 @@ struct ShareExtractor {
     ///   - completion: the block to be called when the extractor has obtained content.
     ///
     func loadShare(completion: @escaping (ExtractedShare) -> Void) {
-        extractText { text in
+        extractText { extractedTextResults in
             self.extractImages { images in
-                let returnedText = text ?? ""
+                let title = extractedTextResults?.title ?? ""
+                let description = extractedTextResults?.description ?? ""
+                let selectedText = extractedTextResults?.selectedText ?? ""
+                let url = extractedTextResults?.url
                 let returnedImages = images ?? [UIImage]()
-                completion(ExtractedShare(text: returnedText, images: returnedImages))
+
+                completion(ExtractedShare(title: title,
+                                          description: description,
+                                          url: url,
+                                          selectedText: selectedText,
+                                          images: returnedImages))
             }
         }
     }
@@ -71,6 +78,31 @@ struct ShareExtractor {
 
 
 // MARK: - Private
+
+/// A private type that represents the information we can extract from an extension context
+/// attachment
+///
+private struct ExtractedItem {
+    /// Any text that was selected
+    ///
+    var selectedText: String?
+
+    /// A description of the resource if available
+    ///
+    var description: String?
+
+    /// A URL associated with the resource if available
+    ///
+    var url: URL?
+
+    /// A title of the resource if available
+    ///
+    var title: String?
+
+    /// An image
+    ///
+    var image: UIImage?
+}
 
 private extension ShareExtractor {
     var supportedTextExtractors: [ExtensionContentExtractor] {
@@ -92,7 +124,7 @@ private extension ShareExtractor {
         })
     }
 
-    func extractText(completion: @escaping (String?) -> Void) {
+    func extractText(completion: @escaping (ExtractedItem?) -> Void) {
         guard let textExtractor = textExtractor else {
             completion(nil)
             return
@@ -102,8 +134,16 @@ private extension ShareExtractor {
                 completion(nil)
                 return
             }
-            let combinedText = extractedItems.flatMap({ $0.text }).joined(separator: " ")
-            completion(combinedText)
+            let combinedTitle = extractedItems.flatMap({ $0.title }).joined(separator: " ")
+            let combinedDescription = extractedItems.flatMap({ $0.description }).joined(separator: " ")
+            let combinedSelectedText = extractedItems.flatMap({ $0.selectedText }).joined(separator: "\n\n")
+            let urls = extractedItems.flatMap({ $0.url })
+
+            completion(ExtractedItem(selectedText: combinedSelectedText,
+                                     description: combinedDescription,
+                                     url: urls.first,
+                                     title: combinedTitle,
+                                     image: nil))
         }
     }
 
@@ -179,7 +219,9 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         guard !payload.isFileURL else {
             return nil
         }
-        return .text(payload.absoluteString)
+        var returnedItem = ExtractedItem()
+        returnedItem.url = payload
+        return returnedItem
     }
 }
 
@@ -199,7 +241,9 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
             loadedImage = nil
         }
 
-        return loadedImage.map(ExtractedItem.image)
+        var returnedItem = ExtractedItem()
+        returnedItem.image = loadedImage
+        return returnedItem
     }
 }
 
@@ -210,19 +254,17 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
         guard let results = payload[NSExtensionJavaScriptPreprocessingResultsKey] as? [String: Any] else {
             return nil
         }
-        let selectedText = string(in: results, forKey: "selection")
-        let title = string(in: results, forKey: "title")
-        let url = string(in: results, forKey: "url")
-        var content = ""
 
-        let excerpt = selectedText ?? title
-        if let excerpt = excerpt {
-            content.append("\(excerpt)\n\n")
+        var returnedItem = ExtractedItem()
+        returnedItem.title = string(in: results, forKey: "title")
+        returnedItem.selectedText = string(in: results, forKey: "selection")
+        returnedItem.description = string(in: results, forKey: "description")
+
+        if let urlString = string(in: results, forKey: "url") {
+            returnedItem.url = URL(string: urlString)
         }
-        if let url = url {
-            content.append(url)
-        }
-        return .text(content)
+
+        return returnedItem
     }
 
     func string(in dictionary: [String: Any], forKey key: String) -> String? {
@@ -242,7 +284,9 @@ private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
         guard !payload.isEmpty else {
             return nil
         }
-        return .text(payload)
+        var returnedItem = ExtractedItem()
+        returnedItem.selectedText = payload
+        return returnedItem
     }
 }
 
@@ -253,6 +297,12 @@ private struct SharePostExtractor: TypeBasedExtensionContentExtractor {
         guard let post = SharePost(data: payload) else {
             return nil
         }
-        return .text(post.content)
+
+        var returnedItem = ExtractedItem()
+        returnedItem.title = post.title
+        returnedItem.selectedText = post.content
+        returnedItem.url = post.url
+        returnedItem.description = post.summary
+        return returnedItem
     }
 }
