@@ -1,6 +1,6 @@
 import UIKit
 
-class SelectThemeCell: UICollectionViewCell {
+class SiteCreationThemeSelectionCell: UICollectionViewCell {
 
     // MARK: - Properties
 
