@@ -9,7 +9,10 @@
 import UIKit
 
 class ShareSitePickerViewController: UIViewController {
-
+    @IBOutlet weak var modulesTableView: UITableView!
+    @IBOutlet weak var summaryLabel: UILabel!
+    @IBOutlet weak var sitePickerTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
