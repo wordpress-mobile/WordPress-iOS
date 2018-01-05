@@ -375,6 +375,11 @@ class ShareExtensionViewController: UIViewController {
         return true
     }
 
+    func setTitleText(_ text: String) {
+        let sanitizedInput = sanitizeInputForTitle(text)
+        titleTextField.insertText(sanitizedInput)
+    }
+
     // MARK: - Configuration Methods
 
     func configureNavigationBar() {
@@ -1389,7 +1394,7 @@ private extension ShareExtensionViewController {
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
-    fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
+    func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = richTextView
         let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
@@ -1408,7 +1413,8 @@ private extension ShareExtensionViewController {
         }
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
-                self?.richTextView.insertText(share.text)
+                self?.setTitleText(share.title)
+                self?.richTextView.insertText(share.combinedContentFields)
 
                 share.images.forEach({ image in
                     if let fileURL = self?.saveImageToSharedContainer(image) {
