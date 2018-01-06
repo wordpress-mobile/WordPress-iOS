@@ -11,7 +11,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
-@property (nonatomic) BOOL isAnimating;
+@property (nonatomic, strong) UIView *blavatarDropTarget;
 
 @end
 
@@ -37,6 +37,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     self.preservesSuperviewLayoutMargins = YES;
     [self setupStackView];
     [self setupBlavatarImageView];
+    [self setupBlavatarDropTarget];
     [self setupLabelsStackView];
     [self setupTitleLabel];
     [self setupSubtitleLabel];
@@ -58,9 +59,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     
     if (@available(iOS 11.0, *)) {
         if ([self.delegate siteIconShouldAllowDroppedImages]) {
-            self.isAnimating = NO;
             UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
-            [self.blavatarImageView addInteraction:dropInteraction];
+            [self.blavatarDropTarget addInteraction:dropInteraction];
         }
     }
 }
@@ -121,11 +121,6 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
     imageView.layer.borderWidth = 1.0;
-    imageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                action:@selector(blavatarImageTapped)];
-    singleTap.numberOfTapsRequired = 1;
-    [imageView addGestureRecognizer:singleTap];
 
     [_stackView addArrangedSubview:imageView];
 
@@ -135,7 +130,23 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               [imageView.widthAnchor constraintEqualToConstant:BlogDetailHeaderViewBlavatarSize],
                                               heightConstraint
                                               ]];
+
     _blavatarImageView = imageView;
+}
+
+- (void)setupBlavatarDropTarget
+{
+    self.blavatarDropTarget = [UIView new];
+    [self.blavatarDropTarget setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.blavatarDropTarget.backgroundColor = [UIColor clearColor];
+
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(blavatarImageTapped)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.blavatarDropTarget addGestureRecognizer:singleTap];
+
+    [self addSubview:self.blavatarDropTarget];
+    [self.blavatarDropTarget pinSubviewToAllEdgeMargins:self.blavatarImageView];
 }
 
 - (UIActivityIndicatorView *)blavatarUpdateActivityIndicatorView {
@@ -221,10 +232,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)dropInteraction:(UIDropInteraction *)interaction
         sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    if (!self.isAnimating) {
-        self.isAnimating = YES;
-        [self.blavatarImageView depressSpringAnimation:nil];
-    }
+    [self.blavatarImageView depressSpringAnimation:nil];
 }
 
 - (BOOL)dropInteraction:(UIDropInteraction *)interaction
@@ -238,10 +246,11 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
                    sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    CGPoint dropLocation = [session locationInView:self];
+    CGPoint dropLocation = [session locationInView:self.blavatarDropTarget];
+
     UIDropOperation dropOperation = UIDropOperationCancel;
     
-    if (CGRectContainsPoint(self.blavatarImageView.frame, dropLocation)) {
+    if (CGRectContainsPoint(self.blavatarDropTarget.bounds, dropLocation)) {
         dropOperation = UIDropOperationCopy;
     }
 
@@ -263,19 +272,19 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)dropInteraction:(UIDropInteraction *)interaction
            concludeDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    if (self.isAnimating) {
-        self.isAnimating = NO;
-        [self.blavatarImageView normalizeSpringAnimation:nil];
-    }
+    [self.blavatarImageView normalizeSpringAnimation:nil];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidExit:(id<UIDropSession>)session  API_AVAILABLE(ios(11.0))
+{
+    [self.blavatarImageView normalizeSpringAnimation:nil];
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
          sessionDidEnd:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    if (self.isAnimating) {
-        self.isAnimating = NO;
-        [self.blavatarImageView normalizeSpringAnimation:nil];
-    }
+    [self.blavatarImageView normalizeSpringAnimation:nil];
 }
 
 @end

@@ -15,7 +15,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 @property (nonatomic, strong) UILabel *displayNameLabel;
 @property (nonatomic, strong) UILabel *usernameLabel;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic) BOOL isAnimating;
+@property (nonatomic, strong) UIView *gravatarDropTarget;
 
 @end
 
@@ -33,6 +33,9 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     if (self) {
         _gravatarImageView = [self newImageViewForGravatar];
         [self addSubview:_gravatarImageView];
+        
+        _gravatarDropTarget = [self newDropTargetForGravatar];
+        [self addSubview:_gravatarDropTarget];
 
         _activityIndicator = [self newSpinner];
         [_gravatarImageView addSubview:_activityIndicator];
@@ -136,6 +139,8 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1
                                                       constant:0]];
+    
+    [self.gravatarDropTarget pinSubviewToAllEdgeMargins:self.gravatarImageView];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.displayNameLabel
                                                      attribute:NSLayoutAttributeCenterX
@@ -206,12 +211,26 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     recognizer.minimumPressDuration = MeHeaderViewMinimumPressDuration;
     [imageView addGestureRecognizer:recognizer];
     
+    return imageView;
+}
+
+- (UIView *)newDropTargetForGravatar
+{
+    UIView *dropTarget = [UIView new];
+    [dropTarget setTranslatesAutoresizingMaskIntoConstraints:NO];
+    dropTarget.backgroundColor = [UIColor clearColor];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(handleHeaderPress:)];
+    singleTap.numberOfTapsRequired = 1;
+    [dropTarget addGestureRecognizer:singleTap];
+    
     if (@available(iOS 11.0, *)) {
         UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
-        [imageView addInteraction:dropInteraction];
+        [dropTarget addInteraction:dropInteraction];
     }
     
-    return imageView;
+    return dropTarget;
 }
 
 - (UIActivityIndicatorView *)newSpinner
@@ -261,19 +280,17 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)dropInteraction:(UIDropInteraction *)interaction
         sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    if (!self.isAnimating) {
-        self.isAnimating = YES;
-        [self.gravatarImageView depressSpringAnimation:nil];
-    }
+    [self.gravatarImageView depressSpringAnimation:nil];
 }
 
 - (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
                    sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    CGPoint dropLocation = [session locationInView:self];
+    CGPoint dropLocation = [session locationInView:self.gravatarDropTarget];
+    
     UIDropOperation dropOperation = UIDropOperationCancel;
     
-    if (CGRectContainsPoint(self.gravatarImageView.frame, dropLocation)) {
+    if (CGRectContainsPoint(self.gravatarDropTarget.bounds, dropLocation)) {
         dropOperation = UIDropOperationCopy;
     }
     
@@ -286,7 +303,6 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
             performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
     [self setShowsActivityIndicator:YES];
-    
     [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
         UIImage *image = [images firstObject];
         if (self.onDroppedImage) {
@@ -298,19 +314,19 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)dropInteraction:(UIDropInteraction *)interaction
            concludeDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    if (self.isAnimating) {
-        self.isAnimating = NO;
-        [self.gravatarImageView normalizeSpringAnimation:nil];
-    }
+    [self.gravatarImageView normalizeSpringAnimation:nil];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidExit:(id<UIDropSession>)session  API_AVAILABLE(ios(11.0))
+{
+    [self.gravatarImageView normalizeSpringAnimation:nil];
 }
 
 - (void)dropInteraction:(UIDropInteraction *)interaction
          sessionDidEnd:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
 {
-    if (self.isAnimating) {
-        self.isAnimating = NO;
-        [self.gravatarImageView normalizeSpringAnimation:nil];
-    }
+    [self.gravatarImageView normalizeSpringAnimation:nil];
 }
 
 @end
