@@ -8,12 +8,13 @@ class LoginLinkMailViewController: LoginViewController {
     @IBOutlet var openMailButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
 
+    var emailMagicLinkSource: EmailMagicLinkSource?
+
     override var sourceTag: SupportSourceTag {
         get {
             return .loginMagicLink
         }
     }
-
 
     // MARK: - Lifecycle Methods
 
@@ -25,15 +26,25 @@ class LoginLinkMailViewController: LoginViewController {
             assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
         }
 
+        emailMagicLinkSource = loginFields.meta.emailMagicLinkSource
+        assert(emailMagicLinkSource != nil, "Must have an email link source.")
+
         localizeControls()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
-               "Only present parts of the magic link signin flow from the application's root vc.")
 
-        WPAppAnalytics.track(.loginMagicLinkOpenEmailClientViewed)
+        guard let emailMagicLinkSource = emailMagicLinkSource else {
+            return
+        }
+
+        switch emailMagicLinkSource {
+        case .login:
+            WPAppAnalytics.track(.loginMagicLinkOpenEmailClientViewed)
+        case .signup:
+            WPAppAnalytics.track(.signupMagicLinkOpenEmailClientViewed)
+        }
     }
 
     // MARK: - Configuration
@@ -41,8 +52,6 @@ class LoginLinkMailViewController: LoginViewController {
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     @objc func localizeControls() {
-        let instructions = NSLocalizedString("Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com", comment: "Instructional text on how to open the email containing a magic link.")
-        label?.text = instructions
 
         let openMailButtonTitle = NSLocalizedString("Open Mail", comment: "Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device.")
         openMailButton?.setTitle(openMailButtonTitle, for: UIControlState())
@@ -52,8 +61,22 @@ class LoginLinkMailViewController: LoginViewController {
         usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
         usePasswordButton?.titleLabel?.numberOfLines = 0
-    }
 
+        guard let emailMagicLinkSource = emailMagicLinkSource else {
+            return
+        }
+
+        usePasswordButton?.isHidden = emailMagicLinkSource == .signup
+
+        label?.text = {
+            switch emailMagicLinkSource {
+            case .login:
+                return NSLocalizedString("Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com", comment: "Instructional text on how to open the email containing a magic link.")
+            case .signup:
+                return NSLocalizedString("We sent an email with a link, open it to proceed with your new WordPress.com account.", comment: "Instructional text on how to open the email containing a magic link.")
+            }
+        }()
+    }
 
     // MARK: - Actions
 

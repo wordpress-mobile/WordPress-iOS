@@ -80,6 +80,9 @@ class LoginLinkRequestViewController: LoginViewController {
     /// Makes the call to request a magic authentication link be emailed to the user.
     ///
     @objc func requestAuthenticationLink() {
+
+        loginFields.meta.emailMagicLinkSource = .login
+
         let email = loginFields.username
         guard email.isValidEmail() else {
             // This is a bit of paranioa as in practice it should never happen.
