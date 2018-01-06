@@ -1,5 +1,6 @@
 import Gridicons
 
+/// Segue identifiers to avoid using strings
 enum NUXSegueIdentifier: String {
     case showURLUsernamePassword
     case showSelfHostedLogin
@@ -12,6 +13,7 @@ enum NUXSegueIdentifier: String {
     case showDomains
 }
 
+/// base protocol for NUX view controllers
 protocol NUXViewControllerBase {
     var sourceTag: SupportSourceTag { get }
     var helpBadge: WPNUXHelpBadgeLabel { get }
@@ -20,6 +22,16 @@ protocol NUXViewControllerBase {
     var dismissBlock: ((_ cancelled: Bool) -> Void)? { get }
 }
 
+/// default implementations for NUXViewControllerBase where the base class doesn't matter
+extension NUXViewControllerBase {
+    var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
+}
+
+/// extension for NUXViewControllerBase where the base class is UIViewController (and thus also NUXTableViewController)
 extension NUXViewControllerBase where Self: UIViewController, Self: UIViewControllerTransitioningDelegate {
 
     /// Checks if the signin vc modal should show a back button. The back button
@@ -180,26 +192,79 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     }
 }
 
+
+/// Base class to use for NUX view controllers that aren't a table view
 class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
     var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
-    var sourceTag: SupportSourceTag {
-        get {
-            return .generalLogin
-        }
-    }
 }
 
+/// Base class to use for NUX view controllers that are also a table view controller
 class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
     var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
-    var sourceTag: SupportSourceTag {
-        get {
-            return .generalLogin
+}
+
+/// View Controller for login-specific screens
+class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate { // temporary name until it can totally replace LoginViewController
+    func configureViewLoading(_ loading: Bool) {
+        configureSubmitButton(animating: loading)
+        navigationItem.hidesBackButton = loading
+    }
+
+    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+        guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
+            let token = loginFields.meta.socialServiceIDToken else {
+                return
         }
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        accountService.connectToSocialService(service, serviceIDToken: token, success: {
+            WPAppAnalytics.track(.loginSocialConnectSuccess)
+            WPAppAnalytics.track(.loginSocialSuccess)
+        }, failure: { error in
+            DDLogError(error.description)
+            WPAppAnalytics.track(.loginSocialConnectFailure, error: error)
+            // We're opting to let this call fail silently.
+            // Our user has already successfully authenticated and can use the app --
+            // connecting the social service isn't critical.  There's little to
+            // be gained by displaying an error that can not currently be resolved
+            // in the app and doing so might tarnish an otherwise satisfying login
+            // experience.
+            // If/when we add support for manually connecting/disconnecting services
+            // we can revisit.
+        })
+    }
+
+    func displayRemoteError(_ error: Error!) {
+        configureViewLoading(false)
+
+        let err = error as NSError
+        guard err.code != 403 else {
+            let message = NSLocalizedString("Whoops, something went wrong and we couldn't log you in. Please try again!", comment: "An error message shown when a wpcom user provides the wrong password.")
+            displayError(message: message)
+            return
+        }
+
+        displayError(err, sourceTag: sourceTag)
+    }
+
+    func needsMultifactorCode() {
+        displayError(message: "")
+        configureViewLoading(false)
+
+        WPAppAnalytics.track(.twoFactorCodeRequested)
+        self.performSegue(withIdentifier: .show2FA, sender: self)
+    }
+
+    // Update safari stored credentials. Call after a successful sign in.
+    ///
+    @objc func updateSafariCredentialsIfNeeded() {
+        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 }
