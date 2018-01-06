@@ -2,9 +2,9 @@ import Foundation
 import XCTest
 
 class LoginPasswordScreen: BaseScreen {
-
     let passwordTextField: XCUIElement
     let loginButton: XCUIElement
+
     init() {
         passwordTextField = XCUIApplication().secureTextFields["Password"]
         loginButton = XCUIApplication().buttons["Log In Button"]
@@ -12,7 +12,13 @@ class LoginPasswordScreen: BaseScreen {
     }
 
     func proceedWith(password: String) -> LoginEpilogueScreen {
-        tryProceed(password: password)
+        _ = tryProceed(password: password)
+
+        let alertModal = XCUIApplication().alerts["“WordPress” Would Like to Send You Notifications"]
+        if alertModal.waitForExistence(timeout: 3) {
+            alertModal.buttons["Don’t Allow"].tap()
+        }
+
         return LoginEpilogueScreen.init()
     }
 
@@ -20,12 +26,17 @@ class LoginPasswordScreen: BaseScreen {
         passwordTextField.tap()
         passwordTextField.typeText(password)
         loginButton.tap()
-        waitFor(predicate: "isEnabled == true", element: loginButton)
+        if loginButton.exists && !loginButton.isHittable {
+            waitFor(element: loginButton, predicate: "isEnabled == true")
+        }
         return self
     }
 
     func verifyLoginError() -> LoginPasswordScreen {
-        XCTAssert(XCUIApplication().staticTexts["pswdErrorLabel"].exists)
+        let errorLabel = XCUIApplication().staticTexts["pswdErrorLabel"]
+        _ = errorLabel.waitForExistence(timeout: 2)
+
+        XCTAssertTrue(errorLabel.exists)
         return self
     }
 
