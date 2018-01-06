@@ -130,11 +130,20 @@
                         <outlet property="errorLabel" destination="EYw-oM-W1K" id="P2j-f2-bLo"/>
                         <outlet property="instructionLabel" destination="CPF-7g-0y5" id="Urr-Xa-YNp"/>
                         <outlet property="submitButton" destination="4Su-Zc-Omp" id="amJ-9P-tcO"/>
+                        <segue destination="Je3-5O-NYu" kind="show" identifier="showLinkMailView" id="Yop-RV-xJa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAN-7g-PQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-882.39999999999998" y="78.710644677661179"/>
+            <point key="canvasLocation" x="-938" y="92"/>
+        </scene>
+        <!--LinkMailView-->
+        <scene sceneID="lKY-0n-z5h">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="LinkMailView" storyboardName="EmailMagicLink" referencedIdentifier="LinkMailView" id="Je3-5O-NYu" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DAI-Ik-KtV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-301" y="92"/>
         </scene>
     </scenes>
     <resources>
