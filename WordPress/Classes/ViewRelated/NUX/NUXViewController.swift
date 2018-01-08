@@ -1,18 +1,5 @@
 import Gridicons
 
-/// Segue identifiers to avoid using strings
-enum NUXSegueIdentifier: String {
-    case showURLUsernamePassword
-    case showSelfHostedLogin
-    case showWPComLogin
-    case startMagicLinkFlow
-    case showMagicLink
-    case showLinkMailView
-    case show2FA
-    case showEpilogue
-    case showDomains
-}
-
 /// base protocol for NUX view controllers
 protocol NUXViewControllerBase {
     var sourceTag: SupportSourceTag { get }
@@ -192,30 +179,181 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     }
 }
 
-
+// MARK: - NUXViewController
 /// Base class to use for NUX view controllers that aren't a table view
-class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
+class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate, LoginSegueHandler {
+    // MARK: NUXViewControllerBase properties
+    /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
     var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
+
+    // MARK: associated type for LoginSegueHandler
+    /// Segue identifiers to avoid using strings
+    enum SegueIdentifier: String {
+        case showURLUsernamePassword
+        case showSelfHostedLogin
+        case showWPComLogin
+        case startMagicLinkFlow
+        case showMagicLink
+        case showLinkMailView
+        case show2FA
+        case showEpilogue
+        case showDomains
+    }
+
+    override func viewDidLoad() {
+        addHelpButtonToNavController()
+    }
+
+    // properties specific to NUXViewController
+    @IBOutlet var submitButton: NUXSubmitButton?
+    @IBOutlet var errorLabel: UILabel?
+
+    func configureSubmitButton(animating: Bool) {
+        submitButton?.showActivityIndicator(animating)
+        submitButton?.isEnabled = enableSubmit(animating: animating)
+    }
+
+    open func enableSubmit(animating: Bool) -> Bool {
+        return !animating
+    }
 }
 
+// MARK: - NUXTableViewController
 /// Base class to use for NUX view controllers that are also a table view controller
 class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
+    // MARK: NUXViewControllerBase properties
+    /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
     var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
+
+    override func viewDidLoad() {
+        addHelpButtonToNavController()
+    }
 }
 
 /// View Controller for login-specific screens
-class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate { // temporary name until it can totally replace LoginViewController
+class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate {
+    @IBOutlet var instructionLabel: UILabel?
+    @objc var errorToPresent: Error?
+
+    lazy var loginFacade: LoginFacade = {
+        let facade = LoginFacade()
+        facade.delegate = self
+        return facade
+    }()
+
+    // MARK: Lifecycle Methods
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        displayError(message: "")
+        setupNavBarIcon()
+        styleInstructions()
+
+        if let error = errorToPresent {
+            displayRemoteError(error)
+        }
+    }
+
+
+    // MARK: - Setup and Configuration
+
+    /// Places the WordPress logo in the navbar
+    ///
+    @objc func setupNavBarIcon() {
+        addWordPressLogoToNavController()
+    }
+
+    /// Configures instruction label font
+    ///
+    @objc func styleInstructions() {
+        instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+    }
+
     func configureViewLoading(_ loading: Bool) {
         configureSubmitButton(animating: loading)
         navigationItem.hidesBackButton = loading
     }
 
+    /// Sets the text of the error label.
+    func displayError(message: String) {
+        guard message.count > 0 else {
+            errorLabel?.isHidden = true
+            return
+        }
+        errorLabel?.isHidden = false
+        errorLabel?.text = message
+    }
+
+    fileprivate func shouldShowEpilogue() -> Bool {
+        if !isJetpackLogin() {
+            return true
+        }
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard
+            let objectID = loginFields.meta.jetpackBlogID,
+            let blog = context.object(with: objectID) as? Blog,
+            let account = blog.account
+            else {
+                return false
+        }
+        return accountService.isDefaultWordPressComAccount(account)
+    }
+
+    func dismiss() {
+        if shouldShowEpilogue() {
+            self.performSegue(withIdentifier: .showEpilogue, sender: self)
+            return
+        }
+        dismissBlock?(false)
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    /// Validates what is entered in the various form fields and, if valid,
+    /// proceeds with login.
+    ///
+    func validateFormAndLogin() {
+        view.endEditing(true)
+        displayError(message: "")
+
+        // Is everything filled out?
+        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
+            let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
+            displayError(message: errorMsg)
+
+            return
+        }
+
+        configureViewLoading(true)
+
+        loginFacade.signIn(with: loginFields)
+    }
+
+    /// Manages data transfer when seguing to a new VC
+    ///
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let source = segue.source as? LoginViewController else {
+            return
+        }
+
+        if let destination = segue.destination as? LoginEpilogueViewController {
+            destination.dismissBlock = source.dismissBlock
+            destination.jetpackLogin = source.loginFields.meta.jetpackLogin
+        } else if let destination = segue.destination as? LoginViewController {
+            destination.loginFields = source.loginFields
+            destination.restrictToWPCom = source.restrictToWPCom
+            destination.dismissBlock = source.dismissBlock
+            destination.errorToPresent = source.errorToPresent
+        }
+    }
+
+    // MARK: SigninWPComSyncHandler methods
     func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
         guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
@@ -241,6 +379,15 @@ class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFa
         })
     }
 
+    func isJetpackLogin() -> Bool {
+        return loginFields.meta.jetpackLogin
+    }
+
+    func configureStatusLabel(_ message: String) {
+        // this is now a no-op, unless status labels return
+    }
+
+    /// Overridden here to direct these errors to the login screen's error label
     func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
@@ -264,7 +411,7 @@ class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFa
 
     // Update safari stored credentials. Call after a successful sign in.
     ///
-    @objc func updateSafariCredentialsIfNeeded() {
+    func updateSafariCredentialsIfNeeded() {
         SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
     }
 }
