@@ -753,7 +753,11 @@ private extension NotificationDetailsViewController {
 
         // Setup: Callbacks
         cell.onUrlClick = { [weak self] url in
-            self?.displayURL(url as URL)
+            guard let `self` = self, self.isViewOnScreen() else {
+                return
+            }
+
+            self.displayURL(url)
         }
     }
 
