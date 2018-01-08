@@ -285,8 +285,24 @@ private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
         guard !payload.isEmpty else {
             return nil
         }
+
         var returnedItem = ExtractedItem()
-        returnedItem.selectedText = payload
+
+        // Often, an attachment type _should_ have a type of "public.url" however in reality
+        // the type will be "public.plain-text" which is why this Extractor is activated. As a fix,
+        // let's use a data detector to determine if the payload text is a link (and check to make sure the
+        // match string is the same length as the payload because the detector could find matches within
+        // the selected text — we just want to make sure shared URLs are handled).
+        let types: NSTextCheckingResult.CheckingType = [.link]
+        let detector = try? NSDataDetector(types: types.rawValue)
+        if let match = detector?.firstMatch(in: payload, options: [], range: NSMakeRange(0, payload.count)),
+            match.resultType == .link,
+            let url = match.url,
+            url.absoluteString.count == payload.count {
+            returnedItem.url = url
+        } else {
+            returnedItem.selectedText = payload
+        }
         return returnedItem
     }
 }
