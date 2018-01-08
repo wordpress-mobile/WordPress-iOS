@@ -47,7 +47,7 @@
                                     <constraint firstAttribute="height" constant="99" id="7lg-o5-2dr"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ModuleTableCell" textLabel="kYL-OD-ycL" detailTextLabel="puP-om-kg5" style="IBUITableViewCellStyleValue1" id="x0J-Ub-4jE">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ModuleTableCell" textLabel="kYL-OD-ycL" detailTextLabel="puP-om-kg5" style="IBUITableViewCellStyleValue1" id="x0J-Ub-4jE">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="x0J-Ub-4jE" id="5bJ-QS-Jyh">
