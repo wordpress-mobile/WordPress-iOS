@@ -48,12 +48,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N85-VU-x1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3362" y="146"/>
+            <point key="canvasLocation" x="3385" y="146"/>
         </scene>
-        <!--Login Link Mail View Controller-->
+        <!--Link Mail View Controller-->
         <scene sceneID="zhV-IL-bW4">
             <objects>
-                <viewController storyboardIdentifier="LinkMailView" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="GSd-vy-rpZ" customClass="LoginLinkMailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LinkMailView" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="GSd-vy-rpZ" customClass="NUXLinkMailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="s8Z-uG-nj5"/>
                         <viewControllerLayoutGuide type="bottom" id="vKK-Mm-0yR"/>
@@ -167,7 +167,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="LoginEpilogue" storyboardName="Login" referencedIdentifier="LoginEpilogue" id="rzX-Pq-aBb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LHN-kW-0Sj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3360" y="649"/>
+            <point key="canvasLocation" x="3384" y="649"/>
         </scene>
         <!--LoginWPcomPassword-->
         <scene sceneID="mn2-Hn-7VV">
