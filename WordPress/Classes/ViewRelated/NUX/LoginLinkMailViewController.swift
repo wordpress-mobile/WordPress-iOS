@@ -3,16 +3,11 @@ import UIKit
 /// Step two in the auth link flow. This VC prompts the user to open their email
 /// app to look for the emailed authentication link.
 ///
-class LoginLinkMailViewController: LoginViewController {
+class LoginLinkMailViewController: LoginNewViewController {
     @IBOutlet var label: UILabel?
     @IBOutlet var openMailButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
-
-    override var sourceTag: SupportSourceTag {
-        get {
-            return .loginMagicLink
-        }
-    }
+    var sourceTag: SupportSourceTag = .loginMagicLink
 
 
     // MARK: - Lifecycle Methods

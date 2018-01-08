@@ -210,6 +210,7 @@
 		438A809C1EA5DB88005D4651 /* LoginLinkRequestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438A809B1EA5DB88005D4651 /* LoginLinkRequestViewController.swift */; };
 		438A809E1EA5DC31005D4651 /* LoginWPComViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */; };
 		43A85B311E9E815B00FA990B /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43A85B301E9E815B00FA990B /* Login.storyboard */; };
+		43A9641D20042083009AD86D /* NUXKeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A9641C20042083009AD86D /* NUXKeyboardResponder.swift */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
 		43ACC1A21FFFFD6700697F8F /* NUXViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43ACC1A11FFFFD6700697F8F /* NUXViewController.swift */; };
 		43BD2F681FCF520300864AC7 /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BD2F671FCF520300864AC7 /* UIControl+Helpers.swift */; };
@@ -1389,6 +1390,7 @@
 		438A809B1EA5DB88005D4651 /* LoginLinkRequestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLinkRequestViewController.swift; sourceTree = "<group>"; };
 		438A809D1EA5DC31005D4651 /* LoginWPComViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWPComViewController.swift; sourceTree = "<group>"; };
 		43A85B301E9E815B00FA990B /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		43A9641C20042083009AD86D /* NUXKeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NUXKeyboardResponder.swift; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
 		43ACC1A11FFFFD6700697F8F /* NUXViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NUXViewController.swift; sourceTree = "<group>"; };
 		43BD2F671FCF520300864AC7 /* UIControl+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Helpers.swift"; sourceTree = "<group>"; };
@@ -5518,6 +5520,7 @@
 				43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */,
 				E6C448561CB091AA00458157 /* SigninKeyboardResponder.swift */,
 				E64E17691CA8C71600BE7744 /* SigninWPComSyncHandler.swift */,
+				43A9641C20042083009AD86D /* NUXKeyboardResponder.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -6732,6 +6735,7 @@
 				742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
 				B50C0C5E1EF42A4A00372C65 /* AztecAttachmentViewController.swift in Sources */,
+				43A9641D20042083009AD86D /* NUXKeyboardResponder.swift in Sources */,
 				E1BB85981F82459800797050 /* WebViewAuthenticator.swift in Sources */,
 				43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */,
 				E19B17B01E5C69A5007517C6 /* NSManagedObject.swift in Sources */,
