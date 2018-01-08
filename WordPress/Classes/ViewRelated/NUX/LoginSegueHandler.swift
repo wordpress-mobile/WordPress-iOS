@@ -10,3 +10,9 @@ extension LoginSegueHandler where Self: NUXAbstractViewController {
         performSegue(withIdentifier: identifier.rawValue, sender: sender)
     }
 }
+
+extension LoginSegueHandler where Self: NUXViewController {
+    func performSegue(withIdentifier identifier: SegueIdentifier, sender: AnyObject?) {
+        performSegue(withIdentifier: identifier.rawValue, sender: sender)
+    }
+}
