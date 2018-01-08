@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
+class SiteDetailsViewController: NUXViewController, NUXKeyboardResponder {
 
     // MARK: - SigninKeyboardResponder Properties
 
@@ -132,7 +132,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     /// Override this to use the appropriate sourceTag.
     ///
-    override func handleHelpButtonTapped(_ sender: AnyObject) {
+    func handleHelpButtonTapped(_ sender: AnyObject) {
         displaySupportViewController(sourceTag: .wpComCreateSiteDetails)
     }
 

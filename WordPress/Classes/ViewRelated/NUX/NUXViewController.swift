@@ -11,6 +11,7 @@ protocol NUXViewControllerBase {
 
 /// default implementations for NUXViewControllerBase where the base class doesn't matter
 extension NUXViewControllerBase {
+    // default implementation. Be careful; if cast as NUXViewControllerBase this method will be called instead of subclass's
     var sourceTag: SupportSourceTag {
         get {
             return .generalLogin
@@ -240,6 +241,7 @@ class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIVi
 class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate {
     @IBOutlet var instructionLabel: UILabel?
     @objc var errorToPresent: Error?
+    var restrictToWPCom = false
 
     lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -338,14 +340,14 @@ class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFa
     /// Manages data transfer when seguing to a new VC
     ///
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let source = segue.source as? LoginViewController else {
+        guard let source = segue.source as? LoginNewViewController else {
             return
         }
 
         if let destination = segue.destination as? LoginEpilogueViewController {
             destination.dismissBlock = source.dismissBlock
             destination.jetpackLogin = source.loginFields.meta.jetpackLogin
-        } else if let destination = segue.destination as? LoginViewController {
+        } else if let destination = segue.destination as? LoginNewViewController {
             destination.loginFields = source.loginFields
             destination.restrictToWPCom = source.restrictToWPCom
             destination.dismissBlock = source.dismissBlock
@@ -354,7 +356,7 @@ class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFa
     }
 
     // MARK: SigninWPComSyncHandler methods
-    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    dynamic func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
         guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
             let token = loginFields.meta.socialServiceIDToken else {
@@ -388,7 +390,7 @@ class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFa
     }
 
     /// Overridden here to direct these errors to the login screen's error label
-    func displayRemoteError(_ error: Error!) {
+    dynamic func displayRemoteError(_ error: Error!) {
         configureViewLoading(false)
 
         let err = error as NSError
