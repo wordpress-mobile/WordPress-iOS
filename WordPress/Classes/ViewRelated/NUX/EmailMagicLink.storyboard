@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Login Link Auth View Controller-->
+        <!--Link Auth View Controller-->
         <scene sceneID="SIF-Pr-Kgx">
             <objects>
-                <viewController storyboardIdentifier="LinkAuthView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VcT-PA-0lj" customClass="LoginLinkAuthViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LinkAuthView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VcT-PA-0lj" customClass="NUXLinkAuthViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="e8j-zJ-CeU"/>
                         <viewControllerLayoutGuide type="bottom" id="ftd-m3-Cpd"/>
