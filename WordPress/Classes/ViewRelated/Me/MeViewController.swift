@@ -414,6 +414,24 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         headerView.onGravatarPress = { [weak self] in
             self?.presentGravatarPicker()
         }
+        headerView.onDroppedImage = { [weak self] image in
+            let imageCropViewController = ImageCropViewController(image: image)
+            imageCropViewController.maskShape = .square
+            imageCropViewController.shouldShowCancelButton = true
+
+            imageCropViewController.onCancel = { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+                self?.gravatarUploadInProgress = false
+            }
+            imageCropViewController.onCompletion = { [weak self] image, _ in
+                self?.dismiss(animated: true, completion: nil)
+                self?.uploadGravatarImage(image)
+            }
+
+            let navController = UINavigationController(rootViewController: imageCropViewController)
+            navController.modalPresentationStyle = .formSheet
+            self?.present(navController, animated: true, completion: nil)
+        }
         return headerView
     }()
 
