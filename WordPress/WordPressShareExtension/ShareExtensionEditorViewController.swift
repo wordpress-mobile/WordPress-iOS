@@ -7,54 +7,26 @@ import Gridicons
 import WordPressShared
 import WordPressKit
 
-class ShareExtensionViewController: UIViewController {
+class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     // MARK: - Private Properties
-
-    /// WordPress.com Username
-    ///
-    fileprivate lazy var wpcomUsername: String? = {
-        ShareExtensionService.retrieveShareExtensionUsername()
-    }()
-
-    /// WordPress.com OAuth Token
-    ///
-    fileprivate lazy var oauth2Token: String? = {
-        ShareExtensionService.retrieveShareExtensionToken()
-    }()
-
-    /// Selected Site's ID
-    ///
-    fileprivate lazy var selectedSiteID: Int? = {
-        69078016
-        // FIXME: Uncomment this!
-        //ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
-    }()
-
-    /// Selected Site's Name
-    ///
-    fileprivate lazy var selectedSiteName: String? = {
-        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteName
-    }()
-
-    /// Maximum Image Size
-    ///
-    fileprivate lazy var maximumImageSize: CGSize = {
-        let dimension = ShareExtensionService.retrieveShareExtensionMaximumMediaDimension() ?? Constants.defaultMaxDimension
-        return CGSize(width: dimension, height: dimension)
-    }()
-
-    /// Tracks Instance
-    ///
-    fileprivate lazy var tracks: Tracks = {
-        Tracks(appGroupName: WPAppGroupName)
-    }()
 
     /// Cancel Bar Button
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on share extension editor screen")
-        return UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on share extension editor screen.")
+        let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
+        button.accessibilityIdentifier = "Cancel Button"
+        return button
+    }()
+
+    /// Next Bar Button
+    ///
+    fileprivate lazy var nextButton: UIBarButtonItem = {
+        let nextButtonTitle = NSLocalizedString("Next", comment: "Next action on share extension editor screen.")
+        let button = UIBarButtonItem(title: nextButtonTitle, style: .plain, target: self, action: #selector(nextWasPressed))
+        button.accessibilityIdentifier = "Next Button"
+        return button
     }()
 
     /// Format Bar
@@ -103,7 +75,7 @@ class ShareExtensionViewController: UIViewController {
     ///
     fileprivate(set) lazy var placeholderLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Share your story here...", comment: "Aztec's Text Placeholder")
+        label.text = NSLocalizedString("Share your story here...", comment: "Share Extension Content Body Text Placeholder")
         label.textColor = ShareColors.placeholder
         label.font = ShareFonts.regular
         label.isUserInteractionEnabled = false
@@ -160,17 +132,15 @@ class ShareExtensionViewController: UIViewController {
     ///
     fileprivate var titleHeightConstraint: NSLayoutConstraint!
 
-
     /// Title's Top Constraint
     ///
     fileprivate var titleTopConstraint: NSLayoutConstraint!
-
 
     /// Placeholder's Top Constraint
     ///
     fileprivate var textPlaceholderTopConstraint: NSLayoutConstraint!
 
-    /// Current keyboard rect used to help size the inline media picker
+    /// Current keyboard rect used to help size things
     ///
     fileprivate var currentKeyboardFrame: CGRect = .zero
 
@@ -202,33 +172,6 @@ class ShareExtensionViewController: UIViewController {
     ///
     fileprivate var optionsViewController: OptionsTableViewController!
 
-    /// Dictionary of images and attachments
-    ///
-    fileprivate var sharedImageDict = [String: URL]()
-
-    /// Post's Status
-    ///
-    fileprivate var postStatus = "publish"
-
-    /// Unique identifier for background sessions
-    ///
-    fileprivate lazy var backgroundSessionIdentifier: String = {
-        let identifier = WPAppGroupName + "." + UUID().uuidString
-        return identifier
-    }()
-
-    /// Unique identifier a group of upload operations
-    ///
-    fileprivate lazy var groupIdentifier: String = {
-        let groupIdentifier = UUID().uuidString
-        return groupIdentifier
-    }()
-
-    /// Core Data stack for application extensions
-    ///
-    fileprivate lazy var coreDataStack = SharedCoreDataStack()
-    fileprivate var managedContext: NSManagedObjectContext!
-
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
@@ -236,13 +179,6 @@ class ShareExtensionViewController: UIViewController {
 
         // This needs to called first
         configureMediaAppearance()
-
-        // Tracker
-        tracks.wpcomUsername = wpcomUsername
-        title = NSLocalizedString("WordPress", comment: "Application title")
-
-        // Core Data
-        managedContext = coreDataStack.managedContext
 
         // Grab the content from the host app
         loadContent(extensionContext: extensionContext)
@@ -278,6 +214,18 @@ class ShareExtensionViewController: UIViewController {
         var safeInsets = self.view.layoutMargins
         safeInsets.top = richTextView.textContainerInset.top
         richTextView.textContainerInset = safeInsets
+    }
+
+    /// Manages data transfer when seguing to a new VC
+    ///
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let source = segue.source as? ShareExtensionEditorViewController else {
+            return
+        }
+
+        if let destination = segue.destination as? ShareSitePickerViewController {
+            destination.shareData = source.shareData
+        }
     }
 
     // MARK: - Title and Title placeholder position methods
@@ -378,6 +326,7 @@ class ShareExtensionViewController: UIViewController {
     func configureNavigationBar() {
         title = NSLocalizedString("Share to WordPress", comment: "Title for Share Exte nsion")
         navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = nextButton
     }
 
     func configureMediaAppearance() {
@@ -545,7 +494,7 @@ class ShareExtensionViewController: UIViewController {
 
 // MARK: - Format Bar Updating
 
-extension ShareExtensionViewController {
+extension ShareExtensionEditorViewController {
 
     func updateFormatBar() {
         updateFormatBarForVisualMode()
@@ -572,7 +521,7 @@ extension ShareExtensionViewController {
 
 // MARK: - FormatBar Actions
 
-extension ShareExtensionViewController {
+extension ShareExtensionEditorViewController {
     func handleAction(for barItem: FormatBarItem) {
         guard let identifier = barItem.identifier else { return }
 
@@ -727,7 +676,7 @@ extension ShareExtensionViewController {
             textField.text = urlToUse?.absoluteString
 
             textField.addTarget(self,
-                                action: #selector(ShareExtensionViewController.alertTextFieldDidChange),
+                                action: #selector(ShareExtensionEditorViewController.alertTextFieldDidChange),
                                 for: UIControlEvents.editingChanged)
         })
 
@@ -936,9 +885,9 @@ extension ShareExtensionViewController {
     }
 }
 
-// MARK: - Media Action Sheet
+// MARK: - Actions
 
-extension ShareExtensionViewController {
+extension ShareExtensionEditorViewController {
 
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
@@ -946,8 +895,9 @@ extension ShareExtensionViewController {
     }
 
     @objc func nextWasPressed() {
-        // TODO: Next screen eventually!
-        savePostToRemoteSite()
+        shareData.title = titleTextField.text ?? ""
+        shareData.contentBody = richTextView.getHTML()
+        performSegue(withIdentifier: .showModularSitePicker, sender: self)
     }
 
     func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
@@ -984,7 +934,8 @@ extension ShareExtensionViewController {
 
 // MARK: - Media Helpers
 
-extension ShareExtensionViewController {
+extension ShareExtensionEditorViewController {
+
     func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
         if mediaAttachment is ImageAttachment {
             mediaAttachment.overlayImage = nil
@@ -999,31 +950,14 @@ extension ShareExtensionViewController {
         attachment.size = .full
         attachment.uploadID = url.lastPathComponent // Use the filename as the uploadID here.
         richTextView.refresh(attachment)
-        sharedImageDict[attachment.identifier] = url
-    }
-
-    func saveImageToSharedContainer(_ image: UIImage) -> URL? {
-        guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
-            let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
-                return nil
-        }
-
-        let uniqueString = "image_\(NSDate.timeIntervalSinceReferenceDate)"
-        let fileName = uniqueString.components(separatedBy: ["."]).joined() + ".jpg"
-        let fullPath = mediaDirectory.appendingPathComponent(fileName)
-        do {
-            try encodedMedia.write(to: fullPath, options: [.atomic])
-        } catch {
-            DDLogError("Error saving \(fullPath) to shared container: \(String(describing: error))")
-            return nil
-        }
-        return fullPath
+        shareData.sharedImageDict[attachment.identifier] = url
     }
 }
 
 // MARK: - FormatBarDelegate Conformance
 
-extension ShareExtensionViewController: Aztec.FormatBarDelegate {
+extension ShareExtensionEditorViewController: Aztec.FormatBarDelegate {
+
     func formatBarTouchesBegan(_ formatBar: FormatBar) {
         dismissOptionsViewControllerIfNecessary()
     }
@@ -1035,7 +969,7 @@ extension ShareExtensionViewController: Aztec.FormatBarDelegate {
 
 // MARK: - UIPopoverPresentationControllerDelegate Conformance
 
-extension ShareExtensionViewController: UIPopoverPresentationControllerDelegate {
+extension ShareExtensionEditorViewController: UIPopoverPresentationControllerDelegate {
 
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
@@ -1050,7 +984,7 @@ extension ShareExtensionViewController: UIPopoverPresentationControllerDelegate 
 
 // MARK: - UITextViewDelegate Conformance
 
-extension ShareExtensionViewController: UITextViewDelegate {
+extension ShareExtensionEditorViewController: UITextViewDelegate {
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         switch textView {
@@ -1107,7 +1041,7 @@ extension ShareExtensionViewController: UITextViewDelegate {
 
 // MARK: - UITextFieldDelegate Conformance
 
-extension ShareExtensionViewController {
+extension ShareExtensionEditorViewController {
     func titleTextFieldDidChange(_ textField: UITextField) {
         // noop
     }
@@ -1115,7 +1049,7 @@ extension ShareExtensionViewController {
 
 // MARK: - TextViewFormattingDelegate Conformance
 
-extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
+extension ShareExtensionEditorViewController: Aztec.TextViewFormattingDelegate {
     func textViewCommandToggledAStyle() {
         updateFormatBar()
     }
@@ -1123,7 +1057,7 @@ extension ShareExtensionViewController: Aztec.TextViewFormattingDelegate {
 
 // MARK: - TextViewAttachmentDelegate Conformance
 
-extension ShareExtensionViewController: TextViewAttachmentDelegate {
+extension ShareExtensionEditorViewController: TextViewAttachmentDelegate {
     func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
         guard let image = UIImage(contentsOfURL: url) else {
             failure()
@@ -1138,11 +1072,11 @@ extension ShareExtensionViewController: TextViewAttachmentDelegate {
 
     func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
         // Remove the temp media file associated with the deleted attachment
-        guard let tempMediaFileURL = sharedImageDict[attachmentID], !tempMediaFileURL.pathExtension.isEmpty else {
+        guard let tempMediaFileURL = shareData.sharedImageDict[attachmentID], !tempMediaFileURL.pathExtension.isEmpty else {
             return
         }
         ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
-        sharedImageDict.removeValue(forKey: attachmentID)
+        shareData.sharedImageDict.removeValue(forKey: attachmentID)
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
@@ -1189,179 +1123,9 @@ extension ShareExtensionViewController: TextViewAttachmentDelegate {
     }
 }
 
-// MARK: - Backend Interaction
-
-private extension ShareExtensionViewController {
-    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
-        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
-            let groupID = postUploadOp.groupID,
-            let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
-                return
-        }
-
-        mediaUploadOps.forEach { mediaUploadOp in
-            guard let fileName = mediaUploadOp.fileName,
-                let remoteURL = mediaUploadOp.remoteURL else {
-                return
-            }
-
-            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
-                                                            remoteURLString: remoteURL,
-                                                            width: Int(mediaUploadOp.width),
-                                                            height: Int(mediaUploadOp.height))
-            let content = postUploadOp.postContent ?? ""
-            postUploadOp.postContent = imgPostUploadProcessor.process(content)
-        }
-
-        coreDataStack.saveContext()
-
-        self.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {})
-    }
-
-    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, requestEnqueued: @escaping () -> ()) {
-        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
-            DDLogError("Error uploading post in share extension — could not fetch saved post.")
-            requestEnqueued()
-            return
-        }
-
-        let remotePost = postUploadOp.remotePost
-
-        // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads so set it false
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: false,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-        let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
-        remote.createPost(remotePost, success: { post in
-            if let post = post {
-                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
-                if let postID = post.postID {
-                    self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
-                } else {
-                    self.coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOpObjectID)
-                }
-            }
-            requestEnqueued()
-        }, failure: { error in
-            var errorString = "Error creating post in share extension"
-            if let error = error as NSError? {
-                errorString += ": \(error.localizedDescription)"
-            }
-            DDLogError(errorString)
-            self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
-            requestEnqueued()
-        })
-    }
-
-    func uploadPostWithMedia(subject: String, body: String, status: String, siteID: Int, requestEnqueued: @escaping () -> ()) {
-        let tempMediaFileURLs = sharedImageDict.values
-        guard tempMediaFileURLs.count > 0 else {
-                DDLogError("No media is attached to this upload request.")
-                requestEnqueued()
-                return
-        }
-
-        // First create the post upload op
-        let remotePost: RemotePost = {
-            let post = RemotePost()
-            post.siteID = NSNumber(value: siteID)
-            post.status = status
-            post.title = subject
-            post.content = body
-            return post
-        }()
-        let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
-
-        // Now process all of the media items and create their upload ops
-        var uploadMediaOpIDs = [NSManagedObjectID]()
-        var allRemoteMedia = [RemoteMedia]()
-        tempMediaFileURLs.forEach { tempFilePath in
-            let remoteMedia = RemoteMedia()
-            remoteMedia.file = tempFilePath.lastPathComponent
-            remoteMedia.mimeType = Constants.mimeType
-            remoteMedia.localURL = tempFilePath
-            allRemoteMedia.append(remoteMedia)
-
-            let uploadMediaOpID = coreDataStack.saveMediaOperation(remoteMedia,
-                                                                   sessionID: backgroundSessionIdentifier,
-                                                                   groupIdentifier: groupIdentifier,
-                                                                   siteID: NSNumber(value: siteID),
-                                                                   with: .pending)
-            uploadMediaOpIDs.append(uploadMediaOpID)
-        }
-
-        // Upload the media items
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: true,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-
-        // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
-        // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
-        // post share here as well as WPiOS.
-        let remote = MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
-        remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
-            uploadMediaOpIDs.forEach({ uploadMediaOpID in
-                self.coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
-                if let taskID = taskID {
-                    self.coreDataStack.updateTaskID(taskID, forUploadOpWithObjectID: uploadMediaOpID)
-                }
-            })
-            requestEnqueued()
-        }, success: { remoteMedia in
-            guard let returnedMedia = remoteMedia as? [RemoteMedia],
-                returnedMedia.count > 0,
-                let mediaUploadOps = self.coreDataStack.fetchMediaUploadOps(for: self.groupIdentifier) else {
-                    DDLogError("Error creating post in share extension. RemoteMedia info not returned from server.")
-                    return
-            }
-
-            mediaUploadOps.forEach({ mediaUploadOp in
-                returnedMedia.forEach({ remoteMedia in
-                    if let remoteMediaID = remoteMedia.mediaID?.int64Value,
-                        let remoteMediaURLString = remoteMedia.url?.absoluteString,
-                        let localFileName = mediaUploadOp.fileName,
-                        let remoteFileName = remoteMedia.file {
-
-                        if localFileName.lowercased().trim() == remoteFileName.lowercased().trim() {
-                            mediaUploadOp.remoteURL = remoteMediaURLString
-                            mediaUploadOp.remoteMediaID = remoteMediaID
-                            mediaUploadOp.currentStatus = .complete
-
-                            if let width = remoteMedia.width?.int32Value,
-                                let height = remoteMedia.width?.int32Value {
-                                mediaUploadOp.width = width
-                                mediaUploadOp.height = height
-                            }
-
-                            ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: localFileName)
-                        }
-                    }
-                })
-            })
-            self.coreDataStack.saveContext()
-
-            // Now upload the post
-            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID)
-        }) { error in
-            guard let error = error as NSError? else {
-                return
-            }
-            DDLogError("Error creating post in share extension: \(error.localizedDescription)")
-            uploadMediaOpIDs.forEach({ uploadMediaOpID in
-                self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadMediaOpID)
-            })
-            self.tracks.trackExtensionError(error)
-        }
-    }
-}
-
 // MARK: - Private Keyboard Helpers
 
-private extension ShareExtensionViewController {
+private extension ShareExtensionEditorViewController {
     @objc func keyboardWillShow(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
@@ -1398,7 +1162,8 @@ private extension ShareExtensionViewController {
 
 // MARK: - Misc Private helpers
 
-private extension ShareExtensionViewController {
+private extension ShareExtensionEditorViewController {
+    
     func loadContent(extensionContext: NSExtensionContext?) {
         guard let extensionContext = extensionContext else {
             return
@@ -1433,85 +1198,23 @@ private extension ShareExtensionViewController {
         alertController.addAction(alertAction)
         present(alertController, animated: true, completion: nil)
     }
-
-    func closeShareExtensionWithoutSaving() {
-        // First, remove the temp media files if needed
-        for tempMediaFileURL in sharedImageDict.values {
-            if !tempMediaFileURL.pathExtension.isEmpty {
-                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
-            }
-        }
-
-        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-    }
-
-    func savePostToRemoteSite() {
-        guard let _ = oauth2Token, let siteID = selectedSiteID else {
-            fatalError("The view should have been dismissed on viewDidAppear!")
-        }
-
-        // FIXME: Save the last used site
-        //        if let siteName = selectedSiteName {
-        //            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: siteName)
-        //        }
-
-        // Proceed uploading the actual post
-        let subject = titleTextField.text ?? ""
-        let body = richTextView.getHTML()
-
-        if sharedImageDict.values.count > 0 {
-            uploadPostWithMedia(subject: subject,
-                                body: body,
-                                status: postStatus,
-                                siteID: siteID,
-                                requestEnqueued: {
-                                    self.tracks.trackExtensionPosted(self.postStatus)
-                                    self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-            })
-        } else {
-            let remotePost: RemotePost = {
-                let post = RemotePost()
-                post.siteID = NSNumber(value: siteID)
-                post.status = postStatus
-                post.title = subject
-                post.content = body
-                return post
-            }()
-            let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .inProgress)
-            uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
-                self.tracks.trackExtensionPosted(self.postStatus)
-                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-            })
-        }
-    }
 }
 
 // MARK: - Constants
 
-fileprivate extension ShareExtensionViewController {
+fileprivate extension ShareExtensionEditorViewController {
 
     struct Assets {
         static let defaultMissingImage          = Gridicon.iconOfType(.image)
     }
 
     struct Constants {
-        static let defaultMargin                = CGFloat(20)
-        static let cancelButtonPadding          = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
-        static let moreAttachmentText           = "more"
         static let placeholderPadding           = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
         static let headers                      = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                        = [TextList.Style.unordered, .ordered]
         static let toolbarHeight                = CGFloat(44.0)
         static let mediaOverlayBorderWidth      = CGFloat(3.0)
         static let mediaPlaceholderImageSize    = CGSize(width: 128, height: 128)
-        static let placeholderMediaLink         = URL(string: "placeholder://")!
-        static let defaultMaxDimension          = 3000
-        static let mimeType                     = "image/jpeg"
-
-        static let postStatuses = [
-            "draft": NSLocalizedString("Draft", comment: "Draft post status"),
-            "publish": NSLocalizedString("Publish", comment: "Publish post status")
-        ]
     }
 
     struct ShareColors {

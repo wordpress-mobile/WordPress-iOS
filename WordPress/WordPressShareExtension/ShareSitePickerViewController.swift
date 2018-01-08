@@ -1,14 +1,8 @@
-//
-//  ShareSitePickerViewController.swift
-//  WordPressShareExtension
-//
-//  Created by Will Kwon on 1/4/18.
-//  Copyright © 2018 WordPress. All rights reserved.
-//
-
 import UIKit
+import WordPressShared
+import WordPressKit
 
-class ShareSitePickerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ShareSitePickerViewController: ShareExtensionAbstractViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var modulesTableView: UITableView!
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var sitePickerTableView: UITableView!
@@ -47,15 +41,45 @@ class ShareSitePickerViewController: UIViewController, UITableViewDelegate, UITa
         
         return cell
     }
+}
 
-    /*
-    // MARK: - Navigation
+// MARK: - Misc Private helpers
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+private extension ShareSitePickerViewController {
+    func savePostToRemoteSite() {
+        guard let _ = oauth2Token, let siteID = selectedSiteID else {
+            fatalError("Need to have an oauth token and site ID selected.")
+        }
+
+        // FIXME: Save the last used site
+        //        if let siteName = selectedSiteName {
+        //            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: siteName)
+        //        }
+
+        // Proceed uploading the actual post
+        if shareData.sharedImageDict.values.count > 0 {
+            uploadPostWithMedia(subject: shareData.title,
+                                body: shareData.contentBody,
+                                status: shareData.postStatus,
+                                siteID: siteID,
+                                requestEnqueued: {
+                                    self.tracks.trackExtensionPosted(self.shareData.postStatus)
+                                    self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            })
+        } else {
+            let remotePost: RemotePost = {
+                let post = RemotePost()
+                post.siteID = NSNumber(value: siteID)
+                post.status = shareData.postStatus
+                post.title = shareData.title
+                post.content = shareData.contentBody
+                return post
+            }()
+            let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .inProgress)
+            uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
+                self.tracks.trackExtensionPosted(self.shareData.postStatus)
+                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+            })
+        }
     }
-    */
-
 }

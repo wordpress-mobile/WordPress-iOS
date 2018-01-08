@@ -10,23 +10,20 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Share Extension View Controller-->
+        <!--Share Extension Editor View Controller-->
         <scene sceneID="XV2-Y0-lVd">
             <objects>
-                <viewController id="u7b-jW-v8f" customClass="ShareExtensionViewController" customModule="WordPressShareExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="u7b-jW-v8f" customClass="ShareExtensionEditorViewController" customModule="WordPressShareExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CCa-df-jpl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="y1B-wC-cgS"/>
                     </view>
-                    <navigationItem key="navigationItem" id="bcT-W4-zS9">
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="KVd-Ci-0k4">
-                            <connections>
-                                <segue destination="smc-Pp-8Yy" kind="show" id="WmA-PP-WRg"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="bcT-W4-zS9"/>
+                    <connections>
+                        <segue destination="smc-Pp-8Yy" kind="show" identifier="showModularSitePicker" id="YeD-KC-8WB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FBQ-IU-bjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

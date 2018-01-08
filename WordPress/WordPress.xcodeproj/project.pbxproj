@@ -341,6 +341,9 @@
 		74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */; };
 		74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */; };
 		74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */; };
+		745EAF452003FD050066F415 /* ShareSegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF442003FD050066F415 /* ShareSegueHandler.swift */; };
+		745EAF472003FDAA0066F415 /* ShareExtensionAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */; };
+		745EAF4A20040B220066F415 /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF4920040B220066F415 /* ShareData.swift */; };
 		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
 		746D6B251FBF701F003C45BE /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
 		7470840F1E269669002CA726 /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7470840D1E269669002CA726 /* JetpackLoginViewController.swift */; };
@@ -368,7 +371,7 @@
 		74F24F671EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */; };
 		74F24F681EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */; };
 		74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
-		74F5CD3A1FE0653500764E7C /* ShareExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F5CD391FE0653500764E7C /* ShareExtensionViewController.swift */; };
+		74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */; };
 		74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
@@ -1601,6 +1604,9 @@
 		74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
 		74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
 		74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
+		745EAF442003FD050066F415 /* ShareSegueHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSegueHandler.swift; sourceTree = "<group>"; };
+		745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionAbstractViewController.swift; sourceTree = "<group>"; };
+		745EAF4920040B220066F415 /* ShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareData.swift; sourceTree = "<group>"; };
 		746A6F561E71C691003B67E3 /* DeleteSite.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeleteSite.storyboard; sourceTree = "<group>"; };
 		746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCoreDataStack.swift; sourceTree = "<group>"; };
 		7470840D1E269669002CA726 /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
@@ -1618,7 +1624,7 @@
 		74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-bad-username-password-error.xml"; sourceTree = "<group>"; };
 		74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-malformed-request-xml-error.xml"; sourceTree = "<group>"; };
 		74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareExtension.storyboard; sourceTree = "<group>"; };
-		74F5CD391FE0653500764E7C /* ShareExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionViewController.swift; sourceTree = "<group>"; };
+		74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionEditorViewController.swift; sourceTree = "<group>"; };
 		74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Extensions.xcdatamodel; sourceTree = "<group>"; };
 		75305C06D345590B757E3890 /* Pods-WordPress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.debug.xcconfig"; sourceTree = "<group>"; };
 		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
@@ -3571,12 +3577,22 @@
 		7430C4471F97F0DA00E2673E /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
 				74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */,
-				74F5CD391FE0653500764E7C /* ShareExtensionViewController.swift */,
+				745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */,
+				74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */,
 				BE6787F41FFF2886005D9F01 /* ShareSitePickerViewController.swift */,
+				B50248B21C96FF8400AFBDED /* SitePickerViewController.swift */,
+				745EAF4920040B220066F415 /* ShareData.swift */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		745EAF432003FC930066F415 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				745EAF442003FD050066F415 /* ShareSegueHandler.swift */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 		74FA4BDB1FBF994F0031EAAD /* Data */ = {
@@ -3884,6 +3900,7 @@
 		932225A81C7CE50300443B02 /* WordPressShareExtension */ = {
 			isa = PBXGroup;
 			children = (
+				745EAF432003FC930066F415 /* Protocols */,
 				B5FA22851C99F63B0016CA7C /* Extensions */,
 				74FA4BDB1FBF994F0031EAAD /* Data */,
 				B542DEBB1D119683004CA6AE /* Tools */,
@@ -7138,7 +7155,7 @@
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
-				74F5CD3A1FE0653500764E7C /* ShareExtensionViewController.swift in Sources */,
+				74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */,
 				B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */,
 				B50248B71C96FF8400AFBDED /* UIImageView+Extensions.swift in Sources */,
 				B50248C21C96FFCC00AFBDED /* WordPressShare-Lumberjack.m in Sources */,
@@ -7148,11 +7165,13 @@
 				B50248B61C96FF8400AFBDED /* SitePickerViewController.swift in Sources */,
 				74D06FEC1FE0869D00AF1788 /* NSAttributedStringKey+Conversion.swift in Sources */,
 				E125F1E51E8E596200320B67 /* SharePost.swift in Sources */,
+				745EAF4A20040B220066F415 /* ShareData.swift in Sources */,
 				B5D7A0EC1CCFD1FC003C375D /* UIImage+RoundedCorner.m in Sources */,
 				B5D7A0EB1CCFD1F6003C375D /* UIImage+Alpha.m in Sources */,
 				74D06FE91FE0782000AF1788 /* String+RegEx.swift in Sources */,
 				938CF3DD1EF1BE7F00AF838E /* CocoaLumberjack.swift in Sources */,
 				746D6B251FBF701F003C45BE /* SharedCoreDataStack.swift in Sources */,
+				745EAF472003FDAA0066F415 /* ShareExtensionAbstractViewController.swift in Sources */,
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,
 				BE6787F51FFF2886005D9F01 /* ShareSitePickerViewController.swift in Sources */,
 				74D06FE61FE075A900AF1788 /* CalypsoProcessorIn.swift in Sources */,
@@ -7167,6 +7186,7 @@
 				74D06FE71FE075A900AF1788 /* CalypsoProcessorOut.swift in Sources */,
 				742F13B81FFD8421000FD2A5 /* ImgUploadProcessor.swift in Sources */,
 				74D06FE81FE076F700AF1788 /* FormatBarItemProviders.swift in Sources */,
+				745EAF452003FD050066F415 /* ShareSegueHandler.swift in Sources */,
 				B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */,
