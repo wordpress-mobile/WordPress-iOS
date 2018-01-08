@@ -6,18 +6,14 @@ import GoogleSignIn
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITextFieldDelegate {
+class Login2FAViewController: LoginNewViewController, NUXKeyboardResponder, UITextFieldDelegate {
+
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var pasteboardBeforeBackground: String? = nil
-
-    override var sourceTag: SupportSourceTag {
-        get {
-            return .login2FA
-        }
-    }
+    var sourceTag: SupportSourceTag = .login2FA
 
 
     // MARK: - Lifecycle Methods

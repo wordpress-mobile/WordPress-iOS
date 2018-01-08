@@ -3,7 +3,7 @@ import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
-class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
+class LoginWPComViewController: LoginNewViewController, NUXKeyboardResponder {
     @IBOutlet weak var passwordField: WPWalkthroughTextField?
     @IBOutlet weak var forgotPasswordButton: UIButton?
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
@@ -11,12 +11,7 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     @objc var onePasswordButton: UIButton!
     @IBOutlet var emailLabel: UILabel?
     @IBOutlet var emailStackView: UIStackView?
-
-    override var sourceTag: SupportSourceTag {
-        get {
-            return .loginWPComPassword
-        }
-    }
+    var sourceTag: SupportSourceTag = .loginWPComPassword
 
     override var loginFields: LoginFields {
         didSet {
