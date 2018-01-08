@@ -57,13 +57,13 @@ extension String {
         var newString = self
 
         for match in matches.reversed() {
-            let matchRange = range(from: match.range)
+            let matchRange = range(fromUTF16NSRange: match.range)
             let matchString = String(self[matchRange])
 
             var submatchStrings = [String]()
 
             for submatchIndex in 0 ..< match.numberOfRanges {
-                let submatchRange = self.range(from: match.range(at: submatchIndex))
+                let submatchRange = self.range(fromUTF16NSRange: match.range(at: submatchIndex))
                 let submatchString = String(self[submatchRange])
 
                 submatchStrings.append(submatchString)
