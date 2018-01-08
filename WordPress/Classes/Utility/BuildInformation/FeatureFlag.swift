@@ -18,7 +18,7 @@ enum FeatureFlag: Int {
         case .iCloudFilesSupport:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .socialSignup:
-            return false // placeholder until the first social signup screen is added
+            return BuildConfiguration.current == .localDeveloper
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .asyncUploadsInMediaLibrary:

@@ -9,6 +9,7 @@ class MainNavigationTests: XCTestCase {
         continueAfterFailure = false
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         XCUIApplication().launch()
+        BaseScreen.testCase = self
 
         // Logout first if needed
         logoutIfNeeded()
@@ -23,7 +24,7 @@ class MainNavigationTests: XCTestCase {
     func testTabBarNavigation() {
         let app = XCUIApplication()
         let mainNavigationTabBar = app.tabBars["Main Navigation"]
-        WelcomeScreen.init().login()
+        _ = WelcomeScreen.init().login()
             .proceedWith(email: WPUITestCredentials.testUserEmail)
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testUserPassword)
