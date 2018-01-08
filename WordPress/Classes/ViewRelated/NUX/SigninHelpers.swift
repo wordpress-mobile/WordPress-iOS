@@ -133,7 +133,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "EmailMagicLink", bundle: nil)
-        guard let loginController = storyboard.instantiateViewController(withIdentifier: "LinkAuthView") as? LoginLinkAuthViewController else {
+        guard let loginController = storyboard.instantiateViewController(withIdentifier: "LinkAuthView") as? NUXLinkAuthViewController else {
             DDLogInfo("App opened with authentication link but couldn't create login screen.")
             return false
         }
