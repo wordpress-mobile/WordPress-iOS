@@ -10,7 +10,9 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     /// Will be invoked with the cropped and scaled image and a boolean indicating
     /// whether or not the original image was modified
     @objc var onCompletion: ((UIImage, Bool) -> Void)?
-    var maskShape: ImageCropOverlayMaskShape = .circle
+    @objc var onCancel: (() -> Void)?
+    @objc var maskShape: ImageCropOverlayMaskShape = .circle
+    @objc var shouldShowCancelButton = false
 
     // MARK: - Public Initializers
 
@@ -34,7 +36,15 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: useButtonTitle,
                                                             style: .plain,
                                                             target: self,
-                                                            action: #selector(btnCropWasPressed))
+                                                            action: #selector(cropWasPressed))
+
+        if shouldShowCancelButton {
+            let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel the crop")
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelButtonTitle,
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(cancelWasPressed))
+        }
 
         // Setup: ImageView
         imageView.image = rawImage
@@ -64,7 +74,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
 
 
     // MARK: - Action Handlers
-    @IBAction func btnCropWasPressed() {
+    @IBAction func cropWasPressed() {
         // Calculations!
         let screenScale     = UIScreen.main.scale
         let zoomScale       = scrollView.zoomScale
@@ -96,6 +106,10 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
 
         let clippedImage = UIImage(cgImage: clippedImageRef, scale: screenScale, orientation: .up)
         onCompletion?(clippedImage, true)
+    }
+
+    @IBAction func cancelWasPressed() {
+        onCancel?()
     }
 
 
