@@ -45,7 +45,7 @@ class LoginLinkMailViewController: LoginViewController {
         case .signup:
             WPAppAnalytics.track(.signupMagicLinkOpenEmailClientViewed)
 
-            let message = "This is a work in progress. If you need to create an account, disable the socialSignup feature flag."
+            let message = "Email was not actually sent. This is a work in progress. If you need to create an account, disable the socialSignup feature flag."
             let alertController = UIAlertController(title: nil,
                                                     message: message,
                                                     preferredStyle: .alert)
