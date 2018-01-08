@@ -185,20 +185,6 @@ import WordPressShared
     }
 
 
-    /// Check if the specified controller was presented from the application's root vc.
-    ///
-    /// - Parameter controller: A UIViewController
-    ///
-    /// - Return: True if presented from the root vc.
-    ///
-    @objc class func controllerWasPresentedFromRootViewController(_ controller: UIViewController) -> Bool {
-        guard let presentingViewController = controller.presentingViewController else {
-            return false
-        }
-        return presentingViewController == UIApplication.shared.keyWindow?.rootViewController
-    }
-
-
     // MARK: - Site URL helper
 
 
