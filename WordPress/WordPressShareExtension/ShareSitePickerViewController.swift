@@ -12,6 +12,7 @@ class ShareSitePickerViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var modulesTableView: UITableView!
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var sitePickerTableView: UITableView!
+    @IBOutlet weak var modulesTableViewHeightConstraint: NSLayoutConstraint!
     var modules = [String]()
     
     override func viewDidLoad() {
@@ -22,6 +23,7 @@ class ShareSitePickerViewController: UIViewController, UITableViewDelegate, UITa
         modulesTableView.dataSource = self
         modulesTableView.backgroundColor = UIColor.blue
         modules = ["Featured Image", "Category", "Tags"]
+        modulesTableViewHeightConstraint.constant = 400
     }
 
     override func didReceiveMemoryWarning() {
