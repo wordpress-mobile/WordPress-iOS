@@ -11,6 +11,7 @@ class SiteCreationDomainsViewController: UITableViewController {
     private var siteTitleSuggestions: [String] = []
     private var searchSuggestions: [String] = []
     private var isSearching: Bool = false
+    private var selectedCell: UITableViewCell?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -200,7 +201,6 @@ extension SiteCreationDomainsViewController {
     private func suggestionCell(domain: String) -> UITableViewCell {
         let cell = UITableViewCell()
 
-        cell.accessoryType = .disclosureIndicator
         cell.textLabel?.attributedText = styleDomain(domain)
         cell.textLabel?.textColor = WPStyleGuide.grey()
         cell.indentationWidth = 20.0
@@ -235,12 +235,17 @@ extension SiteCreationDomainsViewController {
         }
 
         tableView.deselectSelectedRowWithAnimation(true)
-        let message = "'\(selectedDomain)' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        self.present(alertController, animated: true, completion: nil)
+
+        // Uncheck the previously selected cell.
+        if let selectedCell = selectedCell {
+            selectedCell.accessoryType = .none
+        }
+
+        // Check the currently selected cell.
+        if let cell = self.tableView.cellForRow(at: indexPath) {
+            cell.accessoryType = .checkmark
+            selectedCell = cell
+        }
     }
 }
 
