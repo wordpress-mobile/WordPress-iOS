@@ -156,7 +156,11 @@ static NSTimeInterval const TestExpectationTimeout = 5;
         // Writing
         XCTAssertEqualObjects(settings.defaultCategoryID, @(8), @"");
         XCTAssertEqualObjects(settings.defaultPostFormat, @"standard", @"");
-        
+        XCTAssertEqualObjects(settings.dateFormat, @"m/d/Y", @"");
+        XCTAssertEqualObjects(settings.timeFormat, @"g:i a", @"");
+        XCTAssertEqualObjects(settings.startOfWeek, @"0", @"");
+        XCTAssertEqualObjects(settings.postsPerPage, @(12), @"");
+
         // Comments
         XCTAssertEqualObjects(settings.commentsAllowed, @(true), @"");
         XCTAssertEqualObjects(settings.commentsBlacklistKeys, @"some evil keywords", @"");
@@ -185,7 +189,11 @@ static NSTimeInterval const TestExpectationTimeout = 5;
         XCTAssertEqualObjects(settings.relatedPostsEnabled, @(false), @"");
         XCTAssertEqualObjects(settings.relatedPostsShowHeadline, @(true), @"");
         XCTAssertEqualObjects(settings.relatedPostsShowThumbnails, @(false), @"");
-        
+
+        // AMP
+        XCTAssertEqualObjects(settings.ampSupported, @(true), @"");
+        XCTAssertEqualObjects(settings.ampEnabled, @(false), @"");
+
         [expectation fulfill];
         
     } failure:^(NSError *error) {

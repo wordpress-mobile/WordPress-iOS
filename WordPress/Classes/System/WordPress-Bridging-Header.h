@@ -32,11 +32,10 @@
 #import <FLAnimatedImage/FLAnimatedImage.h>
 
 #import "HelpshiftUtils.h"
+#import "HockeyManager.h"
 
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
-
-#import "JetpackService.h"
 
 #import "LoginFacade.h"
 
@@ -65,6 +64,7 @@
 #import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PostSettingsViewController.h"
+#import "PostTag.h"
 #import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"
 
@@ -110,6 +110,7 @@
 #import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
+#import "WPCrashlytics.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"

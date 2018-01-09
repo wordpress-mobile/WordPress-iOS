@@ -1,6 +1,5 @@
 import Foundation
 import UIKit
-import SVProgressHUD
 import WordPressShared
 
 /// A view controller that presents a Jetpack login form
@@ -15,7 +14,7 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - Properties
 
-    typealias CompletionBlock = (Bool) -> Void
+    typealias CompletionBlock = () -> Void
     /// This completion handler closure is executed when the authentication process handled
     /// by this VC is completed.
     ///
@@ -23,36 +22,10 @@ class JetpackLoginViewController: UIViewController {
 
     @IBOutlet fileprivate weak var jetpackImage: UIImageView!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
-    @IBOutlet fileprivate weak var usernameTextField: WPWalkthroughTextField!
-    @IBOutlet fileprivate weak var passwordTextField: WPWalkthroughTextField!
-    @IBOutlet fileprivate weak var verificationCodeTextField: WPWalkthroughTextField!
     @IBOutlet fileprivate weak var scrollView: UIScrollView!
     @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
-    @IBOutlet fileprivate weak var sendSMSCodeButton: UIButton!
     @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
     @IBOutlet fileprivate weak var moreInformationButton: UIButton!
-
-    fileprivate var activeField: UITextField?
-    fileprivate var shouldDisplayMultifactor: Bool = false
-    fileprivate var loginFields = LoginFields()
-
-    fileprivate lazy var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
-        facade.delegate = self
-        return facade
-    }()
-
-    /// Returns true if this VC is currently authenticating with the server.
-    /// After setting, the UI controls will be updated accordingly
-    ///
-    fileprivate var isAuthenticating: Bool = false {
-        didSet {
-            usernameTextField.isEnabled = !isAuthenticating
-            passwordTextField.isEnabled = !isAuthenticating
-            verificationCodeTextField.isEnabled = !isAuthenticating
-            signinButton.showActivityIndicator(isAuthenticating)
-        }
-    }
 
     /// Returns true if the blog has the proper version of Jetpack installed,
     /// otherwise false
@@ -85,29 +58,12 @@ class JetpackLoginViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = WPStyleGuide.itsEverywhereGrey()
         setupControls()
-        setupKeyboard()
     }
 
     override func viewDidLayoutSubviews() {
         reloadInterface()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        registerForKeyboardNotifications()
-        registerForTextFieldNotifications()
-        prefillJetPackUsernameIfAvailible()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        deregisterFromKeyboardNotifications()
-        deregisterFromTextFieldNotifications()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
 
     // MARK: - Configuration
 
@@ -117,58 +73,17 @@ class JetpackLoginViewController: UIViewController {
         descriptionLabel.font = WPNUXUtility.descriptionTextFont()
         descriptionLabel.textColor = WPStyleGuide.allTAllShadeGrey()
 
-        usernameTextField.delegate = self
-        usernameTextField.font = WPNUXUtility.textFieldFont()
-        usernameTextField.placeholder = NSLocalizedString("WordPress.com username",
-                                                               comment: "Username placeholder")
-        passwordTextField.delegate = self
-        passwordTextField.font = WPNUXUtility.textFieldFont()
-        passwordTextField.placeholder = NSLocalizedString("WordPress.com password",
-                                                               comment: "Password placeholder")
-        verificationCodeTextField.delegate = self
-        verificationCodeTextField.font = WPNUXUtility.textFieldFont()
-        verificationCodeTextField.isHidden = true // Hidden by default
-        verificationCodeTextField.placeholder = NSLocalizedString("Verification Code",
-                                                                       comment: "Two factor code placeholder")
-        signinButton.isEnabled = false
-
-        setupSendSMSCodeButtonText()
-        sendSMSCodeButton.isHidden = true // Hidden by default
-
         setupMoreInformationButtonText()
         moreInformationButton.isHidden = true // Hidden by default
 
-        let title = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
+        var title = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
                 "should be uppercase.").localizedUppercase
         installJetpackButton.setTitle(title, for: .normal)
         installJetpackButton.isHidden = true // Hidden by default
-    }
 
-    /// Configures the button text that requests a 2fa code be sent via SMS.
-    ///
-    fileprivate func setupSendSMSCodeButtonText() {
-        let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
-                                       comment: "Message displayed when a verification code is needed")
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [.font: UIFont.systemFont(ofSize: 14),
-                                                                  .foregroundColor: WPStyleGuide.allTAllShadeGrey(),
-                                                                  .paragraphStyle: paragraphStyle]]
-
-        let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
-        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
-        attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
-
-        if let titleLabel = sendSMSCodeButton.titleLabel {
-            titleLabel.lineBreakMode = .byWordWrapping
-            titleLabel.textAlignment = .center
-            titleLabel.numberOfLines = 3
-        }
-
-        sendSMSCodeButton.setAttributedTitle(attributedCode, for: UIControlState())
-        sendSMSCodeButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
+        title = NSLocalizedString("Log In", comment: "Title of a button for signing in. " +
+            "The text should be uppercase.").localizedUppercase
+        signinButton.setTitle(title, for: .normal)
     }
 
     /// Configures the button text for requesting more information about jetpack.
@@ -189,82 +104,35 @@ class JetpackLoginViewController: UIViewController {
         let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
-        if let titleLabel = sendSMSCodeButton.titleLabel {
-            titleLabel.lineBreakMode = .byWordWrapping
-            titleLabel.textAlignment = .center
-            titleLabel.numberOfLines = 3
-        }
-
         moreInformationButton.setAttributedTitle(attributedCode, for: UIControlState())
         moreInformationButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
     }
 
-    fileprivate func setupKeyboard() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(hideKeyboard))
-
-        scrollView.addGestureRecognizer(tap)
-    }
-
-    // MARK: - Textfield
-
-    @objc func registerForTextFieldNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)),
-                                               name: .UITextFieldTextDidChange, object: usernameTextField)
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)),
-                                               name: .UITextFieldTextDidChange, object: passwordTextField)
-        NotificationCenter.default.addObserver(self, selector: #selector(textFieldChanged(_ :)),
-                                               name: .UITextFieldTextDidChange, object: verificationCodeTextField)
-    }
-
-    @objc func deregisterFromTextFieldNotifications() {
-        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: usernameTextField)
-        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: passwordTextField)
-        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidChange, object: verificationCodeTextField)
-    }
-
-    @objc func textFieldChanged(_ notification: Foundation.Notification) {
-        updateSignInButton()
-    }
-
-    // MARK: - Keyboard
-
-    @objc func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_ :)),
-                                               name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(_ :)),
-                                               name: .UIKeyboardWillHide, object: nil)
-    }
-
-    @objc func deregisterFromKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
-    }
-
-    @objc func keyboardWillShow(_ notification: Foundation.Notification) {
-        scrollView.isScrollEnabled = true
-        var info = notification.userInfo!
-        let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize!.height, right: 0)
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-
-        guard let activeField = self.activeField else {
+    fileprivate func observeLoginNotifications(_ observe: Bool) {
+        if observe {
+            // Observe `.handleLoginSyncedSites` instead of `WPSigninDidFinishNotification`
+            // `WPSigninDidFinishNotification` will not be dispatched for Jetpack logins.
+            // Switch back to `WPSigninDidFinishNotification` when the WPTabViewController
+            // no longer destroys and recreates its view hierarchy in response to that
+            // notification.
+            NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .WPLoginFinishedJetpackLogin, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginCancelled), name: .WPLoginCancelled, object: nil)
             return
         }
-        var aRect: CGRect = view.frame
-        aRect.size.height -= keyboardSize!.height
-        if !aRect.contains(activeField.frame.origin) {
-            scrollView.scrollRectToVisible(activeField.frame, animated: true)
-        }
+
+        NotificationCenter.default.removeObserver(self, name: .WPLoginFinishedJetpackLogin, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .WPLoginCancelled, object: nil)
     }
 
-    @objc func keyboardWillBeHidden(_ notification: Notification) {
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
-        scrollView.isScrollEnabled = false
+    @objc fileprivate func handleLoginCancelled() {
+        observeLoginNotifications(false)
     }
+
+    @objc fileprivate func handleFinishedJetpackLogin() {
+        observeLoginNotifications(false)
+        completionBlock?()
+    }
+
 
     // MARK: - UI Helpers
 
@@ -283,7 +151,7 @@ class JetpackLoginViewController: UIViewController {
         if jetPack.isInstalled() {
             if jetPack.isUpdatedToRequiredVersion() {
                 message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! \n" +
-                                            "Sign in with your WordPress.com credentials below to enable " +
+                                            "Log in with your WordPress.com credentials to enable " +
                                             "Stats and Notifications.",
                                             comment: "Message asking the user to sign into Jetpack with WordPress.com credentials")
             } else {
@@ -302,78 +170,9 @@ class JetpackLoginViewController: UIViewController {
     }
 
     fileprivate func updateControls() {
-        usernameTextField.alpha = shouldDisplayMultifactor ? 0.5 : 1.0
-        passwordTextField.alpha = shouldDisplayMultifactor ? 0.5 : 1.0
-        verificationCodeTextField.alpha = shouldDisplayMultifactor ? 1.0 : 0.5
-
-        usernameTextField.isEnabled = !shouldDisplayMultifactor
-        passwordTextField.isEnabled = !shouldDisplayMultifactor
-        verificationCodeTextField.isEnabled = shouldDisplayMultifactor
-
-        usernameTextField.isHidden = !hasJetpack
-        passwordTextField.isHidden = !hasJetpack
-
         installJetpackButton.isHidden = hasJetpack
         moreInformationButton.isHidden = hasJetpack
-
-        if hasJetpack && shouldDisplayMultifactor {
-            passwordTextField.returnKeyType = .next
-            verificationCodeTextField.isHidden = false
-            sendSMSCodeButton.isHidden = false
-        } else {
-            passwordTextField.returnKeyType = .done
-            verificationCodeTextField.isHidden = true
-            sendSMSCodeButton.isHidden = true
-        }
-
-        updateSignInButton()
-    }
-
-    fileprivate func updateSignInButton() {
-        guard hasJetpack else {
-            signinButton.isHidden = true
-            return
-        }
-
-        var title = NSLocalizedString("Sign In", comment: "Title of a button for signing in. " +
-                                                          "The text should be uppercase.").localizedUppercase
-        if shouldDisplayMultifactor {
-            title = NSLocalizedString("Verify", comment: "Title of a button for 2FA verification. The text " +
-                                                         "should be uppercase.").localizedUppercase
-        }
-        signinButton.setTitle(title, for: .normal)
-
-        if shouldDisplayMultifactor {
-            guard let verifcationCodeText = verificationCodeTextField.text, !verifcationCodeText.isEmpty else {
-                signinButton.isEnabled = false
-                return
-            }
-        } else {
-            guard let usernameText = usernameTextField.text, !usernameText.isEmpty else {
-                signinButton.isEnabled = false
-                return
-            }
-            guard let passwordText = passwordTextField.text, !passwordText.isEmpty else {
-                signinButton.isEnabled = false
-                return
-            }
-        }
-        signinButton.isHidden = false
-        signinButton.isEnabled = true
-    }
-
-    fileprivate func handleMultifactorCodeRequest() {
-        shouldDisplayMultifactor = true
-        UIView.animate(withDuration: WPAnimationDurationDefault, animations: { () -> Void in
-            self.updateControls()
-        },
-        completion: { (_) -> Void in
-            //noop
-        })
-    }
-
-    @objc func hideKeyboard() {
-        view.endEditing(true)
+        signinButton.isHidden = !hasJetpack
     }
 
     // MARK: - Private Helpers
@@ -382,57 +181,6 @@ class JetpackLoginViewController: UIViewController {
         return ContextManager.sharedInstance().mainContext
     }
 
-    fileprivate func handleSignInError(_ error: Error) {
-        let error = error as NSError
-        var userInfo = error.userInfo
-        userInfo[WPErrorSupportSourceKey] = SupportSourceTag.jetpackLogin
-        let errorWithSource = NSError(domain: error.domain, code: error.code, userInfo: userInfo)
-        WPError.showNetworkingAlertWithError(errorWithSource)
-        updateControls()
-    }
-
-    fileprivate func prefillJetPackUsernameIfAvailible() {
-        let blogService = BlogService(managedObjectContext: managedObjectContext())
-        blogService.syncBlog(blog, success: {[weak self] () -> Void in
-                              guard let strongSelf = self, let jetpack = strongSelf.blog.jetpack else {
-                                  return
-                              }
-                              if jetpack.isInstalled() && jetpack.isConnected() {
-                                  strongSelf.usernameTextField.text = jetpack.connectedUsername
-                              }
-                              strongSelf.reloadInterface()
-                          },
-                          failure: { (error: Error) in
-                              WPError.showNetworkingAlertWithError(error)
-                          })
-    }
-
-    fileprivate func signIn() {
-        isAuthenticating = true
-        hideKeyboard()
-        loginFields.meta.userIsDotCom = true
-        loginFields.username = usernameTextField.nonNilTrimmedText()
-        loginFields.password = passwordTextField.nonNilTrimmedText()
-        loginFields.multifactorCode = verificationCodeTextField.nonNilTrimmedText()
-        loginFacade.signIn(with: loginFields)
-    }
-
-    fileprivate func sendSMSCode() {
-        let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        loginFields.meta.userIsDotCom = true
-        loginFields.username = usernameTextField.nonNilTrimmedText()
-        loginFields.password = passwordTextField.nonNilTrimmedText()
-        loginFacade.requestOneTimeCode(with: loginFields)
-        SVProgressHUD.showDismissibleSuccess(withStatus: message)
-    }
-
-    fileprivate func completeLogin() {
-        isAuthenticating = false
-        guard let completionBlock = self.completionBlock else {
-            return
-        }
-        completionBlock(true)
-    }
 
     // MARK: - Browser
 
@@ -462,14 +210,15 @@ class JetpackLoginViewController: UIViewController {
         }
     }
 
+    fileprivate func signIn() {
+        observeLoginNotifications(true)
+        SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+    }
+
     // MARK: - Actions
 
     @IBAction func didTouchSignInButton(_ sender: Any) {
         signIn()
-    }
-
-    @IBAction func didTouchSendSMSCodeButton(_ sender: Any) {
-        sendSMSCode()
     }
 
     @IBAction func didTouchInstallJetpackButton(_ sender: Any) {
@@ -478,68 +227,5 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchMoreInformationButton(_ sender: Any) {
         openMoreInformationURL()
-    }
-}
-
-// MARK: - UITextViewDelegate methods
-
-extension JetpackLoginViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        activeField = textField
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        activeField = nil
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == usernameTextField {
-            passwordTextField.becomeFirstResponder()
-        } else if textField == passwordTextField {
-            if verificationCodeTextField.isHidden {
-                signIn()
-            } else {
-                verificationCodeTextField.becomeFirstResponder()
-            }
-        } else if textField == verificationCodeTextField {
-            signIn()
-        }
-        return true
-    }
-}
-
-// MARK: - LoginFacadeDelegate methods
-
-extension JetpackLoginViewController: LoginFacadeDelegate {
-    func displayRemoteError(_ error: Error!) {
-        isAuthenticating = false
-        handleSignInError(error)
-    }
-
-    func needsMultifactorCode() {
-        WPAppAnalytics.track(.twoFactorCodeRequested)
-        isAuthenticating = false
-        handleMultifactorCodeRequest()
-    }
-
-    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
-        let accountFacade = AccountServiceFacade()
-        let account = accountFacade.createOrUpdateWordPressComAccount(withUsername: username, authToken: authToken)
-        BlogSyncFacade().syncBlogs(for: account, success: { [weak self] in
-            accountFacade.updateUserDetails(for: account, success: { [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                strongSelf.completeLogin()
-
-            }, failure: { [weak self] (_) in
-                guard let strongSelf = self else { return }
-                strongSelf.completeLogin()
-            })
-
-            }, failure: { [weak self] (_) in
-                guard let strongSelf = self else { return }
-                strongSelf.completeLogin()
-        })
     }
 }

@@ -10,7 +10,6 @@ class AztecAttachmentViewController: UITableViewController {
         didSet {
             if let attachment = attachment {
                 alignment = attachment.alignment
-                linkURL = attachment.linkURL
                 size = attachment.size
                 alt = attachment.alt
             }

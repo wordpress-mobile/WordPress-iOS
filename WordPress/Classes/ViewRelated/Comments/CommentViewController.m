@@ -322,7 +322,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     // Setup the Gravatar if needed
     if ([self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
-        [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
+        [cell downloadAuthorAvatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
     }
 }
 
