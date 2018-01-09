@@ -6,11 +6,12 @@
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
-@interface BlogDetailHeaderView ()
+@interface BlogDetailHeaderView () <UIDropInteractionDelegate>
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIActivityIndicatorView *blavatarUpdateActivityIndicatorView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
+@property (nonatomic, strong) UIView *blavatarDropTarget;
 
 @end
 
@@ -36,6 +37,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     self.preservesSuperviewLayoutMargins = YES;
     [self setupStackView];
     [self setupBlavatarImageView];
+    [self setupBlavatarDropTarget];
     [self setupLabelsStackView];
     [self setupTitleLabel];
     [self setupSubtitleLabel];
@@ -54,6 +56,13 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self setTitleText:title];
     [self setSubtitleText:blog.displayURL];
     [self.labelsStackView setNeedsLayout];
+    
+    if (@available(iOS 11.0, *)) {
+        if ([self.delegate siteIconShouldAllowDroppedImages]) {
+            UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+            [self.blavatarDropTarget addInteraction:dropInteraction];
+        }
+    }
 }
 
 - (void)setTitleText:(NSString *)title
@@ -70,15 +79,15 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 - (void)loadImageAtPath:(NSString *)imagePath
 {
-    [self.blavatarImageView setImageWithSiteIcon:imagePath];
+    [self.blavatarImageView downloadSiteIconAt:imagePath];
 }
 
 - (void)refreshIconImage
 {
     if (self.blog.hasIcon) {
-        [self.blavatarImageView setImageWithSiteIconFor:self.blog placeholderImage:nil];
+        [self.blavatarImageView downloadSiteIconFor:self.blog placeholderImage:nil];
     } else {
-        [self.blavatarImageView setDefaultSiteIconImage];
+        self.blavatarImageView.image = [UIImage siteIconPlaceholderImage];
     }
 }
 
@@ -112,11 +121,6 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
     imageView.layer.borderWidth = 1.0;
-    imageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                action:@selector(blavatarImageTapped)];
-    singleTap.numberOfTapsRequired = 1;
-    [imageView addGestureRecognizer:singleTap];
 
     [_stackView addArrangedSubview:imageView];
 
@@ -126,7 +130,23 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                               [imageView.widthAnchor constraintEqualToConstant:BlogDetailHeaderViewBlavatarSize],
                                               heightConstraint
                                               ]];
+
     _blavatarImageView = imageView;
+}
+
+- (void)setupBlavatarDropTarget
+{
+    self.blavatarDropTarget = [UIView new];
+    [self.blavatarDropTarget setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.blavatarDropTarget.backgroundColor = [UIColor clearColor];
+
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(blavatarImageTapped)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.blavatarDropTarget addGestureRecognizer:singleTap];
+
+    [self addSubview:self.blavatarDropTarget];
+    [self.blavatarDropTarget pinSubviewToAllEdgeMargins:self.blavatarImageView];
 }
 
 - (UIActivityIndicatorView *)blavatarUpdateActivityIndicatorView {
@@ -206,6 +226,65 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     } else {
         [self.blavatarUpdateActivityIndicatorView stopAnimating];
     }
+}
+
+#pragma mark - Drop Interaction Handler
+- (void)dropInteraction:(UIDropInteraction *)interaction
+        sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.blavatarImageView depressSpringAnimation:nil];
+}
+
+- (BOOL)dropInteraction:(UIDropInteraction *)interaction
+       canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    BOOL isAnImage = [session canLoadObjectsOfClass:[UIImage self]];
+    BOOL isSingleImage = [session.items count] == 1;
+    return (isAnImage && isSingleImage);
+}
+
+- (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
+                   sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    CGPoint dropLocation = [session locationInView:self.blavatarDropTarget];
+
+    UIDropOperation dropOperation = UIDropOperationCancel;
+    
+    if (CGRectContainsPoint(self.blavatarDropTarget.bounds, dropLocation)) {
+        dropOperation = UIDropOperationCopy;
+    }
+
+    UIDropProposal *dropProposal = [[UIDropProposal alloc] initWithDropOperation:dropOperation];
+    
+    return  dropProposal;
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+            performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self setUpdatingIcon:YES];
+    [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
+        UIImage *image = [images firstObject];
+        [self.delegate siteIconReceivedDroppedImage:image];
+    }];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+           concludeDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.blavatarImageView normalizeSpringAnimation:nil];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidExit:(id<UIDropSession>)session  API_AVAILABLE(ios(11.0))
+{
+    [self.blavatarImageView normalizeSpringAnimation:nil];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidEnd:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.blavatarImageView normalizeSpringAnimation:nil];
 }
 
 @end

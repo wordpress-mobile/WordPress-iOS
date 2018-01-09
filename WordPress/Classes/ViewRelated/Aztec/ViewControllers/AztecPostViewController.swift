@@ -3137,14 +3137,31 @@ extension AztecPostViewController {
     }
 
     func displayDetails(forAttachment attachment: ImageAttachment) {
+        guard let attachmentRange = richTextView.textStorage.ranges(forAttachment: attachment).first else {
+            return
+        }
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
+        var oldURL: URL?
+
+        if let linkRange = richTextView.linkFullRange(forRange: attachmentRange),
+            let url = richTextView.linkURL(forRange: attachmentRange),
+            NSIntersectionRange(attachmentRange, linkRange) == attachmentRange {
+            oldURL = url
+            controller.linkURL = url
+        }
+
         controller.onUpdate = { [weak self] (alignment, size, linkURL, alt) in
             self?.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
-                updated.linkURL = linkURL
                 updated.alt = alt
+            }
+            // Update associated link
+            if let updatedURL = linkURL {
+                self?.richTextView.setLink(updatedURL, inRange: attachmentRange)
+            } else if oldURL != nil && linkURL == nil {
+                self?.richTextView.removeLink(inRange: attachmentRange)
             }
         }
 

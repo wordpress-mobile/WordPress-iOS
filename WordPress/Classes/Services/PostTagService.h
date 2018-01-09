@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
  Sync an initial batch of tags for blog via default remote parameters and responses.
  */
 - (void)syncTagsForBlog:(Blog *)blog
-                success:(nullable void (^)(void))success
+                success:(nullable void (^)(NSArray <PostTag *> *tags))success
                 failure:(nullable void (^)(NSError *error))failure;
 
 /**
@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
  Retrieves the most used tags for a blog.
  */
 - (void)getTopTagsForBlog:(Blog *)blog
-                  success:(nullable void (^)(NSArray <NSString *> *tags))success
+                  success:(nullable void (^)(NSArray <PostTag *> *tags))success
                   failure:(nullable void (^)(NSError *error))failure;
 
 /**
@@ -38,6 +38,22 @@ NS_ASSUME_NONNULL_BEGIN
                    success:(nullable void (^)(NSArray <PostTag *> *tags))success
                    failure:(nullable void (^)(NSError *error))failure;
 
+
+/**
+ Deletes a tag assigned to a blog
+ */
+- (void)deleteTag:(PostTag*)tag
+          forBlog:(Blog *)blog
+          success:(nullable void (^)(void))success
+          failure:(nullable void (^)(NSError *error))failure;
+
+/**
+ Saves a tag assigned to a blog
+ */
+- (void)saveTag:(PostTag*)tag
+        forBlog:(Blog *)blog
+        success:(nullable void (^)(PostTag *tag))success
+        failure:(nullable void (^)(NSError *error))failure;
 @end
 
 NS_ASSUME_NONNULL_END
