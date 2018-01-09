@@ -6,10 +6,14 @@ import WordPressShared
 /// A collection of helper methods for NUX.
 ///
 @objc class SigninHelpers: NSObject {
-    fileprivate static let AuthenticationEmailKey = "AuthenticationEmailKey"
     fileprivate static let WPComSuffix = ".wordpress.com"
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
+    fileprivate enum Constants {
+        static let authenticationInfoKey = "authenticationInfoKey"
+        static let jetpackBlogIDURL = "jetpackBlogIDURL"
+        static let username = "username"
+    }
 
     // MARK: - Helpers for presenting the login flow
 
@@ -26,7 +30,7 @@ import WordPressShared
     }
 
     /// Used to present the new wpcom-only login flow from the app delegate
-    @objc class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController) {
+    @objc class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController, forJetpackBlog blog: Blog? = nil) {
         defer {
             trackOpenedLogin()
         }
@@ -36,6 +40,12 @@ import WordPressShared
             return
         }
         controller.restrictToWPCom = true
+        if let blog = blog {
+            controller.loginFields.meta.jetpackBlogID = blog.objectID
+            if let email = blog.jetpack?.connectedEmail {
+                controller.loginFields.username = email
+            }
+        }
 
         let navController = LoginNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
@@ -62,6 +72,7 @@ import WordPressShared
         let context = ContextManager.sharedInstance().mainContext
         let loginFields = LoginFields()
         if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
+            loginFields.emailAddress = account.email
             loginFields.username = account.username
         }
 
@@ -70,6 +81,7 @@ import WordPressShared
             fatalError("unable to create wpcom password screen")
         }
 
+        controller.loginFields = loginFields
         controller.dismissBlock = onDismissed
         return NUXNavigationController(rootViewController: controller)
     }
@@ -105,15 +117,19 @@ import WordPressShared
             return false
         }
 
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = accountService.defaultWordPressComAccount() {
-            DDLogInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
+        guard let loginFields = retrieveLoginInfoForTokenAuth() else {
+            DDLogInfo("App opened with authentication link but info wasn't found for token.")
             return false
         }
 
-        guard let email = getEmailAddressForTokenAuth() else {
-            DDLogInfo("App opened with authentication link but email wasn't found for token.")
-            return false
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let account = accountService.defaultWordPressComAccount() {
+            // The only time we should expect a magic link login when there is already a default wpcom account
+            // is when a user is logging into Jetpack.
+            if !loginFields.meta.jetpackLogin {
+                DDLogInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
+                return false
+            }
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -121,7 +137,8 @@ import WordPressShared
             DDLogInfo("App opened with authentication link but couldn't create login screen.")
             return false
         }
-        loginController.email = email
+        loginController.loginFields = loginFields
+        loginController.email = loginFields.username
         loginController.token = token
         let controller = loginController
         WPAppAnalytics.track(.loginMagicLinkOpened)
@@ -148,7 +165,7 @@ import WordPressShared
             presenter.present(navController, animated: false, completion: nil)
         }
 
-        deleteEmailAddressForTokenAuth()
+        deleteLoginInfoForTokenAuth()
         return true
     }
 
@@ -334,31 +351,52 @@ import WordPressShared
     }
 
 
-    // MARK: - Helpers for Saved Magic Link Email
+    // MARK: - Helpers for Saved Magic Link Info
 
-
-    /// Saves the specified email address in NSUserDefaults
+    /// Saves certain login information in NSUserDefaults
     ///
-    /// - Parameter email: The email address to save.
+    /// - Parameter loginFields: The loginFields instance from which to save.
     ///
-    @objc class func saveEmailAddressForTokenAuth(_ email: String) {
-        UserDefaults.standard.set(email, forKey: AuthenticationEmailKey)
+    class func storeLoginInfoForTokenAuth(_ loginFields: LoginFields) {
+        var dict: [String: String] = [
+            Constants.username: loginFields.username
+        ]
+        if let url = loginFields.meta.jetpackBlogID?.uriRepresentation().absoluteString {
+            dict[Constants.jetpackBlogIDURL] = url
+        }
+        UserDefaults.standard.set(dict, forKey: Constants.authenticationInfoKey)
     }
 
 
-    /// Removes the saved email address from NSUserDefaults
+    /// Retrieves stored login information if any.
     ///
-    @objc class func deleteEmailAddressForTokenAuth() {
-        UserDefaults.standard.removeObject(forKey: AuthenticationEmailKey)
+    /// - Returns: A loginFields instance or nil.
+    ///
+    class func retrieveLoginInfoForTokenAuth() -> LoginFields? {
+        guard let dict = UserDefaults.standard.dictionary(forKey: Constants.authenticationInfoKey) else {
+            return nil
+        }
+
+        let loginFields = LoginFields()
+        if let username = dict[Constants.username] as? String {
+            loginFields.username = username
+        }
+
+        let store = ContextManager.sharedInstance().persistentStoreCoordinator
+        if  let path = dict[Constants.jetpackBlogIDURL] as? String,
+            let url = URL(string: path),
+            let objectID = store.managedObjectID(forURIRepresentation: url) {
+            loginFields.meta.jetpackBlogID = objectID
+        }
+
+        return loginFields
     }
 
 
-    /// Fetches a saved email address if one exists.
+    /// Removes stored login information from NSUserDefaults
     ///
-    /// - Returns: The email address as a string or nil.
-    ///
-    @objc class func getEmailAddressForTokenAuth() -> String? {
-        return UserDefaults.standard.string(forKey: AuthenticationEmailKey)
+    class func deleteLoginInfoForTokenAuth() {
+        UserDefaults.standard.removeObject(forKey: Constants.authenticationInfoKey)
     }
 
 
@@ -511,4 +549,10 @@ import WordPressShared
             })
         })
     }
+}
+
+
+extension NSNotification.Name {
+    static let WPLoginCancelled = Foundation.Notification.Name(rawValue: "WPLoginCancelled")
+    static let WPLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WPLoginFinishedJetpackLogin")
 }

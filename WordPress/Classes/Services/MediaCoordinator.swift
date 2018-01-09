@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 /// MediaCoordinator is responsible for creating and uploading new media
 /// items, independently of a specific view controller. It should be accessed
@@ -102,7 +103,9 @@ class MediaCoordinator: NSObject {
                             success: {
                                 self.end(media)
         }, failure: { error in
-            self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            if let error = error {
+                self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            }
             self.fail(media)
         })
         if let taskProgress = progress {
@@ -248,6 +251,14 @@ class MediaCoordinator: NSObject {
         let service = MediaService(managedObjectContext: backgroundContext)
         service.syncMediaLibrary(for: blog, success: success, failure: failure)
     }
+
+    /// This method checks the status of all media objects and updates them to the correct status if needed.
+    /// The main cause of wrong status is the app being killed while uploads of media are happening.
+    ///
+    @objc func refreshMediaStatus() {
+        let service = MediaService(managedObjectContext: backgroundContext)
+        service.refreshMediaStatus()
+    }
 }
 
 // MARK: - MediaProgressCoordinatorDelegate
@@ -269,7 +280,12 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
+        let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
+        if let notice = model?.notice {
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        }
 
+        mediaProgressCoordinator.stopTrackingOfAllMedia()
     }
 }
 

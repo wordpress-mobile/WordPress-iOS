@@ -65,9 +65,9 @@ struct InstructionRow: ImmuTableRow {
 }
 
 enum SiteType: String {
-    case blog
-    case website
-    case portfolio
+    case blog = "blog"
+    case website = "website"
+    case portfolio = "portfolio"
 }
 
 struct SiteTypeRow: ImmuTableRow {

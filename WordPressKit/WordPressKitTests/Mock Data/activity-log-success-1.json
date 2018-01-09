@@ -16,7 +16,8 @@
         "totalItems": 20,
         "orderedItems": [
                          {
-                         "summary": {"text": "activity002 logged in successfully"},
+                         "summary": "Login Succeeded",
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -49,7 +50,8 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 logged in successfully"},
+                         "summary": "Login Succeeded",
+                         "content": {"text": "activity002 logged in successfully"},
                          "name": "user__login",
                          "actor": {
                          "type": "Person",
@@ -83,7 +85,8 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 published Post scheduled from wp-admin"},
+                         "summary": "Post Published",
+                         "content": {"text": "activity002 published Post scheduled from wp-admin"},
                          "name": "post__published",
                          "actor": {
                          "type": "Person",
@@ -117,7 +120,8 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 updated Post scheduled from wp-admin"},
+                         "summary": "Post Updated",
+                         "content": {"text": "activity002 updated Post scheduled from wp-admin"},
                          "name": "post__updated",
                          "actor": {
                          "type": "Person",
@@ -151,7 +155,8 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 published Post scheduled post"},
+                         "summary": "Post Published",
+                         "content": {"text": "activity002 published Post scheduled post"},
                          "name": "post__published",
                          "actor": {
                          "type": "Person",
@@ -185,7 +190,8 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 updated Post scheduled post"},
+                         "summary": "Post Updated",
+                         "content": {"text": "activity002 updated Post scheduled post"},
                          "name": "post__updated",
                          "actor": {
                          "type": "Person",
@@ -219,7 +225,8 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 updated Post scheduled post"},
+                         "summary": "Post Updated",
+                         "content": {"text": "activity002 updated Post scheduled post"},
                          "name": "post__updated",
                          "actor": {
                          "type": "Person",
@@ -253,7 +260,8 @@
                          }
                          },
                          {
-                         "summary": {"text": "activity002 added user elibud to site."},
+                         "summary": "User Added",
+                         "content": {"text": "activity002 added user elibud to site."},
                          "name": "user__registered",
                          "actor": {
                          "type": "Person",

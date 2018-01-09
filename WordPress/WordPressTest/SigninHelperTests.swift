@@ -115,14 +115,18 @@ class SigninHelperTests: XCTestCase {
 
     func testEmailAddressTokenHandling() {
         let email = "example@email.com"
+        let loginFields = LoginFields()
+        loginFields.username = email
+        SigninHelpers.storeLoginInfoForTokenAuth(loginFields)
 
-        SigninHelpers.saveEmailAddressForTokenAuth(email)
-        var retrievedEmail = SigninHelpers.getEmailAddressForTokenAuth()
+        var retrievedLoginFields = SigninHelpers.retrieveLoginInfoForTokenAuth()
+        let retrievedEmail = loginFields.username
         XCTAssert(email == retrievedEmail, "The email retrived should match the email that was saved.")
 
-        SigninHelpers.deleteEmailAddressForTokenAuth()
-        retrievedEmail = SigninHelpers.getEmailAddressForTokenAuth()
-        XCTAssert(retrievedEmail == nil, "Saved email should be deleted after calling deleteEmailAddressForTokenAuth.")
+        SigninHelpers.deleteLoginInfoForTokenAuth()
+        retrievedLoginFields = SigninHelpers.retrieveLoginInfoForTokenAuth()
+
+        XCTAssert(retrievedLoginFields == nil, "Saved loginFields should be deleted after calling deleteLoginInfoForTokenAuth.")
     }
 
 }

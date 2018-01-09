@@ -9,6 +9,7 @@ class MainNavigationTests: XCTestCase {
         continueAfterFailure = false
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         XCUIApplication().launch()
+        BaseScreen.testCase = self
 
         // Logout first if needed
         logoutIfNeeded()
@@ -23,7 +24,12 @@ class MainNavigationTests: XCTestCase {
     func testTabBarNavigation() {
         let app = XCUIApplication()
         let mainNavigationTabBar = app.tabBars["Main Navigation"]
-        simpleLogin(username: WordPressTestCredentials.oneStepUser, password: WordPressTestCredentials.oneStepPassword)
+        _ = WelcomeScreen.init().login()
+            .proceedWith(email: WPUITestCredentials.testUserEmail)
+            .proceedWithPassword()
+            .proceedWith(password: WPUITestCredentials.testUserPassword)
+            .continueWithSelectedSite()
+
         self.waitForElementToAppear(element: mainNavigationTabBar)
 
         mainNavigationTabBar.buttons["My Sites"].tap()
@@ -34,13 +40,13 @@ class MainNavigationTests: XCTestCase {
         self.waitForElementToAppear(element: app.tables["Reader"])
 
         mainNavigationTabBar.buttons["Me"].tap()
-        self.waitForElementToAppear(element: app.staticTexts["Me"])
+        self.waitForElementToAppear(element: app.navigationBars["Me"].otherElements["Me"])
 
         mainNavigationTabBar.buttons["Notifications"].tap()
-        self.waitForElementToAppear(element: app.staticTexts["Notifications"])
+        self.waitForElementToAppear(element: app.navigationBars["Notifications"])
 
-        mainNavigationTabBar.buttons["New Post"].tap()
-        app.navigationBars["WPPostView"].buttons["Cancel"].tap()
+        mainNavigationTabBar.buttons["Write"].tap()
+        app.buttons["Close"].tap()
     }
 
 }

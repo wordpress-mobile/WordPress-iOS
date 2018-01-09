@@ -590,6 +590,37 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [WPAnalytics refreshMetadata];
 }
 
+- (void)associateSyncedBlogsToJetpackAccount:(WPAccount *)account
+                                     success:(void (^)(void))success
+                                     failure:(void (^)(NSError *error))failure
+{
+    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithWordPressComRestApi:account.wordPressComRestApi];
+    [remote getBlogsWithSuccess:^(NSArray *remoteBlogs) {
+
+        NSMutableSet *accountBlogIDs = [NSMutableSet new];
+        for (RemoteBlog *remoteBlog in remoteBlogs) {
+            [accountBlogIDs addObject:remoteBlog.blogID];
+        }
+
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+        request.predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
+        NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:nil];
+        blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            Blog *blog = (Blog *)evaluatedObject;
+            NSNumber *jetpackBlogID = blog.jetpack.siteID;
+            return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];
+        }]];
+        [account addBlogs:[NSSet setWithArray:blogs]];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+        success();
+
+    } failure:^(NSError *error) {
+        failure(error);
+
+    }];
+}
+
 #pragma mark - Private methods
 
 - (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)(void))completion
@@ -974,6 +1005,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
     settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
+    settings.dateFormat = remoteSettings.dateFormat;
+    settings.timeFormat = remoteSettings.timeFormat;
+    settings.startOfWeek = remoteSettings.startOfWeek;
+    settings.postsPerPage = remoteSettings.postsPerPage;
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
@@ -1006,6 +1041,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.relatedPostsShowHeadline = [remoteSettings.relatedPostsShowHeadline boolValue];
     settings.relatedPostsShowThumbnails = [remoteSettings.relatedPostsShowThumbnails boolValue];
 
+    // AMP
+    settings.ampSupported = [remoteSettings.ampSupported boolValue];
+    settings.ampEnabled = [remoteSettings.ampEnabled boolValue];
+
     // Sharing
     settings.sharingButtonStyle = remoteSettings.sharingButtonStyle;
     settings.sharingLabel = remoteSettings.sharingLabel;
@@ -1034,6 +1073,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Writing
     remoteSettings.defaultCategoryID = settings.defaultCategoryID;
     remoteSettings.defaultPostFormat = settings.defaultPostFormat;
+    remoteSettings.dateFormat = settings.dateFormat;
+    remoteSettings.timeFormat = settings.timeFormat;
+    remoteSettings.startOfWeek = settings.startOfWeek;
+    remoteSettings.postsPerPage = settings.postsPerPage;
 
     // Discussion
     remoteSettings.commentsAllowed = @(settings.commentsAllowed);
@@ -1059,6 +1102,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     
     remoteSettings.pingbackInboundEnabled = @(settings.pingbackInboundEnabled);
     remoteSettings.pingbackOutboundEnabled = @(settings.pingbackOutboundEnabled);
+
+    // AMP
+    remoteSettings.ampEnabled = @(settings.ampEnabled);
     
     // Related Posts
     remoteSettings.relatedPostsAllowed = @(settings.relatedPostsAllowed);

@@ -574,7 +574,7 @@ private extension NotificationDetailsViewController {
 
         // Download the Gravatar
         let mediaURL = gravatarBlock?.media.first?.mediaURL
-        cell.downloadGravatarWithURL(mediaURL)
+        cell.downloadAuthorAvatar(with: mediaURL)
     }
 
     func setupFooterCell(_ cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
@@ -753,7 +753,11 @@ private extension NotificationDetailsViewController {
 
         // Setup: Callbacks
         cell.onUrlClick = { [weak self] url in
-            self?.displayURL(url as URL)
+            guard let `self` = self, self.isViewOnScreen() else {
+                return
+            }
+
+            self.displayURL(url)
         }
     }
 

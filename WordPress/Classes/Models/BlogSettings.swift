@@ -44,6 +44,21 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var defaultPostFormat: String?
 
+    /// The blog's date format setting
+    ///
+    @NSManaged var dateFormat: String
+
+    /// The blog's time format setting
+    ///
+    @NSManaged var timeFormat: String
+
+    /// The blog's chosen day to start the week setting
+    ///
+    @NSManaged var startOfWeek: String
+
+    /// The number of posts displayed per blog's page
+    ///
+    @NSManaged var postsPerPage: NSNumber?
 
 
     // MARK: - Discussion
@@ -172,7 +187,15 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var sharingDisabledReblogs: Bool
 
+    // MARK: AMP
 
+    /// Indicates whether AMP is supported
+    ///
+    @NSManaged var ampSupported: Bool
+
+    /// Indicates whether AMP is enabled
+    ///
+    @NSManaged var ampEnabled: Bool
 
     // MARK: - Jetpack Settings
 

@@ -16,6 +16,7 @@ extern NSString * const JetpackVersionMinimumRequired;
 @property (nonatomic, strong) NSString *version;
 @property (nonatomic, strong) NSString *connectedUsername;
 @property (nonatomic, strong) NSString *connectedEmail;
+@property (nonatomic, assign) BOOL automatedTransfer;
 
 #pragma mark Helpers
 
