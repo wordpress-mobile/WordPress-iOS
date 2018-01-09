@@ -49,11 +49,11 @@ extension PluginDirectoryEntry: Decodable {
 
         // If there's no hi-res version of the banner, the API returns `high: false`, instead of something more logical,
         // like an empty string or `null`, hence the dance below.
-        let banners = try container.nestedContainer(keyedBy: BannersKeys.self, forKey: .banners)
+        let banners = try? container.nestedContainer(keyedBy: BannersKeys.self, forKey: .banners)
 
-        if let highRes = try? banners.decodeIfPresent(String.self, forKey: .high) {
+        if let highRes = try? banners?.decodeIfPresent(String.self, forKey: .high) {
             banner = highRes.flatMap(URL.init(string:))
-        } else if let lowRes = try? banners.decodeIfPresent(String.self, forKey: .low) {
+        } else if let lowRes = try? banners?.decodeIfPresent(String.self, forKey: .low) {
             banner = lowRes.flatMap(URL.init(string:))
         } else {
             banner = nil
