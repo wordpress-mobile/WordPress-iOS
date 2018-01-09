@@ -14,6 +14,7 @@ class PluginDirectoryTests: XCTestCase {
             XCTAssertEqual(plugin.slug, "jetpack")
             XCTAssertEqual(plugin.version, "5.5.1")
             XCTAssertNotNil(plugin.icon)
+            XCTAssertNotNil(plugin.banner)
         } catch {
             XCTFail("Failed decoding plugin \(error)")
         }
@@ -30,6 +31,7 @@ class PluginDirectoryTests: XCTestCase {
             XCTAssertEqual(plugin.slug, "rename-xml-rpc")
             XCTAssertEqual(plugin.version, "1.1")
             XCTAssertNil(plugin.icon)
+            XCTAssertNil(plugin.banner)
         } catch {
             XCTFail("Failed decoding plugin \(error)")
         }
@@ -40,7 +42,7 @@ class PluginDirectoryTests: XCTestCase {
         do {
             let request = try endpoint.buildRequest()
             XCTAssertEqual(request.httpMethod, "GET")
-            XCTAssertEqual(request.url?.absoluteString, "https://api.wordpress.org/plugins/info/1.0/jetpack.json?fields=icons")
+            XCTAssertEqual(request.url?.absoluteString, "https://api.wordpress.org/plugins/info/1.0/jetpack.json?fields=icons%2Cbanners")
         } catch {
             XCTFail(error.localizedDescription)
         }
