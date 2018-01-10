@@ -134,7 +134,7 @@ class MediaThumbnailExporter: MediaExporter {
 
     public func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         guard let fileURL = url else {
-            onError(exporterErrorWith(error:ThumbnailExportError.failedToGenerateThumbnailFileURL))
+            onError(exporterErrorWith(error: ThumbnailExportError.failedToGenerateThumbnailFileURL))
             return Progress.discreteCompletedProgress()
         }
         return exportThumbnail(forFile: fileURL, onCompletion: { (identifier, export) in

@@ -159,7 +159,7 @@ class MediaVideoExporter: MediaExporter {
     func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         let asset = AVURLAsset(url: url)
         guard asset.isExportable else {
-            onError(exporterErrorWith(error:VideoExportError.videoAssetWasDetectedAsNotExportable))
+            onError(exporterErrorWith(error: VideoExportError.videoAssetWasDetectedAsNotExportable))
             return Progress.discreteCompletedProgress()
         }
         let generator = AVAssetImageGenerator(asset: asset)
