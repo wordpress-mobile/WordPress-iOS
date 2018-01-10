@@ -88,10 +88,10 @@ class MediaAssetExporter: MediaExporter {
         options.resizeMode = .exact
         options.isNetworkAccessAllowed = true
         options.isSynchronous = true
-        let progress = Progress.discreteProgress(totalUnitCount: 100)
+        let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = true
         options.progressHandler = { (progressValue, error, stop, info) in
-            progress.completedUnitCount = Int64(progressValue * 50)
+            progress.completedUnitCount = MediaExportProgressUnits.halfDone
             if progress.isCancelled {
                 stop.pointee = true
             }
@@ -120,7 +120,7 @@ class MediaAssetExporter: MediaExporter {
                              contentMode: .aspectFit,
                              options: options,
                              resultHandler: { (image, info) in
-                                progress.completedUnitCount = 50
+                                progress.completedUnitCount = MediaExportProgressUnits.halfDone
                                 guard let image = image else {
                                     onImageRequestError(info?[PHImageErrorKey] as? Error)
                                     return
@@ -132,7 +132,7 @@ class MediaAssetExporter: MediaExporter {
                                     exporter.options = options
                                 }
                                 exporter.export(onCompletion: { (imageExport) in
-                                    progress.completedUnitCount = 100
+                                    progress.completedUnitCount = MediaExportProgressUnits.done
                                     onCompletion(imageExport)
                                 },
                                                 onError: onError)

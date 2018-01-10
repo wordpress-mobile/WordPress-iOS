@@ -37,7 +37,7 @@ class MediaCoordinator: NSObject {
         }
         mediaProgressCoordinator.track(numberOfItems: 1)
         let service = MediaService(managedObjectContext: backgroundContext)
-        let totalProgress = Progress.discreteProgress(totalUnitCount: 10)
+        let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
         let media = service.createMedia(with: asset,
                             objectID: blog.objectID,
@@ -48,11 +48,12 @@ class MediaCoordinator: NSObject {
                                     return
                                 }
                                 let uploadProgress = strongSelf.uploadMedia(media)
-                                totalProgress.addChild(uploadProgress, withPendingUnitCount: 5)
+                                totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         })
+        begin(media)
         if let creationProgress = creationProgress {
-            totalProgress.addChild(creationProgress, withPendingUnitCount: 5)
-            self.mediaProgressCoordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
+            totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
+            mediaProgressCoordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
         }
     }
 
@@ -62,6 +63,7 @@ class MediaCoordinator: NSObject {
             return
         }
         mediaProgressCoordinator.track(numberOfItems: 1)
+        begin(media)
         uploadMedia(media)
     }
 
@@ -92,8 +94,6 @@ class MediaCoordinator: NSObject {
     }
 
     @discardableResult private func uploadMedia(_ media: Media) -> Progress {
-        begin(media)
-
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
