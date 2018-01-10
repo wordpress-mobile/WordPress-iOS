@@ -43,7 +43,7 @@ open class MediaImportService: LocalCoreDataService {
     @objc(importResource:toMedia:onCompletion:onError:)
     func `import`(_ exportable: ExportableAsset, to media: Media, onCompletion: @escaping MediaCompletion, onError: @escaping OnError) -> Progress? {
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
-        importQueue.sync {
+        importQueue.async {
             guard let exporter = self.makeExporter(for: exportable) else {
                 preconditionFailure("An exporter needs to be availale")
             }
