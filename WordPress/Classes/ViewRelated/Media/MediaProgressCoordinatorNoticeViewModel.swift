@@ -2,6 +2,7 @@
 struct MediaProgressCoordinatorNoticeViewModel {
     private let mediaProgressCoordinator: MediaProgressCoordinator
     private let progress: Progress
+    private let failedMedia: [Media]
 
     init?(mediaProgressCoordinator: MediaProgressCoordinator) {
         guard !mediaProgressCoordinator.isRunning,
@@ -11,6 +12,8 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
         self.mediaProgressCoordinator = mediaProgressCoordinator
         self.progress = progress
+
+        failedMedia = mediaProgressCoordinator.failedMedia
     }
 
     private var uploadSuccessful: Bool {
@@ -41,7 +44,14 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var failureNotice: Notice {
-        return Notice(title: title, message: message)
+        return Notice(title: title,
+                      message: message,
+                      actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
+                      actionHandler: {
+                        for media in self.failedMedia {
+                            MediaCoordinator.shared.retryMedia(media)
+                        }
+        })
     }
 
     var title: String {
