@@ -211,6 +211,10 @@
         "trunk": "https://downloads.wordpress.org/plugin/jetpack.zip"
     },
     "donate_link": "",
+    "banners": {
+        "low": "https://ps.w.org//jetpack//assets//banner-772x250.png?rev=1791404",
+        "high": "https://ps.w.org//jetpack//assets//banner-1544x500.png?rev=1791404"
+    },
     "icons": {
         "1x": "https://ps.w.org/jetpack/assets/icon-128x128.png?rev=969908",
         "2x": "https://ps.w.org/jetpack/assets/icon-256x256.png?rev=969908",
