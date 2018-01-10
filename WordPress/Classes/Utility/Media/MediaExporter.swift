@@ -1,5 +1,10 @@
 import Foundation
 
+enum MediaExportProgressUnits {
+    static let done: Int64 = 100
+    static let halfDone: Int64 = MediaExportProgressUnits.done / 2
+    static let quarterDone: Int64 = MediaExportProgressUnits.done / 4
+}
 /// The MediaExport class represents the result of an MediaExporter.
 ///
 class MediaExport {
