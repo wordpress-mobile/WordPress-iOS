@@ -3092,7 +3092,7 @@ extension AztecPostViewController {
 
         // Is upload still going?
         if let mediaProgress = mediaProgressCoordinator.progress(forMediaID: mediaID),
-            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount && !mediaProgress.isFailed {
             alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
                                                style: .destructive,
                                                handler: { (action) in

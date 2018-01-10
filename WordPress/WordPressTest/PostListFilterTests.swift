@@ -8,7 +8,7 @@ class PostListFilterTests: XCTestCase {
         let descriptors = filter.sortDescriptors
         XCTAssertEqual(descriptors.count, 1)
         XCTAssertEqual(descriptors[0].key, "date_created_gmt")
-        XCTAssertEqual(descriptors[0].ascending, false)
+        XCTAssertFalse(descriptors[0].ascending)
     }
 
 
@@ -17,7 +17,7 @@ class PostListFilterTests: XCTestCase {
         let descriptors = filter.sortDescriptors
         XCTAssertEqual(descriptors.count, 1)
         XCTAssertEqual(descriptors[0].key, "dateModified")
-        XCTAssertEqual(descriptors[0].ascending, false)
+        XCTAssertFalse(descriptors[0].ascending)
     }
 
     func testSortDescriptorForScheduled() {
@@ -25,7 +25,7 @@ class PostListFilterTests: XCTestCase {
         let descriptors = filter.sortDescriptors
         XCTAssertEqual(descriptors.count, 1)
         XCTAssertEqual(descriptors[0].key, "date_created_gmt")
-        XCTAssertEqual(descriptors[0].ascending, true)
+        XCTAssertTrue(descriptors[0].ascending)
     }
 
     func testSortDescriptorForTrashed() {
@@ -33,7 +33,7 @@ class PostListFilterTests: XCTestCase {
         let descriptors = filter.sortDescriptors
         XCTAssertEqual(descriptors.count, 1)
         XCTAssertEqual(descriptors[0].key, "date_created_gmt")
-        XCTAssertEqual(descriptors[0].ascending, false)
+        XCTAssertFalse(descriptors[0].ascending)
     }
 
     func testSectionIdentifiersMatchSortDescriptors() {
