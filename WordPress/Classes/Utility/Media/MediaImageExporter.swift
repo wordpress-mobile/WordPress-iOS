@@ -100,6 +100,8 @@ class MediaImageExporter: MediaExporter {
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
     ///
+    /// - Returns: a progress object that report the current state of the export process.
+    ///
     func exportImage(_ image: UIImage, fileName: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         var data: Data?
         var hint: String?
@@ -133,6 +135,8 @@ class MediaImageExporter: MediaExporter {
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
     ///
+    /// - Returns: a progress object that report the current state of the export process.
+    ///
     func exportImage(withData data: Data, fileName: String?, typeHint: String?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
             let hint = typeHint ?? kUTTypeJPEG as String
@@ -164,6 +168,8 @@ class MediaImageExporter: MediaExporter {
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
     ///
+    /// - Returns: a progress object that report the current state of the export process.
+    ///
     func exportImage(atFile url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
             let identifierHint = url.typeIdentifierFileExtension ?? kUTTypeJPEG as String
@@ -191,6 +197,8 @@ class MediaImageExporter: MediaExporter {
     ///     - fileName: Filename if it's known.
     ///     - onCompletion: Called on successful export, with the local file URL of the exported UIImage.
     ///     - onError: Called if an error was encountered during creation.
+    ///
+    /// - Returns: a progress object that report the current state of the export process.
     ///
     func exportImageSource(_ source: CGImageSource, filename: String?, type: String, onCompletion: @escaping OnMediaExport, onError: OnExportError) -> Progress {
         do {
