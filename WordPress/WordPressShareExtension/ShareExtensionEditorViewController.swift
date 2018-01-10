@@ -9,6 +9,18 @@ import WordPressKit
 
 class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
+    // MARK: - Public Properties
+
+    typealias CompletionBlock = () -> Void
+    
+    /// This completion handler closure is executed when this VC is dismissed
+    ///
+    @objc open var cancelCompletionBlock: CompletionBlock?
+
+    /// The extension context data provided from the host app
+    ///
+    open var context: NSExtensionContext?
+
     // MARK: - Private Properties
 
     /// Cancel Bar Button
@@ -180,9 +192,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         // This needs to called first
         configureMediaAppearance()
 
-        // Grab the content from the host app
-        loadContent(extensionContext: extensionContext)
-
         // Setup
         WPFontManager.loadNotoFontFamily()
         configureNavigationBar()
@@ -191,6 +200,13 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Load everything into the editor from the host app
+        loadContent(extensionContext: context)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -324,7 +340,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     // MARK: - Configuration Methods
 
     func configureNavigationBar() {
-        title = NSLocalizedString("Share to WordPress", comment: "Title for Share Exte nsion")
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = nextButton
     }
@@ -891,7 +906,8 @@ extension ShareExtensionEditorViewController {
 
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
-        closeShareExtensionWithoutSaving()
+        cleanUpSharedContainer()
+        dismiss(animated: true, completion: self.cancelCompletionBlock)
     }
 
     @objc func nextWasPressed() {
@@ -1192,7 +1208,8 @@ private extension ShareExtensionEditorViewController {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
-            self.closeShareExtensionWithoutSaving()
+            self.cleanUpSharedContainer()
+            self.dismiss(animated: true, completion: self.cancelCompletionBlock)
         }
 
         alertController.addAction(alertAction)

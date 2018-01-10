@@ -141,15 +141,13 @@ extension ShareExtensionAbstractViewController {
         return fullPath
     }
 
-    func closeShareExtensionWithoutSaving() {
+    func cleanUpSharedContainer() {
         // First, remove the temp media files if needed
         for tempMediaFileURL in shareData.sharedImageDict.values {
             if !tempMediaFileURL.pathExtension.isEmpty {
                 ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
             }
         }
-
-        extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
 }
 
