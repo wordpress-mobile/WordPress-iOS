@@ -669,11 +669,15 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             return
         }
         switch media.remoteStatus {
-        case .processing, .pushing:
+        case .processing:
             if let progress = MediaCoordinator.shared.progress(for: media) {
                 overlayView.state = .progress(progress.fractionCompleted)
             } else {
                 overlayView.state = .indeterminate
+            }
+        case .pushing:
+            if let progress = MediaCoordinator.shared.progress(for: media) {
+                overlayView.state = .progress(progress.fractionCompleted)
             }
         case .failed:
             overlayView.state = .retry
