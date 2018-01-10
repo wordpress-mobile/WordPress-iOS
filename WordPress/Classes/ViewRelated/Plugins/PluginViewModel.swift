@@ -29,11 +29,24 @@ class PluginViewModel: Observable {
     var dismiss: (() -> Void)?
 
     var tableViewModel: ImmuTable {
+
+        var header: ImmuTableRow?
+        if let directory = plugin.directoryEntry {
+            header = PluginHeaderRow(
+                directoryEntry: directory,
+                onLinkTap: { [unowned self] in
+                    guard let url = directory.authorURL else { return }
+                    let controller = WebViewControllerFactory.controller(url: url)
+                    let navigationController = UINavigationController(rootViewController: controller)
+                    self.present?(navigationController)
+            })
+        }
+
         var versionRow: ImmuTableRow?
         if let version = plugin.state.version {
             versionRow = TextRow(
-                title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
-                value: version)
+                title: NSLocalizedString("Version \(version)", comment: "Version of an installed plugin"),
+                value: NSLocalizedString("Installed", comment: "Indicates the state of the plugin"))
         }
 
         var availableUpdateRow: ImmuTableRow?
@@ -90,7 +103,7 @@ class PluginViewModel: Observable {
 
         var homeLink: ImmuTableRow?
         if let homeURL = plugin.state.homeURL {
-            homeLink = NavigationItemRow(
+            homeLink = LinkRow(
                 title: NSLocalizedString("Plugin homepage", comment: "Link to a plugin's home page"),
                 action: { [unowned self] _ in
                     let controller = WebViewControllerFactory.controller(url: homeURL)
@@ -101,6 +114,7 @@ class PluginViewModel: Observable {
 
         return ImmuTable(optionalSections: [
             ImmuTableSection(optionalRows: [
+                header,
                 versionRow,
                 availableUpdateRow
                 ]),
@@ -177,6 +191,6 @@ class PluginViewModel: Observable {
     }
 
     static var immutableRows: [ImmuTableRow.Type] {
-        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self]
+        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self, PluginHeaderRow.self]
     }
 }

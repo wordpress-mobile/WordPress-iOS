@@ -37,9 +37,13 @@ class PluginViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
+        setupViews()
+
         ImmuTable.registerRows(PluginViewModel.immutableRows, tableView: tableView)
         viewModelReceipt = viewModel.onChange { [weak self] in
             self?.bindViewModel()
@@ -47,7 +51,16 @@ class PluginViewController: UITableViewController {
         bindViewModel()
     }
 
-    func bindViewModel() {
+    private func setupViews() {
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 0.01))
+        // This is a hack/work-around to remove the gap from the top of the tableView — the system leaves
+        // a gap with a `grouped` style by default — we want the banner up top, without any gaps.
+        tableView.separatorInset = UIEdgeInsets()
+
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+    }
+
+    private func bindViewModel() {
         handler.viewModel = viewModel.tableViewModel
         title = viewModel.title
     }
