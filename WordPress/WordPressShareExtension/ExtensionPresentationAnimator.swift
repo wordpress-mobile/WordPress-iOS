@@ -21,7 +21,7 @@ final class ExtensionPresentationAnimator: NSObject {
 extension ExtensionPresentationAnimator: UIViewControllerAnimatedTransitioning {
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.4
+        return Constants.animationDuration
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -55,5 +55,13 @@ extension ExtensionPresentationAnimator: UIViewControllerAnimatedTransitioning {
         }) { finished in
             transitionContext.completeTransition(finished)
         }
+    }
+}
+
+// MARK: - Constants
+
+private extension ExtensionPresentationAnimator {
+    struct Constants {
+        static let animationDuration: Double = 0.35
     }
 }
