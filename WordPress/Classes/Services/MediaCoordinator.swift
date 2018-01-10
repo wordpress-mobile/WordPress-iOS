@@ -47,7 +47,7 @@ class MediaCoordinator: NSObject {
                                     return
                                 }
                                 let uploadProgress = strongSelf.uploadMedia(media)
-                                totalProgress.addChild(uploadProgress, withPendingUnitCount: 5);
+                                totalProgress.addChild(uploadProgress, withPendingUnitCount: 5)
         })
         if let creationProgress = creationProgress {
             totalProgress.addChild(creationProgress, withPendingUnitCount: 5)
