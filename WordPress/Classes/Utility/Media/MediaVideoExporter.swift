@@ -129,10 +129,10 @@ class MediaVideoExporter: MediaExporter {
         if options.stripsGeoLocationIfNeeded {
             session.metadataItemFilter = AVMetadataItemFilter.forSharing()
         }
-        let progress = Progress.discreteProgress(totalUnitCount: 100)
+        let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.cancellationHandler = { session.cancelExport() }
         session.exportAsynchronously {
-            progress.completedUnitCount = 100
+            progress.completedUnitCount = MediaExportProgressUnits.halfDone
             guard session.status == .completed else {
                 if let error = session.error {
                     onError(self.exporterErrorWith(error: error))
@@ -167,14 +167,14 @@ class MediaVideoExporter: MediaExporter {
             generator.maximumSize = CGSize(width: maxSize, height: maxSize)
         }
         generator.appliesPreferredTrackTransform = true
-        let progress = Progress.discreteProgress(totalUnitCount: 2)
+        let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = true
         progress.cancellationHandler = { () in
             generator.cancelAllCGImageGeneration()
         }
         generator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(0, 1))],
                                                  completionHandler: { (time, cgImage, actualTime, result, error) in
-                                                    progress.completedUnitCount = 1
+                                                    progress.completedUnitCount = MediaExportProgressUnits.halfDone
                                                     guard let cgImage = cgImage else {
                                                         onError(VideoExportError.failedGeneratingVideoPreviewImage)
                                                         return
@@ -188,7 +188,7 @@ class MediaVideoExporter: MediaExporter {
                                                     let imageProgress = exporter.export(
                                                                          onCompletion: onCompletion,
                                                                          onError: onError)
-                                                    progress.addChild(imageProgress, withPendingUnitCount: 1)
+                                                    progress.addChild(imageProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         })
         return progress
     }
