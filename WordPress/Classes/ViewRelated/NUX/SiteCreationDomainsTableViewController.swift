@@ -1,7 +1,7 @@
 import UIKit
 import SVProgressHUD
 
-class SiteCreationDomainsViewController: UITableViewController {
+class SiteCreationDomainsTableViewController: UITableViewController {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
 
@@ -84,7 +84,7 @@ class SiteCreationDomainsViewController: UITableViewController {
     /// Sets up a gesture recognizer to detect taps on the view, but not its content.
     ///
     @objc func setupBackgroundTapGestureRecognizer() {
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SiteCreationDomainsViewController.handleBackgroundTapGesture(_:)))
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SiteCreationDomainsTableViewController.handleBackgroundTapGesture(_:)))
         gestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(gestureRecognizer)
     }
@@ -96,7 +96,7 @@ class SiteCreationDomainsViewController: UITableViewController {
 
 // MARK: - LoginWithLogoAndHelpViewController methods
 
-extension SiteCreationDomainsViewController: LoginWithLogoAndHelpViewController {
+extension SiteCreationDomainsTableViewController: LoginWithLogoAndHelpViewController {
     func handleHelpButtonTapped(_ sender: AnyObject) {
         displaySupportViewController(sourceTag: .wpComCreateSiteDomain)
     }
@@ -110,7 +110,7 @@ extension SiteCreationDomainsViewController: LoginWithLogoAndHelpViewController 
 
 // MARK: UITableViewDataSource
 
-extension SiteCreationDomainsViewController {
+extension SiteCreationDomainsTableViewController {
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
         case searchField = 1
@@ -220,7 +220,7 @@ extension SiteCreationDomainsViewController {
 
 // MARK: UITableViewDelegate
 
-extension SiteCreationDomainsViewController {
+extension SiteCreationDomainsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedDomain: String
         switch indexPath.section {
@@ -251,7 +251,7 @@ extension SiteCreationDomainsViewController {
 
 // MARK: SiteCreationDomainSearchTableViewCellDelegate
 
-extension SiteCreationDomainsViewController: SiteCreationDomainSearchTableViewCellDelegate {
+extension SiteCreationDomainsTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
         guard searchTerm.count > 0 else {
             searchSuggestions = []

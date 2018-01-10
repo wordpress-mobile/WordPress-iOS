@@ -51,7 +51,7 @@ class SiteCreationSiteDetailsViewController: NUXAbstractViewController, SigninKe
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? SiteCreationDomainsViewController {
+        if let destination = segue.destination as? SiteCreationDomainsTableViewController {
             destination.siteName = siteTitleField.text
         }
         let backButton = UIBarButtonItem()
