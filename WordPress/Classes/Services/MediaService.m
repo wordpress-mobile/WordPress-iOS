@@ -64,6 +64,7 @@
             media = [Media makeMediaWithBlog:blog];
         }
         media.mediaType = exportable.assetMediaType;
+        media.remoteStatus = MediaRemoteStatusProcessing;
         [self.managedObjectContext save: nil];
 
         // Setup completion handlers
