@@ -1,6 +1,7 @@
 import UIKit
+import SVProgressHUD
 
-class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, NSFetchedResultsControllerDelegate, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
+class SiteCreationThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 
     // MARK: - Properties
 
@@ -13,13 +14,8 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var themesSyncHelper: WPContentSyncHelper?
 
-    private lazy var themesController: NSFetchedResultsController<NSFetchRequestResult> = {
-        return self.createThemesFetchedResultsController()
-    }()
-
-    private var themeCount: NSInteger {
-        return themesController.fetchedObjects?.count ?? 0
-    }
+    private var themes: [Theme]?
+    private var themeCount: NSInteger = 0
 
     // MARK: - View
 
@@ -27,7 +23,6 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         super.viewDidLoad()
 
         configureView()
-        fetchThemes()
         setupThemesSyncHelper()
         syncContent()
     }
@@ -56,7 +51,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeSelectionHeaderView.reuseIdentifier, for: indexPath) as! ThemeSelectionHeaderView
+            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SiteCreationThemeSelectionHeaderView.reuseIdentifier, for: indexPath) as! SiteCreationThemeSelectionHeaderView
         }
         return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)
     }
@@ -70,7 +65,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectThemeCell.reuseIdentifier, for: indexPath) as! SelectThemeCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SiteCreationThemeSelectionCell.reuseIdentifier, for: indexPath) as! SiteCreationThemeSelectionCell
         cell.displayTheme = themeAtIndexPath(indexPath)
         return cell
     }
@@ -98,7 +93,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         stepLabel.numberOfLines = 1
         stepLabel.lineBreakMode = NSLineBreakMode.byTruncatingTail
         stepLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        stepLabel.text = ThemeSelectionHeaderView.stepLabelText
+        stepLabel.text = SiteCreationThemeSelectionHeaderView.stepLabelText
         stepLabel.sizeToFit()
 
         let stepDescrLabel = UILabel(frame: CGRect(x: 0, y: 0,
@@ -107,7 +102,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         stepDescrLabel.numberOfLines = 0
         stepDescrLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         stepDescrLabel.font = WPStyleGuide.fontForTextStyle(.subheadline)
-        stepDescrLabel.text = ThemeSelectionHeaderView.stepDescrLabelText
+        stepDescrLabel.text = SiteCreationThemeSelectionHeaderView.stepDescrLabelText
         stepDescrLabel.sizeToFit()
 
         let stackViewHeightMargins: CGFloat = 25 // stack view total height constraints
@@ -128,56 +123,6 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
         performSegue(withIdentifier: "showSiteDetails", sender: nil)
     }
 
-    // MARK: - Theme Fetching
-
-    private func createThemesFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult> {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Theme.entityName())
-        fetchRequest.fetchBatchSize = 4
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                             managedObjectContext: self.themeService.managedObjectContext,
-                                             sectionNameKeyPath: nil,
-                                             cacheName: nil)
-        fetchedResultsController.delegate = self
-
-        return fetchedResultsController
-    }
-
-    private func fetchThemes() {
-        do {
-            themesController.fetchRequest.predicate = themesPredicate()
-            try themesController.performFetch()
-        } catch {
-            DDLogError("Error fetching themes: \(error)")
-        }
-    }
-
-    private func themesPredicate() -> NSPredicate? {
-
-        // TODO: replace with new endpoint.
-
-        guard let siteType = siteType else {
-            return NSPredicate()
-        }
-
-        let themeCollections: [SiteType: [String]] = [
-            .blog: ["Independent Publisher 2", "Penscratch 2", "Intergalactic 2", "Libre 2"],
-            .website: ["Radcliffe 2", "Karuna", "Dara", "Twenty Seventeen"],
-            .portfolio: ["AltoFocus", "Rebalance", "Sketch", "Lodestar"]
-        ]
-        let themes = themeCollections[siteType]
-
-        var predicates = [NSPredicate]()
-
-        if let themes = themes {
-            for themeName in themes {
-                predicates.append(NSPredicate(format: "name = %@", themeName))
-            }
-        }
-
-        return NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
-    }
-
     // MARK: - Theme Syncing
 
     private func setupThemesSyncHelper() {
@@ -186,48 +131,45 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     }
 
     private func syncContent() {
+        SVProgressHUD.show(withStatus: NSLocalizedString("Loading themes", comment: "Shown while the app waits for the starting themes web service to return during the site creation process."))
         themesSyncHelper?.syncContent()
     }
 
-    private func syncThemePage(_ page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
-        assert(page > 0)
-        let account = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext).defaultWordPressComAccount()
+    private func syncThemePage(page: NSInteger, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
 
-        // TODO: replace with new endpoint.
+        guard let siteType = siteType else {
+            return
+        }
 
-        _ = themeService.getThemesFor(account,
-                                      page: page,
-                                      success: { (_, _, _) in
-        },
-                                      failure: { (error) in
+        themeService.getStartingThemes(forCategory: siteType.rawValue,
+                                       page: page,
+                                       success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
+                                        self?.themes = themes
+                                        self?.themeCount = themeCount
+                                        SVProgressHUD.dismiss()
+                                        self?.collectionView?.reloadData()
+            },
+                                       failure: { (error) in
                                         DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
                                         if let failure = failure,
                                             let error = error {
                                             failure(error as NSError)
                                         }
+                                        SVProgressHUD.dismiss()
         })
     }
 
     // MARK: - WPContentSyncHelperDelegate
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+
         if syncHelper == themesSyncHelper {
-            syncThemePage(1, success: success, failure: failure)
+            syncThemePage(page: 1, success: success, failure: failure)
         }
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         // Nothing to be done here. There will only be one page.
-    }
-
-    // MARK: - NSFetchedResultsControllerDelegate
-
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        updateResults()
-    }
-
-    private func updateResults() {
-        collectionView?.reloadData()
     }
 
     // MARK: - LoginWithLogoAndHelpViewController
@@ -253,7 +195,7 @@ class ThemeSelectionViewController: UICollectionViewController, LoginWithLogoAnd
     // MARK: - Helpers
 
     private func themeAtIndexPath(_ indexPath: IndexPath) -> Theme? {
-        return themesController.object(at: IndexPath(row: indexPath.row, section: 0)) as? Theme
+        return themes?[indexPath.row]
     }
 
     // MARK: - Misc

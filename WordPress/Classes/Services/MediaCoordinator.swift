@@ -96,7 +96,9 @@ class MediaCoordinator: NSObject {
                             success: {
                                 self.end(media)
         }, failure: { error in
-            self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            if let error = error {
+                self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            }
             self.fail(media)
         })
         if let taskProgress = progress {
@@ -269,30 +271,12 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        if let notice = self.notice(for: mediaProgressCoordinator) {
+        let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
+        if let notice = model?.notice {
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
-    }
 
-    private func notice(for mediaProgressCoordinator: MediaProgressCoordinator) -> Notice? {
-        guard !mediaProgressCoordinator.isRunning,
-            let progress = mediaProgressCoordinator.mediaGlobalProgress else {
-            return nil
-        }
-
-        guard !mediaProgressCoordinator.hasFailedMedia else {
-            return nil
-        }
-
-        let title: String
-        let completedUnits = progress.completedUnitCount
-        if completedUnits == 1 {
-            title = NSLocalizedString("Media uploaded (%ld file)", comment: "Alert displayed to the user when a single media item has uploaded successfully.")
-        } else {
-            title = NSLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully.")
-        }
-
-        return Notice(title: String.localizedStringWithFormat(title, completedUnits))
+        mediaProgressCoordinator.stopTrackingOfAllMedia()
     }
 }
 

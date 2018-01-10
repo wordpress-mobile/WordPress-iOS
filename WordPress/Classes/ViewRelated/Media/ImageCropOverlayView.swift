@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-enum ImageCropOverlayMaskShape {
+@objc enum ImageCropOverlayMaskShape: Int {
     case circle
     case square
 }
