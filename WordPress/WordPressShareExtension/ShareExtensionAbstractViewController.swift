@@ -14,6 +14,12 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
         case showModularSitePicker
     }
 
+    typealias CompletionBlock = () -> Void
+
+    /// This completion handler closure is executed when this VC is dismissed
+    ///
+    @objc var cancelCompletionBlock: CompletionBlock?
+
     /// Stateful data related to this share session.
     ///
     var shareData = ShareData()

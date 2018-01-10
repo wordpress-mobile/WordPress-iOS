@@ -3,7 +3,15 @@ import UIKit
 
 class MainShareViewController: UIViewController {
 
-    private lazy var extensionTransitioningManager = ExtensionTransitioningManager()
+    fileprivate let extensionTransitioningManager: ExtensionTransitioningManager = {
+        $0.direction = .bottom
+        return $0
+    }(ExtensionTransitioningManager())
+
+    fileprivate let shareNavController: UINavigationController = {
+        let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: "ShareNavigationController") as! UINavigationController
+    }()
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -15,19 +23,15 @@ class MainShareViewController: UIViewController {
     }
 
     func loadAndPresentNavigationVC() {
-        let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)
-        if let nav = storyboard.instantiateViewController(withIdentifier: "ShareNavigationController") as? UINavigationController {
-            extensionTransitioningManager.direction = .bottom
-            nav.transitioningDelegate = extensionTransitioningManager
-            nav.modalPresentationStyle = .custom
-            if let editor = nav.topViewController as? ShareExtensionEditorViewController {
-                editor.context = self.extensionContext
-                editor.cancelCompletionBlock = {
-                    self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-                }
+        shareNavController.transitioningDelegate = extensionTransitioningManager
+        shareNavController.modalPresentationStyle = .custom
+        if let editor = shareNavController.topViewController as? ShareExtensionEditorViewController {
+            editor.context = self.extensionContext
+            editor.cancelCompletionBlock = {
+                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }
-
-            present(nav, animated: true, completion: nil)
         }
+
+        present(shareNavController, animated: true, completion: nil)
     }
 }

@@ -72,15 +72,15 @@ class ExtensionPresentationController: UIPresentationController {
 // MARK: - Constants
 
 private extension ExtensionPresentationController {
-
-    struct Appearance {
-        static let dimmingViewBGColor = UIColor(white: 0.0, alpha: 0.5)
-        static let cornerRadius: CGFloat = 13.0
-        static let widthRatio: CGFloat = 0.95
-        static let heightRatio: CGFloat = 0.90
-    }
     struct Constants {
         static let fullAlpha: CGFloat = 1.0
         static let zeroAlpha: CGFloat = 0.0
+    }
+    
+    struct Appearance {
+        static let dimmingViewBGColor = UIColor(white: 0.0, alpha: 0.5)
+        static let cornerRadius: CGFloat = 13.0
+        static let widthRatio: CGFloat = 0.97
+        static let heightRatio: CGFloat = 0.92
     }
 }
