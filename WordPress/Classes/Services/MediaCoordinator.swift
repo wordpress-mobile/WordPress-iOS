@@ -48,11 +48,11 @@ class MediaCoordinator: NSObject {
                                     return
                                 }
                                 let uploadProgress = strongSelf.uploadMedia(media)
-                                totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
+                                totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
         begin(media)
         if let creationProgress = creationProgress {
-            totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
+            totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
             mediaProgressCoordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
         }
     }
