@@ -169,10 +169,10 @@ class MediaAssetExporter: MediaExporter {
         // Request an export session, which may take time to download the complete video data.
         let options = PHVideoRequestOptions()
         options.isNetworkAccessAllowed = true
-        let progress = Progress.discreteProgress(totalUnitCount: 100)
+        let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = true
         options.progressHandler = { (progressValue, error, stop, info) in
-            progress.completedUnitCount = Int64(progressValue * 50)
+            progress.completedUnitCount = MediaExportProgressUnits.halfDone
             if progress.isCancelled {
                 stop.pointee = true
             }
@@ -181,7 +181,7 @@ class MediaAssetExporter: MediaExporter {
                                           options: options,
                                           exportPreset: exporterVideoOptions.exportPreset,
                                           resultHandler: { (session, info) -> Void in
-                                            progress.completedUnitCount = 50
+                                            progress.completedUnitCount = MediaExportProgressUnits.halfDone
                                             guard let session = session else {
                                                 if let error = info?[PHImageErrorKey] as? Error {
                                                     onError(self.exporterErrorWith(error: error))
@@ -194,6 +194,7 @@ class MediaAssetExporter: MediaExporter {
                                             videoExporter.options = exporterVideoOptions
                                             videoExporter.mediaDirectoryType = self.mediaDirectoryType
                                             videoExporter.export(onCompletion: { (videoExport) in
+                                                progress.completedUnitCount = MediaExportProgressUnits.done
                                                 onCompletion(videoExport)
                                             },
                                                                  onError: onError)
