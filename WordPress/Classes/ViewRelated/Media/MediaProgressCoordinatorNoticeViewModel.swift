@@ -13,8 +13,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
         self.mediaProgressCoordinator = mediaProgressCoordinator
         self.progress = progress
 
-        let failedMediaIDs = mediaProgressCoordinator.failedMediaIDs
-        failedMedia = failedMediaIDs.flatMap({ mediaProgressCoordinator.media(withIdentifier: $0) })
+        failedMedia = mediaProgressCoordinator.failedMedia
     }
 
     private var uploadSuccessful: Bool {
