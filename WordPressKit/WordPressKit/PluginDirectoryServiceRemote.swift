@@ -24,7 +24,7 @@ public struct PluginDirectoryGetInformationEndpoint: Endpoint {
             .appendingPathComponent(slug)
             .appendingPathExtension("json")
         let request = URLRequest(url: url)
-        let encodedRequest = try URLEncoding.default.encode(request, with: ["fields": "icons"])
+        let encodedRequest = try URLEncoding.default.encode(request, with: ["fields": "icons,banners"])
         return encodedRequest
     }
 
