@@ -129,7 +129,10 @@ class MediaVideoExporter: MediaExporter {
         if options.stripsGeoLocationIfNeeded {
             session.metadataItemFilter = AVMetadataItemFilter.forSharing()
         }
+        let progress = Progress.discreteProgress(totalUnitCount: 100)
+        progress.cancellationHandler = { session.cancelExport() }
         session.exportAsynchronously {
+            progress.completedUnitCount = 100
             guard session.status == .completed else {
                 if let error = session.error {
                     onError(self.exporterErrorWith(error: error))
@@ -144,7 +147,7 @@ class MediaVideoExporter: MediaExporter {
                                           height: mediaURL.pixelSize.height,
                                           duration: session.asset.duration.seconds))
         }
-        return Progress.discreteCompletedProgress()
+        return progress
     }
 
     /// Generate and export a preview image for a known video at the URL, local file or remote resource.
