@@ -4,6 +4,7 @@ import Alamofire
 public struct PluginDirectoryGetInformationEndpoint: Endpoint {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US")
         formatter.dateFormat = "YYYY-MM-dd h:mma z"
         return formatter
     }()
