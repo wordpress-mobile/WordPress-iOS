@@ -17,6 +17,8 @@ extern SupportSourceTag const SupportSourceTagLoginUsernamePassword;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteCategory;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteTheme;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteDetails;
+extern SupportSourceTag const SupportSourceTagWPComCreateSiteDomain;
+extern SupportSourceTag const SupportSourceTagWPComSignupEmail;
 
 @interface SupportViewController : UITableViewController
 @property (nonatomic, strong) SupportSourceTag sourceTag;

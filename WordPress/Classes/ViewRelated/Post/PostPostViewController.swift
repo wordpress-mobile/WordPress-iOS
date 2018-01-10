@@ -147,10 +147,7 @@ class PostPostViewController: UIViewController {
         }
         siteNameLabel.text = blogSettings.name
         siteUrlLabel.text = post.blog.displayURL as String?
-        siteIconView.setImageWithSiteIcon(for: post.blog, placeholderImage: nil)
-        if siteIconView.image == .none {
-            siteIconView.superview?.isHidden = true
-        }
+        siteIconView.downloadSiteIcon(for: post.blog)
         let isPrivate = !post.blog.visible
         if isPrivate {
             shareButton.isHidden = true

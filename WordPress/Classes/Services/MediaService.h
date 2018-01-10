@@ -53,7 +53,7 @@
 - (void)uploadMedia:(nonnull Media *)media
            progress:(NSProgress * __nullable __autoreleasing * __nullable) progress
             success:(nullable void (^)(void))success
-            failure:(nullable void (^)(NSError * _Nonnull error))failure;
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 
 /**
@@ -67,7 +67,7 @@
  */
 - (void)updateMedia:(nonnull Media *)media
             success:(nullable void (^)(void))success
-            failure:(nullable void (^)(NSError * _Nonnull error))failure;
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 /**
  Updates multiple media objects similar to -updateMedia:success:failure: but batches them
@@ -79,7 +79,7 @@
  */
 - (void)updateMedia:(nonnull NSArray<Media *> *)mediaObjects
      overallSuccess:(nullable void (^)(void))overallSuccess
-            failure:(nullable void (^)(NSError * _Nonnull error))failure;
+            failure:(nullable void (^)(NSError * _Nullable error))failure;
 
 /**
  Deletes the Media object from the server. Note the Media is deleted, not trashed.
