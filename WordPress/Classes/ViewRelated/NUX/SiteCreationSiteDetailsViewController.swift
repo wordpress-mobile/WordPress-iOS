@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
+class SiteCreationSiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
 
     // MARK: - SigninKeyboardResponder Properties
 
@@ -18,6 +18,12 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     @IBOutlet weak var taglineField: LoginTextField!
     @IBOutlet weak var tagDescriptionLabel: UILabel!
     @IBOutlet weak var nextButton: LoginButton!
+
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComCreateSiteDetails
+        }
+    }
 
     // MARK: - View
 
@@ -42,6 +48,15 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? SiteCreationDomainsViewController {
+            destination.siteName = siteTitleField.text
+        }
+        let backButton = UIBarButtonItem()
+        backButton.title = NSLocalizedString("Back", comment: "Back button title.")
+        navigationItem.backBarButtonItem = backButton
     }
 
     /// Configure the view for an editing state. Should only be called from viewWillAppear
@@ -96,15 +111,10 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
     private func validateForm() {
         if siteTitleField.nonNilTrimmedText().isEmpty {
-            displayErrorAlert(NSLocalizedString("Site Title must have a value.", comment: "Error shown when Site Title does not have a value."), sourceTag: .wpComCreateSiteDetails)
+            displayErrorAlert(NSLocalizedString("Site Title must have a value.", comment: "Error shown when Site Title does not have a value."), sourceTag: sourceTag)
         }
         else {
-            let message = "Title: '\(siteTitleField.text!)'\nTagline: '\(taglineField.text ?? "")'\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-            let alertController = UIAlertController(title: nil,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle("OK")
-            self.present(alertController, animated: true, completion: nil)
+            performSegue(withIdentifier: .showDomains, sender: self)
         }
     }
 
@@ -124,14 +134,6 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
         keyboardWillHide(notification)
     }
 
-    // MARK: - LoginWithLogoAndHelpViewController
-
-    /// Override this to use the appropriate sourceTag.
-    ///
-    override func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComCreateSiteDetails)
-    }
-
     // MARK: - Misc
 
     override func didReceiveMemoryWarning() {
@@ -143,7 +145,7 @@ class SiteDetailsViewController: NUXAbstractViewController, SigninKeyboardRespon
 
 // MARK: - UITextFieldDelegate
 
-extension SiteDetailsViewController: UITextFieldDelegate {
+extension SiteCreationSiteDetailsViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == siteTitleField {
@@ -160,13 +162,6 @@ extension SiteDetailsViewController: UITextFieldDelegate {
         if textField == siteTitleField {
             let updatedString = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
             nextButton.isEnabled = !updatedString.trim().isEmpty
-        }
-        return true
-    }
-
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        if textField == siteTitleField {
-            nextButton.isEnabled = false
         }
         return true
     }

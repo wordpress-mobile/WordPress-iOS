@@ -5,6 +5,8 @@ extern const CGFloat BlogDetailHeaderViewBlavatarSize;
 @protocol BlogDetailHeaderViewDelegate
 
 - (void)siteIconTapped;
+- (void)siteIconReceivedDroppedImage:(UIImage *)image;
+- (BOOL)siteIconShouldAllowDroppedImages;
 
 @end
 

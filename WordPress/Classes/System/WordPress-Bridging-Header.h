@@ -64,6 +64,7 @@
 #import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PostSettingsViewController.h"
+#import "PostTag.h"
 #import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"
 

@@ -505,6 +505,7 @@ extension NotificationsViewController {
         markAsRead(note: note)
 
         // Display Details
+        //
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             showDetailViewController(readerViewController, sender: nil)
@@ -515,8 +516,14 @@ extension NotificationsViewController {
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetailsForNotification` and presenting
         // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
+        //
+        // Plus: Avoid pushing multiple DetailsViewController's, upon quick & repeated touch events.
+        //
+        view.isUserInteractionEnabled = false
+
         DispatchQueue.main.async {
             self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+            self.view.isUserInteractionEnabled = true
         }
     }
 
