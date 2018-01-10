@@ -14,7 +14,6 @@ final class ExtensionTransitioningManager: NSObject {
 // MARK: - UIViewControllerTransitioningDelegate
 
 extension ExtensionTransitioningManager: UIViewControllerTransitioningDelegate {
-
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController = ExtensionPresentationController(presentedViewController: presented, presenting: presenting, direction: direction)
         presentationController.delegate = self
@@ -33,7 +32,6 @@ extension ExtensionTransitioningManager: UIViewControllerTransitioningDelegate {
 // MARK: - UIAdaptivePresentationControllerDelegate
 
 extension ExtensionTransitioningManager: UIAdaptivePresentationControllerDelegate {
-
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         if traitCollection.verticalSizeClass == .compact {
             return .overFullScreen
