@@ -7,8 +7,8 @@ class MockMediaExporter: MediaExporter {
     var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaDirectory = .temporary
 
-    func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
-
+    func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
+        return Progress.discreteCompletedProgress()
     }
 }
 
