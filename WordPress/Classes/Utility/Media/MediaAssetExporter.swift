@@ -91,7 +91,7 @@ class MediaAssetExporter: MediaExporter {
         let progress = Progress.discreteProgress(totalUnitCount: 100)
         progress.isCancellable = true
         options.progressHandler = { (progressValue, error, stop, info) in
-            progress.completedUnitCount = Int64(progressValue * 100)
+            progress.completedUnitCount = Int64(progressValue * 50)
             if progress.isCancelled {
                 stop.pointee = true
             }
@@ -120,6 +120,7 @@ class MediaAssetExporter: MediaExporter {
                              contentMode: .aspectFit,
                              options: options,
                              resultHandler: { (image, info) in
+                                progress.completedUnitCount = 50
                                 guard let image = image else {
                                     onImageRequestError(info?[PHImageErrorKey] as? Error)
                                     return
@@ -131,6 +132,7 @@ class MediaAssetExporter: MediaExporter {
                                     exporter.options = options
                                 }
                                 exporter.export(onCompletion: { (imageExport) in
+                                    progress.completedUnitCount = 100
                                     onCompletion(imageExport)
                                 },
                                                 onError: onError)
@@ -170,7 +172,7 @@ class MediaAssetExporter: MediaExporter {
         let progress = Progress.discreteProgress(totalUnitCount: 100)
         progress.isCancellable = true
         options.progressHandler = { (progressValue, error, stop, info) in
-            progress.completedUnitCount = Int64(progressValue * 100)
+            progress.completedUnitCount = Int64(progressValue * 50)
             if progress.isCancelled {
                 stop.pointee = true
             }
@@ -179,6 +181,7 @@ class MediaAssetExporter: MediaExporter {
                                           options: options,
                                           exportPreset: exporterVideoOptions.exportPreset,
                                           resultHandler: { (session, info) -> Void in
+                                            progress.completedUnitCount = 50
                                             guard let session = session else {
                                                 if let error = info?[PHImageErrorKey] as? Error {
                                                     onError(self.exporterErrorWith(error: error))
