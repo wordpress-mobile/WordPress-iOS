@@ -87,7 +87,9 @@
         NSProgress *importProgress = [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
         [createProgress addChild:importProgress withPendingUnitCount:1];
     }];
-    *progress = createProgress;
+    if (progress != nil) {
+        *progress = createProgress;
+    }
     return media;
 }
 
