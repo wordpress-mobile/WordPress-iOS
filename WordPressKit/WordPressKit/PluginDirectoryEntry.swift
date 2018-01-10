@@ -59,36 +59,22 @@ extension PluginDirectoryEntry: Decodable {
             banner = nil
         }
 
-        let authorHTML = try? container.decode(String.self, forKey: .author)
+        let extractedAuthor = extractAuthor(try? container.decode(String.self, forKey: .author))
 
-        author = extractName(authorHTML)
-        authorURL = extractURL(authorHTML)
+        author = extractedAuthor?.name
+        authorURL = extractedAuthor?.link
     }
 }
 
 // Since the WPOrg API returns `author` as a HTML string (or freeform text), we need to get ugly and parse out the important bits out of it ourselves.
-private func extractName(_ authorHTML: String?) -> String? {
-    guard let author = authorHTML,
-          let closingTagIndex = author.index(of: ">") else {
-            // Some plugins don't have HTML `<a>` in them, just the name.
-            // Just return the original string in that case.
-            return authorHTML
+typealias Author = (name: String, link: URL?)
+func extractAuthor(_ string: String?) -> Author? {
+    guard let data = string?.data(using: .utf8),
+        let attributedString = try? NSAttributedString(data: data, options: [.documentType : NSAttributedString.DocumentType.html], documentAttributes: nil) else {
+            return nil
     }
 
-    let slice = String(author[author.index(after: closingTagIndex)...])
-    return slice.removingSuffix("</a>")
-}
-
-private func extractURL(_ authorHTML: String?) -> URL? {
-    guard let author = authorHTML else {
-        return nil
-    }
-
-    let withoutPrefix = author.removingPrefix("<a href=\"")
-
-    guard let closingTagIndex = withoutPrefix.index(of: ">") else { return nil }
-    let slice = withoutPrefix[...withoutPrefix.index(closingTagIndex, offsetBy: -2)]
-    // Offset by two characters: One is the closing angled bracket itself and the other is closing quotation mark.
-
-    return URL(string: String(slice))
+    let authorName = attributedString.string
+    let authorURL = attributedString.attributes(at: 0, effectiveRange: nil)[.link] as? URL
+    return (authorName, authorURL)
 }

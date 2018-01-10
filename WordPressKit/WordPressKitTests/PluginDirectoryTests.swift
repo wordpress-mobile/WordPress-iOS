@@ -13,8 +13,11 @@ class PluginDirectoryTests: XCTestCase {
             XCTAssertEqual(plugin.name, "Jetpack by WordPress.com")
             XCTAssertEqual(plugin.slug, "jetpack")
             XCTAssertEqual(plugin.version, "5.5.1")
+            XCTAssertEqual(plugin.author, "Automattic")
+            XCTAssertEqual(plugin.authorURL, URL(string:"https://jetpack.com/"))
             XCTAssertNotNil(plugin.icon)
             XCTAssertNotNil(plugin.banner)
+
         } catch {
             XCTFail("Failed decoding plugin \(error)")
         }
@@ -30,6 +33,8 @@ class PluginDirectoryTests: XCTestCase {
             XCTAssertEqual(plugin.name, "Rename XMLRPC")
             XCTAssertEqual(plugin.slug, "rename-xml-rpc")
             XCTAssertEqual(plugin.version, "1.1")
+            XCTAssertEqual(plugin.author, "Jorge Bernal")
+            XCTAssertEqual(plugin.authorURL, URL(string: "http://koke.me/"))
             XCTAssertNil(plugin.icon)
             XCTAssertNil(plugin.banner)
         } catch {
