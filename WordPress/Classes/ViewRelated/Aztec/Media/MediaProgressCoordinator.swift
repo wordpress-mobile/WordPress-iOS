@@ -240,6 +240,12 @@ public class MediaProgressCoordinator: NSObject {
         return mediaInProgress.filter({ $0.value.isFailed }).map({ $0.key })
     }
 
+    /// Returns a list of all media objects that have an error attached
+    ///
+    var failedMedia: [Media] {
+        return failedMediaIDs.flatMap({ media(withIdentifier: $0) })
+    }
+
     // MARK: - KeyPath observer method for the global progress property
 
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
