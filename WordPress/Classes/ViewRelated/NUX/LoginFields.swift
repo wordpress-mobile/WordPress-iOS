@@ -63,9 +63,18 @@ class SafariStoredCredentials {
     var storedPasswordHash = 0
 }
 
+/// An enum to indicate where the Magic Link Email was sent from.
+///
+enum EmailMagicLinkSource: Int {
+    case login
+    case signup
+}
 
 @objc
 class LoginFieldsMeta: NSObject {
+
+    /// Indicates where the Magic Link Email was sent from. 
+    var emailMagicLinkSource: EmailMagicLinkSource?
 
     /// Indicates whether a self-hosted user is attempting to log in to Jetpack
     @objc var jetpackLogin: Bool {
