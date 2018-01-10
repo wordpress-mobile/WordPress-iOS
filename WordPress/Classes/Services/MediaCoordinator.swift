@@ -35,6 +35,7 @@ class MediaCoordinator: NSObject {
         guard let asset = asset as? PHAsset else {
             return
         }
+        mediaProgressCoordinator.track(numberOfItems: 1)
         let service = MediaService(managedObjectContext: backgroundContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: 10)
         var creationProgress: Progress? = nil
@@ -60,7 +61,7 @@ class MediaCoordinator: NSObject {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
         }
-
+        mediaProgressCoordinator.track(numberOfItems: 1)
         uploadMedia(media)
     }
 
@@ -91,8 +92,6 @@ class MediaCoordinator: NSObject {
     }
 
     @discardableResult private func uploadMedia(_ media: Media) -> Progress {
-        mediaProgressCoordinator.track(numberOfItems: 1)
-
         begin(media)
 
         let service = MediaService(managedObjectContext: backgroundContext)
