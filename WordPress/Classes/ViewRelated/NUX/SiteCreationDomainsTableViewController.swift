@@ -1,11 +1,16 @@
 import UIKit
 import SVProgressHUD
 
+protocol SiteCreationDomainsTableViewControllerDelegate {
+    func domainSelected(_ domain: String)
+}
+
 class SiteCreationDomainsTableViewController: UITableViewController {
 
     open var siteName: String?
+    open var delegate: SiteCreationDomainsTableViewControllerDelegate?
 
-    var service: DomainsService?
+    private var service: DomainsService?
     private var siteTitleSuggestions: [String] = []
     private var searchSuggestions: [String] = []
     private var isSearching: Bool = false
@@ -214,6 +219,7 @@ extension SiteCreationDomainsTableViewController {
             return
         }
 
+        self.delegate?.domainSelected(selectedDomain)
         tableView.deselectSelectedRowWithAnimation(true)
 
         // Uncheck the previously selected cell.
