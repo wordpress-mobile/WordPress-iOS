@@ -13,6 +13,7 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
     }
 
     private var domainsTableViewController: SiteCreationDomainsTableViewController?
+    private var buttonViewController: SiteCreationButtonViewController?
 
     // MARK: - View
 
@@ -41,6 +42,10 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
         if let vc = segue.destination as? SiteCreationDomainsTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.siteName = siteName
+        }
+
+        if let vc = segue.destination as? SiteCreationButtonViewController {
+            buttonViewController = vc
         }
     }
 
