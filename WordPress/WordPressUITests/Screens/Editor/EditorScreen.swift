@@ -2,7 +2,16 @@ import Foundation
 import XCTest
 
 class EditorScreen: BaseScreen {
-    var type: String!
+    enum Mode {
+        case rich
+        case html
+
+        func toggle() -> Mode {
+            return self == .rich ? .html : .rich
+        }
+    }
+
+    let mode: Mode
     var textView: XCUIElement
 
     private var richTextField = "Rich Content"
@@ -10,32 +19,30 @@ class EditorScreen: BaseScreen {
 
     let titleView = XCUIApplication().textViews["Title"]
 
-    var mediaButton = XCUIApplication().buttons["formatToolbarInsertMedia"]
-    var headerButton = XCUIApplication().buttons["formatToolbarSelectParagraphStyle"]
-    var boldButton = XCUIApplication().buttons["formatToolbarToggleBold"]
-    var italicButton = XCUIApplication().buttons["formatToolbarToggleItalic"]
-    var underlineButton = XCUIApplication().buttons["formatToolbarToggleUnderline"]
-    var strikethroughButton = XCUIApplication().buttons["formatToolbarToggleStrikethrough"]
-    var blockquoteButton = XCUIApplication().buttons["formatToolbarToggleBlockquote"]
-    var listButton = XCUIApplication().buttons["formatToolbarToggleListUnordered"]
-    var linkButton = XCUIApplication().buttons["formatToolbarInsertLink"]
-    var horizontalrulerButton = XCUIApplication().buttons["formatToolbarInsertHorizontalRuler"]
-    var sourcecodeButton = XCUIApplication().buttons["formatToolbarToggleHtmlView"]
-    var moreButton = XCUIApplication().buttons["formatToolbarInsertMore"]
+    lazy var mediaButton = XCUIApplication().buttons["formatToolbarInsertMedia"]
+    lazy var headerButton = XCUIApplication().buttons["formatToolbarSelectParagraphStyle"]
+    lazy var boldButton = XCUIApplication().buttons["formatToolbarToggleBold"]
+    lazy var italicButton = XCUIApplication().buttons["formatToolbarToggleItalic"]
+    lazy var underlineButton = XCUIApplication().buttons["formatToolbarToggleUnderline"]
+    lazy var strikethroughButton = XCUIApplication().buttons["formatToolbarToggleStrikethrough"]
+    lazy var blockquoteButton = XCUIApplication().buttons["formatToolbarToggleBlockquote"]
+    lazy var listButton = XCUIApplication().buttons["formatToolbarToggleListUnordered"]
+    lazy var linkButton = XCUIApplication().buttons["formatToolbarInsertLink"]
+    lazy var horizontalrulerButton = XCUIApplication().buttons["formatToolbarInsertHorizontalRuler"]
+    lazy var sourcecodeButton = XCUIApplication().buttons["formatToolbarToggleHtmlView"]
+    lazy var moreButton = XCUIApplication().buttons["formatToolbarInsertMore"]
 
     let unorderedListOption = XCUIApplication().buttons["Unordered List"]
     let orderedListOption = XCUIApplication().buttons["Ordered List"]
 
-    init(type: String) {
+    init(mode: Mode) {
         var textField = ""
-        self.type = type
-        switch type {
-        case "rich":
+        self.mode = mode
+        switch mode {
+        case .rich:
             textField = richTextField
-        case "html":
+        case .html:
             textField = htmlTextField
-        default:
-            textField = "invalid locator. check Editor.init type param"
         }
 
         let app = XCUIApplication()
@@ -52,12 +59,12 @@ class EditorScreen: BaseScreen {
         showOptionsStrip()
     }
 
-    func showOptionsStrip() -> Void {
-        textView.coordinate(withNormalizedOffset: CGVector.zero).tap()
+    func showOptionsStrip() {
+        textView.coordinate(withNormalizedOffset: .zero).tap()
         expandOptionsSctrip()
     }
 
-    func expandOptionsSctrip() -> Void {
+    func expandOptionsSctrip() {
         let expandButton = app.children(matching: .window).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .button).element
 
         if expandButton.exists && expandButton.isHittable && !sourcecodeButton.exists {
@@ -134,8 +141,8 @@ class EditorScreen: BaseScreen {
     func switchContentView() -> EditorScreen {
         tapToolbarButton(button: sourcecodeButton)
 
-        let newType = type == "rich" ? "html" : "rich"
-        return EditorScreen.init(type: newType)
+
+        return EditorScreen(mode: mode.toggle())
     }
 
     /**
@@ -169,7 +176,7 @@ class EditorScreen: BaseScreen {
     }
 
     func getViewContent() -> String {
-        if  type == "rich" {
+        if  mode == .rich {
             return getTextContent()
         }
 
@@ -189,7 +196,7 @@ class EditorScreen: BaseScreen {
     func makeLink() -> EditorEditLinkScreen {
         tapToolbarButton(button: linkButton)
 
-        return EditorEditLinkScreen.init()
+        return EditorEditLinkScreen()
     }
     /*
      Select Image from Camera Roll by its ID. Starts with 0
@@ -214,7 +221,9 @@ class EditorScreen: BaseScreen {
         return self
     }
 
-    func goBack() -> MySitesScreen {
+    // returns void since return screen depends on from which screen it loaded
+    func goBack() {
+//    func goBack() -> MySitesScreen {
         let navBar = app.navigationBars["Azctec Editor Navigation Bar"]
         navBar.buttons["Close"].tap()
         let notSavedState = app.staticTexts["You have unsaved changes."]
@@ -222,12 +231,11 @@ class EditorScreen: BaseScreen {
             Logger.log(message: "Discarding unsaved changes", event: .v)
             app.buttons["Discard"].tap()
         }
-        return MySitesScreen.init()
     }
 
     func publish() -> EditorPublishEpilogueScreen {
         app.buttons["Publish"].tap()
-        return EditorPublishEpilogueScreen.init()
+        return EditorPublishEpilogueScreen()
     }
 
     private func getHTMLContent() -> String {
@@ -242,7 +250,6 @@ class EditorScreen: BaseScreen {
     }
 
     private func getTextContent() -> String {
-        let text = textView.value as! String
-        return text
+        return textView.value as! String
     }
 }

@@ -10,7 +10,7 @@ class EditorTests: XCTestCase {
 
         let app = XCUIApplication()
         app.launchArguments = ["NoAnimations"]
-        app.launch()
+        app.activate()
 
         editorScreen = LoginFlow
             .login(email: WPUITestCredentials.testUserEmail, password: WPUITestCredentials.testUserPassword)

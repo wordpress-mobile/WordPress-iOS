@@ -37,18 +37,18 @@ class EditorEditLinkScreen: BaseScreen {
     func ok() -> EditorScreen {
         insertButton.tap()
 
-        return EditorScreen.init(type: "rich")
+        return EditorScreen(mode: .rich)
     }
 
     func cancel() -> EditorScreen {
         cancelButton.tap()
 
-        return EditorScreen.init(type: "rich")
+        return EditorScreen(mode: .rich)
     }
 
     func remove() -> EditorScreen {
         removeButton.tap()
 
-        return EditorScreen.init(type: "rich")
+        return EditorScreen(mode: .rich)
     }
 }

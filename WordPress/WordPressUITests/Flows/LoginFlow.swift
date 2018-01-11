@@ -1,11 +1,11 @@
-import Foundation
+import XCTest
 
 class LoginFlow {
 
-    static func login(email: String, password: String) -> MySitesScreen {
+    static func login(email: String, password: String) -> MySiteScreen {
         logoutIfNeeded()
 
-        return WelcomeScreen.init().login()
+        return WelcomeScreen().login()
             .proceedWith(email: email)
             .proceedWithPassword()
             .proceedWith(password: password)
@@ -13,15 +13,14 @@ class LoginFlow {
     }
 
     static func logoutIfNeeded() {
-        if WelcomeScreen.isLoaded() ||
-            LoginPasswordScreen.isLoaded() ||
-            LoginEmailScreen.isLoaded() {
-
+        if TabNavComponent.isLoaded() {
+            Logger.log(message: "Logging out...", event: .i)
+            _ = TabNavComponent().gotoMeScreen().logout()
             return
-
         }
-        Logger.log(message: "Logging out...", event: .i)
 
-        _ = MySitesScreen.init().tabBar.gotoMeScreen().logout()
+        while LoginPasswordScreen.isLoaded() || LoginEmailScreen.isLoaded() || LinkOrPasswordScreen.isLoaded() {
+            XCUIApplication().buttons["Back"].tap()
+        }
     }
 }

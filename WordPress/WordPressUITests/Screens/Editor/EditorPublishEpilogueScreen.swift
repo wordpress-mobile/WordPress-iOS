@@ -12,8 +12,8 @@ class EditorPublishEpilogueScreen: BaseScreen {
         super.init(element: published)
     }
 
-    func done() -> MySitesScreen {
+    func done() -> MySiteScreen {
         app.navigationBars.buttons["Done"].tap()
-        return MySitesScreen.init()
+        return MySiteScreen()
     }
 }

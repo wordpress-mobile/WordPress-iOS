@@ -682,6 +682,9 @@
 		BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */; };
 		BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */; };
 		BE6DD3321FD6803700E55192 /* MeTabScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD3311FD6803700E55192 /* MeTabScreen.swift */; };
+		BE8707172006B774004FB5A4 /* MySiteScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707162006B774004FB5A4 /* MySiteScreen.swift */; };
+		BE8707192006E48E004FB5A4 /* ReaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8707182006E48E004FB5A4 /* ReaderScreen.swift */; };
+		BE87071B2006E65C004FB5A4 /* NotificationsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */; };
 		BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87E19F1BD4054F0075D45B /* WP3DTouchShortcutCreator.swift */; };
 		BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */; };
 		BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */; };
@@ -2031,6 +2034,9 @@
 		BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySitesScreen.swift; sourceTree = "<group>"; };
 		BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavComponent.swift; sourceTree = "<group>"; };
 		BE6DD3311FD6803700E55192 /* MeTabScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeTabScreen.swift; sourceTree = "<group>"; };
+		BE8707162006B774004FB5A4 /* MySiteScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySiteScreen.swift; sourceTree = "<group>"; };
+		BE8707182006E48E004FB5A4 /* ReaderScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderScreen.swift; sourceTree = "<group>"; };
+		BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsScreen.swift; sourceTree = "<group>"; };
 		BE87E19F1BD4054F0075D45B /* WP3DTouchShortcutCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutCreator.swift; path = 3DTouch/WP3DTouchShortcutCreator.swift; sourceTree = "<group>"; };
 		BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutHandler.swift; path = 3DTouch/WP3DTouchShortcutHandler.swift; sourceTree = "<group>"; };
 		BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutCreatorTests.swift; path = System/3DTouch/WP3DTouchShortcutCreatorTests.swift; sourceTree = "<group>"; };
@@ -4741,6 +4747,9 @@
 				BE6DD32D1FD67EDA00E55192 /* MySitesScreen.swift */,
 				BE6DD32F1FD67F3B00E55192 /* TabNavComponent.swift */,
 				BE6DD3311FD6803700E55192 /* MeTabScreen.swift */,
+				BE8707162006B774004FB5A4 /* MySiteScreen.swift */,
+				BE8707182006E48E004FB5A4 /* ReaderScreen.swift */,
+				BE87071A2006E65C004FB5A4 /* NotificationsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -6169,7 +6178,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/bin/xcrun simctl uninstall booted org.wordpress";
+			shellScript = "# /usr/bin/xcrun simctl uninstall booted org.wordpress";
 		};
 		A279580D198819F50031C6A3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -7172,8 +7181,10 @@
 				BE6DD32E1FD67EDA00E55192 /* MySitesScreen.swift in Sources */,
 				BED4D8351FF1208400A11345 /* EditorScreen.swift in Sources */,
 				BE6DD32C1FD6782A00E55192 /* LoginEpilogueScreen.swift in Sources */,
+				BE87071B2006E65C004FB5A4 /* NotificationsScreen.swift in Sources */,
 				BE6DD3321FD6803700E55192 /* MeTabScreen.swift in Sources */,
 				BED4D8301FF11DEF00A11345 /* EditorAztecTests.swift in Sources */,
+				BE8707172006B774004FB5A4 /* MySiteScreen.swift in Sources */,
 				BE2B4EA21FD6654A007AE3E4 /* Logger.swift in Sources */,
 				FF2716921CAAC87B0006E2D4 /* LoginTests.swift in Sources */,
 				BED4D8391FF137FD00A11345 /* EditorTests.swift in Sources */,
@@ -7186,6 +7197,7 @@
 				BE6DD3301FD67F3B00E55192 /* TabNavComponent.swift in Sources */,
 				BED4D83B1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift in Sources */,
 				BED4D8331FF11E3800A11345 /* LoginFlow.swift in Sources */,
+				BE8707192006E48E004FB5A4 /* ReaderScreen.swift in Sources */,
 				FF2716A11CABC7D40006E2D4 /* XCTest+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

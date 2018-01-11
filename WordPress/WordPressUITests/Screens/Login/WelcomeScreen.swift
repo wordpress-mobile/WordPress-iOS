@@ -14,12 +14,12 @@ class WelcomeScreen: BaseScreen {
     func login() -> LoginEmailScreen {
         logInButton.tap()
 
-        return LoginEmailScreen.init()
+        return LoginEmailScreen()
     }
 
     func createNewSite() -> SignupScreen {
         createNewSiteButton.tap()
-        return SignupScreen.init()
+        return SignupScreen()
     }
 
     static func isLoaded() -> Bool {

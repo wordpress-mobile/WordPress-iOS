@@ -90,7 +90,7 @@ extension XCTestCase {
             LoginEmailScreen.isLoaded() {
             return
         }
-        _ = MySitesScreen.init().tabBar.gotoMeScreen().logout()
+        _ = MySiteScreen().tabBar.gotoMeScreen().logout()
     }
 
     public func simpleLogin(username: String, password: String) {

@@ -10,17 +10,15 @@ class EditorAztecTests: XCTestCase {
 
         let app = XCUIApplication()
         app.launchArguments = ["NoAnimations"]
-        app.launch()
+        app.activate()
 
         editorScreen = LoginFlow
             .login(email: WPUITestCredentials.testUserEmail, password: WPUITestCredentials.testUserPassword)
-            .tabBar
-            .gotoEditorScreen()
+            .tabBar.gotoEditorScreen()
     }
 
     override func tearDown() {
         editorScreen.goBack()
-        logoutIfNeeded()
         super.tearDown()
     }
 
@@ -34,7 +32,7 @@ class EditorAztecTests: XCTestCase {
         let oneLineTitleHeight = titleTextView.frame.height
 
         let repeatTimes = isIPhone() ? 6 : 20
-        editorScreen.enterTextInTitle(text: String(repeating: "very ", count: repeatTimes) + longTitle)
+        _ = editorScreen.enterTextInTitle(text: String(repeating: "very ", count: repeatTimes) + longTitle)
 
         let twoLineTitleHeight = titleTextView.frame.height
 

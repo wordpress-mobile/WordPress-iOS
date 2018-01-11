@@ -21,16 +21,30 @@ class TabNavComponent: BaseScreen {
 
     func gotoMeScreen() -> MeTabScreen {
         meTabButton.tap()
-        return MeTabScreen.init()
+        return MeTabScreen()
     }
 
     func gotoMySitesScreen() -> MySitesScreen {
         mySitesTabButton.tap()
-        return MySitesScreen.init()
+        return MySitesScreen()
     }
 
     func gotoEditorScreen() -> EditorScreen {
         writeTabButton.tap()
-        return EditorScreen.init(type: "rich")
+        return EditorScreen(mode: .rich)
+    }
+
+    func gotoReaderScreen() -> ReaderScreen {
+        readerTabButton.tap()
+        return ReaderScreen()
+    }
+
+    func gotoNotificationsScreen() -> NotificationsScreen {
+        notificationsTabButton.tap()
+        return NotificationsScreen()
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().buttons["mySitesTabButton"].exists
     }
 }

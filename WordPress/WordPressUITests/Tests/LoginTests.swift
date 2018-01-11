@@ -9,20 +9,18 @@ class LoginTests: XCTestCase {
 
         let app = XCUIApplication()
         app.launchArguments = ["NoAnimations"]
-        app.launch()
+        app.activate()
 
         // Logout first if needed
         logoutIfNeeded()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        logoutIfNeeded()
         super.tearDown()
     }
 
     func testSimpleLoginLogout() {
-        let welcomeScreen = WelcomeScreen.init().login()
+        let welcomeScreen = WelcomeScreen().login()
             .proceedWith(email: WPUITestCredentials.testUserEmail)
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testUserPassword)
@@ -34,7 +32,7 @@ class LoginTests: XCTestCase {
     }
 
     func testUnsuccessfulLogin() {
-        _ = WelcomeScreen.init().login()
+        _ = WelcomeScreen().login()
             .proceedWith(email: WPUITestCredentials.testUserEmail)
             .proceedWithPassword()
             .tryProceed(password: "invalidPswd")
