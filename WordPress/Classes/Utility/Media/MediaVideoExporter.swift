@@ -132,7 +132,6 @@ class MediaVideoExporter: MediaExporter {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.cancellationHandler = { session.cancelExport() }
         session.exportAsynchronously {
-            progress.completedUnitCount = MediaExportProgressUnits.halfDone
             guard session.status == .completed else {
                 if let error = session.error {
                     onError(self.exporterErrorWith(error: error))
@@ -141,6 +140,7 @@ class MediaVideoExporter: MediaExporter {
                 }
                 return
             }
+            progress.completedUnitCount = MediaExportProgressUnits.done
             onCompletion(MediaExport(url: mediaURL,
                                           fileSize: mediaURL.fileSize,
                                           width: mediaURL.pixelSize.width,
