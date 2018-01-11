@@ -1,6 +1,6 @@
 import UIKit
 
-class SignupEmailViewController: LoginViewController, SigninKeyboardResponder {
+class SignupEmailViewController: LoginNewViewController, NUXKeyboardResponder {
 
     // MARK: - SigninKeyboardResponder Properties
 

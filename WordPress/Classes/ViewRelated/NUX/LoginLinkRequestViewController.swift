@@ -10,7 +10,11 @@ class LoginLinkRequestViewController: LoginNewViewController {
     @IBOutlet var label: UILabel?
     @IBOutlet var sendLinkButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
-    var sourceTag: SupportSourceTag = .loginMagicLink
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .loginMagicLink
+        }
+    }
 
 
     // MARK: - Lifecycle Methods
