@@ -398,18 +398,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LRh-0q-RfH">
-                                <rect key="frame" x="0.0" y="64" width="375" height="503"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LRh-0q-RfH" userLabel="Table Container View">
+                                <rect key="frame" x="0.0" y="64" width="375" height="519"/>
                                 <connections>
-                                    <segue destination="uS3-8E-y1q" kind="embed" id="ZGn-j6-2VP"/>
+                                    <segue destination="uS3-8E-y1q" kind="embed" identifier="showDomainsTable" id="ZGn-j6-2VP"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gU-1Z-Avk" userLabel="Button Container View">
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="MGV-TN-X2V"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="GNW-13-5sy" kind="embed" identifier="showButtonView" id="cA4-aZ-gWw"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Axj-bl-L3B" firstAttribute="bottom" secondItem="LRh-0q-RfH" secondAttribute="bottom" constant="100" id="1j3-ZJ-Buh"/>
                             <constraint firstItem="LRh-0q-RfH" firstAttribute="leading" secondItem="Axj-bl-L3B" secondAttribute="leading" id="BBi-Wy-I9e"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="leading" secondItem="Axj-bl-L3B" secondAttribute="leading" id="Lnz-Rf-3NY"/>
                             <constraint firstItem="LRh-0q-RfH" firstAttribute="top" secondItem="Axj-bl-L3B" secondAttribute="top" id="YBn-4N-hyW"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="bottom" secondItem="Axj-bl-L3B" secondAttribute="bottom" id="YCL-CF-uZh"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="top" secondItem="LRh-0q-RfH" secondAttribute="bottom" id="a9j-YQ-BcW"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="trailing" secondItem="Axj-bl-L3B" secondAttribute="trailing" id="pVX-mw-6bX"/>
                             <constraint firstItem="Axj-bl-L3B" firstAttribute="trailing" secondItem="LRh-0q-RfH" secondAttribute="trailing" id="wWD-Xp-bXf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Axj-bl-L3B"/>
@@ -424,7 +436,7 @@
             <objects>
                 <viewController id="uS3-8E-y1q" customClass="SiteCreationDomainsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="EAh-Io-1yv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -436,7 +448,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8op-79-wA9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3382" y="95"/>
+            <point key="canvasLocation" x="3364" y="21"/>
+        </scene>
+        <!--SiteCreationButtonView-->
+        <scene sceneID="a3K-Nm-WAp">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SiteCreationButtonView" referencedIdentifier="SiteCreationButtonView" id="GNW-13-5sy" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="As8-Bq-6ml" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2614" y="540"/>
         </scene>
     </scenes>
 </document>
