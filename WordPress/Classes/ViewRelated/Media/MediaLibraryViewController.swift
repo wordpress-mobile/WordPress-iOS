@@ -26,19 +26,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // show an indeterminate spinner as the server processes it.
     fileprivate static let uploadCompleteProgress: Double = 0.99
 
-    fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
-        let coordinator = MediaProgressCoordinator()
-        coordinator.delegate = self
-        return coordinator
-    }()
-
-    private var uploadCoordinatorUUID: UUID? = nil
-
-    // Only used during testing phase of upload coordinator development.
-    // Remove when upload coordinator is properly integrated into the media library.
-    // @frosty 2017-11-01
-    //
-    fileprivate var useUploadCoordinator = false
+    fileprivate var uploadObserverUUID: UUID?
 
     // MARK: - Initializers
 
@@ -49,10 +37,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         self.blog = blog
         self.pickerDataSource = MediaLibraryPickerDataSource(blog: blog)
-
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
-            self.pickerDataSource.includeUnsyncedMedia = true
-        }
+        self.pickerDataSource.includeUnsyncedMedia = true
 
         super.init(options: MediaLibraryViewController.pickerOptions())
 
@@ -87,8 +72,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     // MARK: - View Loading
 
-    @objc var uploadObserverUUID: UUID?
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -107,7 +90,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         super.viewWillAppear(animated)
 
         resetNavigationColors()
-        registerForHUDNotifications()
     }
 
     /*
@@ -128,41 +110,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        unregisterForHUDNotifications()
-
         if searchBar?.isFirstResponder == true {
             searchBar?.resignFirstResponder()
         }
-    }
-
-    // MARK: - HUD handling
-
-    private func registerForHUDNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(statusHUDWasTapped(_:)), name: NSNotification.Name.SVProgressHUDDidTouchDownInside, object: nil)
-    }
-
-    private func unregisterForHUDNotifications() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.SVProgressHUDDidTouchDownInside, object: nil)
-    }
-
-    @objc private func statusHUDWasTapped(_ notification: Notification) {
-        if mediaProgressCoordinator.isRunning {
-            mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
-            SVProgressHUD.dismiss()
-        }
-    }
-
-    fileprivate func prepareMediaProgressForNumberOfAssets(_ count: Int) {
-        showPreparingProgressHUD()
-        mediaProgressCoordinator.track(numberOfItems: count)
-        // Wait until all assets are uploaded before we update the collection view
-        pickerDataSource.isPaused = true
-    }
-
-    fileprivate func showPreparingProgressHUD() {
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.setMinimumDismissTimeInterval(1.0)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Preparing...\nTap to cancel", comment: "Text displayed in HUD while preparing to upload media items."))
     }
 
     // MARK: - Update view state
@@ -329,13 +279,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             self.showDocumentPicker()
         }
 
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
-            menuAlert.addDefaultActionWithTitle("Photo Library (Async - Debug)") { _ in
-                self.useUploadCoordinator = true
-                self.showMediaPicker()
-            }
-        }
-
         menuAlert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
 
         // iPad support
@@ -458,10 +401,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Upload Coordinator Observer
 
     private func registerUploadCoordinatorObserver() {
-        guard FeatureFlag.asyncUploadsInMediaLibrary.enabled else {
-            return
-        }
-
         uploadObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (media, state) in
             switch state {
             case .progress(let progress) :
@@ -486,10 +425,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Document Picker
 
     private func showDocumentPicker() {
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
-            useUploadCoordinator = true
-        }
-
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
@@ -497,47 +432,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         present(docPicker, animated: true, completion: nil)
     }
 
-    // MARK: - Upload Media
-
-    fileprivate func uploadMedia(_ media: Media?, error: Error?, mediaID: String) {
-        let service = MediaService(managedObjectContext: MediaCoordinator.shared.backgroundContext)
-
-        guard let media = media else {
-            if let error = error as NSError? {
-                mediaProgressCoordinator.attach(error: error, toMediaID: mediaID)
-            }
-            return
-        }
-
-        var uploadProgress: Progress? = nil
-        service.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
-            self?.unpauseDataSource()
-            self?.trackUploadFor(media)
-            }, failure: { error in
-                if let error = error {
-                    self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: mediaID)
-                }
-                self.unpauseDataSource()
-        })
-
-        if let progress = uploadProgress {
-            mediaProgressCoordinator.track(progress: progress, of: media, withIdentifier: mediaID)
-        }
-    }
-
     // MARK: - Upload Media from Camera
 
     private func presentMediaCapture() {
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
-            self.useUploadCoordinator = true
-        }
-
         capturePresenter = WPMediaCapturePresenter(presenting: self)
         capturePresenter!.completionBlock = { [weak self] mediaInfo in
             if let mediaInfo = mediaInfo as NSDictionary? {
                 self?.processMediaCaptured(mediaInfo)
             }
-            self?.useUploadCoordinator = false
             self?.capturePresenter = nil
         }
 
@@ -545,7 +447,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func processMediaCaptured(_ mediaInfo: NSDictionary) {
-
         let completionBlock: WPMediaAddedBlock = { [weak self] media, error in
             if error != nil || media == nil {
                 print("Adding media failed: ", error?.localizedDescription ?? "no media")
@@ -556,11 +457,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 return
             }
 
-            if FeatureFlag.asyncUploadsInMediaLibrary.enabled && strongSelf.useUploadCoordinator {
-                MediaCoordinator.shared.addMedia(from: media, to: strongSelf.blog)
-            } else {
-                strongSelf.addMediaAssets([media])
-            }
+            MediaCoordinator.shared.addMedia(from: media, to: strongSelf.blog)
         }
 
         guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
@@ -579,48 +476,15 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             break
         }
     }
-
-    private func addMediaAssets(_ assets: NSArray) {
-
-        guard assets.count > 0 else { return }
-
-        prepareMediaProgressForNumberOfAssets(assets.count)
-
-        for asset in assets {
-            if let asset = asset as? PHAsset {
-                makeAndUploadMediaWith(asset)
-            }
-        }
-    }
 }
 
 // MARK: - UIDocumentPickerDelegate
 
 extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled && useUploadCoordinator {
-            useUploadCoordinator = false
-
-            for documentURL in urls as [NSURL] {
-                MediaCoordinator.shared.addMedia(from: documentURL, to: blog)
-            }
-        } else {
-            prepareMediaProgressForNumberOfAssets(urls.count)
-
-            for documentURL in urls {
-                makeAndUploadMediaWithURL(documentURL)
-            }
+        for documentURL in urls as [NSURL] {
+            MediaCoordinator.shared.addMedia(from: documentURL, to: blog)
         }
-    }
-
-    private func makeAndUploadMediaWithURL(_ url: URL) {
-        let service = MediaService(managedObjectContext: MediaCoordinator.shared.backgroundContext)
-        service.createMedia(with: url as NSURL,
-                            objectID: blog.objectID,
-                            thumbnailCallback: nil,
-                            completion: { [weak self] media, error in
-                                self?.uploadMedia(media, error: error, mediaID: url.lastPathComponent)
-        })
     }
 
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
@@ -663,25 +527,12 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         guard let assets = assets as? [PHAsset],
             assets.count > 0 else { return }
 
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled && useUploadCoordinator {
-            useUploadCoordinator = false
-
-            for asset in assets {
-                MediaCoordinator.shared.addMedia(from: asset, to: blog)
-            }
-
-            return
-        }
-
-        prepareMediaProgressForNumberOfAssets(assets.count)
-
         for asset in assets {
-            makeAndUploadMediaWith(asset)
+            MediaCoordinator.shared.addMedia(from: asset, to: blog)
         }
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        useUploadCoordinator = false
         pickerDataSource.searchCancelled()
 
         dismiss(animated: true, completion: nil)
@@ -707,8 +558,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, shouldShowOverlayViewForCellFor asset: WPMediaAsset) -> Bool {
-        if FeatureFlag.asyncUploadsInMediaLibrary.enabled,
-            let media = asset as? Media {
+        if let media = asset as? Media {
             return media.remoteStatus != .sync
         }
 
@@ -790,16 +640,6 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         return MediaItemViewController(media: asset)
     }
 
-    @objc func makeAndUploadMediaWith(_ asset: PHAsset) {
-        let service = MediaService(managedObjectContext: MediaCoordinator.shared.backgroundContext)
-        service.createMedia(with: asset,
-                            objectID: blog.objectID,
-                            thumbnailCallback: nil,
-                            completion: { [weak self] media, error in
-                                self?.uploadMedia(media, error: error, mediaID: asset.identifier())
-        })
-    }
-
     fileprivate func trackUploadFor(_ media: Media) {
         let properties = WPAppAnalytics.properties(for: media)
 
@@ -813,16 +653,6 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
                                  withProperties: properties,
                                  with: blog)
         default: break
-        }
-    }
-
-    fileprivate func unpauseDataSource() {
-        // If we've finished all uploads, restart the data source
-        if !mediaProgressCoordinator.isRunning && pickerDataSource.isPaused {
-            pickerDataSource.isPaused = false
-            collectionView?.reloadData()
-
-            updateViewState(for: pickerDataSource.numberOfAssets())
         }
     }
 
@@ -873,39 +703,6 @@ extension MediaLibraryViewController: UIViewControllerRestoration {
         super.encodeRestorableState(with: coder)
 
         coder.encode(blog.objectID.uriRepresentation(), forKey: EncodingKey.blogURL)
-    }
-}
-
-// MARK: - Media Progress Coordinator Delegate
-
-extension MediaLibraryViewController: MediaProgressCoordinatorDelegate {
-    func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {}
-
-    func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        guard !mediaProgressCoordinator.hasFailedMedia else {
-            SVProgressHUD.showError(withStatus: NSLocalizedString("Upload failed", comment: "Text displayed in a HUD when media items have failed to upload."))
-            mediaProgressCoordinator.stopTrackingOfAllMedia()
-            return
-        }
-
-        guard let progress = mediaProgressCoordinator.mediaGlobalProgress,
-            !progress.isCancelled else {
-            mediaProgressCoordinator.stopTrackingOfAllMedia()
-            return
-        }
-
-        mediaProgressCoordinator.stopTrackingOfAllMedia()
-        SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Uploaded!", comment: "Text displayed in a HUD when media items have been uploaded successfully."))
-    }
-
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double) {
-        guard let mediaProgress = mediaProgressCoordinator.mediaGlobalProgress,
-            !mediaProgress.isCancelled,
-            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount else {
-                return
-        }
-
-        SVProgressHUD.showProgress(Float(progress), status: NSLocalizedString("Uploading...\nTap to cancel", comment: "Text displayed in HUD while media items are being uploaded."))
     }
 }
 
