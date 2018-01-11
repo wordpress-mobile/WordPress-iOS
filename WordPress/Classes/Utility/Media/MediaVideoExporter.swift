@@ -133,7 +133,7 @@ class MediaVideoExporter: MediaExporter {
         progress.cancellationHandler = {
             session.cancelExport()
         }
-        let observer:VideoSessionProgressObserver = VideoSessionProgressObserver(videoSession: session, progressHandler: { value in
+        let observer = VideoSessionProgressObserver(videoSession: session, progressHandler: { value in
             progress.completedUnitCount = Int64(Float(MediaExportProgressUnits.done) * value)
         })
         session.exportAsynchronously {
@@ -228,10 +228,10 @@ fileprivate class VideoSessionProgressObserver {
         self.work()
     }
 
-    private func work(){
+    private func work() {
         DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(100)) {
             self.progressHandler(self.videoSession.progress)
-            if (self.videoSession.progress != 1 && !self.interrupt) {
+            if self.videoSession.progress != 1 && !self.interrupt {
                 self.work()
             }
         }
