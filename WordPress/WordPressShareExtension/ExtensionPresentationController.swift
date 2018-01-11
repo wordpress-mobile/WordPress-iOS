@@ -1,6 +1,4 @@
-import Foundation
 import UIKit
-import WordPressShared
 
 class ExtensionPresentationController: UIPresentationController {
 
