@@ -117,12 +117,10 @@ class SignupEmailViewController: LoginViewController, SigninKeyboardResponder {
 
         checkEmailAvailability() { available in
             if available {
-                let message = "Email: '\(self.loginFields.emailAddress)'\nThis is a work in progress. If you need to create an account, disable the socialSignup feature flag."
-                let alertController = UIAlertController(title: nil,
-                                                        message: message,
-                                                        preferredStyle: .alert)
-                alertController.addDefaultActionWithTitle("OK")
-                self.present(alertController, animated: true, completion: nil)
+                // TODO: send Magic Link email via new endpoint.
+                self.loginFields.username = self.loginFields.emailAddress
+                self.loginFields.meta.emailMagicLinkSource = .signup
+                self.performSegue(withIdentifier: "showLinkMailView", sender: nil)
             }
             self.configureSubmitButton(animating: false)
         }
