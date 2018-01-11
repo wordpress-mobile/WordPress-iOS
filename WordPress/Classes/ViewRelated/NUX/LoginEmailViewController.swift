@@ -62,9 +62,6 @@ class LoginEmailViewController: LoginNewViewController, NUXKeyboardResponder {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
-               "Only present parts of the magic link signin flow from the application's root vc.")
-
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 

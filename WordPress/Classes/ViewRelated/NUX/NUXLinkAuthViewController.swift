@@ -7,7 +7,7 @@ import WordPressShared
 /// The expectation is this controller will be momentarily visible when the app
 /// is resumed/launched via the appropriate custom scheme, and quickly dismiss.
 ///
-class LoginLinkAuthViewController: LoginNewViewController {
+class NUXLinkAuthViewController: LoginNewViewController {
     @IBOutlet weak var statusLabel: UILabel?
     @objc var email: String = ""
     @objc var token: String = ""
@@ -17,7 +17,8 @@ class LoginLinkAuthViewController: LoginNewViewController {
         super.viewDidAppear(animated)
 
         // Gotta have email and token to use this vc
-        assert(!email.isEmpty && !token.isEmpty)
+        assert(!email.isEmpty, "Email cannot be nil")
+        assert(!token.isEmpty, "Email token cannot be nil")
 
         if didSync {
             return
