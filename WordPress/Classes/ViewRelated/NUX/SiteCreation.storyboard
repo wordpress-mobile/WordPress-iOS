@@ -426,6 +426,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Axj-bl-L3B"/>
                     </view>
+                    <connections>
+                        <outlet property="buttonContainerHeightConstraint" destination="MGV-TN-X2V" id="TJG-Pq-vrh"/>
+                        <outlet property="buttonContainerViewBottomConstraint" destination="YCL-CF-uZh" id="aSd-Ko-q7X"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wgw-m4-zgC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
