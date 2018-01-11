@@ -91,7 +91,7 @@ class MediaAssetExporter: MediaExporter {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = true
         options.progressHandler = { (progressValue, error, stop, info) in
-            progress.completedUnitCount = MediaExportProgressUnits.halfDone
+            progress.completedUnitCount = Int64(progressValue * Double(MediaExportProgressUnits.halfDone))
             if progress.isCancelled {
                 stop.pointee = true
             }
@@ -131,11 +131,10 @@ class MediaAssetExporter: MediaExporter {
                                 if let options = self.imageOptions {
                                     exporter.options = options
                                 }
-                                exporter.export(onCompletion: { (imageExport) in
-                                    progress.completedUnitCount = MediaExportProgressUnits.done
+                                let exportProgress = exporter.export(onCompletion: { (imageExport) in                                    
                                     onCompletion(imageExport)
-                                },
-                                                onError: onError)
+                                }, onError: onError)
+                                progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         })
         return progress
     }
@@ -172,7 +171,7 @@ class MediaAssetExporter: MediaExporter {
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = true
         options.progressHandler = { (progressValue, error, stop, info) in
-            progress.completedUnitCount = MediaExportProgressUnits.halfDone
+            progress.completedUnitCount = Int64(progressValue * Double(MediaExportProgressUnits.halfDone))
             if progress.isCancelled {
                 stop.pointee = true
             }
@@ -193,11 +192,11 @@ class MediaAssetExporter: MediaExporter {
                                             let videoExporter = MediaVideoExporter(session: session, filename: originalFilename)
                                             videoExporter.options = exporterVideoOptions
                                             videoExporter.mediaDirectoryType = self.mediaDirectoryType
-                                            videoExporter.export(onCompletion: { (videoExport) in
-                                                progress.completedUnitCount = MediaExportProgressUnits.done
+                                            let exportProgress = videoExporter.export(onCompletion: { (videoExport) in
                                                 onCompletion(videoExport)
                                             },
                                                                  onError: onError)
+                                            progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         })
         return progress
     }
@@ -223,10 +222,10 @@ class MediaAssetExporter: MediaExporter {
         }
         let options = PHAssetResourceRequestOptions()
         options.isNetworkAccessAllowed = true
-        let progress = Progress.discreteProgress(totalUnitCount: 100)
+        let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = false
         options.progressHandler = { (progressValue) in
-            progress.completedUnitCount = Int64(progressValue * 100)
+            progress.completedUnitCount = Int64(progressValue * Double(MediaExportProgressUnits.done))
         }
         let manager = PHAssetResourceManager.default()
         manager.writeData(for: resource,
