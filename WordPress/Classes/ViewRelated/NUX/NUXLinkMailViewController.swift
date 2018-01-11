@@ -7,8 +7,13 @@ class LoginLinkMailViewController: LoginNewViewController {
     @IBOutlet var label: UILabel?
     @IBOutlet var openMailButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
-    var sourceTag: SupportSourceTag = .loginMagicLink
     var emailMagicLinkSource: EmailMagicLinkSource?
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .loginMagicLink
+        }
+    }
+
 
     // MARK: - Lifecycle Methods
 

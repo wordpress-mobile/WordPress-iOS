@@ -13,7 +13,11 @@ class Login2FAViewController: LoginNewViewController, NUXKeyboardResponder, UITe
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var pasteboardBeforeBackground: String? = nil
-    var sourceTag: SupportSourceTag = .login2FA
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .login2FA
+        }
+    }
 
 
     // MARK: - Lifecycle Methods

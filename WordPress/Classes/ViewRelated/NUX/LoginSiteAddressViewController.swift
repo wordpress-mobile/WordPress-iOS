@@ -5,7 +5,11 @@ class LoginSiteAddressViewController: LoginNewViewController, NUXKeyboardRespond
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
-    var sourceTag: SupportSourceTag = .loginSiteAddress
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .loginSiteAddress
+        }
+    }
 
 
     override var loginFields: LoginFields {

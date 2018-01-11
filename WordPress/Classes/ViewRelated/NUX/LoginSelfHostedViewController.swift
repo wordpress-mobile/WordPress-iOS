@@ -14,7 +14,11 @@ class LoginSelfHostedViewController: LoginNewViewController, NUXKeyboardResponde
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var onePasswordButton: UIButton!
-    var sourceTag: SupportSourceTag = .loginUsernamePassword
+    override  var sourceTag: SupportSourceTag {
+        get {
+            return .loginUsernamePassword
+        }
+    }
 
     override var loginFields: LoginFields {
         didSet {
