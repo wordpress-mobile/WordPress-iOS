@@ -81,8 +81,9 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
         switch step {
         case .siteLoginForm(let redirect):
             performSiteLogin(redirect: redirect, decisionHandler: decisionHandler)
-        case .dotComLoginForm:
-            decisionHandler(.allow)
+        case .dotComLoginForm(let redirect):
+            decisionHandler(.cancel)
+            performDotComLogin(redirect: redirect)
         case .siteAdmin:
             if let redirect = pendingSiteRedirect {
                 pendingSiteRedirect = nil
@@ -228,6 +229,7 @@ private extension JetpackConnectionWebViewController {
 
     func authenticateWithDotCom(username: String, token: String, redirect: URL) {
         let authenticator = WebViewAuthenticator(credentials: .dotCom(username: username, authToken: token))
+        authenticator.safeRedirect = true
         let request = authenticator.authenticatedRequest(url: redirect)
         DDLogDebug("Performing WordPress.com login to \(String(describing: request.url))")
         webView.load(request)
@@ -235,6 +237,7 @@ private extension JetpackConnectionWebViewController {
 
     func presentDotComLogin(redirect: URL) {
         pendingDotComRedirect = redirect
+        observeLoginNotifications(true)
         SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
     }
 
