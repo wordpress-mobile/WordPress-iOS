@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 class MainShareViewController: UIViewController {
 
@@ -18,7 +19,21 @@ class MainShareViewController: UIViewController {
 
     override open func viewDidLoad() {
         super.viewDidLoad()
+        setupAppearance()
         loadAndPresentNavigationVC()
+    }
+}
+
+// MARK: - Private Helpers
+
+private extension MainShareViewController {
+    func setupAppearance() {
+        let navigationBarAppearace = UINavigationBar.appearance()
+        navigationBarAppearace.barTintColor = WPStyleGuide.lightGrey()
+        navigationBarAppearace.barStyle = .default
+        navigationBarAppearace.tintColor = WPStyleGuide.wordPressBlue()
+        navigationBarAppearace.titleTextAttributes = [.foregroundColor: WPStyleGuide.wordPressBlue()]
+        navigationBarAppearace.isTranslucent = false
     }
 
     func loadAndPresentNavigationVC() {
