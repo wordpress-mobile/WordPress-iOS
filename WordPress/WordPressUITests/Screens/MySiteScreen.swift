@@ -13,6 +13,9 @@ class MySiteScreen: BaseScreen {
 
     func switchSite() -> MySitesScreen {
         app.buttons["Switch Site"].tap()
+        if !MySitesScreen.isLoaded() {
+            app.buttons["Switch Site"].tap()
+        }
         return MySitesScreen()
     }
 }

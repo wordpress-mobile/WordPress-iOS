@@ -10,4 +10,8 @@ class MySitesScreen: BaseScreen {
 
         super.init(element: blogsTable)
     }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().tables["Blogs"].exists
+    }
 }
