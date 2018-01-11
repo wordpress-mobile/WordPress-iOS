@@ -11,6 +11,8 @@ class SiteCreationButtonViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        continueButton?.titleLabel?.text = NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process.")
     }
 
     // MARK: - Misc
