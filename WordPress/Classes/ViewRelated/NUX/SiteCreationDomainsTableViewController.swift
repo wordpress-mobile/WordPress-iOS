@@ -3,6 +3,7 @@ import SVProgressHUD
 
 protocol SiteCreationDomainsTableViewControllerDelegate {
     func domainSelected(_ domain: String)
+    func newSearchStarted()
 }
 
 class SiteCreationDomainsTableViewController: UITableViewController {
@@ -74,7 +75,9 @@ class SiteCreationDomainsTableViewController: UITableViewController {
             SVProgressHUD.dismiss()
             addSuggestions(suggestions)
         }) { [weak self] (error) in
+            DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
+            SVProgressHUD.dismiss()
         }
     }
 
@@ -219,7 +222,7 @@ extension SiteCreationDomainsTableViewController {
             return
         }
 
-        self.delegate?.domainSelected(selectedDomain)
+        delegate?.domainSelected(selectedDomain)
         tableView.deselectSelectedRowWithAnimation(true)
 
         // Uncheck the previously selected cell.
@@ -239,6 +242,9 @@ extension SiteCreationDomainsTableViewController {
 
 extension SiteCreationDomainsTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
+
+        delegate?.newSearchStarted()
+
         guard searchTerm.count > 0 else {
             searchSuggestions = []
             tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
