@@ -224,7 +224,7 @@ class MediaCoordinator: NSObject {
         notifyObserversForMedia(media, ofStateChange: .failed)
     }
 
-    /// Notifies observers that a media item has ended uploading.
+    /// Notifies observers that a media item is in progress.
     ///
     func progress(_ value: Double, media: Media) {
         notifyObserversForMedia(media, ofStateChange: .progress(value: value))
@@ -268,7 +268,7 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
             guard let media = mediaProgressCoordinator.media(withIdentifier: mediaID) else {
                 continue
             }
-            if media.remoteStatus == .pushing {
+            if media.remoteStatus == .pushing || media.remoteStatus == .processing {
                 progress(mediaProgress.fractionCompleted, media: media)
             }
         }

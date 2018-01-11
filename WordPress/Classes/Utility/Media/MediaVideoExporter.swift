@@ -130,8 +130,14 @@ class MediaVideoExporter: MediaExporter {
             session.metadataItemFilter = AVMetadataItemFilter.forSharing()
         }
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
-        progress.cancellationHandler = { session.cancelExport() }
+        progress.cancellationHandler = {
+            session.cancelExport()
+        }
+        let observer:VideoSessionProgressObserver = VideoSessionProgressObserver(videoSession: session, progressHandler: { value in
+            progress.completedUnitCount = Int64(Float(MediaExportProgressUnits.done) * value)
+        })
         session.exportAsynchronously {
+            observer.stop()
             guard session.status == .completed else {
                 if let error = session.error {
                     onError(self.exporterErrorWith(error: error))
@@ -206,5 +212,36 @@ class MediaVideoExporter: MediaExporter {
             kUTTypeAVIMovie
         ]
         return types as [String]
+    }
+}
+
+fileprivate class VideoSessionProgressObserver {
+
+    let videoSession: AVAssetExportSession
+    let progressHandler: (Float) -> ()
+    var interrupt: Bool
+
+    init(videoSession: AVAssetExportSession, progressHandler: @escaping (Float) -> ()) {
+        self.videoSession = videoSession
+        self.progressHandler = progressHandler
+        interrupt = false
+        self.work()
+    }
+
+    private func work(){
+        DispatchQueue.global().asyncAfter(deadline: DispatchTime.now() + DispatchTimeInterval.milliseconds(100)) {
+            self.progressHandler(self.videoSession.progress)
+            if (self.videoSession.progress != 1 && !self.interrupt) {
+                self.work()
+            }
+        }
+    }
+
+    func stop() {
+        interrupt = true
+    }
+
+    deinit {
+        interrupt = true
     }
 }
