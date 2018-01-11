@@ -35,6 +35,9 @@
                                 <state key="highlighted" backgroundImage="beveled-blue-button-down">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="handleButtonPressed:" destination="aOG-7h-6d9" eventType="touchUpInside" id="1og-aH-euJ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

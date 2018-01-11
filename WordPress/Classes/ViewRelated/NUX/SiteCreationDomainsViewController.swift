@@ -14,6 +14,7 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
 
     private var domainsTableViewController: SiteCreationDomainsTableViewController?
     private var buttonViewController: SiteCreationButtonViewController?
+    private var selectedDomain: String?
 
     // MARK: - View
 
@@ -28,6 +29,22 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
         WPStyleGuide.configureColors(for: view, andTableView: nil)
     }
 
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let vc = segue.destination as? SiteCreationDomainsTableViewController {
+            domainsTableViewController = vc
+            domainsTableViewController?.delegate = self
+            domainsTableViewController?.siteName = siteName
+        }
+
+        if let vc = segue.destination as? SiteCreationButtonViewController {
+            buttonViewController = vc
+            buttonViewController?.delegate = self
+        }
+    }
+
     // MARK: - Misc
 
     override func didReceiveMemoryWarning() {
@@ -35,18 +52,25 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Navigation
+}
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if let vc = segue.destination as? SiteCreationDomainsTableViewController {
-            domainsTableViewController = vc
-            domainsTableViewController?.siteName = siteName
-        }
+// MARK: - SiteCreationDomainsTableViewControllerDelegate
 
-        if let vc = segue.destination as? SiteCreationButtonViewController {
-            buttonViewController = vc
-        }
+extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControllerDelegate {
+    func domainSelected(_ domain: String) {
+        selectedDomain = domain
     }
+}
 
+// MARK: - SiteCreationButtonViewControllerDelegate
+
+extension SiteCreationDomainsViewController: SiteCreationButtonViewControllerDelegate {
+    func continueButtonPressed() {
+        let message = "'\(selectedDomain ?? "")' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle("OK")
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
