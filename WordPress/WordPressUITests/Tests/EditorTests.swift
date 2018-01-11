@@ -20,6 +20,7 @@ class EditorTests: XCTestCase {
 
     override func tearDown() {
         _ = editorScreen.goBack()
+        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 

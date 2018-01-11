@@ -12,10 +12,11 @@ class LoginTests: XCTestCase {
         app.activate()
 
         // Logout first if needed
-        logoutIfNeeded()
+        LoginFlow.logoutIfNeeded()
     }
 
     override func tearDown() {
+        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 

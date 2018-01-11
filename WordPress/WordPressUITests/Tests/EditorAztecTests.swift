@@ -19,6 +19,7 @@ class EditorAztecTests: XCTestCase {
 
     override func tearDown() {
         editorScreen.goBack()
+        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 

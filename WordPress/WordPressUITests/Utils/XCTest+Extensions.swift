@@ -84,14 +84,14 @@ extension XCTestCase {
     }
 
     // Need to add attempt to sign out of self-hosted as well
-    public func logoutIfNeeded() {
-        if WelcomeScreen.isLoaded() ||
-            LoginPasswordScreen.isLoaded() ||
-            LoginEmailScreen.isLoaded() {
-            return
-        }
-        _ = MySiteScreen().tabBar.gotoMeScreen().logout()
-    }
+//    public func logoutIfNeeded() {
+//        if WelcomeScreen.isLoaded() ||
+//            LoginPasswordScreen.isLoaded() ||
+//            LoginEmailScreen.isLoaded() {
+//            return
+//        }
+//        _ = MySiteScreen().tabBar.gotoMeScreen().logout()
+//    }
 
     public func simpleLogin(username: String, password: String) {
         let app = XCUIApplication()
