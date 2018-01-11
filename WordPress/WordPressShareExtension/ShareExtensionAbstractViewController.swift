@@ -1,8 +1,5 @@
-import Foundation
 import CoreData
-import MobileCoreServices
 import UIKit
-import WordPressShared
 import WordPressKit
 
 /// A base class for the various Share Extension view controllers.
