@@ -110,7 +110,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Posts", comment: "Tile of the screen showing the list of posts for a blog.")
+        title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
     }
 
     // MARK: - Configuration
