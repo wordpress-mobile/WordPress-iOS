@@ -6178,7 +6178,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# /usr/bin/xcrun simctl uninstall booted org.wordpress";
+			shellScript = "/usr/bin/xcrun simctl uninstall booted org.wordpress";
 		};
 		A279580D198819F50031C6A3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
