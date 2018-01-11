@@ -8,7 +8,7 @@ class LoginLinkMailViewController: LoginNewViewController {
     @IBOutlet var openMailButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
     var sourceTag: SupportSourceTag = .loginMagicLink
-
+    var emailMagicLinkSource: EmailMagicLinkSource?
 
     // MARK: - Lifecycle Methods
 
@@ -20,15 +20,32 @@ class LoginLinkMailViewController: LoginNewViewController {
             assert(email.isValidEmail(), "The value of loginFields.username was not a valid email address.")
         }
 
+        emailMagicLinkSource = loginFields.meta.emailMagicLinkSource
+        assert(emailMagicLinkSource != nil, "Must have an email link source.")
+
         localizeControls()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
-               "Only present parts of the magic link signin flow from the application's root vc.")
 
-        WPAppAnalytics.track(.loginMagicLinkOpenEmailClientViewed)
+        guard let emailMagicLinkSource = emailMagicLinkSource else {
+            return
+        }
+
+        switch emailMagicLinkSource {
+        case .login:
+            WPAppAnalytics.track(.loginMagicLinkOpenEmailClientViewed)
+        case .signup:
+            WPAppAnalytics.track(.signupMagicLinkOpenEmailClientViewed)
+
+            let message = "Email was not actually sent. This is a work in progress. If you need to create an account, disable the socialSignup feature flag."
+            let alertController = UIAlertController(title: nil,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+            alertController.addDefaultActionWithTitle("OK")
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
 
     // MARK: - Configuration
@@ -36,8 +53,6 @@ class LoginLinkMailViewController: LoginNewViewController {
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     @objc func localizeControls() {
-        let instructions = NSLocalizedString("Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com", comment: "Instructional text on how to open the email containing a magic link.")
-        label?.text = instructions
 
         let openMailButtonTitle = NSLocalizedString("Open Mail", comment: "Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device.")
         openMailButton?.setTitle(openMailButtonTitle, for: UIControlState())
@@ -47,8 +62,22 @@ class LoginLinkMailViewController: LoginNewViewController {
         usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
         usePasswordButton?.titleLabel?.numberOfLines = 0
-    }
 
+        guard let emailMagicLinkSource = emailMagicLinkSource else {
+            return
+        }
+
+        usePasswordButton?.isHidden = emailMagicLinkSource == .signup
+
+        label?.text = {
+            switch emailMagicLinkSource {
+            case .login:
+                return NSLocalizedString("Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com", comment: "Instructional text on how to open the email containing a magic link.")
+            case .signup:
+                return NSLocalizedString("We sent an email with a link, open it to proceed with your new WordPress.com account.", comment: "Instructional text on how to open the email containing a magic link.")
+            }
+        }()
+    }
 
     // MARK: - Actions
 
