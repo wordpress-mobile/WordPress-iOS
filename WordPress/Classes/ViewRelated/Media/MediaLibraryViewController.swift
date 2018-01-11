@@ -486,6 +486,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Document Picker
 
     private func showDocumentPicker() {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
+            useUploadCoordinator = true
+        }
+
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
@@ -594,11 +598,18 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
 extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled && useUploadCoordinator {
+            useUploadCoordinator = false
 
-        prepareMediaProgressForNumberOfAssets(urls.count)
+            for documentURL in urls as [NSURL] {
+                MediaCoordinator.shared.addMedia(from: documentURL, to: blog)
+            }
+        } else {
+            prepareMediaProgressForNumberOfAssets(urls.count)
 
-        for documentURL in urls {
-            makeAndUploadMediaWithURL(documentURL)
+            for documentURL in urls {
+                makeAndUploadMediaWithURL(documentURL)
+            }
         }
     }
 
