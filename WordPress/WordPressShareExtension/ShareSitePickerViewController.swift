@@ -17,7 +17,7 @@ class ShareSitePickerViewController: ShareExtensionAbstractViewController, UITab
         modulesTableView.dataSource = self
         modulesTableView.backgroundColor = UIColor.blue
         modules = ["Featured Image", "Category", "Tags"]
-        modulesTableViewHeightConstraint.constant = 400
+        modulesTableViewHeightConstraint.constant = 0 // hiding for now
     }
 
     override func didReceiveMemoryWarning() {
