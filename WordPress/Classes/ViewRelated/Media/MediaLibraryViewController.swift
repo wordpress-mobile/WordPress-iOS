@@ -524,11 +524,16 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Upload Media from Camera
 
     private func presentMediaCapture() {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
+            self.useUploadCoordinator = true
+        }
+
         capturePresenter = WPMediaCapturePresenter(presenting: self)
         capturePresenter!.completionBlock = { [weak self] mediaInfo in
             if let mediaInfo = mediaInfo as NSDictionary? {
                 self?.processMediaCaptured(mediaInfo)
             }
+            self?.useUploadCoordinator = false
             self?.capturePresenter = nil
         }
 
@@ -542,7 +547,16 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 print("Adding media failed: ", error?.localizedDescription ?? "no media")
                 return
             }
-            self?.addMediaAssets([media!])
+            guard let strongSelf = self,
+                let media = media as? PHAsset else {
+                return
+            }
+
+            if FeatureFlag.asyncUploadsInMediaLibrary.enabled && strongSelf.useUploadCoordinator {
+                MediaCoordinator.shared.addMedia(from: media, to: strongSelf.blog)
+            } else {
+                strongSelf.addMediaAssets([media])
+            }
         }
 
         guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
