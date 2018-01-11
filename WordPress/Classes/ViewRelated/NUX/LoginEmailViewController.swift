@@ -11,7 +11,11 @@ class LoginEmailViewController: LoginNewViewController, NUXKeyboardResponder {
     @IBOutlet var inputStack: UIStackView?
     @objc var onePasswordButton: UIButton!
     @objc var googleLoginButton: UIButton?
-    var sourceTag: SupportSourceTag = .loginEmail
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .loginEmail
+        }
+    }
 
     @objc var didFindSafariSharedCredentials = false
     @objc var didRequestSafariSharedCredentials = false

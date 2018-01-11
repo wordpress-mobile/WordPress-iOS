@@ -7,20 +7,6 @@ protocol NUXViewControllerBase {
     var helpButton: UIButton { get }
     var loginFields: LoginFields { get }
     var dismissBlock: ((_ cancelled: Bool) -> Void)? { get }
-}
-
-/// default implementations for NUXViewControllerBase where the base class doesn't matter
-extension NUXViewControllerBase {
-    // default implementation. Be careful; if cast as NUXViewControllerBase this method will be called instead of subclass's
-    var sourceTag: SupportSourceTag {
-        get {
-            return .generalLogin
-        }
-    }
-}
-
-/// extension for NUXViewControllerBase where the base class is UIViewController (and thus also NUXTableViewController)
-extension NUXViewControllerBase where Self: UIViewController, Self: UIViewControllerTransitioningDelegate {
 
     /// Checks if the signin vc modal should show a back button. The back button
     /// visible when there is more than one child vc presented, and there is not
@@ -29,8 +15,30 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     ///
     /// - Returns: True if the back button should be visible. False otherwise.
     ///
-    func shouldShowCancelButton() -> Bool {
+    func shouldShowCancelButton() -> Bool
+    func setupCancelButtonIfNeeded()
+}
+
+/// extension for NUXViewControllerBase where the base class is UIViewController (and thus also NUXTableViewController)
+extension NUXViewControllerBase where Self: UIViewController, Self: UIViewControllerTransitioningDelegate {
+
+    func shouldShowCancelButtonBase() -> Bool {
         return isCancellable() && navigationController?.viewControllers.first == self
+    }
+
+    /// Sets up the cancel button for the navbar if its needed.
+    /// The cancel button is only shown when its appropriate to dismiss the modal view controller.
+    ///
+    func setupCancelButtonIfNeeded() {
+        if !shouldShowCancelButton() {
+            return
+        }
+
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
+        cancelButton.on() { [weak self] (control: UIBarButtonItem) in
+            self?.handleCancelButtonTapped()
+        }
+        navigationItem.leftBarButtonItem = cancelButton
     }
 
     /// Checks if the signin vc modal should be cancellable. The controller is
@@ -101,7 +109,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         view.endEditing(true)
     }
 
-    func handleCancelButtonTapped(_ sender: UIButton) {
+    func handleCancelButtonTapped() {
         dismiss(cancelled: true)
         NotificationCenter.default.post(name: .WPLoginCancelled, object: nil)
     }
@@ -189,6 +197,11 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
+    var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
 
     // MARK: associated type for LoginSegueHandler
     /// Segue identifiers to avoid using strings
@@ -206,6 +219,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
 
     override func viewDidLoad() {
         addHelpButtonToNavController()
+        setupCancelButtonIfNeeded()
     }
 
     // properties specific to NUXViewController
@@ -220,6 +234,10 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     open func enableSubmit(animating: Bool) -> Bool {
         return !animating
     }
+
+    func shouldShowCancelButton() -> Bool {
+        return shouldShowCancelButtonBase()
+    }
 }
 
 // MARK: - NUXTableViewController
@@ -231,9 +249,44 @@ class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIVi
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
+    var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
 
     override func viewDidLoad() {
         addHelpButtonToNavController()
+        setupCancelButtonIfNeeded()
+    }
+
+    func shouldShowCancelButton() -> Bool {
+        return shouldShowCancelButtonBase()
+    }
+}
+
+// MARK: - NUXTableViewController
+/// Base class to use for NUX view controllers that are also a table view controller
+class NUXCollectionViewController: UICollectionViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
+    // MARK: NUXViewControllerBase properties
+    /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
+    var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
+    var helpButton: UIButton = UIButton(type: .custom)
+    var dismissBlock: ((_ cancelled: Bool) -> Void)?
+    var loginFields = LoginFields()
+    var sourceTag: SupportSourceTag {
+        get {
+            return .generalLogin
+        }
+    }
+
+    override func viewDidLoad() {
+        addHelpButtonToNavController()
+        setupCancelButtonIfNeeded()
+    }
+
+    func shouldShowCancelButton() -> Bool {
+        return shouldShowCancelButtonBase()
     }
 }
 
