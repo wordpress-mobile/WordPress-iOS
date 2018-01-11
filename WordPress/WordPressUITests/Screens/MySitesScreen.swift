@@ -5,8 +5,8 @@ class MySitesScreen: BaseScreen {
     let tabBar: TabNavComponent
 
     init() {
-        let blogsTable = XCUIApplication().tables["Blogs"]
         tabBar = TabNavComponent()
+        let blogsTable = XCUIApplication().tables["Blogs"]
 
         super.init(element: blogsTable)
     }

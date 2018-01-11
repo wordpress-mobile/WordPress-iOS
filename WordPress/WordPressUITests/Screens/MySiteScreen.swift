@@ -12,8 +12,7 @@ class MySiteScreen: BaseScreen {
     }
 
     func switchSite() -> MySitesScreen {
-        let switchSiteButton = app.buttons["Switch Site"]
-        switchSiteButton.tap()
+        app.buttons["Switch Site"].tap()
         return MySitesScreen()
     }
 }
