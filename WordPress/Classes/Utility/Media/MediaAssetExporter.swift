@@ -131,7 +131,7 @@ class MediaAssetExporter: MediaExporter {
                                 if let options = self.imageOptions {
                                     exporter.options = options
                                 }
-                                let exportProgress = exporter.export(onCompletion: { (imageExport) in                                    
+                                let exportProgress = exporter.export(onCompletion: { (imageExport) in
                                     onCompletion(imageExport)
                                 }, onError: onError)
                                 progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
