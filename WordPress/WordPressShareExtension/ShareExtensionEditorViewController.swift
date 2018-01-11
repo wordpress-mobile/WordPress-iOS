@@ -1,11 +1,7 @@
-import Foundation
 import UIKit
-import MobileCoreServices
-import CoreData
 import Aztec
 import Gridicons
 import WordPressShared
-import WordPressKit
 
 class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
@@ -1178,6 +1174,7 @@ private extension ShareExtensionEditorViewController {
         guard let extensionContext = extensionContext else {
             return
         }
+
         ShareExtractor(extensionContext: extensionContext)
             .loadShare { [weak self] share in
                 self?.setTitleText(share.title)
@@ -1188,6 +1185,9 @@ private extension ShareExtensionEditorViewController {
                         self?.insertImageAttachment(with: fileURL)
                     }
                 })
+
+                // Clear out the extension context after loading it once. We don't need it anymore.
+                self?.context = nil
         }
     }
 
