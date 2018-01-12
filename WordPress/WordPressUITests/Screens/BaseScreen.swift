@@ -19,9 +19,7 @@ class BaseScreen {
 
     func waitForPage() throws -> BaseScreen {
         let result = waitFor(element: expectedElement, predicate: "isEnabled == true", timeout: 20)
-        if !result {
-            throw UITestError.unableToLocateElement
-        }
+        XCTAssert(result)
         Logger.log(message: "Page \(self) is loaded", event: .i)
         return self
     }
