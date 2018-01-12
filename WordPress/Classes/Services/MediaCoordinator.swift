@@ -32,10 +32,6 @@ class MediaCoordinator: NSObject {
     /// - parameter blog: The blog that the asset should be added to.
     ///
     func addMedia(from asset: ExportableAsset, to blog: Blog) {
-        guard let asset = asset as? PHAsset else {
-            return
-        }
-
         let service = MediaService(managedObjectContext: backgroundContext)
         service.createMedia(with: asset,
                             objectID: blog.objectID,
