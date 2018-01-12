@@ -136,7 +136,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
         let title = NSLocalizedString("Rewind Site",
                                       comment: "Title displayed in the Rewind Site alert, should match Calypso")
         let rewindDate = activity.published.mediumStringWithUTCTime()
-        let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@\nThis will remove all content and options created or changed since then.",
+        let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
                                               comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
         let message = String(format: messageFormat, rewindDate)
 
