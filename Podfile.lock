@@ -114,7 +114,7 @@ PODS:
   - SVProgressHUD (2.2.2)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.16)
-  - WPMediaPicker (0.25)
+  - WPMediaPicker (0.26)
   - wpxmlrpc (0.8.3)
 
 DEPENDENCIES:
@@ -146,7 +146,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.2)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.16)
-  - WPMediaPicker (= 0.25)
+  - WPMediaPicker (= 0.26)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -191,9 +191,9 @@ SPEC CHECKSUMS:
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 2cfc5bb64f44b79af11659f7dd7a256a1033092e
-  WPMediaPicker: 80c7401edd8ca05d4277f43afc691662f3a26614
+  WPMediaPicker: 847c1f84f93fda7dda8cc9a8cbc1ffb6e47dea63
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 3562d507bced2844bb4fee5a3348d5a37505fd86
+PODFILE CHECKSUM: 5417dd6c474ecda1054de781eec8e7327f809158
 
 COCOAPODS: 1.3.1
