@@ -78,7 +78,7 @@
         };
         void(^completionWithError)( NSError *) = ^(NSError *error) {
             if (completion) {
-                completion(nil, error);
+                completion(media, error);
             }
         };
 
