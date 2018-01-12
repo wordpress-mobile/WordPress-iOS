@@ -1,4 +1,2 @@
-Aztec-redigeraren: Större skillnad mellan visuellt och html-redigeringsläge.
-Aztec-redigeraren: Förbättrad automatisk länkdetektering.
-Aztec-redigeraren: Lägger till stöd för redigering av inlägg medan mediauppladdning pågår.
-Aztec-redigeraren: Gör det möjligt att söka media från inlägg.
+Tillägg: Nu kan du hantera dina tillägg i appen. Du hittar det via uppgifter om din webbplats -> Tillägg.
+Redigerare: Några problem med kinesiska skrivtecken är lösta.
