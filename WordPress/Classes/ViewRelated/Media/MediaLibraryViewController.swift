@@ -537,7 +537,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             if let mediaInfo = mediaInfo as NSDictionary? {
                 self?.processMediaCaptured(mediaInfo)
             }
-            self?.useUploadCoordinator = false
             self?.capturePresenter = nil
         }
 
@@ -558,6 +557,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
             if FeatureFlag.asyncUploadsInMediaLibrary.enabled && strongSelf.useUploadCoordinator {
                 MediaCoordinator.shared.addMedia(from: media, to: strongSelf.blog)
+                strongSelf.useUploadCoordinator = false
             } else {
                 strongSelf.addMediaAssets([media])
             }
