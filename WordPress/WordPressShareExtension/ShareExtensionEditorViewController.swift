@@ -901,6 +901,7 @@ extension ShareExtensionEditorViewController {
     }
 
     @objc func nextWasPressed() {
+        stopEditing()
         shareData.title = titleTextField.text ?? ""
         shareData.contentBody = richTextView.getHTML()
         performSegue(withIdentifier: .showModularSitePicker, sender: self)
@@ -935,6 +936,10 @@ extension ShareExtensionEditorViewController {
         present(alertController, animated: true, completion: { () in
             UIMenuController.shared.setMenuVisible(false, animated: false)
         })
+    }
+
+    func stopEditing() {
+        view.endEditing(true)
     }
 }
 
