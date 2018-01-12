@@ -7,8 +7,12 @@ class MediaProgressCoordinatorTests: XCTestCase {
     fileprivate var context: NSManagedObjectContext!
     var mediaProgressCoordinator: MediaProgressCoordinator!
 
-    fileprivate func newTestMedia() -> Media {
+    fileprivate func makeTestMedia() -> Media {
         return NSEntityDescription.insertNewObject(forEntityName: Media.classNameWithoutNamespaces(), into: context) as! Media
+    }
+
+    fileprivate func makeTestError() -> NSError {
+        return NSError(domain: "org.wordpress.media-tests", code: 1, userInfo: nil)
     }
 
     override func setUp() {
@@ -33,7 +37,7 @@ class MediaProgressCoordinatorTests: XCTestCase {
         XCTAssertTrue(mediaProgressCoordinator.isRunning, "Coordinator should be running")
 
         let progress = Progress.discreteProgress(totalUnitCount: 4)
-        mediaProgressCoordinator.track(progress: progress, of: self.newTestMedia(), withIdentifier: "progress")
+        mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "progress")
         XCTAssertTrue(mediaProgressCoordinator.isRunning, "Coordinator should be running")
         XCTAssertTrue(mediaProgressCoordinator.cancelledMediaIDs.isEmpty, "No cancelled ids")
         XCTAssertTrue(mediaProgressCoordinator.failedMediaIDs.isEmpty, "No failed ids")
@@ -62,7 +66,7 @@ class MediaProgressCoordinatorTests: XCTestCase {
         XCTAssertTrue(mediaProgressCoordinator.isRunning, "Coordinator should be running")
 
         let progress = Progress.discreteProgress(totalUnitCount: 4)
-        mediaProgressCoordinator.track(progress: progress, of: self.newTestMedia(), withIdentifier: "progress1")
+        mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "progress1")
         XCTAssertTrue(mediaProgressCoordinator.isRunning, "Coordinator should be running")
         XCTAssertEqual(0, mediaProgressCoordinator.totalProgress, "Total progress should be 0")
 
@@ -90,8 +94,8 @@ class MediaProgressCoordinatorTests: XCTestCase {
 
         let progress1 = Progress.discreteProgress(totalUnitCount: 2)
         let progress2 = Progress.discreteProgress(totalUnitCount: 2)
-        mediaProgressCoordinator.track(progress: progress1, of: self.newTestMedia(), withIdentifier: "progress1")
-        mediaProgressCoordinator.track(progress: progress2, of: self.newTestMedia(), withIdentifier: "progress2")
+        mediaProgressCoordinator.track(progress: progress1, of: makeTestMedia(), withIdentifier: "progress1")
+        mediaProgressCoordinator.track(progress: progress2, of: makeTestMedia(), withIdentifier: "progress2")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning, "Coordinator should be running")
         XCTAssertEqual(0, mediaProgressCoordinator.totalProgress, "Total progress should be 0")
@@ -124,7 +128,7 @@ class MediaProgressCoordinatorTests: XCTestCase {
 
         for index in 1...totalItems {
             let progress = Progress.discreteProgress(totalUnitCount: 1)
-            mediaProgressCoordinator.track(progress: progress, of: self.newTestMedia(), withIdentifier: "\(index)")
+            mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "\(index)")
             progress.completedUnitCount = 1
             XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == Int64(index))
         }
@@ -137,17 +141,73 @@ class MediaProgressCoordinatorTests: XCTestCase {
         mediaProgressCoordinator.track(numberOfItems: 1)
         XCTAssertNotNil(mediaProgressCoordinator.mediaGlobalProgress, "Progress should exist")
 
-        XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.totalUnitCount == Int64(1), "There should 1 item")
+        XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.totalUnitCount == 1, "There should 1 item")
 
         let progress = Progress.discreteProgress(totalUnitCount: 1)
-        mediaProgressCoordinator.track(progress: progress, of: self.newTestMedia(), withIdentifier: "\(index)")
+        mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "1")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
+
         // simulate a failed request
-        progress.totalUnitCount = 0
         progress.completedUnitCount = 0
 
+        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "1")
+
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
+
+        XCTAssertFalse(mediaProgressCoordinator.isRunning)
+    }
+
+    func testMultipleMediaProgressAllFailed() {
+        mediaProgressCoordinator.track(numberOfItems: 3)
+        XCTAssertNotNil(mediaProgressCoordinator.mediaGlobalProgress, "Progress should exist")
+
+        XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.totalUnitCount == 3, "There should be 3 items")
+
+        for index in 1...3 {
+            let progress = Progress.discreteProgress(totalUnitCount: 1)
+            mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "\(index)")
+        }
+
+        XCTAssertTrue(mediaProgressCoordinator.isRunning)
+
+        // Fail all the requests
+        mediaProgressCoordinator.mediaInProgress.values.enumerated().forEach({ index, progress in
+            progress.completedUnitCount = 0
+            mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "\(index+1)")
+        })
+
+        XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 0)
+
+        XCTAssertFalse(mediaProgressCoordinator.isRunning)
+    }
+
+    func testMultipleMediaProgressPartiallyFailed() {
+        mediaProgressCoordinator.track(numberOfItems: 3)
+        XCTAssertNotNil(mediaProgressCoordinator.mediaGlobalProgress, "Progress should exist")
+
+        XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.totalUnitCount == 3, "There should be 3 items")
+
+        for index in 1...3 {
+            let progress = Progress.discreteProgress(totalUnitCount: 1)
+            mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "\(index)")
+        }
+
+        XCTAssertTrue(mediaProgressCoordinator.isRunning)
+
+        // Fail 2 of the requests
+        mediaProgressCoordinator.mediaInProgress["1"]!.completedUnitCount = 0
+        mediaProgressCoordinator.mediaInProgress["2"]!.completedUnitCount = 0
+
+        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "1")
+        mediaProgressCoordinator.attach(error: makeTestError(), toMediaID: "2")
+
+        XCTAssertTrue(mediaProgressCoordinator.isRunning)
+
+        // Complete the 3rd
+        mediaProgressCoordinator.mediaInProgress["3"]!.completedUnitCount = 1
+
+        XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.completedUnitCount == 1)
 
         XCTAssertFalse(mediaProgressCoordinator.isRunning)
     }
@@ -160,7 +220,7 @@ class MediaProgressCoordinatorTests: XCTestCase {
         XCTAssertTrue(mediaProgressCoordinator.mediaGlobalProgress!.totalUnitCount == Int64(1), "There should 1 item")
 
         let progress = Progress.discreteProgress(totalUnitCount: 1)
-        mediaProgressCoordinator.track(progress: progress, of: self.newTestMedia(), withIdentifier: "\(index)")
+        mediaProgressCoordinator.track(progress: progress, of: makeTestMedia(), withIdentifier: "\(index)")
 
         XCTAssertTrue(mediaProgressCoordinator.isRunning)
 

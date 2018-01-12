@@ -98,6 +98,10 @@ public class MediaProgressCoordinator: NSObject {
             return
         }
         progress.setUserInfoObject(error, forKey: .mediaError)
+
+        DispatchQueue.main.async {
+            self.refreshMediaProgress()
+        }
     }
 
     // MARK: - Methods to check state of a mediaID process
@@ -186,10 +190,13 @@ public class MediaProgressCoordinator: NSObject {
         }
 
         for progress in mediaInProgress.values {
-            if !progress.isCancelled && (progress.totalUnitCount != progress.completedUnitCount) {
+            if !progress.isCancelled &&
+                !progress.isFailed &&
+                progress.totalUnitCount != progress.completedUnitCount {
                 return true
             }
         }
+
         return false
     }
 
@@ -197,12 +204,7 @@ public class MediaProgressCoordinator: NSObject {
     ///
     @objc
     var hasFailedMedia: Bool {
-        for progress in mediaInProgress.values {
-            if !progress.isCancelled && progress.userInfo[.mediaError] != nil {
-                return true
-            }
-        }
-        return false
+        return !failedMediaIDs.isEmpty
     }
 
     /// Returns a list of media IDs that were cancelled.
@@ -235,13 +237,13 @@ public class MediaProgressCoordinator: NSObject {
     ///
     @objc
     var failedMediaIDs: [String] {
-        var failedMediaIDs = [String]()
-        for (key, progress) in mediaInProgress {
-            if !progress.isCancelled && progress.userInfo[.mediaError] != nil {
-                failedMediaIDs.append(key)
-            }
-        }
-        return failedMediaIDs
+        return mediaInProgress.filter({ $0.value.isFailed }).map({ $0.key })
+    }
+
+    /// Returns a list of all media objects that have an error attached
+    ///
+    var failedMedia: [Media] {
+        return failedMediaIDs.flatMap({ media(withIdentifier: $0) })
     }
 
     // MARK: - KeyPath observer method for the global progress property
@@ -321,5 +323,10 @@ public class MediaProgressCoordinator: NSObject {
             mediaInProgress.removeValue(forKey: key)
         }
     }
+}
 
+extension Progress {
+    var isFailed: Bool {
+        return !isCancelled && userInfo[.mediaError] != nil
+    }
 }
