@@ -721,7 +721,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         }
 
         switch media.remoteStatus {
-        case .failed, .pushing:
+        case .failed, .pushing, .processing:
             presentRetryOptions(for: media)
         case .sync:
             if let viewController = mediaItemViewController(for: asset) {
