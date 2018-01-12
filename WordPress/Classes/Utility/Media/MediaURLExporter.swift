@@ -37,8 +37,8 @@ class MediaURLExporter: MediaExporter {
         self.url = url
     }
 
-    public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) {
-        exportURL(fileURL: url, onCompletion: onCompletion, onError: onError)
+    @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
+        return exportURL(fileURL: url, onCompletion: onCompletion, onError: onError)
     }
 
     /// Query what the URLExporter expects to export a URL as. Throws an error if unknown or invalid.
@@ -66,32 +66,33 @@ class MediaURLExporter: MediaExporter {
     ///
     /// - Note: You can query the expected type via MediaURLExporter.expectedExport(with:).
     ///
-    func exportURL(fileURL: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
+    func exportURL(fileURL: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
             let expected = try MediaURLExporter.expectedExport(with: fileURL)
             switch expected {
             case .image:
-                exportImage(atURL: fileURL, onCompletion: onCompletion, onError: onError)
+                return exportImage(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             case .video:
-                exportVideo(atURL: fileURL, onCompletion: onCompletion, onError: onError)
+                return exportVideo(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             case .gif:
-                exportGIF(atURL: fileURL, onCompletion: onCompletion, onError: onError)
+                return exportGIF(atURL: fileURL, onCompletion: onCompletion, onError: onError)
             }
         } catch {
             onError(exporterErrorWith(error: error))
         }
+        return Progress.discreteCompletedProgress()
     }
 
     /// Exports the known image file at the URL, via MediaImageExporter.
     ///
-    fileprivate func exportImage(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
+    fileprivate func exportImage(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         // Pass the export off to the image exporter
         let exporter = MediaImageExporter(url: url)
         exporter.mediaDirectoryType = mediaDirectoryType
         if let options = imageOptions {
             exporter.options = options
         }
-        exporter.export(
+        return exporter.export(
             onCompletion: { (imageExport) in
                 onCompletion(imageExport)
         },
@@ -100,23 +101,23 @@ class MediaURLExporter: MediaExporter {
 
     /// Exports the known video file at the URL, via MediaVideoExporter.
     ///
-    fileprivate func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
+    fileprivate func exportVideo(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         // Pass the export off to the video exporter.
-        let videoExporter = MediaVideoExporter()
+        let videoExporter = MediaVideoExporter(url: url)
         videoExporter.mediaDirectoryType = mediaDirectoryType
         if let options = videoOptions {
             videoExporter.options = options
         }
-        videoExporter.exportVideo(atURL: url,
-                                  onCompletion: { videoExport in
+        return videoExporter.export(onCompletion: { videoExport in
                                     onCompletion(videoExport)
         },
                                   onError: onError)
+
     }
 
     /// Exports the GIF file at the URL to a new Media URL, by simply copying the file.
     ///
-    fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
+    fileprivate func exportGIF(atURL url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         do {
             let fileManager = FileManager.default
             let mediaURL = try mediaFileManager.makeLocalMediaURL(withFilename: url.lastPathComponent,
@@ -130,5 +131,6 @@ class MediaURLExporter: MediaExporter {
         } catch {
             onError(exporterErrorWith(error: error))
         }
+        return Progress.discreteCompletedProgress()
     }
 }
