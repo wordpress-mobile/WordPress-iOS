@@ -1166,8 +1166,9 @@ private extension ShareExtensionEditorViewController {
 
     func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = richTextView
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
-        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let bottomInset = (view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom) + Constants.insetBottomPadding)
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: bottomInset, right: 0)
+        let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: bottomInset, right: 0)
 
         richTextView.scrollIndicatorInsets = scrollInsets
         richTextView.contentInset = contentInsets
@@ -1229,6 +1230,7 @@ fileprivate extension ShareExtensionEditorViewController {
 
     struct Constants {
         static let placeholderPadding           = UIEdgeInsets(top: 8, left: 5, bottom: 0, right: 0)
+        static let insetBottomPadding           = CGFloat(50.0)
         static let headers                      = [Header.HeaderType.none, .h1, .h2, .h3, .h4, .h5, .h6]
         static let lists                        = [TextList.Style.unordered, .ordered]
         static let toolbarHeight                = CGFloat(44.0)
