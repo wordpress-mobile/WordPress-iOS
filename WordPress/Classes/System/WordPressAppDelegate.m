@@ -468,21 +468,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [SigninHelpers showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
 }
 
-- (BOOL)isWelcomeScreenVisible
-{
-    UINavigationController *presentedViewController = (UINavigationController *)self.window.rootViewController.presentedViewController;
-    if (![presentedViewController isKindOfClass:[UINavigationController class]]) {
-        return NO;
-    }
-
-    if ([presentedViewController isKindOfClass:[NUXNavigationController class]]) {
-        return YES;
-    }
-
-    UIViewController *controller = presentedViewController.visibleViewController;
-    return [controller isKindOfClass:[NUXAbstractViewController class]] || [controller isKindOfClass:[LoginPrologueViewController class]];
-}
-
 - (void)customizeAppearance
 {
     self.window.backgroundColor = [WPStyleGuide itsEverywhereGrey];
