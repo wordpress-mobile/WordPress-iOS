@@ -452,12 +452,12 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 print("Adding media failed: ", error?.localizedDescription ?? "no media")
                 return
             }
-            guard let strongSelf = self,
+            guard let blog = self?.blog,
                 let media = media as? PHAsset else {
                 return
             }
 
-            MediaCoordinator.shared.addMedia(from: media, to: strongSelf.blog)
+            MediaCoordinator.shared.addMedia(from: media, to: blog)
         }
 
         guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
