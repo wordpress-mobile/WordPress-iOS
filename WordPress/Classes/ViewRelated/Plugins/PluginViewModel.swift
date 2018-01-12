@@ -135,7 +135,7 @@ class PluginViewModel: Observable {
         } else {
             disclaimer = NSLocalizedString("This will delete all associated files and data.", comment: "Warning when confirming to remove a plugin that's inactive")
         }
-        let message = "\(question) \(disclaimer)"
+        let message = "\(question)\n\(disclaimer)"
         let alert = UIAlertController(
             title: NSLocalizedString("Remove Plugin?", comment: "Title for the alert to confirm a plugin removal"),
             message: message, preferredStyle: .alert)
