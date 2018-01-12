@@ -30,9 +30,11 @@ class ExtensionPresentationController: UIPresentationController {
 
     override var frameOfPresentedViewInContainerView: CGRect {
         var frame: CGRect = .zero
-        frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView!.bounds.size)
-        frame.origin.x = (containerView!.frame.width - frame.width) / 2.0
-        frame.origin.y = (containerView!.frame.height - frame.height) / 2.0
+        if let containerView = containerView {
+            frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
+            frame.origin.x = (containerView.frame.width - frame.width) / 2.0
+            frame.origin.y = (containerView.frame.height - frame.height) / 2.0
+        }
         return frame
     }
 
@@ -70,6 +72,14 @@ class ExtensionPresentationController: UIPresentationController {
         coordinator.animate(alongsideTransition: { _ in
             self.dimmingView.alpha = Constants.zeroAlpha
         })
+    }
+}
+
+// MARK: - External Helper Methods
+
+extension ExtensionPresentationController {
+    func resetViewSize() {
+        animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
     }
 }
 
@@ -120,12 +130,6 @@ private extension ExtensionPresentationController {
                 self.presentedView?.frame = translatedFrame
             })
         }
-    }
-}
-
-extension ExtensionPresentationController {
-    func resetViewSize() {
-        animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
     }
 }
 

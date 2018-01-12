@@ -940,7 +940,10 @@ extension ShareExtensionEditorViewController {
 
     func stopEditing() {
         view.endEditing(true)
-        if let presentationController = navigationController?.presentationController as? ExtensionPresentationController {
+
+        // Let's reset the presented VC size ONLY if we are not in fullscreen mode (landscape on iPhones)
+        if let presentationController = navigationController?.presentationController as? ExtensionPresentationController,
+            presentationController.traitCollection.verticalSizeClass != .compact {
             presentationController.resetViewSize()
         }
     }
