@@ -44,9 +44,23 @@ class MediaCoordinator: NSObject {
                             progress: &creationProgress,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
-                                guard let strongSelf = self, let media = media, !media.isDeleted else {
+                                guard let strongSelf = self else {
                                     return
                                 }
+                                if let error = error {
+                                    if let media = media {
+                                        strongSelf.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+                                        strongSelf.fail(media)
+                                    } else {
+                                        // If there was an error and we don't have a media object we just say to the coordinator that one item was finished
+                                        strongSelf.mediaProgressCoordinator.finishOneItem()
+                                    }
+                                    return
+                                }
+                                guard let media = media, !media.isDeleted else {
+                                    return
+                                }
+
                                 let uploadProgress = strongSelf.uploadMedia(media)
                                 totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
