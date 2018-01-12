@@ -3,7 +3,7 @@ import UIKit
 /// Step two in the auth link flow. This VC prompts the user to open their email
 /// app to look for the emailed authentication link.
 ///
-class LoginLinkMailViewController: LoginNewViewController {
+class LoginLinkMailViewController: LoginViewController {
     @IBOutlet var label: UILabel?
     @IBOutlet var openMailButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?

@@ -987,7 +987,6 @@
 		E6C1E8421EF1D1C900D139D9 /* LoginSiteAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C1E8411EF1D1C900D139D9 /* LoginSiteAddressViewController.swift */; };
 		E6C448571CB091AA00458157 /* SigninKeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C448561CB091AA00458157 /* SigninKeyboardResponder.swift */; };
 		E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */; };
-		E6D0088E1EF0880C009E5FA3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D0088D1EF0880C009E5FA3 /* LoginViewController.swift */; };
 		E6D0EE601F7EF9830064D3FC /* AccountService+SocialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D0EE5F1F7EF9830064D3FC /* AccountService+SocialService.swift */; };
 		E6D170371EF9D8D10046D433 /* SiteInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D170361EF9D8D10046D433 /* SiteInfo.swift */; };
 		E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */; };
@@ -2496,7 +2495,6 @@
 		E6C1E8411EF1D1C900D139D9 /* LoginSiteAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSiteAddressViewController.swift; sourceTree = "<group>"; };
 		E6C448561CB091AA00458157 /* SigninKeyboardResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SigninKeyboardResponder.swift; sourceTree = "<group>"; };
 		E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingButtonsViewController.swift; sourceTree = "<group>"; };
-		E6D0088D1EF0880C009E5FA3 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E6D0EE5F1F7EF9830064D3FC /* AccountService+SocialService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountService+SocialService.swift"; sourceTree = "<group>"; };
 		E6D170361EF9D8D10046D433 /* SiteInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteInfo.swift; sourceTree = "<group>"; };
 		E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderSiteStreamHeader.xib; sourceTree = "<group>"; };
@@ -5521,7 +5519,6 @@
 		E6C448581CB09E1F00458157 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				E6D0088D1EF0880C009E5FA3 /* LoginViewController.swift */,
 				43D2436C1EAFCE3C00D0C77B /* LoginSegueHandler.swift */,
 				E6C448561CB091AA00458157 /* SigninKeyboardResponder.swift */,
 				E64E17691CA8C71600BE7744 /* SigninWPComSyncHandler.swift */,
@@ -7033,7 +7030,6 @@
 				E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */,
 				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,
 				08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */,
-				E6D0088E1EF0880C009E5FA3 /* LoginViewController.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				FF286C761DE70A4500383A62 /* NSURL+Exporters.swift in Sources */,

@@ -1,12 +1,40 @@
 import UIKit
 import WordPressShared
+import Gridicons
+
+protocol LoginWithLogoAndHelpViewController {
+    func addWordPressLogoToNavController()
+    func handleHelpButtonTapped(_ sender: AnyObject)
+    func displaySupportViewController(sourceTag: SupportSourceTag)
+    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification)
+}
+
+extension LoginWithLogoAndHelpViewController where Self: UIViewController {
+    func addWordPressLogoToNavController() {
+        let image = Gridicon.iconOfType(.mySites)
+        let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
+        navigationItem.titleView = imageView
+    }
+
+    /// Displays the support vc.
+    ///
+    func displaySupportViewController(sourceTag: SupportSourceTag) {
+        let controller = SupportViewController()
+        controller.sourceTag = sourceTag
+
+        let navController = UINavigationController(rootViewController: controller)
+        navController.navigationBar.isTranslucent = false
+        navController.modalPresentationStyle = .formSheet
+
+        navigationController?.present(navController, animated: true, completion: nil)
+    }
+}
 
 /// A base class for the various NUX related related view controllers.
 /// The base class sets up and configures common functionality, such as the help
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
-
 class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithLogoAndHelpViewController {
     @objc var helpBadge: WPNUXHelpBadgeLabel!
     @objc var helpButton: UIButton!
