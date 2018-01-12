@@ -14,7 +14,7 @@ extension MediaService {
             let fetch = NSFetchRequest<Media>(entityName: Media.classNameWithoutNamespaces())
             let pushingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: MediaRemoteStatus.pushing.rawValue))
             let processingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: MediaRemoteStatus.processing.rawValue))
-            fetch.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate]);
+            fetch.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pushingPredicate, processingPredicate])
             do {
                 let mediaPushing = try self.managedObjectContext.fetch(fetch)
                 for media in mediaPushing {
