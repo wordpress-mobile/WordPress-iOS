@@ -4,7 +4,7 @@ import WordPressShared
 /// Part two of the self-hosted sign in flow. A valid site address should be acquired
 /// before presenting this view controller.
 ///
-class LoginSelfHostedViewController: LoginNewViewController, NUXKeyboardResponder {
+class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var siteHeaderView: SiteInfoHeaderView!
     @IBOutlet var siteAddressStackView: UIStackView!
     @IBOutlet var siteAddressLabel: UILabel!

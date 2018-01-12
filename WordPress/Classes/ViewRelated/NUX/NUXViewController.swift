@@ -291,7 +291,7 @@ class NUXCollectionViewController: UICollectionViewController, NUXViewController
 }
 
 /// View Controller for login-specific screens
-class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate {
+class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate {
     @IBOutlet var instructionLabel: UILabel?
     @objc var errorToPresent: Error?
     var restrictToWPCom = false
@@ -393,14 +393,14 @@ class LoginNewViewController: NUXViewController, SigninWPComSyncHandler, LoginFa
     /// Manages data transfer when seguing to a new VC
     ///
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let source = segue.source as? LoginNewViewController else {
+        guard let source = segue.source as? LoginViewController else {
             return
         }
 
         if let destination = segue.destination as? LoginEpilogueViewController {
             destination.dismissBlock = source.dismissBlock
             destination.jetpackLogin = source.loginFields.meta.jetpackLogin
-        } else if let destination = segue.destination as? LoginNewViewController {
+        } else if let destination = segue.destination as? LoginViewController {
             destination.loginFields = source.loginFields
             destination.restrictToWPCom = source.restrictToWPCom
             destination.dismissBlock = source.dismissBlock
