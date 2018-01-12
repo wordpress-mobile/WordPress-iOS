@@ -403,7 +403,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self.blog supports:BlogFeaturePlans]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
                                                          identifier:BlogDetailsPlanCellIdentifier
-                                                              image:[Gridicon iconOfType:GridiconTypeClipboard]
+                                                              image:[Gridicon iconOfType:GridiconTypePlans]
                                                            callback:^{
                                                                [weakSelf showPlans];
                                                            }];
@@ -420,17 +420,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                                    image:[Gridicon iconOfType:GridiconTypePages]
+                                                 callback:^{
+                                                     [weakSelf showPageList];
+                                                 }]];
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                                     image:[Gridicon iconOfType:GridiconTypePosts]
                                                  callback:^{
                                                      [weakSelf showPostList];
                                                  }]];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                                    image:[Gridicon iconOfType:GridiconTypePages]
-                                                 callback:^{
-                                                     [weakSelf showPageList];
-                                                 }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
                                                     image:[Gridicon iconOfType:GridiconTypeImage]
@@ -707,7 +708,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     
     __weak __typeof(self) weakSelf = self;
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    [mediaService createMediaWith:image objectID:self.blog.objectID thumbnailCallback:nil completion:^(Media * _Nullable media, NSError * _Nullable error) {
+    NSProgress *mediaCreateProgress;
+    [mediaService createMediaWith:image objectID:self.blog.objectID progress:&mediaCreateProgress thumbnailCallback:nil completion:^(Media *media, NSError *error) {
         if (media == nil || error != nil) {
             return;
         }
