@@ -940,6 +940,9 @@ extension ShareExtensionEditorViewController {
 
     func stopEditing() {
         view.endEditing(true)
+        if let presentationController = navigationController?.presentationController as? ExtensionPresentationController {
+            presentationController.resetViewSize()
+        }
     }
 }
 

@@ -112,14 +112,20 @@ private extension ExtensionPresentationController {
         return frame
     }
 
-    func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double) {
+    func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double, force: Bool = false) {
         let presentedFrame = frameOfPresentedViewInContainerView
         let translatedFrame = getTranslationFrame(keyboardFrame: keyboardFrame, presentedFrame: presentedFrame)
-        if translatedFrame != presentedFrame {
+        if (force || translatedFrame != presentedFrame) {
             UIView.animate(withDuration: duration, animations: {
                 self.presentedView?.frame = translatedFrame
             })
         }
+    }
+}
+
+extension ExtensionPresentationController {
+    func resetViewSize() {
+        animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
     }
 }
 
