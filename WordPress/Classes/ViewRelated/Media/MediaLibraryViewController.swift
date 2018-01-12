@@ -486,6 +486,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Document Picker
 
     private func showDocumentPicker() {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
+            useUploadCoordinator = true
+        }
+
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
@@ -524,6 +528,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Upload Media from Camera
 
     private func presentMediaCapture() {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled {
+            self.useUploadCoordinator = true
+        }
+
         capturePresenter = WPMediaCapturePresenter(presenting: self)
         capturePresenter!.completionBlock = { [weak self] mediaInfo in
             if let mediaInfo = mediaInfo as NSDictionary? {
@@ -542,7 +550,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 print("Adding media failed: ", error?.localizedDescription ?? "no media")
                 return
             }
-            self?.addMediaAssets([media!])
+            guard let strongSelf = self,
+                let media = media as? PHAsset else {
+                return
+            }
+
+            if FeatureFlag.asyncUploadsInMediaLibrary.enabled && strongSelf.useUploadCoordinator {
+                MediaCoordinator.shared.addMedia(from: media, to: strongSelf.blog)
+                strongSelf.useUploadCoordinator = false
+            } else {
+                strongSelf.addMediaAssets([media])
+            }
         }
 
         guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
@@ -580,11 +598,18 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
 extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if FeatureFlag.asyncUploadsInMediaLibrary.enabled && useUploadCoordinator {
+            useUploadCoordinator = false
 
-        prepareMediaProgressForNumberOfAssets(urls.count)
+            for documentURL in urls as [NSURL] {
+                MediaCoordinator.shared.addMedia(from: documentURL, to: blog)
+            }
+        } else {
+            prepareMediaProgressForNumberOfAssets(urls.count)
 
-        for documentURL in urls {
-            makeAndUploadMediaWithURL(documentURL)
+            for documentURL in urls {
+                makeAndUploadMediaWithURL(documentURL)
+            }
         }
     }
 
