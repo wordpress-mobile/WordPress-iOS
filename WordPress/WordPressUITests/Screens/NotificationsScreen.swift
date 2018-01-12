@@ -10,4 +10,8 @@ class NotificationsScreen: BaseScreen {
 
         super.init(element: navBar)
     }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().navigationBars["Notifications"].exists
+    }
 }

@@ -24,13 +24,13 @@ class MainNavigationTests: XCTestCase {
 
     func testTabBarNavigation() {
         mySiteScreen
-            .switchSite()
+            .tabBar.gotoMySitesScreen()
             .tabBar.gotoReaderScreen()
             .tabBar.gotoMeScreen()
             .tabBar.gotoNotificationsScreen()
             .tabBar.gotoEditorScreen()
             .goBack()
 
-        XCTAssert(NotificationsScreen().isLoaded())
+        XCTAssert(NotificationsScreen.isLoaded())
     }
 }
