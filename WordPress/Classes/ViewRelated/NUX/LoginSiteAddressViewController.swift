@@ -1,6 +1,6 @@
 import UIKit
 
-class LoginSiteAddressViewController: LoginNewViewController, NUXKeyboardResponder {
+class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?

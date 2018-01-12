@@ -5,7 +5,7 @@ import CocoaLumberjack
 /// authentication link be emailed to the user.  Allows the user to signin via
 /// email instead of their password.
 ///
-class LoginLinkRequestViewController: LoginNewViewController {
+class LoginLinkRequestViewController: LoginViewController {
     @IBOutlet var gravatarView: UIImageView?
     @IBOutlet var label: UILabel?
     @IBOutlet var sendLinkButton: NUXSubmitButton?

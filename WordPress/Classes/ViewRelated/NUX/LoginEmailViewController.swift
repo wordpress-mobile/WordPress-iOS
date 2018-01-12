@@ -3,7 +3,7 @@ import GoogleSignIn
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
-class LoginEmailViewController: LoginNewViewController, NUXKeyboardResponder {
+class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
