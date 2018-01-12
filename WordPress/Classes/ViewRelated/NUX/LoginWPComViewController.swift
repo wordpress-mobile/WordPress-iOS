@@ -67,7 +67,6 @@ class LoginWPComViewController: LoginNewViewController, NUXKeyboardResponder {
     // MARK: Setup and Configuration
 
     /// Sets up a 1Password button if 1Password is available.
-    /// - note: this could move into NUXAbstractViewController or LoginViewController for better reuse
     @objc func setupOnePasswordButtonIfNeeded() {
         guard let emailStackView = emailStackView else { return }
         WPStyleGuide.configureOnePasswordButtonForStackView(emailStackView,
