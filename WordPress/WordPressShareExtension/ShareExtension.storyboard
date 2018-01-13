@@ -36,41 +36,32 @@
                     <view key="view" contentMode="scaleToFill" id="sVy-D8-YUb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-rW-x8J">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="smc-Pp-8Yy" id="oql-8o-cfh"/>
+                                    <outlet property="delegate" destination="smc-Pp-8Yy" id="kWV-je-zJm"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="dkr-rW-x8J" secondAttribute="trailing" id="6ah-69-1jA"/>
+                            <constraint firstItem="dkr-rW-x8J" firstAttribute="bottom" secondItem="ImW-YO-81r" secondAttribute="bottom" id="V35-yg-gnv"/>
+                            <constraint firstItem="dkr-rW-x8J" firstAttribute="leading" secondItem="sVy-D8-YUb" secondAttribute="leading" id="cjT-Lm-1AC"/>
+                            <constraint firstItem="dkr-rW-x8J" firstAttribute="top" secondItem="ImW-YO-81r" secondAttribute="top" id="o9u-40-agO"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="ImW-YO-81r"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="dkr-rW-x8J" id="z6V-eD-T2y"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAr-KI-b8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="929" y="108"/>
-        </scene>
-        <!--Table View Controller-->
-        <scene sceneID="Pwk-Oa-cgc">
-            <objects>
-                <tableViewController storyboardIdentifier="ModulesTableViewController" id="Pfb-4H-Imx" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kqm-x0-gGb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="28y-yh-Fc0">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="28y-yh-Fc0" id="vg9-m5-Xjb">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Pfb-4H-Imx" id="OB9-Y1-EHd"/>
-                            <outlet property="delegate" destination="Pfb-4H-Imx" id="pQM-0g-Zql"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7gq-Jc-mI8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1751" y="-98"/>
+            <point key="canvasLocation" x="928.79999999999995" y="107.49625187406298"/>
         </scene>
         <!--Main Share View Controller-->
         <scene sceneID="SDn-ec-486">
