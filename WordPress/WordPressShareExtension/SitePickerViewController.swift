@@ -3,31 +3,64 @@ import UIKit
 import WordPressShared
 import WordPressKit
 
+protocol SitePickerDelegate: class {
+    func didSelectSite(siteId: Int, description: String?)
+}
+
 /// This class presents a list of Sites, and allows the user to select one from the list. Works
 /// absolutely detached from the Core Data Model, since it was designed for Extension usage.
 ///
 class SitePickerViewController: UITableViewController {
+
+    weak var sitePickerDelegate: SitePickerDelegate?
+
+    // MARK: - Private Constants
+
+    fileprivate let reuseIdentifier = "reuseIdentifier"
+
+    // MARK: - Private Properties
+
+    fileprivate var sites           = [RemoteBlog]()
+    fileprivate var noResultsView   = WPNoResultsView()
+
     // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
         setupTableView()
         setupNoResultsView()
         loadSites()
     }
 
+    // MARK: - Setup & Configuration
+
+    fileprivate func setupTableView() {
+        // Fix: Hide the cellSeparators, when the table is empty
+        tableView.tableFooterView = UIView()
+        tableView.allowsSelection = true
+        tableView.delegate = self
+
+        // Style!
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorColor = WPStyleGuide.greyLighten20()
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+
+        // Cells
+        tableView.register(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
+    }
+
+    fileprivate func setupNoResultsView() {
+        tableView.addSubview(noResultsView)
+    }
 
     // MARK: - UITableView Methods
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sites.count
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return rowHeight
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -41,37 +74,12 @@ class SitePickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let site = sites[indexPath.row]
-        onChange?(site.blogID.intValue, (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host)
-        _ = navigationController?.popViewController(animated: true)
+        let siteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
+        sitePickerDelegate?.didSelectSite(siteId: site.blogID.intValue, description: siteName)
     }
-
-
-    // MARK: - Setup Helpers
-    fileprivate func setupView() {
-        title = NSLocalizedString("Site Picker", comment: "Title for the Site Picker")
-        preferredContentSize = UIScreen.main.bounds.size
-    }
-
-    fileprivate func setupTableView() {
-        // Blur!
-        let blurEffect = UIBlurEffect(style: .light)
-        tableView.backgroundColor = UIColor.clear
-        tableView.backgroundView = UIVisualEffectView(effect: blurEffect)
-        tableView.separatorEffect = UIVibrancyEffect(blurEffect: blurEffect)
-
-        // Fix: Hide the cellSeparators, when the table is empty
-        tableView.tableFooterView = UIView()
-
-        // Cells
-        tableView.register(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
-    }
-
-    fileprivate func setupNoResultsView() {
-        tableView.addSubview(noResultsView)
-    }
-
 
     // MARK: - Private Helpers
+
     fileprivate func loadSites() {
         guard let oauth2Token = ShareExtensionService.retrieveShareExtensionToken() else {
             showEmptySitesIfNeeded()
@@ -99,6 +107,8 @@ class SitePickerViewController: UITableViewController {
     }
 
     fileprivate func configureCell(_ cell: UITableViewCell, site: RemoteBlog) {
+        cell.selectionStyle = .blue
+
         // Site's Details
         cell.textLabel?.text = site.name
         cell.detailTextLabel?.text = URL(string: site.url)?.host
@@ -117,6 +127,7 @@ class SitePickerViewController: UITableViewController {
 
 
     // MARK: - No Results Helpers
+
     fileprivate func showLoadingView() {
         noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Legend displayed when loading Sites")
         noResultsView.isHidden = false
@@ -127,18 +138,4 @@ class SitePickerViewController: UITableViewController {
         noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
         noResultsView.isHidden = hasSites
     }
-
-    // MARK: Typealiases
-    typealias PickerHandler = (_ siteId: Int, _ description: String?) -> Void
-
-    // MARK: - Public Properties
-    var onChange: PickerHandler?
-
-    // MARK: - Private Properties
-    fileprivate var sites           = [RemoteBlog]()
-    fileprivate var noResultsView   = WPNoResultsView()
-
-    // MARK: - Private Constants
-    fileprivate let reuseIdentifier = "reuseIdentifier"
-    fileprivate let rowHeight       = CGFloat(74)
 }

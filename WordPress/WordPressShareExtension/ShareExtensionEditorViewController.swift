@@ -229,7 +229,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
             return
         }
 
-        if let destination = segue.destination as? ShareSitePickerViewController {
+        if let destination = segue.destination as? ShareModularViewController {
             destination.shareData = source.shareData
         }
     }
