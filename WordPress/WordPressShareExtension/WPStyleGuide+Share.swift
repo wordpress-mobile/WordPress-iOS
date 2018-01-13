@@ -19,11 +19,11 @@ extension WPStyleGuide {
 
         static func configureTableViewSiteCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
-            //cell.textLabel?.sizeToFit()
+            cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = darkGrey()
 
             cell.detailTextLabel?.font = subtitleFont()
-            //cell.detailTextLabel?.sizeToFit()
+            cell.detailTextLabel?.sizeToFit()
             cell.detailTextLabel?.textColor = greyDarken10()
 
             cell.imageView?.layer.borderColor = UIColor.white.cgColor
