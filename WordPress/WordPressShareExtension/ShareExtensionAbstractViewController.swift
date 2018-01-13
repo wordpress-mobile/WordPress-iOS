@@ -93,19 +93,9 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
         // Core Data
         managedContext = coreDataStack.managedContext
-
-        // Other Stuff
-        setupBackgroundTapGestureRecognizer()
     }
 
     // MARK: Setup and Configuration
-
-    /// Sets up a gesture recognizer to detect taps on the view, but not its content.
-    ///
-    @objc func setupBackgroundTapGestureRecognizer() {
-        let tgr = UITapGestureRecognizer(target: self, action: #selector(ShareExtensionAbstractViewController.handleBackgroundTapGesture(_:)))
-        view.addGestureRecognizer(tgr)
-    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -113,12 +103,6 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.current.userInterfaceIdiom == .pad ? .all : .portrait
-    }
-
-    // MARK: - Actions
-
-    @objc func handleBackgroundTapGesture(_ tgr: UITapGestureRecognizer) {
-        view.endEditing(true)
     }
 }
 
