@@ -41,7 +41,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate func setupTableView() {
         // Register the cells
-        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
+        tableView.register(ShareSitesTableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -335,5 +335,23 @@ fileprivate extension ShareModularViewController {
         static let blogRowHeight           = CGFloat(74.0)
         static let defaultRowHeight        = CGFloat(44.0)
         static let emptyCount              = 0
+    }
+}
+
+// MARK: - UITableView Cells
+
+class ShareSitesTableViewCell: WPTableViewCell {
+
+    // MARK: - Initializers
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+    }
+
+    public convenience init() {
+        self.init(style: .subtitle, reuseIdentifier: nil)
     }
 }
