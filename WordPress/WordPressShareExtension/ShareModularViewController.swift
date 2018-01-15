@@ -172,8 +172,9 @@ extension ShareModularViewController: UITableViewDelegate {
             let site = siteForRowAtIndexPath(indexPath) else {
             return
         }
-        clearAllAccessoryTypes()
+        clearAllSelectedSites()
         cell.accessoryType = .checkmark
+        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
         updatePublishButtonStatus()
@@ -254,12 +255,10 @@ fileprivate extension ShareModularViewController {
         }
     }
 
-    func clearAllAccessoryTypes() {
-        for section in 0..<tableView.numberOfSections {
-            for row in 0..<tableView.numberOfRows(inSection: section) {
-                let cell = tableView.cellForRow(at: IndexPath(row: row, section: section))
-                cell?.accessoryType = .none
-            }
+    func clearAllSelectedSites() {
+        for row in 0 ..< rowCountForSitesSection {
+            let cell = tableView.cellForRow(at: IndexPath(row: row, section: Section.sites.rawValue))
+            cell?.accessoryType = .none
         }
     }
 }
@@ -371,7 +370,7 @@ fileprivate extension ShareModularViewController {
 // MARK: - Table Sections
 
 fileprivate extension ShareModularViewController {
-    fileprivate enum Section: Int {
+        enum Section: Int {
         case modules       = 0
         case sites         = 1
 
@@ -411,6 +410,7 @@ fileprivate extension ShareModularViewController {
         static let blogRowHeight           = CGFloat(74.0)
         static let defaultRowHeight        = CGFloat(44.0)
         static let emptyCount              = 0
+        static let flashAnimationLength    = 0.2
     }
 }
 

@@ -21,7 +21,6 @@ extension WPStyleGuide {
             cell.imageView?.tintColor = greyLighten10()
 
             cell.backgroundColor = UIColor.white
-            cell.selectionStyle = .none
         }
     }
 }

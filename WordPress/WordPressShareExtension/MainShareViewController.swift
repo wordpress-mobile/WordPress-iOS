@@ -19,6 +19,7 @@ class MainShareViewController: UIViewController {
 
     override open func viewDidLoad() {
         super.viewDidLoad()
+        trackExtensionLaunch()
         setupAppearance()
         loadAndPresentNavigationVC()
     }
@@ -47,5 +48,11 @@ private extension MainShareViewController {
         }
 
         present(shareNavController, animated: true, completion: nil)
+    }
+
+    func trackExtensionLaunch() {
+        let tracks = Tracks(appGroupName: WPAppGroupName)
+        let oauth2Token = ShareExtensionService.retrieveShareExtensionToken()
+        tracks.trackExtensionLaunched(oauth2Token != nil)
     }
 }

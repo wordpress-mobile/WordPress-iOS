@@ -328,6 +328,7 @@
 		722F5726ACB4A276B0CF3C83 /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		740B0FD41FF5895E00012B58 /* OptionsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B538F3831EF45B13001003D5 /* OptionsTableView.swift */; };
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
+		741D147A200D55F6003DFD30 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D1479200D55F6003DFD30 /* UITableView+Extensions.swift */; };
 		741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */; };
@@ -1599,6 +1600,7 @@
 		7059CD200F332B6500A0660B /* WPCategoryTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPCategoryTree.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		740BD8331A0D4C3600F04D18 /* WPUploadStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusButton.h; sourceTree = "<group>"; };
 		740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUploadStatusButton.m; sourceTree = "<group>"; };
+		741D1479200D55F6003DFD30 /* UITableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		741E22441FC0CC55007967AB /* UploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadOperation.swift; sourceTree = "<group>"; };
 		742C79971E5F511C00DB1608 /* DeleteSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteViewController.swift; sourceTree = "<group>"; };
 		7430C4481F97F23600E2673E /* ShareMediaFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareMediaFileManager.swift; sourceTree = "<group>"; };
@@ -3572,6 +3574,14 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		741D1478200D5533003DFD30 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */,
+			);
+			name = Style;
+			sourceTree = "<group>";
+		};
 		7430C4471F97F0DA00E2673E /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -3914,6 +3924,7 @@
 				74FA4BDB1FBF994F0031EAAD /* Data */,
 				B542DEBB1D119683004CA6AE /* Tools */,
 				B5FA22841C99F6340016CA7C /* Tracks */,
+				741D1478200D5533003DFD30 /* Style */,
 				7430C4471F97F0DA00E2673E /* UI */,
 				B5BEA5661C7CEB4400C8035B /* Supporting Files */,
 				B50248B81C96FFB000AFBDED /* WordPressShare-Bridging-Header.h */,
@@ -4804,7 +4815,7 @@
 				B5FA868A1D10A41600AB5F7E /* UIImage+Extensions.swift */,
 				B50248B31C96FF8400AFBDED /* UIImageView+Extensions.swift */,
 				74AC1DA0200D0CC300973CAD /* UINavigationController+Extensions.swift */,
-				B50248AE1C96FF6200AFBDED /* WPStyleGuide+Share.swift */,
+				741D1479200D55F6003DFD30 /* UITableView+Extensions.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -7205,6 +7216,7 @@
 				74D06FE81FE076F700AF1788 /* FormatBarItemProviders.swift in Sources */,
 				745EAF452003FD050066F415 /* ShareSegueHandler.swift in Sources */,
 				B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */,
+				741D147A200D55F6003DFD30 /* UITableView+Extensions.swift in Sources */,
 				74AF4D751FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				7430C4491F97F23600E2673E /* ShareMediaFileManager.swift in Sources */,
 				B5D7A0ED1CCFD1FF003C375D /* UIImage+Resize.m in Sources */,
