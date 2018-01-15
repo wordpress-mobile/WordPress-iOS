@@ -133,6 +133,7 @@ class WebKitViewController: UIViewController {
         navigationBar?.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
         navigationBar?.barStyle = .default
         navigationBar?.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
+        navigationBar?.titleTextAttributes = [.foregroundColor: WPStyleGuide.darkGrey()]
 
         titleView.titleLabel.textColor = WPStyleGuide.darkGrey()
         titleView.subtitleLabel.textColor = WPStyleGuide.grey()
