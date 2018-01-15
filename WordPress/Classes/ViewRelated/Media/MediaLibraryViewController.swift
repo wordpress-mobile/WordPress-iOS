@@ -236,24 +236,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Actions
 
     @objc fileprivate func addTapped() {
-        if #available(iOS 11, *), FeatureFlag.iCloudFilesSupport.enabled {
-            showOptionsMenu()
-        }
-        else {
-            showMediaPicker()
-        }
+        showOptionsMenu()
     }
 
     private func showMediaPicker() {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
-
-        // If iOS11, media capture is available via showOptionsMenu()
-        if #available(iOS 11, *) {
-            // NOTE: once iCloudFilesSupport is permanently enabled, this needs to be false.
-            options.allowCaptureOfMedia = !(FeatureFlag.iCloudFilesSupport.enabled)
-        }
+        options.allowCaptureOfMedia = false
 
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = WPPHAssetDataSource()
@@ -275,8 +265,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             self.showMediaPicker()
         }
 
-        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")) { _ in
-            self.showDocumentPicker()
+        if #available(iOS 11.0, *) {
+            menuAlert.addDefaultActionWithTitle(NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")) { _ in
+                self.showDocumentPicker()
+            }
         }
 
         menuAlert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
