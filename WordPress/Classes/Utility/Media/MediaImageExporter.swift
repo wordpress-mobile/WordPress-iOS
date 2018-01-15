@@ -181,7 +181,7 @@ class MediaImageExporter: MediaExporter {
                 throw ImageExportError.imageSourceIsAnUnknownType
             }
             return exportImageSource(source,
-                              filename: url.deletingPathExtension().lastPathComponent,
+                              filename: UUID().uuidString,
                               type: options.exportImageType ?? utType as String,
                               onCompletion: onCompletion,
                               onError: onError)
