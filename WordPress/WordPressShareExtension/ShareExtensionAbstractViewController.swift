@@ -35,15 +35,15 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
         ShareExtensionService.retrieveShareExtensionToken()
     }()
 
-    /// Selected Site's ID
+    /// Historically Selected Site's ID
     ///
-    internal lazy var selectedSiteID: Int? = {
+    internal lazy var historicalSelectedSiteID: Int? = {
         ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
     }()
 
-    /// Selected Site's Name
+    /// Historically Selected Site's Name
     ///
-    internal lazy var selectedSiteName: String? = {
+    internal lazy var historicalSelectedSiteName: String? = {
         ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteName
     }()
 
