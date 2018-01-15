@@ -8,6 +8,7 @@ enum PluginAction: Action {
     case disableAutoupdates(id: String, site: JetpackSiteRef)
     case update(id: String, site: JetpackSiteRef)
     case remove(id: String, site: JetpackSiteRef)
+    case refreshPlugins(site: JetpackSiteRef)
     case receivePlugins(site: JetpackSiteRef, plugins: SitePlugins)
     case receivePluginsFailed(site: JetpackSiteRef, error: Error)
     case receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry)
@@ -121,6 +122,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             updatePlugin(pluginID: pluginID, site: site)
         case .remove(let pluginID, let site):
             removePlugin(pluginID: pluginID, site: site)
+        case .refreshPlugins(let site):
+            refreshPlugins(site: site)
         case .receivePlugins(let site, let plugins):
             receivePlugins(site: site, plugins: plugins)
         case .receivePluginsFailed(let site, _):
@@ -156,10 +159,14 @@ extension PluginStore {
         return state.directoryEntries[slug]?.entry
     }
 
+    func isFetchingPlugins(site: JetpackSiteRef) -> Bool {
+        return state.fetching[site, default: false]
+    }
+
     func shouldFetch(site: JetpackSiteRef) -> Bool {
         let lastFetch = state.lastFetch[site, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let isFetching = state.fetching[site, default: false]
+        let isFetching = isFetchingPlugins(site: site)
         return needsRefresh && !isFetching
     }
 
@@ -174,6 +181,9 @@ extension PluginStore {
 // MARK: - Action handlers
 private extension PluginStore {
     func activatePlugin(pluginID: String, site: JetpackSiteRef) {
+        guard let plugin = getPlugin(id: pluginID, site: site) else {
+            return
+        }
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = true
         }
@@ -181,7 +191,9 @@ private extension PluginStore {
             pluginID: pluginID,
             siteID: site.siteID,
             success: {},
-            failure: { [weak self] _ in
+            failure: { [weak self] (error) in
+                let message = String(format: NSLocalizedString("Error activating %@.", comment: "There was an error activating a plugin, placeholder is the plugin name"), plugin.name)
+                self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = false
                 })
@@ -189,6 +201,9 @@ private extension PluginStore {
     }
 
     func deactivatePlugin(pluginID: String, site: JetpackSiteRef) {
+        guard let plugin = getPlugin(id: pluginID, site: site) else {
+            return
+        }
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = false
         }
@@ -196,7 +211,9 @@ private extension PluginStore {
             pluginID: pluginID,
             siteID: site.siteID,
             success: {},
-            failure: { [weak self] _ in
+            failure: { [weak self] (error) in
+                let message = String(format: NSLocalizedString("Error deactivating %@.", comment: "There was an error deactivating a plugin, placeholder is the plugin name"), plugin.name)
+                self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.active = true
                 })
@@ -204,6 +221,9 @@ private extension PluginStore {
     }
 
     func enableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
+        guard let plugin = getPlugin(id: pluginID, site: site) else {
+            return
+        }
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = true
         }
@@ -211,7 +231,9 @@ private extension PluginStore {
             pluginID: pluginID,
             siteID: site.siteID,
             success: {},
-            failure: { [weak self] _ in
+            failure: { [weak self] (error) in
+                let message = String(format: NSLocalizedString("Error enabling autoupdates for %@.", comment: "There was an error enabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
+                self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = false
                 })
@@ -219,6 +241,9 @@ private extension PluginStore {
     }
 
     func disableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
+        guard let plugin = getPlugin(id: pluginID, site: site) else {
+            return
+        }
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = false
         }
@@ -226,7 +251,9 @@ private extension PluginStore {
             pluginID: pluginID,
             siteID: site.siteID,
             success: {},
-            failure: { [weak self] _ in
+            failure: { [weak self] (error) in
+                let message = String(format: NSLocalizedString("Error disabling autoupdates for %@.", comment: "There was an error disabling autoupdates for a plugin, placeholder is the plugin name"), plugin.name)
+                self?.notifyRemoteError(message: message, error: error)
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = true
                 })
@@ -245,6 +272,7 @@ private extension PluginStore {
                 plugin.updateState = .updating(version)
             })
         }
+        WPAppAnalytics.track(.pluginUpdated, withBlogID: site.siteID as NSNumber)
         remote(site: site)?.updatePlugin(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -262,6 +290,8 @@ private extension PluginStore {
                         updatedPlugin.updateState = .available(version)
                     })
                     state.updatesInProgress[site]?.remove(pluginID)
+                    let message = String(format: NSLocalizedString("Error updating %@.", comment: "There was an error updating a plugin, placeholder is the plugin name"), plugin.name)
+                    self?.notifyRemoteError(message: message, error: error)
                 })
                 print("Error updating plugin: \(error)")
         })
@@ -269,17 +299,47 @@ private extension PluginStore {
 
     func removePlugin(pluginID: String, site: JetpackSiteRef) {
         guard let sitePlugins = state.plugins[site],
+            let plugin = getPlugin(id: pluginID, site: site),
             let index = sitePlugins.plugins.index(where: { $0.id == pluginID }) else {
                 return
         }
         state.plugins[site]?.plugins.remove(at: index)
-        remote(site: site)?.remove(
-            pluginID: pluginID,
-            siteID: site.siteID,
-            success: {},
-            failure: { [weak self] _ in
-                _ = self?.getPlugins(site: site)
-        })
+        WPAppAnalytics.track(.pluginRemoved, withBlogID: site.siteID as NSNumber)
+
+        guard let remote = self.remote(site: site) else {
+            return
+        }
+
+        let failure: (Error) -> Void = { [weak self] (error) in
+            let message = String(format: NSLocalizedString("Error removing %@.", comment: "There was an error removing a plugin, placeholder is the plugin name"), plugin.name)
+            self?.notifyRemoteError(message: message, error: error)
+            self?.refreshPlugins(site: site)
+        }
+
+        let remove = {
+            remote.remove(
+                pluginID: pluginID,
+                siteID: site.siteID,
+                success: {},
+                failure: failure)
+        }
+
+        if plugin.state.active {
+            remote.deactivatePlugin(pluginID: pluginID,
+                                    siteID: site.siteID,
+                                    success: remove,
+                                    failure: failure)
+        } else {
+            remove()
+        }
+    }
+
+    func refreshPlugins(site: JetpackSiteRef) {
+        guard !isFetchingPlugins(site: site) else {
+            DDLogInfo("Plugin refresh triggered while one was in progress")
+            return
+        }
+        fetchPlugins(site: site)
     }
 
     func fetchPlugins(site: JetpackSiteRef) {
@@ -305,6 +365,15 @@ private extension PluginStore {
                 if case let .available(version) = plugin.updateState,
                     updatesForSite.contains(plugin.id) {
                     plugin.updateState = .updating(version)
+                }
+                return plugin
+            })
+        }
+        if isAutomatedTransfer(site: site) {
+            plugins.plugins = plugins.plugins.map({ (plugin) in
+                var plugin = plugin
+                if ["akismet", "jetpack", "vaultpress"].contains(plugin.slug) {
+                    plugin.automanaged = true
                 }
                 return plugin
             })
@@ -360,6 +429,19 @@ private extension PluginStore {
             }
             state.fetchingDirectoryEntry[slug] = false
         }
+    }
+
+    func notifyRemoteError(message: String, error: Error) {
+        DDLogError("[PluginStore Error] \(message)")
+        DDLogError("[PluginStore Error] \(error)")
+        ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
+    }
+
+    func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let predicate = NSPredicate(format: "blogID = %i AND account.username = %@", site.siteID, site.username)
+        let blog = context.firstObject(ofType: Blog.self, matching: predicate)
+        return blog?.jetpack?.automatedTransfer ?? false
     }
 
     func remote(site: JetpackSiteRef) -> PluginServiceRemote? {

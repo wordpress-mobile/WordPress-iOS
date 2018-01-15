@@ -1,2 +1,2 @@
-Nouvelles améliorations des performances de l'éditeur et corrections de bogues. 
- Lecteur : les commentaires sur les sites Jetpack sont maintenant disponibles. 
+Extensions : Vous pouvez à présent gérer vos extensions dans l’app, ça se trouve dans les détails du site -> Extensions.
+Éditeur : Quelques problèmes avec les caractères chinois résolus.

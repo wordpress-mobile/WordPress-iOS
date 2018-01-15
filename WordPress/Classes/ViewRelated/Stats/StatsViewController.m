@@ -137,15 +137,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.showingJetpackLogin = YES;
     JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
     __weak JetpackLoginViewController *safeController = controller;
-    [controller setCompletionBlock:^(BOOL didAuthenticate) {
-        if (didAuthenticate) {
+    [controller setCompletionBlock:^(){
             [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:self.blog];
             [WPAppAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withBlog:self.blog];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
             [self initStats];
-        }
     }];
 
     [self addChildViewController:controller];

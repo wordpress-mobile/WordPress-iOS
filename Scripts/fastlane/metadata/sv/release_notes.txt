@@ -1,2 +1,2 @@
-Nya prestandaförbättringar i redigeraren och felrättningar.
-Läsaren: Nu är kommentarer på Jetpack-webbplatser tillgängliga.
+Tillägg: Nu kan du hantera dina tillägg i appen. Du hittar det via uppgifter om din webbplats -> Tillägg.
+Redigerare: Några problem med kinesiska skrivtecken är lösta.

@@ -1,2 +1,2 @@
-Nuevas mejoras de rendimiento y soluciones a fallos en el editor.
-Lector: Ahora están disponibles los comentarios en los sitios Jetpack.
+Plugins: Ahora puedes gestionar tus plugins en la aplicación, encuéntralos en los detalles de tu sitio -> Plugins.
+Editor: Resueltos algunos problemas con caracteres chinos.

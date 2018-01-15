@@ -247,11 +247,11 @@ open class WordPressComRestApi: NSObject {
         }
         serializeRequest(URLString, parameters: parameters, fileParts: fileParts, success:{ (request, temporaryURL) in
             let task = self.uploadSessionManager.uploadTask(with: request as URLRequest, fromFile: temporaryURL, progress: progressUpdater) { (response, result, error) in
-                progress.completedUnitCount = progress.totalUnitCount
-
                 if let error = error {
+                    progress.completedUnitCount = 0
                     failure(error as NSError, response as? HTTPURLResponse)
                 } else {
+                    progress.completedUnitCount = progress.totalUnitCount
                     guard let responseObject = result else {
                         failure(WordPressComRestApiError.unknown as NSError , response as? HTTPURLResponse)
                         return
