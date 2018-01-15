@@ -17,11 +17,20 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
     ///
     @objc var cancelCompletionBlock: CompletionBlock?
 
+    // MARK: - Internal Properties
+
     /// Stateful data related to this share session.
     ///
-    var shareData = ShareData()
+    internal var shareData = ShareData()
 
-    // MARK: - Internal Properties
+    /// All possible sites for this account
+    ///
+    internal var sites: [RemoteBlog]?
+    internal var hasSites: Bool {
+        get {
+            return sites != nil && sites?.isEmpty == false
+        }
+    }
 
     /// WordPress.com Username
     ///

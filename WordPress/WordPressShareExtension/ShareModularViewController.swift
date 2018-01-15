@@ -36,15 +36,6 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         return $0
     }(WPNoResultsView())
 
-    /// All possible sites for this account
-    ///
-    fileprivate var sites: [RemoteBlog]?
-    fileprivate var hasSites: Bool {
-        get {
-            return sites == nil || sites?.isEmpty == false
-        }
-    }
-
     fileprivate var firstTimeLoad: Bool = true
 
     // MARK: - View Lifecycle
@@ -60,7 +51,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         setupNoResultsView()
 
         // Load Data
-        reloadSites()
+        reloadSitesIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +100,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 extension ShareModularViewController {
     @objc func backWasPressed() {
         if let editor = navigationController?.previousViewController() as? ShareExtensionEditorViewController {
+            editor.sites = sites
             editor.shareData = shareData
         }
         _ = navigationController?.popViewController(animated: true)
@@ -278,6 +270,10 @@ fileprivate extension ShareModularViewController {
     }
 
     fileprivate func showEmptySitesIfNeeded() {
+        guard hasSites else {
+            return
+        }
+
         noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
         noResultsView.isHidden = hasSites
     }
@@ -286,8 +282,8 @@ fileprivate extension ShareModularViewController {
 // MARK: - Backend Interaction
 
 fileprivate extension ShareModularViewController {
-    func reloadSites() {
-        guard let oauth2Token = oauth2Token else {
+    func reloadSitesIfNeeded() {
+        guard !hasSites, let oauth2Token = oauth2Token else {
             showEmptySitesIfNeeded()
             return
         }
