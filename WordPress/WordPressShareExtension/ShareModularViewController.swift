@@ -43,7 +43,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupSiteData()
+        firstTimeSetup()
 
         // Initialize Interface
         setupNavigationBar()
@@ -60,16 +60,16 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     // MARK: - Setup Helpers
 
-    fileprivate func setupSiteData() {
+    fileprivate func firstTimeSetup() {
         // If this is our first time loading this screen AND the selected site ID is empty, prefill
         // the selected site info with what we historically used in the past.
-        if firstTimeLoad {
-            firstTimeLoad = false
-            if shareData.selectedSiteID == nil {
-                shareData.selectedSiteID = historicalSelectedSiteID
-                shareData.selectedSiteName = historicalSelectedSiteName
-            }
+        guard firstTimeLoad, shareData.selectedSiteID == nil else {
+            return
         }
+
+        shareData.selectedSiteID = historicalSelectedSiteID
+        shareData.selectedSiteName = historicalSelectedSiteName
+        firstTimeLoad = false
     }
 
     fileprivate func setupNavigationBar() {
@@ -182,6 +182,7 @@ extension ShareModularViewController: UITableViewDelegate {
 
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
+        updatePublishButtonStatus()
     }
 
     @objc func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -263,19 +264,34 @@ fileprivate extension ShareModularViewController {
 // MARK: - No Results Helpers
 
 fileprivate extension ShareModularViewController {
-    fileprivate func showLoadingView() {
-        noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Legend displayed when loading Sites")
+    func showLoadingView() {
+        noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Placeholder text displayed in the share extention when loading sites from the server.")
+        activityIndicatorView.alpha = Constants.fullAlpha
         activityIndicatorView.startAnimating()
         noResultsView.isHidden = false
+        publishButton.isEnabled = false
     }
 
-    fileprivate func showEmptySitesIfNeeded() {
-        guard hasSites else {
+    func showEmptySitesIfNeeded() {
+        updatePublishButtonStatus()
+
+        guard !hasSites else {
+            noResultsView.isHidden = true
             return
         }
 
-        noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
-        noResultsView.isHidden = hasSites
+        noResultsView.titleText = NSLocalizedString("No Available Sites", comment: "Placeholder text displayed in the share extention when no sites could be loaded for the user.")
+        activityIndicatorView.alpha = Constants.zeroAlpha
+        noResultsView.isHidden = false
+    }
+
+    func updatePublishButtonStatus() {
+        guard hasSites, shareData.selectedSiteID != nil else {
+            publishButton.isEnabled = false
+            return
+        }
+
+        publishButton.isEnabled = true
     }
 }
 

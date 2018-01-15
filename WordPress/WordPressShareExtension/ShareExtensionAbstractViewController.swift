@@ -326,6 +326,8 @@ extension ShareExtensionAbstractViewController {
         static let placeholderMediaLink         = URL(string: "placeholder://")!
         static let defaultMaxDimension          = 3000
         static let mimeType                     = "image/jpeg"
+        static let fullAlpha: CGFloat = 1.0
+        static let zeroAlpha: CGFloat = 0.0
 
         static let postStatuses = [
             "draft": NSLocalizedString("Draft", comment: "Draft post status"),
