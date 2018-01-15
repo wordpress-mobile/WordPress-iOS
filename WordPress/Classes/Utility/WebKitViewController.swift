@@ -116,7 +116,7 @@ class WebKitViewController: UIViewController {
         let refreshButton = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
         if let customOptionsButton = customOptionsButton {
             navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
-        } else {
+        } else if !secureInteraction {
             navigationItem.rightBarButtonItem = refreshButton
         }
 
