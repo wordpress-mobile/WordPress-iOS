@@ -31,8 +31,9 @@ class MediaCoordinator: NSObject {
     /// - parameter asset: The asset to add.
     /// - parameter blog: The blog that the asset should be added to.
     ///
-    func addMedia(from asset: ExportableAsset, to blog: Blog) {
-        self.addMedia(from: asset, to: blog.objectID)
+    @discardableResult
+    func addMedia(from asset: ExportableAsset, to blog: Blog) -> Media {
+        return self.addMedia(from: asset, to: blog.objectID)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -41,14 +42,13 @@ class MediaCoordinator: NSObject {
     /// - parameter asset: The asset to add.
     /// - parameter post: The post that the asset should be added to.
     ///
-    func addMedia(from asset: ExportableAsset, to post: Post) {
-        self.addMedia(from: asset, to: post.objectID)
+    @discardableResult
+    func addMedia(from asset: ExportableAsset, to post: Post) -> Media {
+        return self.addMedia(from: asset, to: post.objectID)
     }
 
-    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) {
-        guard let asset = asset as? PHAsset else {
-            return
-        }
+    @discardableResult
+    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) -> Media {        
         mediaProgressCoordinator.track(numberOfItems: 1)
         let service = MediaService(managedObjectContext: backgroundContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
@@ -83,6 +83,7 @@ class MediaCoordinator: NSObject {
             totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
             mediaProgressCoordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
         }
+        return media
     }
 
     func retryMedia(_ media: Media) {
