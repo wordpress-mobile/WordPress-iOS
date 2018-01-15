@@ -165,7 +165,7 @@ class MediaThumbnailExporter: MediaExporter {
     ///
     @discardableResult func exportThumbnail(forImage image: UIImage, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) -> Progress {
         let exporter = MediaImageExporter(image: image, filename: UUID().uuidString)
-        exporter.mediaDirectoryType = .cache
+        exporter.mediaDirectoryType = .temporary
         exporter.options = imageExporterOptions
         return exporter.export(onCompletion: { (export) in
                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
