@@ -202,7 +202,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        tracks.trackExtensionLaunched(oauth2Token != nil)
         dismissIfNeeded()
         startListeningToNotifications()
     }
