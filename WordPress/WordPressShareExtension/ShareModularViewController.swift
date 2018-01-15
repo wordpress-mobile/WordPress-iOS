@@ -6,13 +6,38 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     // MARK: - Private Properties
 
+    /// TableView for site list
+    ///
     @IBOutlet fileprivate var tableView: UITableView!
+
+    /// Back Bar Button
+    ///
+    fileprivate lazy var backButton: UIBarButtonItem = {
+        let publishTitle = NSLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
+        let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(backWasPressed))
+        button.accessibilityIdentifier = "Publish Button"
+        return button
+    }()
+
+    /// Publish Bar Button
+    ///
+    fileprivate lazy var publishButton: UIBarButtonItem = {
+        let publishTitle = NSLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+        let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(publishWasPressed))
+        button.accessibilityIdentifier = "Publish Button"
+        return button
+    }()
+
+    /// Activity spinner used when loading sites
+    ///
     fileprivate lazy var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     fileprivate lazy var noResultsView: WPNoResultsView = {
         $0.accessoryView = activityIndicatorView
         return $0
     }(WPNoResultsView())
 
+    /// All possible sites for this account
+    ///
     fileprivate var sites: [RemoteBlog]?
     fileprivate var hasSites: Bool {
         get {
@@ -20,12 +45,17 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         }
     }
 
+    fileprivate var firstTimeLoad: Bool = true
+
     // MARK: - View Lifecycle
 
-    open override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupSiteData()
+
         // Initialize Interface
+        setupNavigationBar()
         setupTableView()
         setupNoResultsView()
 
@@ -33,11 +63,29 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         reloadSites()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
     // MARK: - Setup Helpers
+
+    fileprivate func setupSiteData() {
+        // If this is our first time loading this screen AND the selected site ID is empty, prefill
+        // the selected site info with what we historically used in the past.
+        if firstTimeLoad {
+            firstTimeLoad = false
+            if shareData.selectedSiteID == nil {
+                shareData.selectedSiteID = historicalSelectedSiteID
+                shareData.selectedSiteName = historicalSelectedSiteName
+            }
+        }
+    }
+
+    fileprivate func setupNavigationBar() {
+        self.navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = backButton
+        navigationItem.rightBarButtonItem = publishButton
+    }
 
     fileprivate func setupTableView() {
         // Register the cells
@@ -53,6 +101,21 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate func setupNoResultsView() {
         tableView.addSubview(noResultsView)
+    }
+}
+
+// MARK: - Actions
+
+extension ShareModularViewController {
+    @objc func backWasPressed() {
+        if let editor = parent as? ShareExtensionEditorViewController {
+            editor.shareData = shareData
+        }
+        _ = navigationController?.popViewController(animated: true)
+    }
+
+    @objc func publishWasPressed() {
+        // FIXME: Add Publish task
     }
 }
 
@@ -124,7 +187,9 @@ extension ShareModularViewController: UITableViewDelegate {
             return
         }
         cell.accessoryType = .checkmark
-        selectedSiteID = site.blogID.intValue
+
+        shareData.selectedSiteID = site.blogID.intValue
+        shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
     }
 
     @objc func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -173,7 +238,7 @@ fileprivate extension ShareModularViewController {
             cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
         }
 
-        if site.blogID.intValue == selectedSiteID {
+        if site.blogID.intValue == shareData.selectedSiteID {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -203,10 +268,25 @@ fileprivate extension ShareModularViewController {
     }
 }
 
-// MARK: - Data fetching helpers
+// MARK: - No Results Helpers
 
 fileprivate extension ShareModularViewController {
-    fileprivate func reloadSites() {
+    fileprivate func showLoadingView() {
+        noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Legend displayed when loading Sites")
+        activityIndicatorView.startAnimating()
+        noResultsView.isHidden = false
+    }
+
+    fileprivate func showEmptySitesIfNeeded() {
+        noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
+        noResultsView.isHidden = hasSites
+    }
+}
+
+// MARK: - Backend Interaction
+
+fileprivate extension ShareModularViewController {
+    func reloadSites() {
         guard let oauth2Token = oauth2Token else {
             showEmptySitesIfNeeded()
             return
@@ -233,36 +313,16 @@ fileprivate extension ShareModularViewController {
 
         showLoadingView()
     }
-}
-
-// MARK: - No Results Helpers
-
-fileprivate extension ShareModularViewController {
-    fileprivate func showLoadingView() {
-        noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Legend displayed when loading Sites")
-        activityIndicatorView.startAnimating()
-        noResultsView.isHidden = false
-    }
-
-    fileprivate func showEmptySitesIfNeeded() {
-        noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
-        noResultsView.isHidden = hasSites
-    }
-}
-
-// MARK: - Backend Interaction
-
-fileprivate extension ShareModularViewController {
 
     func savePostToRemoteSite() {
-        guard let _ = oauth2Token, let siteID = selectedSiteID else {
+        guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
             fatalError("Need to have an oauth token and site ID selected.")
         }
 
-        // FIXME: Save the last used site
-        //        if let siteName = selectedSiteName {
-        //            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: siteName)
-        //        }
+        // Save the selected site for later use
+        if let selectedSiteName = shareData.selectedSiteName {
+            ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: selectedSiteName)
+        }
 
         // Proceed uploading the actual post
         if shareData.sharedImageDict.values.count > 0 {
