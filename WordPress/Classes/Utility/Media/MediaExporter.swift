@@ -1,5 +1,11 @@
 import Foundation
 
+enum MediaExportProgressUnits {
+    static let done: Int64 = 100
+    static let halfDone: Int64 = MediaExportProgressUnits.done / 2
+    static let quarterDone: Int64 = MediaExportProgressUnits.done / 4
+    static let threeQuartersDone: Int64 = (MediaExportProgressUnits.done / 4) * 3
+}
 /// The MediaExport class represents the result of an MediaExporter.
 ///
 class MediaExport {
@@ -83,7 +89,9 @@ protocol MediaExporter {
     /// - Parameters:
     ///   - onCompletion: a callback to invoke when the export finish with success.
     ///   - onError: a callback to invoke when the export fails.
-    func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError)
+    /// - Returns: a progress object that indicates the progress on the export task
+    ///
+    @discardableResult func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress
 }
 
 /// Extension providing generic helper implementation particular to MediaExporters.

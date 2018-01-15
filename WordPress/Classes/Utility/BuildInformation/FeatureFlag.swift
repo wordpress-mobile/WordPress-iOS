@@ -6,7 +6,6 @@ enum FeatureFlag: Int {
     case iCloudFilesSupport
     case socialSignup
     case jetpackDisconnect
-    case asyncUploadsInMediaLibrary
     case activity
     case siteCreation
 
@@ -20,8 +19,6 @@ enum FeatureFlag: Int {
         case .socialSignup:
             return BuildConfiguration.current == .localDeveloper
         case .jetpackDisconnect:
-            return BuildConfiguration.current == .localDeveloper
-        case .asyncUploadsInMediaLibrary:
             return BuildConfiguration.current == .localDeveloper
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
