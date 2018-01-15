@@ -39,6 +39,8 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory = 0,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
+    SiteSettingsWritingDateAndTimeFormat,
+    SiteSettingsPostPerPage,
     SiteSettingsWritingCount,
 };
 
@@ -81,6 +83,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
+@property (nonatomic, strong) SettingTableViewCell *dateAndTimeFormatCell;
+@property (nonatomic, strong) SettingTableViewCell *postsPerPageCell;
 #pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
 #pragma mark - Jetpack Settings Section
@@ -306,6 +310,28 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _relatedPostsCell;
 }
 
+- (SettingTableViewCell *)dateAndTimeFormatCell
+{
+    if (_dateAndTimeFormatCell) {
+        return _dateAndTimeFormatCell;
+    }
+    _dateAndTimeFormatCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Date and Time Format", @"Label for selecting the date and time settings section")
+                                                                editable:YES
+                                                         reuseIdentifier:nil];
+    return _dateAndTimeFormatCell;
+}
+
+- (SettingTableViewCell *)postsPerPageCell
+{
+    if (_postsPerPageCell) {
+        return _postsPerPageCell;
+    }
+    _postsPerPageCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Posts per page", @"Label for selecting the number of posts per page")
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
+    return _postsPerPageCell;
+}
+
 - (SettingTableViewCell *)discussionSettingsCell
 {
     if (_discussionSettingsCell) {
@@ -352,6 +378,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
 }
 
+- (void)configurePostsPerPageCell
+{
+    [self.postsPerPageCell setTextValue:self.blog.settings.postsPerPage.stringValue];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     switch (row) {
@@ -365,6 +396,13 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case (SiteSettingsWritingRelatedPosts):
             return self.relatedPostsCell;
+
+        case (SiteSettingsWritingDateAndTimeFormat):
+            return self.dateAndTimeFormatCell;
+
+        case (SiteSettingsPostPerPage):
+            [self configurePostsPerPageCell];
+            return self.postsPerPageCell;
     }
     return nil;
 }
@@ -808,6 +846,14 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsWritingRelatedPosts:
             [self showRelatedPostsSettings];
+            break;
+
+        case SiteSettingsWritingDateAndTimeFormat:
+            [self showDateAndTimeFormatSettings];
+            break;
+
+        case SiteSettingsPostPerPage:
+            [self showPostPerPageSetting];
             break;
     }
 }

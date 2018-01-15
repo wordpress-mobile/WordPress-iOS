@@ -147,7 +147,7 @@ class PostPostViewController: UIViewController {
         }
         siteNameLabel.text = blogSettings.name
         siteUrlLabel.text = post.blog.displayURL as String?
-        siteIconView.setImageWithSiteIconFor(post.blog, placeholderImage: nil)
+        siteIconView.setImageWithSiteIcon(for: post.blog, placeholderImage: nil)
         if siteIconView.image == .none {
             siteIconView.superview?.isHidden = true
         }

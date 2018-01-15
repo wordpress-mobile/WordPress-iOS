@@ -704,6 +704,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedPlansComparison:
             eventName = @"plans_compare";
             break;
+        case WPAnalyticsStatOpenedPlugins:
+            eventName = @"plugins_opened";
+            break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"posts" };
@@ -733,6 +736,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatPersonUpdated:
             eventName = @"people_management_person_updated";
+            break;
+        case WPAnalyticsStatPluginUpdated:
+            eventName = @"plugin_updated";
+            break;
+        case WPAnalyticsStatPluginRemoved:
+            eventName = @"plugin_removed";
             break;
         case WPAnalyticsStatPostListAuthorFilterChanged:
             eventName = @"post_list_author_filter_changed";

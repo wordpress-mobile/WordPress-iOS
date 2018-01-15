@@ -6,6 +6,10 @@ class MockMediaExporter: MediaExporter {
     var maximumImageSize: CGFloat?
     var stripsGeoLocationIfNeeded = false
     var mediaDirectoryType: MediaDirectory = .temporary
+
+    func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
+
+    }
 }
 
 class MediaExporterTests: XCTestCase {

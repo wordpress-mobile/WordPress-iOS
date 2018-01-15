@@ -64,6 +64,12 @@ struct InstructionRow: ImmuTableRow {
     }
 }
 
+enum SiteType: String {
+    case blog
+    case website
+    case portfolio
+}
+
 struct SiteTypeRow: ImmuTableRow {
     typealias CellType = SiteTypeTableViewCell
 
@@ -72,6 +78,7 @@ struct SiteTypeRow: ImmuTableRow {
         return ImmuTableCell.nib(nib, CellType.self)
     }()
 
+    let siteType: SiteType
     let startWith: String
     let typeDescr: String
     let typeImage: UIImage?

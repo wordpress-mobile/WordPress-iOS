@@ -6,7 +6,6 @@ class LoginTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
@@ -23,32 +22,39 @@ class LoginTests: XCTestCase {
         super.tearDown()
     }
 
-    func testSimpleLogin() {
-        simpleLogin(username: WordPressTestCredentials.oneStepUser, password: WordPressTestCredentials.oneStepPassword)
+    func testSimpleLoginLogout() {
+        let welcomeScreen = WelcomeScreen.init().login()
+            .proceedWith(email: WPUITestCredentials.testUserEmail)
+            .proceedWithPassword()
+            .proceedWith(password: WPUITestCredentials.testUserPassword)
+            .continueWithSelectedSite()
+            .tabBar.gotoMeScreen()
+            .logout()
 
-        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ])
+        XCTAssert(welcomeScreen.isLoaded())
     }
 
     func testUnsuccessfulLogin() {
-        simpleLogin(username: WordPressTestCredentials.oneStepUser, password: "password")
-
-        waitForElementToAppear(element: app.images[ "icon-alert" ])
-        app.buttons.element(boundBy: 1).tap()
+        _ = WelcomeScreen.init().login()
+            .proceedWith(email: WPUITestCredentials.testUserEmail)
+            .proceedWithPassword()
+            .tryProceed(password: "invalidPswd")
+            .verifyLoginError()
     }
 
-    func testSelfHostedLoginWithoutJetPack() {
-        loginSelfHosted(username: WordPressTestCredentials.selfHostedUser, password: WordPressTestCredentials.selfHostedPassword, url: WordPressTestCredentials.selfHostedSiteURL)
-
-        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ], timeout: 10)
-
-        logoutSelfHosted()
-    }
-
-    func testCreateAccount() {
-        let username = "\(WordPressTestCredentials.oneStepUser)\(arc4random())"
-        let email = WordPressTestCredentials.nuxEmailPrefix + username + WordPressTestCredentials.nuxEmailSuffix
-
-        createAccount(email: email, username: username, password: WordPressTestCredentials.oneStepPassword)
-        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ], timeout: 20)
-    }
+//    func testSelfHostedLoginWithoutJetPack() {
+//        loginSelfHosted(username: WordPressTestCredentials.selfHostedUser, password: WordPressTestCredentials.selfHostedPassword, url: WordPressTestCredentials.selfHostedSiteURL)
+//
+//        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ], timeout: 10)
+//
+//        logoutSelfHosted()
+//    }
+//
+//    func testCreateAccount() {
+//        let username = "\(WordPressTestCredentials.oneStepUser)\(arc4random())"
+//        let email = WordPressTestCredentials.nuxEmailPrefix + username + WordPressTestCredentials.nuxEmailSuffix
+//
+//        createAccount(email: email, username: username, password: WordPressTestCredentials.oneStepPassword)
+//        waitForElementToAppear(element: app.tabBars[ elementStringIDs.mainNavigationBar ], timeout: 20)
+//    }
 }

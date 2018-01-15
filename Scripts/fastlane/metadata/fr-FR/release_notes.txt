@@ -1,0 +1,2 @@
+Extensions : Vous pouvez à présent gérer vos extensions dans l’app, ça se trouve dans les détails du site -> Extensions.
+Éditeur : Quelques problèmes avec les caractères chinois résolus.

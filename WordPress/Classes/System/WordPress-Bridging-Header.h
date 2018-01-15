@@ -32,6 +32,7 @@
 #import <FLAnimatedImage/FLAnimatedImage.h>
 
 #import "HelpshiftUtils.h"
+#import "HockeyManager.h"
 
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
@@ -98,7 +99,6 @@
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
 #import "UIImage+Resize.h"
-#import "UIImageView+Gravatar.h"
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
@@ -111,6 +111,7 @@
 #import "WPAsyncBlockOperation.h"
 #import "WPBlogTableViewCell.h"
 #import "WPBlogSelectorButton.h"
+#import "WPCrashlytics.h"
 #import "WPUploadStatusButton.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"

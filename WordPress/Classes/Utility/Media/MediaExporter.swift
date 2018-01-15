@@ -1,37 +1,32 @@
 import Foundation
 
-/// General MediaExport protocol, and its requirements.
+/// The MediaExport class represents the result of an MediaExporter.
 ///
-protocol MediaExport {
+class MediaExport {
     /// The resulting file URL of an export.
     ///
-    var url: URL { get }
-    var fileSize: Int? { get }
-}
-
-/// Struct of an image export.
-///
-struct MediaImageExport: MediaExport {
     let url: URL
+    /// The resulting file size in bytes of the export.
     let fileSize: Int?
+    /// The pixel width of the media exported.
     let width: CGFloat?
+    /// The pixel height of the media exported.
     let height: CGFloat?
-}
-
-/// Struct of a video export.
-///
-struct MediaVideoExport: MediaExport {
-    let url: URL
-    let fileSize: Int?
+    /// The duration of a media file, this is only available if the asset is a video.
     let duration: TimeInterval?
+
+    init(url: URL, fileSize: Int?, width: CGFloat?, height: CGFloat?, duration: TimeInterval?) {
+        self.url = url
+        self.fileSize = fileSize
+        self.height = height
+        self.width = width
+        self.duration = duration
+    }
 }
 
-/// Struct of a GIF export.
+/// Completion block with an AssetExport.
 ///
-struct MediaGIFExport: MediaExport {
-    let url: URL
-    let fileSize: Int?
-}
+typealias OnMediaExport = (MediaExport) -> Void
 
 /// Generic Error protocol for detecting and type classifying known errors that occur while exporting.
 ///
@@ -82,6 +77,13 @@ protocol MediaExporter {
     /// - Note: This would generally be set to .uploads or .cache, but for unit testing we use .temporary.
     ///
     var mediaDirectoryType: MediaDirectory { get set }
+
+    /// Export a media to another format
+    ///
+    /// - Parameters:
+    ///   - onCompletion: a callback to invoke when the export finish with success.
+    ///   - onError: a callback to invoke when the export fails.
+    func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError)
 }
 
 /// Extension providing generic helper implementation particular to MediaExporters.

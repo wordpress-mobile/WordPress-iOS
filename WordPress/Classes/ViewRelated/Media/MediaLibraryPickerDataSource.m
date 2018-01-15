@@ -151,8 +151,8 @@
         }
     }
     // try to sync from the server
-    MediaSyncCoordinator *mediaSyncCoordinator = [MediaSyncCoordinator shared];
-    [mediaSyncCoordinator syncMediaFor:self.blog success:^{
+    MediaCoordinator *mediaCoordinator = [MediaCoordinator shared];
+    [mediaCoordinator syncMediaFor:self.blog success:^{
         if (!localResultsAvailable && successBlock) {
             successBlock();
         }
@@ -389,14 +389,10 @@
         fetchRequest.predicate = filterPredicate;
     }
 
-    NSPredicate *statusPredicate;
-    if (self.includeUnsyncedMedia) {
-        statusPredicate = [NSPredicate predicateWithFormat:@"%K != %@", @"remoteStatusNumber", @(MediaRemoteStatusFailed)];
-    } else {
-        statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
+    if (!self.includeUnsyncedMedia) {
+        NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"%K == %@", @"remoteStatusNumber", @(MediaRemoteStatusSync)];
+        fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
     }
-
-    fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[fetchRequest.predicate, statusPredicate]];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
     fetchRequest.sortDescriptors = @[sortDescriptor];

@@ -14,17 +14,11 @@ class MediaURLExporterTests: XCTestCase {
         let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageName)
         let expect = self.expectation(description: "image export by URL")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaURLExporter()
+        let exporter = MediaURLExporter(url: url)
         exporter.mediaDirectoryType = .temporary
-        exporter.exportURL(fileURL: url,
-                           onCompletion: { (urlExport) in
-                            switch urlExport {
-                            case .exportedImage(let imageExport):
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                            default:
-                                XCTFail("Error: expected the URL export to result in an image export")
-                            }
-                            expect.fulfill()
+        exporter.export(onCompletion: { (urlExport) in
+                        MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
+                        expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()
@@ -47,22 +41,16 @@ class MediaURLExporterTests: XCTestCase {
         }
         let expect = self.expectation(description: "video export by URL")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaURLExporter()
+        let exporter = MediaURLExporter(url: url)
         exporter.mediaDirectoryType = .temporary
         var options = MediaVideoExporter.Options()
         options.stripsGeoLocationIfNeeded = removingGPS
         exporter.videoOptions = options
         weak var weakExporter = exporter
-        exporter.exportURL(fileURL: url,
-                           onCompletion: { (urlExport) in
-                            switch urlExport {
-                            case .exportedVideo(let videoExport):
-                                MediaURLExporterTests.validateVideoExport(videoExport, exporter: weakExporter!)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: videoExport.url)
-                            default:
-                                XCTFail("Error: expected the URL export to result in a video export")
-                            }
-                            expect.fulfill()
+        exporter.export(onCompletion: { (urlExport) in
+                        MediaURLExporterTests.validateVideoExport(urlExport, exporter: weakExporter!)
+                        MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
+                        expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()
@@ -77,17 +65,11 @@ class MediaURLExporterTests: XCTestCase {
         }
         let expect = self.expectation(description: "image export by URL")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaURLExporter()
+        let exporter = MediaURLExporter(url: url)
         exporter.mediaDirectoryType = .temporary
-        exporter.exportURL(fileURL: url,
-                           onCompletion: { (urlExport) in
-                            switch urlExport {
-                            case .exportedGIF(let gifExport):
-                                MediaExporterTests.cleanUpExportedMedia(atURL: gifExport.url)
-                            default:
-                                XCTFail("Error: expected the URL export to result in a GIF export")
-                            }
-                            expect.fulfill()
+        exporter.export(onCompletion: { (urlExport) in
+            MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()
@@ -97,7 +79,7 @@ class MediaURLExporterTests: XCTestCase {
 
     // MARK: - Media export validation
 
-    class func validateVideoExport(_ export: MediaVideoExport, exporter: MediaURLExporter) {
+    class func validateVideoExport(_ export: MediaExport, exporter: MediaURLExporter) {
         let asset = AVAsset(url: export.url)
         XCTAssertTrue(asset.isPlayable, "Error: exported video asset is unplayble.")
 

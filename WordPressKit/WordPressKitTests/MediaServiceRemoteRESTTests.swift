@@ -81,6 +81,31 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         XCTAssertEqual(errorDescription, response["errors"]![0])
     }
 
+    func testCreateMultipleMedia() {
+
+        let response = ["media": [["ID": 1],["ID": 1]]]
+        let media = [mockRemoteMedia(), mockRemoteMedia()]
+        var remoteMedia: [RemoteMedia]?
+        mediaServiceRemote.uploadMedia(media, requestEnqueued: { _ in }, success: {
+            remoteMedia = $0 as? [RemoteMedia]
+        }, failure: { _ in })
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+        XCTAssertEqual(media[0].mediaID, remoteMedia?[0].mediaID)
+        XCTAssertEqual(media[1].mediaID, remoteMedia?[1].mediaID)
+    }
+
+    func testCreateMultipleMediaError() {
+
+        let response = ["errors": ["some error"]]
+        let media = [mockRemoteMedia(), mockRemoteMedia()]
+        var errorDescription = ""
+        mediaServiceRemote.uploadMedia(media, requestEnqueued: { _ in }, success: { _ in }, failure: {
+            errorDescription = ($0?.localizedDescription)!
+        })
+        mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
+        XCTAssertEqual(errorDescription, response["errors"]![0])
+    }
+
     func testUpdateMediaPath() {
 
         let media = mockRemoteMedia()
@@ -219,19 +244,96 @@ class MediaServiceRemoteRESTTests: XCTestCase {
                                                       "height": height,
                                                       "width": width]
 
-        let remoteMedia = mediaServiceRemote.remoteMedia(fromJSONDictionary: jsonDictionary)
-        XCTAssertEqual(remoteMedia.mediaID?.intValue, id)
-        XCTAssertEqual(remoteMedia.url?.absoluteString, url)
-        XCTAssertEqual(remoteMedia.guid?.absoluteString, guid)
-        XCTAssertEqual(remoteMedia.date, Date.dateWithISO8601String(date)!)
-        XCTAssertEqual(remoteMedia.postID?.intValue, postID)
-        XCTAssertEqual(remoteMedia.file, file)
-        XCTAssertEqual(remoteMedia.mimeType, mimeType)
-        XCTAssertEqual(remoteMedia.title, title)
-        XCTAssertEqual(remoteMedia.caption, caption)
-        XCTAssertEqual(remoteMedia.descriptionText, description)
-        XCTAssertEqual(remoteMedia.alt, alt)
-        XCTAssertEqual(remoteMedia.height?.intValue, height)
-        XCTAssertEqual(remoteMedia.width?.intValue, width)
+        let remoteMedia = MediaServiceRemoteREST.remoteMedia(fromJSONDictionary: jsonDictionary)
+        XCTAssertEqual(remoteMedia?.mediaID?.intValue, id)
+        XCTAssertEqual(remoteMedia?.url?.absoluteString, url)
+        XCTAssertEqual(remoteMedia?.guid?.absoluteString, guid)
+        XCTAssertEqual(remoteMedia?.date, Date.dateWithISO8601String(date)!)
+        XCTAssertEqual(remoteMedia?.postID?.intValue, postID)
+        XCTAssertEqual(remoteMedia?.file, file)
+        XCTAssertEqual(remoteMedia?.mimeType, mimeType)
+        XCTAssertEqual(remoteMedia?.title, title)
+        XCTAssertEqual(remoteMedia?.caption, caption)
+        XCTAssertEqual(remoteMedia?.descriptionText, description)
+        XCTAssertEqual(remoteMedia?.alt, alt)
+        XCTAssertEqual(remoteMedia?.height?.intValue, height)
+        XCTAssertEqual(remoteMedia?.width?.intValue, width)
+    }
+
+    func testRemoteMediaJSONArrayParsing() {
+        let id = 1
+        let id2 = 2
+        let url = "http://www.wordpress.com"
+        let guid = "http://www.gravatar.com"
+        let date = "2016-12-14T22:00:00Z"
+        let postID = 2
+        let file = "file"
+        let mimeType = "img/jpeg"
+        let title = "title"
+        let caption = "caption"
+        let description = "description"
+        let alt = "alt"
+        let height = 321
+        let width = 432
+
+        let jsonDictionary1: [String : Any] = ["ID": id,
+                                              "URL": url,
+                                              "guid": guid,
+                                              "date": date,
+                                              "post_ID": postID,
+                                              "mime_type": mimeType,
+                                              "file": file,
+                                              "title": title,
+                                              "caption": caption,
+                                              "description": description,
+                                              "alt": alt,
+                                              "height": height,
+                                              "width": width]
+
+        let jsonDictionary2: [String : Any] = ["ID": id2,
+                                               "URL": url,
+                                               "guid": guid,
+                                               "date": date,
+                                               "post_ID": postID,
+                                               "mime_type": mimeType,
+                                               "file": file,
+                                               "title": title,
+                                               "caption": caption,
+                                               "description": description,
+                                               "alt": alt,
+                                               "height": height,
+                                               "width": width]
+        let jsonArray = [jsonDictionary1, jsonDictionary2]
+
+
+        let remoteMediaArray: [RemoteMedia] = MediaServiceRemoteREST.remoteMedia(fromJSONArray: jsonArray) as! [RemoteMedia]
+
+        XCTAssertEqual(remoteMediaArray[0].mediaID?.intValue, id)
+        XCTAssertEqual(remoteMediaArray[0].url?.absoluteString, url)
+        XCTAssertEqual(remoteMediaArray[0].guid?.absoluteString, guid)
+        XCTAssertEqual(remoteMediaArray[0].date, Date.dateWithISO8601String(date)!)
+        XCTAssertEqual(remoteMediaArray[0].postID?.intValue, postID)
+        XCTAssertEqual(remoteMediaArray[0].file, file)
+        XCTAssertEqual(remoteMediaArray[0].mimeType, mimeType)
+        XCTAssertEqual(remoteMediaArray[0].title, title)
+        XCTAssertEqual(remoteMediaArray[0].caption, caption)
+        XCTAssertEqual(remoteMediaArray[0].descriptionText, description)
+        XCTAssertEqual(remoteMediaArray[0].alt, alt)
+        XCTAssertEqual(remoteMediaArray[0].height?.intValue, height)
+        XCTAssertEqual(remoteMediaArray[0].width?.intValue, width)
+
+        XCTAssertEqual(remoteMediaArray[1].mediaID?.intValue, id2)
+        XCTAssertEqual(remoteMediaArray[1].url?.absoluteString, url)
+        XCTAssertEqual(remoteMediaArray[1].guid?.absoluteString, guid)
+        XCTAssertEqual(remoteMediaArray[1].date, Date.dateWithISO8601String(date)!)
+        XCTAssertEqual(remoteMediaArray[1].postID?.intValue, postID)
+        XCTAssertEqual(remoteMediaArray[1].file, file)
+        XCTAssertEqual(remoteMediaArray[1].mimeType, mimeType)
+        XCTAssertEqual(remoteMediaArray[1].title, title)
+        XCTAssertEqual(remoteMediaArray[1].caption, caption)
+        XCTAssertEqual(remoteMediaArray[1].descriptionText, description)
+        XCTAssertEqual(remoteMediaArray[1].alt, alt)
+        XCTAssertEqual(remoteMediaArray[1].height?.intValue, height)
+        XCTAssertEqual(remoteMediaArray[1].width?.intValue, width)
     }
 }

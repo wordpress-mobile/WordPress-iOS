@@ -34,6 +34,7 @@ class MediaThumbnailService: LocalCoreDataService {
         managedObjectContext.perform {
             // Configure a thumbnail exporter.
             let exporter = MediaThumbnailExporter()
+            exporter.mediaDirectoryType = .cache
             if preferredSize == CGSize.zero {
                 // When using a zero size, default to the maximum screen dimension.
                 let screenSize = UIScreen.main.bounds
@@ -52,6 +53,8 @@ class MediaThumbnailService: LocalCoreDataService {
             // If we already set an identifier before let's reuse it
             if let identifier = media.localThumbnailIdentifier {
                 exporter.options.identifier = identifier
+            } else {
+                exporter.options.identifier = media.objectID.uriRepresentation().lastPathComponent
             }
 
             // Configure a handler for any thumbnail exports
@@ -195,7 +198,7 @@ class MediaThumbnailService: LocalCoreDataService {
 
     // MARK: - Helpers
 
-    fileprivate func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaImageExport, onCompletion: @escaping OnThumbnailURL) {
+    fileprivate func handleThumbnailExport(media: Media, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport, onCompletion: @escaping OnThumbnailURL) {
         // Make sure the Media object hasn't been deleted.
         guard media.isDeleted == false else {
             onCompletion(nil)
