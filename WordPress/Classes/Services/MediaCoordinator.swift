@@ -32,6 +32,20 @@ class MediaCoordinator: NSObject {
     /// - parameter blog: The blog that the asset should be added to.
     ///
     func addMedia(from asset: ExportableAsset, to blog: Blog) {
+        self.addMedia(from: asset, to: blog.objectID)
+    }
+
+    /// Adds the specified media asset to the specified post. The upload process
+    /// can be observed by adding an observer block using the `addObserver(_:for:)` method.
+    ///
+    /// - parameter asset: The asset to add.
+    /// - parameter post: The post that the asset should be added to.
+    ///
+    func addMedia(from asset: ExportableAsset, to post: Post) {
+        self.addMedia(from: asset, to: post.objectID)
+    }
+
+    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) {
         guard let asset = asset as? PHAsset else {
             return
         }
@@ -40,7 +54,7 @@ class MediaCoordinator: NSObject {
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
         let media = service.createMedia(with: asset,
-                            objectID: blog.objectID,
+                            objectID: objectID,
                             progress: &creationProgress,
                             thumbnailCallback: nil,
                             completion: { [weak self] media, error in
