@@ -36,14 +36,10 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         return $0
     }(WPNoResultsView())
 
-    fileprivate var firstTimeLoad: Bool = true
-
     // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        firstTimeSetup()
 
         // Initialize Interface
         setupNavigationBar()
@@ -51,6 +47,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         setupNoResultsView()
 
         // Load Data
+        setupCachedDataIfNeeded()
         reloadSitesIfNeeded()
     }
 
@@ -60,16 +57,14 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     // MARK: - Setup Helpers
 
-    fileprivate func firstTimeSetup() {
-        // If this is our first time loading this screen AND the selected site ID is empty, prefill
-        // the selected site info with what we historically used in the past.
-        guard firstTimeLoad, shareData.selectedSiteID == nil else {
+    fileprivate func setupCachedDataIfNeeded() {
+        // If the selected site ID is empty, prefill the selected site with what was already used
+        guard shareData.selectedSiteID == nil else {
             return
         }
 
         shareData.selectedSiteID = historicalSelectedSiteID
         shareData.selectedSiteName = historicalSelectedSiteName
-        firstTimeLoad = false
     }
 
     fileprivate func setupNavigationBar() {
@@ -132,7 +127,6 @@ extension ShareModularViewController: UITableViewDataSource {
         let identifier  = reusableIdentifierForIndexPath(indexPath)
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
         configureCell(cell, indexPath: indexPath)
-
         return cell
     }
 
@@ -178,14 +172,14 @@ extension ShareModularViewController: UITableViewDelegate {
             let site = siteForRowAtIndexPath(indexPath) else {
             return
         }
+        clearAllAccessoryTypes()
         cell.accessoryType = .checkmark
-
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
         updatePublishButtonStatus()
     }
 
-    @objc func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
@@ -259,6 +253,15 @@ fileprivate extension ShareModularViewController {
             return false
         }
     }
+
+    func clearAllAccessoryTypes() {
+        for section in 0..<tableView.numberOfSections {
+            for row in 0..<tableView.numberOfRows(inSection: section) {
+                let cell = tableView.cellForRow(at: IndexPath(row: row, section: section))
+                cell?.accessoryType = .none
+            }
+        }
+    }
 }
 
 // MARK: - No Results Helpers
@@ -300,6 +303,7 @@ fileprivate extension ShareModularViewController {
 fileprivate extension ShareModularViewController {
     func reloadSitesIfNeeded() {
         guard !hasSites, let oauth2Token = oauth2Token else {
+            tableView.reloadData()
             showEmptySitesIfNeeded()
             return
         }
