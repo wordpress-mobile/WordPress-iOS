@@ -108,7 +108,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
 extension ShareModularViewController {
     @objc func backWasPressed() {
-        if let editor = parent as? ShareExtensionEditorViewController {
+        if let editor = navigationController?.previousViewController() as? ShareExtensionEditorViewController {
             editor.shareData = shareData
         }
         _ = navigationController?.popViewController(animated: true)
