@@ -1,6 +1,5 @@
 #import "MeHeaderView.h"
 #import "Blog.h"
-#import "UIImageView+Gravatar.h"
 #import "WordPress-Swift.h"
 
 const CGFloat MeHeaderViewHeight = 154;

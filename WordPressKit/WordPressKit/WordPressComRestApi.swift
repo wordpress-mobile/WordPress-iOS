@@ -28,7 +28,7 @@ open class WordPressComRestApi: NSObject {
     @objc open static let ErrorKeyErrorCode: String = "WordPressComRestApiErrorCodeKey"
     @objc open static let ErrorKeyErrorMessage: String = "WordPressComRestApiErrorMessageKey"
 
-    public typealias RequestEnqueuedBlock = () -> Void
+    public typealias RequestEnqueuedBlock = (_ taskID : NSNumber) -> Void
     public typealias SuccessResponseBlock = (_ responseObject: AnyObject, _ httpResponse: HTTPURLResponse?) -> ()
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> ()
 
@@ -224,7 +224,7 @@ open class WordPressComRestApi: NSObject {
      - parameter URLString:  the endpoint to connect
      - parameter parameters: the parameters to use on the request
      - parameter fileParts:  the file parameters that are added to the multipart request
-     - parameter requestEnqueued: callback to be called on when the fileparts are serialized and request is added to the background session. Defaults to nil
+     - parameter requestEnqueued: callback to be called when the fileparts are serialized and request is added to the background session. Defaults to nil
      - parameter success:    callback to be called on successful request
      - parameter failure:    callback to be called on failed request
 
@@ -248,7 +248,6 @@ open class WordPressComRestApi: NSObject {
         serializeRequest(URLString, parameters: parameters, fileParts: fileParts, success:{ (request, temporaryURL) in
             let task = self.uploadSessionManager.uploadTask(with: request as URLRequest, fromFile: temporaryURL, progress: progressUpdater) { (response, result, error) in
                 progress.completedUnitCount = progress.totalUnitCount
-
                 if let error = error {
                     failure(error as NSError, response as? HTTPURLResponse)
                 } else {
@@ -259,7 +258,7 @@ open class WordPressComRestApi: NSObject {
                     success(responseObject as AnyObject, response as? HTTPURLResponse)
                 }
             }
-            requestEnqueued?()
+            requestEnqueued?(NSNumber(value: task.taskIdentifier))
             task.resume()
             progress.cancellationHandler = {
                 task.cancel()

@@ -1,0 +1,2 @@
+Plugins: Agora você pode gerenciar seus plugins pelo aplicativo, indo nos detalhes do seu site -> Plugins.
+Editor: Resolvidos alguns problemas com caracteres chineses.

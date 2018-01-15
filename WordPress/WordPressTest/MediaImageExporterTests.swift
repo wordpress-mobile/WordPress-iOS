@@ -13,14 +13,12 @@ class MediaImageExporterTests: XCTestCase {
     func testThatImageExportingByImageWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export by UIImage")
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(image: image, filename: nil)
         exporter.mediaDirectoryType = .temporary
-        exporter.exportImage(image,
-                             fileName: nil,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export: \(error.toNSError())")
             expect.fulfill()
@@ -33,13 +31,12 @@ class MediaImageExporterTests: XCTestCase {
         let image = MediaImageExporterTests.imageForFilePath(mediaPath)
         let expect = self.expectation(description: "image export by URL")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(url: url)
         exporter.mediaDirectoryType = .temporary
-        exporter.exportImage(atFile: url,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export: \(error.toNSError())")
             expect.fulfill()
@@ -51,15 +48,14 @@ class MediaImageExporterTests: XCTestCase {
         let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export with a maximum size")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(url: url)
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(atFile: url,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export by URL with a maximum size: \(error.toNSError())")
             expect.fulfill()
@@ -70,17 +66,15 @@ class MediaImageExporterTests: XCTestCase {
     func testThatImageExportingWithMaximumSizeLargerThanTheImageWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export with a maximum size larger than the image's size")
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(image: image, filename: nil)
         let expectedSize = max(image.size.width, image.size.height)
         let maximumImageSize = expectedSize + 200
         exporter.mediaDirectoryType = .temporary
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(image,
-                             fileName: nil,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: expectedSize)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: expectedSize)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export with a maximum size larger than the image's size: \(error.toNSError())")
             expect.fulfill()
@@ -94,14 +88,13 @@ class MediaImageExporterTests: XCTestCase {
         let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export with stripping GPS")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(url: url)
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = true
-        exporter.exportImage(atFile: url,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+                MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
+                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+                expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export and stripping GPS: \(error.toNSError())")
             expect.fulfill()
@@ -113,14 +106,13 @@ class MediaImageExporterTests: XCTestCase {
         let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export without stripping GPS")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(url: url)
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = false
-        exporter.exportImage(atFile: url,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExportDidNotStripGPS(imageExport)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExportDidNotStripGPS(imageExport)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export and not stripping GPS: \(error.toNSError())")
             expect.fulfill()
@@ -132,17 +124,16 @@ class MediaImageExporterTests: XCTestCase {
         let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export with resizing and stripping GPS")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(url: url)
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = true
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(atFile: url,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export with resizing and stripping GPS: \(error.toNSError())")
             expect.fulfill()
@@ -154,17 +145,16 @@ class MediaImageExporterTests: XCTestCase {
         let mediaPath = MediaImageExporterTests.filePathForTestImageNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export with resizing and stripping GPS")
         let url = URL(fileURLWithPath: mediaPath)
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(url: url)
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = false
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(atFile: url,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExportDidNotStripGPS(imageExport)
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExportDidNotStripGPS(imageExport)
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export with resizing and not stripping GPS: \(error.toNSError())")
             expect.fulfill()
@@ -181,14 +171,12 @@ class MediaImageExporterTests: XCTestCase {
             return
         }
         let expect = self.expectation(description: "image export by UIImage and correcting the orientation")
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(image: image, filename: nil)
         exporter.mediaDirectoryType = .temporary
-        exporter.exportImage(image,
-                             fileName: nil,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export: \(error.toNSError())")
             expect.fulfill()
@@ -203,17 +191,15 @@ class MediaImageExporterTests: XCTestCase {
             return
         }
         let expect = self.expectation(description: "image export by UIImage and correcting the orientation with resizing")
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(image: image, filename: nil)
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(image,
-                             fileName: nil,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export: \(error.toNSError())")
             expect.fulfill()
@@ -224,19 +210,17 @@ class MediaImageExporterTests: XCTestCase {
     func testExportingAPortraitImageAndCorrectingTheOrientationWhileResizingAndStrippingGPSWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testDeviceImageNameWithGPSInPortrait)
         let expect = self.expectation(description: "image export by UIImage and correcting the orientation with resizing and stripping GPS")
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(image: image, filename: nil)
         let maximumImageSize = CGFloat(200)
         exporter.mediaDirectoryType = .temporary
         exporter.options.stripsGeoLocationIfNeeded = true
         exporter.options.maximumImageSize = maximumImageSize
-        exporter.exportImage(image,
-                             fileName: nil,
-                             onCompletion: { (imageExport) in
-                                MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
-                                MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
+            MediaImageExporterTests.validateImageExportStrippedGPS(imageExport)
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: maximumImageSize)
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export: \(error.toNSError())")
             expect.fulfill()
@@ -247,16 +231,14 @@ class MediaImageExporterTests: XCTestCase {
     func testThatImageExportingByImageAndChangingFormatsWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testDeviceImageNameWithGPS)
         let expect = self.expectation(description: "image export by UIImage")
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(image: image, filename: nil)
         exporter.mediaDirectoryType = .temporary
         exporter.options.exportImageType = kUTTypePNG as String
-        exporter.exportImage(image,
-                             fileName: nil,
-                             onCompletion: { (imageExport) in
-                                XCTAssert(UTTypeEqual(kUTTypePNG, imageExport.url.typeIdentifier! as CFString), "Unexpected image format when trying to target a PNG format from a JPEG.")
-                                MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
-                                MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
-                                expect.fulfill()
+        exporter.export(onCompletion: { (imageExport) in
+            XCTAssert(UTTypeEqual(kUTTypePNG, imageExport.url.typeIdentifier! as CFString), "Unexpected image format when trying to target a PNG format from a JPEG.")
+            MediaImageExporterTests.validateImageExport(imageExport, withExpectedSize: max(image.size.width, image.size.height))
+            MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
+            expect.fulfill()
         }) { (error) in
             XCTFail("Error: an error occurred testing an image export: \(error.toNSError())")
             expect.fulfill()
@@ -288,7 +270,7 @@ class MediaImageExporterTests: XCTestCase {
 
     // MARK: - Export validation
 
-    class func validateImageExport(_ imageExport: MediaImageExport, withExpectedSize expectedSize: CGFloat) {
+    class func validateImageExport(_ imageExport: MediaExport, withExpectedSize expectedSize: CGFloat) {
         guard let image = UIImage(contentsOfFile: imageExport.url.path) else {
             XCTFail("Error: an error occurred checking the image from an export")
             return
@@ -309,7 +291,7 @@ class MediaImageExporterTests: XCTestCase {
         }
     }
 
-    class func validateImageExportStrippedGPS(_ imageExport: MediaImageExport) {
+    class func validateImageExportStrippedGPS(_ imageExport: MediaExport) {
         guard let source = CGImageSourceCreateWithURL(imageExport.url as CFURL, nil) else {
             XCTFail("Error: an error occurred checking the image source from an export")
             return
@@ -323,7 +305,7 @@ class MediaImageExporterTests: XCTestCase {
         }
     }
 
-    class func validateImageExportDidNotStripGPS(_ imageExport: MediaImageExport) {
+    class func validateImageExportDidNotStripGPS(_ imageExport: MediaExport) {
         guard let source = CGImageSourceCreateWithURL(imageExport.url as CFURL, nil) else {
             XCTFail("Error: an error occurred checking the image source from an export")
             return
@@ -337,7 +319,7 @@ class MediaImageExporterTests: XCTestCase {
         }
     }
 
-    class func validateImageExportedWithExpectedOrientation(export: MediaImageExport, expected: UIImageOrientation) {
+    class func validateImageExportedWithExpectedOrientation(export: MediaExport, expected: UIImageOrientation) {
         guard let image = UIImage(contentsOfFile: export.url.path) else {
             XCTFail("Error: an error occurred initializing the exported image for validation")
             return

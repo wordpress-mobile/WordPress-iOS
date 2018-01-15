@@ -456,7 +456,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeaturePlans:
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePluginManagement:
-            return [self supportsRestApi] && ![self isHostedAtWPcom];
+            return [self supportsPluginManagement];
         case BlogFeatureJetpackSettings:
             return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePushNotifications:
@@ -535,6 +535,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 - (BOOL)supportsPushNotifications
 {
     return [self accountIsDefaultAccount];
+}
+
+- (BOOL)supportsPluginManagement
+{
+    NSString *requiredJetpackVersion = @"5.6";
+    return [self supportsRestApi]
+        && ![self isHostedAtWPcom]
+        && [self.jetpack.version compare:requiredJetpackVersion options:NSNumericSearch] != NSOrderedAscending;
 }
 
 - (BOOL)accountIsDefaultAccount
@@ -654,6 +662,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
     }
     _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
+    _jetpack.automatedTransfer = [[[self getOptionValue:@"is_automated_transfer"] numericValue] boolValue];
     return _jetpack;
 }
 

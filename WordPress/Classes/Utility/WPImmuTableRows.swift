@@ -166,6 +166,26 @@ struct DestructiveButtonRow: ImmuTableRow {
     }
 }
 
+struct TextWithButtonRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(TextWithAccessoryButtonCell.self)
+
+    let title: String
+    let actionLabel: String
+    let action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! TextWithAccessoryButtonCell
+
+        cell.textLabel?.text = title
+        cell.buttonText = actionLabel
+        cell.onButtonPressed = action.map({ action in
+            return {
+                action(self)
+            }
+        })
+    }
+}
+
 struct SwitchRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(SwitchTableViewCell.self)
 

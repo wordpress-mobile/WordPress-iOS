@@ -54,7 +54,7 @@ class MediaThumbnailExporterTests: XCTestCase {
         waitForExpectations(timeout: 2.0, handler: nil)
     }
 
-    fileprivate func validateThumbnailExport(withExporter exporter: MediaThumbnailExporter, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaImageExport) {
+    fileprivate func validateThumbnailExport(withExporter exporter: MediaThumbnailExporter, identifier: MediaThumbnailExporter.ThumbnailIdentifier, export: MediaExport) {
         guard let availableThumbnail = exporter.availableThumbnail(with: identifier) else {
             XCTFail("Thumbnail exported but was not detected as available.")
             return

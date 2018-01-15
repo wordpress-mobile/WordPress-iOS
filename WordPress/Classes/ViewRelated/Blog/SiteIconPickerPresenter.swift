@@ -198,21 +198,11 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         case let phAsset as PHAsset:
             showLoadingMessage()
             originalMedia = nil
-            let exporter = MediaAssetExporter()
+            let exporter = MediaAssetExporter(asset: phAsset)
             exporter.imageOptions = MediaImageExporter.Options()
 
-            exporter.exportData(forAsset: phAsset, onCompletion: { [weak self](assetExport) in
-                var url: URL?
-                switch assetExport {
-                case .exportedImage(let export):
-                    url = export.url
-                case .exportedGIF(let export):
-                    url = export.url
-                default:
-                    self?.showErrorLoadingImageMessage()
-                    return
-                }
-                guard let imageURL = url, let image = UIImage(contentsOfFile: imageURL.path) else {
+            exporter.export(onCompletion: { [weak self](assetExport) in
+                guard let image = UIImage(contentsOfFile: assetExport.url.path) else {
                     self?.showErrorLoadingImageMessage()
                     return
                 }

@@ -37,50 +37,51 @@
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
              completion:(void (^)(Media *media, NSError *error))completion
 {
-    // Use the new export services as indicated by the FeatureFlag.
-    AbstractPost *post = nil;
-    Blog *blog = nil;
-    NSError *error = nil;
-    NSManagedObject *existingObject = [self.managedObjectContext existingObjectWithID:objectID error:&error];
-    if ([existingObject isKindOfClass:[AbstractPost class]]) {
-        post = (AbstractPost *)existingObject;
-        blog = post.blog;
-    } else if ([existingObject isKindOfClass:[Blog class]]) {
-        blog = (Blog *)existingObject;
-    }
-    if (!post && !blog) {
-        if (completion) {
-            completion(nil, error);
+    [self.managedObjectContext performBlock:^{
+        AbstractPost *post = nil;
+        Blog *blog = nil;
+        NSError *error = nil;
+        NSManagedObject *existingObject = [self.managedObjectContext existingObjectWithID:objectID error:&error];
+        if ([existingObject isKindOfClass:[AbstractPost class]]) {
+            post = (AbstractPost *)existingObject;
+            blog = post.blog;
+        } else if ([existingObject isKindOfClass:[Blog class]]) {
+            blog = (Blog *)existingObject;
         }
-        return;
-    }
+        if (!post && !blog) {
+            if (completion) {
+                completion(nil, error);
+            }
+            return;
+        }
 
-    Media *media;
-    if (post != nil) {
-        media = [Media makeMediaWithPost:post];
-    } else {
-        media = [Media makeMediaWithBlog:blog];
-    }
-    media.mediaType = exportable.assetMediaType;
-    
-    // Setup completion handlers
-    void(^completionWithMedia)(Media *) = ^(Media *media) {
-        // Pre-generate a thumbnail image, see the method notes.
-        [self exportPlaceholderThumbnailForMedia:media
-                                      completion:thumbnailCallback];
-        if (completion) {
-            completion(media, nil);
+        Media *media;
+        if (post != nil) {
+            media = [Media makeMediaWithPost:post];
+        } else {
+            media = [Media makeMediaWithBlog:blog];
         }
-    };
-    void(^completionWithError)( NSError *) = ^(NSError *error) {
-        if (completion) {
-            completion(nil, error);
-        }
-    };
+        media.mediaType = exportable.assetMediaType;
 
-    // Export based on the type of the exportable.
-    MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
+        // Setup completion handlers
+        void(^completionWithMedia)(Media *) = ^(Media *media) {
+            // Pre-generate a thumbnail image, see the method notes.
+            [self exportPlaceholderThumbnailForMedia:media
+                                          completion:thumbnailCallback];
+            if (completion) {
+                completion(media, nil);
+            }
+        };
+        void(^completionWithError)( NSError *) = ^(NSError *error) {
+            if (completion) {
+                completion(nil, error);
+            }
+        };
+
+        // Export based on the type of the exportable.
+        MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
+    }];
 }
 
 /**
@@ -130,9 +131,10 @@
     // support.  Some third-party image related plugins prefer the .jpg extension.
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
     remoteMedia.file = [remoteMedia.file stringByReplacingOccurrencesOfString:@".jpeg" withString:@".jpg"];
-
-    media.remoteStatus = MediaRemoteStatusPushing;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [self.managedObjectContext performBlock:^{
+        media.remoteStatus = MediaRemoteStatusPushing;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
     NSManagedObjectID *mediaObjectID = media.objectID;
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
@@ -172,8 +174,9 @@
             }
         }];
     };
-
-    [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadStarted withBlog:blog];
+    [self.managedObjectContext performBlock:^{
+        [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadStarted withBlog:blog];
+    }];
 
     [remote uploadMedia:remoteMedia
                progress:progress
@@ -334,8 +337,6 @@
             success:(nullable void (^)(void))success
             failure:(nullable void (^)(NSError * _Nonnull error))failure
 {
-    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
-    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
     NSManagedObjectID *mediaObjectID = media.objectID;
 
     void (^successBlock)(void) = ^() {
@@ -350,6 +351,14 @@
                                      }];
         }];
     };
+
+    if (media.remoteStatus != MediaRemoteStatusSync) {
+        successBlock();
+        return;
+    }
+
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
     
     [remote deleteMedia:remoteMedia
                 success:successBlock
@@ -550,12 +559,8 @@
         [self.thumbnailService thumbnailURLForMedia:media
                                       preferredSize:preferredSize
                                        onCompletion:^(NSURL *url) {
-                                           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
-                                               UIImage *image = [UIImage imageWithContentsOfFile:url.path];
-                                               [self.managedObjectContext performBlock:^{
-                                                   completion(image, nil);
-                                               }];
-                                           });
+                                           UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+                                           completion(image, nil);
                                        }
                                             onError:^(NSError *error) {
                                                 completion(nil, error);

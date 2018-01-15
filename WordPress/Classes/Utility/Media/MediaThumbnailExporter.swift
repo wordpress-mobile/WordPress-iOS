@@ -80,7 +80,7 @@ class MediaThumbnailExporter: MediaExporter {
 
     /// Completion block with the generated thumbnail identifier and resulting image export.
     ///
-    typealias OnThumbnailExport = (ThumbnailIdentifier, MediaImageExport) -> Void
+    typealias OnThumbnailExport = (ThumbnailIdentifier, MediaExport) -> Void
 
     /// Errors specific to exporting thumbnails.
     ///
@@ -126,6 +126,22 @@ class MediaThumbnailExporter: MediaExporter {
         }
     }
 
+    let url: URL?
+
+    init(url: URL? = nil) {
+        self.url = url
+    }
+
+    public func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
+        guard let fileURL = url else {
+            onError(ThumbnailExportError.failedToGenerateThumbnailFileURL)
+            return
+        }
+        exportThumbnail(forFile: fileURL, onCompletion: { (identifier, export) in
+            onCompletion(export)
+        }, onError: onError)
+    }
+
     /// Export a thumbnail image for a file at the URL, with an expected type of an image or video.
     ///
     /// - Note: GIFs are currently unsupported and throw the .gifThumbnailsUnsupported error.
@@ -147,12 +163,10 @@ class MediaThumbnailExporter: MediaExporter {
     /// Export an existing image as a thumbnail image, based on the exporter options.
     ///
     func exportThumbnail(forImage image: UIImage, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
-        let exporter = MediaImageExporter()
+        let exporter = MediaImageExporter(image: image, filename: UUID().uuidString)
         exporter.mediaDirectoryType = .cache
         exporter.options = imageExporterOptions
-        exporter.exportImage(image,
-                             fileName: UUID().uuidString,
-                             onCompletion: { (export) in
+        exporter.export(onCompletion: { (export) in
                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         }, onError: onError)
     }
@@ -172,21 +186,20 @@ class MediaThumbnailExporter: MediaExporter {
     /// Export a thumbnail for a known image at the URL, using self.options for ImageExporter options.
     ///
     fileprivate func exportImageThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
-        let exporter = MediaImageExporter()
-        exporter.mediaDirectoryType = .cache
+        let exporter = MediaImageExporter(url: url)
+        exporter.mediaDirectoryType = .temporary
         exporter.options = imageExporterOptions
-        exporter.exportImage(atFile: url,
-                             onCompletion: { (export) in
-                                self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
+        exporter.export(onCompletion: { (export) in
+            self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         },
-                             onError: onError)
+                        onError: onError)
     }
 
     /// Export a thumbnail for a known video at the URL, using self.options for ImageExporter options.
     ///
     fileprivate func exportVideoThumbnail(at url: URL, onCompletion: @escaping OnThumbnailExport, onError: @escaping OnExportError) {
         let exporter = MediaVideoExporter()
-        exporter.mediaDirectoryType = .cache
+        exporter.mediaDirectoryType = .temporary
         exporter.exportPreviewImageForVideo(atURL: url,
                                             imageOptions: imageExporterOptions,
                                             onCompletion: { (export) in
@@ -222,19 +235,21 @@ class MediaThumbnailExporter: MediaExporter {
 
     /// Renames and moves an exported thumbnail to the expected directory with the expected thumbnail filenaming convention.
     ///
-    fileprivate func exportImageToThumbnailCache(_ export: MediaImageExport, onCompletion: OnThumbnailExport, onError: OnExportError) {
+    fileprivate func exportImageToThumbnailCache(_ export: MediaExport, onCompletion: OnThumbnailExport, onError: OnExportError) {
         do {
             // Generate a unique ID
             let identifier = options.identifier
             let thumbnail = try thumbnailURL(withIdentifier: identifier)
             let fileManager = FileManager.default
             // Move the exported file at the url to the new URL.
+            try? fileManager.removeItem(at: thumbnail)
             try fileManager.moveItem(at: export.url, to: thumbnail)
             // Configure with the new URL
-            let thumbnailExport = MediaImageExport(url: thumbnail,
+            let thumbnailExport = MediaExport(url: thumbnail,
                                                    fileSize: export.fileSize,
                                                    width: export.width,
-                                                   height: export.height)
+                                                   height: export.height,
+                                                   duration: nil)
             // And return.
             onCompletion(identifier, thumbnailExport)
         } catch {

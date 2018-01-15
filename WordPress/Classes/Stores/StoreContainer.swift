@@ -6,4 +6,5 @@ class StoreContainer {
     private init() {}
 
     let plugin = PluginStore()
+    let notice = NoticeStore()
 }

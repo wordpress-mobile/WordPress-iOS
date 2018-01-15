@@ -10,7 +10,7 @@ public class Activity {
     public let rewindable: Bool
     public let rewindID: String?
     public let published: Date
-    public var isDiscarded: Bool = false
+    public var isDiscarded: Bool
     public let actor: ActivityActor?
     public let object: ActivityObject?
     public let target: ActivityObject?
@@ -20,6 +20,10 @@ public class Activity {
         guard let id = dictionary["activity_id"] as? String else {
             throw Error.missingActivityId
         }
+        guard let summaryDictionary = dictionary["content"] as? [String: AnyObject],
+              let text = summaryDictionary["text"] as? String else {
+            throw Error.missingSummaryText
+        }
         guard let publishedString = dictionary["published"] as? String else {
             throw Error.missingPublishedDate
         }
@@ -28,13 +32,14 @@ public class Activity {
             throw Error.incorrectPusblishedDateFormat
         }
         activityID = id
+        summary = text
         published = publishedDate
-        summary = dictionary["summary"] as? String ?? ""
         name = dictionary["name"] as? String ?? ""
         type = dictionary["type"] as? String ?? ""
         gridicon = dictionary["gridicon"] as? String ?? ""
         status = dictionary["status"] as? String ?? ""
         rewindable = dictionary["is_rewindable"] as? Bool ?? false
+        isDiscarded = dictionary["is_discarded"] as? Bool ?? false
         rewindID = dictionary["rewind_id"] as? String
         if let actorData = dictionary["actor"] as? [String: AnyObject] {
             actor = ActivityActor(dictionary: actorData)
@@ -73,6 +78,7 @@ public class Activity {
 private extension Activity {
     enum Error: Swift.Error {
         case missingActivityId
+        case missingSummaryText
         case missingPublishedDate
         case incorrectPusblishedDateFormat
     }

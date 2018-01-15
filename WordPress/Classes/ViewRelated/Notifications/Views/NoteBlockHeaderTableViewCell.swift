@@ -1,7 +1,20 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 
+
+// MARK: - NoteBlockHeaderTableViewCell
+//
 class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
+
+    // MARK: - Private
+    private var authorAvatarURL: URL?
+    private typealias Style = WPStyleGuide.Notifications
+
+    // MARK: - IBOutlets
+    @IBOutlet private var authorAvatarImageView: UIImageView!
+    @IBOutlet private var headerTitleLabel: UILabel!
+    @IBOutlet private var headerDetailsLabel: UILabel!
+
     // MARK: - Public Properties
     @objc var headerTitle: String? {
         set {
@@ -32,30 +45,40 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 
 
     // MARK: - Public Methods
-    @objc func downloadGravatarWithURL(_ url: URL?) {
-        if url == gravatarURL {
+
+    @objc(downloadAuthorAvatarWithURL:)
+    func downloadAuthorAvatar(with url: URL?) {
+        guard url != authorAvatarURL else {
             return
         }
 
-        let placeholderImage = Style.gravatarPlaceholderImage
-        let gravatar = url.flatMap { Gravatar($0) }
-        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
+        authorAvatarURL = url
 
-        gravatarURL = url
+        guard let url = url else {
+            authorAvatarImageView.image = Style.gravatarPlaceholderImage
+            return
+        }
+
+        if let gravatar = Gravatar(url) {
+            authorAvatarImageView.downloadGravatar(gravatar, placeholder: Style.gravatarPlaceholderImage, animate: true)
+        } else {
+            authorAvatarImageView.setImageWithSiteIcon(url.absoluteString)
+        }
     }
 
     // MARK: - View Methods
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
         accessoryType = .disclosureIndicator
-
         backgroundColor = Style.blockBackgroundColor
+
         headerTitleLabel.font = Style.headerTitleBoldFont
         headerTitleLabel.textColor = Style.headerTitleColor
         headerDetailsLabel.font = Style.headerDetailsRegularFont
         headerDetailsLabel.textColor = Style.headerDetailsColor
-        gravatarImageView.image = Style.gravatarPlaceholderImage
+        authorAvatarImageView.image = Style.gravatarPlaceholderImage
     }
 
     // MARK: - Overriden Methods
@@ -63,16 +86,4 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         separatorsView.bottomVisible = true
         separatorsView.bottomInsets = UIEdgeInsets.zero
     }
-
-
-    // MARK: - Private Alias
-    fileprivate typealias Style = WPStyleGuide.Notifications
-
-    // MARK: - Private
-    fileprivate var gravatarURL: URL?
-
-    // MARK: - IBOutlets
-    @IBOutlet fileprivate weak var gravatarImageView: UIImageView!
-    @IBOutlet fileprivate weak var headerTitleLabel: UILabel!
-    @IBOutlet fileprivate weak var headerDetailsLabel: UILabel!
 }

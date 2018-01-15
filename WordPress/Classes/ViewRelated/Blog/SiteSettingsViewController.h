@@ -8,4 +8,6 @@
 
 - (instancetype)initWithBlog:(Blog *)blog;
 
+- (void)saveSettings;
+
 @end

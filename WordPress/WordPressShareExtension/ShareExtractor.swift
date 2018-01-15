@@ -5,8 +5,8 @@ import UIKit
 /// A type that represents the information we can extract from an extension context
 ///
 struct ExtractedShare {
-    let text: String
-    let image: UIImage?
+    var text: String
+    var images: [UIImage]
 }
 
 /// A type that represents the information we can extract from an extension context
@@ -50,9 +50,10 @@ struct ShareExtractor {
     ///
     func loadShare(completion: @escaping (ExtractedShare) -> Void) {
         extractText { text in
-            self.extractImage { image in
-                let text = text ?? ""
-                completion(ExtractedShare(text: text, image: image))
+            self.extractImages { images in
+                let returnedText = text ?? ""
+                let returnedImages = images ?? [UIImage]()
+                completion(ExtractedShare(text: returnedText, images: returnedImages))
             }
         }
     }
@@ -66,7 +67,6 @@ struct ShareExtractor {
     var validContent: Bool {
         return textExtractor != nil || imageExtractor != nil
     }
-
 }
 
 
@@ -77,7 +77,8 @@ private extension ShareExtractor {
         return [
             SharePostExtractor(),
             PropertyListExtractor(),
-            URLExtractor()
+            URLExtractor(),
+            PlainTextExtractor()
         ]
     }
 
@@ -96,25 +97,35 @@ private extension ShareExtractor {
             completion(nil)
             return
         }
-        textExtractor.extract(context: extensionContext) { share in
-            completion(share?.text)
+        textExtractor.extract(context: extensionContext) { extractedItems in
+            guard extractedItems.count > 0 else {
+                completion(nil)
+                return
+            }
+            let combinedText = extractedItems.flatMap({ $0.text }).joined(separator: " ")
+            completion(combinedText)
         }
     }
 
-    func extractImage(completion: @escaping (UIImage?) -> Void) {
+    func extractImages(completion: @escaping ([UIImage]?) -> Void) {
         guard let imageExtractor = imageExtractor else {
             completion(nil)
             return
         }
-        imageExtractor.extract(context: extensionContext) { share in
-            completion(share?.image)
+        imageExtractor.extract(context: extensionContext) { extractedItems in
+            guard extractedItems.count > 0 else {
+                completion(nil)
+                return
+            }
+            let images = extractedItems.flatMap({ $0.image })
+            completion(images)
         }
     }
 }
 
 private protocol ExtensionContentExtractor {
     func canHandle(context: NSExtensionContext) -> Bool
-    func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void)
+    func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void)
 }
 
 private protocol TypeBasedExtensionContentExtractor: ExtensionContentExtractor {
@@ -128,20 +139,34 @@ private extension TypeBasedExtensionContentExtractor {
         return !context.itemProviders(ofType: acceptedType).isEmpty
     }
 
-    func extract(context: NSExtensionContext, completion: @escaping (ExtractedItem?) -> Void) {
-        guard let provider = context.itemProviders(ofType: acceptedType).first else {
+    func extract(context: NSExtensionContext, completion: @escaping ([ExtractedItem]) -> Void) {
+        let itemProviders = context.itemProviders(ofType: acceptedType)
+        var results = [ExtractedItem]()
+        guard itemProviders.count > 0 else {
             DispatchQueue.main.async {
-                completion(nil)
+                completion(results)
             }
             return
         }
-        provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
-            let payload = payload as? Payload
-            let result = payload.flatMap(self.convert(payload:))
 
-            DispatchQueue.main.async {
-                completion(result)
+        // There 1 or more valid item providers here, lets work through them
+        let syncGroup = DispatchGroup()
+        for provider in itemProviders {
+            syncGroup.enter()
+            // Remember, this is an async call....
+            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
+                let payload = payload as? Payload
+                let result = payload.flatMap(self.convert(payload:))
+                if let result = result {
+                    results.append(result)
+                }
+                syncGroup.leave()
             }
+        }
+
+        // Call the completion handler after all of the provider items are loaded
+        syncGroup.notify(queue: DispatchQueue.main) {
+            completion(results)
         }
     }
 }
@@ -203,9 +228,21 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
     func string(in dictionary: [String: Any], forKey key: String) -> String? {
         guard let value = dictionary[key] as? String,
             !value.isEmpty else {
-            return nil
+                return nil
         }
         return value
+    }
+}
+
+private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
+    typealias Payload = String
+    let acceptedType = kUTTypePlainText as String
+
+    func convert(payload: String) -> ExtractedItem? {
+        guard !payload.isEmpty else {
+            return nil
+        }
+        return .text(payload)
     }
 }
 

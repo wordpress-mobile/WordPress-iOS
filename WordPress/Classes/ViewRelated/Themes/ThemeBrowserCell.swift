@@ -117,11 +117,11 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         actionButton.isExclusiveTouch = true
 
-        layer.borderWidth = 1
-        infoBar.layer.borderWidth = 1
+        layer.borderWidth = Styles.cellBorderWidth
+        infoBar.layer.borderWidth = Styles.cellBorderWidth
         nameLabel.font = Styles.cellNameFont
         infoLabel.font = Styles.cellInfoFont
-        actionButton.layer.borderWidth = 1
+        actionButton.layer.borderWidth = Styles.cellBorderWidth
     }
 
     override open func prepareForReuse() {

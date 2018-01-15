@@ -1,6 +1,5 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
-#import "UIImageView+Gravatar.h"
 #import "WordPress-Swift.h"
 
 
@@ -77,7 +76,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)refreshIconImage
 {
     if (self.blog.hasIcon) {
-        [self.blavatarImageView setImageWithSiteIconForBlog:self.blog placeholderImage:nil];
+        [self.blavatarImageView setImageWithSiteIconFor:self.blog placeholderImage:nil];
     } else {
         [self.blavatarImageView setDefaultSiteIconImage];
     }
