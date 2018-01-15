@@ -5,6 +5,14 @@ import Foundation
 @objc
 class ShareData: NSObject {
 
+    /// Selected Site's ID
+    ///
+    var selectedSiteID: Int?
+
+    /// Selected Site's Name
+    ///
+    var selectedSiteName: String?
+
     /// Post's Title
     ///
     var title = ""
