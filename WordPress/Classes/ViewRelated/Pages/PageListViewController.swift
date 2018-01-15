@@ -77,7 +77,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Pages", comment: "Tile of the screen showing the list of pages for a blog.")
+        title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
     }
 
     // MARK: - Configuration

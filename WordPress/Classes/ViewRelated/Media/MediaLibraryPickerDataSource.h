@@ -38,7 +38,4 @@
 /// The total asset account, ignoring the current search query if there is one.
 @property (nonatomic, readonly) NSInteger totalAssetCount;
 
-/// While paused, the data source won't perform any updates if data changes.
-@property (nonatomic) BOOL isPaused;
-
 @end
