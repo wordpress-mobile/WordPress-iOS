@@ -28,6 +28,14 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         return button
     }()
 
+    /// Refresh Control
+    ///
+    fileprivate lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(pullToRefresh(sender:)), for: .valueChanged)
+        return refreshControl
+    }()
+
     /// Activity spinner used when loading sites
     ///
     fileprivate lazy var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
@@ -80,6 +88,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
 
+        // Refresh Control
+        tableView.refreshControl = refreshControl
+
         // Style!
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
@@ -103,6 +114,12 @@ extension ShareModularViewController {
 
     @objc func publishWasPressed() {
         // FIXME: Add Publish task
+    }
+
+    @objc func pullToRefresh(sender: UIRefreshControl) {
+        sites = nil
+        tableView.reloadData()
+        reloadSitesIfNeeded()
     }
 }
 
@@ -268,13 +285,19 @@ fileprivate extension ShareModularViewController {
 fileprivate extension ShareModularViewController {
     func showLoadingView() {
         noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Placeholder text displayed in the share extention when loading sites from the server.")
-        activityIndicatorView.alpha = Constants.fullAlpha
-        activityIndicatorView.startAnimating()
+        if refreshControl.isRefreshing {
+            activityIndicatorView.alpha = Constants.zeroAlpha
+        } else {
+            activityIndicatorView.alpha = Constants.fullAlpha
+            activityIndicatorView.startAnimating()
+        }
+
         noResultsView.isHidden = false
         publishButton.isEnabled = false
     }
 
     func showEmptySitesIfNeeded() {
+        refreshControl.endRefreshing()
         updatePublishButtonStatus()
 
         guard !hasSites else {
