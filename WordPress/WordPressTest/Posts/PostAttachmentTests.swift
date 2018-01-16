@@ -34,7 +34,7 @@ class PostAttachmentTests: XCTestCase {
         let imageName = "someExampleImage.jpg"
         let altValue = "additional alt"
 
-        let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
+        let richTextView = TextView(defaultFont: UIFont.systemFont(ofSize: 14), defaultMissingImage: UIImage())
         let delegate = MockAttachmentDelegate()
         richTextView.textAttachmentDelegate = delegate
         richTextView.attributedText = NSAttributedString(string: prefixString)
@@ -68,7 +68,7 @@ class PostAttachmentTests: XCTestCase {
         let imageName = "someExampleImage.jpg"
         let altValue = ""
 
-        let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
+        let richTextView = TextView(defaultFont: UIFont.systemFont(ofSize: 14), defaultMissingImage: UIImage())
         let delegate = MockAttachmentDelegate()
         richTextView.textAttachmentDelegate = delegate
         richTextView.attributedText = NSAttributedString(string: prefixString)
@@ -102,7 +102,7 @@ class PostAttachmentTests: XCTestCase {
         let imageName = "someExampleImage.jpg"
         let linkURLValue = URL(string: "https://wordpress.com/")!
 
-        let richTextView = TextView(defaultFont: UIFont(), defaultMissingImage: UIImage())
+        let richTextView = TextView(defaultFont: UIFont.systemFont(ofSize: 14), defaultMissingImage: UIImage())
         let delegate = MockAttachmentDelegate()
         richTextView.textAttachmentDelegate = delegate
         richTextView.attributedText = NSAttributedString(string: prefixString)
