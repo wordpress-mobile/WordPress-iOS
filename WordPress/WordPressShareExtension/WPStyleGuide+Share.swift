@@ -13,6 +13,7 @@ extension WPStyleGuide {
             cell.textLabel?.textColor = darkGrey()
 
             cell.backgroundColor = UIColor.clear
+            cell.separatorInset = UIEdgeInsets.zero
         }
 
         static func configureTableViewSiteCell(_ cell: UITableViewCell) {
