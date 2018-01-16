@@ -3,7 +3,6 @@
 @objc
 enum FeatureFlag: Int {
     case exampleFeature
-    case iCloudFilesSupport
     case socialSignup
     case jetpackDisconnect
     case activity
@@ -14,8 +13,6 @@ enum FeatureFlag: Int {
         switch self {
         case .exampleFeature:
             return true
-        case .iCloudFilesSupport:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .socialSignup:
             return BuildConfiguration.current == .localDeveloper
         case .jetpackDisconnect:
