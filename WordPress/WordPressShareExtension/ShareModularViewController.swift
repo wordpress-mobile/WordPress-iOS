@@ -410,28 +410,25 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     func reloadSitesIfNeeded() {
-        guard !hasSites, let oauth2Token = oauth2Token else {
+        guard !hasSites else {
             sitesTableView.reloadData()
             showEmptySitesIfNeeded()
             return
         }
-
-        let api = WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil)
-        let remote = AccountServiceRemoteREST.init(wordPressComRestApi: api)
-        remote?.getVisibleBlogs(success: { [weak self] blogs in
+        let networkService = ShareNetworkService()
+        networkService.fetchSites(onSuccess: { blogs in
             DispatchQueue.main.async {
-                self?.sites = (blogs as? [RemoteBlog]) ?? [RemoteBlog]()
-                self?.sitesTableView.reloadData()
-                self?.showEmptySitesIfNeeded()
+                self.sites = (blogs) ?? [RemoteBlog]()
+                self.sitesTableView.reloadData()
+                self.showEmptySitesIfNeeded()
             }
-            }, failure: { [weak self] error in
-                NSLog("Error retrieving blogs: \(String(describing: error))")
-                DispatchQueue.main.async {
-                    self?.sites = [RemoteBlog]()
-                    self?.sitesTableView.reloadData()
-                    self?.showEmptySitesIfNeeded()
-                }
-        })
+        }) {
+            DispatchQueue.main.async {
+                self.sites = [RemoteBlog]()
+                self.sitesTableView.reloadData()
+                self.showEmptySitesIfNeeded()
+            }
+        }
 
         showLoadingView()
     }
@@ -452,14 +449,17 @@ fileprivate extension ShareModularViewController {
         }
 
         // Then proceed uploading the actual post
-        if shareData.sharedImageDict.values.count > 0 {
-            uploadPostWithMedia(subject: shareData.title,
-                                body: shareData.contentBody,
-                                status: shareData.postStatus,
-                                siteID: siteID,
-                                requestEnqueued: {
-                                    self.tracks.trackExtensionPosted(self.shareData.postStatus)
-                                    self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+        let networkService = ShareNetworkService()
+        let localImageURLs = [URL](shareData.sharedImageDict.values)
+        if !localImageURLs.isEmpty {
+            networkService.uploadPostWithMedia(subject: shareData.title,
+                                            body: shareData.contentBody,
+                                            status: shareData.postStatus,
+                                            siteID: siteID,
+                                            localMediaFileURLs: localImageURLs,
+                                            requestEnqueued: {
+                                                self.tracks.trackExtensionPosted(self.shareData.postStatus)
+                                                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
         } else {
             let remotePost: RemotePost = {
@@ -470,8 +470,11 @@ fileprivate extension ShareModularViewController {
                 post.content = shareData.contentBody
                 return post
             }()
-            let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .inProgress)
-            uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
+            let uploadPostOpID = coreDataStack.savePostOperation(remotePost,
+                                                                 groupIdentifier: networkService.groupIdentifier,
+                                                                 with: .inProgress)
+
+            networkService.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
                 self.tracks.trackExtensionPosted(self.shareData.postStatus)
                 self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
