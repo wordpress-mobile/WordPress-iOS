@@ -43,7 +43,7 @@ class MediaCoordinator: NSObject {
     /// - parameter post: The post that the asset should be added to.
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to post: Post) -> Media {
+    func addMedia(from asset: ExportableAsset, to post: AbstractPost) -> Media {
         return self.addMedia(from: asset, to: post.objectID)
     }
 
