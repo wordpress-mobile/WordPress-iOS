@@ -386,7 +386,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     fileprivate lazy var mediaCoordinator: MediaCoordinator = {
-        let coordinator = MediaCoordinator.shared
+        let coordinator = MediaCoordinator()
         return coordinator
     }()
 

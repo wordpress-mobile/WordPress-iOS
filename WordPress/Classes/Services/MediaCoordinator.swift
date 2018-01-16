@@ -20,9 +20,6 @@ class MediaCoordinator: NSObject {
         return coordinator
     }()
 
-    // Init marked private to ensure use of shared singleton.
-    private override init() {}
-
     // MARK: - Adding Media
 
     /// Adds the specified media asset to the specified blog. The upload process
