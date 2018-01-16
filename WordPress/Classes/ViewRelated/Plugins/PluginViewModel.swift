@@ -127,7 +127,7 @@ class PluginViewModel: Observable {
             })
         }
 
-        var descriptionRow: ImmuTableRow?
+        var descriptionRow: ExpandableRow?
         if let description = plugin.directoryEntry?.descriptionText {
             descriptionRow = ExpandableRow(
                 title: NSLocalizedString("Description", comment: "Title of section that contains plugins' description"),
@@ -135,10 +135,11 @@ class PluginViewModel: Observable {
                 status: descriptionExpandedStatus,
                 action: { [unowned self] _ in
                     self.descriptionExpandedStatus = !self.descriptionExpandedStatus
+                    descriptionRow?.status = self.descriptionExpandedStatus
             })
         }
 
-        var installationRow: ImmuTableRow?
+        var installationRow: ExpandableRow?
         if let installation = plugin.directoryEntry?.installationText {
             installationRow = ExpandableRow(
                 title: NSLocalizedString("Installation", comment: "Title of section that contains plugins' installation instruction"),
@@ -146,10 +147,11 @@ class PluginViewModel: Observable {
                 status: installationExpandedStatus,
                 action: { [unowned self] _ in
                     self.installationExpandedStatus = !self.installationExpandedStatus
+                    installationRow?.status = self.installationExpandedStatus
             })
         }
 
-        var changelogRow: ImmuTableRow?
+        var changelogRow: ExpandableRow?
         if let changelog = plugin.directoryEntry?.changelogText {
             changelogRow = ExpandableRow(
                 title: NSLocalizedString("What's New", comment: "Title of section that contains plugins' change log"),
@@ -157,10 +159,11 @@ class PluginViewModel: Observable {
                 status: changeLogExpandedStatus,
                 action: { [unowned self] _ in
                     self.changeLogExpandedStatus = !self.changeLogExpandedStatus
+                    changelogRow?.status = self.changeLogExpandedStatus
             })
         }
 
-        var faqRow: ImmuTableRow?
+        var faqRow: ExpandableRow?
         if let faq = plugin.directoryEntry?.faqText {
             faqRow = ExpandableRow(
                 title: NSLocalizedString("Frequently Asked Questions", comment: "Title of section that contains plugins' FAQ"),
@@ -168,6 +171,7 @@ class PluginViewModel: Observable {
                 status: faqExpandedStatus,
                 action: { [unowned self] _ in
                     self.faqExpandedStatus = !self.faqExpandedStatus
+                    faqRow?.status = self.faqExpandedStatus
             })
         }
 
