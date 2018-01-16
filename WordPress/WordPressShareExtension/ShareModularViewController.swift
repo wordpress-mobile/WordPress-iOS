@@ -89,6 +89,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate func setupTableView() {
         // Register the cells
         tableView.register(ShareSitesTableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
+        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: Constants.defaultReuseIdentifier)
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -138,8 +139,8 @@ extension ShareModularViewController: UITableViewDataSource {
         switch Section(rawValue: section)! {
         case .sites:
             return rowCountForSitesSection
-        default:
-            return Constants.emptyCount
+        case .summary:
+            return 1
         }
     }
 
@@ -152,7 +153,7 @@ extension ShareModularViewController: UITableViewDataSource {
 
     @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let isSitesSection = indexPath.section == Section.sites.rawValue
-        return isSitesSection ? Constants.blogRowHeight : Constants.defaultRowHeight
+        return isSitesSection ? Constants.siteRowHeight : Constants.defaultRowHeight
     }
 
     @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -215,44 +216,51 @@ fileprivate extension ShareModularViewController {
         switch Section(rawValue: indexPath.section)! {
         case .sites:
             return Constants.sitesReuseIdentifier
-        default:
+        case .summary:
             return Constants.defaultReuseIdentifier
         }
     }
 
     func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        guard let site = siteForRowAtIndexPath(indexPath) else {
-            return
-        }
-
-        // Site's Details
-        let displayURL = URL(string: site.url)?.host ?? ""
-        if let name = site.name.nonEmptyString() {
-            cell.textLabel?.text = name
-            cell.detailTextLabel?.isEnabled = true
-            cell.detailTextLabel?.text = displayURL
+        if isSummaryRow(indexPath) {
+            cell.textLabel?.text            = summaryRowText()
+            cell.textLabel?.textAlignment   = .natural
+            cell.accessoryType              = .none
+            WPStyleGuide.Share.configureTableViewSummaryCell(cell)
         } else {
-            cell.textLabel?.text = displayURL
-            cell.detailTextLabel?.isEnabled = false
-            cell.detailTextLabel?.text = nil
-        }
+            guard let site = siteForRowAtIndexPath(indexPath) else {
+                return
+            }
 
-        // Site's Blavatar
-        cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
-        if let siteIconPath = site.icon,
-            let siteIconUrl = URL(string: siteIconPath) {
-            cell.imageView?.downloadBlavatar(siteIconUrl)
-        } else {
+            // Site's Details
+            let displayURL = URL(string: site.url)?.host ?? ""
+            if let name = site.name.nonEmptyString() {
+                cell.textLabel?.text = name
+                cell.detailTextLabel?.isEnabled = true
+                cell.detailTextLabel?.text = displayURL
+            } else {
+                cell.textLabel?.text = displayURL
+                cell.detailTextLabel?.isEnabled = false
+                cell.detailTextLabel?.text = nil
+            }
+
+            // Site's Blavatar
             cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
-        }
+            if let siteIconPath = site.icon,
+                let siteIconUrl = URL(string: siteIconPath) {
+                cell.imageView?.downloadBlavatar(siteIconUrl)
+            } else {
+                cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
+            }
 
-        if site.blogID.intValue == shareData.selectedSiteID {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
+            if site.blogID.intValue == shareData.selectedSiteID {
+                cell.accessoryType = .checkmark
+            } else {
+                cell.accessoryType = .none
+            }
 
-        WPStyleGuide.Share.configureTableViewSiteCell(cell)
+            WPStyleGuide.Share.configureTableViewSiteCell(cell)
+        }
     }
 
     fileprivate var rowCountForSitesSection: Int {
@@ -285,6 +293,14 @@ fileprivate extension ShareModularViewController {
     func clearSiteDataAndReloadTable() {
         sites = nil
         tableView.reloadData()
+    }
+
+    func isSummaryRow(_ path: IndexPath) -> Bool {
+        return path.section == Section.summary.rawValue
+    }
+
+    func summaryRowText() -> String {
+        return NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
     }
 }
 
@@ -411,12 +427,12 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
         enum Section: Int {
-        case modules       = 0
+        case summary       = 0
         case sites         = 1
 
         func headerText() -> String {
             switch self {
-            case .modules:
+            case .summary:
                 return String()
             case .sites:
                 return String()
@@ -425,9 +441,8 @@ fileprivate extension ShareModularViewController {
 
         func footerText() -> String {
             switch self {
-            case .modules:
-                // FIXME: Placeholder for summary module
-                return String("Save XXX as a draft/published post on:")
+            case .summary:
+                return String()
             case .sites:
                 return String()
             }
@@ -445,9 +460,9 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     struct Constants {
-        static let sitesReuseIdentifier    = String(describing: WPTableViewCell.self)
+        static let sitesReuseIdentifier    = String(describing: ShareSitesTableViewCell.self)
         static let defaultReuseIdentifier  = String(describing: ShareModularViewController.self)
-        static let blogRowHeight           = CGFloat(74.0)
+        static let siteRowHeight           = CGFloat(74.0)
         static let defaultRowHeight        = CGFloat(44.0)
         static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
