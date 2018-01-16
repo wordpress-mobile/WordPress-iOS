@@ -13,7 +13,6 @@ enum SignupStatus: Int {
     case syncing
 }
 
-
 typealias SignupStatusBlock = (_ status: SignupStatus) -> Void
 typealias SignupSuccessBlock = () -> Void
 typealias SignupFailureBlock = (_ error: Error?) -> Void
@@ -54,7 +53,8 @@ open class SignupService: LocalCoreDataService {
                                             failure: @escaping SignupFailureBlock) {
 
         // Organize parameters into a struct for easy sharing
-        let params = SignupParams(url: url, title: blogTitle, email: emailAddress, username: username, password: password)
+        let signupParams = SignupParams(email: emailAddress, username: username, password: password)
+        let siteCreationParams = SiteCreationParams(url: url, title: blogTitle)
 
         // Create call back blocks for the various methods we'll call to create the user account and blog.
         // Each success block calls the next step in the process.
@@ -68,7 +68,7 @@ open class SignupService: LocalCoreDataService {
 
         let signinWPComUserSuccessBlock = { (account: WPAccount) in
             // When authenticated successfully, create the blog for the user.
-            self.createWPComBlogForParams(params, account: account, status: status, success: createWPComBlogSuccessBlock, failure: failure)
+            self.createWPComBlogForParams(siteCreationParams, account: account, status: status, success: createWPComBlogSuccessBlock, failure: failure)
         }
 
         let createAccountFailureBlock: SignupFailureBlock = { error in
@@ -80,53 +80,50 @@ open class SignupService: LocalCoreDataService {
 
         let createWPComUserSuccessBlock = {
             // When the user is successfully created, authenticate.
-            self.signinWPComUserWithParams(params, status: status, success: signinWPComUserSuccessBlock, failure: failure)
+            self.signinWPComUserWithParams(signupParams, status: status, success: signinWPComUserSuccessBlock, failure: failure)
         }
 
         let validateBlogSuccessBlock = {
             // When the blog is successfully validated, create the WPCom user.
-            self.createWPComUserWithParams(params, status: status, success: createWPComUserSuccessBlock, failure: createAccountFailureBlock)
+            self.createWPComUserWithParams(signupParams, status: status, success: createWPComUserSuccessBlock, failure: createAccountFailureBlock)
         }
 
         // To start the process, validate the blog information.
-        validateWPComBlogWithParams(params, status: status, success: validateBlogSuccessBlock, failure: createAccountFailureBlock)
+        validateWPComBlogWithParams(siteCreationParams, status: status, success: validateBlogSuccessBlock, failure: createAccountFailureBlock)
+
     }
 
 
     /// Validates that the blog can be created and is not already taken.
     ///
     /// - Paramaters:
-    ///     - params: Account and blog information with which to sign up the user.
+    ///     - params: Blog information
     ///     - status: The status callback
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func validateWPComBlogWithParams(_ params: SignupParams,
+    func validateWPComBlogWithParams(_ params: SiteCreationParams,
                                      status: SignupStatusBlock,
                                      success: @escaping SignupSuccessBlock,
                                      failure: @escaping SignupFailureBlock) {
 
         status(.validating)
-        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
-        let languageId = currentLanguage.stringValue
 
-        let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
-        remote?.validateWPComBlog(withUrl: params.url,
-                                        andBlogTitle: params.title,
-                                        andLanguageId: languageId,
-                                        andClientID: ApiCredentials.client(),
-                                        andClientSecret: ApiCredentials.secret(),
-                                        success: { (responseDictionary) in
-                                            success()
-                                        },
-                                        failure: failure)
+        let siteSuccessBlock: SiteCreationSuccessBlock = success
+        let siteFailBlock: SiteCreationFailureBlock = failure
+        let siteStatusBlock = { (status: SiteCreationStatus) in
+        }
+
+        let siteCreationService = SiteCreationService(managedObjectContext: managedObjectContext)
+
+        siteCreationService.validateWPComBlogWithParams(params, status: siteStatusBlock, success: siteSuccessBlock, failure: siteFailBlock)
     }
 
 
     /// Creates a WPCom user account
     ///
     /// - Paramaters:
-    ///     - params: Account and blog information with which to sign up the user.
+    ///     - params: Account information with which to sign up the user.
     ///     - status: The status callback
     ///     - success: A success calback
     ///     - failure: A failure callback
@@ -156,7 +153,7 @@ open class SignupService: LocalCoreDataService {
     /// Authenticates a newly created WPCom user.
     ///
     /// - Paramaters:
-    ///     - params: Account and blog information with which to sign up the user.
+    ///     - params: Account information with which to sign up the user.
     ///     - status: The status callback
     ///     - success: A success calback
     ///     - failure: A failure callback
@@ -200,61 +197,27 @@ open class SignupService: LocalCoreDataService {
     /// Creates a WPCom blog
     ///
     /// - Paramaters:
-    ///     - params: Account and blog information with which to sign up the user.
+    ///     - params: Blog information
     ///     - account: The WPAccount for the newly created user
     ///     - status: The status callback
     ///     - success: A success calback
     ///     - failure: A failure callback
     ///
-    func createWPComBlogForParams(_ params: SignupParams,
+    func createWPComBlogForParams(_ params: SiteCreationParams,
                                     account: WPAccount,
                                     status: SignupStatusBlock,
                                     success: @escaping (_ blog: Blog) -> Void,
                                     failure: @escaping SignupFailureBlock) {
 
-        guard let api = account.wordPressComRestApi else {
-            DDLogError("Failed to get the REST API from the account.")
-            assertionFailure()
+        status(.creatingBlog)
 
-            let error = SignupError.missingRESTAPI as NSError
-            failure(error)
-            return
+        let siteFailBlock: SiteCreationFailureBlock = failure
+        let siteStatusBlock = { (status: SiteCreationStatus) in
         }
 
-        let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
-        let languageId = currentLanguage.stringValue
+        let siteCreationService = SiteCreationService(managedObjectContext: managedObjectContext)
 
-        status(.creatingBlog)
-        let remote = WordPressComServiceRemote(wordPressComRestApi: api)
-        remote?.createWPComBlog(withUrl: params.url,
-                                        andBlogTitle: params.title,
-                                        andLanguageId: languageId,
-                                        andBlogVisibility: .public,
-                                        andClientID: ApiCredentials.client(),
-                                        andClientSecret: ApiCredentials.secret(),
-                                        success: {  (responseDictionary) in
-
-                                            // The account was created so bump the stat, even if there are problems later on.
-                                            WPAppAnalytics.track(.createdAccount)
-
-                                            guard let blogOptions = responseDictionary?[self.BlogDetailsKey] as? [String: AnyObject] else {
-                                                DDLogError("Failed creating blog. The response dictionary did not contain the expected results")
-                                                assertionFailure()
-
-                                                let error = SignupError.invalidResponse as NSError
-                                                failure(error)
-                                                return
-                                            }
-
-                                            guard let blog = self.createBlogFromBlogOptions(blogOptions, failure: failure) else {
-                                                // No need to call the failure block here. It will be called from
-                                                // `createBlogFromBlogOptions` if needed.
-                                                return
-                                            }
-
-                                            success(blog)
-                                        },
-                                        failure: failure)
+        siteCreationService.createWPComBlogForParams(params, account: account, status: siteStatusBlock, success: success, failure: siteFailBlock)
     }
 
 
@@ -271,73 +234,16 @@ open class SignupService: LocalCoreDataService {
                                          success: @escaping SignupSuccessBlock,
                                          failure: @escaping SignupFailureBlock) {
 
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-
         status(.syncing)
-        blogService.syncBlogAndAllMetadata(blog, completionHandler: {
-            // The final step
-            accountService.updateUserDetails(for: blog.account!, success: success, failure: failure)
-        })
-    }
 
-
-    /// Create a new blog entity from the supplied blog options. Calls the supplied
-    /// failure block if the blog can not be created.
-    ///
-    /// - Parameters:
-    ///     - blogOptions: A dictionary of blog options.
-    ///     - failure: A failure block.
-    ///
-    /// - Returns: A blog or nil.
-    ///
-    @objc func createBlogFromBlogOptions(_ blogOptions: [String: AnyObject], failure: SignupFailureBlock) -> Blog? {
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        let blogService = BlogService(managedObjectContext: managedObjectContext)
-
-        // Treat missing dictionary keys as an api issue. If we've reached this point
-        // the account/blog creation was probably successful and the app might be able
-        // to recover the next time it tries to sync blogs.
-        guard let blogName = (blogOptions[BlogNameLowerCaseNKey] ?? blogOptions[BlogNameUpperCaseNKey]) as? String,
-            let xmlrpc = blogOptions[XMLRPCKey] as? String,
-            let blogURL = blogOptions[URLKey] as? String,
-            let stringID = blogOptions[BlogIDKey] as? String,
-            let dotComID = Int(stringID)
-            else {
-                DDLogError("Failed finishing account creation. The blogOptions dictionary was missing expected data.")
-                assertionFailure()
-
-                let error = SignupError.invalidResponse as NSError
-                failure(error)
-                return nil
+        let siteSuccessBlock: SiteCreationSuccessBlock = success
+        let siteFailBlock: SiteCreationFailureBlock = failure
+        let siteStatusBlock = { (status: SiteCreationStatus) in
         }
 
-        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
-            DDLogError("Failed finishing account creation. The default wpcom account was not found.")
-            assertionFailure()
+        let siteCreationService = SiteCreationService(managedObjectContext: managedObjectContext)
 
-            let error = SignupError.missingDefaultWPComAccount as NSError
-            failure(error)
-            return nil
-        }
-
-        var blog: Blog
-        if let existingBlog = blogService.findBlog(withXmlrpc: xmlrpc, in: defaultAccount) {
-            blog = existingBlog
-        } else {
-            blog = blogService.createBlog(with: defaultAccount)
-            blog.xmlrpc = xmlrpc
-        }
-
-        blog.dotComID = NSNumber(value: dotComID as Int)
-        blog.url = blogURL
-        blog.settings?.name = blogName.decodingXMLCharacters()
-
-        defaultAccount.defaultBlog = blog
-
-        ContextManager.sharedInstance().save(managedObjectContext)
-
-        return blog
+        siteCreationService.updateAndSyncBlogAndAccountInfo(blog, status: siteStatusBlock, success: siteSuccessBlock, failure: siteFailBlock)
     }
 
 
@@ -365,11 +271,6 @@ open class SignupService: LocalCoreDataService {
     /// sign up steps.
     ///
     struct SignupParams {
-        // WPCom blog url
-        var url: String
-
-        // WPCom blog title
-        var title: String
 
         // Email address for wpcom account.
         var email: String
@@ -382,7 +283,7 @@ open class SignupService: LocalCoreDataService {
     }
 
 
-    /// A conveniece enum for creating meaningful NSError objects.
+    /// A convenience enum for creating meaningful NSError objects.
     ///
     enum SignupError: Error {
         case invalidResponse
