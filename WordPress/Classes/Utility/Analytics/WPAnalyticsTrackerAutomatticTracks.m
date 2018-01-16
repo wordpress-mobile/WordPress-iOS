@@ -285,6 +285,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatCreateSiteCreationFailed:
             eventName = @"create_site_creation_failed";
             break;
+        case WPAnalyticsStatCreateSiteSetTaglineFailed:
+            eventName = @"create_site_set_tagline_failed";
+            break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"local_library" };

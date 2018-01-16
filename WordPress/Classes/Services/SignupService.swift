@@ -54,7 +54,7 @@ open class SignupService: LocalCoreDataService {
 
         // Organize parameters into a struct for easy sharing
         let signupParams = SignupParams(email: emailAddress, username: username, password: password)
-        let siteCreationParams = SiteCreationParams(siteUrl: url, siteTitle: blogTitle)
+        let siteCreationParams = SiteCreationParams(siteUrl: url, siteTitle: blogTitle, siteTagline: nil)
 
         // Create call back blocks for the various methods we'll call to create the user account and blog.
         // Each success block calls the next step in the process.
