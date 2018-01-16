@@ -566,7 +566,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         case SiteSettingsGeneralTimezone:
         {
-            NSString *timezone = self.blog.settings.timezoneString;
+            NSString *timezone = self.blog.settings.timezoneLabel;
             [self.timezoneTextCell setTextValue:timezone];
             return self.timezoneTextCell;
         }
