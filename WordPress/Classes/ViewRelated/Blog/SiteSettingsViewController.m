@@ -26,6 +26,7 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralURL,
     SiteSettingsGeneralPrivacy,
     SiteSettingsGeneralLanguage,
+    SiteSettingsGeneralTimezone,
     SiteSettingsGeneralCount,
 };
 
@@ -78,6 +79,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
 @property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
 @property (nonatomic, strong) SettingTableViewCell *languageTextCell;
+@property (nonatomic, strong) SettingTableViewCell *timezoneTextCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
@@ -200,14 +202,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         {
             NSInteger rowCount = SiteSettingsGeneralCount;
             
-            // NOTE: Sergio Estevao (2015.08.25): Hide Privacy because of lack of support in .org
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                --rowCount;
-            }
-            
-            // NOTE: Jorge Leandro Perez (2016.02.10): .org Language Settings is inconsistent with .com!
+            // NOTE: Jorge Bernal (2018-01-16)
+            // Privacy, Language, and Timezone are only available for WordPress.com admins
             if (!self.blog.supportsSiteManagementServices) {
-                --rowCount;
+                rowCount -= 3;
             }
             
             return rowCount;
@@ -518,6 +516,17 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _languageTextCell;
 }
 
+- (SettingTableViewCell *)timezoneTextCell
+{
+    if (_timezoneTextCell) {
+        return _timezoneTextCell;
+    }
+    _timezoneTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Time Zone", @"Label for the timezone setting")
+                                                           editable:self.blog.isAdmin
+                                                    reuseIdentifier:nil];
+    return _timezoneTextCell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
 {
     switch (row) {
@@ -554,6 +563,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             
             [self.languageTextCell setTextValue:name];
             return self.languageTextCell;
+        }
+        case SiteSettingsGeneralTimezone:
+        {
+            NSString *timezone = self.blog.settings.timezoneString;
+            [self.timezoneTextCell setTextValue:timezone];
+            return self.timezoneTextCell;
         }
     }
 
