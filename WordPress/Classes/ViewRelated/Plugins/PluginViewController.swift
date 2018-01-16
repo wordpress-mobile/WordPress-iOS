@@ -37,8 +37,6 @@ class PluginViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -64,4 +62,17 @@ class PluginViewController: UITableViewController {
         handler.viewModel = viewModel.tableViewModel
         title = viewModel.title
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = handler.viewModel.rowAtIndexPath(indexPath)
+        row.action?(row)
+
+        guard let collapsibleCell = tableView.cellForRow(at: indexPath) as? ExpandableCell else { return }
+
+        collapsibleCell.toggle()
+
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+ 
 }
