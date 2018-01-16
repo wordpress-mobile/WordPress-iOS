@@ -107,7 +107,7 @@ struct CheckmarkRow: ImmuTableRow {
 }
 
 struct LinkRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
+    static let cell = ImmuTableCell.class(WPExternalLinkCell.self)
 
     let title: String
     let action: ImmuTableAction?
@@ -115,7 +115,7 @@ struct LinkRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
 
-        WPStyleGuide.configureTableViewActionCell(cell)
+        WPStyleGuide.configureTableViewCell(cell)
     }
 }
 

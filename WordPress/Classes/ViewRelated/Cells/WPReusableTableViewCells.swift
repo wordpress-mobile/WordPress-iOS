@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
-import WordPressShared.WPTableViewCell
-
+import WordPressShared
+import Gridicons
 
 class WPReusableTableViewCell: WPTableViewCell {
     override func prepareForReuse() {
@@ -87,4 +87,33 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
     fileprivate static var badgeCornerRadius: CGFloat {
         return badgeSize.height / 2
     }
+}
+
+class WPExternalLinkCell: WPTableViewCellDefault {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        accessoryView = accessorryImageView
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        accessoryView = accessorryImageView
+    }
+
+    private static let imageSize = CGSize(width: 20, height: 20)
+
+    private lazy var accessorryImageView: UIImageView = {
+        let image = Gridicon.iconOfType(.external, withSize: WPExternalLinkCell.imageSize)
+
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
+
+        return imageView
+    }()
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        accessoryView = accessorryImageView
+    }
+
 }
