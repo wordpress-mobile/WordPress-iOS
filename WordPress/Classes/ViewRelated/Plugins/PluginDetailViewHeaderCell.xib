@@ -40,7 +40,7 @@
                                                 <color key="tintColor" red="0.6588235294117647" green="0.74901960784313726" blue="0.81176470588235294" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="V6c-02-jRC"/>
-                                                    <constraint firstAttribute="height" constant="40" id="bDE-cw-nZF"/>
+                                                    <constraint firstAttribute="height" priority="999" constant="40" id="bDE-cw-nZF"/>
                                                 </constraints>
                                             </imageView>
                                         </subviews>
@@ -48,7 +48,7 @@
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="j3r-BA-ohO" secondAttribute="trailing" constant="2" id="AEf-In-lSY"/>
                                             <constraint firstItem="j3r-BA-ohO" firstAttribute="top" secondItem="xnc-Ub-bwQ" secondAttribute="top" constant="2" id="Fbd-iw-BN7"/>
-                                            <constraint firstAttribute="height" constant="44" id="KeZ-bZ-vDf"/>
+                                            <constraint firstAttribute="height" priority="999" constant="44" id="KeZ-bZ-vDf"/>
                                             <constraint firstItem="j3r-BA-ohO" firstAttribute="leading" secondItem="xnc-Ub-bwQ" secondAttribute="leading" constant="2" id="jiP-52-olv"/>
                                             <constraint firstAttribute="width" constant="44" id="ruc-Kh-okL"/>
                                             <constraint firstAttribute="bottom" secondItem="j3r-BA-ohO" secondAttribute="bottom" constant="2" id="y26-GB-p26"/>
