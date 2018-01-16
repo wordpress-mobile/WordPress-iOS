@@ -73,7 +73,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         setupNoResultsView()
 
         // Load Data
-        setupCachedDataIfNeeded()
+        setupPrimarySiteIfNeeded()
         reloadSitesIfNeeded()
     }
 
@@ -83,14 +83,14 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     // MARK: - Setup Helpers
 
-    fileprivate func setupCachedDataIfNeeded() {
+    fileprivate func setupPrimarySiteIfNeeded() {
         // If the selected site ID is empty, prefill the selected site with what was already used
         guard shareData.selectedSiteID == nil else {
             return
         }
 
-        shareData.selectedSiteID = historicalSelectedSiteID
-        shareData.selectedSiteName = historicalSelectedSiteName
+        shareData.selectedSiteID = primarySiteID
+        shareData.selectedSiteName = primarySiteName
     }
 
     fileprivate func setupNavigationBar() {
