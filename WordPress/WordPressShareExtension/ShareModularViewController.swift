@@ -6,6 +6,8 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     // MARK: - Private Properties
 
+    fileprivate var isPublishingPost: Bool = false
+
     /// TableView for site list
     ///
     @IBOutlet fileprivate var tableView: UITableView!
@@ -113,7 +115,7 @@ extension ShareModularViewController {
     }
 
     @objc func publishWasPressed() {
-        // FIXME: Add Publish task
+        savePostToRemoteSite()
     }
 
     @objc func pullToRefresh(sender: UIRefreshControl) {
@@ -135,7 +137,6 @@ extension ShareModularViewController: UITableViewDataSource {
         case .sites:
             return rowCountForSitesSection
         default:
-            // FIXME: This will change
             return Constants.emptyCount
         }
     }
@@ -298,6 +299,7 @@ fileprivate extension ShareModularViewController {
 
     func showEmptySitesIfNeeded() {
         refreshControl.endRefreshing()
+        activityIndicatorView.stopAnimating()
         updatePublishButtonStatus()
 
         guard !hasSites else {
@@ -311,7 +313,7 @@ fileprivate extension ShareModularViewController {
     }
 
     func updatePublishButtonStatus() {
-        guard hasSites, shareData.selectedSiteID != nil else {
+        guard hasSites, shareData.selectedSiteID != nil, isPublishingPost == false else {
             publishButton.isEnabled = false
             return
         }
@@ -335,7 +337,6 @@ fileprivate extension ShareModularViewController {
         remote?.getVisibleBlogs(success: { [weak self] blogs in
             DispatchQueue.main.async {
                 self?.sites = (blogs as? [RemoteBlog]) ?? [RemoteBlog]()
-                self?.activityIndicatorView.stopAnimating()
                 self?.tableView.reloadData()
                 self?.showEmptySitesIfNeeded()
             }
@@ -343,7 +344,6 @@ fileprivate extension ShareModularViewController {
                 NSLog("Error retrieving blogs: \(String(describing: error))")
                 DispatchQueue.main.async {
                     self?.sites = [RemoteBlog]()
-                    self?.activityIndicatorView.stopAnimating()
                     self?.tableView.reloadData()
                     self?.showEmptySitesIfNeeded()
                 }
@@ -357,12 +357,16 @@ fileprivate extension ShareModularViewController {
             fatalError("Need to have an oauth token and site ID selected.")
         }
 
-        // Save the selected site for later use
+        // First, let's disable the publish button
+        isPublishingPost = true
+        updatePublishButtonStatus()
+
+        // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
             ShareExtensionService.configureShareExtensionLastUsedSiteID(siteID, lastUsedSiteName: selectedSiteName)
         }
 
-        // Proceed uploading the actual post
+        // Then proceed uploading the actual post
         if shareData.sharedImageDict.values.count > 0 {
             uploadPostWithMedia(subject: shareData.title,
                                 body: shareData.contentBody,
@@ -370,7 +374,7 @@ fileprivate extension ShareModularViewController {
                                 siteID: siteID,
                                 requestEnqueued: {
                                     self.tracks.trackExtensionPosted(self.shareData.postStatus)
-                                    self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+                                    self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
         } else {
             let remotePost: RemotePost = {
@@ -384,7 +388,7 @@ fileprivate extension ShareModularViewController {
             let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .inProgress)
             uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
                 self.tracks.trackExtensionPosted(self.shareData.postStatus)
-                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
         }
     }

@@ -21,7 +21,7 @@ class ShareData: NSObject {
     ///
     var contentBody = ""
 
-    /// Post's Status
+    /// Post's status, set to publish by default
     ///
     var postStatus = "publish"
 
