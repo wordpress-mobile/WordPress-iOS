@@ -114,6 +114,14 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
 }
 
+// MARK: - UITableViewDelegate
+
+extension ActivityListViewController {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+}
+
 // MARK: - WPNoResultsViewDelegate
 
 extension ActivityListViewController: WPNoResultsViewDelegate {
