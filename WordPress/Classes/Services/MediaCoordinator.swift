@@ -170,6 +170,23 @@ class MediaCoordinator: NSObject {
         return mediaProgressCoordinator.progress(forMediaID: media.uploadID)
     }
 
+    /// Returns the error associated to media if any
+    ///
+    /// - Parameter media: the media object from where to  fetch the associated error.
+    /// - Returns: the error associated to media if any
+    func error(for media: Media) -> NSError? {
+        return mediaProgressCoordinator.error(forMediaID: media.uploadID)
+    }
+
+    /// Returns the media object for the specified uploadID.
+    ///
+    /// - Parameter uploadID: the identifier for an ongoing upload
+    /// - Returns: The media object for the specified uploadID.
+    ///
+    func media(withIdentifier uploadID: String) -> Media? {
+        return mediaProgressCoordinator.media(withIdentifier: uploadID)
+    }
+
     // MARK: - Observing
 
     typealias ObserverBlock = (Media, MediaState) -> Void
