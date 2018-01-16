@@ -8,7 +8,8 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
 
-    open var siteName: String?
+    // Used to store Site Creation user options.
+    var siteOptions: [String: Any]?
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -57,10 +58,14 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
+
         if let vc = segue.destination as? SiteCreationDomainsTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.delegate = self
-            domainsTableViewController?.siteName = siteName
+            if let siteOptions = siteOptions,
+                let siteName = siteOptions["title"] as? String {
+                domainsTableViewController?.siteName = siteName
+            }
         }
 
         if let vc = segue.destination as? SiteCreationButtonViewController {
@@ -102,5 +107,11 @@ extension SiteCreationDomainsViewController: SiteCreationButtonViewControllerDel
                                                 preferredStyle: .alert)
         alertController.addDefaultActionWithTitle("OK")
         self.present(alertController, animated: true, completion: nil)
+
+        // TODO: replace siteOptions with SiteCreationFields class when created.
+        guard var siteOptions = siteOptions else {
+            return
+        }
+        siteOptions["domain"] = selectedDomain
     }
 }
