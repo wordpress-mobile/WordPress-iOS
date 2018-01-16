@@ -110,7 +110,7 @@ private func extractAuthor(_ string: String?) -> Author? {
 
 private func extractHTMLText(_ text: String?) -> NSAttributedString? {
     guard Thread.isMainThread,
-        let data = text?.data(using: .utf8),
+        let data = text?.data(using: .utf16),
         let attributedString = try? NSAttributedString(data: data, options: [.documentType : NSAttributedString.DocumentType.html], documentAttributes: nil) else {
             return nil
     }
