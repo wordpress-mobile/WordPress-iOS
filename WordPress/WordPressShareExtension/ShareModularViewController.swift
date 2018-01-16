@@ -41,6 +41,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Activity spinner used when loading sites
     ///
     fileprivate lazy var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+
+    /// No results (and loading) view
+    ///
     fileprivate lazy var noResultsView: WPNoResultsView = {
         $0.accessoryView = activityIndicatorView
         return $0
@@ -119,8 +122,7 @@ extension ShareModularViewController {
     }
 
     @objc func pullToRefresh(sender: UIRefreshControl) {
-        sites = nil
-        tableView.reloadData()
+        clearSiteDataAndReloadTable()
         reloadSitesIfNeeded()
     }
 }
@@ -279,13 +281,24 @@ fileprivate extension ShareModularViewController {
             cell?.accessoryType = .none
         }
     }
+
+    func clearSiteDataAndReloadTable() {
+        sites = nil
+        tableView.reloadData()
+    }
 }
 
 // MARK: - No Results Helpers
 
 fileprivate extension ShareModularViewController {
     func showLoadingView() {
-        noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Placeholder text displayed in the share extention when loading sites from the server.")
+        updatePublishButtonStatus()
+        if isPublishingPost {
+            noResultsView.titleText = NSLocalizedString("Publishing Post...", comment: "Placeholder text displayed in the share extention when publishing a post to the server.")
+        } else {
+            noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Placeholder text displayed in the share extention when loading sites from the server.")
+        }
+
         if refreshControl.isRefreshing {
             activityIndicatorView.alpha = Constants.zeroAlpha
         } else {
@@ -294,13 +307,12 @@ fileprivate extension ShareModularViewController {
         }
 
         noResultsView.isHidden = false
-        publishButton.isEnabled = false
     }
 
     func showEmptySitesIfNeeded() {
+        updatePublishButtonStatus()
         refreshControl.endRefreshing()
         activityIndicatorView.stopAnimating()
-        updatePublishButtonStatus()
 
         guard !hasSites else {
             noResultsView.isHidden = true
@@ -357,9 +369,10 @@ fileprivate extension ShareModularViewController {
             fatalError("Need to have an oauth token and site ID selected.")
         }
 
-        // First, let's disable the publish button
         isPublishingPost = true
-        updatePublishButtonStatus()
+        tableView.refreshControl = nil
+        clearSiteDataAndReloadTable()
+        showLoadingView()
 
         // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
