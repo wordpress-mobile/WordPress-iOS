@@ -38,16 +38,16 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
         ShareExtensionService.retrieveShareExtensionUsername()
     }()
 
-    /// Historically Selected Site's ID
+    /// Primary Site's ID
     ///
-    internal lazy var historicalSelectedSiteID: Int? = {
-        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteID
+    internal lazy var primarySiteID: Int? = {
+        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID
     }()
 
-    /// Historically Selected Site's Name
+    /// Primary Site's Name
     ///
-    internal lazy var historicalSelectedSiteName: String? = {
-        ShareExtensionService.retrieveShareExtensionDefaultSite()?.siteName
+    internal lazy var primarySiteName: String? = {
+        ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteName
     }()
 
     /// Maximum Image Size
