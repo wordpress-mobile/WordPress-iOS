@@ -112,6 +112,7 @@ PODS:
   - Specta (1.0.7)
   - Starscream (3.0.3)
   - SVProgressHUD (2.2.2)
+  - TTTAttributedLabel (2.0.0)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.17)
   - WPMediaPicker (0.26)
@@ -144,6 +145,7 @@ DEPENDENCIES:
   - Specta (= 1.0.7)
   - Starscream (= 3.0.3)
   - SVProgressHUD (= 2.2.2)
+  - TTTAttributedLabel (= 2.0)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.17)
   - WPMediaPicker (= 0.26)
@@ -189,11 +191,12 @@ SPEC CHECKSUMS:
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Starscream: dfb1b3f39506717ee52b67fb48de0c8269504cbc
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
+  TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 0f8ffe01c51d0df7a3a73d91cb52331e63f80d49
   WPMediaPicker: 847c1f84f93fda7dda8cc9a8cbc1ffb6e47dea63
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: 93a4349f448c176c393a7473fc8168d9b716902d
+PODFILE CHECKSUM: 8cef70d80ebc5064dfa1d48a5201e709c0268bb6
 
 COCOAPODS: 1.3.1
