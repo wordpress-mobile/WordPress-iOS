@@ -23,6 +23,7 @@ class ExpandableCell: WPReusableTableViewCell {
     @IBOutlet var chevronImageView: UIImageView?
 
     public var expandedText: NSAttributedString?
+    public var urlCallback: ((URL) -> Void)?
 
     public var expanded: Bool = false {
         didSet {
@@ -59,5 +60,13 @@ class ExpandableCell: WPReusableTableViewCell {
         expandedTextLabel?.linkAttributes = [NSAttributedStringKey.foregroundColor: WPStyleGuide.wordPressBlue(),
                                              NSAttributedStringKey.underlineStyle: 0]
         expandedTextLabel?.enabledTextCheckingTypes = NSTextCheckingResult.CheckingType.link.rawValue
+        expandedTextLabel?.delegate = self
+    }
+
+}
+
+extension ExpandableCell: TTTAttributedLabelDelegate {
+    func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
+        urlCallback?(url)
     }
 }
