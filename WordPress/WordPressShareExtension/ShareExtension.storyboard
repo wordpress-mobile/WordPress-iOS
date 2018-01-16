@@ -37,26 +37,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-rW-x8J">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Q9s-fa-9u2">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="smc-Pp-8Yy" id="oql-8o-cfh"/>
-                                    <outlet property="delegate" destination="smc-Pp-8Yy" id="kWV-je-zJm"/>
-                                </connections>
-                            </tableView>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Zay-kg-8re">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="ojH-fx-4CN"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="dataSource" destination="smc-Pp-8Yy" id="lw1-IX-0hd"/>
+                                            <outlet property="delegate" destination="smc-Pp-8Yy" id="ugB-Ru-0XV"/>
+                                        </connections>
+                                    </tableView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-rW-x8J">
+                                        <rect key="frame" x="0.0" y="44" width="375" height="559"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="smc-Pp-8Yy" id="oql-8o-cfh"/>
+                                            <outlet property="delegate" destination="smc-Pp-8Yy" id="kWV-je-zJm"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="dkr-rW-x8J" secondAttribute="trailing" id="6ah-69-1jA"/>
-                            <constraint firstItem="dkr-rW-x8J" firstAttribute="bottom" secondItem="ImW-YO-81r" secondAttribute="bottom" id="V35-yg-gnv"/>
-                            <constraint firstItem="dkr-rW-x8J" firstAttribute="leading" secondItem="sVy-D8-YUb" secondAttribute="leading" id="cjT-Lm-1AC"/>
-                            <constraint firstItem="dkr-rW-x8J" firstAttribute="top" secondItem="ImW-YO-81r" secondAttribute="top" id="o9u-40-agO"/>
+                            <constraint firstItem="ImW-YO-81r" firstAttribute="bottom" secondItem="Q9s-fa-9u2" secondAttribute="bottom" id="17h-T5-VMb"/>
+                            <constraint firstItem="ImW-YO-81r" firstAttribute="trailing" secondItem="Q9s-fa-9u2" secondAttribute="trailing" id="Cyk-KS-oTh"/>
+                            <constraint firstItem="Q9s-fa-9u2" firstAttribute="leading" secondItem="ImW-YO-81r" secondAttribute="leading" id="ph9-4Z-Gh4"/>
+                            <constraint firstItem="Q9s-fa-9u2" firstAttribute="top" secondItem="ImW-YO-81r" secondAttribute="top" id="qfm-Bu-rkq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ImW-YO-81r"/>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="dkr-rW-x8J" id="z6V-eD-T2y"/>
+                        <outlet property="modulesHeightConstraint" destination="ojH-fx-4CN" id="04s-A4-CXa"/>
+                        <outlet property="modulesTableView" destination="Zay-kg-8re" id="Xyy-BP-NEt"/>
+                        <outlet property="sitesTableView" destination="dkr-rW-x8J" id="z6V-eD-T2y"/>
+                        <outlet property="verticalStackView" destination="Q9s-fa-9u2" id="yXI-Hh-7KA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAr-KI-b8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
