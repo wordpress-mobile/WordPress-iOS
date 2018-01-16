@@ -234,10 +234,12 @@ class JetpackLoginViewController: UIViewController {
 
 extension JetpackLoginViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCompleted() {
+        WPAppAnalytics.track(.installJetpackCompleted)
         dismiss(animated: true, completion: completionBlock)
     }
 
     func jetpackConnectionCanceled() {
+        WPAppAnalytics.track(.installJetpackCanceled)
         dismiss(animated: true, completion: completionBlock)
     }
 }
