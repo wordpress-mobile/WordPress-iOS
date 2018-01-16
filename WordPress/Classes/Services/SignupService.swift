@@ -22,14 +22,6 @@ typealias SignupFailureBlock = (_ error: Error?) -> Void
 /// The entry point is `createBlogAndSigninToWPCom` and the service takes care of the rest.
 ///
 open class SignupService: LocalCoreDataService {
-    fileprivate let LanguageIDKey = "lang_id"
-    fileprivate let BlogDetailsKey = "blog_details"
-    fileprivate let BlogNameLowerCaseNKey = "blogname"
-    fileprivate let BlogNameUpperCaseNKey = "blogName"
-    fileprivate let XMLRPCKey = "xmlrpc"
-    fileprivate let BlogIDKey = "blogid"
-    fileprivate let URLKey = "url"
-
 
     /// Starts the process of creating a new blog and wpcom account for the user.
     ///
@@ -54,7 +46,7 @@ open class SignupService: LocalCoreDataService {
 
         // Organize parameters into a struct for easy sharing
         let signupParams = SignupParams(email: emailAddress, username: username, password: password)
-        let siteCreationParams = SiteCreationParams(siteUrl: url, siteTitle: blogTitle, siteTagline: nil)
+        let siteCreationParams = SiteCreationParams(siteUrl: url, siteTitle: blogTitle)
 
         // Create call back blocks for the various methods we'll call to create the user account and blog.
         // Each success block calls the next step in the process.

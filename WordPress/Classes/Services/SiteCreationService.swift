@@ -8,8 +8,9 @@ import WordPressShared
 enum SiteCreationStatus: Int {
     case validating
     case creatingSite
-    case syncing
     case settingTagline
+    case settingTheme
+    case syncing
 }
 
 /// A struct for conveniently sharing params between the different site creation steps.
@@ -19,6 +20,14 @@ struct SiteCreationParams {
     var siteUrl: String
     var siteTitle: String
     var siteTagline: String?
+    var siteTheme: Theme?
+
+    init(siteUrl: String, siteTitle: String, siteTagline: String? = nil, siteTheme: Theme? = nil) {
+        self.siteUrl = siteUrl
+        self.siteTitle = siteTitle
+        self.siteTagline = siteTagline
+        self.siteTheme = siteTheme
+    }
 }
 
 typealias SiteCreationStatusBlock = (_ status: SiteCreationStatus) -> Void
@@ -30,7 +39,6 @@ typealias SiteCreationFailureBlock = (_ error: Error?) -> Void
 /// The entry point is `createSite` and the service takes care of the rest.
 ///
 open class SiteCreationService: LocalCoreDataService {
-    private let LanguageIDKey = "lang_id"
     private let BlogDetailsKey = "blog_details"
     private let BlogNameLowerCaseNKey = "blogname"
     private let BlogNameUpperCaseNKey = "blogName"
@@ -51,6 +59,7 @@ open class SiteCreationService: LocalCoreDataService {
     func createSite(siteURL url: String,
                     siteTitle: String,
                     siteTagline: String?,
+                    siteTheme: Theme?,
                     status: @escaping SiteCreationStatusBlock,
                     success: @escaping SiteCreationSuccessBlock,
                     failure: @escaping SiteCreationFailureBlock) {
@@ -63,30 +72,61 @@ open class SiteCreationService: LocalCoreDataService {
         }
 
         // Organize parameters into a struct for easy sharing
-        let params = SiteCreationParams(siteUrl: url, siteTitle: siteTitle, siteTagline: siteTagline)
+        let params = SiteCreationParams(siteUrl: url,
+                                        siteTitle: siteTitle,
+                                        siteTagline: siteTagline,
+                                        siteTheme: siteTheme)
 
         // Create call back blocks for the various methods we'll call to create the site.
         // Each success block calls the next step in the process.
         // NOTE: The steps below are constructed in reverse order.
 
         let createBlogSuccessBlock = { (blog: Blog) in
-            if siteTagline != nil {
 
-                let setTaglineSuccessBlock = {
-                    self.updateAndSyncBlogAndAccountInfo(blog, status: status, success: success, failure: failure)
-                }
+            // Set up possible post blog creation steps
 
-                let setTaglineFailureBlock: SiteCreationFailureBlock = { error in
-                    WPAppAnalytics.track(.createSiteSetTaglineFailed)
-                    failure(error)
-                }
-
-                self.setWPComBlogTagline(blog: blog, params: params, status: status, success: setTaglineSuccessBlock, failure: setTaglineFailureBlock)
-            }
-            else {
-                // When the site is successfully created, update and sync all the things.
+            let updateAndSyncBlock = {
                 // Since this is the last step in the process, pass the caller's success block.
                 self.updateAndSyncBlogAndAccountInfo(blog, status: status, success: success, failure: failure)
+            }
+
+            let setThemeFailureBlock: SiteCreationFailureBlock = { error in
+                WPAppAnalytics.track(.createSiteSetThemeFailed)
+                failure(error)
+            }
+
+            let setThemeBlock = {
+                self.setWPComBlogTheme(blog: blog,
+                                       params: params,
+                                       status: status,
+                                       success: updateAndSyncBlock,
+                                       failure: setThemeFailureBlock)
+            }
+
+            let setTaglineFailureBlock: SiteCreationFailureBlock = { error in
+                WPAppAnalytics.track(.createSiteSetTaglineFailed)
+                failure(error)
+            }
+
+            let setTaglineBlock = {
+                let successBlock = (siteTheme != nil) ? setThemeBlock : updateAndSyncBlock
+                self.setWPComBlogTagline(blog: blog,
+                                         params: params,
+                                         status: status,
+                                         success: successBlock,
+                                         failure: setTaglineFailureBlock)
+            }
+
+            // Now call blocks depending on what's needed.
+
+            if siteTagline != nil {
+                setTaglineBlock()
+            }
+            else if siteTheme != nil {
+                setThemeBlock()
+            }
+            else {
+                updateAndSyncBlock()
             }
         }
 
@@ -97,7 +137,11 @@ open class SiteCreationService: LocalCoreDataService {
 
         let validateBlogSuccessBlock = {
             // When the blog is successfully validated, create the WPCom blog.
-            self.createWPComBlogForParams(params, account: defaultAccount, status: status, success: createBlogSuccessBlock, failure: createBlogFailureBlock)
+            self.createWPComBlogForParams(params,
+                                          account: defaultAccount,
+                                          status: status,
+                                          success: createBlogSuccessBlock,
+                                          failure: createBlogFailureBlock)
         }
 
         let validateBlogFailureBlock: SiteCreationFailureBlock = { error in
@@ -106,7 +150,10 @@ open class SiteCreationService: LocalCoreDataService {
         }
 
         // To start the process, validate the blog information.
-        validateWPComBlogWithParams(params, status: status, success: validateBlogSuccessBlock, failure: validateBlogFailureBlock)
+        validateWPComBlogWithParams(params,
+                                    status: status,
+                                    success: validateBlogSuccessBlock,
+                                    failure: validateBlogFailureBlock)
     }
 
     /// Validates that the site can be created and is not already taken.
@@ -241,6 +288,32 @@ open class SiteCreationService: LocalCoreDataService {
         blog.settings?.tagline = params.siteTagline
         let blogService = BlogService(managedObjectContext: managedObjectContext)
         blogService.updateSettings(for: blog, success: success, failure: failure)
+    }
+
+    /// Set the Site Theme.
+    ///
+    /// - Paramaters:
+    ///     - blog:    The newly created blog entity
+    ///     - params:  Blog information
+    ///     - status:  The status callback
+    ///     - success: A success calback
+    ///     - failure: A failure callback
+    ///
+    func setWPComBlogTheme(blog: Blog,
+                           params: SiteCreationParams,
+                           status: SiteCreationStatusBlock,
+                           success: @escaping SiteCreationSuccessBlock,
+                           failure: @escaping SiteCreationFailureBlock) {
+
+        status(.settingTheme)
+
+        guard let siteTheme = params.siteTheme else {
+            failure(nil)
+            return
+        }
+
+        let themeService = ThemeService(managedObjectContext: managedObjectContext)
+        _ = themeService.installTheme(siteTheme, for: blog, success: success, failure: failure)
     }
 
     /// Create a new blog entity from the supplied blog options. Calls the supplied
