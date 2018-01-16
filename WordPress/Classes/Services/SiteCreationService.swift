@@ -15,11 +15,8 @@ enum SiteCreationStatus: Int {
 /// Public to be used by other services that need to call specific methods in this class.
 ///
 struct SiteCreationParams {
-    // WPCom site url
-    var url: String
-
-    // WPCom site title
-    var title: String
+    var siteUrl: String
+    var siteTitle: String
 }
 
 typealias SiteCreationStatusBlock = (_ status: SiteCreationStatus) -> Void
@@ -63,7 +60,7 @@ open class SiteCreationService: LocalCoreDataService {
         }
 
         // Organize parameters into a struct for easy sharing
-        let params = SiteCreationParams(url: url, title: siteTitle)
+        let params = SiteCreationParams(siteUrl: url, siteTitle: siteTitle)
 
         // Create call back blocks for the various methods we'll call to create the site.
         // Each success block calls the next step in the process.
@@ -76,7 +73,6 @@ open class SiteCreationService: LocalCoreDataService {
         }
 
         let createBlogFailureBlock: SiteCreationFailureBlock = { error in
-            self.trackSiteCreationError(error)
             WPAppAnalytics.track(.createSiteCreationFailed)
             failure(error)
         }
@@ -87,7 +83,6 @@ open class SiteCreationService: LocalCoreDataService {
         }
 
         let validateBlogFailureBlock: SiteCreationFailureBlock = { error in
-            self.trackSiteCreationError(error)
             WPAppAnalytics.track(.createSiteValidationFailed)
             failure(error)
         }
@@ -114,8 +109,8 @@ open class SiteCreationService: LocalCoreDataService {
         let languageId = currentLanguage.stringValue
 
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
-        remote?.validateWPComBlog(withUrl: params.url,
-                                  andBlogTitle: params.title,
+        remote?.validateWPComBlog(withUrl: params.siteUrl,
+                                  andBlogTitle: params.siteTitle,
                                   andLanguageId: languageId,
                                   andClientID: ApiCredentials.client(),
                                   andClientSecret: ApiCredentials.secret(),
@@ -154,8 +149,8 @@ open class SiteCreationService: LocalCoreDataService {
 
         status(.creatingSite)
         let remote = WordPressComServiceRemote(wordPressComRestApi: api)
-        remote?.createWPComBlog(withUrl: params.url,
-                                andBlogTitle: params.title,
+        remote?.createWPComBlog(withUrl: params.siteUrl,
+                                andBlogTitle: params.siteTitle,
                                 andLanguageId: languageId,
                                 andBlogVisibility: .public,
                                 andClientID: ApiCredentials.client(),
@@ -267,22 +262,10 @@ open class SiteCreationService: LocalCoreDataService {
     }
 
 
-    // MARK: - WP Api
+    // MARK: - WP API
 
     func anonymousApi() -> WordPressComRestApi {
         return WordPressComRestApi(userAgent: WPUserAgent.wordPress())
-    }
-
-    // MARK: - Error Tracking
-
-    func trackSiteCreationError(_ error: Error?) {
-
-        if let error = error as NSError?,
-            let errorCode = error.userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String {
-            switch errorCode {
-            default: break
-            }
-        }
     }
 
     /// A convenience enum for creating meaningful NSError objects.
