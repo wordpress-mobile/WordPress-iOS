@@ -1199,6 +1199,11 @@ private extension ShareExtensionEditorViewController {
                     }
                 })
 
+                // Lets an extra <p> at the bottom to make editing a little easier
+                if let currentHTML = self?.richTextView.getHTML() {
+                    self?.richTextView.setHTML(currentHTML + "<p></p>")
+                }
+
                 // Clear out the extension context after loading it once. We don't need it anymore.
                 self?.context = nil
         }
