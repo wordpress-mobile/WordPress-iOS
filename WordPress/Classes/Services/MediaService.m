@@ -65,6 +65,7 @@
         }
         media.mediaType = exportable.assetMediaType;
         media.remoteStatus = MediaRemoteStatusProcessing;
+        [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [self.managedObjectContext save: nil];
     }];
 
