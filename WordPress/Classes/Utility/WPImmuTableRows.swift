@@ -203,3 +203,35 @@ struct SwitchRow: ImmuTableRow {
         cell.onChange = onChange
     }
 }
+
+class ExpandableRow: ImmuTableRow {
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "ExpandableCell", bundle: Bundle(for: CellType.self))
+        return ImmuTableCell.nib(nib, CellType.self)
+    }()
+
+    init(title: String,
+         expandedText: NSAttributedString?,
+         status: Bool,
+         action: ImmuTableAction?) {
+        self.title = title
+        self.expandedText = expandedText
+        self.status = status
+        self.action = action
+    }
+
+    typealias CellType = ExpandableCell
+
+    let title: String
+    let expandedText: NSAttributedString?
+    let action: ImmuTableAction?
+    var status: Bool
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! CellType
+
+        cell.titleTextLabel?.text = title
+        cell.expandedText = expandedText
+        cell.expanded = status
+    }
+}
