@@ -64,7 +64,7 @@ class MediaCoordinator: NSObject {
                                 if let error = error {
                                     if let media = media {
                                         strongSelf.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
-                                        strongSelf.fail(media)
+                                        strongSelf.fail(error as NSError, media: media)
                                     } else {
                                         // If there was an error and we don't have a media object we just say to the coordinator that one item was finished
                                         strongSelf.mediaProgressCoordinator.finishOneItem()
@@ -78,7 +78,7 @@ class MediaCoordinator: NSObject {
                                 let uploadProgress = strongSelf.uploadMedia(media)
                                 totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
-        begin(media)
+        processing(media)
         if let creationProgress = creationProgress {
             totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
             mediaProgressCoordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
@@ -92,7 +92,6 @@ class MediaCoordinator: NSObject {
             return
         }
         mediaProgressCoordinator.track(numberOfItems: 1)
-        begin(media)
         uploadMedia(media)
     }
 
@@ -126,15 +125,17 @@ class MediaCoordinator: NSObject {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
+        uploading(media)
         service.uploadMedia(media,
                             progress: &progress,
                             success: {
                                 self.end(media)
         }, failure: { error in
-            if let error = error {
-                self.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+            guard let nserror = error as NSError? else {
+                return
             }
-            self.fail(media)
+            self.mediaProgressCoordinator.attach(error: nserror, toMediaID: media.uploadID)
+            self.fail(nserror, media: media)
         })
         if let taskProgress = progress {
             return taskProgress
@@ -173,8 +174,8 @@ class MediaCoordinator: NSObject {
 
         let observer = MediaObserver(media: media, onUpdate: onUpdate)
 
-        queue.sync {
-            mediaObservers[uuid] = observer
+        queue.async {
+            self.mediaObservers[uuid] = observer
         }
 
         return uuid
@@ -193,19 +194,22 @@ class MediaCoordinator: NSObject {
     /// Encapsulates the state of a media item.
     ///
     enum MediaState: CustomDebugStringConvertible {
+        case processing
         case uploading
         case ended
-        case failed
+        case failed(error: NSError)
         case progress(value: Double)
 
         var debugDescription: String {
             switch self {
+            case .processing:
+                return "Processing"
             case .uploading:
                 return "Uploading"
             case .ended:
                 return "Ended"
-            case .failed:
-                return "Failed"
+            case .failed(let error):
+                return "Failed: \(error)"
             case .progress(let value):
                 return "Progress: \(value)"
             }
@@ -235,9 +239,14 @@ class MediaCoordinator: NSObject {
 
     // MARK: - Notifying observers
 
+    /// Notifies observers that a media item is processing/importing.
+    ///
+    func processing(_ media: Media) {
+        notifyObserversForMedia(media, ofStateChange: .processing)
+    }
     /// Notifies observers that a media item has begun uploading.
     ///
-    func begin(_ media: Media) {
+    func uploading(_ media: Media) {
         notifyObserversForMedia(media, ofStateChange: .uploading)
     }
 
@@ -249,8 +258,8 @@ class MediaCoordinator: NSObject {
 
     /// Notifies observers that a media item has failed to upload.
     ///
-    func fail(_ media: Media) {
-        notifyObserversForMedia(media, ofStateChange: .failed)
+    func fail(_ error:NSError, media: Media) {
+        notifyObserversForMedia(media, ofStateChange: .failed(error: error))
     }
 
     /// Notifies observers that a media item is in progress.
