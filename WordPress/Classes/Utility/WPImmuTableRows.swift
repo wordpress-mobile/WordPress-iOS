@@ -212,12 +212,14 @@ class ExpandableRow: ImmuTableRow {
 
     init(title: String,
          expandedText: NSAttributedString?,
-         status: Bool,
-         action: ImmuTableAction?) {
+         expanded: Bool,
+         action: ImmuTableAction?,
+         onLinkTap: ((URL) -> Void)?) {
         self.title = title
         self.expandedText = expandedText
-        self.status = status
+        self.expanded = expanded
         self.action = action
+        self.onLinkTap = onLinkTap
     }
 
     typealias CellType = ExpandableCell
@@ -225,13 +227,15 @@ class ExpandableRow: ImmuTableRow {
     let title: String
     let expandedText: NSAttributedString?
     let action: ImmuTableAction?
-    var status: Bool
+    let onLinkTap: ((URL) -> Void)?
+    var expanded: Bool
 
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! CellType
 
         cell.titleTextLabel?.text = title
         cell.expandedText = expandedText
-        cell.expanded = status
+        cell.expanded = expanded
+        cell.urlCallback = onLinkTap
     }
 }
