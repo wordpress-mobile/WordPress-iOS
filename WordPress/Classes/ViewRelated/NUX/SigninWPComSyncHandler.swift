@@ -15,7 +15,7 @@ protocol SigninWPComSyncHandler: class {
     func isJetpackLogin() -> Bool
 
     func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
-    func handleSyncSuccess(for account: WPAccount,  requiredMultifactor: Bool)
+    func handleSyncSuccess(for account: WPAccount, requiredMultifactor: Bool)
     func handleSyncFailure(_ error: NSError?)
 }
 
