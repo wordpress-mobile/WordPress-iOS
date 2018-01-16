@@ -8,9 +8,21 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate var isPublishingPost: Bool = false
 
+    /// StackView container for the tables
+    ///
+    @IBOutlet fileprivate var verticalStackView: UIStackView!
+
+    /// Height constraint for modules tableView
+    ///
+    @IBOutlet weak var modulesHeightConstraint: NSLayoutConstraint!
+
+    /// TableView for modules
+    ///
+    @IBOutlet fileprivate var modulesTableView: UITableView!
+
     /// TableView for site list
     ///
-    @IBOutlet fileprivate var tableView: UITableView!
+    @IBOutlet fileprivate var sitesTableView: UITableView!
 
     /// Back Bar Button
     ///
@@ -56,7 +68,8 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
         // Initialize Interface
         setupNavigationBar()
-        setupTableView()
+        setupSitesTableView()
+        setupModulesTableView()
         setupNoResultsView()
 
         // Load Data
@@ -86,24 +99,39 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         navigationItem.rightBarButtonItem = publishButton
     }
 
-    fileprivate func setupTableView() {
+    fileprivate func setupModulesTableView() {
         // Register the cells
-        tableView.register(ShareSitesTableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
-        tableView.register(WPTableViewCell.self, forCellReuseIdentifier: Constants.defaultReuseIdentifier)
+        modulesTableView.register(WPTableViewCell.self, forCellReuseIdentifier: Constants.modulesReuseIdentifier)
 
         // Hide the separators, whenever the table is empty
-        tableView.tableFooterView = UIView()
-
-        // Refresh Control
-        tableView.refreshControl = refreshControl
+        modulesTableView.tableFooterView = UIView()
 
         // Style!
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
-        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        WPStyleGuide.configureColors(for: view, andTableView: modulesTableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: modulesTableView)
+
+        // Update the height constraint to match the number of modules * default row height
+        modulesHeightConstraint.constant = (CGFloat(ModulesSection.count) * Constants.defaultRowHeight)
+        view.layoutIfNeeded()
+    }
+
+    fileprivate func setupSitesTableView() {
+        // Register the cells
+        sitesTableView.register(ShareSitesTableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
+
+        // Hide the separators, whenever the table is empty
+        sitesTableView.tableFooterView = UIView()
+
+        // Refresh Control
+        sitesTableView.refreshControl = refreshControl
+
+        // Style!
+        WPStyleGuide.configureColors(for: view, andTableView: sitesTableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: sitesTableView)
     }
 
     fileprivate func setupNoResultsView() {
-        tableView.addSubview(noResultsView)
+        sitesTableView.addSubview(noResultsView)
     }
 }
 
@@ -123,7 +151,7 @@ extension ShareModularViewController {
     }
 
     @objc func pullToRefresh(sender: UIRefreshControl) {
-        clearSiteDataAndReloadTable()
+        clearSiteDataAndRefreshSitesTable()
         reloadSitesIfNeeded()
     }
 }
@@ -131,56 +159,79 @@ extension ShareModularViewController {
 // MARK: - UITableView DataSource Conformance
 
 extension ShareModularViewController: UITableViewDataSource {
-    @objc func numberOfSections(in tableView: UITableView) -> Int {
-        return Section.count
-    }
-
-    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section)! {
-        case .sites:
-            return rowCountForSitesSection
-        case .summary:
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if tableView == modulesTableView {
+            return ModulesSection.count
+        } else {
+            // Only 1 section in the sites table
             return 1
         }
     }
 
-    @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let identifier  = reusableIdentifierForIndexPath(indexPath)
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
-        configureCell(cell, indexPath: indexPath)
-        return cell
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == modulesTableView {
+            switch ModulesSection(rawValue: section)! {
+            case .summary:
+                return 1
+            }
+        } else {
+            return rowCountForSites
+        }
     }
 
-    @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let isSitesSection = indexPath.section == Section.sites.rawValue
-        return isSitesSection ? Constants.siteRowHeight : Constants.defaultRowHeight
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if tableView == modulesTableView {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.modulesReuseIdentifier)!
+            configureModulesCell(cell, indexPath: indexPath)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.sitesReuseIdentifier)!
+            configureSiteCell(cell, indexPath: indexPath)
+            return cell
+        }
     }
 
-    @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == modulesTableView {
+            return Constants.defaultRowHeight
+        } else {
+            return Constants.siteRowHeight
+        }
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if tableView == modulesTableView {
+            if isModulesSectionEmpty(section) {
+                // Hide when the section is empty!
+                return nil
+            }
+            let theSection = ModulesSection(rawValue: section)!
+            return theSection.headerText()
+        } else {
+            // No header for sites table
             return nil
         }
-
-        let theSection = Section(rawValue: section)!
-        return theSection.headerText()
     }
 
-    @objc func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }
 
-    @objc func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if tableView == modulesTableView {
+            if isModulesSectionEmpty(section) {
+                // Hide when the section is empty!
+                return nil
+            }
+            let theSection = ModulesSection(rawValue: section)!
+            return theSection.footerText()
+        } else {
+            // No footer for sites table
             return nil
         }
-
-        let theSection = Section(rawValue: section)!
-        return theSection.footerText()
     }
 
-    @objc func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 }
@@ -188,7 +239,10 @@ extension ShareModularViewController: UITableViewDataSource {
 // MARK: - UITableView Delegate Conformance
 
 extension ShareModularViewController: UITableViewDelegate {
-    @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard tableView == sitesTableView else {
+            return
+        }
         guard let cell = tableView.cellForRow(at: indexPath),
             let site = siteForRowAtIndexPath(indexPath) else {
             return
@@ -203,6 +257,9 @@ extension ShareModularViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard tableView == sitesTableView else {
+            return
+        }
         guard let cell = tableView.cellForRow(at: indexPath) else {
             return
         }
@@ -210,70 +267,76 @@ extension ShareModularViewController: UITableViewDelegate {
     }
 }
 
-// MARK: - UITableView Helpers
+// MARK: - Modules UITableView Helpers
 
 fileprivate extension ShareModularViewController {
-    func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
-        switch Section(rawValue: indexPath.section)! {
-        case .sites:
-            return Constants.sitesReuseIdentifier
-        case .summary:
-            return Constants.defaultReuseIdentifier
+    func configureModulesCell(_ cell: UITableViewCell, indexPath: IndexPath) {
+        // Only doing the summary row right now. More will come.
+        guard isSummaryRow(indexPath) else {
+            return
         }
+
+        cell.textLabel?.text            = summaryRowText()
+        cell.textLabel?.textAlignment   = .natural
+        cell.accessoryType              = .none
+        WPStyleGuide.Share.configureTableViewSummaryCell(cell)
     }
 
-    func configureCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        if isSummaryRow(indexPath) {
-            cell.textLabel?.text            = summaryRowText()
-            cell.textLabel?.textAlignment   = .natural
-            cell.accessoryType              = .none
-            WPStyleGuide.Share.configureTableViewSummaryCell(cell)
-        } else {
-            guard let site = siteForRowAtIndexPath(indexPath) else {
-                return
-            }
-
-            // Site's Details
-            let displayURL = URL(string: site.url)?.host ?? ""
-            if let name = site.name.nonEmptyString() {
-                cell.textLabel?.text = name
-                cell.detailTextLabel?.isEnabled = true
-                cell.detailTextLabel?.text = displayURL
-            } else {
-                cell.textLabel?.text = displayURL
-                cell.detailTextLabel?.isEnabled = false
-                cell.detailTextLabel?.text = nil
-            }
-
-            // Site's Blavatar
-            cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
-            if let siteIconPath = site.icon,
-                let siteIconUrl = URL(string: siteIconPath) {
-                cell.imageView?.downloadBlavatar(siteIconUrl)
-            } else {
-                cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
-            }
-
-            if site.blogID.intValue == shareData.selectedSiteID {
-                cell.accessoryType = .checkmark
-            } else {
-                cell.accessoryType = .none
-            }
-
-            WPStyleGuide.Share.configureTableViewSiteCell(cell)
-        }
+    func isSummaryRow(_ path: IndexPath) -> Bool {
+        return path.section == ModulesSection.summary.rawValue
     }
 
-    func isSectionEmpty(_ sectionIndex: Int) -> Bool {
-        switch Section(rawValue: sectionIndex)! {
-        case .sites:
-            return hasSites
+    func isModulesSectionEmpty(_ sectionIndex: Int) -> Bool {
+        switch ModulesSection(rawValue: sectionIndex)! {
         case .summary:
             return false
         }
     }
 
-    var rowCountForSitesSection: Int {
+    func summaryRowText() -> String {
+        return NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+    }
+}
+
+// MARK: - Sites UITableView Helpers
+
+fileprivate extension ShareModularViewController {
+    func configureSiteCell(_ cell: UITableViewCell, indexPath: IndexPath) {
+        guard let site = siteForRowAtIndexPath(indexPath) else {
+            return
+        }
+
+        // Site's Details
+        let displayURL = URL(string: site.url)?.host ?? ""
+        if let name = site.name.nonEmptyString() {
+            cell.textLabel?.text = name
+            cell.detailTextLabel?.isEnabled = true
+            cell.detailTextLabel?.text = displayURL
+        } else {
+            cell.textLabel?.text = displayURL
+            cell.detailTextLabel?.isEnabled = false
+            cell.detailTextLabel?.text = nil
+        }
+
+        // Site's Blavatar
+        cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
+        if let siteIconPath = site.icon,
+            let siteIconUrl = URL(string: siteIconPath) {
+            cell.imageView?.downloadBlavatar(siteIconUrl)
+        } else {
+            cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
+        }
+
+        if site.blogID.intValue == shareData.selectedSiteID {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
+
+        WPStyleGuide.Share.configureTableViewSiteCell(cell)
+    }
+
+    var rowCountForSites: Int {
         return sites?.count ?? 0
     }
 
@@ -285,23 +348,15 @@ fileprivate extension ShareModularViewController {
     }
 
     func clearAllSelectedSiteRows() {
-        for row in 0 ..< rowCountForSitesSection {
-            let cell = tableView.cellForRow(at: IndexPath(row: row, section: Section.sites.rawValue))
+        for row in 0 ..< rowCountForSites {
+            let cell = sitesTableView.cellForRow(at: IndexPath(row: row, section: 0))
             cell?.accessoryType = .none
         }
     }
 
-    func clearSiteDataAndReloadTable() {
+    func clearSiteDataAndRefreshSitesTable() {
         sites = nil
-        tableView.reloadData()
-    }
-
-    func isSummaryRow(_ path: IndexPath) -> Bool {
-        return path.section == Section.summary.rawValue
-    }
-
-    func summaryRowText() -> String {
-        return NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        sitesTableView.reloadData()
     }
 }
 
@@ -356,7 +411,7 @@ fileprivate extension ShareModularViewController {
 fileprivate extension ShareModularViewController {
     func reloadSitesIfNeeded() {
         guard !hasSites, let oauth2Token = oauth2Token else {
-            tableView.reloadData()
+            sitesTableView.reloadData()
             showEmptySitesIfNeeded()
             return
         }
@@ -366,14 +421,14 @@ fileprivate extension ShareModularViewController {
         remote?.getVisibleBlogs(success: { [weak self] blogs in
             DispatchQueue.main.async {
                 self?.sites = (blogs as? [RemoteBlog]) ?? [RemoteBlog]()
-                self?.tableView.reloadData()
+                self?.sitesTableView.reloadData()
                 self?.showEmptySitesIfNeeded()
             }
             }, failure: { [weak self] error in
                 NSLog("Error retrieving blogs: \(String(describing: error))")
                 DispatchQueue.main.async {
                     self?.sites = [RemoteBlog]()
-                    self?.tableView.reloadData()
+                    self?.sitesTableView.reloadData()
                     self?.showEmptySitesIfNeeded()
                 }
         })
@@ -387,8 +442,8 @@ fileprivate extension ShareModularViewController {
         }
 
         isPublishingPost = true
-        tableView.refreshControl = nil
-        clearSiteDataAndReloadTable()
+        sitesTableView.refreshControl = nil
+        clearSiteDataAndRefreshSitesTable()
         showLoadingView()
 
         // Next, save the selected site for later use
@@ -427,15 +482,12 @@ fileprivate extension ShareModularViewController {
 // MARK: - Table Sections
 
 fileprivate extension ShareModularViewController {
-        enum Section: Int {
-        case summary       = 0
-        case sites         = 1
+    enum ModulesSection: Int {
+        case summary = 0
 
         func headerText() -> String {
             switch self {
             case .summary:
-                return String()
-            case .sites:
                 return String()
             }
         }
@@ -444,14 +496,12 @@ fileprivate extension ShareModularViewController {
             switch self {
             case .summary:
                 return String()
-            case .sites:
-                return String()
             }
         }
 
         static let count: Int = {
             var max: Int = 0
-            while let _ = Section(rawValue: max) { max += 1 }
+            while let _ = ModulesSection(rawValue: max) { max += 1 }
             return max
         }()
     }
@@ -462,7 +512,7 @@ fileprivate extension ShareModularViewController {
 fileprivate extension ShareModularViewController {
     struct Constants {
         static let sitesReuseIdentifier    = String(describing: ShareSitesTableViewCell.self)
-        static let defaultReuseIdentifier  = String(describing: ShareModularViewController.self)
+        static let modulesReuseIdentifier  = String(describing: ShareModularViewController.self)
         static let siteRowHeight           = CGFloat(74.0)
         static let defaultRowHeight        = CGFloat(44.0)
         static let emptyCount              = 0
