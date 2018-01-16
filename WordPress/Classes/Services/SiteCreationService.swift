@@ -9,6 +9,7 @@ enum SiteCreationStatus: Int {
     case validating
     case creatingSite
     case syncing
+    case settingTagline
 }
 
 /// A struct for conveniently sharing params between the different site creation steps.
@@ -17,6 +18,7 @@ enum SiteCreationStatus: Int {
 struct SiteCreationParams {
     var siteUrl: String
     var siteTitle: String
+    var siteTagline: String?
 }
 
 typealias SiteCreationStatusBlock = (_ status: SiteCreationStatus) -> Void
@@ -48,6 +50,7 @@ open class SiteCreationService: LocalCoreDataService {
     ///
     func createSite(siteURL url: String,
                     siteTitle: String,
+                    siteTagline: String?,
                     status: @escaping SiteCreationStatusBlock,
                     success: @escaping SiteCreationSuccessBlock,
                     failure: @escaping SiteCreationFailureBlock) {
@@ -60,16 +63,31 @@ open class SiteCreationService: LocalCoreDataService {
         }
 
         // Organize parameters into a struct for easy sharing
-        let params = SiteCreationParams(siteUrl: url, siteTitle: siteTitle)
+        let params = SiteCreationParams(siteUrl: url, siteTitle: siteTitle, siteTagline: siteTagline)
 
         // Create call back blocks for the various methods we'll call to create the site.
         // Each success block calls the next step in the process.
         // NOTE: The steps below are constructed in reverse order.
 
         let createBlogSuccessBlock = { (blog: Blog) in
-            // When the site is successfully created, update and sync all the things.
-            // Since this is the last step in the process, pass the caller's success block.
-            self.updateAndSyncBlogAndAccountInfo(blog, status: status, success: success, failure: failure)
+            if siteTagline != nil {
+
+                let setTaglineSuccessBlock = {
+                    self.updateAndSyncBlogAndAccountInfo(blog, status: status, success: success, failure: failure)
+                }
+
+                let setTaglineFailureBlock: SiteCreationFailureBlock = { error in
+                    WPAppAnalytics.track(.createSiteSetTaglineFailed)
+                    failure(error)
+                }
+
+                self.setWPComBlogTagline(blog: blog, params: params, status: status, success: setTaglineSuccessBlock, failure: setTaglineFailureBlock)
+            }
+            else {
+                // When the site is successfully created, update and sync all the things.
+                // Since this is the last step in the process, pass the caller's success block.
+                self.updateAndSyncBlogAndAccountInfo(blog, status: status, success: success, failure: failure)
+            }
         }
 
         let createBlogFailureBlock: SiteCreationFailureBlock = { error in
@@ -144,10 +162,11 @@ open class SiteCreationService: LocalCoreDataService {
             return
         }
 
+        status(.creatingSite)
+
         let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
         let languageId = currentLanguage.stringValue
 
-        status(.creatingSite)
         let remote = WordPressComServiceRemote(wordPressComRestApi: api)
         remote?.createWPComBlog(withUrl: params.siteUrl,
                                 andBlogTitle: params.siteTitle,
@@ -201,6 +220,27 @@ open class SiteCreationService: LocalCoreDataService {
             // The final step
             accountService.updateUserDetails(for: blog.account!, success: success, failure: failure)
         })
+    }
+
+    /// Set the Site Tagline.
+    ///
+    /// - Paramaters:
+    ///     - blog:    The newly created blog entity
+    ///     - params:  Blog information
+    ///     - status:  The status callback
+    ///     - success: A success calback
+    ///     - failure: A failure callback
+    ///
+    func setWPComBlogTagline(blog: Blog,
+                             params: SiteCreationParams,
+                             status: SiteCreationStatusBlock,
+                             success: @escaping SiteCreationSuccessBlock,
+                             failure: @escaping SiteCreationFailureBlock) {
+
+        status(.settingTagline)
+        blog.settings?.tagline = params.siteTagline
+        let blogService = BlogService(managedObjectContext: managedObjectContext)
+        blogService.updateSettings(for: blog, success: success, failure: failure)
     }
 
     /// Create a new blog entity from the supplied blog options. Calls the supplied
@@ -260,7 +300,6 @@ open class SiteCreationService: LocalCoreDataService {
 
         return blog
     }
-
 
     // MARK: - WP API
 
