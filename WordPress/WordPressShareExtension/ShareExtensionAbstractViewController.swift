@@ -15,7 +15,7 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     /// This completion handler closure is executed when this VC is dismissed
     ///
-    @objc var cancelCompletionBlock: CompletionBlock?
+    @objc var dismissalCompletionBlock: CompletionBlock?
 
     // MARK: - Internal Properties
 

@@ -229,6 +229,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         }
 
         if let destination = segue.destination as? ShareModularViewController {
+            destination.dismissalCompletionBlock = source.dismissalCompletionBlock
             destination.sites = source.sites
             destination.shareData = source.shareData
         }
@@ -897,7 +898,7 @@ extension ShareExtensionEditorViewController {
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
         cleanUpSharedContainer()
-        dismiss(animated: true, completion: self.cancelCompletionBlock)
+        dismiss(animated: true, completion: self.dismissalCompletionBlock)
     }
 
     @objc func nextWasPressed() {
@@ -1215,7 +1216,7 @@ private extension ShareExtensionEditorViewController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
             self.cleanUpSharedContainer()
-            self.dismiss(animated: true, completion: self.cancelCompletionBlock)
+            self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
         }
 
         alertController.addAction(alertAction)

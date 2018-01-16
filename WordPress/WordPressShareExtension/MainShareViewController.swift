@@ -42,7 +42,7 @@ private extension MainShareViewController {
         shareNavController.modalPresentationStyle = .custom
         if let editor = shareNavController.topViewController as? ShareExtensionEditorViewController {
             editor.context = self.extensionContext
-            editor.cancelCompletionBlock = {
+            editor.dismissalCompletionBlock = {
                 self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }
         }
