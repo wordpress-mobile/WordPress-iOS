@@ -14,7 +14,7 @@ class MediaCoordinator: NSObject {
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
-    private lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
+    private(set) lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
         return coordinator
@@ -128,6 +128,13 @@ class MediaCoordinator: NSObject {
     ///
     func cancelUpload(of media: Media) {
         mediaProgressCoordinator.cancelAndStopTrack(of: media.uploadID)
+    }
+
+    /// Cancels all ongoing uploads
+    ///
+    ///
+    func cancelUploadOfAllMedia() {
+        mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
     }
 
     /// Deletes a media object from the storage
