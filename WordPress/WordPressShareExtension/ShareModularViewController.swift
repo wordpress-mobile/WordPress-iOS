@@ -193,7 +193,8 @@ extension ShareModularViewController: UITableViewDelegate {
             let site = siteForRowAtIndexPath(indexPath) else {
             return
         }
-        clearAllSelectedSites()
+
+        clearAllSelectedSiteRows()
         cell.accessoryType = .checkmark
         tableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
         shareData.selectedSiteID = site.blogID.intValue
@@ -263,7 +264,16 @@ fileprivate extension ShareModularViewController {
         }
     }
 
-    fileprivate var rowCountForSitesSection: Int {
+    func isSectionEmpty(_ sectionIndex: Int) -> Bool {
+        switch Section(rawValue: sectionIndex)! {
+        case .sites:
+            return hasSites
+        case .summary:
+            return false
+        }
+    }
+
+    var rowCountForSitesSection: Int {
         return sites?.count ?? 0
     }
 
@@ -274,16 +284,7 @@ fileprivate extension ShareModularViewController {
         return sites[indexPath.row]
     }
 
-    func isSectionEmpty(_ sectionIndex: Int) -> Bool {
-        switch Section(rawValue: sectionIndex)! {
-        case .sites:
-            return hasSites
-        default:
-            return false
-        }
-    }
-
-    func clearAllSelectedSites() {
+    func clearAllSelectedSiteRows() {
         for row in 0 ..< rowCountForSitesSection {
             let cell = tableView.cellForRow(at: IndexPath(row: row, section: Section.sites.rawValue))
             cell?.accessoryType = .none
