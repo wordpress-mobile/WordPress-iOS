@@ -36,9 +36,7 @@ class PluginViewModel: Observable {
                 directoryEntry: directory,
                 onLinkTap: { [unowned self] in
                     guard let url = directory.authorURL else { return }
-                    let controller = WebViewControllerFactory.controller(url: url)
-                    let navigationController = UINavigationController(rootViewController: controller)
-                    self.present?(navigationController)
+                    self.presentBrowser(for: url)
             })
         }
 
@@ -106,9 +104,8 @@ class PluginViewModel: Observable {
             settingsLink = LinkRow(
                 title: NSLocalizedString("Settings", comment: "Link to plugin's Settings"),
                 action: { [unowned self] _ in
-                    let controller = WebViewControllerFactory.controller(url: settingsURL)
-                    let navigationController = UINavigationController(rootViewController: controller)
-                    self.present?(navigationController)
+                    self.presentBrowser(for: settingsURL)
+
             })
         }
 
@@ -117,9 +114,7 @@ class PluginViewModel: Observable {
             wpOrgPluginLink = LinkRow(
                 title: NSLocalizedString("WordPress.org Plugin Page", comment: "Link to a WordPress.org page for the plugin"),
                 action: { [unowned self] _ in
-                    let controller = WebViewControllerFactory.controller(url: self.plugin.state.directoryURL)
-                    let navigationController = UINavigationController(rootViewController: controller)
-                    self.present?(navigationController)
+                  self.presentBrowser(for: self.plugin.state.directoryURL)
             })
         }
 
@@ -128,9 +123,7 @@ class PluginViewModel: Observable {
             homeLink = LinkRow(
                 title: NSLocalizedString("Plugin Homepage", comment: "Link to a plugin's home page"),
                 action: { [unowned self] _ in
-                    let controller = WebViewControllerFactory.controller(url: homeURL)
-                    let navigationController = UINavigationController(rootViewController: controller)
-                    self.present?(navigationController)
+                    self.presentBrowser(for: homeURL)
             })
         }
 
@@ -235,6 +228,12 @@ class PluginViewModel: Observable {
             }
         )
         return alert
+    }
+
+    private func presentBrowser(`for` url: URL) {
+        let controller = WebViewControllerFactory.controller(url: url)
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.present?(navigationController)
     }
 
     private func setActive(_ active: Bool) {
