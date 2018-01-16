@@ -7,6 +7,14 @@ extension WPStyleGuide {
     class Share {
         static let blavatarPlaceholderImage = UIImage(named: "blavatar-default")
 
+        static func configureTableViewSummaryCell(_ cell: UITableViewCell) {
+            cell.textLabel?.font = tableviewTextFont()
+            cell.textLabel?.sizeToFit()
+            cell.textLabel?.textColor = darkGrey()
+
+            cell.backgroundColor = UIColor.clear
+        }
+
         static func configureTableViewSiteCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
