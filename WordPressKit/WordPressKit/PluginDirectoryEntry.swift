@@ -87,12 +87,12 @@ extension PluginDirectoryEntry: Decodable {
 
         let sections = try? container.nestedContainer(keyedBy: SectionKeys.self, forKey: .sections)
 
-        descriptionHTML = try sections?.decodeIfPresent(String.self, forKey: .description)
-        installationHTML = try sections?.decodeIfPresent(String.self, forKey: .installation)
-        faqHTML = try sections?.decodeIfPresent(String.self, forKey: .faq)
+        descriptionHTML = try trimTags(sections?.decodeIfPresent(String.self, forKey: .description))
+        installationHTML = try trimTags(sections?.decodeIfPresent(String.self, forKey: .installation))
+        faqHTML = try trimTags(sections?.decodeIfPresent(String.self, forKey: .faq))
 
         let changelog = try sections?.decodeIfPresent(String.self, forKey: .changelog)
-        changelogHTML = trimChangelog(changelog)
+        changelogHTML = trimTags(trimChangelog(changelog))
     }
 }
 
@@ -116,6 +116,27 @@ private func extractHTMLText(_ text: String?) -> NSAttributedString? {
     }
 
     return attributedString
+}
+
+private func trimTags(_ htmlString: String?) -> String? {
+    // Because the HTML we get from backend can contain literally anything, we need to set some limits as to what we won't even try to parse.
+    let tagsToRemove = ["script", "iframe"]
+
+    guard var html = htmlString else { return nil }
+
+    for tag in tagsToRemove {
+        let openingTag = "<\(tag)"
+        let closingTag  = "/\(tag)>"
+
+        if let openingRange = html.range(of: openingTag),
+           let closingRange = html.range(of: closingTag) {
+
+            let rangeToRemove = openingRange.lowerBound..<closingRange.upperBound
+            html.removeSubrange(rangeToRemove)
+        }
+    }
+
+    return html
 }
 
 private func trimChangelog(_ changelog: String?) -> String? {
