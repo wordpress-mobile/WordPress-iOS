@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatCreateSiteValidationFailed,
     WPAnalyticsStatCreateSiteCreationFailed,
     WPAnalyticsStatCreateSiteSetTaglineFailed,
+    WPAnalyticsStatCreateSiteSetThemeFailed,
     WPAnalyticsStatDefaultAccountChanged,
     WPAnalyticsStatEditorAddedPhotoViaLocalLibrary,
     WPAnalyticsStatEditorAddedVideoViaLocalLibrary,
