@@ -17,6 +17,7 @@ class JetpackConnectionWebViewController: UIViewController {
     // it and redirecting manually
     fileprivate var pendingSiteRedirect: URL?
     fileprivate var pendingDotComRedirect: URL?
+    fileprivate var account: WPAccount?
 
     init(blog: Blog) {
         self.blog = blog
@@ -94,7 +95,7 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
             }
         case .mobileRedirect:
             decisionHandler(.cancel)
-            delegate?.jetpackConnectionCompleted()
+            handleMobileRedirect()
         default:
             decisionHandler(.allow)
         }
@@ -203,6 +204,36 @@ private extension JetpackConnectionWebViewController {
             .flatMap(URL.init(string:))
     }
 
+    func handleMobileRedirect() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
+        let success: () -> Void = { [weak self] in
+            self?.delegate?.jetpackConnectionCompleted()
+        }
+        let failure: (Error) -> Void = { (error) in
+            DDLogError("\(error)")
+            success()
+        }
+        service.syncBlog(
+            blog,
+            success: { [account] in
+                guard let account = account else {
+                    // If there's no account let's pretend this worked
+                    // We don't know what to do, but at least it will dismiss
+                    // the connection flow and refresh the site state
+                    success()
+                    return
+                }
+                service.associateSyncedBlogs(
+                    toJetpackAccount: account,
+                    success: success,
+                    failure: failure
+                )
+            },
+            failure: failure
+        )
+    }
+
     func performSiteLogin(redirect: URL, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let authenticator = WebViewAuthenticator(blog: blog) else {
                 decisionHandler(.allow)
@@ -254,11 +285,12 @@ private extension JetpackConnectionWebViewController {
         pendingDotComRedirect = nil
     }
 
-    @objc func handleFinishedJetpackLogin() {
+    @objc func handleFinishedJetpackLogin(notification: NSNotification) {
         observeLoginNotifications(false)
         defer {
             pendingDotComRedirect = nil
         }
+        account = notification.object as? WPAccount
         if let redirect = pendingDotComRedirect {
             performDotComLogin(redirect: redirect)
         }

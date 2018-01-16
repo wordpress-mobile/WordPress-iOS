@@ -234,18 +234,10 @@ class JetpackLoginViewController: UIViewController {
 
 extension JetpackLoginViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCompleted() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-        let completion = { [weak self] in
-            self?.reloadInterface()
-            self?.dismiss(animated: true, completion: nil)
-        }
-        service.syncBlog(blog, success: completion, failure: { (_) in
-            completion()
-        })
+        dismiss(animated: true, completion: completionBlock)
     }
 
     func jetpackConnectionCanceled() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: completionBlock)
     }
 }
