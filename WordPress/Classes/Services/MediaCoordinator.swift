@@ -100,6 +100,19 @@ class MediaCoordinator: NSObject {
         uploadMedia(media)
     }
 
+    /// Starts the upload of a media object
+    ///
+    /// - Parameter media: the media to upload
+    ///
+    func syncMedia(_ media: Media) {
+        guard media.remoteStatus == .local else {
+            DDLogError("Can't try to upload Media that isn't local only. \(String(describing: media))")
+            return
+        }
+        mediaProgressCoordinator.track(numberOfItems: 1)
+        uploadMedia(media)
+    }
+
     /// Cancels any ongoing upload of the Media and deletes it.
     ///
     /// - Parameter media: the object to cancel and delete
