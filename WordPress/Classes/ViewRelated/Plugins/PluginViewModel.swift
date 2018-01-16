@@ -278,11 +278,41 @@ class PluginViewModel: Observable {
     private func setHTMLTextAttributes(_ htmlText: NSAttributedString) -> NSAttributedString {
         guard let copy = htmlText.mutableCopy() as? NSMutableAttributedString else { return htmlText }
 
+        let nonOptions = [NSTextTab.OptionKey: Any]()
+        let fixedTabStops = [NSTextTab(textAlignment: .left, location: 0, options: nonOptions)]
+
         copy.enumerateAttribute(NSAttributedStringKey.font, in: NSMakeRange(0, copy.length), options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
             guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
 
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
             copy.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: range)
+        }
+
+        copy.enumerateAttribute(NSAttributedStringKey.paragraphStyle, in: NSMakeRange(0, copy.length), options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
+            guard let paragraphStyle = value as? NSParagraphStyle else { return }
+
+            var mutableParagraphStyle: NSMutableParagraphStyle?
+
+            if paragraphStyle.tabStops.isEmpty == false {
+                // this means it's a list. we need to fix up the tab stops.
+
+                mutableParagraphStyle = mutableParagraphStyle ?? paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
+                mutableParagraphStyle?.tabStops = fixedTabStops
+                mutableParagraphStyle?.defaultTabInterval = 5
+            }
+
+            if ceil(paragraphStyle.paragraphSpacing) == 16 {
+                // It gets calculated by system as 15.96<something after the second significant digit>,
+                // but it's a PITA to compare Doubles that precise, so let's just round it up instead.
+
+                mutableParagraphStyle = mutableParagraphStyle ?? paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
+                copy.addAttribute(.font, value: WPStyleGuide.subtitleFontBold(), range: range)
+                mutableParagraphStyle?.paragraphSpacing = 12
+            }
+
+            if let newParagraphStyle = mutableParagraphStyle {
+                copy.addAttribute(.paragraphStyle, value: newParagraphStyle, range: range)
+            }
         }
 
         return copy
