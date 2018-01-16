@@ -56,7 +56,12 @@ class MediaCoordinator: NSObject {
         let media = service.createMedia(with: asset,
                             objectID: objectID,
                             progress: &creationProgress,
-                            thumbnailCallback: nil,
+                            thumbnailCallback: { [weak self]media, url in
+                                guard let strongSelf = self else {
+                                    return
+                                }
+                                strongSelf.thumbnailReady(url: url, for: media)
+                            },
                             completion: { [weak self] media, error in
                                 guard let strongSelf = self else {
                                     return
@@ -195,6 +200,7 @@ class MediaCoordinator: NSObject {
     ///
     enum MediaState: CustomDebugStringConvertible {
         case processing
+        case thumbnailReady(url: URL)
         case uploading
         case ended
         case failed(error: NSError)
@@ -204,6 +210,8 @@ class MediaCoordinator: NSObject {
             switch self {
             case .processing:
                 return "Processing"
+            case .thumbnailReady(let url):
+                return "Thumbnail Ready: \(url)"
             case .uploading:
                 return "Uploading"
             case .ended:
@@ -248,6 +256,12 @@ class MediaCoordinator: NSObject {
     ///
     func uploading(_ media: Media) {
         notifyObserversForMedia(media, ofStateChange: .uploading)
+    }
+
+    /// Notifies observers that a thumbnail is ready for the media item
+    ///
+    func thumbnailReady(url: URL, for media: Media) {
+        notifyObserversForMedia(media, ofStateChange: .thumbnailReady(url: url))
     }
 
     /// Notifies observers that a media item has ended uploading.

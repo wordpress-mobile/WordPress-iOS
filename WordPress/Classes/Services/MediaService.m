@@ -35,7 +35,7 @@
 - (Media *)createMediaWith:(id<ExportableAsset>)exportable
                   objectID:(NSManagedObjectID *)objectID
                   progress:(NSProgress **)progress
-         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+         thumbnailCallback:(void (^)(Media *media, NSURL *thumbnailURL))thumbnailCallback
                 completion:(void (^)(Media *media, NSError *error))completion
 {
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
@@ -74,7 +74,9 @@
         void(^completionWithMedia)(Media *) = ^(Media *media) {
             // Pre-generate a thumbnail image, see the method notes.
             [self exportPlaceholderThumbnailForMedia:media
-                                          completion:thumbnailCallback];
+                                          completion:^(NSURL *url){
+                                              thumbnailCallback(media, url);
+                                          }];
             if (completion) {
                 completion(media, nil);
             }
