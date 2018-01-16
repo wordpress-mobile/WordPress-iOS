@@ -404,6 +404,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 self?.reloadCell(for: media)
             case .failed:
                 self?.showFailedStateForCell(for: media)
+            case .thumbnailReady:
+                self?.showUploadingStateForCell(for: media)
             }
             }, for: nil)
     }
