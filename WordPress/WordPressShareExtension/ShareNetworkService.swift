@@ -27,10 +27,14 @@ class ShareNetworkService {
         ShareExtensionService.retrieveShareExtensionToken()
     }()
 
-    /// Tracks Instance
+    /// Simple Rest API (no backgrounding)
     ///
     fileprivate lazy var simpleRestAPI: WordPressComRestApi = {
-        WordPressComRestApi(oAuthToken: oauth2Token, userAgent: nil)
+        WordPressComRestApi(oAuthToken: oauth2Token,
+                            userAgent: nil,
+                            backgroundUploads: false,
+                            backgroundSessionIdentifier: backgroundSessionIdentifier,
+                            sharedContainerIdentifier: WPAppGroupName)
     }()
 
     /// Tracks Instance
@@ -88,13 +92,8 @@ extension ShareNetworkService {
 
         let remotePost = postUploadOp.remotePost
 
-        // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads so set it false
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: false,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-        let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
+        // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads
+        let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: postUploadOp.siteID))
         remote.createPost(remotePost, success: { post in
             if let post = post {
                 DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
@@ -157,7 +156,7 @@ extension ShareNetworkService {
             uploadMediaOpIDs.append(uploadMediaOpID)
         }
 
-        // Upload the media items
+        // Setup an API that uses background uploads with the shared container
         let api = WordPressComRestApi(oAuthToken: oauth2Token,
                                       userAgent: nil,
                                       backgroundUploads: true,
