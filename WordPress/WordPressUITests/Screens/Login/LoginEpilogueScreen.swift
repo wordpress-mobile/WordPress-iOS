@@ -15,9 +15,9 @@ class LoginEpilogueScreen: BaseScreen {
         super.init(element: headerText)
     }
 
-    func continueWithSelectedSite() -> MySitesScreen {
+    func continueWithSelectedSite() -> MySiteScreen {
         continueButton.tap()
-        return MySitesScreen.init()
+        return MySiteScreen()
     }
 
     func connectSite() {
