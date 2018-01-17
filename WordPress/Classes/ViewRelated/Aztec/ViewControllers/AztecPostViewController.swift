@@ -377,14 +377,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
-
-    /// Media Progress Coordinator
-    ///
-    fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
-        return mediaCoordinator.mediaProgressCoordinator
-    }()
-
-
     fileprivate lazy var mediaCoordinator: MediaCoordinator = {
         let coordinator = MediaCoordinator()
         return coordinator
@@ -1123,7 +1115,7 @@ extension AztecPostViewController {
 
     private func publishTapped(dismissWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
-        if mediaProgressCoordinator.isRunning {
+        if mediaCoordinator.isUploading {
             displayMediaIsUploadingAlert()
             return
         }

@@ -14,7 +14,7 @@ class MediaCoordinator: NSObject {
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
-    private(set) lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
+    private lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
         return coordinator
@@ -186,6 +186,10 @@ class MediaCoordinator: NSObject {
     ///
     func media(withIdentifier uploadID: String) -> Media? {
         return mediaProgressCoordinator.media(withIdentifier: uploadID)
+    }
+
+    var isUploading: Bool {
+        return mediaProgressCoordinator.isRunning
     }
 
     // MARK: - Observing
