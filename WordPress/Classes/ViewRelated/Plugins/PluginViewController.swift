@@ -74,5 +74,5 @@ class PluginViewController: UITableViewController {
         tableView.beginUpdates()
         tableView.endUpdates()
     }
- 
+
 }
