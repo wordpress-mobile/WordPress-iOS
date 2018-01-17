@@ -53,11 +53,8 @@ class MediaCoordinator: NSObject {
         let media = service.createMedia(with: asset,
                             objectID: objectID,
                             progress: &creationProgress,
-                            thumbnailCallback: { [weak self]media, url in
-                                guard let strongSelf = self else {
-                                    return
-                                }
-                                strongSelf.thumbnailReady(url: url, for: media)
+                            thumbnailCallback: { [weak self] media, url in
+                                self?.thumbnailReady(url: url, for: media)
                             },
                             completion: { [weak self] media, error in
                                 guard let strongSelf = self else {
