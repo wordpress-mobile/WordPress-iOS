@@ -27,20 +27,21 @@ public class TimeZoneServiceRemote: ServiceRemoteWordPressComREST {
 private extension TimeZoneServiceRemote {
     func timezoneGroupsFromResponse(_ response: AnyObject) throws -> [TimeZoneGroup] {
         guard let response = response as? [String: Any],
-            let timeZonesByContinent = response["timezones_by_continent"] as? [String: [[String: String]]] else {
+            let timeZonesByContinent = response["timezones_by_continent"] as? [String: [[String: String]]],
+            let manualUTCOffsets = response["manual_utc_offsets"] as? [[String: String]] else {
                 throw ResponseError.decodingFailed
         }
-        return try timeZonesByContinent.map({
+        let continentGroups: [TimeZoneGroup] = try timeZonesByContinent.map({
             let (groupName, rawZones) = $0
-            let zones = try rawZones.map({ (zone) -> WPTimeZone in
-                guard let label = zone["label"],
-                    let value = zone["value"] else {
-                        throw ResponseError.decodingFailed
-                }
-                return NamedTimeZone(label: label, value: value)
-            })
+            let zones = try rawZones.map({ try parseNamedTimezone(response: $0) })
             return TimeZoneGroup(name: groupName, timezones: zones)
         }).sorted(by: { return $0.name < $1.name })
+
+        let utcOffsets: [WPTimeZone] = try manualUTCOffsets.map({ try parseOffsetTimezone(response: $0) })
+        let utcOffsetsGroup = TimeZoneGroup(
+            name: NSLocalizedString("Manual Offsets", comment: "Section name for manual offsets in time zone selector"),
+            timezones: utcOffsets)
+        return continentGroups + [utcOffsetsGroup]
     }
 
     func parseNamedTimezone(response: [String: String]) throws -> WPTimeZone {
