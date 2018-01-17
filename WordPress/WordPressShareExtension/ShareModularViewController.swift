@@ -415,7 +415,7 @@ fileprivate extension ShareModularViewController {
             showEmptySitesIfNeeded()
             return
         }
-        let networkService = ShareNetworkService()
+        let networkService = AppExtensionsService()
         networkService.fetchSites(onSuccess: { blogs in
             DispatchQueue.main.async {
                 self.sites = (blogs) ?? [RemoteBlog]()
@@ -449,7 +449,7 @@ fileprivate extension ShareModularViewController {
         }
 
         // Then proceed uploading the actual post
-        let networkService = ShareNetworkService()
+        let networkService = AppExtensionsService()
         let localImageURLs = [URL](shareData.sharedImageDict.values)
         if !localImageURLs.isEmpty {
             // We have media, so let's upload it with the post

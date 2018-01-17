@@ -1,7 +1,9 @@
 import CoreData
 import WordPressKit
 
-class ShareNetworkService {
+/// Provides site fetching and post/media uploading functionality to app extensions.
+///
+class AppExtensionsService {
 
     // MARK: - Private Properties
 
@@ -61,11 +63,15 @@ class ShareNetworkService {
         // Core Data
         managedContext = coreDataStack.managedContext
     }
+
+    deinit {
+        coreDataStack.saveContext()
+    }
 }
 
 // MARK: - Sites
 
-extension ShareNetworkService {
+extension AppExtensionsService {
     func fetchSites(onSuccess success: @escaping ([RemoteBlog]?) -> (), onFailure failure: @escaping () -> ()) {
         let remote = AccountServiceRemoteREST.init(wordPressComRestApi: simpleRestAPI)
         remote?.getVisibleBlogs(success: { blogs in
@@ -79,7 +85,16 @@ extension ShareNetworkService {
 
 // MARK: - Uploading Posts
 
-extension ShareNetworkService {
+extension AppExtensionsService {
+    /// Saves a new post to the share container db and then uploads it synchronously.
+    ///
+    /// - Parameters:
+    ///   - title: Post title
+    ///   - body: Post content body
+    ///   - status: Post status
+    ///   - siteID: Site ID the post will be uploaded to
+    ///   - onComplete: Completion handler executed after a post is uploaded to the server
+    ///
     func saveAndUploadPost(title: String, body: String, status: String, siteID: Int, onComplete: (() -> Void)?) {
         let remotePost = RemotePost()
         remotePost.siteID = NSNumber(value: siteID)
@@ -92,6 +107,12 @@ extension ShareNetworkService {
         })
     }
 
+    /// Uploads an already-saved post synchronously.
+    ///
+    /// - Parameters:
+    ///   - uploadOpObjectID: Managed object ID for the post
+    ///   - onComplete: Completion handler executed after a post is uploaded to the server
+    ///
     func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, onComplete: (() -> Void)?) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
             DDLogError("Error uploading post in share extension — could not fetch saved post.")
@@ -124,6 +145,16 @@ extension ShareNetworkService {
         })
     }
 
+    /// Saves a new post + media items to the shared container db and then uploads it in the background. 
+    ///
+    /// - Parameters:
+    ///   - title: Post title
+    ///   - body: Post content body
+    ///   - status: Post status
+    ///   - siteID: Site ID the post will be uploaded to
+    ///   - localMediaFileURLs: An array of local URLs containing the media files to upload
+    ///   - requestEnqueued: Completion handler executed when the media has been processed and background upload is scheduled
+    ///
     func uploadPostWithMedia(title: String,
                              body: String,
                              status: String,
@@ -231,7 +262,7 @@ extension ShareNetworkService {
 
 // MARK: - Private Helpers
 
-fileprivate extension ShareNetworkService {
+fileprivate extension AppExtensionsService {
     func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
@@ -259,7 +290,7 @@ fileprivate extension ShareNetworkService {
 
 // MARK: - Constants
 
-extension ShareNetworkService {
+extension AppExtensionsService {
     struct Constants {
         static let mimeType = "image/jpeg"
     }
