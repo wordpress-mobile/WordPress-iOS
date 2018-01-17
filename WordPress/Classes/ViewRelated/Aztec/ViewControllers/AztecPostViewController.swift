@@ -1121,7 +1121,7 @@ extension AztecPostViewController {
         }
 
         // If there is any failed media allow it to be removed or cancel publishing
-        if mediaProgressCoordinator.hasFailedMedia {
+        if mediaCoordinator.hasFailedMedia {
             displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
@@ -2895,7 +2895,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func removeFailedMedia() {
-        let failedMediaIDs = mediaProgressCoordinator.failedMediaIDs
+        let failedMediaIDs = mediaCoordinator.failedMediaIDs
         for mediaID in failedMediaIDs {
             if let attachment = self.findAttachment(withUploadID: mediaID) {
                 richTextView.remove(attachmentID: attachment.identifier)
@@ -3178,7 +3178,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
         // Check to see if there is an error associated to the attachment
         var errorAssociatedToAttachment = false
-        if let uploadID = attachment.uploadID, mediaProgressCoordinator.error(forMediaID: uploadID) != nil {
+        if let uploadID = attachment.uploadID, let media = mediaCoordinator.media(withIdentifier: uploadID), mediaCoordinator.error(for: media) != nil {
             errorAssociatedToAttachment = true
         }
         if !errorAssociatedToAttachment {

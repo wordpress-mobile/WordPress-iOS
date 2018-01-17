@@ -188,8 +188,22 @@ class MediaCoordinator: NSObject {
         return mediaProgressCoordinator.media(withIdentifier: uploadID)
     }
 
+    /// Returns true if any media is being processed or uploading
+    ///
     var isUploading: Bool {
         return mediaProgressCoordinator.isRunning
+    }
+
+    /// Returns true if there is any media with a fail state
+    ///
+    var hasFailedMedia: Bool {
+        return mediaProgressCoordinator.hasFailedMedia
+    }
+
+    /// Return an array with all failed media IDs
+    ///
+    var failedMediaIDs: [String] {
+        return mediaProgressCoordinator.failedMediaIDs
     }
 
     // MARK: - Observing
