@@ -208,8 +208,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        coreDataStack.saveContext()
         stopListeningToNotifications()
     }
 

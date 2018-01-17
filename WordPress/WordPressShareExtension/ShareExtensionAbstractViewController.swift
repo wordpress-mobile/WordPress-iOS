@@ -69,11 +69,6 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
         Tracks(appGroupName: WPAppGroupName)
     }()
 
-    /// Core Data stack for application extensions
-    ///
-    internal lazy var coreDataStack = SharedCoreDataStack()
-    internal var managedContext: NSManagedObjectContext!
-
     // MARK: - Lifecycle Methods
 
     deinit {
@@ -85,9 +80,6 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
         // Tracker
         tracks.wpcomUsername = wpcomUsername
-
-        // Core Data
-        managedContext = coreDataStack.managedContext
     }
 
     // MARK: Setup and Configuration

@@ -452,31 +452,25 @@ fileprivate extension ShareModularViewController {
         let networkService = ShareNetworkService()
         let localImageURLs = [URL](shareData.sharedImageDict.values)
         if !localImageURLs.isEmpty {
-            networkService.uploadPostWithMedia(subject: shareData.title,
-                                            body: shareData.contentBody,
-                                            status: shareData.postStatus,
-                                            siteID: siteID,
-                                            localMediaFileURLs: localImageURLs,
-                                            requestEnqueued: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus)
-                                                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+            // We have media, so let's upload it with the post
+            networkService.uploadPostWithMedia(title: shareData.title,
+                                               body: shareData.contentBody,
+                                               status: shareData.postStatus,
+                                               siteID: siteID,
+                                               localMediaFileURLs: localImageURLs,
+                                               requestEnqueued: {
+                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus)
+                                                 self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
         } else {
-            let remotePost: RemotePost = {
-                let post = RemotePost()
-                post.siteID = NSNumber(value: siteID)
-                post.status = shareData.postStatus
-                post.title = shareData.title
-                post.content = shareData.contentBody
-                return post
-            }()
-            let uploadPostOpID = coreDataStack.savePostOperation(remotePost,
-                                                                 groupIdentifier: networkService.groupIdentifier,
-                                                                 with: .inProgress)
-
-            networkService.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {
-                self.tracks.trackExtensionPosted(self.shareData.postStatus)
-                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+            // No media. just a simple post
+            networkService.saveAndUploadPost(title: shareData.title,
+                                             body: shareData.contentBody,
+                                             status: shareData.postStatus,
+                                             siteID: siteID,
+                                             onComplete: {
+                                                self.tracks.trackExtensionPosted(self.shareData.postStatus)
+                                                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
         }
     }
