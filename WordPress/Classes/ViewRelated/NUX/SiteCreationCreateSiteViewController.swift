@@ -48,7 +48,9 @@ class SiteCreationCreateSiteViewController: NUXAbstractViewController {
         guard let siteOptions = siteOptions,
             let siteURL = siteOptions["domain"] as? String,
             let siteTitle = siteOptions["title"] as? String else {
+                DDLogError("Error while creating site: siteURL and/or siteTitle missing.")
                 // TODO: show whoops view
+                self.showAlertWithMessage("Fail: URL and/or Title missing.")
                 return
         }
 
@@ -58,13 +60,17 @@ class SiteCreationCreateSiteViewController: NUXAbstractViewController {
             self.showStepLabelForStatus(status)
         }
 
-        let successBlock = {
+
+        let successBlock = { (blog: Blog) in
             // TODO: show prologue
+            self.showAlertWithMessage("Site '\(blog.settings?.name ?? "")' created.")
+
         }
 
         let failureBlock = { (error: Error?) in
             DDLogError("Error while creating site: \(String(describing: error))")
             // TODO: show whoops view
+            self.showAlertWithMessage("Fail: '\(String(describing: error)).")
         }
 
         // Get optional values from dictionary
@@ -101,6 +107,23 @@ class SiteCreationCreateSiteViewController: NUXAbstractViewController {
 
         labelToUpdate.font = WPStyleGuide.fontForTextStyle(.headline)
         labelToUpdate.textColor = WPStyleGuide.darkGrey()
+    }
+
+    private func showAlertWithMessage(_ alertMessage: String) {
+        let message = "\(alertMessage)\nThis is a work in progress. To use the old flow, disable the siteCreation feature flag."
+        let alertController = UIAlertController(title: nil,
+                                                message: message,
+                                                preferredStyle: .alert)
+
+        let goHome = UIAlertAction(
+            title: "Go Home",
+            style: .destructive,
+            handler: { [unowned self] _ in
+                self.navigationController?.dismiss(animated: true, completion: nil)
+        })
+
+        alertController.addAction(goHome)
+        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - Misc
