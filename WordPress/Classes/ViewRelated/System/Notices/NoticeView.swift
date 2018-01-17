@@ -108,7 +108,12 @@ class NoticeView: UIView {
 
     private func configureForNotice() {
         titleLabel.text = notice.title
-        messageLabel.text = notice.message
+
+        if let message = notice.message {
+            messageLabel.text = message
+        } else {
+            titleLabel.numberOfLines = 2
+        }
 
         if let actionTitle = notice.actionTitle {
             actionButton.setTitle(actionTitle, for: .normal)
