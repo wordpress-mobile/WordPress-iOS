@@ -43,13 +43,29 @@ extension SiteSettingsViewController {
         }
         if let timezone = state.findTimezone(gmtOffset: settings.gmtOffset?.floatValue, timezoneString: settings.timezoneString) {
             return timezone.label
-        } else if let timezoneString = settings.timezoneString?.nonEmptyString() {
+        } else {
+            return timezoneValue
+        }
+    }
+
+    var timezoneValue: String? {
+        if let timezoneString = blog.settings?.timezoneString?.nonEmptyString() {
             return timezoneString
-        } else if let gmtOffset = settings.gmtOffset {
+        } else if let gmtOffset = blog.settings?.gmtOffset {
             return OffsetTimeZone(offset: gmtOffset.floatValue).label
         } else {
             return nil
         }
+    }
+
+    @objc func showTimezoneSelector() {
+        let controller = TimeZoneSelectorViewController(selectedValue: timezoneValue) { [weak self] (newValue) in
+            self?.navigationController?.popViewController(animated: true)
+            self?.blog.settings?.gmtOffset = newValue.gmtOffset as NSNumber?
+            self?.blog.settings?.timezoneString = newValue.timezoneString
+            self?.saveSettings()
+        }
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     @objc func showDateAndTimeFormatSettings() {
