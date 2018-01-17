@@ -31,15 +31,43 @@ struct TimeZoneSelectorViewModel: Observable {
         }
     }
 
+    var filter: String? {
+        didSet {
+            emitChange()
+        }
+    }
+
     let changeDispatcher = Dispatcher<Void>()
 
-    func tableViewModel(selectionHandler: @escaping (WPTimeZone) -> Void) -> ImmuTable {
+    var groups: [TimeZoneGroup] {
         guard case .ready(let groups) = state else {
-            return .Empty
+            return []
+        }
+        return groups
+    }
+
+    var filteredGroups: [TimeZoneGroup] {
+        guard let filter = filter else {
+            return groups
         }
 
+        return groups.flatMap({ (group) in
+            if group.name.localizedCaseInsensitiveContains(filter) {
+                return group
+            } else {
+                let timezones = group.timezones.filter({ $0.label.localizedCaseInsensitiveContains(filter) })
+                if timezones.isEmpty {
+                    return nil
+                } else {
+                    return TimeZoneGroup(name: group.name, timezones: timezones)
+                }
+            }
+        })
+    }
+
+    func tableViewModel(selectionHandler: @escaping (WPTimeZone) -> Void) -> ImmuTable {
         return ImmuTable(
-            sections: groups.map({ (group) -> ImmuTableSection in
+            sections: filteredGroups.map({ (group) -> ImmuTableSection in
                 return ImmuTableSection(
                     headerText: group.name,
                     rows: group.timezones.map({ (timezone) -> ImmuTableRow in
@@ -52,7 +80,7 @@ struct TimeZoneSelectorViewModel: Observable {
     }
 }
 
-class TimeZoneSelectorViewController: UITableViewController {
+class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpdating {
     var storeReceipt: Receipt?
     var queryReceipt: Receipt?
 
@@ -71,10 +99,17 @@ class TimeZoneSelectorViewController: UITableViewController {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
+    private let searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        controller.obscuresBackgroundDuringPresentation = false
+        return controller
+    }()
+
     init(selectedValue: String?, onSelectionChanged: @escaping (WPTimeZone) -> Void) {
         self.onSelectionChanged = onSelectionChanged
-        self.viewModel = TimeZoneSelectorViewModel(state: .loading, selectedValue: selectedValue)
+        self.viewModel = TimeZoneSelectorViewModel(state: .loading, selectedValue: selectedValue, filter: nil)
         super.init(style: .grouped)
+        searchController.searchResultsUpdater = self
         title = NSLocalizedString("Time Zone", comment: "Title for the time zone selector")
     }
 
@@ -86,16 +121,38 @@ class TimeZoneSelectorViewController: UITableViewController {
         super.viewDidLoad()
         ImmuTable.registerRows([CheckmarkRow.self], tableView: tableView)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureSearchBar(searchController.searchBar)
+        tableView.tableHeaderView = searchController.searchBar
+
         let store = StoreContainer.shared.timezone
         storeReceipt = store.onChange { [weak self] in
-            guard let controller = self else {
-                return
-            }
-            controller.viewModel = TimeZoneSelectorViewModel(
-                state: TimeZoneSelectorViewModel.State.with(storeState: store.state),
-                selectedValue: controller.viewModel.selectedValue
-            )
+            self?.updateViewModel()
         }
         queryReceipt = store.query(TimeZoneQuery())
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchController.isActive = false
+    }
+
+    func updateSearchResults(for searchController: UISearchController) {
+        updateViewModel()
+    }
+
+    func updateViewModel() {
+        let store = StoreContainer.shared.timezone
+        viewModel = TimeZoneSelectorViewModel(
+            state: TimeZoneSelectorViewModel.State.with(storeState: store.state),
+            selectedValue: viewModel.selectedValue,
+            filter: searchFilter
+        )
+    }
+
+    var searchFilter: String? {
+        guard searchController.isActive else {
+            return nil
+        }
+        return searchController.searchBar.text?.nonEmptyString()
     }
 }
