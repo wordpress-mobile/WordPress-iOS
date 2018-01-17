@@ -89,7 +89,7 @@ class NoticeView: UIView {
 
         NSLayoutConstraint.activate([
             labelStackView.leadingAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.leadingAnchor),
-            labelStackView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: actionBackgroundView.leadingAnchor),
+            labelStackView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: actionBackgroundView.leadingAnchor, constant: -Appearance.layoutMargins.right),
             labelStackView.topAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.topAnchor),
             labelStackView.bottomAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.bottomAnchor)
             ])
