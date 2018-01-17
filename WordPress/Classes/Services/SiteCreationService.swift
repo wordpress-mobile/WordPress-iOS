@@ -20,6 +20,8 @@ struct SiteCreationParams {
     var siteUrl: String
     var siteTitle: String
     var siteTagline: String?
+    // NOTE: Once the .siteCreation feature flag is removed, Theme should be required.
+    // It's optional now to support the existing Signup flow with automatic site creation.
     var siteTheme: Theme?
 
     init(siteUrl: String, siteTitle: String, siteTagline: String? = nil, siteTheme: Theme? = nil) {
@@ -122,6 +124,9 @@ open class SiteCreationService: LocalCoreDataService {
             // If there is a Tagline, start there. It will call Theme and Sync during it's flow.
             // If there is no Tagline, start with Theme. It will call Sync during it's flow.
             // If there is no Tagline or Theme, go directly to Sync.
+
+            // Since the UI needs to update, always send this status to indicate where the process is.
+            status(.settingTagline)
 
             if let siteTagline = siteTagline,
                 !siteTagline.isEmpty {
@@ -287,7 +292,6 @@ open class SiteCreationService: LocalCoreDataService {
                              success: @escaping SiteCreationSuccessBlock,
                              failure: @escaping SiteCreationFailureBlock) {
 
-        status(.settingTagline)
         blog.settings?.tagline = params.siteTagline
         let blogService = BlogService(managedObjectContext: managedObjectContext)
         blogService.updateSettings(for: blog, success: success, failure: failure)
