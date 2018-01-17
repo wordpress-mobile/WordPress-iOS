@@ -151,6 +151,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     }
 
     [self refreshData];
+    [self observeTimeZoneStore];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -566,8 +567,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         case SiteSettingsGeneralTimezone:
         {
-            NSString *timezone = self.blog.settings.timezoneLabel;
-            [self.timezoneTextCell setTextValue:timezone];
+            [self.timezoneTextCell setTextValue:[self timezoneLabel]];
             return self.timezoneTextCell;
         }
     }
