@@ -9,12 +9,12 @@ enum TimeZoneStoreState {
     case loaded([TimeZoneGroup])
     case error(Error)
 
-    var isLoading: Bool {
+    var shouldFetch: Bool {
         switch self {
-        case .loading:
-            return true
-        default:
+        case .loaded:
             return false
+        default:
+            return true
         }
     }
 
@@ -53,7 +53,7 @@ class TimeZoneStore: QueryStore<TimeZoneStoreState, TimeZoneQuery> {
     }
 
     override func queriesChanged() {
-        guard !activeQueries.isEmpty && !state.isLoading else {
+        guard !activeQueries.isEmpty && state.shouldFetch else {
             return
         }
         fetchTimeZones()
