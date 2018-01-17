@@ -19,6 +19,11 @@ extension WPTimeZone {
 public struct TimeZoneGroup {
     public let name: String
     public let timezones: [WPTimeZone]
+
+    public init(name: String, timezones: [WPTimeZone]) {
+        self.name = name
+        self.timezones = timezones
+    }
 }
 
 public struct NamedTimeZone: WPTimeZone {
