@@ -97,11 +97,11 @@ class MediaCoordinator: NSObject {
         uploadMedia(media)
     }
 
-    /// Starts the upload of a media object
+    /// Starts the upload of an already existing local media object
     ///
     /// - Parameter media: the media to upload
     ///
-    func syncMedia(_ media: Media) {
+    func addMedia(_ media: Media) {
         guard media.remoteStatus == .local else {
             DDLogError("Can't try to upload Media that isn't local only. \(String(describing: media))")
             return

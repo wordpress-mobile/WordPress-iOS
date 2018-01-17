@@ -2827,7 +2827,7 @@ extension AztecPostViewController {
         }
         if let attachment = attachment {
             attachment.uploadID = media.uploadID
-            mediaCoordinator.syncMedia(media)
+            mediaCoordinator.addMedia(media)
             observe(media: media, statType: statType)
         }
     }
