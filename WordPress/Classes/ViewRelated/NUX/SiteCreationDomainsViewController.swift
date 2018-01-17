@@ -73,6 +73,10 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
             buttonViewController?.delegate = self
             showButtonView(show: false, withAnimation: false)
         }
+
+        if let vc = segue.destination as? SiteCreationCreateSiteViewController {
+            vc.siteOptions = siteOptions
+        }
     }
 
     // MARK: - Misc
@@ -101,17 +105,13 @@ extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControl
 
 extension SiteCreationDomainsViewController: SiteCreationButtonViewControllerDelegate {
     func continueButtonPressed() {
-        let message = "'\(selectedDomain ?? "")' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        self.present(alertController, animated: true, completion: nil)
 
         // TODO: replace siteOptions with SiteCreationFields class when created.
         guard var siteOptions = siteOptions else {
             return
         }
+
         siteOptions["domain"] = selectedDomain
+        performSegue(withIdentifier: .showCreateSite, sender: self)
     }
 }
