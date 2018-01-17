@@ -78,6 +78,31 @@ struct TimeZoneSelectorViewModel: Observable {
             })
         )
     }
+
+    var noResultsViewModel: WPNoResultsView.Model? {
+        switch state {
+        case .loading:
+            return WPNoResultsView.Model(
+                title: NSLocalizedString("Loading...", comment: "Text displayed while loading time zones")
+            )
+        case .ready:
+            return nil
+        case .error:
+            let appDelegate = WordPressAppDelegate.sharedInstance()
+            if (appDelegate?.connectionAvailable)! {
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Oops", comment: ""),
+                    message: NSLocalizedString("There was an error loading time zones", comment: ""),
+                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                )
+            } else {
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("No connection", comment: ""),
+                    message: NSLocalizedString("An active internet connection is required", comment: "")
+                )
+            }
+        }
+    }
 }
 
 class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpdating {
@@ -99,6 +124,8 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         return ImmuTableViewHandler(takeOver: self)
     }()
 
+    fileprivate let noResultsView = WPNoResultsView()
+
     private let searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
         controller.obscuresBackgroundDuringPresentation = false
@@ -111,6 +138,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         super.init(style: .grouped)
         searchController.searchResultsUpdater = self
         title = NSLocalizedString("Time Zone", comment: "Title for the time zone selector")
+        noResultsView.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -129,6 +157,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
             self?.updateViewModel()
         }
         queryReceipt = store.query(TimeZoneQuery())
+        updateViewModel()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -147,6 +176,28 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
             selectedValue: viewModel.selectedValue,
             filter: searchFilter
         )
+        updateNoResults()
+    }
+
+    func updateNoResults() {
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
+        }
+    }
+
+    func showNoResults(_ viewModel: WPNoResultsView.Model) {
+        noResultsView.bindViewModel(viewModel)
+        if noResultsView.isDescendant(of: tableView) {
+            noResultsView.centerInSuperview()
+        } else {
+            tableView.addSubview(withFadeAnimation: noResultsView)
+        }
+    }
+
+    func hideNoResults() {
+        noResultsView.removeFromSuperview()
     }
 
     var searchFilter: String? {
@@ -154,5 +205,14 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
             return nil
         }
         return searchController.searchBar.text?.nonEmptyString()
+    }
+}
+
+// MARK: - WPNoResultsViewDelegate
+
+extension TimeZoneSelectorViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        let supportVC = SupportViewController()
+        supportVC.showFromTabBar()
     }
 }
