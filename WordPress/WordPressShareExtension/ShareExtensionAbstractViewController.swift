@@ -81,22 +81,11 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
         // Tracker
         tracks.wpcomUsername = wpcomUsername
     }
-
-    // MARK: Setup and Configuration
-
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIDevice.current.userInterfaceIdiom == .pad ? .all : .portrait
-    }
 }
 
 // MARK: - Misc Helpers
 
 extension ShareExtensionAbstractViewController {
-
     func saveImageToSharedContainer(_ image: UIImage) -> URL? {
         guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
             let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
