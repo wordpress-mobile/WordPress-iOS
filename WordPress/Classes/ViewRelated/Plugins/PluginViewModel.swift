@@ -106,7 +106,7 @@ class PluginViewModel: Observable {
         }
 
         var settingsLink: ImmuTableRow?
-        if let settingsURL = plugin.state.settingsURL, plugin.state.deactivateAllowed == true{
+        if let settingsURL = plugin.state.settingsURL, plugin.state.deactivateAllowed == true {
             settingsLink = LinkRow(
                 title: NSLocalizedString("Settings", comment: "Link to plugin's Settings"),
                 action: { [unowned self] _ in
