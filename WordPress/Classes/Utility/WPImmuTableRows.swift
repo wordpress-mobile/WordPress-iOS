@@ -167,22 +167,50 @@ struct DestructiveButtonRow: ImmuTableRow {
 }
 
 struct TextWithButtonRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(TextWithAccessoryButtonCell.self)
+    typealias CellType = TextWithAccessoryButtonCell
+
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "TextWithAccessoryButtonCell", bundle: Bundle(for: CellType.self))
+        return ImmuTableCell.nib(nib, CellType.self)
+    }()
 
     let title: String
+    let subtitle: String?
     let actionLabel: String
     let action: ImmuTableAction?
 
     func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! TextWithAccessoryButtonCell
+        let cell = cell as! CellType
 
-        cell.textLabel?.text = title
+        cell.mainLabelText = title
+        cell.secondaryLabelText = subtitle
         cell.buttonText = actionLabel
         cell.onButtonPressed = action.map({ action in
             return {
                 action(self)
             }
         })
+    }
+}
+
+struct TextWithButtonIndicatingActivityRow: ImmuTableRow {
+    typealias CellType = TextWithAccessoryButtonCell
+
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "TextWithAccessoryButtonCell", bundle: Bundle(for: CellType.self))
+        return ImmuTableCell.nib(nib, CellType.self)
+    }()
+
+    let title: String
+    let subtitle: String?
+    let action: ImmuTableAction? = nil
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! CellType
+
+        cell.mainLabelText = title
+        cell.secondaryLabelText = subtitle
+        cell.button?.showActivityIndicator(true)
     }
 }
 

@@ -3,16 +3,34 @@ import UIKit
 class TextWithAccessoryButtonCell: WPReusableTableViewCell {
     var buttonText: String? {
         get {
-            return button.title(for: .normal)
+            return button?.title(for: .normal)
         }
         set {
-            button.setTitle(newValue, for: .normal)
-            button.sizeToFit()
+            button?.setTitle(newValue, for: .normal)
+            button?.sizeToFit()
         }
     }
-    var onButtonPressed: (() -> Void)?
 
-    private let button = UIButton()
+    @IBOutlet private var mainLabel: UILabel?
+    @IBOutlet private var secondaryLabel: UILabel?
+    @IBOutlet public private(set) var button: LoginButton?
+
+    public var mainLabelText: String? {
+        didSet {
+            mainLabel?.text = mainLabelText
+        }
+    }
+
+    public var secondaryLabelText: String? {
+        didSet {
+            let hidden = secondaryLabelText?.nonEmptyString == nil
+            secondaryLabel?.isHidden = hidden
+
+            secondaryLabel?.text = secondaryLabelText
+        }
+    }
+
+    var onButtonPressed: (() -> Void)?
 
     public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,22 +42,23 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
         initialSetup()
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        initialSetup()
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
-        accessoryView = button
+        button?.showActivityIndicator(false)
     }
 }
 
 private extension TextWithAccessoryButtonCell {
     func initialSetup() {
-        WPStyleGuide.configureTableViewCell(self)
-        button.titleLabel?.font = WPStyleGuide.tableviewTextFont()
-        button.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
-        button.addTarget(self, action: #selector(TextWithAccessoryButtonCell.buttonPressed(_:)), for: [.touchUpInside])
-        accessoryView = button
+        button?.isPrimary = true
     }
 
-    @objc func buttonPressed(_ button: UIButton) {
+    @IBAction func buttonPressed(_ button: LoginButton) {
         onButtonPressed?()
     }
 }
