@@ -1,5 +1,4 @@
 import Foundation
-import WordPressKit
 
 /// This class encapsulates all of the settings available for a Blog entity
 ///
@@ -239,16 +238,4 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var jetpackSSORequireTwoStepAuthentication: Bool
 
-}
-
-extension BlogSettings {
-    @objc var timezoneLabel: String? {
-        if let timezoneString = timezoneString?.nonEmptyString() {
-            return timezoneString
-        } else if let gmtOffset = gmtOffset {
-            return OffsetTimeZone(offset: gmtOffset.floatValue).label
-        } else {
-            return nil
-        }
-    }
 }
