@@ -2836,7 +2836,7 @@ extension AztecPostViewController {
         guard let image = attachment.image else {
             return
         }
-        insert(exportableAsset:image, source: .localLibrary)
+        insert(exportableAsset: image, source: .localLibrary)
     }
 
     private func handleUploaded(media: Media, mediaUploadID: String) {
@@ -3466,7 +3466,7 @@ extension AztecPostViewController: UIViewControllerRestoration {
 extension AztecPostViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        selectedMediaOrigin = .documentPicker        
+        selectedMediaOrigin = .documentPicker
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
         }

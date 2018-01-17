@@ -45,7 +45,7 @@ class MediaCoordinator: NSObject {
     }
 
     @discardableResult
-    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) -> Media {        
+    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) -> Media {
         mediaProgressCoordinator.track(numberOfItems: 1)
         let service = MediaService(managedObjectContext: backgroundContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
@@ -306,7 +306,7 @@ class MediaCoordinator: NSObject {
 
     /// Notifies observers that a media item has failed to upload.
     ///
-    func fail(_ error:NSError, media: Media) {
+    func fail(_ error: NSError, media: Media) {
         notifyObserversForMedia(media, ofStateChange: .failed(error: error))
     }
 
