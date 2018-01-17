@@ -3,23 +3,21 @@ import WordPressKit
 
 class ShareNetworkService {
 
-    // MARK: - Public Properties
+    // MARK: - Private Properties
 
     /// Unique identifier a group of upload operations
     ///
-    lazy var groupIdentifier: String = {
+    fileprivate lazy var groupIdentifier: String = {
         let groupIdentifier = UUID().uuidString
         return groupIdentifier
     }()
 
     /// Unique identifier for background sessions
     ///
-    lazy var backgroundSessionIdentifier: String = {
+    fileprivate lazy var backgroundSessionIdentifier: String = {
         let identifier = WPAppGroupName + "." + UUID().uuidString
         return identifier
     }()
-
-    // MARK: - Private Properties
 
     /// WordPress.com OAuth Token
     ///
@@ -82,18 +80,30 @@ extension ShareNetworkService {
 // MARK: - Uploading Posts
 
 extension ShareNetworkService {
-    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID,
-                    requestEnqueued: @escaping () -> ()) {
+    func saveAndUploadPost(title: String, body: String, status: String, siteID: Int, onComplete: (() -> Void)?) {
+        let remotePost = RemotePost()
+        remotePost.siteID = NSNumber(value: siteID)
+        remotePost.status = status
+        remotePost.title = title
+        remotePost.content = body
+        let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
+        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
+            onComplete?()
+        })
+    }
+
+    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, onComplete: (() -> Void)?) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
             DDLogError("Error uploading post in share extension — could not fetch saved post.")
-            requestEnqueued()
+            onComplete?()
             return
         }
 
         let remotePost = postUploadOp.remotePost
+        coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadOpObjectID)
 
         // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads
-        let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: postUploadOp.siteID))
+        let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: remotePost.siteID)
         remote.createPost(remotePost, success: { post in
             if let post = post {
                 DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
@@ -102,8 +112,8 @@ extension ShareNetworkService {
                 } else {
                     self.coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOpObjectID)
                 }
+                onComplete?()
             }
-            requestEnqueued()
         }, failure: { error in
             var errorString = "Error creating post in share extension"
             if let error = error as NSError? {
@@ -111,11 +121,10 @@ extension ShareNetworkService {
             }
             DDLogError(errorString)
             self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
-            requestEnqueued()
         })
     }
 
-    func uploadPostWithMedia(subject: String,
+    func uploadPostWithMedia(title: String,
                              body: String,
                              status: String,
                              siteID: Int,
@@ -128,14 +137,11 @@ extension ShareNetworkService {
         }
 
         // First create the post upload op
-        let remotePost: RemotePost = {
-            let post = RemotePost()
-            post.siteID = NSNumber(value: siteID)
-            post.status = status
-            post.title = subject
-            post.content = body
-            return post
-        }()
+        let remotePost = RemotePost()
+        remotePost.siteID = NSNumber(value: siteID)
+        remotePost.status = status
+        remotePost.title = title
+        remotePost.content = body
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
 
         // Now process all of the media items and create their upload ops
@@ -246,10 +252,8 @@ fileprivate extension ShareNetworkService {
             let content = postUploadOp.postContent ?? ""
             postUploadOp.postContent = imgPostUploadProcessor.process(content)
         }
-
         coreDataStack.saveContext()
-
-        self.uploadPost(forUploadOpWithObjectID: uploadPostOpID, requestEnqueued: {})
+        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: nil)
     }
 }
 
