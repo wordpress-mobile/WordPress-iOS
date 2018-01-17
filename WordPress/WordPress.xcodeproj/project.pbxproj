@@ -874,6 +874,7 @@
 		E1C9AA561C10427100732665 /* MathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA551C10427100732665 /* MathTest.swift */; };
 		E1CA0A6C1FA73053004C4BBE /* PluginStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CA0A6B1FA73053004C4BBE /* PluginStore.swift */; };
 		E1CB6DA3200F376400945457 /* TimeZoneStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB6DA2200F376400945457 /* TimeZoneStore.swift */; };
+		E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */; };
 		E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */; };
 		E1CECE021E6EC7A8009C6695 /* FakePreviewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CECE011E6EC7A8009C6695 /* FakePreviewBuilder.swift */; };
 		E1CECE051E6F01CE009C6695 /* PostPreviewGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CECE041E6F01CE009C6695 /* PostPreviewGenerator.swift */; };
@@ -2356,6 +2357,7 @@
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
 		E1CA0A6B1FA73053004C4BBE /* PluginStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginStore.swift; sourceTree = "<group>"; };
 		E1CB6DA2200F376400945457 /* TimeZoneStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneStore.swift; sourceTree = "<group>"; };
+		E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneSelectorViewController.swift; sourceTree = "<group>"; };
 		E1CE41641E8D101A000CF5A4 /* ShareExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShareExtractor.swift; path = WordPressShareExtension/ShareExtractor.swift; sourceTree = SOURCE_ROOT; };
 		E1CECE011E6EC7A8009C6695 /* FakePreviewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakePreviewBuilder.swift; sourceTree = "<group>"; };
 		E1CECE041E6F01CE009C6695 /* PostPreviewGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPreviewGenerator.swift; sourceTree = "<group>"; };
@@ -4316,6 +4318,7 @@
 				B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */,
 				B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */,
 				B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */,
+				E1CB6DA6200F661900945457 /* TimeZoneSelectorViewController.swift */,
 				E1EEFAD91CC4CC5700126533 /* Confirmable.h */,
 				1731BCD21DDA01AF009FE3AE /* HelpshiftPresenter.swift */,
 				E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */,
@@ -6592,6 +6595,7 @@
 				E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				98C87E9C2003FA3E0052AF32 /* NUXLinkMailViewController.swift in Sources */,
+				E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */,
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,

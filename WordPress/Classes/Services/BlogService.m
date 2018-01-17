@@ -1071,6 +1071,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.privacy = settings.privacy;
     remoteSettings.languageID = settings.languageID;
     remoteSettings.iconMediaID = settings.iconMediaID;
+    remoteSettings.gmtOffset = settings.gmtOffset;
+    remoteSettings.timezoneString = settings.timezoneString;
     
     // Writing
     remoteSettings.defaultCategoryID = settings.defaultCategoryID;

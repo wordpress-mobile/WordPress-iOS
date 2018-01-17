@@ -777,6 +777,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case SiteSettingsGeneralLanguage:
             [self showLanguageSelectorForBlog:self.blog];
             break;
+
+        case SiteSettingsGeneralTimezone:
+            [self showTimezoneSelector];
+            break;
     }
 }
 
