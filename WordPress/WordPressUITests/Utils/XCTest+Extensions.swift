@@ -83,17 +83,6 @@ extension XCTestCase {
         return app.windows.element(boundBy: 0).horizontalSizeClass == .regular && app.windows.element(boundBy: 0).verticalSizeClass == .regular
     }
 
-
-    // Need to add attempt to sign out of self-hosted as well
-    public func logoutIfNeeded() {
-        if WelcomeScreen.isLoaded() ||
-            LoginPasswordScreen.isLoaded() ||
-            LoginEmailScreen.isLoaded() {
-            return
-        }
-        _ = MySitesScreen.init().tabBar.gotoMeScreen().logout()
-    }
-
     public func simpleLogin(username: String, password: String) {
         let app = XCUIApplication()
 
@@ -193,5 +182,32 @@ extension XCTestCase {
         }
 
         createAccountButton.tap()
+    }
+}
+
+extension XCUIElement {
+    /**
+     Removes any current text in the field before typing in the new value
+     - Parameter text: the text to enter into the field
+     */
+    func replaceText(text: String) {
+        guard let stringValue = self.value as? String else {
+            XCTFail("Tried to clear and enter text into a non string value")
+            return
+        }
+
+        self.tap()
+        let deleteString = stringValue.map { _ in "\u{8}" }.joined(separator: "")
+
+        self.typeText(deleteString)
+        self.typeText(text)
+    }
+}
+
+extension XCTest {
+
+    func isIPhone() -> Bool {
+        let app = XCUIApplication()
+        return app.windows.element(boundBy: 0).horizontalSizeClass == .compact || app.windows.element(boundBy: 0).verticalSizeClass == .compact
     }
 }
