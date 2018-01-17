@@ -34,6 +34,7 @@ struct SiteCreationParams {
 
 typealias SiteCreationStatusBlock = (_ status: SiteCreationStatus) -> Void
 typealias SiteCreationSuccessBlock = () -> Void
+typealias SiteCreationRequestSuccessBlock = (_ blog: Blog) -> Void
 typealias SiteCreationFailureBlock = (_ error: Error?) -> Void
 
 
@@ -55,7 +56,8 @@ open class SiteCreationService: LocalCoreDataService {
     ///     - url: The url for the new wpcom site
     ///     - siteTitle: The title of the site
     ///     - status: The status callback
-    ///     - success: A success calback
+    ///     - success: A request success callback
+    ///       - This returns the new site to the caller.
     ///     - failure: A failure callback
     ///
     func createSite(siteURL url: String,
@@ -63,7 +65,7 @@ open class SiteCreationService: LocalCoreDataService {
                     siteTagline: String?,
                     siteTheme: Theme?,
                     status: @escaping SiteCreationStatusBlock,
-                    success: @escaping SiteCreationSuccessBlock,
+                    success: @escaping SiteCreationRequestSuccessBlock,
                     failure: @escaping SiteCreationFailureBlock) {
 
         // Verify we have an account.
@@ -89,8 +91,16 @@ open class SiteCreationService: LocalCoreDataService {
             // Set up possible post blog creation steps
 
             let updateAndSyncBlock = {
-                // Since this is the last step in the process, pass the caller's success block.
-                self.updateAndSyncBlogAndAccountInfo(blog, status: status, success: success, failure: failure)
+
+                let syncSuccessBlock = {
+                    // Since this is the last step in the process, return the new site to the caller.
+                    success(blog)
+                }
+
+                self.updateAndSyncBlogAndAccountInfo(blog,
+                                                     status: status,
+                                                     success: syncSuccessBlock,
+                                                     failure: failure)
             }
 
             let setThemeFailureBlock: SiteCreationFailureBlock = { error in
