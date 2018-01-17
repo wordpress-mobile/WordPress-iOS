@@ -75,6 +75,13 @@ class SiteCreationDomainsViewController: NUXAbstractViewController {
         }
 
         if let vc = segue.destination as? SiteCreationCreateSiteViewController {
+
+            // TODO: replace siteOptions with SiteCreationFields class when created.
+            guard var siteOptions = siteOptions else {
+                return
+            }
+
+            siteOptions["domain"] = selectedDomain
             vc.siteOptions = siteOptions
         }
     }
@@ -105,13 +112,6 @@ extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControl
 
 extension SiteCreationDomainsViewController: SiteCreationButtonViewControllerDelegate {
     func continueButtonPressed() {
-
-        // TODO: replace siteOptions with SiteCreationFields class when created.
-        guard var siteOptions = siteOptions else {
-            return
-        }
-
-        siteOptions["domain"] = selectedDomain
         performSegue(withIdentifier: .showCreateSite, sender: self)
     }
 }
