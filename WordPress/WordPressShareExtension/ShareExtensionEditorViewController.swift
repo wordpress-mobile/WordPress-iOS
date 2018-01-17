@@ -402,7 +402,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
         textView.accessibilityLabel = accessibilityLabel
-        textView.keyboardDismissMode = .interactive
+        textView.keyboardDismissMode = .none
         textView.textColor = UIColor.darkText
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
