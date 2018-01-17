@@ -68,6 +68,7 @@ open class SiteCreationService: LocalCoreDataService {
         let accountService = AccountService(managedObjectContext: self.managedObjectContext)
         guard let defaultAccount = accountService.defaultWordPressComAccount() else {
             DDLogError("Failed creating site. The default wpcom account was not found.")
+            failure(nil)
             return
         }
 
@@ -117,15 +118,17 @@ open class SiteCreationService: LocalCoreDataService {
                                          failure: setTaglineFailureBlock)
             }
 
-            // Now call blocks depending on what's needed.
+            // Call blocks depending on what's needed.
+            // If there is a Tagline, start there. It will call Theme and Sync during it's flow.
+            // If there is no Tagline, start with Theme. It will call Sync during it's flow.
+            // If there is no Tagline or Theme, go directly to Sync.
 
-            if siteTagline != nil {
+            if let siteTagline = siteTagline,
+                !siteTagline.isEmpty {
                 setTaglineBlock()
-            }
-            else if siteTheme != nil {
+            } else if siteTheme != nil {
                 setThemeBlock()
-            }
-            else {
+            } else {
                 updateAndSyncBlock()
             }
         }
@@ -313,7 +316,12 @@ open class SiteCreationService: LocalCoreDataService {
         }
 
         let themeService = ThemeService(managedObjectContext: managedObjectContext)
-        _ = themeService.installTheme(siteTheme, for: blog, success: success, failure: failure)
+
+        let themeServiceSuccessBlock = { (theme: Theme?) in
+            success()
+        }
+
+        _ = themeService.activate(siteTheme, for: blog, success: themeServiceSuccessBlock, failure: failure)
     }
 
     /// Create a new blog entity from the supplied blog options. Calls the supplied
@@ -325,7 +333,7 @@ open class SiteCreationService: LocalCoreDataService {
     ///
     /// - Returns: A blog or nil.
     ///
-    func createBlogFromBlogOptions(_ blogOptions: [String: AnyObject], failure: SiteCreationFailureBlock) -> Blog? {
+    private func createBlogFromBlogOptions(_ blogOptions: [String: AnyObject], failure: SiteCreationFailureBlock) -> Blog? {
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let blogService = BlogService(managedObjectContext: managedObjectContext)
 
@@ -376,7 +384,7 @@ open class SiteCreationService: LocalCoreDataService {
 
     // MARK: - WP API
 
-    func anonymousApi() -> WordPressComRestApi {
+    private func anonymousApi() -> WordPressComRestApi {
         return WordPressComRestApi(userAgent: WPUserAgent.wordPress())
     }
 
