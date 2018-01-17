@@ -68,7 +68,8 @@ class PluginViewModel: Observable {
                     subtitle: subtitle
             )
 
-        default: break
+            case (nil, _):
+                versionRow = nil
         }
 
         var activeRow: ImmuTableRow?
