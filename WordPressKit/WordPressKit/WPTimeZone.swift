@@ -10,6 +10,12 @@ public protocol WPTimeZone {
     var timezoneString: String? { get }
 }
 
+extension WPTimeZone {
+    public var timezoneString: String? {
+        return value
+    }
+}
+
 public struct TimeZoneGroup {
     public let name: String
     public let timezones: [WPTimeZone]
@@ -21,10 +27,6 @@ public struct NamedTimeZone: WPTimeZone {
 
     public var gmtOffset: Float? {
         return nil
-    }
-
-    public var timezoneString: String? {
-        return value
     }
 }
 
@@ -46,21 +48,18 @@ public struct OffsetTimeZone: WPTimeZone {
     }
 
     public var value: String {
+        let offsetString = String(format: "%g", offset)
         if offset == 0 {
             return "UTC"
         } else if offset > 0 {
-            return "UTC+\(offset)"
+            return "UTC+\(offsetString)"
         } else {
-            return "UTC\(offset)"
+            return "UTC\(offsetString)"
         }
     }
 
     public var gmtOffset: Float? {
         return offset
-    }
-
-    public var timezoneString: String? {
-        return value
     }
 
     static func fromValue(_ value: String) -> OffsetTimeZone? {
