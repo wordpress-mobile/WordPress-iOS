@@ -52,14 +52,30 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     /// Activity spinner used when loading sites
     ///
-    fileprivate lazy var activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    fileprivate lazy var loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
-    /// No results (and loading) view
+    /// No results view
     ///
-    fileprivate lazy var noResultsView: WPNoResultsView = {
-        $0.accessoryView = activityIndicatorView
-        return $0
-    }(WPNoResultsView())
+    @objc lazy var noResultsView: WPNoResultsView = {
+        let title = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded.")
+        return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
+    }()
+
+    /// Loading view
+    ///
+    @objc lazy var loadingView: WPNoResultsView = {
+        let title = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
+        return WPNoResultsView(title: title, message: nil, accessoryView: loadingActivityIndicatorView, buttonTitle: nil)
+    }()
+
+    /// Publishing view
+    ///
+    @objc lazy var publishingView: WPNoResultsView = {
+        let title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server.")
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityIndicatorView.startAnimating()
+        return WPNoResultsView(title: title, message: nil, accessoryView: activityIndicatorView, buttonTitle: nil)
+    }()
 
     // MARK: - View Lifecycle
 
@@ -70,15 +86,11 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         setupNavigationBar()
         setupSitesTableView()
         setupModulesTableView()
-        setupNoResultsView()
+        clearAllNoResultsViews()
 
         // Load Data
         setupPrimarySiteIfNeeded()
         reloadSitesIfNeeded()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
 
     // MARK: - Setup Helpers
@@ -128,10 +140,6 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         // Style!
         WPStyleGuide.configureColors(for: view, andTableView: sitesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: sitesTableView)
-    }
-
-    fileprivate func setupNoResultsView() {
-        sitesTableView.addSubview(noResultsView)
     }
 }
 
@@ -363,37 +371,45 @@ fileprivate extension ShareModularViewController {
 // MARK: - No Results Helpers
 
 fileprivate extension ShareModularViewController {
+
     func showLoadingView() {
         updatePublishButtonStatus()
-        if isPublishingPost {
-            noResultsView.titleText = NSLocalizedString("Publishing Post...", comment: "Placeholder text displayed in the share extention when publishing a post to the server.")
-        } else {
-            noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Placeholder text displayed in the share extention when loading sites from the server.")
-        }
-
+        clearAllNoResultsViews()
         if refreshControl.isRefreshing {
-            activityIndicatorView.alpha = Constants.zeroAlpha
+            loadingActivityIndicatorView.alpha = Constants.zeroAlpha
         } else {
-            activityIndicatorView.alpha = Constants.fullAlpha
-            activityIndicatorView.startAnimating()
+            loadingActivityIndicatorView.alpha = Constants.fullAlpha
+            loadingActivityIndicatorView.startAnimating()
         }
+        view.addSubview(loadingView)
+        loadingView.centerInSuperview()
+    }
 
-        noResultsView.isHidden = false
+    func showPublishingView() {
+        updatePublishButtonStatus()
+        clearAllNoResultsViews()
+        view.addSubview(publishingView)
+        publishingView.centerInSuperview()
     }
 
     func showEmptySitesIfNeeded() {
         updatePublishButtonStatus()
+        clearAllNoResultsViews()
         refreshControl.endRefreshing()
-        activityIndicatorView.stopAnimating()
+        loadingActivityIndicatorView.stopAnimating()
 
         guard !hasSites else {
-            noResultsView.isHidden = true
             return
         }
 
-        noResultsView.titleText = NSLocalizedString("No Available Sites", comment: "Placeholder text displayed in the share extention when no sites could be loaded for the user.")
-        activityIndicatorView.alpha = Constants.zeroAlpha
-        noResultsView.isHidden = false
+        view.addSubview(noResultsView)
+        noResultsView.centerInSuperview()
+    }
+
+    func clearAllNoResultsViews() {
+        noResultsView.removeFromSuperview()
+        loadingView.removeFromSuperview()
+        publishingView.removeFromSuperview()
     }
 
     func updatePublishButtonStatus() {
@@ -441,7 +457,7 @@ fileprivate extension ShareModularViewController {
         isPublishingPost = true
         sitesTableView.refreshControl = nil
         clearSiteDataAndRefreshSitesTable()
-        showLoadingView()
+        showPublishingView()
 
         // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
