@@ -2689,7 +2689,7 @@ extension AztecPostViewController {
             case .ended:
                 strongSelf.handleUploaded(media: media, mediaUploadID: media.uploadID)
             case .failed(let error):
-                strongSelf.handleError(error as NSError, onAttachment: attachment)
+                strongSelf.handleError(error, onAttachment: attachment)
             case .progress(let value):
                 if value >= 1 {
                     attachment.progress = nil
@@ -2862,13 +2862,16 @@ extension AztecPostViewController {
         }
     }
 
-    private func handleError(_ error: NSError?, onAttachment attachment: Aztec.MediaAttachment) {
-        if let error = error {
-            if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-                self.richTextView.remove(attachmentID: attachment.identifier)
-                return
-            }
+    private func handleError(_ error: Error?, onAttachment attachment: Aztec.MediaAttachment) {
+        if let nserror = error as NSError?, nserror.domain == NSURLErrorDomain && nserror.code == NSURLErrorCancelled {
+            self.richTextView.remove(attachmentID: attachment.identifier)
+            return
         }
+        if let videoExportError = error as? MediaVideoExporter.VideoExportError, videoExportError == MediaVideoExporter.VideoExportError.videoExportSessionCancelled {
+            self.richTextView.remove(attachmentID: attachment.identifier)
+            return
+        }
+        
         WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
 
         let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
