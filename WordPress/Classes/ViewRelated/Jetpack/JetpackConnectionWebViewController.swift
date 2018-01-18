@@ -178,6 +178,8 @@ private extension JetpackConnectionWebViewController {
         return url.matchesPath(in: loginURL)
     }
 
+    /// Returns a function that matches a wp-admin URL with the given path
+    ///
     func isSiteAdmin(path: String) -> (URL) -> Bool {
         guard let adminURL = URL(string: blog.adminUrl(withPath: path)) else {
             return { _ in return false }
