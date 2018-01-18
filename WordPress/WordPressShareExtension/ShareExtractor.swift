@@ -14,19 +14,29 @@ struct ExtractedShare {
     var combinedContentHTML: String {
         var returnString: String
 
-        if selectedText.isEmpty {
-            if description.isEmpty {
-                returnString = "<p>\(title)</p>"
-            } else {
-                returnString = "<p>\(description)</p>"
-            }
-        } else {
-            returnString = "<blockquote><p>\(selectedText)</p></blockquote>"
-        }
+        var rawLink = ""
+        var readOnText = ""
 
         if let url = url {
-            let htmlAnchor = url.absoluteString.stringWithAnchoredLinks()
-            returnString.append("<p>\(htmlAnchor)</p>")
+            rawLink = url.absoluteString.stringWithAnchoredLinks()
+            readOnText = "<br>— Read on \(rawLink)"
+        }
+
+        // Build the returned string by doing the following:
+        //   * 1st check: Look for selected text, if it exists put it into a blockquote.
+        //   * 2nd check: No selected text, but we have a page description...use that.
+        //   * 3rd check: No selected text, but we have a page title...use that.
+        //   * Finally, default to a simple link if nothing else is found
+        if selectedText.isEmpty {
+            if !description.isEmpty {
+                returnString = "<p>\(description)\(readOnText)</p>"
+            } else if !title.isEmpty {
+                returnString = "<p>\(title)\(readOnText)</p>"
+            } else {
+                returnString = "<p>\(rawLink)</p>"
+            }
+        } else {
+            returnString = "<blockquote><p>\(selectedText)\(readOnText)</p></blockquote>"
         }
 
         return returnString
