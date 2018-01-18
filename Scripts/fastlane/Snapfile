@@ -7,7 +7,7 @@ devices([
   "iPad Pro (12.9-inch)"
 ])
 
-languages("da-DK de-DE en-AU en-CA en-GB en-US es-ES fr-FR id-ID it-IT ja-JP ko-KR nb-NO nl-NL pt-BR pt-PT ru-RU sv-SE th-TH tr-TR zh-Hans zh-Hant".split(" "))
+languages("da de-DE en-AU en-CA en-GB en-US es-ES fr-FR id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant".split(" "))
 
 # Where should the resulting screenshots be stored?
 output_directory "./screenshots"

@@ -7,21 +7,21 @@ class LoginTests: XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        XCUIApplication().launch()
-        BaseScreen.testCase = self
+        let app = XCUIApplication()
+        app.launchArguments = ["NoAnimations"]
+        app.activate()
 
         // Logout first if needed
-        logoutIfNeeded()
+        LoginFlow.logoutIfNeeded()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        logoutIfNeeded()
+        LoginFlow.logoutIfNeeded()
         super.tearDown()
     }
 
     func testSimpleLoginLogout() {
-        let welcomeScreen = WelcomeScreen.init().login()
+        let welcomeScreen = WelcomeScreen().login()
             .proceedWith(email: WPUITestCredentials.testUserEmail)
             .proceedWithPassword()
             .proceedWith(password: WPUITestCredentials.testUserPassword)
@@ -33,7 +33,7 @@ class LoginTests: XCTestCase {
     }
 
     func testUnsuccessfulLogin() {
-        _ = WelcomeScreen.init().login()
+        _ = WelcomeScreen().login()
             .proceedWith(email: WPUITestCredentials.testUserEmail)
             .proceedWithPassword()
             .tryProceed(password: "invalidPswd")

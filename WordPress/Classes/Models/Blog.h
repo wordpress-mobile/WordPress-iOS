@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
-#import "JetpackState.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -153,12 +152,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;
 @property (nonatomic, copy, readonly, nullable) NSString *usernameForSite;
-
-/**
- *  @details    Contains the Jetpack state. Returns nil if the blog options haven't been downloaded yet
- */
-@property (nonatomic, strong,  readonly, nullable) JetpackState *jetpack;
-
 
 /**
  *  @details    URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
