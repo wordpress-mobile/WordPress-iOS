@@ -2992,7 +2992,7 @@ extension AztecPostViewController {
                 alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
                                                    style: .destructive,
                                                    handler: { (action) in
-                                                    self.mediaCoordinator.cancelUpload(of: media)
+                                                    self.mediaCoordinator.cancelUploadAndDeleteMedia(media)
                 })
             } else {
                 if let error = mediaCoordinator.error(for: media) {
