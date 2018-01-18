@@ -16,6 +16,7 @@ final class ExtensionTransitioningManager: NSObject {
 extension ExtensionTransitioningManager: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         let presentationController = ExtensionPresentationController(presentedViewController: presented, presenting: presenting, direction: direction)
+        presentationController.delegate = self
         return presentationController
     }
 
@@ -25,5 +26,18 @@ extension ExtensionTransitioningManager: UIViewControllerTransitioningDelegate {
 
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return ExtensionPresentationAnimator(direction: direction, isPresentation: false)
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate Conformance
+
+extension ExtensionTransitioningManager: UIAdaptivePresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        if traitCollection.verticalSizeClass == .compact {
+            // On an iPhone in landscape, force the presentation style to be full screen
+            return .overFullScreen
+        } else {
+            return .custom
+        }
     }
 }
