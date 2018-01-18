@@ -12,6 +12,10 @@ class LinkOrPasswordScreen: BaseScreen {
     func proceedWithPassword() -> LoginPasswordScreen {
         passwordOption.tap()
 
-        return LoginPasswordScreen.init()
+        return LoginPasswordScreen()
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().buttons["Use Password"].exists
     }
 }

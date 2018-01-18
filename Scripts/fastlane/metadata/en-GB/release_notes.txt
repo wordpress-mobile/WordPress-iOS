@@ -1,4 +1,2 @@
-Aztec Editor: Clearer distinction between visual and HTML editing modes.
-Aztec Editor: Improve automatic link detection.
-Aztec Editor: Adds support for editing posts while uploading media.
-Aztec Editor: Allow Media Search From Post.
+Plugins: You can now manage your plugins in the app, find it on your site's details -> Plugins.
+Editor: Resolved some issues with Chinese characters.
