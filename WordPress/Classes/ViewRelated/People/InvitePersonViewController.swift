@@ -165,7 +165,7 @@ class InvitePersonViewController: UITableViewController {
 
         textViewController.title = title
         textViewController.text = usernameOrEmail
-        textViewController.placeholder = placeholder
+        textViewController.placeholder = placeholder;
         textViewController.hint = hint
         textViewController.onValueChanged = { [unowned self] value in
             self.usernameOrEmail = value.nonEmptyString()

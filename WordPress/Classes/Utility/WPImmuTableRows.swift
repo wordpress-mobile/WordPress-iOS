@@ -74,6 +74,23 @@ struct EditableTextRow: ImmuTableRow {
     }
 }
 
+struct EditableAttributedTextRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
+    
+    let title: String
+    let value: NSAttributedString
+    let action: ImmuTableAction?
+    
+    func configureCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text = title
+        cell.detailTextLabel?.attributedText = value
+        cell.accessoryType = .disclosureIndicator
+        
+        WPStyleGuide.configureTableViewCell(cell)
+    }
+}
+
+
 struct TextRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 
