@@ -12,6 +12,7 @@ typedef NS_ENUM(NSInteger, SettingsTextModes) {
 
 typedef void (^SettingsTextAction)(void);
 typedef void (^SettingsTextChanged)(NSString * _Nonnull);
+typedef void (^SettingsAttributedTextChanged)(NSAttributedString * _Nonnull);
 
 /// Reusable component that renders a UITextField + Hint onscreen. Useful for Text / Password / Email data entry.
 ///
@@ -20,6 +21,10 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 /// Block to be executed on dismiss, if the value was effectively updated.
 ///
 @property (nullable, nonatomic, copy) SettingsTextChanged onValueChanged;
+
+/// Block to be executed on dismiss, if the value was effectively updated.
+///
+@property (nullable, nonatomic, copy) SettingsAttributedTextChanged onAttributedValueChanged;
 
 /// Block to be executed whenever the Action, if visible, is pressed.
 ///
@@ -32,6 +37,10 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 /// Placeholder string to be displayed, in case the text is empty.
 ///
 @property (nullable, nonatomic, strong) NSString *placeholder;
+
+/// The raw attributed string (current value) to edit.
+///
+@property (nullable, nonatomic, strong) NSAttributedString *attributedText;
 
 /// The raw string (current value) to edit.
 ///
@@ -77,5 +86,16 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 - (nonnull instancetype)initWithText:(NSString * __nullable)text
                          placeholder:(NSString * __nullable)placeholder
                                 hint:(NSString * __nullable)hint;
+
+/// Required initializer.
+///
+/// Parameters:
+///  - text: The attributed string (current value) to edit.
+///  - placeholder: Placeholder string to be displayed, in case the text is empty.
+///  - hint: String to be displayed at the bottom.
+///
+- (nonnull instancetype)initWithAttributedText:(NSAttributedString * __nullable)text
+                                   placeholder:(NSString * __nullable)placeholder
+                                          hint:(NSString * __nullable)hint;
 
 @end
