@@ -79,7 +79,10 @@ class ExtensionPresentationController: UIPresentationController {
 
 extension ExtensionPresentationController {
     func resetViewSize() {
-        animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
+        // Don't do this when the vertical size class is compact
+        if traitCollection.verticalSizeClass != .compact {
+            animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
+        }
     }
 }
 
