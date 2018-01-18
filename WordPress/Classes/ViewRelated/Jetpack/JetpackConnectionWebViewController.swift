@@ -267,25 +267,26 @@ private extension JetpackConnectionWebViewController {
 
     func presentDotComLogin(redirect: URL) {
         pendingDotComRedirect = redirect
-        observeLoginNotifications(true)
+        startObservingLoginNotifications()
         SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
     }
 
-    func observeLoginNotifications(_ observe: Bool) {
-        if observe {
-            NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .WPLoginFinishedJetpackLogin, object: nil)
-        } else {
-            NotificationCenter.default.removeObserver(self, name: .WPLoginFinishedJetpackLogin, object: nil)
-        }
+    func startObservingLoginNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .WPLoginFinishedJetpackLogin, object: nil)
+    }
+
+    func stopObservingLoginNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .WPLoginFinishedJetpackLogin, object: nil)
+
     }
 
     @objc func handleLoginCancelled() {
-        observeLoginNotifications(false)
+        stopObservingLoginNotifications()
         pendingDotComRedirect = nil
     }
 
     @objc func handleFinishedJetpackLogin(notification: NSNotification) {
-        observeLoginNotifications(false)
+        stopObservingLoginNotifications()
         defer {
             pendingDotComRedirect = nil
         }
