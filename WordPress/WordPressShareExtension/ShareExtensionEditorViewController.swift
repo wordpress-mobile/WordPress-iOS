@@ -211,6 +211,11 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         stopListeningToNotifications()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)        
+        dismissOptionsViewControllerIfNecessary()
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -940,9 +945,8 @@ extension ShareExtensionEditorViewController {
     func stopEditing() {
         view.endEditing(true)
 
-        // Let's reset the presented VC size ONLY if we are not in fullscreen mode (landscape on iPhones)
-        if let presentationController = navigationController?.presentationController as? ExtensionPresentationController,
-            presentationController.traitCollection.verticalSizeClass != .compact {
+        // Let's reset the presented VC size
+        if let presentationController = navigationController?.presentationController as? ExtensionPresentationController {
             presentationController.resetViewSize()
         }
     }

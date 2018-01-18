@@ -45,8 +45,7 @@ private extension MainShareViewController {
             editor.dismissalCompletionBlock = {
                 self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }
-        }
-        shareNavController.presentationController?.delegate = self
+        }        
         present(shareNavController, animated: true, completion: nil)
     }
 
@@ -54,18 +53,5 @@ private extension MainShareViewController {
         let tracks = Tracks(appGroupName: WPAppGroupName)
         let oauth2Token = ShareExtensionService.retrieveShareExtensionToken()
         tracks.trackExtensionLaunched(oauth2Token != nil)
-    }
-}
-
-// MARK: - UIAdaptivePresentationControllerDelegate Conformance
-
-extension MainShareViewController: UIAdaptivePresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        if traitCollection.verticalSizeClass == .compact {
-            // On an iPhone in landscape, force the presentation style to be full screen
-            return .overFullScreen
-        } else {
-            return .custom
-        }
     }
 }
