@@ -40,7 +40,7 @@ enum ActivityListViewModel {
         case .loading, .error:
             return .Empty
         case .ready(let activities):
-            var rows = activities.filter({ activity in
+            let rows = activities.filter({ activity in
                 !activity.isDiscarded
             }).map({ activity in
                 return ActivityListRow(
@@ -51,30 +51,16 @@ enum ActivityListViewModel {
                 )
             })
 
-            guard rows.count > 0 else {
-                return ImmuTable(sections: [])
+            let publishedDateUTCKeyPath = \ActivityListRow.activity.publishedDateUTCWithoutTime
+            let groupedRows = rows.sortedGroup(keyPath: publishedDateUTCKeyPath)
+
+            let tableSections = groupedRows.map { (date, rows) in
+                return ImmuTableSection(headerText: date,
+                                        optionalRows: rows,
+                                        footerText: nil)
             }
 
-            var tableSections = [ImmuTableSection]()
-
-            let firstRow = rows.removeFirst()
-            var currentSection: (date: String, rows: [ImmuTableRow]) = (firstRow.activity.published.longUTCStringWithoutTime(), [firstRow])
-
-            for row in rows {
-                if row.activity.published.longUTCStringWithoutTime() == currentSection.date {
-                    currentSection.rows.append(row)
-                } else {
-                    tableSections.append(ImmuTableSection(headerText: currentSection.date,
-                                                          optionalRows: currentSection.rows,
-                                                          footerText: nil)!)
-                    currentSection = (row.activity.published.longUTCStringWithoutTime(), [row])
-                }
-            }
-            tableSections.append(ImmuTableSection(headerText: currentSection.date,
-                                                  optionalRows: currentSection.rows,
-                                                  footerText: nil)!)
-
-            return ImmuTable(sections: tableSections)
+            return ImmuTable(optionalSections: tableSections)
         }
     }
 }
