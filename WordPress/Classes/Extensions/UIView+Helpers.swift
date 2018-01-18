@@ -15,21 +15,21 @@ extension UIView {
     }
 
     @objc func pinSubviewToAllEdges(_ subview: UIView) {
-        let newConstraints = [
-            NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: subview, attribute: .leading, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: subview, attribute: .trailing, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: subview, attribute: .bottom, multiplier: 1, constant: 0),
-            NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: subview, attribute: .top, multiplier: 1, constant: 0)
-        ]
-
-        addConstraints(newConstraints)
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: subview.leadingAnchor),
+            trailingAnchor.constraint(equalTo: subview.trailingAnchor),
+            topAnchor.constraint(equalTo: subview.topAnchor),
+            bottomAnchor.constraint(equalTo: subview.bottomAnchor),
+            ])
     }
 
     @objc func pinSubviewToAllEdgeMargins(_ subview: UIView) {
-        subview.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor).isActive = true
-        subview.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor).isActive = true
-        subview.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor).isActive = true
-        subview.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            layoutMarginsGuide.leadingAnchor.constraint(equalTo: subview.leadingAnchor),
+            layoutMarginsGuide.trailingAnchor.constraint(equalTo: subview.trailingAnchor),
+            layoutMarginsGuide.topAnchor.constraint(equalTo: subview.topAnchor),
+            layoutMarginsGuide.bottomAnchor.constraint(equalTo: subview.bottomAnchor),
+            ])
     }
 
     @objc func findFirstResponder() -> UIView? {
