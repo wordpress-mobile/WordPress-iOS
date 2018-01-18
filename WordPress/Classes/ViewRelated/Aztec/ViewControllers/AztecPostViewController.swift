@@ -3151,11 +3151,12 @@ extension AztecPostViewController {
             controller.linkURL = url
         }
 
-        controller.onUpdate = { [weak self] (alignment, size, linkURL, alt) in
+        controller.onUpdate = { [weak self] (alignment, size, linkURL, alt, caption) in
             self?.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
                 updated.alt = alt
+                updated.caption = caption
             }
             // Update associated link
             if let updatedURL = linkURL {
