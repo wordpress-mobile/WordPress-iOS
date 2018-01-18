@@ -2,7 +2,7 @@
 /// Base class to use for NUX view controllers that aren't a table view
 /// Note: shares most of its code with NUXTableViewController and NUXCollectionViewController. Look to make
 ///       most changes in either the base protocol NUXViewControllerBase or further subclasses like LoginViewController
-class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate, LoginSegueHandler {
+class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate, NUXSegueHandler {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
     var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
@@ -15,7 +15,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         }
     }
 
-    // MARK: associated type for LoginSegueHandler
+    // MARK: associated type for NUXSegueHandler
     /// Segue identifiers to avoid using strings
     enum SegueIdentifier: String {
         case showURLUsernamePassword
