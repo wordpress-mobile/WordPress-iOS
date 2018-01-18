@@ -105,11 +105,6 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
 }
 
 private extension URL {
-    var isHTTP: Bool {
-        return scheme == "http"
-            || scheme == "https"
-    }
-
     func matchesPath(in other: URL) -> Bool {
         return scheme == other.scheme
             && host == other.host
