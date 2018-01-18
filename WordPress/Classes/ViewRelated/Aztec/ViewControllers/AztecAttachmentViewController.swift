@@ -95,7 +95,7 @@ class AztecAttachmentViewController: UITableViewController {
         
         let captionRow = EditableAttributedTextRow(
             title: NSLocalizedString("Caption", comment: "Image caption field label (for editing)"),
-            value: caption.string ?? ""NSAttributedString()"",
+            value: caption ?? NSAttributedString(),
             action: displayCaptionTextfield)
 
         return ImmuTable(sections: [
