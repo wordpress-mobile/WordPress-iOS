@@ -31,36 +31,23 @@ class ExtensionPresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
         var frame: CGRect = .zero
         if let containerView = containerView {
-            if traitCollection.verticalSizeClass == .compact {
-                frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
-                frame.origin.x = 0.0
-                frame.origin.y = 0.0
-            } else {
-                frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
-                frame.origin.x = (containerView.frame.width - frame.width) / 2.0
-                frame.origin.y = (containerView.frame.height - frame.height) / 2.0
-            }
+            frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
+            frame.origin.x = (containerView.frame.width - frame.width) / 2.0
+            frame.origin.y = (containerView.frame.height - frame.height) / 2.0
         }
         return frame
     }
 
     override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
-        if traitCollection.verticalSizeClass == .compact {
-            return CGSize(width: parentSize.width, height: parentSize.height)
-        } else {
-            return CGSize(width: (parentSize.width * Appearance.widthRatio), height: (parentSize.height * Appearance.heightRatio))
-        }
+        let widthRatio = traitCollection.verticalSizeClass != .compact ? Appearance.widthRatio : Appearance.widthRatioCompactVertical
+        let heightRatio = traitCollection.verticalSizeClass != .compact ? Appearance.heightRatio : Appearance.heightRatioCompactVertical
+        return CGSize(width: (parentSize.width * widthRatio), height: (parentSize.height * heightRatio))
     }
 
     override func containerViewWillLayoutSubviews() {
         presentedView?.frame = frameOfPresentedViewInContainerView
-        if traitCollection.verticalSizeClass == .compact {
-            presentedView?.layer.cornerRadius = 0.0
-            presentedView?.clipsToBounds = false
-        } else {
-            presentedView?.layer.cornerRadius = Appearance.cornerRadius
-            presentedView?.clipsToBounds = true
-        }
+        presentedView?.layer.cornerRadius = Appearance.cornerRadius
+        presentedView?.clipsToBounds = true
     }
 
     override func presentationTransitionWillBegin() {
@@ -94,10 +81,7 @@ class ExtensionPresentationController: UIPresentationController {
 
 extension ExtensionPresentationController {
     func resetViewSize() {
-        // Don't do this when the vertical size class is compact
-        if traitCollection.verticalSizeClass != .compact {
-            animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
-        }
+        animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
     }
 }
 
@@ -127,7 +111,7 @@ private extension ExtensionPresentationController {
     }
 
     func getTranslationFrame(keyboardFrame: CGRect, presentedFrame: CGRect) -> CGRect {
-        let keyboardTopPadding = traitCollection.verticalSizeClass != .compact ? Constants.bottomKeyboardMargin : 0.0
+        let keyboardTopPadding = traitCollection.verticalSizeClass != .compact ? Constants.bottomKeyboardMarginPortrait : Constants.bottomKeyboardMarginLandscape
         let keyboardTop = UIScreen.main.bounds.height - (keyboardFrame.size.height + keyboardTopPadding)
         let presentedViewBottom = presentedFrame.origin.y + presentedFrame.height
         let offset = presentedViewBottom - keyboardTop
@@ -159,14 +143,17 @@ private extension ExtensionPresentationController {
         static let fullAlpha: CGFloat = 1.0
         static let zeroAlpha: CGFloat = 0.0
         static let defaultAnimationDuration: Double = 0.33
-        static let bottomKeyboardMargin: CGFloat = 10.0
+        static let bottomKeyboardMarginPortrait: CGFloat = 8.0
+        static let bottomKeyboardMarginLandscape: CGFloat = 4.0
     }
     
     struct Appearance {
         static let dimmingViewBGColor = UIColor(white: 0.0, alpha: 0.5)
         static let cornerRadius: CGFloat = 13.0
-        static let widthRatio: CGFloat = 0.97
+        static let widthRatio: CGFloat = 0.95
+        static let widthRatioCompactVertical: CGFloat = 0.91
         static let heightRatio: CGFloat = 0.92
+        static let heightRatioCompactVertical: CGFloat = 0.97
     }
 }
 

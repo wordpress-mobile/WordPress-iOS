@@ -62,6 +62,6 @@ extension ExtensionPresentationAnimator: UIViewControllerAnimatedTransitioning {
 
 private extension ExtensionPresentationAnimator {
     struct Constants {
-        static let animationDuration: Double = 0.35
+        static let animationDuration: Double = 0.33
     }
 }
