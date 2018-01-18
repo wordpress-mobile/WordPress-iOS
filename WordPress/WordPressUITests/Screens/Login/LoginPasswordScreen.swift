@@ -19,7 +19,7 @@ class LoginPasswordScreen: BaseScreen {
             alertModal.buttons["Don’t Allow"].tap()
         }
 
-        return LoginEpilogueScreen.init()
+        return LoginEpilogueScreen()
     }
 
     func tryProceed(password: String) -> LoginPasswordScreen {
@@ -27,13 +27,13 @@ class LoginPasswordScreen: BaseScreen {
         passwordTextField.typeText(password)
         loginButton.tap()
         if loginButton.exists && !loginButton.isHittable {
-            waitFor(element: loginButton, predicate: "isEnabled == true")
+            _ = waitFor(element: loginButton, predicate: "isEnabled == true")
         }
         return self
     }
 
     func verifyLoginError() -> LoginPasswordScreen {
-        let errorLabel = XCUIApplication().staticTexts["pswdErrorLabel"]
+        let errorLabel = app.staticTexts["pswdErrorLabel"]
         _ = errorLabel.waitForExistence(timeout: 2)
 
         XCTAssertTrue(errorLabel.exists)
