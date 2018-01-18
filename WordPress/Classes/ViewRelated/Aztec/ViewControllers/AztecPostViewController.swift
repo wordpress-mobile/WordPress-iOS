@@ -2873,7 +2873,7 @@ extension AztecPostViewController {
             self.richTextView.remove(attachmentID: attachment.identifier)
             return
         }
-        
+
         WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
 
         let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
