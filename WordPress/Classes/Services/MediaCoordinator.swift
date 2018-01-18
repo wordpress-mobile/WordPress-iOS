@@ -126,7 +126,6 @@ class MediaCoordinator: NSObject {
 
     /// Cancels all ongoing uploads
     ///
-    ///
     func cancelUploadOfAllMedia() {
         mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
     }
@@ -171,10 +170,17 @@ class MediaCoordinator: NSObject {
         return mediaProgressCoordinator.progress(forMediaID: media.uploadID)
     }
 
+    /// The global value of progress for all tasks running on the coordinator.
+    ///
+    var totalProgress: Double {
+        return mediaProgressCoordinator.totalProgress
+    }
+
     /// Returns the error associated to media if any
     ///
     /// - Parameter media: the media object from where to  fetch the associated error.
     /// - Returns: the error associated to media if any
+    ///
     func error(for media: Media) -> NSError? {
         return mediaProgressCoordinator.error(forMediaID: media.uploadID)
     }

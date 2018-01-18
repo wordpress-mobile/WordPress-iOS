@@ -2604,10 +2604,9 @@ private extension AztecPostViewController {
     }
 }
 
-
-// MARK: - MediaProgressCoordinatorDelegate
+// MARK: - Media Support
 //
-extension AztecPostViewController: MediaProgressCoordinatorDelegate {
+extension AztecPostViewController {
 
     func configureMediaAppearance() {
         MediaAttachment.defaultAppearance.progressBackgroundColor = Colors.mediaProgressBarBackground
@@ -2627,26 +2626,12 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         return result
     }
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double) {
-        mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
-        mediaProgressView.progress = Float(progress)
-    }
-
-    func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        postEditorStateContext.update(isUploadingMedia: true)
+    func refreshGlobalProgress() {
+        mediaProgressView.isHidden = !mediaCoordinator.isUploading
+        mediaProgressView.progress = Float(mediaCoordinator.totalProgress)
+        postEditorStateContext.update(isUploadingMedia: mediaCoordinator.isUploading)
         refreshNavigationBar()
     }
-
-    func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        postEditorStateContext.update(isUploadingMedia: false)
-        refreshNavigationBar()
-    }
-}
-
-
-// MARK: - Media Support
-//
-extension AztecPostViewController {
 
     enum MediaSource {
         case localLibrary
@@ -2694,7 +2679,7 @@ extension AztecPostViewController {
             }
             switch state {
             case .processing:
-                print("creating")
+                DDLogInfo("Creating media")
             case .thumbnailReady(let url):
                 strongSelf.handleThumbnailURL(url, attachment: attachment)
             case .uploading:
@@ -2713,6 +2698,7 @@ extension AztecPostViewController {
                 }
                 strongSelf.richTextView.refresh(attachment)
             }
+            strongSelf.refreshGlobalProgress()
             }, for: media)
     }
 
