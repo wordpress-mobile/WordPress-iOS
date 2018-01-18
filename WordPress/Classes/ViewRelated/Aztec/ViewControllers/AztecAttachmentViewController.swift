@@ -23,7 +23,7 @@ class AztecAttachmentViewController: UITableViewController {
     @objc var alt: String?
     var caption: NSAttributedString?
 
-    var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?) -> Void)?
+    var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?, _ caption: NSAttributedString?) -> Void)?
     @objc var onCancel: (() -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
@@ -95,7 +95,7 @@ class AztecAttachmentViewController: UITableViewController {
         
         let captionRow = EditableAttributedTextRow(
             title: NSLocalizedString("Caption", comment: "Image caption field label (for editing)"),
-            value: caption ?? NSAttributedString(),
+            value: caption.string ?? ""NSAttributedString()"",
             action: displayCaptionTextfield)
 
         return ImmuTable(sections: [
@@ -231,7 +231,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     @objc func handleDoneButtonTapped(sender: UIBarButtonItem) {
         let checkedAlt = alt == "" ? nil : alt
-        onUpdate?(alignment, size, linkURL, checkedAlt)
+        onUpdate?(alignment, size, linkURL, checkedAlt, caption)
         dismiss(animated: true, completion: nil)
     }
 
