@@ -37,3 +37,29 @@ extension Array where Element: Equatable {
         })
     }
 }
+
+extension Array {
+    /// Returns an array of [(Value, [Element])] resulting of grouping the sorted elements
+    /// of the original array by Value.
+    ///
+    public func sortedGroup<Value: Equatable>(keyPath: KeyPath<Element, Value>) -> [(Value, [Element])] {
+        var currentValue: Value?
+        var currentGroup = [Element]()
+        var result = [(Value, [Element])]()
+        forEach { (element) in
+            let value = element[keyPath: keyPath]
+            if currentValue != value {
+                if let currentValue = currentValue {
+                    result.append((currentValue, currentGroup))
+                }
+                currentValue = value
+                currentGroup = []
+            }
+            currentGroup.append(element)
+        }
+        if let currentValue = currentValue {
+            result.append((currentValue, currentGroup))
+        }
+        return result
+    }
+}
