@@ -54,11 +54,13 @@ class JetpackConnectionWebViewController: UIViewController {
     }
 
     func startConnectionFlow() {
-        guard let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let url = URL(string: "https://wordpress.com/jetpack/connect?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)") else {
-                // FIXME: We should handle this error better
-                preconditionFailure()
+        let url: URL
+        if let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            url = URL(string: "https://wordpress.com/jetpack/connect?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)")!
+        } else {
+            url = URL(string: "https://wordpress.com/jetpack/connect?mobile_redirect=\(mobileRedirectURL)")!
         }
+
         let request = URLRequest(url: url)
         webView.load(request)
     }
