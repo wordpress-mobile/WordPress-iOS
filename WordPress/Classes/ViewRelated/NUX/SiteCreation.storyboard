@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -464,7 +465,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-tS-MMs" userLabel=" Image">
-                                <rect key="frame" x="12.5" y="84" width="350" height="219"/>
+                                <rect key="frame" x="12.5" y="146.5" width="350" height="219"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="350" id="RHZ-Z4-JMd">
                                         <variation key="heightClass=compact" constant="325"/>
@@ -472,8 +473,8 @@
                                     <constraint firstAttribute="width" secondItem="Erg-tS-MMs" secondAttribute="height" multiplier="8:5" id="TGb-sH-RGu"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="OQN-Yl-sBD" userLabel="Label Stack View">
-                                <rect key="frame" x="0.0" y="323" width="375" height="110"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="OQN-Yl-sBD" userLabel="Label Stack View">
+                                <rect key="frame" x="0.0" y="345.5" width="375" height="110"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Laying site foundation..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XpK-EE-vff">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="18"/>
@@ -511,9 +512,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="OQN-Yl-sBD" firstAttribute="leading" secondItem="FHN-yR-aWh" secondAttribute="leading" id="6cn-X9-rnW"/>
-                            <constraint firstItem="Erg-tS-MMs" firstAttribute="top" secondItem="FHN-yR-aWh" secondAttribute="top" constant="20" id="Kff-Aw-WKZ"/>
+                            <constraint firstItem="OQN-Yl-sBD" firstAttribute="top" secondItem="FHN-yR-aWh" secondAttribute="centerY" constant="-20" id="aph-Bm-eob"/>
                             <constraint firstItem="Erg-tS-MMs" firstAttribute="centerX" secondItem="FHN-yR-aWh" secondAttribute="centerX" id="czu-4c-YOM"/>
-                            <constraint firstItem="OQN-Yl-sBD" firstAttribute="top" secondItem="Erg-tS-MMs" secondAttribute="bottom" constant="20" id="nUN-cf-0Ta"/>
+                            <constraint firstItem="Erg-tS-MMs" firstAttribute="bottom" secondItem="FHN-yR-aWh" secondAttribute="centerY" id="dkr-Ic-wNQ"/>
                             <constraint firstItem="FHN-yR-aWh" firstAttribute="trailing" secondItem="OQN-Yl-sBD" secondAttribute="trailing" id="zNT-Lb-pfF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="FHN-yR-aWh"/>
