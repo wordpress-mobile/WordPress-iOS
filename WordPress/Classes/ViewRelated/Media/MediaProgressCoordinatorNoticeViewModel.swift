@@ -37,10 +37,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       notificationInfo: notificationInfo,
                       actionTitle: actionTitle,
                       actionHandler: {
-                        let editor = EditPostViewController(blog: blog)
-                        editor.modalPresentationStyle = .fullScreen
-                        WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
-                        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "media_upload_notice"], with: blog)
+                        MediaNoticeNavigationCoordinator.presentEditor(for: blog, source: "media_upload_notice")
         })
     }
 

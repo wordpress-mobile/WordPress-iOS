@@ -93,12 +93,21 @@ final class InteractiveNotificationsManager: NSObject {
             } else {
                 DDLogError("Tried to reply to a comment notification with no text")
             }
+        default: break
         }
 
         return true
     }
 
     func handleLocalNotificationAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+        if let action = NoteActionDefinition(rawValue: identifier) {
+            switch action {
+            case .mediaWritePost:
+                MediaNoticeNavigationCoordinator.presentEditor(with: userInfo)
+            default:
+                break
+            }
+        }
         return true
     }
 }
@@ -204,7 +213,7 @@ private extension InteractiveNotificationsManager {
             case .commentReplyWithLike:
                 return [.commentReply, .commentLike]
             case .mediaUploadSuccess:
-                return []
+                return [.mediaWritePost]
             }
         }
 
@@ -233,9 +242,10 @@ private extension InteractiveNotificationsManager {
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
     ///
     enum NoteActionDefinition: String {
-        case commentApprove = "COMMENT_MODERATE_APPROVE"
-        case commentLike    = "COMMENT_LIKE"
-        case commentReply   = "COMMENT_REPLY"
+        case commentApprove   = "COMMENT_MODERATE_APPROVE"
+        case commentLike      = "COMMENT_LIKE"
+        case commentReply     = "COMMENT_REPLY"
+        case mediaWritePost   = "MEDIA_WRITE_POST"
 
         var description: String {
             switch self {
@@ -245,6 +255,8 @@ private extension InteractiveNotificationsManager {
                 return NSLocalizedString("Like", comment: "Like (verb)")
             case .commentReply:
                 return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
+            case .mediaWritePost:
+                return NSLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
             }
         }
 
@@ -261,7 +273,11 @@ private extension InteractiveNotificationsManager {
         }
 
         var requiresForeground: Bool {
-            return false
+            switch self {
+            case .mediaWritePost:
+                return true
+            default: return false
+            }
         }
 
         var notificationActionOptions: UNNotificationActionOptions {
@@ -291,7 +307,7 @@ private extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost]
     }
 }
 
