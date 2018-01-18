@@ -31,21 +31,36 @@ class ExtensionPresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
         var frame: CGRect = .zero
         if let containerView = containerView {
-            frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
-            frame.origin.x = (containerView.frame.width - frame.width) / 2.0
-            frame.origin.y = (containerView.frame.height - frame.height) / 2.0
+            if traitCollection.verticalSizeClass == .compact {
+                frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
+                frame.origin.x = 0.0
+                frame.origin.y = 0.0
+            } else {
+                frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
+                frame.origin.x = (containerView.frame.width - frame.width) / 2.0
+                frame.origin.y = (containerView.frame.height - frame.height) / 2.0
+            }
         }
         return frame
     }
 
     override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
-        return CGSize(width: (parentSize.width * Appearance.widthRatio), height: (parentSize.height * Appearance.heightRatio))
+        if traitCollection.verticalSizeClass == .compact {
+            return CGSize(width: parentSize.width, height: parentSize.height)
+        } else {
+            return CGSize(width: (parentSize.width * Appearance.widthRatio), height: (parentSize.height * Appearance.heightRatio))
+        }
     }
 
     override func containerViewWillLayoutSubviews() {
         presentedView?.frame = frameOfPresentedViewInContainerView
-        presentedView?.layer.cornerRadius = Appearance.cornerRadius
-        presentedView?.clipsToBounds = true
+        if traitCollection.verticalSizeClass == .compact {
+            presentedView?.layer.cornerRadius = 0.0
+            presentedView?.clipsToBounds = false
+        } else {
+            presentedView?.layer.cornerRadius = Appearance.cornerRadius
+            presentedView?.clipsToBounds = true
+        }
     }
 
     override func presentationTransitionWillBegin() {
@@ -112,7 +127,8 @@ private extension ExtensionPresentationController {
     }
 
     func getTranslationFrame(keyboardFrame: CGRect, presentedFrame: CGRect) -> CGRect {
-        let keyboardTop = UIScreen.main.bounds.height - (keyboardFrame.size.height + Constants.bottomKeyboardMargin)
+        let keyboardTopPadding = traitCollection.verticalSizeClass != .compact ? Constants.bottomKeyboardMargin : 0.0
+        let keyboardTop = UIScreen.main.bounds.height - (keyboardFrame.size.height + keyboardTopPadding)
         let presentedViewBottom = presentedFrame.origin.y + presentedFrame.height
         let offset = presentedViewBottom - keyboardTop
 
