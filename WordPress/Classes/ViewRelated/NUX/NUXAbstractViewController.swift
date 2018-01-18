@@ -35,7 +35,7 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
-class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithLogoAndHelpViewController {
+class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLogoAndHelpViewController {
     @objc var helpBadge: WPNUXHelpBadgeLabel!
     @objc var helpButton: UIButton!
     @objc var loginFields = LoginFields()
