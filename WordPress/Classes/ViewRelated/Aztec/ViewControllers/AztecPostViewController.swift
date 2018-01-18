@@ -2673,9 +2673,12 @@ extension AztecPostViewController {
 
     fileprivate func observe(media: Media, statType: WPAnalyticsStat?) {
         let _ = mediaCoordinator.addObserver({ [weak self](media, state) in
-            guard let strongSelf = self,
-                let attachment = strongSelf.findAttachment(withUploadID: media.uploadID) else {
-                    return
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.refreshGlobalProgress()
+            guard let attachment = strongSelf.findAttachment(withUploadID: media.uploadID) else {
+                return
             }
             switch state {
             case .processing:
@@ -2698,7 +2701,6 @@ extension AztecPostViewController {
                 }
                 strongSelf.richTextView.refresh(attachment)
             }
-            strongSelf.refreshGlobalProgress()
             }, for: media)
     }
 
@@ -3295,8 +3297,14 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         activeMediaRequests.removeAll()
     }
 
-    func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
-
+    func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {
+        guard let uploadID = attachment.uploadID,
+            let media = mediaCoordinator.media(withIdentifier: uploadID),
+            (media.remoteStatus == .pushing || media.remoteStatus == .processing)
+        else {
+            return
+        }
+        mediaCoordinator.cancelUploadAndDeleteMedia(media)
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
