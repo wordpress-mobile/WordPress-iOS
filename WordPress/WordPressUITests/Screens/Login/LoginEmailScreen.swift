@@ -22,11 +22,11 @@ class LoginEmailScreen: BaseScreen {
         emailTextField.typeText(email)
         nextButton.tap()
 
-        return LinkOrPasswordScreen.init()
+        return LinkOrPasswordScreen()
     }
 
     static func isLoaded() -> Bool {
-        return XCUIApplication().buttons["Log In Button"].exists
+        let expectedElement = XCUIApplication().textFields["Email address"]
+        return expectedElement.exists && expectedElement.isHittable
     }
-
 }
