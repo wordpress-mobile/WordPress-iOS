@@ -3,9 +3,11 @@ import XCTest
 
 class MeTabScreen: BaseScreen {
     let navBar: XCUIElement
+    let tabBar: TabNavComponent
 
     init() {
         navBar = XCUIApplication().navigationBars["Me"].otherElements["Me"]
+        tabBar = TabNavComponent()
 
         super.init(element: navBar)
     }
@@ -14,6 +16,6 @@ class MeTabScreen: BaseScreen {
         app.cells["logOutFromWPcomButton"].tap()
         app.alerts.firstMatch.buttons["Log Out"].tap()
 
-        return WelcomeScreen.init()
+        return WelcomeScreen()
     }
 }
