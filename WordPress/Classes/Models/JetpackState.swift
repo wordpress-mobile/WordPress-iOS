@@ -1,5 +1,5 @@
 @objcMembers class JetpackState: NSObject {
-    static var minimumVersionRequired = "3.4.3"
+    static let minimumVersionRequired = "3.4.3"
 
     var siteID: NSNumber?
     var version: String?
