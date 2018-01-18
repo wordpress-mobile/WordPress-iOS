@@ -60,7 +60,12 @@ final class InteractiveNotificationsManager: NSObject {
     /// - Returns: True on success
     ///
     @objc @discardableResult
-    func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+        if let noteCategory = NoteCategoryDefinition(rawValue: category),
+            noteCategory.isLocalNotification {
+            return handleLocalNotificationAction(with: identifier, category: category, userInfo: userInfo, responseText: responseText)
+        }
+
         guard AccountHelper.isDotcomAvailable(),
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
@@ -90,6 +95,10 @@ final class InteractiveNotificationsManager: NSObject {
             }
         }
 
+        return true
+    }
+
+    func handleLocalNotificationAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
         return true
     }
 }
@@ -182,6 +191,7 @@ private extension InteractiveNotificationsManager {
         case commentLike            = "like-comment"
         case commentReply           = "replyto-comment"
         case commentReplyWithLike   = "replyto-like-comment"
+        case mediaUploadSuccess     = "media-upload-success"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -193,11 +203,17 @@ private extension InteractiveNotificationsManager {
                 return [.commentReply]
             case .commentReplyWithLike:
                 return [.commentReply, .commentLike]
+            case .mediaUploadSuccess:
+                return []
             }
         }
 
         var identifier: String {
             return rawValue
+        }
+
+        var isLocalNotification: Bool {
+            return NoteCategoryDefinition.localDefinitions.contains(self)
         }
 
         func notificationCategory() -> UNNotificationCategory {
@@ -208,7 +224,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess]
+        static var localDefinitions = [mediaUploadSuccess]
     }
 
 
@@ -289,7 +306,10 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo as NSDictionary
         let textInputResponse = response as? UNTextInputNotificationResponse
 
-        if handleAction(with: response.actionIdentifier, userInfo: userInfo, responseText: textInputResponse?.userText) {
+        if handleAction(with: response.actionIdentifier,
+                        category: response.notification.request.content.categoryIdentifier,
+                        userInfo: userInfo,
+                        responseText: textInputResponse?.userText) {
             completionHandler()
             return
         }

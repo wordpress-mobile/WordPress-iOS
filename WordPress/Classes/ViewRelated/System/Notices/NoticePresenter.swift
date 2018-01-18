@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import UserNotifications
 import WordPressFlux
 
 class NoticePresenter: NSObject {
@@ -30,6 +31,31 @@ class NoticePresenter: NSObject {
     }
 
     private func present(_ notice: Notice) {
+        if UIApplication.shared.applicationState == .background {
+            presentNoticeInBackground(notice)
+        } else {
+            presentNoticeInForeground(notice)
+        }
+    }
+
+    private func presentNoticeInBackground(_ notice: Notice) {
+        guard let notificationInfo = notice.notificationInfo else {
+            return
+        }
+
+        let content = UNMutableNotificationContent(notice: notice)
+        let request = UNNotificationRequest(identifier: notificationInfo.identifier,
+                                            content: content,
+                                            trigger: nil)
+
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+            DispatchQueue.main.async {
+                self.dismiss()
+            }
+        })
+    }
+
+    private func presentNoticeInForeground(_ notice: Notice) {
         guard let view = presentingViewController.view else {
             return
         }
@@ -194,5 +220,27 @@ private class NoticeContainerView: UIView {
         noticeWidthConstraint.isActive = isRegularWidth
 
         layoutIfNeeded()
+    }
+}
+
+private extension UNMutableNotificationContent {
+    convenience init(notice: Notice) {
+        self.init()
+
+        title = notice.title
+
+        if let message = notice.message {
+            subtitle = message
+        }
+
+        if let categoryIdentifier = notice.notificationInfo?.categoryIdentifier {
+            self.categoryIdentifier = categoryIdentifier
+        }
+
+        if let userInfo = notice.notificationInfo?.userInfo {
+            self.userInfo = userInfo
+        }
+
+        sound = .default()
     }
 }
