@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 #pragma mark - Private Properties
 
 @interface SettingsTextViewController() <UITextFieldDelegate>
+@property (nonatomic, assign) BOOL              dirty;
 @property (nonatomic, strong) NoticeAnimator    *noticeAnimator;
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
 @property (nonatomic, strong) WPTableViewCell   *actionCell;
@@ -45,11 +46,21 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        _text = text;
-        _placeholder = placeholder;
-        _hint = hint;
+        [self commonInitWithPlaceholder:placeholder hint:hint];
+        
+        _textField.text = text;
+    }
+    return self;
+}
 
-        [self configureInstance];
+- (instancetype)initWithAttributedText:(NSAttributedString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        [self commonInitWithPlaceholder:placeholder hint:hint];
+        
+        _textField.attributedText = text;
+        _textField.allowsEditingTextAttributes = true;
     }
     return self;
 }
@@ -66,20 +77,27 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)configureInstance
 {
+    _dirty = NO;
     _autocorrectionType = UITextAutocorrectionTypeDefault;
     _shouldNotifyValue = YES;
     _validatesInput = YES;
 }
 
-
+- (void)commonInitWithPlaceholder:(NSString *)placeholder hint:(NSString *)hint
+{
+    [self createTextField];
+    
+    _textField.placeholder = placeholder;
+    _hint = hint;
+    
+    [self configureInstance];
+}
 
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.shouldNotifyValue = YES;
 
     // Don't auto-size rows
     self.tableView.estimatedRowHeight = 0;
@@ -208,26 +226,53 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     return _actionCell;
 }
 
-- (UITextField *)textField
+- (void)createTextField
 {
-    if (_textField) {
-        return _textField;
-    }
+    NSAssert(_textField == nil, @"The text field has already been created.");
     
     _textField = [[UITextField alloc] initWithFrame:CGRectZero];
     _textField.clearButtonMode = UITextFieldViewModeAlways;
     _textField.font = [WPStyleGuide tableviewTextFont];
     _textField.textColor = [WPStyleGuide darkGrey];
-    _textField.text = self.text;
-    _textField.placeholder = self.placeholder;
     _textField.returnKeyType = UIReturnKeyDone;
     _textField.keyboardType = UIKeyboardTypeDefault;
     _textField.delegate = self;
     _textField.autocorrectionType = self.autocorrectionType;
-    
-    return _textField;
 }
 
+#pragma mark - Getters
+
+- (NSString *)attributedText
+{
+    return self.textField.attributedText;
+}
+
+- (NSString *)placeholder
+{
+    return self.textField.placeholder;
+}
+
+- (NSString *)text
+{
+    return self.textField.text;
+}
+
+#pragma mark - Setters
+
+- (void)setAttributedText:(NSAttributedString *)text
+{
+    self.textField.attributedText = text;
+}
+
+- (void)setPlaceholder:(NSString *)placeholder
+{
+    self.textField.placeholder = placeholder;
+}
+
+- (void)setText:(NSString *)text
+{
+    self.textField.text = text;
+}
 
 #pragma mark - UITableViewDelegate
 
@@ -287,11 +332,17 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)notifyValueDidChangeIfNeeded
 {
-    if (self.onValueChanged == nil || [self.textField.text isEqualToString:self.text]) {
+    if (self.dirty == NO) {
         return;
     }
     
-    self.onValueChanged(self.textField.text);
+    if (self.onValueChanged != nil) {
+        self.onValueChanged(self.textField.text);
+    }
+    
+    if (self.onAttributedValueChanged != nil) {
+        self.onAttributedValueChanged(self.textField.attributedText);
+    }
 }
 
 
@@ -325,6 +376,12 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 
 #pragma mark - UITextFieldDelegate Methods
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    self.dirty = YES;
+    return YES;
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

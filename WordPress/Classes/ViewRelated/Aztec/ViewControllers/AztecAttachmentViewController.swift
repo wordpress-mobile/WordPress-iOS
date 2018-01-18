@@ -10,8 +10,9 @@ class AztecAttachmentViewController: UITableViewController {
         didSet {
             if let attachment = attachment {
                 alignment = attachment.alignment
-                size = attachment.size
                 alt = attachment.alt
+                caption = attachment.caption
+                size = attachment.size
             }
         }
     }
@@ -20,6 +21,7 @@ class AztecAttachmentViewController: UITableViewController {
     var linkURL: URL?
     var size = ImageAttachment.Size.none
     @objc var alt: String?
+    var caption: NSAttributedString?
 
     var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?) -> Void)?
     @objc var onCancel: (() -> Void)?
@@ -90,6 +92,11 @@ class AztecAttachmentViewController: UITableViewController {
             title: NSLocalizedString("Alt Text", comment: "Image alt attribute option title."),
             value: alt ?? "",
             action: displayAltTextfield)
+        
+        let captionRow = EditableAttributedTextRow(
+            title: NSLocalizedString("Caption", comment: "Image caption field label (for editing)"),
+            value: caption ?? NSAttributedString(),
+            action: displayCaptionTextfield)
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -98,7 +105,8 @@ class AztecAttachmentViewController: UITableViewController {
                     alignmentRow,
                     linkToRow,
                     sizeRow,
-                    altRow
+                    altRow,
+                    captionRow
                 ],
                 footerText: nil)
             ])
@@ -110,8 +118,27 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
-        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { value in
+        
+        pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { [weak self] value in
+            guard let `self` = self else {
+                return
+            }
+            
             self.alt = value
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func displayCaptionTextfield(row: ImmuTableRow) {
+        let editableRow = row as! EditableAttributedTextRow
+        let hint = NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings.")
+        
+        pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { [weak self] value in
+            guard let `self` = self else {
+                return
+            }
+            
+            self.caption = value
             self.tableView.reloadData()
         }
     }
@@ -119,7 +146,12 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayLinkTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Link", comment: "Hint for image link on image settings.")
-        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { value in
+        
+        pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { [weak self] value in
+            guard let `self` = self else {
+                return
+            }
+            
             self.linkURL = URL(string: value)
             self.tableView.reloadData()
         }
@@ -215,6 +247,21 @@ class AztecAttachmentViewController: UITableViewController {
         controller.mode = settingsTextMode
         controller.onValueChanged = onValueChanged
 
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    private func pushSettingsController(for row: EditableAttributedTextRow,
+                                        hint: String? = nil,
+                                        settingsTextMode: SettingsTextModes,
+                                        onValueChanged: @escaping SettingsAttributedTextChanged) {
+        let title = row.title
+        let value = row.value
+        let controller = SettingsTextViewController(attributedText: value, placeholder: "\(title)...", hint: hint)
+
+        controller.title = title
+        controller.mode = settingsTextMode
+        controller.onAttributedValueChanged = onValueChanged
+        
         navigationController?.pushViewController(controller, animated: true)
     }
 }
