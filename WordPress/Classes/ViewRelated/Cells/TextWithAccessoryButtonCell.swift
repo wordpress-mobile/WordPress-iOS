@@ -15,6 +15,8 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
     @IBOutlet private var secondaryLabel: UILabel?
     @IBOutlet public private(set) var button: LoginButton?
 
+    var onButtonTap: (() -> Void)?
+
     public var mainLabelText: String? {
         didSet {
             mainLabel?.text = mainLabelText
@@ -24,13 +26,12 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
     public var secondaryLabelText: String? {
         didSet {
             let hidden = secondaryLabelText?.nonEmptyString == nil
-            secondaryLabel?.isHidden = hidden
 
+            secondaryLabel?.isHidden = hidden
             secondaryLabel?.text = secondaryLabelText
         }
     }
 
-    var onButtonPressed: (() -> Void)?
 
     public override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -58,7 +59,7 @@ private extension TextWithAccessoryButtonCell {
         button?.isPrimary = true
     }
 
-    @IBAction func buttonPressed(_ button: LoginButton) {
-        onButtonPressed?()
+    @IBAction func buttonTapped(_ button: LoginButton) {
+        onButtonTap?()
     }
 }
