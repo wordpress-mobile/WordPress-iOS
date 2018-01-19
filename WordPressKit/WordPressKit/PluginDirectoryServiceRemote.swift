@@ -48,8 +48,88 @@ public struct PluginDirectoryGetInformationEndpoint: Endpoint {
     }
 }
 
+public struct PluginDirectoryFeedEndpoint: Endpoint {
+    private let pluginsPerPage = 50
+
+    public enum FeedType {
+        case popular
+        case newest
+        case search(term: String)
+
+        public var feedName: String {
+            switch self {
+            case .popular:
+                return "popular"
+            case .newest:
+                return "newest"
+            case .search(let term):
+                return "search:\(term)"
+            }
+        }
+
+    }
+
+    public enum Error: Swift.Error {
+        case genericError
+    }
+
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "YYYY-MM-dd h:mma z"
+        return formatter
+    }()
+
+    let feedType: FeedType
+    let pageNumber: Int
+
+    public func buildRequest() throws -> URLRequest {
+        // note that this _isn't_ the same URL as PluginDirectoryGetInformationEndpoint.
+        let baseURL = URL(string: "https://api.wordpress.org/plugins/info/1.1/")!
+
+        var parameters: [String: Any] = ["action": "query_plugins",
+                                         "request[per_page]": pluginsPerPage,
+                                         "request[fields][icons]": 1,
+                                         "request[fields][banners]": 1,
+                                         "request[fields][sections]": 0,
+                                         "request[page]": pageNumber]
+        switch feedType {
+        case .popular:
+            parameters["request[browse]"] = "popular"
+        case .newest:
+            parameters["request[browse]"] = "new"
+        case .search(let term):
+            parameters["request[search]"] = term
+
+        }
+
+        let request = URLRequest(url: baseURL)
+        let encodedRequest = try URLEncoding.default.encode(request, with: parameters)
+
+        return encodedRequest
+    }
+
+    public func parseResponse(data: Data) throws -> PluginDirectoryResponse {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(PluginDirectoryGetInformationEndpoint.dateFormatter)
+        return try decoder.decode(PluginDirectoryResponse.self, from: data)
+    }
+
+   public func validate(request: URLRequest?, response: HTTPURLResponse, data: Data?) throws {
+        if response.statusCode != 200 { throw Error.genericError}
+    }
+}
+
+
 public struct PluginDirectoryServiceRemote {
+
     public init() {}
+
+    public func getPluginFeed(_ feedType: PluginDirectoryFeedEndpoint.FeedType,
+                              pageNumber: Int = 1,
+                              completion: @escaping (Result<PluginDirectoryResponse>) -> Void) {
+        PluginDirectoryFeedEndpoint(feedType: feedType, pageNumber: pageNumber).request(completion: completion)
+    }
 
     public func getPluginInformation(slug: String, completion: @escaping (Result<PluginDirectoryEntry>) -> Void) {
         PluginDirectoryGetInformationEndpoint(slug: slug).request(completion: completion)
