@@ -13,15 +13,29 @@ enum PluginAction: Action {
     case receivePluginsFailed(site: JetpackSiteRef, error: Error)
     case receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry)
     case receivePluginDirectoryEntryFailed(slug: String, error: Error)
+    case receivePluginDirectoryFeed(feed: FeedType, response: PluginDirectoryResponse)
+    case receivePluginDirectoryFeedFailed(feed: FeedType, error: Error)
 }
 
 enum PluginQuery {
     case all(site: JetpackSiteRef)
+    case feed(type: FeedType)
 
-    var site: JetpackSiteRef {
+    var site: JetpackSiteRef? {
         switch self {
         case .all(let site):
             return site
+        case .feed(_):
+            return nil
+        }
+    }
+
+    var feedType: FeedType? {
+        switch self {
+        case .all(_):
+            return nil
+        case .feed(let feedType):
+            return feedType
         }
     }
 }
@@ -30,10 +44,11 @@ enum PluginDirectoryEntryState {
     case unknown
     case missing(Date)
     case present(PluginDirectoryEntry)
+    case partial(PluginDirectoryEntry)
 
     var entry: PluginDirectoryEntry? {
         switch self {
-        case .present(let entry):
+        case .present(let entry), .partial(let entry):
             return entry
         case .missing, .unknown:
             return nil
@@ -46,8 +61,33 @@ enum PluginDirectoryEntryState {
             return .distantPast
         case .missing(let date):
             return date
-        case .present(let entry):
+        case .present(let entry), .partial(let entry):
             return entry.lastUpdated
+        }
+    }
+
+    static func moreSpecific(_ left: PluginDirectoryEntryState, _ right: PluginDirectoryEntryState) -> PluginDirectoryEntryState {
+        // When fetching data about plugins from the Directory, we specifically ask the backend
+        // to not include some fields — otherwise the payload becomes too large and takes too long to parse (and we're probably gonna discard it anyway),
+        // but it's possible we already "knew" about that Plugin from before — when user has that plugin installed on their site, for example.
+        // We fetch all the required data for in that case, but we need to be careful not to overwrite it with "partial" data accidentaly, when refreshing
+        // data from the directory.
+
+        switch (left, right) {
+        case (.present, _):
+            return left
+        case (_, .present):
+            return right
+        case (.partial, _):
+            return left
+        case (_, .partial):
+            return right
+        case (.missing, _):
+            return left
+        case (_, .missing):
+            return right
+        case (.unknown, _):
+            return left
         }
     }
 }
@@ -56,9 +96,15 @@ struct PluginStoreState {
     var plugins = [JetpackSiteRef: SitePlugins]()
     var fetching = [JetpackSiteRef: Bool]()
     var lastFetch = [JetpackSiteRef: Date]()
+
+    var updatesInProgress = [JetpackSiteRef: Set<String>]()
+
+    var directoryFeeds = [String: PluginDirectoryPageMetadata]()
+    var fetchingDirectoryFeed = [String: Bool]()
+    var lastDirectoryFeedFetch = [String: Date]()
+
     var directoryEntries = [String: PluginDirectoryEntryState]()
     var fetchingDirectoryEntry = [String: Bool]()
-    var updatesInProgress = [JetpackSiteRef: Set<String>]()
 }
 
 extension PluginStoreState {
@@ -87,6 +133,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
                 state.plugins = [:]
                 state.lastFetch = [:]
                 state.directoryEntries = [:]
+                state.directoryFeeds = [:]
+                state.lastDirectoryFeedFetch = [:]
             })
             return
         }
@@ -94,15 +142,29 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     }
 
     func processQueries() {
-        let sitesWithQuery = activeQueries
-            .map({ $0.site })
+        let sitesToFetch = activeQueries
+            .flatMap { query -> JetpackSiteRef? in
+                guard case .all(let site) = query else { return nil }
+                return site
+            }
             .unique
-        let sitesToFetch = sitesWithQuery
-            .filter(shouldFetch(site:))
+            .filter { shouldFetch(site: $0) }
 
         sitesToFetch.forEach { (site) in
             fetchPlugins(site: site)
         }
+
+        let feedsToFetch = activeQueries
+            .flatMap { query -> FeedType? in
+                guard case .feed(let feedType) = query else { return nil }
+                return feedType
+            }
+            .unique(by: \FeedType.feedName)
+            .filter { shouldFetchDirectory(feed: $0) }
+
+        feedsToFetch
+            .forEach { fetchPluginDirectoryFeed(feed: $0) }
+
     }
 
     override func onDispatch(_ action: Action) {
@@ -132,6 +194,10 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             receivePluginDirectoryEntry(slug: slug, entry: entry)
         case .receivePluginDirectoryEntryFailed(let slug, let error):
             receivePluginDirectoryEntryFailed(slug: slug, error: error)
+        case .receivePluginDirectoryFeed(let feed, let response):
+            receivePluginDirectoryFeed(feed: feed, response: response)
+        case .receivePluginDirectoryFeedFailed(let feed, let error):
+            receivePluginDirectoryFeedFailed(feed: feed, error: error)
         }
     }
 }
@@ -163,6 +229,13 @@ extension PluginStore {
         return state.fetching[site, default: false]
     }
 
+    func getPluginDirectoryFeedPlugins(from feed: FeedType) -> [PluginDirectoryEntry] {
+        guard let fetchedFeed = state.directoryFeeds[feed.feedName] else { return [] }
+        let directoryEntries = fetchedFeed.pluginSlugs.flatMap { getPluginDirectoryEntry(slug: $0) }
+
+        return directoryEntries
+    }
+
     func shouldFetch(site: JetpackSiteRef) -> Bool {
         let lastFetch = state.lastFetch[site, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
@@ -174,6 +247,13 @@ extension PluginStore {
         let lastFetch = state.directoryEntries[slug, default: .unknown].lastUpdated
         let needsRefresh = lastFetch + refreshInterval < Date()
         let isFetching = state.fetchingDirectoryEntry[slug, default: false]
+        return needsRefresh && !isFetching
+    }
+
+    func shouldFetchDirectory(feed: FeedType) -> Bool {
+        let lastFetch = state.lastDirectoryFeedFetch[feed.feedName, default: .distantPast]
+        let needsRefresh = lastFetch + refreshInterval < Date()
+        let isFetching = state.fetchingDirectoryFeed[feed.feedName, default: false]
         return needsRefresh && !isFetching
     }
 }
@@ -428,6 +508,39 @@ private extension PluginStore {
                 state.directoryEntries[slug] = .missing(Date())
             }
             state.fetchingDirectoryEntry[slug] = false
+        }
+    }
+
+    func fetchPluginDirectoryFeed(feed: FeedType) {
+        state.fetchingDirectoryFeed[feed.feedName] = true
+
+        let remote = PluginDirectoryServiceRemote()
+        remote.getPluginFeed(feed) { [actionDispatcher] result in
+            switch result {
+            case .success(let response):
+                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryFeed(feed: feed, response: response))
+            case .failure(let error):
+                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryFeedFailed(feed: feed, error: error))
+            }
+        }
+    }
+
+    func receivePluginDirectoryFeed(feed: FeedType, response: PluginDirectoryResponse) {
+        let zippedPlugins = zip(response.pageMetadata.pluginSlugs, response.plugins.map { PluginDirectoryEntryState.partial($0)})
+        let plugins = Dictionary(uniqueKeysWithValues: zippedPlugins)
+
+        transaction { (state) in
+            state.fetchingDirectoryFeed[feed.feedName] = false
+            state.directoryFeeds[feed.feedName] = response.pageMetadata
+            state.lastDirectoryFeedFetch[feed.feedName] = Date()
+            state.directoryEntries.merge(plugins) { PluginDirectoryEntryState.moreSpecific($0, $1) }
+        }
+    }
+
+    func receivePluginDirectoryFeedFailed(feed: FeedType, error: Error) {
+        transaction { state in
+            state.fetchingDirectoryFeed[feed.feedName] = false
+            state.lastDirectoryFeedFetch[feed.feedName] = Date()
         }
     }
 
