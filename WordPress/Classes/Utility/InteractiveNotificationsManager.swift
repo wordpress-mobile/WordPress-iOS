@@ -100,14 +100,20 @@ final class InteractiveNotificationsManager: NSObject {
     }
 
     func handleLocalNotificationAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
-        if let action = NoteActionDefinition(rawValue: identifier) {
-            switch action {
-            case .mediaWritePost:
-                MediaNoticeNavigationCoordinator.presentEditor(with: userInfo)
-            default:
-                break
+        if let noteCategory = NoteCategoryDefinition(rawValue: category),
+            noteCategory == .mediaUploadSuccess {
+            if let action = NoteActionDefinition(rawValue: identifier) {
+                switch action {
+                case .mediaWritePost:
+                    MediaNoticeNavigationCoordinator.presentEditor(with: userInfo)
+                default:
+                    break
+                }
+            } else if identifier == UNNotificationDefaultActionIdentifier {
+                MediaNoticeNavigationCoordinator.navigateToMediaLibrary(with: userInfo)
             }
         }
+
         return true
     }
 }
