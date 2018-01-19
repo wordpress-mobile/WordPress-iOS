@@ -20,6 +20,17 @@ extension Array where Element: Hashable {
     }
 }
 
+extension Array {
+    public func unique<Value: Hashable>(by filteringKeyPath: KeyPath<Element, Value>) -> [Element] {
+        let values = self.map { $0[keyPath: filteringKeyPath] }
+
+        let uniqueValues = values.unique
+        let indices = uniqueValues.flatMap { values.index(of: $0) }
+
+        return indices.map { self[$0] }
+    }
+}
+
 extension Array where Element: Equatable {
     /// Returns an array of indices for the elements that are different than the
     /// corresponding element in the given array.
