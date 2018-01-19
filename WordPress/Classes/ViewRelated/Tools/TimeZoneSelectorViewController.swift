@@ -91,14 +91,14 @@ struct TimeZoneSelectorViewModel: Observable {
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
                 return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: ""),
-                    message: NSLocalizedString("There was an error loading time zones", comment: ""),
+                    title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading time zones"),
+                    message: NSLocalizedString("There was an error loading time zones", comment: "Error message when time zones can't be loaded"),
                     buttonTitle: NSLocalizedString("Contact support", comment: "")
                 )
             } else {
                 return WPNoResultsView.Model(
-                    title: NSLocalizedString("No connection", comment: ""),
-                    message: NSLocalizedString("An active internet connection is required", comment: "")
+                    title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
+                    message: NSLocalizedString("An active internet connection is required", comment: "Error message when loading failed because there's no connection")
                 )
             }
         }
