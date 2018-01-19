@@ -177,19 +177,17 @@ struct TextWithButtonRow: ImmuTableRow {
     let title: String
     let subtitle: String?
     let actionLabel: String
-    let action: ImmuTableAction?
+    let action: ImmuTableAction? = nil
+    let onButtonTap: ImmuTableAction
 
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! CellType
 
+        cell.selectionStyle = .none
         cell.mainLabelText = title
         cell.secondaryLabelText = subtitle
         cell.buttonText = actionLabel
-        cell.onButtonPressed = action.map({ action in
-            return {
-                action(self)
-            }
-        })
+        cell.onButtonPressed = { self.onButtonTap(self) }
     }
 }
 
