@@ -38,10 +38,13 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.1-whats-new"
+msgctxt "v9.2-whats-new"
 msgid ""
-"Plugins: You can now manage your plugins in the app, find it on your site's details -> Plugins.\n"
-"Editor: Resolved some issues with Chinese characters.\n"
+"Site Settings, Writing: You can now edit your site's tags!\n"
+"Aztec, Media: Users can now import photos and videos from other apps using the ... button on the media toolbar in Aztec, and via the Media Library section of the app\n"
+"Media: Uploading is now asynchronous!\n"
+"Blog details: You can drag and drop images from other apps onto the blavatar icon.\n"
+"Me: You can drag and drop images from other apps onto the gravatar icon\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
