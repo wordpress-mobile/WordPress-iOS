@@ -28,6 +28,42 @@ class PluginViewModel: Observable {
     var present: ((UIViewController) -> Void)?
     var dismiss: (() -> Void)?
 
+    var versionRow: ImmuTableRow? {
+        guard let version = plugin.state.version else { return nil }
+
+        let versionRow: ImmuTableRow?
+
+        switch plugin.state.updateState {
+        case .updated:
+            versionRow = TextRow(
+                title: NSLocalizedString("Version \(version)", comment: "Version of an installed plugin"),
+                value: NSLocalizedString("Installed", comment: "Indicates the state of the plugin")
+            )
+        case .available(let newVersion):
+            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
+            let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
+
+            versionRow = TextWithButtonRow(
+                title: message,
+                subtitle: subtitle,
+                actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
+                action: { [unowned self] (_) in
+                    ActionDispatcher.dispatch(PluginAction.update(id: self.plugin.id, site: self.site))
+                }
+            )
+        case .updating(let newVersion):
+            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
+            let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
+
+            versionRow = TextWithButtonIndicatingActivityRow(
+                title: message,
+                subtitle: subtitle
+            )
+        }
+
+        return versionRow
+    }
+
     var tableViewModel: ImmuTable {
 
         var header: ImmuTableRow?
@@ -38,38 +74,6 @@ class PluginViewModel: Observable {
                     guard let url = directory.authorURL else { return }
                     self.presentBrowser(for: url)
             })
-        }
-
-        var versionRow: ImmuTableRow?
-        switch (plugin.state.version, plugin.state.updateState) {
-            case (let version?, .updated):
-                versionRow = TextRow(
-                    title: NSLocalizedString("Version \(version)", comment: "Version of an installed plugin"),
-                    value: NSLocalizedString("Installed", comment: "Indicates the state of the plugin")
-                )
-            case (let version?, .available(let newVersion)):
-                let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
-                let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
-
-                versionRow = TextWithButtonRow(
-                    title: message,
-                    subtitle: subtitle,
-                    actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
-                    action: { [unowned self] (_) in
-                        ActionDispatcher.dispatch(PluginAction.update(id: self.plugin.id, site: self.site))
-                    }
-                )
-            case (let version?, .updating(let newVersion)):
-                let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
-                let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
-
-                versionRow = TextWithButtonIndicatingActivityRow(
-                    title: message,
-                    subtitle: subtitle
-            )
-
-            case (nil, _):
-                versionRow = nil
         }
 
         var activeRow: ImmuTableRow?
