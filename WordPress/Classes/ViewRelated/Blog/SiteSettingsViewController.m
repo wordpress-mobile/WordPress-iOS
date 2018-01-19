@@ -208,7 +208,11 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             if (!self.blog.supportsSiteManagementServices) {
                 rowCount -= 2;
             }
-            
+            // Timezone is only available for WordPress.com and Jetpack sites
+            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+                rowCount--;
+            }
+
             return rowCount;
         }
         case SiteSettingsSectionAccount:
