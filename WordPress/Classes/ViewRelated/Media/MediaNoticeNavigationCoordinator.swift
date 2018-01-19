@@ -4,13 +4,7 @@ class MediaNoticeNavigationCoordinator {
     private static let blogIDKey = "blog_id"
 
     static func presentEditor(with userInfo: NSDictionary) {
-        let context = ContextManager.sharedInstance().mainContext
-
-        if let blogID = userInfo[MediaNoticeNavigationCoordinator.blogIDKey] as? String,
-            let URIRepresentation = URL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URIRepresentation),
-            let managedObject = try? context.existingObject(with: objectID),
-            let blog = managedObject as? Blog {
+        if let blog = blog(from: userInfo) {
             presentEditor(for: blog, source: "media_upload_notification")
         }
     }
@@ -20,5 +14,25 @@ class MediaNoticeNavigationCoordinator {
         editor.modalPresentationStyle = .fullScreen
         WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": source], with: blog)
+    }
+
+    static func navigateToMediaLibrary(with userInfo: NSDictionary) {
+        if let blog = blog(from: userInfo) {
+            WPTabBarController.sharedInstance().switchMySitesTabToMedia(for: blog)
+        }
+    }
+
+    private static func blog(from userInfo: NSDictionary) -> Blog? {
+        let context = ContextManager.sharedInstance().mainContext
+
+        guard let blogID = userInfo[MediaNoticeNavigationCoordinator.blogIDKey] as? String,
+            let URIRepresentation = URL(string: blogID),
+            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URIRepresentation),
+            let managedObject = try? context.existingObject(with: objectID),
+            let blog = managedObject as? Blog else {
+                return nil
+        }
+
+        return blog
     }
 }
