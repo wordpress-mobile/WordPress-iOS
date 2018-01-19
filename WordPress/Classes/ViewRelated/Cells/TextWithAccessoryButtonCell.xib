@@ -41,7 +41,7 @@
                     <inset key="contentEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="Button"/>
                     <connections>
-                        <action selector="buttonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="B71-pz-WXU"/>
+                        <action selector="buttonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="B71-pz-WXU"/>
                     </connections>
                 </button>
             </subviews>

@@ -200,7 +200,7 @@ struct TextWithButtonRow: ImmuTableRow {
         cell.mainLabelText = title
         cell.secondaryLabelText = subtitle
         cell.buttonText = actionLabel
-        cell.onButtonPressed = { self.onButtonTap(self) }
+        cell.onButtonTap = { self.onButtonTap(self) }
     }
 }
 
