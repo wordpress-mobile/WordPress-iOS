@@ -85,13 +85,18 @@ class MediaCoordinator: NSObject {
         return media
     }
 
+    /// Retrie the upload of media that previsouly has failed.
+    ///
+    /// - Parameter media: the media object to retry the upload
+    ///
     func retryMedia(_ media: Media) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
         }
         mediaProgressCoordinator.track(numberOfItems: 1)
-        uploadMedia(media)
+        let uploadProgress = uploadMedia(media)
+        mediaProgressCoordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
     /// Starts the upload of an already existing local media object
@@ -104,7 +109,8 @@ class MediaCoordinator: NSObject {
             return
         }
         mediaProgressCoordinator.track(numberOfItems: 1)
-        uploadMedia(media)
+        let uploadProgress = uploadMedia(media)
+        mediaProgressCoordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
     /// Cancels any ongoing upload of the Media and deletes it.
@@ -192,6 +198,21 @@ class MediaCoordinator: NSObject {
     ///
     func media(withIdentifier uploadID: String) -> Media? {
         return mediaProgressCoordinator.media(withIdentifier: uploadID)
+    }
+
+    /// Returns an existing media objcect with the specificed objectID
+    ///
+    /// - Parameter objectID: the object unique ID
+    /// - Returns: an media object if it exists.
+    ///
+    func media(withObjectID objectID: String) -> Media? {
+        guard let storeCoordinator = mainContext.persistentStoreCoordinator,
+            let url = URL(string: objectID),
+            let managedObjectID = storeCoordinator.managedObjectID(forURIRepresentation: url),
+            let media = mainContext.object(with: managedObjectID) as? Media else {
+            return nil
+        }
+        return media
     }
 
     /// Returns true if any media is being processed or uploading

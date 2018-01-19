@@ -382,6 +382,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         return coordinator
     }()
 
+    fileprivate var errorsForAttachmentUploads: [String: Error] = [:]
+
     /// Media Progress View
     ///
     fileprivate lazy var mediaProgressView: UIProgressView = {
@@ -2826,6 +2828,8 @@ extension AztecPostViewController {
             return
         }
 
+        errorsForAttachmentUploads.removeValue(forKey: mediaUploadID)
+
         switch self.mode {
         case .richText:
             guard let attachment = self.findAttachment(withUploadID: mediaUploadID) else {
@@ -2876,12 +2880,17 @@ extension AztecPostViewController {
 
         WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
 
+        if let attachmentError = error, let uploadID = attachment.uploadID{
+            errorsForAttachmentUploads[uploadID] = attachmentError
+        }
+
         let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
         attachment.overlayImage = Gridicon.iconOfType(.refresh, withSize: Constants.mediaOverlayIconSize)
         attachment.shouldHideBorder = true
+        attachment.progress = nil
         richTextView.refresh(attachment)
     }
 
@@ -2987,7 +2996,8 @@ extension AztecPostViewController {
                                             }
         })
         var showDefaultActions = true
-        if let mediaUploadID = attachment.uploadID, let media = mediaCoordinator.media(withIdentifier: mediaUploadID) {
+        if let mediaUploadID = attachment.uploadID,
+           let media = mediaCoordinator.media(withIdentifier: mediaUploadID) {
             // Is upload still going?
             if media.remoteStatus == .pushing || media.remoteStatus == .processing {
                 showDefaultActions = false
@@ -2996,25 +3006,28 @@ extension AztecPostViewController {
                                                    handler: { (action) in
                                                     self.mediaCoordinator.cancelUploadAndDeleteMedia(media)
                 })
-            } else {
-                if let error = mediaCoordinator.error(for: media) {
-                    message = error.localizedDescription
-                    alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
-                                                       style: .default,
-                                                       handler: { (action) in
-                                                        //retry upload
-                                                        if let attachment = self.richTextView.attachment(withId: attachmentID) {
-                                                            self.resetMediaAttachmentOverlay(attachment)
-                                                            attachment.progress = 0
-                                                            self.richTextView.refresh(attachment)
-
-                                                            WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
-
-                                                            self.mediaCoordinator.retryMedia(media)
-                                                        }
-                    })
-                }
             }
+        }
+        if let mediaUploadID = attachment.uploadID,
+           let media = mediaCoordinator.media(withObjectID: mediaUploadID),
+           let error = errorsForAttachmentUploads[media.uploadID]
+        {
+            showDefaultActions = false
+            message = error.localizedDescription
+            alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
+                                               style: .default,
+                                               handler: { [weak self] (action) in
+                                                //retry upload
+                                                guard let strongSelf = self,
+                                                    let attachment = strongSelf.richTextView.attachment(withId: attachmentID) else {
+                                                        return
+                                                }
+                                                strongSelf.resetMediaAttachmentOverlay(attachment)
+                                                attachment.progress = 0
+                                                strongSelf.richTextView.refresh(attachment)
+                                                strongSelf.mediaCoordinator.retryMedia(media)
+                                                strongSelf.observe(media: media, statType: .editorUploadMediaRetried)
+            })
         }
 
         if showDefaultActions {
@@ -3031,12 +3044,12 @@ extension AztecPostViewController {
                                                                                         self.displayPlayerFor(videoAttachment: videoAttachment, atPosition: position)
                 })
             }
-            alertController.addActionWithTitle(NSLocalizedString("Remove", comment: "User action to remove media."),
-                                               style: .destructive,
-                                               handler: { (action) in
-                                                self.richTextView.remove(attachmentID: attachmentID)
-            })
         }
+        alertController.addActionWithTitle(NSLocalizedString("Remove", comment: "User action to remove media."),
+                                           style: .destructive,
+                                           handler: { (action) in
+                                            self.richTextView.remove(attachmentID: attachmentID)
+        })
         alertController.title = title
         alertController.message = message
         alertController.popoverPresentationController?.sourceView = richTextView
@@ -3169,7 +3182,8 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
         // Check to see if there is an error associated to the attachment
         var errorAssociatedToAttachment = false
-        if let uploadID = attachment.uploadID, let media = mediaCoordinator.media(withIdentifier: uploadID), mediaCoordinator.error(for: media) != nil {
+        if let uploadID = attachment.uploadID,
+           self.errorsForAttachmentUploads[uploadID] != nil {
             errorAssociatedToAttachment = true
         }
         if !errorAssociatedToAttachment {
