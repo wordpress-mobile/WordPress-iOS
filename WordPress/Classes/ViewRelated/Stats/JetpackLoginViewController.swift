@@ -34,7 +34,7 @@ class JetpackLoginViewController: UIViewController {
         guard let jetpack = blog.jetpack else {
             return false
         }
-        return (jetpack.isInstalled() && jetpack.isUpdatedToRequiredVersion())
+        return (jetpack.isInstalled && jetpack.isUpdatedToRequiredVersion)
     }
 
     // MARK: - Initializers
@@ -148,8 +148,8 @@ class JetpackLoginViewController: UIViewController {
 
         var message: String
 
-        if jetPack.isInstalled() {
-            if jetPack.isUpdatedToRequiredVersion() {
+        if jetPack.isInstalled {
+            if jetPack.isUpdatedToRequiredVersion {
                 message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! \n" +
                                             "Log in with your WordPress.com credentials to enable " +
                                             "Stats and Notifications.",
@@ -159,7 +159,7 @@ class JetpackLoginViewController: UIViewController {
                                                                              "for stats. Do you want to update Jetpack?",
                                                                              comment: "Message stating the minimum required " +
                                                                              "version for Jetpack and asks the user " +
-                                                                             "if they want to upgrade"), JetpackVersionMinimumRequired)
+                                                                             "if they want to upgrade"), JetpackState.minimumVersionRequired)
             }
         } else {
             message = NSLocalizedString("Jetpack is required for stats. Do you want to set up Jetpack?",

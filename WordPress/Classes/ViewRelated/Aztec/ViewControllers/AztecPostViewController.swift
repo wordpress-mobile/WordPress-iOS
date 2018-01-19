@@ -2316,7 +2316,7 @@ extension AztecPostViewController {
 
         toolbarButtons.append(makeToolbarButton(identifier: .mediaLibrary))
 
-        if #available(iOS 11, *), FeatureFlag.iCloudFilesSupport.enabled {
+        if #available(iOS 11, *) {
             toolbarButtons.append(makeToolbarButton(identifier: .otherApplications))
         }
 

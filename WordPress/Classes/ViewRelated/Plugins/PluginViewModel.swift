@@ -118,14 +118,24 @@ class PluginViewModel: Observable {
     }
 
     private func confirmRemovalAlert(plugin: Plugin) -> UIAlertController {
-        let message: String
+        let question: String
         if let siteTitle = getSiteTitle() {
-            let messageTemplate = NSLocalizedString("Are you sure you want to remove %1$@ from %2$@? This will deactivate the plugin and delete all associated files and data.", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title.")
-            message = String(format: messageTemplate, plugin.name, siteTitle)
+            question = String(
+                format: NSLocalizedString("Are you sure you want to remove %1$@ from %2$@?", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title."),
+                plugin.name,
+                siteTitle)
         } else {
-            let messageTemplate = NSLocalizedString("Are you sure you want to remove %1$@? This will deactivate the plugin and delete all associated files and data.", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name.")
-            message = String(format: messageTemplate, plugin.name)
+            question = String(
+                format: NSLocalizedString("Are you sure you want to remove %1$@?", comment: "Text for the alert to confirm a plugin removal. %1$@ is the plugin name."),
+                plugin.name)
         }
+        let disclaimer: String
+        if plugin.state.active {
+            disclaimer = NSLocalizedString("This will deactivate the plugin and delete all associated files and data.", comment: "Warning when confirming to remove a plugin that's active")
+        } else {
+            disclaimer = NSLocalizedString("This will delete all associated files and data.", comment: "Warning when confirming to remove a plugin that's inactive")
+        }
+        let message = "\(question)\n\(disclaimer)"
         let alert = UIAlertController(
             title: NSLocalizedString("Remove Plugin?", comment: "Title for the alert to confirm a plugin removal"),
             message: message, preferredStyle: .alert)
