@@ -36,7 +36,7 @@ class CaptionShortcodePostProcessor: Aztec.HTMLProcessor {
             }
 
             html += "[/caption]"
-            
+
             return html
         }
     }
