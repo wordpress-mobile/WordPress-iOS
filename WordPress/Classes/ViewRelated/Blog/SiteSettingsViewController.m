@@ -24,9 +24,9 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
-    SiteSettingsGeneralPrivacy,
-    SiteSettingsGeneralLanguage,
     SiteSettingsGeneralTimezone,
+    SiteSettingsGeneralLanguage,
+    SiteSettingsGeneralPrivacy,
     SiteSettingsGeneralCount,
 };
 
@@ -204,9 +204,9 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
             NSInteger rowCount = SiteSettingsGeneralCount;
             
             // NOTE: Jorge Bernal (2018-01-16)
-            // Privacy, Language, and Timezone are only available for WordPress.com admins
+            // Privacy and Language are only available for WordPress.com admins
             if (!self.blog.supportsSiteManagementServices) {
-                rowCount -= 3;
+                rowCount -= 2;
             }
             
             return rowCount;
