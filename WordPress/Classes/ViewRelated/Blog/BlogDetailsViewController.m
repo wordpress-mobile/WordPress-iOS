@@ -394,7 +394,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([Feature enabled:FeatureFlagActivity] && [self.blog supports:BlogFeatureActivity]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
-                                                        image:[Gridicon iconOfType:GridiconTypeStatsAlt]
+                                                        image:[Gridicon iconOfType:GridiconTypeHistory]
                                                      callback:^{
                                                          [weakSelf showActivity];
                                                      }]];
