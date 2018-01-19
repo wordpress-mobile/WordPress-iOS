@@ -18,13 +18,14 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 #pragma mark - Private Properties
 
 @interface SettingsTextViewController() <UITextFieldDelegate>
-@property (nonatomic, assign) BOOL              dirty;
 @property (nonatomic, strong) NoticeAnimator    *noticeAnimator;
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
 @property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, assign) BOOL              doneButtonEnabled;
 @property (nonatomic, assign) BOOL              shouldNotifyValue;
+@property (nonatomic, strong) NSString          *originalString;
+@property (nonatomic, strong) NSAttributedString *originalAttributedString;
 @end
 
 
@@ -48,6 +49,8 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     if (self) {
         [self commonInitWithPlaceholder:placeholder hint:hint];
         
+        _originalString = text;
+        _originalAttributedString = [[NSAttributedString alloc] initWithString:text];
         _textField.text = text;
     }
     return self;
@@ -59,6 +62,8 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     if (self) {
         [self commonInitWithPlaceholder:placeholder hint:hint];
         
+        _originalString = text.string;
+        _originalAttributedString = text;
         _textField.attributedText = text;
         _textField.allowsEditingTextAttributes = true;
     }
@@ -77,7 +82,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (void)configureInstance
 {
-    _dirty = NO;
     _autocorrectionType = UITextAutocorrectionTypeDefault;
     _shouldNotifyValue = YES;
     _validatesInput = YES;
@@ -124,7 +128,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     [self.view endEditing:YES];
     
     if (self.shouldNotifyValue) {
-        [self notifyValueDidChangeIfNeeded];
+        [self notifyValueChangedIfNecessary];
     }
 }
 
@@ -330,17 +334,13 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     }
 }
 
-- (void)notifyValueDidChangeIfNeeded
+- (void)notifyValueChangedIfNecessary
 {
-    if (self.dirty == NO) {
-        return;
-    }
-    
-    if (self.onValueChanged != nil) {
+    if (self.onValueChanged != nil && ![_originalString isEqual:self.textField.text]) {
         self.onValueChanged(self.textField.text);
     }
     
-    if (self.onAttributedValueChanged != nil) {
+    if (self.onAttributedValueChanged != nil && ![_originalAttributedString isEqual:self.textField.attributedText]) {
         self.onAttributedValueChanged(self.textField.attributedText);
     }
 }
@@ -376,12 +376,6 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 
 #pragma mark - UITextFieldDelegate Methods
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    self.dirty = YES;
-    return YES;
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {

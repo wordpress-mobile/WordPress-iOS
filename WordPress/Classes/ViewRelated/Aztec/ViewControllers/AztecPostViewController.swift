@@ -42,11 +42,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.inputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
+        textView.inputProcessor = PipelineProcessor([CaptionShortcodePreProcessor(),
+                                                     VideoShortcodeProcessor.videoPressPreProcessor,
                                                      VideoShortcodeProcessor.wordPressVideoPreProcessor,
                                                      CalypsoProcessorIn()])
 
-        textView.outputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
+        textView.outputProcessor = PipelineProcessor([CaptionShortcodePostProcessor(),
+                                                      VideoShortcodeProcessor.videoPressPostProcessor,
                                                       VideoShortcodeProcessor.wordPressVideoPostProcessor,
                                                       CalypsoProcessorOut()])
 
