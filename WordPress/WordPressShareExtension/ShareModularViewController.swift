@@ -466,7 +466,7 @@ fileprivate extension ShareModularViewController {
 
         // Then proceed uploading the actual post
         let networkService = AppExtensionsService()
-        let localImageURLs = [URL](shareData.sharedImageDict.values)
+        let localImageURLs = [URL](shareData.sharedImageDict.keys)
         if !localImageURLs.isEmpty {
             // We have media, so let's upload it with the post
             networkService.uploadPostWithMedia(title: shareData.title,
