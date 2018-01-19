@@ -92,7 +92,7 @@ class AztecAttachmentViewController: UITableViewController {
             title: NSLocalizedString("Alt Text", comment: "Image alt attribute option title."),
             value: alt ?? "",
             action: displayAltTextfield)
-        
+
         let captionRow = EditableAttributedTextRow(
             title: NSLocalizedString("Caption", comment: "Image caption field label (for editing)"),
             value: caption ?? NSAttributedString(),
@@ -118,26 +118,26 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
-        
+
         pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { [weak self] value in
             guard let `self` = self else {
                 return
             }
-            
+
             self.alt = value
             self.tableView.reloadData()
         }
     }
-    
+
     private func displayCaptionTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableAttributedTextRow
         let hint = NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings.")
-        
+
         pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { [weak self] value in
             guard let `self` = self else {
                 return
             }
-            
+
             self.caption = value
             self.tableView.reloadData()
         }
@@ -146,12 +146,12 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayLinkTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Link", comment: "Hint for image link on image settings.")
-        
+
         pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { [weak self] value in
             guard let `self` = self else {
                 return
             }
-            
+
             self.linkURL = URL(string: value)
             self.tableView.reloadData()
         }
@@ -249,7 +249,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         navigationController?.pushViewController(controller, animated: true)
     }
-    
+
     private func pushSettingsController(for row: EditableAttributedTextRow,
                                         hint: String? = nil,
                                         settingsTextMode: SettingsTextModes,
@@ -261,7 +261,7 @@ class AztecAttachmentViewController: UITableViewController {
         controller.title = title
         controller.mode = settingsTextMode
         controller.onAttributedValueChanged = onValueChanged
-        
+
         navigationController?.pushViewController(controller, animated: true)
     }
 }
