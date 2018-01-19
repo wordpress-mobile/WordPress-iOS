@@ -3,10 +3,15 @@ import XCTest
 
 class MySitesScreen: BaseScreen {
     let tabBar: TabNavComponent
-    init() {
-        let navBar = XCUIApplication().navigationBars.element(boundBy: 0)
-        tabBar = TabNavComponent.init()
 
-        super.init(element: navBar)
+    init() {
+        tabBar = TabNavComponent()
+        let blogsTable = XCUIApplication().tables["Blogs"]
+
+        super.init(element: blogsTable)
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().tables["Blogs"].exists
     }
 }

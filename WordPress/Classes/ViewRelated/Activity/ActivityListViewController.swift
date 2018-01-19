@@ -114,6 +114,14 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
 }
 
+// MARK: - UITableViewDelegate
+
+extension ActivityListViewController {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+}
+
 // MARK: - WPNoResultsViewDelegate
 
 extension ActivityListViewController: WPNoResultsViewDelegate {
@@ -136,8 +144,9 @@ extension ActivityListViewController: ActivityRewindPresenter {
         let title = NSLocalizedString("Rewind Site",
                                       comment: "Title displayed in the Rewind Site alert, should match Calypso")
         let rewindDate = activity.published.mediumStringWithUTCTime()
-        let message = NSLocalizedString("Are you sure you want to rewind your site back to \(rewindDate)\nThis will remove all content and options created or changed since then.",
-                                        comment: "Mesage displayed in the Rewind Site alert, the palceholder holds a date, should match Calypso.")
+        let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
+                                              comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
+        let message = String(format: messageFormat, rewindDate)
 
         let alertController = UIAlertController(title: title,
                                                 message: message,

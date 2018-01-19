@@ -93,6 +93,22 @@ extension WordPressAppDelegate {
 
         return WPTabBarController.sharedInstance().currentlySelectedScreen()
     }
+
+    @objc var isWelcomeScreenVisible: Bool {
+        get {
+            guard let presentedViewController = window.rootViewController?.presentedViewController as? UINavigationController else {
+                return false
+            }
+
+            guard let visibleViewController = presentedViewController.visibleViewController else {
+                return false
+            }
+
+            return visibleViewController is NUXAbstractViewController
+                || visibleViewController is LoginPrologueViewController
+                || visibleViewController is NUXViewControllerBase
+        }
+    }
 }
 
 // MARK: - Debugging

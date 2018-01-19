@@ -9,12 +9,10 @@ protocol LoginSocialErrorViewControllerDelegate {
 }
 
 /// ViewController for presenting recovery options when social login fails
-class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHelpViewController {
+class LoginSocialErrorViewController: NUXTableViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
     fileprivate var restrictToWPCom = false
-    var helpBadge: WPNUXHelpBadgeLabel!
-    var helpButton: UIButton!
     @objc var delegate: LoginSocialErrorViewControllerDelegate?
     @objc var handler: ImmuTableViewHandler!
 
@@ -43,9 +41,6 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
         super.viewDidLoad()
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
-        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
-        helpButton = helpButtonResult
-        helpBadge = helpBadgeResult
         addWordPressLogoToNavController()
 
         ImmuTable.registerRows([
@@ -98,19 +93,6 @@ class LoginSocialErrorViewController: UITableViewController, LoginWithLogoAndHel
         return { [weak self] _ in
             self?.delegate?.retryAsSignup()
         }
-    }
-
-
-    // MARK: - LoginWithLogoAndHelpViewController methods
-
-    func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComLogin)
-    }
-
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
-        helpBadge.text = "\(count)"
-        helpBadge.isHidden = (count == 0)
     }
 }
 

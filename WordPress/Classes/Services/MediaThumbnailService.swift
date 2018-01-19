@@ -75,7 +75,7 @@ class MediaThumbnailService: LocalCoreDataService {
             let attemptDownloadingThumbnail: () -> Void = {
                 self.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
                     guard let image = image else {
-                        onCompletion(nil)
+                        onError?(MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
                         return
                     }
                     self.exportQueue.async {

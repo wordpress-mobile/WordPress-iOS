@@ -52,10 +52,10 @@ target 'WordPress' do
   # WordPress components
   # --------------------
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.1'
-  pod 'Gridicons', '0.13'
+  pod 'Gridicons', '0.14'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.25'
-  pod 'WordPress-Aztec-iOS', '1.0.0-beta.16'
+  pod 'WPMediaPicker', '0.26'
+  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.17'
 
   target 'WordPressTest' do
     inherit! :search_paths

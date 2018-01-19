@@ -4,6 +4,7 @@ import Alamofire
 public struct PluginDirectoryGetInformationEndpoint: Endpoint {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "YYYY-MM-dd h:mma z"
         return formatter
     }()
@@ -24,7 +25,7 @@ public struct PluginDirectoryGetInformationEndpoint: Endpoint {
             .appendingPathComponent(slug)
             .appendingPathExtension("json")
         let request = URLRequest(url: url)
-        let encodedRequest = try URLEncoding.default.encode(request, with: ["fields": "icons"])
+        let encodedRequest = try URLEncoding.default.encode(request, with: ["fields": "icons,banners"])
         return encodedRequest
     }
 

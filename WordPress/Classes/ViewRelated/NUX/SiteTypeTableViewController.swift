@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpViewController {
+class SiteTypeTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
@@ -28,7 +28,6 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
                                            target: self,
                                            action: #selector(handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
-        _ = addHelpButtonToNavController()
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
     }
 
@@ -98,7 +97,7 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        guard let themeVC = segue.destination as? ThemeSelectionViewController else {
+        guard let themeVC = segue.destination as? SiteCreationThemeSelectionViewController else {
             return
         }
 
@@ -108,15 +107,6 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
 
         themeVC.siteType = tableRow.siteType
     }
-
-    // MARK: - LoginWithLogoAndHelpViewController methods
-
-    func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComCreateSiteCategory)
-    }
-
-    // this VC isn't setup to handle the badge count. Should be fixed when NUXAbstractViewController and LoginViewController are refactored
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) { }
 
     // MARK: - Misc
 

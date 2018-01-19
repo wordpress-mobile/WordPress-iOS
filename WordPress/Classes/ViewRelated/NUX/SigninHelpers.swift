@@ -36,7 +36,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? LoginEmailViewController else {
             return
         }
         controller.restrictToWPCom = true
@@ -58,7 +58,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? LoginSiteAddressViewController else {
             return
         }
 
@@ -77,7 +77,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "wpcomPassword") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "LoginWPcomPassword") as? LoginWPComViewController else {
             fatalError("unable to create wpcom password screen")
         }
 
@@ -132,8 +132,8 @@ import WordPressShared
             }
         }
 
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let loginController = storyboard.instantiateViewController(withIdentifier: "loginLinkAuth") as? LoginLinkAuthViewController else {
+        let storyboard = UIStoryboard(name: "EmailMagicLink", bundle: nil)
+        guard let loginController = storyboard.instantiateViewController(withIdentifier: "LinkAuthView") as? NUXLinkAuthViewController else {
             DDLogInfo("App opened with authentication link but couldn't create login screen.")
             return false
         }
@@ -182,20 +182,6 @@ import WordPressShared
             presenter = presented
         }
         return presenter
-    }
-
-
-    /// Check if the specified controller was presented from the application's root vc.
-    ///
-    /// - Parameter controller: A UIViewController
-    ///
-    /// - Return: True if presented from the root vc.
-    ///
-    @objc class func controllerWasPresentedFromRootViewController(_ controller: UIViewController) -> Bool {
-        guard let presentingViewController = controller.presentingViewController else {
-            return false
-        }
-        return presentingViewController == UIApplication.shared.keyWindow?.rootViewController
     }
 
 

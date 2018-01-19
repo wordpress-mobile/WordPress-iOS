@@ -10,7 +10,6 @@ class LoginLinkRequestViewController: LoginViewController {
     @IBOutlet var label: UILabel?
     @IBOutlet var sendLinkButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
-
     override var sourceTag: SupportSourceTag {
         get {
             return .loginMagicLink
@@ -44,8 +43,6 @@ class LoginLinkRequestViewController: LoginViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
-               "Only present parts of the magic link signin flow from the application's root vc.")
         WPAppAnalytics.track(.loginMagicLinkRequestFormViewed)
     }
 
@@ -80,6 +77,9 @@ class LoginLinkRequestViewController: LoginViewController {
     /// Makes the call to request a magic authentication link be emailed to the user.
     ///
     @objc func requestAuthenticationLink() {
+
+        loginFields.meta.emailMagicLinkSource = .login
+
         let email = loginFields.username
         guard email.isValidEmail() else {
             // This is a bit of paranioa as in practice it should never happen.
