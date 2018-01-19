@@ -78,6 +78,10 @@ public class Activity {
         return self.name == ActivityName.fullBackup
     }()
 
+    public lazy var publishedDateUTCWithoutTime: String = {
+        return self.published.longUTCStringWithoutTime()
+    }()
+
 }
 
 private extension Activity {
