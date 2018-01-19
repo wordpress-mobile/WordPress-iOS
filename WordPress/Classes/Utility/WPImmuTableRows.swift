@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import Gridicons
 
 
 struct NavigationItemRow: ImmuTableRow {
@@ -104,16 +105,28 @@ struct CheckmarkRow: ImmuTableRow {
 
         WPStyleGuide.configureTableViewCell(cell)
     }
+
 }
 
 struct LinkRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPExternalLinkCell.self)
+    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let title: String
     let action: ImmuTableAction?
 
+    private static let imageSize = CGSize(width: 20, height: 20)
+    private var accessoryImageView: UIImageView {
+        let image = Gridicon.iconOfType(.external, withSize: LinkRow.imageSize)
+
+        let imageView = UIImageView(image: image)
+        imageView.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
+
+        return imageView
+    }
+
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
+        cell.accessoryView = accessoryImageView
 
         WPStyleGuide.configureTableViewCell(cell)
     }
