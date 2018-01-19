@@ -68,6 +68,7 @@ class NoticePresenter: NSObject {
             }
 
             self.animatePresentation(fromState: {}, toState: fromState, completion: {
+                noticeContainerView.removeFromSuperview()
                 self.dismiss()
             })
         }
