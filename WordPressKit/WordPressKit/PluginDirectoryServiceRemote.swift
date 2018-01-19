@@ -27,7 +27,7 @@ public enum PluginDirectoryFeedType {
     case newest
     case search(term: String)
 
-    public var feedName: String {
+    public var slug: String {
         switch self {
         case .popular:
             return "popular"
