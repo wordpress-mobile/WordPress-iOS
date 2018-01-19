@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		40AB1ADA200FED25009B533D /* PluginDirectoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB1AD9200FED25009B533D /* PluginDirectoryResponse.swift */; };
+		40AB1ADA200FED25009B533D /* PluginDirectoryFeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB1AD9200FED25009B533D /* PluginDirectoryFeedPage.swift */; };
 		40F88F601F85723500AE3FAF /* auth-send-verification-email-already-verified-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 40F88F5F1F85723400AE3FAF /* auth-send-verification-email-already-verified-failure.json */; };
 		40F88F621F85799A00AE3FAF /* auth-send-verification-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 40F88F611F85799A00AE3FAF /* auth-send-verification-email-success.json */; };
 		7403A2E41EF06ED500DED7DC /* AccountSettingsRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403A2E31EF06ED500DED7DC /* AccountSettingsRemote.swift */; };
@@ -378,7 +378,7 @@
 
 /* Begin PBXFileReference section */
 		374CA122F886DCBD6C042B3E /* Pods-WordPressKitTests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-alpha.xcconfig"; sourceTree = "<group>"; };
-		40AB1AD9200FED25009B533D /* PluginDirectoryResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryResponse.swift; sourceTree = "<group>"; };
+		40AB1AD9200FED25009B533D /* PluginDirectoryFeedPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryFeedPage.swift; sourceTree = "<group>"; };
 		40F88F5F1F85723400AE3FAF /* auth-send-verification-email-already-verified-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-verification-email-already-verified-failure.json"; sourceTree = "<group>"; };
 		40F88F611F85799A00AE3FAF /* auth-send-verification-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-verification-email-success.json"; sourceTree = "<group>"; };
 		5B78E5816A82E3614ACCD7A7 /* Pods-WordPressKitTests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-internal.xcconfig"; sourceTree = "<group>"; };
@@ -1400,7 +1400,7 @@
 		E1EF5D5E1F9F3CA700B6D53E /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				40AB1AD9200FED25009B533D /* PluginDirectoryResponse.swift */,
+				40AB1AD9200FED25009B533D /* PluginDirectoryFeedPage.swift */,
 				E194CB721FBDEF6400B0A8B8 /* PluginState.swift */,
 				E1EF5D5C1F9F329900B6D53E /* SitePluginCapabilities.swift */,
 				E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */,
@@ -1904,7 +1904,7 @@
 				93188D1F1F2262BF0028ED4D /* RemotePostTag.m in Sources */,
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
 				74D67F081F15BEB70010C5ED /* RemotePerson.swift in Sources */,
-				40AB1ADA200FED25009B533D /* PluginDirectoryResponse.swift in Sources */,
+				40AB1ADA200FED25009B533D /* PluginDirectoryFeedPage.swift in Sources */,
 				74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */,
 				E182BF6A1FD961810001D850 /* Endpoint.swift in Sources */,
 				74BA04F41F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m in Sources */,

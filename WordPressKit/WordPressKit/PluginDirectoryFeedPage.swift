@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PluginDirectoryResponse: Decodable, Equatable {
+public struct PluginDirectoryFeedPage: Decodable, Equatable {
     public let pageMetadata: PluginDirectoryPageMetadata
     public let plugins: [PluginDirectoryEntry]
 
@@ -24,7 +24,7 @@ public struct PluginDirectoryResponse: Decodable, Equatable {
         pageMetadata = PluginDirectoryPageMetadata(page: pageNumber, pluginSlugs: plugins.map { $0.slug} )
     }
 
-    public static func ==(lhs: PluginDirectoryResponse, rhs: PluginDirectoryResponse) -> Bool {
+    public static func ==(lhs: PluginDirectoryFeedPage, rhs: PluginDirectoryFeedPage) -> Bool {
         return lhs.pageMetadata == rhs.pageMetadata
             && lhs.plugins == rhs.plugins
     }
@@ -41,3 +41,5 @@ public struct PluginDirectoryPageMetadata: Equatable {
             && lhs.pluginSlugs == rhs.pluginSlugs
     }
 }
+
+
