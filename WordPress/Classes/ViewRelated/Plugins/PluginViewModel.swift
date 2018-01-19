@@ -47,7 +47,7 @@ class PluginViewModel: Observable {
                 title: message,
                 subtitle: subtitle,
                 actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
-                action: { [unowned self] (_) in
+                onButtonTap: { [unowned self] (_) in
                     ActionDispatcher.dispatch(PluginAction.update(id: self.plugin.id, site: self.site))
                 }
             )
