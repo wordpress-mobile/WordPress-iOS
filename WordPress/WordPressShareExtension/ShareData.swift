@@ -25,7 +25,7 @@ class ShareData: NSObject {
     ///
     var postStatus = "publish"
 
-    /// Array of ID's and images
+    /// Dictionary of URLs mapped to attachment ID's
     ///
-    var sharedImageDict = [String: URL]()
+    var sharedImageDict = [URL: String]()
 }
