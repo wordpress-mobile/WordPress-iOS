@@ -22,7 +22,6 @@ class ExpandableCell: WPReusableTableViewCell {
     @IBOutlet var expandedTextLabel: TTTAttributedLabel?
     @IBOutlet var chevronImageView: UIImageView?
 
-    public var expandedText: NSAttributedString?
     public var urlCallback: ((URL) -> Void)?
 
     public var expanded: Bool = false {
@@ -30,16 +29,19 @@ class ExpandableCell: WPReusableTableViewCell {
             self.expandedTextLabel?.isHidden = !self.expanded
 
             let transform: CGAffineTransform
+            let alpha: CGFloat
+
             if self.expanded {
-                self.expandedTextLabel?.setText(self.expandedText)
                 transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                alpha = 1
             } else {
-                self.expandedTextLabel?.setText(nil)
                 transform =  CGAffineTransform.identity
+                alpha = 0
             }
 
             UIView.animate(withDuration: 0.2) { [unowned self] in
                 self.chevronImageView?.transform = transform
+                self.expandedTextLabel?.alpha = alpha
             }
         }
     }
