@@ -9,7 +9,7 @@ public struct PluginDirectoryEntry: Equatable {
     public let icon: URL?
     public let banner: URL?
 
-    public let author: String?
+    public let author: String
     public let authorURL: URL?
 
     private let descriptionHTML: String?
@@ -80,10 +80,10 @@ extension PluginDirectoryEntry: Decodable {
             banner = nil
         }
 
-        let extractedAuthor = extractAuthor(try? container.decode(String.self, forKey: .author))
+        let extractedAuthor = extractAuthor(try container.decode(String.self, forKey: .author))
 
-        author = extractedAuthor?.name
-        authorURL = extractedAuthor?.link
+        author = extractedAuthor.name
+        authorURL = extractedAuthor.link
 
         let sections = try? container.nestedContainer(keyedBy: SectionKeys.self, forKey: .sections)
 
@@ -98,9 +98,9 @@ extension PluginDirectoryEntry: Decodable {
 
 // Since the WPOrg API returns `author` as a HTML string (or freeform text), we need to get ugly and parse out the important bits out of it ourselves.
 typealias Author = (name: String, link: URL?)
-private func extractAuthor(_ string: String?) -> Author? {
+private func extractAuthor(_ string: String) -> Author {
     guard let attributedString = extractHTMLText(string) else {
-        return nil
+        return (name: string, link: nil)
     }
 
     let authorName = attributedString.string

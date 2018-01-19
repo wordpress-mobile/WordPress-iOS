@@ -17,7 +17,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
         nameLabel?.text = directoryEntry.name
 
-        let author = directoryEntry.author!
+        let author = directoryEntry.author
 
         let defaultAttributes: [NSAttributedStringKey: Any] = [.foregroundColor: WPStyleGuide.darkGrey()]
 
