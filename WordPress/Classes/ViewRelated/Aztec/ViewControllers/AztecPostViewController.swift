@@ -2880,7 +2880,7 @@ extension AztecPostViewController {
 
         WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
 
-        if let attachmentError = error, let uploadID = attachment.uploadID{
+        if let attachmentError = error, let uploadID = attachment.uploadID {
             errorsForAttachmentUploads[uploadID] = attachmentError
         }
 
@@ -3010,8 +3010,7 @@ extension AztecPostViewController {
         }
         if let mediaUploadID = attachment.uploadID,
            let media = mediaCoordinator.media(withObjectID: mediaUploadID),
-           let error = errorsForAttachmentUploads[media.uploadID]
-        {
+           let error = errorsForAttachmentUploads[media.uploadID] {
             showDefaultActions = false
             message = error.localizedDescription
             alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
