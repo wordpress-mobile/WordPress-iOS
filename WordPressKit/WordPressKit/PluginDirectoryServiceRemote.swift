@@ -107,8 +107,8 @@ public struct PluginDirectoryFeedEndpoint: Endpoint {
         return encodedRequest
     }
 
-    public func parseResponse(data: Data) throws -> PluginDirectoryResponse {
-        return try PluginDirectoryRemoteConstants.jsonDecoder.decode(PluginDirectoryResponse.self, from: data)
+    public func parseResponse(data: Data) throws -> PluginDirectoryFeedPage {
+        return try PluginDirectoryRemoteConstants.jsonDecoder.decode(PluginDirectoryFeedPage.self, from: data)
     }
 
    public func validate(request: URLRequest?, response: HTTPURLResponse, data: Data?) throws {
@@ -123,7 +123,7 @@ public struct PluginDirectoryServiceRemote {
 
     public func getPluginFeed(_ feedType: PluginDirectoryFeedType,
                               pageNumber: Int = 1,
-                              completion: @escaping (Result<PluginDirectoryResponse>) -> Void) {
+                              completion: @escaping (Result<PluginDirectoryFeedPage>) -> Void) {
         PluginDirectoryFeedEndpoint(feedType: feedType, pageNumber: pageNumber).request(completion: completion)
     }
 

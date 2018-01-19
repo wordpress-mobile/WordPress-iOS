@@ -13,7 +13,7 @@ enum PluginAction: Action {
     case receivePluginsFailed(site: JetpackSiteRef, error: Error)
     case receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry)
     case receivePluginDirectoryEntryFailed(slug: String, error: Error)
-    case receivePluginDirectoryFeed(feed: PluginDirectoryFeedType, response: PluginDirectoryResponse)
+    case receivePluginDirectoryFeed(feed: PluginDirectoryFeedType, response: PluginDirectoryFeedPage)
     case receivePluginDirectoryFeedFailed(feed: PluginDirectoryFeedType, error: Error)
 }
 
@@ -525,7 +525,7 @@ private extension PluginStore {
         }
     }
 
-    func receivePluginDirectoryFeed(feed: PluginDirectoryFeedType, response: PluginDirectoryResponse) {
+    func receivePluginDirectoryFeed(feed: PluginDirectoryFeedType, response: PluginDirectoryFeedPage) {
         let zippedPlugins = zip(response.pageMetadata.pluginSlugs, response.plugins.map { PluginDirectoryEntryState.partial($0)})
         let plugins = Dictionary(uniqueKeysWithValues: zippedPlugins)
 
