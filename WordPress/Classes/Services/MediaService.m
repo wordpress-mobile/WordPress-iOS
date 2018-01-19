@@ -66,7 +66,9 @@
         media.mediaType = exportable.assetMediaType;
         media.remoteStatus = MediaRemoteStatusProcessing;
         [self.managedObjectContext save: nil];
+    }];
 
+    [self.managedObjectContext performBlock:^{
         // Setup completion handlers
         void(^completionWithMedia)(Media *) = ^(Media *media) {
             // Pre-generate a thumbnail image, see the method notes.
