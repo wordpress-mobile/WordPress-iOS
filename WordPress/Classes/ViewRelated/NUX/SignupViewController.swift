@@ -320,7 +320,7 @@ import WordPressShared
     ///
     @objc func signinFormVerticalOffset() -> CGFloat {
         if shouldAdjustLayoutForSmallScreen() {
-            return DefaultSigninFormVerticalOffset
+            return NUXKeyboardDefaultFormVerticalOffset
         }
         return -24.0
     }
