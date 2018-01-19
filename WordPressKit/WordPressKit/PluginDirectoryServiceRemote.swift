@@ -48,26 +48,28 @@ public struct PluginDirectoryGetInformationEndpoint: Endpoint {
     }
 }
 
+public enum PluginDirectoryFeedType {
+    case popular
+    case newest
+    case search(term: String)
+
+    public var feedName: String {
+        switch self {
+        case .popular:
+            return "popular"
+        case .newest:
+            return "newest"
+        case .search(let term):
+            return "search:\(term)"
+        }
+    }
+
+}
+
 public struct PluginDirectoryFeedEndpoint: Endpoint {
     private let pluginsPerPage = 50
 
-    public enum FeedType {
-        case popular
-        case newest
-        case search(term: String)
 
-        public var feedName: String {
-            switch self {
-            case .popular:
-                return "popular"
-            case .newest:
-                return "newest"
-            case .search(let term):
-                return "search:\(term)"
-            }
-        }
-
-    }
 
     public enum Error: Swift.Error {
         case genericError
@@ -80,7 +82,7 @@ public struct PluginDirectoryFeedEndpoint: Endpoint {
         return formatter
     }()
 
-    let feedType: FeedType
+    let feedType: PluginDirectoryFeedType
     let pageNumber: Int
 
     public func buildRequest() throws -> URLRequest {
@@ -125,7 +127,7 @@ public struct PluginDirectoryServiceRemote {
 
     public init() {}
 
-    public func getPluginFeed(_ feedType: PluginDirectoryFeedEndpoint.FeedType,
+    public func getPluginFeed(_ feedType: PluginDirectoryFeedType,
                               pageNumber: Int = 1,
                               completion: @escaping (Result<PluginDirectoryResponse>) -> Void) {
         PluginDirectoryFeedEndpoint(feedType: feedType, pageNumber: pageNumber).request(completion: completion)
