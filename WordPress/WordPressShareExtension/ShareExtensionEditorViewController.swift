@@ -975,7 +975,6 @@ extension ShareExtensionEditorViewController {
         attachment.size = .full
         attachment.uploadID = url.lastPathComponent // Use the filename as the uploadID here.
         richTextView.refresh(attachment)
-        shareData.sharedImageDict[attachment.identifier] = url
     }
 }
 
@@ -1088,6 +1087,10 @@ extension ShareExtensionEditorViewController: TextViewAttachmentDelegate {
             failure()
             return
         }
+
+        if let mediaAttachment = attachment as? MediaAttachment {
+            shareData.sharedImageDict.updateValue(mediaAttachment.identifier, forKey: url)
+        }
         success(image)
     }
 
@@ -1097,11 +1100,15 @@ extension ShareExtensionEditorViewController: TextViewAttachmentDelegate {
 
     func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
         // Remove the temp media file associated with the deleted attachment
-        guard let tempMediaFileURL = shareData.sharedImageDict[attachmentID], !tempMediaFileURL.pathExtension.isEmpty else {
+        guard let keys = (shareData.sharedImageDict as NSDictionary).allKeys(for: attachmentID) as? [URL], !keys.isEmpty else {
             return
         }
-        ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
-        shareData.sharedImageDict.removeValue(forKey: attachmentID)
+        keys.forEach { tempMediaFileURL in
+            if !tempMediaFileURL.pathExtension.isEmpty {
+                ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
+                shareData.sharedImageDict.removeValue(forKey: tempMediaFileURL)
+            }
+        }
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
