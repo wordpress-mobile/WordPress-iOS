@@ -25,14 +25,14 @@ enum PluginQuery {
         switch self {
         case .all(let site):
             return site
-        case .feed(_):
+        case .feed:
             return nil
         }
     }
 
     var feedType: PluginDirectoryFeedType? {
         switch self {
-        case .all(_):
+        case .all:
             return nil
         case .feed(let feedType):
             return feedType
@@ -159,7 +159,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
                 guard case .feed(let feedType) = query else { return nil }
                 return feedType
             }
-            .unique(by: \PluginDirectoryFeedType.feedName)
+            .unique(by: \PluginDirectoryFeedType.slug)
             .filter { shouldFetchDirectory(feed: $0) }
 
         feedsToFetch
@@ -230,7 +230,7 @@ extension PluginStore {
     }
 
     func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry] {
-        guard let fetchedFeed = state.directoryFeeds[feed.feedName] else { return [] }
+        guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return [] }
         let directoryEntries = fetchedFeed.pluginSlugs.flatMap { getPluginDirectoryEntry(slug: $0) }
 
         return directoryEntries
@@ -251,9 +251,9 @@ extension PluginStore {
     }
 
     func shouldFetchDirectory(feed: PluginDirectoryFeedType) -> Bool {
-        let lastFetch = state.lastDirectoryFeedFetch[feed.feedName, default: .distantPast]
+        let lastFetch = state.lastDirectoryFeedFetch[feed.slug, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let isFetching = state.fetchingDirectoryFeed[feed.feedName, default: false]
+        let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
         return needsRefresh && !isFetching
     }
 }
@@ -512,7 +512,7 @@ private extension PluginStore {
     }
 
     func fetchPluginDirectoryFeed(feed: PluginDirectoryFeedType) {
-        state.fetchingDirectoryFeed[feed.feedName] = true
+        state.fetchingDirectoryFeed[feed.slug] = true
 
         let remote = PluginDirectoryServiceRemote()
         remote.getPluginFeed(feed) { [actionDispatcher] result in
@@ -530,17 +530,17 @@ private extension PluginStore {
         let plugins = Dictionary(uniqueKeysWithValues: zippedPlugins)
 
         transaction { (state) in
-            state.fetchingDirectoryFeed[feed.feedName] = false
-            state.directoryFeeds[feed.feedName] = response.pageMetadata
-            state.lastDirectoryFeedFetch[feed.feedName] = Date()
+            state.fetchingDirectoryFeed[feed.slug] = false
+            state.directoryFeeds[feed.slug] = response.pageMetadata
+            state.lastDirectoryFeedFetch[feed.slug] = Date()
             state.directoryEntries.merge(plugins) { PluginDirectoryEntryState.moreSpecific($0, $1) }
         }
     }
 
     func receivePluginDirectoryFeedFailed(feed: PluginDirectoryFeedType, error: Error) {
         transaction { state in
-            state.fetchingDirectoryFeed[feed.feedName] = false
-            state.lastDirectoryFeedFetch[feed.feedName] = Date()
+            state.fetchingDirectoryFeed[feed.slug] = false
+            state.lastDirectoryFeedFetch[feed.slug] = Date()
         }
     }
 
