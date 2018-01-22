@@ -350,24 +350,26 @@ extension SiteTagsViewController {
     }
 
     private func existingTagForData(_ data: SettingsTitleSubtitleController.Content) -> PostTag? {
-        if let title = data.title {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
-            request.predicate = NSPredicate(format: "blog.blogID = %@ AND name = %@", blog.dotComID!, title)
-            request.fetchLimit = 1
-            guard let results = (try? context.fetch(request)) as? [PostTag] else {
-                return nil
-            }
-            return results.first
-        } else {
+        guard let title = data.title else {
             return nil
         }
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
+        request.predicate = NSPredicate(format: "blog.blogID = %@ AND name = %@", blog.dotComID!, title)
+        request.fetchLimit = 1
+        guard let results = (try? context.fetch(request)) as? [PostTag] else {
+            return nil
+        }
+        return results.first
     }
 
     fileprivate func displayAlertForExistingTag(_ tag: PostTag) {
-        let title =  NSLocalizedString("Name already exists",
+        let title =  NSLocalizedString("Tag already exists",
                                        comment: "Title of the alert indicating that a tag with that name already exists.")
-        let message = NSLocalizedString("A tag with that name already exists, please choose a different one.",
-                                        comment: "Message of the alert indicating that a tag with that name already exists.")
+        let tagName = tag.name ?? ""
+        let message = String(format: NSLocalizedString("A tag named '%@' already exists.",
+                                                       comment: "Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag"),
+                             tagName)
+
         let acceptTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(acceptTitle)
