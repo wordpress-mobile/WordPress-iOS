@@ -34,7 +34,7 @@ class JetpackLoginViewController: UIViewController {
         guard let jetpack = blog.jetpack else {
             return false
         }
-        return (jetpack.isInstalled && jetpack.isUpdatedToRequiredVersion)
+        return (jetpack.isConnected && jetpack.isUpdatedToRequiredVersion)
     }
 
     // MARK: - Initializers
@@ -148,7 +148,7 @@ class JetpackLoginViewController: UIViewController {
 
         var message: String
 
-        if jetPack.isInstalled {
+        if jetPack.isConnected {
             if jetPack.isUpdatedToRequiredVersion {
                 message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! \n" +
                                             "Log in with your WordPress.com credentials to enable " +
