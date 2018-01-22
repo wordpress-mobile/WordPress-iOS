@@ -1,11 +1,10 @@
 import UIKit
 
-class LoginSiteAddressViewController: LoginViewController, SigninKeyboardResponder {
+class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
-
     override var sourceTag: SupportSourceTag {
         get {
             return .loginSiteAddress
