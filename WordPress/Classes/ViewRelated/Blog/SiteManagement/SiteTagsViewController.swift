@@ -286,10 +286,12 @@ extension SiteTagsViewController {
     fileprivate func navigate(to tag: PostTag?) {
         let titleSectionHeader = NSLocalizedString("Tag", comment: "Section header for tag name in Tag Details View.")
         let subtitleSectionHeader = NSLocalizedString("Description", comment: "Section header for tag name in Tag Details View.")
+        let titleErrorFooter = NSLocalizedString("Name Required", comment: "Error to be displayed when a tag is empty")
         let content = SettingsTitleSubtitleController.Content(title: tag?.name,
                                                               subtitle: tag?.tagDescription,
                                                               titleHeader: titleSectionHeader,
-                                                              subtitleHeader: subtitleSectionHeader)
+                                                              subtitleHeader: subtitleSectionHeader,
+                                                              titleErrorFooter: titleErrorFooter)
         let confirmationContent = confirmation()
         let tagDetailsView = SettingsTitleSubtitleController(content: content, confirmation: confirmationContent)
 
