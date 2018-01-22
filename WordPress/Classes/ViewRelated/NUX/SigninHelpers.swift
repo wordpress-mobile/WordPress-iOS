@@ -36,7 +36,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? LoginEmailViewController else {
             return
         }
         controller.restrictToWPCom = true
@@ -58,7 +58,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? LoginSiteAddressViewController else {
             return
         }
 
@@ -77,7 +77,7 @@ import WordPressShared
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "LoginWPcomPassword") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "LoginWPcomPassword") as? LoginWPComViewController else {
             fatalError("unable to create wpcom password screen")
         }
 

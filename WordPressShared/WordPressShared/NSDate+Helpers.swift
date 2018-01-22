@@ -44,6 +44,14 @@ extension Date {
             return formatter
         }()
 
+        static let longUTCDate: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .long
+            formatter.timeStyle = .none
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return formatter
+        }()
+
         static let shortDateTime: DateFormatter = {
             let formatter = DateFormatter()
             formatter.doesRelativeDateFormatting = true
@@ -126,6 +134,14 @@ extension Date {
     ///
     public func mediumStringWithTime() -> String {
         return DateFormatters.mediumDateTime.string(from: self)
+    }
+
+    /// Formats the current date as (non relative) long date (no time) in UTC.
+    ///
+    /// - Example: January 6th, 2018
+    ///
+    public func longUTCStringWithoutTime() -> String {
+        return DateFormatters.longUTCDate.string(from: self)
     }
 
     /// Formats the current date as (non relattive) medium date/time in UTC.
