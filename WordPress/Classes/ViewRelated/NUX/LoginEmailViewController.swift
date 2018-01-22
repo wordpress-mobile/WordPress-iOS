@@ -3,7 +3,7 @@ import GoogleSignIn
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
-class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
+class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
@@ -11,6 +11,11 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
     @IBOutlet var inputStack: UIStackView?
     @objc var onePasswordButton: UIButton!
     @objc var googleLoginButton: UIButton?
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .loginEmail
+        }
+    }
 
     @objc var didFindSafariSharedCredentials = false
     @objc var didRequestSafariSharedCredentials = false
@@ -20,12 +25,6 @@ class LoginEmailViewController: LoginViewController, SigninKeyboardResponder {
             if isViewLoaded {
                 configureForWPComOnlyIfNeeded()
             }
-        }
-    }
-
-    override var sourceTag: SupportSourceTag {
-        get {
-            return .loginEmail
         }
     }
 
@@ -454,7 +453,7 @@ extension LoginEmailViewController {
         loginFields.username = email
         loginFields.emailAddress = email
 
-        performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.showWPComLogin, sender: self)
+        performSegue(withIdentifier: .showWPComLogin, sender: self)
         WPAppAnalytics.track(.loginSocialAccountsNeedConnecting)
         configureViewLoading(false)
     }
@@ -464,7 +463,7 @@ extension LoginEmailViewController {
         loginFields.nonceInfo = nonceInfo
         loginFields.nonceUserID = userID
 
-        performSegue(withIdentifier: NUXAbstractViewController.SegueIdentifier.show2FA, sender: self)
+        performSegue(withIdentifier: .show2FA, sender: self)
         WPAppAnalytics.track(.loginSocial2faNeeded)
         configureViewLoading(false)
     }
