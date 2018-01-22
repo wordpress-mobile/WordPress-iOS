@@ -185,10 +185,14 @@
 - (void)testThatGetTagsWorks
 {
     NSString *url = [self GETtaxonomyURLWithType:@"tags"];
-    
+
+    BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
+        return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"number"] integerValue] == 1000);
+    };
+
     WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
+          parameters:[OCMArg checkWithBlock:parametersCheckBlock]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     

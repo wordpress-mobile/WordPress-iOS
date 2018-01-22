@@ -30,16 +30,14 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
     private var successNotice: Notice {
         guard let blog = blogInContext else {
-            return Notice(title: title)
+            return Notice(title: title, notificationInfo: notificationInfo)
         }
 
         return Notice(title: title,
+                      notificationInfo: notificationInfo,
                       actionTitle: actionTitle,
                       actionHandler: {
-                        let editor = EditPostViewController(blog: blog)
-                        editor.modalPresentationStyle = .fullScreen
-                        WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
-                        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "media_upload_notice"], with: blog)
+                        MediaNoticeNavigationCoordinator.presentEditor(for: blog, source: "media_upload_notice")
         })
     }
 
@@ -52,6 +50,18 @@ struct MediaProgressCoordinatorNoticeViewModel {
                             MediaCoordinator.shared.retryMedia(media)
                         }
         })
+    }
+
+    private var notificationInfo: NoticeNotificationInfo {
+        var userInfo = [String : Any]()
+
+        if let blog = blogInContext {
+            userInfo["blog_id"] = blog.objectID.uriRepresentation().absoluteString
+        }
+
+        return NoticeNotificationInfo(identifier: UUID().uuidString,
+                                      categoryIdentifier: "media-upload-success",
+                                      userInfo: userInfo)
     }
 
     var title: String {
