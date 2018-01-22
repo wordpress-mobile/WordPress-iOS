@@ -315,13 +315,67 @@ extension SiteTagsViewController {
                 return
             }
 
-            tag.name = updatedData.title
-            tag.tagDescription = updatedData.subtitle
+            self?.updateTag(tag, updatedData: updatedData)
 
-            self?.save(tag)
         }
 
         navigationController?.pushViewController(tagDetailsView, animated: true)
+    }
+
+    private func addTag(data: SettingsTitleSubtitleController.Content) {
+        if let existingTag = existingTagForData(data) {
+            displayAlertForExistingTag(existingTag)
+            return
+        }
+        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
+            return
+        }
+
+        newTag.name = data.title
+        newTag.tagDescription = data.subtitle
+
+        save(newTag)
+    }
+
+    private func updateTag(_ tag: PostTag, updatedData: SettingsTitleSubtitleController.Content) {
+        // Lets check that we are not updating a tag to a name that already exists
+        if let existingTag = existingTagForData(updatedData),
+            existingTag != tag {
+            displayAlertForExistingTag(existingTag)
+            return
+        }
+
+        tag.name = updatedData.title
+        tag.tagDescription = updatedData.subtitle
+
+        save(tag)
+    }
+
+    private func existingTagForData(_ data: SettingsTitleSubtitleController.Content) -> PostTag? {
+        guard let title = data.title else {
+            return nil
+        }
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "PostTag")
+        request.predicate = NSPredicate(format: "blog.blogID = %@ AND name = %@", blog.dotComID!, title)
+        request.fetchLimit = 1
+        guard let results = (try? context.fetch(request)) as? [PostTag] else {
+            return nil
+        }
+        return results.first
+    }
+
+    fileprivate func displayAlertForExistingTag(_ tag: PostTag) {
+        let title =  NSLocalizedString("Tag already exists",
+                                       comment: "Title of the alert indicating that a tag with that name already exists.")
+        let tagName = tag.name ?? ""
+        let message = String(format: NSLocalizedString("A tag named '%@' already exists.",
+                                                       comment: "Message of the alert indicating that a tag with that name already exists. The placeholder is the name of the tag"),
+                             tagName)
+
+        let acceptTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(acceptTitle)
+        present(alertController, animated: true, completion: nil)
     }
 
     private func tagWasUpdated(tag: PostTag, updatedTag: SettingsTitleSubtitleController.Content) -> Bool {
@@ -330,17 +384,6 @@ extension SiteTagsViewController {
         }
 
         return true
-    }
-
-    private func addTag(data: SettingsTitleSubtitleController.Content) {
-        guard let newTag = NSEntityDescription.insertNewObject(forEntityName: "PostTag", into: ContextManager.sharedInstance().mainContext) as? PostTag else {
-            return
-        }
-
-        newTag.name = data.title
-        newTag.tagDescription = data.subtitle
-
-        self.save(newTag)
     }
 
     private func confirmation() -> SettingsTitleSubtitleController.Confirmation {
