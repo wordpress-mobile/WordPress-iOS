@@ -65,7 +65,6 @@ final class SettingsTitleSubtitleController: UITableViewController {
             }
         }
 
-        static let footerHeight = CGFloat(34.0)
     }
 
     private lazy var nameCell: WPTableViewCell = {
@@ -269,16 +268,6 @@ extension SettingsTitleSubtitleController {
             return content.titleErrorFooter
         case .description:
             return nil
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let contentSection = Sections.section(for: section)
-        switch contentSection {
-        case .name:
-            return Sections.footerHeight
-        case .description:
-            return 0.0
         }
     }
 
