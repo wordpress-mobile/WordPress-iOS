@@ -1,9 +1,7 @@
 import UIKit
 import SVProgressHUD
 
-class SiteCreationDomainsViewController: UITableViewController {
-    var helpBadge: WPNUXHelpBadgeLabel!
-    var helpButton: UIButton!
+class SiteCreationDomainsViewController: NUXTableViewController {
 
     open var siteName: String?
 
@@ -27,10 +25,6 @@ class SiteCreationDomainsViewController: UITableViewController {
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
-
-        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
-        helpButton = helpButtonResult
-        helpBadge = helpBadgeResult
 
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Title for the site creation flow.")
     }
@@ -90,20 +84,6 @@ class SiteCreationDomainsViewController: UITableViewController {
 
     @objc func handleBackgroundTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
         view.endEditing(true)
-    }
-}
-
-// MARK: - LoginWithLogoAndHelpViewController methods
-
-extension SiteCreationDomainsViewController: LoginWithLogoAndHelpViewController {
-    func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComCreateSiteDomain)
-    }
-
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
-        helpBadge.text = "\(count)"
-        helpBadge.isHidden = (count == 0)
     }
 }
 
