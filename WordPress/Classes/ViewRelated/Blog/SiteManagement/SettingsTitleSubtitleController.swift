@@ -15,12 +15,14 @@ final class SettingsTitleSubtitleController: UITableViewController {
         var subtitle: String?
         var titleHeader: String?
         var subtitleHeader: String?
+        var titleErrorFooter: String?
 
-        init(title: String?, subtitle: String?, titleHeader: String? = nil, subtitleHeader: String? = nil) {
+        init(title: String?, subtitle: String?, titleHeader: String? = nil, subtitleHeader: String? = nil, titleErrorFooter: String? = nil) {
             self.title = title
             self.subtitle = subtitle
             self.titleHeader = titleHeader
             self.subtitleHeader = subtitleHeader
+            self.titleErrorFooter = titleErrorFooter
         }
     }
 
@@ -62,6 +64,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
                 return WPTableViewDefaultRowHeight * 3
             }
         }
+
     }
 
     private lazy var nameCell: WPTableViewCell = {
@@ -258,6 +261,27 @@ extension SettingsTitleSubtitleController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        let contentSection = Sections.section(for: section)
+        switch contentSection {
+        case .name:
+            return content.titleErrorFooter
+        case .description:
+            return nil
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        let contentSection = Sections.section(for: section)
+        if contentSection == .name {
+            if let footer = view as? UITableViewHeaderFooterView {
+                footer.textLabel?.textColor = WPStyleGuide.errorRed()
+            }
+            // By default the footer is hidden, it will be shown if the user leaves the title empty
+            view.isHidden = true
+        }
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let sectionForIndexPath = Sections.section(for: indexPath.section)
         switch sectionForIndexPath {
@@ -280,8 +304,11 @@ extension SettingsTitleSubtitleController {
 extension SettingsTitleSubtitleController {
     @objc
     fileprivate func textChanged(_ textField: UITextField) {
-        content.title = textField.text
+        content.title = textField.text?.trim()
         setupTitle()
+        if let title = content.title {
+            tableView.footerView(forSection: Sections.name.rawValue)?.isHidden = title.count > 0
+        }
     }
 }
 
