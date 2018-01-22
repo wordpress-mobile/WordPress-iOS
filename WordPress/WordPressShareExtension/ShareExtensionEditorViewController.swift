@@ -363,7 +363,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     }
 
     override func updateViewConstraints() {
-
         super.updateViewConstraints()
 
         titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
@@ -509,7 +508,6 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 // MARK: - Format Bar Updating
 
 extension ShareExtensionEditorViewController {
-
     func updateFormatBar() {
         updateFormatBarForVisualMode()
     }
@@ -902,7 +900,6 @@ extension ShareExtensionEditorViewController {
 // MARK: - Actions
 
 extension ShareExtensionEditorViewController {
-
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
         cleanUpSharedContainer()
@@ -960,7 +957,6 @@ extension ShareExtensionEditorViewController {
 // MARK: - Media Helpers
 
 extension ShareExtensionEditorViewController {
-
     func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
         if mediaAttachment is ImageAttachment {
             mediaAttachment.overlayImage = nil
@@ -981,7 +977,6 @@ extension ShareExtensionEditorViewController {
 // MARK: - FormatBarDelegate Conformance
 
 extension ShareExtensionEditorViewController: Aztec.FormatBarDelegate {
-
     func formatBarTouchesBegan(_ formatBar: FormatBar) {
         dismissOptionsViewControllerIfNecessary()
     }
@@ -994,7 +989,6 @@ extension ShareExtensionEditorViewController: Aztec.FormatBarDelegate {
 // MARK: - UIPopoverPresentationControllerDelegate Conformance
 
 extension ShareExtensionEditorViewController: UIPopoverPresentationControllerDelegate {
-
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
@@ -1009,7 +1003,6 @@ extension ShareExtensionEditorViewController: UIPopoverPresentationControllerDel
 // MARK: - UITextViewDelegate Conformance
 
 extension ShareExtensionEditorViewController: UITextViewDelegate {
-
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         switch textView {
         case titleTextField:
@@ -1196,7 +1189,6 @@ private extension ShareExtensionEditorViewController {
 // MARK: - Misc Private helpers
 
 private extension ShareExtensionEditorViewController {
-    
     func loadContent(extensionContext: NSExtensionContext?) {
         guard let extensionContext = extensionContext else {
             return
@@ -1246,7 +1238,6 @@ private extension ShareExtensionEditorViewController {
 // MARK: - Constants
 
 fileprivate extension ShareExtensionEditorViewController {
-
     struct Assets {
         static let defaultMissingImage          = Gridicon.iconOfType(.image)
     }
