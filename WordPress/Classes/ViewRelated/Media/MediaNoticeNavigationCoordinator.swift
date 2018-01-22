@@ -1,5 +1,8 @@
 import UIKit
 
+/// This class simply exists to coordinate the display of various sections of
+/// the app in response to actions taken by the user from Media notifications.
+///
 class MediaNoticeNavigationCoordinator {
     private static let blogIDKey = "blog_id"
 
