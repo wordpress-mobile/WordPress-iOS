@@ -40,7 +40,9 @@ enum ActivityListViewModel {
         case .loading, .error:
             return .Empty
         case .ready(let activities):
-            let rows = activities.map({ activity in
+            let rows = activities.filter({ activity in
+                !activity.isDiscarded
+            }).map({ activity in
                 return ActivityListRow(
                     activity: activity,
                     action: { (row) in
@@ -48,9 +50,17 @@ enum ActivityListViewModel {
                     }
                 )
             })
-            return ImmuTable(sections: [
-                ImmuTableSection(rows: rows)
-            ])
+
+            let publishedDateUTCKeyPath = \ActivityListRow.activity.publishedDateUTCWithoutTime
+            let groupedRows = rows.sortedGroup(keyPath: publishedDateUTCKeyPath)
+
+            let tableSections = groupedRows.map { (date, rows) in
+                return ImmuTableSection(headerText: date,
+                                        optionalRows: rows,
+                                        footerText: nil)
+            }
+
+            return ImmuTable(optionalSections: tableSections)
         }
     }
 }
