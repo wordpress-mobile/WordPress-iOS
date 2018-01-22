@@ -128,7 +128,7 @@ private extension ExtensionPresentationController {
     func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double, force: Bool = false) {
         let presentedFrame = frameOfPresentedViewInContainerView
         let translatedFrame = getTranslationFrame(keyboardFrame: keyboardFrame, presentedFrame: presentedFrame)
-        if (force || translatedFrame != presentedFrame) {
+        if force || translatedFrame != presentedFrame {
             UIView.animate(withDuration: duration, animations: {
                 self.presentedView?.frame = translatedFrame
             })
@@ -146,7 +146,7 @@ private extension ExtensionPresentationController {
         static let bottomKeyboardMarginPortrait: CGFloat = 8.0
         static let bottomKeyboardMarginLandscape: CGFloat = 4.0
     }
-    
+
     struct Appearance {
         static let dimmingViewBGColor = UIColor(white: 0.0, alpha: 0.5)
         static let cornerRadius: CGFloat = 13.0
