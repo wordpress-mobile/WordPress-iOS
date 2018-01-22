@@ -85,7 +85,7 @@ class MediaCoordinator: NSObject {
         return media
     }
 
-    /// Retrie the upload of media that previsouly has failed.
+    /// Retry the upload of a media object that previously has failed.
     ///
     /// - Parameter media: the media object to retry the upload
     ///
