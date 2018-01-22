@@ -4,7 +4,7 @@ import WordPressShared
 /// Part two of the self-hosted sign in flow. A valid site address should be acquired
 /// before presenting this view controller.
 ///
-class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponder {
+class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var siteHeaderView: SiteInfoHeaderView!
     @IBOutlet var siteAddressStackView: UIStackView!
     @IBOutlet var siteAddressLabel: UILabel!
@@ -14,8 +14,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var onePasswordButton: UIButton!
-
-    override var sourceTag: SupportSourceTag {
+    override  var sourceTag: SupportSourceTag {
         get {
             return .loginUsernamePassword
         }
