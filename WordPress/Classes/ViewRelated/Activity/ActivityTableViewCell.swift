@@ -15,13 +15,6 @@ open class ActivityTableViewCell: WPTableViewCell {
         rewindIcon.image = rewindGridicon
     }
 
-    override open func prepareForReuse() {
-        super.prepareForReuse()
-
-        iconImageView?.removeFromSuperview()
-        iconImageView = nil
-    }
-
     // MARK: - Public Methods
 
     open func configureCell(_ activity: Activity) {
@@ -31,11 +24,10 @@ open class ActivityTableViewCell: WPTableViewCell {
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {
-            iconImageView = UIImageView.init(image: iconImage)
-            if let iconImageView = iconImageView {
-                iconBackgroundImageView.addSubview(iconImageView)
-                iconImageView.center = iconBackgroundImageView.center
-            }
+            iconImageView.image = iconImage
+            iconImageView.isHidden = false
+        } else {
+            iconImageView.isHidden = true
         }
         if activity.isDiscarded {
             contentView.backgroundColor = Style.backgroundDiscardedColor()
@@ -51,12 +43,12 @@ open class ActivityTableViewCell: WPTableViewCell {
     // MARK: - Private Properties
 
     fileprivate var activity: Activity?
-    fileprivate var iconImageView: UIImageView?
     fileprivate var rewindGridicon = Gridicon.iconOfType(.history)
 
     // MARK: - IBOutlets
 
     @IBOutlet fileprivate var iconBackgroundImageView: CircularImageView!
+    @IBOutlet fileprivate var iconImageView: UIImageView!
     @IBOutlet fileprivate var contentLabel: UILabel!
     @IBOutlet fileprivate var summaryLabel: UILabel!
     @IBOutlet fileprivate var rewindIcon: UIImageView!
