@@ -2836,6 +2836,7 @@ extension AztecPostViewController {
                 return
             }
             attachment.uploadID = nil
+            attachment.progress = nil
             if let imageAttachment = attachment as? ImageAttachment {
                 if let width = media.width?.intValue {
                     imageAttachment.width = width
@@ -3182,13 +3183,13 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         // Check to see if there is an error associated to the attachment
         var errorAssociatedToAttachment = false
         if let uploadID = attachment.uploadID,
-           self.errorsForAttachmentUploads[uploadID] != nil {
+           errorsForAttachmentUploads[uploadID] != nil {
             errorAssociatedToAttachment = true
         }
         if !errorAssociatedToAttachment {
             // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {
-                self.resetMediaAttachmentOverlay(selectedAttachment)
+                resetMediaAttachmentOverlay(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
 
