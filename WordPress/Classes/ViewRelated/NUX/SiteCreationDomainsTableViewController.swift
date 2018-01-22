@@ -6,7 +6,7 @@ protocol SiteCreationDomainsTableViewControllerDelegate {
     func newSearchStarted()
 }
 
-class SiteCreationDomainsTableViewController: UITableViewController {
+class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     open var siteName: String?
     open var delegate: SiteCreationDomainsTableViewControllerDelegate?
