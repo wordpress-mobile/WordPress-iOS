@@ -267,8 +267,8 @@ class MediaCoordinator: NSObject {
     /// - parameter uuid: The UUID that matches the observer to be removed.
     ///
     func removeObserver(withUUID uuid: UUID) {
-        queue.sync {
-            mediaObservers[uuid] = nil
+        queue.async {
+            self.mediaObservers[uuid] = nil
         }
     }
 
@@ -361,7 +361,7 @@ class MediaCoordinator: NSObject {
     func notifyObserversForMedia(_ media: Media, ofStateChange state: MediaState) {
         queue.async {
             self.observersForMedia(media).forEach({ observer in
-                DispatchQueue.main.sync {
+                DispatchQueue.main.async {
                     if let media = self.mainContext.object(with: media.objectID) as? Media {
                         observer.onUpdate(media, state)
                     }
