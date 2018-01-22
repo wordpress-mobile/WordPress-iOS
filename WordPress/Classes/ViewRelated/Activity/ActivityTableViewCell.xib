@@ -19,38 +19,30 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="73.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dsX-LD-1XZ">
-                        <rect key="frame" x="16" y="14" width="248" height="46"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" userLabel="icon" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="46" height="46"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="46" id="h59-o3-ocT"/>
-                                    <constraint firstAttribute="width" constant="46" id="pBo-eH-W4J"/>
-                                </constraints>
-                            </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe">
-                                <rect key="frame" x="56" y="0.0" width="192" height="46"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDk-1k-6n4">
-                                        <rect key="frame" x="0.0" y="0.0" width="192" height="26"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVX-To-MrZ">
-                                        <rect key="frame" x="0.0" y="28" width="192" height="18"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                            </stackView>
-                        </subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" userLabel="icon" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="10" y="13" width="46" height="46"/>
                         <constraints>
-                            <constraint firstItem="0Gm-n3-CNm" firstAttribute="centerY" secondItem="dsX-LD-1XZ" secondAttribute="centerY" id="QHI-9B-lNu"/>
+                            <constraint firstAttribute="height" constant="46" id="h59-o3-ocT"/>
+                            <constraint firstAttribute="width" constant="46" id="pBo-eH-W4J"/>
                         </constraints>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe">
+                        <rect key="frame" x="64" y="16.5" width="211" height="40.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDk-1k-6n4">
+                                <rect key="frame" x="0.0" y="0.0" width="211" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVX-To-MrZ">
+                                <rect key="frame" x="0.0" y="22.5" width="211" height="18"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                     </stackView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0lh-9o-ekV">
                         <rect key="frame" x="281" y="24" width="24" height="24"/>
@@ -59,20 +51,33 @@
                             <constraint firstAttribute="width" constant="24" id="mV7-T4-hKK"/>
                         </constraints>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RzG-YS-PIa">
+                        <rect key="frame" x="21" y="24" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="QMf-o8-jUg"/>
+                            <constraint firstAttribute="height" constant="24" id="v1f-H3-n69"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="TCy-wp-wTe" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="Dc3-4m-Gwv"/>
-                    <constraint firstItem="dsX-LD-1XZ" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" id="WVn-it-RvF"/>
+                    <constraint firstAttribute="trailing" secondItem="TCy-wp-wTe" secondAttribute="trailing" constant="45" id="0oE-5U-SQT"/>
+                    <constraint firstItem="TCy-wp-wTe" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="C8d-4Z-PfM"/>
+                    <constraint firstItem="RzG-YS-PIa" firstAttribute="centerX" secondItem="0Gm-n3-CNm" secondAttribute="centerX" id="L3r-zV-wCL"/>
+                    <constraint firstItem="RzG-YS-PIa" firstAttribute="centerY" secondItem="0Gm-n3-CNm" secondAttribute="centerY" id="OWl-vB-Ogj"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" constant="-6" id="WWd-O4-jdV"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="XJ7-jd-HAr"/>
+                    <constraint firstItem="TCy-wp-wTe" firstAttribute="leading" secondItem="0Gm-n3-CNm" secondAttribute="trailing" constant="8" symbolic="YES" id="Z4j-ub-4hK"/>
                     <constraint firstItem="0lh-9o-ekV" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="topMargin" constant="13" id="iFV-eU-vyW"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="dsX-LD-1XZ" secondAttribute="trailing" constant="40" id="mUy-WB-D5x"/>
                     <constraint firstItem="0lh-9o-ekV" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="mWj-F5-WNl"/>
-                    <constraint firstItem="dsX-LD-1XZ" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="topMargin" constant="3" id="qkF-E2-4Jc"/>
+                    <constraint firstItem="TCy-wp-wTe" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" constant="64" id="s8e-8L-e8s"/>
                     <constraint firstAttribute="trailing" secondItem="0lh-9o-ekV" secondAttribute="trailing" constant="15" id="wXY-aQ-Z2t"/>
                 </constraints>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="contentLabel" destination="wDk-1k-6n4" id="iL5-j2-jY5"/>
                 <outlet property="iconBackgroundImageView" destination="0Gm-n3-CNm" id="fGa-Im-Uyk"/>
+                <outlet property="iconImageView" destination="RzG-YS-PIa" id="ipG-B7-oYT"/>
                 <outlet property="rewindIcon" destination="0lh-9o-ekV" id="VWL-O9-f2T"/>
                 <outlet property="summaryLabel" destination="wVX-To-MrZ" id="mTZ-pq-Wt4"/>
             </connections>
