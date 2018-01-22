@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 import WordPressShared.WPTableViewCell
 
 open class ActivityTableViewCell: WPTableViewCell {
@@ -7,69 +8,42 @@ open class ActivityTableViewCell: WPTableViewCell {
 
     open override func awakeFromNib() {
         super.awakeFromNib()
-        assert(gravatarImageView != nil)
+        assert(iconBackgroundImageView != nil)
+        assert(contentLabel != nil)
         assert(summaryLabel != nil)
-        assert(statusImageView != nil)
-        assert(timestampLabel != nil)
-        assert(borderView != nil)
+        assert(rewindIcon != nil)
+        rewindIcon.image = rewindGridicon
+    }
+
+    override open func prepareForReuse() {
+        super.prepareForReuse()
+
+        iconImageView?.removeFromSuperview()
+        iconImageView = nil
     }
 
     // MARK: - Public Methods
 
     open func configureCell(_ activity: Activity) {
         self.activity = activity
-        timestampLabel?.attributedText = NSAttributedString(string: activity.published.mediumStringWithUTCTime(),
-                                                            attributes: Style.timestampStyle())
-        if activity.isFullBackup {
-            gravatarImageView.isHidden = true
-        } else {
-            gravatarImageView.isHidden = false
-            if let actor = activity.actor,
-                let url = URL(string: actor.avatarURL) {
-                downloadGravatarWithURL(url)
-            } else if let actor = activity.actor,
-                       actor.isJetpack {
-                gravatarImageView.image = jetpackGravatar
-            } else {
-                gravatarImageView.image = placeholderImage
-            }
-        }
-        let summaryAttributed = NSMutableAttributedString(string: activity.summary + ": ",
-                                                          attributes: Style.summaryBoldStyle())
-        summaryAttributed.append(NSAttributedString(string: activity.text,
-                                                    attributes: Style.summaryRegularStyle()))
-        summaryLabel.attributedText = summaryAttributed
+        summaryLabel.text = activity.summary
+        contentLabel.text = activity.text
 
-        if let statusImage = Style.getIconForActivity(activity) {
-            statusImageView.image = statusImage
-            statusImageView.isHidden = false
-        } else {
-            statusImageView.isHidden = true
+        iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
+        if let iconImage = Style.getIconForActivity(activity) {
+            iconImageView = UIImageView.init(image: iconImage)
+            if let iconImageView = iconImageView {
+                iconBackgroundImageView.addSubview(iconImageView)
+                iconImageView.center = iconBackgroundImageView.center
+            }
         }
         if activity.isDiscarded {
             contentView.backgroundColor = Style.backgroundDiscardedColor()
-            borderView.backgroundColor = Style.backgroundDiscardedColor()
+            rewindIcon.isHidden = true
         } else {
             contentView.backgroundColor = Style.backgroundColor()
-            if activity.rewindable {
-                borderView.backgroundColor = Style.backgroundRewindableColor()
-            } else {
-                borderView.backgroundColor = Style.backgroundColor()
-            }
+            rewindIcon.isHidden = !activity.rewindable
         }
-    }
-
-    // MARK: - Private Methods
-
-    fileprivate func downloadGravatarWithURL(_ url: URL?) {
-        if url == gravatarURL {
-            return
-        }
-
-        let gravatar = url.flatMap { Gravatar($0) }
-        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
-
-        gravatarURL = url
     }
 
     typealias Style = WPStyleGuide.ActivityStyleGuide
@@ -77,18 +51,13 @@ open class ActivityTableViewCell: WPTableViewCell {
     // MARK: - Private Properties
 
     fileprivate var activity: Activity?
-    fileprivate var gravatarURL: URL?
-
-    fileprivate var placeholderImage: UIImage {
-        return Style.gravatarPlaceholderImage()
-    }
-    fileprivate var jetpackGravatar = UIImage(named: "icon-jetpack-gray")
+    fileprivate var iconImageView: UIImageView?
+    fileprivate var rewindGridicon = Gridicon.iconOfType(.history)
 
     // MARK: - IBOutlets
 
-    @IBOutlet fileprivate var gravatarImageView: CircularImageView!
+    @IBOutlet fileprivate var iconBackgroundImageView: CircularImageView!
+    @IBOutlet fileprivate var contentLabel: UILabel!
     @IBOutlet fileprivate var summaryLabel: UILabel!
-    @IBOutlet fileprivate var statusImageView: UIImageView!
-    @IBOutlet fileprivate var timestampLabel: UILabel!
-    @IBOutlet fileprivate var borderView: UIView!
+    @IBOutlet fileprivate var rewindIcon: UIImageView!
 }
