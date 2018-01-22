@@ -3,7 +3,7 @@ import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
-class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
+class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet weak var passwordField: WPWalkthroughTextField?
     @IBOutlet weak var forgotPasswordButton: UIButton?
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
@@ -11,7 +11,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     @objc var onePasswordButton: UIButton!
     @IBOutlet var emailLabel: UILabel?
     @IBOutlet var emailStackView: UIStackView?
-
     override var sourceTag: SupportSourceTag {
         get {
             return .loginWPComPassword
@@ -68,7 +67,6 @@ class LoginWPComViewController: LoginViewController, SigninKeyboardResponder {
     // MARK: Setup and Configuration
 
     /// Sets up a 1Password button if 1Password is available.
-    /// - note: this could move into NUXAbstractViewController or LoginViewController for better reuse
     @objc func setupOnePasswordButtonIfNeeded() {
         guard let emailStackView = emailStackView else { return }
         WPStyleGuide.configureOnePasswordButtonForStackView(emailStackView,
