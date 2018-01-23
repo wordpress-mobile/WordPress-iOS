@@ -17,7 +17,7 @@ class MockAttachmentDelegate: TextViewAttachmentDelegate {
         return UIImage()
     }
 
-    func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
+    func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
