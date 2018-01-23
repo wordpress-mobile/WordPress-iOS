@@ -249,8 +249,9 @@ static NSInteger HideSearchMinSites = 3;
         [self showNoResultsViewForAllSitesHidden];
     } else {
         [self showNoResultsViewForSiteCount:count];
-        [self updateSplitViewAppearanceForSiteCount:count];
     }
+    
+    [self updateSplitViewAppearanceForSiteCount:count];
 }
 
 - (void)removeNoResultsFromView
@@ -268,7 +269,8 @@ static NSInteger HideSearchMinSites = 3;
     }
     
     [self addChildViewController:self.noResultsViewController];
-    [self.view addSubview:self.noResultsViewController.view];
+    [self.tableView addSubview:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.tableView.bounds;
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
@@ -354,7 +356,8 @@ static NSInteger HideSearchMinSites = 3;
     WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
     if ([splitViewController isKindOfClass:[WPSplitViewController class]]) {
         splitViewController.dimsDetailViewControllerAutomatically = hasSites;
-        splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow : WPSplitViewControllerPrimaryColumnWidthFull;
+        splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow
+                                                              : WPSplitViewControllerPrimaryColumnWidthFull;
     }
 }
 
