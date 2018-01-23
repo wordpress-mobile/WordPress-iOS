@@ -289,3 +289,4 @@ extension WordPressAppDelegate {
         ShareExtensionService.removeShareExtensionConfiguration()
     }
 }
+
