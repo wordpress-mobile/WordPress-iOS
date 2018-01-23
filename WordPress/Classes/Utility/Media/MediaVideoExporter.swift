@@ -169,6 +169,7 @@ class MediaVideoExporter: MediaExporter {
     ///
     /// - imageOptions: ImageExporter options for the generated thumbnail image.
     ///
+    @discardableResult
     func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         let asset = AVURLAsset(url: url)
         guard asset.isExportable else {
