@@ -18,7 +18,7 @@ class SiteCreationDomainsViewController: NUXViewController {
     }
 
     private var domainsTableViewController: SiteCreationDomainsTableViewController?
-    private var buttonViewController: SiteCreationButtonViewController?
+    private var buttonViewController: NUXButtonViewController?
     private var selectedDomain: String?
 
     // MARK: - View
@@ -68,7 +68,7 @@ class SiteCreationDomainsViewController: NUXViewController {
             }
         }
 
-        if let vc = segue.destination as? SiteCreationButtonViewController {
+        if let vc = segue.destination as? NUXButtonViewController {
             buttonViewController = vc
             buttonViewController?.delegate = self
             buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
@@ -109,9 +109,9 @@ extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControl
     }
 }
 
-// MARK: - SiteCreationButtonViewControllerDelegate
+// MARK: - NUXButtonViewControllerDelegate
 
-extension SiteCreationDomainsViewController: SiteCreationButtonViewControllerDelegate {
+extension SiteCreationDomainsViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
         performSegue(withIdentifier: .showCreateSite, sender: self)
     }
