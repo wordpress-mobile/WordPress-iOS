@@ -2956,7 +2956,7 @@ extension AztecPostViewController {
                     }
                 }, onError: { (error) in
                     DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
-                })                
+                })
             }
         }
     }
