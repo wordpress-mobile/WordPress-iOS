@@ -1091,9 +1091,9 @@ extension ShareExtensionEditorViewController: TextViewAttachmentDelegate {
         return nil
     }
 
-    func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
+    func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {
         // Remove the temp media file associated with the deleted attachment
-        guard let keys = (shareData.sharedImageDict as NSDictionary).allKeys(for: attachmentID) as? [URL], !keys.isEmpty else {
+        guard let keys = (shareData.sharedImageDict as NSDictionary).allKeys(for: attachment.identifier) as? [URL], !keys.isEmpty else {
             return
         }
         keys.forEach { tempMediaFileURL in
