@@ -3130,9 +3130,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
-        if mediaAttachment is ImageAttachment {
-            mediaAttachment.overlayImage = nil
-        }
+        mediaAttachment.overlayImage = nil
         mediaAttachment.message = nil
         mediaAttachment.shouldHideBorder = false
     }
