@@ -35,7 +35,7 @@
 - (Media *)createMediaWith:(id<ExportableAsset>)exportable
                   objectID:(NSManagedObjectID *)objectID
                   progress:(NSProgress **)progress
-         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+         thumbnailCallback:(void (^)(Media *media, NSURL *thumbnailURL))thumbnailCallback
                 completion:(void (^)(Media *media, NSError *error))completion
 {
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
@@ -65,6 +65,7 @@
         }
         media.mediaType = exportable.assetMediaType;
         media.remoteStatus = MediaRemoteStatusProcessing;
+        [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [self.managedObjectContext save: nil];
     }];
 
@@ -73,7 +74,9 @@
         void(^completionWithMedia)(Media *) = ^(Media *media) {
             // Pre-generate a thumbnail image, see the method notes.
             [self exportPlaceholderThumbnailForMedia:media
-                                          completion:thumbnailCallback];
+                                          completion:^(NSURL *url){
+                                              thumbnailCallback(media, url);
+                                          }];
             if (completion) {
                 completion(media, nil);
             }
@@ -142,11 +145,14 @@
     // support.  Some third-party image related plugins prefer the .jpg extension.
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
     remoteMedia.file = [remoteMedia.file stringByReplacingOccurrencesOfString:@".jpeg" withString:@".jpg"];
-    [self.managedObjectContext performBlock:^{
-        media.remoteStatus = MediaRemoteStatusPushing;
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
     NSManagedObjectID *mediaObjectID = media.objectID;
+    [self.managedObjectContext performBlock:^{
+        Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+        if (mediaInContext) {
+            mediaInContext.remoteStatus = MediaRemoteStatusPushing;
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }
+    }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
             [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];

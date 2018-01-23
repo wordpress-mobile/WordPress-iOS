@@ -60,7 +60,12 @@ final class InteractiveNotificationsManager: NSObject {
     /// - Returns: True on success
     ///
     @objc @discardableResult
-    func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+        if let noteCategory = NoteCategoryDefinition(rawValue: category),
+            noteCategory.isLocalNotification {
+            return handleLocalNotificationAction(with: identifier, category: category, userInfo: userInfo, responseText: responseText)
+        }
+
         guard AccountHelper.isDotcomAvailable(),
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
@@ -87,6 +92,25 @@ final class InteractiveNotificationsManager: NSObject {
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
                 DDLogError("Tried to reply to a comment notification with no text")
+            }
+        default: break
+        }
+
+        return true
+    }
+
+    func handleLocalNotificationAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+        if let noteCategory = NoteCategoryDefinition(rawValue: category),
+            noteCategory == .mediaUploadSuccess {
+            if let action = NoteActionDefinition(rawValue: identifier) {
+                switch action {
+                case .mediaWritePost:
+                    MediaNoticeNavigationCoordinator.presentEditor(with: userInfo)
+                default:
+                    break
+                }
+            } else if identifier == UNNotificationDefaultActionIdentifier {
+                MediaNoticeNavigationCoordinator.navigateToMediaLibrary(with: userInfo)
             }
         }
 
@@ -182,6 +206,7 @@ private extension InteractiveNotificationsManager {
         case commentLike            = "like-comment"
         case commentReply           = "replyto-comment"
         case commentReplyWithLike   = "replyto-like-comment"
+        case mediaUploadSuccess     = "media-upload-success"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -193,11 +218,17 @@ private extension InteractiveNotificationsManager {
                 return [.commentReply]
             case .commentReplyWithLike:
                 return [.commentReply, .commentLike]
+            case .mediaUploadSuccess:
+                return [.mediaWritePost]
             }
         }
 
         var identifier: String {
             return rawValue
+        }
+
+        var isLocalNotification: Bool {
+            return NoteCategoryDefinition.localDefinitions.contains(self)
         }
 
         func notificationCategory() -> UNNotificationCategory {
@@ -208,7 +239,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess]
+        static var localDefinitions = [mediaUploadSuccess]
     }
 
 
@@ -216,9 +248,10 @@ private extension InteractiveNotificationsManager {
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
     ///
     enum NoteActionDefinition: String {
-        case commentApprove = "COMMENT_MODERATE_APPROVE"
-        case commentLike    = "COMMENT_LIKE"
-        case commentReply   = "COMMENT_REPLY"
+        case commentApprove   = "COMMENT_MODERATE_APPROVE"
+        case commentLike      = "COMMENT_LIKE"
+        case commentReply     = "COMMENT_REPLY"
+        case mediaWritePost   = "MEDIA_WRITE_POST"
 
         var description: String {
             switch self {
@@ -228,6 +261,8 @@ private extension InteractiveNotificationsManager {
                 return NSLocalizedString("Like", comment: "Like (verb)")
             case .commentReply:
                 return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
+            case .mediaWritePost:
+                return NSLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
             }
         }
 
@@ -244,7 +279,11 @@ private extension InteractiveNotificationsManager {
         }
 
         var requiresForeground: Bool {
-            return false
+            switch self {
+            case .mediaWritePost:
+                return true
+            default: return false
+            }
         }
 
         var notificationActionOptions: UNNotificationActionOptions {
@@ -274,7 +313,7 @@ private extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost]
     }
 }
 
@@ -289,7 +328,10 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo as NSDictionary
         let textInputResponse = response as? UNTextInputNotificationResponse
 
-        if handleAction(with: response.actionIdentifier, userInfo: userInfo, responseText: textInputResponse?.userText) {
+        if handleAction(with: response.actionIdentifier,
+                        category: response.notification.request.content.categoryIdentifier,
+                        userInfo: userInfo,
+                        responseText: textInputResponse?.userText) {
             completionHandler()
             return
         }
