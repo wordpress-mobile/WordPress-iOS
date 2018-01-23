@@ -53,7 +53,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var notificationInfo: NoticeNotificationInfo {
-        var userInfo = [String : Any]()
+        var userInfo = [String: Any]()
 
         if let blog = blogInContext {
             userInfo["blog_id"] = blog.objectID.uriRepresentation().absoluteString
