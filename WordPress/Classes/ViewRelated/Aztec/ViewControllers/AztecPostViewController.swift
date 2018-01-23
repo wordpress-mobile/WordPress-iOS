@@ -2885,7 +2885,7 @@ extension AztecPostViewController {
             errorsForAttachmentUploads[uploadID] = attachmentError
         }
 
-        let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
+        let message = MediaAttachmentActionSheet.failedMediaActionTitle
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
@@ -2981,13 +2981,12 @@ extension AztecPostViewController {
         return fileURL
     }
 
-    // TODO: Extract these strings into structs like other items
     fileprivate func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
         let attachmentID = attachment.identifier
-        let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        let title: String = MediaAttachmentActionSheet.title
         var message: String?
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
+        alertController.addActionWithTitle(MediaAttachmentActionSheet.dismissActionTitle,
                                            style: .cancel,
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
@@ -3002,7 +3001,7 @@ extension AztecPostViewController {
             // Is upload still going?
             if media.remoteStatus == .pushing || media.remoteStatus == .processing {
                 showDefaultActions = false
-                alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
+                alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
                                                    style: .destructive,
                                                    handler: { (action) in
                                                     self.mediaCoordinator.cancelUploadAndDeleteMedia(media)
@@ -3014,7 +3013,7 @@ extension AztecPostViewController {
            let error = errorsForAttachmentUploads[media.uploadID] {
             showDefaultActions = false
             message = error.localizedDescription
-            alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
+            alertController.addActionWithTitle(MediaAttachmentActionSheet.retryUploadActionTitle,
                                                style: .default,
                                                handler: { [weak self] (action) in
                                                 //retry upload
@@ -3032,20 +3031,20 @@ extension AztecPostViewController {
 
         if showDefaultActions {
             if let imageAttachment = attachment as? ImageAttachment {
-                alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Edit", comment: "User action to edit media details."),
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
                                                                                      style: .default,
                                                                                      handler: { (action) in
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
             } else if let videoAttachment = attachment as? VideoAttachment {
-                alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Play Video", comment: "User action to play a video on the editor."),
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.playVideoActionTitle,
                                                                                      style: .default,
                                                                                      handler: { (action) in
                                                                                         self.displayPlayerFor(videoAttachment: videoAttachment, atPosition: position)
                 })
             }
         }
-        alertController.addActionWithTitle(NSLocalizedString("Remove", comment: "User action to remove media."),
+        alertController.addActionWithTitle(MediaAttachmentActionSheet.removeActionTitle,
                                            style: .destructive,
                                            handler: { (action) in
                                             self.richTextView.remove(attachmentID: attachmentID)
@@ -3522,6 +3521,17 @@ extension AztecPostViewController {
         static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
         static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+    }
+
+    struct MediaAttachmentActionSheet {
+        static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let stopUploadActionTitle = NSLocalizedString("Stop Upload", comment: "User action to stop upload.")
+        static let retryUploadActionTitle = NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")
+        static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
+        static let playVideoActionTitle = NSLocalizedString("Play Video", comment: "User action to play a video on the editor.")
+        static let removeActionTitle = NSLocalizedString("Remove", comment: "User action to remove media.")
+        static let failedMediaActionTitle = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
     }
 
     struct Colors {
