@@ -113,7 +113,7 @@ extension ShareExtensionAbstractViewController {
         }
     }
 
-    func createErrorWithDescription(_ description: String) -> NSError{
+    func createErrorWithDescription(_ description: String) -> NSError {
         let userInfo = [NSLocalizedDescriptionKey: description]
         return NSError(domain: "ShareExtensionAbstractViewController", code: 0, userInfo: userInfo)
     }

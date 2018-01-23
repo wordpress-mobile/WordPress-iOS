@@ -190,26 +190,9 @@ extension AppExtensionsService {
             return
         }
 
-        // Create the post upload op
+        // Create the post & media upload ops
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
-
-        // Now process all of the media items and create their upload ops
-        var uploadMediaOpIDs = [NSManagedObjectID]()
-        var allRemoteMedia = [RemoteMedia]()
-        localMediaFileURLs.forEach { tempFilePath in
-            let remoteMedia = RemoteMedia()
-            remoteMedia.file = tempFilePath.lastPathComponent
-            remoteMedia.mimeType = Constants.mimeType
-            remoteMedia.localURL = tempFilePath
-            allRemoteMedia.append(remoteMedia)
-
-            let uploadMediaOpID = coreDataStack.saveMediaOperation(remoteMedia,
-                                                                   sessionID: backgroundSessionIdentifier,
-                                                                   groupIdentifier: groupIdentifier,
-                                                                   siteID: NSNumber(value: siteID),
-                                                                   with: .pending)
-            uploadMediaOpIDs.append(uploadMediaOpID)
-        }
+        let (uploadMediaOpIDs, allRemoteMedia) = createAndSaveRemoteMediaWithLocalURLs(localMediaFileURLs, siteID: NSNumber(value: siteID))
 
         // Setup an API that uses background uploads with the shared container
         let api = WordPressComRestApi(oAuthToken: oauth2Token,
@@ -281,6 +264,28 @@ extension AppExtensionsService {
 // MARK: - Private Helpers
 
 fileprivate extension AppExtensionsService {
+    func createAndSaveRemoteMediaWithLocalURLs(_ localMediaFileURLs: [URL], siteID: NSNumber) -> ([NSManagedObjectID], [RemoteMedia]) {
+        // Process all of the media items and create their upload ops
+        var uploadMediaOpIDs = [NSManagedObjectID]()
+        var allRemoteMedia = [RemoteMedia]()
+        localMediaFileURLs.forEach { tempFilePath in
+            let remoteMedia = RemoteMedia()
+            remoteMedia.file = tempFilePath.lastPathComponent
+            remoteMedia.mimeType = Constants.mimeType
+            remoteMedia.localURL = tempFilePath
+            allRemoteMedia.append(remoteMedia)
+
+            let uploadMediaOpID = coreDataStack.saveMediaOperation(remoteMedia,
+                                                                   sessionID: backgroundSessionIdentifier,
+                                                                   groupIdentifier: groupIdentifier,
+                                                                   siteID: siteID,
+                                                                   with: .pending)
+            uploadMediaOpIDs.append(uploadMediaOpID)
+        }
+
+        return (uploadMediaOpIDs, allRemoteMedia)
+    }
+
     func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
