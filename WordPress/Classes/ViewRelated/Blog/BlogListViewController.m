@@ -27,7 +27,7 @@ static NSInteger HideSearchMinSites = 3;
                                         UIDataSourceModelAssociation,
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
-                                        WPNoResultsViewDelegate,
+                                        WPNoResultsViewDelegate, // To be removed with FeatureFlagSiteCreation.
                                         NUXNoResultsViewControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
@@ -35,7 +35,7 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
-@property (nonatomic, strong) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) WPNoResultsView *noResultsView; // To be removed with FeatureFlagSiteCreation.
 @property (nonatomic, strong) NUXNoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
@@ -505,6 +505,7 @@ static NSInteger HideSearchMinSites = 3;
     self.noResultsViewController.delegate = self;
 }
 
+// To be removed with FeatureFlagSiteCreation.
 - (void)configureNoResultsView
 {
     self.noResultsView = [WPNoResultsView noResultsViewWithTitle:nil
@@ -1013,6 +1014,7 @@ static NSInteger HideSearchMinSites = 3;
     [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
 }
 
+// To be removed with FeatureFlagSiteCreation.
 #pragma mark - WPNoResultsViewDelegate
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
