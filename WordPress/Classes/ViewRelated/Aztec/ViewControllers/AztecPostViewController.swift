@@ -2885,7 +2885,7 @@ extension AztecPostViewController {
             errorsForAttachmentUploads[uploadID] = attachmentError
         }
 
-        let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
+        let message = MediaAttachmentActionSheet.faileMediaActionTitle
 
         let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
         attachment.message = attributeMessage
@@ -3531,6 +3531,7 @@ extension AztecPostViewController {
         static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
         static let playVideoActionTitle = NSLocalizedString("Play Video", comment: "User action to play a video on the editor.")
         static let removeActionTitle = NSLocalizedString("Remove", comment: "User action to remove media.")
+        static let faileMediaActionTitle = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
     }
 
     struct Colors {
