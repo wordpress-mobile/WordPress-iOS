@@ -190,13 +190,13 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
         // Setup Autolayout
         view.setNeedsUpdateConstraints()
+
+        // Load everything into the editor from the host app
+        loadContent()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        // Load everything into the editor from the host app
-        loadContent(extensionContext: context)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -1189,8 +1189,8 @@ private extension ShareExtensionEditorViewController {
 // MARK: - Misc Private helpers
 
 private extension ShareExtensionEditorViewController {
-    func loadContent(extensionContext: NSExtensionContext?) {
-        guard let extensionContext = extensionContext else {
+    func loadContent() {
+        guard let extensionContext = context else {
             return
         }
 
