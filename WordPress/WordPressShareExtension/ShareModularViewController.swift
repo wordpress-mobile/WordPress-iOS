@@ -27,9 +27,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Back Bar Button
     ///
     fileprivate lazy var backButton: UIBarButtonItem = {
-        let publishTitle = NSLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
-        let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(backWasPressed))
-        button.accessibilityIdentifier = "Publish Button"
+        let backTitle = NSLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
+        let button = UIBarButtonItem(title: backTitle, style: .plain, target: self, action: #selector(backWasPressed))
+        button.accessibilityIdentifier = "Back Button"
         return button
     }()
 
@@ -471,21 +471,21 @@ fileprivate extension ShareModularViewController {
             // We have media, so let's upload it with the post
             networkService.uploadPostWithMedia(title: shareData.title,
                                                body: shareData.contentBody,
-                                               status: shareData.postStatus,
+                                               status: shareData.postStatus.rawValue,
                                                siteID: siteID,
                                                localMediaFileURLs: localImageURLs,
                                                requestEnqueued: {
-                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus)
+                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                                  self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
         } else {
             // No media. just a simple post
             networkService.saveAndUploadPost(title: shareData.title,
                                              body: shareData.contentBody,
-                                             status: shareData.postStatus,
+                                             status: shareData.postStatus.rawValue,
                                              siteID: siteID,
                                              onComplete: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus)
+                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                                 self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             })
         }
