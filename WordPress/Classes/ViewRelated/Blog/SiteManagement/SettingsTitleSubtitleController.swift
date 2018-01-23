@@ -190,6 +190,14 @@ final class SettingsTitleSubtitleController: UITableViewController {
         textView.textColor = WPStyleGuide.darkGrey()
         textView.delegate = self
 
+        // Remove leading and trailing padding, so textview content aligns
+        // with title textfield content.
+        let padding = textView.textContainer.lineFragmentPadding
+        textView.textContainer.lineFragmentPadding = 0
+
+        // Inset the trailing edge so the scroll indicator doesn't obscure text
+        textView.textContainerInset.right = padding
+
         return textView
     }
 
