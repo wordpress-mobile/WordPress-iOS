@@ -22,7 +22,7 @@ private struct PluginDirectoryRemoteConstants {
     // note that this _isn't_ the same URL as PluginDirectoryGetInformationEndpoint.
 }
 
-public enum PluginDirectoryFeedType {
+public enum PluginDirectoryFeedType: Hashable {
     case popular
     case newest
     case search(term: String)
@@ -36,6 +36,14 @@ public enum PluginDirectoryFeedType {
         case .search(let term):
             return "search:\(term)"
         }
+    }
+
+    public var hashValue: Int {
+        return slug.hashValue
+    }
+
+    public static func ==(lhs: PluginDirectoryFeedType, rhs: PluginDirectoryFeedType) -> Bool {
+        return lhs.slug == rhs.slug
     }
 
 }

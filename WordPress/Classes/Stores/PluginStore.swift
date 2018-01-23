@@ -143,10 +143,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
 
     func processQueries() {
         let sitesToFetch = activeQueries
-            .flatMap { query -> JetpackSiteRef? in
-                guard case .all(let site) = query else { return nil }
-                return site
-            }
+            .flatMap { $0.site }
             .unique
             .filter { shouldFetch(site: $0) }
 
@@ -155,11 +152,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
         }
 
         let feedsToFetch = activeQueries
-            .flatMap { query -> PluginDirectoryFeedType? in
-                guard case .feed(let feedType) = query else { return nil }
-                return feedType
-            }
-            .unique(by: \PluginDirectoryFeedType.slug)
+            .flatMap { $0.feedType }
+            .unique
             .filter { shouldFetchDirectory(feed: $0) }
 
         feedsToFetch
