@@ -263,11 +263,13 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)addNoResultsToView
 {
-    if (self.noResultsViewController) {
-        [self addChildViewController:self.noResultsViewController];
-        [self.view addSubview:self.noResultsViewController.view];
-        [self.noResultsViewController didMoveToParentViewController:self];
+    if (!self.noResultsViewController) {
+        [self instantiateNoResultsViewController];
     }
+    
+    [self addChildViewController:self.noResultsViewController];
+    [self.view addSubview:self.noResultsViewController.view];
+    [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 - (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
@@ -281,11 +283,6 @@ static NSInteger HideSearchMinSites = 3;
         
         // If we have no sites, show the No Results VC.
         if (siteCount == 0) {
-            // If we don't have a No Results VC yet, create one.
-            if (!self.noResultsViewController) {
-                [self configureNoSitesView];
-            }
-            
             [self addNoResultsToView];
             
             [self.noResultsViewController configureViewWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subTitle:nil];
@@ -473,10 +470,10 @@ static NSInteger HideSearchMinSites = 3;
     [WPStyleGuide configureSearchBar:self.searchBar];
 }
 
-- (void)configureNoSitesView
+- (void)instantiateNoResultsViewController
 {
-    UIStoryboard *noSitesSB = [UIStoryboard storyboardWithName:@"NUXNoResults" bundle:nil];
-    self.noResultsViewController = [noSitesSB instantiateViewControllerWithIdentifier:@"NoResults"];
+    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"NUXNoResults" bundle:nil];
+    self.noResultsViewController = [noResultsSB instantiateViewControllerWithIdentifier:@"NoResults"];
     self.noResultsViewController.delegate = self;
 }
 
