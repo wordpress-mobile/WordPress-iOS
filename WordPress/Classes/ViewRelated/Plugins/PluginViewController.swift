@@ -31,10 +31,23 @@ class PluginViewController: UITableViewController {
             }
             navigationController.popViewController(animated: true)
         }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeDynamicType), name: .UIContentSizeCategoryDidChange, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIContentSizeCategoryDidChange, object: nil)
+    }
+
+    @objc private func didChangeDynamicType() {
+        // (non-trivial) NSAttributedStrings and Dynamic Type don't work super well with each other.
+        // We use fairly complex NSAttributedStrings in this view — so we subscribe to the notification
+        // from the system, in order to correctly redraw the screen.
+        bindViewModel()
     }
 
     override func viewDidLoad() {
