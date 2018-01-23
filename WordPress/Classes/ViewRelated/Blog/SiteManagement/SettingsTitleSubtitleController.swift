@@ -118,6 +118,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         setupNavigationBar()
         setupTitle()
         setupTable()
+        nameTextField.becomeFirstResponder()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -175,8 +176,8 @@ final class SettingsTitleSubtitleController: UITableViewController {
         returnValue.clearButtonMode = .whileEditing
         returnValue.font = WPStyleGuide.tableviewTextFont()
         returnValue.textColor = WPStyleGuide.darkGrey()
+        returnValue.delegate = self
         returnValue.returnKeyType = .done
-        returnValue.keyboardType = .default
 
         returnValue.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
@@ -189,6 +190,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         returnValue.font = WPStyleGuide.tableviewTextFont()
         returnValue.textColor = WPStyleGuide.darkGrey()
         returnValue.delegate = self
+        returnValue.returnKeyType = .done
 
         return returnValue
     }
@@ -312,9 +314,29 @@ extension SettingsTitleSubtitleController {
     }
 }
 
-// MARK: - Tag subtitle updates
+// MARK: - UITextViewDelegate
 extension SettingsTitleSubtitleController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         content.subtitle = textView.text
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView == descriptionTextField &&
+           text == "\n" {
+            descriptionTextField.resignFirstResponder()
+        }
+        return true
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension SettingsTitleSubtitleController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == nameTextField {
+            nameTextField.resignFirstResponder()
+            descriptionTextField.becomeFirstResponder()
+            return false
+        }
+        return true
     }
 }
