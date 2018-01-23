@@ -4112,7 +4112,6 @@
 		982BED941FBCF08F000B848E /* Site Creation */ = {
 			isa = PBXGroup;
 			children = (
-				98A7B8E220168C510087ABB2 /* NUXNoResultsViewController.swift */,
 				987ED7B62005693B008CAAF2 /* SiteCreationButtonViewController.swift */,
 				98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */,
 				98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */,
@@ -4128,6 +4127,7 @@
 			isa = PBXGroup;
 			children = (
 				98A7B8E420168C770087ABB2 /* NUXNoResults.storyboard */,
+				98A7B8E220168C510087ABB2 /* NUXNoResultsViewController.swift */,
 			);
 			name = "No Results";
 			sourceTree = "<group>";
