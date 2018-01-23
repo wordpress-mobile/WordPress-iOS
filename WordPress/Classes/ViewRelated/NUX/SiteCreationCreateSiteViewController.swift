@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteCreationCreateSiteViewController: NUXAbstractViewController {
+class SiteCreationCreateSiteViewController: NUXViewController {
 
     // MARK: - Properties
 
