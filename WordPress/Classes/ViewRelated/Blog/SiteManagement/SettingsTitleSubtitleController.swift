@@ -324,6 +324,7 @@ extension SettingsTitleSubtitleController: UITextViewDelegate {
         if textView == descriptionTextField &&
            text == "\n" {
             descriptionTextField.resignFirstResponder()
+            navigationController?.popViewController(animated: true)
         }
         return true
     }
