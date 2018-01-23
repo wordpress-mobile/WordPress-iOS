@@ -72,6 +72,12 @@ class AppExtensionsService {
 // MARK: - Sites
 
 extension AppExtensionsService {
+    /// Fetches only visible blogs for the current account.
+    ///
+    /// - Parameters:
+    ///   - onSuccess: Completion handler executed after a successful fetch.
+    ///   - onFailure: The (optional) failure handler.
+    ///
     func fetchSites(onSuccess success: @escaping ([RemoteBlog]?) -> (), onFailure failure: @escaping () -> ()) {
         let remote = AccountServiceRemoteREST(wordPressComRestApi: simpleRestAPI)
         remote?.getVisibleBlogs(success: { blogs in
