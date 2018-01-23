@@ -40,6 +40,7 @@ target 'WordPress' do
   pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
   pod 'SVProgressHUD', '2.2.2'
+  pod 'Firebase', '4.8.1'
   pod 'Crashlytics', '3.9.3'
   pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '1.0.12'
