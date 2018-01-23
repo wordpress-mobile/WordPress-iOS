@@ -451,7 +451,9 @@ fileprivate extension ShareModularViewController {
 
     func savePostToRemoteSite() {
         guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
-            fatalError("Need to have an oauth token and site ID selected.")
+            let error = createErrorWithDescription("Could not save post to remote site: oauth token or site ID is nil.")
+            self.tracks.trackExtensionError(error)
+            return
         }
 
         isPublishingPost = true
@@ -477,6 +479,10 @@ fileprivate extension ShareModularViewController {
                                                requestEnqueued: {
                                                  self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                                  self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+            }, onFailure: {
+                let error = self.createErrorWithDescription("Failed to save and upload post with media.")
+                self.tracks.trackExtensionError(error)
+                self.showAlert()
             })
         } else {
             // No media. just a simple post
@@ -487,8 +493,33 @@ fileprivate extension ShareModularViewController {
                                              onComplete: {
                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                                 self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+            }, onFailure: {
+                let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
+                self.tracks.trackExtensionError(error)
+                self.showAlert()
             })
         }
+    }
+
+    func showAlert() {
+        let title = NSLocalizedString("Error Occured While Sharing", comment: "Share extension error dialog title - displayed when an error occurs while sharing.")
+        let message = NSLocalizedString("Would you like to attempt sharing this content again?", comment: "Share extension error dialog text - displayed when an error occurs while sharing.")
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        let acceptButtonText = NSLocalizedString("Retry", comment: "Share extension dialog dismiss button label - displayed when an error occurs while sharing.")
+        let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
+            self.savePostToRemoteSite()
+        }
+        alertController.addAction(acceptAction)
+
+        let dismissButtonText = NSLocalizedString("Cancel Sharing", comment: "Share extension dialog dismiss button label - displayed when an error occurs while sharing.")
+        let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
+            self.cleanUpSharedContainer()
+            self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+        }
+        alertController.addAction(dismissAction)
+
+        present(alertController, animated: true, completion: nil)
     }
 }
 

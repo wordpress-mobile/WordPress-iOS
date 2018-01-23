@@ -46,7 +46,7 @@ private extension MainShareViewController {
             editor.dismissalCompletionBlock = {
                 self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }
-        } 
+        }
         present(shareNavController, animated: true, completion: nil)
     }
 
