@@ -4,9 +4,10 @@ import WordPressShared
 class MainShareViewController: UIViewController {
 
     fileprivate let extensionTransitioningManager: ExtensionTransitioningManager = {
-        $0.direction = .bottom
-        return $0
-    }(ExtensionTransitioningManager())
+        let manager = ExtensionTransitioningManager()
+        manager.direction = .bottom
+        return manager
+    }()
 
     fileprivate let shareNavController: UINavigationController = {
         let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)

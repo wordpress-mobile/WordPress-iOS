@@ -73,7 +73,7 @@ class AppExtensionsService {
 
 extension AppExtensionsService {
     func fetchSites(onSuccess success: @escaping ([RemoteBlog]?) -> (), onFailure failure: @escaping () -> ()) {
-        let remote = AccountServiceRemoteREST.init(wordPressComRestApi: simpleRestAPI)
+        let remote = AccountServiceRemoteREST(wordPressComRestApi: simpleRestAPI)
         remote?.getVisibleBlogs(success: { blogs in
             success(blogs as? [RemoteBlog])
             }, failure: { error in

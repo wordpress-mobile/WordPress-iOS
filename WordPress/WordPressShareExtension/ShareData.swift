@@ -1,5 +1,10 @@
 import Foundation
 
+enum PostStatus: String {
+    case draft    = "draft"
+    case publish  = "publish"
+}
+
 /// ShareData is a state container for the share extension screens.
 ///
 @objc
@@ -23,7 +28,7 @@ class ShareData: NSObject {
 
     /// Post's status, set to publish by default
     ///
-    var postStatus = "publish"
+    var postStatus: PostStatus = .publish
 
     /// Dictionary of URLs mapped to attachment ID's
     ///

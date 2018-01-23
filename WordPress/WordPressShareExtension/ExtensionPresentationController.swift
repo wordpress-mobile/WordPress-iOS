@@ -7,11 +7,12 @@ class ExtensionPresentationController: UIPresentationController {
     fileprivate var direction: Direction
 
     fileprivate let dimmingView: UIView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = Appearance.dimmingViewBGColor
-        $0.alpha = Constants.zeroAlpha
-        return $0
-    }(UIView())
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Appearance.dimmingViewBGColor
+        view.alpha = Constants.zeroAlpha
+        return view
+    }()
 
     // MARK: - Initializers
 
