@@ -111,7 +111,7 @@ class LoginEpilogueViewController: UIViewController {
     @IBAction func handleConnectAnotherButton() {
         dismissBlock?(false)
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? LoginSiteAddressViewController else {
             return
         }
         navigationController?.setViewControllers([controller], animated: true)
