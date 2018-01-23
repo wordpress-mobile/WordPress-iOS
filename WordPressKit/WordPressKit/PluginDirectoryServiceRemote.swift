@@ -92,6 +92,11 @@ public struct PluginDirectoryFeedEndpoint: Endpoint {
     let feedType: PluginDirectoryFeedType
     let pageNumber: Int
 
+    public init(feedType: PluginDirectoryFeedType) {
+        self.feedType = feedType
+        self.pageNumber = 1
+    }
+
     public func buildRequest() throws -> URLRequest {
         var parameters: [String: Any] = ["action": "query_plugins",
                                          "request[per_page]": PluginDirectoryRemoteConstants.pluginsPerPage,
@@ -132,7 +137,7 @@ public struct PluginDirectoryServiceRemote {
     public func getPluginFeed(_ feedType: PluginDirectoryFeedType,
                               pageNumber: Int = 1,
                               completion: @escaping (Result<PluginDirectoryFeedPage>) -> Void) {
-        PluginDirectoryFeedEndpoint(feedType: feedType, pageNumber: pageNumber).request(completion: completion)
+        PluginDirectoryFeedEndpoint(feedType: feedType).request(completion: completion)
     }
 
     public func getPluginInformation(slug: String, completion: @escaping (Result<PluginDirectoryEntry>) -> Void) {
