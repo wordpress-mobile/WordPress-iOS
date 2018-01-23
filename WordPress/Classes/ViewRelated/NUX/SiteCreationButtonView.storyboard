@@ -15,7 +15,7 @@
             <objects>
                 <viewController storyboardIdentifier="SiteCreationButtonView" id="aOG-7h-6d9" customClass="SiteCreationButtonViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d2l-kB-WtE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="84"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="RrB-Aa-ADd">
@@ -24,37 +24,60 @@
                                     <constraint firstAttribute="height" constant="10" id="cjP-3n-4DS"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M7J-a3-klP">
-                                <rect key="frame" x="20" y="20" width="335" height="44"/>
-                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <state key="normal" title="Create site" backgroundImage="beveled-blue-button">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
-                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleButtonPressed:" destination="aOG-7h-6d9" eventType="touchUpInside" id="1og-aH-euJ"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xzf-f5-7zQ" userLabel="Button Stack View">
+                                <rect key="frame" x="20" y="20" width="335" height="108"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knN-O6-M86">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="connectSite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="YB6-LI-NGI"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <state key="normal" title="Secondary Button" backgroundImage="beveled-secondary-button">
+                                            <color key="titleColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="secondaryButtonPressed:" destination="aOG-7h-6d9" eventType="touchUpInside" id="UXk-DD-td0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M7J-a3-klP">
+                                        <rect key="frame" x="0.0" y="64" width="335" height="44"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="SiB-Xy-stR"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <state key="normal" title="Primary Button" backgroundImage="beveled-blue-button">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                        <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="primaryButtonPressed:" destination="aOG-7h-6d9" eventType="touchUpInside" id="W8M-wW-PhN"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="RrB-Aa-ADd" firstAttribute="leading" secondItem="vC0-ge-46d" secondAttribute="leading" id="29Q-jd-hiu"/>
+                            <constraint firstItem="xzf-f5-7zQ" firstAttribute="top" secondItem="RrB-Aa-ADd" secondAttribute="bottom" constant="20" id="86p-bn-8hO"/>
                             <constraint firstItem="RrB-Aa-ADd" firstAttribute="trailing" secondItem="vC0-ge-46d" secondAttribute="trailing" id="APL-hI-Fg5"/>
-                            <constraint firstItem="vC0-ge-46d" firstAttribute="trailing" secondItem="M7J-a3-klP" secondAttribute="trailing" constant="20" id="KhC-2B-GFg"/>
-                            <constraint firstItem="M7J-a3-klP" firstAttribute="top" secondItem="RrB-Aa-ADd" secondAttribute="bottom" constant="20" id="RnT-na-9tg"/>
-                            <constraint firstItem="M7J-a3-klP" firstAttribute="leading" secondItem="vC0-ge-46d" secondAttribute="leading" constant="20" id="fed-ql-IQE"/>
+                            <constraint firstItem="vC0-ge-46d" firstAttribute="bottom" secondItem="xzf-f5-7zQ" secondAttribute="bottom" constant="20" id="Pdr-ac-zdu"/>
+                            <constraint firstItem="xzf-f5-7zQ" firstAttribute="leading" secondItem="vC0-ge-46d" secondAttribute="leading" constant="20" id="VYB-ut-UCK"/>
+                            <constraint firstItem="vC0-ge-46d" firstAttribute="trailing" secondItem="xzf-f5-7zQ" secondAttribute="trailing" constant="20" id="pdk-yI-G0O"/>
                             <constraint firstItem="RrB-Aa-ADd" firstAttribute="top" secondItem="vC0-ge-46d" secondAttribute="top" constant="-10" id="qZc-jk-YRs"/>
-                            <constraint firstItem="vC0-ge-46d" firstAttribute="bottom" secondItem="M7J-a3-klP" secondAttribute="bottom" constant="20" id="sY2-8L-A3A"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vC0-ge-46d"/>
                     </view>
-                    <size key="freeformSize" width="375" height="84"/>
+                    <size key="freeformSize" width="375" height="148"/>
                     <connections>
-                        <outlet property="continueButton" destination="M7J-a3-klP" id="oBE-Hr-ooB"/>
+                        <outlet property="primaryButton" destination="M7J-a3-klP" id="cpl-TM-lX1"/>
+                        <outlet property="secondaryButton" destination="knN-O6-M86" id="3fN-Bh-Z8O"/>
                         <outlet property="shadowView" destination="RrB-Aa-ADd" id="LZa-Jn-ghb"/>
                     </connections>
                 </viewController>
@@ -66,6 +89,7 @@
     <resources>
         <image name="beveled-blue-button" width="18" height="19"/>
         <image name="beveled-blue-button-down" width="18" height="19"/>
+        <image name="beveled-secondary-button" width="18" height="19"/>
         <image name="darkgrey-shadow" width="10" height="10"/>
     </resources>
 </document>

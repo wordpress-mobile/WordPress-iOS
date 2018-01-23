@@ -71,6 +71,7 @@ class SiteCreationDomainsViewController: NUXViewController {
         if let vc = segue.destination as? SiteCreationButtonViewController {
             buttonViewController = vc
             buttonViewController?.delegate = self
+            buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
             showButtonView(show: false, withAnimation: false)
         }
 
@@ -111,7 +112,7 @@ extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControl
 // MARK: - SiteCreationButtonViewControllerDelegate
 
 extension SiteCreationDomainsViewController: SiteCreationButtonViewControllerDelegate {
-    func continueButtonPressed() {
+    func primaryButtonPressed() {
         performSegue(withIdentifier: .showCreateSite, sender: self)
     }
 }
