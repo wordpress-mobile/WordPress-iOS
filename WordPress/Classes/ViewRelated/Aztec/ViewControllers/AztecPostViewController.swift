@@ -2954,37 +2954,17 @@ extension AztecPostViewController {
                     DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
                 })
             } else if let videoSrcURL = videoAttachment.srcURL, videoAttachment.posterURL == nil {
-                let asset = AVURLAsset(url: videoSrcURL as URL, options: nil)
-                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                imgGenerator.maximumSize = .zero
-                imgGenerator.appliesPreferredTrackTransform = true
-                let timeToCapture = NSValue(time: CMTimeMake(0, 1))
-                imgGenerator.generateCGImagesAsynchronously(forTimes: [timeToCapture],
-                                                            completionHandler: { (time, cgImage, actualTime, result, error) in
-                    guard let cgImage = cgImage else {
-                        return
+                let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
+                thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
+                    DispatchQueue.main.async {
+                        videoAttachment.posterURL = exportResult.url
+                        self.richTextView.refresh(videoAttachment)
                     }
-                    let uiImage = UIImage(cgImage: cgImage)
-                    let url = self.URLForTemporaryFileWithFileExtension(".jpg")
-                    do {
-                        try uiImage.writeJPEGToURL(url)
-                        DispatchQueue.main.async {
-                            videoAttachment.posterURL = url
-                            self.richTextView.refresh(videoAttachment)
-                        }
-                    } catch {
-                        DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
-                    }
+                }, onError: { (error) in
+                    DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
                 })
             }
         }
-    }
-
-    private func URLForTemporaryFileWithFileExtension(_ fileExtension: String) -> URL {
-        assert(!fileExtension.isEmpty, "file Extension cannot be empty")
-        let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.\(fileExtension)"
-        let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
-        return fileURL
     }
 
     fileprivate func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
@@ -3156,9 +3136,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
-        if mediaAttachment is ImageAttachment {
-            mediaAttachment.overlayImage = nil
-        }
+        mediaAttachment.overlayImage = nil
         mediaAttachment.message = nil
         mediaAttachment.shouldHideBorder = false
     }
