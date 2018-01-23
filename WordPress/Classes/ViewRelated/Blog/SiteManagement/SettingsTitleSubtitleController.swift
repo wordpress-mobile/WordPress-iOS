@@ -68,19 +68,19 @@ final class SettingsTitleSubtitleController: UITableViewController {
     }
 
     private lazy var nameCell: WPTableViewCell = {
-        return self.cell(content: self.nameTextField)
+        return makeCell(content: nameTextField)
     }()
 
     private lazy var descriptionCell: WPTableViewCell = {
-        return self.cell(content: self.descriptionTextField)
+        return makeCell(content: descriptionTextView)
     }()
 
     private lazy var nameTextField: UITextField = {
-        return self.textField()
+        return makeTextField()
     }()
 
-    private lazy var descriptionTextField: UITextView = {
-        return self.textView()
+    private lazy var descriptionTextView: UITextView = {
+        return makeTextView()
     }()
 
     private let content: SettingsTitleSubtitleController.Content
@@ -152,12 +152,12 @@ final class SettingsTitleSubtitleController: UITableViewController {
         tableView.tableFooterView = UIView(frame: .zero)
     }
 
-    private func cell(content: UIView) -> WPTableViewCell {
-        let returnValue = WPTableViewCell(style: .default, reuseIdentifier: nil)
-        returnValue.selectionStyle = .none
-        returnValue.contentView.addSubview(content)
+    private func makeCell(content: UIView) -> WPTableViewCell {
+        let cell = WPTableViewCell(style: .default, reuseIdentifier: nil)
+        cell.selectionStyle = .none
+        cell.contentView.addSubview(content)
 
-        let readableGuide = returnValue.contentView.readableContentGuide
+        let readableGuide = cell.contentView.readableContentGuide
         NSLayoutConstraint.activate([
             content.leadingAnchor.constraint(equalTo: readableGuide.leadingAnchor),
             content.trailingAnchor.constraint(equalTo: readableGuide.trailingAnchor),
@@ -165,32 +165,40 @@ final class SettingsTitleSubtitleController: UITableViewController {
             content.bottomAnchor.constraint(equalTo: readableGuide.bottomAnchor)
             ])
 
-        WPStyleGuide.configureTableViewActionCell(returnValue)
-        return returnValue
+        WPStyleGuide.configureTableViewActionCell(cell)
+        return cell
     }
 
-    private func textField() -> UITextField {
-        let returnValue = UITextField(frame: .zero)
-        returnValue.translatesAutoresizingMaskIntoConstraints = false
-        returnValue.clearButtonMode = .whileEditing
-        returnValue.font = WPStyleGuide.tableviewTextFont()
-        returnValue.textColor = WPStyleGuide.darkGrey()
-        returnValue.returnKeyType = .done
-        returnValue.keyboardType = .default
+    private func makeTextField() -> UITextField {
+        let textField = UITextField(frame: .zero)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.clearButtonMode = .whileEditing
+        textField.font = WPStyleGuide.tableviewTextFont()
+        textField.textColor = WPStyleGuide.darkGrey()
+        textField.returnKeyType = .done
+        textField.keyboardType = .default
 
-        returnValue.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
-        return returnValue
+        return textField
     }
 
-    private func textView() -> UITextView {
-        let returnValue = UITextView(frame: .zero, textContainer: nil)
-        returnValue.translatesAutoresizingMaskIntoConstraints = false
-        returnValue.font = WPStyleGuide.tableviewTextFont()
-        returnValue.textColor = WPStyleGuide.darkGrey()
-        returnValue.delegate = self
+    private func makeTextView() -> UITextView {
+        let textView = UITextView(frame: .zero, textContainer: nil)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.font = WPStyleGuide.tableviewTextFont()
+        textView.textColor = WPStyleGuide.darkGrey()
+        textView.delegate = self
 
-        return returnValue
+        // Remove leading and trailing padding, so textview content aligns
+        // with title textfield content.
+        let padding = textView.textContainer.lineFragmentPadding
+        textView.textContainer.lineFragmentPadding = 0
+
+        // Inset the trailing edge so the scroll indicator doesn't obscure text
+        textView.textContainerInset.right = padding
+
+        return textView
     }
 
     @objc private func actionButtonTapped() {
@@ -289,7 +297,7 @@ extension SettingsTitleSubtitleController {
             nameTextField.text = content.title
             return nameCell
         case .description:
-            descriptionTextField.text = content.subtitle
+            descriptionTextView.text = content.subtitle
             return descriptionCell
         }
     }
