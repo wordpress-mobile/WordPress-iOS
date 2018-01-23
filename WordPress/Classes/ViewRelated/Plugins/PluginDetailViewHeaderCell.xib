@@ -57,8 +57,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="-5" translatesAutoresizingMaskIntoConstraints="NO" id="ELc-B1-A79">
                                         <rect key="frame" x="0.0" y="61" width="0.0" height="40"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="1" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9vT-Of-2n7">
-                                                <rect key="frame" x="0.0" y="10" width="0.0" height="0.0"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="1" translatesAutoresizingMaskIntoConstraints="NO" id="9vT-Of-2n7">
+                                                <rect key="frame" x="0.0" y="10.5" width="0.0" height="0.0"/>
                                                 <string key="text">This is 
 a 
 mutliline
