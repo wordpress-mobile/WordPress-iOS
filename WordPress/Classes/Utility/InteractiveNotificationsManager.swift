@@ -207,6 +207,7 @@ private extension InteractiveNotificationsManager {
         case commentReply           = "replyto-comment"
         case commentReplyWithLike   = "replyto-like-comment"
         case mediaUploadSuccess     = "media-upload-success"
+        case mediaUploadFailure     = "media-upload-failure"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -220,6 +221,8 @@ private extension InteractiveNotificationsManager {
                 return [.commentReply, .commentLike]
             case .mediaUploadSuccess:
                 return [.mediaWritePost]
+            case .mediaUploadFailure:
+                return []
             }
         }
 
@@ -239,8 +242,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess]
-        static var localDefinitions = [mediaUploadSuccess]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure]
     }
 
 
