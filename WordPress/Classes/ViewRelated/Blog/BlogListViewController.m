@@ -277,7 +277,8 @@ static NSInteger HideSearchMinSites = 3;
     if ([Feature enabled:FeatureFlagSiteCreation]) {
         // If we've gone from no results to having just one site, the user has
         // added a new site so we should auto-select it
-        if (self.noResultsViewController && siteCount == 1) {
+        if (self.noResultsViewController.beingPresented && siteCount == 1) {
+            [self removeNoResultsFromView];
             [self bypassBlogListViewController];
         }
         
