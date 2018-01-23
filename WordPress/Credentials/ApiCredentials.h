@@ -9,6 +9,8 @@
 + (NSString *)googlePlusClientId;
 + (NSString *)googleLoginClientId;
 + (NSString *)googleLoginServerClientId;
++ (NSString *)firebaseAPIKey;
++ (NSString *)firebaseAppID;
 + (NSString *)helpshiftAPIKey;
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;
