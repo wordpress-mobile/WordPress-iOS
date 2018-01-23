@@ -4,8 +4,14 @@ import Gridicons
 
 class PluginDetailViewHeaderCell: UITableViewCell {
 
-    open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        if #available(iOS 11, *) {
+            nameLabel?.font = UIFontMetrics.default.scaledFont(for: nameLabel!.font)
+        }
+    }
 
+    open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
         if let banner = directoryEntry.banner {
             headerImageView?.downloadImage(banner, placeholderImage: nil)
         } else {
@@ -19,7 +25,8 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
         let author = directoryEntry.author
 
-        let defaultAttributes: [NSAttributedStringKey: Any] = [.foregroundColor: WPStyleGuide.darkGrey()]
+        let defaultAttributes: [NSAttributedStringKey: Any] = [.font: UIFont.preferredFont(forTextStyle: .subheadline),
+                                                               .foregroundColor: WPStyleGuide.darkGrey()]
 
         let authorAttributes: [NSAttributedStringKey: Any] = [.foregroundColor: WPStyleGuide.mediumBlue()]
 
