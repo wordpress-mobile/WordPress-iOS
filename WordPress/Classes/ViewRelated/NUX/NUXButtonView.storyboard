@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Site Creation Button View Controller-->
+        <!--Button View Controller-->
         <scene sceneID="Mo4-UQ-zlD">
             <objects>
-                <viewController storyboardIdentifier="SiteCreationButtonView" id="aOG-7h-6d9" customClass="SiteCreationButtonViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ButtonView" id="aOG-7h-6d9" customClass="NUXButtonViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d2l-kB-WtE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

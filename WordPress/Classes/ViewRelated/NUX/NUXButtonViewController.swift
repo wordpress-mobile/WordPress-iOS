@@ -1,11 +1,11 @@
 import UIKit
 
-@objc protocol SiteCreationButtonViewControllerDelegate {
+@objc protocol NUXButtonViewControllerDelegate {
     func primaryButtonPressed()
     @objc optional func secondaryButtonPressed()
 }
 
-class SiteCreationButtonViewController: UIViewController {
+class NUXButtonViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -13,7 +13,7 @@ class SiteCreationButtonViewController: UIViewController {
     @IBOutlet var primaryButton: UIButton?
     @IBOutlet var secondaryButton: UIButton?
 
-    open var delegate: SiteCreationButtonViewControllerDelegate?
+    open var delegate: NUXButtonViewControllerDelegate?
 
     private var primaryButtonTitle: String?
     private var secondaryButtonTitle: String?
