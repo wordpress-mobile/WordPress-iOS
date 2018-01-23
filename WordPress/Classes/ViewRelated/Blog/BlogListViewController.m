@@ -307,18 +307,42 @@ static NSInteger HideSearchMinSites = 3;
 - (void)showNoResultsViewForAllSitesHidden
 {
     NSUInteger count = self.dataSource.allBlogsCount;
-
-    if (count == 1) {
-        self.noResultsView.titleText = NSLocalizedString(@"You have 1 hidden WordPress site.", "Message informing the user that all of their sites are currently hidden (singular)");
-        self.noResultsView.messageText = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
+    
+    NSString *singularTitle = NSLocalizedString(@"You have 1 hidden WordPress site.", @"Message informing the user that all of their sites are currently hidden (singular)");
+    NSString *singularSubtitle = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
+    
+    NSString *multipleTitle = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", @"Message informing the user that all of their sites are currently hidden (plural)"), count];
+    NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
+    
+    NSString *buttonTitle = NSLocalizedString(@"Change Visibility", @"Button title to edit visibility of sites.");
+    
+    
+    if ([Feature enabled:FeatureFlagSiteCreation]) {
+        [self addNoResultsToView];
+        
+        if (count == 1) {
+            [self.noResultsViewController configureViewWithTitle:singularTitle
+                                                     buttonTitle:buttonTitle
+                                                        subTitle:singularSubtitle];
+        } else {
+            [self.noResultsViewController configureViewWithTitle:multipleTitle
+                                                     buttonTitle:buttonTitle
+                                                        subTitle:multipleSubtitle];
+        }
+        
     } else {
-        self.noResultsView.titleText = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", "Message informing the user that all of their sites are currently hidden (plural)"), count];
-        self.noResultsView.messageText = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
+        if (count == 1) {
+            self.noResultsView.titleText = singularTitle;
+            self.noResultsView.messageText = singularSubtitle;
+        } else {
+            self.noResultsView.titleText = multipleTitle;
+            self.noResultsView.messageText = multipleSubtitle;
+        }
+        
+        self.noResultsView.buttonTitle = buttonTitle;
+        
+        self.noResultsView.hidden = NO;
     }
-
-    self.noResultsView.buttonTitle = NSLocalizedString(@"Change Visibility", "Button title to edit visibility of sites.");
-
-    self.noResultsView.hidden = NO;
 }
 
 - (void)updateSplitViewAppearanceForSiteCount:(NSUInteger)siteCount
