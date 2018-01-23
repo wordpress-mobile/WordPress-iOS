@@ -5,6 +5,9 @@ import WordPressKit
 ///
 class AppExtensionsService {
 
+    typealias CompletionBlock = () -> Void
+    typealias FailureBlock = () -> Void
+
     // MARK: - Private Properties
 
     /// Unique identifier a group of upload operations
@@ -76,15 +79,15 @@ extension AppExtensionsService {
     ///
     /// - Parameters:
     ///   - onSuccess: Completion handler executed after a successful fetch.
-    ///   - onFailure: The (optional) failure handler.
+    ///   - onFailure: The failure handler.
     ///
-    func fetchSites(onSuccess success: @escaping ([RemoteBlog]?) -> (), onFailure failure: @escaping () -> ()) {
+    func fetchSites(onSuccess: @escaping ([RemoteBlog]?) -> (), onFailure: @escaping FailureBlock) {
         let remote = AccountServiceRemoteREST(wordPressComRestApi: simpleRestAPI)
         remote?.getVisibleBlogs(success: { blogs in
-            success(blogs as? [RemoteBlog])
+            onSuccess(blogs as? [RemoteBlog])
             }, failure: { error in
                 DDLogError("Error retrieving blogs: \(String(describing: error))")
-                failure()
+                onFailure()
         })
     }
 }
@@ -100,16 +103,21 @@ extension AppExtensionsService {
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - onComplete: Completion handler executed after a post is uploaded to the server
+    ///   - onFailure: The (optional) failure handler.
     ///
-    func saveAndUploadPost(title: String, body: String, status: String, siteID: Int, onComplete: (() -> Void)?) {
-        let remotePost = RemotePost()
-        remotePost.siteID = NSNumber(value: siteID)
-        remotePost.status = status
-        remotePost.title = title
-        remotePost.content = body
+    func saveAndUploadPost(title: String, body: String, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
+        guard let remotePost = RemotePost(siteID: NSNumber(value: siteID), status: status, title: title, content: body) else {
+            DDLogError("Unable to create the post object required for uploading.")
+            onFailure?()
+            return
+        }
+
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
         uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
             onComplete?()
+        }, onFailure: {
+            // Error is already logged in coredata so no need to do it here.
+            onFailure?()
         })
     }
 
@@ -117,12 +125,13 @@ extension AppExtensionsService {
     ///
     /// - Parameters:
     ///   - uploadOpObjectID: Managed object ID for the post
-    ///   - onComplete: Completion handler executed after a post is uploaded to the server
+    ///   - onComplete: Completion handler executed after a post is uploaded to the server.
+    ///   - onFailure: The (optional) failure handler.
     ///
-    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, onComplete: (() -> Void)?) {
+    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
             DDLogError("Error uploading post in share extension — could not fetch saved post.")
-            onComplete?()
+            onFailure?()
             return
         }
 
@@ -148,6 +157,7 @@ extension AppExtensionsService {
             }
             DDLogError(errorString)
             self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
+            onFailure?()
         })
     }
 
@@ -159,26 +169,28 @@ extension AppExtensionsService {
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - localMediaFileURLs: An array of local URLs containing the media files to upload
-    ///   - requestEnqueued: Completion handler executed when the media has been processed and background upload is scheduled
+    ///   - requestEnqueued: Completion handler executed when the media has been processed and background upload is scheduled.
+    ///   - onFailure: The failure handler.
     ///
     func uploadPostWithMedia(title: String,
                              body: String,
                              status: String,
                              siteID: Int,
                              localMediaFileURLs: [URL],
-                             requestEnqueued: @escaping () -> ()) {
+                             requestEnqueued: @escaping CompletionBlock,
+                             onFailure: @escaping FailureBlock) {
         guard !localMediaFileURLs.isEmpty else {
-            DDLogError("No media is attached to this upload request.")
-            requestEnqueued()
+            DDLogError("No media is attached to this upload request")
+            onFailure()
+            return
+        }
+        guard let remotePost = RemotePost(siteID: NSNumber(value: siteID), status: status, title: title, content: body) else {
+            DDLogError("Unable to create the post object required for uploading.")
+            onFailure()
             return
         }
 
-        // First create the post upload op
-        let remotePost = RemotePost()
-        remotePost.siteID = NSNumber(value: siteID)
-        remotePost.status = status
-        remotePost.title = title
-        remotePost.content = body
+        // Create the post upload op
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
 
         // Now process all of the media items and create their upload ops
@@ -261,7 +273,7 @@ extension AppExtensionsService {
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadMediaOpID)
             })
-            self.tracks.trackExtensionError(error)
+            onFailure()
         }
     }
 }
@@ -290,7 +302,7 @@ fileprivate extension AppExtensionsService {
             postUploadOp.postContent = imgPostUploadProcessor.process(content)
         }
         coreDataStack.saveContext()
-        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: nil)
+        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: nil, onFailure: nil)
     }
 }
 
