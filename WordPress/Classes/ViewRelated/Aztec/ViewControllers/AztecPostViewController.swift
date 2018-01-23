@@ -2961,13 +2961,6 @@ extension AztecPostViewController {
         }
     }
 
-    private func URLForTemporaryFileWithFileExtension(_ fileExtension: String) -> URL {
-        assert(!fileExtension.isEmpty, "file Extension cannot be empty")
-        let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.\(fileExtension)"
-        let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
-        return fileURL
-    }
-
     fileprivate func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
         let attachmentID = attachment.identifier
         let title: String = MediaAttachmentActionSheet.title
