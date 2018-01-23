@@ -1123,7 +1123,7 @@ extension AztecPostViewController {
         }
 
         // If there is any failed media allow it to be removed or cancel publishing
-        if mediaCoordinator.hasFailedMedia {
+        if hasFailedMedia {
             displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
@@ -2895,8 +2895,12 @@ extension AztecPostViewController {
         richTextView.refresh(attachment)
     }
 
+    fileprivate var hasFailedMedia: Bool {
+        return !errorsForAttachmentUploads.isEmpty
+    }
+
     fileprivate func removeFailedMedia() {
-        let failedMediaIDs = mediaCoordinator.failedMediaIDs
+        let failedMediaIDs = errorsForAttachmentUploads.keys
         for mediaID in failedMediaIDs {
             if let attachment = self.findAttachment(withUploadID: mediaID) {
                 richTextView.remove(attachmentID: attachment.identifier)
@@ -2905,6 +2909,7 @@ extension AztecPostViewController {
                 mediaCoordinator.cancelUploadAndDeleteMedia(media)
             }
         }
+        errorsForAttachmentUploads.removeAll()
     }
 
     fileprivate func processMediaAttachments() {
@@ -2914,10 +2919,11 @@ extension AztecPostViewController {
 
     fileprivate func processMediaWithErrorAttachments() {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
-            guard let mediaAttachment = attachment as? MediaAttachment, let mediaUploadID = mediaAttachment.uploadID, let media = self.mediaCoordinator.media(withIdentifier: mediaUploadID) else {
+            guard let mediaAttachment = attachment as? MediaAttachment,
+                let mediaUploadID = mediaAttachment.uploadID else {
                 return
             }
-            if let error = self.mediaCoordinator.error(for: media) {
+            if let error = self.errorsForAttachmentUploads[mediaUploadID] {
                 self.handleError(error, onAttachment: mediaAttachment)
             }
         }
