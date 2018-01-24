@@ -524,6 +524,7 @@
 		98E47DF81FE9875A0066A71C /* SignupEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E47DF71FE9875A0066A71C /* SignupEmailViewController.swift */; };
 		98ED49921FBFA5C200DF9180 /* SiteTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */; };
 		98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */; };
+		98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */; };
@@ -1890,6 +1891,7 @@
 		98E47DF71FE9875A0066A71C /* SignupEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEmailViewController.swift; sourceTree = "<group>"; };
 		98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteTypeTableViewCell.xib; sourceTree = "<group>"; };
 		98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationCreateSiteViewController.swift; sourceTree = "<group>"; };
+		98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationSitePreviewViewController.swift; sourceTree = "<group>"; };
 		99D675225C3282AC88B89F04 /* Pods-WordPressTodayWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -4126,6 +4128,7 @@
 				982BED991FBCF976000B848E /* SiteCreationNavigationController.swift */,
 				9863BE751FFEDA0600B55B7D /* SiteCreationNoSitesViewController.swift */,
 				98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */,
+				98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */,
 				98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */,
 				985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */,
 			);
@@ -6904,6 +6907,7 @@
 				08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
+				98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */,
 				43EACB1E1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
