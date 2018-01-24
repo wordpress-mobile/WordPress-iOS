@@ -907,6 +907,7 @@ extension ShareExtensionEditorViewController {
     }
 
     @objc func nextWasPressed() {
+        dismissOptionsViewControllerIfNecessary()
         stopEditing()
         shareData.title = titleTextField.text ?? ""
         shareData.contentBody = richTextView.getHTML()

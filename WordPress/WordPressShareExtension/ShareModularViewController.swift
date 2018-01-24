@@ -80,7 +80,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Cancelling view
     ///
     @objc lazy var cancellingView: WPNoResultsView = {
-        let title = NSLocalizedString("Cancelling post...", comment: "A short message that informs the user that the current post in the share extension is being cancelled.")
+        let title = NSLocalizedString("Cancelling...", comment: "A short message that informs the user the share extension is being cancelled.")
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicatorView.startAnimating()
         return WPNoResultsView(title: title, message: nil, accessoryView: activityIndicatorView, buttonTitle: nil)
