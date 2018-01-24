@@ -3099,7 +3099,10 @@ extension AztecPostViewController {
         }
         // It's videoPress video so let's fetch the information for the video
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { [weak self] (videoURLString, posterURLString) in
+            guard let `self` = self else {
+                return
+            }
             guard let videoURL = URL(string: videoURLString) else {
                 return
             }
