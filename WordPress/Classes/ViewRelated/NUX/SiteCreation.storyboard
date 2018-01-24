@@ -548,6 +548,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mk-X6-iC4" userLabel="Site Preview Container View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                                <connections>
+                                    <segue destination="KTF-Bg-ViW" kind="embed" identifier="showSitePreview" id="Xwu-IV-Jab"/>
+                                </connections>
+                            </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="glq-sP-l5l" userLabel="Button Container View">
                                 <rect key="frame" x="0.0" y="519" width="375" height="148"/>
                                 <constraints>
@@ -560,8 +566,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="9mk-X6-iC4" firstAttribute="leading" secondItem="s9d-Q2-1mR" secondAttribute="leading" id="OhV-C1-oKQ"/>
                             <constraint firstItem="glq-sP-l5l" firstAttribute="bottom" secondItem="s9d-Q2-1mR" secondAttribute="bottom" id="czM-as-NRE"/>
+                            <constraint firstItem="s9d-Q2-1mR" firstAttribute="trailing" secondItem="9mk-X6-iC4" secondAttribute="trailing" id="jAO-c1-QaA"/>
+                            <constraint firstItem="glq-sP-l5l" firstAttribute="top" secondItem="9mk-X6-iC4" secondAttribute="bottom" id="qQm-vO-750"/>
                             <constraint firstItem="glq-sP-l5l" firstAttribute="leading" secondItem="s9d-Q2-1mR" secondAttribute="leading" id="tgA-dj-HE7"/>
+                            <constraint firstItem="9mk-X6-iC4" firstAttribute="top" secondItem="2Jh-zO-DOs" secondAttribute="top" id="wia-fc-AfJ"/>
                             <constraint firstItem="glq-sP-l5l" firstAttribute="trailing" secondItem="s9d-Q2-1mR" secondAttribute="trailing" id="zF1-4D-yG2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="s9d-Q2-1mR"/>
@@ -579,8 +589,80 @@
             </objects>
             <point key="canvasLocation" x="4851" y="540"/>
         </scene>
+        <!--Site Creation Site Preview View Controller-->
+        <scene sceneID="jwY-ut-ZEb">
+            <objects>
+                <viewController id="KTF-Bg-ViW" customClass="SiteCreationSitePreviewViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HRs-A0-gOR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bi6-03-qcM" userLabel="Congratulations View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="-50" translatesAutoresizingMaskIntoConstraints="NO" id="ZfC-AE-UYX">
+                                        <rect key="frame" x="0.0" y="144" width="375" height="231"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="site-creation-confetti" translatesAutoresizingMaskIntoConstraints="NO" id="NbC-e9-IVo">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="234.5"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="NbC-e9-IVo" secondAttribute="height" multiplier="8:5" id="hcE-v0-Erp"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="V8f-EU-YF3" userLabel="Label Stack View">
+                                                <rect key="frame" x="0.0" y="234.5" width="375" height="37.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5s-0F-Lvb">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="18.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your site is ready." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LlD-qK-erU">
+                                                        <rect key="frame" x="0.0" y="-2" width="375" height="19"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="NbC-e9-IVo" firstAttribute="width" secondItem="ZfC-AE-UYX" secondAttribute="width" id="w2j-jK-PAN"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ZfC-AE-UYX" secondAttribute="trailing" id="CMt-JD-3iJ"/>
+                                    <constraint firstItem="ZfC-AE-UYX" firstAttribute="centerY" secondItem="bi6-03-qcM" secondAttribute="centerY" id="OxZ-fG-ncd"/>
+                                    <constraint firstItem="ZfC-AE-UYX" firstAttribute="leading" secondItem="bi6-03-qcM" secondAttribute="leading" id="X0l-6H-C2C"/>
+                                    <constraint firstItem="ZfC-AE-UYX" firstAttribute="centerX" secondItem="bi6-03-qcM" secondAttribute="centerX" id="zYq-vO-gQh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="bi6-03-qcM" secondAttribute="trailing" id="Luc-ke-2Mg"/>
+                            <constraint firstAttribute="bottom" secondItem="bi6-03-qcM" secondAttribute="bottom" id="U1G-V5-qcq"/>
+                            <constraint firstItem="bi6-03-qcM" firstAttribute="leading" secondItem="HRs-A0-gOR" secondAttribute="leading" id="kR3-KX-pqz"/>
+                            <constraint firstItem="bi6-03-qcM" firstAttribute="top" secondItem="HRs-A0-gOR" secondAttribute="top" id="p5B-Du-3Jm"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="congratulationsLabel" destination="j5s-0F-Lvb" id="mWc-2r-Mlb"/>
+                        <outlet property="congratulationsView" destination="bi6-03-qcM" id="vAl-QN-L1L"/>
+                        <outlet property="siteReadyLabel" destination="LlD-qK-erU" id="fHa-OD-wlP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PhO-xF-yVF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5637.6000000000004" y="-118.29085457271366"/>
+        </scene>
     </scenes>
     <resources>
         <image name="mysites-nosites" width="400" height="250"/>
+        <image name="site-creation-confetti" width="400" height="250"/>
     </resources>
 </document>

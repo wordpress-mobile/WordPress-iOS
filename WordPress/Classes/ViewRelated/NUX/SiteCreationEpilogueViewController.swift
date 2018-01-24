@@ -2,7 +2,16 @@ import UIKit
 
 class SiteCreationEpilogueViewController: UIViewController {
 
+    // MARK: - Properties
+
+    private var previewViewController: SiteCreationSitePreviewViewController?
     private var buttonViewController: NUXButtonViewController?
+
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,12 +28,18 @@ class SiteCreationEpilogueViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
+        if let vc = segue.destination as? SiteCreationSitePreviewViewController {
+            previewViewController = vc
+        }
+
         if let vc = segue.destination as? NUXButtonViewController {
             buttonViewController = vc
             buttonViewController?.delegate = self
             setButtonTitles()
         }
     }
+
+    // MARK: - Button View Button Titles
 
     private func setButtonTitles() {
         let primaryTitle = NSLocalizedString("Write first post", comment: "")
@@ -37,6 +52,7 @@ class SiteCreationEpilogueViewController: UIViewController {
 // MARK: - NUXButtonViewControllerDelegate
 
 extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
+
     func primaryButtonPressed() {
     }
 
