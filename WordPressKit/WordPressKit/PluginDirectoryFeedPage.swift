@@ -19,17 +19,15 @@ public struct PluginDirectoryFeedPage: Decodable, Equatable {
         // The API we're using has a bug where sometimes the `plugins` field is an Array, and sometimes
         // it's a dictionary with numerical keys. Until the responsible parties can deploy a patch,
         // here's a workaround.
-        pluginParsing: do {
+        do {
             if let parsedPlugins = try? container.decode([PluginDirectoryEntry].self, forKey: .plugins) {
-                self.plugins = parsedPlugins
-                break pluginParsing
+                plugins = parsedPlugins
+            } else {
+                let parsedPlugins = try container.decode([Int: PluginDirectoryEntry].self, forKey: .plugins)
+                plugins = parsedPlugins
+                    .sorted { $0.key < $1.key }
+                    .flatMap { $0.value }
             }
-
-            let parsedPlugins = try container.decode([Int: PluginDirectoryEntry].self, forKey: .plugins)
-
-            self.plugins = parsedPlugins
-                .sorted { $0.key < $1.key }
-                .flatMap { $0.value }
         }
 
         let info = try container.nestedContainer(keyedBy: InfoKeys.self, forKey: .info)
