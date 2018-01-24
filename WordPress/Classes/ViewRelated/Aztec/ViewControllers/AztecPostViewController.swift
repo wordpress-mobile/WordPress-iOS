@@ -2924,6 +2924,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func retryFailedMediaUpload(media: Media, attachment: MediaAttachment) {
+        errorsForAttachmentUploads.removeValue(forKey: media.uploadID)
         resetMediaAttachmentOverlay(attachment)
         attachment.progress = 0
         richTextView.refresh(attachment)
