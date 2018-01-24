@@ -47,8 +47,21 @@ extension WPStyleGuide {
             guard let gridiconType = stringToGridiconTypeMapping[activity.gridicon] else {
                 return nil
             }
-            let gridicon = Gridicon.iconOfType(gridiconType)
-            return gridicon.imageWithTintColor(getColorByActivityStatus(activity))
+
+            return Gridicon.iconOfType(gridiconType).imageWithTintColor(.white)
+        }
+
+        public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
+            switch activity.status {
+            case ActivityStatus.error:
+                return WPStyleGuide.errorRed()
+            case ActivityStatus.success:
+                return WPStyleGuide.validGreen()
+            case ActivityStatus.warning:
+                return WPStyleGuide.warningYellow()
+            default:
+                return WPStyleGuide.greyLighten10()
+            }
         }
 
         // MARK: - Private Properties
@@ -76,19 +89,6 @@ extension WPStyleGuide {
                                            maxLineHeight: summaryLineSize,
                                            lineBreakMode: .byTruncatingTail,
                                            alignment: .natural)
-        }
-
-        private static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
-            switch activity.status {
-            case ActivityStatus.error:
-                return WPStyleGuide.errorRed()
-            case ActivityStatus.success:
-                return WPStyleGuide.validGreen()
-            case ActivityStatus.warning:
-                return WPStyleGuide.warningYellow()
-            default:
-                return WPStyleGuide.greyLighten10()
-            }
         }
 
         // We will be able to get rid of this disgusting dictionary once we build the

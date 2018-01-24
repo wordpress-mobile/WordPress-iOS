@@ -134,7 +134,7 @@ PODS:
   - Starscream (3.0.3)
   - SVProgressHUD (2.2.2)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.17)
+  - WordPress-Aztec-iOS (1.0.0-beta.16)
   - WPMediaPicker (0.26)
   - wpxmlrpc (0.8.3)
 
@@ -167,7 +167,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.3)
   - SVProgressHUD (= 2.2.2)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.17)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git`, commit `018f9dc45d806c9317bd927a4890e9a19467accd`)
   - WPMediaPicker (= 0.26)
   - wpxmlrpc (= 0.8.3)
 
@@ -175,11 +175,17 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
+  WordPress-Aztec-iOS:
+    :commit: 018f9dc45d806c9317bd927a4890e9a19467accd
+    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.1
+  WordPress-Aztec-iOS:
+    :commit: 018f9dc45d806c9317bd927a4890e9a19467accd
+    :git: https://github.com/wordpress-mobile/WordPress-Aztec-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -217,7 +223,7 @@ SPEC CHECKSUMS:
   Starscream: dfb1b3f39506717ee52b67fb48de0c8269504cbc
   SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 0f8ffe01c51d0df7a3a73d91cb52331e63f80d49
+  WordPress-Aztec-iOS: 4713c6e5d3ccd4ce7457a16e6b43b58d1c0cc6a8
   WPMediaPicker: 847c1f84f93fda7dda8cc9a8cbc1ffb6e47dea63
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
