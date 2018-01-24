@@ -146,6 +146,10 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     ///
     fileprivate var currentKeyboardFrame: CGRect = .zero
 
+    /// Original size of keyboard frame *prior to* the options VC displaying
+    ///
+    fileprivate var originalKeyboardFrame: CGRect = .zero
+
     /// Separator View
     ///
     fileprivate(set) lazy var separatorView: UIView = {
@@ -870,6 +874,9 @@ extension ShareExtensionEditorViewController {
     }
 
     private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
+        if currentKeyboardFrame.height > originalKeyboardFrame.height {
+            originalKeyboardFrame = currentKeyboardFrame
+        }
         self.addChildViewController(viewController)
         changeRichTextInputView(to: viewController.view)
         viewController.didMove(toParentViewController: self)
@@ -882,6 +889,7 @@ extension ShareExtensionEditorViewController {
         default:
             optionsViewController?.removeFromParentViewController()
             changeRichTextInputView(to: nil)
+            resetPresentationViewUsingKeyboardFrame(originalKeyboardFrame)
         }
 
         optionsViewController = nil
@@ -901,6 +909,8 @@ extension ShareExtensionEditorViewController {
 
 extension ShareExtensionEditorViewController {
     @objc func cancelWasPressed() {
+        dismissOptionsViewControllerIfNecessary()
+        stopEditing()
         tracks.trackExtensionCancelled()
         cleanUpSharedContainer()
         dismiss(animated: true, completion: self.dismissalCompletionBlock)
@@ -943,15 +953,6 @@ extension ShareExtensionEditorViewController {
         present(alertController, animated: true, completion: { () in
             UIMenuController.shared.setMenuVisible(false, animated: false)
         })
-    }
-
-    func stopEditing() {
-        view.endEditing(true)
-
-        // Let's reset the presented VC size
-        if let presentationController = navigationController?.presentationController as? ExtensionPresentationController {
-            presentationController.resetViewSize()
-        }
     }
 }
 
@@ -1190,6 +1191,20 @@ private extension ShareExtensionEditorViewController {
 // MARK: - Misc Private helpers
 
 private extension ShareExtensionEditorViewController {
+    func stopEditing() {
+        view.endEditing(true)
+        resetPresentationViewUsingKeyboardFrame()
+        originalKeyboardFrame = .zero
+    }
+
+    func resetPresentationViewUsingKeyboardFrame(_ keyboardFrame: CGRect = .zero) {
+        guard let presentationController = navigationController?.presentationController as? ExtensionPresentationController else {
+            return
+        }
+
+        presentationController.resetViewUsingKeyboardFrame(keyboardFrame)
+    }
+
     func loadContent() {
         guard let extensionContext = context else {
             return

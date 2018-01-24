@@ -81,8 +81,8 @@ class ExtensionPresentationController: UIPresentationController {
 // MARK: - External Helper Methods
 
 extension ExtensionPresentationController {
-    func resetViewSize() {
-        animateForWithKeyboardFrame(.zero, duration: Constants.defaultAnimationDuration, force: true)
+    func resetViewUsingKeyboardFrame(_ keyboardFrame: CGRect = .zero) {
+        animateForWithKeyboardFrame(keyboardFrame, duration: Constants.defaultAnimationDuration, force: true)
     }
 }
 
@@ -111,6 +111,16 @@ private extension ExtensionPresentationController {
         animateForWithKeyboardFrame(presentedView!.convert(keyboardFrame, from: nil), duration: duration)
     }
 
+    func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double, force: Bool = false) {
+        let presentedFrame = frameOfPresentedViewInContainerView
+        let translatedFrame = getTranslationFrame(keyboardFrame: keyboardFrame, presentedFrame: presentedFrame)
+        if force || translatedFrame != presentedFrame {
+            UIView.animate(withDuration: duration, animations: {
+                self.presentedView?.frame = translatedFrame
+            })
+        }
+    }
+
     func getTranslationFrame(keyboardFrame: CGRect, presentedFrame: CGRect) -> CGRect {
         let keyboardTopPadding = traitCollection.verticalSizeClass != .compact ? Constants.bottomKeyboardMarginPortrait : Constants.bottomKeyboardMarginLandscape
         let keyboardTop = UIScreen.main.bounds.height - (keyboardFrame.size.height + keyboardTopPadding)
@@ -124,16 +134,6 @@ private extension ExtensionPresentationController {
         let newHeight = presentedFrame.size.height - offset
         let frame = CGRect(x: presentedFrame.origin.x, y: presentedFrame.origin.y, width: presentedFrame.size.width, height: newHeight)
         return frame
-    }
-
-    func animateForWithKeyboardFrame(_ keyboardFrame: CGRect, duration: Double, force: Bool = false) {
-        let presentedFrame = frameOfPresentedViewInContainerView
-        let translatedFrame = getTranslationFrame(keyboardFrame: keyboardFrame, presentedFrame: presentedFrame)
-        if force || translatedFrame != presentedFrame {
-            UIView.animate(withDuration: duration, animations: {
-                self.presentedView?.frame = translatedFrame
-            })
-        }
     }
 }
 
