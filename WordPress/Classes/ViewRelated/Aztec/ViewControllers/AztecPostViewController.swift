@@ -3093,27 +3093,27 @@ extension AztecPostViewController {
         guard let videoURL = videoAttachment.srcURL else {
             return
         }
-        if let videoPressID = videoAttachment.videoPressID {
-            // It's videoPress video so let's fetch the information for the video
-            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                guard let videoURL = URL(string: videoURLString) else {
-                    return
-                }
-                videoAttachment.srcURL = videoURL
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                    videoAttachment.posterURL = posterURL
-                }
-                self.richTextView.refresh(videoAttachment)
-                self.displayVideoPlayer(for: videoURL)
-            }, failure: { (error) in
-                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-            })
-        } else {
+        guard let videoPressID = videoAttachment.videoPressID else {
             displayVideoPlayer(for: videoURL)
+            return
         }
+        // It's videoPress video so let's fetch the information for the video
+        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+            guard let videoURL = URL(string: videoURLString) else {
+                return
+            }
+            videoAttachment.srcURL = videoURL
+            if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                videoAttachment.posterURL = posterURL
+            }
+            self.richTextView.refresh(videoAttachment)
+            self.displayVideoPlayer(for: videoURL)
+        }, failure: { (error) in
+            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+        })
     }
-    
+
     func displayVideoPlayer(for videoURL: URL) {
         let asset = AVURLAsset(url: videoURL)
         let controller = AVPlayerViewController()
