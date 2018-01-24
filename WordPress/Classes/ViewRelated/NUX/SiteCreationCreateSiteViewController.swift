@@ -13,6 +13,8 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     @IBOutlet weak var configureStyleLabel: UILabel!
     @IBOutlet weak var preparingFrontendLabel: UILabel!
 
+    private var newSite: Blog?
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -62,9 +64,8 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
 
         let successBlock = { (blog: Blog) in
-            // TODO: show prologue
-            self.showAlertWithMessage("Site '\(blog.settings?.name ?? "")' created.")
-
+            self.newSite = blog
+            self.performSegue(withIdentifier: .showSiteCreationEpilogue, sender: self)
         }
 
         let failureBlock = { (error: Error?) in
@@ -126,11 +127,13 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    // MARK: - Misc
+    // MARK: - Navigation
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        if let vc = segue.destination as? SiteCreationEpilogueViewController {
+            vc.siteToShow = newSite
+        }
     }
-
 }
