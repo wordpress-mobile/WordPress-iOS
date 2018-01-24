@@ -2887,7 +2887,7 @@ extension AztecPostViewController {
 
         let message = MediaAttachmentActionSheet.failedMediaActionTitle
 
-        let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+        let attributeMessage = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
         attachment.message = attributeMessage
         attachment.overlayImage = Gridicon.iconOfType(.refresh, withSize: Constants.mediaOverlayIconSize)
         attachment.shouldHideBorder = true
@@ -3128,15 +3128,6 @@ extension AztecPostViewController {
         present(controller, animated: true, completion: nil)
     }
 
-    var mediaMessageAttributes: [NSAttributedStringKey: Any] {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-
-        return [.font: Fonts.mediaOverlay,
-                .paragraphStyle: paragraphStyle,
-                .foregroundColor: UIColor.white]
-    }
-
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let icon: UIImage
         switch attachment {
@@ -3217,7 +3208,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 
             // ...and mark the newly tapped attachment
             let message = ""
-            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.message = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
             richTextView.refresh(attachment)
             currentSelectedAttachment = attachment
         }
@@ -3494,6 +3485,14 @@ extension AztecPostViewController {
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
+        static let mediaMessageAttributes: [NSAttributedStringKey: Any] = {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+
+            return [.font: Fonts.mediaOverlay,
+                    .paragraphStyle: paragraphStyle,
+                    .foregroundColor: UIColor.white]
+        }()
         static let placeholderMediaLink = URL(string: "placeholder://")!
 
         struct Animations {
