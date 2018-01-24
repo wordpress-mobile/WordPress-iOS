@@ -17,6 +17,9 @@ class SiteCreationSitePreviewViewController: UIViewController {
     /// https://stackoverflow.com/a/46649435/3354034
     private var webView: WKWebView?
 
+    private var timeExpired: Bool = false
+    private var siteLoaded: Bool = false
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -24,6 +27,22 @@ class SiteCreationSitePreviewViewController: UIViewController {
         congratulationsView.backgroundColor = WPStyleGuide.wordPressBlue()
         createWebView()
         loadSite()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Show Congratulations view for 4 seconds.
+        Timer.scheduledTimer(timeInterval: 4,
+                             target: self,
+                             selector: #selector(setTimeExpired),
+                             userInfo: nil,
+                             repeats: false)
+    }
+
+    @objc private func setTimeExpired() {
+        timeExpired = true
+        showSite()
     }
 
     private func setLabelText() {
@@ -45,14 +64,21 @@ class SiteCreationSitePreviewViewController: UIViewController {
             webView.load(URLRequest(url: url))
         }
     }
+
+    private func showSite() {
+        if siteLoaded == true && timeExpired == true {
+            siteView.addSubview(self.webView!)
+            siteView.isHidden = false
+        }
+    }
 }
 
 // MARK: - WKNavigationDelegate
 extension SiteCreationSitePreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        siteView.addSubview(self.webView!)
-        siteView.isHidden = false
+        siteLoaded = true
+        showSite()
     }
 
 }
