@@ -377,6 +377,8 @@
 		827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827704F01F607C0E002E8A03 /* JetpackConnectionViewController.swift */; };
 		8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8298F38E1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift */; };
 		8298F3921EEF3BA7008EB7F0 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */; };
+		82A062DC2017BC220084CE7C /* ActivityListSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 82A062DB2017BC220084CE7C /* ActivityListSectionHeaderView.xib */; };
+		82A062DE2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A062DD2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift */; };
 		82B67B361FC726CD006FB593 /* Memoize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B67B351FC726CD006FB593 /* Memoize.swift */; };
 		82B85DF91EDDB807004FD510 /* SiteIconPickerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */; };
 		82C420761FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82C420751FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift */; };
@@ -1655,6 +1657,8 @@
 		827704F01F607C0E002E8A03 /* JetpackConnectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackConnectionViewController.swift; sourceTree = "<group>"; };
 		8298F38E1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFeedbackPromptView.swift; sourceTree = "<group>"; };
 		8298F3911EEF3BA7008EB7F0 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		82A062DB2017BC220084CE7C /* ActivityListSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActivityListSectionHeaderView.xib; sourceTree = "<group>"; };
+		82A062DD2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListSectionHeaderView.swift; sourceTree = "<group>"; };
 		82B67B351FC726CD006FB593 /* Memoize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memoize.swift; sourceTree = "<group>"; };
 		82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteIconPickerPresenter.swift; sourceTree = "<group>"; };
 		82C420751FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SiteSettingsViewController+Swift.swift"; sourceTree = "<group>"; };
@@ -3662,13 +3666,15 @@
 			isa = PBXGroup;
 			children = (
 				82FC612B1FA8B7FC00A1757E /* ActivityListRow.swift */,
+				82A062DD2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift */,
+				82A062DB2017BC220084CE7C /* ActivityListSectionHeaderView.xib */,
 				82FC611D1FA8ADAC00A1757E /* ActivityListViewController.swift */,
 				82FC61291FA8B6F000A1757E /* ActivityListViewModel.swift */,
 				82FC611C1FA8ADAC00A1757E /* ActivityTableViewCell.swift */,
 				82FC611E1FA8ADAC00A1757E /* ActivityTableViewCell.xib */,
-				82FC611F1FA8ADAC00A1757E /* WPStyleGuide+Activity.swift */,
 				825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */,
 				82B67B351FC726CD006FB593 /* Memoize.swift */,
+				82FC611F1FA8ADAC00A1757E /* WPStyleGuide+Activity.swift */,
 			);
 			path = Activity;
 			sourceTree = "<group>";
@@ -6060,6 +6066,7 @@
 				93F2E53B1E9E596A0050D489 /* HSThemes in Resources */,
 				93F2E53C1E9E596A0050D489 /* HsUIResourceBundle.bundle in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
+				82A062DC2017BC220084CE7C /* ActivityListSectionHeaderView.xib in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				B5EEB19F1CA96D19004B6540 /* ImageCropViewController.xib in Resources */,
@@ -7199,6 +7206,7 @@
 				85D239B11AE5A5FC0074768D /* OnePasswordFacade.m in Sources */,
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
+				82A062DE2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift in Sources */,
 				B5FF3BE71CAD881100C1D597 /* ImageCropOverlayView.swift in Sources */,
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
 				82FFBF4D1F434BDA00F4573F /* ThemeIdHelper.swift in Sources */,
