@@ -503,16 +503,16 @@ fileprivate extension ShareModularViewController {
 
     func showAlert() {
         let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message = NSLocalizedString("An error occurred while sharing. Would you like to attempt sharing this content again?", comment: "Share extension error dialog text.")
+        let message = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let acceptButtonText = NSLocalizedString("Retry", comment: "Share extension error dialog retry button label.")
+        let acceptButtonText = NSLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
         let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
             self.savePostToRemoteSite()
         }
         alertController.addAction(acceptAction)
 
-        let dismissButtonText = NSLocalizedString("Cancel Sharing", comment: "Share extension error dialog cancel button label.")
+        let dismissButtonText = NSLocalizedString("Nevermind", comment: "Share extension error dialog cancel button label.")
         let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
             self.cleanUpSharedContainer()
             self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
