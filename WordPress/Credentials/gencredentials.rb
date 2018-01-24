@@ -113,6 +113,14 @@ print <<-EOF
 EOF
 end
 
+def print_firebase_gcm_id(gcm_id)
+print <<-EOF
++ (NSString *)firebaseGCMID {
+    return @"#{gcm_id}";
+}
+EOF
+end
+
 def print_helpshift_api_key(helpshift_api_key)
 print <<-EOF
 + (NSString *)helpshiftAPIKey {
@@ -145,7 +153,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, firebase_app_id, firebase_api_key, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, firebase_app_id, firebase_api_key, firebase_gcm_id, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -160,6 +168,7 @@ EOF
   print_google_login_server(google_login_server)
   print_firebase_api_key(firebase_api_key)
   print_firebase_app_id(firebase_app_id)
+  print_firebase_gcm_id(firebase_gcm_id)
   print_helpshift_api_key(helpshift_api_key)
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
@@ -189,6 +198,7 @@ google_id = nil
 google_login_server = nil
 firebase_app_id = nil
 firebase_api_key = nil
+firebase_gcm_id = nil
 helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
@@ -218,6 +228,8 @@ File.open(path) do |f|
       firebase_api_key = value
     elsif k == "GOOGLE_FIREBASE_APP_ID"
       firebase_app_id = value
+    elsif k == "GOOGLE_FIREBASE_GCM_ID"
+      firebase_gcm_id = value
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = value
     elsif k == "HELPSHIFT_DOMAIN_NAME"
@@ -270,4 +282,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, firebase_app_id, firebase_api_key, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, firebase_app_id, firebase_api_key, firebase_gcm_id, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)

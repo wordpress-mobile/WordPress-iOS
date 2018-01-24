@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
+import Firebase
 
 // MARK: - Utility Configuration
 
@@ -35,6 +36,14 @@ extension WordPressAppDelegate {
                 crashlytics = WPCrashlytics(apiKey: apiKey)
             }
         #endif
+    }
+
+    @objc func configureFirebase() {
+        let options = FirebaseOptions(googleAppID: ApiCredentials.firebaseAppID(), gcmSenderID: ApiCredentials.firebaseGCMID())
+        options.apiKey = ApiCredentials.firebaseAPIKey()
+        options.clientID = ApiCredentials.googlePlusClientId()
+        FirebaseApp.configure(options: options)
+        Analytics.logEvent(AnalyticsEventAppOpen, parameters: nil)
     }
 
     @objc func configureHockeySDK() {

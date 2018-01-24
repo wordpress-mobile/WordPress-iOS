@@ -11,6 +11,7 @@
 + (NSString *)googleLoginServerClientId;
 + (NSString *)firebaseAPIKey;
 + (NSString *)firebaseAppID;
++ (NSString *)firebaseGCMID;
 + (NSString *)helpshiftAPIKey;
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;
