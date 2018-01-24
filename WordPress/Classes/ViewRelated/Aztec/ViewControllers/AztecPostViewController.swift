@@ -2912,6 +2912,25 @@ extension AztecPostViewController {
         errorsForAttachmentUploads.removeAll()
     }
 
+    fileprivate func retryAllFailedMediaUploads() {
+        let failedMediaIDs = errorsForAttachmentUploads.keys
+        for mediaID in failedMediaIDs {
+            guard let attachment = self.findAttachment(withUploadID: mediaID),
+                let media = mediaCoordinator.media(withObjectID: mediaID) else {
+                continue
+            }
+            retryFailedMediaUpload(media: media, attachment: attachment)
+        }
+    }
+
+    fileprivate func retryFailedMediaUpload(media: Media, attachment: MediaAttachment) {
+        resetMediaAttachmentOverlay(attachment)
+        attachment.progress = 0
+        richTextView.refresh(attachment)
+        mediaCoordinator.retryMedia(media)
+        observe(media: media, statType: .editorUploadMediaRetried)
+    }
+
     fileprivate func processMediaAttachments() {
         processMediaWithErrorAttachments()
         processVideoPressAttachments()
@@ -3002,17 +3021,19 @@ extension AztecPostViewController {
             alertController.addActionWithTitle(MediaAttachmentActionSheet.retryUploadActionTitle,
                                                style: .default,
                                                handler: { [weak self] (action) in
-                                                //retry upload
                                                 guard let strongSelf = self,
                                                     let attachment = strongSelf.richTextView.attachment(withId: attachmentID) else {
                                                         return
                                                 }
-                                                strongSelf.resetMediaAttachmentOverlay(attachment)
-                                                attachment.progress = 0
-                                                strongSelf.richTextView.refresh(attachment)
-                                                strongSelf.mediaCoordinator.retryMedia(media)
-                                                strongSelf.observe(media: media, statType: .editorUploadMediaRetried)
+                                                strongSelf.retryFailedMediaUpload(media: media, attachment: attachment)
             })
+            if errorsForAttachmentUploads.count > 1 {
+                alertController.addActionWithTitle(MediaAttachmentActionSheet.retryAllFailedUploadsActionTitle,
+                                                   style: .default,
+                                                   handler: { [weak self] (action) in
+                                                    self?.retryAllFailedMediaUploads()
+                })
+            }
         }
 
         if showDefaultActions {
@@ -3512,6 +3533,7 @@ extension AztecPostViewController {
         static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
         static let stopUploadActionTitle = NSLocalizedString("Stop Upload", comment: "User action to stop upload.")
         static let retryUploadActionTitle = NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")
+        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry All Failed Uploads", comment: "User action to retry all failed media uploads.")
         static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
         static let playVideoActionTitle = NSLocalizedString("Play Video", comment: "User action to play a video on the editor.")
         static let removeActionTitle = NSLocalizedString("Remove", comment: "User action to remove media.")
