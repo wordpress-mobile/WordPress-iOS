@@ -513,6 +513,7 @@
 		98AD07651FFFF96B00485ACA /* SiteCreationSiteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */; };
 		98B24D5A2017E2520082BA78 /* NUXButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D592017E2510082BA78 /* NUXButtonViewController.swift */; };
 		98B24D5D2017E39A0082BA78 /* NUXButtonView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */; };
+		98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */; };
 		98C43E861FE98092006FEF54 /* SignupNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C43E851FE98092006FEF54 /* SignupNavigationController.swift */; };
 		98C43E881FE98137006FEF54 /* Signup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98C43E871FE98137006FEF54 /* Signup.storyboard */; };
 		98C87E9C2003FA3E0052AF32 /* NUXLinkMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C87E9B2003FA3E0052AF32 /* NUXLinkMailViewController.swift */; };
@@ -1878,6 +1879,7 @@
 		98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationSiteDetailsViewController.swift; sourceTree = "<group>"; };
 		98B24D592017E2510082BA78 /* NUXButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXButtonViewController.swift; sourceTree = "<group>"; };
 		98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUXButtonView.storyboard; sourceTree = "<group>"; };
+		98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEpilogueViewController.swift; sourceTree = "<group>"; };
 		98C43E851FE98092006FEF54 /* SignupNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupNavigationController.swift; sourceTree = "<group>"; };
 		98C43E871FE98137006FEF54 /* Signup.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Signup.storyboard; sourceTree = "<group>"; };
 		98C87E9B2003FA3E0052AF32 /* NUXLinkMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXLinkMailViewController.swift; sourceTree = "<group>"; };
@@ -4120,6 +4122,7 @@
 				98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */,
 				98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */,
 				98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */,
+				98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */,
 				982BED991FBCF976000B848E /* SiteCreationNavigationController.swift */,
 				9863BE751FFEDA0600B55B7D /* SiteCreationNoSitesViewController.swift */,
 				98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */,
@@ -6731,6 +6734,7 @@
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
+				98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */,
 				FFDA7E501B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m in Sources */,
 				438A809E1EA5DC31005D4651 /* LoginWPComViewController.swift in Sources */,
 				E66E2A691FE432BC00788F22 /* TitleBadgeDisclosureCell.swift in Sources */,
