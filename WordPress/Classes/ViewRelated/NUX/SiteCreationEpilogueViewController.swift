@@ -4,6 +4,8 @@ class SiteCreationEpilogueViewController: UIViewController {
 
     // MARK: - Properties
 
+    var siteToShow: Blog?
+
     private var previewViewController: SiteCreationSitePreviewViewController?
     private var buttonViewController: NUXButtonViewController?
 
@@ -13,13 +15,8 @@ class SiteCreationEpilogueViewController: UIViewController {
 
     // MARK: - View
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
@@ -29,12 +26,13 @@ class SiteCreationEpilogueViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
 
         if let vc = segue.destination as? SiteCreationSitePreviewViewController {
+            vc.siteUrl = siteToShow?.url
             previewViewController = vc
         }
 
         if let vc = segue.destination as? NUXButtonViewController {
+            vc.delegate = self
             buttonViewController = vc
-            buttonViewController?.delegate = self
             setButtonTitles()
         }
     }

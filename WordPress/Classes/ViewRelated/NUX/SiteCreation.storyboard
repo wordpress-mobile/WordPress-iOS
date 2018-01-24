@@ -465,7 +465,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-tS-MMs" userLabel=" Image">
-                                <rect key="frame" x="0.0" y="146.5" width="350" height="219"/>
+                                <rect key="frame" x="12.5" y="146.5" width="350" height="219"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="350" id="RHZ-Z4-JMd">
                                         <variation key="heightClass=compact" constant="325"/>
@@ -474,34 +474,34 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="OQN-Yl-sBD" userLabel="Label Stack View">
-                                <rect key="frame" x="0.0" y="345.5" width="0.0" height="110"/>
+                                <rect key="frame" x="0.0" y="345.5" width="375" height="110"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Laying site foundation..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XpK-EE-vff">
-                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Retrieving site information..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhD-d7-Due">
-                                        <rect key="frame" x="0.0" y="23" width="0.0" height="18"/>
+                                        <rect key="frame" x="0.0" y="23" width="375" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Configure site content..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adl-Sa-KjY">
-                                        <rect key="frame" x="0.0" y="46" width="0.0" height="18"/>
+                                        <rect key="frame" x="0.0" y="46" width="375" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Configure site style..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1CX-Hg-dIB">
-                                        <rect key="frame" x="0.0" y="69" width="0.0" height="18"/>
+                                        <rect key="frame" x="0.0" y="69" width="375" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preparing frontend..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gz4-el-KfJ">
-                                        <rect key="frame" x="0.0" y="92" width="0.0" height="18"/>
+                                        <rect key="frame" x="0.0" y="92" width="375" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -641,19 +641,28 @@
                                     <constraint firstItem="ZfC-AE-UYX" firstAttribute="centerX" secondItem="bi6-03-qcM" secondAttribute="centerX" id="zYq-vO-gQh"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNd-pl-ODa" userLabel="Site View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="wNd-pl-ODa" secondAttribute="trailing" id="5Zj-6j-7da"/>
                             <constraint firstAttribute="trailing" secondItem="bi6-03-qcM" secondAttribute="trailing" id="Luc-ke-2Mg"/>
                             <constraint firstAttribute="bottom" secondItem="bi6-03-qcM" secondAttribute="bottom" id="U1G-V5-qcq"/>
+                            <constraint firstItem="wNd-pl-ODa" firstAttribute="leading" secondItem="HRs-A0-gOR" secondAttribute="leading" id="eOo-9C-Hxu"/>
+                            <constraint firstAttribute="bottom" secondItem="wNd-pl-ODa" secondAttribute="bottom" id="kJ2-0x-TG1"/>
                             <constraint firstItem="bi6-03-qcM" firstAttribute="leading" secondItem="HRs-A0-gOR" secondAttribute="leading" id="kR3-KX-pqz"/>
                             <constraint firstItem="bi6-03-qcM" firstAttribute="top" secondItem="HRs-A0-gOR" secondAttribute="top" id="p5B-Du-3Jm"/>
+                            <constraint firstItem="wNd-pl-ODa" firstAttribute="top" secondItem="HRs-A0-gOR" secondAttribute="top" id="s5a-X2-Te1"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="congratulationsLabel" destination="j5s-0F-Lvb" id="mWc-2r-Mlb"/>
                         <outlet property="congratulationsView" destination="bi6-03-qcM" id="vAl-QN-L1L"/>
                         <outlet property="siteReadyLabel" destination="LlD-qK-erU" id="fHa-OD-wlP"/>
+                        <outlet property="siteView" destination="wNd-pl-ODa" id="WTS-Xu-7ws"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PhO-xF-yVF" userLabel="First Responder" sceneMemberID="firstResponder"/>
