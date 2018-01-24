@@ -57,7 +57,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// No results view
     ///
     @objc lazy var noResultsView: WPNoResultsView = {
-        let title = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded.")
+        let title = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
         return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
     }()
 
@@ -71,7 +71,16 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Publishing view
     ///
     @objc lazy var publishingView: WPNoResultsView = {
-        let title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server.")
+        let title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityIndicatorView.startAnimating()
+        return WPNoResultsView(title: title, message: nil, accessoryView: activityIndicatorView, buttonTitle: nil)
+    }()
+
+    /// Cancelling view
+    ///
+    @objc lazy var cancellingView: WPNoResultsView = {
+        let title = NSLocalizedString("Cancelling post...", comment: "A short message that informs the user that the current post in the share extension is being cancelled.")
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicatorView.startAnimating()
         return WPNoResultsView(title: title, message: nil, accessoryView: activityIndicatorView, buttonTitle: nil)
@@ -392,6 +401,13 @@ fileprivate extension ShareModularViewController {
         publishingView.centerInSuperview()
     }
 
+    func showCancellingView() {
+        updatePublishButtonStatus()
+        clearAllNoResultsViews()
+        view.addSubview(cancellingView)
+        cancellingView.centerInSuperview()
+    }
+
     func showEmptySitesIfNeeded() {
         updatePublishButtonStatus()
         clearAllNoResultsViews()
@@ -410,6 +426,7 @@ fileprivate extension ShareModularViewController {
         noResultsView.removeFromSuperview()
         loadingView.removeFromSuperview()
         publishingView.removeFromSuperview()
+        cancellingView.removeFromSuperview()
     }
 
     func updatePublishButtonStatus() {
@@ -514,6 +531,7 @@ fileprivate extension ShareModularViewController {
 
         let dismissButtonText = NSLocalizedString("Nevermind", comment: "Share extension error dialog cancel button label.")
         let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
+            self.showCancellingView()
             self.cleanUpSharedContainer()
             self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
         }
