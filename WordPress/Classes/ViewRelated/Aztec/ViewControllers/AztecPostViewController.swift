@@ -3089,6 +3089,42 @@ extension AztecPostViewController {
         WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
     }
 
+    func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
+        guard let videoURL = videoAttachment.srcURL else {
+            return
+        }
+        if let videoPressID = videoAttachment.videoPressID {
+            // It's videoPress video so let's fetch the information for the video
+            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+                guard let videoURL = URL(string: videoURLString) else {
+                    return
+                }
+                videoAttachment.srcURL = videoURL
+                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                    videoAttachment.posterURL = posterURL
+                }
+                self.richTextView.refresh(videoAttachment)
+                self.displayVideoPlayer(for: videoURL)
+            }, failure: { (error) in
+                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            })
+        } else {
+            displayVideoPlayer(for: videoURL)
+        }
+    }
+    
+    func displayVideoPlayer(for videoURL: URL) {
+        let asset = AVURLAsset(url: videoURL)
+        let controller = AVPlayerViewController()
+        let playerItem = AVPlayerItem(asset: asset)
+        let player = AVPlayer(playerItem: playerItem)
+        controller.showsPlaybackControls = true
+        controller.player = player
+        player.play()
+        present(controller, animated: true, completion: nil)
+    }
+
     var mediaMessageAttributes: [NSAttributedStringKey: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -3185,42 +3221,6 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 
         // Display the action sheet right away
         displayActions(forAttachment: attachment, position: position)
-    }
-
-    func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = videoAttachment.srcURL else {
-            return
-        }
-        if let videoPressID = videoAttachment.videoPressID {
-            // It's videoPress video so let's fetch the information for the video
-            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                guard let videoURL = URL(string: videoURLString) else {
-                    return
-                }
-                videoAttachment.srcURL = videoURL
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                    videoAttachment.posterURL = posterURL
-                }
-                self.richTextView.refresh(videoAttachment)
-                self.displayVideoPlayer(for: videoURL)
-            }, failure: { (error) in
-                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-            })
-        } else {
-            displayVideoPlayer(for: videoURL)
-        }
-    }
-
-    func displayVideoPlayer(for videoURL: URL) {
-        let asset = AVURLAsset(url: videoURL)
-        let controller = AVPlayerViewController()
-        let playerItem = AVPlayerItem(asset: asset)
-        let player = AVPlayer(playerItem: playerItem)
-        controller.showsPlaybackControls = true
-        controller.player = player
-        player.play()
-        present(controller, animated: true, completion: nil)
     }
 
     public func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
