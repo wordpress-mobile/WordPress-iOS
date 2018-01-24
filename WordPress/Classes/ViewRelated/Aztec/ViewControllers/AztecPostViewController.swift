@@ -3104,6 +3104,7 @@ extension AztecPostViewController {
                 return
             }
             guard let videoURL = URL(string: videoURLString) else {
+                self.displayUnableToPlayVideoAlert()
                 return
             }
             videoAttachment.srcURL = videoURL
@@ -3112,7 +3113,8 @@ extension AztecPostViewController {
             }
             self.richTextView.refresh(videoAttachment)
             self.displayVideoPlayer(for: videoURL)
-        }, failure: { (error) in
+        }, failure: { [weak self] (error) in
+            self?.displayUnableToPlayVideoAlert()
             DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
         })
     }
@@ -3126,6 +3128,13 @@ extension AztecPostViewController {
         controller.player = player
         player.play()
         present(controller, animated: true, completion: nil)
+    }
+
+    func displayUnableToPlayVideoAlert() {
+        let alertController = UIAlertController(title: MediaUnableToPlayVideoAlert.title, message: MediaUnableToPlayVideoAlert.message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        present(alertController, animated: true, completion: nil)
+        return
     }
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
@@ -3577,5 +3586,10 @@ extension AztecPostViewController {
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    }
+
+    struct MediaUnableToPlayVideoAlert {
+        static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
+        static let message = NSLocalizedString("We are unable to get information from this video at the moment. Please try later.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
 }
