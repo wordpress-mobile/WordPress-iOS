@@ -1,3 +1,7 @@
+enum MediaNoticeUserInfoKey {
+    static let blogID = "blog_id"
+    static let failedMediaIDs = "failed_media_ids"
+}
 
 struct MediaProgressCoordinatorNoticeViewModel {
     private let mediaProgressCoordinator: MediaProgressCoordinator
@@ -57,7 +61,11 @@ struct MediaProgressCoordinatorNoticeViewModel {
         var userInfo = [String: Any]()
 
         if let blog = blogInContext {
-            userInfo["blog_id"] = blog.objectID.uriRepresentation().absoluteString
+            userInfo[MediaNoticeUserInfoKey.blogID] = blog.objectID.uriRepresentation().absoluteString
+        }
+
+        if !uploadSuccessful {
+            userInfo[MediaNoticeUserInfoKey.failedMediaIDs] = failedMedia.map({ $0.objectID.uriRepresentation().absoluteString })
         }
 
         return NoticeNotificationInfo(identifier: UUID().uuidString,
