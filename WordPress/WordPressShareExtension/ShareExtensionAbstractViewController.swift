@@ -105,7 +105,7 @@ extension ShareExtensionAbstractViewController {
     }
 
     func cleanUpSharedContainer() {
-        // First, remove the temp media files if needed
+        // Remove the temp media files if needed
         for tempMediaFileURL in shareData.sharedImageDict.keys {
             if !tempMediaFileURL.pathExtension.isEmpty {
                 ShareMediaFileManager.shared.removeFromUploadDirectory(fileName: tempMediaFileURL.lastPathComponent)
