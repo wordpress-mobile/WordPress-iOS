@@ -1,3 +1,7 @@
+enum MediaNoticeUserInfoKey {
+    static let blogID = "blog_id"
+    static let failedMediaIDs = "failed_media_ids"
+}
 
 struct MediaProgressCoordinatorNoticeViewModel {
     private let mediaProgressCoordinator: MediaProgressCoordinator
@@ -30,28 +34,47 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
     private var successNotice: Notice {
         guard let blog = blogInContext else {
-            return Notice(title: title)
+            return Notice(title: title, notificationInfo: notificationInfo)
         }
 
         return Notice(title: title,
+                      notificationInfo: notificationInfo,
                       actionTitle: actionTitle,
                       actionHandler: {
-                        let editor = EditPostViewController(blog: blog)
-                        editor.modalPresentationStyle = .fullScreen
-                        WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
-                        WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": "media_upload_notice"], with: blog)
+                        MediaNoticeNavigationCoordinator.presentEditor(for: blog, source: "media_upload_notice")
         })
     }
 
     private var failureNotice: Notice {
         return Notice(title: title,
                       message: message,
+                      notificationInfo: notificationInfo,
                       actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
                       actionHandler: {
                         for media in self.failedMedia {
                             MediaCoordinator.shared.retryMedia(media)
                         }
         })
+    }
+
+    private var notificationInfo: NoticeNotificationInfo {
+        var userInfo = [String: Any]()
+
+        if let blog = blogInContext {
+            userInfo[MediaNoticeUserInfoKey.blogID] = blog.objectID.uriRepresentation().absoluteString
+        }
+
+        if !uploadSuccessful {
+            userInfo[MediaNoticeUserInfoKey.failedMediaIDs] = failedMedia.map({ $0.objectID.uriRepresentation().absoluteString })
+        }
+
+        return NoticeNotificationInfo(identifier: UUID().uuidString,
+                                      categoryIdentifier: notificationCategoryIdentifier,
+                                      userInfo: userInfo)
+    }
+
+    private var notificationCategoryIdentifier: String {
+        return uploadSuccessful ? "media-upload-success" : "media-upload-failure"
     }
 
     var title: String {
