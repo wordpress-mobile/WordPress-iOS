@@ -40,8 +40,8 @@ class SiteCreationEpilogueViewController: UIViewController {
     // MARK: - Button View Button Titles
 
     private func setButtonTitles() {
-        let primaryTitle = NSLocalizedString("Write first post", comment: "")
-        let secondaryTitle = NSLocalizedString("Configure", comment: "")
+        let primaryTitle = NSLocalizedString("Write first post", comment: "On the final site creation page, button to allow the user to write a post for the newly created site.")
+        let secondaryTitle = NSLocalizedString("Configure", comment: "Button to allow the user to dismiss the final site creation page.")
         buttonViewController?.setButtonTitles(primary: primaryTitle, secondary: secondaryTitle)
     }
 
