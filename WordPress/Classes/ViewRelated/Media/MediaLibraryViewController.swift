@@ -398,12 +398,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             case .progress(let progress) :
                 self?.updateCellProgress(progress, for: media)
                 break
-            case .uploading:
+            case .processing, .uploading:
                 self?.showUploadingStateForCell(for: media)
             case .ended:
                 self?.reloadCell(for: media)
             case .failed:
                 self?.showFailedStateForCell(for: media)
+            case .thumbnailReady:
+                self?.showUploadingStateForCell(for: media)
             }
             }, for: nil)
     }
