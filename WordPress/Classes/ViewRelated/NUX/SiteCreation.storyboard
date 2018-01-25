@@ -611,7 +611,7 @@
                                                 </constraints>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="V8f-EU-YF3" userLabel="Label Stack View">
-                                                <rect key="frame" x="0.0" y="234.5" width="375" height="37.5"/>
+                                                <rect key="frame" x="0.0" y="234.5" width="375" height="42.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5s-0F-Lvb">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="18.5"/>
@@ -641,7 +641,7 @@
                                     <constraint firstItem="ZfC-AE-UYX" firstAttribute="centerX" secondItem="bi6-03-qcM" secondAttribute="centerX" id="zYq-vO-gQh"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNd-pl-ODa" userLabel="Site View">
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNd-pl-ODa" userLabel="Site View">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
