@@ -21,10 +21,6 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" userLabel="icon" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                         <rect key="frame" x="10" y="13" width="46" height="46"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="46" id="h59-o3-ocT"/>
-                            <constraint firstAttribute="width" constant="46" id="pBo-eH-W4J"/>
-                        </constraints>
                     </imageView>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe">
                         <rect key="frame" x="64" y="16.5" width="211" height="40.5"/>
@@ -38,7 +34,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVX-To-MrZ">
                                 <rect key="frame" x="0.0" y="22.5" width="211" height="18"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" red="0.4349169135093689" green="0.55408048629760742" blue="0.65517556667327881" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -63,6 +59,7 @@
                     <constraint firstAttribute="trailing" secondItem="TCy-wp-wTe" secondAttribute="trailing" constant="45" id="0oE-5U-SQT"/>
                     <constraint firstItem="TCy-wp-wTe" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="C8d-4Z-PfM"/>
                     <constraint firstItem="RzG-YS-PIa" firstAttribute="centerX" secondItem="0Gm-n3-CNm" secondAttribute="centerX" id="L3r-zV-wCL"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="topMargin" constant="2" id="L9J-ix-0rd"/>
                     <constraint firstItem="RzG-YS-PIa" firstAttribute="centerY" secondItem="0Gm-n3-CNm" secondAttribute="centerY" id="OWl-vB-Ogj"/>
                     <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" constant="-6" id="WWd-O4-jdV"/>
                     <constraint firstItem="0Gm-n3-CNm" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="XJ7-jd-HAr"/>
