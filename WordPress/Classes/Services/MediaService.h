@@ -27,7 +27,7 @@
 - (nonnull Media *)createMediaWith:(nonnull id<ExportableAsset>)exportable
                           objectID:(nonnull NSManagedObjectID *)objectID
                           progress:(NSProgress * __nullable __autoreleasing * __nullable)progress
-                 thumbnailCallback:(nullable void (^)(NSURL * __nonnull thumbnailURL))thumbnailCallback
+                 thumbnailCallback:(nullable void (^)(Media * __nonnull media, NSURL * __nonnull thumbnailURL))thumbnailCallback
                         completion:(nullable void (^)(Media * __nullable media, NSError * __nullable error))completion;
 
 
