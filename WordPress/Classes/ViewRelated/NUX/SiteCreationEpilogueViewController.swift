@@ -51,9 +51,18 @@ class SiteCreationEpilogueViewController: UIViewController {
 
 extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
 
+    // 'Write first post' button
     func primaryButtonPressed() {
+        if let navController = navigationController as? SiteCreationNavigationController {
+            // SiteCreationNavigationController will check this value before dismissing
+            // and take appropriate action.
+            navController.needToShowPostEditor = true
+        }
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
+    // 'Configure' button
     func secondaryButtonPressed() {
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 }
