@@ -54,11 +54,12 @@ class JetpackConnectionWebViewController: UIViewController {
     }
 
     func startConnectionFlow() {
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let url: URL
         if let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            url = URL(string: "https://wordpress.com/jetpack/connect?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)")!
+            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)")!
         } else {
-            url = URL(string: "https://wordpress.com/jetpack/connect?mobile_redirect=\(mobileRedirectURL)")!
+            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?mobile_redirect=\(mobileRedirectURL)")!
         }
 
         let request = URLRequest(url: url)
