@@ -100,17 +100,25 @@ final class InteractiveNotificationsManager: NSObject {
     }
 
     func handleLocalNotificationAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
-        if let noteCategory = NoteCategoryDefinition(rawValue: category),
-            noteCategory == .mediaUploadSuccess {
-            if let action = NoteActionDefinition(rawValue: identifier) {
-                switch action {
-                case .mediaWritePost:
-                    MediaNoticeNavigationCoordinator.presentEditor(with: userInfo)
-                default:
-                    break
+        if let noteCategory = NoteCategoryDefinition(rawValue: category) {
+            switch noteCategory {
+            case .mediaUploadSuccess, .mediaUploadFailure:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    MediaNoticeNavigationCoordinator.navigateToMediaLibrary(with: userInfo)
+                    return true
                 }
-            } else if identifier == UNNotificationDefaultActionIdentifier {
-                MediaNoticeNavigationCoordinator.navigateToMediaLibrary(with: userInfo)
+
+                if let action = NoteActionDefinition(rawValue: identifier) {
+                    switch action {
+                    case .mediaWritePost:
+                        MediaNoticeNavigationCoordinator.presentEditor(with: userInfo)
+                    case .mediaRetry:
+                        MediaNoticeNavigationCoordinator.retryMediaUploads(with: userInfo)
+                    default:
+                        break
+                    }
+                }
+            default: break
             }
         }
 
@@ -207,6 +215,7 @@ private extension InteractiveNotificationsManager {
         case commentReply           = "replyto-comment"
         case commentReplyWithLike   = "replyto-like-comment"
         case mediaUploadSuccess     = "media-upload-success"
+        case mediaUploadFailure     = "media-upload-failure"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -220,6 +229,8 @@ private extension InteractiveNotificationsManager {
                 return [.commentReply, .commentLike]
             case .mediaUploadSuccess:
                 return [.mediaWritePost]
+            case .mediaUploadFailure:
+                return [.mediaRetry]
             }
         }
 
@@ -239,8 +250,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess]
-        static var localDefinitions = [mediaUploadSuccess]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure]
     }
 
 
@@ -252,6 +263,7 @@ private extension InteractiveNotificationsManager {
         case commentLike      = "COMMENT_LIKE"
         case commentReply     = "COMMENT_REPLY"
         case mediaWritePost   = "MEDIA_WRITE_POST"
+        case mediaRetry       = "MEDIA_RETRY"
 
         var description: String {
             switch self {
@@ -263,6 +275,8 @@ private extension InteractiveNotificationsManager {
                 return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
             case .mediaWritePost:
                 return NSLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
+            case .mediaRetry:
+                return NSLocalizedString("Retry", comment: "Opens the media library .")
             }
         }
 
@@ -280,7 +294,7 @@ private extension InteractiveNotificationsManager {
 
         var requiresForeground: Bool {
             switch self {
-            case .mediaWritePost:
+            case .mediaWritePost, .mediaRetry:
                 return true
             default: return false
             }
@@ -313,7 +327,7 @@ private extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry]
     }
 }
 
