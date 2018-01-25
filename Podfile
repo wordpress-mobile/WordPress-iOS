@@ -47,6 +47,7 @@ target 'WordPress' do
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '3.0.3'
   pod 'GoogleSignIn', '4.1.1'
+  pod 'TTTAttributedLabel', '2.0'
 
   # --------------------
   # WordPress components
