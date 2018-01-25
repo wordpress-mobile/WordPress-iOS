@@ -12,6 +12,10 @@ struct Notice {
     /// An optional subtitle for the notice
     let message: String?
 
+    /// If provided, the notice will be presented as a system notification when
+    /// the app isn't in the foreground.
+    let notificationInfo: NoticeNotificationInfo?
+
     /// A title for an optional action button that can be displayed as part of
     /// a notice
     let actionTitle: String?
@@ -20,19 +24,34 @@ struct Notice {
     /// is tapped, if you've provided an action title
     let actionHandler: (() -> Void)?
 
-    init(title: String, message: String? = nil) {
+    init(title: String, message: String? = nil, notificationInfo: NoticeNotificationInfo? = nil) {
         self.title = title
         self.message = message
+        self.notificationInfo = notificationInfo
         self.actionTitle = nil
         self.actionHandler = nil
     }
 
-    init(title: String, message: String? = nil, actionTitle: String, actionHandler: @escaping (() -> Void)) {
+    init(title: String, message: String? = nil, notificationInfo: NoticeNotificationInfo? = nil, actionTitle: String, actionHandler: @escaping (() -> Void)) {
         self.title = title
         self.message = message
+        self.notificationInfo = notificationInfo
         self.actionTitle = actionTitle
         self.actionHandler = actionHandler
     }
+}
+
+struct NoticeNotificationInfo {
+    /// Unique identifier for this notice. When displayed as a system notification,
+    /// this value will be used as the `UNNotificationRequest`'s identifier.
+    let identifier: String
+
+    /// Optional category identifier for this notice. If provided, this value
+    /// will be used as the `UNNotificationContent`'s category identifier.
+    let categoryIdentifier: String?
+
+    /// If provided, this will be added to the `UNNotificationRequest` for this notice.
+    let userInfo: [String: Any]?
 }
 
 /// NoticeActions can be posted to control or report the display of notices.

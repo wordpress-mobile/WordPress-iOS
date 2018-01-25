@@ -148,7 +148,7 @@ static NSUInteger const TaxonomyRESTNumberMaxValue = 1000;
                    failure:(nullable void (^)(NSError *error))failure
 {
     [self getTaxonomyWithType:TaxonomyRESTTagIdentifier
-                   parameters:nil
+                   parameters:@{TaxonomyRESTNumberParameter: @(TaxonomyRESTNumberMaxValue)}
                       success:^(NSDictionary *responseObject) {
                           success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
                       } failure:failure];
