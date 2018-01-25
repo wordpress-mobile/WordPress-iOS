@@ -2887,7 +2887,7 @@ extension AztecPostViewController {
 
         let message = MediaAttachmentActionSheet.failedMediaActionTitle
 
-        let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+        let attributeMessage = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
         attachment.message = attributeMessage
         attachment.overlayImage = Gridicon.iconOfType(.refresh, withSize: Constants.mediaOverlayIconSize)
         attachment.shouldHideBorder = true
@@ -3115,13 +3115,52 @@ extension AztecPostViewController {
         WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
     }
 
-    var mediaMessageAttributes: [NSAttributedStringKey: Any] {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
+    func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
+        guard let videoURL = videoAttachment.srcURL else {
+            return
+        }
+        guard let videoPressID = videoAttachment.videoPressID else {
+            displayVideoPlayer(for: videoURL)
+            return
+        }
+        // It's videoPress video so let's fetch the information for the video
+        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { [weak self] (videoURLString, posterURLString) in
+            guard let `self` = self else {
+                return
+            }
+            guard let videoURL = URL(string: videoURLString) else {
+                self.displayUnableToPlayVideoAlert()
+                return
+            }
+            videoAttachment.srcURL = videoURL
+            if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                videoAttachment.posterURL = posterURL
+            }
+            self.richTextView.refresh(videoAttachment)
+            self.displayVideoPlayer(for: videoURL)
+        }, failure: { [weak self] (error) in
+            self?.displayUnableToPlayVideoAlert()
+            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+        })
+    }
 
-        return [.font: Fonts.mediaOverlay,
-                .paragraphStyle: paragraphStyle,
-                .foregroundColor: UIColor.white]
+    func displayVideoPlayer(for videoURL: URL) {
+        let asset = AVURLAsset(url: videoURL)
+        let controller = AVPlayerViewController()
+        let playerItem = AVPlayerItem(asset: asset)
+        let player = AVPlayer(playerItem: playerItem)
+        controller.showsPlaybackControls = true
+        controller.player = player
+        player.play()
+        present(controller, animated: true, completion: nil)
+    }
+
+    func displayUnableToPlayVideoAlert() {
+        let alertController = UIAlertController(title: MediaUnableToPlayVideoAlert.title, message: MediaUnableToPlayVideoAlert.message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        present(alertController, animated: true, completion: nil)
+        return
     }
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
@@ -3204,49 +3243,13 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 
             // ...and mark the newly tapped attachment
             let message = ""
-            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.message = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
             richTextView.refresh(attachment)
             currentSelectedAttachment = attachment
         }
 
         // Display the action sheet right away
         displayActions(forAttachment: attachment, position: position)
-    }
-
-    func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = videoAttachment.srcURL else {
-            return
-        }
-        if let videoPressID = videoAttachment.videoPressID {
-            // It's videoPress video so let's fetch the information for the video
-            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                guard let videoURL = URL(string: videoURLString) else {
-                    return
-                }
-                videoAttachment.srcURL = videoURL
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                    videoAttachment.posterURL = posterURL
-                }
-                self.richTextView.refresh(videoAttachment)
-                self.displayVideoPlayer(for: videoURL)
-            }, failure: { (error) in
-                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-            })
-        } else {
-            displayVideoPlayer(for: videoURL)
-        }
-    }
-
-    func displayVideoPlayer(for videoURL: URL) {
-        let asset = AVURLAsset(url: videoURL)
-        let controller = AVPlayerViewController()
-        let playerItem = AVPlayerItem(asset: asset)
-        let player = AVPlayer(playerItem: playerItem)
-        controller.showsPlaybackControls = true
-        controller.player = player
-        player.play()
-        present(controller, animated: true, completion: nil)
     }
 
     public func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
@@ -3517,6 +3520,14 @@ extension AztecPostViewController {
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
+        static let mediaMessageAttributes: [NSAttributedStringKey: Any] = {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+
+            return [.font: Fonts.mediaOverlay,
+                    .paragraphStyle: paragraphStyle,
+                    .foregroundColor: UIColor.white]
+        }()
         static let placeholderMediaLink = URL(string: "placeholder://")!
 
         struct Animations {
@@ -3603,5 +3614,10 @@ extension AztecPostViewController {
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    }
+
+    struct MediaUnableToPlayVideoAlert {
+        static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
+        static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
 }
