@@ -195,6 +195,8 @@
 		4034FDEE2007D4F700153B87 /* ExpandableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4034FDED2007D4F700153B87 /* ExpandableCell.xib */; };
 		4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058F4191FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib */; };
 		405B53FB1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */; };
+		40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */; };
+		40E469912017EAB10030DB5F /* plugin-directory-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = 40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */; };
 		40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */; };
 		40E728851FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E728841FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift */; };
 		40F88F641F86C26600AE3FAF /* AztecVerificationPromptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F88F631F86C26600AE3FAF /* AztecVerificationPromptHelper.swift */; };
@@ -1404,6 +1406,8 @@
 		4034FDED2007D4F700153B87 /* ExpandableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpandableCell.xib; sourceTree = "<group>"; };
 		4058F4191FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginDetailViewHeaderCell.xib; sourceTree = "<group>"; };
 		405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlerts+VerificationPrompt.swift"; sourceTree = "<group>"; };
+		40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryEntryStateTests.swift; sourceTree = "<group>"; };
+		40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "plugin-directory-jetpack.json"; path = "../../../WordPressKit/WordPressKitTests/Mock Data/plugin-directory-jetpack.json"; sourceTree = "<group>"; };
 		40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextWithAccessoryButtonCell.xib; sourceTree = "<group>"; };
 		40E728841FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDetailViewHeaderCell.swift; sourceTree = "<group>"; };
 		40F88F631F86C26600AE3FAF /* AztecVerificationPromptHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecVerificationPromptHelper.swift; sourceTree = "<group>"; };
@@ -4689,6 +4693,7 @@
 				E1A7CA4A1CC9FD7800373E06 /* StoreCoordinatorTests.swift */,
 				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
 				932645A31E7C206600134988 /* EditorSettingsTests.swift */,
+				40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -5345,6 +5350,7 @@
 		E16AB94414D9A13A0047A2E5 /* Mock Data */ = {
 			isa = PBXGroup;
 			children = (
+				40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */,
 				855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */,
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
 				855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */,
@@ -6208,6 +6214,7 @@
 				933D1F6E1EA7A402009FB462 /* TestAssets.xcassets in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
+				40E469912017EAB10030DB5F /* plugin-directory-jetpack.json in Resources */,
 				08F8CD361EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg in Resources */,
 				FF9839AF1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
@@ -7370,6 +7377,7 @@
 				B532ACCF1DC3AB8E00FFFA57 /* NotificationSyncMediatorTests.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
+				40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */,
 				E1AB5A3A1E0C464700574B4E /* DelayTests.swift in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
 				85D239C01AE5A7020074768D /* LoginFacadeTests.m in Sources */,
