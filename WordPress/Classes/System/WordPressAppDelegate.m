@@ -106,6 +106,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupBuddyBuild];
     [self setupPingHub];
+    [self configureFirebase];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
     [self disableAnimationsForUITests:application];

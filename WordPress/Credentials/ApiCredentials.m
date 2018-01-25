@@ -37,6 +37,18 @@
     return @"";
 }
 
++ (NSString *)firebaseAPIKey {
+    return @"";
+}
+
++ (NSString *)firebaseAppID {
+    return @"";
+}
+
++ (NSString *)firebaseGCMID {
+    return @"";
+}
+
 + (NSString *)helpshiftAPIKey {
     return  @"";
 }
