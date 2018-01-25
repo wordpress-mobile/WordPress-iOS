@@ -7,6 +7,8 @@ class NoticePresenter: NSObject {
     private let store: NoticeStore
     private let presentingViewController: UIViewController
 
+    let generator = UINotificationFeedbackGenerator()
+
     private var storeReceipt: Receipt?
 
     private init(store: NoticeStore, presentingViewController: UIViewController) {
@@ -60,6 +62,8 @@ class NoticePresenter: NSObject {
             return
         }
 
+        generator.prepare()
+
         let noticeView = NoticeView(notice: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -100,6 +104,10 @@ class NoticePresenter: NSObject {
         }
 
         noticeView.dismissHandler = dismiss
+
+        if let feedbackType = notice.feedbackType {
+            generator.notificationOccurred(feedbackType)
+        }
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
