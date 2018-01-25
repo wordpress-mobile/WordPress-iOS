@@ -55,6 +55,7 @@ class SiteCreationSitePreviewViewController: UIViewController {
     private func createWebView() {
         webView = WKWebView(frame: view.frame)
         webView?.navigationDelegate = self
+        siteView.addSubview(self.webView!)
     }
 
     private func loadSite() {
@@ -67,8 +68,10 @@ class SiteCreationSitePreviewViewController: UIViewController {
 
     private func showSite() {
         if siteLoaded == true && timeExpired == true {
-            siteView.addSubview(self.webView!)
-            siteView.isHidden = false
+            UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
+                self.siteView.alpha = 1
+                self.congratulationsView.alpha = 0
+            }, completion: nil)
         }
     }
 }
