@@ -246,7 +246,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                        failure:(void (^)(NSError *))failure
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     [self.wordPressComRestApi GET:requestUrl
                        parameters:parameters
                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
