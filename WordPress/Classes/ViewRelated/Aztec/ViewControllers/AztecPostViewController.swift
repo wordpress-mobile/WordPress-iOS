@@ -3590,6 +3590,6 @@ extension AztecPostViewController {
 
     struct MediaUnableToPlayVideoAlert {
         static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
-        static let message = NSLocalizedString("We are unable to get information from this video at the moment. Please try later.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
+        static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
 }
