@@ -12,12 +12,14 @@ class SiteCreationSitePreviewViewController: UIViewController {
     @IBOutlet weak var congratulationsLabel: UILabel!
     @IBOutlet weak var siteReadyLabel: UILabel!
 
-    /// Due to build error when adding WKWebView in a storyboard, must create it
+    /// Due to build error when adding WKWebView in a storyboard, must create WKWebView
     /// programatically for < iOS 11.
     /// https://stackoverflow.com/a/46649435/3354034
     private var webView: WKWebView?
 
+    /// Indicates if the allotted time showing the Congratulations view has expired.
     private var timeExpired: Bool = false
+    /// Indicates if the new site has finished loading.
     private var siteLoaded: Bool = false
 
     // MARK: - View
@@ -46,8 +48,8 @@ class SiteCreationSitePreviewViewController: UIViewController {
     }
 
     private func setLabelText() {
-        congratulationsLabel.text = NSLocalizedString("Congratulations!", comment: "")
-        siteReadyLabel.text = NSLocalizedString("Your site is ready.", comment: "")
+        congratulationsLabel.text = NSLocalizedString("Congratulations!", comment: "Message shown on the final page of the site creation process.")
+        siteReadyLabel.text = NSLocalizedString("Your site is ready.", comment: "Message shown on the final page of the site creation process.")
     }
 
     // MARK: - Web View
@@ -66,6 +68,8 @@ class SiteCreationSitePreviewViewController: UIViewController {
         }
     }
 
+    /// If the site has finished loading and the Congratulations view has shown long enough,
+    /// fade in the site and fade out the Congratulations view.
     private func showSite() {
         if siteLoaded == true && timeExpired == true {
             UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
@@ -77,6 +81,7 @@ class SiteCreationSitePreviewViewController: UIViewController {
 }
 
 // MARK: - WKNavigationDelegate
+
 extension SiteCreationSitePreviewViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
