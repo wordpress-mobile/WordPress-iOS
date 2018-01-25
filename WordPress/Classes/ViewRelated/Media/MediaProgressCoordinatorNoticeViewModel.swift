@@ -34,6 +34,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
         }
 
         return Notice(title: title,
+                      feedbackType: .success,
                       notificationInfo: notificationInfo,
                       actionTitle: actionTitle,
                       actionHandler: {
@@ -44,6 +45,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
     private var failureNotice: Notice {
         return Notice(title: title,
                       message: message,
+                      feedbackType: .error,
                       actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
                       actionHandler: {
                         for media in self.failedMedia {
