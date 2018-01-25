@@ -4,8 +4,6 @@ import UIKit
 /// the app in response to actions taken by the user from Media notifications.
 ///
 class MediaNoticeNavigationCoordinator {
-    private static let blogIDKey = "blog_id"
-
     static func presentEditor(with userInfo: NSDictionary) {
         if let blog = blog(from: userInfo) {
             presentEditor(for: blog, source: "media_upload_notification")
@@ -25,10 +23,15 @@ class MediaNoticeNavigationCoordinator {
         }
     }
 
+    static func retryMediaUploads(with userInfo: NSDictionary) {
+        let media = self.media(from: userInfo)
+        media.forEach({ MediaCoordinator.shared.retryMedia($0) })
+    }
+
     private static func blog(from userInfo: NSDictionary) -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
 
-        guard let blogID = userInfo[MediaNoticeNavigationCoordinator.blogIDKey] as? String,
+        guard let blogID = userInfo[MediaNoticeUserInfoKey.blogID] as? String,
             let URIRepresentation = URL(string: blogID),
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URIRepresentation),
             let managedObject = try? context.existingObject(with: objectID),
@@ -37,5 +40,26 @@ class MediaNoticeNavigationCoordinator {
         }
 
         return blog
+    }
+
+    private static func media(from userInfo: NSDictionary) -> [Media] {
+        let context = ContextManager.sharedInstance().mainContext
+
+        if let mediaIDs = userInfo[MediaNoticeUserInfoKey.failedMediaIDs] as? [String] {
+            let media = mediaIDs.flatMap({ mediaID -> Media? in
+                if let URIRepresentation = URL(string: mediaID),
+                    let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URIRepresentation),
+                    let managedObject = try? context.existingObject(with: objectID),
+                    let media = managedObject as? Media {
+                    return media
+                }
+
+                return nil
+            })
+
+            return media
+        }
+
+        return []
     }
 }
