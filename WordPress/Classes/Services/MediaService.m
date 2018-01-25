@@ -75,7 +75,9 @@
             // Pre-generate a thumbnail image, see the method notes.
             [self exportPlaceholderThumbnailForMedia:media
                                           completion:^(NSURL *url){
-                                              thumbnailCallback(media, url);
+                                              if (thumbnailCallback) {
+                                                  thumbnailCallback(media, url);
+                                              }
                                           }];
             if (completion) {
                 completion(media, nil);
