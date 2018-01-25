@@ -2730,7 +2730,9 @@ extension AztecPostViewController {
         insert(exportableAsset: phAsset, source: .localLibrary)
     }
 
-    fileprivate func insertSiteMediaLibrary(media: Media) {
+    /// Insert media to the post from the site's media library.
+    ///
+    func insertSiteMediaLibrary(media: Media) {
         if media.hasRemote {
             insertRemoteSiteMediaLibrary(media: media)
         } else {
