@@ -28,6 +28,7 @@ public struct PluginState: Equatable {
     public var autoupdate: Bool
     public var automanaged: Bool
     public let url: URL?
+    public let settingsURL: URL?
 
     public static func ==(lhs: PluginState, rhs: PluginState) -> Bool {
         return lhs.id == rhs.id
@@ -63,7 +64,6 @@ public extension PluginState {
         return url
     }
 
-    @available(*, unavailable, message: "Don't use until we can figure out if the plugin is in the WordPress.org directory")
     var directoryURL: URL {
         return URL(string: "https://wordpress.org/plugins/\(slug)")!
     }
