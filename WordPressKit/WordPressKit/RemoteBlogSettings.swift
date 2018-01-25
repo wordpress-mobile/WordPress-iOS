@@ -26,6 +26,14 @@ public class RemoteBlogSettings: NSObject {
     ///
     @objc public var iconMediaID: NSNumber?
 
+    /// Stores the Blog's GMT offset
+    ///
+    @objc public var gmtOffset: NSNumber?
+
+    /// Stores the Blog's timezone
+    ///
+    @objc public var timezoneString: String?
+
     // MARK: - Writing
 
     /// Contains the Default Category ID. Used when creating new posts.

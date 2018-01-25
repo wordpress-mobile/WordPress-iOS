@@ -287,6 +287,7 @@ public class MediaProgressCoordinator: NSObject {
         }
         if mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
             mediaProgress.cancel()
+            finishOneItem()
         }
         mediaInProgress.removeValue(forKey: mediaID)
     }
