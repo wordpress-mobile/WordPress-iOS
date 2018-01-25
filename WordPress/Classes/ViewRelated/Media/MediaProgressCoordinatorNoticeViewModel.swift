@@ -1,3 +1,7 @@
+enum MediaNoticeUserInfoKey {
+    static let blogID = "blog_id"
+    static let failedMediaIDs = "failed_media_ids"
+}
 
 struct MediaProgressCoordinatorNoticeViewModel {
     private let mediaProgressCoordinator: MediaProgressCoordinator
@@ -46,6 +50,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
         return Notice(title: title,
                       message: message,
                       feedbackType: .error,
+                      notificationInfo: notificationInfo,
                       actionTitle: NSLocalizedString("Retry", comment: "User action to retry media upload."),
                       actionHandler: {
                         for media in self.failedMedia {
@@ -58,12 +63,20 @@ struct MediaProgressCoordinatorNoticeViewModel {
         var userInfo = [String: Any]()
 
         if let blog = blogInContext {
-            userInfo["blog_id"] = blog.objectID.uriRepresentation().absoluteString
+            userInfo[MediaNoticeUserInfoKey.blogID] = blog.objectID.uriRepresentation().absoluteString
+        }
+
+        if !uploadSuccessful {
+            userInfo[MediaNoticeUserInfoKey.failedMediaIDs] = failedMedia.map({ $0.objectID.uriRepresentation().absoluteString })
         }
 
         return NoticeNotificationInfo(identifier: UUID().uuidString,
-                                      categoryIdentifier: "media-upload-success",
+                                      categoryIdentifier: notificationCategoryIdentifier,
                                       userInfo: userInfo)
+    }
+
+    private var notificationCategoryIdentifier: String {
+        return uploadSuccessful ? "media-upload-success" : "media-upload-failure"
     }
 
     var title: String {
