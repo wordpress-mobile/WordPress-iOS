@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
-import WordPressShared.WPTableViewCell
-
+import WordPressShared
+import Gridicons
 
 class WPReusableTableViewCell: WPTableViewCell {
     override func prepareForReuse() {
