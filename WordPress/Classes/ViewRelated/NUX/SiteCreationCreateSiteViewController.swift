@@ -62,8 +62,15 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             self.showStepLabelForStatus(status)
         }
 
-
         let successBlock = { (blog: Blog) in
+
+            // Touch site so the app recognizes it as the last used.
+            // Primarily so the 'write first post' action from the epilogue
+            // defaults to the new site.
+            if let siteUrl = blog.url {
+                RecentSitesService().touch(site: siteUrl)
+            }
+
             self.newSite = blog
             self.performSegue(withIdentifier: .showSiteCreationEpilogue, sender: self)
         }

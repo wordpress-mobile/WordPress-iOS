@@ -29,6 +29,7 @@ static NSInteger HideSearchMinSites = 3;
                                         UISearchBarDelegate,
                                         WPNoResultsViewDelegate,
                                         SiteCreationNoSitesViewControllerDelegate,
+                                        SiteCreationNavigationControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) UIStackView *stackView;
@@ -912,6 +913,7 @@ static NSInteger HideSearchMinSites = 3;
         SiteTypeTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteType"];
         SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
                                                            initWithRootViewController:controller];
+        navController.navControllerDelegate = self;
         [self presentViewController:navController animated:YES completion:nil];
     }
     
@@ -978,6 +980,13 @@ static NSInteger HideSearchMinSites = 3;
     [self maybeShowNUX];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
+}
+
+#pragma mark - SiteCreationNavigationControllerDelegate
+
+- (void)showPostEditor
+{
+    [[WPTabBarController sharedInstance] showPostTab];
 }
 
 #pragma mark - NoSitesViewControllerDelegate

@@ -657,6 +657,7 @@
                             <constraint firstItem="bi6-03-qcM" firstAttribute="top" secondItem="HRs-A0-gOR" secondAttribute="top" id="p5B-Du-3Jm"/>
                             <constraint firstItem="wNd-pl-ODa" firstAttribute="top" secondItem="HRs-A0-gOR" secondAttribute="top" id="s5a-X2-Te1"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="LA2-F9-HCM"/>
                     </view>
                     <connections>
                         <outlet property="congratulationsLabel" destination="j5s-0F-Lvb" id="mWc-2r-Mlb"/>
