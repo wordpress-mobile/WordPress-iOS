@@ -97,7 +97,7 @@ import CoreData
     /// For the provided group ID:
     ///   1. Find the (not completed) post upload op (there should be one)
     ///   2. Find all of the completed media upload ops
-    ///   3. Append the media to the postContent property of the post upload op
+    ///   3. Update the media in tags within the postContent property of the post upload op
     ///   4. Save the post upload op and return it
     ///
     /// - Parameter groupID: Group ID representing all of the media upload ops and single post upload op
@@ -108,12 +108,20 @@ import CoreData
             let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
                 return nil
         }
-        let remoteURLText = mediaUploadOps.flatMap({ $0 })
-            .map({ "".stringByAppendingMediaURL(remoteURL: $0.remoteURL, remoteID: $0.remoteMediaID, height: $0.height, width: $0.width) })
-            .joined()
 
-        let content = postUploadOp.postContent ?? ""
-        postUploadOp.postContent = content + remoteURLText
+        mediaUploadOps.forEach { mediaUploadOp in
+            guard let fileName = mediaUploadOp.fileName,
+                let remoteURL = mediaUploadOp.remoteURL else {
+                    return
+            }
+
+            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
+                                                            remoteURLString: remoteURL,
+                                                            width: Int(mediaUploadOp.width),
+                                                            height: Int(mediaUploadOp.height))
+            let content = postUploadOp.postContent ?? ""
+            postUploadOp.postContent = imgPostUploadProcessor.process(content)
+        }
         coreDataStack.saveContext()
 
         return postUploadOp
