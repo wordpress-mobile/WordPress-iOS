@@ -20,24 +20,6 @@ extension Array where Element: Hashable {
     }
 }
 
-
-extension Array {
-    /// Returns array containing only elements that have unique values for item at given KeyPath.
-    /// Useful when you want to `unique` objects by their property, e.g. find all unique `author`s for a list of `Comment`s.
-    ///
-    /// - Parameter filteringKeyPath: A KeyPath to a `Hashable` property that the elements should be uniqued by.
-    ///
-    /// - Returns: Array with values filtered by using the given KeyPath to ensure only unique values are present.
-    public func unique<Value: Hashable>(by filteringKeyPath: KeyPath<Element, Value>) -> [Element] {
-        let values = self.map { $0[keyPath: filteringKeyPath] }
-
-        let uniqueValues = values.unique
-        let indices = uniqueValues.flatMap { values.index(of: $0) }
-
-        return indices.map { self[$0] }
-    }
-}
-
 extension Array where Element: Equatable {
     /// Returns an array of indices for the elements that are different than the
     /// corresponding element in the given array.
