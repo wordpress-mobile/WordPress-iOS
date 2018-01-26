@@ -15,7 +15,7 @@ protocol SigninWPComSyncHandler: class {
     func isJetpackLogin() -> Bool
 
     func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
-    func handleSyncSuccess(_ requiredMultifactor: Bool)
+    func handleSyncSuccess(for account: WPAccount, requiredMultifactor: Bool)
     func handleSyncFailure(_ error: NSError?)
 }
 
@@ -39,7 +39,7 @@ extension SigninWPComSyncHandler {
         // Create reusable success and failure blocks to share between service calls.
         let successBlock = { [weak self] in
             accountFacade.updateUserDetails(for: account, success: { [weak self] in
-                self?.handleSyncSuccess(requiredMultifactor)
+                self?.handleSyncSuccess(for: account, requiredMultifactor: requiredMultifactor)
 
                 }, failure: { [weak self] (error: Error?) in
                     self?.handleSyncFailure(error as NSError?)
@@ -67,7 +67,7 @@ extension SigninWPComSyncHandler {
     ///
     /// - Parameters:
     ///
-    func handleSyncSuccess(_ requiredMultifactor: Bool) {
+    func handleSyncSuccess(for account: WPAccount, requiredMultifactor: Bool) {
         configureStatusLabel("")
         configureViewLoading(false)
 
@@ -77,7 +77,7 @@ extension SigninWPComSyncHandler {
         // and rebuilds the view hierarchy this alternate notification can be
         // removed.
         let notification = isJetpackLogin() ? .WPLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification)
-        NotificationCenter.default.post(name: notification, object: nil)
+        NotificationCenter.default.post(name: notification, object: account)
 
         dismiss()
 
