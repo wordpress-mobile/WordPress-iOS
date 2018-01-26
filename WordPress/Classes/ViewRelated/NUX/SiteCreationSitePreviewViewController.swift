@@ -22,6 +22,8 @@ class SiteCreationSitePreviewViewController: UIViewController {
     /// Indicates if the new site has finished loading.
     private var siteLoaded: Bool = false
 
+    private let hideSiteMasterBarUrlParams = "/?preview=true&iframe=true"
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -63,8 +65,8 @@ class SiteCreationSitePreviewViewController: UIViewController {
     private func loadSite() {
         if let webView = webView,
             let siteUrl = siteUrl,
-            let url = URL(string: siteUrl) {
-            webView.load(URLRequest(url: url))
+            let url = URL(string: siteUrl + hideSiteMasterBarUrlParams) {
+                webView.load(URLRequest(url: url))
         }
     }
 
