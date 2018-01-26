@@ -2,6 +2,7 @@ import Foundation
 import WordPressShared
 import SVProgressHUD
 import CocoaLumberjack
+import WordPressFlux
 
 /// Displays the list of sites a user follows in the Reader.  Provides functionality
 /// for following new sites by URL, and unfollowing existing sites via a swipe
@@ -202,25 +203,25 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
 
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.followSite(by: url, success: { [weak self] in
-            let success = NSLocalizedString("Followed", comment: "User followed a site.")
-            SVProgressHUD.showDismissibleSuccess(withStatus: success)
-            generator.notificationOccurred(.success)
+            SVProgressHUD.dismiss()
+
+            let notice = Notice(title: NSLocalizedString("Followed site", comment: "User followed a site."),
+                                message: url.host,
+                                feedbackType: .success)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
+
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
 
-        }, failure: { [weak self] (error) in
+        }, failure: { error in
             DDLogError("Could not follow site: \(String(describing: error))")
 
-            generator.notificationOccurred(.error)
-
-            let title = NSLocalizedString("Could not Follow Site", comment: "Title of a prompt.")
-            let description = error?.localizedDescription
-            self?.promptWithTitle(title, message: description!)
+            let notice = Notice(title: NSLocalizedString("Could not follow site", comment: "Title of a prompt."),
+                                message: error?.localizedDescription,
+                                feedbackType: .error)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         })
     }
 
