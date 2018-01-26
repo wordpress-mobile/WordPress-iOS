@@ -157,28 +157,72 @@ public struct ActivityStatus {
     public static let warning = "warning"
 }
 
+public class RewindStatus {
+    public let state: State
+    public let reason: String?
+    public let restore: RestoreStatus?
+
+    init(dictionary: [String: AnyObject]) throws {
+        guard let rewindState = dictionary["state"] as? String else {
+            throw Error.missingState
+        }
+        guard let rewindStateEnum = State(rawValue: rewindState) else {
+            throw Error.invalidRewindState
+        }
+
+        state = rewindStateEnum
+        reason = dictionary["reason"] as? String
+        if let rawRestore = dictionary["rewind"] as? [String: AnyObject] {
+            restore = try RestoreStatus(dictionary: rawRestore)
+        } else {
+            restore = nil
+        }
+    }
+}
+
+public extension RewindStatus {
+    enum State: String {
+        case active
+        case inactive
+        case unavailable
+        case awaitingCredentials
+        case provisioning
+    }
+}
+
+private extension RewindStatus {
+    enum Error: Swift.Error {
+        case missingState
+        case invalidRewindState
+    }
+}
+
 public class RestoreStatus {
+    public let id: String
     public let status: Status
-    public let percent: Int
+    public let progress: Int
     public let message: String?
     public let errorCode: String?
     public let failureReason: String?
 
     init(dictionary: [String: AnyObject]) throws {
+        print(dictionary.description)
+        guard let restoreId = dictionary["restore_id"] as? Int else {
+            throw Error.missingRestoreId
+        }
         guard let restoreStatus = dictionary["status"] as? String else {
             throw Error.missingRestoreStatus
         }
         guard let restoreStatusEnum = Status(rawValue: restoreStatus) else {
             throw Error.invalidRestoreStatus
         }
-        guard let percentCompleted = dictionary["percent"] as? Int else {
-            throw Error.missingRestorePercent
-        }
+
+        id = String(restoreId)
         status = restoreStatusEnum
-        percent = percentCompleted
+        progress = dictionary["progress"] as? Int ?? 0
         message = dictionary["message"] as? String
         errorCode = dictionary["error_code"] as? String
-        failureReason = dictionary["failure_reason"] as? String
+        failureReason = dictionary["reason"] as? String
     }
 }
 
@@ -193,8 +237,8 @@ public extension RestoreStatus {
 
 extension RestoreStatus {
     enum Error: Swift.Error {
+        case missingRestoreId
         case missingRestoreStatus
         case invalidRestoreStatus
-        case missingRestorePercent
     }
 }
