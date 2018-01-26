@@ -35,7 +35,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         ]
 
         wordPressComRestApi.GET(path!,
-                                parameters: parameters as [String : AnyObject]?,
+                                parameters: parameters,
                                 success: { response, _ in
                                     do {
                                         let (activities, totalItems) = try self.mapActivitiesResponse(response)
@@ -70,7 +70,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         ]
 
         wordPressComRestApi.GET(path!,
-                                parameters: parameters as [String : AnyObject]?,
+                                parameters: parameters,
                                 success: { response, _ in
                                     guard let rewindStatus = response as? [String: AnyObject] else {
                                         failure(ResponseError.decodingFailure)
