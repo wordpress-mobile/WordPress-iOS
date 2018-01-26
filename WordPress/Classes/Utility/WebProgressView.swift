@@ -1,4 +1,5 @@
 import UIKit
+import WebKit
 import WordPressShared
 
 /// A view to show progress when loading web pages.
@@ -31,6 +32,25 @@ class WebProgressView: UIProgressView {
                 self?.alpha = Animation.hiddenAlhpa
             })
         })
+    }
+
+    func observeProgress(webView: WKWebView) {
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: [.new], context: nil)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        guard let webView = object as? WKWebView,
+            let keyPath = keyPath else {
+                return
+        }
+
+        switch keyPath {
+        case #keyPath(WKWebView.estimatedProgress):
+            progress = Float(webView.estimatedProgress)
+            isHidden = webView.estimatedProgress == 1
+        default:
+            assertionFailure("Observed change to web view that we are not handling")
+        }
     }
 
     private func configure() {
