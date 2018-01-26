@@ -206,7 +206,6 @@ public class RestoreStatus {
     public let failureReason: String?
 
     init(dictionary: [String: AnyObject]) throws {
-        print(dictionary.description)
         guard let restoreId = dictionary["restore_id"] as? Int else {
             throw Error.missingRestoreId
         }
