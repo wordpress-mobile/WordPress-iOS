@@ -23,6 +23,11 @@ class WebViewAuthenticator: NSObject {
 
     fileprivate let credentials: Credentials
 
+    /// If true, the authenticator will assume that redirect URLs are allowed and
+    /// won't use the special WordPress.com redirect URL
+    ///
+    var safeRedirect = false
+
     init(credentials: Credentials) {
         self.credentials = credentials
     }
@@ -102,17 +107,14 @@ class WebViewAuthenticator: NSObject {
 
         return URLRequest(url: redirectUrl)
     }
-}
 
-private extension WebViewAuthenticator {
-    func request(url: URL, authenticated: Bool) -> URLRequest {
-        guard authenticated else {
-            return unauthenticatedRequest(url: url)
-        }
-        return authenticatedRequest(url: url) ?? unauthenticatedRequest(url: url)
-    }
-
-    func authenticatedRequest(url: URL) -> URLRequest? {
+    /// Rewrites a request for authentication.
+    ///
+    /// This method will always return an authenticated request. If you want to
+    /// authenticate only if needed, by inspecting the existing cookies, use
+    /// request(url:cookieJar:completion:) instead
+    ///
+    func authenticatedRequest(url: URL) -> URLRequest {
         var request = URLRequest(url: loginURL)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -121,6 +123,16 @@ private extension WebViewAuthenticator {
             request.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
         }
         return request
+    }
+}
+
+private extension WebViewAuthenticator {
+    func request(url: URL, authenticated: Bool) -> URLRequest {
+        if authenticated {
+            return authenticatedRequest(url: url)
+        } else {
+            return unauthenticatedRequest(url: url)
+        }
     }
 
     func unauthenticatedRequest(url: URL) -> URLRequest {
@@ -146,7 +158,8 @@ private extension WebViewAuthenticator {
 
     func redirectUrl(url: String) -> String? {
         guard case .dotCom = credentials,
-            let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+            let escapedUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            !safeRedirect else {
             return url
         }
 
