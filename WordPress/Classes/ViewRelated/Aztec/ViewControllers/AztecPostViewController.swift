@@ -2732,7 +2732,13 @@ extension AztecPostViewController {
 
     /// Insert media to the post from the site's media library.
     ///
-    func insertSiteMediaLibrary(media: Media) {
+    func prepopulateMediaItems(_ media: [Media]) {
+        selectedMediaOrigin = .mediaUploadWritePost
+
+        media.forEach({ insertSiteMediaLibrary(media: $0) })
+    }
+
+    private func insertSiteMediaLibrary(media: Media) {
         if media.hasRemote {
             insertRemoteSiteMediaLibrary(media: media)
         } else {
