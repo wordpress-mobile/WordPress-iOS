@@ -52,6 +52,44 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
                                 })
     }
 
+    /// Retrieves the site current rewind state.
+    ///
+    /// - Parameters:
+    ///     - siteID: The target site's ID.
+    ///
+    /// - Returns: The current rewind status for the site.
+    ///
+    public func getRewindStatus(_ siteID: Int,
+                                success: @escaping (RewindStatus) -> Void,
+                                failure: @escaping (Error) -> Void) {
+        let endpoint = "sites/\(siteID)/rewind"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
+        let parameters: [String: AnyObject] = [
+            "locale": locale as AnyObject
+        ]
+
+        wordPressComRestApi.GET(path!,
+                                parameters: parameters as [String : AnyObject]?,
+                                success: { response, _ in
+                                    guard let rewindStatus = response as? [String: AnyObject] else {
+                                        failure(ResponseError.decodingFailure)
+                                        return
+                                    }
+                                    do {
+                                        let status = try RewindStatus(dictionary: rewindStatus)
+                                        success(status)
+                                    } catch {
+                                        DDLogError("Error parsing rewind response for site \(siteID)")
+                                        DDLogError("\(error)")
+                                        DDLogDebug("Full response: \(response)")
+                                        failure(ResponseError.decodingFailure)
+                                    }
+                                }, failure: { error, _ in
+                                    failure(error)
+                                })
+    }
+
     /// Makes a request to Restore a site to a previous state.
     ///
     /// - Parameters:
@@ -81,45 +119,6 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
                                  failure: { error, _ in
                                      failure(error)
                                  })
-    }
-
-    /// Returns the status of a restore.
-    ///
-    /// - Parameters:
-    ///     - siteID: The target site's ID.
-    ///     - restoreID: The restoreID obtained when the restore was triggered.
-    ///     - success: Closure to be executed on success
-    ///     - failure: Closure to be executed on error.
-    ///
-    /// - Returns: A RestoreStatus object.
-    ///
-    public func restoreStatusForSite(_ siteID: Int,
-                                     restoreID: String,
-                                     success: @escaping (RestoreStatus) -> Void,
-                                     failure: @escaping (Error) -> Void) {
-        let endpoint = "activity-log/\(siteID)/rewind/\(restoreID)/restore-status"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_0)
-
-        wordPressComRestApi.GET(path!,
-                                parameters: nil,
-                                success: { response, _ in
-                                    guard let restoreSatus = response["restore_status"] as? [String: AnyObject] else {
-                                        failure(ResponseError.decodingFailure)
-                                        return
-                                    }
-                                    do {
-                                        let status = try RestoreStatus(dictionary: restoreSatus)
-                                        success(status)
-                                    } catch {
-                                        DDLogError("Error parsing restore status response for site \(siteID) restore \(restoreID)")
-                                        DDLogError("\(error)")
-                                        DDLogDebug("Full response: \(response)")
-                                        failure(ResponseError.decodingFailure)
-                                    }
-                                },
-                                failure: { error, _ in
-                                    failure(error)
-                                })
     }
 
 }
