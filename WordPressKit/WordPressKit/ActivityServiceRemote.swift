@@ -63,9 +63,9 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
     /// - Returns: A restoreID to check the status of the rewind request.
     ///
     @objc public func restoreSite(_ siteID: Int,
-                            rewindID: String,
-                            success: @escaping (_ restoreID: String) -> Void,
-                            failure: @escaping (Error) -> Void) {
+                                  rewindID: String,
+                                  success: @escaping (_ restoreID: String) -> Void,
+                                  failure: @escaping (Error) -> Void) {
         let endpoint = "activity-log/\(siteID)/rewind/to/\(rewindID)"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_0)
 
