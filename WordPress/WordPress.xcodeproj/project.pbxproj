@@ -952,6 +952,7 @@
 		E1EBC3731C118ED200F638E0 /* ImmuTableTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EBC3721C118ED200F638E0 /* ImmuTableTest.swift */; };
 		E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1EBC3741C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib */; };
 		E1ECE34F1FA88DA2007FA37A /* StoreContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ECE34E1FA88DA2007FA37A /* StoreContainer.swift */; };
+		E1F391EF1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F391EE1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift */; };
 		E1F47D4D1FE0290C00C1D44E /* PluginListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F47D4C1FE0290C00C1D44E /* PluginListCell.swift */; };
 		E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */; };
 		E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1FD45DF1C030B3800750F4C /* AccountSettingsService.swift */; };
@@ -2484,6 +2485,7 @@
 		E1EBC3741C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImmuTableTestViewCellWithNib.xib; sourceTree = "<group>"; };
 		E1ECE34E1FA88DA2007FA37A /* StoreContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreContainer.swift; sourceTree = "<group>"; };
 		E1EEFAD91CC4CC5700126533 /* Confirmable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Confirmable.h; sourceTree = "<group>"; };
+		E1F391EE1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackConnectionWebViewController.swift; sourceTree = "<group>"; };
 		E1F47D4C1FE0290C00C1D44E /* PluginListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginListCell.swift; sourceTree = "<group>"; };
 		E1F5A1BA1771C90A00E0495F /* WPTableImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableImageSource.h; sourceTree = "<group>"; };
 		E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSource.m; sourceTree = "<group>"; };
@@ -3872,6 +3874,7 @@
 				8320B5CF11FCA3EA00607422 /* Cells */,
 				C533CF320E6D3AB3000C3DE8 /* Comments */,
 				173BCE711CEB365400AE8817 /* Domains */,
+				E1F391ED1FF25DEC00DB32A3 /* Jetpack */,
 				31F4F6641A13858F00196A98 /* Me */,
 				5DA5BF4A18E32DE2005F11F9 /* Media */,
 				08D978491CD2AF7D0054F19A /* Menus */,
@@ -5563,6 +5566,14 @@
 			path = Stores;
 			sourceTree = "<group>";
 		};
+		E1F391ED1FF25DEC00DB32A3 /* Jetpack */ = {
+			isa = PBXGroup;
+			children = (
+				E1F391EE1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift */,
+			);
+			path = Jetpack;
+			sourceTree = "<group>";
+		};
 		E1F47D4B1FE028F800C1D44E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -7160,6 +7171,7 @@
 				08216FAB1CDBF95100304BA7 /* MenuItemEditingViewController.m in Sources */,
 				E68191491F856B910055E197 /* LoginFields.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
+				E1F391EF1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
 				E64ECA4D1CE62041000188A0 /* ReaderSearchViewController.swift in Sources */,
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
