@@ -50,7 +50,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             let siteTitle = siteOptions["title"] as? String else {
                 DDLogError("Error while creating site: siteURL and/or siteTitle missing.")
                 // TODO: show whoops view
-                self.showAlertWithMessage("Fail: URL and/or Title missing.")
+                showAlertWithMessage("Fail: URL and/or Title missing.")
                 return
         }
 
@@ -93,15 +93,15 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         let labelToUpdate: UILabel = {
             switch status {
             case .validating:
-                return self.layingFoundationLabel
+                return layingFoundationLabel
             case .creatingSite:
-                return self.retrievingInformationLabel
+                return retrievingInformationLabel
             case .settingTagline:
-                return self.configureContentLabel
+                return configureContentLabel
             case .settingTheme:
-                return self.configureStyleLabel
+                return configureStyleLabel
             case .syncing:
-                return self.preparingFrontendLabel
+                return preparingFrontendLabel
             }
         }()
 
@@ -123,7 +123,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         })
 
         alertController.addAction(goHome)
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - Misc
