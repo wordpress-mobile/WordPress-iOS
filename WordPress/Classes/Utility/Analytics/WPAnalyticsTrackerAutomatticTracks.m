@@ -463,6 +463,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatGravatarUploaded:
             eventName = @"me_gravatar_uploaded";
             break;
+        case WPAnalyticsStatInstallJetpackCanceled:
+            eventName = @"stats_install_jetpack_canceled";
+            break;
+        case WPAnalyticsStatInstallJetpackCompleted:
+            eventName = @"stats_install_jetpack_completed";
+            break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";
             break;
