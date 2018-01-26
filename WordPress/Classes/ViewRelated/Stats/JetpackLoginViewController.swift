@@ -34,7 +34,7 @@ class JetpackLoginViewController: UIViewController {
         guard let jetpack = blog.jetpack else {
             return false
         }
-        return (jetpack.isInstalled && jetpack.isUpdatedToRequiredVersion)
+        return (jetpack.isConnected && jetpack.isUpdatedToRequiredVersion)
     }
 
     // MARK: - Initializers
@@ -76,7 +76,7 @@ class JetpackLoginViewController: UIViewController {
         setupMoreInformationButtonText()
         moreInformationButton.isHidden = true // Hidden by default
 
-        var title = NSLocalizedString("Install Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
+        var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
                 "should be uppercase.").localizedUppercase
         installJetpackButton.setTitle(title, for: .normal)
         installJetpackButton.isHidden = true // Hidden by default
@@ -148,7 +148,7 @@ class JetpackLoginViewController: UIViewController {
 
         var message: String
 
-        if jetPack.isInstalled {
+        if jetPack.isConnected {
             if jetPack.isUpdatedToRequiredVersion {
                 message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! \n" +
                                             "Log in with your WordPress.com credentials to enable " +
@@ -162,8 +162,8 @@ class JetpackLoginViewController: UIViewController {
                                                                              "if they want to upgrade"), JetpackState.minimumVersionRequired)
             }
         } else {
-            message = NSLocalizedString("Jetpack is required for stats. Do you want to install Jetpack?",
-                                        comment: "Message asking the user if they want to install Jetpack")
+            message = NSLocalizedString("Jetpack is required for stats. Do you want to set up Jetpack?",
+                                        comment: "Message asking the user if they want to set up Jetpack")
         }
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
@@ -186,8 +186,10 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func openInstallJetpackURL() {
         WPAppAnalytics.track(.selectedInstallJetpack)
-        let targetURL = blog.adminUrl(withPath: jetpackInstallRelativePath)
-        displayWebView(url: targetURL)
+        let controller = JetpackConnectionWebViewController(blog: blog)
+        controller.delegate = self
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true, completion: nil)
     }
 
     fileprivate func openMoreInformationURL() {
@@ -227,5 +229,17 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchMoreInformationButton(_ sender: Any) {
         openMoreInformationURL()
+    }
+}
+
+extension JetpackLoginViewController: JetpackConnectionWebDelegate {
+    func jetpackConnectionCompleted() {
+        WPAppAnalytics.track(.installJetpackCompleted)
+        dismiss(animated: true, completion: completionBlock)
+    }
+
+    func jetpackConnectionCanceled() {
+        WPAppAnalytics.track(.installJetpackCanceled)
+        dismiss(animated: true, completion: completionBlock)
     }
 }

@@ -83,6 +83,8 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatGravatarCropped,
     WPAnalyticsStatGravatarTapped,
     WPAnalyticsStatGravatarUploaded,
+    WPAnalyticsStatInstallJetpackCanceled,
+    WPAnalyticsStatInstallJetpackCompleted,
     WPAnalyticsStatLogSpecialCondition,
     WPAnalyticsStatLoginFailed,
     WPAnalyticsStatLoginFailedToGuessXMLRPC,
