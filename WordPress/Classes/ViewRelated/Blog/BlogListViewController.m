@@ -288,7 +288,7 @@ static NSInteger HideSearchMinSites = 3;
         if (siteCount == 0) {
             [self addNoResultsToView];
             
-            [self.noResultsViewController configureViewWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subTitle:nil];
+            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subTitle:nil];
         }
     } else {
         // If we've gone from no results to having just one site, the user has
@@ -324,13 +324,13 @@ static NSInteger HideSearchMinSites = 3;
         [self addNoResultsToView];
         
         if (count == 1) {
-            [self.noResultsViewController configureViewWithTitle:singularTitle
-                                                     buttonTitle:buttonTitle
-                                                        subTitle:singularSubtitle];
+            [self.noResultsViewController configureWithTitle:singularTitle
+                                                 buttonTitle:buttonTitle
+                                                    subTitle:singularSubtitle];
         } else {
-            [self.noResultsViewController configureViewWithTitle:multipleTitle
-                                                     buttonTitle:buttonTitle
-                                                        subTitle:multipleSubtitle];
+            [self.noResultsViewController configureWithTitle:multipleTitle
+                                                 buttonTitle:buttonTitle
+                                                    subTitle:multipleSubtitle];
         }
         
     } else {
