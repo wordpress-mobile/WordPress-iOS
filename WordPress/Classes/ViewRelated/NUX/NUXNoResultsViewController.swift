@@ -33,7 +33,7 @@ import UIKit
     ///   - title:       Main descriptive text. Required.
     ///   - buttonTitle: Title of action button. Required.
     ///   - subTitle:    Secondary descriptive text. Optional.
-    @objc func configureView(title: String, buttonTitle: String, subTitle: String? = nil) {
+    @objc func configure(title: String, buttonTitle: String, subTitle: String? = nil) {
         titleLabel.text = title
         subTitleLabel.text = subTitle
         actionButton?.setTitle(buttonTitle, for: UIControlState())
