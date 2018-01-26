@@ -989,6 +989,11 @@ static NSInteger HideSearchMinSites = 3;
     [[WPTabBarController sharedInstance] showPostTab];
 }
 
+- (void)showDetailsForSite:(Blog *)blog
+{
+    [self setSelectedBlog:blog animated:true];
+}
+
 #pragma mark - NoSitesViewControllerDelegate
 
 - (void)addSiteButtonPressed {
