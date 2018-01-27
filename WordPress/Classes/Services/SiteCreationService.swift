@@ -42,13 +42,6 @@ typealias SiteCreationFailureBlock = (_ error: Error?) -> Void
 /// The entry point is `createSite` and the service takes care of the rest.
 ///
 open class SiteCreationService: LocalCoreDataService {
-    private let BlogDetailsKey = "blog_details"
-    private let BlogNameLowerCaseNKey = "blogname"
-    private let BlogNameUpperCaseNKey = "blogName"
-    private let XMLRPCKey = "xmlrpc"
-    private let BlogIDKey = "blogid"
-    private let URLKey = "url"
-
 
     /// Starts the process of creating a new site.
     ///
@@ -247,8 +240,7 @@ open class SiteCreationService: LocalCoreDataService {
 
                                     // The site was created so bump the stat, even if there are problems later on.
                                     WPAppAnalytics.track(.createdSite)
-
-                                    guard let blogOptions = responseDictionary?[self.BlogDetailsKey] as? [String: AnyObject] else {
+                                    guard let blogOptions = responseDictionary?[BlogKeys.blogDetails] as? [String: AnyObject] else {
                                         let error = SiteCreationError.invalidResponse as NSError
                                         DDLogError("Error while creating site: The Blog response dictionary did not contain the expected results.")
                                         assertionFailure()
@@ -359,10 +351,12 @@ open class SiteCreationService: LocalCoreDataService {
         // Treat missing dictionary keys as an api issue. If we've reached this point
         // the account/blog creation was probably successful and the app might be able
         // to recover the next time it tries to sync blogs.
-        guard let blogName = (blogOptions[BlogNameLowerCaseNKey] ?? blogOptions[BlogNameUpperCaseNKey]) as? String,
-            let xmlrpc = blogOptions[XMLRPCKey] as? String,
-            let blogURL = blogOptions[URLKey] as? String,
-            let stringID = blogOptions[BlogIDKey] as? String,
+
+        guard let blogName = (blogOptions[BlogKeys.blogNameLowerCaseN] ??
+                             blogOptions[BlogKeys.blogNameUpperCaseN]) as? String,
+            let xmlrpc = blogOptions[BlogKeys.XMLRPC] as? String,
+            let blogURL = blogOptions[BlogKeys.URL] as? String,
+            let stringID = blogOptions[BlogKeys.blogID] as? String,
             let dotComID = Int(stringID)
             else {
                 let error = SiteCreationError.invalidResponse as NSError
@@ -406,12 +400,21 @@ open class SiteCreationService: LocalCoreDataService {
     }
 
     /// A convenience enum for creating meaningful NSError objects.
-    ///
-    enum SiteCreationError: Error {
+    private enum SiteCreationError: Error {
         case invalidResponse
         case missingRESTAPI
         case missingDefaultWPComAccount
         case missingTheme
+    }
+
+    /// A convenience struct for Blog keys
+    private struct BlogKeys {
+        static let blogDetails = "blog_details"
+        static let blogNameLowerCaseN = "blogname"
+        static let blogNameUpperCaseN = "blogName"
+        static let XMLRPC = "xmlrpc"
+        static let blogID = "blogid"
+        static let URL = "url"
     }
 
 }
