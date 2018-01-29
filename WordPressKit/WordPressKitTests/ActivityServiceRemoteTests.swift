@@ -16,15 +16,17 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
     let getActivityBadJsonFailureMockFilename = "activity-log-bad-json-failure.json"
     let getActivityAuthFailureMockFilename = "activity-log-auth-failure.json"
     let restoreSuccessMockFilename = "activity-restore-success.json"
-    let restoreBadIdFailureMockFilename = "activity-restore-bad-id-failure.json"
-    let restoreStatusSuccessMockFilename = "activity-restore-status-success.json"
-    let restoreStatusFailureMockFilename = "activity-restore-status-failure.json"
+    let rewindStatusSuccessMockFilename = "activity-rewind-status-success.json"
+    let rewindStatusRestoreFailureMockFilename = "activity-rewind-status-restore-failure.json"
+    let rewindStatusRestoreFinishedMockFilename = "activity-rewind-status-restore-finished.json"
+    let rewindStatusRestoreInProgressMockFilename = "activity-rewind-status-restore-in-progress.json"
+    let rewindStatusRestoreQueuedMockFilename = "activity-rewind-status-restore-queued.json"
 
     /// MARK: - Properties
 
     var siteActivityEndpoint: String { return "sites/\(siteID)/activity" }
     var restoreEndpoint: String { return "activity-log/\(siteID)/rewind/to/\(rewindID)" }
-    var restoreStatusEndpoint: String { return "activity-log/\(siteID)/rewind/\(restoreID)/restore-status" }
+    var rewindStatusEndpoint: String { return "sites/\(siteID)/rewind" }
 
     var remote: ActivityServiceRemote!
 
@@ -170,37 +172,98 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         waitForExpectations(timeout: timeout, handler: nil)
     }*/
 
-    func testGetRestoreStatusSuceeds() {
-        let expect = expectation(description: "Check restore status success")
+    func testGetRewindStatusSuccess() {
+        let expect = expectation(description: "Check rewind status success")
 
-        stubRemoteResponse(restoreStatusEndpoint, filename: restoreStatusSuccessMockFilename, contentType: .ApplicationJSON)
+        stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusSuccessMockFilename, contentType: .ApplicationJSON)
 
-        remote.restoreStatusForSite(siteID,
-                                    restoreID: restoreID,
-                                    success: { (restoreStatus) in
-                                        XCTAssertEqual(restoreStatus.status, .finished)
-                                        XCTAssertEqual(restoreStatus.percent, 100)
-                                        expect.fulfill()
-                                    }, failure: { error in
-                                        XCTFail("This callback shouldn't get called")
-                                        expect.fulfill()
-                                    })
+        remote.getRewindStatus(siteID,
+                               success: { (rewindStatus) in
+                                   XCTAssertEqual(rewindStatus.state, .active)
+                                   XCTAssertNil(rewindStatus.restore)
+                                   expect.fulfill()
+                               }, failure: { error in
+                                    XCTFail("This callback shouldn't get called")
+                                    expect.fulfill()
+                               })
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
-    func testGetRestoreStatusWithBadJsonFails() {
-        let expect = expectation(description: "Check restore status failure")
+    func testGetRewindStatusRestoreFinish() {
+        let expect = expectation(description: "Check rewind status, restore finished")
 
-        stubRemoteResponse(restoreStatusEndpoint, filename: restoreStatusFailureMockFilename, contentType: .ApplicationJSON)
+        stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreFinishedMockFilename, contentType: .ApplicationJSON)
 
-        remote.restoreStatusForSite(siteID,
-                                    restoreID: restoreID,
-                                    success: { (restoreStatus) in
-                                        XCTFail("This callback shouldn't get called")
-                                        expect.fulfill()
-                                    }, failure: { error in
-                                        expect.fulfill()
-                                    })
+        remote.getRewindStatus(siteID,
+                               success: { (rewindStatus) in
+                                   XCTAssertNotNil(rewindStatus.restore)
+                                   XCTAssertNotNil(rewindStatus.restore!.id)
+                                   XCTAssertEqual(rewindStatus.restore!.status, .finished)
+                                   XCTAssertEqual(rewindStatus.restore!.progress, 100)
+                                   XCTAssertNil(rewindStatus.restore!.failureReason)
+                                   expect.fulfill()
+                                }, failure: { error in
+                                   XCTFail("This callback shouldn't get called")
+                                   expect.fulfill()
+                                })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testGetRewindStatusRestoreFailure() {
+        let expect = expectation(description: "Check rewind status, restore failure")
+
+        stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreFailureMockFilename, contentType: .ApplicationJSON)
+
+        remote.getRewindStatus(siteID,
+                               success: { (rewindStatus) in
+                                   XCTAssertNotNil(rewindStatus.restore)
+                                   XCTAssertNotNil(rewindStatus.restore!.id)
+                                   XCTAssertEqual(rewindStatus.restore!.status, .fail)
+                                   XCTAssertEqual(rewindStatus.restore!.progress, 0)
+                                   XCTAssertNotNil(rewindStatus.restore!.failureReason)
+                                   XCTAssert(rewindStatus.restore!.failureReason!.count > 0)
+                                   expect.fulfill()
+                                }, failure: { error in
+                                   expect.fulfill()
+                                })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testGetRewindStatusRestoreInProgress() {
+        let expect = expectation(description: "Check rewind status, restore in progress")
+
+        stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreInProgressMockFilename, contentType: .ApplicationJSON)
+
+        remote.getRewindStatus(siteID,
+                               success: { (rewindStatus) in
+                                   XCTAssertNotNil(rewindStatus.restore)
+                                   XCTAssertNotNil(rewindStatus.restore!.id)
+                                   XCTAssertEqual(rewindStatus.restore!.status, .running)
+                                   XCTAssert(rewindStatus.restore!.progress > 0)
+                                   XCTAssertNil(rewindStatus.restore!.failureReason)
+                                   expect.fulfill()
+                               }, failure: { error in
+                                   expect.fulfill()
+                               })
+        waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testGetRestoreStatusRestoreQueued() {
+        let expect = expectation(description: "Check rewind status, restore queued")
+
+        stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreQueuedMockFilename, contentType: .ApplicationJSON)
+
+        remote.getRewindStatus(siteID,
+                               success: { (rewindStatus) in
+                                   XCTAssertNotNil(rewindStatus.restore)
+                                   XCTAssertNotNil(rewindStatus.restore!.id)
+                                   XCTAssertEqual(rewindStatus.restore!.status, .queued)
+                                   XCTAssertEqual(rewindStatus.restore!.progress, 0)
+                                   XCTAssertNil(rewindStatus.restore!.failureReason)
+                                   expect.fulfill()
+                               }, failure: { error in
+                                   expect.fulfill()
+                               })
         waitForExpectations(timeout: timeout, handler: nil)
     }
 }
