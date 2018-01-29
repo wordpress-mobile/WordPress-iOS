@@ -37,9 +37,16 @@ final class SiteTagsViewController: UITableViewController {
         returnValue.hidesNavigationBarDuringPresentation = false
         returnValue.dimsBackgroundDuringPresentation = false
         returnValue.searchResultsUpdater = self
+        returnValue.delegate = self
 
         WPStyleGuide.configureSearchBar(returnValue.searchBar)
         return returnValue
+    }()
+
+    fileprivate lazy var refreshCont: UIRefreshControl = {
+        let control = UIRefreshControl()
+        control.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        return control
     }()
 
     private var isPerformingInitialSync = false
@@ -101,13 +108,15 @@ final class SiteTagsViewController: UITableViewController {
         tableView.tableFooterView = UIView(frame: .zero)
         let nibName = UINib(nibName: TableConstants.cellIdentifier, bundle: nil)
         tableView.register(nibName, forCellReuseIdentifier: TableConstants.cellIdentifier)
-        setupRefreshControl()
+        activateRefreshControl()
     }
 
-    private func setupRefreshControl() {
-        let control = UIRefreshControl()
-        control.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-        refreshControl = control
+    private func activateRefreshControl() {
+        refreshControl = refreshCont
+    }
+
+    private func deactivateRefreshControl() {
+        refreshControl = nil
     }
 
     @objc private func refreshResultsController(predicate: NSPredicate) {
@@ -436,5 +445,16 @@ extension SiteTagsViewController: UISearchResultsUpdating {
 
         let filterPredicate = NSPredicate(format: "blog.blogID = %@ AND name contains [cd] %@", blog.dotComID!, text)
         refreshResultsController(predicate: filterPredicate)
+    }
+}
+
+// MARK: - UISearchControllerDelegate Conformance
+extension SiteTagsViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        deactivateRefreshControl()
+    }
+
+    func willDismissSearchController(_ searchController: UISearchController) {
+        activateRefreshControl()
     }
 }
