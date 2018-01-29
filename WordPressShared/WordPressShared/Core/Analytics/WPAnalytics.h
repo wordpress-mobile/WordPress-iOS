@@ -153,6 +153,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatNotificationsSettingsUpdated,
     WPAnalyticsStatNotificationsSiteFollowAction,
     WPAnalyticsStatNotificationsSiteUnfollowAction,
+    WPAnalyticsStatNotificationsUploadMediaSuccessWritePost,
     WPAnalyticsStatOnePasswordFailed,
     WPAnalyticsStatOnePasswordLogin,
     WPAnalyticsStatOnePasswordSignup,
