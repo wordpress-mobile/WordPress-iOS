@@ -1,11 +1,13 @@
 enum MediaNoticeUserInfoKey {
     static let blogID = "blog_id"
     static let failedMediaIDs = "failed_media_ids"
+    static let mediaIDs = "media_ids"
 }
 
 struct MediaProgressCoordinatorNoticeViewModel {
     private let mediaProgressCoordinator: MediaProgressCoordinator
     private let progress: Progress
+    private let successfulMedia: [Media]
     private let failedMedia: [Media]
 
     init?(mediaProgressCoordinator: MediaProgressCoordinator) {
@@ -17,6 +19,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
         self.mediaProgressCoordinator = mediaProgressCoordinator
         self.progress = progress
 
+        successfulMedia = mediaProgressCoordinator.successfulMedia
         failedMedia = mediaProgressCoordinator.failedMedia
     }
 
@@ -42,7 +45,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
                       notificationInfo: notificationInfo,
                       actionTitle: actionTitle,
                       actionHandler: {
-                        MediaNoticeNavigationCoordinator.presentEditor(for: blog, source: "media_upload_notice")
+                        MediaNoticeNavigationCoordinator.presentEditor(for: blog, source: "media_upload_notice", media: self.successfulMedia)
         })
     }
 
@@ -66,7 +69,9 @@ struct MediaProgressCoordinatorNoticeViewModel {
             userInfo[MediaNoticeUserInfoKey.blogID] = blog.objectID.uriRepresentation().absoluteString
         }
 
-        if !uploadSuccessful {
+        if uploadSuccessful {
+            userInfo[MediaNoticeUserInfoKey.mediaIDs] = successfulMedia.map({ $0.objectID.uriRepresentation().absoluteString })
+        } else {
             userInfo[MediaNoticeUserInfoKey.failedMediaIDs] = failedMedia.map({ $0.objectID.uriRepresentation().absoluteString })
         }
 

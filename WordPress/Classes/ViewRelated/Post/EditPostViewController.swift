@@ -6,6 +6,8 @@ class EditPostViewController: UIViewController {
     @objc var showImmediately: Bool = false
     /// appear with the media picker open
     @objc var openWithMediaPicker: Bool = false
+    /// appear with media pre-inserted into the post
+    var insertedMedia: [Media]? = nil
 
     @objc fileprivate(set) var post: Post?
     fileprivate var hasShownEditor = false
@@ -140,6 +142,11 @@ class EditPostViewController: UIViewController {
 
         postPost.present(navController, animated: !showImmediately) {
             generator.impactOccurred()
+
+            if let insertedMedia = self.insertedMedia,
+                let aztec = editor as? AztecPostViewController {
+                aztec.prepopulateMediaItems(insertedMedia)
+            }
         }
     }
 
