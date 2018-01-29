@@ -206,14 +206,17 @@ extension ActivityListViewController {
             restoreTimedout()
             return
         }
-        service.restoreStatusForSite(siteID, restoreID: restoreID, success: { (restoreStatus) in
+
+        service.getRewindStatus(siteID, success: { (rewindStatus) in
+            guard let restoreStatus = rewindStatus.restore,
+                restoreStatus.id == restoreID else {
+                self.delayedRetryForRestoreID(restoreID, showingProgress: 0)
+                return
+            }
+
             switch restoreStatus.status {
             case .running, .queued:
-                self.showRestoringMessage(Float(restoreStatus.percent) / 100.0)
-                self.delayedRetry = DispatchDelayedAction(delay: .seconds(self.delay.current)) { [weak self] in
-                    self?.checkStatusDelayedForRestoreID(restoreID)
-                }
-                self.delay.increment()
+                self.delayedRetryForRestoreID(restoreID, showingProgress: restoreStatus.progress)
             case .finished:
                 self.restoreCompleted()
             case .fail:
@@ -222,6 +225,14 @@ extension ActivityListViewController {
         }) { (error) in
             DDLogError("Error checking restore status \(error)")
         }
+    }
+
+    fileprivate func delayedRetryForRestoreID(_ restoreID: String, showingProgress progress: Int) {
+        self.showRestoringMessage(Float(progress) / 100.0)
+        self.delayedRetry = DispatchDelayedAction(delay: .seconds(self.delay.current)) { [weak self] in
+            self?.checkStatusDelayedForRestoreID(restoreID)
+        }
+        self.delay.increment()
     }
 
     fileprivate func showErrorRestoringMessage() {

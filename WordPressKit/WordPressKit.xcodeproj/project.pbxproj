@@ -213,10 +213,12 @@
 		826016FC1F9FAF6300533B6C /* activity-log-success-2.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F71F9FAF6300533B6C /* activity-log-success-2.json */; };
 		826016FD1F9FAF6300533B6C /* activity-log-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F81F9FAF6300533B6C /* activity-log-bad-json-failure.json */; };
 		826017001F9FD60A00533B6C /* ActivityServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826016FF1F9FD60A00533B6C /* ActivityServiceRemoteTests.swift */; };
-		829BA4301FACF187003ADEEA /* activity-restore-status-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42C1FACF185003ADEEA /* activity-restore-status-failure.json */; };
-		829BA4311FACF187003ADEEA /* activity-restore-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42D1FACF186003ADEEA /* activity-restore-success.json */; };
-		829BA4321FACF187003ADEEA /* activity-restore-status-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42E1FACF187003ADEEA /* activity-restore-status-success.json */; };
-		829BA4331FACF187003ADEEA /* activity-restore-bad-id-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42F1FACF187003ADEEA /* activity-restore-bad-id-failure.json */; };
+		828A2400201B671F004F6859 /* activity-restore-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 828A23FF201B671F004F6859 /* activity-restore-success.json */; };
+		828A2402201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 828A2401201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json */; };
+		829BA4301FACF187003ADEEA /* activity-rewind-status-restore-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42C1FACF185003ADEEA /* activity-rewind-status-restore-failure.json */; };
+		829BA4311FACF187003ADEEA /* activity-rewind-status-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42D1FACF186003ADEEA /* activity-rewind-status-success.json */; };
+		829BA4321FACF187003ADEEA /* activity-rewind-status-restore-finished.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42E1FACF187003ADEEA /* activity-rewind-status-restore-finished.json */; };
+		829BA4331FACF187003ADEEA /* activity-rewind-status-restore-queued.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42F1FACF187003ADEEA /* activity-rewind-status-restore-queued.json */; };
 		82FFBF501F45EFD100F4573F /* RemoteBlogJetpackSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF4F1F45EFD100F4573F /* RemoteBlogJetpackSettings.swift */; };
 		82FFBF521F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF511F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift */; };
 		82FFBF561F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF551F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift */; };
@@ -592,10 +594,12 @@
 		826016F71F9FAF6300533B6C /* activity-log-success-2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-success-2.json"; sourceTree = "<group>"; };
 		826016F81F9FAF6300533B6C /* activity-log-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-bad-json-failure.json"; sourceTree = "<group>"; };
 		826016FF1F9FD60A00533B6C /* ActivityServiceRemoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityServiceRemoteTests.swift; sourceTree = "<group>"; };
-		829BA42C1FACF185003ADEEA /* activity-restore-status-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-status-failure.json"; sourceTree = "<group>"; };
-		829BA42D1FACF186003ADEEA /* activity-restore-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-success.json"; sourceTree = "<group>"; };
-		829BA42E1FACF187003ADEEA /* activity-restore-status-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-status-success.json"; sourceTree = "<group>"; };
-		829BA42F1FACF187003ADEEA /* activity-restore-bad-id-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-bad-id-failure.json"; sourceTree = "<group>"; };
+		828A23FF201B671F004F6859 /* activity-restore-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-success.json"; sourceTree = "<group>"; };
+		828A2401201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-in-progress.json"; sourceTree = "<group>"; };
+		829BA42C1FACF185003ADEEA /* activity-rewind-status-restore-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-failure.json"; sourceTree = "<group>"; };
+		829BA42D1FACF186003ADEEA /* activity-rewind-status-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-success.json"; sourceTree = "<group>"; };
+		829BA42E1FACF187003ADEEA /* activity-rewind-status-restore-finished.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-finished.json"; sourceTree = "<group>"; };
+		829BA42F1FACF187003ADEEA /* activity-rewind-status-restore-queued.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-queued.json"; sourceTree = "<group>"; };
 		82FFBF4F1F45EFD100F4573F /* RemoteBlogJetpackSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteBlogJetpackSettings.swift; sourceTree = "<group>"; };
 		82FFBF511F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteBlogJetpackMonitorSettings.swift; sourceTree = "<group>"; };
 		82FFBF551F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogJetpackSettingsServiceRemote.swift; sourceTree = "<group>"; };
@@ -1233,10 +1237,12 @@
 				826016F51F9FAF6300533B6C /* activity-log-success-1.json */,
 				826016F71F9FAF6300533B6C /* activity-log-success-2.json */,
 				826016F41F9FAF6300533B6C /* activity-log-success-3.json */,
-				829BA42F1FACF187003ADEEA /* activity-restore-bad-id-failure.json */,
-				829BA42C1FACF185003ADEEA /* activity-restore-status-failure.json */,
-				829BA42E1FACF187003ADEEA /* activity-restore-status-success.json */,
-				829BA42D1FACF186003ADEEA /* activity-restore-success.json */,
+				828A23FF201B671F004F6859 /* activity-restore-success.json */,
+				829BA42C1FACF185003ADEEA /* activity-rewind-status-restore-failure.json */,
+				829BA42E1FACF187003ADEEA /* activity-rewind-status-restore-finished.json */,
+				828A2401201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json */,
+				829BA42F1FACF187003ADEEA /* activity-rewind-status-restore-queued.json */,
+				829BA42D1FACF186003ADEEA /* activity-rewind-status-success.json */,
 				93BD27431EE73442002BB00B /* auth-send-login-email-invalid-client-failure.json */,
 				93BD27441EE73442002BB00B /* auth-send-login-email-invalid-secret-failure.json */,
 				93BD27451EE73442002BB00B /* auth-send-login-email-no-user-failure.json */,
@@ -1618,7 +1624,7 @@
 				74D67F171F15C2D70010C5ED /* site-users-update-role-success.json in Resources */,
 				74C473B11EF31A19009918F2 /* site-delete-success.json in Resources */,
 				E14694031F344F71004052C8 /* site-plugins-error.json in Resources */,
-				829BA4311FACF187003ADEEA /* activity-restore-success.json in Resources */,
+				829BA4311FACF187003ADEEA /* activity-rewind-status-success.json in Resources */,
 				93BD27571EE73442002BB00B /* auth-send-login-email-no-user-failure.json in Resources */,
 				93AC8ED71ED32FD000900F5A /* stats-v1.1-top-posts-day-large.json in Resources */,
 				93AC8EC71ED32FD000900F5A /* stats-v1.1-clicks-day.json in Resources */,
@@ -1658,7 +1664,7 @@
 				74D67F161F15C2D70010C5ED /* site-users-update-role-bad-json-failure.json in Resources */,
 				93BD27661EE73442002BB00B /* me-success.json in Resources */,
 				74C473C71EF334D4009918F2 /* site-active-purchases-none-active-success.json in Resources */,
-				829BA4321FACF187003ADEEA /* activity-restore-status-success.json in Resources */,
+				829BA4321FACF187003ADEEA /* activity-rewind-status-restore-finished.json in Resources */,
 				74D67F181F15C2D70010C5ED /* site-users-update-role-unknown-site-failure.json in Resources */,
 				93AC8ED31ED32FD000900F5A /* stats-v1.1-streak.json in Resources */,
 				7403A2F91EF06FEB00DED7DC /* me-settings-change-email-success.json in Resources */,
@@ -1674,7 +1680,7 @@
 				7433BC0A1EFC4598002D9E92 /* plans-feature-bad-json-failure.json in Resources */,
 				E1787DB0200E564B004CB3AF /* timezones.json in Resources */,
 				93BD275E1EE73442002BB00B /* me-bad-json-failure.json in Resources */,
-				829BA4301FACF187003ADEEA /* activity-restore-status-failure.json in Resources */,
+				829BA4301FACF187003ADEEA /* activity-rewind-status-restore-failure.json in Resources */,
 				74D67F391F15C3740010C5ED /* site-viewers-delete-bad-json.json in Resources */,
 				93BD27631EE73442002BB00B /* me-sites-visibility-bad-json-failure.json in Resources */,
 				7433BC131EFC45C7002D9E92 /* site-plans-bad-json-failure.json in Resources */,
@@ -1689,12 +1695,14 @@
 				74D67F151F15C2D70010C5ED /* site-roles-success.json in Resources */,
 				740B23E11F17FB4200067A2A /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */,
 				93AC8ED51ED32FD000900F5A /* stats-v1.1-tags-categories-views-day.json in Resources */,
+				828A2402201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json in Resources */,
 				74D67F131F15C2D70010C5ED /* site-roles-auth-failure.json in Resources */,
 				74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */,
 				93BD27611EE73442002BB00B /* me-sites-empty-success.json in Resources */,
 				40E4698D2017D2E30030DB5F /* plugin-directory-new.json in Resources */,
 				74FC6F431F191C1D00112505 /* notifications-load-all.json in Resources */,
 				74C473C11EF32C74009918F2 /* site-export-missing-status-failure.json in Resources */,
+				828A2400201B671F004F6859 /* activity-restore-success.json in Resources */,
 				826016FC1F9FAF6300533B6C /* activity-log-success-2.json in Resources */,
 				74D67F1E1F15C3240010C5ED /* people-send-invitation-failure.json in Resources */,
 				7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */,
@@ -1718,7 +1726,7 @@
 				74C473C91EF335B8009918F2 /* site-active-purchases-empty-response.json in Resources */,
 				93AC8ECC1ED32FD000900F5A /* stats-v1.1-followers-wpcom-day.json in Resources */,
 				740B23EA1F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml in Resources */,
-				829BA4331FACF187003ADEEA /* activity-restore-bad-id-failure.json in Resources */,
+				829BA4331FACF187003ADEEA /* activity-rewind-status-restore-queued.json in Resources */,
 				74C473B31EF3204B009918F2 /* site-delete-auth-failure.json in Resources */,
 				40F88F621F85799A00AE3FAF /* auth-send-verification-email-success.json in Resources */,
 				740B23E81F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml in Resources */,
