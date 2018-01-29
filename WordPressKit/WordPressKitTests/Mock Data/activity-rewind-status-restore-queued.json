@@ -1,7 +1,7 @@
 {
     "rewind": {
         "status": "queued",
-        "restore_id": 100360,
+        "rewind_id": "100360",
         "started_at": "2018-01-25 15:07:02",
         "progress": 0
     },

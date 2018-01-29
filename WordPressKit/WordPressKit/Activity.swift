@@ -206,7 +206,7 @@ public class RestoreStatus {
     public let failureReason: String?
 
     init(dictionary: [String: AnyObject]) throws {
-        guard let restoreId = dictionary["restore_id"] as? Int else {
+        guard let restoreId = dictionary["rewind_id"] as? String else {
             throw Error.missingRestoreId
         }
         guard let restoreStatus = dictionary["status"] as? String else {
@@ -216,7 +216,7 @@ public class RestoreStatus {
             throw Error.invalidRestoreStatus
         }
 
-        id = String(restoreId)
+        id = restoreId
         status = restoreStatusEnum
         progress = dictionary["progress"] as? Int ?? 0
         message = dictionary["message"] as? String
