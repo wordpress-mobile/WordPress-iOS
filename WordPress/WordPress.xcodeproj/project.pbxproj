@@ -2710,6 +2710,7 @@
 		FFE69A281B1BFDE50073C2EB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A291B1BFE050073C2EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2A1B1BFE200073C2EB /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FFE8CAA6201F5F0A00E5001E /* WordPress 71.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 71.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -9420,6 +9421,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FFE8CAA6201F5F0A00E5001E /* WordPress 71.xcdatamodel */,
 				E1D6B552200E36B900325669 /* WordPress 70.xcdatamodel */,
 				E6452B7C1FEAF4DC00D21BF1 /* WordPress 69.xcdatamodel */,
 				821738071FE03F7A00BEC94C /* WordPress 68.xcdatamodel */,
@@ -9491,7 +9493,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E1D6B552200E36B900325669 /* WordPress 70.xcdatamodel */;
+			currentVersion = FFE8CAA6201F5F0A00E5001E /* WordPress 71.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

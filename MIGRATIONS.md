@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 71
+
+- @sergioestevao 2018-01-29
+- ``Media` added `errorCode` Decimal property, and `errorMessage` String property. Store error information resulting from processing or uploading media.
+
 ## WordPress 70
 
 - @koke 2018-01-16
