@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-11-21 13:30-0000\n"
+"PO-Revision-Date: 2018-01-29 17:30-0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -38,13 +38,9 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.2-whats-new"
+msgctxt "v9.3-whats-new"
 msgid ""
-"Site Settings, Writing: You can now edit your site's tags!\n"
-"Aztec, Media: Users can now import photos and videos from other apps using the ... button on the media toolbar in Aztec, and via the Media Library section of the app\n"
-"Media: Uploading is now asynchronous!\n"
-"Blog details: You can drag and drop images from other apps onto the blavatar icon.\n"
-"Me: You can drag and drop images from other apps onto the gravatar icon\n"
+"A completely new and delightful Share Extension is available in this version.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
