@@ -27,6 +27,8 @@
 @dynamic localThumbnailURL;
 @dynamic remoteThumbnailURL;
 @dynamic postID;
+@dynamic errorCode;
+@dynamic errorMessage;
 
 #pragma mark -
 
