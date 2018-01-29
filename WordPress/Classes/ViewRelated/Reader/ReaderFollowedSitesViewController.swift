@@ -218,8 +218,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }, failure: { error in
             DDLogError("Could not follow site: \(String(describing: error))")
 
-            let notice = Notice(title: NSLocalizedString("Could not follow site", comment: "Title of a prompt."),
-                                message: error?.localizedDescription,
+            let title = error?.localizedDescription ?? NSLocalizedString("Could not follow site", comment: "Title of a prompt.")
+            let notice = Notice(title: title,
+                                message: url.host,
                                 feedbackType: .error)
             ActionDispatcher.dispatch(NoticeAction.post(notice))
         })
