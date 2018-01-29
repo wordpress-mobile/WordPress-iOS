@@ -68,7 +68,7 @@
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [self.managedObjectContext save: nil];
     }];
-
+    NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
         // Setup completion handlers
         void(^completionWithMedia)(Media *) = ^(Media *media) {
@@ -84,6 +84,11 @@
             }
         };
         void(^completionWithError)( NSError *) = ^(NSError *error) {
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
             if (completion) {
                 completion(media, error);
             }
@@ -182,14 +187,16 @@
             if (error) {
                 [self trackUploadError:error];
             }
-
+            NSError *customError = [self customMediaUploadError:error remote:remote];
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                mediaInContext.errorMessage = customError.localizedDescription;
+                mediaInContext.errorCode = [NSNumber numberWithInteger:customError.code];
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
-                failure([self customMediaUploadError:error remote:remote]);
+                failure(customError);
             }
         }];
     };
