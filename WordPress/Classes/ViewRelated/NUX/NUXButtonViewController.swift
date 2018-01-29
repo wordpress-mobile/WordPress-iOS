@@ -20,6 +20,11 @@ class NUXButtonViewController: UIViewController {
 
     // MARK: - View
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.translatesAutoresizingMaskIntoConstraints = false
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
