@@ -28,7 +28,7 @@ static NSInteger HideSearchMinSites = 3;
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
                                         WPNoResultsViewDelegate, // To be removed with FeatureFlagSiteCreation.
-                                        NUXNoResultsViewControllerDelegate,
+                                        BlogListNoResultsViewControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) UIStackView *stackView;
@@ -36,7 +36,7 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) WPNoResultsView *noResultsView; // To be removed with FeatureFlagSiteCreation.
-@property (nonatomic, strong) NUXNoResultsViewController *noResultsViewController;
+@property (nonatomic, strong) BlogListNoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
@@ -500,7 +500,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)instantiateNoResultsViewController
 {
-    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"NUXNoResults" bundle:nil];
+    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"BlogListNoResults" bundle:nil];
     self.noResultsViewController = [noResultsSB instantiateViewControllerWithIdentifier:@"NoResults"];
     self.noResultsViewController.delegate = self;
 }
@@ -1008,7 +1008,7 @@ static NSInteger HideSearchMinSites = 3;
     [self validateBlogDetailsViewController];
 }
 
-#pragma mark - NUXNoResultsViewControllerDelegate
+#pragma mark - BlogListNoResultsViewControllerDelegate
 
 - (void)actionButtonPressed {
     [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
