@@ -1,5 +1,5 @@
 if [ $# -ne 2 ] || [ -z "$1" ] || [ -z "$2" ]; then
-    echo "usage: prs.sh source_branch destination_branch"
+    echo "usage: build.sh source_branch destination_branch"
     echo "example: prs.sh release/8.7 release/8.8"
     exit -1;
 fi
