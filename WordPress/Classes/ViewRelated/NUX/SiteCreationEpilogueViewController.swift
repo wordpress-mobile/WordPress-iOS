@@ -6,7 +6,6 @@ class SiteCreationEpilogueViewController: UIViewController {
 
     var siteToShow: Blog?
 
-    private var previewViewController: SiteCreationSitePreviewViewController?
     private var buttonViewController: NUXButtonViewController?
 
     override var prefersStatusBarHidden: Bool {
@@ -27,7 +26,6 @@ class SiteCreationEpilogueViewController: UIViewController {
 
         if let vc = segue.destination as? SiteCreationSitePreviewViewController {
             vc.siteUrl = siteToShow?.url
-            previewViewController = vc
         }
 
         if let vc = segue.destination as? NUXButtonViewController {
