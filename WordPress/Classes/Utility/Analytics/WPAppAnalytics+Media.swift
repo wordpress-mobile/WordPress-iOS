@@ -7,6 +7,7 @@ public extension WPAppAnalytics {
         case inlinePicker
         case fullScreenPicker
         case documentPicker
+        case mediaUploadWritePost
         case none
 
         public var description: String {
@@ -14,6 +15,7 @@ public extension WPAppAnalytics {
             case .inlinePicker: return "inline_picker"
             case .fullScreenPicker: return "full_screen_picker"
             case .documentPicker: return "document_picker"
+            case .mediaUploadWritePost: return "media_write_post"
             case .none: return "not_identified"
             }
         }
