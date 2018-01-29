@@ -86,19 +86,15 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
     var title: String {
         if uploadSuccessful {
-            let completedUnits = progress.completedUnitCount
-            if completedUnits == 1 {
-                return NSLocalizedString("Media uploaded (1 file)", comment: "Alert displayed to the user when a single media item has uploaded successfully.")
-            } else {
-                return String(format: NSLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully."), completedUnits)
-            }
+            return pluralize(Int(progress.completedUnitCount),
+                             singular: NSLocalizedString("Media uploaded (1 file)", comment: "Alert displayed to the user when a single media item has uploaded successfully."),
+                             plural: NSLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully."),
+                             zeroBehavior: .plural)!
         } else {
-            let failedUnits = mediaProgressCoordinator.failedMediaIDs.count
-            if failedUnits == 1 {
-                return NSLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload.")
-            } else {
-                return String(format: NSLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."), failedUnits)
-            }
+            return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
+                             singular: NSLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
+                             plural: NSLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."),
+                             zeroBehavior: .plural)!
         }
     }
 
@@ -107,13 +103,9 @@ struct MediaProgressCoordinatorNoticeViewModel {
             return nil
         }
 
-        switch progress.completedUnitCount {
-        case 1:
-            return NSLocalizedString("1 file successfully uploaded", comment: "Alert displayed to the user when a single media item has failed to upload.")
-        case 1...:
-            return String(format: NSLocalizedString("%ld files successfully uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."), progress.completedUnitCount)
-        default: return nil
-        }
+        return pluralize(Int(progress.completedUnitCount),
+                         singular: NSLocalizedString("1 file successfully uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
+                         plural: NSLocalizedString("%ld files successfully uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."))
     }
 
     var actionTitle: String {
@@ -141,4 +133,23 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
         return blog
     }
+}
+
+/// Helper method to provide the singular or plural (formatted) version of a
+/// string based on a count.
+///
+private func pluralize(_ count: Int, singular: String, plural: String, zeroBehavior: PluralizeZeroBehavior = .omit) -> String? {
+    switch count {
+    case 1:
+        return singular
+    case 1...:
+        return String(format: plural, count)
+    default:
+        return zeroBehavior == .omit ? nil : String(format: plural, count)
+    }
+}
+
+private enum PluralizeZeroBehavior {
+    case omit
+    case plural
 }
