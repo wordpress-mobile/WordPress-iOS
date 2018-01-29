@@ -1,2 +1,5 @@
-Plugins: You can now manage your plugins in the app, find it on your site's details -> Plugins.
-Editor: Resolved some issues with Chinese characters.
+Site Settings, Writing: You can now edit your site's tags!
+Aztec, Media: Users can now import photos and videos from other apps using the ... button on the media toolbar in Aztec, and via the Media Library section of the app
+Media: Uploading is now asynchronous!
+Blog details: You can drag and drop images from other apps onto the blavatar icon.
+Me: You can drag and drop images from other apps onto the gravatar icon
