@@ -43,16 +43,6 @@ class SiteCreationEpilogueViewController: UIViewController {
         buttonViewController?.setButtonTitles(primary: primaryTitle, secondary: secondaryTitle)
     }
 
-    private func handleButtonActions(showPostEditor: Bool, siteToShow: Blog? = nil) {
-        if let navController = navigationController as? SiteCreationNavigationController {
-            // SiteCreationNavigationController will check these values before dismissing
-            // and take appropriate action.
-            navController.needToShowPostEditor = showPostEditor
-            navController.siteToShow = siteToShow
-        }
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-
 }
 
 // MARK: - NUXButtonViewControllerDelegate
@@ -61,11 +51,15 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
 
     // 'Write first post' button
     func primaryButtonPressed() {
-        handleButtonActions(showPostEditor: true)
+        WPTabBarController.sharedInstance().showPostTab()
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
     // 'Configure' button
     func secondaryButtonPressed() {
-        handleButtonActions(showPostEditor: false, siteToShow: siteToShow)
+        if let siteToShow = siteToShow {
+            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: siteToShow)
+        }
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 }
