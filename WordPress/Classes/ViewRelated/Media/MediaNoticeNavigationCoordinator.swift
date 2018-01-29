@@ -6,13 +6,16 @@ import UIKit
 class MediaNoticeNavigationCoordinator {
     static func presentEditor(with userInfo: NSDictionary) {
         if let blog = blog(from: userInfo) {
-            presentEditor(for: blog, source: "media_upload_notification")
+            presentEditor(for: blog, source: "media_upload_notification", media: successfulMedia(from: userInfo))
         }
     }
 
-    static func presentEditor(for blog: Blog, source: String) {
+    static func presentEditor(for blog: Blog, source: String, media: [Media]) {
+        WPAppAnalytics.track(.notificationsUploadMediaSuccessWritePost, with: blog)
+
         let editor = EditPostViewController(blog: blog)
         editor.modalPresentationStyle = .fullScreen
+        editor.insertedMedia = media
         WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
         WPAppAnalytics.track(.editorCreatedPost, withProperties: ["tap_source": source], with: blog)
     }
@@ -24,7 +27,7 @@ class MediaNoticeNavigationCoordinator {
     }
 
     static func retryMediaUploads(with userInfo: NSDictionary) {
-        let media = self.media(from: userInfo)
+        let media = failedMedia(from: userInfo)
         media.forEach({ MediaCoordinator.shared.retryMedia($0) })
     }
 
@@ -42,10 +45,18 @@ class MediaNoticeNavigationCoordinator {
         return blog
     }
 
-    private static func media(from userInfo: NSDictionary) -> [Media] {
+    private static func successfulMedia(from userInfo: NSDictionary) -> [Media] {
+        return media(from: userInfo, withKey: MediaNoticeUserInfoKey.mediaIDs)
+    }
+
+    private static func failedMedia(from userInfo: NSDictionary) -> [Media] {
+        return media(from: userInfo, withKey: MediaNoticeUserInfoKey.failedMediaIDs)
+    }
+
+    private static func media(from userInfo: NSDictionary, withKey key: String) -> [Media] {
         let context = ContextManager.sharedInstance().mainContext
 
-        if let mediaIDs = userInfo[MediaNoticeUserInfoKey.failedMediaIDs] as? [String] {
+        if let mediaIDs = userInfo[key] as? [String] {
             let media = mediaIDs.flatMap({ mediaID -> Media? in
                 if let URIRepresentation = URL(string: mediaID),
                     let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URIRepresentation),
