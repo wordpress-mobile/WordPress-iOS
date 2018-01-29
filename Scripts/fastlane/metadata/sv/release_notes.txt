@@ -1,2 +1,5 @@
-Tillägg: Nu kan du hantera dina tillägg i appen. Du hittar det via uppgifter om din webbplats -> Tillägg.
-Redigerare: Några problem med kinesiska skrivtecken är lösta.
+Webbplatsinställningar, Skriva: Nu kan du redigera etiketterna för din webbplats!
+Aztec, Media: Nu kan användare importera foton och videoklipp från andra appar med knappen ... i mediafältet i Aztec och via mediabibliotekets sektion i appen
+Media: Nu sker uppladdning asynkront!
+Blogginformation: Du kan dra och släppa bilder från andra appar till blavatar-ikonen.
+Me: Du kan dra och släppa bilder från andra appar till gravatar-ikonen
