@@ -1,7 +1,7 @@
 import Foundation
 import WordPressShared
-import SVProgressHUD
 import CocoaLumberjack
+import WordPressFlux
 
 /// Displays the list of sites a user follows in the Reader.  Provides functionality
 /// for following new sites by URL, and unfollowing existing sites via a swipe
@@ -184,13 +184,21 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
         service.toggleFollowing(forSite: site, success: { [weak self] in
+            let siteURL = URL(string: site.siteURL)
+            let notice = Notice(title: NSLocalizedString("Unfollowed site", comment: "User unfollowed a site."),
+                                message: siteURL?.host,
+                                feedbackType: .success)
+            self?.post(notice)
+
             self?.syncSites()
             self?.refreshFollowedPosts()
         }, failure: { [weak self] (error) in
             DDLogError("Could not unfollow site: \(String(describing: error))")
-            let title = NSLocalizedString("Could not Unfollow Site", comment: "Title of a prompt.")
-            let description = error?.localizedDescription
-            self?.promptWithTitle(title, message: description!)
+
+            let notice = Notice(title: NSLocalizedString("Could not unfollow site", comment: "Title of a prompt."),
+                                message: error?.localizedDescription,
+                                feedbackType: .error)
+            self?.post(notice)
         })
     }
 
@@ -202,25 +210,24 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             return
         }
 
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.followSite(by: url, success: { [weak self] in
-            let success = NSLocalizedString("Followed", comment: "User followed a site.")
-            SVProgressHUD.showDismissibleSuccess(withStatus: success)
-            generator.notificationOccurred(.success)
+            let notice = Notice(title: NSLocalizedString("Followed site", comment: "User followed a site."),
+                                message: url.host,
+                                feedbackType: .success)
+            self?.post(notice)
+
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
 
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             DDLogError("Could not follow site: \(String(describing: error))")
 
-            generator.notificationOccurred(.error)
-
-            let title = NSLocalizedString("Could not Follow Site", comment: "Title of a prompt.")
-            let description = error?.localizedDescription
-            self?.promptWithTitle(title, message: description!)
+            let title = error?.localizedDescription ?? NSLocalizedString("Could not follow site", comment: "Title of a prompt.")
+            let notice = Notice(title: title,
+                                message: url.host,
+                                feedbackType: .error)
+            self?.post(notice)
         })
     }
 
@@ -260,12 +267,15 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         navigationController?.pushViewController(controller, animated: true)
     }
 
-
     @objc func promptWithTitle(_ title: String, message: String) {
         let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(buttonTitle)
         alert.presentFromRootViewController()
+    }
+
+    private func post(_ notice: Notice) {
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
 
