@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-import SVProgressHUD
 import CocoaLumberjack
 import WordPressFlux
 
@@ -185,13 +184,21 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
         service.toggleFollowing(forSite: site, success: { [weak self] in
+            let siteURL = URL(string: site.siteURL)
+            let notice = Notice(title: NSLocalizedString("Unfollowed site", comment: "User unfollowed a site."),
+                                message: siteURL?.host,
+                                feedbackType: .success)
+            self?.post(notice)
+
             self?.syncSites()
             self?.refreshFollowedPosts()
         }, failure: { [weak self] (error) in
             DDLogError("Could not unfollow site: \(String(describing: error))")
-            let title = NSLocalizedString("Could not Unfollow Site", comment: "Title of a prompt.")
-            let description = error?.localizedDescription
-            self?.promptWithTitle(title, message: description!)
+
+            let notice = Notice(title: NSLocalizedString("Could not unfollow site", comment: "Title of a prompt."),
+                                message: error?.localizedDescription,
+                                feedbackType: .error)
+            self?.post(notice)
         })
     }
 
@@ -205,24 +212,22 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.followSite(by: url, success: { [weak self] in
-            SVProgressHUD.dismiss()
-
             let notice = Notice(title: NSLocalizedString("Followed site", comment: "User followed a site."),
                                 message: url.host,
                                 feedbackType: .success)
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
+            self?.post(notice)
 
             self?.syncSites()
             self?.refreshPostsForFollowedTopic()
 
-        }, failure: { error in
+        }, failure: { [weak self] error in
             DDLogError("Could not follow site: \(String(describing: error))")
 
             let title = error?.localizedDescription ?? NSLocalizedString("Could not follow site", comment: "Title of a prompt.")
             let notice = Notice(title: title,
                                 message: url.host,
                                 feedbackType: .error)
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
+            self?.post(notice)
         })
     }
 
@@ -262,12 +267,15 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         navigationController?.pushViewController(controller, animated: true)
     }
 
-
     @objc func promptWithTitle(_ title: String, message: String) {
         let buttonTitle = NSLocalizedString("OK", comment: "Button title. Acknowledges a prompt.")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addCancelActionWithTitle(buttonTitle)
         alert.presentFromRootViewController()
+    }
+
+    private func post(_ notice: Notice) {
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
 
