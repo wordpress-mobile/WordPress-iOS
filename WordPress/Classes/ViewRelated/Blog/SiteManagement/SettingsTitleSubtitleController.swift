@@ -118,6 +118,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         setupNavigationBar()
         setupTitle()
         setupTable()
+        nameTextField.becomeFirstResponder()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -175,8 +176,8 @@ final class SettingsTitleSubtitleController: UITableViewController {
         textField.clearButtonMode = .whileEditing
         textField.font = WPStyleGuide.tableviewTextFont()
         textField.textColor = WPStyleGuide.darkGrey()
+        textField.delegate = self
         textField.returnKeyType = .done
-        textField.keyboardType = .default
 
         textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
@@ -189,6 +190,7 @@ final class SettingsTitleSubtitleController: UITableViewController {
         textView.font = WPStyleGuide.tableviewTextFont()
         textView.textColor = WPStyleGuide.darkGrey()
         textView.delegate = self
+        textView.returnKeyType = .done
 
         // Remove leading and trailing padding, so textview content aligns
         // with title textfield content.
@@ -320,9 +322,30 @@ extension SettingsTitleSubtitleController {
     }
 }
 
-// MARK: - Tag subtitle updates
+// MARK: - UITextViewDelegate
 extension SettingsTitleSubtitleController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         content.subtitle = textView.text
+    }
+
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView == descriptionTextView &&
+           text == "\n" {
+            descriptionTextView.resignFirstResponder()
+            navigationController?.popViewController(animated: true)
+        }
+        return true
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension SettingsTitleSubtitleController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == nameTextField {
+            nameTextField.resignFirstResponder()
+            descriptionTextView.becomeFirstResponder()
+            return false
+        }
+        return true
     }
 }
