@@ -1,2 +1,5 @@
-Plugins: Ahora puedes gestionar tus plugins en la aplicación, encuéntralos en los detalles de tu sitio -> Plugins.
-Editor: Resueltos algunos problemas con caracteres chinos.
+Ajustes del sitio, Escritura: ¡Ahora puedes editar las etiquetas de tu sitio!
+Aztec, Medios: Ahora los usuarios pueden importar fotos y vídeos de otras aplicaciones usando el … botón en la barra de herramientas de medios en Aztec, y desde la sección Biblioteca de medios de la aplicación
+Medios: ¡Ahora las subidas son asíncronas!
+Detalles del sitio: Puedes arrastrar y soltar imágenes desde otras aplicaciones en el icono de blavatar.
+Yo: Puedes arrastrar y soltar imágenes desde otras aplicaciones en el icono de gravatar
