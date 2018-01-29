@@ -71,11 +71,11 @@ class SiteCreationSitePreviewViewController: UIViewController {
     }
 
     /// If the site has finished loading and the Congratulations view has shown long enough,
-    /// fade in the site and fade out the Congratulations view.
+    /// show the site and fade out the Congratulations view.
     private func showSite() {
         if siteLoaded && timeExpired {
+            self.siteView.alpha = 1
             UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
-                self.siteView.alpha = 1
                 self.congratulationsView.alpha = 0
             }, completion: nil)
         }
