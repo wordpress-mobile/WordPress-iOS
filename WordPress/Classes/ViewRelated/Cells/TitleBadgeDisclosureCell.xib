@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="TitleBadgeDisclosureCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ML5-iW-nUY">
+                        <rect key="frame" x="16" y="12" width="240" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w1Y-xN-3cQ" customClass="BadgeLabel" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="278" y="12" width="42" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" priority="250" constant="42" id="TIW-E3-lOP"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="w1Y-xN-3cQ" firstAttribute="leading" secondItem="ML5-iW-nUY" secondAttribute="trailing" priority="250" constant="32" id="18H-4h-8Cr"/>
+                    <constraint firstItem="ML5-iW-nUY" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="2I5-J0-tUa"/>
+                    <constraint firstAttribute="trailing" secondItem="w1Y-xN-3cQ" secondAttribute="trailing" id="A7b-B8-e3f"/>
+                    <constraint firstItem="w1Y-xN-3cQ" firstAttribute="centerY" secondItem="ML5-iW-nUY" secondAttribute="centerY" id="Hhb-4h-77B"/>
+                    <constraint firstItem="ML5-iW-nUY" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="U5T-DO-cef"/>
+                    <constraint firstAttribute="trailing" secondItem="ML5-iW-nUY" secondAttribute="trailing" constant="64" id="xnd-ed-4h1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="cellBadge" destination="w1Y-xN-3cQ" id="Bpt-lD-KJW"/>
+                <outlet property="cellTitle" destination="ML5-iW-nUY" id="0Ra-0B-7wQ"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

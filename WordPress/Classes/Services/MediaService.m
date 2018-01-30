@@ -32,12 +32,15 @@
 
 #pragma mark - Creating media
 
-- (void)createMediaWith:(id<ExportableAsset>)exportable
-               objectID:(NSManagedObjectID *)objectID              
-      thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-             completion:(void (^)(Media *media, NSError *error))completion
+- (Media *)createMediaWith:(id<ExportableAsset>)exportable
+                  objectID:(NSManagedObjectID *)objectID
+                  progress:(NSProgress **)progress
+         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                completion:(void (^)(Media *media, NSError *error))completion
 {
-    [self.managedObjectContext performBlock:^{
+    NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
+    __block Media *media;
+    [self.managedObjectContext performBlockAndWait:^{
         AbstractPost *post = nil;
         Blog *blog = nil;
         NSError *error = nil;
@@ -55,14 +58,17 @@
             return;
         }
 
-        Media *media;
         if (post != nil) {
             media = [Media makeMediaWithPost:post];
         } else {
             media = [Media makeMediaWithBlog:blog];
         }
         media.mediaType = exportable.assetMediaType;
+        media.remoteStatus = MediaRemoteStatusProcessing;
+        [self.managedObjectContext save: nil];
+    }];
 
+    [self.managedObjectContext performBlock:^{
         // Setup completion handlers
         void(^completionWithMedia)(Media *) = ^(Media *media) {
             // Pre-generate a thumbnail image, see the method notes.
@@ -74,14 +80,19 @@
         };
         void(^completionWithError)( NSError *) = ^(NSError *error) {
             if (completion) {
-                completion(nil, error);
+                completion(media, error);
             }
         };
 
         // Export based on the type of the exportable.
         MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
+        NSProgress *importProgress = [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
+        [createProgress addChild:importProgress withPendingUnitCount:1];
     }];
+    if (progress != nil) {
+        *progress = createProgress;
+    }
+    return media;
 }
 
 /**

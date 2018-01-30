@@ -2,7 +2,6 @@
 #import <XCTest/XCTest.h>
 #import "TaxonomyServiceRemoteREST.h"
 #import "RemotePostTag.h"
-#import "RemoteTaxonomyPaging.h"
 @import WordPressKit;
 
 @interface TaxonomyServiceRemoteRESTTests : XCTestCase
@@ -162,6 +161,7 @@
 {
     RemotePostTag *tag = OCMStrictClassMock([RemotePostTag class]);
     OCMStub([tag name]).andReturn(@"name");
+    OCMStub([tag tagDescription]).andReturn(@"description");
 
     NSString *endpoint = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.service.siteID, @"tags"];
     NSString *url = [self.service pathForEndpoint:endpoint
@@ -185,10 +185,14 @@
 - (void)testThatGetTagsWorks
 {
     NSString *url = [self GETtaxonomyURLWithType:@"tags"];
-    
+
+    BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
+        return ([parameters isKindOfClass:[NSDictionary class]] && [[parameters objectForKey:@"number"] integerValue] == 1000);
+    };
+
     WordPressComRestApi *api = self.service.wordPressComRestApi;
     OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
+          parameters:[OCMArg checkWithBlock:parametersCheckBlock]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
