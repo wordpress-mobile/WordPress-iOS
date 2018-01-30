@@ -55,7 +55,7 @@ target 'WordPress' do
   pod 'Gridicons', '0.14'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.26'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.17'
+  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.17.1'
 
   target 'WordPressTest' do
     inherit! :search_paths
