@@ -909,7 +909,7 @@ static NSInteger HideSearchMinSites = 3;
     
     if ([Feature enabled:FeatureFlagSiteCreation]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
-        SiteTypeTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteType"];
+        SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
         SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
                                                            initWithRootViewController:controller];
         [self presentViewController:navController animated:YES completion:nil];

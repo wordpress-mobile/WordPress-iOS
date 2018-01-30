@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteTypeTableViewController: NUXTableViewController {
+class SiteCreationCategoryTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
