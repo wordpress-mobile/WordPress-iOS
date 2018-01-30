@@ -24,6 +24,11 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
         syncContent()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
+    }
+
     private func configureView() {
         WPStyleGuide.configureColors(for: view, collectionView: collectionView)
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
