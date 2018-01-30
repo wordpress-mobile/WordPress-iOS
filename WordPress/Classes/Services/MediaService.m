@@ -160,6 +160,7 @@
         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
+            mediaInContext.error = nil;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
