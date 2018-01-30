@@ -1,5 +1,8 @@
 import Foundation
 
+/// Singleton class to contain options selected by the user
+/// during the Site Creation process.
+///
 class SiteCreationFields {
 
     // MARK: - Properties
