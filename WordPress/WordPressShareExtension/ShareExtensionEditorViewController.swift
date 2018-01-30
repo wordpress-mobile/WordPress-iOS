@@ -62,6 +62,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = ShareColors.aztecBackground
+        textView.tintColor = ShareColors.aztecCursorColor
         textView.linkTextAttributes = NSAttributedStringKey.convertToRaw(attributes: linkAttributes)
         textView.textAlignment = .natural
 
@@ -108,7 +109,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
+        textView.tintColor = ShareColors.aztecCursorColor
+        textView.backgroundColor = ShareColors.aztecBackground
         textView.spellCheckingType = .default
 
         return textView
@@ -1293,6 +1295,7 @@ fileprivate extension ShareExtensionEditorViewController {
         static let aztecLinkColor                       = WPStyleGuide.mediumBlue()
         static let aztecFormatBarDisabledColor          = WPStyleGuide.greyLighten20()
         static let aztecFormatBarDividerColor           = WPStyleGuide.greyLighten30()
+        static let aztecCursorColor                     = WPStyleGuide.wordPressBlue()
         static let aztecFormatBarBackgroundColor        = UIColor.white
         static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
         static let aztecFormatBarActiveColor: UIColor   = UIColor(hexString: "11181D")
