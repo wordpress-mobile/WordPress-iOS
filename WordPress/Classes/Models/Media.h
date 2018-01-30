@@ -45,8 +45,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, strong, nullable) NSString *title;
 @property (nonatomic, strong, nullable) NSString *videopressGUID;
 @property (nonatomic, strong, nullable) NSNumber *width;
-@property (nonatomic, strong, nullable) NSNumber *errorCode;
-@property (nonatomic, strong, nullable) NSString *errorMessage;
+@property (nonatomic, strong, nullable) id errorData;
 
 
 // Relationships
@@ -74,6 +73,8 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 /// Returns true if the media object already exists on the server
 @property (nonatomic, readonly) BOOL hasRemote;
+
+@property (nonatomic, strong, nullable) NSError *error;
 
 // Helper methods
 
