@@ -380,9 +380,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var mediaCoordinator: MediaCoordinator = {
         let coordinator = MediaCoordinator()
         return coordinator
-    }()
-
-    fileprivate var errorsForAttachmentUploads: [String: Error] = [:]
+    }()    
 
     /// Media Progress View
     ///
@@ -2828,8 +2826,6 @@ extension AztecPostViewController {
             return
         }
 
-        errorsForAttachmentUploads.removeValue(forKey: mediaUploadID)
-
         switch self.mode {
         case .richText:
             guard let attachment = self.findAttachment(withUploadID: mediaUploadID) else {
@@ -2881,10 +2877,6 @@ extension AztecPostViewController {
 
         WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
 
-        if let attachmentError = error, let uploadID = attachment.uploadID {
-            errorsForAttachmentUploads[uploadID] = attachmentError
-        }
-
         let message = MediaAttachmentActionSheet.failedMediaActionTitle
 
         let attributeMessage = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
@@ -2895,12 +2887,26 @@ extension AztecPostViewController {
         richTextView.refresh(attachment)
     }
 
+    fileprivate var failedMediaIDs: [String] {
+        var failedIDs = [String]()
+        richTextView.textStorage.enumerateAttachments { (attachment, range) in
+            guard let mediaAttachment = attachment as? MediaAttachment,
+                let mediaUploadID = mediaAttachment.uploadID,
+                let media = self.mediaCoordinator.media(withObjectID: mediaUploadID),
+                media.error != nil
+                else {
+                    return
+            }
+            failedIDs.append(mediaUploadID)
+        }
+        return failedIDs
+    }
+
     fileprivate var hasFailedMedia: Bool {
-        return !errorsForAttachmentUploads.isEmpty
+        return !failedMediaIDs.isEmpty
     }
 
     fileprivate func removeFailedMedia() {
-        let failedMediaIDs = errorsForAttachmentUploads.keys
         for mediaID in failedMediaIDs {
             if let attachment = self.findAttachment(withUploadID: mediaID) {
                 richTextView.remove(attachmentID: attachment.identifier)
@@ -2909,11 +2915,9 @@ extension AztecPostViewController {
                 mediaCoordinator.cancelUploadAndDeleteMedia(media)
             }
         }
-        errorsForAttachmentUploads.removeAll()
     }
 
     fileprivate func retryAllFailedMediaUploads() {
-        let failedMediaIDs = errorsForAttachmentUploads.keys
         for mediaID in failedMediaIDs {
             guard let attachment = self.findAttachment(withUploadID: mediaID),
                 let media = mediaCoordinator.media(withObjectID: mediaID) else {
@@ -2924,7 +2928,6 @@ extension AztecPostViewController {
     }
 
     fileprivate func retryFailedMediaUpload(media: Media, attachment: MediaAttachment) {
-        errorsForAttachmentUploads.removeValue(forKey: media.uploadID)
         resetMediaAttachmentOverlay(attachment)
         attachment.progress = 0
         richTextView.refresh(attachment)
@@ -2940,12 +2943,13 @@ extension AztecPostViewController {
     fileprivate func processMediaWithErrorAttachments() {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
             guard let mediaAttachment = attachment as? MediaAttachment,
-                let mediaUploadID = mediaAttachment.uploadID else {
+                let mediaUploadID = mediaAttachment.uploadID,
+                let media = self.mediaCoordinator.media(withObjectID: mediaUploadID),
+                let error = media.error
+                else {
                 return
             }
-            if let error = self.errorsForAttachmentUploads[mediaUploadID] {
-                self.handleError(error, onAttachment: mediaAttachment)
-            }
+            self.handleError(error, onAttachment: mediaAttachment)
         }
     }
 
@@ -3022,11 +3026,11 @@ extension AztecPostViewController {
         }
         if let mediaUploadID = attachment.uploadID,
            let media = mediaCoordinator.media(withObjectID: mediaUploadID),
-           let error = errorsForAttachmentUploads[media.uploadID] {
+           let error = media.error {
             showDefaultActions = false
             message = error.localizedDescription
 
-            if errorsForAttachmentUploads.count > 1 {
+            if failedMediaIDs.count > 1 {
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.retryAllFailedUploadsActionTitle,
                                                    style: .default,
                                                    handler: { [weak self] (action) in
@@ -3231,7 +3235,8 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         // Check to see if there is an error associated to the attachment
         var errorAssociatedToAttachment = false
         if let uploadID = attachment.uploadID,
-           errorsForAttachmentUploads[uploadID] != nil {
+           let media = mediaCoordinator.media(withObjectID: uploadID),
+           media.error != nil {
             errorAssociatedToAttachment = true
         }
         if !errorAssociatedToAttachment {
