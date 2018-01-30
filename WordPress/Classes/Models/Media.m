@@ -27,8 +27,7 @@
 @dynamic localThumbnailURL;
 @dynamic remoteThumbnailURL;
 @dynamic postID;
-@dynamic errorCode;
-@dynamic errorMessage;
+@dynamic errorData;
 
 #pragma mark -
 
@@ -220,6 +219,20 @@
         return nil;
     }
     return [mediaDirectory URLByAppendingPathComponent:localPath.lastPathComponent];
+}
+
+#pragma mark - Error information
+
+- (NSError *)error {
+    if (self.errorData) {
+        return (NSError *)self.errorData;
+    } else {
+        return nil;
+    }
+}
+
+- (void) setError:(NSError *)value {
+    self.errorData = value;
 }
 
 #pragma mark - CoreData Helpers

@@ -86,6 +86,7 @@
         void(^completionWithError)( NSError *) = ^(NSError *error) {
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
+                mediaInContext.error = error;
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
@@ -191,8 +192,7 @@
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
-                mediaInContext.errorMessage = customError.localizedDescription;
-                mediaInContext.errorCode = [NSNumber numberWithInteger:customError.code];
+                mediaInContext.error = customError;                
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
