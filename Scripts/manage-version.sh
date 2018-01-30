@@ -12,21 +12,25 @@ IS_A_NUM_RE="^[0-9]+$"
 # Show script usage, commands and options
 function showUsage() {
     # Help message
-    echo "Usage: $exename command new-version [new-internal-version]"
+    echo "Usage: $exeName command new-version [new-internal-version]"
     echo ""
     echo "   Available commands:"
     echo "      $CMD_CREATE (or $CMD_CREATE_SHORT): creates the new branch and updates the version IDs"
     echo "      $CMD_UPDATE (or $CMD_UPDATE_SHORT): updates the version IDs"
     echo ""
-    echo "Example: $exename create 9.3.0"
-    echo "Example: $exename update 9.3.0.1"
-    echo "Example: $exename update 9.3.0.1 9.3.0.20180129"
+    echo "Example: $exeName create 9.3.0"
+    echo "Example: $exeName update 9.3.0.1"
+    echo "Example: $exeName update 9.3.0.1 9.3.0.20180129"
     echo ""
     exit 1
 }
 
 function showErrorMessage() {
-    echo $1
+    echo $1 | tee -a $logFile
+}
+
+function showMessage() {
+    echo $1 | tee -a $logFile
 }
 
 # Verifies the command against the known ones and normalize to the extended version
@@ -80,8 +84,10 @@ function verifyVersion() {
         fi
     done
 
-    # Recreate version number
+    # Create version numbers
     newVer=${nvp[0]}.${nvp[1]}.${nvp[2]}.${nvp[3]}
+    newMainVer=${nvp[0]}.${nvp[1]}
+    releaseBranch="$releaseBranch$newMainVer"
 
     # If internal version exists, check if has the same major, minor, release
     # otherwise, create one
@@ -100,11 +106,71 @@ function verifyParams() {
     verifyVersion
 }
 
+# Shows the configuration the script received
+function showConfig() {
+    echo "Build version: $newVer"
+    echo "Internal version: $newIntVer"
+    echo "Release branch: $releaseBranch"
+}
+
+# Appends an init line to the log
+function startLog() {
+    dateTime=`date "+%d-%m-%Y - %H:%M:%S"`
+    echo "$exeName started at $dateTime" >> $logFile
+}
+
+# Appends a closing line to the log
+function stopLog() {
+    dateTime=`date "+%d-%m-%Y - %H:%M:%S"`
+    echo "$exeName terminated at $dateTime" >> $logFile
+    echo "" >> $logFile
+    echo "Log location: $logFile"
+}
+
+# Writes an error message and exits
+function stopOnError() {
+    showErrorMessage "Operation failed. Aborting."
+    showErrorMessage "See log for further details."
+    stopLog
+    exit 1
+}
+
+# Checks out develop, updates it to origin and creates the release branch
+function doBranching() {
+    git checkout develop >> $logFile 2>&1 || stopOnError
+    git pull origin develop >> $logFile 2>&1 || stopOnError
+    git show-ref --verify --quiet "refs/heads/$releaseBranch" >> $logFile 2>&1 
+    if [ $? -eq 0 ]; then
+        showMessage "Branch $releaseBranch already exists. Skipping creation."
+        git checkout $releaseBranch >> $logFile 2>&1 || stopOnError
+    else
+        git checkout -b $releaseBranch >> $logFile 2>&1 || stopOnError
+    fi 
+}
+
+# Pushes the new branch to origin
+function pushToOrigin() {
+    git push origin $releaseBranch >> $logFile 2>&1 || stopOnError
+}
+
+# Creates a new branch for the release and updates the relevant files
+function createBranch() {
+    startLog
+    showMessage "Creating new Release branch for version $newMainVer"
+    showConfig
+    doBranching
+    showMessage "Done!"
+    showMessage "Updating remote for $newMainVer"
+    pushToOrigin
+    showMessage "Done!"
+    stopLog
+}
+
 ### Script main
-exename=$(basename "$0" ".sh")
+exeName=$(basename "$0" ".sh")
 
 # Params check
-if [ "$#" -lt 2 ] || [ "$#" -gt 3 ]; then
+if [ "$#" -lt 2 ] || [ "$#" -gt 3 ] || [ -z $1 ]; then
     showUsage
 fi
 
@@ -112,11 +178,15 @@ fi
 cmd=$1
 newVer=$2
 newIntVer=$3
-
+newMainVer=0
+releaseBranch="release/"
+logFile="/tmp/manage-version.log"
 
 verifyParams
-
-#test
-echo $cmd
-echo $newVer
-echo $newIntVer
+if [ $cmd == $CMD_CREATE ]; then
+    createBranch
+elif [ $cmd == $CMD_UPDATE ]; then
+    updateBranch
+else
+    showUsage
+fi
