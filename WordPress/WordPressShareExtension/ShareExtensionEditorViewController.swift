@@ -206,8 +206,10 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        dismissIfNeeded()
-        startListeningToNotifications()
+        verifyAuthCredentials {
+            startListeningToNotifications()
+            makeRichTextViewFirstResponderAndPlaceCursorAtEnd()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1197,6 +1199,18 @@ private extension ShareExtensionEditorViewController {
         originalKeyboardFrame = .zero
     }
 
+    func makeRichTextViewFirstResponderAndPlaceCursorAtEnd() {
+        // Unfortunatly, we need set the first responder and cursor position in this manner otherwise
+        // some odd scrolling behavior occurs when inserting images into the share ext editor.
+        DispatchQueue.main.async {
+            if !self.richTextView.isFirstResponder {
+                self.richTextView.becomeFirstResponder()
+            }
+            let newPosition = self.richTextView.endOfDocument
+            self.richTextView.selectedTextRange = self.richTextView.textRange(from: newPosition, to: newPosition)
+        }
+    }
+
     func resetPresentationViewUsingKeyboardFrame(_ keyboardFrame: CGRect = .zero) {
         guard let presentationController = navigationController?.presentationController as? ExtensionPresentationController else {
             return
@@ -1231,8 +1245,9 @@ private extension ShareExtensionEditorViewController {
         }
     }
 
-    func dismissIfNeeded() {
+    func verifyAuthCredentials(onSuccess: (() -> Void)) {
         guard oauth2Token == nil else {
+            onSuccess()
             return
         }
 
