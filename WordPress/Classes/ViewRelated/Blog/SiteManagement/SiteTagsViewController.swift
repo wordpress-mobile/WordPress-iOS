@@ -43,12 +43,6 @@ final class SiteTagsViewController: UITableViewController {
         return returnValue
     }()
 
-    fileprivate lazy var refreshCont: UIRefreshControl = {
-        let control = UIRefreshControl()
-        control.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-        return control
-    }()
-
     private var isPerformingInitialSync = false
 
     @objc
@@ -108,11 +102,14 @@ final class SiteTagsViewController: UITableViewController {
         tableView.tableFooterView = UIView(frame: .zero)
         let nibName = UINib(nibName: TableConstants.cellIdentifier, bundle: nil)
         tableView.register(nibName, forCellReuseIdentifier: TableConstants.cellIdentifier)
-        activateRefreshControl()
+        setupRefreshControl()
     }
 
-    private func activateRefreshControl() {
-        refreshControl = refreshCont
+    private func setupRefreshControl() {
+        if refreshControl == nil {
+            refreshControl = UIRefreshControl()
+            refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        }
     }
 
     private func deactivateRefreshControl() {
@@ -455,6 +452,6 @@ extension SiteTagsViewController: UISearchControllerDelegate {
     }
 
     func willDismissSearchController(_ searchController: UISearchController) {
-        activateRefreshControl()
+        setupRefreshControl()
     }
 }
