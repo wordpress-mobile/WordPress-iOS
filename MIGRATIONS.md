@@ -6,7 +6,7 @@ data model as well as any custom migrations.
 ## WordPress 71
 
 - @sergioestevao 2018-01-29
-- ``Media` added `errorData` Transformable property that stores a NSError object tha esulted from a failed import or upload.
+- ``Media` added `error` Transformable property that stores a NSError object tha esulted from a failed import or upload.
 
 ## WordPress 70
 
