@@ -2316,7 +2316,7 @@ extension AztecPostViewController {
 
         toolbarButtons.append(makeToolbarButton(identifier: .mediaLibrary))
 
-        if #available(iOS 11, *), FeatureFlag.iCloudFilesSupport.enabled {
+        if #available(iOS 11, *) {
             toolbarButtons.append(makeToolbarButton(identifier: .otherApplications))
         }
 
@@ -2683,7 +2683,7 @@ extension AztecPostViewController {
             guard let attachment = newAttachment, let statType = newStatType else { return }
             attachment.uploadID = attachment.identifier
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.createMedia(with: url as NSURL, objectID: post.objectID,
+            mediaService.createMedia(with: url as NSURL, objectID: post.objectID, progress: nil,
                                      thumbnailCallback: { [weak self](thumbnailURL) in
                                         self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
                 },
@@ -2714,7 +2714,7 @@ extension AztecPostViewController {
 
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
-                                 objectID: post.objectID,
+                                 objectID: post.objectID, progress: nil,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
                                     if let attachment = self?.findAttachment(withUploadID: uploadID) {
                                         self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
@@ -2733,7 +2733,7 @@ extension AztecPostViewController {
         attachment.uploadID = uploadID
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         mediaService.createMedia(with: phAsset,
-                                 objectID: post.objectID,
+                                 objectID: post.objectID, progress: nil,
                                  thumbnailCallback: { [weak self](thumbnailURL) in
                                     if let attachment = self?.findAttachment(withUploadID: uploadID) {
                                         self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
@@ -2852,7 +2852,7 @@ extension AztecPostViewController {
         }
         mediaProgressCoordinator.track(numberOfItems: 1)
         let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: image, objectID: post.objectID, thumbnailCallback: { (thumbnailURL) in
+        mediaService.createMedia(with: image, objectID: post.objectID, progress: nil, thumbnailCallback: { (thumbnailURL) in
             DispatchQueue.main.async {
                 if let imageAttachment = attachment as? ImageAttachment {
                     imageAttachment.updateURL(thumbnailURL)
@@ -3092,7 +3092,7 @@ extension AztecPostViewController {
 
         // Is upload still going?
         if let mediaProgress = mediaProgressCoordinator.progress(forMediaID: mediaID),
-            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
+            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount && !mediaProgress.isFailed {
             alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
                                                style: .destructive,
                                                handler: { (action) in

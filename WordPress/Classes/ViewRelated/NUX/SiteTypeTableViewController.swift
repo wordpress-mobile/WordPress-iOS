@@ -32,6 +32,10 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     // MARK: - Cancel Button Action
 
     @objc func handleCancelButtonTapped(sender: UIBarButtonItem) {
@@ -94,7 +98,7 @@ class SiteTypeTableViewController: UITableViewController, LoginWithLogoAndHelpVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        guard let themeVC = segue.destination as? ThemeSelectionViewController else {
+        guard let themeVC = segue.destination as? SiteCreationThemeSelectionViewController else {
             return
         }
 

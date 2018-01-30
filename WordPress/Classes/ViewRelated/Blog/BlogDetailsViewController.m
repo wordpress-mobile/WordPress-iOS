@@ -115,6 +115,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
+@property (nonatomic, strong) ImageCropViewController *imageCropViewController;
 
 /// Used to restore the tableview selection during state restoration, and
 /// also when switching between a collapsed and expanded split view controller presentation
@@ -402,7 +403,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([self.blog supports:BlogFeaturePlans]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
                                                          identifier:BlogDetailsPlanCellIdentifier
-                                                              image:[Gridicon iconOfType:GridiconTypeClipboard]
+                                                              image:[Gridicon iconOfType:GridiconTypePlans]
                                                            callback:^{
                                                                [weakSelf showPlans];
                                                            }];
@@ -419,17 +420,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Site Pages", @"Noun. Title. Links to the blog's Pages screen.")
+                                                    image:[Gridicon iconOfType:GridiconTypePages]
+                                                 callback:^{
+                                                     [weakSelf showPageList];
+                                                 }]];
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                                     image:[Gridicon iconOfType:GridiconTypePosts]
                                                  callback:^{
                                                      [weakSelf showPostList];
                                                  }]];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                                    image:[Gridicon iconOfType:GridiconTypePages]
-                                                 callback:^{
-                                                     [weakSelf showPageList];
-                                                 }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Media", @"Noun. Title. Links to the blog's Media library.")
                                                     image:[Gridicon iconOfType:GridiconTypeImage]
@@ -618,12 +620,32 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)siteIconTapped
 {
-    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
+    if (![self siteIconShouldAllowDroppedImages]) {
         // Gracefully ignore the tap for users that can not upload files or
         // blogs that do not have capabilities since those will not support the REST API icon update
         return;
     }
     [self showUpdateSiteIconAlert];
+}
+
+- (void)siteIconReceivedDroppedImage:(UIImage *)image
+{
+    if (![self siteIconShouldAllowDroppedImages]) {
+        // Gracefully ignore the drop for users that can not upload files or
+        // blogs that do not have capabilities since those will not support the REST API icon update
+        self.headerView.updatingIcon = NO;
+        return;
+    }
+    [self presentCropViewControllerForDroppedSiteIcon:image];
+}
+
+- (BOOL)siteIconShouldAllowDroppedImages
+{
+    if (!self.blog.isAdmin || !self.blog.isUploadingFilesAllowed) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark Site Icon Update Management
@@ -652,6 +674,54 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                 handler:nil];
 
     [self presentViewController:updateIconAlertController animated:YES completion:nil];
+}
+
+- (void)presentCropViewControllerForDroppedSiteIcon:(UIImage *)image
+{
+    self.imageCropViewController = [[ImageCropViewController alloc] initWithImage:image];
+    self.imageCropViewController.maskShape = ImageCropOverlayMaskShapeSquare;
+    self.imageCropViewController.shouldShowCancelButton = YES;
+   
+    __weak __typeof(self) weakSelf = self;
+    self.imageCropViewController.onCancel = ^(void) {
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        weakSelf.headerView.updatingIcon = NO;
+    };
+    
+    self.imageCropViewController.onCompletion = ^(UIImage *image, BOOL modified) {
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        [weakSelf uploadDroppedSiteIcon:image onCompletion:^{
+            weakSelf.headerView.blavatarImageView.image = image;
+            weakSelf.headerView.updatingIcon = NO;
+        }];
+    };
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.imageCropViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)uploadDroppedSiteIcon:(UIImage *)image onCompletion:(void(^)(void))completion
+{
+    if (self.blog.objectID == nil) {
+        return;
+    }
+    
+    __weak __typeof(self) weakSelf = self;
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    NSProgress *mediaCreateProgress;
+    [mediaService createMediaWith:image objectID:self.blog.objectID progress:&mediaCreateProgress thumbnailCallback:nil completion:^(Media *media, NSError *error) {
+        if (media == nil || error != nil) {
+            return;
+        }
+        NSProgress *uploadProgress;
+        [mediaService uploadMedia:media progress:&uploadProgress success:^{
+            [weakSelf updateBlogIconWithMedia:media];
+            completion();
+        } failure:^(NSError * _Nonnull error) {
+            [weakSelf showErrorForSiteIconUpdate];
+            completion();
+        }];
+    }];
 }
 
 - (void)updateSiteIcon

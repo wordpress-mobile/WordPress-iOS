@@ -9,12 +9,13 @@ const CGFloat MeHeaderViewVerticalMargin = 20.0;
 const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
-@interface MeHeaderView ()
+@interface MeHeaderView () <UIDropInteractionDelegate>
 
 @property (nonatomic, strong) UIImageView *gravatarImageView;
 @property (nonatomic, strong) UILabel *displayNameLabel;
 @property (nonatomic, strong) UILabel *usernameLabel;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIView *gravatarDropTarget;
 
 @end
 
@@ -32,6 +33,9 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     if (self) {
         _gravatarImageView = [self newImageViewForGravatar];
         [self addSubview:_gravatarImageView];
+        
+        _gravatarDropTarget = [self newDropTargetForGravatar];
+        [self addSubview:_gravatarDropTarget];
 
         _activityIndicator = [self newSpinner];
         [_gravatarImageView addSubview:_activityIndicator];
@@ -85,7 +89,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 - (BOOL)showsActivityIndicator
 {
-    // Note: ActivityIndicator will be visible only while it's beign animated
+    // Note: ActivityIndicator will be visible only while it's being animated
     return [_activityIndicator isAnimating];
 }
 
@@ -135,6 +139,8 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
                                                      attribute:NSLayoutAttributeCenterX
                                                     multiplier:1
                                                       constant:0]];
+    
+    [self.gravatarDropTarget pinSubviewToAllEdgeMargins:self.gravatarImageView];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.displayNameLabel
                                                      attribute:NSLayoutAttributeCenterX
@@ -208,6 +214,25 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     return imageView;
 }
 
+- (UIView *)newDropTargetForGravatar
+{
+    UIView *dropTarget = [UIView new];
+    [dropTarget setTranslatesAutoresizingMaskIntoConstraints:NO];
+    dropTarget.backgroundColor = [UIColor clearColor];
+    
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                action:@selector(handleHeaderPress:)];
+    singleTap.numberOfTapsRequired = 1;
+    [dropTarget addGestureRecognizer:singleTap];
+    
+    if (@available(iOS 11.0, *)) {
+        UIDropInteraction *dropInteraction = [[UIDropInteraction alloc] initWithDelegate:self];
+        [dropTarget addInteraction:dropInteraction];
+    }
+    
+    return dropTarget;
+}
+
 - (UIActivityIndicatorView *)newSpinner
 {
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
@@ -240,6 +265,68 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
             self.onGravatarPress();
         }
     }
+}
+
+#pragma mark - Drop Interaction Handler
+
+- (BOOL)dropInteraction:(UIDropInteraction *)interaction
+       canHandleSession:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    BOOL isAnImage = [session canLoadObjectsOfClass:[UIImage self]];
+    BOOL isSingleImage = [session.items count] == 1;
+    return (isAnImage && isSingleImage);
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+        sessionDidEnter:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.gravatarImageView depressSpringAnimation:nil];
+}
+
+- (UIDropProposal *)dropInteraction:(UIDropInteraction *)interaction
+                   sessionDidUpdate:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    CGPoint dropLocation = [session locationInView:self.gravatarDropTarget];
+    
+    UIDropOperation dropOperation = UIDropOperationCancel;
+    
+    if (CGRectContainsPoint(self.gravatarDropTarget.bounds, dropLocation)) {
+        dropOperation = UIDropOperationCopy;
+    }
+    
+    UIDropProposal *dropProposal = [[UIDropProposal alloc] initWithDropOperation:dropOperation];
+    
+    return  dropProposal;
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+            performDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self setShowsActivityIndicator:YES];
+    [session loadObjectsOfClass:[UIImage self] completion:^(NSArray *images) {
+        UIImage *image = [images firstObject];
+        if (self.onDroppedImage) {
+            self.onDroppedImage(image);
+        }
+    }];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+           concludeDrop:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.gravatarImageView normalizeSpringAnimation:nil];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidExit:(id<UIDropSession>)session  API_AVAILABLE(ios(11.0))
+{
+    [self.gravatarImageView normalizeSpringAnimation:nil];
+}
+
+- (void)dropInteraction:(UIDropInteraction *)interaction
+         sessionDidEnd:(id<UIDropSession>)session API_AVAILABLE(ios(11.0))
+{
+    [self.gravatarImageView normalizeSpringAnimation:nil];
 }
 
 @end

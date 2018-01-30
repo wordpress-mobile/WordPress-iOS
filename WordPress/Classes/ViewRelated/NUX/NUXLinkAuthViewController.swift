@@ -1,5 +1,4 @@
 import UIKit
-import SVProgressHUD
 import WordPressShared
 
 /// Handles the final step in the magic link auth process. At this point all the
@@ -8,7 +7,7 @@ import WordPressShared
 /// The expectation is this controller will be momentarily visible when the app
 /// is resumed/launched via the appropriate custom scheme, and quickly dismiss.
 ///
-class LoginLinkAuthViewController: LoginViewController {
+class NUXLinkAuthViewController: LoginViewController {
     @IBOutlet weak var statusLabel: UILabel?
     @objc var email: String = ""
     @objc var token: String = ""
@@ -18,7 +17,8 @@ class LoginLinkAuthViewController: LoginViewController {
         super.viewDidAppear(animated)
 
         // Gotta have email and token to use this vc
-        assert(!email.isEmpty && !token.isEmpty)
+        assert(!email.isEmpty, "Email cannot be nil")
+        assert(!token.isEmpty, "Email token cannot be nil")
 
         if didSync {
             return
@@ -42,9 +42,5 @@ class LoginLinkAuthViewController: LoginViewController {
 
     override func updateSafariCredentialsIfNeeded() {
         // Noop
-    }
-
-    override func dismiss() {
-        self.performSegue(withIdentifier: .showEpilogue, sender: self)
     }
 }
