@@ -43,14 +43,11 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
     private func createSite() {
 
-        let siteCreationFields = SiteCreationFields.sharedInstance()
-
-        // Make sure we have the bare minimum before proceeding.
-        if siteCreationFields.domain.isEmpty ||
-            siteCreationFields.title.isEmpty {
-            DDLogError("Error while creating site: siteURL and/or siteTitle missing.")
+        // Make sure we have all required info before proceeding.
+        if let error = SiteCreationFields.validateFields() {
+            DDLogError("Error while creating site: \(String(describing: error))")
             // TODO: show whoops view
-            showAlertWithMessage("Fail: URL and/or Title missing.")
+            showAlertWithMessage("Error: \(String(describing: error))")
             return
         }
 
@@ -80,6 +77,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         }
 
         // Start the site creation process
+        let siteCreationFields = SiteCreationFields.sharedInstance()
         let service = SiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createSite(siteURL: siteCreationFields.domain,
                            siteTitle: siteCreationFields.title,
