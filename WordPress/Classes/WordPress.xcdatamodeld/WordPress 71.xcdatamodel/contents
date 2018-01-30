@@ -296,7 +296,7 @@
             <userInfo/>
         </attribute>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="errorData" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
