@@ -14,6 +14,10 @@ class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIVi
         }
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     override func viewDidLoad() {
         addHelpButtonToNavController()
         setupCancelButtonIfNeeded()

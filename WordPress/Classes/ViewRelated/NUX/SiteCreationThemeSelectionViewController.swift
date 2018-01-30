@@ -37,10 +37,6 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
         })
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIDevice.isPad() ? .all : .portrait
-    }
-
     // MARK: - UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
