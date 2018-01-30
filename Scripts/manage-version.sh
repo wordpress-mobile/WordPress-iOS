@@ -153,15 +153,36 @@ function pushToOrigin() {
     git push origin $releaseBranch >> $logFile 2>&1 || stopOnError
 }
 
+# Updates the keys in download_metadata.swift and AppStoreStrings.po
+function updateGlotPressKey() {
+    dmFile="./fastlane/download_metadata.swift"
+    if [ -f $dmFile ]; then
+        sed -i '' "s/let glotPressWhatsNewKey.*/let glotPressWhatsNewKey = \"v$newMainVer-whats-new\"/" $dmFile
+    else
+        showErrorMessage "Can't find $dmFile."
+        stopOnError
+    fi
+
+    assFile="../WordPress/Resources/AppStoreStrings.po"
+    if [ -f $assFile ]; then
+        sed -i '' "s#.*whats-new\"#msgctxt \"v$newMainVer-whats-new\"#"  $assFile
+    else
+        showErrorMessage "Can't find $assFile."
+        stopOnError
+    fi
+}
 # Creates a new branch for the release and updates the relevant files
 function createBranch() {
     startLog
-    showMessage "Creating new Release branch for version $newMainVer"
+    showMessage "Creating new Release branch for version $newMainVer..."
     showConfig
     doBranching
     showMessage "Done!"
-    showMessage "Updating remote for $newMainVer"
+    showMessage "Updating remote for $newMainVer..."
     pushToOrigin
+    showMessage "Done!"
+    showMessage "Updating glotPressKeys..."
+    updateGlotPressKey
     showMessage "Done!"
     stopLog
 }
