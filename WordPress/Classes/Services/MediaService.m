@@ -72,6 +72,8 @@
     [self.managedObjectContext performBlock:^{
         // Setup completion handlers
         void(^completionWithMedia)(Media *) = ^(Media *media) {
+            media.remoteStatus = MediaRemoteStatusLocal;
+            media.error = nil;
             // Pre-generate a thumbnail image, see the method notes.
             [self exportPlaceholderThumbnailForMedia:media
                                           completion:^(NSURL *url){
