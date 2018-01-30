@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17C205" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -296,8 +296,7 @@
             <userInfo/>
         </attribute>
         <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="errorCode" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="errorMessage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="errorData" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="filename" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -660,7 +659,7 @@
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Domain" positionX="27" positionY="153" width="128" height="105"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="420"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="405"/>
         <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
         <element name="MenuItem" positionX="45" positionY="180" width="128" height="255"/>
         <element name="MenuLocation" positionX="54" positionY="189" width="128" height="120"/>
