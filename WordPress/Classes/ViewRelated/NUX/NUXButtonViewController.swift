@@ -29,10 +29,11 @@ class NUXButtonViewController: UIViewController {
         super.viewWillAppear(animated)
 
         primaryButton?.setTitle(primaryButtonTitle, for: UIControlState())
-        primaryButton?.accessibilityIdentifier = accessibilityIdentifierForString(primaryButtonTitle)
+
+        primaryButton?.accessibilityIdentifier = accessibilityIdentifier(for: primaryButtonTitle)
 
         secondaryButton?.setTitle(secondaryButtonTitle, for: UIControlState())
-        secondaryButton?.accessibilityIdentifier = accessibilityIdentifierForString(secondaryButtonTitle)
+        secondaryButton?.accessibilityIdentifier = accessibilityIdentifier(for: secondaryButtonTitle)
 
         // Hide secondary button if title is not provided.
         secondaryButton?.isHidden = (secondaryButtonTitle ?? "").isEmpty
@@ -51,7 +52,7 @@ class NUXButtonViewController: UIViewController {
 
     // MARK: - Helpers
 
-    private func accessibilityIdentifierForString(_ string: String?) -> String {
+    private func accessibilityIdentifier(for string: String?) -> String {
         let buttonId = NSLocalizedString("Button", comment: "Appended accessibility identifier for buttons.")
         return "\(string ?? "") \(buttonId)"
     }
