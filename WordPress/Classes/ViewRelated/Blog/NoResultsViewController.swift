@@ -14,32 +14,62 @@ import UIKit
     // MARK: - Properties
 
     @objc weak var delegate: NoResultsViewControllerDelegate?
-    @IBOutlet weak var noResultsImageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var actionButton: LoginButton!
+
+    // To allow storing values until view is loaded.
+    private var titleText: String?
+    private var subTitleText: String?
+    private var buttonText: String?
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         WPStyleGuide.configureColors(for: view, andTableView: nil)
     }
 
-    /// Configures the view with the given information.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureView()
+    }
+
+    /// Public method to provide values for text elements.
     ///
     /// - Parameters:
     ///   - title:       Main descriptive text. Required.
     ///   - buttonTitle: Title of action button. Required.
     ///   - subTitle:    Secondary descriptive text. Optional.
     @objc func configure(title: String, buttonTitle: String, subTitle: String? = nil) {
-        titleLabel.text = title
-        subTitleLabel.text = subTitle
-        actionButton?.setTitle(buttonTitle, for: UIControlState())
-        actionButton?.setTitle(buttonTitle, for: .highlighted)
+        titleText = title
+        subTitleText = subTitle
+        buttonText = buttonTitle
+    }
+
+    /// Use the values provided in the actual elements.
+    private func configureView() {
+
+        guard let titleText = titleText,
+            let buttonText = buttonText else {
+                return
+        }
+
+        titleLabel.text = titleText
+        subTitleLabel.text = subTitleText
+        actionButton?.setTitle(buttonText, for: UIControlState())
+        actionButton?.setTitle(buttonText, for: .highlighted)
         actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton?.accessibilityIdentifier = buttonTitle + " Button"
+        actionButton?.accessibilityIdentifier = accessibilityIdentifier(for: buttonText)
+        view.layoutIfNeeded()
+    }
+
+    // MARK: - Helpers
+
+    private func accessibilityIdentifier(for string: String) -> String {
+        let buttonId = NSLocalizedString("Button", comment: "Appended accessibility identifier for buttons.")
+        return "\(string) \(buttonId)"
     }
 
     // MARK: - Button Handling
