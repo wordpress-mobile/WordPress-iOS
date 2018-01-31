@@ -6,7 +6,14 @@ CMD_CREATE_SHORT="create"
 CMD_UPDATE="update-branch"
 CMD_UPDATE_SHORT="update"
 
+# Regex for "is a number"
 IS_A_NUM_RE="^[0-9]+$"
+
+# Color/formatting support
+OUTPUT_NORM="\033[0m"
+OUTPUT_RED="\033[31m"
+OUTPUT_GREEN="\033[32m"
+OUTPUT_BOLD="\033[1m"
 
 ### Function definitions
 # Show script usage, commands and options
@@ -26,11 +33,25 @@ function showUsage() {
 }
 
 function showErrorMessage() {
-    echo $1 | tee -a $logFile
+    message=$1
+    echo "$OUTPUT_RED$message$OUTPUT_NORM"
+    echo $message >> $logFile
+}
+
+function showOkMessage() {
+    message=$1
+    echo "$OUTPUT_GREEN$message$OUTPUT_NORM" 
+    echo $message >> $logFile
+}
+
+function showTitleMessage() {
+    message=$1
+    echo "$OUTPUT_BOLD$message$OUTPUT_NORM" 
+    echo $message >> $logFile
 }
 
 function showMessage() {
-    echo $1 | tee -a $logFile
+    echo "$1" | tee -a $logFile
 }
 
 # Verifies the command against the known ones and normalize to the extended version
@@ -216,7 +237,7 @@ function updatePLists() {
 function updateBranch() {
     if [ $cmd == $CMD_UPDATE ]; then
         startLog
-        showMessage "Updating the current branch to version $newMainVer..."
+        showTitleMessage "Updating the current branch to version $newMainVer..."
     fi
 
     showMessage "Updating Fastlane deliver file..."
@@ -227,6 +248,7 @@ function updateBranch() {
     showMessage "Done!"
 
     if [ $cmd == $CMD_UPDATE ]; then
+        showOkMessage "Success!"
         stopLog
     fi
 }
@@ -234,7 +256,7 @@ function updateBranch() {
 # Creates a new branch for the release and updates the relevant files
 function createBranch() {
     startLog
-    showMessage "Creating new Release branch for version $newMainVer..."
+    showTitleMessage "Creating new Release branch for version $newMainVer..."
     showConfig
     doBranching
     showMessage "Done!"
@@ -242,6 +264,7 @@ function createBranch() {
     updateGlotPressKey
     showMessage "Done!"
     updateBranch
+    showOkMessage "Success!"
     stopLog
 }
 
