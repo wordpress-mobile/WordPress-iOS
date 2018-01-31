@@ -58,7 +58,7 @@ class SiteCreationDomainsViewController: NUXViewController {
         if let vc = segue.destination as? SiteCreationDomainsTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.delegate = self
-            domainsTableViewController?.siteName = SiteCreationFields.sharedInstance().title
+            domainsTableViewController?.siteName = SiteCreationFields.sharedInstance.title
         }
 
         if let vc = segue.destination as? NUXButtonViewController {
@@ -82,7 +82,7 @@ class SiteCreationDomainsViewController: NUXViewController {
 
 extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControllerDelegate {
     func domainSelected(_ domain: String) {
-        SiteCreationFields.sharedInstance().domain = domain
+        SiteCreationFields.sharedInstance.domain = domain
         showButtonView(show: true, withAnimation: true)
     }
 

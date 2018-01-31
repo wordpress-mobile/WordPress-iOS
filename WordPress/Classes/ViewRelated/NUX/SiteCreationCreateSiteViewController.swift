@@ -77,7 +77,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         }
 
         // Start the site creation process
-        let siteCreationFields = SiteCreationFields.sharedInstance()
+        let siteCreationFields = SiteCreationFields.sharedInstance
         let service = SiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createSite(siteURL: siteCreationFields.domain,
                            siteTitle: siteCreationFields.title,
