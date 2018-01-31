@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -429,11 +430,12 @@
                     <connections>
                         <outlet property="buttonContainerHeightConstraint" destination="MGV-TN-X2V" id="TJG-Pq-vrh"/>
                         <outlet property="buttonContainerViewBottomConstraint" destination="YCL-CF-uZh" id="aSd-Ko-q7X"/>
+                        <segue destination="fWU-YH-Qbk" kind="show" identifier="showCreateSite" id="vZo-bh-JWz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wgw-m4-zgC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2613.5999999999999" y="94.902548725637189"/>
+            <point key="canvasLocation" x="2591" y="95"/>
         </scene>
         <!--Site Creation Domains Table View Controller-->
         <scene sceneID="8Yr-nW-up1">
@@ -452,7 +454,82 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8op-79-wA9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3364" y="21"/>
+            <point key="canvasLocation" x="3338" y="-170"/>
+        </scene>
+        <!--Site Creation Create Site View Controller-->
+        <scene sceneID="Za3-kz-aBl">
+            <objects>
+                <viewController id="fWU-YH-Qbk" customClass="SiteCreationCreateSiteViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rxp-rD-9hS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-tS-MMs" userLabel=" Image">
+                                <rect key="frame" x="12.5" y="146.5" width="350" height="219"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="RHZ-Z4-JMd">
+                                        <variation key="heightClass=compact" constant="325"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" secondItem="Erg-tS-MMs" secondAttribute="height" multiplier="8:5" id="TGb-sH-RGu"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="OQN-Yl-sBD" userLabel="Label Stack View">
+                                <rect key="frame" x="0.0" y="345.5" width="375" height="110"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Laying site foundation..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XpK-EE-vff">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Retrieving site information..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhD-d7-Due">
+                                        <rect key="frame" x="0.0" y="23" width="375" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Configure site content..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adl-Sa-KjY">
+                                        <rect key="frame" x="0.0" y="46" width="375" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Configure site style..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1CX-Hg-dIB">
+                                        <rect key="frame" x="0.0" y="69" width="375" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preparing frontend..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gz4-el-KfJ">
+                                        <rect key="frame" x="0.0" y="92" width="375" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="OQN-Yl-sBD" firstAttribute="leading" secondItem="FHN-yR-aWh" secondAttribute="leading" id="6cn-X9-rnW"/>
+                            <constraint firstItem="OQN-Yl-sBD" firstAttribute="top" secondItem="FHN-yR-aWh" secondAttribute="centerY" constant="-20" id="aph-Bm-eob"/>
+                            <constraint firstItem="Erg-tS-MMs" firstAttribute="centerX" secondItem="FHN-yR-aWh" secondAttribute="centerX" id="czu-4c-YOM"/>
+                            <constraint firstItem="Erg-tS-MMs" firstAttribute="bottom" secondItem="FHN-yR-aWh" secondAttribute="centerY" id="dkr-Ic-wNQ"/>
+                            <constraint firstItem="FHN-yR-aWh" firstAttribute="trailing" secondItem="OQN-Yl-sBD" secondAttribute="trailing" id="zNT-Lb-pfF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="FHN-yR-aWh"/>
+                    </view>
+                    <connections>
+                        <outlet property="configureContentLabel" destination="adl-Sa-KjY" id="C9B-6W-bz3"/>
+                        <outlet property="configureStyleLabel" destination="1CX-Hg-dIB" id="NeL-Ob-rbW"/>
+                        <outlet property="layingFoundationLabel" destination="XpK-EE-vff" id="aJF-rW-2Ju"/>
+                        <outlet property="preparingFrontendLabel" destination="Gz4-el-KfJ" id="Os0-Ll-Mi6"/>
+                        <outlet property="retrievingInformationLabel" destination="qhD-d7-Due" id="2pG-SL-7V6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uzw-Dd-qHN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4028" y="114.69265367316342"/>
         </scene>
         <!--SiteCreationButtonView-->
         <scene sceneID="a3K-Nm-WAp">
@@ -460,7 +537,10 @@
                 <viewControllerPlaceholder storyboardName="SiteCreationButtonView" referencedIdentifier="SiteCreationButtonView" id="GNW-13-5sy" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="As8-Bq-6ml" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2614" y="540"/>
+            <point key="canvasLocation" x="2590" y="507"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="mysites-nosites" width="400" height="250"/>
+    </resources>
 </document>
