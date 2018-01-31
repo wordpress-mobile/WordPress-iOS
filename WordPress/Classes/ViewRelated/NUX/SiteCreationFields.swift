@@ -31,7 +31,7 @@ class SiteCreationFields {
         return privateShared!
     }
 
-    static func resetFields() {
+    static func resetSharedInstance() {
         privateShared = nil
     }
 
