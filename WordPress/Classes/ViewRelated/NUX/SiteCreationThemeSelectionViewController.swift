@@ -14,6 +14,9 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
     private var themes: [Theme]?
     private var themeCount: NSInteger = 0
 
+    // Used to store Site Creation user options.
+    private var siteOptions: [String: Any] = [:]
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -109,10 +112,11 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-        // TODO: save selected Theme for site creation step.
-        guard let _ = themeAtIndexPath(indexPath) else {
+        guard let selectedTheme = themeAtIndexPath(indexPath) else {
             return
         }
+
+        siteOptions["theme"] = selectedTheme
 
         performSegue(withIdentifier: "showSiteDetails", sender: nil)
     }
@@ -169,6 +173,12 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        // TODO: replace siteOptions with SiteCreationFields class when created.
+        if let destination = segue.destination as? SiteCreationSiteDetailsViewController {
+            destination.siteOptions = siteOptions
+        }
+
         let backButton = UIBarButtonItem()
         backButton.title = NSLocalizedString("Back", comment: "Back button title.")
         navigationItem.backBarButtonItem = backButton
