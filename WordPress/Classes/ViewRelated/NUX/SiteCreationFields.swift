@@ -7,7 +7,7 @@ class SiteCreationFields {
 
     // MARK: - Properties
 
-    private static var privateShared: SiteCreationFields?
+    static var sharedInstance: SiteCreationFields = SiteCreationFields()
 
     var title = ""
     var tagline: String?
@@ -22,39 +22,27 @@ class SiteCreationFields {
         case missingTheme
     }
 
-    // MARK: - Init
-
-    private init() {
-    }
-
     // MARK: - Instance Methods
 
-    static func sharedInstance() -> SiteCreationFields {
-        if privateShared == nil {
-            privateShared = SiteCreationFields()
-        }
-        return privateShared!
-    }
-
-    static func resetFields() {
-        privateShared = nil
+    static func resetSharedInstance() {
+        sharedInstance = SiteCreationFields()
     }
 
     static func validateFields() -> Error? {
 
-        if SiteCreationFields.sharedInstance().title.isEmpty {
+        if SiteCreationFields.sharedInstance.title.isEmpty {
             return SiteCreationFieldsError.missingTitle
         }
 
-        if SiteCreationFields.sharedInstance().domain.isEmpty {
+        if SiteCreationFields.sharedInstance.domain.isEmpty {
             return SiteCreationFieldsError.missingDomain
         }
 
-        if SiteCreationFields.sharedInstance().domain.contains(".wordpress.com") {
+        if SiteCreationFields.sharedInstance.domain.contains(".wordpress.com") {
             return SiteCreationFieldsError.domainContainsWordPressDotCom
         }
 
-        if SiteCreationFields.sharedInstance().theme == nil {
+        if SiteCreationFields.sharedInstance.theme == nil {
             return SiteCreationFieldsError.missingTheme
         }
 
