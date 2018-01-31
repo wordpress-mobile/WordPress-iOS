@@ -55,8 +55,8 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
             return
         }
 
-        SiteCreationFields.sharedInstance().title = siteTitle
-        SiteCreationFields.sharedInstance().tagline = taglineField.text
+        SiteCreationFields.sharedInstance.title = siteTitle
+        SiteCreationFields.sharedInstance.tagline = taglineField.text
 
         let backButton = UIBarButtonItem()
         backButton.title = NSLocalizedString("Back", comment: "Back button title.")

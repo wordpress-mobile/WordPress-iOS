@@ -113,7 +113,7 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
             return
         }
 
-        SiteCreationFields.sharedInstance().theme = selectedTheme
+        SiteCreationFields.sharedInstance.theme = selectedTheme
         performSegue(withIdentifier: "showSiteDetails", sender: nil)
     }
 
