@@ -15,13 +15,13 @@ screenshots_path "./screenshots/"
 app_identifier "org.wordpress"
 
 # Make sure to update these keys for a new version
-app_version "9.2.1"
+app_version "9.3"
 
 privacy_url({
   'default' => 'https://automattic.com/privacy/',
 })
 
-copyright('2017 Automattic Inc.')
+copyright('2018 Automattic Inc.')
 
 skip_binary_upload true
 overwrite_screenshots true

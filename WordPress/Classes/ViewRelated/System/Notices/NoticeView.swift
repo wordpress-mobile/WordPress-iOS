@@ -1,6 +1,8 @@
 import UIKit
 
 class NoticeView: UIView {
+    private let contentStackView = UIStackView()
+
     private let backgroundView =  UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
     private let actionBackgroundView = UIView()
 
@@ -21,8 +23,9 @@ class NoticeView: UIView {
         layer.masksToBounds = true
 
         configureBackgroundViews()
-        configureActionButton()
+        configureContentStackView()
         configureLabels()
+        configureActionButton()
         configureDismissRecognizer()
 
         configureForNotice()
@@ -34,64 +37,35 @@ class NoticeView: UIView {
 
     private func configureBackgroundViews() {
         addSubview(backgroundView)
-        addSubview(actionBackgroundView)
-
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            backgroundView.topAnchor.constraint(equalTo: topAnchor),
-            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
-
-        NSLayoutConstraint.activate([
-            actionBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            actionBackgroundView.topAnchor.constraint(equalTo: topAnchor),
-            actionBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
-
-        backgroundView.layoutMargins = Appearance.layoutMargins
-        actionBackgroundView.layoutMargins = Appearance.layoutMargins
-
-        actionBackgroundView.backgroundColor = Appearance.actionBackgroundColor
+        pinSubviewToAllEdges(backgroundView)
     }
 
-    private func configureActionButton() {
-        actionBackgroundView.addSubview(actionButton)
-        actionButton.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            actionButton.leadingAnchor.constraint(equalTo: actionBackgroundView.layoutMarginsGuide.leadingAnchor),
-            actionButton.trailingAnchor.constraint(equalTo: actionBackgroundView.layoutMarginsGuide.trailingAnchor),
-            actionButton.topAnchor.constraint(equalTo: actionBackgroundView.layoutMarginsGuide.topAnchor),
-            actionButton.bottomAnchor.constraint(equalTo: actionBackgroundView.layoutMarginsGuide.bottomAnchor)
-            ])
-
-        actionButton.titleLabel?.font = Appearance.actionButtonFont
-        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
-        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+    private func configureContentStackView() {
+        contentStackView.axis = .horizontal
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.contentView.addSubview(contentStackView)
+        backgroundView.contentView.pinSubviewToAllEdges(contentStackView)
     }
 
     private func configureLabels() {
         let labelStackView = UIStackView()
+        labelStackView.translatesAutoresizingMaskIntoConstraints = false
         labelStackView.alignment = .leading
         labelStackView.axis = .vertical
         labelStackView.spacing = Appearance.labelLineSpacing
         labelStackView.isBaselineRelativeArrangement = true
+        labelStackView.isLayoutMarginsRelativeArrangement = true
+        labelStackView.layoutMargins = Appearance.layoutMargins
+
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(messageLabel)
 
-        backgroundView.contentView.addSubview(labelStackView)
-
-        labelStackView.translatesAutoresizingMaskIntoConstraints = false
+        contentStackView.addArrangedSubview(labelStackView)
 
         NSLayoutConstraint.activate([
-            labelStackView.leadingAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.leadingAnchor),
-            labelStackView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: actionBackgroundView.leadingAnchor),
-            labelStackView.topAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.topAnchor),
-            labelStackView.bottomAnchor.constraint(equalTo: backgroundView.layoutMarginsGuide.bottomAnchor)
+            labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
+            labelStackView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor)
             ])
 
         titleLabel.font = Appearance.titleLabelFont
@@ -101,6 +75,29 @@ class NoticeView: UIView {
         messageLabel.textColor = WPStyleGuide.darkGrey()
     }
 
+    private func configureActionButton() {
+        contentStackView.addArrangedSubview(actionBackgroundView)
+        actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+
+        actionBackgroundView.layoutMargins = Appearance.layoutMargins
+        actionBackgroundView.backgroundColor = Appearance.actionBackgroundColor
+
+        actionBackgroundView.addSubview(actionButton)
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            actionBackgroundView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
+            actionBackgroundView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor),
+            ])
+
+        actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
+
+        actionButton.titleLabel?.font = Appearance.actionButtonFont
+        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+
     private func configureDismissRecognizer() {
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         addGestureRecognizer(recognizer)
@@ -108,7 +105,12 @@ class NoticeView: UIView {
 
     private func configureForNotice() {
         titleLabel.text = notice.title
-        messageLabel.text = notice.message
+
+        if let message = notice.message {
+            messageLabel.text = message
+        } else {
+            titleLabel.numberOfLines = 2
+        }
 
         if let actionTitle = notice.actionTitle {
             actionButton.setTitle(actionTitle, for: .normal)
