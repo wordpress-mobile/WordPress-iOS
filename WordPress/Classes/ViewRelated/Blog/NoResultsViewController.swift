@@ -1,6 +1,6 @@
 import UIKit
 
-@objc protocol BlogListNoResultsViewControllerDelegate {
+@objc protocol NoResultsViewControllerDelegate {
     func actionButtonPressed()
 }
 
@@ -9,11 +9,11 @@ import UIKit
 /// The image, title, and action button will always show.
 /// The subtitle is optional and will only show if provided.
 ///
-@objc class BlogListNoResultsViewController: UIViewController {
+@objc class NoResultsViewController: UIViewController {
 
     // MARK: - Properties
 
-    @objc weak var delegate: BlogListNoResultsViewControllerDelegate?
+    @objc weak var delegate: NoResultsViewControllerDelegate?
     @IBOutlet weak var noResultsImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
