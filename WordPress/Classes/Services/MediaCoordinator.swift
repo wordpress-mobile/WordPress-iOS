@@ -61,7 +61,7 @@ class MediaCoordinator: NSObject {
                                     return
                                 }
                                 if let error = error as NSError? {
-                                    if let media = media {                                    
+                                    if let media = media {
                                         strongSelf.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
                                         strongSelf.fail(error as NSError, media: media)
                                     } else {
