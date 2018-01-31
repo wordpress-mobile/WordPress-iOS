@@ -380,7 +380,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var mediaCoordinator: MediaCoordinator = {
         let coordinator = MediaCoordinator()
         return coordinator
-    }()    
+    }()
 
     /// Media Progress View
     ///
