@@ -46,8 +46,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         // Make sure we have all required info before proceeding.
         if let error = SiteCreationFields.validateFields() {
             DDLogError("Error while creating site: \(String(describing: error))")
-            // TODO: show whoops view
-            showAlertWithMessage("Error: \(String(describing: error))")
+            self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
             return
         }
 
@@ -72,8 +71,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
         let failureBlock = { (error: Error?) in
             DDLogError("Error while creating site: \(String(describing: error))")
-            // TODO: show whoops view
-            self.showAlertWithMessage("Fail: '\(String(describing: error)).")
+            self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
         }
 
         // Start the site creation process
@@ -109,23 +107,6 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         labelToUpdate.textColor = WPStyleGuide.darkGrey()
     }
 
-    private func showAlertWithMessage(_ alertMessage: String) {
-        let message = "\(alertMessage)\nThis is a work in progress. To use the old flow, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-
-        let goHome = UIAlertAction(
-            title: "Go Home",
-            style: .destructive,
-            handler: { [unowned self] _ in
-                self.navigationController?.dismiss(animated: true, completion: nil)
-        })
-
-        alertController.addAction(goHome)
-        present(alertController, animated: true, completion: nil)
-    }
-
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -134,5 +115,25 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         if let vc = segue.destination as? SiteCreationEpilogueViewController {
             vc.siteToShow = newSite
         }
+
+        if let vc = segue.destination as? NoResultsViewController {
+
+            vc.configure(title: NSLocalizedString("Something went wrong...", comment: "Primary message on site creation error page."),
+                         buttonTitle: NSLocalizedString("Try again", comment: "Button text on site creation error page."),
+                         subTitle: NSLocalizedString("A parliament of owls distracted our servers with their superior oratory skills.", comment: "Secondary message on site creation error page."))
+            vc.delegate = self
+        }
     }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension SiteCreationCreateSiteViewController: NoResultsViewControllerDelegate {
+
+    func actionButtonPressed() {
+        print("SGH - create site > error > actionButtonPressed")
+        navigationController?.dismiss(animated: true, completion: nil)
+
+    }
+
 }
