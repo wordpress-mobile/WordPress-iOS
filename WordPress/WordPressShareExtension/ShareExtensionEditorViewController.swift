@@ -1253,9 +1253,9 @@ private extension ShareExtensionEditorViewController {
             return
         }
 
-        let title = NSLocalizedString("Login to WordPress to Share", comment: "Share extension dialog title - displayed when user is missing a login token.")
-        let message = NSLocalizedString("Please launch the WordPress app and log in, then try again.", comment: "Share extension dialog text  - displayed when user is missing a login token.")
-        let accept = NSLocalizedString("Cancel Sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
+        let title = NSLocalizedString("Sharing error", comment: "Share extension dialog title - displayed when user is missing a login token.")
+        let message = NSLocalizedString("Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again.", comment: "Share extension dialog text  - displayed when user is missing a login token.")
+        let accept = NSLocalizedString("Cancel sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
