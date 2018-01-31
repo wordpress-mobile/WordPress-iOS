@@ -542,8 +542,9 @@
 		985554311FBF78C9002D6D12 /* SiteTypeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */; };
 		985554331FBF86F4002D6D12 /* SiteTypeTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985554321FBF86F4002D6D12 /* SiteTypeTableViewCells.swift */; };
 		985554351FBF88A3002D6D12 /* InstructionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 985554341FBF88A3002D6D12 /* InstructionTableViewCell.xib */; };
-		987ED7B72005693B008CAAF2 /* SiteCreationButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987ED7B62005693B008CAAF2 /* SiteCreationButtonViewController.swift */; };
-		987ED7B920056967008CAAF2 /* SiteCreationButtonView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 987ED7B820056967008CAAF2 /* SiteCreationButtonView.storyboard */; };
+		98B24D5A2017E2520082BA78 /* NUXButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D592017E2510082BA78 /* NUXButtonViewController.swift */; };
+		98B24D5D2017E39A0082BA78 /* NUXButtonView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */; };
+		98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */; };
 		98A437AE20069098004A8A57 /* SiteCreationDomainsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */; };
 		98A437B0200693C0004A8A57 /* SiteCreationDomainsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */; };
 		98AD07651FFFF96B00485ACA /* SiteCreationSiteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */; };
@@ -559,6 +560,7 @@
 		98E47DF81FE9875A0066A71C /* SignupEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98E47DF71FE9875A0066A71C /* SignupEmailViewController.swift */; };
 		98ED49921FBFA5C200DF9180 /* SiteTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */; };
 		98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */; };
+		98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */; };
@@ -1924,8 +1926,9 @@
 		985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTypeTableViewController.swift; sourceTree = "<group>"; };
 		985554321FBF86F4002D6D12 /* SiteTypeTableViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteTypeTableViewCells.swift; sourceTree = "<group>"; };
 		985554341FBF88A3002D6D12 /* InstructionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InstructionTableViewCell.xib; sourceTree = "<group>"; };
-		987ED7B62005693B008CAAF2 /* SiteCreationButtonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationButtonViewController.swift; sourceTree = "<group>"; };
-		987ED7B820056967008CAAF2 /* SiteCreationButtonView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SiteCreationButtonView.storyboard; sourceTree = "<group>"; };
+		98B24D592017E2510082BA78 /* NUXButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXButtonViewController.swift; sourceTree = "<group>"; };
+		98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUXButtonView.storyboard; sourceTree = "<group>"; };
+		98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEpilogueViewController.swift; sourceTree = "<group>"; };
 		98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationDomainsTableViewController.swift; sourceTree = "<group>"; };
 		98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationDomainsViewController.swift; sourceTree = "<group>"; };
 		98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationSiteDetailsViewController.swift; sourceTree = "<group>"; };
@@ -1941,6 +1944,7 @@
 		98E47DF71FE9875A0066A71C /* SignupEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEmailViewController.swift; sourceTree = "<group>"; };
 		98ED49911FBFA5C200DF9180 /* SiteTypeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteTypeTableViewCell.xib; sourceTree = "<group>"; };
 		98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationCreateSiteViewController.swift; sourceTree = "<group>"; };
+		98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationSitePreviewViewController.swift; sourceTree = "<group>"; };
 		99D675225C3282AC88B89F04 /* Pods-WordPressTodayWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -4204,16 +4208,26 @@
 		982BED941FBCF08F000B848E /* Site Creation */ = {
 			isa = PBXGroup;
 			children = (
-				987ED7B62005693B008CAAF2 /* SiteCreationButtonViewController.swift */,
 				98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */,
 				98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */,
 				98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */,
+				98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */,
 				982BED991FBCF976000B848E /* SiteCreationNavigationController.swift */,
 				98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */,
+				98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */,
 				98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */,
 				985554301FBF78C9002D6D12 /* SiteTypeTableViewController.swift */,
 			);
 			name = "Site Creation";
+			sourceTree = "<group>";
+		};
+		98B24D5B2017E2C40082BA78 /* Button View */ = {
+			isa = PBXGroup;
+			children = (
+				98B24D592017E2510082BA78 /* NUXButtonViewController.swift */,
+				98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */,
+			);
+			name = "Button View";
 			sourceTree = "<group>";
 		};
 		98C43E841FE98041006FEF54 /* Social Signup */ = {
@@ -5595,10 +5609,10 @@
 		E6417B951CA07AFE0084050A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				98B24D5B2017E2C40082BA78 /* Button View */,
 				98DED29B1FC38DBE00015AE4 /* Select Site Type */,
 				982A65261FCCE2F0008236BA /* Select Theme */,
 				436269631ECD0726008692C7 /* LoginButton.swift */,
-				987ED7B820056967008CAAF2 /* SiteCreationButtonView.storyboard */,
 				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				43FB3F441EC1020600FC8A62 /* LoginEpilogueSectionHeader.swift */,
 				4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */,
@@ -6140,6 +6154,7 @@
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
+				98B24D5D2017E39A0082BA78 /* NUXButtonView.storyboard in Resources */,
 				1731BCD11DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist in Resources */,
 				982905AF2000233600F92779 /* EmailMagicLink.storyboard in Resources */,
 				E6B42CBF1D9DA6270043E228 /* Noticons.ttf in Resources */,
@@ -6168,7 +6183,6 @@
 				98ED49921FBFA5C200DF9180 /* SiteTypeTableViewCell.xib in Resources */,
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
 				82FC61261FA8ADAD00A1757E /* ActivityTableViewCell.xib in Resources */,
-				987ED7B920056967008CAAF2 /* SiteCreationButtonView.storyboard in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
@@ -6815,6 +6829,7 @@
 				080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */,
 				E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
+				98B24D5A2017E2520082BA78 /* NUXButtonViewController.swift in Sources */,
 				98C87E9C2003FA3E0052AF32 /* NUXLinkMailViewController.swift in Sources */,
 				E1CB6DA7200F661900945457 /* TimeZoneSelectorViewController.swift in Sources */,
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
@@ -6822,6 +6837,7 @@
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
+				98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */,
 				FFDA7E501B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m in Sources */,
 				438A809E1EA5DC31005D4651 /* LoginWPComViewController.swift in Sources */,
 				E66E2A691FE432BC00788F22 /* TitleBadgeDisclosureCell.swift in Sources */,
@@ -6991,6 +7007,7 @@
 				08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
+				98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */,
 				43EACB1E1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
@@ -7156,7 +7173,6 @@
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
-				987ED7B72005693B008CAAF2 /* SiteCreationButtonViewController.swift in Sources */,
 				B5032DDD1F02B30B00D946DC /* CalypsoProcessorIn.swift in Sources */,
 				E6C448571CB091AA00458157 /* SigninKeyboardResponder.swift in Sources */,
 				B580E4791AEA91000091A094 /* UIViewController+Helpers.swift in Sources */,

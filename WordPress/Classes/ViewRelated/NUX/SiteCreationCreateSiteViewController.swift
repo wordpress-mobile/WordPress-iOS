@@ -13,6 +13,8 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     @IBOutlet weak var configureStyleLabel: UILabel!
     @IBOutlet weak var preparingFrontendLabel: UILabel!
 
+    private var newSite: Blog?
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -60,11 +62,17 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             self.showStepLabelForStatus(status)
         }
 
-
         let successBlock = { (blog: Blog) in
-            // TODO: show prologue
-            self.showAlertWithMessage("Site '\(blog.settings?.name ?? "")' created.")
 
+            // Touch site so the app recognizes it as the last used.
+            // Primarily so the 'write first post' action from the epilogue
+            // defaults to the new site.
+            if let siteUrl = blog.url {
+                RecentSitesService().touch(site: siteUrl)
+            }
+
+            self.newSite = blog
+            self.performSegue(withIdentifier: .showSiteCreationEpilogue, sender: self)
         }
 
         let failureBlock = { (error: Error?) in
@@ -126,11 +134,13 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    // MARK: - Misc
+    // MARK: - Navigation
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        if let vc = segue.destination as? SiteCreationEpilogueViewController {
+            vc.siteToShow = newSite
+        }
     }
-
 }
