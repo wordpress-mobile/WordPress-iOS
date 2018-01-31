@@ -221,17 +221,17 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzj-vV-csj" userLabel="Title View">
-                                        <rect key="frame" x="0.0" y="102" width="375" height="44.5"/>
+                                        <rect key="frame" x="0.0" y="102" width="375" height="21.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-JQ-uX5">
-                                                <rect key="frame" x="20" y="0.0" width="67" height="45"/>
+                                                <rect key="frame" x="20" y="0.0" width="67" height="22"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" textAlignment="right" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8CU-ee-CNI" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="87" y="0.0" width="288" height="44"/>
+                                                <rect key="frame" x="87" y="0.0" width="288" height="21"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -257,24 +257,24 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IaW-BS-zlj" userLabel="Separator Line">
-                                        <rect key="frame" x="0.0" y="146.5" width="375" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="123.5" width="375" height="0.5"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Jwd-7O-xxH"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qh3-nA-H9v" userLabel="Tagline View">
-                                        <rect key="frame" x="0.0" y="147" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="124" width="375" height="21"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Tagline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iol-Va-cKN">
-                                                <rect key="frame" x="20" y="0.0" width="88" height="44"/>
+                                                <rect key="frame" x="20" y="0.0" width="88" height="21"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional tagline" textAlignment="right" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="108" y="0.0" width="267" height="44"/>
+                                                <rect key="frame" x="108" y="0.0" width="267" height="21"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                                 <nil key="textColor"/>
@@ -301,14 +301,14 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-4I-TFT" userLabel="Separator Line">
-                                        <rect key="frame" x="0.0" y="191" width="375" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="145" width="375" height="0.5"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="1yt-CV-1KF"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGJ-Lt-fd3">
-                                        <rect key="frame" x="20" y="201" width="335" height="26.5"/>
+                                        <rect key="frame" x="20" y="155" width="335" height="13.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                         <color key="textColor" red="0.30980392156862746" green="0.45490196078431372" blue="0.55686274509803924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -408,10 +408,11 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gU-1Z-Avk" userLabel="Button Container View">
                                 <rect key="frame" x="0.0" y="583" width="375" height="84"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="84" id="MGV-TN-X2V"/>
+                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="HXL-Fa-S1S"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="MGV-TN-X2V"/>
                                 </constraints>
                                 <connections>
-                                    <segue destination="GNW-13-5sy" kind="embed" identifier="showButtonView" id="cA4-aZ-gWw"/>
+                                    <segue destination="GNW-13-5sy" kind="embed" identifier="showCreateSiteButtonView" id="cA4-aZ-gWw"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -420,7 +421,7 @@
                             <constraint firstItem="LRh-0q-RfH" firstAttribute="leading" secondItem="Axj-bl-L3B" secondAttribute="leading" id="BBi-Wy-I9e"/>
                             <constraint firstItem="5gU-1Z-Avk" firstAttribute="leading" secondItem="Axj-bl-L3B" secondAttribute="leading" id="Lnz-Rf-3NY"/>
                             <constraint firstItem="LRh-0q-RfH" firstAttribute="top" secondItem="Axj-bl-L3B" secondAttribute="top" id="YBn-4N-hyW"/>
-                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="bottom" secondItem="Axj-bl-L3B" secondAttribute="bottom" id="YCL-CF-uZh"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="bottom" secondItem="EAZ-3B-IhF" secondAttribute="bottom" id="YCL-CF-uZh"/>
                             <constraint firstItem="5gU-1Z-Avk" firstAttribute="top" secondItem="LRh-0q-RfH" secondAttribute="bottom" id="a9j-YQ-BcW"/>
                             <constraint firstItem="5gU-1Z-Avk" firstAttribute="trailing" secondItem="Axj-bl-L3B" secondAttribute="trailing" id="pVX-mw-6bX"/>
                             <constraint firstItem="Axj-bl-L3B" firstAttribute="trailing" secondItem="LRh-0q-RfH" secondAttribute="trailing" id="wWD-Xp-bXf"/>
@@ -525,22 +526,166 @@
                         <outlet property="layingFoundationLabel" destination="XpK-EE-vff" id="aJF-rW-2Ju"/>
                         <outlet property="preparingFrontendLabel" destination="Gz4-el-KfJ" id="Os0-Ll-Mi6"/>
                         <outlet property="retrievingInformationLabel" destination="qhD-d7-Due" id="2pG-SL-7V6"/>
+                        <segue destination="SYa-VS-bwM" kind="custom" identifier="showSiteCreationEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="yDO-LP-TSW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uzw-Dd-qHN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4028" y="114.69265367316342"/>
+            <point key="canvasLocation" x="4092" y="113"/>
         </scene>
-        <!--SiteCreationButtonView-->
+        <!--ButtonView-->
         <scene sceneID="a3K-Nm-WAp">
             <objects>
-                <viewControllerPlaceholder storyboardName="SiteCreationButtonView" referencedIdentifier="SiteCreationButtonView" id="GNW-13-5sy" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="GNW-13-5sy" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="As8-Bq-6ml" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2590" y="507"/>
         </scene>
+        <!--Site Creation Epilogue View Controller-->
+        <scene sceneID="tjq-Mf-ysq">
+            <objects>
+                <viewController storyboardIdentifier="SiteCreationEpilogue" id="SYa-VS-bwM" customClass="SiteCreationEpilogueViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2Jh-zO-DOs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mk-X6-iC4" userLabel="Site Preview Container View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                                <connections>
+                                    <segue destination="KTF-Bg-ViW" kind="embed" identifier="showSitePreview" id="Xwu-IV-Jab"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="glq-sP-l5l" userLabel="Button Container View">
+                                <rect key="frame" x="0.0" y="519" width="375" height="148"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="148" id="Ym4-Vm-NdQ"/>
+                                    <constraint firstAttribute="height" constant="148" placeholder="YES" id="veG-Nv-EOP"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="YT6-IM-P0f" kind="embed" identifier="showEpilogeButtonView" id="Meo-mq-XUq"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9mk-X6-iC4" firstAttribute="leading" secondItem="s9d-Q2-1mR" secondAttribute="leading" id="OhV-C1-oKQ"/>
+                            <constraint firstItem="glq-sP-l5l" firstAttribute="bottom" secondItem="2Jh-zO-DOs" secondAttribute="bottom" id="czM-as-NRE"/>
+                            <constraint firstItem="s9d-Q2-1mR" firstAttribute="trailing" secondItem="9mk-X6-iC4" secondAttribute="trailing" id="jAO-c1-QaA"/>
+                            <constraint firstItem="glq-sP-l5l" firstAttribute="top" secondItem="9mk-X6-iC4" secondAttribute="bottom" id="qQm-vO-750"/>
+                            <constraint firstItem="glq-sP-l5l" firstAttribute="leading" secondItem="s9d-Q2-1mR" secondAttribute="leading" id="tgA-dj-HE7"/>
+                            <constraint firstItem="9mk-X6-iC4" firstAttribute="top" secondItem="2Jh-zO-DOs" secondAttribute="top" id="wia-fc-AfJ"/>
+                            <constraint firstItem="glq-sP-l5l" firstAttribute="trailing" secondItem="s9d-Q2-1mR" secondAttribute="trailing" id="zF1-4D-yG2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="s9d-Q2-1mR"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fmd-xx-51m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4854" y="108"/>
+        </scene>
+        <!--ButtonView-->
+        <scene sceneID="hTX-Fl-UMq">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="YT6-IM-P0f" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jKJ-UF-RQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4851" y="540"/>
+        </scene>
+        <!--Site Creation Site Preview View Controller-->
+        <scene sceneID="jwY-ut-ZEb">
+            <objects>
+                <viewController id="KTF-Bg-ViW" customClass="SiteCreationSitePreviewViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HRs-A0-gOR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNd-pl-ODa" userLabel="Site View">
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="519"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bi6-03-qcM" userLabel="Congratulations View">
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="519"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wOx-Qi-xGY" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="259.5" width="0.0" height="0.0"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="site-creation-confetti" translatesAutoresizingMaskIntoConstraints="NO" id="NbC-e9-IVo">
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="NbC-e9-IVo" secondAttribute="height" multiplier="8:5" id="hcE-v0-Erp"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="V8f-EU-YF3" userLabel="Label Stack View">
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="46"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5s-0F-Lvb">
+                                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="20.5"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your site is ready." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LlD-qK-erU">
+                                                        <rect key="frame" x="0.0" y="0.0" width="0.0" height="20.5"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="V8f-EU-YF3" secondAttribute="bottom" id="1QB-GF-M8z"/>
+                                            <constraint firstItem="NbC-e9-IVo" firstAttribute="width" secondItem="wOx-Qi-xGY" secondAttribute="width" id="4yW-5A-P0a">
+                                                <variation key="widthClass=regular" constant="-200"/>
+                                            </constraint>
+                                            <constraint firstItem="NbC-e9-IVo" firstAttribute="centerX" secondItem="wOx-Qi-xGY" secondAttribute="centerX" id="4yx-2W-7OI"/>
+                                            <constraint firstItem="V8f-EU-YF3" firstAttribute="leading" secondItem="wOx-Qi-xGY" secondAttribute="leading" id="6EW-1V-klD"/>
+                                            <constraint firstAttribute="trailing" secondItem="V8f-EU-YF3" secondAttribute="trailing" id="HOx-Qi-nff"/>
+                                            <constraint firstItem="NbC-e9-IVo" firstAttribute="top" secondItem="wOx-Qi-xGY" secondAttribute="top" constant="-50" id="cj3-zG-hpC"/>
+                                            <constraint firstItem="V8f-EU-YF3" firstAttribute="top" secondItem="NbC-e9-IVo" secondAttribute="bottom" constant="-20" id="gzi-Dg-23G"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="wOx-Qi-xGY" firstAttribute="centerY" secondItem="bi6-03-qcM" secondAttribute="centerY" id="2h3-Hc-GSE"/>
+                                    <constraint firstItem="wOx-Qi-xGY" firstAttribute="leading" secondItem="bi6-03-qcM" secondAttribute="leading" constant="10" id="ecN-BG-ml0"/>
+                                    <constraint firstAttribute="trailing" secondItem="wOx-Qi-xGY" secondAttribute="trailing" constant="10" id="oZg-MG-VN6"/>
+                                    <constraint firstItem="wOx-Qi-xGY" firstAttribute="centerX" secondItem="bi6-03-qcM" secondAttribute="centerX" id="yGQ-FS-aT3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="wNd-pl-ODa" secondAttribute="trailing" id="5Zj-6j-7da"/>
+                            <constraint firstAttribute="trailing" secondItem="bi6-03-qcM" secondAttribute="trailing" id="Luc-ke-2Mg"/>
+                            <constraint firstAttribute="bottom" secondItem="bi6-03-qcM" secondAttribute="bottom" id="U1G-V5-qcq"/>
+                            <constraint firstItem="wNd-pl-ODa" firstAttribute="leading" secondItem="HRs-A0-gOR" secondAttribute="leading" id="eOo-9C-Hxu"/>
+                            <constraint firstAttribute="bottom" secondItem="wNd-pl-ODa" secondAttribute="bottom" id="kJ2-0x-TG1"/>
+                            <constraint firstItem="bi6-03-qcM" firstAttribute="leading" secondItem="HRs-A0-gOR" secondAttribute="leading" id="kR3-KX-pqz"/>
+                            <constraint firstItem="bi6-03-qcM" firstAttribute="top" secondItem="HRs-A0-gOR" secondAttribute="top" id="p5B-Du-3Jm"/>
+                            <constraint firstItem="wNd-pl-ODa" firstAttribute="top" secondItem="HRs-A0-gOR" secondAttribute="top" id="s5a-X2-Te1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="LA2-F9-HCM"/>
+                    </view>
+                    <connections>
+                        <outlet property="congratulationsLabel" destination="j5s-0F-Lvb" id="mWc-2r-Mlb"/>
+                        <outlet property="congratulationsView" destination="bi6-03-qcM" id="vAl-QN-L1L"/>
+                        <outlet property="siteReadyLabel" destination="LlD-qK-erU" id="fHa-OD-wlP"/>
+                        <outlet property="siteView" destination="wNd-pl-ODa" id="WTS-Xu-7ws"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PhO-xF-yVF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5637.6000000000004" y="-118.29085457271366"/>
+        </scene>
     </scenes>
     <resources>
         <image name="mysites-nosites" width="400" height="250"/>
+        <image name="site-creation-confetti" width="400" height="250"/>
     </resources>
 </document>
