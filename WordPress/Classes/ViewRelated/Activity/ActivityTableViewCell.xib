@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,82 +19,66 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="73.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dsX-LD-1XZ">
-                        <rect key="frame" x="0.0" y="11" width="0.0" height="52"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" userLabel="icon" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="10" y="13" width="46" height="46"/>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe">
+                        <rect key="frame" x="64" y="16.5" width="211" height="40.5"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="46" height="46"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="999" constant="46" id="h59-o3-ocT"/>
-                                    <constraint firstAttribute="width" constant="46" id="pBo-eH-W4J"/>
-                                </constraints>
-                            </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TCy-wp-wTe">
-                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="18"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wrp-Wr-ZBq">
-                                        <rect key="frame" x="0.0" y="-4" width="0.0" height="0.0"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="dIK-tl-nW4">
-                                        <rect key="frame" x="0.0" y="-2" width="0.0" height="20"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="Y5k-AN-EkG">
-                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="20" id="29r-hs-lYX"/>
-                                                    <constraint firstAttribute="width" constant="20" id="kuB-hl-2yM"/>
-                                                </constraints>
-                                            </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5iU-3C-qKY">
-                                                <rect key="frame" x="0.0" y="2" width="0.0" height="16"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                                    </stackView>
-                                </subviews>
-                                <edgeInsets key="layoutMargins" top="-4" left="0.0" bottom="0.0" right="0.0"/>
-                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wDk-1k-6n4">
+                                <rect key="frame" x="0.0" y="0.0" width="211" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVX-To-MrZ">
+                                <rect key="frame" x="0.0" y="22.5" width="211" height="18"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <color key="textColor" red="0.4349169135093689" green="0.55408048629760742" blue="0.65517556667327881" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="dsX-LD-1XZ" secondAttribute="top" id="9dw-Qk-yyT"/>
-                        </constraints>
+                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                     </stackView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pA-bu-D5A">
-                        <rect key="frame" x="0.0" y="0.0" width="5" height="74"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0lh-9o-ekV">
+                        <rect key="frame" x="281" y="24" width="24" height="24"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="5" id="wTc-YC-CJo"/>
+                            <constraint firstAttribute="height" constant="24" id="LgG-Ii-fpv"/>
+                            <constraint firstAttribute="width" constant="24" id="mV7-T4-hKK"/>
                         </constraints>
-                    </view>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RzG-YS-PIa">
+                        <rect key="frame" x="21" y="24" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="24" id="QMf-o8-jUg"/>
+                            <constraint firstAttribute="height" constant="24" id="v1f-H3-n69"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="1pA-bu-D5A" secondAttribute="bottom" id="AIK-5K-HqA"/>
-                    <constraint firstItem="1pA-bu-D5A" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" id="Sna-6k-ZWA"/>
-                    <constraint firstItem="dsX-LD-1XZ" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" id="WVn-it-RvF"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="dsX-LD-1XZ" secondAttribute="bottom" id="YbA-Pd-ZGu"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="dsX-LD-1XZ" secondAttribute="trailing" id="mUy-WB-D5x"/>
-                    <constraint firstItem="dsX-LD-1XZ" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="topMargin" id="qkF-E2-4Jc"/>
-                    <constraint firstItem="1pA-bu-D5A" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="top" id="yal-Ih-1Mc"/>
+                    <constraint firstAttribute="trailing" secondItem="TCy-wp-wTe" secondAttribute="trailing" constant="45" id="0oE-5U-SQT"/>
+                    <constraint firstItem="TCy-wp-wTe" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="C8d-4Z-PfM"/>
+                    <constraint firstItem="RzG-YS-PIa" firstAttribute="centerX" secondItem="0Gm-n3-CNm" secondAttribute="centerX" id="L3r-zV-wCL"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="topMargin" constant="2" id="L9J-ix-0rd"/>
+                    <constraint firstItem="RzG-YS-PIa" firstAttribute="centerY" secondItem="0Gm-n3-CNm" secondAttribute="centerY" id="OWl-vB-Ogj"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leadingMargin" constant="-6" id="WWd-O4-jdV"/>
+                    <constraint firstItem="0Gm-n3-CNm" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="XJ7-jd-HAr"/>
+                    <constraint firstItem="TCy-wp-wTe" firstAttribute="leading" secondItem="0Gm-n3-CNm" secondAttribute="trailing" constant="8" symbolic="YES" id="Z4j-ub-4hK"/>
+                    <constraint firstItem="0lh-9o-ekV" firstAttribute="top" secondItem="p6H-P7-J7f" secondAttribute="topMargin" constant="13" id="iFV-eU-vyW"/>
+                    <constraint firstItem="0lh-9o-ekV" firstAttribute="centerY" secondItem="p6H-P7-J7f" secondAttribute="centerY" id="mWj-F5-WNl"/>
+                    <constraint firstItem="TCy-wp-wTe" firstAttribute="leading" secondItem="p6H-P7-J7f" secondAttribute="leading" constant="64" id="s8e-8L-e8s"/>
+                    <constraint firstAttribute="trailing" secondItem="0lh-9o-ekV" secondAttribute="trailing" constant="15" id="wXY-aQ-Z2t"/>
                 </constraints>
             </tableViewCellContentView>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
-                <outlet property="borderView" destination="1pA-bu-D5A" id="5LJ-HS-4Q4"/>
-                <outlet property="gravatarImageView" destination="0Gm-n3-CNm" id="GXM-xm-h6r"/>
-                <outlet property="statusImageView" destination="Y5k-AN-EkG" id="9QX-d6-gFL"/>
-                <outlet property="summaryLabel" destination="Wrp-Wr-ZBq" id="avY-5i-4By"/>
-                <outlet property="timestampLabel" destination="5iU-3C-qKY" id="u6u-Kr-Oyh"/>
+                <outlet property="contentLabel" destination="wDk-1k-6n4" id="iL5-j2-jY5"/>
+                <outlet property="iconBackgroundImageView" destination="0Gm-n3-CNm" id="fGa-Im-Uyk"/>
+                <outlet property="iconImageView" destination="RzG-YS-PIa" id="ipG-B7-oYT"/>
+                <outlet property="rewindIcon" destination="0lh-9o-ekV" id="VWL-O9-f2T"/>
+                <outlet property="summaryLabel" destination="wVX-To-MrZ" id="mTZ-pq-Wt4"/>
             </connections>
             <point key="canvasLocation" x="34" y="56"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="gravatar" width="85" height="85"/>
-        <image name="icon-jetpack-gray" width="72" height="72"/>
-    </resources>
 </document>

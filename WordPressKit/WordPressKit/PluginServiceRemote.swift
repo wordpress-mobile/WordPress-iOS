@@ -155,6 +155,10 @@ fileprivate extension PluginServiceRemote {
         let url = (response["plugin_url"] as? String).flatMap(URL.init(string:))
         let availableUpdate = (response["update"] as? [String: String])?["new_version"]
         let updateState: PluginState.UpdateState = availableUpdate.map({ .available($0) }) ?? .updated
+
+        let actions = response["action_links"] as? [String: String]
+        let settingsURL = (actions?["Settings"]).flatMap(URL.init(string:))
+
         return PluginState(id: id,
                            slug: slug,
                            active: active,
@@ -163,7 +167,8 @@ fileprivate extension PluginServiceRemote {
                            updateState: updateState,
                            autoupdate: autoupdate,
                            automanaged: false,
-                           url: url)
+                           url: url,
+                           settingsURL: settingsURL)
 
     }
 

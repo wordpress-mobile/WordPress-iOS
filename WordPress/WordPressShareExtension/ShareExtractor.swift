@@ -5,31 +5,43 @@ import UIKit
 /// A type that represents the information we can extract from an extension context
 ///
 struct ExtractedShare {
-    var text: String
+    var title: String
+    var description: String
+    var url: URL?
+    var selectedText: String
     var images: [UIImage]
-}
 
-/// A type that represents the information we can extract from an extension context
-/// attachment
-///
-enum ExtractedItem {
-    /// Some text
-    case text(String)
-    /// An image
-    case image(UIImage)
+    var combinedContentHTML: String {
+        var returnString: String
 
-    var text: String? {
-        guard case let .text(text) = self else {
-            return nil
+        var rawLink = ""
+        var readOnText = ""
+
+        if let url = url {
+            rawLink = url.absoluteString.stringWithAnchoredLinks()
+            let attributionText = NSLocalizedString("Read on",
+                                                    comment: "In the share extension, this is the text used right before attributing a quote to a website. Example: 'Read on www.site.com'. We are looking for the 'Read on' text in this situation.")
+            readOnText = "<br>— \(attributionText) \(rawLink)"
         }
-        return text
-    }
 
-    var image: UIImage? {
-        guard case let .image(image) = self else {
-            return nil
+        // Build the returned string by doing the following:
+        //   * 1st check: Look for selected text, if it exists put it into a blockquote.
+        //   * 2nd check: No selected text, but we have a page description...use that.
+        //   * 3rd check: No selected text, but we have a page title...use that.
+        //   * Finally, default to a simple link if nothing else is found
+        if selectedText.isEmpty {
+            if !description.isEmpty {
+                returnString = "<p>\(description)\(readOnText)</p>"
+            } else if !title.isEmpty {
+                returnString = "<p>\(title)\(readOnText)</p>"
+            } else {
+                returnString = "<p>\(rawLink)</p>"
+            }
+        } else {
+            returnString = "<blockquote><p>\(selectedText)\(readOnText)</p></blockquote>"
         }
-        return image
+
+        return returnString
     }
 }
 
@@ -49,11 +61,19 @@ struct ShareExtractor {
     ///   - completion: the block to be called when the extractor has obtained content.
     ///
     func loadShare(completion: @escaping (ExtractedShare) -> Void) {
-        extractText { text in
+        extractText { extractedTextResults in
             self.extractImages { images in
-                let returnedText = text ?? ""
+                let title = extractedTextResults?.title ?? ""
+                let description = extractedTextResults?.description ?? ""
+                let selectedText = extractedTextResults?.selectedText ?? ""
+                let url = extractedTextResults?.url
                 let returnedImages = images ?? [UIImage]()
-                completion(ExtractedShare(text: returnedText, images: returnedImages))
+
+                completion(ExtractedShare(title: title,
+                                          description: description,
+                                          url: url,
+                                          selectedText: selectedText,
+                                          images: returnedImages))
             }
         }
     }
@@ -71,6 +91,31 @@ struct ShareExtractor {
 
 
 // MARK: - Private
+
+/// A private type that represents the information we can extract from an extension context
+/// attachment
+///
+private struct ExtractedItem {
+    /// Any text that was selected
+    ///
+    var selectedText: String?
+
+    /// A description of the resource if available
+    ///
+    var description: String?
+
+    /// A URL associated with the resource if available
+    ///
+    var url: URL?
+
+    /// A title of the resource if available
+    ///
+    var title: String?
+
+    /// An image
+    ///
+    var image: UIImage?
+}
 
 private extension ShareExtractor {
     var supportedTextExtractors: [ExtensionContentExtractor] {
@@ -92,7 +137,7 @@ private extension ShareExtractor {
         })
     }
 
-    func extractText(completion: @escaping (String?) -> Void) {
+    func extractText(completion: @escaping (ExtractedItem?) -> Void) {
         guard let textExtractor = textExtractor else {
             completion(nil)
             return
@@ -102,8 +147,16 @@ private extension ShareExtractor {
                 completion(nil)
                 return
             }
-            let combinedText = extractedItems.flatMap({ $0.text }).joined(separator: " ")
-            completion(combinedText)
+            let combinedTitle = extractedItems.flatMap({ $0.title }).joined(separator: " ")
+            let combinedDescription = extractedItems.flatMap({ $0.description }).joined(separator: " ")
+            let combinedSelectedText = extractedItems.flatMap({ $0.selectedText }).joined(separator: "\n\n")
+            let urls = extractedItems.flatMap({ $0.url })
+
+            completion(ExtractedItem(selectedText: combinedSelectedText,
+                                     description: combinedDescription,
+                                     url: urls.first,
+                                     title: combinedTitle,
+                                     image: nil))
         }
     }
 
@@ -179,7 +232,9 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         guard !payload.isFileURL else {
             return nil
         }
-        return .text(payload.absoluteString)
+        var returnedItem = ExtractedItem()
+        returnedItem.url = payload
+        return returnedItem
     }
 }
 
@@ -199,7 +254,9 @@ private struct ImageExtractor: TypeBasedExtensionContentExtractor {
             loadedImage = nil
         }
 
-        return loadedImage.map(ExtractedItem.image)
+        var returnedItem = ExtractedItem()
+        returnedItem.image = loadedImage
+        return returnedItem
     }
 }
 
@@ -210,19 +267,17 @@ private struct PropertyListExtractor: TypeBasedExtensionContentExtractor {
         guard let results = payload[NSExtensionJavaScriptPreprocessingResultsKey] as? [String: Any] else {
             return nil
         }
-        let selectedText = string(in: results, forKey: "selection")
-        let title = string(in: results, forKey: "title")
-        let url = string(in: results, forKey: "url")
-        var content = ""
 
-        let excerpt = selectedText ?? title
-        if let excerpt = excerpt {
-            content.append("\(excerpt)\n\n")
+        var returnedItem = ExtractedItem()
+        returnedItem.title = string(in: results, forKey: "title")
+        returnedItem.selectedText = string(in: results, forKey: "selection")
+        returnedItem.description = string(in: results, forKey: "description")
+
+        if let urlString = string(in: results, forKey: "url") {
+            returnedItem.url = URL(string: urlString)
         }
-        if let url = url {
-            content.append(url)
-        }
-        return .text(content)
+
+        return returnedItem
     }
 
     func string(in dictionary: [String: Any], forKey key: String) -> String? {
@@ -242,7 +297,25 @@ private struct PlainTextExtractor: TypeBasedExtensionContentExtractor {
         guard !payload.isEmpty else {
             return nil
         }
-        return .text(payload)
+
+        var returnedItem = ExtractedItem()
+
+        // Often, an attachment type _should_ have a type of "public.url" however in reality
+        // the type will be "public.plain-text" which is why this Extractor is activated. As a fix,
+        // let's use a data detector to determine if the payload text is a link (and check to make sure the
+        // match string is the same length as the payload because the detector could find matches within
+        // the selected text — we just want to make sure shared URLs are handled).
+        let types: NSTextCheckingResult.CheckingType = [.link]
+        let detector = try? NSDataDetector(types: types.rawValue)
+        if let match = detector?.firstMatch(in: payload, options: [], range: NSMakeRange(0, payload.count)),
+            match.resultType == .link,
+            let url = match.url,
+            url.absoluteString.count == payload.count {
+            returnedItem.url = url
+        } else {
+            returnedItem.selectedText = payload
+        }
+        return returnedItem
     }
 }
 
@@ -253,6 +326,12 @@ private struct SharePostExtractor: TypeBasedExtensionContentExtractor {
         guard let post = SharePost(data: payload) else {
             return nil
         }
-        return .text(post.content)
+
+        var returnedItem = ExtractedItem()
+        returnedItem.title = post.title
+        returnedItem.selectedText = post.content
+        returnedItem.url = post.url
+        returnedItem.description = post.summary
+        return returnedItem
     }
 }
