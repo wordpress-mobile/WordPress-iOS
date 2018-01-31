@@ -22,11 +22,6 @@ class SiteCreationFields {
         case missingTheme
     }
 
-    // MARK: - Init
-
-    private init() {
-    }
-
     // MARK: - Instance Methods
 
     static func sharedInstance() -> SiteCreationFields {
