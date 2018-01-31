@@ -542,6 +542,27 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
+- (void)switchMySitesTabToMediaForBlog:(Blog *)blog
+{
+    if (self.selectedIndex == WPTabMySites) {
+        UIViewController *topViewController = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+        if ([topViewController isKindOfClass:[MediaLibraryViewController class]]) {
+            MediaLibraryViewController *mediaVC = (MediaLibraryViewController *)topViewController;
+            if (mediaVC.blog == blog) {
+                // If media is already selected for the specified blog, do nothing.
+                return;
+            }
+        }
+    }
+    
+    [self switchMySitesTabToBlogDetailsForBlog:blog];
+
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionMedia];
+    }
+}
+
 - (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog
 {
     [self switchMySitesTabToThemesViewForBlog:blog];
