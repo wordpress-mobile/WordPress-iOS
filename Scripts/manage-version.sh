@@ -148,11 +148,6 @@ function doBranching() {
     fi 
 }
 
-# Pushes the new branch to origin
-function pushToOrigin() {
-    git push origin $releaseBranch >> $logFile 2>&1 || stopOnError
-}
-
 # Updates the keys in download_metadata.swift and AppStoreStrings.po
 function updateGlotPressKey() {
     dmFile="./fastlane/download_metadata.swift"
@@ -165,12 +160,77 @@ function updateGlotPressKey() {
 
     assFile="../WordPress/Resources/AppStoreStrings.po"
     if [ -f $assFile ]; then
-        sed -i '' "s#.*whats-new\"#msgctxt \"v$newMainVer-whats-new\"#"  $assFile
+        sed -i '' "s#.*whats-new\"#msgctxt \"v$newMainVer-whats-new\"#"  $assFile >> $logFile 2>&1 || stopOnError
     else
         showErrorMessage "Can't find $assFile."
         stopOnError
     fi
 }
+
+# Updates the app version in Fastlane Deliver file
+function updateFastlaneDeliver() {
+    fdFile="./fastlane/Deliverfile"
+    if [ -f $fdFile ]; then
+        sed -i '' "s/app_version.*/app_version \"$newMainVer\"/" $fdFile
+    else
+        showErrorMessage "Can't find $fdFile."
+        stopOnError
+    fi
+}
+
+# Updates a list of plist files with the provided version 
+function updatePlistArray() {
+    declare -a fileList=("${!1}")
+    updateVer=$2
+
+    for i in "${fileList[@]}"
+    do
+        cFile="../WordPress/$i"
+        if [ -f "$cFile" ]; then
+            echo "Updating $cFile to version $2" >> $logFile 2>&1
+            sed -i '' "$(awk '/CFBundleShortVersionString/{ print NR + 1; exit }' "$cFile")s/<string>.*/<string>$newMainVer<\/string>/" "$cFile" >> $logFile 2>&1 || stopOnError
+            sed -i '' "$(awk '/CFBundleVersion/{ print NR + 1; exit }' "$cFile")s/<string>.*/<string>$updateVer<\/string>/" "$cFile" >> $logFile 2>&1 || stopOnError
+        else
+            stopOnError "$cFile  not found"
+        fi
+    done
+}
+
+# Updates the pList files
+function updatePLists() {
+    local buildPLists=("Info.plist" 
+            "WordPressShareExtension/Info.plist" 
+            "WordPressTodayWidget/Info.plist")
+    local intPLists=("WordPress-Internal-Info.plist" \
+            "WordPressShareExtension/Info-Alpha.plist" \
+            "WordPressShareExtension/Info-Internal.plist" \
+            "WordPressTodayWidget/Info-Alpha.plist" \
+            "WordPressTodayWidget/Info-Internal.plist" \
+            "Wordpress-Alpha-Info.plist")
+
+    updatePlistArray buildPLists[@] "$newVer"
+    updatePlistArray intPLists[@] "$newIntVer"
+}
+
+# Updates pLists files and fastlane deliver on the current branch
+function updateBranch() {
+    if [ $cmd == $CMD_UPDATE ]; then
+        startLog
+        showMessage "Updating the current branch to version $newMainVer..."
+    fi
+
+    showMessage "Updating Fastlane deliver file..."
+    updateFastlaneDeliver
+    showMessage "Done!"
+    showMessage "Updating pLists..."
+    updatePLists
+    showMessage "Done!"
+
+    if [ $cmd == $CMD_UPDATE ]; then
+        stopLog
+    fi
+}
+
 # Creates a new branch for the release and updates the relevant files
 function createBranch() {
     startLog
@@ -178,12 +238,10 @@ function createBranch() {
     showConfig
     doBranching
     showMessage "Done!"
-    showMessage "Updating remote for $newMainVer..."
-    pushToOrigin
-    showMessage "Done!"
     showMessage "Updating glotPressKeys..."
     updateGlotPressKey
     showMessage "Done!"
+    updateBranch
     stopLog
 }
 
