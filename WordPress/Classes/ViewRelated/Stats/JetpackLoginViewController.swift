@@ -65,20 +65,18 @@ class JetpackLoginViewController: UIViewController {
     /// One time setup of the form textfields and buttons
     ///
     fileprivate func setupControls() {
-        descriptionLabel.font = WPNUXUtility.descriptionTextFont()
-        descriptionLabel.textColor = WPStyleGuide.allTAllShadeGrey()
+        descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
+        descriptionLabel.textColor = WPStyleGuide.darkGrey()
         updateMessage()
 
         setupMoreInformationButtonText()
         moreInformationButton.isHidden = hasJetpack
 
-        var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
-                "should be uppercase.").localizedUppercase
+        var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation.")
         installJetpackButton.setTitle(title, for: .normal)
         installJetpackButton.isHidden = hasJetpack
 
-        title = NSLocalizedString("Log In", comment: "Title of a button for signing in. " +
-            "The text should be uppercase.").localizedUppercase
+        title = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
         signinButton.setTitle(title, for: .normal)
         signinButton.isHidden = !hasJetpack
     }
@@ -92,8 +90,8 @@ class JetpackLoginViewController: UIViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
 
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: UIFont.systemFont(ofSize: 14),
-                                                                   .foregroundColor: WPStyleGuide.allTAllShadeGrey(),
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: WPStyleGuide.fontForTextStyle(.footnote),
+                                                                   .foregroundColor: WPStyleGuide.mediumBlue(),
                                                                    .underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
                                                                    .paragraphStyle: paragraphStyle ]]
 
@@ -154,7 +152,7 @@ class JetpackLoginViewController: UIViewController {
                                                                              "if they want to upgrade"), JetpackState.minimumVersionRequired)
             }
         } else {
-            message = NSLocalizedString("Jetpack is required for stats. Do you want to set up Jetpack?",
+            message = NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.\n Would you like to set up Jetpack?",
                                         comment: "Message asking the user if they want to set up Jetpack")
         }
         descriptionLabel.text = message
