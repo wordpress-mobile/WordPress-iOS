@@ -11,6 +11,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     @IBOutlet weak var preparingFrontendLabel: UILabel!
 
     private var newSite: Blog?
+    private var errorMessage: String?
 
     // MARK: - View
 
@@ -45,7 +46,8 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
         // Make sure we have all required info before proceeding.
         if let error = SiteCreationFields.validateFields() {
-            DDLogError("Error while creating site: \(String(describing: error))")
+            DDLogError("Error while creating site: \(error)")
+            errorMessage = error
             self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
             return
         }
@@ -118,12 +120,11 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
         if let vc = segue.destination as? NoResultsViewController {
             let title = NSLocalizedString("Something went wrong...", comment: "Primary message on site creation error page.")
-            let subTitle = NSLocalizedString("A parliament of owls distracted our servers with their superior oratory skills.", comment: "Secondary message on site creation error page.")
             let buttonTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
             let imageName = "site-creation-error"
 
             vc.delegate = self
-            vc.configure(title: title, buttonTitle: buttonTitle, subTitle: subTitle, image: imageName)
+            vc.configure(title: title, buttonTitle: buttonTitle, subTitle: errorMessage, image: imageName)
             vc.hideBackButton()
             vc.addWordPressLogoToNavController()
         }
@@ -135,9 +136,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 extension SiteCreationCreateSiteViewController: NoResultsViewControllerDelegate {
 
     func actionButtonPressed() {
-        print("SGH - create site > error > actionButtonPressed")
         navigationController?.dismiss(animated: true, completion: nil)
-
     }
 
 }

@@ -14,12 +14,25 @@ class SiteCreationFields {
     var theme: Theme?
     var domain = ""
 
-    /// An enum for returning validation Errors.
-    private enum SiteCreationFieldsError: Error {
+    /// An enum for returning validation error messages.
+    private enum SiteCreationFieldsError: String {
         case missingTitle
         case missingDomain
         case domainContainsWordPressDotCom
         case missingTheme
+
+        var description: String {
+            switch self {
+            case .missingTitle:
+                return NSLocalizedString("The Site Title is missing.", comment: "Error shown during site creation process when the site title is missing.")
+            case .missingDomain:
+                return NSLocalizedString("The Site Domain is missing.", comment: "Error shown during site creation process when the site domain is missing.")
+            case .domainContainsWordPressDotCom:
+                return NSLocalizedString("The Site Domain contains wordpress.com.", comment: "Error shown during site creation process when the site domain contains wordpress.com.")
+            case .missingTheme:
+                return NSLocalizedString("The Site Theme is missing.", comment: "Error shown during site creation process when the site theme is missing.")
+            }
+        }
     }
 
     // MARK: - Instance Methods
@@ -28,22 +41,23 @@ class SiteCreationFields {
         sharedInstance = SiteCreationFields()
     }
 
-    static func validateFields() -> Error? {
+    static func validateFields() -> String? {
 
+        SiteCreationFields.sharedInstance.title = ""
         if SiteCreationFields.sharedInstance.title.isEmpty {
-            return SiteCreationFieldsError.missingTitle
+            return SiteCreationFieldsError.missingTitle.description
         }
 
         if SiteCreationFields.sharedInstance.domain.isEmpty {
-            return SiteCreationFieldsError.missingDomain
+            return SiteCreationFieldsError.missingDomain.description
         }
 
         if SiteCreationFields.sharedInstance.domain.contains(".wordpress.com") {
-            return SiteCreationFieldsError.domainContainsWordPressDotCom
+            return SiteCreationFieldsError.domainContainsWordPressDotCom.description
         }
 
         if SiteCreationFields.sharedInstance.theme == nil {
-            return SiteCreationFieldsError.missingTheme
+            return SiteCreationFieldsError.missingTheme.description
         }
 
         return nil
