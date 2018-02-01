@@ -120,9 +120,10 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             let title = NSLocalizedString("Something went wrong...", comment: "Primary message on site creation error page.")
             let subTitle = NSLocalizedString("A parliament of owls distracted our servers with their superior oratory skills.", comment: "Secondary message on site creation error page.")
             let buttonTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
+            let imageName = "site-creation-error"
 
             vc.delegate = self
-            vc.configure(title: title, buttonTitle: buttonTitle, subTitle: subTitle)
+            vc.configure(title: title, buttonTitle: buttonTitle, subTitle: subTitle, image: imageName)
             vc.hideBackButton()
             vc.addWordPressLogoToNavController()
         }
