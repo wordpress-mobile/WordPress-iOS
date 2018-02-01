@@ -57,9 +57,9 @@ class JetpackConnectionWebViewController: UIViewController {
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let url: URL
         if let escapedSiteURL = blog.homeURL?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)")!
+            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?url=\(escapedSiteURL)&mobile_redirect=\(mobileRedirectURL)&from=mobile")!
         } else {
-            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?mobile_redirect=\(mobileRedirectURL)")!
+            url = URL(string: "https://wordpress.com/jetpack/connect/\(locale)?mobile_redirect=\(mobileRedirectURL)&from=mobile")!
         }
 
         let request = URLRequest(url: url)
@@ -82,20 +82,20 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
         }
 
         Debug.log("🚀🔌 Step: \(step)")
+        if step.isAdminPage,
+            let redirect = pendingSiteRedirect {
+            pendingSiteRedirect = nil
+            decisionHandler(.cancel)
+            webView.load(URLRequest(url: redirect))
+            return
+        }
+
         switch step {
         case .siteLoginForm(let redirect):
             performSiteLogin(redirect: redirect, decisionHandler: decisionHandler)
         case .dotComLoginForm(let redirect):
             decisionHandler(.cancel)
             performDotComLogin(redirect: redirect)
-        case .siteAdmin:
-            if let redirect = pendingSiteRedirect {
-                pendingSiteRedirect = nil
-                decisionHandler(.cancel)
-                webView.load(URLRequest(url: redirect))
-            } else {
-                decisionHandler(.allow)
-            }
         case .mobileRedirect:
             decisionHandler(.cancel)
             handleMobileRedirect()
@@ -140,6 +140,15 @@ private extension JetpackConnectionWebViewController {
                 return "WordPress.com login, redirecting to \(redirect)"
             case .mobileRedirect:
                 return "Mobile Redirect, end of the connection flow"
+            }
+        }
+
+        var isAdminPage: Bool {
+            switch self {
+            case .sitePluginDetail, .sitePluginInstallation, .sitePlugins, .siteAdmin:
+                return true
+            case .siteLoginForm, .dotComLoginForm, .mobileRedirect:
+                return false
             }
         }
     }
@@ -216,8 +225,8 @@ private extension JetpackConnectionWebViewController {
         }
         service.syncBlog(
             blog,
-            success: { [account] in
-                guard let account = account else {
+            success: { [weak self] in
+                guard let account = self?.account ?? self?.defaultAccount() else {
                     // If there's no account let's pretend this worked
                     // We don't know what to do, but at least it will dismiss
                     // the connection flow and refresh the site state
@@ -247,9 +256,7 @@ private extension JetpackConnectionWebViewController {
     }
 
     func performDotComLogin(redirect: URL) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        if let account = service.defaultWordPressComAccount(),
+        if let account = defaultAccount(),
             let token = account.authToken,
             let username = account.username {
             authenticateWithDotCom(username: username, token: token, redirect: redirect)
@@ -295,6 +302,12 @@ private extension JetpackConnectionWebViewController {
         if let redirect = pendingDotComRedirect {
             performDotComLogin(redirect: redirect)
         }
+    }
+
+    func defaultAccount() -> WPAccount? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        return service.defaultWordPressComAccount()
     }
 
     enum Debug {
