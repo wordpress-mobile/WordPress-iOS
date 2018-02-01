@@ -122,6 +122,8 @@ class SiteCreationCreateSiteViewController: NUXViewController {
                          buttonTitle: NSLocalizedString("Try again", comment: "Button text on site creation error page."),
                          subTitle: NSLocalizedString("A parliament of owls distracted our servers with their superior oratory skills.", comment: "Secondary message on site creation error page."))
             vc.delegate = self
+            vc.hideBackButton()
+            vc.addWordPressLogoToNavController()
         }
     }
 }
