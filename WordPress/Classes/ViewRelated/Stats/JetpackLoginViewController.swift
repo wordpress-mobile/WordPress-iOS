@@ -201,7 +201,7 @@ class JetpackLoginViewController: UIViewController {
         guard let url =  URL(string: url) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url, blog: blog)
+        let webViewController = WebViewControllerFactory.controller(url: url)
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
