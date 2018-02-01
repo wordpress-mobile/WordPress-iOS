@@ -33,6 +33,7 @@ import UIKit
     private var titleText: String?
     private var subTitleText: String?
     private var buttonText: String?
+    private var imageName: String?
 
     // MARK: - View
 
@@ -52,10 +53,12 @@ import UIKit
     ///   - title:       Main descriptive text. Required.
     ///   - buttonTitle: Title of action button. Required.
     ///   - subTitle:    Secondary descriptive text. Optional.
-    @objc func configure(title: String, buttonTitle: String, subTitle: String? = nil) {
+    ///   - image:       Name of image file to use. Optional.
+    @objc func configure(title: String, buttonTitle: String, subTitle: String? = nil, image: String? = nil) {
         titleText = title
         subTitleText = subTitle
         buttonText = buttonTitle
+        imageName = image
     }
 
     func hideBackButton() {
@@ -76,6 +79,11 @@ import UIKit
         actionButton?.setTitle(buttonText, for: .highlighted)
         actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
         actionButton?.accessibilityIdentifier = accessibilityIdentifier(for: buttonText)
+
+        if let imageName = imageName {
+            imageView.image = UIImage(named: imageName)
+        }
+
         view.layoutIfNeeded()
     }
 
