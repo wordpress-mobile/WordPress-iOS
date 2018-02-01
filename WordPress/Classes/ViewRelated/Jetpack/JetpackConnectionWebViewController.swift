@@ -225,8 +225,8 @@ private extension JetpackConnectionWebViewController {
         }
         service.syncBlog(
             blog,
-            success: { [account] in
-                guard let account = account else {
+            success: { [weak self] in
+                guard let account = self?.account ?? self?.defaultAccount() else {
                     // If there's no account let's pretend this worked
                     // We don't know what to do, but at least it will dismiss
                     // the connection flow and refresh the site state
@@ -256,9 +256,7 @@ private extension JetpackConnectionWebViewController {
     }
 
     func performDotComLogin(redirect: URL) {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        if let account = service.defaultWordPressComAccount(),
+        if let account = defaultAccount(),
             let token = account.authToken,
             let username = account.username {
             authenticateWithDotCom(username: username, token: token, redirect: redirect)
@@ -304,6 +302,12 @@ private extension JetpackConnectionWebViewController {
         if let redirect = pendingDotComRedirect {
             performDotComLogin(redirect: redirect)
         }
+    }
+
+    func defaultAccount() -> WPAccount? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        return service.defaultWordPressComAccount()
     }
 
     enum Debug {
