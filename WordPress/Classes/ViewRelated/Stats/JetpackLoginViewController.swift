@@ -60,11 +60,6 @@ class JetpackLoginViewController: UIViewController {
         setupControls()
     }
 
-    override func viewDidLayoutSubviews() {
-        reloadInterface()
-    }
-
-
     // MARK: - Configuration
 
     /// One time setup of the form textfields and buttons
@@ -72,18 +67,20 @@ class JetpackLoginViewController: UIViewController {
     fileprivate func setupControls() {
         descriptionLabel.font = WPNUXUtility.descriptionTextFont()
         descriptionLabel.textColor = WPStyleGuide.allTAllShadeGrey()
+        updateMessage()
 
         setupMoreInformationButtonText()
-        moreInformationButton.isHidden = true // Hidden by default
+        moreInformationButton.isHidden = hasJetpack
 
         var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
                 "should be uppercase.").localizedUppercase
         installJetpackButton.setTitle(title, for: .normal)
-        installJetpackButton.isHidden = true // Hidden by default
+        installJetpackButton.isHidden = hasJetpack
 
         title = NSLocalizedString("Log In", comment: "Title of a button for signing in. " +
             "The text should be uppercase.").localizedUppercase
         signinButton.setTitle(title, for: .normal)
+        signinButton.isHidden = !hasJetpack
     }
 
     /// Configures the button text for requesting more information about jetpack.
@@ -136,11 +133,6 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - UI Helpers
 
-    fileprivate func reloadInterface() {
-        updateMessage()
-        updateControls()
-    }
-
     fileprivate func updateMessage() {
         guard let jetPack = blog.jetpack else {
             return
@@ -167,12 +159,6 @@ class JetpackLoginViewController: UIViewController {
         }
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
-    }
-
-    fileprivate func updateControls() {
-        installJetpackButton.isHidden = hasJetpack
-        moreInformationButton.isHidden = hasJetpack
-        signinButton.isHidden = !hasJetpack
     }
 
     // MARK: - Private Helpers
