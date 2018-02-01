@@ -45,9 +45,9 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     private func createSite() {
 
         // Make sure we have all required info before proceeding.
-        if let error = SiteCreationFields.validateFields() {
-            DDLogError("Error while creating site: \(error)")
-            errorMessage = error
+        if let validationError = SiteCreationFields.validateFields() {
+            errorMessage = messageFor(validationError: validationError)
+            DDLogError("Error while creating site: \(String(describing: errorMessage))")
             self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
             return
         }
@@ -127,6 +127,21 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             vc.configure(title: title, buttonTitle: buttonTitle, subTitle: errorMessage, image: imageName)
             vc.hideBackButton()
             vc.addWordPressLogoToNavController()
+        }
+    }
+
+    // MARK: - Error Messages
+
+    private func messageFor(validationError: SiteCreationFieldsError) -> String {
+        switch validationError {
+        case .missingTitle:
+            return NSLocalizedString("The Site Title is missing.", comment: "Error shown during site creation process when the site title is missing.")
+        case .missingDomain:
+            return NSLocalizedString("The Site Domain is missing.", comment: "Error shown during site creation process when the site domain is missing.")
+        case .domainContainsWordPressDotCom:
+            return NSLocalizedString("The Site Domain contains wordpress.com.", comment: "Error shown during site creation process when the site domain contains wordpress.com.")
+        case .missingTheme:
+            return NSLocalizedString("The Site Theme is missing.", comment: "Error shown during site creation process when the site theme is missing.")
         }
     }
 }
