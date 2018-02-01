@@ -82,20 +82,20 @@ extension JetpackConnectionWebViewController: WKNavigationDelegate {
         }
 
         Debug.log("🚀🔌 Step: \(step)")
+        if step.isAdminPage,
+            let redirect = pendingSiteRedirect {
+            pendingSiteRedirect = nil
+            decisionHandler(.cancel)
+            webView.load(URLRequest(url: redirect))
+            return
+        }
+
         switch step {
         case .siteLoginForm(let redirect):
             performSiteLogin(redirect: redirect, decisionHandler: decisionHandler)
         case .dotComLoginForm(let redirect):
             decisionHandler(.cancel)
             performDotComLogin(redirect: redirect)
-        case .siteAdmin:
-            if let redirect = pendingSiteRedirect {
-                pendingSiteRedirect = nil
-                decisionHandler(.cancel)
-                webView.load(URLRequest(url: redirect))
-            } else {
-                decisionHandler(.allow)
-            }
         case .mobileRedirect:
             decisionHandler(.cancel)
             handleMobileRedirect()
@@ -140,6 +140,15 @@ private extension JetpackConnectionWebViewController {
                 return "WordPress.com login, redirecting to \(redirect)"
             case .mobileRedirect:
                 return "Mobile Redirect, end of the connection flow"
+            }
+        }
+
+        var isAdminPage: Bool {
+            switch self {
+            case .sitePluginDetail, .sitePluginInstallation, .sitePlugins, .siteAdmin:
+                return true
+            case .siteLoginForm, .dotComLoginForm, .mobileRedirect:
+                return false
             }
         }
     }
