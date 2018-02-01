@@ -7,6 +7,7 @@ import WordPressShared
 ///
 enum SiteCreationStatus: Int {
     case validating
+    case gettingDefaultAccount
     case creatingSite
     case settingTagline
     case settingTheme
@@ -61,17 +62,6 @@ open class SiteCreationService: LocalCoreDataService {
                     success: @escaping SiteCreationRequestSuccessBlock,
                     failure: @escaping SiteCreationFailureBlock) {
 
-        // Verify we have an account.
-        let accountService = AccountService(managedObjectContext: self.managedObjectContext)
-
-        guard let defaultAccount = accountService.defaultWordPressComAccount() else {
-            let error = SiteCreationError.missingDefaultWPComAccount as NSError
-            DDLogError("Error while creating site: The default wpcom account was not found.")
-            assertionFailure()
-            failure(error)
-            return
-        }
-
         // Organize parameters into a struct for easy sharing
         let params = SiteCreationParams(siteUrl: url,
                                         siteTitle: siteTitle,
@@ -101,6 +91,7 @@ open class SiteCreationService: LocalCoreDataService {
 
             let setThemeFailureBlock: SiteCreationFailureBlock = { error in
                 WPAppAnalytics.track(.createSiteSetThemeFailed)
+                DDLogError("Error while creating site: \(String(describing: error))")
                 failure(error)
             }
 
@@ -147,10 +138,24 @@ open class SiteCreationService: LocalCoreDataService {
 
         let createBlogFailureBlock: SiteCreationFailureBlock = { error in
             WPAppAnalytics.track(.createSiteCreationFailed)
+            DDLogError("Error while creating site: \(String(describing: error))")
             failure(error)
         }
 
         let validateBlogSuccessBlock = {
+
+            status(.gettingDefaultAccount)
+
+            // Verify we have an account.
+            let accountService = AccountService(managedObjectContext: self.managedObjectContext)
+
+            guard let defaultAccount = accountService.defaultWordPressComAccount() else {
+                let error = SiteCreationError.missingDefaultWPComAccount
+                DDLogError("Error while creating site: The default wpcom account was not found.")
+                failure(error)
+                return
+            }
+
             // When the blog is successfully validated, create the WPCom blog.
             self.createWPComBlogForParams(params,
                                           account: defaultAccount,
@@ -216,15 +221,14 @@ open class SiteCreationService: LocalCoreDataService {
                                   success: @escaping (_ blog: Blog) -> Void,
                                   failure: @escaping SiteCreationFailureBlock) {
 
+        status(.creatingSite)
+
         guard let api = account.wordPressComRestApi else {
-            let error = SiteCreationError.missingRESTAPI as NSError
+            let error = SiteCreationError.missingRESTAPI
             DDLogError("Error while creating site: Missing REST API.")
-            assertionFailure()
             failure(error)
             return
         }
-
-        status(.creatingSite)
 
         let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
         let languageId = currentLanguage.stringValue
@@ -241,9 +245,8 @@ open class SiteCreationService: LocalCoreDataService {
                                     // The site was created so bump the stat, even if there are problems later on.
                                     WPAppAnalytics.track(.createdSite)
                                     guard let blogOptions = responseDictionary?[BlogKeys.blogDetails] as? [String: AnyObject] else {
-                                        let error = SiteCreationError.invalidResponse as NSError
+                                        let error = SiteCreationError.invalidResponse
                                         DDLogError("Error while creating site: The Blog response dictionary did not contain the expected results.")
-                                        assertionFailure()
                                         failure(error)
                                         return
                                     }
@@ -272,10 +275,11 @@ open class SiteCreationService: LocalCoreDataService {
                                          success: @escaping SiteCreationSuccessBlock,
                                          failure: @escaping SiteCreationFailureBlock) {
 
+        status(.syncing)
+
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let blogService = BlogService(managedObjectContext: managedObjectContext)
 
-        status(.syncing)
         blogService.syncBlogAndAllMetadata(blog, completionHandler: {
             // The final step
             accountService.updateUserDetails(for: blog.account!, success: success, failure: failure)
@@ -320,7 +324,7 @@ open class SiteCreationService: LocalCoreDataService {
         status(.settingTheme)
 
         guard let siteTheme = params.siteTheme else {
-            let error = SiteCreationError.missingTheme as NSError
+            let error = SiteCreationError.missingTheme
             DDLogError("Error while creating site: Missing Theme.")
             failure(error)
             return
@@ -359,17 +363,15 @@ open class SiteCreationService: LocalCoreDataService {
             let stringID = blogOptions[BlogKeys.blogID] as? String,
             let dotComID = Int(stringID)
             else {
-                let error = SiteCreationError.invalidResponse as NSError
+                let error = SiteCreationError.invalidResponse
                 DDLogError("Error while creating site: The blogOptions dictionary was missing expected data.")
-                assertionFailure()
                 failure(error)
                 return nil
         }
 
         guard let defaultAccount = accountService.defaultWordPressComAccount() else {
-            let error = SiteCreationError.missingDefaultWPComAccount as NSError
+            let error = SiteCreationError.missingDefaultWPComAccount
             DDLogError("Error while creating site: The default wpcom account was not found.")
-            assertionFailure()
             failure(error)
             return nil
         }

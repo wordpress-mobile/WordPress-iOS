@@ -12,6 +12,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
     private var newSite: Blog?
     private var errorMessage: String?
+    private var lastStatus: SiteCreationStatus?
 
     // MARK: - View
 
@@ -46,7 +47,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
         // Make sure we have all required info before proceeding.
         if let validationError = SiteCreationFields.validateFields() {
-            errorMessage = messageFor(validationError: validationError)
+            errorMessage = displayMessageFor(validationError: validationError)
             DDLogError("Error while creating site: \(String(describing: errorMessage))")
             self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
             return
@@ -55,6 +56,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         // Blocks for Create Site process
 
         let statusBlock = { (status: SiteCreationStatus) in
+            self.lastStatus = status
             self.showStepLabelForStatus(status)
         }
 
@@ -72,7 +74,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         }
 
         let failureBlock = { (error: Error?) in
-            DDLogError("Error while creating site: \(String(describing: error))")
+            self.errorMessage = self.displayMessageForLastStatus()
             self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
         }
 
@@ -94,7 +96,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             switch status {
             case .validating:
                 return layingFoundationLabel
-            case .creatingSite:
+            case .gettingDefaultAccount, .creatingSite:
                 return retrievingInformationLabel
             case .settingTagline:
                 return configureContentLabel
@@ -132,7 +134,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
     // MARK: - Error Messages
 
-    private func messageFor(validationError: SiteCreationFieldsError) -> String {
+    private func displayMessageFor(validationError: SiteCreationFieldsError) -> String {
         switch validationError {
         case .missingTitle:
             return NSLocalizedString("The Site Title is missing.", comment: "Error shown during site creation process when the site title is missing.")
@@ -144,6 +146,28 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             return NSLocalizedString("The Site Theme is missing.", comment: "Error shown during site creation process when the site theme is missing.")
         }
     }
+
+    private func displayMessageForLastStatus() -> String {
+        guard let lastStatus = lastStatus else {
+            return ""
+        }
+
+        switch lastStatus {
+        case .validating:
+            return NSLocalizedString("The Site Domain is invalid.", comment: "Error shown during site creation process when the site domain validation fails.")
+        case .gettingDefaultAccount:
+            return NSLocalizedString("We were unable to get your account information.", comment: "Error shown during site creation process when the account cannot be obtained.")
+        case .creatingSite:
+            return NSLocalizedString("We were unable to create the site.", comment: "Error shown during site creation process when the site creation fails.")
+        case .settingTagline:
+            return NSLocalizedString("We were unable to set the Site Tagline.", comment: "Error shown during site creation process when setting the site tagline fails.")
+        case .settingTheme:
+            return NSLocalizedString("We were unable to set the Site Theme.", comment: "Error shown during site creation process when setting the site theme fails.")
+        case .syncing:
+            return NSLocalizedString("We were unable to sync your account information.", comment: "Error shown during site creation process when syncing the account fails.")
+        }
+    }
+
 }
 
 // MARK: - NoResultsViewControllerDelegate
