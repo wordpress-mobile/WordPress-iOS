@@ -9,7 +9,7 @@ import UIKit
 /// The image, title, and action button will always show.
 /// The subtitle is optional and will only show if provided.
 ///
-@objc class NoResultsViewController: UIViewController {
+@objc class NoResultsViewController: NUXViewController {
 
     // MARK: - Properties
 
@@ -18,6 +18,16 @@ import UIKit
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var actionButton: LoginButton!
+
+    override var sourceTag: SupportSourceTag {
+        get {
+            if let parent = parent,
+                parent.isKind(of: SiteCreationNavigationController.self) {
+                return .wpComCreateSiteError
+            }
+            return super.sourceTag
+        }
+    }
 
     // To allow storing values until view is loaded.
     private var titleText: String?
@@ -46,6 +56,10 @@ import UIKit
         titleText = title
         subTitleText = subTitle
         buttonText = buttonTitle
+    }
+
+    func hideBackButton() {
+        navigationItem.hidesBackButton = true
     }
 
     /// Use the values provided in the actual elements.

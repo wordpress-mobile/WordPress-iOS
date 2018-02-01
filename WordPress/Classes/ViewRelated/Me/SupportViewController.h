@@ -18,6 +18,7 @@ extern SupportSourceTag const SupportSourceTagWPComCreateSiteCategory;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteTheme;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteDetails;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteDomain;
+extern SupportSourceTag const SupportSourceTagWPComCreateSiteError;
 extern SupportSourceTag const SupportSourceTagWPComSignupEmail;
 
 @interface SupportViewController : UITableViewController
