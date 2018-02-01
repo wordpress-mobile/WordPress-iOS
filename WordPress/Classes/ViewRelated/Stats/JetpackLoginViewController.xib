@@ -53,7 +53,7 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="335" width="300" height="30"/>
-                                    <state key="normal" title="Install Jetpack"/>
+                                    <state key="normal" title="Set up Jetpack"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                     </userDefinedRuntimeAttributes>
