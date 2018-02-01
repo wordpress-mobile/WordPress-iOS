@@ -9,6 +9,9 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
 
     // MARK: - Properties
 
+    // Used to store Site Creation user options.
+    var siteOptions: [String: Any]?
+
     @IBOutlet weak var stepLabel: UILabel!
     @IBOutlet weak var stepDescriptionLabel1: UILabel!
     @IBOutlet weak var stepDescriptionLabel2: UILabel!
@@ -50,9 +53,17 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        // TODO: replace siteOptions with SiteCreationFields class when created.
         if let destination = segue.destination as? SiteCreationDomainsViewController {
-            destination.siteName = siteTitleField.text
+            guard var siteOptions = siteOptions else {
+                return
+            }
+            siteOptions["title"] = siteTitleField.text
+            siteOptions["tagline"] = taglineField.text
+            destination.siteOptions = siteOptions
         }
+
         let backButton = UIBarButtonItem()
         backButton.title = NSLocalizedString("Back", comment: "Back button title.")
         navigationItem.backBarButtonItem = backButton

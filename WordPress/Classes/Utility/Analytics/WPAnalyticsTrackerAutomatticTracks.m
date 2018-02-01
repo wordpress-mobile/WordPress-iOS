@@ -279,6 +279,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatCreatedSite:
             eventName = @"site_created";
             break;
+        case WPAnalyticsStatCreateSiteValidationFailed:
+            eventName = @"create_site_validation_failed";
+            break;
+        case WPAnalyticsStatCreateSiteCreationFailed:
+            eventName = @"create_site_creation_failed";
+            break;
+        case WPAnalyticsStatCreateSiteSetTaglineFailed:
+            eventName = @"create_site_set_tagline_failed";
+            break;
+        case WPAnalyticsStatCreateSiteSetThemeFailed:
+            eventName = @"create_site_set_theme_failed";
+            break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"local_library" };
