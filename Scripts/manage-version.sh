@@ -5,6 +5,8 @@ CMD_CREATE="create-branch"
 CMD_CREATE_SHORT="create"
 CMD_UPDATE="update-branch"
 CMD_UPDATE_SHORT="update"
+CMD_FORCE="force-branch"
+CMD_FORCE_SHORT="force"
 
 # Regex for "is a number"
 IS_A_NUM_RE="^[0-9]+$"
@@ -77,6 +79,11 @@ function verifyCommand() {
 
     if [ $cmd == $CMD_UPDATE ] || [ $cmd == $CMD_UPDATE_SHORT ]; then
         cmd=$CMD_UPDATE
+        return
+    fi
+
+    if [ $cmd == $CMD_FORCE ] || [ $cmd == $CMD_FORCE_SHORT ]; then
+        cmd=$CMD_FORCE
         return
     fi
 
@@ -247,9 +254,6 @@ function updateBranch() {
         showConfig
     fi
 
-    showMessage "Updating Fastlane deliver file..."
-    updateFastlaneDeliver
-    showMessage "Done!"
     showMessage "Updating pLists..."
     updatePLists
     showMessage "Done!"
@@ -263,13 +267,20 @@ function updateBranch() {
 # Creates a new branch for the release and updates the relevant files
 function createBranch() {
     startLog
-    checkVersions
-    showTitleMessage "Creating new Release branch for version $newMainVer..."
+    if [ $cmd != $CMD_FORCE ]; then
+        checkVersions
+        showTitleMessage "Creating new Release branch for version $newMainVer..."
+    else
+        showTitleMessage "Forcing branch for version $newMainVer..."
+    fi
     showConfig
     doBranching
     showMessage "Done!"
     showMessage "Updating glotPressKeys..."
     updateGlotPressKey
+    showMessage "Done!"
+    showMessage "Updating Fastlane deliver file..."
+    updateFastlaneDeliver
     showMessage "Done!"
     updateBranch
     showOkMessage "Success!"
@@ -349,7 +360,7 @@ logFile="/tmp/manage-version.log"
 
 verifyParams
 getCurrentVersions
-if [ $cmd == $CMD_CREATE ]; then
+if [ $cmd == $CMD_CREATE ] || [ $cmd == $CMD_FORCE ]; then
     createBranch
 elif [ $cmd == $CMD_UPDATE ]; then
     updateBranch
