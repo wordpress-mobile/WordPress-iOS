@@ -17,7 +17,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
     private var errorButtonTitle: String?
     struct ErrorButtonTitles {
-        static let continueTitle = NSLocalizedString("Continue", comment: "Button text on site creation error page.")
+        static let dismissTitle = NSLocalizedString("Dismiss", comment: "Button text on site creation error page.")
         static let tryAgainTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
     }
 
@@ -207,13 +207,13 @@ private extension SiteCreationCreateSiteViewController {
                 setReturnViewController(for: .createSite)
                 return NSLocalizedString("We were unable to create the site.", comment: "Error shown during site creation process when the site creation fails.")
             case .settingTagline:
-                errorButtonTitle = ErrorButtonTitles.continueTitle
+                errorButtonTitle = ErrorButtonTitles.dismissTitle
                 return NSLocalizedString("Your Site was created. Unfortunately, we were unable to set the Site Tagline. You can set the Tagline in the Site Settings.", comment: "Error shown during site creation process when setting the site tagline fails.")
             case .settingTheme:
-                errorButtonTitle = ErrorButtonTitles.continueTitle
+                errorButtonTitle = ErrorButtonTitles.dismissTitle
                 return NSLocalizedString("Your Site was created. Unfortunately, we were unable to set the Site Theme. You can set the Theme in the Site Settings.", comment: "Error shown during site creation process when setting the site theme fails.")
             case .syncing:
-                errorButtonTitle = ErrorButtonTitles.continueTitle
+                errorButtonTitle = ErrorButtonTitles.dismissTitle
                 return NSLocalizedString("Your Site was created. Unfortunately, we were unable to sync your account information. You can still access your site from My Sites.", comment: "Error shown during site creation process when syncing the account fails.")
             }
         }()
