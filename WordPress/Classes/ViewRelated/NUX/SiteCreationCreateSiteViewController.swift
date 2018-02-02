@@ -15,6 +15,12 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     private var lastStatus: SiteCreationStatus?
     private var returnToViewController: UIViewController?
 
+    private var errorButtonTitle: String?
+    struct ErrorButtonTitles {
+        static let continueTitle = NSLocalizedString("Continue", comment: "Button text on site creation error page.")
+        static let tryAgainTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -36,7 +42,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
         if let vc = segue.destination as? NoResultsViewController {
             let title = NSLocalizedString("Something went wrong...", comment: "Primary message on site creation error page.")
-            let buttonTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
+            let buttonTitle = errorButtonTitle ?? ErrorButtonTitles.tryAgainTitle
             let imageName = "site-creation-error"
 
             vc.delegate = self
@@ -67,6 +73,8 @@ private extension SiteCreationCreateSiteViewController {
         configureContentLabel.text = NSLocalizedString("Configure site content...", comment: "Text shown during the site creation process when it is on the third step.")
         configureStyleLabel.text = NSLocalizedString("Configure site style...", comment: "Text shown during the site creation process when it is on the fourth step.")
         preparingFrontendLabel.text = NSLocalizedString("Preparing frontend...", comment: "Text shown during the site creation process when it is on the fifth step.")
+
+        errorButtonTitle = ErrorButtonTitles.tryAgainTitle
     }
 
 }
@@ -154,6 +162,7 @@ private extension SiteCreationCreateSiteViewController {
         case themeSelection
         case details
         case domainSuggestion
+        case createSite
     }
 
     /// Determines the error message displayed to the user depending on
@@ -189,17 +198,23 @@ private extension SiteCreationCreateSiteViewController {
         errorMessage = {
             switch lastStatus {
             case .validating:
+                setReturnViewController(for: .domainSuggestion)
                 return NSLocalizedString("The Site Domain is invalid.", comment: "Error shown during site creation process when the site domain validation fails.")
             case .gettingDefaultAccount:
+                setReturnViewController(for: .createSite)
                 return NSLocalizedString("We were unable to get your account information.", comment: "Error shown during site creation process when the account cannot be obtained.")
             case .creatingSite:
+                setReturnViewController(for: .createSite)
                 return NSLocalizedString("We were unable to create the site.", comment: "Error shown during site creation process when the site creation fails.")
             case .settingTagline:
-                return NSLocalizedString("We were unable to set the Site Tagline.", comment: "Error shown during site creation process when setting the site tagline fails.")
+                errorButtonTitle = ErrorButtonTitles.continueTitle
+                return NSLocalizedString("Your Site was created. Unfortunately, we were unable to set the Site Tagline. You can set the Tagline in the Site Settings.", comment: "Error shown during site creation process when setting the site tagline fails.")
             case .settingTheme:
-                return NSLocalizedString("We were unable to set the Site Theme.", comment: "Error shown during site creation process when setting the site theme fails.")
+                errorButtonTitle = ErrorButtonTitles.continueTitle
+                return NSLocalizedString("Your Site was created. Unfortunately, we were unable to set the Site Theme. You can set the Theme in the Site Settings.", comment: "Error shown during site creation process when setting the site theme fails.")
             case .syncing:
-                return NSLocalizedString("We were unable to sync your account information.", comment: "Error shown during site creation process when syncing the account fails.")
+                errorButtonTitle = ErrorButtonTitles.continueTitle
+                return NSLocalizedString("Your Site was created. Unfortunately, we were unable to sync your account information. You can still access your site from My Sites.", comment: "Error shown during site creation process when syncing the account fails.")
             }
         }()
     }
@@ -230,6 +245,10 @@ private extension SiteCreationCreateSiteViewController {
                 return viewControllers.first(where: {
                     $0.isKind(of: SiteCreationDomainsViewController.self)
                 })
+            case .createSite:
+                return viewControllers.first(where: {
+                    $0.isKind(of: SiteCreationCreateSiteViewController.self)
+                })
             }
         }()
     }
@@ -242,6 +261,8 @@ extension SiteCreationCreateSiteViewController: NoResultsViewControllerDelegate 
     func actionButtonPressed() {
         if let returnToViewController = returnToViewController {
             navigationController?.popToViewController(returnToViewController, animated: true)
+        } else {
+            navigationController?.dismiss(animated: true, completion: nil)
         }
     }
 
