@@ -10,7 +10,7 @@ class SiteCreationNoSitesViewController: UIViewController {
 
     @objc weak var delegate: SiteCreationNoSitesViewControllerDelegate?
     @IBOutlet weak var noSitesTitle: UILabel!
-    @IBOutlet weak var addSiteButton: LoginButton!
+    @IBOutlet weak var addSiteButton: NUXButton!
 
     // MARK: - View
 
