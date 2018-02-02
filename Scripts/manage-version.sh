@@ -15,6 +15,19 @@ OUTPUT_RED="\033[31m"
 OUTPUT_GREEN="\033[32m"
 OUTPUT_BOLD="\033[1m"
 
+# PList files
+buildPLists=("Info.plist" 
+    "WordPressShareExtension/Info.plist" 
+    "WordPressTodayWidget/Info.plist")
+
+intPLists=("WordPress-Internal-Info.plist" \
+    "WordPressShareExtension/Info-Alpha.plist" \
+    "WordPressShareExtension/Info-Internal.plist" \
+    "WordPressTodayWidget/Info-Alpha.plist" \
+    "WordPressTodayWidget/Info-Internal.plist" \
+    "Wordpress-Alpha-Info.plist")
+
+
 ### Function definitions
 # Show script usage, commands and options
 function showUsage() {
@@ -129,9 +142,11 @@ function verifyParams() {
 
 # Shows the configuration the script received
 function showConfig() {
-    echo "Build version: $newVer"
-    echo "Internal version: $newIntVer"
-    echo "Release branch: $releaseBranch"
+    showMessage "Current build version: $currentVer"
+    showMessage "Current internal version: $currentIntVer"
+    showMessage "New build version: $newVer"
+    showMessage "New internal version: $newIntVer"
+    showMessage "Release branch: $releaseBranch"
 }
 
 # Appends an init line to the log
@@ -219,16 +234,6 @@ function updatePlistArray() {
 
 # Updates the pList files
 function updatePLists() {
-    local buildPLists=("Info.plist" 
-            "WordPressShareExtension/Info.plist" 
-            "WordPressTodayWidget/Info.plist")
-    local intPLists=("WordPress-Internal-Info.plist" \
-            "WordPressShareExtension/Info-Alpha.plist" \
-            "WordPressShareExtension/Info-Internal.plist" \
-            "WordPressTodayWidget/Info-Alpha.plist" \
-            "WordPressTodayWidget/Info-Internal.plist" \
-            "Wordpress-Alpha-Info.plist")
-
     updatePlistArray buildPLists[@] "$newVer"
     updatePlistArray intPLists[@] "$newIntVer"
 }
@@ -237,7 +242,9 @@ function updatePLists() {
 function updateBranch() {
     if [ $cmd == $CMD_UPDATE ]; then
         startLog
+        checkVersions
         showTitleMessage "Updating the current branch to version $newMainVer..."
+        showConfig
     fi
 
     showMessage "Updating Fastlane deliver file..."
@@ -256,6 +263,7 @@ function updateBranch() {
 # Creates a new branch for the release and updates the relevant files
 function createBranch() {
     startLog
+    checkVersions
     showTitleMessage "Creating new Release branch for version $newMainVer..."
     showConfig
     doBranching
@@ -266,6 +274,59 @@ function createBranch() {
     updateBranch
     showOkMessage "Success!"
     stopLog
+}
+
+# Reads a version from a Plist file
+function readVersion() {
+    cFile="../WordPress/$1"
+    if [ -f "$cFile" ]; then
+        tmp=$(sed -n "$(awk '/CFBundleVersion/{ print NR + 1; exit }' "$cFile")p" "$cFile" | cut -d'>' -f 2 | cut -d'<' -f 1)
+    else
+        showErrorMessage "$cFile not found. Can't read version. Are you in the correct branch/folder?"
+        exit 1
+    fi
+}
+
+# Reads the current internal and external versions
+function getCurrentVersions() {
+    printf "Reading current version in this branch..."
+    readVersion ${buildPLists[0]}
+    currentVer=$tmp
+
+    readVersion ${intPLists[0]}
+    currentIntVer=$tmp 
+    echo "Done."
+}
+
+# Check coherency between current and updating version
+function checkVersion() {
+    firstVer=$1
+    secondVer=$2
+    if [ $firstVer == $secondVer ]; then
+        showErrorMessage "Current branch is already on version $firstVer"
+        stopOnError
+    fi
+
+    nvp=( ${firstVer//./ } )
+    cvp=( ${secondVer//./ } )
+
+    idx=0
+    for i in "${nvp[@]}"
+    do
+        if [ $i -gt ${cvp[idx]} ]; then
+            return
+        elif [ $i -lt ${cvp[idx]} ]; then
+            showErrorMessage "New version $firstVer is lower than current version $secondVer"
+            stopOnError
+        fi
+        ((idx++))
+    done
+}
+
+# Check coherency between current and updating versions
+function checkVersions() {
+    checkVersion $newVer $currentVer
+    checkVersion $newIntVer $currentIntVer
 }
 
 ### Script main
@@ -281,10 +342,13 @@ cmd=$1
 newVer=$2
 newIntVer=$3
 newMainVer=0
+currentVer=0
+currentIntVer=0
 releaseBranch="release/"
 logFile="/tmp/manage-version.log"
 
 verifyParams
+getCurrentVersions
 if [ $cmd == $CMD_CREATE ]; then
     createBranch
 elif [ $cmd == $CMD_UPDATE ]; then
