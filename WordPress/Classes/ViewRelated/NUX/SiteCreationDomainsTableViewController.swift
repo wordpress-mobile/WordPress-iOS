@@ -51,8 +51,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         }
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIDevice.isPad() ? .all : .portrait
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
     }
 
     /// Fetches new domain suggestions based on the provided string

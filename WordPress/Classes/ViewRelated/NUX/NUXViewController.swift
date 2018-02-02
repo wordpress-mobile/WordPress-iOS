@@ -15,6 +15,10 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         }
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     // MARK: associated type for NUXSegueHandler
     /// Segue identifiers to avoid using strings
     enum SegueIdentifier: String {
