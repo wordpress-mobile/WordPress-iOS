@@ -105,6 +105,12 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
         addSubview(activityIndicator)
     }
 
+    internal func attemptConfigure(forced: Bool) -> Bool {
+        let canAttempt = !alreadyConfigured || alreadyConfigured && forced
+        alreadyConfigured = true
+        return canAttempt
+    }
+
 
     /// Configures the border color.
     ///

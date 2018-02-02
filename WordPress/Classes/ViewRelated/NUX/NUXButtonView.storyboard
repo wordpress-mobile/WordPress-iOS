@@ -27,29 +27,29 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xzf-f5-7zQ" userLabel="Button Stack View">
                                 <rect key="frame" x="20" y="20" width="335" height="108"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knN-O6-M86">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knN-O6-M86" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
                                         <accessibility key="accessibilityConfiguration" identifier="connectSite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="YB6-LI-NGI"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <state key="normal" title="Secondary Button" backgroundImage="beveled-secondary-button">
+                                        <state key="normal" title="Secondary Button">
                                             <color key="titleColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="secondaryButtonPressed:" destination="aOG-7h-6d9" eventType="touchUpInside" id="UXk-DD-td0"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M7J-a3-klP">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M7J-a3-klP" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="64" width="335" height="44"/>
                                         <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="SiB-Xy-stR"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <state key="normal" title="Primary Button" backgroundImage="beveled-blue-button">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Primary Button">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <state key="selected" backgroundImage="beveled-blue-button-down"/>
                                         <state key="highlighted" backgroundImage="beveled-blue-button-down">
@@ -76,9 +76,9 @@
                     </view>
                     <size key="freeformSize" width="375" height="148"/>
                     <connections>
-                        <outlet property="primaryButton" destination="M7J-a3-klP" id="cpl-TM-lX1"/>
-                        <outlet property="secondaryButton" destination="knN-O6-M86" id="3fN-Bh-Z8O"/>
+                        <outlet property="bottomButton" destination="M7J-a3-klP" id="cpl-TM-lX1"/>
                         <outlet property="shadowView" destination="RrB-Aa-ADd" id="LZa-Jn-ghb"/>
+                        <outlet property="topButton" destination="knN-O6-M86" id="3fN-Bh-Z8O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7sJ-Ej-Lr7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -87,9 +87,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="beveled-blue-button" width="18" height="19"/>
         <image name="beveled-blue-button-down" width="18" height="19"/>
-        <image name="beveled-secondary-button" width="18" height="19"/>
         <image name="darkgrey-shadow" width="10" height="10"/>
     </resources>
 </document>

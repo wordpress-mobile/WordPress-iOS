@@ -59,7 +59,7 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="fwZ-QE-5et" kind="show" id="ttc-1d-dkK"/>
+                                            <segue destination="fwZ-QE-5et" kind="show" identifier="showEmailLogin" id="ttc-1d-dkK"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5na-fB-S4z" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
@@ -1626,23 +1626,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WTT-3e-E71" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2456" y="261"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="zvn-VB-Xtn">
-            <objects>
-                <viewController id="PrO-Ov-SDT" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="CQu-lS-KR2"/>
-                        <viewControllerLayoutGuide type="bottom" id="VC2-w1-Lz6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9jc-AE-OS5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nHC-la-uxY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <resources>
