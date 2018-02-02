@@ -47,7 +47,7 @@ class MediaCoordinator: NSObject {
     @discardableResult
     private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) -> Media {
         mediaProgressCoordinator.track(numberOfItems: 1)
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = MediaService(managedObjectContext: mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
         let media = service.createMedia(with: asset,
