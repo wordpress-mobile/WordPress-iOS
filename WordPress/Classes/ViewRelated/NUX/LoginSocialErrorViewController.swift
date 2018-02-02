@@ -12,31 +12,20 @@ protocol LoginSocialErrorViewControllerDelegate {
 class LoginSocialErrorViewController: NUXTableViewController {
     fileprivate var errorTitle: String
     fileprivate var errorDescription: String
+    fileprivate var restrictToWPCom = false
     @objc var delegate: LoginSocialErrorViewControllerDelegate?
+    @objc var handler: ImmuTableViewHandler!
 
-    fileprivate enum Sections: Int {
-        case titleAndDescription = 0
-        case buttons = 1
-
-        static var count: Int {
-            return buttons.rawValue + 1
-        }
-    }
-
-    fileprivate enum Buttons: Int {
-        case tryEmail = 0
-        case tryAddress = 1
-        case signup = 2
-    }
 
     /// Create and instance of LoginSocialErrorViewController
     ///
     /// - Parameters:
     ///   - title: The title that will be shown on the error VC
     ///   - description: A brief explination of what failed during social login
-    @objc init(title: String, description: String) {
+    @objc init(title: String, description: String, restrictToWPCom: Bool) {
         errorTitle = title
         errorDescription = description
+        self.restrictToWPCom = restrictToWPCom
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -53,115 +42,97 @@ class LoginSocialErrorViewController: NUXTableViewController {
 
         view.backgroundColor = WPStyleGuide.greyLighten30()
         addWordPressLogoToNavController()
+
+        ImmuTable.registerRows([
+            LoginSocialErrorDescriptionRow.self,
+            LoginSocialErrorButtonRow.self,
+            ], tableView: self.tableView)
+
+        handler = ImmuTableViewHandler(takeOver: self)
+        handler.viewModel = tableViewModel()
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == Sections.buttons.rawValue,
-            let delegate = delegate else {
+    fileprivate func tableViewModel() -> ImmuTable {
+        let descriptionRow = LoginSocialErrorDescriptionRow(title: errorTitle, detail: errorDescription)
+
+        var buttonRows = [ImmuTableRow]()
+        buttonRows.append(LoginSocialErrorButtonRow(buttonText: NSLocalizedString("Try with another email", comment: "When social login fails, this button offers to let the user try again with a differen email address"),
+                                                    buttonIcon: Gridicon.iconOfType(.undo),
+                                                    action: retryWithEmailAction()))
+
+        if !restrictToWPCom {
+            buttonRows.append(LoginSocialErrorButtonRow(buttonText: NSLocalizedString("Try with the site address", comment: "When social login fails, this button offers to let them try tp login using a URL"),
+                                                        buttonIcon: Gridicon.iconOfType(.domains),
+                                                        action: retryWithAddressAction()))
+        }
+        buttonRows.append(LoginSocialErrorButtonRow(buttonText: NSLocalizedString("Sign up", comment: "When social login fails, this button offers to let them signup for a new WordPress.com account"),
+                                                    buttonIcon: Gridicon.iconOfType(.mySites),
+                                                    action: retryAsSignUpAction()))
+
+        return ImmuTable(sections: [
+            ImmuTableSection(rows: [descriptionRow]),
+            ImmuTableSection(rows: buttonRows)
+            ])
+
+    }
+
+    /// MARK: - ImmuTable Actions
+    func retryWithEmailAction() -> ImmuTableAction {
+        return { [weak self] _ in
+            self?.delegate?.retryWithEmail()
+        }
+    }
+
+    func retryWithAddressAction() -> ImmuTableAction {
+        return { [weak self] _ in
+            self?.delegate?.retryWithAddress()
+        }
+    }
+
+    func retryAsSignUpAction() -> ImmuTableAction {
+        return { [weak self] _ in
+            self?.delegate?.retryAsSignup()
+        }
+    }
+}
+
+
+// MARK: ImmuTableRows
+
+struct LoginSocialErrorDescriptionRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(LoginSocialErrorCell.self)
+    var title: String = ""
+    var detail: String = ""
+    var action: ImmuTableAction?
+
+    init(title: String, detail: String) {
+        self.title = title
+        self.detail = detail
+    }
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? LoginSocialErrorCell else {
             return
         }
-
-        switch indexPath.row {
-        case Buttons.tryEmail.rawValue:
-            delegate.retryWithEmail()
-        case Buttons.tryAddress.rawValue:
-            delegate.retryWithAddress()
-        case Buttons.signup.rawValue:
-            fallthrough
-        default:
-            delegate.retryAsSignup()
-        }
+        cell.configureCell(title, errorDescription: detail)
     }
 }
 
+struct LoginSocialErrorButtonRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(UITableViewCell.self)
+    var buttonText: String
+    var buttonIcon: UIImage
+    var action: ImmuTableAction?
 
-// MARK: UITableViewDelegate methods
-
-extension LoginSocialErrorViewController {
-    private struct RowHeightConstants {
-        static let estimate: CGFloat = 45.0
-        static let automatic: CGFloat = UITableViewAutomaticDimension
+    init(buttonText: String, buttonIcon: UIImage, action: @escaping ImmuTableAction) {
+        self.buttonText = buttonText
+        self.buttonIcon = buttonIcon
+        self.action = action
     }
 
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return RowHeightConstants.estimate
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return RowHeightConstants.automatic
-    }
-}
-
-
-// MARK: UITableViewDataSource methods
-
-extension LoginSocialErrorViewController {
-    private struct Constants {
-        static let buttonCount = 3
-    }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return Sections.count
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case Sections.titleAndDescription.rawValue:
-            return 1
-        case Sections.buttons.rawValue:
-            return Constants.buttonCount
-        default:
-            return 0
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell
-        switch indexPath.section {
-        case Sections.titleAndDescription.rawValue:
-            cell = titleAndDescriptionCell()
-        case Sections.buttons.rawValue:
-            fallthrough
-        default:
-            cell = buttonCell(index: indexPath.row)
-        }
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footer = UIView()
-        footer.backgroundColor = WPStyleGuide.greyLighten20()
-        return footer
-    }
-
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.5
-    }
-
-    private func titleAndDescriptionCell() -> UITableViewCell {
-        return LoginSocialErrorCell(title: errorTitle, description: errorDescription)
-    }
-
-    private func buttonCell(index: Int) -> UITableViewCell {
-        let cell = UITableViewCell()
-        let buttonText: String
-        let buttonIcon: UIImage
-        switch index {
-        case Buttons.tryEmail.rawValue:
-            buttonText = NSLocalizedString("Try with another email", comment: "When social login fails, this button offers to let the user try again with a differen email address")
-            buttonIcon = Gridicon.iconOfType(.undo)
-        case Buttons.tryAddress.rawValue:
-            buttonText = NSLocalizedString("Try with the site address", comment: "When social login fails, this button offers to let them try tp login using a URL")
-            buttonIcon = Gridicon.iconOfType(.domains)
-        case Buttons.signup.rawValue:
-            fallthrough
-        default:
-            buttonText = NSLocalizedString("Sign up", comment: "When social login fails, this button offers to let them signup for a new WordPress.com account")
-            buttonIcon = Gridicon.iconOfType(.mySites)
-        }
+    func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = buttonText
         cell.textLabel?.textColor = WPStyleGuide.darkGrey()
         cell.imageView?.image = buttonIcon.imageWithTintColor(WPStyleGuide.grey())
-        return cell
     }
 }
