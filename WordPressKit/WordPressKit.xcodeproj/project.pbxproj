@@ -205,6 +205,7 @@
 		74FC6F411F191C1D00112505 /* notifications-last-seen.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3D1F191C1D00112505 /* notifications-last-seen.json */; };
 		74FC6F421F191C1D00112505 /* notifications-load-hash.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3E1F191C1D00112505 /* notifications-load-hash.json */; };
 		74FC6F431F191C1D00112505 /* notifications-load-all.json in Resources */ = {isa = PBXBuildFile; fileRef = 74FC6F3F1F191C1D00112505 /* notifications-load-all.json */; };
+		8236EB4D2024B9F8007C7CF9 /* RemoteBlogJetpackModulesSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8236EB4C2024B9F8007C7CF9 /* RemoteBlogJetpackModulesSettings.swift */; };
 		826016F11F9FA13A00533B6C /* ActivityServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826016F01F9FA13A00533B6C /* ActivityServiceRemote.swift */; };
 		826016F31F9FA17B00533B6C /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826016F21F9FA17B00533B6C /* Activity.swift */; };
 		826016F91F9FAF6300533B6C /* activity-log-success-3.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F41F9FAF6300533B6C /* activity-log-success-3.json */; };
@@ -586,6 +587,7 @@
 		74FC6F3D1F191C1D00112505 /* notifications-last-seen.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-last-seen.json"; sourceTree = "<group>"; };
 		74FC6F3E1F191C1D00112505 /* notifications-load-hash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-load-hash.json"; sourceTree = "<group>"; };
 		74FC6F3F1F191C1D00112505 /* notifications-load-all.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-load-all.json"; sourceTree = "<group>"; };
+		8236EB4C2024B9F8007C7CF9 /* RemoteBlogJetpackModulesSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteBlogJetpackModulesSettings.swift; sourceTree = "<group>"; };
 		826016F01F9FA13A00533B6C /* ActivityServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityServiceRemote.swift; sourceTree = "<group>"; };
 		826016F21F9FA17B00533B6C /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		826016F41F9FAF6300533B6C /* activity-log-success-3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-success-3.json"; sourceTree = "<group>"; };
@@ -1131,6 +1133,7 @@
 				93C674E51EE8345300BFAF05 /* RemoteBlog.h */,
 				93C674E61EE8345300BFAF05 /* RemoteBlog.m */,
 				82FFBF511F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift */,
+				8236EB4C2024B9F8007C7CF9 /* RemoteBlogJetpackModulesSettings.swift */,
 				82FFBF4F1F45EFD100F4573F /* RemoteBlogJetpackSettings.swift */,
 				93C674E91EE8348F00BFAF05 /* RemoteBlogOptionsHelper.h */,
 				93C674EA1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.m */,
@@ -1894,6 +1897,7 @@
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				7433BC011EFC4505002D9E92 /* PlanServiceRemote.swift in Sources */,
 				74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */,
+				8236EB4D2024B9F8007C7CF9 /* RemoteBlogJetpackModulesSettings.swift in Sources */,
 				740B23BB1F17EC7300067A2A /* PostServiceRemoteXMLRPC.m in Sources */,
 				74B5F0E31EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m in Sources */,
 				74E2295C1F1E77290085F7F2 /* KeyringConnectionExternalUser.swift in Sources */,
