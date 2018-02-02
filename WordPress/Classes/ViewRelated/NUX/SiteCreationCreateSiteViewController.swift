@@ -4,9 +4,6 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
     // MARK: - Properties
 
-    // Used to store Site Creation user options.
-    var siteOptions: [String: Any]?
-
     @IBOutlet weak var layingFoundationLabel: UILabel!
     @IBOutlet weak var retrievingInformationLabel: UILabel!
     @IBOutlet weak var configureContentLabel: UILabel!
@@ -46,14 +43,12 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
     private func createSite() {
 
-        // Make sure we have the bare minimum before proceeding.
-        guard let siteOptions = siteOptions,
-            let siteURL = siteOptions["domain"] as? String,
-            let siteTitle = siteOptions["title"] as? String else {
-                DDLogError("Error while creating site: siteURL and/or siteTitle missing.")
-                // TODO: show whoops view
-                showAlertWithMessage("Fail: URL and/or Title missing.")
-                return
+        // Make sure we have all required info before proceeding.
+        if let error = SiteCreationFields.validateFields() {
+            DDLogError("Error while creating site: \(String(describing: error))")
+            // TODO: show whoops view
+            showAlertWithMessage("Error: \(String(describing: error))")
+            return
         }
 
         // Blocks for Create Site process
@@ -81,16 +76,13 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             self.showAlertWithMessage("Fail: '\(String(describing: error)).")
         }
 
-        // Get optional values from dictionary
-        let siteTagline = siteOptions["tagline"] as? String
-        let siteTheme = siteOptions["theme"] as? Theme
-
         // Start the site creation process
+        let siteCreationFields = SiteCreationFields.sharedInstance
         let service = SiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.createSite(siteURL: siteURL,
-                           siteTitle: siteTitle,
-                           siteTagline: siteTagline,
-                           siteTheme: siteTheme,
+        service.createSite(siteURL: siteCreationFields.domain,
+                           siteTitle: siteCreationFields.title,
+                           siteTagline: siteCreationFields.tagline,
+                           siteTheme: siteCreationFields.theme,
                            status: statusBlock,
                            success: successBlock,
                            failure: failureBlock)
