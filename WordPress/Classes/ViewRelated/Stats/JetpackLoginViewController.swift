@@ -140,7 +140,7 @@ class JetpackLoginViewController: UIViewController {
 
         if jetPack.isConnected {
             if jetPack.isUpdatedToRequiredVersion {
-                message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! \n" +
+                message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! " +
                                             "Log in with your WordPress.com credentials to enable " +
                                             "Stats and Notifications.",
                                             comment: "Message asking the user to sign into Jetpack with WordPress.com credentials")
