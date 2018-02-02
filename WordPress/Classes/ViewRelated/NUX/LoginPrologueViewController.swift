@@ -1,7 +1,9 @@
 import UIKit
 import Lottie
 
-class LoginPrologueViewController: UIViewController {
+class LoginPrologueViewController: UIViewController, NUXButtonViewControllerDelegate {
+
+    private var buttonViewController: NUXButtonViewController?
 
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var signupButton: UIButton!
@@ -37,6 +39,24 @@ class LoginPrologueViewController: UIViewController {
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
+    }
+
+    // MARK: - Segue
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        if let vc = segue.destination as? NUXButtonViewController {
+            buttonViewController = vc
+            buttonViewController?.delegate = self
+            buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
+            buttonViewController?.setButtonTitles(primary: "One", secondary: "Two")
+            //showButtonView(show: false, withAnimation: false)
+        }
+    }
+
+    func primaryButtonPressed() {
+        //
     }
 
     // MARK: - Setup and Config

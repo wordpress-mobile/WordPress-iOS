@@ -20,7 +20,7 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
     @IBOutlet weak var siteTitleField: LoginTextField!
     @IBOutlet weak var taglineField: LoginTextField!
     @IBOutlet weak var tagDescriptionLabel: UILabel!
-    @IBOutlet weak var nextButton: LoginButton!
+    @IBOutlet weak var nextButton: NUXButton!
     override var sourceTag: SupportSourceTag {
         get {
             return .wpComCreateSiteDetails
