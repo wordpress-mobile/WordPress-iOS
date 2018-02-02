@@ -9428,6 +9428,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8236EB4E2024CBCD007C7CF9 /* WordPress 71.xcdatamodel */,
 				E1D6B552200E36B900325669 /* WordPress 70.xcdatamodel */,
 				E6452B7C1FEAF4DC00D21BF1 /* WordPress 69.xcdatamodel */,
 				821738071FE03F7A00BEC94C /* WordPress 68.xcdatamodel */,
@@ -9499,7 +9500,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E1D6B552200E36B900325669 /* WordPress 70.xcdatamodel */;
+			currentVersion = 8236EB4E2024CBCD007C7CF9 /* WordPress 71.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
