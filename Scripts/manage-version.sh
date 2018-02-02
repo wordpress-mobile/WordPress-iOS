@@ -39,6 +39,7 @@ function showUsage() {
     echo "   Available commands:"
     echo "      $CMD_CREATE (or $CMD_CREATE_SHORT): creates the new branch and updates the version IDs"
     echo "      $CMD_UPDATE (or $CMD_UPDATE_SHORT): updates the version IDs"
+    echo "      $CMD_FORCE (or $CMD_FORCE_SHORT): force the update to the provided version, skipping the checks."
     echo ""
     echo "Example: $exeName create 9.3.0"
     echo "Example: $exeName update 9.3.0.1"
