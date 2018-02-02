@@ -1,7 +1,7 @@
 import UIKit
 import Lottie
 
-class LoginPrologueViewController: UIViewController, NUXButtonViewControllerDelegate {
+class LoginPrologueViewController: UIViewController {
 
     private var buttonViewController: NUXButtonViewController?
 
@@ -22,7 +22,7 @@ class LoginPrologueViewController: UIViewController, NUXButtonViewControllerDele
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        configureButtonVC()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
@@ -48,15 +48,22 @@ class LoginPrologueViewController: UIViewController, NUXButtonViewControllerDele
 
         if let vc = segue.destination as? NUXButtonViewController {
             buttonViewController = vc
-            buttonViewController?.delegate = self
-            buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
-            buttonViewController?.setButtonTitles(primary: "One", secondary: "Two")
-            //showButtonView(show: false, withAnimation: false)
         }
     }
 
-    func primaryButtonPressed() {
-        //
+    private func configureButtonVC() {
+        guard let buttonViewController = buttonViewController else {
+            return
+        }
+
+        let topButtonTitle = NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form.")
+        let bottomButtonTitle = NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site.")
+        buttonViewController.setupTopButton(title: topButtonTitle, isPrimary: true) { [weak self] in
+            self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showEmailLogin.rawValue, sender: self)
+        }
+        buttonViewController.setupButtomButton(title: bottomButtonTitle, isPrimary: false) { [weak self] in
+            self?.signupTapped()
+        }
     }
 
     // MARK: - Setup and Config

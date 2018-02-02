@@ -6,17 +6,20 @@ import UIKit
 }
 
 class NUXButtonViewController: UIViewController {
+    typealias CallBackType = () -> Void
 
     // MARK: - Properties
 
     @IBOutlet var shadowView: UIView?
-    @IBOutlet var primaryButton: UIButton?
-    @IBOutlet var secondaryButton: UIButton?
+    @IBOutlet var bottomButton: NUXButton?
+    @IBOutlet var topButton: NUXButton?
 
     open var delegate: NUXButtonViewControllerDelegate?
 
-    private var primaryButtonTitle: String?
-    private var secondaryButtonTitle: String?
+    private var bottomButtonTitle: String?
+    private var topButtonTitle: String?
+    private var topCallback: CallBackType?
+    private var bottomCallback: CallBackType?
 
     // MARK: - View
 
@@ -28,16 +31,18 @@ class NUXButtonViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        primaryButton?.setTitle(primaryButtonTitle, for: UIControlState())
-        primaryButton?.accessibilityIdentifier = accessibilityIdentifierForString(primaryButtonTitle)
+        bottomButton?.setTitle(bottomButtonTitle, for: UIControlState())
+        bottomButton?.accessibilityIdentifier = accessibilityIdentifierForString(bottomButtonTitle)
 
-        secondaryButton?.setTitle(secondaryButtonTitle, for: UIControlState())
-        secondaryButton?.accessibilityIdentifier = accessibilityIdentifierForString(secondaryButtonTitle)
+        topButton?.setTitle(topButtonTitle, for: UIControlState())
+        topButton?.accessibilityIdentifier = accessibilityIdentifierForString(topButtonTitle)
 
         // Hide secondary button if title is not provided.
-        secondaryButton?.isHidden = (secondaryButtonTitle ?? "").isEmpty
+        topButton?.isHidden = (topButtonTitle ?? "").isEmpty
+        bottomButton?.isHidden = (bottomButtonTitle ?? "").isEmpty
     }
 
+    // MARK: public API
 
     /// Public method to set the button titles.
     ///
@@ -45,8 +50,22 @@ class NUXButtonViewController: UIViewController {
     ///   - primary: Title string for primary button. Required.
     ///   - secondary: Title string for secondary button. Optional.
     func setButtonTitles(primary: String, secondary: String? = nil) {
-        primaryButtonTitle = primary
-        secondaryButtonTitle = secondary
+        bottomButtonTitle = primary
+        topButtonTitle = secondary
+    }
+
+    func setupTopButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
+        topButtonTitle = title
+        topButton?.isPrimary = isPrimary
+        topButton?.isHidden = false
+        topCallback = callback
+    }
+
+    func setupButtomButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
+        bottomButtonTitle = title
+        bottomButton?.isPrimary = isPrimary
+        bottomButton?.isHidden = false
+        bottomCallback = callback
     }
 
     // MARK: - Helpers
@@ -59,11 +78,19 @@ class NUXButtonViewController: UIViewController {
     // MARK: - Button Handling
 
     @IBAction func primaryButtonPressed(_ sender: Any) {
-        delegate?.primaryButtonPressed()
+        guard let callback = bottomCallback else {
+            delegate?.primaryButtonPressed()
+            return
+        }
+        callback()
     }
 
     @IBAction func secondaryButtonPressed(_ sender: Any) {
-        delegate?.secondaryButtonPressed?()
+        guard let callback = topCallback else {
+            delegate?.secondaryButtonPressed?()
+            return
+        }
+        callback()
     }
 
 }
