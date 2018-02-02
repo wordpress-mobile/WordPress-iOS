@@ -43,6 +43,7 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingDateAndTimeFormat,
     SiteSettingsPostPerPage,
+    SiteSettingsSpeedUpYourSite,
     SiteSettingsWritingCount,
 };
 
@@ -90,6 +91,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 @property (nonatomic, strong) SettingTableViewCell *dateAndTimeFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *postsPerPageCell;
+@property (nonatomic, strong) SettingTableViewCell *speedUpYourSiteCell;
 #pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
 #pragma mark - Traffic Section
@@ -221,7 +223,12 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         }
         case SiteSettingsSectionWriting:
         {
-            return SiteSettingsWritingCount;
+            if ([self.blog supports:BlogFeatureJetpackImageSettings]) {
+                return SiteSettingsWritingCount;
+            } else {
+                // The last setting, Speed Up Your Site is only available for Jetpack sites
+                return SiteSettingsWritingCount - 1;
+            }
         }
         case SiteSettingsSectionDiscussion:
         {
@@ -358,6 +365,19 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _postsPerPageCell;
 }
 
+- (SettingTableViewCell *)speedUpYourSiteCell
+{
+    if (_speedUpYourSiteCell) {
+        return _speedUpYourSiteCell;
+    }
+
+    _speedUpYourSiteCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Speed up your site", @"Label for selecting the Speed up your site Settings section")
+                                                              editable:YES
+                                                       reuseIdentifier:nil];
+    return _speedUpYourSiteCell;
+}
+
+
 - (SettingTableViewCell *)discussionSettingsCell
 {
     if (_discussionSettingsCell) {
@@ -450,6 +470,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         case (SiteSettingsPostPerPage):
             [self configurePostsPerPageCell];
             return self.postsPerPageCell;
+
+        case (SiteSettingsSpeedUpYourSite):
+            return self.speedUpYourSiteCell;
+
     }
     return nil;
 }
@@ -938,6 +962,10 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
         case SiteSettingsPostPerPage:
             [self showPostPerPageSetting];
+            break;
+
+        case SiteSettingsSpeedUpYourSite:
+            [self showSpeedUpYourSiteSettings];
             break;
     }
 }
