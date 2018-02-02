@@ -62,6 +62,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = ShareColors.aztecBackground
+        textView.tintColor = ShareColors.aztecCursorColor
         textView.linkTextAttributes = NSAttributedStringKey.convertToRaw(attributes: linkAttributes)
         textView.textAlignment = .natural
 
@@ -108,7 +109,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
+        textView.tintColor = ShareColors.aztecCursorColor
+        textView.backgroundColor = ShareColors.aztecBackground
         textView.spellCheckingType = .default
 
         return textView
@@ -206,8 +208,10 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        dismissIfNeeded()
-        startListeningToNotifications()
+        verifyAuthCredentials {
+            startListeningToNotifications()
+            makeRichTextViewFirstResponderAndPlaceCursorAtEnd()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1197,6 +1201,18 @@ private extension ShareExtensionEditorViewController {
         originalKeyboardFrame = .zero
     }
 
+    func makeRichTextViewFirstResponderAndPlaceCursorAtEnd() {
+        // Unfortunatly, we need set the first responder and cursor position in this manner otherwise
+        // some odd scrolling behavior occurs when inserting images into the share ext editor.
+        DispatchQueue.main.async {
+            if !self.richTextView.isFirstResponder {
+                self.richTextView.becomeFirstResponder()
+            }
+            let newPosition = self.richTextView.endOfDocument
+            self.richTextView.selectedTextRange = self.richTextView.textRange(from: newPosition, to: newPosition)
+        }
+    }
+
     func resetPresentationViewUsingKeyboardFrame(_ keyboardFrame: CGRect = .zero) {
         guard let presentationController = navigationController?.presentationController as? ExtensionPresentationController else {
             return
@@ -1231,14 +1247,15 @@ private extension ShareExtensionEditorViewController {
         }
     }
 
-    func dismissIfNeeded() {
+    func verifyAuthCredentials(onSuccess: (() -> Void)) {
         guard oauth2Token == nil else {
+            onSuccess()
             return
         }
 
-        let title = NSLocalizedString("Login to WordPress to Share", comment: "Share extension dialog title - displayed when user is missing a login token.")
-        let message = NSLocalizedString("Please launch the WordPress app and log in, then try again.", comment: "Share extension dialog text  - displayed when user is missing a login token.")
-        let accept = NSLocalizedString("Cancel Sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
+        let title = NSLocalizedString("Sharing error", comment: "Share extension dialog title - displayed when user is missing a login token.")
+        let message = NSLocalizedString("Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again.", comment: "Share extension dialog text  - displayed when user is missing a login token.")
+        let accept = NSLocalizedString("Cancel sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
@@ -1278,6 +1295,7 @@ fileprivate extension ShareExtensionEditorViewController {
         static let aztecLinkColor                       = WPStyleGuide.mediumBlue()
         static let aztecFormatBarDisabledColor          = WPStyleGuide.greyLighten20()
         static let aztecFormatBarDividerColor           = WPStyleGuide.greyLighten30()
+        static let aztecCursorColor                     = WPStyleGuide.wordPressBlue()
         static let aztecFormatBarBackgroundColor        = UIColor.white
         static let aztecFormatBarInactiveColor: UIColor = UIColor(hexString: "7B9AB1")
         static let aztecFormatBarActiveColor: UIColor   = UIColor(hexString: "11181D")
