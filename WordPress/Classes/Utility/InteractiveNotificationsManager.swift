@@ -118,6 +118,20 @@ final class InteractiveNotificationsManager: NSObject {
                         break
                     }
                 }
+            case .shareUploadSuccess:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    ShareNoticeNavigationCoordinator.navigateToPostList(with: userInfo)
+                    return true
+                }
+
+                if let action = NoteActionDefinition(rawValue: identifier) {
+                    switch action {
+                    case .shareEditPost:
+                        ShareNoticeNavigationCoordinator.presentEditor(with: userInfo)
+                    default:
+                        break
+                    }
+                }
             default: break
             }
         }
@@ -216,6 +230,7 @@ private extension InteractiveNotificationsManager {
         case commentReplyWithLike   = "replyto-like-comment"
         case mediaUploadSuccess     = "media-upload-success"
         case mediaUploadFailure     = "media-upload-failure"
+        case shareUploadSuccess     = "share-upload-success"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -231,6 +246,8 @@ private extension InteractiveNotificationsManager {
                 return [.mediaWritePost]
             case .mediaUploadFailure:
                 return [.mediaRetry]
+            case .shareUploadSuccess:
+                return [.shareEditPost]
             }
         }
 
@@ -250,8 +267,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, shareUploadSuccess]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, shareUploadSuccess]
     }
 
 
@@ -264,6 +281,7 @@ private extension InteractiveNotificationsManager {
         case commentReply     = "COMMENT_REPLY"
         case mediaWritePost   = "MEDIA_WRITE_POST"
         case mediaRetry       = "MEDIA_RETRY"
+        case shareEditPost    = "SHARE_EDIT_POST"
 
         var description: String {
             switch self {
@@ -277,6 +295,8 @@ private extension InteractiveNotificationsManager {
                 return NSLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
             case .mediaRetry:
                 return NSLocalizedString("Retry", comment: "Opens the media library .")
+            case .shareEditPost:
+                return NSLocalizedString("Edit Post", comment: "Opens the editor to edit an existing post.")
             }
         }
 
@@ -294,7 +314,7 @@ private extension InteractiveNotificationsManager {
 
         var requiresForeground: Bool {
             switch self {
-            case .mediaWritePost, .mediaRetry:
+            case .mediaWritePost, .mediaRetry, .shareEditPost:
                 return true
             default: return false
             }
@@ -327,7 +347,7 @@ private extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, shareEditPost]
     }
 }
 

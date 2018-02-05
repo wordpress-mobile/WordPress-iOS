@@ -20,6 +20,12 @@ class ShareNoticeNavigationCoordinator {
         WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
     }
 
+    static func navigateToPostList(with userInfo: NSDictionary) {
+        if let post = post(from: userInfo) {
+            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+        }
+    }
+
     private static func post(from userInfo: NSDictionary) -> Post? {
         let context = ContextManager.sharedInstance().mainContext
 
