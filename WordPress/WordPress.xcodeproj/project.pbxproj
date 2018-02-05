@@ -406,6 +406,7 @@
 		822D60B11F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822D60B01F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift */; };
 		822D60B91F4CCC7A0016C46D /* BlogJetpackSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */; };
 		82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82301B8E1E787420009C9C4E /* AppRatingUtilityTests.swift */; };
+		8236EB4B20248FF1007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8236EB4A20248FF0007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift */; };
 		825327581FBF7CD600B8B7D2 /* ActivityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */; };
 		8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */ = {isa = PBXBuildFile; fileRef = 8261B4CA1EA8E13700668298 /* SVProgressHUD+Dismiss.m */; };
 		827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827704F01F607C0E002E8A03 /* JetpackConnectionViewController.swift */; };
@@ -1704,6 +1705,8 @@
 		822D60B01F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackSecuritySettingsViewController.swift; sourceTree = "<group>"; };
 		822D60B81F4CCC7A0016C46D /* BlogJetpackSettingsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogJetpackSettingsService.swift; sourceTree = "<group>"; };
 		82301B8E1E787420009C9C4E /* AppRatingUtilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRatingUtilityTests.swift; sourceTree = "<group>"; };
+		8236EB4A20248FF0007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackSpeedUpSiteSettingsViewController.swift; sourceTree = "<group>"; };
+		8236EB4E2024CBCD007C7CF9 /* WordPress 71.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 71.xcdatamodel"; sourceTree = "<group>"; };
 		825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityUtils.swift; sourceTree = "<group>"; };
 		8261B4CA1EA8E13700668298 /* SVProgressHUD+Dismiss.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SVProgressHUD+Dismiss.m"; sourceTree = "<group>"; };
 		8261B4CB1EA8E13700668298 /* SVProgressHUD+Dismiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD+Dismiss.h"; sourceTree = "<group>"; };
@@ -4319,6 +4322,7 @@
 				B5AC00671BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift */,
 				827704F01F607C0E002E8A03 /* JetpackConnectionViewController.swift */,
 				822D60B01F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift */,
+				8236EB4A20248FF0007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift */,
 				FF42584E1BA092EE00580C68 /* RelatedPostsSettingsViewController.h */,
 				FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */,
 				FF1933FD1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.h */,
@@ -6770,6 +6774,7 @@
 				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */,
+				8236EB4B20248FF1007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
 				31C9F82E1A2368A2008BB945 /* BlogDetailHeaderView.m in Sources */,
@@ -9432,6 +9437,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				8236EB4E2024CBCD007C7CF9 /* WordPress 71.xcdatamodel */,
 				E1D6B552200E36B900325669 /* WordPress 70.xcdatamodel */,
 				E6452B7C1FEAF4DC00D21BF1 /* WordPress 69.xcdatamodel */,
 				821738071FE03F7A00BEC94C /* WordPress 68.xcdatamodel */,
@@ -9503,7 +9509,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E1D6B552200E36B900325669 /* WordPress 70.xcdatamodel */;
+			currentVersion = 8236EB4E2024CBCD007C7CF9 /* WordPress 71.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
