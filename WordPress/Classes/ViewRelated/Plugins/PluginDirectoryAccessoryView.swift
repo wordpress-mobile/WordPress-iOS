@@ -3,9 +3,28 @@ import Gridicons
 
 struct PluginDirectoryAccessoryView {
 
-    static let imageSize = CGSize(width: 14, height: 14)
+    static func accessoryView(plugin: PluginDirectoryEntry) -> UIView {
+        return PluginDirectoryAccessoryView.stars(count: plugin.starRating)
+    }
 
-    static func active() -> UIView {
+    static func accessoryView(pluginState: PluginState) -> UIView {
+        guard pluginState.active else {
+            return PluginDirectoryAccessoryView.inactive()
+        }
+
+        switch pluginState.updateState {
+        case .available:
+            return PluginDirectoryAccessoryView.needsUpdate()
+        case .updating:
+            return PluginDirectoryAccessoryView.updating()
+        case .updated:
+            return PluginDirectoryAccessoryView.active()
+        }
+    }
+
+    private static let imageSize = CGSize(width: 14, height: 14)
+
+    private static func active() -> UIView {
         let icon = Gridicon.iconOfType(.checkmark, withSize: PluginDirectoryAccessoryView.imageSize)
         let color = WPStyleGuide.validGreen()
         let text = NSLocalizedString("Active", comment: "Describes a status of a plugin")
@@ -13,7 +32,7 @@ struct PluginDirectoryAccessoryView {
         return PluginDirectoryAccessoryView.label(with: icon, tintColor: color, text: text)
     }
 
-    static func inactive() -> UIView {
+    private static func inactive() -> UIView {
         let icon = Gridicon.iconOfType(.cross, withSize: PluginDirectoryAccessoryView.imageSize)
         let color = WPStyleGuide.greyDarken10()
         let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
@@ -21,7 +40,7 @@ struct PluginDirectoryAccessoryView {
         return PluginDirectoryAccessoryView.label(with: icon, tintColor: color, text: text)
     }
 
-    static func needsUpdate() -> UIView {
+    private static func needsUpdate() -> UIView {
         let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryView.imageSize)
         let color = WPStyleGuide.warningYellow()
         let text = NSLocalizedString("Needs Update", comment: "Describes a status of a plugin")
@@ -29,7 +48,7 @@ struct PluginDirectoryAccessoryView {
         return PluginDirectoryAccessoryView.label(with: icon, tintColor: color, text: text)
     }
 
-    static func updating() -> UIView {
+    private static func updating() -> UIView {
         let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryView.imageSize)
         let color = WPStyleGuide.warningYellow()
         let text = NSLocalizedString("Updating", comment: "Describes a status of a plugin")
@@ -65,7 +84,7 @@ struct PluginDirectoryAccessoryView {
         return container
     }
 
-    static func stars(count: Double) -> UIView {
+    private static func stars(count: Double) -> UIView {
         let totalStars = 5
 
         let starImageSize = CGSize(width: 12, height: 12)
@@ -75,6 +94,7 @@ struct PluginDirectoryAccessoryView {
 
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
+        container.widthAnchor.constraint(equalToConstant: totalWidth).isActive = true
 
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +106,7 @@ struct PluginDirectoryAccessoryView {
         stackView.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         stackView.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        stackView.widthAnchor.constraint(equalToConstant: totalWidth).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
 
         let (wholeStars, half) = modf(count)
 
@@ -157,8 +177,5 @@ struct PluginDirectoryAccessoryView {
 
         return container
     }
-
 }
-
-
 

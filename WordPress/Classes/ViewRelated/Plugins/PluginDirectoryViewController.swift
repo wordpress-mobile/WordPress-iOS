@@ -47,7 +47,7 @@ class PluginDirectoryViewController: UITableViewController {
 
         let handler = ImmuTableViewHandler(takeOver: self)
         handler.automaticallyDeselectCells = true
-        handler.viewModel = viewModel.tableViewModel(presenter: self)
+        handler.viewModel = viewModel.tableViewModel(presenter: self, listPresenter: self)
 
         immuHandler = handler
     }
@@ -65,7 +65,7 @@ class PluginDirectoryViewController: UITableViewController {
 
 
     func reloadTable() {
-        immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
+        immuHandler?.viewModel = viewModel.tableViewModel(presenter: self, listPresenter: self)
     }
 
 }
@@ -81,6 +81,12 @@ extension PluginDirectoryViewController: PluginPresenter {
         navigationController?.pushViewController(pluginVC, animated: true)
     }
 
+}
 
+extension PluginDirectoryViewController: PluginListPresenter {
+    func present(site: JetpackSiteRef, query: PluginQuery) {
+        let listVC = PluginListViewController(site: site, query: query)
+        navigationController?.pushViewController(listVC, animated: true)
+    }
 }
 
