@@ -5,12 +5,14 @@ enum ShareNoticeUserInfoKey {
 
 struct ShareNoticeViewModel {
     private let uploadedPost: PostUploadOperation
+    private let uploadedMedia: [MediaUploadOperation]?
 
-    init?(postOperation: PostUploadOperation) {
+    init?(postOperation: PostUploadOperation, mediaOperations: [MediaUploadOperation]? = nil) {
         guard postOperation.currentStatus != .pending, postOperation.currentStatus != .inProgress else {
             return nil
         }
         self.uploadedPost = postOperation
+        self.uploadedMedia = mediaOperations
     }
 
     private var uploadSuccessful: Bool {
@@ -36,7 +38,7 @@ struct ShareNoticeViewModel {
                       notificationInfo: notificationInfo,
                       actionTitle: NSLocalizedString("Edit Post", comment: "Button title. Opens the editor to edit an existing post."),
                       actionHandler: {
-                        ShareNoticeNavigationCoordinator.presentEditor(for: post, source: "share_upload_notification")
+                        ShareNoticeNavigationCoordinator.presentEditor(for: post, source: "share_success_notification")
         })
     }
 
@@ -68,18 +70,35 @@ struct ShareNoticeViewModel {
 
     var notificationTitle: String {
         if uploadSuccessful {
-            return NSLocalizedString("Post uploaded", comment: "Title on alert displayed to the user when a single post has been uploaded.")
+            return successfulDescription
         } else {
-            return NSLocalizedString("Post upload failed", comment: "Title on alert displayed to the user when a single post has failed to upload.")
+            return failedDescription
         }
     }
 
-    var notificationBody: String? {
-        if uploadSuccessful {
-            return postInContext?.titleForDisplay() ?? NSLocalizedString("1 post successfully shared", comment: "Alert displayed to the user when a single post has been successfully shared.")
-        } else {
-            return NSLocalizedString("1 post not uploaded", comment: "Alert displayed to the user when a single post item has failed to upload.")
+    var notificationBody: String {
+        let dateString = postInContext?.dateForDisplay()?.mediumString() ?? Date().mediumString()
+        return "\(dateString)."
+    }
+
+    private var successfulDescription: String {
+        guard let uploadedMedia = uploadedMedia else {
+            return NSLocalizedString("1 post uploaded.", comment: "Alert displayed to the user when a single post has been successfully uploaded.")
         }
+
+        return pluralize(uploadedMedia.count,
+                         singular: NSLocalizedString("Successfully uploaded 1 post, 1 file.", comment: "System notification displayed to the user when a single post and 1 file has uploaded successfully."),
+                         plural: NSLocalizedString("Successfully uploaded 1 post, %ld files.", comment: "System notification displayed to the user when a single post and multiple files have uploaded successfully."))
+    }
+
+    private var failedDescription: String {
+        guard let uploadedMedia = uploadedMedia else {
+            return NSLocalizedString("Unable to upload 1 post.", comment: "Alert displayed to the user when a single post has failed to upload.")
+        }
+
+        return pluralize(uploadedMedia.count,
+                         singular: NSLocalizedString("Unable to upload 1 post, 1 file.", comment: "Alert displayed to the user when a single post and 1 file has failed to upload."),
+                         plural: NSLocalizedString("Unable to upload 1 post, %ld files.", comment: "Alert displayed to the user when a single post and multiple files have failed to upload."))
     }
 
     private var postInContext: Post? {
@@ -99,5 +118,16 @@ struct ShareNoticeViewModel {
         }
 
         return post
+    }
+}
+
+/// Helper method to provide the singular or plural (formatted) version of a
+/// string based on a count.
+///
+private func pluralize(_ count: Int, singular: String, plural: String) -> String {
+    if count == 1 {
+        return singular
+    } else {
+        return String(format: plural, count)
     }
 }

@@ -1,7 +1,7 @@
 import UIKit
 
 /// This class simply exists to coordinate the display of various sections of
-/// the app in response to actions taken by the user from app extension notifications.
+/// the app in response to actions taken by the user from share/app extension notifications.
 ///
 class ShareNoticeNavigationCoordinator {
     static func presentEditor(with userInfo: NSDictionary) {
@@ -13,7 +13,7 @@ class ShareNoticeNavigationCoordinator {
     }
 
     static func presentEditor(for post: Post, source: String) {
-        //FIXME: Add analytics
+        WPAppAnalytics.track(.notificationsShareSuccessEditPost, with: post)
 
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
