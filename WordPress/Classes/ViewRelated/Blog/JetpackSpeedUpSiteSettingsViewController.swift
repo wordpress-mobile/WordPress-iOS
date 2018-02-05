@@ -53,8 +53,8 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
 
-        let serveImagesFromOurServers = SwitchRow(title: NSLocalizedString("Server images from our servers",
-                                                                           comment: "Title for the Server images from our servers setting"),
+        let serveImagesFromOurServers = SwitchRow(title: NSLocalizedString("Serve images from our servers",
+                                                                           comment: "Title for the Serve images from our servers setting"),
                                                   value: self.settings.jetpackServeImagesFromOurServers,
                                                   onChange: self.serveImagesFromOurServersValueChanged())
 
@@ -70,7 +70,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
                 footerText: NSLocalizedString("Jetpack will optimize your images and serve them from the server " +
                                               "location nearest to your visitors. Using our global content delivery " +
                                               "network will boost the loading speed of your site.",
-                                              comment: "Footer for the Server images from our servers setting")),
+                                              comment: "Footer for the Serve images from our servers setting")),
 
 
             ImmuTableSection(
@@ -80,7 +80,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
                                               "New images will load just before they scroll into view. This prevents " +
                                               "viewers from having to download all the images on a page all at once, " +
                                               "even ones they can't see.",
-                                              comment: "Footer for the Server images from our servers setting")),
+                                              comment: "Footer for the Serve images from our servers setting")),
         ])
     }
 
