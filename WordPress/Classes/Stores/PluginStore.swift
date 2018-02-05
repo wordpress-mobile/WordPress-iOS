@@ -24,22 +24,32 @@ enum PluginQuery {
     case all(site: JetpackSiteRef)
     case featured(site: JetpackSiteRef)
     case feed(type: PluginDirectoryFeedType)
+    case directoryEntry(slug: String)
 
     var site: JetpackSiteRef? {
         switch self {
         case .all(let site), .featured(let site):
             return site
-        case .feed:
+        case .feed, .directoryEntry:
             return nil
         }
     }
 
     var feedType: PluginDirectoryFeedType? {
         switch self {
-        case .all:
+        case .all, .directoryEntry, .featured:
             return nil
         case .feed(let feedType):
             return feedType
+        }
+    }
+
+    var slug: String? {
+        switch self {
+        case .directoryEntry(let slug):
+            return slug
+        case .all, .feed, .featured:
+            return nil
         }
     }
 }
@@ -66,7 +76,7 @@ enum PluginDirectoryEntryState {
         case .missing(let date):
             return date
         case .present(let entry), .partial(let entry):
-            return entry.lastUpdated
+            return entry.lastUpdated ?? .distantPast
         }
     }
 
@@ -205,6 +215,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             enableAutoupdatesPlugin(pluginID: pluginID, site: site)
         case .disableAutoupdates(let pluginID, let site):
             disableAutoupdatesPlugin(pluginID: pluginID, site: site)
+        case .install(let slug, let site):
+            installPlugin(slug: slug, site: site)
         case .update(let pluginID, let site):
             updatePlugin(pluginID: pluginID, site: site)
         case .remove(let pluginID, let site):
@@ -250,6 +262,10 @@ extension PluginStore {
         return getPlugins(site: site)?.plugins.first(where: { $0.id == id })
     }
 
+    func getPlugin(slug: String, site: JetpackSiteRef) -> Plugin? {
+        return getPlugins(site: site)?.plugins.first(where: { $0.state.slug == slug })
+    }
+
     func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry] {
         guard let fetchedFeaturedSlugs = state.featuredPluginsSlugs[site] else { return [] }
 
@@ -262,6 +278,10 @@ extension PluginStore {
 
     func isFetchingPlugins(site: JetpackSiteRef) -> Bool {
         return state.fetching[site, default: false]
+    }
+
+    func isInstallingPlugin(site: JetpackSiteRef, slug: String) -> Bool {
+        return state.updatesInProgress[site, default: Set()].contains(slug)
     }
 
     func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry] {
@@ -372,6 +392,37 @@ private extension PluginStore {
                 self?.state.modifyPlugin(id: pluginID, site: site, change: { (plugin) in
                     plugin.autoupdate = true
                 })
+        })
+    }
+
+    func installPlugin(slug: String, site: JetpackSiteRef) {
+        guard let remote = remote(site: site),
+            !state.updatesInProgress[site, default: Set()].contains(slug),
+            getPlugin(slug: slug, site: site) == nil else {
+                return
+        }
+
+        transaction { state in
+            state.updatesInProgress[site, default: Set()].insert(slug)
+        }
+
+        remote.install(
+            pluginSlug: slug,
+            siteID: site.siteID,
+            success: { [weak self] plugin in
+                self?.transaction { state in
+                    state.plugins[site]?.plugins.append(plugin)
+                    state.updatesInProgress[site]?.remove(slug)
+                }
+
+                let message = NSLocalizedString("Succesfully installed \(plugin.name).", comment: "Notice displayed after installing a plug-in.")
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
+            },
+            failure: { [weak self] error in
+                self?.state.updatesInProgress[site]?.remove(slug)
+
+                let message = NSLocalizedString("Error installing plugin.", comment: "Notice displayed after attempt to install a plugin fails.")
+                self?.notifyRemoteError(message: message, error: error)
         })
     }
 

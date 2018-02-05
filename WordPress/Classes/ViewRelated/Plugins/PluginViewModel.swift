@@ -2,26 +2,72 @@ import Foundation
 import WordPressFlux
 
 class PluginViewModel: Observable {
-    var plugin: Plugin {
+    var plugin: Plugin? {
         didSet {
             changeDispatcher.dispatch()
         }
     }
-    let capabilities: SitePluginCapabilities
+
+    var directoryEntry: PluginDirectoryEntry? {
+        didSet {
+            changeDispatcher.dispatch()
+        }
+    }
+
+    var isInstallingPlugin: Bool {
+        didSet {
+            if isInstallingPlugin != oldValue {
+                changeDispatcher.dispatch()
+            }
+        }
+    }
+
+
     let site: JetpackSiteRef
+    var capabilities: SitePluginCapabilities?
+
     var storeReceipt: Receipt?
     let changeDispatcher = Dispatcher<Void>()
+    let queryReceipt: Receipt?
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.plugin = plugin
+        self.directoryEntry = plugin.directoryEntry
         self.capabilities = capabilities
         self.site = site
+        self.isInstallingPlugin = false
+
+        queryReceipt = nil
         storeReceipt = store.onChange { [weak self] in
             guard let plugin = store.getPlugin(id: plugin.id, site: site) else {
                 self?.dismiss?()
                 return
             }
+
             self?.plugin = plugin
+            self?.directoryEntry = plugin.directoryEntry
+        }
+    }
+
+    init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        self.plugin = store.getPlugin(slug: directoryEntry.slug, site: site)
+        self.directoryEntry = directoryEntry
+        self.capabilities = store.getPlugins(site: site)?.capabilities
+        self.site = site
+        self.isInstallingPlugin = false
+
+        queryReceipt = store.query(.directoryEntry(slug: directoryEntry.slug))
+
+        storeReceipt = store.onChange { [weak self] in
+            guard let entry = store.getPluginDirectoryEntry(slug: directoryEntry.slug) else {
+                self?.dismiss?()
+                return
+            }
+
+            self?.directoryEntry = entry
+            self?.plugin = store.getPlugin(slug: entry.slug, site: site)
+            self?.capabilities = store.getPlugins(site: site)?.capabilities
+            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: directoryEntry.slug)
         }
     }
 
@@ -29,9 +75,52 @@ class PluginViewModel: Observable {
     var dismiss: (() -> Void)?
 
     var versionRow: ImmuTableRow? {
-        guard let version = plugin.state.version else { return nil }
+        let versionString: String?
 
-        let versionRow: ImmuTableRow?
+        if plugin?.state.version != nil {
+            versionString = plugin?.state.version
+        } else {
+            versionString = directoryEntry?.version
+        }
+
+        guard let version = versionString else {
+            // If there's neither `Plugin` nor `PluginDirectoryEntry` that has a `version`, we don't show this row.
+
+            return nil
+        }
+
+        guard let capabilities = capabilities, capabilities.modify == true else {
+            // If we know about versions, but we can't update/install the plugin, just show the version number.
+            return TextRow(title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
+                           value: version)
+        }
+
+        guard let plugin = plugin else {
+            // This means we have capabilities to update a Plugin, but we're not looking at an already-installed plugin.
+            // We're gonna show a "install plugin" button.
+            guard let directoryEntry = directoryEntry else {
+                return nil
+            }
+
+            let message = NSLocalizedString("Version \(version)", comment: "Version of a plugin to install")
+
+            guard !isInstallingPlugin else {
+                return TextWithButtonIndicatingActivityRow(
+                    title: message,
+                    subtitle: nil)
+            }
+
+            return TextWithButtonRow(
+                title: message,
+                subtitle: nil,
+                actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
+                onButtonTap: { [unowned self] _ in
+                    ActionDispatcher.dispatch(PluginAction.install(slug: directoryEntry.slug, site: self.site))
+                }
+            )
+        }
+
+        let versionRow: ImmuTableRow
 
         switch plugin.state.updateState {
         case .updated:
@@ -48,7 +137,7 @@ class PluginViewModel: Observable {
                 subtitle: subtitle,
                 actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
                 onButtonTap: { [unowned self] (_) in
-                    ActionDispatcher.dispatch(PluginAction.update(id: self.plugin.id, site: self.site))
+                    ActionDispatcher.dispatch(PluginAction.update(id: plugin.id, site: self.site))
                 }
             )
         case .updating(let newVersion):
@@ -64,138 +153,174 @@ class PluginViewModel: Observable {
         return versionRow
     }
 
+    private func headerRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
+        guard let entry = directoryEntry else { return nil }
+
+        return PluginHeaderRow(
+            directoryEntry: entry,
+            onLinkTap: { [unowned self] in
+                guard let url = entry.authorURL else { return }
+                self.presentBrowser(for: url)
+        })
+    }
+
+    private func activeRow(plugin: Plugin?) -> ImmuTableRow? {
+        guard let activationPlugin = plugin,
+            activationPlugin.state.deactivateAllowed else { return nil }
+
+        return SwitchRow(
+            title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
+            value: activationPlugin.state.active,
+            onChange: { [unowned self] (active) in
+                self.setActive(active, for: activationPlugin)
+            }
+        )
+    }
+
+    private func autoUpdatesRow(plugin: Plugin?, capabilities: SitePluginCapabilities?) -> ImmuTableRow? {
+        guard let autoUpdatePlugin = plugin,
+            let siteCapabilities = capabilities,
+            siteCapabilities.autoupdate && !autoUpdatePlugin.state.automanaged else { return nil }
+
+        return SwitchRow(
+            title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
+            value: autoUpdatePlugin.state.autoupdate,
+            onChange: { [unowned self] (autoupdate) in
+                self.setAutoupdate(autoupdate, for: autoUpdatePlugin)
+            }
+        )
+    }
+
+    private func removeRow(plugin: Plugin?, capabilities: SitePluginCapabilities?) -> ImmuTableRow? {
+        guard let pluginToRemove = plugin,
+            let siteCapabilities = capabilities,
+            siteCapabilities.modify && pluginToRemove.state.deactivateAllowed else { return nil }
+
+        return  DestructiveButtonRow(
+            title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
+            action: { [unowned self] _ in
+                let alert = self.confirmRemovalAlert(plugin: pluginToRemove)
+                self.present?(alert)
+            },
+            accessibilityIdentifier: "remove-plugin")
+    }
+
+    private func settingsLinkRow(state: PluginState?) -> ImmuTableRow? {
+        guard let pluginState = state,
+            let settingsURL = pluginState.settingsURL,
+            pluginState.deactivateAllowed == true  else {
+                return nil
+        }
+
+        return LinkRow(
+            title: NSLocalizedString("Settings", comment: "Link to plugin's Settings"),
+            action: { [unowned self] _ in
+                self.presentBrowser(for: settingsURL)
+            }
+        )
+    }
+
+    private func wpOrgLinkRow(directoryEntry: PluginDirectoryEntry?, state: PluginState?) -> ImmuTableRow? {
+        guard let url = state?.directoryURL, directoryEntry != nil else { return nil }
+
+        return LinkRow(
+            title: NSLocalizedString("WordPress.org Plugin Page", comment: "Link to a WordPress.org page for the plugin"),
+            action: { [unowned self] _ in
+                self.presentBrowser(for: url)
+        })
+    }
+
+    private func homeLinkRow(state: PluginState?) -> ImmuTableRow? {
+        guard let homeURL = state?.homeURL else { return nil }
+
+        return LinkRow(
+            title: NSLocalizedString("Plugin Homepage", comment: "Link to a plugin's home page"),
+            action: { [unowned self] _ in
+                self.presentBrowser(for: homeURL)
+        })
+    }
+
+    private func descriptionRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
+        guard let text = directoryEntry?.descriptionText else { return nil }
+
+        return ExpandableRow(
+            title: NSLocalizedString("Description", comment: "Title of section that contains plugins' description"),
+            expandedText: setHTMLTextAttributes(text),
+            expanded: descriptionExpandedStatus,
+            action: { [unowned self] _ in
+                self.descriptionExpandedStatus = !self.descriptionExpandedStatus
+                //row?.expanded = self.descriptionExpandedStatus
+            },
+            onLinkTap: { [unowned self] url in
+                self.presentBrowser(for: url)
+        })
+    }
+
+    private func installationRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
+        guard let text = directoryEntry?.installationText else { return nil }
+
+        return ExpandableRow(
+            title: NSLocalizedString("Installation", comment: "Title of section that contains plugins' installation instruction"),
+            expandedText: setHTMLTextAttributes(text),
+            expanded: installationExpandedStatus,
+            action: { [unowned self] _ in
+                self.installationExpandedStatus = !self.installationExpandedStatus
+                //installationRow?.expanded = self.installationExpandedStatus
+            },
+            onLinkTap: { [unowned self] url in
+                self.presentBrowser(for: url)
+        })
+    }
+
+    private func changelogRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
+        guard let text = directoryEntry?.changelogText else { return nil }
+
+        return ExpandableRow(
+            title: NSLocalizedString("What's New", comment: "Title of section that contains plugins' change log"),
+            expandedText: setHTMLTextAttributes(text),
+            expanded: changeLogExpandedStatus,
+            action: { [unowned self] _ in
+                self.changeLogExpandedStatus = !self.changeLogExpandedStatus
+                //changelogRow?.expanded = self.changeLogExpandedStatus
+            },
+            onLinkTap: { [unowned self] url in
+                self.presentBrowser(for: url)
+        })
+    }
+
+    private func faqRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
+        guard let text = directoryEntry?.faqText else { return nil }
+
+        return ExpandableRow(
+            title: NSLocalizedString("Frequently Asked Questions", comment: "Title of section that contains plugins' FAQ"),
+            expandedText: setHTMLTextAttributes(text),
+            expanded: faqExpandedStatus,
+            action: { [unowned self] _ in
+                self.faqExpandedStatus = !self.faqExpandedStatus
+                //faqRow?.expanded = self.faqExpandedStatus
+            },
+            onLinkTap: { [unowned self] url in
+                self.presentBrowser(for: url)
+        })
+    }
+    
     var tableViewModel: ImmuTable {
 
-        var header: ImmuTableRow?
-        if let directory = plugin.directoryEntry {
-            header = PluginHeaderRow(
-                directoryEntry: directory,
-                onLinkTap: { [unowned self] in
-                    guard let url = directory.authorURL else { return }
-                    self.presentBrowser(for: url)
-            })
-        }
+        let header = headerRow(directoryEntry: directoryEntry)
 
-        var activeRow: ImmuTableRow?
-        if plugin.state.deactivateAllowed {
-            activeRow = SwitchRow(
-                title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
-                value: plugin.state.active,
-                onChange: { [unowned self] (active) in
-                    self.setActive(active)
-                }
-            )
-        }
+        let active = activeRow(plugin: plugin)
+        let autoupdates = autoUpdatesRow(plugin: plugin, capabilities: capabilities)
 
-        var autoupdatesRow: ImmuTableRow?
-        if capabilities.autoupdate && !plugin.state.automanaged {
-            autoupdatesRow = SwitchRow(
-                title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
-                value: plugin.state.autoupdate,
-                onChange: { [unowned self] (autoupdate) in
-                    self.setAutoupdate(autoupdate)
-                }
-            )
-        }
+        let settingsLink = settingsLinkRow(state: plugin?.state)
+        let wpOrgPluginLink = wpOrgLinkRow(directoryEntry: directoryEntry, state: plugin?.state)
+        let homeLink = homeLinkRow(state: plugin?.state)
 
-        var removeRow: ImmuTableRow?
-        if capabilities.modify && plugin.state.deactivateAllowed {
-            removeRow = DestructiveButtonRow(
-                title: NSLocalizedString("Remove Plugin", comment: "Button to remove a plugin from a site"),
-                action: { [unowned self] _ in
-                    let alert = self.confirmRemovalAlert(plugin: self.plugin)
-                    self.present?(alert)
-                },
-                accessibilityIdentifier: "remove-plugin")
-        }
+        let description = descriptionRow(directoryEntry: directoryEntry)
+        let installation = installationRow(directoryEntry: directoryEntry)
+        let changelog = changelogRow(directoryEntry: directoryEntry)
+        let faq = faqRow(directoryEntry: directoryEntry)
 
-        var settingsLink: ImmuTableRow?
-        if let settingsURL = plugin.state.settingsURL, plugin.state.deactivateAllowed == true {
-            settingsLink = LinkRow(
-                title: NSLocalizedString("Settings", comment: "Link to plugin's Settings"),
-                action: { [unowned self] _ in
-                    self.presentBrowser(for: settingsURL)
-
-            })
-        }
-
-        var wpOrgPluginLink: ImmuTableRow?
-        if plugin.directoryEntry != nil {
-            wpOrgPluginLink = LinkRow(
-                title: NSLocalizedString("WordPress.org Plugin Page", comment: "Link to a WordPress.org page for the plugin"),
-                action: { [unowned self] _ in
-                  self.presentBrowser(for: self.plugin.state.directoryURL)
-            })
-        }
-
-        var homeLink: ImmuTableRow?
-        if let homeURL = plugin.state.homeURL {
-            homeLink = LinkRow(
-                title: NSLocalizedString("Plugin Homepage", comment: "Link to a plugin's home page"),
-                action: { [unowned self] _ in
-                    self.presentBrowser(for: homeURL)
-            })
-        }
-
-        var descriptionRow: ExpandableRow?
-        if let description = plugin.directoryEntry?.descriptionText {
-            descriptionRow = ExpandableRow(
-                title: NSLocalizedString("Description", comment: "Title of section that contains plugins' description"),
-                expandedText: setHTMLTextAttributes(description),
-                expanded: descriptionExpandedStatus,
-                action: { [unowned self] _ in
-                    self.descriptionExpandedStatus = !self.descriptionExpandedStatus
-                    descriptionRow?.expanded = self.descriptionExpandedStatus
-                },
-                onLinkTap: { [unowned self] url in
-                    self.presentBrowser(for: url)
-            })
-        }
-
-        var installationRow: ExpandableRow?
-        if let installation = plugin.directoryEntry?.installationText {
-            installationRow = ExpandableRow(
-                title: NSLocalizedString("Installation", comment: "Title of section that contains plugins' installation instruction"),
-                expandedText: setHTMLTextAttributes(installation),
-                expanded: installationExpandedStatus,
-                action: { [unowned self] _ in
-                    self.installationExpandedStatus = !self.installationExpandedStatus
-                    installationRow?.expanded = self.installationExpandedStatus
-                },
-                onLinkTap: { [unowned self] url in
-                    self.presentBrowser(for: url)
-            })
-        }
-
-        var changelogRow: ExpandableRow?
-        if let changelog = plugin.directoryEntry?.changelogText {
-            changelogRow = ExpandableRow(
-                title: NSLocalizedString("What's New", comment: "Title of section that contains plugins' change log"),
-                expandedText: setHTMLTextAttributes(changelog),
-                expanded: changeLogExpandedStatus,
-                action: { [unowned self] _ in
-                    self.changeLogExpandedStatus = !self.changeLogExpandedStatus
-                    changelogRow?.expanded = self.changeLogExpandedStatus
-                },
-                onLinkTap: { [unowned self] url in
-                    self.presentBrowser(for: url)
-            })
-        }
-
-        var faqRow: ExpandableRow?
-        if let faq = plugin.directoryEntry?.faqText {
-            faqRow = ExpandableRow(
-                title: NSLocalizedString("Frequently Asked Questions", comment: "Title of section that contains plugins' FAQ"),
-                expandedText: setHTMLTextAttributes(faq),
-                expanded: faqExpandedStatus,
-                action: { [unowned self] _ in
-                    self.faqExpandedStatus = !self.faqExpandedStatus
-                    faqRow?.expanded = self.faqExpandedStatus
-                },
-                onLinkTap: { [unowned self] url in
-                    self.presentBrowser(for: url)
-            })
-        }
+        let remove = removeRow(plugin: plugin, capabilities: capabilities)
 
         return ImmuTable(optionalSections: [
             ImmuTableSection(optionalRows: [
@@ -203,8 +328,8 @@ class PluginViewModel: Observable {
                 versionRow
                 ]),
             ImmuTableSection(optionalRows: [
-                activeRow,
-                autoupdatesRow
+                active,
+                autoupdates
                 ]),
             ImmuTableSection(optionalRows: [
                 settingsLink,
@@ -212,13 +337,13 @@ class PluginViewModel: Observable {
                 homeLink
                 ]),
             ImmuTableSection(optionalRows: [
-                descriptionRow,
-                installationRow,
-                changelogRow,
-                faqRow
+                description,
+                installation,
+                changelog,
+                faq
                 ]),
             ImmuTableSection(optionalRows: [
-                removeRow
+                remove
                 ])
             ])
     }
@@ -249,7 +374,7 @@ class PluginViewModel: Observable {
         alert.addDestructiveActionWithTitle(
             NSLocalizedString("Remove", comment: "Alert button to confirm a plugin to be removed"),
             handler: { [unowned self] _ in
-                ActionDispatcher.dispatch(PluginAction.remove(id: self.plugin.id, site: self.site))
+                ActionDispatcher.dispatch(PluginAction.remove(id: plugin.id, site: self.site))
             }
         )
         return alert
@@ -261,7 +386,7 @@ class PluginViewModel: Observable {
         self.present?(navigationController)
     }
 
-    private func setActive(_ active: Bool) {
+    private func setActive(_ active: Bool, `for` plugin: Plugin) {
         if active {
             ActionDispatcher.dispatch(PluginAction.activate(id: plugin.id, site: site))
         } else {
@@ -269,7 +394,7 @@ class PluginViewModel: Observable {
         }
     }
 
-    private func setAutoupdate(_ autoupdate: Bool) {
+    private func setAutoupdate(_ autoupdate: Bool, `for` plugin: Plugin) {
         if autoupdate {
             ActionDispatcher.dispatch(PluginAction.enableAutoupdates(id: plugin.id, site: site))
         } else {
@@ -328,7 +453,7 @@ class PluginViewModel: Observable {
     }
 
     var title: String {
-        return plugin.name
+        return plugin?.name ?? directoryEntry?.name ?? "foo"
     }
 
     private var descriptionExpandedStatus: Bool = true

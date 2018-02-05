@@ -150,6 +150,11 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 // MARK: - PluginPresenter
 
 extension PluginListViewController: PluginPresenter {
+    func present(directoryEntry: PluginDirectoryEntry) {
+        let controller = PluginViewController(directoryEntry: directoryEntry, site: site)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
     func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
         let controller = PluginViewController(plugin: plugin, capabilities: capabilities, site: site)
         navigationController?.pushViewController(controller, animated: true)
