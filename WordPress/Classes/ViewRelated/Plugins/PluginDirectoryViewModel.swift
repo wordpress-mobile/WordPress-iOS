@@ -34,7 +34,7 @@ class PluginDirectoryViewModel: Observable {
             self?.changeDispatcher.dispatch()
         }
     }
-    
+
     func tableViewModel(presenter: PluginPresenter, listPresenter: PluginListPresenter) -> ImmuTable {
 
         let installedRow = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, Plugin>(

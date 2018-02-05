@@ -85,4 +85,3 @@ extension PluginDirectoryViewController: PluginListPresenter {
         navigationController?.pushViewController(listVC, animated: true)
     }
 }
-
