@@ -95,6 +95,11 @@ extension SiteSettingsViewController {
         navigationController?.pushViewController(pickerViewController, animated: true)
     }
 
+    @objc func showSpeedUpYourSiteSettings() {
+        let speedUpSiteSettingsViewController = JetpackSpeedUpSiteSettingsViewController(blog: blog)
+        navigationController?.pushViewController(speedUpSiteSettingsViewController, animated: true)
+    }
+
     // MARK: AMP footer
 
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
