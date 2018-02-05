@@ -13,15 +13,21 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
     }
 
     let title: String
-    var action: ImmuTableAction? = nil
+    let secondaryTitle: String?
+    let action: ImmuTableAction?
+
     private let helper: CollectionViewContainerRowHelper
 
     init(data: [Item],
          title: String,
+         secondaryTitle: String?,
+         action: ImmuTableAction?,
          configureCollectionCell: @escaping ((CollectionViewCellType, Item) -> Void),
          collectionCellSelected: @escaping ((Item) -> Void)) {
 
         self.title = title
+        self.secondaryTitle = secondaryTitle
+        self.action = action
 
         let configurationBlock = { (cell: UICollectionViewCell, item: Any) in
             configureCollectionCell(cell as! CollectionViewCellType, item as! Item)
@@ -48,6 +54,9 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
         }
 
         cell.titleLabel.text = title
+
+        cell.actionButton.setTitle(secondaryTitle, for: .normal)
+        cell.buttonTappedAction = { self.action?(self) }
 
         cell.collectionView.delegate = helper
         cell.collectionView.dataSource = helper
@@ -100,6 +109,9 @@ class CollectionViewContainerCell: UITableViewCell {
 
     private(set) var collectionView: UICollectionView!
     private(set) var titleLabel: UILabel!
+    private(set) var actionButton: UIButton!
+
+    var buttonTappedAction: (() -> Void)?
 
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -112,6 +124,7 @@ class CollectionViewContainerCell: UITableViewCell {
     }
 
     private func setupViews() {
+        selectionStyle = .none
 
         titleLabel = UILabel(frame: .zero)
         titleLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title2).pointSize,
@@ -119,17 +132,30 @@ class CollectionViewContainerCell: UITableViewCell {
         titleLabel.textColor = WPStyleGuide.darkGrey()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
-        contentView.addSubview(titleLabel)
+        self.addSubview(titleLabel)
 
-        titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 16).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 18).isActive = true
+
+        actionButton = UIButton(type: .custom)
+        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        actionButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+
+        self.addSubview(actionButton)
+
+        actionButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -18).isActive = true
+        actionButton.lastBaselineAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor).isActive = true
+        actionButton.setContentHuggingPriority(.required, for: .horizontal)
+
+        titleLabel.trailingAnchor.constraint(greaterThanOrEqualTo: actionButton.leadingAnchor).isActive = true
 
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.itemSize = CGSize(width: 98, height: 98*2)
-        flowLayout.minimumLineSpacing = 16
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        flowLayout.minimumLineSpacing = 18
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
 
@@ -137,12 +163,16 @@ class CollectionViewContainerCell: UITableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
 
-        contentView.addSubview(collectionView)
+        self.addSubview(collectionView)
 
         collectionView.topAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor, constant: 8).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    }
+
+    @objc private func actionButtonTapped() {
+        buttonTappedAction?()
     }
 
 }

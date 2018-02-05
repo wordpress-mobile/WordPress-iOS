@@ -96,7 +96,9 @@ class PluginDirectoryViewModel: Observable {
 
 
         let installed = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, Plugin>(data: self.installed(),
-                                                                                              title: "Installed",
+                                                                                              title: NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins"),
+                                                                                              secondaryTitle: NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins"),
+                                                                                              action: { _ in dump("installed"); return },
                                                                                               configureCollectionCell:
             { [weak self] cell, plugin in
 
@@ -117,25 +119,28 @@ class PluginDirectoryViewModel: Observable {
             }
         )
 
-        let featured =  CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>(data: self.featured(),
-                                                                                                            title: "Featured",
-                                                                                                            configureCollectionCell: configureCell,
-                                                                                                            collectionCellSelected: cellSelected)
+        let commonRowType = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self
 
+        let featured = commonRowType.init(data: self.featured(),
+                                          title: NSLocalizedString("Featured", comment: "Header of section in Plugin Directory showing featured plugins"),
+                                           secondaryTitle: nil,
+                                           action: nil,
+                                           configureCollectionCell: configureCell,
+                                           collectionCellSelected: cellSelected)
 
+        let popular = commonRowType.init(data: self.popular(),
+                                         title: NSLocalizedString("Popular", comment: "Header of section in Plugin Directory showing popular plugins"),
+                                         secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
+                                         action: { _ in dump("pop"); return },
+                                         configureCollectionCell: configureCell,
+                                         collectionCellSelected: cellSelected)
 
-
-        let popular = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>(data: self.popular(),
-                                                                                                          title: "Popular",
-                                                                                                          configureCollectionCell: configureCell,
-                                                                                                          collectionCellSelected: cellSelected)
-
-
-
-        let new = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>(data: newest(),
-                                                                                                             title: "Newest",
-                                                                                                             configureCollectionCell: configureCell,
-                                                                                                             collectionCellSelected: cellSelected)
+        let new = commonRowType.init(data: newest(),
+                                     title: NSLocalizedString("New", comment: "Header of section in Plugin Directory showing newest plugins"),
+                                     secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
+                                     action: { _ in dump("new"); return},
+                                     configureCollectionCell: configureCell,
+                                     collectionCellSelected: cellSelected)
 
         return ImmuTable(optionalSections: [
             ImmuTableSection(rows: [
