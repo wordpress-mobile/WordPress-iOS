@@ -52,18 +52,42 @@ class PluginDirectoryViewModel: Observable {
     func featured() -> [PluginDirectoryEntry] {
         return store.getFeaturedPlugins(site: site)
     }
+
     func installed() -> [Plugin] {
         return store.getPlugins(site: site)?.plugins ?? []
     }
 
+    private func accessoryView(`for` directoryEntry: PluginDirectoryEntry) -> UIView {
+        if let plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
+            return accessoryView(for: plugin)
+        }
+
+        return PluginDirectoryAccessoryView.stars(count: directoryEntry.starRating)
+    }
+
+    private func accessoryView(`for` plugin: Plugin) -> UIView {
+
+        guard plugin.state.active else {
+            return PluginDirectoryAccessoryView.inactive()
+        }
+
+        switch plugin.state.updateState {
+        case .available, .updating:
+            return PluginDirectoryAccessoryView.needsUpdate()
+        case .updated:
+            return PluginDirectoryAccessoryView.active()
+        }
+    }
 
     func tableViewModel(presenter: PluginPresenter) -> ImmuTable {
 
-        let configureCell: (PluginDirectoryCollectionViewCell, PluginDirectoryEntry) -> Void = { cell, item in
+        let configureCell: (PluginDirectoryCollectionViewCell, PluginDirectoryEntry) -> Void = { [weak self] cell, item in
             let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
             cell.logoImageView?.downloadImage(item.icon, placeholderImage: iconPlaceholder)
             cell.authorLabel?.text = item.author
             cell.nameLabel?.text = item.name
+
+            cell.accessoryView = self?.accessoryView(for: item)
         }
 
         let cellSelected: (PluginDirectoryEntry) -> Void = { [weak self] entry in
@@ -74,7 +98,7 @@ class PluginDirectoryViewModel: Observable {
         let installed = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, Plugin>(data: self.installed(),
                                                                                               title: "Installed",
                                                                                               configureCollectionCell:
-            { cell, plugin in
+            { [weak self] cell, plugin in
 
 
                 let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
@@ -82,6 +106,9 @@ class PluginDirectoryViewModel: Observable {
                 cell.nameLabel?.text = plugin.state.name
                 cell.authorLabel.text = plugin.state.author
                 cell.logoImageView?.downloadImage(plugin.directoryEntry?.icon, placeholderImage: iconPlaceholder)
+
+                cell.accessoryView = self?.accessoryView(for: plugin)
+
 
         },
                                                                                               collectionCellSelected:
