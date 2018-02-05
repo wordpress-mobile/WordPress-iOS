@@ -3,8 +3,8 @@ import Foundation
 public struct PluginDirectoryEntry: Equatable {
     public let name: String
     public let slug: String
-    public let version: String
-    public let lastUpdated: Date
+    public let version: String?
+    public let lastUpdated: Date?
 
     public let icon: URL?
     public let banner: URL?
@@ -62,8 +62,8 @@ extension PluginDirectoryEntry: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         slug = try container.decode(String.self, forKey: .slug)
-        version = try container.decode(String.self, forKey: .version)
-        lastUpdated = try container.decode(Date.self, forKey: .lastUpdated)
+        version = try? container.decode(String.self, forKey: .version)
+        lastUpdated = try? container.decode(Date.self, forKey: .lastUpdated)
 
         let icons = try? container.decodeIfPresent([String: String].self, forKey: .icons)
         icon = icons??["2x"].flatMap(URL.init(string:))
@@ -93,6 +93,40 @@ extension PluginDirectoryEntry: Decodable {
 
         let changelog = try sections?.decodeIfPresent(String.self, forKey: .changelog)
         changelogHTML = trimTags(trimChangelog(changelog))
+    }
+
+    internal init(responseObject: [String: AnyObject]) throws {
+        // Data returned by the featured plugins API endpoint is almost exactly in the same format
+        // as the data from the Plugin Directory, with few fields missing (updateDate, version, etc).
+        // In order to avoid duplicating almost identical entites, we provide a special initializer
+        // that `nil`s out those fields.
+
+        guard let name = responseObject["name"] as? String,
+            let slug = responseObject["slug"] as? String,
+            let authorString = responseObject["author"] as? String else {
+                throw PluginServiceRemote.ResponseError.decodingFailure
+        }
+
+        self.name = name
+        self.slug = slug
+
+        let author = extractAuthor(authorString)
+        self.author = author.name
+
+        if let icon = (responseObject["icons"]?["2x"] as? String).flatMap({ URL(string: $0) }) {
+            self.icon = icon
+        } else {
+            self.icon = (responseObject["icons"]?["1x"] as? String).flatMap { URL(string: $0) }
+        }
+
+        self.version = nil
+        self.lastUpdated = nil
+        self.banner = nil
+        self.authorURL = nil
+        self.descriptionHTML = nil
+        self.installationHTML = nil
+        self.faqHTML = nil
+        self.changelogHTML = nil
     }
 }
 
