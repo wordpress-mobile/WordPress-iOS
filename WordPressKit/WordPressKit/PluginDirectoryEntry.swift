@@ -23,7 +23,7 @@ public struct PluginDirectoryEntry: Equatable {
     public var changelogText: NSAttributedString? { return extractHTMLText(self.changelogHTML) }
 
     private let rating: Int
-    public var starRating: Int { return Int((Double(rating) / 20).rounded()) }
+    public var starRating: Double { return (Double(rating) / 10).rounded() / 2 } // rounded to nearest half.
 
 
     public static func ==(lhs: PluginDirectoryEntry, rhs: PluginDirectoryEntry) -> Bool {
