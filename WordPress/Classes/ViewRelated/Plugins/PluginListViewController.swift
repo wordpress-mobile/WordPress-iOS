@@ -4,6 +4,11 @@ import WordPressFlux
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let site: JetpackSiteRef
+    var query: PluginQuery {
+        didSet {
+            viewModel.query = query
+        }
+    }
 
     fileprivate var viewModel: PluginListViewModel
     fileprivate var tableViewModel = ImmuTable.Empty
@@ -14,11 +19,12 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     init(site: JetpackSiteRef, query: PluginQuery, store: PluginStore = StoreContainer.shared.plugin) {
         self.site = site
+        self.query = query
         viewModel = PluginListViewModel(site: site, query: query, store: store)
 
         super.init(style: .grouped)
 
-        title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
+        title = viewModel.title
         noResultsView.delegate = self
     }
 
@@ -75,6 +81,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     func refreshModel(change: PluginListViewModel.StateChange) {
+        title = viewModel.title
         tableViewModel = viewModel.tableViewModel(presenter: self)
         switch change {
         case .replace:
