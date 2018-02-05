@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteTypeTableViewController: NUXTableViewController {
+class SiteCreationCategoryTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
@@ -29,10 +29,6 @@ class SiteTypeTableViewController: NUXTableViewController {
                                            action: #selector(handleCancelButtonTapped))
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
-    }
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIDevice.isPad() ? .all : .portrait
     }
 
     // MARK: - Cancel Button Action
