@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressFlux
 
 /// Manages URLSessions initiated by the share extension
 ///
@@ -162,6 +163,8 @@ import CoreData
             }
             postUploadOp.currentStatus = .complete
             self.coreDataStack.saveContext()
+
+            self.fireUserNotificationIfNeeded(postUploadOp)
             self.cleanupSessionAndTerminate()
         }, failure: { error in
             var errorString = "Error creating post"
@@ -169,8 +172,32 @@ import CoreData
                 errorString += ": \(error.localizedDescription)"
             }
             self.logError(errorString, uploadOpObjectIDs: postUploadOpID)
+            self.fireUserNotificationIfNeeded(postUploadOp)
             self.cleanupSessionAndTerminate()
         })
+    }
+
+    fileprivate func fireUserNotificationIfNeeded(_ postUploadOp: PostUploadOperation?) {
+        guard let postUploadOp = postUploadOp else {
+            return
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let blog = blogService.blog(byBlogId: NSNumber(value: postUploadOp.siteID)) else {
+            DDLogError("Unable to create user notification for share extension session with ID \(self.backgroundSessionIdentifier).")
+            return
+        }
+
+        let postService = PostService(managedObjectContext: context)
+        postService.getPostWithID(NSNumber(value: postUploadOp.remotePostID), for: blog, success: { _ in
+            let model = ShareNoticeViewModel(postOperation: postUploadOp)
+            if let notice = model?.notice {
+                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            }
+        }) { error in
+            DDLogError("Unable to create user notification for share extension session with ID \(self.backgroundSessionIdentifier).")
+        }
     }
 }
 
