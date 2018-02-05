@@ -33,7 +33,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
 
         accessoryView?.removeFromSuperview()
-        logoImageView.image = nil
+        logoImageView.cancelImageDownloadTask()
     }
 
 }
