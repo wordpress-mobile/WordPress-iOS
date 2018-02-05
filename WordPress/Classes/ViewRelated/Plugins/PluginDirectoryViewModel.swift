@@ -72,8 +72,10 @@ class PluginDirectoryViewModel: Observable {
         }
 
         switch plugin.state.updateState {
-        case .available, .updating:
+        case .available:
             return PluginDirectoryAccessoryView.needsUpdate()
+        case .updating:
+            return PluginDirectoryAccessoryView.updating()
         case .updated:
             return PluginDirectoryAccessoryView.active()
         }
