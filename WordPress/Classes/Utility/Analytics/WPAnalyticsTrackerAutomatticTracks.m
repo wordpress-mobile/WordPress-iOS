@@ -673,6 +673,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNotificationsUploadMediaSuccessWritePost:
             eventName = @"notifications_upload_media_success_write_post";
             break;
+        case WPAnalyticsStatNotificationsShareSuccessEditPost:
+            eventName = @"notifications_share_success_edit_post";
+            break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
             break;
