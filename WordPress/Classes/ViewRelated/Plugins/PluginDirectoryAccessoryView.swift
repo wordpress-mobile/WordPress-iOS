@@ -138,7 +138,7 @@ struct PluginDirectoryAccessoryView {
         return container
     }
 
-    private static func halfStar(size:CGSize) -> UIView {
+    private static func halfStar(size: CGSize) -> UIView {
         let color = WPStyleGuide.mediumBlue()
 
         let container = UIView(frame: .zero)
@@ -178,4 +178,3 @@ struct PluginDirectoryAccessoryView {
         return container
     }
 }
-

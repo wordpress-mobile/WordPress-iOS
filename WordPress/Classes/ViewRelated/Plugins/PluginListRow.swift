@@ -18,7 +18,7 @@ struct PluginListRow: ImmuTableRow {
         guard let cell = cell as? PluginListCell else {
             return
         }
-        
+
         cell.nameLabel?.text = name
         cell.authorLabel?.text = author
 
