@@ -456,6 +456,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePluginManagement:
             return [self supportsPluginManagement];
+        case BlogFeatureJetpackImageSettings:
+            return [self supportsJetpackImageSettings];
         case BlogFeatureJetpackSettings:
             return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePushNotifications:
@@ -536,12 +538,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [self accountIsDefaultAccount];
 }
 
+- (BOOL)supportsJetpackImageSettings
+{
+    return [self hasRequiredJetpackVersion:@"5.6"];
+}
+
 - (BOOL)supportsPluginManagement
 {
-    NSString *requiredJetpackVersion = @"5.6";
-    return [self supportsRestApi]
-        && ![self isHostedAtWPcom]
-        && [self.jetpack.version compare:requiredJetpackVersion options:NSNumericSearch] != NSOrderedAscending;
+    return [self hasRequiredJetpackVersion:@"5.6"];
 }
 
 - (BOOL)accountIsDefaultAccount
@@ -658,7 +662,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [self jetpackActiveModule:ActiveModulesKeySharingButtons];
 }
 
-- (BOOL)isBasicAuthCredentialStored {
+- (BOOL)isBasicAuthCredentialStored
+{
     NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
     NSURL *url = [NSURL URLWithString:self.url];
     NSDictionary * credentials = storage.allCredentials;
@@ -670,6 +675,13 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         }
     }
     return NO;
+}
+
+- (BOOL)hasRequiredJetpackVersion:(NSString *)requiredJetpackVersion
+{
+    return [self supportsRestApi]
+    && ![self isHostedAtWPcom]
+    && [self.jetpack.version compare:requiredJetpackVersion options:NSNumericSearch] != NSOrderedAscending;
 }
 
 #pragma mark - Private Methods
