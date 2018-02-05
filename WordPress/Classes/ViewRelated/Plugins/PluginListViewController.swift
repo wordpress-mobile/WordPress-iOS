@@ -12,9 +12,9 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     var viewModelStateChangeReceipt: Receipt?
     var viewModelChangeReceipt: Receipt?
 
-    init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    init(site: JetpackSiteRef, query: PluginQuery, store: PluginStore = StoreContainer.shared.plugin) {
         self.site = site
-        viewModel = PluginListViewModel(site: site, store: store)
+        viewModel = PluginListViewModel(site: site, query: query, store: store)
 
         super.init(style: .grouped)
 
@@ -24,14 +24,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc convenience init?(blog: Blog) {
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        self.init(site: site)
     }
 
     override func viewDidLoad() {

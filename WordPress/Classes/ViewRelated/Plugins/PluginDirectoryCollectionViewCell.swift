@@ -17,7 +17,6 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
 
             view.topAnchor.constraint(greaterThanOrEqualTo: authorLabel.bottomAnchor).isActive = true
             view.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-            view.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
             view.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
         }
     }

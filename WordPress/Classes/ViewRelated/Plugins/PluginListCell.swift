@@ -1,38 +1,28 @@
-class PluginListCell: WPTableViewCellSubtitle {
-    private let updateImageView = UIImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
-    private let spinningAnimationKey = "spinning"
+class PluginListCell: UITableViewCell {
 
-    var updateImageVisible: Bool {
-        get {
-            return accessoryView == updateImageView
+    @IBOutlet var accessoryViewContainer: UIView!
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var authorLabel: UILabel!
+    @IBOutlet var iconImageView: UIImageView!
+
+    var pluginAccessoryView: UIView? = nil {
+        willSet {
+            pluginAccessoryView?.removeFromSuperview()
         }
-        set {
-            accessoryView = newValue ? updateImageView : nil
+
+        didSet {
+            guard let view = pluginAccessoryView else { return }
+
+            accessoryViewContainer.addSubview(view)
+
+            view.trailingAnchor.constraint(equalTo: accessoryViewContainer.trailingAnchor).isActive = true
+            view.bottomAnchor.constraint(equalTo: accessoryViewContainer.bottomAnchor).isActive = true
         }
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
 
-    var updateImageAnimating: Bool {
-        get {
-            return updateImageView.layer.animation(forKey: spinningAnimationKey) != nil
-        }
-        set {
-            guard updateImageAnimating != newValue else {
-                return
-            }
-            if newValue {
-                updateImageView.layer.add(spinningAnimation, forKey: spinningAnimationKey)
-            } else {
-                updateImageView.layer.removeAnimation(forKey: spinningAnimationKey)
-            }
-        }
+        iconImageView.cancelImageDownloadTask()
     }
 
-    private var spinningAnimation: CAAnimation {
-        let animation = CABasicAnimation(keyPath: "transform.rotation")
-        animation.duration = 1
-        animation.repeatCount = .infinity
-        animation.fromValue = 0.0
-        animation.toValue = Float(Float.pi * 2.0)
-        return animation
-    }
 }
