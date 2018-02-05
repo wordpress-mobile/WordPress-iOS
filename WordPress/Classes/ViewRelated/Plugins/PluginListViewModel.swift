@@ -3,6 +3,7 @@ import WordPressFlux
 
 protocol PluginPresenter: class {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities)
+    func present(directoryEntry: PluginDirectoryEntry)
 }
 
 class PluginListViewModel: Observable {
