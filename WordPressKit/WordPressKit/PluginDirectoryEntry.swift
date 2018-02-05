@@ -66,7 +66,8 @@ extension PluginDirectoryEntry: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
+        let decodedName = try container.decode(String.self, forKey: .name)
+        name = decodedName.stringByDecodingXMLCharacters()
         slug = try container.decode(String.self, forKey: .slug)
         version = try? container.decode(String.self, forKey: .version)
         lastUpdated = try? container.decode(Date.self, forKey: .lastUpdated)
