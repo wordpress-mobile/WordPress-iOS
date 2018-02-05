@@ -280,6 +280,14 @@ extension PluginStore {
         return state.fetching[site, default: false]
     }
 
+    func isFetchingFeatured(site: JetpackSiteRef) -> Bool {
+        return state.fetchingFeatured[site, default: false]
+    }
+
+    func isFetchingFeed(feed: PluginDirectoryFeedType) -> Bool {
+        return state.fetchingDirectoryFeed[feed.slug, default: false]
+    }
+
     func isInstallingPlugin(site: JetpackSiteRef, slug: String) -> Bool {
         return state.updatesInProgress[site, default: Set()].contains(slug)
     }
