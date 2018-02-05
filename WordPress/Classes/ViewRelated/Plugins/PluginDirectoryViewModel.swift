@@ -8,7 +8,6 @@ protocol PluginListPresenter: class {
 
 class PluginDirectoryViewModel: Observable {
 
-
     let site: JetpackSiteRef
 
     let changeDispatcher = Dispatcher<Void>()
@@ -33,10 +32,9 @@ class PluginDirectoryViewModel: Observable {
 
         storeReceipt = store.onChange { [weak self] in
             self?.changeDispatcher.dispatch()
-            return
         }
     }
-
+    
     func tableViewModel(presenter: PluginPresenter, listPresenter: PluginListPresenter) -> ImmuTable {
 
         let installedRow = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, Plugin>(
