@@ -2,8 +2,9 @@ import Foundation
 import WordPressFlux
 
 class PluginViewController: UITableViewController {
-    var plugin: Plugin {
+    var plugin: Plugin? {
         didSet {
+            guard let plugin = plugin else { return }
             viewModel.plugin = plugin
         }
     }
@@ -21,6 +22,17 @@ class PluginViewController: UITableViewController {
         self.plugin = plugin
         viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, site: site)
         super.init(style: .grouped)
+        commonInit()
+    }
+
+    init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef) {
+        self.plugin = nil
+        viewModel = PluginViewModel(directoryEntry: directoryEntry, site: site)
+        super.init(style: .grouped)
+        commonInit()
+    }
+
+    private func commonInit() {
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
         }
@@ -63,11 +75,7 @@ class PluginViewController: UITableViewController {
     }
 
     private func setupViews() {
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 0.01))
-        // This is a hack/work-around to remove the gap from the top of the tableView — the system leaves
-        // a gap with a `grouped` style by default — we want the banner up top, without any gaps.
         tableView.separatorInset = UIEdgeInsets()
-
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -88,4 +96,11 @@ class PluginViewController: UITableViewController {
         tableView.endUpdates()
     }
 
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // This is a hack/work-around to remove the gap from the top of the tableView — the system leaves
+        // a gap with a `grouped` style by default — we want the banner up top, without any gaps.
+        guard section != 0 else { return 0 }
+
+        return 17.5
+    }
 }
