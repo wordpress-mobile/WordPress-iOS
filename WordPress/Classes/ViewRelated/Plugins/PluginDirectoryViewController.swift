@@ -6,7 +6,7 @@ class PluginDirectoryViewController: UITableViewController {
 
     private let viewModel: PluginDirectoryViewModel
     private var viewModelReceipt: Receipt?
-    private var collectionView: UICollectionView?
+    private var immuHandler: ImmuTableViewHandler?
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
@@ -52,9 +52,6 @@ class PluginDirectoryViewController: UITableViewController {
         immuHandler = handler
     }
 
-    var immuHandler: ImmuTableViewHandler?
- 
-
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
@@ -63,8 +60,7 @@ class PluginDirectoryViewController: UITableViewController {
         return 0
     }
 
-
-    func reloadTable() {
+    private func reloadTable() {
         immuHandler?.viewModel = viewModel.tableViewModel(presenter: self, listPresenter: self)
     }
 

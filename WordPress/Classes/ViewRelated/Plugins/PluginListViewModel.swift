@@ -108,6 +108,7 @@ class PluginListViewModel: Observable {
 
     var query: PluginQuery {
         didSet {
+            queryReceipt = store.query(query)
             refreshState()
         }
     }
@@ -200,6 +201,21 @@ class PluginListViewModel: Observable {
 
     static var immutableRows: [ImmuTableRow.Type] {
         return [PluginListRow.self]
+    }
+
+    var title: String {
+        switch query {
+        case .all:
+            return NSLocalizedString("Manage", comment: "Screen title, where users can see all their installed plugins.")
+        case .feed(.popular):
+            return NSLocalizedString("Popular", comment: "Screen title, where users can see the most popular plugins")
+        case .feed(.newest):
+            return NSLocalizedString("Newest", comment: "Screen title, where users can see the newest plugins")
+        case .feed(.search(let term)):
+            return term
+        case .featured, .directoryEntry:
+            return ""
+        }
     }
 
     private func refreshState() {
