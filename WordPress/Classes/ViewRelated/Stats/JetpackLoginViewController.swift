@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import WordPressShared
 
-/// A view controller that presents a Jetpack login form
+/// A view controller that presents a Jetpack login form.
 ///
 class JetpackLoginViewController: UIViewController {
 
@@ -13,6 +13,9 @@ class JetpackLoginViewController: UIViewController {
     fileprivate let blog: Blog
 
     // MARK: - Properties
+
+    // Defaulting to stats because since that one is written in ObcC we don't have access to the enum there.
+    var presenter: JetpackLoginViewControllerPresenter = .stats
 
     typealias CompletionBlock = () -> Void
     /// This completion handler closure is executed when the authentication process handled
@@ -65,6 +68,12 @@ class JetpackLoginViewController: UIViewController {
     /// One time setup of the form textfields and buttons
     ///
     fileprivate func setupControls() {
+        switch presenter {
+        case .stats:
+            jetpackImage.image = UIImage(named: "wp-illustration-stats")
+        case .notifications:
+            jetpackImage.image = UIImage(named: "icon-jetpack-gray")
+        }
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
         updateMessage()
@@ -131,7 +140,7 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - UI Helpers
 
-    fileprivate func updateMessage() {
+    func updateMessage() {
         guard let jetPack = blog.jetpack else {
             return
         }
@@ -145,15 +154,21 @@ class JetpackLoginViewController: UIViewController {
                                             "Stats and Notifications.",
                                             comment: "Message asking the user to sign into Jetpack with WordPress.com credentials")
             } else {
-                message = String.localizedStringWithFormat(NSLocalizedString("Jetpack %@ or later is required " +
-                                                                             "for stats. Do you want to update Jetpack?",
+                message = String.localizedStringWithFormat(NSLocalizedString("Jetpack %@ or later is required. " +
+                                                                             "Do you want to update Jetpack?",
                                                                              comment: "Message stating the minimum required " +
                                                                              "version for Jetpack and asks the user " +
                                                                              "if they want to upgrade"), JetpackState.minimumVersionRequired)
             }
         } else {
-            message = NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.\n Would you like to set up Jetpack?",
-                                        comment: "Message asking the user if they want to set up Jetpack")
+            switch presenter {
+            case .stats:
+                message = NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.\n Would you like to set up Jetpack?",
+                                            comment: "Message asking the user if they want to set up Jetpack from stats")
+            case .notifications:
+                message = NSLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin. Would you like to set up Jetpack?",
+                                            comment: "Message asking the user if they want to set up Jetpack from notifications")
+            }
         }
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
@@ -226,4 +241,11 @@ extension JetpackLoginViewController: JetpackConnectionWebDelegate {
         WPAppAnalytics.track(.installJetpackCanceled)
         dismiss(animated: true, completion: completionBlock)
     }
+}
+
+public enum JetpackLoginViewControllerPresenter {
+
+    case stats
+    case notifications
+
 }
