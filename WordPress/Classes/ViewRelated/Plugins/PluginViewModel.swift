@@ -303,7 +303,7 @@ class PluginViewModel: Observable {
                 self.presentBrowser(for: url)
         })
     }
-    
+
     var tableViewModel: ImmuTable {
 
         let header = headerRow(directoryEntry: directoryEntry)
