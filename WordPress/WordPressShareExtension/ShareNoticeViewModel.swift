@@ -1,8 +1,3 @@
-enum ShareNoticeUserInfoKey {
-    static let blogID = "blog_id"
-    static let postID = "post_id"
-}
-
 struct ShareNoticeViewModel {
     private let uploadedPost: PostUploadOperation
     private let uploadedMedia: [MediaUploadOperation]?
@@ -15,16 +10,18 @@ struct ShareNoticeViewModel {
         self.uploadedMedia = mediaOperations
     }
 
-    private var uploadSuccessful: Bool {
-        return uploadedPost.currentStatus == .complete
-    }
-
     var notice: Notice? {
         if uploadSuccessful {
             return successNotice
         } else {
             return failureNotice
         }
+    }
+
+    // MARK: - Private Vars
+
+    private var uploadSuccessful: Bool {
+        return uploadedPost.currentStatus == .complete
     }
 
     private var successNotice: Notice {
@@ -36,9 +33,9 @@ struct ShareNoticeViewModel {
                       message: notificationBody,
                       feedbackType: .success,
                       notificationInfo: notificationInfo,
-                      actionTitle: NSLocalizedString("Edit Post", comment: "Button title. Opens the editor to edit an existing post."),
+                      actionTitle: ShareNoticeText.actionEditPost,
                       actionHandler: {
-                        ShareNoticeNavigationCoordinator.presentEditor(for: post, source: "share_success_notification")
+                        ShareNoticeNavigationCoordinator.presentEditor(for: post, source: ShareNoticeConstants.notificationSourceSuccess)
         })
     }
 
@@ -65,40 +62,40 @@ struct ShareNoticeViewModel {
     }
 
     private var notificationCategoryIdentifier: String {
-        return uploadSuccessful ? "share-upload-success" : "share-upload-failure"
+        return uploadSuccessful ? ShareNoticeConstants.categorySuccessIdentifier : ShareNoticeConstants.categoryFailureIdentifier
     }
 
-    var notificationTitle: String {
+    private var notificationTitle: String {
         if uploadSuccessful {
-            return successfulDescription
+            return successfulTitle
         } else {
-            return failedDescription
+            return failedTitle
         }
     }
 
-    var notificationBody: String {
+    private var successfulTitle: String {
+        guard let uploadedMedia = uploadedMedia else {
+            return ShareNoticeText.successTitleDefault
+        }
+
+        return pluralize(uploadedMedia.count,
+                         singular: ShareNoticeText.successTitleSingular,
+                         plural: ShareNoticeText.successTitlePlural)
+    }
+
+    private var failedTitle: String {
+        guard let uploadedMedia = uploadedMedia else {
+            return ShareNoticeText.failureTitleDefault
+        }
+
+        return pluralize(uploadedMedia.count,
+                         singular: ShareNoticeText.failureTitleSingular,
+                         plural: ShareNoticeText.failureTitlePlural)
+    }
+
+    private var notificationBody: String {
         let dateString = postInContext?.dateForDisplay()?.mediumString() ?? Date().mediumString()
         return "\(dateString)."
-    }
-
-    private var successfulDescription: String {
-        guard let uploadedMedia = uploadedMedia else {
-            return NSLocalizedString("1 post uploaded.", comment: "Alert displayed to the user when a single post has been successfully uploaded.")
-        }
-
-        return pluralize(uploadedMedia.count,
-                         singular: NSLocalizedString("Successfully uploaded 1 post, 1 file.", comment: "System notification displayed to the user when a single post and 1 file has uploaded successfully."),
-                         plural: NSLocalizedString("Successfully uploaded 1 post, %ld files.", comment: "System notification displayed to the user when a single post and multiple files have uploaded successfully."))
-    }
-
-    private var failedDescription: String {
-        guard let uploadedMedia = uploadedMedia else {
-            return NSLocalizedString("Unable to upload 1 post.", comment: "Alert displayed to the user when a single post has failed to upload.")
-        }
-
-        return pluralize(uploadedMedia.count,
-                         singular: NSLocalizedString("Unable to upload 1 post, 1 file.", comment: "Alert displayed to the user when a single post and 1 file has failed to upload."),
-                         plural: NSLocalizedString("Unable to upload 1 post, %ld files.", comment: "Alert displayed to the user when a single post and multiple files have failed to upload."))
     }
 
     private var postInContext: Post? {
