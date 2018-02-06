@@ -3,7 +3,7 @@ import Gridicons
 /// base protocol for NUX view controllers
 protocol NUXViewControllerBase {
     var sourceTag: SupportSourceTag { get }
-    var helpBadge: WPNUXHelpBadgeLabel { get }
+    var helpBadge: NUXHelpBadgeLabel { get }
     var helpButton: UIButton { get }
     var loginFields: LoginFields { get }
     var dismissBlock: ((_ cancelled: Bool) -> Void)? { get }
