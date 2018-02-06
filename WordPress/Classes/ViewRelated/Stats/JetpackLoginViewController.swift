@@ -60,30 +60,25 @@ class JetpackLoginViewController: UIViewController {
         setupControls()
     }
 
-    override func viewDidLayoutSubviews() {
-        reloadInterface()
-    }
-
-
     // MARK: - Configuration
 
     /// One time setup of the form textfields and buttons
     ///
     fileprivate func setupControls() {
-        descriptionLabel.font = WPNUXUtility.descriptionTextFont()
-        descriptionLabel.textColor = WPStyleGuide.allTAllShadeGrey()
+        descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
+        descriptionLabel.textColor = WPStyleGuide.darkGrey()
+        updateMessage()
 
         setupMoreInformationButtonText()
-        moreInformationButton.isHidden = true // Hidden by default
+        moreInformationButton.isHidden = hasJetpack
 
-        var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation. The text " +
-                "should be uppercase.").localizedUppercase
+        var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation.")
         installJetpackButton.setTitle(title, for: .normal)
-        installJetpackButton.isHidden = true // Hidden by default
+        installJetpackButton.isHidden = hasJetpack
 
-        title = NSLocalizedString("Log In", comment: "Title of a button for signing in. " +
-            "The text should be uppercase.").localizedUppercase
+        title = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
         signinButton.setTitle(title, for: .normal)
+        signinButton.isHidden = !hasJetpack
     }
 
     /// Configures the button text for requesting more information about jetpack.
@@ -95,8 +90,8 @@ class JetpackLoginViewController: UIViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
 
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: UIFont.systemFont(ofSize: 14),
-                                                                   .foregroundColor: WPStyleGuide.allTAllShadeGrey(),
+        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: WPStyleGuide.fontForTextStyle(.footnote),
+                                                                   .foregroundColor: WPStyleGuide.mediumBlue(),
                                                                    .underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
                                                                    .paragraphStyle: paragraphStyle ]]
 
@@ -136,11 +131,6 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - UI Helpers
 
-    fileprivate func reloadInterface() {
-        updateMessage()
-        updateControls()
-    }
-
     fileprivate func updateMessage() {
         guard let jetPack = blog.jetpack else {
             return
@@ -150,7 +140,7 @@ class JetpackLoginViewController: UIViewController {
 
         if jetPack.isConnected {
             if jetPack.isUpdatedToRequiredVersion {
-                message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! \n" +
+                message = NSLocalizedString("Looks like you have Jetpack set up on your site. Congrats! " +
                                             "Log in with your WordPress.com credentials to enable " +
                                             "Stats and Notifications.",
                                             comment: "Message asking the user to sign into Jetpack with WordPress.com credentials")
@@ -162,17 +152,11 @@ class JetpackLoginViewController: UIViewController {
                                                                              "if they want to upgrade"), JetpackState.minimumVersionRequired)
             }
         } else {
-            message = NSLocalizedString("Jetpack is required for stats. Do you want to set up Jetpack?",
+            message = NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.\n Would you like to set up Jetpack?",
                                         comment: "Message asking the user if they want to set up Jetpack")
         }
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
-    }
-
-    fileprivate func updateControls() {
-        installJetpackButton.isHidden = hasJetpack
-        moreInformationButton.isHidden = hasJetpack
-        signinButton.isHidden = !hasJetpack
     }
 
     // MARK: - Private Helpers
@@ -201,7 +185,7 @@ class JetpackLoginViewController: UIViewController {
         guard let url =  URL(string: url) else {
             return
         }
-        let webViewController = WebViewControllerFactory.controller(url: url, blog: blog)
+        let webViewController = WebViewControllerFactory.controller(url: url)
 
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
