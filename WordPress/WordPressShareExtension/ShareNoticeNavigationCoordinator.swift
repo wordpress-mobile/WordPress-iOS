@@ -5,11 +5,13 @@ import UIKit
 ///
 class ShareNoticeNavigationCoordinator {
     static func presentEditor(with userInfo: NSDictionary) {
-        guard let post = post(from: userInfo) else {
-            return
-        }
-
-        presentEditor(for: post, source: "share_upload_notification")
+        fetchPost(from: userInfo, onSuccess: { post in
+            if let post = post {
+                presentEditor(for: post, source: ShareNoticeConstants.notificationSourceSuccess)
+            }
+        }, onFailure: {
+            DDLogError("Could not fetch post from share notification.")
+        })
     }
 
     static func presentEditor(for post: Post, source: String) {
@@ -21,22 +23,39 @@ class ShareNoticeNavigationCoordinator {
     }
 
     static func navigateToPostList(with userInfo: NSDictionary) {
-        if let post = post(from: userInfo) {
-            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
-        }
+        fetchPost(from: userInfo, onSuccess: { post in
+            if let post = post {
+                WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+            }
+        }, onFailure: {
+            DDLogError("Could not fetch post from share notification.")
+        })
     }
 
-    private static func post(from userInfo: NSDictionary) -> Post? {
+    private static func fetchPost(from userInfo: NSDictionary,
+                                  onSuccess: @escaping (_ post: Post?) -> Void,
+                                  onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        let postService = PostService(managedObjectContext: context)
 
-        guard let postID = userInfo[ShareNoticeUserInfoKey.postID] as? String,
-            let URIRepresentation = URL(string: postID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URIRepresentation),
-            let managedObject = try? context.existingObject(with: objectID),
-            let post = managedObject as? Post else {
-                return nil
+        guard let postIDString = userInfo[ShareNoticeUserInfoKey.postID] as? String,
+            let postID = NumberFormatter().number(from: postIDString),
+            let siteIDString = userInfo[ShareNoticeUserInfoKey.blogID] as? String,
+            let siteID = NumberFormatter().number(from: siteIDString),
+            let blog = blogService.blog(byBlogId: siteID) else {
+                onFailure()
+                return
         }
 
-        return post
+        postService.getPostWithID(postID, for: blog, success: { apost in
+            guard let post = apost as? Post else {
+                onFailure()
+                return
+            }
+            onSuccess(post)
+        }, failure: { error in
+            onFailure()
+        })
     }
 }

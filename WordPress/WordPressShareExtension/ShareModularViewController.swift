@@ -508,7 +508,6 @@ fileprivate extension ShareModularViewController {
                                              status: shareData.postStatus.rawValue,
                                              siteID: siteID,
                                              onComplete: {
-                                                self.scheduleLocalNotification()
                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                                 self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             }, onFailure: {
