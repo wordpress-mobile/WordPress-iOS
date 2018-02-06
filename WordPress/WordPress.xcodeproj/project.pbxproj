@@ -545,12 +545,12 @@
 		9859DF86202107C600FB848E /* SiteCreationCategoryTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9859DF85202107C600FB848E /* SiteCreationCategoryTableViewCells.swift */; };
 		9859DF882021099800FB848E /* SiteCreationCategoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9859DF872021099800FB848E /* SiteCreationCategoryTableViewCell.xib */; };
 		9859DF8A20210B2100FB848E /* SiteCreationInstructionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9859DF8920210B2100FB848E /* SiteCreationInstructionTableViewCell.xib */; };
-		98B24D5A2017E2520082BA78 /* NUXButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D592017E2510082BA78 /* NUXButtonViewController.swift */; };
-		98B24D5D2017E39A0082BA78 /* NUXButtonView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */; };
-		98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */; };
 		98A437AE20069098004A8A57 /* SiteCreationDomainsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */; };
 		98A437B0200693C0004A8A57 /* SiteCreationDomainsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */; };
 		98AD07651FFFF96B00485ACA /* SiteCreationSiteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */; };
+		98B24D5A2017E2520082BA78 /* NUXButtonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D592017E2510082BA78 /* NUXButtonViewController.swift */; };
+		98B24D5D2017E39A0082BA78 /* NUXButtonView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */; };
+		98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */; };
 		98BFAAFF201F9D0200FDBE56 /* BlogListNoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BFAAFE201F9D0100FDBE56 /* BlogListNoResultsViewController.swift */; };
 		98BFAB01201FA04700FDBE56 /* BlogListNoResults.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98BFAB00201FA04700FDBE56 /* BlogListNoResults.storyboard */; };
 		98C43E861FE98092006FEF54 /* SignupNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C43E851FE98092006FEF54 /* SignupNavigationController.swift */; };
@@ -566,7 +566,6 @@
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */; };
-		A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
@@ -687,6 +686,7 @@
 		B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */; };
 		B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D40A51DB522DF003D2D79 /* NSAttributedStringTests.swift */; };
 		B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */; };
+		B59DCB05202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */; };
 		B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */; };
 		B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
 		B5A9B7C31BFA6F3100FC30A5 /* NSString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */; };
@@ -1932,12 +1932,12 @@
 		9859DF85202107C600FB848E /* SiteCreationCategoryTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationCategoryTableViewCells.swift; sourceTree = "<group>"; };
 		9859DF872021099800FB848E /* SiteCreationCategoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteCreationCategoryTableViewCell.xib; sourceTree = "<group>"; };
 		9859DF8920210B2100FB848E /* SiteCreationInstructionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteCreationInstructionTableViewCell.xib; sourceTree = "<group>"; };
-		98B24D592017E2510082BA78 /* NUXButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXButtonViewController.swift; sourceTree = "<group>"; };
-		98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUXButtonView.storyboard; sourceTree = "<group>"; };
-		98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEpilogueViewController.swift; sourceTree = "<group>"; };
 		98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationDomainsTableViewController.swift; sourceTree = "<group>"; };
 		98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationDomainsViewController.swift; sourceTree = "<group>"; };
 		98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationSiteDetailsViewController.swift; sourceTree = "<group>"; };
+		98B24D592017E2510082BA78 /* NUXButtonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXButtonViewController.swift; sourceTree = "<group>"; };
+		98B24D5C2017E39A0082BA78 /* NUXButtonView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUXButtonView.storyboard; sourceTree = "<group>"; };
+		98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEpilogueViewController.swift; sourceTree = "<group>"; };
 		98BFAAFE201F9D0100FDBE56 /* BlogListNoResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogListNoResultsViewController.swift; sourceTree = "<group>"; };
 		98BFAB00201FA04700FDBE56 /* BlogListNoResults.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = BlogListNoResults.storyboard; sourceTree = "<group>"; };
 		98C43E851FE98092006FEF54 /* SignupNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupNavigationController.swift; sourceTree = "<group>"; };
@@ -1961,8 +1961,6 @@
 		A20971B819B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
 		A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXHelpBadgeLabel.h; sourceTree = "<group>"; };
-		A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXHelpBadgeLabel.m; sourceTree = "<group>"; };
 		ACBAB5FC0E121C7300F38795 /* PostSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController.h; sourceTree = "<group>"; usesTabs = 0; };
 		ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostPreviewViewController.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -2101,6 +2099,7 @@
 		B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
 		B59D40A51DB522DF003D2D79 /* NSAttributedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringTests.swift; sourceTree = "<group>"; };
 		B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsListEditorViewController.swift; sourceTree = "<group>"; };
+		B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXHelpBadgeLabel.swift; sourceTree = "<group>"; };
 		B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropViewController.swift; sourceTree = "<group>"; };
 		B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountToAccount20to21.swift; path = "20-21/AccountToAccount20to21.swift"; sourceTree = "<group>"; };
 		B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Helpers.swift"; sourceTree = "<group>"; };
@@ -5628,8 +5627,7 @@
 				43EACB1C1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.swift */,
 				43EACB1D1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.xib */,
 				E6B84DD41F01BDAA00B1B686 /* SiteInfoHeaderView.swift */,
-				A2DC5B181953451B009584C3 /* WPNUXHelpBadgeLabel.h */,
-				A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */,
+				B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */,
 				85AD6AEA173CCF9E002CB896 /* WPNUXPrimaryButton.h */,
 				85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */,
 				85AD6AED173CCFDC002CB896 /* WPNUXSecondaryButton.h */,
@@ -6832,6 +6830,7 @@
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
 				B50C0C571EF42A0000372C65 /* VideoShortcodeProcessor.swift in Sources */,
 				FFD12D5E1FE1998D00F20A00 /* Progress+Helpers.swift in Sources */,
+				B59DCB05202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift in Sources */,
 				B5F641B31E37C36700B7819F /* AdaptiveNavigationController.swift in Sources */,
 				825327581FBF7CD600B8B7D2 /* ActivityUtils.swift in Sources */,
 				080AAA691E7C63C3004DCD11 /* Media+HTML.m in Sources */,
@@ -7358,7 +7357,6 @@
 				827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */,
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				5D732F971AE84E3C00CD89E7 /* PostListFooterView.m in Sources */,
-				A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */,
 				1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */,
 				0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */,
 				B532D4EA199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift in Sources */,
