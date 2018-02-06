@@ -95,7 +95,8 @@ extension AppExtensionsService {
 // MARK: - Uploading Posts
 
 extension AppExtensionsService {
-    /// Saves a new post to the share container db and then uploads it synchronously.
+    /// Saves a new post to the share container db and then uploads it synchronously. This function
+    /// WILL schedule a local notification to fire upon success or failure.
     ///
     /// - Parameters:
     ///   - title: Post title
@@ -114,49 +115,18 @@ extension AppExtensionsService {
 
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
         uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
+            // Schedule a local success notification
+            if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
+                ExtensionNotificationManager.scheduleSuccessNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+            }
             onComplete?()
         }, onFailure: {
+            // Schedule a local failure notification
+            if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
+                ExtensionNotificationManager.scheduleFailureNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+            }
+
             // Error is already logged in coredata so no need to do it here.
-            onFailure?()
-        })
-    }
-
-    /// Uploads an already-saved post synchronously.
-    ///
-    /// - Parameters:
-    ///   - uploadOpObjectID: Managed object ID for the post
-    ///   - onComplete: Completion handler executed after a post is uploaded to the server.
-    ///   - onFailure: The (optional) failure handler.
-    ///
-    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
-        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
-            DDLogError("Error uploading post in share extension — could not fetch saved post.")
-            onFailure?()
-            return
-        }
-
-        let remotePost = postUploadOp.remotePost
-        coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadOpObjectID)
-
-        // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads
-        let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: remotePost.siteID)
-        remote.createPost(remotePost, success: { post in
-            if let post = post {
-                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
-                if let postID = post.postID {
-                    self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
-                } else {
-                    self.coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOpObjectID)
-                }
-                onComplete?()
-            }
-        }, failure: { error in
-            var errorString = "Error creating post in share extension"
-            if let error = error as NSError? {
-                errorString += ": \(error.localizedDescription)"
-            }
-            DDLogError(errorString)
-            self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
             onFailure?()
         })
     }
@@ -286,6 +256,11 @@ fileprivate extension AppExtensionsService {
         return (uploadMediaOpIDs, allRemoteMedia)
     }
 
+    /// This function takes the already-uploaded media, inserts it into the provided post, and then
+    /// uploads the post. This function WILL schedule a local notification to fire upon success or failure.
+    ///
+    /// - Parameter uploadPostOpID: Managed object ID for the post
+    ///
     func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
@@ -307,7 +282,57 @@ fileprivate extension AppExtensionsService {
             postUploadOp.postContent = imgPostUploadProcessor.process(content)
         }
         coreDataStack.saveContext()
-        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: nil, onFailure: nil)
+        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
+            // Schedule a local success notification
+            if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
+                ExtensionNotificationManager.scheduleSuccessNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+            }
+        }, onFailure: {
+            // Schedule a local failure notification
+            if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
+                ExtensionNotificationManager.scheduleFailureNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+            }
+        })
+    }
+
+    /// Uploads an already-saved post synchronously.
+    ///
+    /// - Parameters:
+    ///   - uploadOpObjectID: Managed object ID for the post
+    ///   - onComplete: Completion handler executed after a post is uploaded to the server.
+    ///   - onFailure: The (optional) failure handler.
+    ///
+    func uploadPost(forUploadOpWithObjectID uploadOpObjectID: NSManagedObjectID, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
+        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadOpObjectID) else {
+            DDLogError("Error uploading post in share extension — could not fetch saved post.")
+            onFailure?()
+            return
+        }
+
+        let remotePost = postUploadOp.remotePost
+        coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadOpObjectID)
+
+        // 15-Nov-2017: Creating a post without media on the PostServiceRemoteREST does not use background uploads
+        let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: remotePost.siteID)
+        remote.createPost(remotePost, success: { post in
+            if let post = post {
+                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
+                if let postID = post.postID {
+                    self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
+                } else {
+                    self.coreDataStack.updateStatus(.complete, forUploadOpWithObjectID: uploadOpObjectID)
+                }
+                onComplete?()
+            }
+        }, failure: { error in
+            var errorString = "Error creating post in share extension"
+            if let error = error as NSError? {
+                errorString += ": \(error.localizedDescription)"
+            }
+            DDLogError(errorString)
+            self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
+            onFailure?()
+        })
     }
 }
 

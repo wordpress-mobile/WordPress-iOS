@@ -50,8 +50,8 @@ struct ShareNoticeViewModel {
         var userInfo = [String: Any]()
 
         if let post = postInContext {
-            userInfo[ShareNoticeUserInfoKey.postID] = post.objectID.uriRepresentation().absoluteString
-            userInfo[ShareNoticeUserInfoKey.blogID] = post.blog.objectID.uriRepresentation().absoluteString
+            userInfo[ShareNoticeUserInfoKey.postID] = post.postID
+            userInfo[ShareNoticeUserInfoKey.blogID] = post.blog.dotComID?.stringValue
         }
 
         return NoticeNotificationInfo(identifier: UUID().uuidString,
@@ -78,9 +78,7 @@ struct ShareNoticeViewModel {
             return ShareNoticeText.successTitleDefault
         }
 
-        return pluralize(uploadedMedia.count,
-                         singular: ShareNoticeText.successTitleSingular,
-                         plural: ShareNoticeText.successTitlePlural)
+        return ShareNoticeText.successTitle(mediaItemCount: uploadedMedia.count)
     }
 
     private var failedTitle: String {
@@ -88,9 +86,7 @@ struct ShareNoticeViewModel {
             return ShareNoticeText.failureTitleDefault
         }
 
-        return pluralize(uploadedMedia.count,
-                         singular: ShareNoticeText.failureTitleSingular,
-                         plural: ShareNoticeText.failureTitlePlural)
+        return ShareNoticeText.failureTitle(mediaItemCount: uploadedMedia.count)
     }
 
     private var notificationBody: String {
@@ -105,7 +101,7 @@ struct ShareNoticeViewModel {
         guard uploadedPost.remotePostID > 0,
             uploadedPost.siteID > 0,
             let blog = blogService.blog(byBlogId: NSNumber(value: uploadedPost.siteID)) else {
-            return nil
+                return nil
         }
 
         let postID = NSNumber(value: uploadedPost.remotePostID)
@@ -115,16 +111,5 @@ struct ShareNoticeViewModel {
         }
 
         return post
-    }
-}
-
-/// Helper method to provide the singular or plural (formatted) version of a
-/// string based on a count.
-///
-private func pluralize(_ count: Int, singular: String, plural: String) -> String {
-    if count == 1 {
-        return singular
-    } else {
-        return String(format: plural, count)
     }
 }

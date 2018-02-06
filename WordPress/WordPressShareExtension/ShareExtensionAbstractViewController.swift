@@ -1,6 +1,5 @@
 import CoreData
 import UIKit
-import UserNotifications
 import WordPressKit
 
 /// A base class for the various Share Extension view controllers.
@@ -117,30 +116,6 @@ extension ShareExtensionAbstractViewController {
     func createErrorWithDescription(_ description: String) -> NSError {
         let userInfo = [NSLocalizedDescriptionKey: description]
         return NSError(domain: "ShareExtensionAbstractViewController", code: 0, userInfo: userInfo)
-    }
-
-    // FIXME: This is NOT final!
-    func scheduleLocalNotification() {
-        // Create Notification Content
-        let notificationContent = UNMutableNotificationContent()
-
-        // Configure Notification Content
-        notificationContent.title = "WordPress!"
-        notificationContent.body = "A local Notification from the Share eXtension!"
-        notificationContent.categoryIdentifier = "share-upload-success"
-
-        // Add Trigger
-        let notificationTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 3.0, repeats: false)
-
-        // Create Notification Request
-        let notificationRequest = UNNotificationRequest(identifier: UUID().uuidString, content: notificationContent, trigger: notificationTrigger)
-
-        // Add Request to User Notification Center
-        UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { error in
-            if let error = error {
-                DDLogError("Unable to Add Notification Request (\(error), \(error.localizedDescription))")
-            }
-        })
     }
 }
 
