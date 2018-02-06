@@ -4,7 +4,7 @@
 class NUXCollectionViewController: UICollectionViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
-    var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
+    var helpBadge: NUXHelpBadgeLabel = NUXHelpBadgeLabel()
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
