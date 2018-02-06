@@ -26,6 +26,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 @property (nonatomic, strong) UINavigationController *statsNavVC;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
 @property (nonatomic, weak) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 
 @end
 
@@ -55,7 +56,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:statsBundle] instantiateInitialViewController];
     self.statsVC = self.statsNavVC.viewControllers.firstObject;
     self.statsVC.statsDelegate = self;
-    
+    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.loadingIndicator];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.loadingIndicator.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                                              [self.loadingIndicator.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+                                              ]];
+
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
 
     // Being shown in a modal window
@@ -115,7 +123,23 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         return;
     }
 
-    [self promptForJetpackCredentials];
+    [self refreshStatus];
+}
+
+- (void)refreshStatus
+{
+    [self.loadingIndicator startAnimating];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf = self;
+    [blogService syncBlog:self.blog success:^{
+        [self.loadingIndicator stopAnimating];
+        [weakSelf promptForJetpackCredentials];
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"Error refreshing blog status when loading stats: %@", error);
+        [self.loadingIndicator stopAnimating];
+        [weakSelf promptForJetpackCredentials];
+    }];
 }
 
 

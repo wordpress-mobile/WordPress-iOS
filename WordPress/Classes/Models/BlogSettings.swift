@@ -67,6 +67,13 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged var postsPerPage: NSNumber?
 
+    /// Jetpack Setting: serve images from our servers.
+    ///
+    @NSManaged var jetpackServeImagesFromOurServers: Bool
+
+    /// Jetpack Setting: lazy load images.
+    ///
+    @NSManaged var jetpackLazyLoadImages: Bool
 
     // MARK: - Discussion
 
