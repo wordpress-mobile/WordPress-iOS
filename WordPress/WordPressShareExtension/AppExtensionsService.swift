@@ -285,12 +285,12 @@ fileprivate extension AppExtensionsService {
         uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
             // Schedule a local success notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleSuccessNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+                ExtensionNotificationManager.scheduleSuccessNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID), mediaItemCount: mediaUploadOps.count)
             }
         }, onFailure: {
             // Schedule a local failure notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleFailureNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+                ExtensionNotificationManager.scheduleFailureNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID), mediaItemCount: mediaUploadOps.count)
             }
         })
     }
