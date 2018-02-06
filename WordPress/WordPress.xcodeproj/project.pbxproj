@@ -391,6 +391,8 @@
 		74D06FEA1FE0787400AF1788 /* Header+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C631EF42B3A00372C65 /* Header+WordPress.swift */; };
 		74D06FEB1FE0788500AF1788 /* TextList+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50C0C611EF42AF200372C65 /* TextList+WordPress.swift */; };
 		74D06FEC1FE0869D00AF1788 /* NSAttributedStringKey+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */; };
+		74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
+		74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74F24F671EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */; };
 		74F24F681EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */; };
 		74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
@@ -1687,6 +1689,7 @@
 		74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUploadOperation.swift; sourceTree = "<group>"; };
 		74B335EB1F06F9520053A184 /* MockWordPressComRestApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWordPressComRestApi.swift; sourceTree = "<group>"; };
 		74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionSessionManager.swift; sourceTree = "<group>"; };
+		74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeConstants.swift; sourceTree = "<group>"; };
 		74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-bad-username-password-error.xml"; sourceTree = "<group>"; };
 		74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-malformed-request-xml-error.xml"; sourceTree = "<group>"; };
 		74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareExtension.storyboard; sourceTree = "<group>"; };
@@ -3725,6 +3728,7 @@
 		7462BFD22028CD0500B552D8 /* Notices */ = {
 			isa = PBXGroup;
 			children = (
+				74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */,
 				7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */,
 				7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */,
 			);
@@ -7232,6 +7236,7 @@
 				98D60B9E1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				B50C0C561EF42A0000372C65 /* ShortcodeProcessor.swift in Sources */,
+				74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				B587797F19B799D800E57C5A /* UIImageView+Networking.swift in Sources */,
 				FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */,
 				B54075D41D3D7D5B0095C318 /* IntrinsicTableView.swift in Sources */,
@@ -7398,6 +7403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				741E224B1FC0E5C0007967AB /* UploadOperation.swift in Sources */,
+				74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
