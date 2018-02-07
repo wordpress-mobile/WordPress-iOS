@@ -13,7 +13,7 @@
 #import "ContextManager.h"
 #import "Constants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import <WordPressUIKit/WPNUXUtility.h>
+#import <WordPressShared/WPNUXUtility.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 @import WordPressKit;
