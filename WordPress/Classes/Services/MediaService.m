@@ -68,10 +68,12 @@
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [self.managedObjectContext save: nil];
     }];
-
+    NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
         // Setup completion handlers
         void(^completionWithMedia)(Media *) = ^(Media *media) {
+            media.remoteStatus = MediaRemoteStatusLocal;
+            media.error = nil;
             // Pre-generate a thumbnail image, see the method notes.
             [self exportPlaceholderThumbnailForMedia:media
                                           completion:^(NSURL *url){
@@ -84,6 +86,12 @@
             }
         };
         void(^completionWithError)( NSError *) = ^(NSError *error) {
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                mediaInContext.error = error;
+                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
             if (completion) {
                 completion(media, error);
             }
@@ -152,6 +160,7 @@
         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
+            mediaInContext.error = nil;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
@@ -182,14 +191,15 @@
             if (error) {
                 [self trackUploadError:error];
             }
-
+            NSError *customError = [self customMediaUploadError:error remote:remote];
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                mediaInContext.error = customError;                
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
-                failure([self customMediaUploadError:error remote:remote]);
+                failure(customError);
             }
         }];
     };
