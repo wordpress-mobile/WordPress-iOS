@@ -76,6 +76,15 @@ target 'WordPress' do
     pod 'WordPress-Aztec-iOS', '1.0.0-beta.18.1'
   end
 
+  target 'WordPressDraftActionExtension' do
+    inherit! :search_paths
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    pod 'WordPress-Aztec-iOS', '1.0.0-beta.18.1'
+  end
+
   target 'WordPressTodayWidget' do
     inherit! :search_paths
 
