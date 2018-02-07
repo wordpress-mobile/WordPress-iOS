@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 72
+
+- @sergioestevao 2018-02-07
+- ``Media` added `error` Transformable property that stores a NSError object that resulted from a failed import or upload.
+
 ## WordPress 71
 
 - @elibud 2018-02-02
