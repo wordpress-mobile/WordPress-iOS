@@ -2932,7 +2932,7 @@ extension AztecPostViewController {
         attachment.progress = 0
         richTextView.refresh(attachment)
         mediaCoordinator.retryMedia(media)
-        observe(media: media, statType: .editorUploadMediaRetried)
+        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
     }
 
     fileprivate func processMediaAttachments() {
