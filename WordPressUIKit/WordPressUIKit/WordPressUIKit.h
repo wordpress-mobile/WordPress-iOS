@@ -15,7 +15,3 @@ FOUNDATION_EXPORT const unsigned char WordPressUIKitVersionString[];
 #import <WordPressUIKit/UIImage+Resize.h>
 #import <WordPressUIKit/UIImage+RoundedCorner.h>
 #import <WordPressUIKit/UIImage+Util.h>
-#import <WordPressUIKit/WPNoResultsView.h>
-#import <WordPressUIKit/WPNUXUtility.h>
-#import <WordPressUIKit/WPStyleGuide.h>
-

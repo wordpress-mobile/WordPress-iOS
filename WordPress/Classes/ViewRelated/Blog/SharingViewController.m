@@ -6,7 +6,7 @@
 #import "WordPress-Swift.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <WordPressUIKit/UIImage+Util.h>
-#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
     SharingPublicizeServices = 0,

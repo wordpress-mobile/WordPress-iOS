@@ -6,7 +6,7 @@
 #import "CustomHighlightButton.h"
 #import "PostCategoryService.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"
 
 static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";

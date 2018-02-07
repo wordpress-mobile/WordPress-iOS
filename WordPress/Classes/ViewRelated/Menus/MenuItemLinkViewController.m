@@ -1,7 +1,7 @@
 #import "MenuItemLinkViewController.h"
 #import "MenuItemCheckButtonView.h"
 #import <WordPressShared/WPFontManager.h>
-#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 static CGFloat const LinkTextBarHeight = 48.0;
 

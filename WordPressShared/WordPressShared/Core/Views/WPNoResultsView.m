@@ -2,7 +2,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPStyleGuide.h"
 #import "WPNUXUtility.h"
-@import WordPressShared;
+#import "WPFontManager.h"
+#import "WPDeviceIdentification.h"
 
 
 @interface WPNoResultsView ()

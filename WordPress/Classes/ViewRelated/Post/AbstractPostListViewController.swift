@@ -30,7 +30,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 class AbstractPostListViewController: UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
 
-    typealias WPNoResultsView = WordPressUIKit.WPNoResultsView
+    typealias WPNoResultsView = WordPressShared.WPNoResultsView
 
     fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
     fileprivate static let HTTPErrorCodeForbidden = Int(403)

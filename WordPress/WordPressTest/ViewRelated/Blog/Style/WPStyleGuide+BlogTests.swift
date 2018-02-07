@@ -1,5 +1,5 @@
 import XCTest
-import WordPressUIKit.WPStyleGuide
+import WordPressShared.WPStyleGuide
 
 class WPStyleGuide_BlogTests: XCTestCase {
     var testCell: UITableViewCell!

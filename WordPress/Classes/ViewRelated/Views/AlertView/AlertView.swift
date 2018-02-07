@@ -1,5 +1,5 @@
 import Foundation
-import WordPressUIKit.WPStyleGuide
+import WordPressShared.WPStyleGuide
 
 
 /// The purpose of this class is to render a simple AlertView, with a custom style, and the following

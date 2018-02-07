@@ -1,5 +1,4 @@
 #import "WPTextFieldTableViewCell.h"
-@import WordPressShared;
 
 
 CGFloat const TextFieldPadding = 15.0f;

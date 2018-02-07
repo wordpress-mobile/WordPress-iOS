@@ -1,7 +1,7 @@
 #import "MenuItemAbstractView.h"
 #import "MenuItem+ViewDesign.h"
 #import <WordPressShared/WPFontManager.h>
-#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 @interface MenuItemDrawingView ()
 

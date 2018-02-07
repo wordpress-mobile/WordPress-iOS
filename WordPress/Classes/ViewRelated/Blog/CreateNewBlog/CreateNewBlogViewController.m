@@ -14,7 +14,7 @@
 #import "Constants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressUIKit/WPNUXUtility.h>
-#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 @import WordPressKit;
 @import WordPressShared;
