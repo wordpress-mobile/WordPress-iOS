@@ -20,7 +20,6 @@
 		B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */; };
 		B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AC202B2323007874FB /* UIImage+Rotation.swift */; };
 		B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AD202B2323007874FB /* UITableView+Helpers.swift */; };
-		B5A787BB202B2324007874FB /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */; };
 		B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */; };
 		B5A787D6202B2AA7007874FB /* UIImage+Util.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787CC202B2AA6007874FB /* UIImage+Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A787D7202B2AA7007874FB /* UIColor+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787CD202B2AA6007874FB /* UIColor+Helpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -65,7 +64,6 @@
 		B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787AC202B2323007874FB /* UIImage+Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotation.swift"; sourceTree = "<group>"; };
 		B5A787AD202B2323007874FB /* UITableView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Helpers.swift"; sourceTree = "<group>"; };
-		B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787CC202B2AA6007874FB /* UIImage+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		B5A787CD202B2AA6007874FB /* UIColor+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Helpers.h"; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 				B5A787A9202B2323007874FB /* UIDevice+Helpers.swift */,
 				B5A787AC202B2323007874FB /* UIImage+Rotation.swift */,
 				B5A787A4202B2322007874FB /* UIImage+Tint.swift */,
-				B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */,
 				B5A787AD202B2323007874FB /* UITableView+Helpers.swift */,
 				B5A787A7202B2322007874FB /* UITableViewController+Helpers.swift */,
 				B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */,
@@ -329,7 +326,6 @@
 				B5A787DC202B2AA7007874FB /* UIImage+Util.m in Sources */,
 				B5A787B5202B2324007874FB /* UIDevice+Helpers.swift in Sources */,
 				B5A787B3202B2324007874FB /* UITableViewController+Helpers.swift in Sources */,
-				B5A787BB202B2324007874FB /* UIScreen+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
