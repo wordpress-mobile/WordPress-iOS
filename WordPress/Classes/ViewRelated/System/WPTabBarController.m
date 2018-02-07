@@ -11,7 +11,7 @@
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
-#import <WordPressUIKit/WPDeviceIdentification.h>
+#import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 

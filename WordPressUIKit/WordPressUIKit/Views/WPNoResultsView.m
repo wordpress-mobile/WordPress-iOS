@@ -2,8 +2,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPStyleGuide.h"
 #import "WPNUXUtility.h"
-#import "WPFontManager.h"
-#import "WPDeviceIdentification.h"
+@import WordPressShared;
+
 
 @interface WPNoResultsView ()
 @property (nonatomic, strong) UILabel   *titleLabel;

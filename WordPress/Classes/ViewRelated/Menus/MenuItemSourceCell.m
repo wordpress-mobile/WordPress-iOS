@@ -1,6 +1,6 @@
 #import "MenuItemSourceCell.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WordPressUIKit/WPStyleGuide.h>
 
 #pragma mark - MenuItemSourceRadioButton

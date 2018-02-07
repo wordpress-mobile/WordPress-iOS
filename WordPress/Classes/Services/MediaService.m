@@ -4,13 +4,13 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
-#import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import <WordPressShared/WPImageSource.h>
 #import <WordPressShared/WPAnalytics.h>
 @import WordPressKit;
+@import WordPressUIKit;
 @import WordPressShared;
 
 @interface MediaService ()

@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import WordPressUIKit.WPFontManager
+import WordPressShared.WPFontManager
 
 open class NavigationTitleView: UIView {
     @objc open let titleLabel       = UILabel(frame: defaultTitleFrame)

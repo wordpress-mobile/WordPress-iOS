@@ -1,5 +1,5 @@
-#import "UIImage+Resize.h"
 #import "WPAvatarSource.h"
+@import WordPressUIKit;
 @import WordPressShared;
 
 static CGSize BlavatarMaxSize = {60, 60};

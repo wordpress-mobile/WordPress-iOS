@@ -96,7 +96,6 @@
 
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
-#import "UIImage+Resize.h"
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
@@ -142,8 +141,8 @@
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
-#import <WordPressUIKit/WPDeviceIdentification.h>
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPDeviceIdentification.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WordPressUIKit/WPNoResultsView.h>
 #import <WordPressUIKit/WPStyleGuide.h>
 #import <WordPressUIKit/WPTableViewCell.h>
