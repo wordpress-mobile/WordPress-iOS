@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "WPButtonForNavigationBar.h"
 
 

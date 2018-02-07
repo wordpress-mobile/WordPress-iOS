@@ -1,5 +1,5 @@
 import Foundation
-import WordPressUIKit.WPStyleGuide
+import WordPressShared.WPStyleGuide
 
 
 // MARK: - NoteBlockHeaderTableViewCell

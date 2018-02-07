@@ -143,8 +143,8 @@
 
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>
-#import <WordPressUIKit/WPNoResultsView.h>
-#import <WordPressUIKit/WPStyleGuide.h>
-#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressShared/WPNoResultsView.h>
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPTableViewCell.h>
 #import <WordPressUIKit/UIImage+Util.h>
 #import <WordPressShared/WPAnalytics.h>

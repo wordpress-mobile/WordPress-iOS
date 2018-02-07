@@ -1,5 +1,5 @@
 import Foundation
-import WordPressUIKit.WPStyleGuide
+import WordPressShared.WPStyleGuide
 
 
 /// The purpose of this class is to retrieve the collection of NotificationSettings from WordPress.com

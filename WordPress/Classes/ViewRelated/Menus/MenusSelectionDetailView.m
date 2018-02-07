@@ -2,7 +2,7 @@
 #import "Menu+ViewDesign.h"
 #import "MenusSelectionView.h"
 #import <WordPressShared/WPFontManager.h>
-#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 
 @import Gridicons;

@@ -15,7 +15,7 @@
 #import "WordPress-Swift.h"
 #import "MenusViewController.h"
 #import <Reachability/Reachability.h>
-#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 @import WordPressComStatsiOS;
 @import Gridicons;

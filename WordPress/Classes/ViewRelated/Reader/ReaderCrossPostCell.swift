@@ -1,5 +1,5 @@
 import Foundation
-import WordPressUIKit.WPStyleGuide
+import WordPressShared.WPStyleGuide
 
 open class ReaderCrossPostCell: UITableViewCell {
     @IBOutlet fileprivate weak var blavatarImageView: UIImageView!

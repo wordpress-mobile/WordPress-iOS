@@ -1,7 +1,8 @@
 #import "WPStyleGuide.h"
 #import "WPTextFieldTableViewCell.h"
-#import "UIColor+Helpers.h"
-@import WordPressShared;
+#import "WPFontManager.h"
+#import "WPDeviceIdentification.h"
+
 
 
 @implementation WPStyleGuide

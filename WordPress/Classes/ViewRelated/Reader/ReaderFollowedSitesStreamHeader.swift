@@ -1,6 +1,6 @@
 import Foundation
 import Gridicons
-import WordPressUIKit.WPStyleGuide
+import WordPressShared.WPStyleGuide
 
 @objc open class ReaderFollowedSitesStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!

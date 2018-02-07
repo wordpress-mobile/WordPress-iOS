@@ -1,5 +1,5 @@
 #import "WPTableViewCell.h"
-@import WordPressShared;
+#import "WPDeviceIdentification.h"
 
 
 CGFloat const WPTableViewFixedWidth = 600;

@@ -1,9 +1,9 @@
 import UIKit
-import WordPressShared
 
 
 extension UITextField {
     @objc public func nonNilTrimmedText() -> String {
-        return text?.trim() ?? ""
+        let trimmed = text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        return trimmed ?? ""
     }
 }

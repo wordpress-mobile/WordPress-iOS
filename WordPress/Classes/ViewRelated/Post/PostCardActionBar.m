@@ -1,7 +1,7 @@
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import <WordPressShared/UIDevice+Helpers.h>
-#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import <WordPressUIKit/UIImage+Util.h>
 #import "WordPress-Swift.h"
 
