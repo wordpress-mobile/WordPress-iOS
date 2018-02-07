@@ -2694,6 +2694,9 @@ extension AztecPostViewController {
             case .failed(let error):
                 strongSelf.handleError(error, onAttachment: attachment)
             case .progress(let value):
+                guard media.remoteStatus == .processing || media.remoteStatus == .pushing else {
+                    return
+                }
                 if value >= 1 {
                     attachment.progress = nil
                 } else {
