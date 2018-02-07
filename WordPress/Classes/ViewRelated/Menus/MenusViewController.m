@@ -13,7 +13,7 @@
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 #import <WordPressUIKit/WPNoResultsView.h>
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WordPressUIKit/WPStyleGuide.h>
 
 static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;

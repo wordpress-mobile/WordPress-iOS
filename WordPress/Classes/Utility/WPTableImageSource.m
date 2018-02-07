@@ -2,7 +2,7 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
-#import "UIImage+Resize.h"
+@import WordPressUIKit;
 @import WordPressShared;
 
 static const NSInteger WPTableImageSourceMaxPhotonQuality = 100;

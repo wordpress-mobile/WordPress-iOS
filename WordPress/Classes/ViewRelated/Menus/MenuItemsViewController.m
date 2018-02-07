@@ -8,7 +8,7 @@
 #import "ContextManager.h"
 #import "Menu+ViewDesign.h"
 #import "WPGUIConstants.h"
-#import <WordPressUIKit/WPDeviceIdentification.h>
+#import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressUIKit/WPStyleGuide.h>
 
 static CGFloat const ItemHoriztonalDragDetectionWidthRatio = 0.05;

@@ -1,7 +1,7 @@
 #import "MenusSelectionDetailView.h"
 #import "Menu+ViewDesign.h"
 #import "MenusSelectionView.h"
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WordPressUIKit/WPStyleGuide.h>
 
 

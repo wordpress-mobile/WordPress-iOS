@@ -1,5 +1,6 @@
 #import "WPNUXUtility.h"
-#import "WPFontManager.h"
+@import WordPressShared;
+
 
 @implementation WPNUXUtility
 
