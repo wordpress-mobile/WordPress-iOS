@@ -1,8 +1,22 @@
 import UIKit
 import WordPressShared
 
+
+// MARK: - NUXHelpBadgeLabel
+//
 class NUXHelpBadgeLabel: UILabel {
-    private let insets = UIEdgeInsets(top: 0, left: 0, bottom: 1, right: 0)
+
+    struct Constants {
+        static let defaultInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let defaultBackgroundColor = UIColor(fromHex: 0xdd3d36)
+        static let defaultFont = WPFontManager.systemRegularFont(ofSize: 8.0)
+    }
+
+    var insets: UIEdgeInsets = Constants.defaultInsets {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,12 +31,12 @@ class NUXHelpBadgeLabel: UILabel {
         layer.masksToBounds = true
         layer.cornerRadius = 6.0
         textAlignment = .center
-        backgroundColor = UIColor(fromHex: 0xdd3d36)
+        backgroundColor = Constants.defaultBackgroundColor
         textColor = .white
-        font = WPFontManager.systemRegularFont(ofSize: 8.0)
+        font = Constants.defaultFont
     }
 
-    override func draw(_ rect: CGRect) {
+    override func drawText(in rect: CGRect) {
         super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }
 }
