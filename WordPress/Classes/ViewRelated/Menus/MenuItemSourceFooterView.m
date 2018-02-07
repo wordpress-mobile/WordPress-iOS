@@ -1,7 +1,7 @@
 #import "MenuItemSourceFooterView.h"
 #import "MenuItemSourceCell.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUIKit/WPStyleGuide.h>
 
 static NSTimeInterval const PulseAnimationDuration = 0.35;
 

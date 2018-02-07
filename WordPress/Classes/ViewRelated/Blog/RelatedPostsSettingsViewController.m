@@ -7,7 +7,7 @@
 #import "SVProgressHud+Dismiss.h"
 #import "RelatedPostsPreviewTableViewCell.h"
 
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUIKit/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
 

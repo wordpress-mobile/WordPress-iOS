@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressUIKit.WPStyleGuide
 
 open class ReaderBlockedSiteCell: UITableViewCell {
     @IBOutlet fileprivate weak var borderedContentView: UIView!

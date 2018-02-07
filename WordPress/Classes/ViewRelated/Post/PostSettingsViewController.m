@@ -23,7 +23,7 @@
 #import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
-#import <WordPressShared/WPTextFieldTableViewCell.h>
+#import <WordPressUIKit/WPTextFieldTableViewCell.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;

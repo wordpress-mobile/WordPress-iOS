@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <WordPressShared/WPTableViewCell.h>
+#import <WordPressUIKit/WPTableViewCell.h>
 
 @interface WPTableViewActivityCell : WPTableViewCell {
 }

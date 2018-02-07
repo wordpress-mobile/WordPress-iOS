@@ -1,8 +1,8 @@
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import <WordPressShared/UIDevice+Helpers.h>
-#import <WordPressShared/WPStyleGuide.h>
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressUIKit/UIImage+Util.h>
 #import "WordPress-Swift.h"
 
 static NSInteger ActionBarMoreButtonIndex = 999;

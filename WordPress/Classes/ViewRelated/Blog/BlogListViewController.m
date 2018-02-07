@@ -13,8 +13,8 @@
 #import "WordPress-Swift.h"
 #import "WPGUIConstants.h"
 #import "CreateNewBlogViewController.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPTableViewCell.h>
+#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressUIKit/WPTableViewCell.h>
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 

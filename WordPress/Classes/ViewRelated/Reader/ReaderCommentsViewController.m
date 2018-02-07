@@ -13,7 +13,7 @@
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
-#import <WordPressShared/WPNoResultsView.h>
+#import <WordPressUIKit/WPNoResultsView.h>
 #import "WordPress-Swift.h"
 
 

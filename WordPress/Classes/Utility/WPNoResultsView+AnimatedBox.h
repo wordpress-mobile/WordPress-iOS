@@ -1,4 +1,4 @@
-#import <WordPressShared/WPNoResultsView.h>
+#import <WordPressUIKit/WPNoResultsView.h>
 
 @interface WPNoResultsView (AnimatedBox)
 

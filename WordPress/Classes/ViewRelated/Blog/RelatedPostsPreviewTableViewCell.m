@@ -1,6 +1,6 @@
 #import "RelatedPostsPreviewTableViewCell.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressUIKit/WPStyleGuide.h>
 
 static CGFloat HorizontalMargin = 0.0;
 static CGFloat VerticalMargin = 5.0;
