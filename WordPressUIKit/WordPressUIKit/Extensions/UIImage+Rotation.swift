@@ -1,7 +1,7 @@
 import Foundation
 
 extension UIImage {
-    @objc func rotate180Degrees() -> UIImage? {
+    @objc public func rotate180Degrees() -> UIImage? {
         guard let cgImg = cgImage else {
             return nil
         }
