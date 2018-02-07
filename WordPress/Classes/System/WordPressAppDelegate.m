@@ -37,7 +37,6 @@
 #import "WordPress-Swift.h"
 
 // View controllers
-#import "RotationAwareNavigationViewController.h"
 #import "StatsViewController.h"
 #import "SupportViewController.h"
 #import "WPTabBarController.h"
