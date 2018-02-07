@@ -1,5 +1,5 @@
 #import "SuggestionsTableViewCell.h"
-#import <WordPressShared/WPFontManager.h>
+#import <WordPressUIKit/WPFontManager.h>
 
 NSInteger const SuggestionsTableViewCellAvatarSize = 23;
 

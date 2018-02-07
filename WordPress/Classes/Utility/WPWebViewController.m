@@ -6,7 +6,7 @@
 #import "Constants.h"
 #import "WPError.h"
 #import "WPStyleGuide+WebView.h"
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUIKit/UIImage+Util.h>
 #import <WordPressShared/UIDevice+Helpers.h>
 #import "WordPress-Swift.h"
 

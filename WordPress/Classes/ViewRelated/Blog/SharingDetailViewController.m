@@ -4,7 +4,7 @@
 #import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationHelper.h"
 #import "UIImageView+AFNetworkingExtra.h"
-#import <WordPressShared/WPTableViewCell.h>
+#import <WordPressUIKit/WPTableViewCell.h>
 
 #import "WordPress-Swift.h"
 

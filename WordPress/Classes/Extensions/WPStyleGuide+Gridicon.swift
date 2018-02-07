@@ -1,4 +1,4 @@
-import WordPressShared
+import WordPressUIKit
 
 extension WPStyleGuide {
     @objc public class func cellGridiconAccessoryColor() -> UIColor {

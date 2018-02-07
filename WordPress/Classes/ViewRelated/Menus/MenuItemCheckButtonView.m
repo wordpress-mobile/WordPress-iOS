@@ -1,7 +1,7 @@
 #import "MenuItemCheckButtonView.h"
 #import "Menu+ViewDesign.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressUIKit/WPStyleGuide.h>
 
 @import Gridicons;
 

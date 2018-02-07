@@ -1,5 +1,5 @@
 import UIKit
-import WordPressShared.WPStyleGuide
+import WordPressUIKit.WPStyleGuide
 import Gridicons
 import TTTAttributedLabel
 import CoreGraphics

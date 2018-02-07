@@ -1,5 +1,5 @@
 #import "PostListFooterView.h"
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUIKit/WPStyleGuide.h>
 
 @interface PostListFooterView()
 

@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPTableViewCell
+import WordPressUIKit.WPTableViewCell
 
 open class CommentsTableViewCell: WPTableViewCell {
     // MARK: - Public Properties
