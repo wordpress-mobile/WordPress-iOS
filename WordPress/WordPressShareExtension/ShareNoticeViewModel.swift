@@ -1,13 +1,15 @@
 struct ShareNoticeViewModel {
     private let uploadedPost: PostUploadOperation
+    private let postInContext: Post?
     private let uploadedMedia: [MediaUploadOperation]?
 
-    init?(postOperation: PostUploadOperation, mediaOperations: [MediaUploadOperation]? = nil) {
+    init?(postOperation: PostUploadOperation, post: Post?, mediaOperations: [MediaUploadOperation]? = nil) {
         guard postOperation.currentStatus != .pending, postOperation.currentStatus != .inProgress else {
             return nil
         }
         self.uploadedPost = postOperation
         self.uploadedMedia = mediaOperations
+        self.postInContext = post
     }
 
     var notice: Notice? {
@@ -92,24 +94,5 @@ struct ShareNoticeViewModel {
     private var notificationBody: String {
         let dateString = postInContext?.dateForDisplay()?.mediumString() ?? Date().mediumString()
         return "\(dateString)."
-    }
-
-    private var postInContext: Post? {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        guard uploadedPost.remotePostID > 0,
-            uploadedPost.siteID > 0,
-            let blog = blogService.blog(byBlogId: NSNumber(value: uploadedPost.siteID)) else {
-                return nil
-        }
-
-        let postID = NSNumber(value: uploadedPost.remotePostID)
-        let postService = PostService(managedObjectContext: context)
-        guard let post = postService.findPost(withID: postID, in: blog) as? Post else {
-            return nil
-        }
-
-        return post
     }
 }

@@ -199,8 +199,12 @@ import WordPressFlux
 
         // We need to first sync the specific post to WPiOS so that we can open it for editing if needed.
         let postService = PostService(managedObjectContext: context)
-        postService.getPostWithID(NSNumber(value: postUploadOp.remotePostID), for: blog, success: { _ in
-            let model = ShareNoticeViewModel(postOperation: postUploadOp, mediaOperations: mediaUploadOps)
+        postService.getPostWithID(NSNumber(value: postUploadOp.remotePostID), for: blog, success: { post in
+            guard let post = post as? Post else {
+                return
+            }
+
+            let model = ShareNoticeViewModel(postOperation: postUploadOp, post: post, mediaOperations: mediaUploadOps)
             if let notice = model?.notice {
                 ActionDispatcher.dispatch(NoticeAction.post(notice))
             }
