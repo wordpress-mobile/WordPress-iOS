@@ -59,7 +59,6 @@
 		93A73ABF1EE9DDB000C0F2F9 /* WPMapFilterReduceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A73ABE1EE9DDB000C0F2F9 /* WPMapFilterReduceTest.m */; };
 		93AB05FD1EE8405A00EF8764 /* LanguagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */; };
 		93AB05FF1EE840A100EF8764 /* Languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AB05FE1EE840A100EF8764 /* Languages.json */; };
-		93AB06061EE884C000EF8764 /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AB06051EE884C000EF8764 /* UIAlertController+Helpers.swift */; };
 		93C674F51EE83D4B00BFAF05 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C674F41EE83D4B00BFAF05 /* Languages.swift */; };
 		93C882AD1EEB1E2F00227A59 /* NSDate+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C882AC1EEB1E2F00227A59 /* NSDate+Helpers.swift */; };
 		B5A787E6202B2BD3007874FB /* WPDeviceIdentification.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E2202B2BD2007874FB /* WPDeviceIdentification.m */; };
@@ -157,7 +156,6 @@
 		93A73ABE1EE9DDB000C0F2F9 /* WPMapFilterReduceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMapFilterReduceTest.m; sourceTree = "<group>"; };
 		93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguagesTests.swift; sourceTree = "<group>"; };
 		93AB05FE1EE840A100EF8764 /* Languages.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Languages.json; sourceTree = "<group>"; };
-		93AB06051EE884C000EF8764 /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+Helpers.swift"; path = "WordPressShared/UIAlertController+Helpers.swift"; sourceTree = SOURCE_ROOT; };
 		93C674F41EE83D4B00BFAF05 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Languages.swift; path = WordPressShared/Languages.swift; sourceTree = SOURCE_ROOT; };
 		93C882AC1EEB1E2F00227A59 /* NSDate+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSDate+Helpers.swift"; path = "WordPressShared/NSDate+Helpers.swift"; sourceTree = SOURCE_ROOT; };
 		94914F79BD25CA900E917965 /* Pods-WordPressShared.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShared.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared.release.xcconfig"; sourceTree = "<group>"; };
@@ -273,7 +271,6 @@
 				82706FF51ECA43AA00155CBF /* NSString+Util.m */,
 				82706FF71ECA43AA00155CBF /* NSString+XMLExtensions.h */,
 				82706FF81ECA43AA00155CBF /* NSString+XMLExtensions.m */,
-				93AB06051EE884C000EF8764 /* UIAlertController+Helpers.swift */,
 				7414BD5F1F13D084005759F8 /* UIDevice+Helpers.h */,
 				7414BD601F13D084005759F8 /* UIDevice+Helpers.m */,
 				827070011ECA43AA00155CBF /* WPImageSource.h */,
@@ -681,7 +678,6 @@
 				B5A78818202B3A55007874FB /* WPNUXUtility.m in Sources */,
 				7430C9DB1F1933F40051B8E6 /* RichContentFormatter.swift in Sources */,
 				937BA5881EF1DAC100D301B2 /* CocoaLumberjack.swift in Sources */,
-				93AB06061EE884C000EF8764 /* UIAlertController+Helpers.swift in Sources */,
 				7414BD551F13CBE0005759F8 /* Dictionary+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

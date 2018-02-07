@@ -16,6 +16,10 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 
+@import WordPressUIKit;
+
+
+
 static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 @interface MenusViewController () <UIScrollViewDelegate, MenuHeaderViewControllerDelegate, MenuDetailsViewControllerDelegate, MenuItemsViewControllerDelegate>

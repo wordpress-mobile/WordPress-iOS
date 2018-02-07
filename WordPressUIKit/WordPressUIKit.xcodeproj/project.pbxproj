@@ -34,6 +34,7 @@
 		B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D5202B2AA6007874FB /* UIImage+Resize.m */; };
 		B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */; };
 		B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787F4202B3587007874FB /* UIKitConstants.swift */; };
+		B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		B5A787D5202B2AA6007874FB /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787F4202B3587007874FB /* UIKitConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitConstants.swift; sourceTree = "<group>"; };
+		B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */,
+				B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */,
 				B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */,
 				B5A787A9202B2323007874FB /* UIDevice+Helpers.swift */,
 				B5A787AC202B2323007874FB /* UIImage+Rotation.swift */,
@@ -313,6 +316,7 @@
 				B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */,
 				B5A787B6202B2324007874FB /* UIView+Animations.swift in Sources */,
 				B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */,
+				B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */,
 				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
 				B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */,
 				B5A787DE202B2AA7007874FB /* UIImage+RoundedCorner.m in Sources */,
