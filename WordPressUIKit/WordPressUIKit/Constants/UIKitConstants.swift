@@ -1,8 +1,10 @@
 import Foundation
 
 
-class UIKitConstants {
-    static let alphaMid: CGFloat = 0.5
-    static let alphaZero: CGFloat = 0
-    static let alphaFull: CGFloat = 1
+// MARK: UIKit Constants
+//
+public class UIKitConstants {
+    public static let alphaMid: CGFloat = 0.5
+    public static let alphaZero: CGFloat = 0
+    public static let alphaFull: CGFloat = 1
 }
