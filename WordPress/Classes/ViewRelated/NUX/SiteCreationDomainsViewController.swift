@@ -8,8 +8,6 @@ class SiteCreationDomainsViewController: NUXViewController {
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
 
-    open var siteName: String?
-
     override var sourceTag: SupportSourceTag {
         get {
             return .wpComCreateSiteDomain
@@ -17,8 +15,7 @@ class SiteCreationDomainsViewController: NUXViewController {
     }
 
     private var domainsTableViewController: SiteCreationDomainsTableViewController?
-    private var buttonViewController: SiteCreationButtonViewController?
-    private var selectedDomain: String?
+    private var buttonViewController: NUXButtonViewController?
 
     // MARK: - View
 
@@ -57,15 +54,17 @@ class SiteCreationDomainsViewController: NUXViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
+
         if let vc = segue.destination as? SiteCreationDomainsTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.delegate = self
-            domainsTableViewController?.siteName = siteName
+            domainsTableViewController?.siteName = SiteCreationFields.sharedInstance.title
         }
 
-        if let vc = segue.destination as? SiteCreationButtonViewController {
+        if let vc = segue.destination as? NUXButtonViewController {
             buttonViewController = vc
             buttonViewController?.delegate = self
+            buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
             showButtonView(show: false, withAnimation: false)
         }
     }
@@ -83,7 +82,7 @@ class SiteCreationDomainsViewController: NUXViewController {
 
 extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControllerDelegate {
     func domainSelected(_ domain: String) {
-        selectedDomain = domain
+        SiteCreationFields.sharedInstance.domain = domain
         showButtonView(show: true, withAnimation: true)
     }
 
@@ -92,15 +91,10 @@ extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControl
     }
 }
 
-// MARK: - SiteCreationButtonViewControllerDelegate
+// MARK: - NUXButtonViewControllerDelegate
 
-extension SiteCreationDomainsViewController: SiteCreationButtonViewControllerDelegate {
-    func continueButtonPressed() {
-        let message = "'\(selectedDomain ?? "")' selected.\nThis is a work in progress. If you need to create a site, disable the siteCreation feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        self.present(alertController, animated: true, completion: nil)
+extension SiteCreationDomainsViewController: NUXButtonViewControllerDelegate {
+    func primaryButtonPressed() {
+        performSegue(withIdentifier: .showCreateSite, sender: self)
     }
 }
