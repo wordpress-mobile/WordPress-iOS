@@ -43,7 +43,7 @@ extension UIView {
 
     /// Applies a spring animation, from size 0 to final size
     ///
-    @objc public func expandSpringAnimation(_ completion: ((Bool) -> Void)? = nil) {
+    public func expandSpringAnimation(_ completion: ((Bool) -> Void)? = nil) {
         let duration        = 0.5
         let delay           = 0.2
         let damping         = CGFloat(0.7)
@@ -70,7 +70,7 @@ extension UIView {
 
     /// Applies a fade in animation
     ///
-    @objc public func fadeInAnimation(_ completion: ((Bool) -> Void)? = nil) {
+    public func fadeInAnimation(_ completion: ((Bool) -> Void)? = nil) {
         alpha = UIKitConstants.alphaMid
 
         UIView.animate(withDuration: Animations.duration, animations: { [weak self] in
@@ -82,7 +82,7 @@ extension UIView {
 
     /// Displays the current view with a Fade In / Rotation Animation
     ///
-    @objc public func fadeInWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
+    public func fadeInWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
         transform = CGAffineTransform.makeRotation(-270, scale: 3)
         alpha = UIKitConstants.alphaZero
 
@@ -100,7 +100,7 @@ extension UIView {
 
     /// Hides the current view with a Rotation / FadeOut Animation
     ///
-    @objc public func fadeOutWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
+    public func fadeOutWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform.makeRotation(120, scale: 3)
             self.alpha = UIKitConstants.alphaZero
@@ -111,7 +111,7 @@ extension UIView {
 
     /// Applies an "Expand to 300%" animation + Fade Out
     ///
-    @objc public func explodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
+    public func explodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
             self.alpha = UIKitConstants.alphaZero
@@ -122,7 +122,7 @@ extension UIView {
 
     /// Applies an "Expand from 300% to 100" animation
     ///
-    @objc public func implodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
+    public func implodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
         transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
         alpha = UIKitConstants.alphaZero
 
