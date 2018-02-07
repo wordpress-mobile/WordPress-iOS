@@ -74,9 +74,6 @@ extension UITableView {
 
     public static let defaultFlashLength: TimeInterval = 0.7
 
-    /// Default Disable Edition Action Delay
-    ///
-    public static let defaultDelay = TimeInterval(0.2)
 
     /// Returns true if the table view does not have any rows
     ///
