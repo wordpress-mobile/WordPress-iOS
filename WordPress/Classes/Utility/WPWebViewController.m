@@ -11,6 +11,8 @@
 #import "WordPress-Swift.h"
 
 @import Gridicons;
+@import WordPressUIKit;
+
 
 #pragma mark - Constants
 

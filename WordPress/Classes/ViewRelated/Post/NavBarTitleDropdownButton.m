@@ -2,6 +2,10 @@
 #import "WordPress-Swift.h"
 #import <WordPressShared/WPFontManager.h>
 
+@import WordPressUIKit;
+
+
+
 @implementation NavBarTitleDropdownButton
 
 - (instancetype)initWithFrame:(CGRect)frame

@@ -14,7 +14,9 @@
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import <WordPressShared/WPNoResultsView.h>
-#import "WordPress-Swift.h"
+
+@import WordPressUIKit;
+
 
 
 // NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar

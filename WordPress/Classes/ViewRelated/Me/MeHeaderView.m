@@ -2,6 +2,10 @@
 #import "Blog.h"
 #import "WordPress-Swift.h"
 
+@import WordPressUIKit;
+
+
+
 const CGFloat MeHeaderViewHeight = 154;
 const CGFloat MeHeaderViewGravatarSize = 64.0;
 const CGFloat MeHeaderViewLabelHeight = 20.0;

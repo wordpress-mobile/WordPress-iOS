@@ -5,6 +5,8 @@
 #import "IOS7CorrectedTextView.h"
 #import "WordPress-Swift.h"
 
+@import WordPressUIKit;
+
 
 
 #pragma mark ==========================================================================================

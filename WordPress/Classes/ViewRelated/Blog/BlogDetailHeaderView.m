@@ -2,6 +2,9 @@
 #import "Blog.h"
 #import "WordPress-Swift.h"
 
+@import WordPressUIKit;
+
+
 
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;

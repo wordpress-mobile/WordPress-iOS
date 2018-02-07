@@ -11,6 +11,8 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
+@import WordPressUIKit;
+
 
 
 #pragma mark ==========================================================================================

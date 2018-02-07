@@ -8,6 +8,10 @@
 
 #import "WordPress-Swift.h"
 
+@import WordPressUIKit;
+
+
+
 static NSString *const CellIdentifier = @"CellIdentifier";
 
 @interface SharingDetailViewController () <SharingAuthorizationHelperDelegate>
