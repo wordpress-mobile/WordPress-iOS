@@ -114,7 +114,6 @@
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
-#import "WPNUXHelpBadgeLabel.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPScrollableViewController.h"
