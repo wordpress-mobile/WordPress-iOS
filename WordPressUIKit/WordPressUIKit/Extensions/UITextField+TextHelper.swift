@@ -1,4 +1,6 @@
 import UIKit
+import WordPressShared
+
 
 extension UITextField {
     @objc func nonNilTrimmedText() -> String {
