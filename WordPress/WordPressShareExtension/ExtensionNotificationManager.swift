@@ -12,7 +12,7 @@ class ExtensionNotificationManager {
     ///   - mediaItemCount: Number of media items included with the post. Default is 0.
     ///
     static func scheduleSuccessNotification(postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date()) {
-        let userInfo = createUserInfoDict(postID: postID, blogID: blogID)
+        let userInfo = makeUserInfoDict(postID: postID, blogID: blogID)
         let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount)
         let body = notificationDate.mediumString()
         scheduleLocalNotification(title: title, body: body, category: ShareNoticeConstants.categorySuccessIdentifier, userInfo: userInfo)
@@ -26,7 +26,7 @@ class ExtensionNotificationManager {
     ///   - mediaItemCount: Number of media items included with the post. Default is 0.
     ///
     static func scheduleFailureNotification(postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date()) {
-        let userInfo = createUserInfoDict(postID: postID, blogID: blogID)
+        let userInfo = makeUserInfoDict(postID: postID, blogID: blogID)
         let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount)
         let body = notificationDate.mediumString()
         scheduleLocalNotification(title: title, body: body, category: ShareNoticeConstants.categoryFailureIdentifier, userInfo: userInfo)
@@ -59,7 +59,7 @@ class ExtensionNotificationManager {
         })
     }
 
-    private static func createUserInfoDict(postID: String, blogID: String) -> [String: Any] {
+    private static func makeUserInfoDict(postID: String, blogID: String) -> [String: Any] {
         var userInfo = [String: Any]()
         userInfo[ShareNoticeUserInfoKey.postID] = postID
         userInfo[ShareNoticeUserInfoKey.blogID] = blogID
