@@ -11,16 +11,12 @@
 		B59DCB6B202B146D00BEBD8A /* WordPressUIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB6A202B146D00BEBD8A /* WordPressUIKitTests.swift */; };
 		B59DCB6D202B146D00BEBD8A /* WordPressUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A78780202B167F007874FB /* WPStyleGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A78775202B167F007874FB /* WPStyleGuide.m */; };
-		B5A78781202B167F007874FB /* WPTextFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A78776202B167F007874FB /* WPTextFieldTableViewCell.m */; };
 		B5A78782202B167F007874FB /* WPNoResultsView.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A78777202B167F007874FB /* WPNoResultsView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B5A78783202B167F007874FB /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A78778202B167F007874FB /* WPTableViewCell.m */; };
 		B5A78784202B167F007874FB /* WPNUXUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A78779202B167F007874FB /* WPNUXUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A78785202B167F007874FB /* WPStyleGuide+DynamicType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A7877A202B167F007874FB /* WPStyleGuide+DynamicType.swift */; };
 		B5A78786202B167F007874FB /* WPStyleGuide.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7877B202B167F007874FB /* WPStyleGuide.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B5A78787202B167F007874FB /* WPTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7877C202B167F007874FB /* WPTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A78788202B167F007874FB /* WPNUXUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7877D202B167F007874FB /* WPNUXUtility.m */; };
 		B5A78789202B167F007874FB /* WPNoResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7877E202B167F007874FB /* WPNoResultsView.m */; };
-		B5A7878A202B167F007874FB /* WPTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7877F202B167F007874FB /* WPTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A78797202B1A58007874FB /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A78798202B1A58007874FB /* WordPressShared.framework */; };
 		B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A4202B2322007874FB /* UIImage+Tint.swift */; };
 		B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */; };
@@ -32,7 +28,6 @@
 		B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */; };
 		B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AC202B2323007874FB /* UIImage+Rotation.swift */; };
 		B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AD202B2323007874FB /* UITableView+Helpers.swift */; };
-		B5A787BA202B2324007874FB /* UITableViewCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AE202B2324007874FB /* UITableViewCell+Helpers.swift */; };
 		B5A787BB202B2324007874FB /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */; };
 		B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */; };
 		B5A787D6202B2AA7007874FB /* UIImage+Util.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787CC202B2AA6007874FB /* UIImage+Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -46,6 +41,7 @@
 		B5A787DE202B2AA7007874FB /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D4202B2AA6007874FB /* UIImage+RoundedCorner.m */; };
 		B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D5202B2AA6007874FB /* UIImage+Resize.m */; };
 		B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */; };
+		B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787F4202B3587007874FB /* UIKitConstants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,16 +62,12 @@
 		B59DCB6A202B146D00BEBD8A /* WordPressUIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressUIKitTests.swift; sourceTree = "<group>"; };
 		B59DCB6C202B146D00BEBD8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5A78775202B167F007874FB /* WPStyleGuide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStyleGuide.m; sourceTree = "<group>"; };
-		B5A78776202B167F007874FB /* WPTextFieldTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTextFieldTableViewCell.m; sourceTree = "<group>"; };
 		B5A78777202B167F007874FB /* WPNoResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNoResultsView.h; sourceTree = "<group>"; };
-		B5A78778202B167F007874FB /* WPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCell.m; sourceTree = "<group>"; };
 		B5A78779202B167F007874FB /* WPNUXUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXUtility.h; sourceTree = "<group>"; };
 		B5A7877A202B167F007874FB /* WPStyleGuide+DynamicType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+DynamicType.swift"; sourceTree = "<group>"; };
 		B5A7877B202B167F007874FB /* WPStyleGuide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStyleGuide.h; sourceTree = "<group>"; };
-		B5A7877C202B167F007874FB /* WPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCell.h; sourceTree = "<group>"; };
 		B5A7877D202B167F007874FB /* WPNUXUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXUtility.m; sourceTree = "<group>"; };
 		B5A7877E202B167F007874FB /* WPNoResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNoResultsView.m; sourceTree = "<group>"; };
-		B5A7877F202B167F007874FB /* WPTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTextFieldTableViewCell.h; sourceTree = "<group>"; };
 		B5A78798202B1A58007874FB /* WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A787A4202B2322007874FB /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
 		B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+TextHelper.swift"; sourceTree = "<group>"; };
@@ -87,7 +79,6 @@
 		B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787AC202B2323007874FB /* UIImage+Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotation.swift"; sourceTree = "<group>"; };
 		B5A787AD202B2323007874FB /* UITableView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Helpers.swift"; sourceTree = "<group>"; };
-		B5A787AE202B2324007874FB /* UITableViewCell+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787CC202B2AA6007874FB /* UIImage+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
@@ -101,6 +92,7 @@
 		B5A787D4202B2AA6007874FB /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
 		B5A787D5202B2AA6007874FB /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787F4202B3587007874FB /* UIKitConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitConstants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				B5A787CB202B2AA6007874FB /* Categories */,
+				B5A787F3202B3587007874FB /* Constants */,
 				B5A78799202B1A93007874FB /* Extensions */,
 				B5A78774202B167F007874FB /* Views */,
 				B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */,
@@ -173,10 +166,6 @@
 				B5A7877B202B167F007874FB /* WPStyleGuide.h */,
 				B5A78775202B167F007874FB /* WPStyleGuide.m */,
 				B5A7877A202B167F007874FB /* WPStyleGuide+DynamicType.swift */,
-				B5A7877C202B167F007874FB /* WPTableViewCell.h */,
-				B5A78778202B167F007874FB /* WPTableViewCell.m */,
-				B5A7877F202B167F007874FB /* WPTextFieldTableViewCell.h */,
-				B5A78776202B167F007874FB /* WPTextFieldTableViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -199,7 +188,6 @@
 				B5A787A4202B2322007874FB /* UIImage+Tint.swift */,
 				B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */,
 				B5A787AD202B2323007874FB /* UITableView+Helpers.swift */,
-				B5A787AE202B2324007874FB /* UITableViewCell+Helpers.swift */,
 				B5A787A7202B2322007874FB /* UITableViewController+Helpers.swift */,
 				B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */,
 				B5A787AA202B2323007874FB /* UIView+Animations.swift */,
@@ -227,6 +215,14 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		B5A787F3202B3587007874FB /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				B5A787F4202B3587007874FB /* UIKitConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -241,10 +237,8 @@
 				B5A787DA202B2AA7007874FB /* UIImage+Alpha.h in Headers */,
 				B5A787D6202B2AA7007874FB /* UIImage+Util.h in Headers */,
 				B5A78782202B167F007874FB /* WPNoResultsView.h in Headers */,
-				B5A78787202B167F007874FB /* WPTableViewCell.h in Headers */,
 				B5A78786202B167F007874FB /* WPStyleGuide.h in Headers */,
 				B5A78784202B167F007874FB /* WPNUXUtility.h in Headers */,
-				B5A7878A202B167F007874FB /* WPTextFieldTableViewCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,7 +341,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5A78783202B167F007874FB /* WPTableViewCell.m in Sources */,
 				B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */,
 				B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */,
 				B5A78789202B167F007874FB /* WPNoResultsView.m in Sources */,
@@ -358,15 +351,14 @@
 				B5A78785202B167F007874FB /* WPStyleGuide+DynamicType.swift in Sources */,
 				B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */,
 				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
-				B5A787BA202B2324007874FB /* UITableViewCell+Helpers.swift in Sources */,
 				B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */,
 				B5A787DE202B2AA7007874FB /* UIImage+RoundedCorner.m in Sources */,
 				B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */,
-				B5A78781202B167F007874FB /* WPTextFieldTableViewCell.m in Sources */,
 				B5A787B4202B2324007874FB /* UIWindow+Helpers.swift in Sources */,
 				B5A787B2202B2324007874FB /* UIView+Helpers.swift in Sources */,
 				B5A787DD202B2AA7007874FB /* UIImage+Alpha.m in Sources */,
 				B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */,
+				B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */,
 				B5A787DC202B2AA7007874FB /* UIImage+Util.m in Sources */,
 				B5A78780202B167F007874FB /* WPStyleGuide.m in Sources */,
 				B5A787B5202B2324007874FB /* UIDevice+Helpers.swift in Sources */,
