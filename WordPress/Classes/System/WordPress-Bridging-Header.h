@@ -76,7 +76,6 @@
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
-#import "RotationAwareNavigationViewController.h"
 
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
