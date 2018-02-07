@@ -77,9 +77,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     fileprivate var selectedNotification: Notification? = nil
 
-    /// Whether the Jetpack Login Prompt is being shown or not.
+    /// JetpackLoginVC being presented.
     ///
-    internal var showingJetpackLogin = false
+    internal var jetpackLoginViewController: JetpackLoginViewController? = nil
 
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
