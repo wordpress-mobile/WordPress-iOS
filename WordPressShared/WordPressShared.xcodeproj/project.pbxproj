@@ -404,8 +404,7 @@
 				82706FE01ECA32D400155CBF /* Utility */,
 				82706FDF1ECA32CD00155CBF /* Views */,
 			);
-			name = Core;
-			path = "WordPress-iOS-Shared/Core";
+			path = Core;
 			sourceTree = "<group>";
 		};
 		E1A444251F063CAB00F6AA8A /* Analytics */ = {
