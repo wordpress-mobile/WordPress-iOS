@@ -6,11 +6,7 @@ class RotationAwareNavigationViewController: UINavigationController {
 
     override var shouldAutorotate: Bool {
         // Respect the top child's orientation prefs.
-        guard let shouldAutorotate = topViewController?.shouldAutorotate else {
-            return super.shouldAutorotate
-        }
-
-        return shouldAutorotate
+        return topViewController?.shouldAutorotate ?? super.shouldAutorotate
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -22,4 +18,3 @@ class RotationAwareNavigationViewController: UINavigationController {
         return WPDeviceIdentification.isiPad() ? .all : .allButUpsideDown
     }
 }
-
