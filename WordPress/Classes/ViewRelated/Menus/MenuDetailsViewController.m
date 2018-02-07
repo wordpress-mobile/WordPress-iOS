@@ -4,7 +4,7 @@
 #import "Blog.h"
 #import "WPAppAnalytics.h"
 #import <WordPressUIKit/UIColor+Helpers.h>
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WordPressUIKit/WPStyleGuide.h>
 
 @import Gridicons;

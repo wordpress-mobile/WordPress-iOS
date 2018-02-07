@@ -9,3 +9,14 @@ FOUNDATION_EXPORT const unsigned char WordPressUIKitVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <WordPressUIKit/PublicHeader.h>
 
 
+#import <WordPressUIKit/UIColor+Helpers.h>
+#import <WordPressUIKit/UIImage+Util.h>
+#import <WordPressUIKit/UIImage+Alpha.h>
+#import <WordPressUIKit/UIImage+Resize.h>
+#import <WordPressUIKit/UIImage+RoundedCorner.h>
+#import <WordPressUIKit/UIImage+Util.h>
+#import <WordPressUIKit/WPNoResultsView.h>
+#import <WordPressUIKit/WPNUXUtility.h>
+#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressUIKit/WPTextFieldTableViewCell.h>

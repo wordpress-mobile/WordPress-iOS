@@ -2,7 +2,7 @@
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WordPressUIKit/WPNUXUtility.h>
 
 @interface WPWalkthroughOverlayView() {

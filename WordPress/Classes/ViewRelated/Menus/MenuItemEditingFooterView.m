@@ -1,5 +1,5 @@
 #import "MenuItemEditingFooterView.h"
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WordPressUIKit/WPStyleGuide.h>
 
 @import Gridicons;

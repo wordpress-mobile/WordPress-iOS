@@ -1,5 +1,5 @@
 #import "WPStyleGuide+Stats.h"
-#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 const CGFloat StatsVCHorizontalOuterPadding = 8.0f;
 const CGFloat StatsVCVerticalOuterPadding = 16.0f;
