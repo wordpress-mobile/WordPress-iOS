@@ -3,6 +3,8 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
+@import WordPressUIKit;
+
 
 
 #pragma mark - Constants

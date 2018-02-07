@@ -16,6 +16,10 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPTableViewCell.h>
 
+@import WordPressUIKit;
+
+
+
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
 static NSInteger HideAllMinSites = 10;

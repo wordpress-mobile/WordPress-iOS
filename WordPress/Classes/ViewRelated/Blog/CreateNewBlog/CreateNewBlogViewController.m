@@ -16,8 +16,12 @@
 #import <WordPressShared/WPNUXUtility.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
+
 @import WordPressKit;
+@import WordPressUIKit;
 @import WordPressShared;
+
+
 
 NSString * const NewWPComBlogCreatedNotification = @"NewWPComBlogCreatedNotification";
 NSString * const NewWPComBlogCreatedNotificationBlogUserInfoKey = @"NewWPComBlogCreatedNotificationBlogUserInfoKey";

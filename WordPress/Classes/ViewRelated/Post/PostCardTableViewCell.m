@@ -6,7 +6,11 @@
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
 #import "FLAnimatedImage.h"
+
 @import WordPressShared;
+@import WordPressUIKit;
+
+
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 

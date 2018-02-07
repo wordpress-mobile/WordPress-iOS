@@ -29,6 +29,7 @@
 @import Gridicons;
 @import WordPressShared;
 @import WordPressKit;
+@import WordPressUIKit;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
