@@ -71,10 +71,10 @@ extension UIView {
     /// Applies a fade in animation
     ///
     @objc public func fadeInAnimation(_ completion: ((Bool) -> Void)? = nil) {
-        alpha = Animations.alphaMid
+        alpha = UIKitConstants.alphaMid
 
         UIView.animate(withDuration: Animations.duration, animations: { [weak self] in
-            self?.alpha = Animations.alphaFull
+            self?.alpha = UIKitConstants.alphaFull
         }, completion: { success in
             completion?(success)
         })
@@ -84,11 +84,11 @@ extension UIView {
     ///
     @objc public func fadeInWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
         transform = CGAffineTransform.makeRotation(-270, scale: 3)
-        alpha = Animations.alphaZero
+        alpha = UIKitConstants.alphaZero
 
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform.makeRotation(0, scale: 0.75)
-            self.alpha = Animations.alphaFull
+            self.alpha = UIKitConstants.alphaFull
         }, completion: { _ in
             UIView.animate(withDuration: Animations.duration, animations: {
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -103,7 +103,7 @@ extension UIView {
     @objc public func fadeOutWithRotationAnimation(_ completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform.makeRotation(120, scale: 3)
-            self.alpha = Animations.alphaZero
+            self.alpha = UIKitConstants.alphaZero
         }, completion: { success in
             completion?(success)
         })
@@ -114,7 +114,7 @@ extension UIView {
     @objc public func explodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Animations.duration, animations: {
             self.transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
-            self.alpha = Animations.alphaZero
+            self.alpha = UIKitConstants.alphaZero
         }, completion: { success in
             completion?(success)
         })
@@ -124,10 +124,10 @@ extension UIView {
     ///
     @objc public func implodeAnimation(_ completion: ((Bool) -> Void)? = nil) {
         transform = CGAffineTransform(scaleX: 3.0, y: 3.0)
-        alpha = Animations.alphaZero
+        alpha = UIKitConstants.alphaZero
 
         UIView.animate(withDuration: Animations.duration, animations: {
-            self.alpha = Animations.alphaFull
+            self.alpha = UIKitConstants.alphaFull
             self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
         }, completion: { success in
             completion?(success)
@@ -138,9 +138,6 @@ extension UIView {
     /// Private Constants
     ///
     private struct Animations {
-        static let duration         = TimeInterval(0.3)
-        static let alphaZero        = CGFloat(0)
-        static let alphaMid         = CGFloat(0.5)
-        static let alphaFull        = CGFloat(1)
+        static let duration = TimeInterval(0.3)
     }
 }
