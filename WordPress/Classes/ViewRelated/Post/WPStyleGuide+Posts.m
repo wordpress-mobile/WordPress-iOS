@@ -3,6 +3,10 @@
 #import "WordPress-Swift.h"
 #import <QuartzCore/QuartzCore.h>
 
+@import WordPressUIKit;
+
+
+
 @implementation WPStyleGuide (Posts)
 
 #pragma mark - Post List Styles
