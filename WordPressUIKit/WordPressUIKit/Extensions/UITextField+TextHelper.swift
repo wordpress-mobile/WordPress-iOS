@@ -3,7 +3,7 @@ import WordPressShared
 
 
 extension UITextField {
-    @objc func nonNilTrimmedText() -> String {
+    @objc public func nonNilTrimmedText() -> String {
         return text?.trim() ?? ""
     }
 }
