@@ -688,6 +688,7 @@
 		B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */; };
 		B59DCB05202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */; };
 		B59DCB01202A144D00BEBD8A /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB00202A144D00BEBD8A /* RotationAwareNavigationViewController.swift */; };
+		B59DCB05202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */; };
 		B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */; };
 		B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
 		B5A9B7C31BFA6F3100FC30A5 /* NSString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */; };
@@ -2101,6 +2102,7 @@
 		B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsListEditorViewController.swift; sourceTree = "<group>"; };
 		B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXHelpBadgeLabel.swift; sourceTree = "<group>"; };
 		B59DCB00202A144D00BEBD8A /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
+		B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXHelpBadgeLabel.swift; sourceTree = "<group>"; };
 		B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropViewController.swift; sourceTree = "<group>"; };
 		B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountToAccount20to21.swift; path = "20-21/AccountToAccount20to21.swift"; sourceTree = "<group>"; };
 		B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Helpers.swift"; sourceTree = "<group>"; };
