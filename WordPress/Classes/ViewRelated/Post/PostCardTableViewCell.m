@@ -2,7 +2,7 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
-#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
 #import "FLAnimatedImage.h"

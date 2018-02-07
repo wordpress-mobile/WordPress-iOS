@@ -1,4 +1,4 @@
-#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 NS_ASSUME_NONNULL_BEGIN;
 
