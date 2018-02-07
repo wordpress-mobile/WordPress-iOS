@@ -18,5 +18,4 @@ FOUNDATION_EXPORT const unsigned char WordPressUIKitVersionString[];
 #import <WordPressUIKit/WPNoResultsView.h>
 #import <WordPressUIKit/WPNUXUtility.h>
 #import <WordPressUIKit/WPStyleGuide.h>
-#import <WordPressUIKit/WPTableViewCell.h>
-#import <WordPressUIKit/WPTextFieldTableViewCell.h>
+
