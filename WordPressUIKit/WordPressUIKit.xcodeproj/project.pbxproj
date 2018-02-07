@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B59DCB66202B146D00BEBD8A /* WordPressUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59DCB5C202B146D00BEBD8A /* WordPressUIKit.framework */; };
-		B59DCB6B202B146D00BEBD8A /* WordPressUIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB6A202B146D00BEBD8A /* WordPressUIKitTests.swift */; };
 		B59DCB6D202B146D00BEBD8A /* WordPressUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A4202B2322007874FB /* UIImage+Tint.swift */; };
 		B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */; };
@@ -49,7 +48,6 @@
 		B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressUIKit.h; sourceTree = "<group>"; };
 		B59DCB60202B146D00BEBD8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B59DCB65202B146D00BEBD8A /* WordPressUIKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressUIKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B59DCB6A202B146D00BEBD8A /* WordPressUIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressUIKitTests.swift; sourceTree = "<group>"; };
 		B59DCB6C202B146D00BEBD8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5A78798202B1A58007874FB /* WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A787A4202B2322007874FB /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 		B59DCB69202B146D00BEBD8A /* WordPressUIKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				B59DCB6A202B146D00BEBD8A /* WordPressUIKitTests.swift */,
 				B59DCB6C202B146D00BEBD8A /* Info.plist */,
 			);
 			path = WordPressUIKitTests;
@@ -325,7 +322,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B59DCB6B202B146D00BEBD8A /* WordPressUIKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
