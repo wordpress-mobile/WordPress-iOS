@@ -692,7 +692,6 @@
 		B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */; };
 		B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D40A51DB522DF003D2D79 /* NSAttributedStringTests.swift */; };
 		B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */; };
-		B59DCB05202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */; };
 		B59DCB01202A144D00BEBD8A /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB00202A144D00BEBD8A /* RotationAwareNavigationViewController.swift */; };
 		B59DCB05202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */; };
 		B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */; };
@@ -2126,7 +2125,6 @@
 		B59B18741CC7FB8D0055EB7C /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
 		B59D40A51DB522DF003D2D79 /* NSAttributedStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedStringTests.swift; sourceTree = "<group>"; };
 		B59D994E1C0790CC0003D795 /* SettingsListEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsListEditorViewController.swift; sourceTree = "<group>"; };
-		B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXHelpBadgeLabel.swift; sourceTree = "<group>"; };
 		B59DCB00202A144D00BEBD8A /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
 		B59DCB04202A1E3200BEBD8A /* NUXHelpBadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXHelpBadgeLabel.swift; sourceTree = "<group>"; };
 		B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCropViewController.swift; sourceTree = "<group>"; };
@@ -8094,6 +8092,7 @@
 			baseConfigurationReference = 712D0A17BC83B9730BD7CCC0 /* Pods-WordPressDraftActionExtension.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -8139,6 +8138,7 @@
 			baseConfigurationReference = B60BB199C4D84FFF05C0F97E /* Pods-WordPressDraftActionExtension.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -8177,6 +8177,7 @@
 			baseConfigurationReference = 61923FEDAFD6503928030311 /* Pods-WordPressDraftActionExtension.release-internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -8215,6 +8216,7 @@
 			baseConfigurationReference = 3B28C7D4D65D0CA6AB9FCFDC /* Pods-WordPressDraftActionExtension.release-alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
