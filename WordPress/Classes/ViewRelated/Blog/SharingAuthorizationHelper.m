@@ -6,6 +6,10 @@
 #import "SharingAuthorizationWebViewController.h"
 #import "WordPress-Swift.h"
 
+@import WordPressUIKit;
+
+
+
 @interface SharingAuthorizationHelper() <SharingAuthorizationDelegate, SharingAccountSelectionDelegate>
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PublicizeService *publicizeService;

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUIKit
 
 
 open class HTTPAuthenticationAlertController {

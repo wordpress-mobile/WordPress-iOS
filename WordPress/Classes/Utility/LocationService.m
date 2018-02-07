@@ -4,6 +4,10 @@
 @import MapKit;
 #import "WordPress-Swift.h"
 
+@import WordPressUIKit;
+
+
+
 static LocationService *instance;
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
