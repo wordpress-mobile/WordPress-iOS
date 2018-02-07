@@ -10,6 +10,42 @@
 		B59DCB66202B146D00BEBD8A /* WordPressUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59DCB5C202B146D00BEBD8A /* WordPressUIKit.framework */; };
 		B59DCB6B202B146D00BEBD8A /* WordPressUIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59DCB6A202B146D00BEBD8A /* WordPressUIKitTests.swift */; };
 		B59DCB6D202B146D00BEBD8A /* WordPressUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A78780202B167F007874FB /* WPStyleGuide.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A78775202B167F007874FB /* WPStyleGuide.m */; };
+		B5A78781202B167F007874FB /* WPTextFieldTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A78776202B167F007874FB /* WPTextFieldTableViewCell.m */; };
+		B5A78782202B167F007874FB /* WPNoResultsView.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A78777202B167F007874FB /* WPNoResultsView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A78783202B167F007874FB /* WPTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A78778202B167F007874FB /* WPTableViewCell.m */; };
+		B5A78784202B167F007874FB /* WPNUXUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A78779202B167F007874FB /* WPNUXUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A78785202B167F007874FB /* WPStyleGuide+DynamicType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A7877A202B167F007874FB /* WPStyleGuide+DynamicType.swift */; };
+		B5A78786202B167F007874FB /* WPStyleGuide.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7877B202B167F007874FB /* WPStyleGuide.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A78787202B167F007874FB /* WPTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7877C202B167F007874FB /* WPTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A78788202B167F007874FB /* WPNUXUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7877D202B167F007874FB /* WPNUXUtility.m */; };
+		B5A78789202B167F007874FB /* WPNoResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A7877E202B167F007874FB /* WPNoResultsView.m */; };
+		B5A7878A202B167F007874FB /* WPTextFieldTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A7877F202B167F007874FB /* WPTextFieldTableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A78797202B1A58007874FB /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A78798202B1A58007874FB /* WordPressShared.framework */; };
+		B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A4202B2322007874FB /* UIImage+Tint.swift */; };
+		B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */; };
+		B5A787B2202B2324007874FB /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A6202B2322007874FB /* UIView+Helpers.swift */; };
+		B5A787B3202B2324007874FB /* UITableViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A7202B2322007874FB /* UITableViewController+Helpers.swift */; };
+		B5A787B4202B2324007874FB /* UIWindow+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A8202B2323007874FB /* UIWindow+Helpers.swift */; };
+		B5A787B5202B2324007874FB /* UIDevice+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A9202B2323007874FB /* UIDevice+Helpers.swift */; };
+		B5A787B6202B2324007874FB /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AA202B2323007874FB /* UIView+Animations.swift */; };
+		B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */; };
+		B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AC202B2323007874FB /* UIImage+Rotation.swift */; };
+		B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AD202B2323007874FB /* UITableView+Helpers.swift */; };
+		B5A787BA202B2324007874FB /* UITableViewCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AE202B2324007874FB /* UITableViewCell+Helpers.swift */; };
+		B5A787BB202B2324007874FB /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */; };
+		B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */; };
+		B5A787D6202B2AA7007874FB /* UIImage+Util.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787CC202B2AA6007874FB /* UIImage+Util.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A787D7202B2AA7007874FB /* UIColor+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787CD202B2AA6007874FB /* UIColor+Helpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A787D8202B2AA7007874FB /* UIImage+RoundedCorner.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787CE202B2AA6007874FB /* UIImage+RoundedCorner.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A787D9202B2AA7007874FB /* UIImage+Resize.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787CF202B2AA6007874FB /* UIImage+Resize.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A787DA202B2AA7007874FB /* UIImage+Alpha.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787D0202B2AA6007874FB /* UIImage+Alpha.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5A787DB202B2AA7007874FB /* UIColor+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D1202B2AA6007874FB /* UIColor+Helpers.m */; };
+		B5A787DC202B2AA7007874FB /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D2202B2AA6007874FB /* UIImage+Util.m */; };
+		B5A787DD202B2AA7007874FB /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D3202B2AA6007874FB /* UIImage+Alpha.m */; };
+		B5A787DE202B2AA7007874FB /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D4202B2AA6007874FB /* UIImage+RoundedCorner.m */; };
+		B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787D5202B2AA6007874FB /* UIImage+Resize.m */; };
+		B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +65,42 @@
 		B59DCB65202B146D00BEBD8A /* WordPressUIKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressUIKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59DCB6A202B146D00BEBD8A /* WordPressUIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressUIKitTests.swift; sourceTree = "<group>"; };
 		B59DCB6C202B146D00BEBD8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B5A78775202B167F007874FB /* WPStyleGuide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStyleGuide.m; sourceTree = "<group>"; };
+		B5A78776202B167F007874FB /* WPTextFieldTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTextFieldTableViewCell.m; sourceTree = "<group>"; };
+		B5A78777202B167F007874FB /* WPNoResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNoResultsView.h; sourceTree = "<group>"; };
+		B5A78778202B167F007874FB /* WPTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCell.m; sourceTree = "<group>"; };
+		B5A78779202B167F007874FB /* WPNUXUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXUtility.h; sourceTree = "<group>"; };
+		B5A7877A202B167F007874FB /* WPStyleGuide+DynamicType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+DynamicType.swift"; sourceTree = "<group>"; };
+		B5A7877B202B167F007874FB /* WPStyleGuide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStyleGuide.h; sourceTree = "<group>"; };
+		B5A7877C202B167F007874FB /* WPTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCell.h; sourceTree = "<group>"; };
+		B5A7877D202B167F007874FB /* WPNUXUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXUtility.m; sourceTree = "<group>"; };
+		B5A7877E202B167F007874FB /* WPNoResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNoResultsView.m; sourceTree = "<group>"; };
+		B5A7877F202B167F007874FB /* WPTextFieldTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTextFieldTableViewCell.h; sourceTree = "<group>"; };
+		B5A78798202B1A58007874FB /* WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5A787A4202B2322007874FB /* UIImage+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tint.swift"; sourceTree = "<group>"; };
+		B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+TextHelper.swift"; sourceTree = "<group>"; };
+		B5A787A6202B2322007874FB /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787A7202B2322007874FB /* UITableViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewController+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787A8202B2323007874FB /* UIWindow+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIWindow+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787A9202B2323007874FB /* UIDevice+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787AA202B2323007874FB /* UIView+Animations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Animations.swift"; sourceTree = "<group>"; };
+		B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787AC202B2323007874FB /* UIImage+Rotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotation.swift"; sourceTree = "<group>"; };
+		B5A787AD202B2323007874FB /* UITableView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787AE202B2324007874FB /* UITableViewCell+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGAffineTransform+Helpers.swift"; sourceTree = "<group>"; };
+		B5A787CC202B2AA6007874FB /* UIImage+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
+		B5A787CD202B2AA6007874FB /* UIColor+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Helpers.h"; sourceTree = "<group>"; };
+		B5A787CE202B2AA6007874FB /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
+		B5A787CF202B2AA6007874FB /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		B5A787D0202B2AA6007874FB /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Alpha.h"; sourceTree = "<group>"; };
+		B5A787D1202B2AA6007874FB /* UIColor+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Helpers.m"; sourceTree = "<group>"; };
+		B5A787D2202B2AA6007874FB /* UIImage+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
+		B5A787D3202B2AA6007874FB /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
+		B5A787D4202B2AA6007874FB /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		B5A787D5202B2AA6007874FB /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Helpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5A78797202B1A58007874FB /* WordPressShared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +129,7 @@
 				B59DCB5E202B146D00BEBD8A /* WordPressUIKit */,
 				B59DCB69202B146D00BEBD8A /* WordPressUIKitTests */,
 				B59DCB5D202B146D00BEBD8A /* Products */,
+				B5A78796202B1A58007874FB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +145,9 @@
 		B59DCB5E202B146D00BEBD8A /* WordPressUIKit */ = {
 			isa = PBXGroup;
 			children = (
+				B5A787CB202B2AA6007874FB /* Categories */,
+				B5A78799202B1A93007874FB /* Extensions */,
+				B5A78774202B167F007874FB /* Views */,
 				B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */,
 				B59DCB60202B146D00BEBD8A /* Info.plist */,
 			);
@@ -86,6 +163,70 @@
 			path = WordPressUIKitTests;
 			sourceTree = "<group>";
 		};
+		B5A78774202B167F007874FB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B5A78777202B167F007874FB /* WPNoResultsView.h */,
+				B5A7877E202B167F007874FB /* WPNoResultsView.m */,
+				B5A78779202B167F007874FB /* WPNUXUtility.h */,
+				B5A7877D202B167F007874FB /* WPNUXUtility.m */,
+				B5A7877B202B167F007874FB /* WPStyleGuide.h */,
+				B5A78775202B167F007874FB /* WPStyleGuide.m */,
+				B5A7877A202B167F007874FB /* WPStyleGuide+DynamicType.swift */,
+				B5A7877C202B167F007874FB /* WPTableViewCell.h */,
+				B5A78778202B167F007874FB /* WPTableViewCell.m */,
+				B5A7877F202B167F007874FB /* WPTextFieldTableViewCell.h */,
+				B5A78776202B167F007874FB /* WPTextFieldTableViewCell.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B5A78796202B1A58007874FB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B5A78798202B1A58007874FB /* WordPressShared.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B5A78799202B1A93007874FB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */,
+				B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */,
+				B5A787A9202B2323007874FB /* UIDevice+Helpers.swift */,
+				B5A787AC202B2323007874FB /* UIImage+Rotation.swift */,
+				B5A787A4202B2322007874FB /* UIImage+Tint.swift */,
+				B5A787AF202B2324007874FB /* UIScreen+Helpers.swift */,
+				B5A787AD202B2323007874FB /* UITableView+Helpers.swift */,
+				B5A787AE202B2324007874FB /* UITableViewCell+Helpers.swift */,
+				B5A787A7202B2322007874FB /* UITableViewController+Helpers.swift */,
+				B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */,
+				B5A787AA202B2323007874FB /* UIView+Animations.swift */,
+				B5A787A6202B2322007874FB /* UIView+Helpers.swift */,
+				B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */,
+				B5A787A8202B2323007874FB /* UIWindow+Helpers.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B5A787CB202B2AA6007874FB /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				B5A787CD202B2AA6007874FB /* UIColor+Helpers.h */,
+				B5A787D1202B2AA6007874FB /* UIColor+Helpers.m */,
+				B5A787D0202B2AA6007874FB /* UIImage+Alpha.h */,
+				B5A787D3202B2AA6007874FB /* UIImage+Alpha.m */,
+				B5A787CF202B2AA6007874FB /* UIImage+Resize.h */,
+				B5A787D5202B2AA6007874FB /* UIImage+Resize.m */,
+				B5A787CE202B2AA6007874FB /* UIImage+RoundedCorner.h */,
+				B5A787D4202B2AA6007874FB /* UIImage+RoundedCorner.m */,
+				B5A787CC202B2AA6007874FB /* UIImage+Util.h */,
+				B5A787D2202B2AA6007874FB /* UIImage+Util.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -94,6 +235,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				B59DCB6D202B146D00BEBD8A /* WordPressUIKit.h in Headers */,
+				B5A787D7202B2AA7007874FB /* UIColor+Helpers.h in Headers */,
+				B5A787D8202B2AA7007874FB /* UIImage+RoundedCorner.h in Headers */,
+				B5A787D9202B2AA7007874FB /* UIImage+Resize.h in Headers */,
+				B5A787DA202B2AA7007874FB /* UIImage+Alpha.h in Headers */,
+				B5A787D6202B2AA7007874FB /* UIImage+Util.h in Headers */,
+				B5A78782202B167F007874FB /* WPNoResultsView.h in Headers */,
+				B5A78787202B167F007874FB /* WPTableViewCell.h in Headers */,
+				B5A78786202B167F007874FB /* WPStyleGuide.h in Headers */,
+				B5A78784202B167F007874FB /* WPNUXUtility.h in Headers */,
+				B5A7878A202B167F007874FB /* WPTextFieldTableViewCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +347,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5A78783202B167F007874FB /* WPTableViewCell.m in Sources */,
+				B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */,
+				B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */,
+				B5A78789202B167F007874FB /* WPNoResultsView.m in Sources */,
+				B5A787DB202B2AA7007874FB /* UIColor+Helpers.m in Sources */,
+				B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */,
+				B5A78788202B167F007874FB /* WPNUXUtility.m in Sources */,
+				B5A787B6202B2324007874FB /* UIView+Animations.swift in Sources */,
+				B5A78785202B167F007874FB /* WPStyleGuide+DynamicType.swift in Sources */,
+				B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */,
+				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
+				B5A787BA202B2324007874FB /* UITableViewCell+Helpers.swift in Sources */,
+				B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */,
+				B5A787DE202B2AA7007874FB /* UIImage+RoundedCorner.m in Sources */,
+				B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */,
+				B5A78781202B167F007874FB /* WPTextFieldTableViewCell.m in Sources */,
+				B5A787B4202B2324007874FB /* UIWindow+Helpers.swift in Sources */,
+				B5A787B2202B2324007874FB /* UIView+Helpers.swift in Sources */,
+				B5A787DD202B2AA7007874FB /* UIImage+Alpha.m in Sources */,
+				B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */,
+				B5A787DC202B2AA7007874FB /* UIImage+Util.m in Sources */,
+				B5A78780202B167F007874FB /* WPStyleGuide.m in Sources */,
+				B5A787B5202B2324007874FB /* UIDevice+Helpers.swift in Sources */,
+				B5A787B3202B2324007874FB /* UITableViewController+Helpers.swift in Sources */,
+				B5A787BB202B2324007874FB /* UIScreen+Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +510,7 @@
 		B59DCB71202B146D00BEBD8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -343,6 +520,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WordPressUIKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -355,6 +533,7 @@
 		B59DCB72202B146D00BEBD8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -364,6 +543,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = WordPressUIKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.WordPressUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -376,6 +556,7 @@
 		B59DCB74202B146D00BEBD8A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				INFOPLIST_FILE = WordPressUIKitTests/Info.plist;
@@ -390,6 +571,7 @@
 		B59DCB75202B146D00BEBD8A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				INFOPLIST_FILE = WordPressUIKitTests/Info.plist;
