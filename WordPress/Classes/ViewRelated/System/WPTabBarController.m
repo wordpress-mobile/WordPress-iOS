@@ -1,5 +1,5 @@
 #import "WPTabBarController.h"
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUIKit/UIImage+Util.h>
 
 #import "WordPressAppDelegate.h"
 #import "AccountService.h"
@@ -11,7 +11,7 @@
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
-#import <WordPressShared/WPDeviceIdentification.h>
+#import <WordPressUIKit/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 

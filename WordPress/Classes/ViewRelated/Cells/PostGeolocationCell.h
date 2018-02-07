@@ -1,5 +1,5 @@
 #import "Coordinate.h"
-#import <WordPressShared/WPTableViewCell.h>
+#import <WordPressUIKit/WPTableViewCell.h>
 
 @interface PostGeolocationCell : WPTableViewCell
 

@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressUIKit.WPStyleGuide
 
 @objc open class ReaderListStreamHeader: UIView, ReaderStreamHeader {
     @IBOutlet fileprivate weak var borderedView: UIView!

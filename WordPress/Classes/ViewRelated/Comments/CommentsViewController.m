@@ -9,8 +9,8 @@
 #import "WPGUIConstants.h"
 #import "UIView+Subviews.h"
 #import "ContextManager.h"
-#import <WordPressShared/WPNoResultsView.h>
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUIKit/WPNoResultsView.h>
+#import <WordPressUIKit/WPStyleGuide.h>
 
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};

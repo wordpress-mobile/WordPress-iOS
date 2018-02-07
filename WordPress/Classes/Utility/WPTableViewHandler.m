@@ -1,5 +1,5 @@
 #import "WPTableViewHandler.h"
-#import <WordPressShared/WPTableViewCell.h>
+#import <WordPressUIKit/WPTableViewCell.h>
 #import "WordPress-Swift.h"
 
 static NSString * const DefaultCellIdentifier = @"DefaultCellIdentifier";

@@ -9,8 +9,8 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import <WordPressShared/NSString+Util.h>
-#import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/WPTextFieldTableViewCell.h>
+#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressUIKit/WPTextFieldTableViewCell.h>
 
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate, UITextFieldDelegate>
 

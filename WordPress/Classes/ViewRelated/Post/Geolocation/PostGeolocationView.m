@@ -1,6 +1,6 @@
 #import "PostGeolocationView.h"
 #import "PostAnnotation.h"
-#import <WordPressShared/WPFontManager.h>
+#import <WordPressUIKit/WPFontManager.h>
 
 const CGFloat DefaultLabelMargin = 20.0f;
 const CGFloat GeoViewMinHeight = 130.0f;

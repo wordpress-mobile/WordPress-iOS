@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPStyleGuide
+import WordPressUIKit.WPStyleGuide
 
 //  NOTE:
 //  ReplyBezierView is a helper class, used to render the ReplyTextView bubble

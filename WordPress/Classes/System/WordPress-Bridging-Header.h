@@ -142,10 +142,10 @@
 
 #import <WPMediaPicker/WPMediaPicker.h>
 
-#import <WordPressShared/WPDeviceIdentification.h>
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPNoResultsView.h>
-#import <WordPressShared/WPStyleGuide.h>
-#import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUIKit/WPDeviceIdentification.h>
+#import <WordPressUIKit/WPFontManager.h>
+#import <WordPressUIKit/WPNoResultsView.h>
+#import <WordPressUIKit/WPStyleGuide.h>
+#import <WordPressUIKit/WPTableViewCell.h>
+#import <WordPressUIKit/UIImage+Util.h>
 #import <WordPressShared/WPAnalytics.h>

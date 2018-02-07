@@ -1,6 +1,6 @@
 import Foundation
 import Gridicons
-import WordPressShared.WPTableViewCell
+import WordPressUIKit.WPTableViewCell
 
 open class ActivityTableViewCell: WPTableViewCell {
 

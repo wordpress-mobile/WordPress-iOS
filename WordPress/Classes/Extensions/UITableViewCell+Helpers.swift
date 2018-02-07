@@ -1,5 +1,5 @@
 import Foundation
-import WordPressShared.WPTableViewCell
+import WordPressUIKit.WPTableViewCell
 
 extension UITableViewCell {
     @objc public func layoutHeightWithWidth(_ width: CGFloat) -> CGFloat {
