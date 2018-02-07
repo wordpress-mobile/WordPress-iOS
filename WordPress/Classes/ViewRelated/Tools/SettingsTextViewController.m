@@ -1,5 +1,5 @@
 #import "SettingsTextViewController.h"
-#import <WordPressUIKit/WPTextFieldTableViewCell.h>
+#import <WordPressShared/WPTextFieldTableViewCell.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
