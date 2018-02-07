@@ -4,7 +4,7 @@ import Foundation
 extension UITableView {
     /// Reloads the currently selected row, if any.
     ///
-    @objc public func reloadSelectedRow() {
+    public func reloadSelectedRow() {
         if let selectedRowIndexPath = indexPathForSelectedRow {
             reloadRows(at: [selectedRowIndexPath], with: .none)
             selectRow(at: selectedRowIndexPath, animated: false, scrollPosition: .none)
@@ -13,7 +13,7 @@ extension UITableView {
 
     /// Reloads the tableView's data, while preserving the currently selected row.
     ///
-    @objc public func reloadDataPreservingSelection() {
+    public func reloadDataPreservingSelection() {
         if let selectedRowIndexPath = indexPathForSelectedRow {
             reloadData()
             selectRow(at: selectedRowIndexPath, animated: false, scrollPosition: .none)
@@ -30,7 +30,7 @@ extension UITableView {
 
     /// Deselects the currently selected row, asynchronously
     ///
-    @objc public func deselectSelectedRowWithAnimationAfterDelay(_ animated: Bool) {
+    public func deselectSelectedRowWithAnimationAfterDelay(_ animated: Bool) {
         // Note: due to a weird UITableView interaction between reloadData and deselectSelectedRow,
         // we'll introduce a slight delay before deselecting, to avoid getting the highlighted row flickering.
         //
@@ -73,19 +73,6 @@ extension UITableView {
     }
 
     public static let defaultFlashLength: TimeInterval = 0.7
-
-    /// Disables Editing after a specified delay.
-    ///
-    /// -   Parameter delay: milliseconds to elapse before edition will be disabled.
-    ///
-    @objc public func disableEditionAfterDelay(_ delay: TimeInterval = defaultDelay) {
-        let delay = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delay) { [weak self] in
-            if self?.isEditing == true {
-                self?.setEditing(false, animated: true)
-            }
-        }
-    }
 
     /// Default Disable Edition Action Delay
     ///
