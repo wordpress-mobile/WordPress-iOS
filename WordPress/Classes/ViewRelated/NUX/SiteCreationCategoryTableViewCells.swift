@@ -16,7 +16,7 @@ class InstructionTableViewCell: WPTableViewCell {
     }
 }
 
-class SiteTypeTableViewCell: WPTableViewCell {
+class CategoryTableViewCell: WPTableViewCell {
 
     @IBOutlet weak var typeImageView: UIImageView!
     @IBOutlet weak var startWithLabel: UILabel!
@@ -36,7 +36,7 @@ struct InstructionRow: ImmuTableRow {
     typealias CellType = InstructionTableViewCell
 
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "InstructionTableViewCell", bundle: Bundle(for: CellType.self))
+        let nib = UINib(nibName: "SiteCreationInstructionTableViewCell", bundle: Bundle(for: CellType.self))
         return ImmuTableCell.nib(nib, CellType.self)
     }()
 
@@ -71,10 +71,10 @@ enum SiteType: String {
 }
 
 struct SiteTypeRow: ImmuTableRow {
-    typealias CellType = SiteTypeTableViewCell
+    typealias CellType = CategoryTableViewCell
 
     static let cell: ImmuTableCell = {
-        let nib = UINib(nibName: "SiteTypeTableViewCell", bundle: Bundle(for: CellType.self))
+        let nib = UINib(nibName: "SiteCreationCategoryTableViewCell", bundle: Bundle(for: CellType.self))
         return ImmuTableCell.nib(nib, CellType.self)
     }()
 

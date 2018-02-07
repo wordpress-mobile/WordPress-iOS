@@ -1,7 +1,10 @@
 import UIKit
 
 class SiteCreationNavigationController: RotationAwareNavigationViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SiteCreationFields.resetSharedInstance()
     }
+
 }

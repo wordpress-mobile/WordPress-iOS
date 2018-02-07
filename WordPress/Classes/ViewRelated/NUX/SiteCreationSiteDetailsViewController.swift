@@ -50,9 +50,14 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? SiteCreationDomainsViewController {
-            destination.siteName = siteTitleField.text
+
+        guard let siteTitle = siteTitleField.text else {
+            return
         }
+
+        SiteCreationFields.sharedInstance.title = siteTitle
+        SiteCreationFields.sharedInstance.tagline = taglineField.text
+
         let backButton = UIBarButtonItem()
         backButton.title = NSLocalizedString("Back", comment: "Back button title.")
         navigationItem.backBarButtonItem = backButton
