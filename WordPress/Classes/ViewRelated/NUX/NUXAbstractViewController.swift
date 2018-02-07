@@ -42,7 +42,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     @objc var restrictToWPCom = false
 
     @objc let helpButtonMarginSpacerWidth = CGFloat(-8)
-    @objc let helpBadgeSize = CGSize(width: 12, height: 10)
+    @objc let helpBadgeSize = CGSize(width: 12, height: 12)
     @objc let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
     @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
