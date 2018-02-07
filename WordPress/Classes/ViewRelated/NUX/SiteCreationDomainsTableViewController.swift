@@ -51,8 +51,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         }
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIDevice.isPad() ? .all : .portrait
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
     }
 
     /// Fetches new domain suggestions based on the provided string
@@ -210,7 +211,7 @@ extension SiteCreationDomainsTableViewController {
 
 extension SiteCreationDomainsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedDomain: String
+        var selectedDomain: String
         switch indexPath.section {
         case Sections.suggestions.rawValue:
             if searchSuggestions.count > 0 {
@@ -222,7 +223,10 @@ extension SiteCreationDomainsTableViewController {
             return
         }
 
+        // Remove ".wordpress.com" before sending it to the delegate
+        selectedDomain = selectedDomain.components(separatedBy: ".")[0]
         delegate?.domainSelected(selectedDomain)
+
         tableView.deselectSelectedRowWithAnimation(true)
 
         // Uncheck the previously selected cell.

@@ -15,6 +15,10 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         }
     }
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
+    }
+
     // MARK: associated type for NUXSegueHandler
     /// Segue identifiers to avoid using strings
     enum SegueIdentifier: String {
@@ -27,6 +31,8 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case show2FA
         case showEpilogue
         case showDomains
+        case showCreateSite
+        case showSiteCreationEpilogue
     }
 
     override func viewDidLoad() {
