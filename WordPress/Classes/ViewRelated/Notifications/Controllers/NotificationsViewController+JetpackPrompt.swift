@@ -9,7 +9,7 @@ extension NotificationsViewController {
 
         if let controller = jetpackLoginViewController {
             controller.blog = blog
-            controller.updateMessage()
+            controller.updateMessageAndButton()
             configureControllerCompletion(controller, withBlog: blog)
         } else {
             let controller = JetpackLoginViewController(blog: blog)
@@ -36,7 +36,7 @@ extension NotificationsViewController {
                     self?.jetpackLoginViewController = nil
                     self?.tableView.reloadData()
                 } else {
-                    controller?.updateMessage()
+                    controller?.updateMessageAndButton()
                 }
             }, failure: { (error) in
                 self?.activityIndicator.stopAnimating()
