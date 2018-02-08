@@ -1,6 +1,6 @@
 #import "WPAvatarSource.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 @import WordPressShared;
 
 

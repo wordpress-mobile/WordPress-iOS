@@ -8,7 +8,7 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

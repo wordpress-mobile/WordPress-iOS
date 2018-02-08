@@ -4,7 +4,7 @@
 @import MapKit;
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

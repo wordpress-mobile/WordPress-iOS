@@ -1,6 +1,6 @@
 import UIKit
 import WordPressShared
-import WordPressUIKit
+import WordPressUI
 
 class MainShareViewController: UIViewController {
 

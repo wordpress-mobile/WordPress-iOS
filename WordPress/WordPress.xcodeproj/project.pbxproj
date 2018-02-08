@@ -647,6 +647,7 @@
 		B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */; };
 		B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56994441B7A7EF200FF26FA /* WPStyleGuide+Comments.swift */; };
 		B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */; };
+		B56D96B3202C9B9300485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B4202C9B9300485233 /* WordPressUI.framework */; };
 		B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */; };
 		B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */; };
 		B5722E421D51A28100F40C5E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5722E401D51A28100F40C5E /* Notification.swift */; };
@@ -678,7 +679,6 @@
 		B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A05AD81CA48601002EC787 /* ImageCropViewController.swift */; };
 		B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
 		B5A78770202B151A007874FB /* WordPressUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A78771202B151A007874FB /* WordPressUIKit.framework */; };
-		B5A787A2202B1B8A007874FB /* WordPressUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A787A3202B1B8A007874FB /* WordPressUIKit.framework */; };
 		B5A9B7C31BFA6F3100FC30A5 /* NSString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */; };
 		B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5AA54D41A8E7510003BDD12 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B5AB733C19901F85005F5044 /* WPNoResultsView+AnimatedBox.m */; };
@@ -2036,6 +2036,7 @@
 		B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableHeaderView.xib; sourceTree = "<group>"; };
 		B56994441B7A7EF200FF26FA /* WPStyleGuide+Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Comments.swift"; sourceTree = "<group>"; };
 		B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
+		B56D96B4202C9B9300485233 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedStringKey+Conversion.swift"; sourceTree = "<group>"; };
 		B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoleViewController.swift; sourceTree = "<group>"; };
 		B5722E401D51A28100F40C5E /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -2741,8 +2742,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B56D96B3202C9B9300485233 /* WordPressUI.framework in Frameworks */,
 				743368EF1F914DCE0055224D /* WordPressKit.framework in Frameworks */,
-				B5A787A2202B1B8A007874FB /* WordPressUIKit.framework in Frameworks */,
 				930D5C8C1ED32A1900D9A771 /* WordPressShared.framework in Frameworks */,
 				4C8A715EBCE7E73AEE216293 /* Pods_WordPressShareExtension.framework in Frameworks */,
 			);
@@ -3112,6 +3113,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B56D96B4202C9B9300485233 /* WordPressUI.framework */,
 				B5A787A3202B1B8A007874FB /* WordPressUIKit.framework */,
 				B5A78771202B151A007874FB /* WordPressUIKit.framework */,
 				E19FED0B1FBD85F300D77FAB /* WordPressFlux.framework */,

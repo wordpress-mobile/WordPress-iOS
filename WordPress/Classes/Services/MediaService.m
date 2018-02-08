@@ -11,7 +11,7 @@
 #import <WordPressShared/WPAnalytics.h>
 
 @import WordPressKit;
-@import WordPressUIKit;
+@import WordPressUI;
 @import WordPressShared;
 
 

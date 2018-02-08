@@ -2,7 +2,7 @@
 #import "WordPress-Swift.h"
 #import <WordPressShared/WPFontManager.h>
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

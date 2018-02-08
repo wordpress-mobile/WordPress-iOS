@@ -2,7 +2,7 @@
 #import "Constants.h"
 #import <WordPressShared/WPNUXUtility.h>
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

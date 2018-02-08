@@ -144,5 +144,5 @@
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
-#import <WordPressUIKit/UIImage+Util.h>
+#import <WordPressUI/UIImage+Util.h>
 #import <WordPressShared/WPAnalytics.h>

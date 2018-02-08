@@ -3,7 +3,7 @@
 #import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

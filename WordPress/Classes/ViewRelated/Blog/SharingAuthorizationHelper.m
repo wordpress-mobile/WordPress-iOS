@@ -6,7 +6,7 @@
 #import "SharingAuthorizationWebViewController.h"
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

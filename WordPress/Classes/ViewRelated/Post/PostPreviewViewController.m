@@ -9,7 +9,7 @@
 
 @import Gridicons;
 @import SVProgressHUD;
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

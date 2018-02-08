@@ -1,5 +1,5 @@
 import XCTest
-import WordPressUIKit
+import WordPressUI
 
 class UIColorHelpersTests: XCTestCase {
 
