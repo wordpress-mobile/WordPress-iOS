@@ -14,8 +14,7 @@
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import <WordPressShared/WPNoResultsView.h>
-
-@import WordPressUI;
+#import <WordPressUI/WordPressUI.h>
 
 
 

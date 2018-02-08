@@ -6,12 +6,11 @@
 #import "Constants.h"
 #import "WPError.h"
 #import "WPStyleGuide+WebView.h"
-#import <WordPressUI/UIImage+Util.h>
+#import <WordPressUI/WordPressUI.h>
 #import <WordPressShared/UIDevice+Helpers.h>
 #import "WordPress-Swift.h"
 
 @import Gridicons;
-@import WordPressUI;
 
 
 #pragma mark - Constants

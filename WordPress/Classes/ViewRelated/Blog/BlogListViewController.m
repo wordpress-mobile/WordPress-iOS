@@ -15,8 +15,7 @@
 #import "CreateNewBlogViewController.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPTableViewCell.h>
-
-@import WordPressUI;
+#import <WordPressUI/WordPressUI.h>
 
 
 
