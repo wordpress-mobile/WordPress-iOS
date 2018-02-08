@@ -76,7 +76,6 @@
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
-#import "RotationAwareNavigationViewController.h"
 
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
@@ -116,7 +115,6 @@
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
-#import "WPNUXHelpBadgeLabel.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPScrollableViewController.h"
