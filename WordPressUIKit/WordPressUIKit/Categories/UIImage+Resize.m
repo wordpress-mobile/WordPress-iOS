@@ -4,7 +4,6 @@
 // No warranty is expressed or implied.
 
 #import "UIImage+Resize.h"
-#import "UIImage+Alpha.h"
 
 @implementation UIImage (Resize)
 
