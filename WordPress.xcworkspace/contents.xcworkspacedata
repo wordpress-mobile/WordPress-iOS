@@ -8,7 +8,7 @@
       location = "group:WordPressKit/WordPressKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:WordPressUI/WordPressUIKit.xcodeproj">
+      location = "group:/Users/lantean/Developer/Automattic/WordPress-iOS/WordPressUI/WordPressUI.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:WordPressShared/WordPressShared.xcodeproj">
