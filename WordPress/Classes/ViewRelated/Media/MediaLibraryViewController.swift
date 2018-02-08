@@ -336,6 +336,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
 
         if media.remoteStatus == .failed {
+            if let error = media.error {
+                alertController.message = error.localizedDescription
+            }
             alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
                 MediaCoordinator.shared.retryMedia(media)
             }
