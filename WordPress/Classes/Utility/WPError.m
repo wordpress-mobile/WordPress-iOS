@@ -6,7 +6,7 @@
 #import <wpxmlrpc/WPXMLRPC.h>
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 NSInteger const SupportButtonIndex = 0;

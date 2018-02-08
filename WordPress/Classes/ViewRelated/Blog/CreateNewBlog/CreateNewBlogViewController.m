@@ -18,7 +18,7 @@
 #import "WordPress-Swift.h"
 
 @import WordPressKit;
-@import WordPressUIKit;
+@import WordPressUI;
 @import WordPressShared;
 
 

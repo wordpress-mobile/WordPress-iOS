@@ -5,7 +5,7 @@
 #import "IOS7CorrectedTextView.h"
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 
