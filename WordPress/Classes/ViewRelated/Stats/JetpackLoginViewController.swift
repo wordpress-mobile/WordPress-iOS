@@ -14,7 +14,7 @@ class JetpackLoginViewController: UIViewController {
     // MARK: - Properties
 
     // Defaulting to stats because since that one is written in ObcC we don't have access to the enum there.
-    var presenter: JetpackLoginViewControllerPresenter = .stats
+    var promptType: JetpackLoginPromptType = .stats
 
     typealias CompletionBlock = () -> Void
     /// This completion handler closure is executed when the authentication process handled
@@ -66,7 +66,7 @@ class JetpackLoginViewController: UIViewController {
     /// One time setup of the form textfields and buttons
     ///
     fileprivate func setupControls() {
-        switch presenter {
+        switch promptType {
         case .stats:
             jetpackImage.image = UIImage(named: "wp-illustration-stats")
         case .notifications:
@@ -134,7 +134,7 @@ class JetpackLoginViewController: UIViewController {
                                                                              "if they want to upgrade"), JetpackState.minimumVersionRequired)
             }
         } else {
-            switch presenter {
+            switch promptType {
             case .stats:
                 message = NSLocalizedString("To use Stats on your site, you'll need to install the Jetpack plugin.\n Would you like to set up Jetpack?",
                                             comment: "Message asking the user if they want to set up Jetpack from stats")
@@ -192,7 +192,7 @@ extension JetpackLoginViewController: JetpackConnectionWebDelegate {
     }
 }
 
-public enum JetpackLoginViewControllerPresenter {
+public enum JetpackLoginPromptType {
 
     case stats
     case notifications
