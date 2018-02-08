@@ -45,7 +45,6 @@
 		827070101ECA43AA00155CBF /* WPImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 827070021ECA43AA00155CBF /* WPImageSource.m */; };
 		827070881ECA4DB700155CBF /* anim-reader.gif in Resources */ = {isa = PBXBuildFile; fileRef = 827070861ECA4DB700155CBF /* anim-reader.gif */; };
 		827070891ECA4DB700155CBF /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 827070871ECA4DB700155CBF /* test-image.jpg */; };
-		827070921ECA4E1D00155CBF /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827070901ECA4E1D00155CBF /* UIColorHelpersTests.swift */; };
 		827070931ECA4E1D00155CBF /* WPImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 827070911ECA4E1D00155CBF /* WPImageSourceTest.m */; };
 		827070A11ECA5A7C00155CBF /* NotoSerif-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8270709D1ECA5A7C00155CBF /* NotoSerif-Bold.ttf */; };
 		827070A21ECA5A7C00155CBF /* NotoSerif-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8270709E1ECA5A7C00155CBF /* NotoSerif-BoldItalic.ttf */; };
@@ -139,7 +138,6 @@
 		827070861ECA4DB700155CBF /* anim-reader.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "anim-reader.gif"; sourceTree = "<group>"; };
 		827070871ECA4DB700155CBF /* test-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image.jpg"; sourceTree = "<group>"; };
 		8270708F1ECA4E1C00155CBF /* WordPressSharedTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressSharedTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		827070901ECA4E1D00155CBF /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		827070911ECA4E1D00155CBF /* WPImageSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImageSourceTest.m; sourceTree = "<group>"; };
 		827070981ECA4EBC00155CBF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8270709A1ECA502F00155CBF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -306,7 +304,6 @@
 				93AB05FC1EE8405A00EF8764 /* LanguagesTests.swift */,
 				748710AB1F06C465008095AB /* StringHelperTests.swift */,
 				74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */,
-				827070901ECA4E1D00155CBF /* UIColorHelpersTests.swift */,
 				8270708F1ECA4E1C00155CBF /* WordPressSharedTests-Bridging-Header.h */,
 				827070911ECA4E1D00155CBF /* WPImageSourceTest.m */,
 				93A73ABE1EE9DDB000C0F2F9 /* WPMapFilterReduceTest.m */,
@@ -687,7 +684,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				74D44ED91F0EC6230075F96B /* NSStringHelpersTests.m in Sources */,
-				827070921ECA4E1D00155CBF /* UIColorHelpersTests.swift in Sources */,
 				7414BD521F13CB90005759F8 /* DictionaryHelpersTests.swift in Sources */,
 				93A73ABF1EE9DDB000C0F2F9 /* WPMapFilterReduceTest.m in Sources */,
 				827070931ECA4E1D00155CBF /* WPImageSourceTest.m in Sources */,
