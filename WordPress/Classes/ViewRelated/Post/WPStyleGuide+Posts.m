@@ -1,9 +1,8 @@
 #import "WPStyleGuide+Posts.h"
 #import <WordPressShared/WPFontManager.h>
-#import "WordPress-Swift.h"
 #import <QuartzCore/QuartzCore.h>
-
-@import WordPressUI;
+#import <WordPressUI/WordPressUI.h>
+#import "WordPress-Swift.h"
 
 
 
