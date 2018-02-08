@@ -1,8 +1,7 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
+#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
-
-@import WordPressUI;
 
 
 

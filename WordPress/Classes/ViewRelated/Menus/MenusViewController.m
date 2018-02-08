@@ -15,8 +15,7 @@
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-
-@import WordPressUI;
+#import <WordPressUI/WordPressUI.h>
 
 
 

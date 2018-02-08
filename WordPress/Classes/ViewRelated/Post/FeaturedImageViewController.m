@@ -2,7 +2,7 @@
 
 #import "Media.h"
 #import "WordPress-Swift.h"
-@import WordPressUI;
+#import <WordPressUI/WordPressUI.h>
 
 
 @interface FeaturedImageViewController ()
