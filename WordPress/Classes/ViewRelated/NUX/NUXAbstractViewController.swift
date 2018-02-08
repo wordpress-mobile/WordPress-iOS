@@ -36,13 +36,13 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
 /// It is assumed that NUX controllers will always be presented modally.
 ///
 class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLogoAndHelpViewController {
-    @objc var helpBadge: WPNUXHelpBadgeLabel!
+    @objc var helpBadge: NUXHelpBadgeLabel!
     @objc var helpButton: UIButton!
     @objc var loginFields = LoginFields()
     @objc var restrictToWPCom = false
 
     @objc let helpButtonMarginSpacerWidth = CGFloat(-8)
-    @objc let helpBadgeSize = CGSize(width: 12, height: 10)
+    @objc let helpBadgeSize = CGSize(width: 12, height: 12)
     @objc let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
     @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
@@ -150,7 +150,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
         helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
         helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
 
-        helpBadge = WPNUXHelpBadgeLabel()
+        helpBadge = NUXHelpBadgeLabel()
         helpBadge.translatesAutoresizingMaskIntoConstraints = false
         helpBadge.isHidden = true
         customView.addSubview(helpBadge)

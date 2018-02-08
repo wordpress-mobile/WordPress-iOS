@@ -56,6 +56,10 @@ extension MediaService {
         if media.remoteStatus != .sync {
             media.remoteStatus = .sync
         }
+        if media.error != nil {
+            media.error = nil
+        }
+
     }
 
 }
