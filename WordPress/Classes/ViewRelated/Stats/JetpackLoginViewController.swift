@@ -9,7 +9,6 @@ class JetpackLoginViewController: UIViewController {
     // MARK: - Constants
 
     fileprivate let jetpackInstallRelativePath = "plugin-install.php?tab=plugin-information&plugin=jetpack"
-    fileprivate let jetpackMoreInformationURL = "https://apps.wordpress.com/support/#faq-ios-15"
     fileprivate let blog: Blog
 
     // MARK: - Properties
@@ -25,7 +24,6 @@ class JetpackLoginViewController: UIViewController {
     @IBOutlet fileprivate weak var scrollView: UIScrollView!
     @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
     @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
-    @IBOutlet fileprivate weak var moreInformationButton: UIButton!
 
     /// Returns true if the blog has the proper version of Jetpack installed,
     /// otherwise false
@@ -69,9 +67,6 @@ class JetpackLoginViewController: UIViewController {
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
         updateMessage()
 
-        setupMoreInformationButtonText()
-        moreInformationButton.isHidden = hasJetpack
-
         var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation.")
         installJetpackButton.setTitle(title, for: .normal)
         installJetpackButton.isHidden = hasJetpack
@@ -79,28 +74,6 @@ class JetpackLoginViewController: UIViewController {
         title = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
         signinButton.setTitle(title, for: .normal)
         signinButton.isHidden = !hasJetpack
-    }
-
-    /// Configures the button text for requesting more information about jetpack.
-    ///
-    fileprivate func setupMoreInformationButtonText() {
-        let string = NSLocalizedString("More information",
-                                       comment: "Text used for a button to request more information.")
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-
-        let attributes: StyledHTMLAttributes = [ .BodyAttribute: [ .font: WPStyleGuide.fontForTextStyle(.footnote),
-                                                                   .foregroundColor: WPStyleGuide.mediumBlue(),
-                                                                   .underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
-                                                                   .paragraphStyle: paragraphStyle ]]
-
-        let attributedCode = NSAttributedString.attributedStringWithHTML(string, attributes: attributes)
-        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
-        attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
-
-        moreInformationButton.setAttributedTitle(attributedCode, for: UIControlState())
-        moreInformationButton.setAttributedTitle(attributedCodeHighlighted, for: .highlighted)
     }
 
     fileprivate func observeLoginNotifications(_ observe: Bool) {
@@ -176,26 +149,6 @@ class JetpackLoginViewController: UIViewController {
         present(navController, animated: true, completion: nil)
     }
 
-    fileprivate func openMoreInformationURL() {
-        WPAppAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen)
-        displayWebView(url: jetpackMoreInformationURL)
-    }
-
-    fileprivate func displayWebView(url: String) {
-        guard let url =  URL(string: url) else {
-            return
-        }
-        let webViewController = WebViewControllerFactory.controller(url: url)
-
-        if presentingViewController != nil {
-            navigationController?.pushViewController(webViewController, animated: true)
-        } else {
-            let navController = UINavigationController(rootViewController: webViewController)
-            navController.modalPresentationStyle = .pageSheet
-            present(navController, animated: true, completion: nil)
-        }
-    }
-
     fileprivate func signIn() {
         observeLoginNotifications(true)
         SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
@@ -209,10 +162,6 @@ class JetpackLoginViewController: UIViewController {
 
     @IBAction func didTouchInstallJetpackButton(_ sender: Any) {
         openInstallJetpackURL()
-    }
-
-    @IBAction func didTouchMoreInformationButton(_ sender: Any) {
-        openMoreInformationURL()
     }
 }
 
