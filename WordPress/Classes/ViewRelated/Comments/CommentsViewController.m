@@ -12,7 +12,7 @@
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

@@ -2,7 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 @interface ReachabilityAlert : NSObject

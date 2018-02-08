@@ -1,7 +1,7 @@
 #import "WPButtonForNavigationBar.h"
 #import "WordPress-Swift.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

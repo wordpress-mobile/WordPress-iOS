@@ -16,7 +16,7 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

@@ -11,7 +11,7 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

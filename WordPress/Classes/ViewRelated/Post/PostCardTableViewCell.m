@@ -8,7 +8,7 @@
 #import "FLAnimatedImage.h"
 
 @import WordPressShared;
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

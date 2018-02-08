@@ -16,7 +16,7 @@
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPTableViewCell.h>
 
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 

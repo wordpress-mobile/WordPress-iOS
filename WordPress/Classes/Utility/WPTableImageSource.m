@@ -3,7 +3,7 @@
 #import "ContextManager.h"
 #import "WPAccount.h"
 
-@import WordPressUIKit;
+@import WordPressUI;
 @import WordPressShared;
 
 

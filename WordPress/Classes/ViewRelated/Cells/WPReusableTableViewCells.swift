@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 import WordPressShared
-import WordPressUIKit
+import WordPressUI
 import Gridicons
 
 class WPReusableTableViewCell: WPTableViewCell {

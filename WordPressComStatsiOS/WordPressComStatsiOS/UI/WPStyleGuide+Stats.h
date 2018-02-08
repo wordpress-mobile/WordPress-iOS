@@ -1,5 +1,5 @@
 @import WordPressShared;
-@import WordPressUIKit;
+@import WordPressUI;
 
 extern const CGFloat StatsVCHorizontalOuterPadding;
 extern const CGFloat StatsCVerticalOuterPadding;

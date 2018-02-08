@@ -5,7 +5,7 @@
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
-#import <WordPressUIKit/UIImage+Util.h>
+#import <WordPressUI/UIImage+Util.h>
 #import <WordPressShared/WPTableViewCell.h>
 
 typedef NS_ENUM(NSInteger, SharingSectionIdentifier){

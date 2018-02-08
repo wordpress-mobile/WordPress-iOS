@@ -1,5 +1,5 @@
 #import "UIAlertControllerProxy.h"
-@import WordPressUIKit;
+@import WordPressUI;
 
 
 @implementation UIAlertControllerProxy
