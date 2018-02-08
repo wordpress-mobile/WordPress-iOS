@@ -13,7 +13,7 @@ extension NotificationsViewController {
             configureControllerCompletion(controller, withBlog: blog)
         } else {
             let controller = JetpackLoginViewController(blog: blog)
-            controller.presenter = .notifications
+            controller.promptType = .notifications
             addChildViewController(controller)
             tableView.addSubview(withFadeAnimation: controller.view)
             controller.view.center = tableView.center
