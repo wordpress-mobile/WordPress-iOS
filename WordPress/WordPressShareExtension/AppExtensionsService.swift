@@ -117,13 +117,17 @@ extension AppExtensionsService {
         uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
             // Schedule a local success notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleSuccessNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+                ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                                                                         postID: String(uploadPostOp.remotePostID),
+                                                                         blogID: String(uploadPostOp.siteID))
             }
             onComplete?()
         }, onFailure: {
             // Schedule a local failure notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleFailureNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID))
+                ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                                                                         postID: String(uploadPostOp.remotePostID),
+                                                                         blogID: String(uploadPostOp.siteID))
             }
 
             // Error is already logged in coredata so no need to do it here.
@@ -285,12 +289,18 @@ fileprivate extension AppExtensionsService {
         uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
             // Schedule a local success notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleSuccessNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID), mediaItemCount: mediaUploadOps.count)
+                ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                                                                         postID: String(uploadPostOp.remotePostID),
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         mediaItemCount: mediaUploadOps.count)
             }
         }, onFailure: {
             // Schedule a local failure notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
-                ExtensionNotificationManager.scheduleFailureNotification(postID: String(uploadPostOp.remotePostID), blogID: String(uploadPostOp.siteID), mediaItemCount: mediaUploadOps.count)
+                ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
+                                                                         postID: String(uploadPostOp.remotePostID),
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         mediaItemCount: mediaUploadOps.count)
             }
         })
     }
