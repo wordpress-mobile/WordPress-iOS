@@ -74,15 +74,7 @@ class JetpackLoginViewController: UIViewController {
         }
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
-        updateMessage()
-
-        var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation.")
-        installJetpackButton.setTitle(title, for: .normal)
-        installJetpackButton.isHidden = hasJetpack
-
-        title = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
-        signinButton.setTitle(title, for: .normal)
-        signinButton.isHidden = !hasJetpack
+        updateMessageAndButton()
     }
 
     fileprivate func observeLoginNotifications(_ observe: Bool) {
@@ -113,7 +105,7 @@ class JetpackLoginViewController: UIViewController {
 
     // MARK: - UI Helpers
 
-    func updateMessage() {
+    func updateMessageAndButton() {
         guard let jetPack = blog.jetpack else {
             return
         }
@@ -145,6 +137,14 @@ class JetpackLoginViewController: UIViewController {
         }
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
+
+        var title = NSLocalizedString("Set up Jetpack", comment: "Title of a button for Jetpack Installation.")
+        installJetpackButton.setTitle(title, for: .normal)
+        installJetpackButton.isHidden = hasJetpack
+
+        title = NSLocalizedString("Log in", comment: "Title of a button for signing in.")
+        signinButton.setTitle(title, for: .normal)
+        signinButton.isHidden = !hasJetpack
     }
 
     // MARK: - Private Helpers
