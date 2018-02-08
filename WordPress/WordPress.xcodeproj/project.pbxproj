@@ -649,6 +649,7 @@
 		B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */; };
 		B56D96B3202C9B9300485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B4202C9B9300485233 /* WordPressUI.framework */; };
 		B56D96B5202C9C9200485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B6202C9C9200485233 /* WordPressUI.framework */; };
+		B56D96B8202CA86C00485233 /* WordPressUI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B56D96B6202C9C9200485233 /* WordPressUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */; };
 		B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */; };
 		B5722E421D51A28100F40C5E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5722E401D51A28100F40C5E /* Notification.swift */; };
@@ -1169,6 +1170,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				B56D96B8202CA86C00485233 /* WordPressUI.framework in CopyFiles */,
 				FF854B8D1FD16DA20043BB2B /* WordPressFlux.framework in CopyFiles */,
 				9356471D1EBE18C100604C6C /* WordPressComStatsiOS.framework in CopyFiles */,
 				9368C79A1EC5F0C70092CE8E /* WordPressKit.framework in CopyFiles */,
