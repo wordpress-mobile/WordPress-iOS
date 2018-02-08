@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import UserNotifications
+import WordPressFlux
 
 
 /// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
@@ -355,6 +356,21 @@ private extension InteractiveNotificationsManager {
 // MARK: - UNUserNotificationCenterDelegate Conformance
 //
 extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
+        let userInfo = notification.request.content.userInfo as NSDictionary
+        let category = notification.request.content.categoryIdentifier
+
+        guard (category == ShareNoticeConstants.categorySuccessIdentifier || category == ShareNoticeConstants.categoryFailureIdentifier),
+            (userInfo.object(forKey: ShareNoticeUserInfoKey.originatedFromAppExtension) as? Bool) == true,
+            let postUploadOpID = userInfo.object(forKey: ShareNoticeUserInfoKey.postUploadOpID) as? String  else {
+                return
+        }
+
+        ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
+        completionHandler([]) // Do nothing here!
+    }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,

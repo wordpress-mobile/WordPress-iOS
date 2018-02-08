@@ -1,15 +1,16 @@
 struct ShareNoticeViewModel {
-    private let uploadedPost: PostUploadOperation
     private let postInContext: Post?
-    private let uploadedMedia: [MediaUploadOperation]?
+    private let uploadStatus: UploadOperation.UploadStatus
+    private let uploadedMediaCount: Int
 
-    init?(postOperation: PostUploadOperation, post: Post?, mediaOperations: [MediaUploadOperation]? = nil) {
-        guard postOperation.currentStatus != .pending, postOperation.currentStatus != .inProgress else {
+    init?(post: Post?, uploadStatus: UploadOperation.UploadStatus, uploadedMediaCount: Int = 0) {
+        guard uploadStatus != .pending, uploadStatus != .inProgress else {
             return nil
         }
-        self.uploadedPost = postOperation
-        self.uploadedMedia = mediaOperations
+
         self.postInContext = post
+        self.uploadStatus = uploadStatus
+        self.uploadedMediaCount = uploadedMediaCount
     }
 
     var notice: Notice? {
@@ -23,7 +24,7 @@ struct ShareNoticeViewModel {
     // MARK: - Private Vars
 
     private var uploadSuccessful: Bool {
-        return uploadedPost.currentStatus == .complete
+        return uploadStatus == .complete
     }
 
     private var successNotice: Notice {
@@ -55,6 +56,7 @@ struct ShareNoticeViewModel {
             userInfo[ShareNoticeUserInfoKey.postID] = post.postID
             userInfo[ShareNoticeUserInfoKey.blogID] = post.blog.dotComID?.stringValue
         }
+        userInfo[ShareNoticeUserInfoKey.originatedFromAppExtension] = false
 
         return NoticeNotificationInfo(identifier: UUID().uuidString,
                                       categoryIdentifier: notificationCategoryIdentifier,
@@ -76,19 +78,19 @@ struct ShareNoticeViewModel {
     }
 
     private var successfulTitle: String {
-        guard let uploadedMedia = uploadedMedia else {
+        if uploadedMediaCount == 0 {
             return ShareNoticeText.successTitleDefault
         }
 
-        return ShareNoticeText.successTitle(mediaItemCount: uploadedMedia.count)
+        return ShareNoticeText.successTitle(mediaItemCount: uploadedMediaCount)
     }
 
     private var failedTitle: String {
-        guard let uploadedMedia = uploadedMedia else {
+        if uploadedMediaCount == 0 {
             return ShareNoticeText.failureTitleDefault
         }
 
-        return ShareNoticeText.failureTitle(mediaItemCount: uploadedMedia.count)
+        return ShareNoticeText.failureTitle(mediaItemCount: uploadedMediaCount)
     }
 
     private var notificationBody: String {

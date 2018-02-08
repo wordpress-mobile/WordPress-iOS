@@ -58,6 +58,45 @@ import WordPressFlux
         DDLogInfo("Initializing background session: \(backgroundSession)")
     }
 
+    /// Displays a notification to the user about the successful/error-ridden post if necessary.
+    ///
+    /// - Parameter postUploadOp: The post UploadOperation in question
+    ///
+    static func fireUserNotificationIfNeeded(_ postUploadOpID: String) {
+        let coreDataStack = SharedCoreDataStack()
+        coreDataStack.managedContext.refreshAllObjects()
+        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: postUploadOpID) else {
+            return
+        }
+        let uploadStatus = postUploadOp.currentStatus
+
+        var uploadedMediaCount = 0
+        if let groupID = postUploadOp.groupID, let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) {
+            uploadedMediaCount = mediaUploadOps.count
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let blog = blogService.blog(byBlogId: NSNumber(value: postUploadOp.siteID)) else {
+            return
+        }
+
+        // We need to first sync the specific post to WPiOS so that we can open it for editing if needed.
+        let postService = PostService(managedObjectContext: context)
+        postService.getPostWithID(NSNumber(value: postUploadOp.remotePostID), for: blog, success: { post in
+            guard let post = post as? Post else {
+                return
+            }
+
+            let model = ShareNoticeViewModel(post: post, uploadStatus: uploadStatus, uploadedMediaCount: uploadedMediaCount)
+            if let notice = model?.notice {
+                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            }
+        }) { error in
+            DDLogError("Unable to create user notification for share extension session with.")
+        }
+    }
+
     // MARK: - Private Functions
 
     /// Clean up the session manager and end things gracefully (run the stored completion block, etc). Run
@@ -164,7 +203,7 @@ import WordPressFlux
             postUploadOp.currentStatus = .complete
             self.coreDataStack.saveContext()
 
-            self.fireUserNotificationIfNeeded(postUploadOp)
+            ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
             self.cleanupSessionAndTerminate()
         }, failure: { error in
             var errorString = "Error creating post"
@@ -172,45 +211,9 @@ import WordPressFlux
                 errorString += ": \(error.localizedDescription)"
             }
             self.logError(errorString, uploadOpObjectIDs: postUploadOpID)
-            self.fireUserNotificationIfNeeded(postUploadOp)
+            ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
             self.cleanupSessionAndTerminate()
         })
-    }
-
-    /// Displays a notification to the user about the successful/error-ridden post if necessary.
-    ///
-    /// - Parameter postUploadOp: The post UploadOperation in question
-    ///
-    fileprivate func fireUserNotificationIfNeeded(_ postUploadOp: PostUploadOperation?) {
-        guard let postUploadOp = postUploadOp else {
-            return
-        }
-
-        var mediaUploadOps: [MediaUploadOperation]?
-        if let groupID = postUploadOp.groupID {
-            mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID)
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        guard let blog = blogService.blog(byBlogId: NSNumber(value: postUploadOp.siteID)) else {
-            return
-        }
-
-        // We need to first sync the specific post to WPiOS so that we can open it for editing if needed.
-        let postService = PostService(managedObjectContext: context)
-        postService.getPostWithID(NSNumber(value: postUploadOp.remotePostID), for: blog, success: { post in
-            guard let post = post as? Post else {
-                return
-            }
-
-            let model = ShareNoticeViewModel(postOperation: postUploadOp, post: post, mediaOperations: mediaUploadOps)
-            if let notice = model?.notice {
-                ActionDispatcher.dispatch(NoticeAction.post(notice))
-            }
-        }) { error in
-            DDLogError("Unable to create user notification for share extension session with ID \(self.backgroundSessionIdentifier).")
-        }
     }
 }
 

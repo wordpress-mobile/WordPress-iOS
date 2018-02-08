@@ -10,6 +10,8 @@ enum ShareNoticeConstants {
 enum ShareNoticeUserInfoKey {
     static let blogID = "blog_id"
     static let postID = "post_id"
+    static let postUploadOpID = "post_upload_op_id"
+    static let originatedFromAppExtension = "originated_from_app_extension"
 }
 
 struct ShareNoticeText {
