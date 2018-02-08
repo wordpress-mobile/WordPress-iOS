@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B529F288202C855B00895D88 /* UIColorHelpersTests.swift */; };
 		B59DCB66202B146D00BEBD8A /* WordPressUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59DCB5C202B146D00BEBD8A /* WordPressUIKit.framework */; };
 		B59DCB6D202B146D00BEBD8A /* WordPressUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A4202B2322007874FB /* UIImage+Tint.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B529F288202C855B00895D88 /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		B59DCB5C202B146D00BEBD8A /* WordPressUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59DCB5F202B146D00BEBD8A /* WordPressUIKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressUIKit.h; sourceTree = "<group>"; };
 		B59DCB60202B146D00BEBD8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -93,6 +95,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B529F287202C855B00895D88 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B529F288202C855B00895D88 /* UIColorHelpersTests.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		B59DCB52202B146D00BEBD8A = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +137,7 @@
 		B59DCB69202B146D00BEBD8A /* WordPressUIKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				B529F287202C855B00895D88 /* Extensions */,
 				B59DCB6C202B146D00BEBD8A /* Info.plist */,
 			);
 			path = WordPressUIKitTests;
@@ -322,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
