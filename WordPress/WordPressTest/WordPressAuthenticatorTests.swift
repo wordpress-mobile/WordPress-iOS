@@ -2,7 +2,7 @@ import XCTest
 
 @testable import WordPress
 
-class SigninHelperTests: XCTestCase {
+class WordPressAuthenticatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

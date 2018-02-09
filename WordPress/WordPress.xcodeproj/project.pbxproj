@@ -986,7 +986,7 @@
 		E6374DC01C444D8B00F24720 /* PublicizeConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DBD1C444D8B00F24720 /* PublicizeConnection.swift */; };
 		E6374DC11C444D8B00F24720 /* PublicizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DBE1C444D8B00F24720 /* PublicizeService.swift */; };
 		E63BBC961C5168BE00598BE8 /* SharingAuthorizationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */; };
-		E63C89741CB99A8500649C8F /* SigninHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63C89731CB99A8500649C8F /* SigninHelperTests.swift */; };
+		E63C89741CB99A8500649C8F /* WordPressAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63C89731CB99A8500649C8F /* WordPressAuthenticatorTests.swift */; };
 		E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63C897B1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift */; };
 		E6417B991CA07B9C0084050A /* WPStyleGuide+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6417B981CA07B9C0084050A /* WPStyleGuide+Login.swift */; };
 		E6417B9C1CA07C3C0084050A /* NUXAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6417B9B1CA07C3C0084050A /* NUXAbstractViewController.swift */; };
@@ -2528,7 +2528,7 @@
 		E6374DBE1C444D8B00F24720 /* PublicizeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicizeService.swift; sourceTree = "<group>"; };
 		E63BBC941C5168BE00598BE8 /* SharingAuthorizationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingAuthorizationHelper.h; sourceTree = "<group>"; };
 		E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationHelper.m; sourceTree = "<group>"; };
-		E63C89731CB99A8500649C8F /* SigninHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SigninHelperTests.swift; sourceTree = "<group>"; };
+		E63C89731CB99A8500649C8F /* WordPressAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorTests.swift; sourceTree = "<group>"; };
 		E63C897B1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextFieldTextHelperTests.swift; sourceTree = "<group>"; };
 		E63FF0581C5C297500906C07 /* WordPress 46.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 46.xcdatamodel"; sourceTree = "<group>"; };
 		E6417B981CA07B9C0084050A /* WPStyleGuide+Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Login.swift"; sourceTree = "<group>"; };
@@ -4013,7 +4013,7 @@
 			isa = PBXGroup;
 			children = (
 				85D239BE1AE5A7020074768D /* LoginFacadeTests.m */,
-				E63C89731CB99A8500649C8F /* SigninHelperTests.swift */,
+				E63C89731CB99A8500649C8F /* WordPressAuthenticatorTests.swift */,
 			);
 			name = NUX;
 			sourceTree = "<group>";
@@ -7512,7 +7512,7 @@
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
-				E63C89741CB99A8500649C8F /* SigninHelperTests.swift in Sources */,
+				E63C89741CB99A8500649C8F /* WordPressAuthenticatorTests.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
 				08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */,
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,
