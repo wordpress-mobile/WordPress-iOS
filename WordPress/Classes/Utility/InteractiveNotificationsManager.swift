@@ -232,6 +232,7 @@ private extension InteractiveNotificationsManager {
         case mediaUploadSuccess     = "media-upload-success"
         case mediaUploadFailure     = "media-upload-failure"
         case shareUploadSuccess     = "share-upload-success"
+        case shareUploadFailure     = "share-upload-failure"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -249,6 +250,8 @@ private extension InteractiveNotificationsManager {
                 return [.mediaRetry]
             case .shareUploadSuccess:
                 return [.shareEditPost]
+            case .shareUploadFailure:
+                return []
             }
         }
 
@@ -268,8 +271,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, shareUploadSuccess]
-        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, shareUploadSuccess]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, shareUploadSuccess, shareUploadFailure]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, shareUploadSuccess, shareUploadFailure]
     }
 
 
@@ -368,8 +371,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
                 return
         }
 
+        // If the notification orginated from the share extension, disregard this current notification and resend a new one.
         ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
-        completionHandler([]) // Do nothing here!
+        completionHandler([])
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
