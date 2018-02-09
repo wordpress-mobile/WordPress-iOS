@@ -76,7 +76,7 @@ extension SigninWPComSyncHandler {
         // for Jetpack logins.  When WPTabViewController no longer destroy's
         // and rebuilds the view hierarchy this alternate notification can be
         // removed.
-        let notification = isJetpackLogin() ? .WPLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
+        let notification = isJetpackLogin() ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
         NotificationCenter.default.post(name: notification, object: account)
 
         dismiss()
