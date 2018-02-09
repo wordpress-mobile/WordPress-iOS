@@ -86,7 +86,7 @@ extension SigninWPComSyncHandler {
             "dotcom_user": true.description
         ]
 
-        WPAppAnalytics.track(WPAnalyticsStat.signedIn, withProperties: properties)
+        WordPressAuthenticator.emit(event: .signedIn(properties: properties))
     }
 
 

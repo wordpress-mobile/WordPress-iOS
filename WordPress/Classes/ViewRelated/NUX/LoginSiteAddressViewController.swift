@@ -48,7 +48,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
-        WPAppAnalytics.track(.loginURLFormViewed)
+        WordPressAuthenticator.emit(event: .loginURLFormViewed)
     }
 
 
@@ -151,8 +151,8 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
                 return
             }
             DDLogError(error.localizedDescription)
-            WPAppAnalytics.track(.loginFailedToGuessXMLRPC, error: error)
-            WPAppAnalytics.track(.loginFailed, error: error)
+            WordPressAuthenticator.emit(event: .loginFailedToGuessXMLRPC(error: error))
+            WordPressAuthenticator.emit(event: .loginFailed(error: error))
             strongSelf.configureViewLoading(false)
 
             let err = strongSelf.originalErrorOrError(error: error as NSError)

@@ -64,6 +64,10 @@ extension WordPressAppDelegate {
 
         connectionAvailable = internetReachability.isReachable()
     }
+
+    @objc func configureWordPressAuthenticator() {
+        WordPressAuthenticationTracker.shared.startListeningToAuthenticationEvents()
+    }
 }
 
 // MARK: - Helpers
