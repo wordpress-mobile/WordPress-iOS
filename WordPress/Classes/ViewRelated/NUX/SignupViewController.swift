@@ -280,17 +280,17 @@ import WordPressShared
         view.endEditing(true)
 
         // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForCreateAccount(loginFields) {
+        if !WordPressAuthenticator.validateFieldsPopulatedForCreateAccount(loginFields) {
             displayErrorAlert(NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."), sourceTag: sourceTag)
             return
         }
 
-        if !SigninHelpers.validateFieldsForSigninContainNoSpaces(loginFields) {
+        if !WordPressAuthenticator.validateFieldsForSigninContainNoSpaces(loginFields) {
             displayErrorAlert(NSLocalizedString("Email, Username, and Site Address cannot contain spaces.", comment: "No spaces error message."), sourceTag: sourceTag)
             return
         }
 
-        if !SigninHelpers.validateUsernameMaxLength(loginFields.username) {
+        if !WordPressAuthenticator.validateUsernameMaxLength(loginFields.username) {
             displayErrorAlert(NSLocalizedString("Username must be less than fifty characters.", comment: "Prompts that the username entered was too long."), sourceTag: sourceTag)
             usernameField.becomeFirstResponder()
             return

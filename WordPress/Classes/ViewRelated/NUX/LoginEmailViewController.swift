@@ -223,7 +223,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     @objc func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
-        SigninHelpers.requestSharedWebCredentials { [weak self] (found, username, password) in
+        WordPressAuthenticator.requestSharedWebCredentials { [weak self] (found, username, password) in
             self?.handleFetchedWebCredentials(found, username: username, password: password)
         }
     }
@@ -380,7 +380,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
+        WordPressAuthenticator.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
             self?.emailTextField.text = loginFields.username
             self?.loginWithUsernamePassword(immediately: true)
         }
