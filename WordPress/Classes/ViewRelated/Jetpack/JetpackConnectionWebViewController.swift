@@ -276,7 +276,7 @@ private extension JetpackConnectionWebViewController {
     func presentDotComLogin(redirect: URL) {
         pendingDotComRedirect = redirect
         startObservingLoginNotifications()
-        SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+        WordPressAuthenticator.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
     }
 
     func startObservingLoginNotifications() {

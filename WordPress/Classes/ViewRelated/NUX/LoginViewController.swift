@@ -86,7 +86,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         displayError(message: "")
 
         // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
+        if !WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields) {
             let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
             displayError(message: errorMsg)
 
@@ -175,6 +175,6 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     // Update safari stored credentials. Call after a successful sign in.
     ///
     func updateSafariCredentialsIfNeeded() {
-        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
+        WordPressAuthenticator.updateSafariCredentialsIfNeeded(loginFields)
     }
 }
