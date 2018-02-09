@@ -2707,19 +2707,21 @@ extension AztecPostViewController {
             }, for: media)
     }
 
-    fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource) {
-        let attachment: MediaAttachment
-        switch exportableAsset.assetMediaType {
-        case .image:
-            attachment = insertImageAttachment()
-        case .video:
-            attachment = insertVideoAttachmentWithPlaceholder()
-        default:
-            return
+    fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource, attachment: MediaAttachment? = nil) {
+        var attachment = attachment
+        if attachment == nil {
+            switch exportableAsset.assetMediaType {
+            case .image:
+                attachment = insertImageAttachment()
+            case .video:
+                attachment = insertVideoAttachmentWithPlaceholder()
+            default:
+                return
+            }
         }
 
         let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post)
-        attachment.uploadID = media.uploadID
+        attachment?.uploadID = media.uploadID
         observe(media: media, statType: source.statType(for: exportableAsset))
     }
 
@@ -2827,7 +2829,7 @@ extension AztecPostViewController {
         guard let image = attachment.image else {
             return
         }
-        insert(exportableAsset: image, source: .localLibrary)
+        insert(exportableAsset: image, source: .otherApps, attachment: attachment)        
     }
 
     private func handleUploaded(media: Media, mediaUploadID: String) {
