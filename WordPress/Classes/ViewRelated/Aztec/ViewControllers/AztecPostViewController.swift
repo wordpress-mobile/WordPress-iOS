@@ -3043,24 +3043,26 @@ extension AztecPostViewController {
            let error = media.error {
             showDefaultActions = false
             message = error.localizedDescription
+            // only show retry options if we at least have a local file to try to upload again.
+            if media.absoluteLocalURL != nil {
+                if failedMediaIDs.count > 1 {
+                    alertController.addActionWithTitle(MediaAttachmentActionSheet.retryAllFailedUploadsActionTitle,
+                                                       style: .default,
+                                                       handler: { [weak self] (action) in
+                                                        self?.retryAllFailedMediaUploads()
+                    })
+                }
 
-            if failedMediaIDs.count > 1 {
-                alertController.addActionWithTitle(MediaAttachmentActionSheet.retryAllFailedUploadsActionTitle,
+                alertController.addActionWithTitle(MediaAttachmentActionSheet.retryUploadActionTitle,
                                                    style: .default,
                                                    handler: { [weak self] (action) in
-                                                    self?.retryAllFailedMediaUploads()
+                                                    guard let strongSelf = self,
+                                                        let attachment = strongSelf.richTextView.attachment(withId: attachmentID) else {
+                                                            return
+                                                    }
+                                                    strongSelf.retryFailedMediaUpload(media: media, attachment: attachment)
                 })
             }
-
-            alertController.addActionWithTitle(MediaAttachmentActionSheet.retryUploadActionTitle,
-                                               style: .default,
-                                               handler: { [weak self] (action) in
-                                                guard let strongSelf = self,
-                                                    let attachment = strongSelf.richTextView.attachment(withId: attachmentID) else {
-                                                        return
-                                                }
-                                                strongSelf.retryFailedMediaUpload(media: media, attachment: attachment)
-            })
         }
 
         if showDefaultActions {
