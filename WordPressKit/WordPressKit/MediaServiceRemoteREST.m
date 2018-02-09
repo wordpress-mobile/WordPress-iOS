@@ -194,6 +194,15 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
         parameters[@"attrs[0][parent_id]"] = media.postID;
     }
+    if (media.localURL == nil || filename == nil || type == nil) {
+        if (failure) {
+            NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                                 code:NSURLErrorFileDoesNotExist
+                                             userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Media doesn't have an associated file to upload.", @"Error message to show to users when trying to upload a media object with no local file associated")}];
+            failure(error);
+        }
+        return;
+    }
     FilePart *filePart = [[FilePart alloc] initWithParameterName:@"media[]" url:media.localURL filename:filename mimeType:type];
     __block NSProgress *localProgress = [self.wordPressComRestApi multipartPOST:requestUrl
                                                                      parameters:parameters
