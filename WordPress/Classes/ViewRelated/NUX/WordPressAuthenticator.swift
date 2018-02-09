@@ -5,7 +5,7 @@ import WordPressShared
 
 /// A collection of helper methods for NUX.
 ///
-@objc class SigninHelpers: NSObject {
+@objc class WordPressAuthenticator: NSObject {
     fileprivate static let WPComSuffix = ".wordpress.com"
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
@@ -396,7 +396,7 @@ import WordPressShared
     /// - Parameter loginFields: A LoginFields instance.
     ///
     @objc class func openForgotPasswordURL(_ loginFields: LoginFields) {
-        let baseURL = loginFields.meta.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(string: loginFields.siteAddress)
+        let baseURL = loginFields.meta.userIsDotCom ? "https://wordpress.com" : WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
         UIApplication.shared.open(forgotPasswordURL)
     }
