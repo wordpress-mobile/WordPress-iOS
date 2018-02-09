@@ -132,7 +132,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     @objc func validateForm() {
         view.endEditing(true)
         displayError(message: "")
-        guard SigninHelpers.validateSiteForSignin(loginFields) else {
+        guard WordPressAuthenticator.validateSiteForSignin(loginFields) else {
             assertionFailure("Form should not be submitted unless there is a valid looking URL entered.")
             return
         }
@@ -179,7 +179,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
 
     @objc func fetchSiteInfo() {
-        let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteAddress) as NSString
+        let baseSiteUrl = WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress) as NSString
         if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
 
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -222,7 +222,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     /// Whether the form can be submitted.
     ///
     @objc func canSubmit() -> Bool {
-        return SigninHelpers.validateSiteForSignin(loginFields)
+        return WordPressAuthenticator.validateSiteForSignin(loginFields)
     }
 
 
@@ -248,7 +248,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
-        loginFields.siteAddress = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
+        loginFields.siteAddress = WordPressAuthenticator.baseSiteURL(string: siteURLField.nonNilTrimmedText())
         configureSubmitButton(animating: false)
     }
 

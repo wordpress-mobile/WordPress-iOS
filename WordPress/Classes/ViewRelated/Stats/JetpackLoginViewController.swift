@@ -151,7 +151,7 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func signIn() {
         observeLoginNotifications(true)
-        SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+        WordPressAuthenticator.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
     }
 
     // MARK: - Actions

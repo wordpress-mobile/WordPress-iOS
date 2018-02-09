@@ -165,14 +165,14 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
     }
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
-        SigninHelpers.openForgotPasswordURL(loginFields)
+        WordPressAuthenticator.openForgotPasswordURL(loginFields)
         WPAppAnalytics.track(.loginForgotPasswordClicked)
     }
 
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
+        WordPressAuthenticator.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
             self?.emailLabel?.text = loginFields.username
             self?.passwordField?.text = loginFields.password
             self?.validateForm()
