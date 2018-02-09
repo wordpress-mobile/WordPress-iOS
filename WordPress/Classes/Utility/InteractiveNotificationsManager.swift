@@ -133,6 +133,11 @@ final class InteractiveNotificationsManager: NSObject {
                         break
                     }
                 }
+            case .shareUploadFailure:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    ShareNoticeNavigationCoordinator.navigateToBlogDetails(with: userInfo)
+                    return true
+                }
             default: break
             }
         }
