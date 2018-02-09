@@ -3,9 +3,10 @@ import CocoaLumberjack
 import NSURL_IDN
 import WordPressShared
 
+
 /// A collection of helper methods for NUX.
 ///
-@objc class WordPressAuthenticator: NSObject {
+@objc public class WordPressAuthenticator: NSObject {
     fileprivate static let WPComSuffix = ".wordpress.com"
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
@@ -97,7 +98,7 @@ import WordPressShared
     }
 
     private class func trackOpenedLogin() {
-        WPAppAnalytics.track(.openedLogin)
+        WordPressAuthenticator.emit(event: .openedLogin)
     }
 
 
@@ -141,7 +142,7 @@ import WordPressShared
         loginController.email = loginFields.username
         loginController.token = token
         let controller = loginController
-        WPAppAnalytics.track(.loginMagicLinkOpened)
+        WordPressAuthenticator.emit(event: .loginMagicLinkOpened)
 
         let navController = UINavigationController(rootViewController: controller)
 
@@ -418,7 +419,7 @@ import WordPressShared
         let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
                 DDLogError("OnePassword Error: \(error.localizedDescription)")
-                WPAppAnalytics.track(.onePasswordFailed)
+                WordPressAuthenticator.emit(event: .onePasswordFailed)
                 return
             }
 
@@ -437,7 +438,7 @@ import WordPressShared
                 loginFields.multifactorCode = oneTimePassword
             }
 
-            WPAppAnalytics.track(.onePasswordLogin)
+            WordPressAuthenticator.emit(event: .onePasswordLogin)
 
             success(loginFields)
         }
@@ -486,7 +487,7 @@ import WordPressShared
                 return
             }
             DispatchQueue.main.async(execute: {
-                WPAppAnalytics.track(.loginAutoFillCredentialsUpdated)
+                WordPressAuthenticator.emit(event: .loginAutoFillCredentialsUpdated)
             })
         })
     }
@@ -539,8 +540,9 @@ import WordPressShared
 }
 
 
+
 extension NSNotification.Name {
     static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
     static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
-    static let wordpressAuthenticationEvent = NSNotification.Name(rawValue: "WordPressAuthenticatorEvent")
+    static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
 }

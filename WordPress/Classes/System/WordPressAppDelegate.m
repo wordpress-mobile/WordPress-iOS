@@ -102,6 +102,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
+    [self configureWordPressAuthenticator];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupBuddyBuild];
     [self setupPingHub];
