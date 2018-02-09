@@ -540,6 +540,7 @@ import WordPressShared
 
 
 extension NSNotification.Name {
-    static let WPLoginCancelled = Foundation.Notification.Name(rawValue: "WPLoginCancelled")
+    static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
     static let WPLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WPLoginFinishedJetpackLogin")
+    static let wordpressAuthenticationEvent = NSNotification.Name(rawValue: "WordPressAuthenticatorEvent")
 }
