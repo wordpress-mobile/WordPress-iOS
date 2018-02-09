@@ -32,6 +32,16 @@ class ShareNoticeNavigationCoordinator {
         })
     }
 
+    static func navigateToBlogDetails(with userInfo: NSDictionary) {
+        fetchBlog(from: userInfo, onSuccess: { blog in
+            if let blog = blog {
+                WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+            }
+        }, onFailure: {
+            DDLogError("Could not fetch blog from share notification.")
+        })
+    }
+
     private static func fetchPost(from userInfo: NSDictionary,
                                   onSuccess: @escaping (_ post: Post?) -> Void,
                                   onFailure: @escaping () -> Void) {
@@ -57,5 +67,20 @@ class ShareNoticeNavigationCoordinator {
         }, failure: { error in
             onFailure()
         })
+    }
+
+    private static func fetchBlog(from userInfo: NSDictionary,
+                                  onSuccess: @escaping (_ blog: Blog?) -> Void,
+                                  onFailure: @escaping () -> Void) {
+        guard let siteIDString = userInfo[ShareNoticeUserInfoKey.blogID] as? String,
+            let siteID = NumberFormatter().number(from: siteIDString) else {
+                onFailure()
+                return
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        let blog = blogService.blog(byBlogId: siteID)
+        onSuccess(blog)
     }
 }
