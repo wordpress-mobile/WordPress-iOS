@@ -43,7 +43,7 @@ class LoginEpilogueViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WPAppAnalytics.track(.loginEpilogueViewed)
+        WordPressAuthenticator.emit(event: .loginEpilogueViewed)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
