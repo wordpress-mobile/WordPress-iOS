@@ -94,7 +94,6 @@ struct ShareNoticeViewModel {
     }
 
     private var notificationBody: String {
-        let dateString = postInContext?.dateForDisplay()?.mediumString() ?? Date().mediumString()
-        return "\(dateString)."
+        return postInContext?.dateForDisplay()?.mediumString() ?? Date().mediumString()
     }
 }

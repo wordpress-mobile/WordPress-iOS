@@ -17,13 +17,13 @@ enum ShareNoticeUserInfoKey {
 struct ShareNoticeText {
     static let actionEditPost       = NSLocalizedString("Edit Post", comment: "Button title. Opens the editor to edit an existing post.")
 
-    static let successTitleDefault  = NSLocalizedString("1 post uploaded.", comment: "Alert displayed to the user when a single post has been successfully uploaded.")
-    static let successTitleSingular = NSLocalizedString("Uploaded 1 post, 1 file.", comment: "System notification displayed to the user when a single post and 1 file has uploaded successfully.")
-    static let successTitlePlural   = NSLocalizedString("Uploaded 1 post, %ld files.", comment: "System notification displayed to the user when a single post and multiple files have uploaded successfully.")
+    static let successTitleDefault  = NSLocalizedString("1 post uploaded", comment: "Alert displayed to the user when a single post has been successfully uploaded.")
+    static let successTitleSingular = NSLocalizedString("Uploaded 1 post, 1 file", comment: "System notification displayed to the user when a single post and 1 file has uploaded successfully.")
+    static let successTitlePlural   = NSLocalizedString("Uploaded 1 post, %ld files", comment: "System notification displayed to the user when a single post and multiple files have uploaded successfully.")
 
-    static let failureTitleDefault  = NSLocalizedString("Unable to upload 1 post.", comment: "Alert displayed to the user when a single post has failed to upload.")
-    static let failureTitleSingular = NSLocalizedString("Unable to upload 1 post, 1 file.", comment: "Alert displayed to the user when a single post and 1 file has failed to upload.")
-    static let failureTitlePlural   = NSLocalizedString("Unable to upload 1 post, %ld files.", comment: "Alert displayed to the user when a single post and multiple files have failed to upload.")
+    static let failureTitleDefault  = NSLocalizedString("Unable to upload 1 post", comment: "Alert displayed to the user when a single post has failed to upload.")
+    static let failureTitleSingular = NSLocalizedString("Unable to upload 1 post, 1 file", comment: "Alert displayed to the user when a single post and 1 file has failed to upload.")
+    static let failureTitlePlural   = NSLocalizedString("Unable to upload 1 post, %ld files", comment: "Alert displayed to the user when a single post and multiple files have failed to upload.")
 
     /// Helper method to provide the formatted version of a success title based on the media item count.
     ///
