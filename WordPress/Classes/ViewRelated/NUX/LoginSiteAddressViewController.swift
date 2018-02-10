@@ -83,7 +83,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     @objc func configureTextFields() {
-        siteURLField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        siteURLField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         siteURLField.text = loginFields.siteAddress
     }
 
