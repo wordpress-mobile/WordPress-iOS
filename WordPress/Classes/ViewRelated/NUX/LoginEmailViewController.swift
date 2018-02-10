@@ -99,7 +99,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     @objc func localizeControls() {
         if loginFields.meta.jetpackLogin {
-            instructionLabel?.text = NSLocalizedString("To view your stats, log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email address screen.")
+            instructionLabel?.text = NSLocalizedString("Log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email address screen.")
         } else {
             instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email address screen.")
         }
