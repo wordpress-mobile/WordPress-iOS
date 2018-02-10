@@ -1,5 +1,1 @@
-Site instellingen, schrijven: je kan nu de tags van jouw site bewerken!
-Aztec, media: gebruikers kunnen nu foto's en video's importeren van andere apps door middel van de ... knop op de media-toolbar in Aztec en via de Media bibliotheek sectie van de app
-Media: uploaden is nu asynchroon!
-Blog details: je kan nu afbeeldingen slepen vanuit andere apps op het blavatar icoon.
-Me: je kan afbeeldingen slepen vanuit andere apps op het gravatar icoon
+Een compleet nieuwe en verrukkelijke Deel extensie is beschikbaar in deze versie.
