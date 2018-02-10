@@ -1,5 +1,1 @@
-Configurações do site e escrita: Agora você pode editar as tags do seu site!
-Aztec e mídia: Usuário agora podem importar fotos e vídeos de outros aplicativos usando o botão ... na barra de ferramentas de mídia do Aztec ou através da seção Biblioteca de mídia do aplicativo.
-Mídia: Envios de arquivos agora são assíncronos!
-Detalhes do blog: Agora é possível arrastar e soltar imagens de outros aplicativos no ícone do blavatar.
-Eu: Agora é possível arrastar e soltar imagens de outros aplicativos no ícone do gravatar.
+Uma nova e deliciosa experiência de compartilhamento está disponível nessa versão.
