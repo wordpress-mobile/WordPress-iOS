@@ -40,8 +40,12 @@
 				<true/>
 				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
 				<integer>1</integer>
+				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
+				<integer>1</integer>
 			</dict>
 		</dict>
+		<key>NSExtensionJavaScriptPreprocessingFile</key>
+		<string>WordPressShare</string>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
