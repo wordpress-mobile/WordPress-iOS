@@ -115,6 +115,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
         selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
         selfHostedSigninButton.titleLabel?.numberOfLines = 0
+        selfHostedSigninButton.naturalContentHorizontalAlignment = .leading
     }
 
 
@@ -179,7 +180,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// in `loginFields`.
     ///
     @objc func configureEmailField() {
-        emailTextField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        emailTextField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailTextField.text = loginFields.username
     }
 
