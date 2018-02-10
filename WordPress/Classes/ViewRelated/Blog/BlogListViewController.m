@@ -271,15 +271,17 @@ static NSInteger HideSearchMinSites = 3;
 {
     // If we've gone from no results to having just one site, the user has
     // added a new site so we should auto-select it
-    if (siteCount > 0) {
+    if (self.noSitesViewController && siteCount == 1) {
         [self bypassBlogListViewController];
     }
-    else {
+    
+    // If we have no sites, show the No Sites view.
+    if (siteCount == 0) {
         // If we don't have a No Sites view yet, create one.
         if (!self.noSitesViewController) {
             [self configureNoSitesView];
         }
-        
+
         [self addChildViewController:self.noSitesViewController];
         [self.view addSubview:self.noSitesViewController.view];
         [self.noSitesViewController didMoveToParentViewController:self];

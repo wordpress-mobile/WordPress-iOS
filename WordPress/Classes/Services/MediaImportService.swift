@@ -114,7 +114,7 @@ open class MediaImportService: LocalCoreDataService {
         // Return the error via the context's queue, and as an NSError to ensure it carries over the right code/message.
         if let errorHandler = errorHandler {
             self.managedObjectContext.perform {
-                errorHandler(error.toNSError())
+                errorHandler(error)
             }
         }
     }

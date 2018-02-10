@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40AB1ADA200FED25009B533D /* PluginDirectoryFeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB1AD9200FED25009B533D /* PluginDirectoryFeedPage.swift */; };
+		40E4698B2017C2840030DB5F /* plugin-directory-popular.json in Resources */ = {isa = PBXBuildFile; fileRef = 40E4698A2017C2840030DB5F /* plugin-directory-popular.json */; };
+		40E4698D2017D2E30030DB5F /* plugin-directory-new.json in Resources */ = {isa = PBXBuildFile; fileRef = 40E4698C2017D2E30030DB5F /* plugin-directory-new.json */; };
 		40F88F601F85723500AE3FAF /* auth-send-verification-email-already-verified-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 40F88F5F1F85723400AE3FAF /* auth-send-verification-email-already-verified-failure.json */; };
 		40F88F621F85799A00AE3FAF /* auth-send-verification-email-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 40F88F611F85799A00AE3FAF /* auth-send-verification-email-success.json */; };
 		7403A2E41EF06ED500DED7DC /* AccountSettingsRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403A2E31EF06ED500DED7DC /* AccountSettingsRemote.swift */; };
@@ -210,10 +213,12 @@
 		826016FC1F9FAF6300533B6C /* activity-log-success-2.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F71F9FAF6300533B6C /* activity-log-success-2.json */; };
 		826016FD1F9FAF6300533B6C /* activity-log-bad-json-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 826016F81F9FAF6300533B6C /* activity-log-bad-json-failure.json */; };
 		826017001F9FD60A00533B6C /* ActivityServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 826016FF1F9FD60A00533B6C /* ActivityServiceRemoteTests.swift */; };
-		829BA4301FACF187003ADEEA /* activity-restore-status-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42C1FACF185003ADEEA /* activity-restore-status-failure.json */; };
-		829BA4311FACF187003ADEEA /* activity-restore-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42D1FACF186003ADEEA /* activity-restore-success.json */; };
-		829BA4321FACF187003ADEEA /* activity-restore-status-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42E1FACF187003ADEEA /* activity-restore-status-success.json */; };
-		829BA4331FACF187003ADEEA /* activity-restore-bad-id-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42F1FACF187003ADEEA /* activity-restore-bad-id-failure.json */; };
+		828A2400201B671F004F6859 /* activity-restore-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 828A23FF201B671F004F6859 /* activity-restore-success.json */; };
+		828A2402201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 828A2401201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json */; };
+		829BA4301FACF187003ADEEA /* activity-rewind-status-restore-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42C1FACF185003ADEEA /* activity-rewind-status-restore-failure.json */; };
+		829BA4311FACF187003ADEEA /* activity-rewind-status-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42D1FACF186003ADEEA /* activity-rewind-status-success.json */; };
+		829BA4321FACF187003ADEEA /* activity-rewind-status-restore-finished.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42E1FACF187003ADEEA /* activity-rewind-status-restore-finished.json */; };
+		829BA4331FACF187003ADEEA /* activity-rewind-status-restore-queued.json in Resources */ = {isa = PBXBuildFile; fileRef = 829BA42F1FACF187003ADEEA /* activity-rewind-status-restore-queued.json */; };
 		82FFBF501F45EFD100F4573F /* RemoteBlogJetpackSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF4F1F45EFD100F4573F /* RemoteBlogJetpackSettings.swift */; };
 		82FFBF521F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF511F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift */; };
 		82FFBF561F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FFBF551F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift */; };
@@ -350,10 +355,14 @@
 		E13EE1491F332B8500C15787 /* site-plugins-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E13EE1481F332B8500C15787 /* site-plugins-success.json */; };
 		E13EE14C1F332C4400C15787 /* PluginServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13EE14B1F332C4400C15787 /* PluginServiceRemoteTests.swift */; };
 		E14694031F344F71004052C8 /* site-plugins-error.json in Resources */ = {isa = PBXBuildFile; fileRef = E14694021F344F71004052C8 /* site-plugins-error.json */; };
+		E1787DB0200E564B004CB3AF /* timezones.json in Resources */ = {isa = PBXBuildFile; fileRef = E1787DAF200E564B004CB3AF /* timezones.json */; };
+		E1787DB2200E5690004CB3AF /* TimeZoneServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1787DB1200E5690004CB3AF /* TimeZoneServiceRemoteTests.swift */; };
 		E182BF6A1FD961810001D850 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E182BF691FD961810001D850 /* Endpoint.swift */; };
 		E194CB731FBDEF6500B0A8B8 /* PluginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E194CB721FBDEF6400B0A8B8 /* PluginState.swift */; };
 		E1A6605F1FD694ED00BAC339 /* PluginDirectoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A6605E1FD694ED00BAC339 /* PluginDirectoryEntry.swift */; };
 		E1BD95151FD5A2B800CD5CE3 /* PluginDirectoryServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BD95141FD5A2B800CD5CE3 /* PluginDirectoryServiceRemote.swift */; };
+		E1D6B556200E46F300325669 /* WPTimeZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D6B555200E46F200325669 /* WPTimeZone.swift */; };
+		E1D6B558200E473A00325669 /* TimeZoneServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D6B557200E473A00325669 /* TimeZoneServiceRemote.swift */; };
 		E1E89C661FD6B291006E7A33 /* plugin-directory-rename-xml-rpc.json in Resources */ = {isa = PBXBuildFile; fileRef = E1E89C651FD6B291006E7A33 /* plugin-directory-rename-xml-rpc.json */; };
 		E1E89C681FD6B2E9006E7A33 /* plugin-directory-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = E1E89C671FD6B2E9006E7A33 /* plugin-directory-jetpack.json */; };
 		E1E89C6A1FD6BDB1006E7A33 /* PluginDirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E89C691FD6BDB1006E7A33 /* PluginDirectoryTests.swift */; };
@@ -377,6 +386,9 @@
 
 /* Begin PBXFileReference section */
 		374CA122F886DCBD6C042B3E /* Pods-WordPressKitTests.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-alpha.xcconfig"; sourceTree = "<group>"; };
+		40AB1AD9200FED25009B533D /* PluginDirectoryFeedPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryFeedPage.swift; sourceTree = "<group>"; };
+		40E4698A2017C2840030DB5F /* plugin-directory-popular.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "plugin-directory-popular.json"; sourceTree = "<group>"; };
+		40E4698C2017D2E30030DB5F /* plugin-directory-new.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "plugin-directory-new.json"; sourceTree = "<group>"; };
 		40F88F5F1F85723400AE3FAF /* auth-send-verification-email-already-verified-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-verification-email-already-verified-failure.json"; sourceTree = "<group>"; };
 		40F88F611F85799A00AE3FAF /* auth-send-verification-email-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "auth-send-verification-email-success.json"; sourceTree = "<group>"; };
 		5B78E5816A82E3614ACCD7A7 /* Pods-WordPressKitTests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKitTests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests.release-internal.xcconfig"; sourceTree = "<group>"; };
@@ -582,10 +594,12 @@
 		826016F71F9FAF6300533B6C /* activity-log-success-2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-success-2.json"; sourceTree = "<group>"; };
 		826016F81F9FAF6300533B6C /* activity-log-bad-json-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-log-bad-json-failure.json"; sourceTree = "<group>"; };
 		826016FF1F9FD60A00533B6C /* ActivityServiceRemoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityServiceRemoteTests.swift; sourceTree = "<group>"; };
-		829BA42C1FACF185003ADEEA /* activity-restore-status-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-status-failure.json"; sourceTree = "<group>"; };
-		829BA42D1FACF186003ADEEA /* activity-restore-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-success.json"; sourceTree = "<group>"; };
-		829BA42E1FACF187003ADEEA /* activity-restore-status-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-status-success.json"; sourceTree = "<group>"; };
-		829BA42F1FACF187003ADEEA /* activity-restore-bad-id-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-bad-id-failure.json"; sourceTree = "<group>"; };
+		828A23FF201B671F004F6859 /* activity-restore-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-restore-success.json"; sourceTree = "<group>"; };
+		828A2401201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-in-progress.json"; sourceTree = "<group>"; };
+		829BA42C1FACF185003ADEEA /* activity-rewind-status-restore-failure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-failure.json"; sourceTree = "<group>"; };
+		829BA42D1FACF186003ADEEA /* activity-rewind-status-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-success.json"; sourceTree = "<group>"; };
+		829BA42E1FACF187003ADEEA /* activity-rewind-status-restore-finished.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-finished.json"; sourceTree = "<group>"; };
+		829BA42F1FACF187003ADEEA /* activity-rewind-status-restore-queued.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "activity-rewind-status-restore-queued.json"; sourceTree = "<group>"; };
 		82FFBF4F1F45EFD100F4573F /* RemoteBlogJetpackSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteBlogJetpackSettings.swift; sourceTree = "<group>"; };
 		82FFBF511F45F04100F4573F /* RemoteBlogJetpackMonitorSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteBlogJetpackMonitorSettings.swift; sourceTree = "<group>"; };
 		82FFBF551F460DD400F4573F /* BlogJetpackSettingsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogJetpackSettingsServiceRemote.swift; sourceTree = "<group>"; };
@@ -730,10 +744,14 @@
 		E13EE1481F332B8500C15787 /* site-plugins-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-plugins-success.json"; sourceTree = "<group>"; };
 		E13EE14B1F332C4400C15787 /* PluginServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginServiceRemoteTests.swift; sourceTree = "<group>"; };
 		E14694021F344F71004052C8 /* site-plugins-error.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "site-plugins-error.json"; sourceTree = "<group>"; };
+		E1787DAF200E564B004CB3AF /* timezones.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = timezones.json; sourceTree = "<group>"; };
+		E1787DB1200E5690004CB3AF /* TimeZoneServiceRemoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneServiceRemoteTests.swift; sourceTree = "<group>"; };
 		E182BF691FD961810001D850 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		E194CB721FBDEF6400B0A8B8 /* PluginState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginState.swift; sourceTree = "<group>"; };
 		E1A6605E1FD694ED00BAC339 /* PluginDirectoryEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryEntry.swift; sourceTree = "<group>"; };
 		E1BD95141FD5A2B800CD5CE3 /* PluginDirectoryServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryServiceRemote.swift; sourceTree = "<group>"; };
+		E1D6B555200E46F200325669 /* WPTimeZone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPTimeZone.swift; sourceTree = "<group>"; };
+		E1D6B557200E473A00325669 /* TimeZoneServiceRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZoneServiceRemote.swift; sourceTree = "<group>"; };
 		E1E89C651FD6B291006E7A33 /* plugin-directory-rename-xml-rpc.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "plugin-directory-rename-xml-rpc.json"; sourceTree = "<group>"; };
 		E1E89C671FD6B2E9006E7A33 /* plugin-directory-jetpack.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "plugin-directory-jetpack.json"; sourceTree = "<group>"; };
 		E1E89C691FD6BDB1006E7A33 /* PluginDirectoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryTests.swift; sourceTree = "<group>"; };
@@ -836,6 +854,7 @@
 			isa = PBXGroup;
 			children = (
 				74C473AE1EF2F7D1009918F2 /* SiteManagementServiceRemoteTests.swift */,
+				E1787DB1200E5690004CB3AF /* TimeZoneServiceRemoteTests.swift */,
 			);
 			name = Site;
 			sourceTree = "<group>";
@@ -1088,6 +1107,7 @@
 				9311A6831F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.h */,
 				9311A6841F22625A00704AC9 /* TaxonomyServiceRemoteXMLRPC.m */,
 				9309994B1F1657C600F006A1 /* ThemeServiceRemote.h */,
+				E1D6B557200E473A00325669 /* TimeZoneServiceRemote.swift */,
 				9309994C1F1657C600F006A1 /* ThemeServiceRemote.m */,
 				93F50A3E1F227C8900B5BEBA /* UsersServiceRemoteXMLRPC.swift */,
 				93F50A351F226B9300B5BEBA /* WordPressComServiceRemote.h */,
@@ -1160,6 +1180,7 @@
 				9309995A1F16616A00F006A1 /* RemoteTheme.m */,
 				93BD27671EE736A8002BB00B /* RemoteUser.h */,
 				93BD27681EE736A8002BB00B /* RemoteUser.m */,
+				E1D6B555200E46F200325669 /* WPTimeZone.swift */,
 				E632D7771F6E047400297F6D /* SocialLogin2FANonceInfo.swift */,
 			);
 			name = Models;
@@ -1216,10 +1237,12 @@
 				826016F51F9FAF6300533B6C /* activity-log-success-1.json */,
 				826016F71F9FAF6300533B6C /* activity-log-success-2.json */,
 				826016F41F9FAF6300533B6C /* activity-log-success-3.json */,
-				829BA42F1FACF187003ADEEA /* activity-restore-bad-id-failure.json */,
-				829BA42C1FACF185003ADEEA /* activity-restore-status-failure.json */,
-				829BA42E1FACF187003ADEEA /* activity-restore-status-success.json */,
-				829BA42D1FACF186003ADEEA /* activity-restore-success.json */,
+				828A23FF201B671F004F6859 /* activity-restore-success.json */,
+				829BA42C1FACF185003ADEEA /* activity-rewind-status-restore-failure.json */,
+				829BA42E1FACF187003ADEEA /* activity-rewind-status-restore-finished.json */,
+				828A2401201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json */,
+				829BA42F1FACF187003ADEEA /* activity-rewind-status-restore-queued.json */,
+				829BA42D1FACF186003ADEEA /* activity-rewind-status-success.json */,
 				93BD27431EE73442002BB00B /* auth-send-login-email-invalid-client-failure.json */,
 				93BD27441EE73442002BB00B /* auth-send-login-email-invalid-secret-failure.json */,
 				93BD27451EE73442002BB00B /* auth-send-login-email-no-user-failure.json */,
@@ -1272,6 +1295,8 @@
 				7433BC071EFC4598002D9E92 /* plans-feature-bad-json-failure.json */,
 				7433BC081EFC4598002D9E92 /* plans-feature-empty-success.json */,
 				7433BC091EFC4598002D9E92 /* plans-feature-success.json */,
+				40E4698A2017C2840030DB5F /* plugin-directory-popular.json */,
+				40E4698C2017D2E30030DB5F /* plugin-directory-new.json */,
 				E1E89C651FD6B291006E7A33 /* plugin-directory-rename-xml-rpc.json */,
 				E1E89C671FD6B2E9006E7A33 /* plugin-directory-jetpack.json */,
 				74A44DD71F13C7AC006CD8F4 /* remote-notification.json */,
@@ -1318,6 +1343,7 @@
 				74D67F2C1F15C3740010C5ED /* site-viewers-delete-bad-json.json */,
 				74D67F2D1F15C3740010C5ED /* site-viewers-delete-failure.json */,
 				74D67F2E1F15C3740010C5ED /* site-viewers-delete-success.json */,
+				E1787DAF200E564B004CB3AF /* timezones.json */,
 				74B335DF1F06F6290053A184 /* WordPressComRestApiFailInvalidInput.json */,
 				74B335DD1F06F5A50053A184 /* WordPressComRestApiFailInvalidJSON.json */,
 				74B335E11F06F6730053A184 /* WordPressComRestApiFailRequestInvalidToken.json */,
@@ -1398,6 +1424,7 @@
 		E1EF5D5E1F9F3CA700B6D53E /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				40AB1AD9200FED25009B533D /* PluginDirectoryFeedPage.swift */,
 				E194CB721FBDEF6400B0A8B8 /* PluginState.swift */,
 				E1EF5D5C1F9F329900B6D53E /* SitePluginCapabilities.swift */,
 				E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */,
@@ -1597,7 +1624,7 @@
 				74D67F171F15C2D70010C5ED /* site-users-update-role-success.json in Resources */,
 				74C473B11EF31A19009918F2 /* site-delete-success.json in Resources */,
 				E14694031F344F71004052C8 /* site-plugins-error.json in Resources */,
-				829BA4311FACF187003ADEEA /* activity-restore-success.json in Resources */,
+				829BA4311FACF187003ADEEA /* activity-rewind-status-success.json in Resources */,
 				93BD27571EE73442002BB00B /* auth-send-login-email-no-user-failure.json in Resources */,
 				93AC8ED71ED32FD000900F5A /* stats-v1.1-top-posts-day-large.json in Resources */,
 				93AC8EC71ED32FD000900F5A /* stats-v1.1-clicks-day.json in Resources */,
@@ -1619,6 +1646,7 @@
 				93BD27561EE73442002BB00B /* auth-send-login-email-invalid-secret-failure.json in Resources */,
 				93BD275A1EE73442002BB00B /* is-available-email-success.json in Resources */,
 				74D67F141F15C2D70010C5ED /* site-roles-bad-json-failure.json in Resources */,
+				40E4698B2017C2840030DB5F /* plugin-directory-popular.json in Resources */,
 				93AC8ED01ED32FD000900F5A /* stats-v1.1-post-details.json in Resources */,
 				74C473B91EF325F6009918F2 /* site-delete-missing-status-failure.json in Resources */,
 				7403A2FD1EF06FEB00DED7DC /* me-settings-change-primary-site-success.json in Resources */,
@@ -1636,7 +1664,7 @@
 				74D67F161F15C2D70010C5ED /* site-users-update-role-bad-json-failure.json in Resources */,
 				93BD27661EE73442002BB00B /* me-success.json in Resources */,
 				74C473C71EF334D4009918F2 /* site-active-purchases-none-active-success.json in Resources */,
-				829BA4321FACF187003ADEEA /* activity-restore-status-success.json in Resources */,
+				829BA4321FACF187003ADEEA /* activity-rewind-status-restore-finished.json in Resources */,
 				74D67F181F15C2D70010C5ED /* site-users-update-role-unknown-site-failure.json in Resources */,
 				93AC8ED31ED32FD000900F5A /* stats-v1.1-streak.json in Resources */,
 				7403A2F91EF06FEB00DED7DC /* me-settings-change-email-success.json in Resources */,
@@ -1650,8 +1678,9 @@
 				93BD27651EE73442002BB00B /* me-sites-visibility-success.json in Resources */,
 				93AC8ED61ED32FD000900F5A /* stats-v1.1-top-posts-day-exception.json in Resources */,
 				7433BC0A1EFC4598002D9E92 /* plans-feature-bad-json-failure.json in Resources */,
+				E1787DB0200E564B004CB3AF /* timezones.json in Resources */,
 				93BD275E1EE73442002BB00B /* me-bad-json-failure.json in Resources */,
-				829BA4301FACF187003ADEEA /* activity-restore-status-failure.json in Resources */,
+				829BA4301FACF187003ADEEA /* activity-rewind-status-restore-failure.json in Resources */,
 				74D67F391F15C3740010C5ED /* site-viewers-delete-bad-json.json in Resources */,
 				93BD27631EE73442002BB00B /* me-sites-visibility-bad-json-failure.json in Resources */,
 				7433BC131EFC45C7002D9E92 /* site-plans-bad-json-failure.json in Resources */,
@@ -1666,11 +1695,14 @@
 				74D67F151F15C2D70010C5ED /* site-roles-success.json in Resources */,
 				740B23E11F17FB4200067A2A /* xmlrpc-metaweblog-editpost-bad-xml-failure.xml in Resources */,
 				93AC8ED51ED32FD000900F5A /* stats-v1.1-tags-categories-views-day.json in Resources */,
+				828A2402201B6B8A004F6859 /* activity-rewind-status-restore-in-progress.json in Resources */,
 				74D67F131F15C2D70010C5ED /* site-roles-auth-failure.json in Resources */,
 				74B040721EF8B366002C6258 /* rest-site-settings.json in Resources */,
 				93BD27611EE73442002BB00B /* me-sites-empty-success.json in Resources */,
+				40E4698D2017D2E30030DB5F /* plugin-directory-new.json in Resources */,
 				74FC6F431F191C1D00112505 /* notifications-load-all.json in Resources */,
 				74C473C11EF32C74009918F2 /* site-export-missing-status-failure.json in Resources */,
+				828A2400201B671F004F6859 /* activity-restore-success.json in Resources */,
 				826016FC1F9FAF6300533B6C /* activity-log-success-2.json in Resources */,
 				74D67F1E1F15C3240010C5ED /* people-send-invitation-failure.json in Resources */,
 				7403A3001EF06FEB00DED7DC /* me-settings-success.json in Resources */,
@@ -1694,7 +1726,7 @@
 				74C473C91EF335B8009918F2 /* site-active-purchases-empty-response.json in Resources */,
 				93AC8ECC1ED32FD000900F5A /* stats-v1.1-followers-wpcom-day.json in Resources */,
 				740B23EA1F17FB4200067A2A /* xmlrpc-wp-getpost-success.xml in Resources */,
-				829BA4331FACF187003ADEEA /* activity-restore-bad-id-failure.json in Resources */,
+				829BA4331FACF187003ADEEA /* activity-rewind-status-restore-queued.json in Resources */,
 				74C473B31EF3204B009918F2 /* site-delete-auth-failure.json in Resources */,
 				40F88F621F85799A00AE3FAF /* auth-send-verification-email-success.json in Resources */,
 				740B23E81F17FB4200067A2A /* xmlrpc-wp-getpost-bad-xml-failure.xml in Resources */,
@@ -1847,6 +1879,7 @@
 				7430C9CB1F192F260051B8E6 /* RemoteSourcePostAttribution.m in Sources */,
 				742362E11F1025B400BD0A7F /* RemoteMenuItem.m in Sources */,
 				93BD27721EE737A9002BB00B /* ServiceRemoteWordPressXMLRPC.m in Sources */,
+				E1D6B556200E46F300325669 /* WPTimeZone.swift in Sources */,
 				93F50A3F1F227C8900B5BEBA /* UsersServiceRemoteXMLRPC.swift in Sources */,
 				74E2295E1F1E777B0085F7F2 /* RemoteSharingButton.swift in Sources */,
 				93BD27701EE737A8002BB00B /* ServiceRemoteWordPressComREST.m in Sources */,
@@ -1901,6 +1934,7 @@
 				93188D1F1F2262BF0028ED4D /* RemotePostTag.m in Sources */,
 				9368C7BC1EC630270092CE8E /* StatsVisits.m in Sources */,
 				74D67F081F15BEB70010C5ED /* RemotePerson.swift in Sources */,
+				40AB1ADA200FED25009B533D /* PluginDirectoryFeedPage.swift in Sources */,
 				74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */,
 				E182BF6A1FD961810001D850 /* Endpoint.swift in Sources */,
 				74BA04F41F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m in Sources */,
@@ -1908,6 +1942,7 @@
 				938CF3D81EF1BE3800AF838E /* CocoaLumberjack.swift in Sources */,
 				74585B971F0D54B400E7E667 /* RemoteDomain.swift in Sources */,
 				74A44DD01F13C64B006CD8F4 /* RemoteNotification.swift in Sources */,
+				E1D6B558200E473A00325669 /* TimeZoneServiceRemote.swift in Sources */,
 				93BD273D1EE73282002BB00B /* AccountServiceRemoteREST.m in Sources */,
 				82FFBF501F45EFD100F4573F /* RemoteBlogJetpackSettings.swift in Sources */,
 				74650F741F0EA1E200188EDB /* RemoteGravatarProfile.swift in Sources */,
@@ -1980,6 +2015,7 @@
 				74A44DD51F13C6D8006CD8F4 /* PushAuthenticationServiceRemoteTests.swift in Sources */,
 				931924241F1662FA0069CBCC /* JSONLoader.swift in Sources */,
 				93AC8EE21ED32FD000900F5A /* WPStatsServiceRemoteTests.m in Sources */,
+				E1787DB2200E5690004CB3AF /* TimeZoneServiceRemoteTests.swift in Sources */,
 				740B23D21F17F6BB00067A2A /* PostServiceRemoteRESTTests.m in Sources */,
 				7430C9BE1F192C0F0051B8E6 /* ReaderTopicServiceRemoteTests.m in Sources */,
 				74B335DC1F06F4180053A184 /* WordPressOrgXMLRPCApiTests.swift in Sources */,

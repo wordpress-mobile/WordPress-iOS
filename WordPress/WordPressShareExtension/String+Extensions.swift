@@ -21,8 +21,16 @@ extension String {
             }
 
             let rangeWithOffset = NSMakeRange(range.location + offset, range.length)
-            let rawURL          = output.substring(with: rangeWithOffset)
-            let anchoredURL     = "<a href=\"\(rawURL)\">\(rawURL)</a>"
+            let rawURL = output.substring(with: rangeWithOffset)
+
+            var niceURL: String
+            if let urlComps = URLComponents(string: rawURL), let host = urlComps.host {
+                niceURL = "\(host)\(urlComps.path)"
+            } else {
+                niceURL = rawURL
+            }
+
+            let anchoredURL     = "<a href=\"\(rawURL)\">\(niceURL)</a>"
 
             output.replaceCharacters(in: rangeWithOffset, with: anchoredURL)
             offset += anchoredURL.count - rawURL.count

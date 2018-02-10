@@ -12,6 +12,14 @@ struct Notice {
     /// An optional subtitle for the notice
     let message: String?
 
+    /// An optional taptic feedback type. If provided, taptic feedback will be
+    /// triggered when the notice is displayed.
+    let feedbackType: UINotificationFeedbackType?
+
+    /// If provided, the notice will be presented as a system notification when
+    /// the app isn't in the foreground.
+    let notificationInfo: NoticeNotificationInfo?
+
     /// A title for an optional action button that can be displayed as part of
     /// a notice
     let actionTitle: String?
@@ -20,18 +28,51 @@ struct Notice {
     /// is tapped, if you've provided an action title
     let actionHandler: (() -> Void)?
 
-    init(title: String, message: String? = nil) {
+    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil) {
         self.title = title
         self.message = message
+        self.feedbackType = feedbackType
+        self.notificationInfo = notificationInfo
         self.actionTitle = nil
         self.actionHandler = nil
     }
 
-    init(title: String, message: String? = nil, actionTitle: String, actionHandler: @escaping (() -> Void)) {
+    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, actionTitle: String, actionHandler: @escaping (() -> Void)) {
         self.title = title
         self.message = message
+        self.feedbackType = feedbackType
+        self.notificationInfo = notificationInfo
         self.actionTitle = actionTitle
         self.actionHandler = actionHandler
+    }
+}
+
+struct NoticeNotificationInfo {
+    /// Unique identifier for this notice. When displayed as a system notification,
+    /// this value will be used as the `UNNotificationRequest`'s identifier.
+    let identifier: String
+
+    /// Optional category identifier for this notice. If provided, this value
+    /// will be used as the `UNNotificationContent`'s category identifier.
+    let categoryIdentifier: String?
+
+    /// Optional title. If provided, this will override the notice's
+    /// standard title when displayed as a notification.
+    let title: String?
+
+    /// Optional body text. If provided, this will override the notice's
+    /// standard message when displayed as a notification.
+    let body: String?
+
+    /// If provided, this will be added to the `UNNotificationRequest` for this notice.
+    let userInfo: [String: Any]?
+
+    init(identifier: String, categoryIdentifier: String? = nil, title: String? = nil, body: String? = nil, userInfo: [String: Any]? = nil) {
+        self.identifier = identifier
+        self.categoryIdentifier = categoryIdentifier
+        self.title = title
+        self.body = body
+        self.userInfo = userInfo
     }
 }
 

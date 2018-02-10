@@ -463,6 +463,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatGravatarUploaded:
             eventName = @"me_gravatar_uploaded";
             break;
+        case WPAnalyticsStatInstallJetpackCanceled:
+            eventName = @"stats_install_jetpack_canceled";
+            break;
+        case WPAnalyticsStatInstallJetpackCompleted:
+            eventName = @"stats_install_jetpack_completed";
+            break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";
             break;
@@ -651,6 +657,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatNotificationsTappedViewReader:
             eventName = @"notification_tapped_view_reader";
+            break;
+        case WPAnalyticsStatNotificationsUploadMediaSuccessWritePost:
+            eventName = @"notifications_upload_media_success_write_post";
             break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
