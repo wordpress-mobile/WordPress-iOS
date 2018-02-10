@@ -60,7 +60,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z9e-FE-qu2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-36" y="95"/>
+            <point key="canvasLocation" x="238" y="95"/>
         </scene>
         <!--Site Creation Theme Selection View Controller-->
         <scene sceneID="z67-tA-tNh">
@@ -181,7 +181,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vlR-DZ-wUt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="511" y="95"/>
+            <point key="canvasLocation" x="998" y="95"/>
         </scene>
         <!--Site Creation Site Details View Controller-->
         <scene sceneID="Co8-mp-gBA">
@@ -383,31 +383,84 @@
                         <outlet property="tagDescriptionLabel" destination="cGJ-Lt-fd3" id="mge-CL-Pan"/>
                         <outlet property="taglineField" destination="MyF-yC-tG6" id="XYN-dQ-9Pt"/>
                         <outlet property="taglineLabel" destination="iol-Va-cKN" id="HJg-xM-3PT"/>
-                        <segue destination="pd3-Be-itM" kind="show" identifier="showDomains" id="0st-cX-Udd"/>
+                        <segue destination="KXX-3w-0CE" kind="show" identifier="showDomains" id="XTb-kq-FKV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuO-m2-AGh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1041" y="95"/>
+            <point key="canvasLocation" x="1782" y="95"/>
         </scene>
         <!--Site Creation Domains View Controller-->
-        <scene sceneID="CAl-vn-1Ma">
+        <scene sceneID="vHC-bu-Vnz">
             <objects>
-                <tableViewController id="pd3-Be-itM" customClass="SiteCreationDomainsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="iRl-pX-0eT">
+                <viewController id="KXX-3w-0CE" customClass="SiteCreationDomainsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EAZ-3B-IhF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LRh-0q-RfH" userLabel="Table Container View">
+                                <rect key="frame" x="0.0" y="64" width="375" height="519"/>
+                                <connections>
+                                    <segue destination="uS3-8E-y1q" kind="embed" identifier="showDomainsTable" id="ZGn-j6-2VP"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gU-1Z-Avk" userLabel="Button Container View">
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="MGV-TN-X2V"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="GNW-13-5sy" kind="embed" identifier="showButtonView" id="cA4-aZ-gWw"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="LRh-0q-RfH" firstAttribute="leading" secondItem="Axj-bl-L3B" secondAttribute="leading" id="BBi-Wy-I9e"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="leading" secondItem="Axj-bl-L3B" secondAttribute="leading" id="Lnz-Rf-3NY"/>
+                            <constraint firstItem="LRh-0q-RfH" firstAttribute="top" secondItem="Axj-bl-L3B" secondAttribute="top" id="YBn-4N-hyW"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="bottom" secondItem="Axj-bl-L3B" secondAttribute="bottom" id="YCL-CF-uZh"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="top" secondItem="LRh-0q-RfH" secondAttribute="bottom" id="a9j-YQ-BcW"/>
+                            <constraint firstItem="5gU-1Z-Avk" firstAttribute="trailing" secondItem="Axj-bl-L3B" secondAttribute="trailing" id="pVX-mw-6bX"/>
+                            <constraint firstItem="Axj-bl-L3B" firstAttribute="trailing" secondItem="LRh-0q-RfH" secondAttribute="trailing" id="wWD-Xp-bXf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Axj-bl-L3B"/>
+                    </view>
+                    <connections>
+                        <outlet property="buttonContainerHeightConstraint" destination="MGV-TN-X2V" id="TJG-Pq-vrh"/>
+                        <outlet property="buttonContainerViewBottomConstraint" destination="YCL-CF-uZh" id="aSd-Ko-q7X"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wgw-m4-zgC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2613.5999999999999" y="94.902548725637189"/>
+        </scene>
+        <!--Site Creation Domains Table View Controller-->
+        <scene sceneID="8Yr-nW-up1">
+            <objects>
+                <viewController id="uS3-8E-y1q" customClass="SiteCreationDomainsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="EAh-Io-1yv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <connections>
-                            <outlet property="dataSource" destination="pd3-Be-itM" id="kaK-XZ-e57"/>
-                            <outlet property="delegate" destination="pd3-Be-itM" id="3EE-ec-BFU"/>
+                            <outlet property="dataSource" destination="uS3-8E-y1q" id="1Zo-cL-kyH"/>
+                            <outlet property="delegate" destination="uS3-8E-y1q" id="NRd-GM-Bx9"/>
                         </connections>
                     </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5UC-ph-sIZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8op-79-wA9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1542" y="95"/>
+            <point key="canvasLocation" x="3364" y="21"/>
+        </scene>
+        <!--SiteCreationButtonView-->
+        <scene sceneID="a3K-Nm-WAp">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SiteCreationButtonView" referencedIdentifier="SiteCreationButtonView" id="GNW-13-5sy" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="As8-Bq-6ml" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2614" y="540"/>
         </scene>
     </scenes>
 </document>

@@ -28,31 +28,52 @@ class PluginViewModel: Observable {
     var present: ((UIViewController) -> Void)?
     var dismiss: (() -> Void)?
 
-    var tableViewModel: ImmuTable {
-        var versionRow: ImmuTableRow?
-        if let version = plugin.state.version {
-            versionRow = TextRow(
-                title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
-                value: version)
-        }
+    var versionRow: ImmuTableRow? {
+        guard let version = plugin.state.version else { return nil }
 
-        var availableUpdateRow: ImmuTableRow?
+        let versionRow: ImmuTableRow?
+
         switch plugin.state.updateState {
         case .updated:
-            break
-        case .available(let version):
-            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), version)
-            availableUpdateRow = TextWithButtonRow(
+            versionRow = TextRow(
+                title: NSLocalizedString("Version \(version)", comment: "Version of an installed plugin"),
+                value: NSLocalizedString("Installed", comment: "Indicates the state of the plugin")
+            )
+        case .available(let newVersion):
+            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
+            let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
+
+            versionRow = TextWithButtonRow(
                 title: message,
+                subtitle: subtitle,
                 actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
-                action: { [unowned self] (_) in
+                onButtonTap: { [unowned self] (_) in
                     ActionDispatcher.dispatch(PluginAction.update(id: self.plugin.id, site: self.site))
                 }
             )
-        case .updating(let version):
-            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), version)
-            availableUpdateRow = TextRow(title: message,
-                                         value: NSLocalizedString("Updating", comment: "Text to show when a plugin is updating."))
+        case .updating(let newVersion):
+            let message = String(format: NSLocalizedString("Version %@ is available", comment: "Message to show when a new plugin version is available"), newVersion)
+            let subtitle = String(format: NSLocalizedString("Version %@ installed", comment: "Message to show what version is currently installed when a new plugin version is available"), version)
+
+            versionRow = TextWithButtonIndicatingActivityRow(
+                title: message,
+                subtitle: subtitle
+            )
+        }
+
+        return versionRow
+    }
+
+    var tableViewModel: ImmuTable {
+
+        var header: ImmuTableRow?
+        if let directory = plugin.directoryEntry {
+            header = PluginHeaderRow(
+                directoryEntry: directory,
+                onLinkTap: { [unowned self] in
+                    guard let url = directory.authorURL else { return }
+                    self.presentBrowser(for: url)
+            })
         }
 
         var activeRow: ImmuTableRow?
@@ -88,28 +109,113 @@ class PluginViewModel: Observable {
                 accessibilityIdentifier: "remove-plugin")
         }
 
+        var settingsLink: ImmuTableRow?
+        if let settingsURL = plugin.state.settingsURL, plugin.state.deactivateAllowed == true {
+            settingsLink = LinkRow(
+                title: NSLocalizedString("Settings", comment: "Link to plugin's Settings"),
+                action: { [unowned self] _ in
+                    self.presentBrowser(for: settingsURL)
+
+            })
+        }
+
+        var wpOrgPluginLink: ImmuTableRow?
+        if plugin.directoryEntry != nil {
+            wpOrgPluginLink = LinkRow(
+                title: NSLocalizedString("WordPress.org Plugin Page", comment: "Link to a WordPress.org page for the plugin"),
+                action: { [unowned self] _ in
+                  self.presentBrowser(for: self.plugin.state.directoryURL)
+            })
+        }
+
         var homeLink: ImmuTableRow?
         if let homeURL = plugin.state.homeURL {
-            homeLink = NavigationItemRow(
-                title: NSLocalizedString("Plugin homepage", comment: "Link to a plugin's home page"),
+            homeLink = LinkRow(
+                title: NSLocalizedString("Plugin Homepage", comment: "Link to a plugin's home page"),
                 action: { [unowned self] _ in
-                    let controller = WebViewControllerFactory.controller(url: homeURL)
-                    let navigationController = UINavigationController(rootViewController: controller)
-                    self.present?(navigationController)
+                    self.presentBrowser(for: homeURL)
+            })
+        }
+
+        var descriptionRow: ExpandableRow?
+        if let description = plugin.directoryEntry?.descriptionText {
+            descriptionRow = ExpandableRow(
+                title: NSLocalizedString("Description", comment: "Title of section that contains plugins' description"),
+                expandedText: setHTMLTextAttributes(description),
+                expanded: descriptionExpandedStatus,
+                action: { [unowned self] _ in
+                    self.descriptionExpandedStatus = !self.descriptionExpandedStatus
+                    descriptionRow?.expanded = self.descriptionExpandedStatus
+                },
+                onLinkTap: { [unowned self] url in
+                    self.presentBrowser(for: url)
+            })
+        }
+
+        var installationRow: ExpandableRow?
+        if let installation = plugin.directoryEntry?.installationText {
+            installationRow = ExpandableRow(
+                title: NSLocalizedString("Installation", comment: "Title of section that contains plugins' installation instruction"),
+                expandedText: setHTMLTextAttributes(installation),
+                expanded: installationExpandedStatus,
+                action: { [unowned self] _ in
+                    self.installationExpandedStatus = !self.installationExpandedStatus
+                    installationRow?.expanded = self.installationExpandedStatus
+                },
+                onLinkTap: { [unowned self] url in
+                    self.presentBrowser(for: url)
+            })
+        }
+
+        var changelogRow: ExpandableRow?
+        if let changelog = plugin.directoryEntry?.changelogText {
+            changelogRow = ExpandableRow(
+                title: NSLocalizedString("What's New", comment: "Title of section that contains plugins' change log"),
+                expandedText: setHTMLTextAttributes(changelog),
+                expanded: changeLogExpandedStatus,
+                action: { [unowned self] _ in
+                    self.changeLogExpandedStatus = !self.changeLogExpandedStatus
+                    changelogRow?.expanded = self.changeLogExpandedStatus
+                },
+                onLinkTap: { [unowned self] url in
+                    self.presentBrowser(for: url)
+            })
+        }
+
+        var faqRow: ExpandableRow?
+        if let faq = plugin.directoryEntry?.faqText {
+            faqRow = ExpandableRow(
+                title: NSLocalizedString("Frequently Asked Questions", comment: "Title of section that contains plugins' FAQ"),
+                expandedText: setHTMLTextAttributes(faq),
+                expanded: faqExpandedStatus,
+                action: { [unowned self] _ in
+                    self.faqExpandedStatus = !self.faqExpandedStatus
+                    faqRow?.expanded = self.faqExpandedStatus
+                },
+                onLinkTap: { [unowned self] url in
+                    self.presentBrowser(for: url)
             })
         }
 
         return ImmuTable(optionalSections: [
             ImmuTableSection(optionalRows: [
-                versionRow,
-                availableUpdateRow
+                header,
+                versionRow
                 ]),
             ImmuTableSection(optionalRows: [
                 activeRow,
                 autoupdatesRow
                 ]),
             ImmuTableSection(optionalRows: [
+                settingsLink,
+                wpOrgPluginLink,
                 homeLink
+                ]),
+            ImmuTableSection(optionalRows: [
+                descriptionRow,
+                installationRow,
+                changelogRow,
+                faqRow
                 ]),
             ImmuTableSection(optionalRows: [
                 removeRow
@@ -149,6 +255,12 @@ class PluginViewModel: Observable {
         return alert
     }
 
+    private func presentBrowser(`for` url: URL) {
+        let controller = WebViewControllerFactory.controller(url: url)
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.present?(navigationController)
+    }
+
     private func setActive(_ active: Bool) {
         if active {
             ActionDispatcher.dispatch(PluginAction.activate(id: plugin.id, site: site))
@@ -172,11 +284,59 @@ class PluginViewModel: Observable {
         return blog?.settings?.name?.nonEmptyString()
     }
 
+    private func setHTMLTextAttributes(_ htmlText: NSAttributedString) -> NSAttributedString {
+        guard let copy = htmlText.mutableCopy() as? NSMutableAttributedString else { return htmlText }
+
+        let nonOptions = [NSTextTab.OptionKey: Any]()
+        let fixedTabStops = [NSTextTab(textAlignment: .left, location: 0, options: nonOptions)]
+
+        copy.enumerateAttribute(NSAttributedStringKey.font, in: NSMakeRange(0, copy.length), options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
+            guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
+
+            copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
+            copy.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: range)
+        }
+
+        copy.enumerateAttribute(NSAttributedStringKey.paragraphStyle, in: NSMakeRange(0, copy.length), options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
+            guard let paragraphStyle = value as? NSParagraphStyle else { return }
+
+            var mutableParagraphStyle: NSMutableParagraphStyle?
+
+            if paragraphStyle.tabStops.isEmpty == false {
+                // this means it's a list. we need to fix up the tab stops.
+
+                mutableParagraphStyle = mutableParagraphStyle ?? paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
+                mutableParagraphStyle?.tabStops = fixedTabStops
+                mutableParagraphStyle?.defaultTabInterval = 5
+            }
+
+            if ceil(paragraphStyle.paragraphSpacing) == 16 {
+                // It gets calculated by system as 15.96<something after the second significant digit>,
+                // but it's a PITA to compare Doubles that precise, so let's just round it up instead.
+
+                mutableParagraphStyle = mutableParagraphStyle ?? paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
+                copy.addAttribute(.font, value: WPStyleGuide.subtitleFontBold(), range: range)
+                mutableParagraphStyle?.paragraphSpacing = 12
+            }
+
+            if let newParagraphStyle = mutableParagraphStyle {
+                copy.addAttribute(.paragraphStyle, value: newParagraphStyle, range: range)
+            }
+        }
+
+        return copy
+    }
+
     var title: String {
         return plugin.name
     }
 
+    private var descriptionExpandedStatus: Bool = true
+    private var installationExpandedStatus: Bool = false
+    private var changeLogExpandedStatus: Bool = false
+    private var faqExpandedStatus: Bool = false
+
     static var immutableRows: [ImmuTableRow.Type] {
-        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self]
+        return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self, PluginHeaderRow.self, LinkRow.self, ExpandableRow.self]
     }
 }

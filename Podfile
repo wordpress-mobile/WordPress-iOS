@@ -47,6 +47,7 @@ target 'WordPress' do
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '3.0.3'
   pod 'GoogleSignIn', '4.1.1'
+  pod 'TTTAttributedLabel', '2.0'
 
   # --------------------
   # WordPress components
@@ -55,7 +56,7 @@ target 'WordPress' do
   pod 'Gridicons', '0.14'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.26'
-  pod 'WordPress-Aztec-iOS', '=1.0.0-beta.17'
+  pod 'WordPress-Aztec-iOS', '1.0.0-beta.18.1'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -71,6 +72,8 @@ target 'WordPress' do
 
     shared_with_all_pods
     shared_with_networking_pods
+
+    pod 'WordPress-Aztec-iOS', '1.0.0-beta.18.1'
   end
 
   target 'WordPressTodayWidget' do

@@ -8,6 +8,7 @@
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import "WPUserAgent.h"
+#import "WordPress-Swift.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -28,7 +29,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
-@property (nonatomic, strong, readwrite) JetpackState *jetpack;
 
 @end
 
@@ -81,7 +81,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @synthesize isSyncingPages;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
-@synthesize jetpack = _jetpack;
 @synthesize xmlrpcApi = _xmlrpcApi;
 
 #pragma mark - NSManagedObject subclass methods
@@ -586,8 +585,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 {
     [self willChangeValueForKey:@"options"];
     [self setPrimitiveValue:options forKey:@"options"];
-    // Invalidate the Jetpack state since it's constructed from options
-    self.jetpack = nil;
     [self didChangeValueForKey:@"options"];
 
     self.siteVisibility = (SiteVisibility)([[self getOptionValue:@"blog_public"] integerValue]);
@@ -644,27 +641,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 }
 
 #pragma mark - Jetpack
-
-- (JetpackState *)jetpack
-{
-    if (_jetpack) {
-        return _jetpack;
-    }
-    if ([self.options count] == 0) {
-        return nil;
-    }
-    _jetpack = [JetpackState new];
-    _jetpack.siteID = [[self getOptionValue:@"jetpack_client_id"] numericValue];
-    _jetpack.version = [self getOptionValue:@"jetpack_version"];
-    if (self.account.username) {
-        _jetpack.connectedUsername = self.account.username;
-    } else {
-        _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
-    }
-    _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
-    _jetpack.automatedTransfer = [[[self getOptionValue:@"is_automated_transfer"] numericValue] boolValue];
-    return _jetpack;
-}
 
 - (BOOL)jetpackActiveModule:(NSString *)moduleName
 {

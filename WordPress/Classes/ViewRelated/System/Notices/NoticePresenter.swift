@@ -1,10 +1,13 @@
 import Foundation
 import UIKit
+import UserNotifications
 import WordPressFlux
 
 class NoticePresenter: NSObject {
     private let store: NoticeStore
     private let presentingViewController: UIViewController
+
+    let generator = UINotificationFeedbackGenerator()
 
     private var storeReceipt: Receipt?
 
@@ -30,9 +33,36 @@ class NoticePresenter: NSObject {
     }
 
     private func present(_ notice: Notice) {
+        if UIApplication.shared.applicationState == .background {
+            presentNoticeInBackground(notice)
+        } else {
+            presentNoticeInForeground(notice)
+        }
+    }
+
+    private func presentNoticeInBackground(_ notice: Notice) {
+        guard let notificationInfo = notice.notificationInfo else {
+            return
+        }
+
+        let content = UNMutableNotificationContent(notice: notice)
+        let request = UNNotificationRequest(identifier: notificationInfo.identifier,
+                                            content: content,
+                                            trigger: nil)
+
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+            DispatchQueue.main.async {
+                self.dismiss()
+            }
+        })
+    }
+
+    private func presentNoticeInForeground(_ notice: Notice) {
         guard let view = presentingViewController.view else {
             return
         }
+
+        generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,11 +98,16 @@ class NoticePresenter: NSObject {
             }
 
             self.animatePresentation(fromState: {}, toState: fromState, completion: {
+                noticeContainerView.removeFromSuperview()
                 self.dismiss()
             })
         }
 
         noticeView.dismissHandler = dismiss
+
+        if let feedbackType = notice.feedbackType {
+            generator.notificationOccurred(feedbackType)
+        }
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
@@ -194,5 +229,29 @@ private class NoticeContainerView: UIView {
         noticeWidthConstraint.isActive = isRegularWidth
 
         layoutIfNeeded()
+    }
+}
+
+private extension UNMutableNotificationContent {
+    convenience init(notice: Notice) {
+        self.init()
+
+        title = notice.notificationInfo?.title ?? notice.title
+
+        if let body = notice.notificationInfo?.body {
+            self.body = body
+        } else if let message = notice.message {
+            subtitle = message
+        }
+
+        if let categoryIdentifier = notice.notificationInfo?.categoryIdentifier {
+            self.categoryIdentifier = categoryIdentifier
+        }
+
+        if let userInfo = notice.notificationInfo?.userInfo {
+            self.userInfo = userInfo
+        }
+
+        sound = .default()
     }
 }

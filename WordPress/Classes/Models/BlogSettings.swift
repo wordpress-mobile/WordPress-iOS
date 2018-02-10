@@ -1,6 +1,5 @@
 import Foundation
 
-
 /// This class encapsulates all of the settings available for a Blog entity
 ///
 open class BlogSettings: NSManagedObject {
@@ -33,6 +32,14 @@ open class BlogSettings: NSManagedObject {
     /// Stores the Blog's Icon Media ID
     ///
     @NSManaged var iconMediaID: NSNumber?
+
+    /// Stores the Blog's GMT offset
+    ///
+    @NSManaged var gmtOffset: NSNumber?
+
+    /// Stores the Blog's timezone
+    ///
+    @NSManaged var timezoneString: String?
 
     // MARK: - Writing
 

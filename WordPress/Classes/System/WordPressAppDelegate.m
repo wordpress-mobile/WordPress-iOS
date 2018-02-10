@@ -108,6 +108,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
+    [self disableAnimationsForUITests:application];
 
     return YES;
 }
@@ -142,6 +143,23 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 {
     self.shortcutCreator = [WP3DTouchShortcutCreator new];
 }
+
+/**
+ This method will disable animations and speed-up keyboad input if command-line arguments includes "NoAnimations"
+ It was designed to be used in UI test suites. To enable it just pass a launch argument into XCUIApplicaton:
+
+ XCUIApplication().launchArguments = ["NoAnimations"]
+*/
+- (void)disableAnimationsForUITests:(UIApplication *)application {
+    NSArray *args = [NSProcessInfo processInfo].arguments;
+    
+    for (NSString *arg in args){
+        if ([arg isEqualToString:@"NoAnimations"]){
+            [UIView setAnimationsEnabled:false];
+            application.windows.firstObject.layer.speed = MAXFLOAT;
+            application.keyWindow.layer.speed = MAXFLOAT;
+        }
+    }}
 
 - (void)setupBackgroundRefresh:(UIApplication *)application {
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
@@ -466,21 +484,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
     [SigninHelpers showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
-}
-
-- (BOOL)isWelcomeScreenVisible
-{
-    UINavigationController *presentedViewController = (UINavigationController *)self.window.rootViewController.presentedViewController;
-    if (![presentedViewController isKindOfClass:[UINavigationController class]]) {
-        return NO;
-    }
-
-    if ([presentedViewController isKindOfClass:[NUXNavigationController class]]) {
-        return YES;
-    }
-
-    UIViewController *controller = presentedViewController.visibleViewController;
-    return [controller isKindOfClass:[NUXAbstractViewController class]] || [controller isKindOfClass:[LoginPrologueViewController class]];
 }
 
 - (void)customizeAppearance
