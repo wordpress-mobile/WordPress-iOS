@@ -43,9 +43,9 @@
 				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
 				<integer>1</integer>
 			</dict>
+			<key>NSExtensionJavaScriptPreprocessingFile</key>
+			<string>WordPressShare</string>
 		</dict>
-		<key>NSExtensionJavaScriptPreprocessingFile</key>
-		<string>WordPressShare</string>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>
