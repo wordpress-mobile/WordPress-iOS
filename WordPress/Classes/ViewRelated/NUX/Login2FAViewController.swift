@@ -87,7 +87,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     /// configures the text fields
     ///
     @objc func configureTextFields() {
-        verificationCodeField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        verificationCodeField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     /// Configures the appearance and state of the submit button.

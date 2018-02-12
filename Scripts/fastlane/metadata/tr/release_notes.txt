@@ -1,5 +1,1 @@
-Site ayarları, Yazma: Artık sitenizin etiketlerini düzenleyebilirsiniz.
-Aztec, Ortam: Kullanıcılar artık Aztech içindeki ortam araç çubuğundan ... düğmesini ve uygulamanın Ortam kütüphanesi bölümünü kullanarak diğer uygulamalardan fotoğraf yada video içeri aktarabilir.
-Ortam: Yükleme artık asenkron!
-Blog detayları: Diğer uygulamalardan fotoğrafları blavatar simgesine sürükleyip bırakabilirsiniz.
-Ben: Diğer uygulamalardan fotoğrafları gravatar simgesine sürükleyip bırakabilirsiniz.
+Bu sürümde tamamen yeni ve keyifli bir paylaşım uzantısı mevcuttur.
