@@ -13,9 +13,15 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     typealias CompletionBlock = () -> Void
 
+    // MARK: - Public Properties
+
     /// This completion handler closure is executed when this VC is dismissed
     ///
     @objc var dismissalCompletionBlock: CompletionBlock?
+
+    /// The extension context data provided from the host app
+    ///
+    open var context: NSExtensionContext?
 
     // MARK: - Internal Properties
 
