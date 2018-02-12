@@ -402,7 +402,7 @@
 }
 
 - (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
-           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+           progress:(nullable void (^)(Media *_Nonnull media, NSProgress *_Nonnull progress))progress
             success:(nullable void (^)(void))success
             failure:(nullable void (^)(void))failure
 {
@@ -422,7 +422,7 @@
         [self deleteMedia:media success:^{
             currentProgress.completedUnitCount++;
             if (progress) {
-                progress(currentProgress);
+                progress(media, currentProgress);
             }
             dispatch_group_leave(group);
         } failure:^(NSError *error) {

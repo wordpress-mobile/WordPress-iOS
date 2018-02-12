@@ -103,7 +103,7 @@
  @param failure a block that will be invoked when there is an error.
  */
 - (void)deleteMedia:(nonnull NSArray<Media *> *)mediaObjects
-           progress:(nullable void (^)(NSProgress *_Nonnull progress))progress
+           progress:(nullable void (^)(Media *_Nonnull media, NSProgress *_Nonnull progress))progress
             success:(nullable void (^)(void))success
             failure:(nullable void (^)(void))failure;
 
