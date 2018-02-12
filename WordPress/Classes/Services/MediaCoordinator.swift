@@ -119,7 +119,7 @@ class MediaCoordinator: NSObject {
     ///
     func cancelUploadAndDeleteMedia(_ media: Media) {
         cancelUpload(of: media)
-        delete(media: media)
+        delete(media: [media])
     }
 
     /// Cancels any ongoing upload for the media object
@@ -136,13 +136,23 @@ class MediaCoordinator: NSObject {
         mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
     }
 
-    /// Deletes a media object from the storage
+    /// Deletes media objects
     ///
-    /// - Parameter media: the media object to delete
+    /// - Parameter media: The media objects to delete
+    /// - Parameter onProgress: Optional progress block, called after each media item is deleted
     ///
-    func delete(media: Media) {
+    func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil) {
         let service = MediaService(managedObjectContext: backgroundContext)
-        service.delete(media, success: nil, failure: nil)
+
+        let progress = { [weak self] (media: Media, progress: Progress?) in
+            self?.cancelUpload(of: media)
+            onProgress?(progress)
+        }
+
+        service.deleteMedia(media,
+                            progress: progress,
+                            success: nil,
+                            failure: nil)
     }
 
     @discardableResult private func uploadMedia(_ media: Media) -> Progress {
