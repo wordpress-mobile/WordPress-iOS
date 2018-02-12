@@ -49,8 +49,6 @@
 #import "NSObject+Helpers.h"
 #import "NSURL+Util.h"
 
-#import "OnePasswordFacade.h"
-
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "PageSettingsViewController.h"
