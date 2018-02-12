@@ -118,10 +118,10 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     @objc func configureTextFields() {
-        usernameField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         usernameField.text = loginFields.username
         passwordField.text = loginFields.password
+        passwordField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        usernameField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
 
