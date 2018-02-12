@@ -55,6 +55,29 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
                                 })
     }
 
+    /// Fetches the Jetpack Modules settings for the specified site
+    ///
+    public func getJetpackModulesSettingsForSite(_ siteID: Int, success: @escaping (RemoteBlogJetpackModulesSettings) -> Void, failure: @escaping (Error) -> Void) {
+
+        let endpoint = "sites/\(siteID)/jetpack/modules"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
+
+        wordPressComRestApi.GET(path!,
+                                parameters: nil,
+                                success: {
+                                    response, _ in
+                                    guard let modules = response["modules"] as? [[String: AnyObject]],
+                                        let remoteModulesSettings = try? self.remoteJetpackModulesSettingsFromArray(modules) else {
+                                        failure(ResponseError.decodingFailure)
+                                        return
+                                    }
+                                    success(remoteModulesSettings)
+                                }, failure: {
+                                    error, _ in
+                                    failure(error)
+                                })
+    }
+
     /// Saves the Jetpack settings for the specified site
     ///
     public func updateJetpackSettingsForSite(_ siteID: Int, settings: RemoteBlogJetpackSettings, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
@@ -75,11 +98,11 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRestApi.POST(path!,
                                  parameters: parameters,
                                  success: {
-                                    _,_  in
-                                    success()
+                                     _,_  in
+                                     success()
                                  }, failure: {
-                                    error, _ in
-                                    failure(error)
+                                     error, _ in
+                                     failure(error)
                                  })
     }
 
@@ -100,6 +123,24 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
                                     error, _ in
                                     failure(error)
                                 })
+    }
+
+    /// Saves the Jetpack Module active setting for the specified site
+    ///
+    public func updateJetpackModuleActiveSettingForSite(_ siteID: Int, module: String, active: Bool, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let endpoint = "sites/\(siteID)/jetpack/modules/\(module)"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
+        let parameters = [ModuleOptionKeys.active: active]
+
+        wordPressComRestApi.POST(path!,
+                                 parameters: parameters as [String : AnyObject],
+                                 success: {
+                                     _,_  in
+                                     success()
+                                 }, failure: {
+                                     error, _ in
+                                     failure(error)
+                                 })
     }
 
     /// Disconnects Jetpack from a site
@@ -153,6 +194,23 @@ private extension BlogJetpackSettingsServiceRemote {
                                                 monitorPushNotifications: monitorPushNotifications)
     }
 
+    func remoteJetpackModulesSettingsFromArray(_ modules: [[String: AnyObject]]) throws -> RemoteBlogJetpackModulesSettings {
+        let dictionary = modules.reduce(into: [String: [String: AnyObject]]()) {
+            guard let key = $1.valueAsString(forKey: "id") else {
+                return
+            }
+            $0[key] = $1
+        }
+
+        guard let lazyLoadImagesValue = dictionary[Keys.lazyLoadImages]?[ModuleOptionKeys.active] as? Bool,
+            let serveImagesFromOurServersValue = dictionary[Keys.serveImagesFromOurServers]?[ModuleOptionKeys.active] as? Bool else {
+            throw ResponseError.decodingFailure
+        }
+
+        return RemoteBlogJetpackModulesSettings(lazyLoadImages: lazyLoadImagesValue,
+                                                serveImagesFromOurServers: serveImagesFromOurServersValue)
+    }
+
     func dictionaryFromJetpackSettings(_ settings: RemoteBlogJetpackSettings) -> [String: AnyObject] {
         let joinedIPs = settings.loginWhiteListedIPAddresses.joined(separator: ", ")
         return [Keys.monitorEnabled: settings.monitorEnabled as AnyObject,
@@ -187,6 +245,17 @@ public extension BlogJetpackSettingsServiceRemote {
         // RemoteBlogJetpackMonitorSettings keys
         static let monitorEmailNotifications = "email_notifications"
         static let monitorPushNotifications = "wp_note_notifications"
+
+        // RemoteBlogJetpackModuleSettings keys
+        public static let lazyLoadImages = "lazy-images"
+        public static let serveImagesFromOurServers  = "photon"
+
+    }
+
+    public enum ModuleOptionKeys {
+
+        // Whether or not the module is currently active
+        public static let active = "active"
 
     }
 }
