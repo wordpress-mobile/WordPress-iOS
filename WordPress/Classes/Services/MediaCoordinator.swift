@@ -136,7 +136,17 @@ class MediaCoordinator: NSObject {
         mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
     }
 
-    /// Deletes media objects
+    /// Deletes a single Media object. If the object is currently being uploaded,
+    /// the upload will be cancelled.
+    ///
+    /// - Parameter media: The media object to delete
+    ///
+    func delete(_ media: Media) {
+        delete(media: [media])
+    }
+
+    /// Deletes media objects. If the objects are currently being uploaded,
+    /// the uploads will be cancelled.
     ///
     /// - Parameter media: The media objects to delete
     /// - Parameter onProgress: Optional progress block, called after each media item is deleted
