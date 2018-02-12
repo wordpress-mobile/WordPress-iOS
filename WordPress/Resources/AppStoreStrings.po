@@ -38,9 +38,10 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.3-whats-new"
+msgctxt "v9.4-whats-new"
 msgid ""
-"A completely new and delightful Share Extension is available in this version.\n"
+"Improvements to the new Share Extension.\n"
+"New Jetpack setting: Speed up your site.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
