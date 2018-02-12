@@ -15,6 +15,12 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     private var lastStatus: SiteCreationStatus?
     private var returnToViewController: UIViewController?
 
+    private let defaultLabelFont = WPStyleGuide.fontForTextStyle(.subheadline)
+    private let defaultLabelTextColor = WPStyleGuide.greyDarken20()
+    private let completedLabelFont = WPStyleGuide.fontForTextStyle(.headline)
+    private let completedLabelTextColor = WPStyleGuide.darkGrey()
+
+
     private var errorButtonTitle: String?
     struct ErrorButtonTitles {
         static let dismissTitle = NSLocalizedString("Dismiss", comment: "Button text on site creation error page.")
@@ -34,6 +40,12 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
         configureView()
         setLabelText()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        setDefaultLabelStyle()
         createSite()
     }
 
@@ -83,6 +95,27 @@ private extension SiteCreationCreateSiteViewController {
         errorButtonTitle = ErrorButtonTitles.tryAgainTitle
     }
 
+
+    /// Sets the labels' font and color to the defaults.
+    /// Specifically for when an error occurs and the user presses 'Try again'.
+    ///
+    func setDefaultLabelStyle() {
+        layingFoundationLabel.font = defaultLabelFont
+        layingFoundationLabel.textColor = defaultLabelTextColor
+
+        retrievingInformationLabel.font = defaultLabelFont
+        retrievingInformationLabel.textColor = defaultLabelTextColor
+
+        configureContentLabel.font = defaultLabelFont
+        configureContentLabel.textColor = defaultLabelTextColor
+
+        configureStyleLabel.font = defaultLabelFont
+        configureStyleLabel.textColor = defaultLabelTextColor
+
+        preparingFrontendLabel.font = defaultLabelFont
+        preparingFrontendLabel.textColor = defaultLabelTextColor
+    }
+
 }
 
 // MARK: - Site Creation Extension
@@ -90,6 +123,9 @@ private extension SiteCreationCreateSiteViewController {
 private extension SiteCreationCreateSiteViewController {
 
     func createSite() {
+
+        // Ensure we start from the beginning when updating labels for statuses.
+        lastStatus = nil
 
         // Make sure we have all required info before proceeding.
         if let validationError = SiteCreationFields.validateFields() {
@@ -153,8 +189,8 @@ private extension SiteCreationCreateSiteViewController {
             }
         }()
 
-        labelToUpdate.font = WPStyleGuide.fontForTextStyle(.headline)
-        labelToUpdate.textColor = WPStyleGuide.darkGrey()
+        labelToUpdate.font = completedLabelFont
+        labelToUpdate.textColor = completedLabelTextColor
     }
 
 }
