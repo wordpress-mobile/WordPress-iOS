@@ -45,7 +45,7 @@ private extension MainDraftActionViewController {
             editor.context = self.extensionContext
             editor.dismissalCompletionBlock = {
                 // This extension doesn't mutate anything passed into it, so just echo the original items.
-                self.extensionContext!.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
+                self.extensionContext?.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
             }
         }
         present(shareNavController, animated: true, completion: nil)
