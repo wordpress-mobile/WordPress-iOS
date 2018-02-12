@@ -752,6 +752,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
             break;
+        case WPAnalyticsStatPerformedJetpackSignInFromNotificationsScreen:
+            eventName = @"notifications_screen_signed_into_jetpack";
+            break;
         case WPAnalyticsStatPersonRemoved:
             eventName = @"people_management_person_removed";
             break;

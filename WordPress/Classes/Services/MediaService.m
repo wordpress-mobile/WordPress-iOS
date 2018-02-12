@@ -150,7 +150,14 @@
     Blog *blog = media.blog;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
-
+    if (media.absoluteLocalURL == nil) {
+        if (failure) {
+            failure([NSError errorWithDomain:NSURLErrorDomain
+                                        code:NSURLErrorFileDoesNotExist
+                                    userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Media doesn't have an associated file to upload.", @"Error message to show to users when trying to upload a media object with no local file associated")}]);
+        }
+        return;
+    }
     // Even though jpeg is a valid extension, use jpg instead for the widest possible
     // support.  Some third-party image related plugins prefer the .jpg extension.
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
