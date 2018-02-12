@@ -23,7 +23,7 @@
                                 <rect key="frame" x="20" y="216" width="375" height="256"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
-                                        <rect key="frame" x="187.5" y="-55" width="350" height="218.5"/>
+                                        <rect key="frame" x="167.5" y="-55" width="350" height="218.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="8:5" id="AAo-23-ODz"/>
                                             <constraint firstAttribute="width" constant="350" id="wER-bJ-ebd">
@@ -50,7 +50,7 @@
                                         <variation key="heightClass=compact" spacing="5"/>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="145.5" y="212" width="84" height="44"/>
+                                        <rect key="frame" x="125.5" y="212" width="84" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
                                         </constraints>
@@ -96,7 +96,7 @@
                     <connections>
                         <outlet property="actionButton" destination="CPl-cH-d7b" id="aGa-gx-Vlh"/>
                         <outlet property="imageView" destination="Fwm-rl-dKS" id="dxy-k9-CRH"/>
-                        <outlet property="subTitleLabel" destination="sdl-jh-nme" id="jwE-ZY-H77"/>
+                        <outlet property="subtitleLabel" destination="sdl-jh-nme" id="egs-7j-xNg"/>
                         <outlet property="titleLabel" destination="8BN-gx-7TL" id="1Pu-ma-D5Y"/>
                     </connections>
                 </viewController>

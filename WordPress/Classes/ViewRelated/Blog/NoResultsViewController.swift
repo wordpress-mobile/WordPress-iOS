@@ -16,12 +16,12 @@ import UIKit
     @objc weak var delegate: NoResultsViewControllerDelegate?
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var actionButton: LoginButton!
 
     // To allow storing values until view is loaded.
     private var titleText: String?
-    private var subTitleText: String?
+    private var subtitleText: String?
     private var buttonText: String?
     private var imageName: String?
 
@@ -42,11 +42,11 @@ import UIKit
     /// - Parameters:
     ///   - title:       Main descriptive text. Required.
     ///   - buttonTitle: Title of action button. Required.
-    ///   - subTitle:    Secondary descriptive text. Optional.
+    ///   - subtitle:    Secondary descriptive text. Optional.
     ///   - image:       Name of image file to use. Optional.
-    @objc func configure(title: String, buttonTitle: String, subTitle: String? = nil, image: String? = nil) {
+    @objc func configure(title: String, buttonTitle: String, subtitle: String? = nil, image: String? = nil) {
         titleText = title
-        subTitleText = subTitle
+        subtitleText = subtitle
         buttonText = buttonTitle
         imageName = image
     }
@@ -64,7 +64,7 @@ import UIKit
         }
 
         titleLabel.text = titleText
-        subTitleLabel.text = subTitleText
+        subtitleLabel.text = subtitleText
         actionButton?.setTitle(buttonText, for: UIControlState())
         actionButton?.setTitle(buttonText, for: .highlighted)
         actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true

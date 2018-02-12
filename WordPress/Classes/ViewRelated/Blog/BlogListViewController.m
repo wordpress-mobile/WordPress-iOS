@@ -288,7 +288,7 @@ static NSInteger HideSearchMinSites = 3;
         if (siteCount == 0) {
             [self addNoResultsToView];
 
-            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subTitle:nil image:nil];
+            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subtitle:nil image:nil];
         }
     } else {
         // If we've gone from no results to having just one site, the user has
@@ -326,12 +326,12 @@ static NSInteger HideSearchMinSites = 3;
         if (count == 1) {
             [self.noResultsViewController configureWithTitle:singularTitle
                                                  buttonTitle:buttonTitle
-                                                    subTitle:singularSubtitle
+                                                    subtitle:singularSubtitle
                                                        image:nil];
         } else {
             [self.noResultsViewController configureWithTitle:multipleTitle
                                                  buttonTitle:buttonTitle
-                                                    subTitle:multipleSubtitle
+                                                    subtitle:multipleSubtitle
                                                        image:nil];
         }
         

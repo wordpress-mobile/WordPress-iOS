@@ -52,7 +52,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             let imageName = "site-creation-error"
 
             vc.delegate = self
-            vc.configure(title: title, buttonTitle: buttonTitle, subTitle: errorMessage, image: imageName)
+            vc.configure(title: title, buttonTitle: buttonTitle, subtitle: errorMessage, image: imageName)
             vc.hideBackButton()
             vc.addWordPressLogoToNavController()
         }
