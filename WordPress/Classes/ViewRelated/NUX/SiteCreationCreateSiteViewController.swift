@@ -21,6 +21,12 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         static let tryAgainTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
     }
 
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .wpComCreateSiteCreation
+        }
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
