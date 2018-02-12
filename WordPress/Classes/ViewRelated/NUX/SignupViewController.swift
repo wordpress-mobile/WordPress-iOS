@@ -15,10 +15,13 @@ import WordPressShared
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var termsButton: UIButton!
+    @IBOutlet weak var wpcomLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @IBOutlet var topLayoutGuideAdjustmentConstraint: NSLayoutConstraint!
     @IBOutlet var formTopMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var wpcomLabelTrailingConstraint: NSLayoutConstraint!
+
     @objc var onePasswordButton: UIButton!
     @objc var didCorrectEmailOnce: Bool = false
     @objc var userDefinedSiteAddress: Bool = false
@@ -128,6 +131,17 @@ import WordPressShared
         let submitButtonTitle = NSLocalizedString("Create Account", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
+
+        //The wpcom label is always at the left of the screen, independently of the user layout direction.
+        if view.userInterfaceLayoutDirection() == .rightToLeft {
+            let siteFieldLeftViewWidth = siteURLField.leftView?.frame.width ?? 0
+            let wpcomRightInset = -(siteFieldLeftViewWidth + siteURLField.contentInsets.left + siteURLField.textInsets.left)
+            let textfieldLeftEdgeInset = wpcomLabel.bounds.width + WPStyleGuide.textInsetsForLoginTextFieldWithLeftView().left
+            wpcomLabelTrailingConstraint.constant = wpcomRightInset
+            siteURLField.textInsets = UIEdgeInsets(top: 0, left: textfieldLeftEdgeInset, bottom: 0, right: 0)
+        } else {
+            siteURLField.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: wpcomLabel.bounds.width)
+        }
     }
 
 
@@ -220,6 +234,11 @@ import WordPressShared
     /// Sets up the view's colors and style
     @objc open func setupStyles() {
         WPStyleGuide.configureColorsForSigninView(view)
+
+        emailField.contentInsets    = WPStyleGuide.edgeInsetForLoginTextFields()
+        usernameField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        passwordField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        siteURLField.contentInsets  = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     /// Whether the view layout should be adjusted for smaller screens
