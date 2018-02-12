@@ -3886,8 +3886,8 @@
 		74576684202B56EF00F42E40 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				74576674202B558C00F42E40 /* MainDraftActionViewController.swift */,
 				74576676202B558C00F42E40 /* MainInterface.storyboard */,
+				74576674202B558C00F42E40 /* MainDraftActionViewController.swift */,
 			);
 			name = UI;
 			sourceTree = "<group>";

@@ -5,12 +5,6 @@ import WordPressShared
 
 class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
-    // MARK: - Public Properties
-
-    /// The extension context data provided from the host app
-    ///
-    open var context: NSExtensionContext?
-
     // MARK: - Private Properties
 
     /// Cancel Bar Button
