@@ -8410,8 +8410,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressDraftAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "389234cf-2010-4bd1-90fd-56db8605c2c3";
-				PROVISIONING_PROFILE_SPECIFIER = "WordPress Draft Action App Store Distribution";
+				PROVISIONING_PROFILE = "9e2ee691-e597-4254-bb1b-4a597a450e5d";
+				PROVISIONING_PROFILE_SPECIFIER = "WordPress Draft App Store Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
