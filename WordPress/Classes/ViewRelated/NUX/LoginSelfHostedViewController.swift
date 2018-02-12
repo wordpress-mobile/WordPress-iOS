@@ -121,7 +121,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         usernameField.text = loginFields.username
         passwordField.text = loginFields.password
         passwordField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        usernameField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields() 
+        usernameField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
 
