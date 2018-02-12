@@ -19,16 +19,6 @@ import UIKit
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var actionButton: LoginButton!
 
-    override var sourceTag: SupportSourceTag {
-        get {
-            if let parent = parent,
-                parent.isKind(of: SiteCreationNavigationController.self) {
-                return .wpComCreateSiteError
-            }
-            return super.sourceTag
-        }
-    }
-
     // To allow storing values until view is loaded.
     private var titleText: String?
     private var subTitleText: String?
