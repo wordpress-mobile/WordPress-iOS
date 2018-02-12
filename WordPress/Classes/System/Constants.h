@@ -58,13 +58,6 @@ extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;
 ///
 extern NSString *const WPiTunesAppId;
 
-/// 1Password Constants
-///
-extern NSString *const WPOnePasswordWordPressTitle;
-extern NSString *const WPOnePasswordWordPressComURL;
-extern NSInteger const WPOnePasswordGeneratedMinLength;
-extern NSInteger const WPOnePasswordGeneratedMaxLength;
-
 /// Scheme Constants
 ///
 extern NSString *const WPComScheme;
