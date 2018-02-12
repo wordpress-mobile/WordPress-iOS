@@ -196,7 +196,7 @@ extension WPStyleGuide {
         // User Cell Helpers
         public static func configureFollowButton(_ button: UIButton) {
             // General
-            button.contentHorizontalAlignment = .left
+            button.naturalContentHorizontalAlignment = .leading
             button.backgroundColor = .clear
             button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
