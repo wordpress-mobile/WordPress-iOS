@@ -70,13 +70,6 @@ NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVis
 ///
 NSString *const WPiTunesAppId                                       = @"335703880";
 
-/// 1Password Constants
-///
-NSString *const WPOnePasswordWordPressTitle                         = @"WordPress";
-NSString *const WPOnePasswordWordPressComURL                        = @"wordpress.com";
-NSInteger const WPOnePasswordGeneratedMinLength                     = 7;
-NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
-
 /// Scheme Constants
 ///
 NSString *const WPComScheme                                         = WPCOM_SCHEME;
