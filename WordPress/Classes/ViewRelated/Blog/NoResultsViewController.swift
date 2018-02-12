@@ -80,8 +80,8 @@ import UIKit
     // MARK: - Helpers
 
     private func accessibilityIdentifier(for string: String) -> String {
-        let buttonId = NSLocalizedString("Button", comment: "Appended accessibility identifier for buttons.")
-        return "\(string) \(buttonId)"
+        let buttonIdFormat = NSLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
+        return String(format: buttonIdFormat, string)
     }
 
     // MARK: - Button Handling
