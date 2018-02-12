@@ -387,7 +387,6 @@
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		740C7C4F202F4CD6001C31B0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 740C7C4E202F4CD6001C31B0 /* MainInterface.storyboard */; };
 		740C7C50202F4F86001C31B0 /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
-		740C7C52202F5258001C31B0 /* WordPressShare-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */; };
 		741AF3A2202F3DC400C771A5 /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
 		741AF3A5202F3E2A00C771A5 /* Tracks+DraftAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741AF3A4202F3E2A00C771A5 /* Tracks+DraftAction.swift */; };
 		741D147A200D55F6003DFD30 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741D1479200D55F6003DFD30 /* UITableView+Extensions.swift */; };
@@ -445,6 +444,8 @@
 		74D06FEC1FE0869D00AF1788 /* NSAttributedStringKey+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */; };
 		74E44AD52031E83C00556205 /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
 		74E44AD62031E85A00556205 /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
+		74E44AD92031ED2300556205 /* WordPressDraft-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */; };
+		74E44ADC2031EFD600556205 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 74E44ADE2031EFD600556205 /* Localizable.strings */; };
 		74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74F24F671EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */; };
@@ -1773,6 +1774,42 @@
 		74D6DA90202B651300A0E1FE /* WordPressDraftActionExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressDraftActionExtension.entitlements; sourceTree = "<group>"; };
 		74D6DA91202B669100A0E1FE /* WordPressDraftActionExtension-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressDraftActionExtension-Internal.entitlements"; sourceTree = "<group>"; };
 		74D6DA92202B669100A0E1FE /* WordPressDraftActionExtension-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressDraftActionExtension-Alpha.entitlements"; sourceTree = "<group>"; };
+		74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WordPressDraft-Lumberjack.m"; sourceTree = "<group>"; };
+		74E44AD82031ED2300556205 /* WordPressDraftPrefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressDraftPrefix.pch; sourceTree = "<group>"; };
+		74E44ADF2031EFF700556205 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE02031F00C00556205 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE12031F00F00556205 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE22031F02A00556205 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE32031F02E00556205 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE42031F02F00556205 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE52031F03000556205 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE62031F03200556205 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE72031F03300556205 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		74E44AE82031F03500556205 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AE92031F03700556205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AEA2031F03900556205 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AEB2031F03A00556205 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		74E44AEC2031F03D00556205 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AED2031F03F00556205 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AEE2031F04000556205 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AEF2031F04100556205 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF02031F04200556205 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF12031F04400556205 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF22031F04600556205 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		74E44AF32031F04B00556205 /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF42031F05000556205 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF52031F05100556205 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF62031F05200556205 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF72031F05400556205 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF82031F05600556205 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AF92031F05800556205 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AFA2031F05A00556205 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AFB2031F05C00556205 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AFC2031F05D00556205 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AFD2031F05E00556205 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		74E44AFE2031F07800556205 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		74E44AFF2031F07900556205 /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		74E44B002031F07B00556205 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeConstants.swift; sourceTree = "<group>"; };
 		74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-bad-username-password-error.xml"; sourceTree = "<group>"; };
 		74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-malformed-request-xml-error.xml"; sourceTree = "<group>"; };
@@ -3867,6 +3904,9 @@
 				74D6DA90202B651300A0E1FE /* WordPressDraftActionExtension.entitlements */,
 				74D6DA92202B669100A0E1FE /* WordPressDraftActionExtension-Alpha.entitlements */,
 				74D6DA91202B669100A0E1FE /* WordPressDraftActionExtension-Internal.entitlements */,
+				74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */,
+				74E44AD82031ED2300556205 /* WordPressDraftPrefix.pch */,
+				74E44ADE2031EFD600556205 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -6444,6 +6484,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				741AF3A2202F3DC400C771A5 /* ShareExtension.storyboard in Resources */,
+				74E44ADC2031EFD600556205 /* Localizable.strings in Resources */,
 				740C7C50202F4F86001C31B0 /* WordPressShare.js in Resources */,
 				74FC2D05202B69C100AC3422 /* AppImages.xcassets in Resources */,
 				74FC2D06202B69C100AC3422 /* Images.xcassets in Resources */,
@@ -7662,10 +7703,10 @@
 				74021A01202E12F4006CC39F /* SharedCoreDataStack.swift in Sources */,
 				74021A14202E1393006CC39F /* ShareExtensionEditorViewController.swift in Sources */,
 				74021A0F202E1370006CC39F /* ExtensionTransitioningManager.swift in Sources */,
+				74E44AD92031ED2300556205 /* WordPressDraft-Lumberjack.m in Sources */,
 				74021A27202E175F006CC39F /* CalypsoProcessorOut.swift in Sources */,
 				741AF3A5202F3E2A00C771A5 /* Tracks+DraftAction.swift in Sources */,
 				74021A26202E175D006CC39F /* CalypsoProcessorIn.swift in Sources */,
-				740C7C52202F5258001C31B0 /* WordPressShare-Lumberjack.m in Sources */,
 				74021A1F202E16DC006CC39F /* SFHFKeychainUtils.m in Sources */,
 				74021A0B202E1330006CC39F /* WPStyleGuide+Share.swift in Sources */,
 				74021A1B202E150F006CC39F /* String+RegEx.swift in Sources */,
@@ -7943,6 +7984,47 @@
 				74576677202B558C00F42E40 /* Base */,
 			);
 			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		74E44ADE2031EFD600556205 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				74E44ADF2031EFF700556205 /* Base */,
+				74E44AE02031F00C00556205 /* ja */,
+				74E44AE12031F00F00556205 /* fr */,
+				74E44AE22031F02A00556205 /* de */,
+				74E44AE32031F02E00556205 /* es */,
+				74E44AE42031F02F00556205 /* it */,
+				74E44AE52031F03000556205 /* pt */,
+				74E44AE62031F03200556205 /* sv */,
+				74E44AE72031F03300556205 /* zh-Hans */,
+				74E44AE82031F03500556205 /* nb */,
+				74E44AE92031F03700556205 /* tr */,
+				74E44AEA2031F03900556205 /* id */,
+				74E44AEB2031F03A00556205 /* zh-Hant */,
+				74E44AEC2031F03D00556205 /* hu */,
+				74E44AED2031F03F00556205 /* pl */,
+				74E44AEE2031F04000556205 /* ru */,
+				74E44AEF2031F04100556205 /* da */,
+				74E44AF02031F04200556205 /* th */,
+				74E44AF12031F04400556205 /* nl */,
+				74E44AF22031F04600556205 /* pt-BR */,
+				74E44AF32031F04B00556205 /* sk */,
+				74E44AF42031F05000556205 /* bg */,
+				74E44AF52031F05100556205 /* ar */,
+				74E44AF62031F05200556205 /* ko */,
+				74E44AF72031F05400556205 /* is */,
+				74E44AF82031F05600556205 /* sq */,
+				74E44AF92031F05800556205 /* ro */,
+				74E44AFA2031F05A00556205 /* cs */,
+				74E44AFB2031F05C00556205 /* cy */,
+				74E44AFC2031F05D00556205 /* he */,
+				74E44AFD2031F05E00556205 /* hr */,
+				74E44AFE2031F07800556205 /* en-GB */,
+				74E44AFF2031F07900556205 /* en-CA */,
+				74E44B002031F07B00556205 /* en-AU */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		931DF4D818D09A2F00540BDD /* InfoPlist.strings */ = {
@@ -8269,7 +8351,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WordPressShareExtension/WordPressSharePrefix.pch;
+				GCC_PREFIX_HEADER = WordPressDraftActionExtension/WordPressDraftPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"DEBUG=1",
@@ -8321,7 +8403,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WordPressShareExtension/WordPressSharePrefix.pch;
+				GCC_PREFIX_HEADER = WordPressDraftActionExtension/WordPressDraftPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
@@ -8370,7 +8452,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WordPressShareExtension/WordPressSharePrefix.pch;
+				GCC_PREFIX_HEADER = WordPressDraftActionExtension/WordPressDraftPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					INTERNAL_BUILD,
@@ -8420,7 +8502,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = WordPressShareExtension/WordPressSharePrefix.pch;
+				GCC_PREFIX_HEADER = WordPressDraftActionExtension/WordPressDraftPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					INTERNAL_BUILD,
