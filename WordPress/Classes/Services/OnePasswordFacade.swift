@@ -21,8 +21,7 @@ class OnePasswordFacade {
                    viewController: UIViewController,
                    sender: Any,
                    success: @escaping (_ username: String, _ password: String, _ otp: String?) -> Void,
-                   failure: @escaping (OnePasswordError) -> Void)
-    {
+                   failure: @escaping (OnePasswordError) -> Void) {
         OnePasswordExtension.shared().findLogin(forURLString: url, for: viewController, sender: sender) { (dictionary, error) in
             if let error = error as NSError? {
                 failure(OnePasswordError(error: error))
@@ -66,8 +65,8 @@ class OnePasswordFacade {
                      for viewController: UIViewController,
                      sender: Any,
                      success: @escaping (_ username: String, _ password: String) -> Void,
-                     failure: @escaping (OnePasswordError) -> Void)
-    {
+                     failure: @escaping (OnePasswordError) -> Void) {
+
         let loginDetails = [
             AppExtensionTitleKey: title,
             AppExtensionUsernameKey: username,
