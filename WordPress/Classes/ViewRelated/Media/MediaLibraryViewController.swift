@@ -594,7 +594,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         }
 
         guard !isEditing else {
-            return media.remoteStatus == .sync
+            return media.remoteStatus == .sync || media.remoteStatus == .failed
         }
 
         switch media.remoteStatus {
