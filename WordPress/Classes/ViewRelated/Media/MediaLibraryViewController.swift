@@ -309,7 +309,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         let deletedItemsCount = assets.count
 
-        let updateProgress = { (progress: Progress?) in
+        let updateProgress = { (media: Media?, progress: Progress?) in
             let fractionCompleted = progress?.fractionCompleted ?? 0
             SVProgressHUD.showProgress(Float(fractionCompleted), status: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
         }
@@ -318,7 +318,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
 
         // Initialize the progress HUD before we start
-        updateProgress(nil)
+        updateProgress(nil, nil)
         isEditing = false
         let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.deleteMedia(assets, progress: updateProgress, success: { [weak self] () in
@@ -332,7 +332,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate func presentRetryOptions(for media: Media) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
-            MediaCoordinator.shared.cancelUploadAndDeleteMedia(media)
+            MediaCoordinator.shared.delete(media: [media])
         }
 
         if media.remoteStatus == .failed {
@@ -345,7 +345,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 }
             } else {
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Delete", comment: "User action to delete media.")) { _ in
-                    MediaCoordinator.shared.delete(media: media)
+                    MediaCoordinator.shared.delete(media: [media])
                 }
             }
         }
