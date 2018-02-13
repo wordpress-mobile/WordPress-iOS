@@ -125,8 +125,26 @@ whitelist_rules:
   # short.
   # - variable_name
 
+  - custom_rules
 
 # Rules configuration
 
 control_statement: 
   severity: error 
+
+custom_rules:
+
+  natural_content_alignment:
+    name: "Natural Content Alignment"
+    regex: '\.contentHorizontalAlignment(\s*)=(\s*)(\.left|\.right)'
+    message: "Forcing content alignment left or right can affect the Right-to-Left layout. Use naturalContentHorizontalAlignment instead."
+
+  natural_text_alignment:
+    name: "Natural Text Alignment"
+    regex: '\.textAlignment(\s*)=(\s*).left'
+    message: "Forcing text alignment to left can affect the Right-to-Left layout. Consider setting it to `natural`"
+
+  inverse_text_alignment:
+    name: "Inverse Text Alignment"
+    regex: '\.textAlignment(\s*)=(\s*).right'
+    message: "Forcing text alignment to right is the inverse to natural language direction. Be sure to handle the Right-to-Left case and then silence this warning with this line `// swiftlint:disable:next inverse_text_alignment`"
