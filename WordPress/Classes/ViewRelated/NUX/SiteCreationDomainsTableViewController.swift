@@ -11,6 +11,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     open var siteName: String?
     open var delegate: SiteCreationDomainsTableViewControllerDelegate?
 
+    private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
     private var siteTitleSuggestions: [String] = []
     private var searchSuggestions: [String] = []
@@ -71,6 +72,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         let api = WordPressComRestApi(oAuthToken: "")
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
+
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
             SVProgressHUD.dismiss()
@@ -79,6 +81,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
             SVProgressHUD.dismiss()
+            self?.addNoResultsToView()
         }
     }
 
@@ -116,14 +119,9 @@ extension SiteCreationDomainsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Sections.titleAndDescription.rawValue:
+        case Sections.titleAndDescription.rawValue,
+             Sections.searchField.rawValue:
             return 1
-        case Sections.searchField.rawValue:
-            if siteTitleSuggestions.count == 0 {
-                return 0
-            } else {
-                return 1
-            }
         case Sections.suggestions.rawValue:
             return searchSuggestions.count > 0 ? searchSuggestions.count : siteTitleSuggestions.count
         default:
@@ -207,6 +205,52 @@ extension SiteCreationDomainsTableViewController {
     }
 }
 
+// MARK: NoResultsViewController Extension
+
+private extension SiteCreationDomainsTableViewController {
+
+    func addNoResultsToView() {
+        if noResultsViewController == nil {
+            instantiateNoResultsViewController()
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        // Calculate the frame for the noResultsVC.
+        var noResultsFrame = tableView.bounds
+        let titleCellRect = tableView.rect(forSection: Sections.titleAndDescription.rawValue)
+        let searchCellRect = tableView.rect(forSection: Sections.searchField.rawValue)
+        let noResultsOffset = searchCellRect.height + titleCellRect.height
+
+        noResultsFrame.size.height -= noResultsOffset
+        noResultsFrame.origin.y += noResultsOffset
+        noResultsViewController.view.frame = noResultsFrame
+
+        // Add noResultsVC to the tableView.
+        addChildViewController(noResultsViewController)
+        tableView.addSubview(noResultsViewController.view)
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func removeNoResultsFromView() {
+        noResultsViewController?.view.removeFromSuperview()
+        noResultsViewController?.removeFromParentViewController()
+    }
+
+    func instantiateNoResultsViewController() {
+        let noResultsSB = UIStoryboard(name: "NoResults", bundle: nil)
+        noResultsViewController = noResultsSB.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController
+
+        let title = NSLocalizedString("No available site addresses with that name, maybe try another one?", comment: "Primary message shown when there are no domains that match the user entered text.")
+        let subtitle = NSLocalizedString("Enter another site name in the search box above.", comment: "Secondary message shown when there are no domains that match the user entered text.")
+
+        noResultsViewController?.configure(title: title, buttonTitle: "i'm a button", subtitle: subtitle)
+    }
+
+}
+
 // MARK: UITableViewDelegate
 
 extension SiteCreationDomainsTableViewController {
@@ -247,6 +291,7 @@ extension SiteCreationDomainsTableViewController {
 extension SiteCreationDomainsTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
+        removeNoResultsFromView()
         delegate?.newSearchStarted()
 
         guard searchTerm.count > 0 else {
