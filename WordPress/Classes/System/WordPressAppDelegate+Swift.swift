@@ -10,7 +10,6 @@ extension WordPressAppDelegate {
         analytics = WPAppAnalytics(lastVisibleScreenBlock: { [weak self] in
             return self?.currentlySelectedScreen
         })
-        SearchAdsAttribution().requestDetails()
     }
 
     @objc func configureAppRatingUtility() {
