@@ -138,8 +138,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
                 share.images.forEach({ image in
                     if let fileURL = self.saveImageToSharedContainer(image) {
+                        self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: fileURL)
+
                         // FIXME: Insert images into content body properly
-                        // self?.insertImageAttachment(with: fileURL)
                     }
                 })
 
