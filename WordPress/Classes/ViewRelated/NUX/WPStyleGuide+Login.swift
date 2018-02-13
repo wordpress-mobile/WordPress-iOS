@@ -78,7 +78,7 @@ extension WPStyleGuide {
 
     // MARK: - Google Signin Button Methods
 
-    /// A factory method for getting a button for Google Sign-in
+    /// Creates a button for Google Sign-in
     ///
     /// - Returns: A properly styled UIButton
     ///
@@ -88,13 +88,38 @@ extension WPStyleGuide {
         let attrStrNormal = googleButtonString(baseString, linkColor: WPStyleGuide.wordPressBlue())
         let attrStrHighlight = googleButtonString(baseString, linkColor: WPStyleGuide.lightBlue())
 
-        return textButton(normal: attrStrNormal, highlighted: attrStrHighlight)
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+
+        return textButton(normal: attrStrNormal, highlighted: attrStrHighlight, font: font)
     }
 
-    class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString) -> UIButton {
+    /// Creates a button to open our T&C
+    ///
+    /// - Returns: A properly styled UIButton
+    ///
+    class func termsButton() -> UIButton {
+        let baseString =  NSLocalizedString("By choosing \"Sign up\" you agree to our _Terms of Service_", comment: "Legal disclaimer for signup buttons. Sign Up must match button phrasing, two underscores _..._ denote underline")
+
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .center
+
+        let labelParts = baseString.components(separatedBy: "_")
+        let firstPart = labelParts[0]
+        let underlinePart = labelParts.indices.contains(1) ? labelParts[1] : ""
+        let lastPart = labelParts.indices.contains(2) ? labelParts[2] : ""
+
+        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.paragraphStyle: titleParagraphStyle])
+        labelString.append(NSAttributedString(string: underlinePart, attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]))
+        labelString.append(NSAttributedString(string: lastPart))
+
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .caption2)
+        return textButton(normal: labelString, highlighted: labelString, font: font)
+    }
+
+    private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont) -> UIButton {
         let button = UIButton()
         button.clipsToBounds = true
-        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = font
         button.titleLabel?.numberOfLines = 0
@@ -111,24 +136,6 @@ extension WPStyleGuide {
         button.setAttributedTitle(normalString, for: .normal)
         button.setAttributedTitle(highlightString, for: .highlighted)
         return button
-    }
-
-    class func termsButton() -> UIButton {
-        let baseString =  NSLocalizedString("By choosing \"Sign up\" you agree to our _Terms of Service_", comment: "Legal disclaimer for signup buttons. Sign Up must match button phrasing, two underscores _..._ denote underline")
-
-        let titleParagraphStyle = NSMutableParagraphStyle()
-        titleParagraphStyle.alignment = .center
-
-        let labelParts = baseString.components(separatedBy: "_")
-        let firstPart = labelParts[0]
-        let underlinePart = labelParts.indices.contains(1) ? labelParts[1] : ""
-        let lastPart = labelParts.indices.contains(2) ? labelParts[2] : ""
-
-        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.paragraphStyle: titleParagraphStyle])
-        labelString.append(NSAttributedString(string: underlinePart, attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]))
-        labelString.append(NSAttributedString(string: lastPart))
-
-        return textButton(normal: labelString, highlighted: labelString)
     }
 
     private class func googleButtonString(_ baseString: String, linkColor: UIColor) -> NSAttributedString {

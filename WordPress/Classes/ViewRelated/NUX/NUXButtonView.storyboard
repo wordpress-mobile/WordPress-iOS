@@ -25,13 +25,13 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="xzf-f5-7zQ" userLabel="Button Stack View">
-                                <rect key="frame" x="20" y="20" width="335" height="108"/>
+                                <rect key="frame" x="20" y="20" width="335" height="103"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="knN-O6-M86" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="50"/>
                                         <accessibility key="accessibilityConfiguration" identifier="connectSite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="YB6-LI-NGI"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="YB6-LI-NGI"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <state key="normal" title="Secondary Button">
@@ -42,10 +42,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M7J-a3-klP" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="64" width="335" height="44"/>
+                                        <rect key="frame" x="0.0" y="70" width="335" height="33"/>
                                         <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="SiB-Xy-stR"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="SiB-Xy-stR"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <state key="normal" title="Primary Button">

@@ -30,8 +30,5 @@ class LoginPrologueSignupMethodViewController: UIViewController {
         }
         let termsButton = WPStyleGuide.termsButton()
         buttonViewController.stackView?.insertArrangedSubview(termsButton, at: 0)
-        if #available(iOS 11, *) {
-            buttonViewController.stackView?.setCustomSpacing(0, after: termsButton)
-        }
     }
 }
