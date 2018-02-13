@@ -118,11 +118,35 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         clearAllNoResultsViews()
 
         // Load Data
+        loadContentIfNeeded()
         setupPrimarySiteIfNeeded()
         reloadSitesIfNeeded()
     }
 
     // MARK: - Setup Helpers
+
+    fileprivate func loadContentIfNeeded() {
+        // Only attempt loading data from the context when launched from the draft extension
+        guard originatingExtension != .share, let extensionContext = context else {
+            return
+        }
+
+        ShareExtractor(extensionContext: extensionContext)
+            .loadShare { share in
+                self.shareData.title = share.title
+                self.shareData.contentBody = share.combinedContentHTML
+
+                share.images.forEach({ image in
+                    if let fileURL = self.saveImageToSharedContainer(image) {
+                        // FIXME: Insert images into content body properly
+                        // self?.insertImageAttachment(with: fileURL)
+                    }
+                })
+
+                // Clear out the extension context after loading it once. We don't need it anymore.
+                self.context = nil
+        }
+    }
 
     fileprivate func setupPrimarySiteIfNeeded() {
         // If the selected site ID is empty, prefill the selected site with what was already used
