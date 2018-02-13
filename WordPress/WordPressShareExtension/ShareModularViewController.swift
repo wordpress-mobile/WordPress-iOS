@@ -147,6 +147,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
                 // Clear out the extension context after loading it once. We don't need it anymore.
                 self.context = nil
+                self.refreshModulesTable()
         }
     }
 
@@ -369,10 +370,20 @@ fileprivate extension ShareModularViewController {
 
     func summaryRowText() -> String {
         if originatingExtension == .share {
-            return NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+            return SummaryText.summaryPublishing
+        } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
+            return SummaryText.summaryDraftDefault
+        } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
+            return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
+                                             singular: SummaryText.summaryDraftSingular,
+                                             plural: SummaryText.summaryDraftPlural)
         } else {
-            return NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view. It describes the save draft post action.")
+            return ""
         }
+    }
+
+    func refreshModulesTable() {
+        modulesTableView.reloadData()
     }
 }
 
@@ -640,6 +651,13 @@ fileprivate extension ShareModularViewController {
         static let defaultRowHeight        = CGFloat(44.0)
         static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
+    }
+
+    struct SummaryText {
+        static let summaryPublishing    = NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        static let summaryDraftDefault  = NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
+        static let summaryDraftSingular = NSLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
+        static let summaryDraftPlural   = NSLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
     }
 }
 
