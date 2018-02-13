@@ -14,6 +14,7 @@ class MainShareViewController: UIViewController {
         guard let controller = storyboard.instantiateViewController(withIdentifier: "ShareExtensionEditorViewController") as? ShareExtensionEditorViewController else {
             fatalError("Unable to create share extension editor screen.")
         }
+        controller.originatingExtension = .share
         return controller
     }()
 

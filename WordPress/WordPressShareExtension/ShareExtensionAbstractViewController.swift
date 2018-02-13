@@ -2,6 +2,11 @@ import CoreData
 import UIKit
 import WordPressKit
 
+enum OriginatingExtension: String {
+    case share
+    case saveToDraft
+}
+
 /// A base class for the various Share Extension view controllers.
 /// It is assumed that Share Extension controllers will always be presented modally.
 ///
@@ -14,6 +19,10 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
     typealias CompletionBlock = () -> Void
 
     // MARK: - Public Properties
+
+    /// Identifies which app extension launched this VC
+    ///
+    var originatingExtension: OriginatingExtension = .share
 
     /// This completion handler closure is executed when this VC is dismissed
     ///
