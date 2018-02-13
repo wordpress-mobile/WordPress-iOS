@@ -9,9 +9,12 @@ class MainDraftActionViewController: UIViewController {
         return manager
     }()
 
-    fileprivate let shareNavController: UINavigationController = {
+    fileprivate let editorController: ShareExtensionEditorViewController = {
         let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: "ShareNavigationController") as! UINavigationController
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "ShareExtensionEditorViewController") as? ShareExtensionEditorViewController else {
+            fatalError("Unable to create share extension editor screen.")
+        }
+        return controller
     }()
 
     required init?(coder aDecoder: NSCoder) {
@@ -39,15 +42,15 @@ private extension MainDraftActionViewController {
     }
 
     func loadAndPresentNavigationVC() {
+        editorController.context = self.extensionContext
+        editorController.dismissalCompletionBlock = {
+            // This extension doesn't mutate anything passed into it, so just echo the original items.
+            self.extensionContext?.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
+        }
+
+        let shareNavController = UINavigationController(rootViewController: editorController)
         shareNavController.transitioningDelegate = extensionTransitioningManager
         shareNavController.modalPresentationStyle = .custom
-        if let editor = shareNavController.topViewController as? ShareExtensionEditorViewController {
-            editor.context = self.extensionContext
-            editor.dismissalCompletionBlock = {
-                // This extension doesn't mutate anything passed into it, so just echo the original items.
-                self.extensionContext?.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
-            }
-        }
         present(shareNavController, animated: true, completion: nil)
     }
 
