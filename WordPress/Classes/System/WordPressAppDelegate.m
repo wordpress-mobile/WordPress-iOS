@@ -108,6 +108,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
     [self disableAnimationsForUITests:application];
+    [[SearchAdsAttribution new] requestDetails];
 
     return YES;
 }
