@@ -85,11 +85,17 @@ extension WPStyleGuide {
     @objc class func googleLoginButton() -> UIButton {
         let baseString =  NSLocalizedString("Or you can {G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
 
-        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        let attrStrNormal = googleButtonString(baseString, linkColor: WPStyleGuide.wordPressBlue())
+        let attrStrHighlight = googleButtonString(baseString, linkColor: WPStyleGuide.lightBlue())
+
+        return textButton(normal: attrStrNormal, highlighted: attrStrHighlight)
+    }
+
+    class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString) -> UIButton {
         let button = UIButton()
         button.clipsToBounds = true
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.contentHorizontalAlignment = .left
         button.titleLabel?.font = font
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byWordWrapping
@@ -101,21 +107,41 @@ extension WPStyleGuide {
         button.titleLabel?.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: -Constants.verticalLabelSpacing).isActive = true
         button.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.buttonMinHeight).isActive = true
 
-        let attrStrNormal = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.wordPressBlue())
-        let attrStrHiglight = googleButtonString(baseString, for: font, linkColor: WPStyleGuide.lightBlue())
-        button.setAttributedTitle(attrStrNormal, for: .normal)
-        button.setAttributedTitle(attrStrHiglight, for: .highlighted)
+
+        button.setAttributedTitle(normalString, for: .normal)
+        button.setAttributedTitle(highlightString, for: .highlighted)
         return button
     }
 
-    private class func googleButtonString(_ baseString: String, for font: UIFont, linkColor: UIColor) -> NSAttributedString {
+    class func termsButton() -> UIButton {
+        let baseString =  NSLocalizedString("By choosing \"Sign up\" you agree to our _Terms of Service_", comment: "Legal disclaimer for signup buttons. Sign Up must match button phrasing, two underscores _..._ denote underline")
+
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .center
+
+        let labelParts = baseString.components(separatedBy: "_")
+        let firstPart = labelParts[0]
+        let underlinePart = labelParts.indices.contains(1) ? labelParts[1] : ""
+        let lastPart = labelParts.indices.contains(2) ? labelParts[2] : ""
+
+        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.paragraphStyle: titleParagraphStyle])
+        labelString.append(NSAttributedString(string: underlinePart, attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]))
+        labelString.append(NSAttributedString(string: lastPart))
+
+        return textButton(normal: labelString, highlighted: labelString)
+    }
+
+    private class func googleButtonString(_ baseString: String, linkColor: UIColor) -> NSAttributedString {
         let labelParts = baseString.components(separatedBy: "{G}")
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
 
         let firstPart = labelParts[0]
         // 👇 don't want to crash when a translation lacks "{G}"
         let lastPart = labelParts.indices.contains(1) ? labelParts[1] : ""
 
-        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: WPStyleGuide.greyDarken30()])
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .left
+        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: WPStyleGuide.greyDarken30(), .paragraphStyle: titleParagraphStyle])
 
         if let googleIcon = UIImage(named: "google"), lastPart != "" {
             let googleAttachment = NSTextAttachment()
