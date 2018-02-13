@@ -28,7 +28,7 @@ class LoginPrologueSignupMethodViewController: UIViewController {
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
             // nil
         }
-        let termsButton = WPStyleGuide.googleLoginButton()
+        let termsButton = WPStyleGuide.termsButton()
         buttonViewController.stackView?.insertArrangedSubview(termsButton, at: 0)
         if #available(iOS 11, *) {
             buttonViewController.stackView?.setCustomSpacing(0, after: termsButton)
