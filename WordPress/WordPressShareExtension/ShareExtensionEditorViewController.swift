@@ -242,6 +242,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
             destination.dismissalCompletionBlock = source.dismissalCompletionBlock
             destination.sites = source.sites
             destination.shareData = source.shareData
+            destination.originatingExtension = source.originatingExtension
         }
     }
 
