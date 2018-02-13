@@ -65,7 +65,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
 
             vc.delegate = self
             vc.configure(title: title, buttonTitle: buttonTitle, subtitle: errorMessage, image: imageName)
-            vc.hideBackButton()
+            vc.showDismissButton()
             vc.addWordPressLogoToNavController()
         }
     }
@@ -306,6 +306,10 @@ extension SiteCreationCreateSiteViewController: NoResultsViewControllerDelegate 
         } else {
             navigationController?.dismiss(animated: true, completion: nil)
         }
+    }
+
+    func dismissButtonPressed() {
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
 }
