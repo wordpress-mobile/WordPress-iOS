@@ -21,6 +21,40 @@
             </objects>
             <point key="canvasLocation" x="341" y="-350"/>
         </scene>
+        <!--Login Prologue Signup Method View Controller-->
+        <scene sceneID="8K7-Gj-yNn">
+            <objects>
+                <viewController id="IwV-3R-6dB" customClass="LoginPrologueSignupMethodViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LS5-8f-iNn"/>
+                        <viewControllerLayoutGuide type="bottom" id="NZ0-gC-OHl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1bR-Uc-YPO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V2N-XU-yx0">
+                                <rect key="frame" x="0.0" y="501" width="375" height="166"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="166" placeholder="YES" id="c05-ur-bLz"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="A3H-HK-nmU" kind="embed" id="iD4-VS-n3M"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="V2N-XU-yx0" firstAttribute="leading" secondItem="1bR-Uc-YPO" secondAttribute="leading" id="3e9-yc-R9r"/>
+                            <constraint firstAttribute="trailing" secondItem="V2N-XU-yx0" secondAttribute="trailing" id="goV-pb-UDh"/>
+                            <constraint firstAttribute="bottom" secondItem="V2N-XU-yx0" secondAttribute="bottom" id="y2t-8w-Bh7"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fbD-KM-2nK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1108" y="-457"/>
+        </scene>
         <!--Login Prologue View Controller-->
         <scene sceneID="nGd-KO-sMQ">
             <objects>
@@ -34,7 +68,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cw-FO-hjb">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="501"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="tlO-rf-p4Q"/>
                                 </constraints>
@@ -93,7 +127,7 @@
                                 </connections>
                             </containerView>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="X1p-73-aGm">
-                                <rect key="frame" x="0.0" y="657" width="375" height="10"/>
+                                <rect key="frame" x="0.0" y="491" width="375" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="5fL-Mc-SKT"/>
                                 </constraints>
@@ -105,10 +139,10 @@
                             <constraint firstItem="dPr-Tg-feW" firstAttribute="top" secondItem="Icw-wp-UXX" secondAttribute="bottom" constant="22" id="7IO-0C-0w6"/>
                             <constraint firstItem="6cw-FO-hjb" firstAttribute="leading" secondItem="EnO-7f-1yO" secondAttribute="leading" id="7Z8-mD-FWN"/>
                             <constraint firstAttribute="trailing" secondItem="G3G-Ap-6ix" secondAttribute="trailing" id="96a-eB-JlD"/>
+                            <constraint firstItem="G3G-Ap-6ix" firstAttribute="top" secondItem="6cw-FO-hjb" secondAttribute="bottom" id="Cuw-sd-C5k"/>
                             <constraint firstAttribute="trailing" secondItem="6cw-FO-hjb" secondAttribute="trailing" id="Hgo-qC-AqF"/>
                             <constraint firstItem="X1p-73-aGm" firstAttribute="leading" secondItem="EnO-7f-1yO" secondAttribute="leading" id="bvL-2u-7AR"/>
                             <constraint firstItem="6cw-FO-hjb" firstAttribute="top" secondItem="EnO-7f-1yO" secondAttribute="top" id="dXg-NZ-hRY"/>
-                            <constraint firstAttribute="bottom" secondItem="6cw-FO-hjb" secondAttribute="bottom" id="h1H-HM-wvT"/>
                             <constraint firstItem="X1p-73-aGm" firstAttribute="bottom" secondItem="6cw-FO-hjb" secondAttribute="bottom" id="jeg-wN-ua6"/>
                             <constraint firstAttribute="bottom" secondItem="G3G-Ap-6ix" secondAttribute="bottom" id="lOP-Up-00c"/>
                             <constraint firstAttribute="trailing" secondItem="X1p-73-aGm" secondAttribute="trailing" id="u95-1f-lmm"/>
@@ -122,6 +156,7 @@
                         <outlet property="signupButton" destination="5na-fB-S4z" id="3Bd-jn-IhO"/>
                         <segue destination="60d-o9-Asx" kind="show" identifier="showSigninV2" id="AM0-E9-ueb"/>
                         <segue destination="QDy-AC-sAr" kind="show" identifier="showSigninV1" id="32U-G0-qXg"/>
+                        <segue destination="IwV-3R-6dB" kind="presentation" identifier="showSignupMethod" id="gD5-d0-X3t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ieq-Ar-5OF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1640,8 +1675,9 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7lv-19-h36"/>
-        <segue reference="qLI-qX-rkG"/>
+        <segue reference="gAE-di-Wyf"/>
+        <segue reference="kRR-qz-Hu2"/>
         <segue reference="ySQ-EM-6JI"/>
+        <segue reference="iD4-VS-n3M"/>
     </inferredMetricsTieBreakers>
 </document>

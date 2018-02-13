@@ -78,6 +78,7 @@
                     <connections>
                         <outlet property="bottomButton" destination="M7J-a3-klP" id="cpl-TM-lX1"/>
                         <outlet property="shadowView" destination="RrB-Aa-ADd" id="LZa-Jn-ghb"/>
+                        <outlet property="stackView" destination="xzf-f5-7zQ" id="frG-Oo-nB4"/>
                         <outlet property="topButton" destination="knN-O6-M86" id="3fN-Bh-Z8O"/>
                     </connections>
                 </viewController>
