@@ -11,6 +11,7 @@ class NUXButtonViewController: UIViewController {
     // MARK: - Properties
 
     @IBOutlet var shadowView: UIView?
+    @IBOutlet var stackView: UIStackView?
     @IBOutlet var bottomButton: NUXButton?
     @IBOutlet var topButton: NUXButton?
 
