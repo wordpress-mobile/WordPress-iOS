@@ -49,7 +49,7 @@ extension String {
     ///   - remoteID: Remote image ID
     ///   - height: Height of image. Can be nil unless width is provided
     ///   - width: Width of image. Can be nil unless height is provided
-    /// - Returns: <img> element appended to the current string otherwise the current string if the remoteURL param is nil or empty
+    /// - Returns: <img> element appended to the current string otherwise the current string if the mediaURL param is nil or empty
     ///
     func stringByAppendingMediaURL(mediaURL: String?,
                                    uploadID: String? = nil,
