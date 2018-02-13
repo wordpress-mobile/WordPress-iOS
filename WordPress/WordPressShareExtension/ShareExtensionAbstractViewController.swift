@@ -22,7 +22,15 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     /// Identifies which app extension launched this VC
     ///
-    var originatingExtension: OriginatingExtension = .share
+    var originatingExtension: OriginatingExtension = .share {
+        didSet {
+            if originatingExtension == .share {
+                shareData.postStatus = .publish
+            } else {
+                shareData.postStatus = .draft
+            }
+        }
+    }
 
     /// This completion handler closure is executed when this VC is dismissed
     ///
