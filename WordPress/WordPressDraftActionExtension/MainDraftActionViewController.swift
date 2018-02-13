@@ -9,11 +9,12 @@ class MainDraftActionViewController: UIViewController {
         return manager
     }()
 
-    fileprivate let editorController: ShareExtensionEditorViewController = {
+    fileprivate let modularController: ShareModularViewController = {
         let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "ShareExtensionEditorViewController") as? ShareExtensionEditorViewController else {
-            fatalError("Unable to create share extension editor screen.")
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "ShareModularViewController") as? ShareModularViewController else {
+            fatalError("Unable to create share extension modular screen.")
         }
+        controller.originatingExtension = .saveToDraft
         return controller
     }()
 
@@ -42,13 +43,13 @@ private extension MainDraftActionViewController {
     }
 
     func loadAndPresentNavigationVC() {
-        editorController.context = self.extensionContext
-        editorController.dismissalCompletionBlock = {
+        modularController.context = self.extensionContext
+        modularController.dismissalCompletionBlock = {
             // This extension doesn't mutate anything passed into it, so just echo the original items.
             self.extensionContext?.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
         }
 
-        let shareNavController = UINavigationController(rootViewController: editorController)
+        let shareNavController = UINavigationController(rootViewController: modularController)
         shareNavController.transitioningDelegate = extensionTransitioningManager
         shareNavController.modalPresentationStyle = .custom
         present(shareNavController, animated: true, completion: nil)

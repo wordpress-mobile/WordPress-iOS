@@ -33,12 +33,32 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         return button
     }()
 
+    /// Cancel Bar Button
+    ///
+    fileprivate lazy var cancelButton: UIBarButtonItem = {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension modules screen.")
+        let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
+        button.accessibilityIdentifier = "Cancel Button"
+        return button
+    }()
+
     /// Publish Bar Button
     ///
     fileprivate lazy var publishButton: UIBarButtonItem = {
-        let publishTitle = NSLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+        let publishTitle: String
+        if self.originatingExtension == .share {
+            publishTitle = NSLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+        } else {
+            publishTitle = NSLocalizedString("Save", comment: "Save draft post action on share extension site picker screen.")
+        }
+
         let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(publishWasPressed))
-        button.accessibilityIdentifier = "Publish Button"
+        if self.originatingExtension == .share {
+            button.accessibilityIdentifier = "Publish Button"
+        } else {
+            button.accessibilityIdentifier = "Draft Button"
+        }
+
         return button
     }()
 
@@ -116,7 +136,11 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate func setupNavigationBar() {
         self.navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = backButton
+        if originatingExtension == .share {
+            navigationItem.leftBarButtonItem = backButton
+        } else {
+            navigationItem.leftBarButtonItem = cancelButton
+        }
         navigationItem.rightBarButtonItem = publishButton
     }
 
@@ -155,10 +179,17 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 // MARK: - Actions
 
 extension ShareModularViewController {
+    @objc func cancelWasPressed() {
+        tracks.trackExtensionCancelled()
+        cleanUpSharedContainer()
+        dismiss(animated: true, completion: self.dismissalCompletionBlock)
+    }
+
     @objc func backWasPressed() {
         if let editor = navigationController?.previousViewController() as? ShareExtensionEditorViewController {
             editor.sites = sites
             editor.shareData = shareData
+            editor.originatingExtension = originatingExtension
         }
         _ = navigationController?.popViewController(animated: true)
     }
@@ -311,7 +342,11 @@ fileprivate extension ShareModularViewController {
     }
 
     func summaryRowText() -> String {
-        return NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        if originatingExtension == .share {
+            return NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        } else {
+            return NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view. It describes the save draft post action.")
+        }
     }
 }
 
