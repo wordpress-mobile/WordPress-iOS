@@ -226,6 +226,7 @@ open class SiteCreationService: LocalCoreDataService {
         guard let api = account.wordPressComRestApi else {
             let error = SiteCreationError.missingRESTAPI
             DDLogError("Error while creating site: Missing REST API.")
+            assertionFailure()
             failure(error)
             return
         }
@@ -247,6 +248,7 @@ open class SiteCreationService: LocalCoreDataService {
                                     guard let blogOptions = responseDictionary?[BlogKeys.blogDetails] as? [String: AnyObject] else {
                                         let error = SiteCreationError.invalidResponse
                                         DDLogError("Error while creating site: The Blog response dictionary did not contain the expected results.")
+                                        assertionFailure()
                                         failure(error)
                                         return
                                     }
@@ -365,6 +367,7 @@ open class SiteCreationService: LocalCoreDataService {
             else {
                 let error = SiteCreationError.invalidResponse
                 DDLogError("Error while creating site: The blogOptions dictionary was missing expected data.")
+                assertionFailure()
                 failure(error)
                 return nil
         }
@@ -372,6 +375,7 @@ open class SiteCreationService: LocalCoreDataService {
         guard let defaultAccount = accountService.defaultWordPressComAccount() else {
             let error = SiteCreationError.missingDefaultWPComAccount
             DDLogError("Error while creating site: The default wpcom account was not found.")
+            assertionFailure()
             failure(error)
             return nil
         }
