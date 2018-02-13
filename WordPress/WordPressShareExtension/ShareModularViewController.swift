@@ -91,7 +91,12 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Publishing view
     ///
     @objc lazy var publishingView: WPNoResultsView = {
-        let title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        let title: String
+        if self.originatingExtension == .share {
+            title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        } else {
+            title = NSLocalizedString("Saving post...", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
+        }
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicatorView.startAnimating()
         return WPNoResultsView(title: title, message: nil, accessoryView: activityIndicatorView, buttonTitle: nil)
