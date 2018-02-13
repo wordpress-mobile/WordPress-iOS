@@ -19,7 +19,7 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJg-F8-ikt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="341" y="-350"/>
+            <point key="canvasLocation" x="626" y="-345"/>
         </scene>
         <!--Login Prologue Signup Method View Controller-->
         <scene sceneID="8K7-Gj-yNn">
@@ -50,10 +50,13 @@
                             <constraint firstAttribute="bottom" secondItem="V2N-XU-yx0" secondAttribute="bottom" id="y2t-8w-Bh7"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="fwZ-QE-5et" kind="show" identifier="showEmailLogin" id="1xT-tL-sp6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fbD-KM-2nK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1108" y="-457"/>
+            <point key="canvasLocation" x="855" y="259"/>
         </scene>
         <!--Login Prologue View Controller-->
         <scene sceneID="nGd-KO-sMQ">
@@ -185,7 +188,7 @@
                 <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="A3H-HK-nmU" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2gc-Kt-f0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="98" y="666"/>
+            <point key="canvasLocation" x="362" y="717"/>
         </scene>
         <!--Login Email View Controller-->
         <scene sceneID="w6Y-pB-a3f">
@@ -200,13 +203,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ozJ-hT-OEw">
-                                <rect key="frame" x="-4" y="64" width="391" height="612"/>
+                                <rect key="frame" x="-4" y="20" width="391" height="656"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAn-ug-oE6">
-                                        <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="391" height="592"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="JdU-yW-tzf">
-                                                <rect key="frame" x="0.0" y="194" width="391" height="102"/>
+                                                <rect key="frame" x="0.0" y="216" width="391" height="102"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKR-9c-zZQ">
                                                         <rect key="frame" x="20" y="0.0" width="351" height="38"/>
@@ -264,7 +267,7 @@
                                         </constraints>
                                     </view>
                                     <stackView contentMode="scaleToFill" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-CG-3Tg">
-                                        <rect key="frame" x="20" y="548" width="351" height="44"/>
+                                        <rect key="frame" x="20" y="592" width="351" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Hn-ZK-h9k">
                                                 <rect key="frame" x="0.0" y="7" width="307" height="30"/>
@@ -354,7 +357,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wWl-qb-1Yp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="756" y="258.17091454272867"/>
+            <point key="canvasLocation" x="1730" y="255"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="asm-N9-Kfb">
@@ -629,13 +632,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dSZ-FR-Cdo">
-                                <rect key="frame" x="-4" y="64" width="383" height="603"/>
+                                <rect key="frame" x="-4" y="20" width="383" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8j-4r-VXw">
-                                        <rect key="frame" x="0.0" y="0.0" width="383" height="539"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="383" height="583"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rFl-BX-tKE" userLabel="Header Stack View">
-                                                <rect key="frame" x="20" y="155.5" width="343" height="72"/>
+                                                <rect key="frame" x="20" y="177.5" width="343" height="72"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n8z-Py-Err" customClass="SiteInfoHeaderView" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
@@ -660,7 +663,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
-                                                <rect key="frame" x="0.0" y="247.5" width="383" height="88"/>
+                                                <rect key="frame" x="0.0" y="269.5" width="383" height="88"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="383" height="44"/>
@@ -700,7 +703,7 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dmn-nh-HTH">
-                                                <rect key="frame" x="20" y="355.5" width="343" height="0.0"/>
+                                                <rect key="frame" x="20" y="377.5" width="343" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -720,7 +723,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zbk-h0-lpE">
-                                        <rect key="frame" x="20" y="539" width="343" height="44"/>
+                                        <rect key="frame" x="20" y="583" width="343" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP">
                                                 <rect key="frame" x="0.0" y="7" width="141" height="30"/>
@@ -820,19 +823,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-0t-1zq">
-                                <rect key="frame" x="-4" y="64" width="383" height="603"/>
+                                <rect key="frame" x="-4" y="20" width="383" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
-                                        <rect key="frame" x="0.0" y="0.0" width="383" height="539"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="383" height="583"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" placeholderIntrinsicWidth="343" placeholderIntrinsicHeight="48" text="Enter the password for your WordPress.com account." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBi-2N-RAh">
-                                                <rect key="frame" x="20" y="167.5" width="343" height="48"/>
+                                                <rect key="frame" x="20" y="189.5" width="343" height="48"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3be-99-g62">
-                                                <rect key="frame" x="0.0" y="247.5" width="383" height="72.5"/>
+                                                <rect key="frame" x="0.0" y="269.5" width="383" height="72.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Xgi-ZQ-8YL">
                                                         <rect key="frame" x="20" y="0.0" width="343" height="20.5"/>
@@ -873,7 +876,7 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
-                                                <rect key="frame" x="20" y="340" width="343" height="18"/>
+                                                <rect key="frame" x="20" y="362" width="343" height="18"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="pswdErrorLabel"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -896,7 +899,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ilv-iW-HgP">
-                                        <rect key="frame" x="20" y="539" width="343" height="44"/>
+                                        <rect key="frame" x="20" y="583" width="343" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3">
                                                 <rect key="frame" x="0.0" y="7" width="141" height="30"/>
@@ -996,19 +999,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hTY-xb-H5h">
-                                <rect key="frame" x="-4" y="64" width="383" height="603"/>
+                                <rect key="frame" x="-4" y="20" width="383" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DHF-bN-so0">
-                                        <rect key="frame" x="0.0" y="0.0" width="383" height="539"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="383" height="583"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Almost there" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0i-9g-1E6">
-                                                <rect key="frame" x="20" y="209.5" width="343" height="18"/>
+                                                <rect key="frame" x="20" y="231.5" width="343" height="18"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A2K-lq-6XM" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="247.5" width="383" height="44"/>
+                                                <rect key="frame" x="0.0" y="269.5" width="383" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="Verification Code"/>
                                                 <constraints>
@@ -1038,7 +1041,7 @@
                                                 </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
-                                                <rect key="frame" x="20" y="311.5" width="343" height="0.0"/>
+                                                <rect key="frame" x="20" y="333.5" width="343" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039215686272" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1058,7 +1061,7 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="x1G-Lf-mra">
-                                        <rect key="frame" x="20" y="539" width="343" height="44"/>
+                                        <rect key="frame" x="20" y="583" width="343" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx">
                                                 <rect key="frame" x="0.0" y="0.0" width="131" height="44"/>
@@ -1143,7 +1146,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PwX-lW-aCa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3058" y="928"/>
+            <point key="canvasLocation" x="2964" y="1072"/>
         </scene>
         <!--Login Epilogue View Controller-->
         <scene sceneID="mq7-wS-hIR">
@@ -1499,7 +1502,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cja-vu-y88" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1752" y="262"/>
+            <point key="canvasLocation" x="2671" y="260"/>
         </scene>
         <!--Login Site Address View Controller-->
         <scene sceneID="idG-jg-gxH">
@@ -1514,19 +1517,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a59-c7-WBk">
-                                <rect key="frame" x="-4" y="64" width="391" height="612"/>
+                                <rect key="frame" x="-4" y="20" width="391" height="656"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PIc-wF-cQF">
-                                        <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="391" height="592"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="Enter the address of the WordPress site you'd like to connect." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFO-bF-n1P">
-                                                <rect key="frame" x="20" y="194" width="351" height="38"/>
+                                                <rect key="frame" x="20" y="216" width="351" height="38"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="example.wordpress.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZrT-CY-qD7" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="252" width="391" height="44"/>
+                                                <rect key="frame" x="0.0" y="274" width="391" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                 <constraints>
@@ -1546,7 +1549,7 @@
                                                 </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIW-Up-9bc">
-                                                <rect key="frame" x="20" y="316" width="351" height="0.0"/>
+                                                <rect key="frame" x="20" y="338" width="351" height="0.0"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.85098039219999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1566,7 +1569,7 @@
                                         </constraints>
                                     </view>
                                     <stackView contentMode="scaleToFill" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mlx-XY-MGX">
-                                        <rect key="frame" x="20" y="548" width="351" height="44"/>
+                                        <rect key="frame" x="20" y="592" width="351" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roL-ID-k8n">
                                                 <rect key="frame" x="0.0" y="7" width="250" height="30"/>
@@ -1660,7 +1663,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="LinkMailView" storyboardName="EmailMagicLink" referencedIdentifier="LinkMailView" id="Aii-0z-zLC" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WTT-3e-E71" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2456" y="261"/>
+            <point key="canvasLocation" x="3021" y="247"/>
         </scene>
     </scenes>
     <resources>
@@ -1677,7 +1680,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="gAE-di-Wyf"/>
         <segue reference="kRR-qz-Hu2"/>
-        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="0ao-yi-yZI"/>
+        <segue reference="1xT-tL-sp6"/>
         <segue reference="iD4-VS-n3M"/>
     </inferredMetricsTieBreakers>
 </document>
