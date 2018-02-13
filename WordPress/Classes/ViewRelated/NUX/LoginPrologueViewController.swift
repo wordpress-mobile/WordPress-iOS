@@ -1,7 +1,7 @@
 import UIKit
 import Lottie
 
-class LoginPrologueViewController: UIViewController {
+class LoginPrologueViewController: UIViewController, UIViewControllerTransitioningDelegate {
 
     private var buttonViewController: NUXButtonViewController?
 
@@ -49,6 +49,10 @@ class LoginPrologueViewController: UIViewController {
         if let vc = segue.destination as? NUXButtonViewController {
             buttonViewController = vc
         }
+        else if let vc = segue.destination as? LoginPrologueSignupMethodViewController {
+            vc.transitioningDelegate = self
+            vc.modalPresentationStyle = .custom
+        }
     }
 
     private func configureButtonVC() {
@@ -56,12 +60,12 @@ class LoginPrologueViewController: UIViewController {
             return
         }
 
-        let topButtonTitle = NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form.")
-        let bottomButtonTitle = NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site.")
-        buttonViewController.setupTopButton(title: topButtonTitle, isPrimary: true) { [weak self] in
+        let loginTitle = NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form.")
+        let createTitle = NSLocalizedString("Signup to WordPress.com", comment: "Button title. Tapping begins the process of creating a WordPress.com account.")
+        buttonViewController.setupTopButton(title: loginTitle, isPrimary: true) { [weak self] in
             self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showEmailLogin.rawValue, sender: self)
         }
-        buttonViewController.setupButtomButton(title: bottomButtonTitle, isPrimary: false) { [weak self] in
+        buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
             self?.signupTapped()
         }
     }
@@ -83,16 +87,37 @@ class LoginPrologueViewController: UIViewController {
     @IBAction func signupTapped() {
         if Feature.enabled(.socialSignup) {
 
+            performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSignupMethod.rawValue, sender: self)
+
             // TODO: replace with Signup Prologue implementation
-
-            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
-            let emailVC = storyboard.instantiateViewController(withIdentifier: "emailEntry")
-            let navController = SignupNavigationController(rootViewController: emailVC)
-            present(navController, animated: true, completion: nil)
-
+//
+//            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
+//            let emailVC = storyboard.instantiateViewController(withIdentifier: "emailEntry")
+//            let navController = SignupNavigationController(rootViewController: emailVC)
+//            present(navController, animated: true, completion: nil)
+//
 
         } else {
             performSegue(withIdentifier: "showSigninV1", sender: self)
         }
+    }
+
+    // MARK: - UIViewControllerTransitioningDelegate
+
+//    - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
+//    {
+//        if ([presented isKindOfClass:[FancyAlertViewController class]]) {
+//            return [[FancyAlertPresentationController alloc] initWithPresentedViewController:presented
+//                                                                    presentingViewController:presenting];
+//        }
+//
+//        return nil;
+//    }
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is LoginPrologueSignupMethodViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
     }
 }
