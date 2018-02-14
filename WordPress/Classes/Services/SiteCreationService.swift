@@ -38,6 +38,12 @@ typealias SiteCreationSuccessBlock = () -> Void
 typealias SiteCreationRequestSuccessBlock = (_ blog: Blog) -> Void
 typealias SiteCreationFailureBlock = (_ error: Error?) -> Void
 
+/// Blocks retained for kicking off the process from these steps.
+/// Currently used for retrying failed steps during site creation.
+///
+private var taglineBlock: (() -> Void)?
+private var themeBlock: (() -> Void)?
+private var syncBlock: (() -> Void)?
 
 /// SiteCreationService is responsible for creating a new site.
 /// The entry point is `createSite` and the service takes care of the rest.
@@ -77,7 +83,6 @@ open class SiteCreationService: LocalCoreDataService {
             // Set up possible post blog creation steps
 
             let updateAndSyncBlock = {
-
                 let syncSuccessBlock = {
                     // Since this is the last step in the process, return the new site to the caller.
                     success(blog)
@@ -88,6 +93,8 @@ open class SiteCreationService: LocalCoreDataService {
                                                      success: syncSuccessBlock,
                                                      failure: failure)
             }
+
+            syncBlock = updateAndSyncBlock
 
             let setThemeFailureBlock: SiteCreationFailureBlock = { error in
                 WPAppAnalytics.track(.createSiteSetThemeFailed)
@@ -103,7 +110,10 @@ open class SiteCreationService: LocalCoreDataService {
                                        failure: setThemeFailureBlock)
             }
 
+            themeBlock = setThemeBlock
+
             let setTaglineFailureBlock: SiteCreationFailureBlock = { error in
+                print("service > setTaglineFailureBlock")
                 WPAppAnalytics.track(.createSiteSetTaglineFailed)
                 DDLogError("Error while creating site: \(String(describing: error))")
                 failure(error)
@@ -117,6 +127,8 @@ open class SiteCreationService: LocalCoreDataService {
                                          success: successBlock,
                                          failure: setTaglineFailureBlock)
             }
+
+            taglineBlock = setTaglineBlock
 
             // Call blocks depending on what's needed.
             // If there is a Tagline, start there. It will call Theme and Sync during it's flow.
@@ -226,6 +238,7 @@ open class SiteCreationService: LocalCoreDataService {
         guard let api = account.wordPressComRestApi else {
             let error = SiteCreationError.missingRESTAPI
             DDLogError("Error while creating site: Missing REST API.")
+            assertionFailure()
             failure(error)
             return
         }
@@ -247,6 +260,7 @@ open class SiteCreationService: LocalCoreDataService {
                                     guard let blogOptions = responseDictionary?[BlogKeys.blogDetails] as? [String: AnyObject] else {
                                         let error = SiteCreationError.invalidResponse
                                         DDLogError("Error while creating site: The Blog response dictionary did not contain the expected results.")
+                                        assertionFailure()
                                         failure(error)
                                         return
                                     }
@@ -255,6 +269,11 @@ open class SiteCreationService: LocalCoreDataService {
                                         // No need to call the failure block here. It will be called from
                                         // `createBlogFromBlogOptions` if needed.
                                         return
+                                    }
+
+                                    // Touch site so the app recognizes it as the last used.
+                                    if let siteUrl = blog.url {
+                                        RecentSitesService().touch(site: siteUrl)
                                     }
 
                                     success(blog)
@@ -300,6 +319,8 @@ open class SiteCreationService: LocalCoreDataService {
                              status: SiteCreationStatusBlock,
                              success: @escaping SiteCreationSuccessBlock,
                              failure: @escaping SiteCreationFailureBlock) {
+
+        status(.settingTagline)
 
         blog.settings?.tagline = params.siteTagline
         let blogService = BlogService(managedObjectContext: managedObjectContext)
@@ -365,6 +386,7 @@ open class SiteCreationService: LocalCoreDataService {
             else {
                 let error = SiteCreationError.invalidResponse
                 DDLogError("Error while creating site: The blogOptions dictionary was missing expected data.")
+                assertionFailure()
                 failure(error)
                 return nil
         }
@@ -372,6 +394,7 @@ open class SiteCreationService: LocalCoreDataService {
         guard let defaultAccount = accountService.defaultWordPressComAccount() else {
             let error = SiteCreationError.missingDefaultWPComAccount
             DDLogError("Error while creating site: The default wpcom account was not found.")
+            assertionFailure()
             failure(error)
             return nil
         }
@@ -393,6 +416,33 @@ open class SiteCreationService: LocalCoreDataService {
         ContextManager.sharedInstance().save(managedObjectContext)
 
         return blog
+    }
+
+
+    /// Kick off the process starting from setting the tagline.
+    /// i.e. set tagline, set theme, synch account.
+    ///
+    func retryFromTagline() {
+        if let taglineBlock = taglineBlock {
+            taglineBlock()
+        }
+    }
+
+    /// Kick off the process starting from setting the theme.
+    /// i.e. set theme, synch account.
+    ///
+    func retryFromTheme() {
+        if let themeBlock = themeBlock {
+            themeBlock()
+        }
+    }
+
+    /// Kick off the process starting from syncing account.
+    ///
+    func retryFromAccountSync() {
+        if let syncBlock = syncBlock {
+            syncBlock()
+        }
     }
 
     // MARK: - WP API

@@ -1,7 +1,8 @@
 import UIKit
 
 @objc protocol NoResultsViewControllerDelegate {
-    func actionButtonPressed()
+    @objc optional func actionButtonPressed()
+    @objc optional func dismissButtonPressed()
 }
 
 /// A view to show when there are no results for a given situation.
@@ -51,8 +52,16 @@ import UIKit
         imageName = image
     }
 
-    func hideBackButton() {
+    /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
+    func showDismissButton() {
         navigationItem.hidesBackButton = true
+
+        let dismissButton = UIBarButtonItem(title: NSLocalizedString("Dismiss", comment: "Dismiss button title."),
+                                            style: .done,
+                                            target: self,
+                                            action: #selector(self.dismissButtonPressed))
+        dismissButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss button title.")
+        navigationItem.leftBarButtonItem = dismissButton
     }
 
     /// Use the values provided in the actual elements.
@@ -87,7 +96,11 @@ import UIKit
     // MARK: - Button Handling
 
     @IBAction func actionButtonPressed(_ sender: Any) {
-        delegate?.actionButtonPressed()
+        delegate?.actionButtonPressed?()
+    }
+
+    @objc func dismissButtonPressed() {
+        delegate?.dismissButtonPressed?()
     }
 
 }
