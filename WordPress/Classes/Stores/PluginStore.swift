@@ -258,7 +258,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             state.fetching[site] = false
         case .receiveFeaturedPlugins(let site, let plugins):
             receiveFeaturedPlugins(site: site, plugins: plugins)
-        case .receiveFeaturedPluginsFailed(_, _):
+        case .receiveFeaturedPluginsFailed:
             state.fetchingFeatured = false
         case .receivePluginDirectoryEntry(let slug, let entry):
             receivePluginDirectoryEntry(slug: slug, entry: entry)
