@@ -420,6 +420,7 @@
 		747BA5EE202E1B3300FB15D0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 747BA5F0202E1B3300FB15D0 /* WordPressKit.framework */; };
 		747BA5EF202E1B3300FB15D0 /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 747BA5F1202E1B3300FB15D0 /* WordPressShared.framework */; };
 		747BA5F3202E1B8400FB15D0 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7E51051FBDDFA700AD2918 /* ImgUploadProcessor.swift */; };
+		747D09862034837C0085EABF /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
 		748437EB1F1D4A4800E8DDAF /* gallery-reader-post-private.json in Resources */ = {isa = PBXBuildFile; fileRef = 748437E91F1D4A4800E8DDAF /* gallery-reader-post-private.json */; };
 		748437EC1F1D4A4800E8DDAF /* gallery-reader-post-public.json in Resources */ = {isa = PBXBuildFile; fileRef = 748437EA1F1D4A4800E8DDAF /* gallery-reader-post-public.json */; };
 		748437EE1F1D4A7300E8DDAF /* RichContentFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748437ED1F1D4A7300E8DDAF /* RichContentFormatterTests.swift */; };
@@ -6448,6 +6449,7 @@
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				5D18FEA01AFBB17400EFEED0 /* RestorePageTableViewCell.xib in Resources */,
+				747D09862034837C0085EABF /* WordPressShare.js in Resources */,
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
 				E60C2ED51DE5048200488630 /* ReaderCommentCell.xib in Resources */,
 				E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */,
