@@ -45,11 +45,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         setupOnePasswordButtonIfNeeded()
         configureForWPComOnlyIfNeeded()
         addGoogleButton()
-
-        instructionLabel?.textAlignment = .left
-        errorLabel?.textAlignment = .right
-        googleLoginButton?.contentHorizontalAlignment = .left
-        googleLoginButton?.contentHorizontalAlignment = .right
     }
 
 
