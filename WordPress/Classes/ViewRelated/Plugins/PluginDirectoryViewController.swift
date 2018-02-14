@@ -47,7 +47,7 @@ class PluginDirectoryViewController: UITableViewController {
 
         let handler = ImmuTableViewHandler(takeOver: self)
         handler.automaticallyDeselectCells = true
-        handler.viewModel = viewModel.tableViewModel(presenter: self, listPresenter: self)
+        handler.viewModel = viewModel.tableViewModel(presenter: self)
 
         immuHandler = handler
     }
@@ -61,7 +61,7 @@ class PluginDirectoryViewController: UITableViewController {
     }
 
     private func reloadTable() {
-        immuHandler?.viewModel = viewModel.tableViewModel(presenter: self, listPresenter: self)
+        immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
     }
 
 }
