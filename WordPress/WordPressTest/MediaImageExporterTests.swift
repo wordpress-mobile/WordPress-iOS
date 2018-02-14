@@ -170,7 +170,7 @@ class MediaImageExporterTests: XCTestCase {
             XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
             return
         }
-        let expect = self.expectation(description: "image export by UIImage and correcting the orientation")
+        let expect = self.expectation(description: "image export by UIImage and keeping the orientation")
         let exporter = MediaImageExporter(image: image, filename: nil)
         exporter.mediaDirectoryType = .temporary
         exporter.export(onCompletion: { (imageExport) in
