@@ -86,10 +86,11 @@ import AutomatticTracks
     /// Fix key format to send to Tracks
     ///
     private func sanitize(_ parameters: [String: Any]) -> [String: Any] {
-        var sanitized = [String: Any]()
+        var sanitized = [String: String]()
         parameters.forEach {
             let key = $0.key.replacingOccurrences(of: "-", with: "_")
-            sanitized[key] = $0.value
+            let value: String = $0.value as? String ?? String(describing: $0.value)
+            sanitized[key] = value
         }
 
         return sanitized
