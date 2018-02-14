@@ -115,7 +115,7 @@ class PluginViewModel: Observable {
                 subtitle: nil,
                 actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
                 onButtonTap: { [unowned self] _ in
-                    ActionDispatcher.dispatch(PluginAction.install(slug: directoryEntry.slug, site: self.site))
+                    ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
                 }
             )
         }
