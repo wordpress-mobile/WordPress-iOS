@@ -48,33 +48,45 @@ NSInteger const LeftImageSpacing = 8;
 {
     if (leftViewImage) {
         _leftViewImage = leftViewImage;
-
-        self.leftView = [[UIImageView alloc] initWithImage:leftViewImage];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:leftViewImage];
+        if (self.leadingViewWidth > 0) {
+            imageView.frame = [self frameForLeadingView];
+            imageView.contentMode = [self isLayoutLeftToRight] ? UIViewContentModeLeft : UIViewContentModeRight;
+        } else {
+            [imageView sizeToFit];
+        }
+        self.leftView = imageView;
         self.leftViewMode = UITextFieldViewModeAlways;
     } else {
         self.leftView = nil;
     }
 }
 
+-(void)setRightView:(UIView *)rightView {
+    if (self.trailingViewWidth > 0) {
+        rightView.frame = [self frameForTrailingView];
+        rightView.contentMode = [self isLayoutLeftToRight] ? UIViewContentModeRight : UIViewContentModeLeft;
+        if ([rightView isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton *)rightView;
+            if ([self isLayoutLeftToRight]) {
+                [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+            } else {
+                [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+            }
+        }
+    }
+    [super setRightView:rightView];
+}
+
 - (void)commonInit
 {
-    self.textInsets = UIEdgeInsetsMake(7, 10, 7, 10);
+    self.leadingViewWidth = 30.f;
+    self.trailingViewWidth = 40.f;
+
     self.layer.cornerRadius = 0.0;
     self.clipsToBounds = YES;
     self.showTopLineSeparator = NO;
     self.showSecureTextEntryToggle = NO;
-
-    self.secureTextEntryImageVisible = [Gridicon iconOfType:GridiconTypeVisible];
-    self.secureTextEntryImageHidden = [Gridicon iconOfType:GridiconTypeNotVisible];
-
-    self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.secureTextEntryToggle.clipsToBounds = true;
-    self.secureTextEntryToggle.tintColor = [WPStyleGuide greyLighten10];
-    self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
-    [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    [self addSubview:self.secureTextEntryToggle];
-    [self updateSecureTextEntryToggleImage];
 
     // Apply styles to the placeholder if one was set in IB.
     if (self.placeholder) {
@@ -86,6 +98,28 @@ NSInteger const LeftImageSpacing = 8;
     }
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self configureSecureTextEntryToggle];
+}
+
+- (void)configureSecureTextEntryToggle {
+    if (self.showSecureTextEntryToggle == NO) {
+        return;
+    }
+    self.secureTextEntryImageVisible = [Gridicon iconOfType:GridiconTypeVisible];
+    self.secureTextEntryImageHidden = [Gridicon iconOfType:GridiconTypeNotVisible];
+
+    self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.secureTextEntryToggle.clipsToBounds = true;
+    self.secureTextEntryToggle.tintColor = [WPStyleGuide greyLighten10];
+    [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self updateSecureTextEntryToggleImage];
+    self.rightView = self.secureTextEntryToggle;
+    self.rightViewMode = UITextFieldViewModeAlways;
+}
+
 - (CGSize)intrinsicContentSize
 {
     return CGSizeMake(0.0, 44.0);
@@ -94,107 +128,116 @@ NSInteger const LeftImageSpacing = 8;
 - (void)drawRect:(CGRect)rect
 {
     // Draw top border
-    if (_showTopLineSeparator) {
+    if (!self.showTopLineSeparator) {
+        return;
+    }
 
-        CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRef context = UIGraphicsGetCurrentContext();
 
-        UIBezierPath *path = [UIBezierPath bezierPath];
-        [path moveToPoint:CGPointMake(CGRectGetMinX(rect) + _textInsets.left, CGRectGetMinY(rect))];
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    CGFloat emptySpace = self.contentInsets.left;
+    if ([self isLayoutLeftToRight]) {
+        [path moveToPoint:CGPointMake(CGRectGetMinX(rect) + emptySpace, CGRectGetMinY(rect))];
         [path addLineToPoint:CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect))];
-        [path setLineWidth:[[UIScreen mainScreen] scale] / 2.0];
-        CGContextAddPath(context, path.CGPath);
-        CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.87 alpha:1.0].CGColor);
-        CGContextStrokePath(context);
-    }
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-
-    self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
-    if (self.showSecureTextEntryToggle) {
-        CGFloat secureImagePadding = [self calculateSecureImagePadding];
-        CGRect frame = self.secureTextEntryToggle.frame;
-        if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
-            frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame) - secureImagePadding,
-                                              (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
-                                              CGRectGetWidth(self.secureTextEntryToggle.frame),
-                                              CGRectGetHeight(self.secureTextEntryToggle.frame)));
-        } else {
-            frame = CGRectIntegral(CGRectMake(CGRectGetMinX(self.bounds) + secureImagePadding,
-                                              (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
-                                              CGRectGetWidth(self.secureTextEntryToggle.frame),
-                                              CGRectGetHeight(self.secureTextEntryToggle.frame)));
-        }
-        self.secureTextEntryToggle.frame = frame;
-        [self bringSubviewToFront:self.secureTextEntryToggle];
-    }
-}
-
-- (CGFloat)calculateSecureImagePadding {
-    CGFloat desiredPadding = 20.0;
-    CGSize imageSize = self.secureTextEntryToggle.imageView.image.size;
-    CGSize buttonSize = self.secureTextEntryToggle.frame.size;
-    CGFloat buttonPadding = (buttonSize.width - imageSize.width) / 2.0;
-    return desiredPadding - buttonPadding;
-}
-
-- (CGRect)calculateTextRectForBounds:(CGRect)bounds
-{
-    CGRect returnRect;
-    
-    if (_leftViewImage) {
-        CGFloat leftViewWidth = _leftViewImage.size.width;
-        returnRect = CGRectMake(leftViewWidth + LeftImageSpacing + _textInsets.left, _textInsets.top, bounds.size.width - leftViewWidth - LeftImageSpacing - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
     } else {
-        returnRect = CGRectMake(_textInsets.left, _textInsets.top, bounds.size.width - _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
+        [path moveToPoint:CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect))];
+        [path addLineToPoint:CGPointMake(CGRectGetMaxX(rect) - emptySpace, CGRectGetMinY(rect))];
     }
 
-    if (self.showSecureTextEntryToggle) {
-        returnRect.size.width -= CGRectGetWidth(self.secureTextEntryToggle.frame);
-    }
-    
-    if (self.rightView && self.rightViewMode != UITextFieldViewModeNever) {
-        returnRect.size.width -= CGRectGetWidth(self.rightView.frame);
-    }
+    [path setLineWidth:[[UIScreen mainScreen] scale] / 2.0];
+    CGContextAddPath(context, path.CGPath);
+    CGContextSetStrokeColorWithColor(context, [UIColor colorWithWhite:0.87 alpha:1.0].CGColor);
+    CGContextStrokePath(context);
 
-    return CGRectIntegral(returnRect);
 }
 
-// placeholder position
+
+/// Returns the drawing rectangle for the text field’s text.
+///
 - (CGRect)textRectForBounds:(CGRect)bounds
 {
-    return [self calculateTextRectForBounds:bounds];
+    CGRect rect = [super textRectForBounds:bounds];
+    return [self textAreaRectForProposedRect:rect];
 }
 
-// text position
+/// Returns the rectangle in which editable text can be displayed.
+///
 - (CGRect)editingRectForBounds:(CGRect)bounds
 {
-    return [self calculateTextRectForBounds:bounds];
+    CGRect rect = [super editingRectForBounds:bounds];
+    return [self textAreaRectForProposedRect:rect];
 }
 
-// left view position
+/// Returns the drawing rectangle of the receiver’s left overlay view.
+/// This value is always the view seen at the left side, independently of the layout direction.
+///
 - (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
-
-    if (_leftViewImage) {
-        return CGRectIntegral(CGRectMake(_textInsets.left, (CGRectGetHeight(bounds) - _leftViewImage.size.height) / 2.0, _leftViewImage.size.width, _leftViewImage.size.height));
+    CGRect rect = [super leftViewRectForBounds:bounds];
+    if ([self isLayoutLeftToRight]) {
+        rect.origin.x += self.leadingViewInsets.left + self.contentInsets.left;
+    } else {
+        rect.origin.x += self.trailingViewInsets.right + self.contentInsets.right;
     }
-
-    return [super leftViewRectForBounds:bounds];
+    return rect;
 }
 
-// Right view position
+/// Returns the drawing location of the receiver’s right overlay view.
+/// This value is always the view seen at the right side, independently of the layout direction.
+///
 - (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
-    CGRect textRect = [super rightViewRectForBounds:bounds];
-    textRect.origin.x -= _rightViewPadding.horizontal;
-    textRect.origin.y -= _rightViewPadding.vertical;
-    
-    return textRect;
+    CGRect rect = [super rightViewRectForBounds:bounds];
+    if ([self isLayoutLeftToRight]) {
+        rect.origin.x -= self.trailingViewInsets.right + self.contentInsets.right;
+    } else {
+        rect.origin.x -= self.leadingViewInsets.left + self.contentInsets.left;
+    }
+    return rect;
 }
 
+#pragma mark - Helpers
+
+- (BOOL)isLayoutLeftToRight
+{
+    return [self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight;
+}
+
+/// Returns the rectangle in which both editable text and the placeholder can be displayed.
+///
+- (CGRect)textAreaRectForProposedRect:(CGRect)rect
+{
+    rect.size.width -= self.textInsets.left + self.textInsets.right;
+    if ([self isLayoutLeftToRight]) {
+        rect.origin.x   += self.textInsets.left + self.leadingViewInsets.right;
+        rect.size.width -= self.leadingViewInsets.right + self.contentInsets.right;
+        if (self.leftView == nil) {
+            rect.origin.x   += self.contentInsets.left;
+            rect.size.width -= self.contentInsets.right;
+        }
+    } else {
+        rect.origin.x   += self.textInsets.right + self.trailingViewInsets.left;
+        rect.size.width -= self.leadingViewInsets.right + self.trailingViewInsets.left;
+        if (self.rightView == nil) {
+            rect.origin.x   += self.contentInsets.right;
+            rect.size.width -= self.contentInsets.left;
+        }
+        if (self.leftView == nil) {
+            rect.size.width -= self.contentInsets.left;
+        }
+    }
+    return rect;
+}
+
+- (CGRect)frameForTrailingView
+{
+    return CGRectMake(0, 0, self.trailingViewWidth, CGRectGetHeight(self.bounds));
+}
+
+- (CGRect)frameForLeadingView
+{
+    return CGRectMake(0, 0, self.leadingViewWidth, CGRectGetHeight(self.bounds));
+}
 
 #pragma mark - Secure Text Entry
 
@@ -212,7 +255,7 @@ NSInteger const LeftImageSpacing = 8;
 - (void)secureTextEntryToggleAction:(id)sender
 {
     self.secureTextEntry = !self.secureTextEntry;
-    
+
     // Save and re-apply the current selection range to save the cursor position
     UITextRange *currentTextRange = self.selectedTextRange;
     [self becomeFirstResponder];
@@ -223,6 +266,7 @@ NSInteger const LeftImageSpacing = 8;
 {
     UIImage *image = self.isSecureTextEntry ? self.secureTextEntryImageHidden : self.secureTextEntryImageVisible;
     [self.secureTextEntryToggle setImage:image forState:UIControlStateNormal];
+    [self.secureTextEntryToggle sizeToFit];
 }
 
 @end

@@ -494,8 +494,8 @@ fileprivate extension ShareModularViewController {
                                                siteID: siteID,
                                                localMediaFileURLs: localImageURLs,
                                                requestEnqueued: {
-                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                 self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
+                                                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
             }, onFailure: {
                 let error = self.createErrorWithDescription("Failed to save and upload post with media.")
                 self.tracks.trackExtensionError(error)
