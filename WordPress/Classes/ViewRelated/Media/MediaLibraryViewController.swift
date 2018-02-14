@@ -309,7 +309,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         let deletedItemsCount = assets.count
 
-        let updateProgress = { (media: Media?, progress: Progress?) in
+        let updateProgress = { (progress: Progress?) in
             let fractionCompleted = progress?.fractionCompleted ?? 0
             SVProgressHUD.showProgress(Float(fractionCompleted), status: NSLocalizedString("Deleting...", comment: "Text displayed in HUD while a media item is being deleted."))
         }
@@ -318,13 +318,16 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         SVProgressHUD.setMinimumDismissTimeInterval(1.0)
 
         // Initialize the progress HUD before we start
-        updateProgress(nil, nil)
+        updateProgress(nil)
         isEditing = false
-        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteMedia(assets, progress: updateProgress, success: { [weak self] () in
+
+        MediaCoordinator.shared.delete(media: assets,
+                                       onProgress: updateProgress,
+                                       success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-        }, failure: { () in
+        },
+                                       failure: {
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
     }
