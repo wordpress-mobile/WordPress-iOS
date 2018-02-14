@@ -2,7 +2,7 @@ import Gridicons
 
 /// base protocol for NUX view controllers
 protocol NUXViewControllerBase {
-    var sourceTag: SupportSourceTag { get }
+    var sourceTag: WordPressSupportSourceTag { get }
     var helpBadge: NUXHelpBadgeLabel { get }
     var helpButton: UIButton { get }
     var loginFields: LoginFields { get }
@@ -65,7 +65,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Displays a login error in an attractive dialog
     ///
-    func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
+    func displayError(_ error: NSError, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -75,7 +75,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Displays a login error message in an attractive dialog
     ///
-    func displayErrorAlert(_ message: String, sourceTag: SupportSourceTag) {
+    func displayErrorAlert(_ message: String, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -125,7 +125,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     // Handle the help button being tapped
     //
     func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: sourceTag)
+        displaySupportViewController(from: sourceTag)
     }
 
 

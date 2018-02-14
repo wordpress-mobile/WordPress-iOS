@@ -68,7 +68,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// The Helpshift tag to track the origin of user conversations
     ///
-    @objc var sourceTag: SupportSourceTag {
+    var sourceTag: WordPressSupportSourceTag {
         get {
             return .generalLogin
         }
@@ -214,7 +214,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// Displays a login error in an attractive dialog
     ///
-    @objc func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
+    func displayError(_ error: NSError, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -224,7 +224,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// Displays a login error message in an attractive dialog
     ///
-    @objc func displayErrorAlert(_ message: String, sourceTag: SupportSourceTag) {
+    func displayErrorAlert(_ message: String, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -279,7 +279,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     // Handle the help button being tapped
     //
     func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: sourceTag)
+        displaySupportViewController(from: sourceTag)
     }
 }
 

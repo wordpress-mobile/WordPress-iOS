@@ -10,7 +10,7 @@ protocol SigninWPComSyncHandler: class {
     func configureViewLoading(_ loading: Bool)
     func configureStatusLabel(_ message: String)
     func dismiss()
-    func displayError(_ error: NSError, sourceTag: SupportSourceTag)
+    func displayError(_ error: NSError, sourceTag: WordPressSupportSourceTag)
     func updateSafariCredentialsIfNeeded()
     func isJetpackLogin() -> Bool
 

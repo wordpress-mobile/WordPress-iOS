@@ -34,7 +34,7 @@ import WordPressShared
     @objc let URLKey = "url"
     @objc let nonAlphanumericCharacterSet = NSCharacterSet.alphanumerics.inverted
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComSignup
         }
