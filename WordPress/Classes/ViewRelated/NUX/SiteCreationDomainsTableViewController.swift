@@ -175,7 +175,7 @@ extension SiteCreationDomainsTableViewController {
             let searchFieldRect = tableView.rect(forSection: Sections.searchField.rawValue)
             let searchFieldBottom = searchFieldRect.origin.y + searchFieldRect.height
             let screenBottom = UIScreen.main.bounds.height
-            return screenBottom - searchFieldBottom - 80
+            return screenBottom - searchFieldBottom - 60
         }
 
         return super.tableView(tableView, heightForRowAt: indexPath)
@@ -275,7 +275,7 @@ private extension SiteCreationDomainsTableViewController {
         noResultsViewController = noResultsSB.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController
 
         let title = NSLocalizedString("No available site addresses with that name, maybe try another one?", comment: "Primary message shown when there are no domains that match the user entered text.")
-        let subtitle = NSLocalizedString("Enter another site name in the search box above.", comment: "Secondary message shown when there are no domains that match the user entered text.")
+        let subtitle = NSLocalizedString("Enter another site name in the search field above.", comment: "Secondary message shown when there are no domains that match the user entered text.")
 
         noResultsViewController?.configure(title: title, buttonTitle: nil, subtitle: subtitle)
     }
