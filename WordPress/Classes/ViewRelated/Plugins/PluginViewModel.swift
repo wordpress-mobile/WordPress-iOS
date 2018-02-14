@@ -126,7 +126,7 @@ class PluginViewModel: Observable {
                 return nil
             }
 
-            let message = NSLocalizedString("Version \(version)", comment: "Version of a plugin to install")
+            let message = String(format: NSLocalizedString("Version %@", comment: "Version of a plugin to install"), version)
 
             guard !isInstallingPlugin else {
                 return TextWithButtonIndicatingActivityRow(
