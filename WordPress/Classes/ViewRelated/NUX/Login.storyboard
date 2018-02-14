@@ -33,6 +33,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gpM-nW-lFQ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <connections>
+                                    <action selector="dismissTapped" destination="IwV-3R-6dB" eventType="touchDown" id="E6x-JG-Ve8"/>
+                                </connections>
+                            </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V2N-XU-yx0">
                                 <rect key="frame" x="0.0" y="501" width="375" height="166"/>
                                 <constraints>
@@ -45,7 +51,11 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="gpM-nW-lFQ" secondAttribute="trailing" id="2id-by-lnA"/>
                             <constraint firstItem="V2N-XU-yx0" firstAttribute="leading" secondItem="1bR-Uc-YPO" secondAttribute="leading" id="3e9-yc-R9r"/>
+                            <constraint firstItem="NZ0-gC-OHl" firstAttribute="top" secondItem="gpM-nW-lFQ" secondAttribute="bottom" id="Fiw-SH-C5m"/>
+                            <constraint firstItem="gpM-nW-lFQ" firstAttribute="top" secondItem="1bR-Uc-YPO" secondAttribute="top" id="Ivq-bt-puo"/>
+                            <constraint firstItem="gpM-nW-lFQ" firstAttribute="leading" secondItem="1bR-Uc-YPO" secondAttribute="leading" id="QDG-Ta-wW5"/>
                             <constraint firstAttribute="trailing" secondItem="V2N-XU-yx0" secondAttribute="trailing" id="goV-pb-UDh"/>
                             <constraint firstAttribute="bottom" secondItem="V2N-XU-yx0" secondAttribute="bottom" id="y2t-8w-Bh7"/>
                         </constraints>
@@ -56,7 +66,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fbD-KM-2nK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="855" y="259"/>
+            <point key="canvasLocation" x="853.60000000000002" y="258.62068965517244"/>
         </scene>
         <!--Login Prologue View Controller-->
         <scene sceneID="nGd-KO-sMQ">

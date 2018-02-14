@@ -20,6 +20,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     enum SegueIdentifier: String {
         case showEmailLogin
         case showSignupMethod
+        case showSigninV2
         case showURLUsernamePassword
         case showSelfHostedLogin
         case showWPComLogin
