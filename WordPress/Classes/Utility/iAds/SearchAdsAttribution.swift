@@ -1,4 +1,4 @@
-/// Implementation of Search Ads attribution detail
+/// Implementation of Search Ads attribution details
 /// More info: https://searchads.apple.com/help/measure-results/#attribution-api
 
 import Foundation
@@ -14,6 +14,9 @@ import AutomatticTracks
     private static let userDefaultsSentKey = "search_ads_attribution_details_sent"
     private static let userDefaultsLimitedAdTrackingKey = "search_ads_limited_tracking"
 
+    /// Is ad tracking limited?
+    /// If the user has limited ad tracking, and this API won't return data
+    ///
     private var isTrackingLimited: Bool {
         get {
             return UserDefaults.standard.bool(forKey: SearchAdsAttribution.userDefaultsLimitedAdTrackingKey)
@@ -23,6 +26,9 @@ import AutomatticTracks
         }
     }
 
+    /// Has the attribution details been sent already?
+    /// Once the attribution details are sent, it won't change; so it is not necesary to send it again.
+    ///
     private var isAttributionDetailsSent: Bool {
         get {
             return UserDefaults.standard.bool(forKey: SearchAdsAttribution.userDefaultsSentKey)
@@ -46,7 +52,7 @@ import AutomatticTracks
 
     @objc func requestDetails() {
         guard
-            isSimulator == false, // don't request in simulator
+            isSimulator == false, // Requests from simulator will always fail
             isTrackingLimited == false,
             isAttributionDetailsSent == false
         else {
@@ -59,12 +65,37 @@ import AutomatticTracks
 
     private func requestAttributionDetails() {
         ADClient.shared().requestAttributionDetails { [weak self] (attributionDetails, error) in
-            if let error = error as NSError? {
-                self?.didReceiveError(error)
-            } else {
-                self?.didReceiveAttributionDetails(attributionDetails)
+            DispatchQueue.main.async {
+                if let error = error as NSError? {
+                    self?.didReceiveError(error)
+                } else {
+                    self?.didReceiveAttributionDetails(attributionDetails)
+                }
             }
         }
+    }
+
+    private func didReceiveAttributionDetails(_ details: [String: NSObject]?) {
+        defer {
+            finish()
+        }
+        guard let details = details?["Version3.1"] as? [String: Any] else { return }
+        let parameters = sanitize(details)
+
+        WPAnalytics.track(WPAnalyticsStat.searchAdsAttribution, withProperties: parameters)
+        isAttributionDetailsSent = true
+    }
+
+    /// Fix key format to send to Tracks
+    ///
+    private func sanitize(_ parameters: [String: Any]) -> [String: Any] {
+        var sanitized: [String: Any] = [:]
+        parameters.forEach {
+            let key = $0.key.replacingOccurrences(of: "-", with: "_")
+            sanitized[key] = $0.value
+        }
+
+        return sanitized
     }
 
     private func didReceiveError(_ error: Error) {
@@ -74,7 +105,7 @@ import AutomatticTracks
         case .limitAdTracking?: // Not possible to get data
             isTrackingLimited = true
             finish()
-        default: // Possible connectivity issues
+        default:                // Possible connectivity issues
             self.tryAgain(after: 5)
         }
     }
@@ -82,26 +113,6 @@ import AutomatticTracks
     private func tryAgain(after delay: TimeInterval) {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
             self?.requestDetails()
-        }
-    }
-
-    private func didReceiveAttributionDetails(_ details: [String: NSObject]?) {
-        defer {
-            finish()
-        }
-        guard
-            let version = details,
-            let details = version["Version3.1"] as? [String: Any]
-        else { return }
-
-        // Search Ads Attribution API returns testing data when it's not called from a distribution build.
-        // So we won't send that testing data to Tracks
-
-        if BuildConfiguration.current == .appStore {
-            WPAnalytics.track(WPAnalyticsStat.searchAdsAttribution, withProperties: details)
-            isAttributionDetailsSent = true
-        } else {
-            DDLogInfo("SearchAdsAttribution: Data will be send to Tracks from AppStore build")
         }
     }
 
