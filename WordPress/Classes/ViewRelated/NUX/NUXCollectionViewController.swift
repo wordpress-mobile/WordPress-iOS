@@ -8,7 +8,7 @@ class NUXCollectionViewController: UICollectionViewController, NUXViewController
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
-    var sourceTag: SupportSourceTag {
+    var sourceTag: WordPressSupportSourceTag {
         get {
             return .generalLogin
         }
