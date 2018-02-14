@@ -18,6 +18,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
+    // API returned no domain suggestions.
+    private var noSuggestions: Bool = false
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -40,7 +43,8 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // only procede with initial search if we don't have site title suggestions yet (hopefully only the first time)
+        // only procede with initial search if we don't have site title suggestions yet
+        // (hopefully only the first time)
         guard siteTitleSuggestions.count < 1,
             let nameToSearch = siteName else {
             return
@@ -77,13 +81,16 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
             self?.isSearching = false
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .singleLine
+            self?.noSuggestions = false
             addSuggestions(suggestions)
         }) { [weak self] (error) in
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .none
-            self?.addNoResultsToView()
+            self?.noSuggestions = true
+            // reload to display the no results view.
+            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
 
@@ -125,6 +132,9 @@ extension SiteCreationDomainsTableViewController {
              Sections.searchField.rawValue:
             return 1
         case Sections.suggestions.rawValue:
+            if noSuggestions == true {
+                return 1
+            }
             return searchSuggestions.count > 0 ? searchSuggestions.count : siteTitleSuggestions.count
         default:
             return 0
@@ -133,6 +143,7 @@ extension SiteCreationDomainsTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
+
         switch indexPath.section {
         case Sections.titleAndDescription.rawValue:
             cell = titleAndDescriptionCell()
@@ -141,15 +152,33 @@ extension SiteCreationDomainsTableViewController {
         case Sections.suggestions.rawValue:
             fallthrough
         default:
-            let suggestion: String
-            if searchSuggestions.count > 0 {
-                suggestion = searchSuggestions[indexPath.row]
+            if noSuggestions == true {
+                cell = noResultsCell()
             } else {
-                suggestion = siteTitleSuggestions[indexPath.row]
+                let suggestion: String
+                if searchSuggestions.count > 0 {
+                    suggestion = searchSuggestions[indexPath.row]
+                } else {
+                    suggestion = siteTitleSuggestions[indexPath.row]
+                }
+                cell = suggestionCell(domain: suggestion)
             }
-            cell = suggestionCell(domain: suggestion)
         }
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        if indexPath.section == Sections.suggestions.rawValue && noSuggestions == true {
+            // Calculate the height of the no results cell from the bottom of
+            // the search field to the screen bottom, minus some padding.
+            let searchFieldRect = tableView.rect(forSection: Sections.searchField.rawValue)
+            let searchFieldBottom = searchFieldRect.origin.y + searchFieldRect.height
+            let screenBottom = UIScreen.main.bounds.height
+            return screenBottom - searchFieldBottom - 80
+        }
+
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -187,6 +216,13 @@ extension SiteCreationDomainsTableViewController {
         return cell
     }
 
+    private func noResultsCell() -> UITableViewCell {
+        let cell = UITableViewCell()
+        addNoResultsTo(cell: cell)
+        cell.isUserInteractionEnabled = false
+        return cell
+    }
+
     private func suggestionCell(domain: String) -> UITableViewCell {
         let cell = UITableViewCell()
 
@@ -211,7 +247,7 @@ extension SiteCreationDomainsTableViewController {
 
 private extension SiteCreationDomainsTableViewController {
 
-    func addNoResultsToView() {
+    func addNoResultsTo(cell: UITableViewCell) {
         if noResultsViewController == nil {
             instantiateNoResultsViewController()
         }
@@ -220,13 +256,16 @@ private extension SiteCreationDomainsTableViewController {
             return
         }
 
-        // Add noResultsVC to the tableView.
+        noResultsViewController.view.frame = cell.frame
+        cell.contentView.addSubview(noResultsViewController.view)
+
         addChildViewController(noResultsViewController)
-        tableView.addSubview(noResultsViewController.view)
         noResultsViewController.didMove(toParentViewController: self)
     }
 
     func removeNoResultsFromView() {
+        noSuggestions = false
+        tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         noResultsViewController?.view.removeFromSuperview()
         noResultsViewController?.removeFromParentViewController()
     }
@@ -239,16 +278,6 @@ private extension SiteCreationDomainsTableViewController {
         let subtitle = NSLocalizedString("Enter another site name in the search box above.", comment: "Secondary message shown when there are no domains that match the user entered text.")
 
         noResultsViewController?.configure(title: title, buttonTitle: nil, subtitle: subtitle)
-
-        // Calculate the frame for the noResultsVC.
-        var noResultsFrame = tableView.bounds
-        let titleCellRect = tableView.rect(forSection: Sections.titleAndDescription.rawValue)
-        let searchCellRect = tableView.rect(forSection: Sections.searchField.rawValue)
-        let noResultsOffset = searchCellRect.height + titleCellRect.height
-
-        noResultsFrame.size.height -= noResultsOffset
-        noResultsFrame.origin.y += noResultsOffset
-        noResultsViewController?.view.frame = noResultsFrame
     }
 
 }
