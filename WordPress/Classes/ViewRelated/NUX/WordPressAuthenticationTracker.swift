@@ -29,7 +29,7 @@ extension WordPressAuthenticationTracker {
 
         switch event {
         case .createAccountInitiated:
-            break
+            WPAppAnalytics.track(.createAccountInitiated)
         case .loginAutoFillCredentialsFilled:
             WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
         case .loginAutoFillCredentialsUpdated:
