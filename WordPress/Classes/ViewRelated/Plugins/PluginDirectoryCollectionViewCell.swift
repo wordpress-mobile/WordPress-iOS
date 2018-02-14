@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import Gridicons
 
 class PluginDirectoryCollectionViewCell: UICollectionViewCell {
 
@@ -33,6 +34,22 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
 
         accessoryView?.removeFromSuperview()
         logoImageView.cancelImageDownloadTask()
+    }
+
+    func configure(with directoryEntry: PluginDirectoryEntry) {
+        configure(name: directoryEntry.name, author: directoryEntry.author, image: directoryEntry.icon)
+    }
+
+    func configure(with plugin: Plugin) {
+        configure(name: plugin.state.name, author: plugin.state.author, image: plugin.directoryEntry?.icon)
+    }
+
+    func configure(name: String, author: String, image: URL?) {
+        let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
+
+        logoImageView?.downloadImage(image, placeholderImage: iconPlaceholder)
+        authorLabel?.text = author
+        nameLabel?.text = name
     }
 
 }
