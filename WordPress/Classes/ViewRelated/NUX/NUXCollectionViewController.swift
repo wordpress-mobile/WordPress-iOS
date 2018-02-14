@@ -19,7 +19,8 @@ class NUXCollectionViewController: UICollectionViewController, NUXViewController
     }
 
     override func viewDidLoad() {
-        addHelpButtonToNavController()
+        super.viewDidLoad()
+        setupHelpButtonIfNeeded()
         setupCancelButtonIfNeeded()
     }
 
