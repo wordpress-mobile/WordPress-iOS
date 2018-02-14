@@ -336,8 +336,17 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
 
         if media.remoteStatus == .failed {
-            alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
-                MediaCoordinator.shared.retryMedia(media)
+            if let error = media.error {
+                alertController.message = error.localizedDescription
+            }
+            if media.absoluteLocalURL != nil {
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
+                    MediaCoordinator.shared.retryMedia(media)
+                }
+            } else {
+                alertController.addDefaultActionWithTitle(NSLocalizedString("Delete", comment: "User action to delete media.")) { _ in
+                    MediaCoordinator.shared.delete(media: media)
+                }
             }
         }
 

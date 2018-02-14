@@ -3,7 +3,7 @@ import Gridicons
 /// base protocol for NUX view controllers
 protocol NUXViewControllerBase {
     var sourceTag: SupportSourceTag { get }
-    var helpBadge: WPNUXHelpBadgeLabel { get }
+    var helpBadge: NUXHelpBadgeLabel { get }
     var helpButton: UIButton { get }
     var loginFields: LoginFields { get }
     var dismissBlock: ((_ cancelled: Bool) -> Void)? { get }
@@ -132,7 +132,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     func addHelpButtonToNavController() {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
-        let helpBadgeSize = CGSize(width: 12, height: 10)
+        let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
         NotificationCenter.default.addObserver(forName: .HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in

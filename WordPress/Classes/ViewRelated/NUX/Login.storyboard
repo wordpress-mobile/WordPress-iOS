@@ -145,22 +145,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ozJ-hT-OEw">
-                                <rect key="frame" x="-4" y="64" width="391" height="612"/>
+                                <rect key="frame" x="0.0" y="64" width="383" height="612"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAn-ug-oE6">
-                                        <rect key="frame" x="0.0" y="0.0" width="391" height="548"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="383" height="548"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="JdU-yW-tzf">
-                                                <rect key="frame" x="0.0" y="194" width="391" height="102"/>
+                                                <rect key="frame" x="0.0" y="194" width="383" height="102"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DKR-9c-zZQ">
-                                                        <rect key="frame" x="20" y="0.0" width="351" height="38"/>
+                                                        <rect key="frame" x="20" y="0.0" width="343" height="38"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="58" width="391" height="44"/>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="58" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                         <constraints>
@@ -180,7 +180,7 @@
                                                         </connections>
                                                     </textField>
                                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qqt-eq-gac">
-                                                        <rect key="frame" x="20" y="102" width="351" height="40"/>
+                                                        <rect key="frame" x="20" y="102" width="343" height="40"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" placeholder="YES" id="0GR-cF-ntU"/>
                                                         </constraints>
@@ -209,10 +209,10 @@
                                         </constraints>
                                     </view>
                                     <stackView contentMode="scaleToFill" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="6i6-CG-3Tg">
-                                        <rect key="frame" x="20" y="548" width="351" height="44"/>
+                                        <rect key="frame" x="20" y="548" width="343" height="44"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Hn-ZK-h9k">
-                                                <rect key="frame" x="0.0" y="7" width="307" height="30"/>
+                                                <rect key="frame" x="0.0" y="7" width="299" height="30"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="addSelfHostedButton"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <state key="normal" title="Log into your site by entering your site address instead.">
@@ -223,7 +223,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="315" y="0.0" width="36" height="44"/>
+                                                <rect key="frame" x="307" y="0.0" width="36" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="PgU-lW-anB"/>
@@ -268,10 +268,10 @@
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="ozJ-hT-OEw" firstAttribute="top" secondItem="bn3-aC-RIM" secondAttribute="bottom" id="S6n-FZ-9Yc"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ozJ-hT-OEw" secondAttribute="trailing" constant="-20" id="Uuo-bm-Be2"/>
+                            <constraint firstAttribute="trailing" secondItem="ozJ-hT-OEw" secondAttribute="trailing" id="Uuo-bm-Be2"/>
                             <constraint firstItem="ozJ-hT-OEw" firstAttribute="centerX" secondItem="e5n-Bf-JaL" secondAttribute="centerX" id="ZpP-No-8Mw"/>
                             <constraint firstItem="tip-gy-Hwr" firstAttribute="top" secondItem="ozJ-hT-OEw" secondAttribute="bottom" id="h6K-00-qtf"/>
-                            <constraint firstItem="ozJ-hT-OEw" firstAttribute="leading" secondItem="e5n-Bf-JaL" secondAttribute="leadingMargin" constant="-20" id="lqe-jU-dLs"/>
+                            <constraint firstItem="ozJ-hT-OEw" firstAttribute="leading" secondItem="e5n-Bf-JaL" secondAttribute="leading" id="lqe-jU-dLs"/>
                         </constraints>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
@@ -369,7 +369,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="yx4-Vw-DFk">
                                                 <rect key="frame" x="0.0" y="95" width="375" height="176"/>
                                                 <subviews>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="It3-g0-cxp" customClass="WPWalkthroughTextField">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="It3-g0-cxp" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
@@ -384,7 +384,7 @@
                                                             <outlet property="delegate" destination="QDy-AC-sAr" id="XW1-iz-4zI"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MMG-3p-JWU" customClass="WPWalkthroughTextField">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MMG-3p-JWU" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="nuxUsernameField"/>
@@ -400,7 +400,7 @@
                                                             <outlet property="delegate" destination="QDy-AC-sAr" id="CdW-xP-Q0C"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uNv-KX-D1D" customClass="WPWalkthroughTextField">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uNv-KX-D1D" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="88" width="375" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="nuxPasswordField"/>
@@ -416,7 +416,7 @@
                                                             <outlet property="delegate" destination="QDy-AC-sAr" id="xqe-J2-thL"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Site Address (URL)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HNy-PM-AgS" customClass="WPWalkthroughTextField">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Site Address (URL)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HNy-PM-AgS" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="132" width="375" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="nuxUrlField"/>
@@ -555,6 +555,8 @@
                         <outlet property="topLayoutGuideAdjustmentConstraint" destination="g5e-48-rwT" id="wK6-By-loG"/>
                         <outlet property="usernameField" destination="MMG-3p-JWU" id="nMk-0h-ogG"/>
                         <outlet property="verticalCenterConstraint" destination="XFf-th-GSA" id="ybo-1G-a14"/>
+                        <outlet property="wpcomLabel" destination="BHQ-iH-Ffv" id="5TJ-A2-3Im"/>
+                        <outlet property="wpcomLabelTrailingConstraint" destination="IPK-cg-i4q" id="Ss5-ld-6mE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lhb-00-kKg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -607,7 +609,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
                                                 <rect key="frame" x="0.0" y="247.5" width="383" height="88"/>
                                                 <subviews>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
@@ -623,7 +625,7 @@
                                                             <outlet property="delegate" destination="SZS-o3-1P7" id="NfG-gH-Yct"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oi5-Kd-TEW" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oi5-Kd-TEW" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="44" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="passwordField"/>
@@ -793,7 +795,7 @@
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28.5" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="passwordField"/>
@@ -817,7 +819,7 @@
                                                     <constraint firstItem="BtS-3D-CIU" firstAttribute="width" secondItem="3be-99-g62" secondAttribute="width" id="uoX-on-LUd"/>
                                                 </constraints>
                                             </stackView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
                                                 <rect key="frame" x="20" y="340" width="343" height="18"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="pswdErrorLabel"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -952,7 +954,7 @@
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A2K-lq-6XM" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A2K-lq-6XM" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="247.5" width="383" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="Verification Code"/>
@@ -1470,7 +1472,7 @@
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="example.wordpress.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZrT-CY-qD7" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="example.wordpress.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZrT-CY-qD7" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="252" width="391" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>

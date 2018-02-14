@@ -6,21 +6,22 @@ enum MediaNoticeUserInfoKey {
 
 struct MediaProgressCoordinatorNoticeViewModel {
     private let mediaProgressCoordinator: MediaProgressCoordinator
-    private let progress: Progress
     private let successfulMedia: [Media]
     private let failedMedia: [Media]
 
     init?(mediaProgressCoordinator: MediaProgressCoordinator) {
-        guard !mediaProgressCoordinator.isRunning,
-            let progress = mediaProgressCoordinator.mediaGlobalProgress else {
+        guard !mediaProgressCoordinator.isRunning else {
                 return nil
         }
 
         self.mediaProgressCoordinator = mediaProgressCoordinator
-        self.progress = progress
 
         successfulMedia = mediaProgressCoordinator.successfulMedia
         failedMedia = mediaProgressCoordinator.failedMedia
+
+        guard successfulMedia.count + failedMedia.count > 0 else {
+            return nil
+        }
     }
 
     private var uploadSuccessful: Bool {
@@ -88,7 +89,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
 
     var title: String {
         if uploadSuccessful {
-            return pluralize(Int(progress.completedUnitCount),
+            return pluralize(successfulMedia.count,
                              singular: NSLocalizedString("Media uploaded (1 file)", comment: "Alert displayed to the user when a single media item has uploaded successfully."),
                              plural: NSLocalizedString("Media uploaded (%ld files)", comment: "Alert displayed to the user when multiple media items have uploaded successfully."))
         } else {
@@ -97,7 +98,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     var message: String? {
-        guard !uploadSuccessful && progress.completedUnitCount >= 1 else {
+        guard !uploadSuccessful && successfulMedia.count >= 1 else {
             return nil
         }
 
@@ -121,7 +122,7 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var successfulUploadsDescription: String {
-        return pluralize(Int(progress.completedUnitCount),
+        return pluralize(successfulMedia.count,
                          singular: NSLocalizedString("1 file successfully uploaded", comment: "System notification displayed to the user when a single media item has uploaded successfully."),
                          plural: NSLocalizedString("%ld files successfully uploaded", comment: "System notification displayed to the user when multiple media items have uploaded successfully."))
     }
