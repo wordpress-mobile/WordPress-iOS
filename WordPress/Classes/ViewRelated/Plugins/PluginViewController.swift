@@ -99,8 +99,14 @@ class PluginViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // This is a hack/work-around to remove the gap from the top of the tableView — the system leaves
         // a gap with a `grouped` style by default — we want the banner up top, without any gaps.
-        guard section != 0 else { return 0 }
+        guard section != 0 else {
+            return 0
+        }
 
-        return 17.5
+        return Constants.tableViewHeaderHeight
+    }
+
+    private enum Constants {
+        static var tableViewHeaderHeight: CGFloat = 17.5
     }
 }
