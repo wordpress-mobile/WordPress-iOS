@@ -30,7 +30,7 @@ PODS:
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
   - Expecta (1.0.6)
-  - Fabric (1.7.3)
+  - Fabric (1.7.2)
   - FLAnimatedImage (1.0.12)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
@@ -51,11 +51,11 @@ PODS:
   - Gridicons (0.14)
   - GTMOAuth2 (1.1.6):
     - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.1.13):
-    - GTMSessionFetcher/Full (= 1.1.13)
-  - GTMSessionFetcher/Core (1.1.13)
-  - GTMSessionFetcher/Full (1.1.13):
-    - GTMSessionFetcher/Core (= 1.1.13)
+  - GTMSessionFetcher (1.1.12):
+    - GTMSessionFetcher/Full (= 1.1.12)
+  - GTMSessionFetcher/Core (1.1.12)
+  - GTMSessionFetcher/Full (1.1.12):
+    - GTMSessionFetcher/Core (= 1.1.12)
   - HockeySDK (5.1.1):
     - HockeySDK/DefaultLib (= 5.1.1)
   - HockeySDK/DefaultLib (5.1.1)
@@ -176,14 +176,14 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  Fabric: bb495bb9a7a7677c6d03a1f8b83d95bc49b47e41
+  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   GoogleSignIn: 3fdaa34a2ba04dbd7a25d7db39aecb0da98d5bdc
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Gridicons: 558073b1ff34092a49336ee0955ad97d2ef799f0
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
-  GTMSessionFetcher: 5bb1eae636127de695590f50e7d248483eb891e6
+  GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
   HockeySDK: a240b3c62ac6b8ccd4301ee65cf25a8e5c9c0556
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: c3bc6e261e7bc06c112909fe3fb8205de286082c
