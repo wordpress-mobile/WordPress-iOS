@@ -1,59 +1,59 @@
 import UIKit
 import Gridicons
 
-struct PluginDirectoryAccessoryView {
+struct PluginDirectoryAccessoryItem {
 
     static func accessoryView(plugin: PluginDirectoryEntry) -> UIView {
-        return PluginDirectoryAccessoryView.stars(count: plugin.starRating)
+        return PluginDirectoryAccessoryItem.stars(count: plugin.starRating)
     }
 
     static func accessoryView(pluginState: PluginState) -> UIView {
         guard pluginState.active else {
-            return PluginDirectoryAccessoryView.inactive()
+            return PluginDirectoryAccessoryItem.inactive()
         }
 
         switch pluginState.updateState {
         case .available:
-            return PluginDirectoryAccessoryView.needsUpdate()
+            return PluginDirectoryAccessoryItem.needsUpdate()
         case .updating:
-            return PluginDirectoryAccessoryView.updating()
+            return PluginDirectoryAccessoryItem.updating()
         case .updated:
-            return PluginDirectoryAccessoryView.active()
+            return PluginDirectoryAccessoryItem.active()
         }
     }
 
     private static let imageSize = CGSize(width: 14, height: 14)
 
     private static func active() -> UIView {
-        let icon = Gridicon.iconOfType(.checkmark, withSize: PluginDirectoryAccessoryView.imageSize)
+        let icon = Gridicon.iconOfType(.checkmark, withSize: PluginDirectoryAccessoryItem.imageSize)
         let color = WPStyleGuide.validGreen()
         let text = NSLocalizedString("Active", comment: "Describes a status of a plugin")
 
-        return PluginDirectoryAccessoryView.label(with: icon, tintColor: color, text: text)
+        return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
 
     private static func inactive() -> UIView {
-        let icon = Gridicon.iconOfType(.cross, withSize: PluginDirectoryAccessoryView.imageSize)
+        let icon = Gridicon.iconOfType(.cross, withSize: PluginDirectoryAccessoryItem.imageSize)
         let color = WPStyleGuide.greyDarken10()
         let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
 
-        return PluginDirectoryAccessoryView.label(with: icon, tintColor: color, text: text)
+        return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
 
     private static func needsUpdate() -> UIView {
-        let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryView.imageSize)
+        let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryItem.imageSize)
         let color = WPStyleGuide.warningYellow()
         let text = NSLocalizedString("Needs Update", comment: "Describes a status of a plugin")
 
-        return PluginDirectoryAccessoryView.label(with: icon, tintColor: color, text: text)
+        return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
 
     private static func updating() -> UIView {
-        let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryView.imageSize)
+        let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryItem.imageSize)
         let color = WPStyleGuide.warningYellow()
         let text = NSLocalizedString("Updating", comment: "Describes a status of a plugin")
 
-        return PluginDirectoryAccessoryView.label(with: icon, tintColor: color, text: text)
+        return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
 
     private static func label(with icon: UIImage, tintColor: UIColor, text: String) -> UIView {
@@ -114,7 +114,7 @@ struct PluginDirectoryAccessoryView {
 
             if i == Int(wholeStars) + 1, half > 0 {
                 // if this is the next iteration after the last "whole" star, and `half` is > 0, add a half-star.
-                stackView.addArrangedSubview(PluginDirectoryAccessoryView.halfStar(size: starImageSize))
+                stackView.addArrangedSubview(PluginDirectoryAccessoryItem.halfStar(size: starImageSize))
                 continue
             }
 
