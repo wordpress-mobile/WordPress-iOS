@@ -231,11 +231,11 @@ class PluginListViewModel: Observable {
             return accessoryView(for: plugin)
         }
 
-        return PluginDirectoryAccessoryView.accessoryView(plugin: directoryEntry)
+        return PluginDirectoryAccessoryItem.accessoryView(plugin: directoryEntry)
     }
 
     private func accessoryView(`for` plugin: Plugin) -> UIView {
-        return PluginDirectoryAccessoryView.accessoryView(pluginState: plugin.state)
+        return PluginDirectoryAccessoryItem.accessoryView(pluginState: plugin.state)
     }
 
     private func isFetching(`for` query: PluginQuery) -> Bool {
