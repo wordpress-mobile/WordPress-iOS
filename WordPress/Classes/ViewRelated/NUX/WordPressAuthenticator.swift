@@ -15,7 +15,7 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Returns a Support UIViewController instance, to be displayed from a given source.
     ///
-    func supportViewController(from origin: WordPressAuthenticator.SupportOrigin) -> UIViewController
+    func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController
 }
 
 
