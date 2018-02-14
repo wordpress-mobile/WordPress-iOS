@@ -76,11 +76,13 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
             SVProgressHUD.dismiss()
+            self?.tableView.separatorStyle = .singleLine
             addSuggestions(suggestions)
         }) { [weak self] (error) in
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
             SVProgressHUD.dismiss()
+            self?.tableView.separatorStyle = .none
             self?.addNoResultsToView()
         }
     }
