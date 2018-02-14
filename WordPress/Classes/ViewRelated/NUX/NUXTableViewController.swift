@@ -19,7 +19,8 @@ class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIVi
     }
 
     override func viewDidLoad() {
-        addHelpButtonToNavController()
+        super.viewDidLoad()
+        setupHelpButtonIfNeeded()
         setupCancelButtonIfNeeded()
     }
 
