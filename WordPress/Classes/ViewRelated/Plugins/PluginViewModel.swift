@@ -2,24 +2,43 @@ import Foundation
 import WordPressFlux
 
 class PluginViewModel: Observable {
-    var plugin: Plugin? {
+    private enum State {
+        case plugin(Plugin)
+        case directoryEntry(PluginDirectoryEntry)
+    }
+
+    private var state: State {
         didSet {
             changeDispatcher.dispatch()
         }
     }
 
-    var directoryEntry: PluginDirectoryEntry? {
-        didSet {
-            changeDispatcher.dispatch()
-        }
-    }
-
-    var isInstallingPlugin: Bool {
+    private var isInstallingPlugin: Bool {
         didSet {
             if isInstallingPlugin != oldValue {
                 changeDispatcher.dispatch()
             }
         }
+    }
+
+    private var plugin: Plugin? {
+        if case .plugin(let plugin) = state {
+            return plugin
+        }
+
+        return nil
+    }
+
+    private var directoryEntry: PluginDirectoryEntry? {
+        if let plugin = plugin {
+            return plugin.directoryEntry
+        }
+
+        if case .directoryEntry(let entry) = state {
+            return entry
+        }
+
+        return nil
     }
 
 
@@ -31,8 +50,7 @@ class PluginViewModel: Observable {
     let queryReceipt: Receipt?
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
-        self.plugin = plugin
-        self.directoryEntry = plugin.directoryEntry
+        self.state = .plugin(plugin)
         self.capabilities = capabilities
         self.site = site
         self.isInstallingPlugin = false
@@ -44,14 +62,16 @@ class PluginViewModel: Observable {
                 return
             }
 
-            self?.plugin = plugin
-            self?.directoryEntry = plugin.directoryEntry
+            self?.state = .plugin(plugin)
         }
     }
 
     init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
-        self.plugin = store.getPlugin(slug: directoryEntry.slug, site: site)
-        self.directoryEntry = directoryEntry
+        if let plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
+            self.state = .plugin(plugin)
+        } else {
+            self.state = .directoryEntry(directoryEntry)
+        }
         self.capabilities = store.getPlugins(site: site)?.capabilities
         self.site = site
         self.isInstallingPlugin = false
@@ -64,8 +84,12 @@ class PluginViewModel: Observable {
                 return
             }
 
-            self?.directoryEntry = entry
-            self?.plugin = store.getPlugin(slug: entry.slug, site: site)
+            if let plugin = store.getPlugin(slug: entry.slug, site: site) {
+                self?.state = .plugin(plugin)
+            } else {
+                self?.state = .directoryEntry(entry)
+            }
+
             self?.capabilities = store.getPlugins(site: site)?.capabilities
             self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: directoryEntry.slug)
         }
