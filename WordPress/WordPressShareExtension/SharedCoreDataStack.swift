@@ -93,6 +93,21 @@ extension SharedCoreDataStack {
         return groupID
     }
 
+    /// Fetch the post upload op for the provided managed object ID string
+    ///
+    /// - Parameter objectID: Managed object ID string for a given post upload op
+    /// - Returns: PostUploadOperation or nil
+    ///
+    func fetchPostUploadOp(withObjectID objectID: String) -> PostUploadOperation? {
+        guard let storeCoordinator = managedContext.persistentStoreCoordinator,
+            let url = URL(string: objectID),
+            let managedObjectID = storeCoordinator.managedObjectID(forURIRepresentation: url) else {
+                return nil
+        }
+
+        return fetchPostUploadOp(withObjectID: managedObjectID)
+    }
+
     /// Fetch the post upload op for the provided managed object ID
     ///
     /// - Parameter postUploadOpObjectID: Managed object ID for a given post upload op
