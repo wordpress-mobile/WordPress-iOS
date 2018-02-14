@@ -413,6 +413,7 @@
 		745EAF4A20040B220066F415 /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF4920040B220066F415 /* ShareData.swift */; };
 		7462BFD02028C49800B552D8 /* ShareNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */; };
 		7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */; };
+		7467324F2034E0400037E85B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7467324E2034E0400037E85B /* MainInterface.storyboard */; };
 		746A6F571E71C691003B67E3 /* DeleteSite.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 746A6F561E71C691003B67E3 /* DeleteSite.storyboard */; };
 		746D6B251FBF701F003C45BE /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
 		7470840F1E269669002CA726 /* JetpackLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7470840D1E269669002CA726 /* JetpackLoginViewController.swift */; };
@@ -458,7 +459,6 @@
 		74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
-		74FC2D04202B696300AC3422 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74576676202B558C00F42E40 /* MainInterface.storyboard */; };
 		74FC2D05202B69C100AC3422 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4645AFC41961E1FB005F7509 /* AppImages.xcassets */; };
 		74FC2D06202B69C100AC3422 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
@@ -1741,7 +1741,6 @@
 		74558368201A1FD3007809BB /* WPReusableTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPReusableTableViewCells.swift; sourceTree = "<group>"; };
 		74576672202B558C00F42E40 /* WordPressDraftActionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressDraftActionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		74576674202B558C00F42E40 /* MainDraftActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDraftActionViewController.swift; sourceTree = "<group>"; };
-		74576677202B558C00F42E40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
 		74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
 		74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
@@ -1750,6 +1749,7 @@
 		745EAF4920040B220066F415 /* ShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareData.swift; sourceTree = "<group>"; };
 		7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeViewModel.swift; sourceTree = "<group>"; };
 		7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeNavigationCoordinator.swift; sourceTree = "<group>"; };
+		7467324E2034E0400037E85B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		746A6F561E71C691003B67E3 /* DeleteSite.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DeleteSite.storyboard; sourceTree = "<group>"; };
 		746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCoreDataStack.swift; sourceTree = "<group>"; };
 		7470840D1E269669002CA726 /* JetpackLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackLoginViewController.swift; sourceTree = "<group>"; };
@@ -3887,7 +3887,7 @@
 		74576684202B56EF00F42E40 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				74576676202B558C00F42E40 /* MainInterface.storyboard */,
+				7467324E2034E0400037E85B /* MainInterface.storyboard */,
 				74576674202B558C00F42E40 /* MainDraftActionViewController.swift */,
 			);
 			name = UI;
@@ -6481,11 +6481,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7484D94D20320DFE006E94B4 /* WordPressShare.js in Resources */,
+				7467324F2034E0400037E85B /* MainInterface.storyboard in Resources */,
 				741AF3A2202F3DC400C771A5 /* ShareExtension.storyboard in Resources */,
 				74E44ADC2031EFD600556205 /* Localizable.strings in Resources */,
 				74FC2D05202B69C100AC3422 /* AppImages.xcassets in Resources */,
 				74FC2D06202B69C100AC3422 /* Images.xcassets in Resources */,
-				74FC2D04202B696300AC3422 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7974,14 +7974,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		74576676202B558C00F42E40 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				74576677202B558C00F42E40 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 		74E44ADE2031EFD600556205 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
