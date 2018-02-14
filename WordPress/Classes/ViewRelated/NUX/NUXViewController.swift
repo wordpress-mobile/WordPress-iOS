@@ -36,7 +36,8 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     }
 
     override func viewDidLoad() {
-        addHelpButtonToNavController()
+        super.viewDidLoad()
+        setupHelpButtonIfNeeded()
         setupCancelButtonIfNeeded()
     }
 
