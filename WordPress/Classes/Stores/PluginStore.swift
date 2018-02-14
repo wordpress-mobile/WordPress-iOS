@@ -192,7 +192,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     }
 
     private var featuredSiteToFetch: JetpackSiteRef? {
-        guard state.fetchingFeatured == false, state.featuredPluginsSlugs.isEmpty == false else { return nil }
+        guard state.fetchingFeatured == false, state.featuredPluginsSlugs.isEmpty else { return nil }
 
         return activeQueries
             .filter {
