@@ -51,6 +51,9 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         }
         else if let vc = segue.destination as? LoginPrologueSignupMethodViewController {
             vc.transitioningDelegate = self
+            vc.emailTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSigninV2.rawValue, sender: self)
+            }
             vc.modalPresentationStyle = .custom
         }
     }
