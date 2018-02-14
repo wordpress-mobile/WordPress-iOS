@@ -223,16 +223,16 @@ private extension SiteCreationCreateSiteViewController {
         switch validationError {
         case .missingTitle:
             setReturnViewController(for: .details)
-            errorMessage = NSLocalizedString("The Site Title is missing.", comment: "Error shown during site creation process when the site title is missing.")
+            errorMessage = NSLocalizedString("The site sitle is missing.", comment: "Error shown during site creation process when the site title is missing.")
         case .missingDomain:
             setReturnViewController(for: .domainSuggestion)
-            errorMessage = NSLocalizedString("The Site Domain is missing.", comment: "Error shown during site creation process when the site domain is missing.")
+            errorMessage = NSLocalizedString("The site domain is missing.", comment: "Error shown during site creation process when the site domain is missing.")
         case .domainContainsWordPressDotCom:
             setReturnViewController(for: .domainSuggestion)
-            errorMessage = NSLocalizedString("The Site Domain contains wordpress.com.", comment: "Error shown during site creation process when the site domain contains wordpress.com.")
+            errorMessage = NSLocalizedString("The site domain contains wordpress.com.", comment: "Error shown during site creation process when the site domain contains wordpress.com.")
         case .missingTheme:
             setReturnViewController(for: .themeSelection)
-            errorMessage = NSLocalizedString("The Site Theme is missing.", comment: "Error shown during site creation process when the site theme is missing.")
+            errorMessage = NSLocalizedString("The site theme is missing.", comment: "Error shown during site creation process when the site theme is missing.")
         }
     }
 
@@ -248,7 +248,7 @@ private extension SiteCreationCreateSiteViewController {
             switch lastStatus {
             case .validating:
                 setReturnViewController(for: .domainSuggestion)
-                return NSLocalizedString("The Site Domain is invalid.", comment: "Error shown during site creation process when the site domain validation fails.")
+                return NSLocalizedString("The site domain is invalid.", comment: "Error shown during site creation process when the site domain validation fails.")
             case .gettingDefaultAccount:
                 setReturnViewController(for: .createSite)
                 self.lastStatus = nil // start from the beginning on retry
@@ -259,13 +259,13 @@ private extension SiteCreationCreateSiteViewController {
                 return NSLocalizedString("We were unable to create the site.", comment: "Error shown during site creation process when the site creation fails.")
             case .settingTagline:
                 setReturnViewController(for: .createSite)
-                return NSLocalizedString("Your Site was created. Unfortunately, we were unable to set the Site Tagline. You can set the Tagline in the Site Settings, or try again now.", comment: "Error shown during site creation process when setting the site tagline fails.")
+                return NSLocalizedString("We've successfully created your site. Unfortunately, we were unable to set the site tagline. You can set the tagline in the Site Settings screen, or try again now.", comment: "Error shown during site creation process when setting the site tagline fails.")
             case .settingTheme:
                 setReturnViewController(for: .createSite)
-                return NSLocalizedString("Your Site was created. Unfortunately, we were unable to set the Site Theme. You can set the Theme in the Site Settings, or try again now.", comment: "Error shown during site creation process when setting the site theme fails.")
+                return NSLocalizedString("We've successfully created your site. Unfortunately, we were unable to set the site theme. You can set the theme in the Site Settings screen, or try again now.", comment: "Error shown during site creation process when setting the site theme fails.")
             case .syncing:
                 setReturnViewController(for: .createSite)
-                return NSLocalizedString("Your Site was created. Unfortunately, we were unable to sync your account information. You can still access your site from My Sites. You can also retry syncing your account now.", comment: "Error shown during site creation process when syncing the account fails.")
+                return NSLocalizedString("We've successfully created your site. Unfortunately, we were unable to sync your account information. You can still access your site from the My Sites screen. You can also retry syncing your account now.", comment: "Error shown during site creation process when syncing the account fails.")
             }
         }()
     }
