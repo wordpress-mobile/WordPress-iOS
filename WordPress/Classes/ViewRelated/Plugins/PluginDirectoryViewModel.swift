@@ -19,7 +19,6 @@ class PluginDirectoryViewModel: Observable {
     private var featuredReceipt: Receipt?
     private var popularReceipt: Receipt?
     private var newReceipt: Receipt?
-    private var searchReceipt: Receipt?
 
     public init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.store = store
@@ -35,64 +34,50 @@ class PluginDirectoryViewModel: Observable {
         }
     }
 
-    func tableViewModel(presenter: PluginPresenter, listPresenter: PluginListPresenter) -> ImmuTable {
+    func tableViewModel(presenter: PluginPresenter & PluginListPresenter) -> ImmuTable {
 
-        let installedRow = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, Plugin>(
-            data: installedPlugins,
-            title: NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins"),
-            secondaryTitle: NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins"),
-            action: actionClosure(presenter: listPresenter, query: .all(site: site)),
-            configureCollectionCell: { [weak self] cell, plugin in
-                let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
+        let installedRow = CollectionViewContainerRow(title: NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins"),
+                                                      secondaryTitle: NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins"),
+                                                      sitePlugins: installedPlugins,
+                                                      site: site,
+                                                      listViewQuery: .all(site: site),
+                                                      presenter: presenter)
 
-                cell.nameLabel?.text = plugin.state.name
-                cell.authorLabel.text = plugin.state.author
-                cell.logoImageView?.downloadImage(plugin.directoryEntry?.icon, placeholderImage: iconPlaceholder)
-
-                cell.accessoryView = self?.accessoryView(for: plugin)
-            },
-            collectionCellSelected: { [weak presenter, weak self] plugin in
-                guard let capabilities = self?.siteCapabilities else { return }
-                presenter?.present(plugin: plugin, capabilities: capabilities)
-        })
-
-        let commonRowType = CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self
-
-        let configureCell: (PluginDirectoryCollectionViewCell, PluginDirectoryEntry) -> Void = { [weak self] cell, item in
-            let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
-            cell.logoImageView?.downloadImage(item.icon, placeholderImage: iconPlaceholder)
-            cell.authorLabel?.text = item.author
-            cell.nameLabel?.text = item.name
-
-            cell.accessoryView = self?.accessoryView(for: item)
+        let accessoryViewCallback = { [weak self] (entry: PluginDirectoryEntry) -> UIView in
+            guard let strongSelf = self else {
+                return UIView()
+            }
+            return strongSelf.accessoryView(for: entry)
         }
+        // We need to be able to map between a `PluginDirectoryEntry` and a potentially already installed `Plugin`,
+        // but passing the entire `PluginStore` to the CollectionViewContainerRow isn't the best idea.
+        // Instead, we allow the row to reach back to us and ask for the accessoryView.
 
-        let cellSelected: (PluginDirectoryEntry) -> Void = { [weak presenter] entry in
-            presenter?.present(directoryEntry: entry)
-        }
+        let featuredRow = CollectionViewContainerRow(title: NSLocalizedString("Featured", comment: "Header of section in Plugin Directory showing featured plugins"),
+                                                     secondaryTitle: nil,
+                                                     plugins: featuredPlugins,
+                                                     site: site,
+                                                     accessoryViewCallback: accessoryViewCallback,
+                                                     listViewQuery: nil,
+                                                     presenter: presenter)
 
-        let featuredRow = commonRowType.init(data: featuredPlugins,
-                                             title: NSLocalizedString("Featured", comment: "Header of section in Plugin Directory showing featured plugins"),
-                                             secondaryTitle: nil,
-                                             action: nil,
-                                             configureCollectionCell: configureCell,
-                                             collectionCellSelected: cellSelected)
+        let popularRow = CollectionViewContainerRow(title: NSLocalizedString("Popular", comment: "Header of section in Plugin Directory showing popular plugins"),
+                                                    secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
+                                                    plugins: popularPlugins,
+                                                    site: site,
+                                                    accessoryViewCallback: accessoryViewCallback,
+                                                    listViewQuery: .feed(type: .popular),
+                                                    presenter: presenter)
 
-        let popularRow = commonRowType.init(data: popularPlugins,
-                                            title: NSLocalizedString("Popular", comment: "Header of section in Plugin Directory showing popular plugins"),
-                                            secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
-                                            action: actionClosure(presenter: listPresenter, query: .feed(type: .popular)),
-                                            configureCollectionCell: configureCell,
-                                            collectionCellSelected: cellSelected)
+        let newRow = CollectionViewContainerRow(title: NSLocalizedString("New", comment: "Header of section in Plugin Directory showing newest plugins"),
+                                                secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
+                                                plugins: newPlugins,
+                                                site: site,
+                                                accessoryViewCallback: accessoryViewCallback,
+                                                listViewQuery: .feed(type: .newest),
+                                                presenter: presenter)
 
-        let newRow = commonRowType.init(data: newPlugins,
-                                        title: NSLocalizedString("New", comment: "Header of section in Plugin Directory showing newest plugins"),
-                                        secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
-                                        action: actionClosure(presenter: listPresenter, query: .feed(type: .newest)),
-                                        configureCollectionCell: configureCell,
-                                        collectionCellSelected: cellSelected)
-
-        return ImmuTable(optionalSections: [
+        return ImmuTable(sections: [
             ImmuTableSection(rows: [
                 installedRow,
                 featuredRow,
@@ -102,15 +87,8 @@ class PluginDirectoryViewModel: Observable {
             ])
     }
 
-    private func actionClosure(presenter: PluginListPresenter, query: PluginQuery) -> ImmuTableAction? {
-        return { [weak presenter, weak self] _ in
-            guard let site = self?.site else { return }
-            presenter?.present(site: site, query: query)
-        }
-    }
-
-    private var installedPlugins: [Plugin] {
-        return store.getPlugins(site: site)?.plugins ?? []
+    private var installedPlugins: Plugins? {
+        return store.getPlugins(site: site)
     }
 
     private var featuredPlugins: [PluginDirectoryEntry] {
@@ -125,10 +103,6 @@ class PluginDirectoryViewModel: Observable {
         return Array(store.getPluginDirectoryFeedPlugins(from: .newest).prefix(6))
     }
 
-    private var siteCapabilities: SitePluginCapabilities? {
-        return store.getPlugins(site: site)?.capabilities
-    }
-
     private func accessoryView(`for` directoryEntry: PluginDirectoryEntry) -> UIView {
         if let plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
             return accessoryView(for: plugin)
@@ -141,4 +115,78 @@ class PluginDirectoryViewModel: Observable {
         return PluginDirectoryAccessoryItem.accessoryView(pluginState: plugin.state)
     }
 
+}
+
+private extension CollectionViewContainerRow where Item == PluginDirectoryEntry, CollectionViewCellType == PluginDirectoryCollectionViewCell {
+
+    init(title: String,
+         secondaryTitle: String?,
+         plugins: [PluginDirectoryEntry],
+         site: JetpackSiteRef,
+         accessoryViewCallback: @escaping ((Item) -> UIView),
+         listViewQuery: PluginQuery?,
+         presenter: PluginPresenter & PluginListPresenter) {
+
+        let configureCell: (PluginDirectoryCollectionViewCell, PluginDirectoryEntry) -> Void = { cell, item in
+            cell.configure(with: item)
+            cell.accessoryView = accessoryViewCallback(item)
+        }
+
+        let actionClosure: ImmuTableAction = { [weak presenter] _ in
+            guard let presenter = presenter, let query = listViewQuery else {
+                return
+            }
+
+            presenter.present(site: site, query: query)
+        }
+
+        let cellSelected: (PluginDirectoryEntry) -> Void = { [weak presenter] entry in
+            presenter?.present(directoryEntry: entry)
+        }
+
+        self.init(data: plugins,
+                  title: title,
+                  secondaryTitle: secondaryTitle,
+                  action: actionClosure,
+                  configureCollectionCell: configureCell,
+                  collectionCellSelected: cellSelected)
+    }
+
+}
+
+private extension CollectionViewContainerRow where Item == Plugin, CollectionViewCellType == PluginDirectoryCollectionViewCell {
+    init(title: String,
+         secondaryTitle: String?,
+         sitePlugins: Plugins?,
+         site: JetpackSiteRef,
+         listViewQuery: PluginQuery?,
+         presenter: PluginPresenter & PluginListPresenter) {
+
+        let configureCell: (PluginDirectoryCollectionViewCell, Plugin) -> Void = { cell, item in
+            cell.configure(with: item)
+            cell.accessoryView = PluginDirectoryAccessoryItem.accessoryView(pluginState: item.state)
+        }
+
+        let actionClosure: ImmuTableAction = { [weak presenter] _ in
+            guard let presenter = presenter, let query = listViewQuery else {
+                return
+            }
+
+            presenter.present(site: site, query: query)
+        }
+
+        let cellSelected: (Plugin) -> Void = { [weak presenter] plugin in
+            guard let capabilities = sitePlugins?.capabilities else {
+                return
+            }
+            presenter?.present(plugin: plugin, capabilities: capabilities)
+        }
+
+        self.init(data: sitePlugins?.plugins ?? [],
+                  title: title,
+                  secondaryTitle: secondaryTitle,
+                  action: actionClosure,
+                  configureCollectionCell: configureCell,
+                  collectionCellSelected: cellSelected)
+    }
 }
