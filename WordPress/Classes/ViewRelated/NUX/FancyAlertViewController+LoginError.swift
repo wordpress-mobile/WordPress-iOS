@@ -27,8 +27,9 @@ extension FancyAlertViewController {
 
                 guard HelpshiftUtils.isHelpshiftEnabled() else { return }
 
+                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
                 let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag
+                presenter.sourceTag = sourceTag.toSupportSourceTag()
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
@@ -115,8 +116,9 @@ extension FancyAlertViewController {
                     let window = appDelegate.window,
                     let viewController = window?.topmostPresentedViewController else { return }
 
+                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
                 let supportController = SupportViewController()
-                supportController.sourceTag = sourceTag
+                supportController.sourceTag = sourceTag.toSupportSourceTag()
                 supportController.helpshiftOptions = loginFields.helpshiftLoginOptions()
 
                 let navController = UINavigationController(rootViewController: supportController)
@@ -156,8 +158,9 @@ extension FancyAlertViewController {
 
                 guard HelpshiftUtils.isHelpshiftEnabled() else { return }
 
+                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
                 let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag
+                presenter.sourceTag = sourceTag.toSupportSourceTag()
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
