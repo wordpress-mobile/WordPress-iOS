@@ -15,9 +15,13 @@ class LoginPrologueSignupMethodViewController: UIViewController {
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureButtonVC()
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureButtonVC()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
@@ -26,16 +30,24 @@ class LoginPrologueSignupMethodViewController: UIViewController {
             return
         }
 
-        let loginTitle = NSLocalizedString("Sign up with Email", comment: "Button title.  Tapping begins our normal sign up process.")
+        let loginTitle = NSLocalizedString("Sign up with Email", comment: "Button title. Tapping begins our normal sign up process.")
         let createTitle = NSLocalizedString("Sign up with Google", comment: "Button title. Tapping begins sign up using Google.")
         buttonViewController.setupTopButton(title: loginTitle, isPrimary: false) { [weak self] in
             self?.dismiss(animated: true)
             self?.emailTapped?()
         }
-        buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
-            // nil
+        buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) {
+
         }
         let termsButton = WPStyleGuide.termsButton()
+        termsButton.on(.touchUpInside) { [weak self] button in
+            guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
+                return
+            }
+            let controller = WebViewControllerFactory.controller(url: url)
+            let navController = RotationAwareNavigationViewController(rootViewController: controller)
+            self?.present(navController, animated: true, completion: nil)
+        }
         buttonViewController.stackView?.insertArrangedSubview(termsButton, at: 0)
     }
 
