@@ -6,7 +6,7 @@ enum PluginAction: Action {
     case deactivate(id: String, site: JetpackSiteRef)
     case enableAutoupdates(id: String, site: JetpackSiteRef)
     case disableAutoupdates(id: String, site: JetpackSiteRef)
-    case install(slug: String, site: JetpackSiteRef)
+    case install(plugin: PluginDirectoryEntry, site: JetpackSiteRef)
     case update(id: String, site: JetpackSiteRef)
     case remove(id: String, site: JetpackSiteRef)
     case refreshPlugins(site: JetpackSiteRef)
@@ -23,6 +23,8 @@ enum PluginAction: Action {
 enum PluginQuery {
     case all(site: JetpackSiteRef)
     case featured(site: JetpackSiteRef)
+    // `featured` endpoint isn't really site specific, but it still requires authorized requests.
+    // to avoid having the Store reach out to Core Data, get the default WPCom site etc, we're just gonna pass one here.
     case feed(type: PluginDirectoryFeedType)
     case directoryEntry(slug: String)
 
@@ -113,8 +115,8 @@ struct PluginStoreState {
 
     var updatesInProgress = [JetpackSiteRef: Set<String>]()
 
-    var featuredPluginsSlugs = [JetpackSiteRef: [String]]()
-    var fetchingFeatured = [JetpackSiteRef: Bool]()
+    var featuredPluginsSlugs = [String]()
+    var fetchingFeatured: Bool = false
 
     var directoryFeeds = [String: PluginDirectoryPageMetadata]()
     var fetchingDirectoryFeed = [String: Bool]()
@@ -134,6 +136,17 @@ extension PluginStoreState {
         change(&plugin)
         plugins[site]?.plugins[index] = plugin
     }
+
+    mutating func upsertPlugin(id: String, site: JetpackSiteRef, newPlugin: PluginState) -> Void {
+        guard let sitePlugins = plugins[site], sitePlugins.plugins.contains(where: { $0.id == newPlugin.id }) else {
+            plugins[site]?.plugins.append(newPlugin)
+            return
+        }
+
+        modifyPlugin(id: id, site: site) {
+            $0 = newPlugin
+        }
+    }
 }
 
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
@@ -152,6 +165,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
                 state.directoryEntries = [:]
                 state.directoryFeeds = [:]
                 state.lastDirectoryFeedFetch = [:]
+                state.featuredPluginsSlugs = []
             })
             return
         }
@@ -160,7 +174,40 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
 
     func processQueries() {
         // Fetching installed Plugins.
-        let sitesToFetch = activeQueries
+         sitesToFetch
+            .forEach { fetchPlugins(site: $0) }
+
+        // Fetching directory feeds.
+        feedsToFetch
+            .forEach { fetchPluginDirectoryFeed(feed: $0) }
+
+        // Fetching specific plugins from directory.
+        pluginsToFetch
+            .forEach { fetchPluginDirectoryEntry(slug: $0) }
+
+        // Fetching featured plugins.
+        if let site = featuredSiteToFetch {
+            fetchFeaturedPlugins(site: site)
+        }
+    }
+
+    private var featuredSiteToFetch: JetpackSiteRef? {
+        guard state.fetchingFeatured == false, state.featuredPluginsSlugs.isEmpty == false else { return nil }
+
+        return activeQueries
+            .filter {
+                if case .featured = $0 { return true }
+                else { return false }
+            }
+            .flatMap { $0.site }
+            .unique
+            .first
+        // It doesn't matter which site we're fetching from, we only need it to be able to create an authenticated
+        // API remote.
+    }
+
+    private var sitesToFetch: [JetpackSiteRef] {
+        return activeQueries
             .filter {
                 if case .all = $0 { return true }
                 else { return false }
@@ -168,38 +215,20 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             .flatMap { $0.site }
             .unique
             .filter { shouldFetch(site: $0) }
+    }
 
-        sitesToFetch
-            .forEach { fetchPlugins(site: $0) }
-
-        // Fetching featured plugins.
-        let featuredToFetch  = activeQueries
-            .filter {
-                if case .featured = $0 { return true }
-                else { return false }
-            }
-            .flatMap { $0.site }
-            .unique
-            .filter { state.featuredPluginsSlugs[$0, default: []].isEmpty }
-
-        featuredToFetch.forEach { fetchFeaturedPlugins(site: $0) }
-
-        // Fetching directory feeds.
-        let feedsToFetch = activeQueries
+    private var feedsToFetch: [PluginDirectoryFeedType] {
+        return activeQueries
             .flatMap { $0.feedType }
             .unique
             .filter { shouldFetchDirectory(feed: $0) }
+    }
 
-        feedsToFetch
-            .forEach { fetchPluginDirectoryFeed(feed: $0) }
-
-        // Fetching specific plugins from directory.
-        activeQueries
+    private var pluginsToFetch: [String] {
+        return activeQueries
             .flatMap { $0.slug }
             .unique
             .filter { shouldFetchDirectory(slug: $0) }
-            .forEach { fetchPluginDirectoryEntry(slug: $0) }
-
     }
 
     override func onDispatch(_ action: Action) {
@@ -215,8 +244,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             enableAutoupdatesPlugin(pluginID: pluginID, site: site)
         case .disableAutoupdates(let pluginID, let site):
             disableAutoupdatesPlugin(pluginID: pluginID, site: site)
-        case .install(let slug, let site):
-            installPlugin(slug: slug, site: site)
+        case .install(let plugin, let site):
+            installPlugin(plugin: plugin, site: site)
         case .update(let pluginID, let site):
             updatePlugin(pluginID: pluginID, site: site)
         case .remove(let pluginID, let site):
@@ -229,8 +258,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             state.fetching[site] = false
         case .receiveFeaturedPlugins(let site, let plugins):
             receiveFeaturedPlugins(site: site, plugins: plugins)
-        case .receiveFeaturedPluginsFailed(let site, _):
-            state.fetchingFeatured[site] = false
+        case .receiveFeaturedPluginsFailed(_, _):
+            state.fetchingFeatured = false
         case .receivePluginDirectoryEntry(let slug, let entry):
             receivePluginDirectoryEntry(slug: slug, entry: entry)
         case .receivePluginDirectoryEntryFailed(let slug, let error):
@@ -267,9 +296,7 @@ extension PluginStore {
     }
 
     func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry] {
-        guard let fetchedFeaturedSlugs = state.featuredPluginsSlugs[site] else { return [] }
-
-        return fetchedFeaturedSlugs.flatMap { getPluginDirectoryEntry(slug: $0)}
+        return state.featuredPluginsSlugs.flatMap { getPluginDirectoryEntry(slug: $0)}
     }
 
     func getPluginDirectoryEntry(slug: String) -> PluginDirectoryEntry? {
@@ -281,7 +308,7 @@ extension PluginStore {
     }
 
     func isFetchingFeatured(site: JetpackSiteRef) -> Bool {
-        return state.fetchingFeatured[site, default: false]
+        return state.fetchingFeatured
     }
 
     func isFetchingFeed(feed: PluginDirectoryFeedType) -> Bool {
@@ -403,33 +430,30 @@ private extension PluginStore {
         })
     }
 
-    func installPlugin(slug: String, site: JetpackSiteRef) {
-        guard let remote = remote(site: site),
-            !state.updatesInProgress[site, default: Set()].contains(slug),
-            getPlugin(slug: slug, site: site) == nil else {
+    func installPlugin(plugin: PluginDirectoryEntry, site: JetpackSiteRef) {
+        guard let remote = remote(site: site), !isInstallingPlugin(site: site, slug: plugin.slug),
+            getPlugin(slug: plugin.slug, site: site) == nil else {
                 return
         }
 
-        transaction { state in
-            state.updatesInProgress[site, default: Set()].insert(slug)
-        }
+        state.updatesInProgress[site, default: Set()].insert(plugin.slug)
 
         remote.install(
-            pluginSlug: slug,
+            pluginSlug: plugin.slug,
             siteID: site.siteID,
-            success: { [weak self] plugin in
+            success: { [weak self] installedPlugin in
                 self?.transaction { state in
-                    state.plugins[site]?.plugins.append(plugin)
-                    state.updatesInProgress[site]?.remove(slug)
+                    state.upsertPlugin(id: installedPlugin.id, site: site, newPlugin: installedPlugin)
+                    state.updatesInProgress[site]?.remove(installedPlugin.slug)
                 }
 
-                let message = NSLocalizedString("Succesfully installed \(plugin.name).", comment: "Notice displayed after installing a plug-in.")
+                let message = String(format: NSLocalizedString("Succesfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
                 ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
             },
             failure: { [weak self] error in
-                self?.state.updatesInProgress[site]?.remove(slug)
+                self?.state.updatesInProgress[site]?.remove(plugin.slug)
 
-                let message = NSLocalizedString("Error installing plugin.", comment: "Notice displayed after attempt to install a plugin fails.")
+                let message = String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), plugin.name)
                 self?.notifyRemoteError(message: message, error: error)
         })
     }
@@ -609,7 +633,7 @@ private extension PluginStore {
             return
         }
 
-        state.fetchingFeatured[site] = true
+        state.fetchingFeatured = true
 
         remote.getFeaturedPlugins(success: { [actionDispatcher] plugins in
             actionDispatcher.dispatch(PluginAction.receiveFeaturedPlugins(site: site, plugins: plugins))
@@ -623,7 +647,8 @@ private extension PluginStore {
         let pluginStates = Dictionary(uniqueKeysWithValues: zip(slugs, plugins.map { PluginDirectoryEntryState.partial($0) }))
 
         transaction { state in
-            state.featuredPluginsSlugs[site] = slugs
+            state.fetchingFeatured = false
+            state.featuredPluginsSlugs = slugs
             state.directoryEntries.merge(pluginStates) { PluginDirectoryEntryState.moreSpecific($0, $1) }
         }
     }
