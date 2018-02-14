@@ -164,7 +164,7 @@ class MediaImageExporterTests: XCTestCase {
 
     // MARK: - Image export orientation testing
 
-    func testExportingAPortraitImageAndCorrectingTheOrientationWorks() {
+    func testExportingAPortraitImageWithoutResizeKeepsTheOrientationWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
             XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
