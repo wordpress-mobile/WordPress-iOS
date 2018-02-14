@@ -140,9 +140,13 @@ class MediaCoordinator: NSObject {
     /// the upload will be cancelled.
     ///
     /// - Parameter media: The media object to delete
+    /// - Parameter onProgress: Optional progress block, called after each media item is deleted
+    /// - Parameter success: Optional block called after all media items are deleted successfully
+    /// - Parameter failure: Optional block called if deletion failed for any media items,
+    ///                      after attempted deletion of all media items
     ///
-    func delete(_ media: Media) {
-        delete(media: [media])
+    func delete(_ media: Media, onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+        delete(media: [media], onProgress: onProgress, success: success, failure: failure)
     }
 
     /// Deletes media objects. If the objects are currently being uploaded,
@@ -150,19 +154,18 @@ class MediaCoordinator: NSObject {
     ///
     /// - Parameter media: The media objects to delete
     /// - Parameter onProgress: Optional progress block, called after each media item is deleted
+    /// - Parameter success: Optional block called after all media items are deleted successfully
+    /// - Parameter failure: Optional block called if deletion failed for any media items,
+    ///                      after attempted deletion of all media items
     ///
-    func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil) {
+    func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+        media.forEach({ self.cancelUpload(of: $0) })
+
         let service = MediaService(managedObjectContext: backgroundContext)
-
-        let progress = { [weak self] (media: Media, progress: Progress?) in
-            self?.cancelUpload(of: media)
-            onProgress?(progress)
-        }
-
         service.deleteMedia(media,
-                            progress: progress,
-                            success: nil,
-                            failure: nil)
+                            progress: { onProgress?($0) },
+                            success: success,
+                            failure: failure)
     }
 
     @discardableResult private func uploadMedia(_ media: Media) -> Progress {
