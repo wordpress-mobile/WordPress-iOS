@@ -11,20 +11,12 @@ class PluginListViewModel: Observable {
         case installed(Plugins)
         case directory([PluginDirectoryEntry])
 
-        init?(_ plugins: Plugins?) {
-            guard let plugins = plugins else {
-                return nil
-            }
-
+        init(_ plugins: Plugins) {
             self = .installed(plugins)
         }
 
-        init?(_ directoryEntries: [PluginDirectoryEntry]?) {
-            guard let entries = directoryEntries else {
-                return nil
-            }
-
-            self = .directory(entries)
+        init(_ directoryEntries: [PluginDirectoryEntry]) {
+            self = .directory(directoryEntries)
         }
 
         static func ==(lhs: PluginListViewModel.PluginResults, rhs: PluginListViewModel.PluginResults) -> Bool {
@@ -256,7 +248,7 @@ class PluginListViewModel: Observable {
         switch query {
 
         case .all(let site):
-            return PluginResults(store.getPlugins(site: site))
+            return store.getPlugins(site: site).flatMap { PluginResults($0) }
         case .featured(let site):
             return PluginResults(store.getFeaturedPlugins(site: site))
         case .feed(let feed):
