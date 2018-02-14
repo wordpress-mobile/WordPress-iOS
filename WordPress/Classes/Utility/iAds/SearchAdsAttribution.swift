@@ -27,7 +27,7 @@ import AutomatticTracks
     }
 
     /// Has the attribution details been sent already?
-    /// Once the attribution details are sent, it won't change; so it is not necesary to send it again.
+    /// Once the attribution details are sent, it won't change; so it is not necesary to send it again
     ///
     private var isAttributionDetailsSent: Bool {
         get {
