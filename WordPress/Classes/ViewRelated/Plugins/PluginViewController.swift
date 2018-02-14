@@ -2,12 +2,6 @@ import Foundation
 import WordPressFlux
 
 class PluginViewController: UITableViewController {
-    var plugin: Plugin? {
-        didSet {
-            guard let plugin = plugin else { return }
-            viewModel.plugin = plugin
-        }
-    }
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         let handler = ImmuTableViewHandler(takeOver: self)
@@ -19,14 +13,12 @@ class PluginViewController: UITableViewController {
     var viewModelReceipt: Receipt?
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
-        self.plugin = plugin
         viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, site: site)
         super.init(style: .grouped)
         commonInit()
     }
 
     init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef) {
-        self.plugin = nil
         viewModel = PluginViewModel(directoryEntry: directoryEntry, site: site)
         super.init(style: .grouped)
         commonInit()
