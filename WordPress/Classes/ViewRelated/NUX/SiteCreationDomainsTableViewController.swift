@@ -246,7 +246,7 @@ private extension SiteCreationDomainsTableViewController {
         let title = NSLocalizedString("No available site addresses with that name, maybe try another one?", comment: "Primary message shown when there are no domains that match the user entered text.")
         let subtitle = NSLocalizedString("Enter another site name in the search box above.", comment: "Secondary message shown when there are no domains that match the user entered text.")
 
-        noResultsViewController?.configure(title: title, buttonTitle: "i'm a button", subtitle: subtitle)
+        noResultsViewController?.configure(title: title, buttonTitle: nil, subtitle: subtitle)
     }
 
 }

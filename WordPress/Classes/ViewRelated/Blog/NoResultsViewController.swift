@@ -7,7 +7,8 @@ import UIKit
 
 /// A view to show when there are no results for a given situation.
 /// Ex: My Sites > account has no sites; My Sites > all sites are hidden.
-/// The image, title, and action button will always show.
+/// The image and title will always show.
+/// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
 ///
 @objc class NoResultsViewController: NUXViewController {
@@ -42,10 +43,10 @@ import UIKit
     ///
     /// - Parameters:
     ///   - title:       Main descriptive text. Required.
-    ///   - buttonTitle: Title of action button. Required.
+    ///   - buttonTitle: Title of action button. Optional.
     ///   - subtitle:    Secondary descriptive text. Optional.
     ///   - image:       Name of image file to use. Optional.
-    @objc func configure(title: String, buttonTitle: String, subtitle: String? = nil, image: String? = nil) {
+    @objc func configure(title: String, buttonTitle: String? = nil, subtitle: String? = nil, image: String? = nil) {
         titleText = title
         subtitleText = subtitle
         buttonText = buttonTitle
@@ -67,17 +68,21 @@ import UIKit
     /// Use the values provided in the actual elements.
     private func configureView() {
 
-        guard let titleText = titleText,
-            let buttonText = buttonText else {
+        guard let titleText = titleText else {
                 return
         }
 
         titleLabel.text = titleText
         subtitleLabel.text = subtitleText
-        actionButton?.setTitle(buttonText, for: UIControlState())
-        actionButton?.setTitle(buttonText, for: .highlighted)
-        actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
-        actionButton?.accessibilityIdentifier = accessibilityIdentifier(for: buttonText)
+
+        if let buttonText = buttonText {
+            actionButton?.setTitle(buttonText, for: UIControlState())
+            actionButton?.setTitle(buttonText, for: .highlighted)
+            actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
+            actionButton?.accessibilityIdentifier = accessibilityIdentifier(for: buttonText)
+        } else {
+            actionButton.isHidden = true
+        }
 
         if let imageName = imageName {
             imageView.image = UIImage(named: imageName)
