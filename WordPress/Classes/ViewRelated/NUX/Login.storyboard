@@ -167,9 +167,9 @@
                     <connections>
                         <outlet property="loginButton" destination="Lhb-JH-DQG" id="RIH-uM-wDl"/>
                         <outlet property="signupButton" destination="5na-fB-S4z" id="3Bd-jn-IhO"/>
-                        <segue destination="60d-o9-Asx" kind="show" identifier="showSigninV2" id="AM0-E9-ueb"/>
                         <segue destination="QDy-AC-sAr" kind="show" identifier="showSigninV1" id="32U-G0-qXg"/>
                         <segue destination="IwV-3R-6dB" kind="presentation" identifier="showSignupMethod" id="gD5-d0-X3t"/>
+                        <segue destination="T5n-nb-cOW" kind="show" identifier="showSigninV2" id="nCA-u7-fKm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ieq-Ar-5OF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -369,38 +369,13 @@
             </objects>
             <point key="canvasLocation" x="1730" y="255"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="asm-N9-Kfb">
+        <!--emailEntry-->
+        <scene sceneID="CQL-qu-sjW">
             <objects>
-                <viewController id="60d-o9-Asx" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6mW-NW-RvR"/>
-                        <viewControllerLayoutGuide type="bottom" id="q8x-Be-lmb"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="zA8-q0-Jk5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEW SIGNUP FLOW HERE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4r-1T-PUI">
-                                <rect key="frame" x="86.5" y="323" width="202" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="RL5-Xw-mqk"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="z4r-1T-PUI" firstAttribute="centerY" secondItem="zA8-q0-Jk5" secondAttribute="centerY" id="Awg-RM-WzW"/>
-                            <constraint firstItem="z4r-1T-PUI" firstAttribute="centerX" secondItem="zA8-q0-Jk5" secondAttribute="centerX" id="WEy-KR-dQY"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7X8-Jt-KHs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Signup" referencedIdentifier="emailEntry" id="T5n-nb-cOW" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UdV-y0-6AN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-856.79999999999995" y="1181.5592203898052"/>
+            <point key="canvasLocation" x="-530" y="760"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="w7c-Xj-AH8">
