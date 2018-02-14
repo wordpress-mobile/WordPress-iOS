@@ -220,16 +220,6 @@ private extension SiteCreationDomainsTableViewController {
             return
         }
 
-        // Calculate the frame for the noResultsVC.
-        var noResultsFrame = tableView.bounds
-        let titleCellRect = tableView.rect(forSection: Sections.titleAndDescription.rawValue)
-        let searchCellRect = tableView.rect(forSection: Sections.searchField.rawValue)
-        let noResultsOffset = searchCellRect.height + titleCellRect.height
-
-        noResultsFrame.size.height -= noResultsOffset
-        noResultsFrame.origin.y += noResultsOffset
-        noResultsViewController.view.frame = noResultsFrame
-
         // Add noResultsVC to the tableView.
         addChildViewController(noResultsViewController)
         tableView.addSubview(noResultsViewController.view)
@@ -249,6 +239,16 @@ private extension SiteCreationDomainsTableViewController {
         let subtitle = NSLocalizedString("Enter another site name in the search box above.", comment: "Secondary message shown when there are no domains that match the user entered text.")
 
         noResultsViewController?.configure(title: title, buttonTitle: nil, subtitle: subtitle)
+
+        // Calculate the frame for the noResultsVC.
+        var noResultsFrame = tableView.bounds
+        let titleCellRect = tableView.rect(forSection: Sections.titleAndDescription.rawValue)
+        let searchCellRect = tableView.rect(forSection: Sections.searchField.rawValue)
+        let noResultsOffset = searchCellRect.height + titleCellRect.height
+
+        noResultsFrame.size.height -= noResultsOffset
+        noResultsFrame.origin.y += noResultsOffset
+        noResultsViewController?.view.frame = noResultsFrame
     }
 
 }
