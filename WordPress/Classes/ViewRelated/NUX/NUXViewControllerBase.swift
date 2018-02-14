@@ -22,6 +22,14 @@ protocol NUXViewControllerBase {
 /// extension for NUXViewControllerBase where the base class is UIViewController (and thus also NUXTableViewController)
 extension NUXViewControllerBase where Self: UIViewController, Self: UIViewControllerTransitioningDelegate {
 
+    /// Indicates if the Help Button should be displayed, or not.
+    ///
+    var shouldDisplayHelpButton: Bool {
+        return WordPressAuthenticator.shared.delegate?.supportActionEnabled ?? false
+    }
+
+    /// Indicates if the Cancel button should be displayed, or not.
+    ///
     func shouldShowCancelButtonBase() -> Bool {
         return isCancellable() && navigationController?.viewControllers.first == self
     }
@@ -124,13 +132,27 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     // MARK: - Navbar Help and WP Logo methods
 
     /// Adds the WP logo to the nav controller
+    ///
     func addWordPressLogoToNavController() {
         let image = Gridicon.iconOfType(.mySites)
         let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
     }
 
-    func addHelpButtonToNavController() {
+    /// Whenever the WordPressAuthenticator Delegate returns true, when `shouldDisplayHelpButton` is queried, we'll proceed
+    /// and attach the Help Button to the navigationController.
+    ///
+    func setupHelpButtonIfNeeded() {
+        guard shouldDisplayHelpButton else {
+            return
+        }
+
+        addHelpButtonToNavController()
+    }
+
+    /// Adds the Help Button to the nav controller
+    ///
+    private func addHelpButtonToNavController() {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
         let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
@@ -172,18 +194,16 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         navigationItem.rightBarButtonItems = [spacer, barButton]
     }
 
+
     // MARK: - UIViewControllerTransitioningDelegate
 
     /// Displays the support vc.
     ///
-    func displaySupportViewController(sourceTag: SupportSourceTag) {
-        let controller = SupportViewController()
-        controller.sourceTag = sourceTag
+    func displaySupportViewController(from source: WordPressSupportSourceTag) {
+        guard let supporViewController = WordPressAuthenticator.shared.delegate?.supportViewController(from: source) else {
+            fatalError()
+        }
 
-        let navController = UINavigationController(rootViewController: controller)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
-
-        navigationController?.present(navController, animated: true, completion: nil)
+        navigationController?.present(supporViewController, animated: true, completion: nil)
     }
 }
