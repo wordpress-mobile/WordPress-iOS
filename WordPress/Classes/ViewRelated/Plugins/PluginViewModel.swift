@@ -149,7 +149,7 @@ class PluginViewModel: Observable {
         switch plugin.state.updateState {
         case .updated:
             versionRow = TextRow(
-                title: NSLocalizedString("Version \(version)", comment: "Version of an installed plugin"),
+                title: String(format: NSLocalizedString("Version %@", comment: "Version of an installed plugin"), version),
                 value: NSLocalizedString("Installed", comment: "Indicates the state of the plugin")
             )
         case .available(let newVersion):

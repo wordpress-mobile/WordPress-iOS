@@ -3,10 +3,20 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 72
+
+- @sergioestevao 2018-02-07
+- ``Media` added `error` Transformable property that stores a NSError object that resulted from a failed import or upload.
+
+## WordPress 71
+
+- @elibud 2018-02-02
+- `BlogSettings` added `jetpackLazyLoadImages` and `jetpackServeImagesFromOurServers` Bool properties.
+
 ## WordPress 70
 
 - @koke 2018-01-16
-- ``BlogSettings` added `gmtOffset` Decimal property, and `timeZoneString` String property. Store the timezone settings.
+- `BlogSettings` added `gmtOffset` Decimal property, and `timeZoneString` String property. Store the timezone settings.
 
 ## WordPress 69
 - @ctarda 2017-11-27
