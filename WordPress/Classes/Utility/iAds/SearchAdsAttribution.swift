@@ -14,6 +14,8 @@ import AutomatticTracks
     private static let userDefaultsSentKey = "search_ads_attribution_details_sent"
     private static let userDefaultsLimitedAdTrackingKey = "search_ads_limited_tracking"
 
+    private let searchAdsApiVersion = "Version3.1"
+
     /// Is ad tracking limited?
     /// If the user has limited ad tracking, and this API won't return data
     ///
@@ -38,13 +40,6 @@ import AutomatticTracks
         }
     }
 
-    #if (arch(i386) || arch(x86_64)) && os(iOS)
-    private let isSimulator = true
-    #else
-    private let isSimulator = false
-    #endif
-
-
     override init() {
         super.init()
         SearchAdsAttribution.lifeToken = self
@@ -52,7 +47,7 @@ import AutomatticTracks
 
     @objc func requestDetails() {
         guard
-            isSimulator == false, // Requests from simulator will always fail
+            UIDevice.current.isSimulator() == false, // Requests from simulator will always fail
             isTrackingLimited == false,
             isAttributionDetailsSent == false
         else {
@@ -79,17 +74,19 @@ import AutomatticTracks
         defer {
             finish()
         }
-        guard let details = details?["Version3.1"] as? [String: Any] else { return }
+        guard let details = details?[searchAdsApiVersion] as? [String: Any] else {
+            return
+        }
         let parameters = sanitize(details)
 
-        WPAnalytics.track(WPAnalyticsStat.searchAdsAttribution, withProperties: parameters)
+        WPAnalytics.track(.searchAdsAttribution, withProperties: parameters)
         isAttributionDetailsSent = true
     }
 
     /// Fix key format to send to Tracks
     ///
     private func sanitize(_ parameters: [String: Any]) -> [String: Any] {
-        var sanitized: [String: Any] = [:]
+        var sanitized = [String: Any]()
         parameters.forEach {
             let key = $0.key.replacingOccurrences(of: "-", with: "_")
             sanitized[key] = $0.value
@@ -101,13 +98,14 @@ import AutomatticTracks
     private func didReceiveError(_ error: Error) {
         let nsError = error as NSError
 
-        switch ADClientError.Code(rawValue: nsError.code) {
-        case .limitAdTracking?: // Not possible to get data
-            isTrackingLimited = true
-            finish()
-        default:                // Possible connectivity issues
-            self.tryAgain(after: 5)
+        guard nsError.code == ADClientError.Code.limitAdTracking.rawValue else {
+            tryAgain(after: 5) // Possible connectivity issues
+            return
         }
+
+        // Not possible to get data
+        isTrackingLimited = true
+        finish()
     }
 
     private func tryAgain(after delay: TimeInterval) {
