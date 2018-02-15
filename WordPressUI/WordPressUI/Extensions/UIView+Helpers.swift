@@ -5,7 +5,7 @@ import Foundation
 //
 extension UIView {
 
-    @objc func pinSubviewAtCenter(_ subview: UIView) {
+    @objc public func pinSubviewAtCenter(_ subview: UIView) {
         let newConstraints = [
             NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: subview, attribute: .centerX, multiplier: 1, constant: 0),
             NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: subview, attribute: .centerY, multiplier: 1, constant: 0)
@@ -14,7 +14,7 @@ extension UIView {
         addConstraints(newConstraints)
     }
 
-    @objc func pinSubviewToAllEdges(_ subview: UIView) {
+    @objc public func pinSubviewToAllEdges(_ subview: UIView) {
         NSLayoutConstraint.activate([
             leadingAnchor.constraint(equalTo: subview.leadingAnchor),
             trailingAnchor.constraint(equalTo: subview.trailingAnchor),
@@ -23,7 +23,7 @@ extension UIView {
             ])
     }
 
-    @objc func pinSubviewToAllEdgeMargins(_ subview: UIView) {
+    @objc public func pinSubviewToAllEdgeMargins(_ subview: UIView) {
         NSLayoutConstraint.activate([
             layoutMarginsGuide.leadingAnchor.constraint(equalTo: subview.leadingAnchor),
             layoutMarginsGuide.trailingAnchor.constraint(equalTo: subview.trailingAnchor),
@@ -32,7 +32,7 @@ extension UIView {
             ])
     }
 
-    @objc func findFirstResponder() -> UIView? {
+    @objc public func findFirstResponder() -> UIView? {
         if isFirstResponder {
             return self
         }
@@ -48,7 +48,7 @@ extension UIView {
         return nil
     }
 
-    @objc func userInterfaceLayoutDirection() -> UIUserInterfaceLayoutDirection {
+    @objc public func userInterfaceLayoutDirection() -> UIUserInterfaceLayoutDirection {
         return UIView.userInterfaceLayoutDirection(for: semanticContentAttribute)
     }
 }

@@ -4,7 +4,7 @@ import Foundation
 extension UIViewController {
     /// Determines if the current ViewController's View is visible and onscreen
     ///
-    @objc public func isViewOnScreen() -> Bool {
+    public func isViewOnScreen() -> Bool {
         let visibleAsRoot       = view.window?.rootViewController == self
         let visibleAsTopOnStack = navigationController?.topViewController == self && view.window != nil
         let visibleAsPresented  = view.window?.rootViewController?.presentedViewController == self
@@ -14,13 +14,13 @@ extension UIViewController {
 
     /// Determines if the current ViewController's View is horizontally Compact
     ///
-    @objc public func hasHorizontallyCompactView() -> Bool {
+    public func hasHorizontallyCompactView() -> Bool {
         return traitCollection.horizontalSizeClass == .compact
     }
 
     /// Determines if the horizontal size class is specified or not.
     ///
-    @objc public func isHorizontalSizeClassUnspecified() -> Bool {
+    public func isHorizontalSizeClassUnspecified() -> Bool {
         return traitCollection.horizontalSizeClass == .unspecified
     }
 
