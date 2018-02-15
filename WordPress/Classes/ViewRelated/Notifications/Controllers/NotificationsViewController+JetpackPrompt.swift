@@ -16,7 +16,7 @@ extension NotificationsViewController {
             controller.promptType = .notifications
             addChildViewController(controller)
             tableView.addSubview(withFadeAnimation: controller.view)
-            controller.view.center = tableView.center
+            controller.view.frame = CGRect(origin: .zero, size: view.frame.size)
             configureControllerCompletion(controller, withBlog: blog)
             jetpackLoginViewController = controller
         }
