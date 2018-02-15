@@ -2,7 +2,7 @@ import UIKit
 
 extension UIWindow {
     /// Returns the view controller at the top of the view hierarchy.
-    @objc var topmostPresentedViewController: UIViewController? {
+    @objc public var topmostPresentedViewController: UIViewController? {
         guard var controller = rootViewController else {
             return nil
         }
