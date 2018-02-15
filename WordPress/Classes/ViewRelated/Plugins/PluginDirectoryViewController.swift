@@ -37,8 +37,8 @@ class PluginDirectoryViewController: UITableViewController {
             self?.reloadTable()
         }
 
-        tableView.rowHeight = 256
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.rowHeight = Constants.rowHeight
+        tableView.separatorInset = Constants.separatorInset
 
         ImmuTable.registerRows([CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self,
                                 TextRow.self],
@@ -62,6 +62,11 @@ class PluginDirectoryViewController: UITableViewController {
 
     private func reloadTable() {
         immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
+    }
+
+    private enum Constants {
+        static var rowHeight: CGFloat = 256
+        static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
 }
