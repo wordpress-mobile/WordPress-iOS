@@ -37,6 +37,7 @@ final class SiteTagsViewController: UITableViewController {
         returnValue.hidesNavigationBarDuringPresentation = false
         returnValue.dimsBackgroundDuringPresentation = false
         returnValue.searchResultsUpdater = self
+        returnValue.delegate = self
 
         WPStyleGuide.configureSearchBar(returnValue.searchBar)
         return returnValue
@@ -105,9 +106,14 @@ final class SiteTagsViewController: UITableViewController {
     }
 
     private func setupRefreshControl() {
-        let control = UIRefreshControl()
-        control.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
-        refreshControl = control
+        if refreshControl == nil {
+            refreshControl = UIRefreshControl()
+            refreshControl?.addTarget(self, action: #selector(refreshTags), for: .valueChanged)
+        }
+    }
+
+    private func deactivateRefreshControl() {
+        refreshControl = nil
     }
 
     @objc private func refreshResultsController(predicate: NSPredicate) {
@@ -436,5 +442,16 @@ extension SiteTagsViewController: UISearchResultsUpdating {
 
         let filterPredicate = NSPredicate(format: "blog.blogID = %@ AND name contains [cd] %@", blog.dotComID!, text)
         refreshResultsController(predicate: filterPredicate)
+    }
+}
+
+// MARK: - UISearchControllerDelegate Conformance
+extension SiteTagsViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        deactivateRefreshControl()
+    }
+
+    func willDismissSearchController(_ searchController: UISearchController) {
+        setupRefreshControl()
     }
 }

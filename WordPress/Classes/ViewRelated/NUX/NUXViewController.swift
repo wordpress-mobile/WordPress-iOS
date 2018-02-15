@@ -5,7 +5,7 @@
 class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate, NUXSegueHandler {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
-    var helpBadge: WPNUXHelpBadgeLabel = WPNUXHelpBadgeLabel()
+    var helpBadge: NUXHelpBadgeLabel = NUXHelpBadgeLabel()
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
@@ -13,6 +13,10 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         get {
             return .generalLogin
         }
+    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIDevice.isPad() ? .all : .portrait
     }
 
     // MARK: associated type for NUXSegueHandler

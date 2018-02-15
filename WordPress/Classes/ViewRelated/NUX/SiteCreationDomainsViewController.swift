@@ -8,9 +8,6 @@ class SiteCreationDomainsViewController: NUXViewController {
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
 
-    // Used to store Site Creation user options.
-    var siteOptions: [String: Any]?
-
     override var sourceTag: SupportSourceTag {
         get {
             return .wpComCreateSiteDomain
@@ -19,7 +16,6 @@ class SiteCreationDomainsViewController: NUXViewController {
 
     private var domainsTableViewController: SiteCreationDomainsTableViewController?
     private var buttonViewController: NUXButtonViewController?
-    private var selectedDomain: String?
 
     // MARK: - View
 
@@ -62,10 +58,7 @@ class SiteCreationDomainsViewController: NUXViewController {
         if let vc = segue.destination as? SiteCreationDomainsTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.delegate = self
-            if let siteOptions = siteOptions,
-                let siteName = siteOptions["title"] as? String {
-                domainsTableViewController?.siteName = siteName
-            }
+            domainsTableViewController?.siteName = SiteCreationFields.sharedInstance.title
         }
 
         if let vc = segue.destination as? NUXButtonViewController {
@@ -73,17 +66,6 @@ class SiteCreationDomainsViewController: NUXViewController {
             buttonViewController?.delegate = self
             buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
             showButtonView(show: false, withAnimation: false)
-        }
-
-        if let vc = segue.destination as? SiteCreationCreateSiteViewController {
-
-            // TODO: replace siteOptions with SiteCreationFields class when created.
-            guard var siteOptions = siteOptions else {
-                return
-            }
-
-            siteOptions["domain"] = selectedDomain
-            vc.siteOptions = siteOptions
         }
     }
 
@@ -100,7 +82,7 @@ class SiteCreationDomainsViewController: NUXViewController {
 
 extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControllerDelegate {
     func domainSelected(_ domain: String) {
-        selectedDomain = domain
+        SiteCreationFields.sharedInstance.domain = domain
         showButtonView(show: true, withAnimation: true)
     }
 

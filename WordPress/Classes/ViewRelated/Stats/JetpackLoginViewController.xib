@@ -14,7 +14,6 @@
                 <outlet property="descriptionLabel" destination="5EX-8b-0NL" id="D6j-Vu-Grr"/>
                 <outlet property="installJetpackButton" destination="Qm1-Pi-98R" id="nNU-KI-fYA"/>
                 <outlet property="jetpackImage" destination="GNi-Lj-sLf" id="OLq-eC-Ez8"/>
-                <outlet property="moreInformationButton" destination="9Kv-7j-SnM" id="4xT-az-q2M"/>
                 <outlet property="scrollView" destination="BSZ-Dy-TNX" id="GHi-Th-IDj"/>
                 <outlet property="signinButton" destination="lMy-o2-gd3" id="9I4-sr-k0G"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -28,38 +27,37 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSZ-Dy-TNX">
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                     <subviews>
-                        <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
-                            <rect key="frame" x="361.5" y="264.5" width="300" height="238"/>
+                        <stackView autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="wZ5-Fs-qlA">
+                            <rect key="frame" x="361.5" y="201" width="300" height="365"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="72"/>
+                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wp-illustration-stats" translatesAutoresizingMaskIntoConstraints="NO" id="GNi-Lj-sLf">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="179"/>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looks like you have Jetpack set up on your site." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5EX-8b-0NL">
-                                    <rect key="frame" x="0.0" y="82" width="300" height="36"/>
+                                    <rect key="frame" x="0.0" y="209" width="300" height="36"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="WPNUXMainButton">
-                                    <rect key="frame" x="0.0" y="128" width="300" height="30"/>
-                                    <state key="normal" title="Save"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="275" width="300" height="30"/>
+                                    <state key="normal" title="Log in"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="WPNUXMainButton">
-                                    <rect key="frame" x="0.0" y="168" width="300" height="30"/>
-                                    <state key="normal" title="Install Jetpack"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="335" width="300" height="30"/>
+                                    <state key="normal" title="Set up Jetpack"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="jig-Gw-45O"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Kv-7j-SnM">
-                                    <rect key="frame" x="0.0" y="208" width="300" height="30"/>
-                                    <state key="normal" title="More Information"/>
-                                    <connections>
-                                        <action selector="didTouchMoreInformationButton:" destination="-1" eventType="touchUpInside" id="IQm-Ea-4Un"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -87,6 +85,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon-jetpack-gray" width="72" height="72"/>
+        <image name="wp-illustration-stats" width="226" height="179"/>
     </resources>
 </document>
