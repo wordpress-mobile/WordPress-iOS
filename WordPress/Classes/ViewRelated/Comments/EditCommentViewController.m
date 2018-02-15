@@ -87,7 +87,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     [super viewWillDisappear:animated];
     
     // FIX FIX:
-    // iOS +8 is resigning first responder when the presentedViewController is effectively removed from screen.
+    // iOS 8+ is resigning first responder when the presentedViewController is effectively removed from screen.
     // This creates a UX glitch, as a side effect (two animations!!)
     [self.textView resignFirstResponder];
 }
