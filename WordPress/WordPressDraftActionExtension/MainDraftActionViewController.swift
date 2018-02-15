@@ -47,8 +47,7 @@ private extension MainDraftActionViewController {
     func loadAndPresentNavigationVC() {
         modularController.context = self.extensionContext
         modularController.dismissalCompletionBlock = {
-            // This extension doesn't mutate anything passed into it, so just echo the original items.
-            self.extensionContext?.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         }
 
         let shareNavController = UINavigationController(rootViewController: modularController)
