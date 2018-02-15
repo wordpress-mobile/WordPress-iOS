@@ -23,19 +23,19 @@
  SOFTWARE.
  */
 
-protocol ControlEventBindable: class { }
+public protocol ControlEventBindable: class { }
 
 extension UIControl: ControlEventBindable { }
 
 // MARK: - Implementation
-extension ControlEventBindable where Self: UIControl {
+public extension ControlEventBindable where Self: UIControl {
     private var controlEventHandlers: [ControlEventHandler<Self>] {
         get { return (objc_getAssociatedObject(self, &Keys.ControlEventHandlers) as? [ControlEventHandler<Self>]) ?? [] }
         set { objc_setAssociatedObject(self, &Keys.ControlEventHandlers, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 
     /// Listen for `UIControlEvents` executing the provided closure when triggered
-    func on(_ events: UIControlEvents, call closure: @escaping (Self) -> Void) {
+    public func on(_ events: UIControlEvents, call closure: @escaping (Self) -> Void) {
         let handler = ControlEventHandler<Self>(sender: self, events: events, closure: closure)
         self.controlEventHandlers.append(handler)
     }
@@ -72,7 +72,6 @@ private final class BarButtonItemEventHandler<Sender: UIBarButtonItem>: NSObject
         self.closure = closure
         super.init()
 
-//        sender.addTarget(self, action: #selector(self.action), for: events)
         sender.target = self
         sender.action = #selector(self.action)
     }
@@ -94,7 +93,7 @@ extension ControlEventBindable where Self: UIBarButtonItem {
     }
 
     /// Listen for `UIControlEvents` executing the provided closure when triggered
-    func on(call closure: @escaping (Self) -> Void) {
+    public func on(call closure: @escaping (Self) -> Void) {
         let handler = BarButtonItemEventHandler<Self>(sender: self, events: .touchUpInside, closure: closure)
         self.controlEventHandlers.append(handler)
     }
