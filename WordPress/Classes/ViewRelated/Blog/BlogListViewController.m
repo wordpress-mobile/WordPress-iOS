@@ -31,7 +31,7 @@ static NSInteger HideSearchMinSites = 3;
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
                                         WPNoResultsViewDelegate, // To be removed with FeatureFlagSiteCreation.
-                                        BlogListNoResultsViewControllerDelegate,
+                                        NoResultsViewControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) UIStackView *stackView;
@@ -39,7 +39,7 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) WPNoResultsView *noResultsView; // To be removed with FeatureFlagSiteCreation.
-@property (nonatomic, strong) BlogListNoResultsViewController *noResultsViewController;
+@property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
@@ -290,8 +290,8 @@ static NSInteger HideSearchMinSites = 3;
         // If we have no sites, show the No Results VC.
         if (siteCount == 0) {
             [self addNoResultsToView];
-            
-            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subTitle:nil];
+
+            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subtitle:nil image:nil];
         }
     } else {
         // If we've gone from no results to having just one site, the user has
@@ -329,11 +329,13 @@ static NSInteger HideSearchMinSites = 3;
         if (count == 1) {
             [self.noResultsViewController configureWithTitle:singularTitle
                                                  buttonTitle:buttonTitle
-                                                    subTitle:singularSubtitle];
+                                                    subtitle:singularSubtitle
+                                                       image:nil];
         } else {
             [self.noResultsViewController configureWithTitle:multipleTitle
                                                  buttonTitle:buttonTitle
-                                                    subTitle:multipleSubtitle];
+                                                    subtitle:multipleSubtitle
+                                                       image:nil];
         }
         
     } else {
@@ -503,7 +505,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)instantiateNoResultsViewController
 {
-    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"BlogListNoResults" bundle:nil];
+    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"NoResults" bundle:nil];
     self.noResultsViewController = [noResultsSB instantiateViewControllerWithIdentifier:@"NoResults"];
     self.noResultsViewController.delegate = self;
 }
@@ -1011,7 +1013,7 @@ static NSInteger HideSearchMinSites = 3;
     [self validateBlogDetailsViewController];
 }
 
-#pragma mark - BlogListNoResultsViewControllerDelegate
+#pragma mark - NoResultsViewControllerDelegate
 
 - (void)actionButtonPressed {
     [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
