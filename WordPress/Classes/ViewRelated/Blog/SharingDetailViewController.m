@@ -5,8 +5,11 @@
 #import "SharingAuthorizationHelper.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import <WordPressShared/WPTableViewCell.h>
+#import <WordPressUI/WordPressUI.h>
 
 #import "WordPress-Swift.h"
+
+
 
 static NSString *const CellIdentifier = @"CellIdentifier";
 

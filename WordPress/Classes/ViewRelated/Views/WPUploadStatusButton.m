@@ -1,5 +1,8 @@
 #import "WPUploadStatusButton.h"
 #import <WordPressShared/WPFontManager.h>
+#import "WordPress-Swift.h"
+@import WordPressUI;
+
 
 @implementation WPUploadStatusButton
 
@@ -26,7 +29,11 @@
     indicator.autoresizingMask = UIViewAutoresizingNone;
     CGFloat halfButtonHeight = self.bounds.size.height / 2;
     CGFloat buttonWidth = self.bounds.size.width;
-    indicator.center = CGPointMake(buttonWidth - halfButtonHeight , halfButtonHeight);
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight) {
+        indicator.center = CGPointMake(buttonWidth - halfButtonHeight , halfButtonHeight);
+    } else { // Position the loading indicator to the left of the button
+        indicator.center = CGPointMake(-halfButtonHeight , halfButtonHeight);
+    }
     [self addSubview:indicator];
     [indicator startAnimating];
     return self;
