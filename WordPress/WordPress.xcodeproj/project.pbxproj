@@ -434,6 +434,7 @@
 		74AF4D7D1FE417D200E3EBFE /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B335EB1F06F9520053A184 /* MockWordPressComRestApi.swift */; };
 		74BED42E2036038C00C47E40 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BED42F2036038C00C47E40 /* WordPressUI.framework */; };
+		74C2044E20363316006FB344 /* WPReusableTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74558368201A1FD3007809BB /* WPReusableTableViewCells.swift */; };
 		74CEF0781F9AA10100B729CA /* ShareExtensionSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CEF0761F9AA0F700B729CA /* ShareExtensionSessionManager.swift */; };
 		74D06FE61FE075A900AF1788 /* CalypsoProcessorIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5032DDC1F02B30B00D946DC /* CalypsoProcessorIn.swift */; };
 		74D06FE71FE075A900AF1788 /* CalypsoProcessorOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1049F321F39FCF9004DF0BB /* CalypsoProcessorOut.swift */; };
@@ -7637,6 +7638,7 @@
 				74021A0B202E1330006CC39F /* WPStyleGuide+Share.swift in Sources */,
 				74021A1B202E150F006CC39F /* String+RegEx.swift in Sources */,
 				74021A16202E139A006CC39F /* ShareData.swift in Sources */,
+				74C2044E20363316006FB344 /* WPReusableTableViewCells.swift in Sources */,
 				74021A15202E1397006CC39F /* ShareModularViewController.swift in Sources */,
 				74021A25202E1753006CC39F /* OptionsTableView.swift in Sources */,
 				74021A00202E12F4006CC39F /* MediaUploadOperation.swift in Sources */,
