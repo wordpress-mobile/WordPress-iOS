@@ -70,7 +70,7 @@ class JetpackLoginViewController: UIViewController {
         case .stats:
             jetpackImage.image = UIImage(named: "wp-illustration-stats")
         case .notifications:
-            jetpackImage.image = UIImage(named: "icon-jetpack-gray")
+            jetpackImage.image = UIImage(named: "wp-illustration-notifications")
         }
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()

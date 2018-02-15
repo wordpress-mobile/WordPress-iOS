@@ -10,9 +10,13 @@ class MainShareViewController: UIViewController {
         return manager
     }()
 
-    fileprivate let shareNavController: UINavigationController = {
+    fileprivate let editorController: ShareExtensionEditorViewController = {
         let storyboard = UIStoryboard(name: "ShareExtension", bundle: nil)
-        return storyboard.instantiateViewController(withIdentifier: "ShareNavigationController") as! UINavigationController
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "ShareExtensionEditorViewController") as? ShareExtensionEditorViewController else {
+            fatalError("Unable to create share extension editor screen.")
+        }
+        controller.originatingExtension = .share
+        return controller
     }()
 
     required init?(coder aDecoder: NSCoder) {
@@ -40,14 +44,15 @@ private extension MainShareViewController {
     }
 
     func loadAndPresentNavigationVC() {
+        editorController.context = self.extensionContext
+        editorController.dismissalCompletionBlock = {
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+
+        let shareNavController = UINavigationController(rootViewController: editorController)
         shareNavController.transitioningDelegate = extensionTransitioningManager
         shareNavController.modalPresentationStyle = .custom
-        if let editor = shareNavController.topViewController as? ShareExtensionEditorViewController {
-            editor.context = self.extensionContext
-            editor.dismissalCompletionBlock = {
-                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-            }
-        }
+
         present(shareNavController, animated: true, completion: nil)
     }
 
