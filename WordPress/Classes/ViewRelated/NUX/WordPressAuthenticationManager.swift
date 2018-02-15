@@ -31,6 +31,35 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         return supportViewController
     }
+
+    /// Indicates if Helpshift is Enabled.
+    ///
+    var helpshiftEnabled: Bool {
+        return HelpshiftUtils.isHelpshiftEnabled()
+    }
+
+    /// Returns Helpshift's Unread Messages Count.
+    ///
+    var helpshiftUnreadCount: Int {
+        return HelpshiftUtils.unreadNotificationCount()
+    }
+
+    /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
+    ///
+    func presentHelpshift(from viewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
+        let presenter = HelpshiftPresenter()
+        presenter.sourceTag = sourceTag.toSupportSourceTag()
+        presenter.optionsDictionary = options
+        presenter.presentHelpshiftConversationWindowFromViewController(viewController,
+                                                                       refreshUserDetails: true,
+                                                                       completion: nil)
+    }
+
+    /// Refreshes Helpshift's Unread Count.
+    ///
+    func refreshHelpshiftUnreadCount() {
+        HelpshiftUtils.refreshUnreadNotificationCount()
+    }
 }
 
 

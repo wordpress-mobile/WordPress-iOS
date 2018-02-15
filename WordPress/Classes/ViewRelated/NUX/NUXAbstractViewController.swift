@@ -93,7 +93,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        HelpshiftUtils.refreshUnreadNotificationCount()
+        WordPressAuthenticator.shared.delegate?.refreshHelpshiftUnreadCount()
     }
 
 
@@ -257,7 +257,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     /// Updates the badge count and its visibility.
     ///
     @objc func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
+        let count = WordPressAuthenticator.shared.delegate?.helpshiftUnreadCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
     }
