@@ -1,6 +1,6 @@
 import UIKit
-import WordPressShared
 import WordPressKit
+import WordPressShared
 
 class ShareModularViewController: ShareExtensionAbstractViewController {
 
