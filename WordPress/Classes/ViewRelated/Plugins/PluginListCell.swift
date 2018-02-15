@@ -11,7 +11,9 @@ class PluginListCell: UITableViewCell {
         }
 
         didSet {
-            guard let view = pluginAccessoryView else { return }
+            guard let view = pluginAccessoryView else {
+                return
+            }
 
             accessoryViewContainer.addSubview(view)
 

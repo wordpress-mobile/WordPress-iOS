@@ -176,7 +176,7 @@ class CollectionViewContainerCell: UITableViewCell {
 
         self.addSubview(collectionView)
 
-        collectionView.topAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor, constant: 8).isActive = true
+        collectionView.topAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor, constant: Constants.labelVerticalSpacing).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
@@ -190,6 +190,7 @@ class CollectionViewContainerCell: UITableViewCell {
         static var cellWidth: CGFloat = 98
         static var cellHeight: CGFloat = cellWidth * 2
         static var spacing: CGFloat = 18
+        static var labelVerticalSpacing: CGFloat = 8
     }
 
 }
