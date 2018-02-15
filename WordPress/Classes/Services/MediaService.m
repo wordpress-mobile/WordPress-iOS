@@ -68,10 +68,12 @@
         [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [self.managedObjectContext save: nil];
     }];
-
+    NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
         // Setup completion handlers
         void(^completionWithMedia)(Media *) = ^(Media *media) {
+            media.remoteStatus = MediaRemoteStatusLocal;
+            media.error = nil;
             // Pre-generate a thumbnail image, see the method notes.
             [self exportPlaceholderThumbnailForMedia:media
                                           completion:^(NSURL *url){
@@ -84,6 +86,12 @@
             }
         };
         void(^completionWithError)( NSError *) = ^(NSError *error) {
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                mediaInContext.error = error;
+                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
             if (completion) {
                 completion(media, error);
             }
@@ -142,7 +150,14 @@
     Blog *blog = media.blog;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
-
+    if (media.absoluteLocalURL == nil) {
+        if (failure) {
+            failure([NSError errorWithDomain:NSURLErrorDomain
+                                        code:NSURLErrorFileDoesNotExist
+                                    userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Media doesn't have an associated file to upload.", @"Error message to show to users when trying to upload a media object with no local file associated")}]);
+        }
+        return;
+    }
     // Even though jpeg is a valid extension, use jpg instead for the widest possible
     // support.  Some third-party image related plugins prefer the .jpg extension.
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
@@ -152,6 +167,7 @@
         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
         if (mediaInContext) {
             mediaInContext.remoteStatus = MediaRemoteStatusPushing;
+            mediaInContext.error = nil;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
     }];
@@ -182,14 +198,15 @@
             if (error) {
                 [self trackUploadError:error];
             }
-
+            NSError *customError = [self customMediaUploadError:error remote:remote];
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                mediaInContext.error = customError;                
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
-                failure([self customMediaUploadError:error remote:remote]);
+                failure(customError);
             }
         }];
     };

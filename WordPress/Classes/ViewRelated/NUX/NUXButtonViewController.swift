@@ -71,7 +71,7 @@ class NUXButtonViewController: UIViewController {
 
     // MARK: - Helpers
 
-    private func accessibilityIdentifierForString(_ string: String?) -> String {
+    private func accessibilityIdentifier(for string: String?) -> String {
         let buttonId = NSLocalizedString("Button", comment: "Appended accessibility identifier for buttons.")
         return "\(string ?? "") \(buttonId)"
     }

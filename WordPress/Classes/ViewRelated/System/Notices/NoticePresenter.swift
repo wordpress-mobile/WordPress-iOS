@@ -236,9 +236,11 @@ private extension UNMutableNotificationContent {
     convenience init(notice: Notice) {
         self.init()
 
-        title = notice.title
+        title = notice.notificationInfo?.title ?? notice.title
 
-        if let message = notice.message {
+        if let body = notice.notificationInfo?.body {
+            self.body = body
+        } else if let message = notice.message {
             subtitle = message
         }
 

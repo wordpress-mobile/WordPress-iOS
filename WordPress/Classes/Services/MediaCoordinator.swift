@@ -47,7 +47,7 @@ class MediaCoordinator: NSObject {
     @discardableResult
     private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) -> Media {
         mediaProgressCoordinator.track(numberOfItems: 1)
-        let service = MediaService(managedObjectContext: backgroundContext)
+        let service = MediaService(managedObjectContext: mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
         let media = service.createMedia(with: asset,
@@ -60,7 +60,7 @@ class MediaCoordinator: NSObject {
                                 guard let strongSelf = self else {
                                     return
                                 }
-                                if let error = error {
+                                if let error = error as NSError? {
                                     if let media = media {
                                         strongSelf.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
                                         strongSelf.fail(error as NSError, media: media)
