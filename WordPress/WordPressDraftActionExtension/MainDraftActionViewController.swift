@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressUI
 
 class MainDraftActionViewController: UIViewController {
 

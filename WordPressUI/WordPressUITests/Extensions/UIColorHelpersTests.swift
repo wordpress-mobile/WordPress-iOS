@@ -1,5 +1,5 @@
 import XCTest
-import WordPressShared
+import WordPressUI
 
 class UIColorHelpersTests: XCTestCase {
 
@@ -10,5 +10,4 @@ class UIColorHelpersTests: XCTestCase {
         XCTAssertEqual(UIColor.black.hexString().lowercased(), "000000")
         XCTAssertEqual(UIColor(white: 1, alpha: 1).hexString().lowercased(), "ffffff")
     }
-
 }

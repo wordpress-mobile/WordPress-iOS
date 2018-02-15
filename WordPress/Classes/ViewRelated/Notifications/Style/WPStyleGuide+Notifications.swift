@@ -196,7 +196,7 @@ extension WPStyleGuide {
         // User Cell Helpers
         public static func configureFollowButton(_ button: UIButton) {
             // General
-            button.contentHorizontalAlignment = .left
+            button.naturalContentHorizontalAlignment = .leading
             button.backgroundColor = .clear
             button.titleLabel?.font = WPStyleGuide.subtitleFont()
 
@@ -218,7 +218,7 @@ extension WPStyleGuide {
             button.setImage(followIcon.imageWithTintColor(normalColor), for: .normal)
             button.setImage(followingIcon.imageWithTintColor(selectedColor), for: .selected)
             button.setImage(followingIcon.imageWithTintColor(highlightedColor), for: .highlighted)
-            button.imageEdgeInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 0)
+            button.imageEdgeInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: -4)
             button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
 
             // Strings
