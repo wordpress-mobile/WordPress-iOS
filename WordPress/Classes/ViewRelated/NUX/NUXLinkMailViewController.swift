@@ -43,13 +43,6 @@ class NUXLinkMailViewController: LoginViewController {
             WPAppAnalytics.track(.loginMagicLinkOpenEmailClientViewed)
         case .signup:
             WPAppAnalytics.track(.signupMagicLinkOpenEmailClientViewed)
-
-            let message = "Email was not actually sent. This is a work in progress. If you need to create an account, disable the socialSignup feature flag."
-            let alertController = UIAlertController(title: nil,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle("OK")
-            self.present(alertController, animated: true, completion: nil)
         }
     }
 
