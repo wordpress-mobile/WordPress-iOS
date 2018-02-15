@@ -7,9 +7,20 @@ import AutomatticTracks
 
 @objc final class SearchAdsAttribution: NSObject {
 
+    private static let lock = NSLock()
+
+    @objc static var instance: SearchAdsAttribution {
+        lock.lock()
+        let output = _instance ?? SearchAdsAttribution()
+        _instance = output
+        lock.unlock()
+
+        return output
+    }
+
     /// Keep the instance alive
     ///
-    private static var lifeToken: SearchAdsAttribution?
+    private static var _instance: SearchAdsAttribution?
 
     private static let userDefaultsSentKey = "search_ads_attribution_details_sent"
     private static let userDefaultsLimitedAdTrackingKey = "search_ads_limited_tracking"
@@ -40,9 +51,8 @@ import AutomatticTracks
         }
     }
 
-    override init() {
+    private override init() {
         super.init()
-        SearchAdsAttribution.lifeToken = self
     }
 
     @objc func requestDetails() {
@@ -118,6 +128,6 @@ import AutomatticTracks
     /// Free this instance after all work is done.
     ///
     private func finish() {
-        SearchAdsAttribution.lifeToken = nil
+        SearchAdsAttribution._instance = nil
     }
 }
