@@ -4,48 +4,8 @@
 // No warranty is expressed or implied.
 
 #import "UIImage+Resize.h"
-#import "UIImage+RoundedCorner.h"
-#import "UIImage+Alpha.h"
 
 @implementation UIImage (Resize)
-
-// Returns a copy of this image that is cropped to the given bounds.
-// The bounds will be adjusted using CGRectIntegral.
-// This method ignores the image's imageOrientation setting.
-- (UIImage *)croppedImage:(CGRect)bounds {
-    CGFloat scale = MAX(self.scale, 1.0f);
-    CGRect scaledBounds = CGRectMake(bounds.origin.x * scale, bounds.origin.y * scale, bounds.size.width * scale, bounds.size.height * scale);
-    CGImageRef imageRef = CGImageCreateWithImageInRect([self CGImage], scaledBounds);
-    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef scale:self.scale orientation:UIImageOrientationUp];
-    CGImageRelease(imageRef);
-    return croppedImage;
-}
-
-// Returns a copy of this image that is squared to the thumbnail size.
-// If transparentBorder is non-zero, a transparent border of the given size will be added around the edges of the thumbnail. (Adding a transparent border of at least one pixel in size has the side-effect of antialiasing the edges of the image when rotating it using Core Animation.)
-- (UIImage *)thumbnailImage:(NSInteger)thumbnailSize
-          transparentBorder:(NSUInteger)borderSize
-               cornerRadius:(NSUInteger)cornerRadius
-       interpolationQuality:(CGInterpolationQuality)quality {
-    
-    UIImage *resizedImage = [self resizedImageWithContentMode:UIViewContentModeScaleAspectFill
-                                                       bounds:CGSizeMake(thumbnailSize, thumbnailSize)
-                                         interpolationQuality:quality];
-    
-    
-    // Crop out any part of the image that's larger than the thumbnail size
-    // The cropped rect must be centered on the resized image
-    // Round the origin points so that the size isn't altered when CGRectIntegral is later invoked
-    CGRect cropRect = CGRectMake(round((resizedImage.size.width - thumbnailSize) / 2),
-                                 round((resizedImage.size.height - thumbnailSize) / 2),
-                                 thumbnailSize,
-                                 thumbnailSize);
-    UIImage *croppedImage = [resizedImage croppedImage:cropRect];
-    
-    UIImage *transparentBorderImage = borderSize ? [croppedImage transparentBorderImage:borderSize] : croppedImage;
-    
-    return [transparentBorderImage roundedCornerImage:cornerRadius borderSize:borderSize];
-}
 
 // Returns a rescaled copy of the image, taking into account its orientation
 // The image will be scaled disproportionately if necessary to fit the bounds specified by the parameter

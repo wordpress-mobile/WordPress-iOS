@@ -4,7 +4,7 @@ import Foundation
 extension UITableView {
     /// Reloads the currently selected row, if any.
     ///
-    @objc func reloadSelectedRow() {
+    public func reloadSelectedRow() {
         if let selectedRowIndexPath = indexPathForSelectedRow {
             reloadRows(at: [selectedRowIndexPath], with: .none)
             selectRow(at: selectedRowIndexPath, animated: false, scrollPosition: .none)
@@ -13,7 +13,7 @@ extension UITableView {
 
     /// Reloads the tableView's data, while preserving the currently selected row.
     ///
-    @objc func reloadDataPreservingSelection() {
+    public func reloadDataPreservingSelection() {
         if let selectedRowIndexPath = indexPathForSelectedRow {
             reloadData()
             selectRow(at: selectedRowIndexPath, animated: false, scrollPosition: .none)
@@ -22,7 +22,7 @@ extension UITableView {
 
     /// Deselects the currently selected row. If any
     ///
-    @objc func deselectSelectedRowWithAnimation(_ animated: Bool) {
+    @objc public func deselectSelectedRowWithAnimation(_ animated: Bool) {
         if let selectedRowIndexPath = indexPathForSelectedRow {
             deselectRow(at: selectedRowIndexPath, animated: animated)
         }
@@ -30,7 +30,7 @@ extension UITableView {
 
     /// Deselects the currently selected row, asynchronously
     ///
-    @objc func deselectSelectedRowWithAnimationAfterDelay(_ animated: Bool) {
+    public func deselectSelectedRowWithAnimationAfterDelay(_ animated: Bool) {
         // Note: due to a weird UITableView interaction between reloadData and deselectSelectedRow,
         // we'll introduce a slight delay before deselecting, to avoid getting the highlighted row flickering.
         //
@@ -49,7 +49,7 @@ extension UITableView {
     ///     - scrollPosition:   The position in the table view to scroll the specified row. Use `.None` for no scrolling. Defaults to `.Middle`.
     ///     - completion:       A block to call after the row has been deselected.
     ///
-    @objc func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableViewScrollPosition = .middle, completion: (() -> Void)?) {
+    @objc public func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableViewScrollPosition = .middle, completion: (() -> Void)?) {
         flashRowAtIndexPath(indexPath, scrollPosition: scrollPosition, flashLength: type(of: self).defaultFlashLength, completion: completion)
     }
 
@@ -61,7 +61,7 @@ extension UITableView {
     ///     - flashLength:      The length of time (in seconds) to wait between selecting and deselecting the row.
     ///     - completion:       A block to call after the row has been deselected.
     ///
-    @objc func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableViewScrollPosition = .middle, flashLength: TimeInterval, completion: (() -> Void)?) {
+    @objc public func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableViewScrollPosition = .middle, flashLength: TimeInterval, completion: (() -> Void)?) {
         selectRow(at: indexPath, animated: true, scrollPosition: scrollPosition)
 
         let time = DispatchTime.now() + Double(Int64(flashLength * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -72,28 +72,12 @@ extension UITableView {
         }
     }
 
-    static let defaultFlashLength: TimeInterval = 0.7
+    public static let defaultFlashLength: TimeInterval = 0.7
 
-    /// Disables Editing after a specified delay.
-    ///
-    /// -   Parameter delay: milliseconds to elapse before edition will be disabled.
-    ///
-    @objc func disableEditionAfterDelay(_ delay: TimeInterval = defaultDelay) {
-        let delay = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        DispatchQueue.main.asyncAfter(deadline: delay) { [weak self] in
-            if self?.isEditing == true {
-                self?.setEditing(false, animated: true)
-            }
-        }
-    }
-
-    /// Default Disable Edition Action Delay
-    ///
-    fileprivate static let defaultDelay = TimeInterval(0.2)
 
     /// Returns true if the table view does not have any rows
     ///
-    @objc var isEmpty: Bool {
+    @objc public var isEmpty: Bool {
         if numberOfSections == 0 {
             return true
         }
@@ -104,5 +88,4 @@ extension UITableView {
         }
         return true
     }
-
 }

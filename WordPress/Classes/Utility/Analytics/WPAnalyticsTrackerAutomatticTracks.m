@@ -114,6 +114,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"jetpack_user"] = @(jetpackBlogsPresent);
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
+    userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];

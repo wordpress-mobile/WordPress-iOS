@@ -1,6 +1,7 @@
 #import "WPTableViewCell.h"
 #import "WPDeviceIdentification.h"
 
+
 CGFloat const WPTableViewFixedWidth = 600;
 
 @implementation WPTableViewCell
