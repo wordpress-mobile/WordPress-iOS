@@ -5,6 +5,7 @@
 #import "WPFontManager.h"
 #import "WPDeviceIdentification.h"
 
+
 @interface WPNoResultsView ()
 @property (nonatomic, strong) UILabel   *titleLabel;
 @property (nonatomic, strong) UILabel   *messageLabel;

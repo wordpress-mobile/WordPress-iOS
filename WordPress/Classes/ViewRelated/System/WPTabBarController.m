@@ -1,5 +1,5 @@
 #import "WPTabBarController.h"
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUI/UIImage+Util.h>
 
 #import "WordPressAppDelegate.h"
 #import "AccountService.h"
