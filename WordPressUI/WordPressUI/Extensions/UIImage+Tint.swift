@@ -1,7 +1,7 @@
 import Foundation
 
 extension UIImage {
-    @objc func imageWithTintColor(_ color: UIColor) -> UIImage? {
+    public func imageWithTintColor(_ color: UIColor) -> UIImage? {
         guard let cgImg = cgImage else {
             return nil
         }
