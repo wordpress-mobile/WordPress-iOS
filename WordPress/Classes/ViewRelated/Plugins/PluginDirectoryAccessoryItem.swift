@@ -22,10 +22,8 @@ struct PluginDirectoryAccessoryItem {
         }
     }
 
-    private static let imageSize = CGSize(width: 14, height: 14)
-
     private static func active() -> UIView {
-        let icon = Gridicon.iconOfType(.checkmark, withSize: PluginDirectoryAccessoryItem.imageSize)
+        let icon = Gridicon.iconOfType(.checkmark, withSize: Constants.imageSize)
         let color = WPStyleGuide.validGreen()
         let text = NSLocalizedString("Active", comment: "Describes a status of a plugin")
 
@@ -33,7 +31,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func inactive() -> UIView {
-        let icon = Gridicon.iconOfType(.cross, withSize: PluginDirectoryAccessoryItem.imageSize)
+        let icon = Gridicon.iconOfType(.cross, withSize: Constants.imageSize)
         let color = WPStyleGuide.greyDarken10()
         let text = NSLocalizedString("Inactive", comment: "Describes a status of a plugin")
 
@@ -41,7 +39,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func needsUpdate() -> UIView {
-        let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryItem.imageSize)
+        let icon = Gridicon.iconOfType(.sync, withSize: Constants.imageSize)
         let color = WPStyleGuide.warningYellow()
         let text = NSLocalizedString("Needs Update", comment: "Describes a status of a plugin")
 
@@ -49,7 +47,7 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func updating() -> UIView {
-        let icon = Gridicon.iconOfType(.sync, withSize: PluginDirectoryAccessoryItem.imageSize)
+        let icon = Gridicon.iconOfType(.sync, withSize: Constants.imageSize)
         let color = WPStyleGuide.warningYellow()
         let text = NSLocalizedString("Updating", comment: "Describes a status of a plugin")
 
@@ -77,7 +75,7 @@ struct PluginDirectoryAccessoryItem {
         label.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
 
         imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: label.leadingAnchor, constant: -4).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: label.leadingAnchor, constant: -Constants.trailingSpacing).isActive = true
 
         imageView.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
 
@@ -85,12 +83,9 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func stars(count: Double) -> UIView {
-        let totalStars = 5
-
-        let starImageSize = CGSize(width: 12, height: 12)
         let spacing: CGFloat = 0
 
-        let totalWidth = (starImageSize.width * CGFloat(totalStars)) + (spacing * (CGFloat(totalStars) - 1))
+        let totalWidth = (Constants.starImageSize.width * CGFloat(Constants.totalStarsCount)) + (spacing * (CGFloat(Constants.totalStarsCount) - 1))
 
         let container = UIView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
@@ -110,11 +105,11 @@ struct PluginDirectoryAccessoryItem {
 
         let (wholeStars, half) = modf(count)
 
-        for i in 1...totalStars {
+        for i in 1...Constants.totalStarsCount {
 
             if i == Int(wholeStars) + 1, half > 0 {
                 // if this is the next iteration after the last "whole" star, and `half` is > 0, add a half-star.
-                stackView.addArrangedSubview(PluginDirectoryAccessoryItem.halfStar(size: starImageSize))
+                stackView.addArrangedSubview(PluginDirectoryAccessoryItem.halfStar(size: Constants.starImageSize))
                 continue
             }
 
@@ -122,10 +117,10 @@ struct PluginDirectoryAccessoryItem {
             let color: UIColor
 
             if i <= Int(wholeStars) {
-                image = Gridicon.iconOfType(.star, withSize: starImageSize)
+                image = Gridicon.iconOfType(.star, withSize: Constants.starImageSize)
                 color = WPStyleGuide.mediumBlue()
             } else {
-                image = Gridicon.iconOfType(.starOutline, withSize: starImageSize)
+                image = Gridicon.iconOfType(.starOutline, withSize: Constants.starImageSize)
                 color = WPStyleGuide.greyLighten20()
             }
 
@@ -176,5 +171,13 @@ struct PluginDirectoryAccessoryItem {
         rightHalf.centerYAnchor.constraint(equalTo: leftHalf.centerYAnchor).isActive = true
 
         return container
+    }
+
+    private enum Constants {
+        static var totalStarsCount = 5
+        static var imageSize = CGSize(width: 14, height: 14)
+        static var starImageSize = CGSize(width: 12, height: 12)
+        static var trailingSpacing: CGFloat = 4
+
     }
 }
