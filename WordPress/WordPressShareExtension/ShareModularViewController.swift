@@ -33,12 +33,32 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         return button
     }()
 
+    /// Cancel Bar Button
+    ///
+    fileprivate lazy var cancelButton: UIBarButtonItem = {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension modules screen.")
+        let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
+        button.accessibilityIdentifier = "Cancel Button"
+        return button
+    }()
+
     /// Publish Bar Button
     ///
     fileprivate lazy var publishButton: UIBarButtonItem = {
-        let publishTitle = NSLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+        let publishTitle: String
+        if self.originatingExtension == .share {
+            publishTitle = NSLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+        } else {
+            publishTitle = NSLocalizedString("Save", comment: "Save draft post action on share extension site picker screen.")
+        }
+
         let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(publishWasPressed))
-        button.accessibilityIdentifier = "Publish Button"
+        if self.originatingExtension == .share {
+            button.accessibilityIdentifier = "Publish Button"
+        } else {
+            button.accessibilityIdentifier = "Draft Button"
+        }
+
         return button
     }()
 
@@ -71,7 +91,12 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Publishing view
     ///
     @objc lazy var publishingView: WPNoResultsView = {
-        let title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        let title: String
+        if self.originatingExtension == .share {
+            title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        } else {
+            title = NSLocalizedString("Saving post...", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
+        }
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicatorView.startAnimating()
         return WPNoResultsView(title: title, message: nil, accessoryView: activityIndicatorView, buttonTitle: nil)
@@ -98,11 +123,38 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         clearAllNoResultsViews()
 
         // Load Data
+        loadContentIfNeeded()
         setupPrimarySiteIfNeeded()
         reloadSitesIfNeeded()
     }
 
     // MARK: - Setup Helpers
+
+    fileprivate func loadContentIfNeeded() {
+        // Only attempt loading data from the context when launched from the draft extension
+        guard originatingExtension != .share, let extensionContext = context else {
+            return
+        }
+
+        ShareExtractor(extensionContext: extensionContext)
+            .loadShare { share in
+                self.shareData.title = share.title
+                self.shareData.contentBody = share.combinedContentHTML
+
+                share.images.forEach({ image in
+                    if let fileURL = self.saveImageToSharedContainer(image) {
+                        self.shareData.sharedImageDict.updateValue(UUID().uuidString, forKey: fileURL)
+
+                         // Use the filename as the uploadID here.
+                        self.shareData.contentBody = self.shareData.contentBody.stringByAppendingMediaURL(mediaURL: fileURL.absoluteString, uploadID: fileURL.lastPathComponent)
+                    }
+                })
+
+                // Clear out the extension context after loading it once. We don't need it anymore.
+                self.context = nil
+                self.refreshModulesTable()
+        }
+    }
 
     fileprivate func setupPrimarySiteIfNeeded() {
         // If the selected site ID is empty, prefill the selected site with what was already used
@@ -116,7 +168,11 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate func setupNavigationBar() {
         self.navigationItem.hidesBackButton = true
-        navigationItem.leftBarButtonItem = backButton
+        if originatingExtension == .share {
+            navigationItem.leftBarButtonItem = backButton
+        } else {
+            navigationItem.leftBarButtonItem = cancelButton
+        }
         navigationItem.rightBarButtonItem = publishButton
     }
 
@@ -155,10 +211,17 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 // MARK: - Actions
 
 extension ShareModularViewController {
+    @objc func cancelWasPressed() {
+        tracks.trackExtensionCancelled()
+        cleanUpSharedContainer()
+        dismiss(animated: true, completion: self.dismissalCompletionBlock)
+    }
+
     @objc func backWasPressed() {
         if let editor = navigationController?.previousViewController() as? ShareExtensionEditorViewController {
             editor.sites = sites
             editor.shareData = shareData
+            editor.originatingExtension = originatingExtension
         }
         _ = navigationController?.popViewController(animated: true)
     }
@@ -311,7 +374,21 @@ fileprivate extension ShareModularViewController {
     }
 
     func summaryRowText() -> String {
-        return NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        if originatingExtension == .share {
+            return SummaryText.summaryPublishing
+        } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
+            return SummaryText.summaryDraftDefault
+        } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
+            return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
+                                             singular: SummaryText.summaryDraftSingular,
+                                             plural: SummaryText.summaryDraftPlural)
+        } else {
+            return ""
+        }
+    }
+
+    func refreshModulesTable() {
+        modulesTableView.reloadData()
     }
 }
 
@@ -579,6 +656,13 @@ fileprivate extension ShareModularViewController {
         static let defaultRowHeight        = CGFloat(44.0)
         static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
+    }
+
+    struct SummaryText {
+        static let summaryPublishing    = NSLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
+        static let summaryDraftDefault  = NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
+        static let summaryDraftSingular = NSLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
+        static let summaryDraftPlural   = NSLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
     }
 }
 
