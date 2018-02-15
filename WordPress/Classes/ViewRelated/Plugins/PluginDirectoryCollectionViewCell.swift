@@ -12,7 +12,9 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
         didSet {
             oldValue?.removeFromSuperview()
 
-            guard let view = accessoryView else { return }
+            guard let view = accessoryView else {
+                return
+            }
 
             self.addSubview(view)
 
