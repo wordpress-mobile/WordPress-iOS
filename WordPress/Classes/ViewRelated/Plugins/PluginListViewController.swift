@@ -151,7 +151,13 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 extension PluginListViewController: PluginPresenter {
     func present(directoryEntry: PluginDirectoryEntry) {
         let controller = PluginViewController(directoryEntry: directoryEntry, site: site)
-        navigationController?.pushViewController(controller, animated: true)
+
+        if let presenting = presentingViewController as? PluginDirectoryViewController, let presentingNavVC = presenting.navigationController {
+            // If we're presenting results of a search query, we don't have a navVC, need to push on the presenting one.
+            presentingNavVC.pushViewController(controller, animated: true)
+        } else {
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
