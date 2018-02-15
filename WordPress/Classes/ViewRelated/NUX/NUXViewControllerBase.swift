@@ -105,7 +105,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     /// Updates the badge count and its visibility.
     ///
     func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
+        let count = WordPressAuthenticator.shared.delegate?.helpshiftUnreadCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
     }
