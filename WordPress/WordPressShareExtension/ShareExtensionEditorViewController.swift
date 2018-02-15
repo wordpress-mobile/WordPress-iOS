@@ -1,6 +1,7 @@
 import UIKit
 import Aztec
 import Gridicons
+import WordPressUI
 import WordPressShared
 
 class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {

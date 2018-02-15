@@ -4,7 +4,12 @@
 #import "BlogService.h"
 #import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationWebViewController.h"
+
+#import <WordPressUI/WordPressUI.h>
+
 #import "WordPress-Swift.h"
+
+
 
 @interface SharingAuthorizationHelper() <SharingAuthorizationDelegate, SharingAccountSelectionDelegate>
 @property (nonatomic, strong) Blog *blog;
