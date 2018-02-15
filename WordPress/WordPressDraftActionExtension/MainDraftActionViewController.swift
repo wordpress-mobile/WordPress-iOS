@@ -34,6 +34,7 @@ class MainDraftActionViewController: UIViewController {
 
 private extension MainDraftActionViewController {
     func setupAppearance() {
+        self.view.backgroundColor = UIColor.white
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.barTintColor = WPStyleGuide.lightGrey()
         navigationBarAppearace.barStyle = .default
