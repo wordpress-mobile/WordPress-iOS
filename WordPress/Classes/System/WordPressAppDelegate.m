@@ -186,8 +186,14 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
-            
-        if ([URLString rangeOfString:@"magic-login"].length) {
+        if ([URLString rangeOfString:@"new_user"].length) {
+            // TODO: direct to Signup Epilogue
+            DDLogInfo(@"App launched with signup link");
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"This is a work in progress. If you need to create an account, disable the socialSignup feature flag." preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addDefaultActionWithTitle:@"OK" handler:nil];
+            [alertController presentFromRootViewController];
+        }
+        else if ([URLString rangeOfString:@"magic-login"].length) {
             DDLogInfo(@"App launched with authentication link");
             returnValue = [SigninHelpers openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
