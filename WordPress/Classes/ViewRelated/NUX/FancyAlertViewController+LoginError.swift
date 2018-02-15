@@ -23,17 +23,13 @@ extension FancyAlertViewController {
                 // Find the topmost view controller that we can present from
                 guard let delegate = UIApplication.shared.delegate,
                     let window = delegate.window,
-                    let viewController = window?.topmostPresentedViewController else { return }
+                    let viewController = window?.topmostPresentedViewController,
+                    WordPressAuthenticator.shared.delegate?.helpshiftEnabled == true
+                else {
+                    return
+                }
 
-                guard HelpshiftUtils.isHelpshiftEnabled() else { return }
-
-                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
-                let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag.toSupportSourceTag()
-                presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
-                presenter.presentHelpshiftConversationWindowFromViewController(viewController,
-                                                                               refreshUserDetails: true,
-                                                                               completion: nil)
+                WordPressAuthenticator.shared.delegate?.presentHelpshift(from: viewController, sourceTag: sourceTag, options: loginFields.helpshiftLoginOptions())
             }
         }
 
@@ -73,7 +69,7 @@ extension FancyAlertViewController {
         DDLogError(message)
 
         if sourceTag == .jetpackLogin && error.domain == WordPressAppErrorDomain && error.code == NSURLErrorBadURL {
-            if HelpshiftUtils.isHelpshiftEnabled() {
+            if WordPressAuthenticator.shared.delegate?.helpshiftEnabled == true {
                 // TODO: Placeholder Jetpack login error message. Needs updating with final wording. 2017-06-15 Aerych.
                 message = NSLocalizedString("We're not able to connect to the Jetpack site at that URL.  Contact us for assistance.", comment: "Error message shown when having trouble connecting to a Jetpack site.")
                 return alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
@@ -81,7 +77,7 @@ extension FancyAlertViewController {
         }
 
         if error.domain != WPXMLRPCFaultErrorDomain && error.code != NSURLErrorBadURL {
-            if HelpshiftUtils.isHelpshiftEnabled() {
+            if WordPressAuthenticator.shared.delegate?.helpshiftEnabled == true {
                 return alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
             } else {
                 return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
@@ -154,17 +150,13 @@ extension FancyAlertViewController {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
                     let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController else { return }
+                    let viewController = window?.topmostPresentedViewController,
+                    WordPressAuthenticator.shared.delegate?.helpshiftEnabled == true
+                else {
+                    return
+                }
 
-                guard HelpshiftUtils.isHelpshiftEnabled() else { return }
-
-                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
-                let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag.toSupportSourceTag()
-                presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
-                presenter.presentHelpshiftConversationWindowFromViewController(viewController,
-                                                                               refreshUserDetails: true,
-                                                                               completion: nil)
+                WordPressAuthenticator.shared.delegate?.presentHelpshift(from: viewController, sourceTag: sourceTag, options: loginFields.helpshiftLoginOptions())
             }
         }
 

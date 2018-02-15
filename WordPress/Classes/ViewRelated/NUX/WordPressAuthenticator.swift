@@ -16,6 +16,22 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// Returns a Support UIViewController instance, to be displayed from a given source.
     ///
     func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController
+
+    /// Indicates if Helpshift is Enabled.
+    ///
+    var helpshiftEnabled: Bool { get }
+
+    /// Returns Helpshift's Unread Messages Count.
+    ///
+    var helpshiftUnreadCount: Int { get }
+
+    /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
+    ///
+    func presentHelpshift(from viewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+
+    /// Refreshes Helpshift's Unread Count.
+    ///
+    func refreshHelpshiftUnreadCount()
 }
 
 
