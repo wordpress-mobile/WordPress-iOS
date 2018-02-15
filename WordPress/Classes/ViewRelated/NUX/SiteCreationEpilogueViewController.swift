@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteCreationEpilogueViewController: UIViewController {
+class SiteCreationEpilogueViewController: NUXViewController {
 
     // MARK: - Properties
 
