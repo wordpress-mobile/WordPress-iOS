@@ -11,18 +11,18 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Blog List No Results View Controller-->
+        <!--No Results View Controller-->
         <scene sceneID="Lkk-bQ-VGq">
             <objects>
-                <viewController storyboardIdentifier="NoResults" id="m07-8o-jn8" customClass="BlogListNoResultsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NoResults" id="m07-8o-jn8" customClass="NoResultsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ccg-6y-CMO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Sites View">
-                                <rect key="frame" x="20" y="215.5" width="375" height="256"/>
+                                <rect key="frame" x="20" y="216" width="375" height="256"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="No Results Image View">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
                                         <rect key="frame" x="167.5" y="-55" width="350" height="218.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="8:5" id="AAo-23-ODz"/>
@@ -95,8 +95,8 @@
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="actionButton" destination="CPl-cH-d7b" id="aGa-gx-Vlh"/>
-                        <outlet property="noResultsImageView" destination="Fwm-rl-dKS" id="wFT-Fc-ZtZ"/>
-                        <outlet property="subTitleLabel" destination="sdl-jh-nme" id="jwE-ZY-H77"/>
+                        <outlet property="imageView" destination="Fwm-rl-dKS" id="dxy-k9-CRH"/>
+                        <outlet property="subtitleLabel" destination="sdl-jh-nme" id="egs-7j-xNg"/>
                         <outlet property="titleLabel" destination="8BN-gx-7TL" id="1Pu-ma-D5Y"/>
                     </connections>
                 </viewController>
