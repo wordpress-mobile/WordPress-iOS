@@ -33,10 +33,10 @@ class NUXButtonViewController: UIViewController {
         super.viewWillAppear(animated)
 
         bottomButton?.setTitle(bottomButtonTitle, for: UIControlState())
-        bottomButton?.accessibilityIdentifier = accessibilityIdentifierForString(bottomButtonTitle)
+        bottomButton?.accessibilityIdentifier = accessibilityIdentifier(for: bottomButtonTitle)
 
         topButton?.setTitle(topButtonTitle, for: UIControlState())
-        topButton?.accessibilityIdentifier = accessibilityIdentifierForString(topButtonTitle)
+        topButton?.accessibilityIdentifier = accessibilityIdentifier(for: topButtonTitle)
 
         // Hide secondary button if title is not provided.
         topButton?.isHidden = (topButtonTitle ?? "").isEmpty

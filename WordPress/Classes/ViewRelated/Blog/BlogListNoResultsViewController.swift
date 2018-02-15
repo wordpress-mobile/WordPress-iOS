@@ -17,7 +17,7 @@ import UIKit
     @IBOutlet weak var noResultsImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
-    @IBOutlet weak var actionButton: LoginButton!
+    @IBOutlet weak var actionButton: NUXButton!
 
     // MARK: - View
 
