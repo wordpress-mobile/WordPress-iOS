@@ -95,17 +95,6 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         }
     }
 
-    // MARK: - UIViewControllerTransitioningDelegate
-
-//    - (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
-//    {
-//        if ([presented isKindOfClass:[FancyAlertViewController class]]) {
-//            return [[FancyAlertPresentationController alloc] initWithPresentedViewController:presented
-//                                                                    presentingViewController:presenting];
-//        }
-//
-//        return nil;
-//    }
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         if presented is LoginPrologueSignupMethodViewController {
             return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
