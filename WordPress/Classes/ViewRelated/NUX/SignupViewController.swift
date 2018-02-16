@@ -57,7 +57,7 @@ import WordPressShared
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        WordPressAuthenticator.emit(event: .createAccountInitiated)
+        WordPressAuthenticator.post(event: .createAccountInitiated)
     }
 
 
