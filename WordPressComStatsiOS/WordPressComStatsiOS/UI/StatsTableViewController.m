@@ -439,8 +439,13 @@ static NSString *const StatsTableSectionHeaderSimpleBorder = @"StatsTableSection
 {
     self.selectedPeriodUnit = toPeriod;
     [self resetDateToTodayForSite];
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:[self.sections indexOfObject:@(StatsSectionPeriodHeader)]];
-    [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+
+    NSInteger periodHeaderSectionIndex = [self.sections indexOfObject:@(StatsSectionPeriodHeader)];
+    NSIndexPath *periodHeaderIndexPath = [NSIndexPath indexPathForRow:0 inSection:periodHeaderSectionIndex];
+    if ([self.tableView cellForRowAtIndexPath:periodHeaderIndexPath]) { //Animate just if cell is visible
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex: periodHeaderSectionIndex];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
+    }
 
     [self wipeDataAndSeedGroups];
     [self.tableView reloadData];

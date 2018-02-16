@@ -26,7 +26,7 @@ class LoginPrologueViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WordPressAuthenticator.emit(event: .loginPrologueViewed)
+        WordPressAuthenticator.post(event: .loginPrologueViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

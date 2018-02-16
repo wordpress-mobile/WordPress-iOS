@@ -66,7 +66,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WordPressAuthenticator.emit(event: .loginUsernamePasswordFormViewed)
+        WordPressAuthenticator.post(event: .loginUsernamePasswordFormViewed)
     }
 
 
@@ -118,10 +118,10 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     @objc func configureTextFields() {
-        usernameField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         usernameField.text = loginFields.username
         passwordField.text = loginFields.password
+        passwordField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        usernameField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
 
@@ -325,7 +325,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         WordPressAuthenticator.openForgotPasswordURL(loginFields)
-        WordPressAuthenticator.emit(event: .loginForgotPasswordClicked)
+        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
     }
 
 
