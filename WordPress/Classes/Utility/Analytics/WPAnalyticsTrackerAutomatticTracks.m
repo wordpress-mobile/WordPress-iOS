@@ -114,6 +114,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"jetpack_user"] = @(jetpackBlogsPresent);
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
+    userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
@@ -672,6 +673,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatNotificationsUploadMediaSuccessWritePost:
             eventName = @"notifications_upload_media_success_write_post";
+            break;
+        case WPAnalyticsStatNotificationsShareSuccessEditPost:
+            eventName = @"notifications_share_success_edit_post";
             break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
