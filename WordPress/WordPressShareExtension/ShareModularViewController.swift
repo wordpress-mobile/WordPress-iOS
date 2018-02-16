@@ -234,6 +234,19 @@ extension ShareModularViewController {
         clearSiteDataAndRefreshSitesTable()
         reloadSitesIfNeeded()
     }
+
+    func showTagsPicker() {
+        guard let siteID = shareData.selectedSiteID else {
+            // FIXME: show an alert here or something telling the user to pick a site first
+            return
+        }
+
+        let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
+        tagsPicker.onValueChanged = { tagString in
+            self.shareData.tags = tagString
+        }
+        self.navigationController?.pushViewController(tagsPicker, animated: true)
+    }
 }
 
 // MARK: - UITableView DataSource Conformance
@@ -377,6 +390,7 @@ fileprivate extension ShareModularViewController {
         switch ModulesSection(rawValue: indexPath.section)! {
         case .tags:
             modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+            showTagsPicker()
             return
         case .summary:
             return
@@ -454,6 +468,7 @@ fileprivate extension ShareModularViewController {
         sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
+        shareData.tags = String() // Clear the current tags when changing the selected site
         updatePublishButtonStatus()
     }
 
@@ -590,6 +605,7 @@ fileprivate extension ShareModularViewController {
             // We have media, so let's upload it with the post
             networkService.uploadPostWithMedia(title: shareData.title,
                                                body: shareData.contentBody,
+                                               tags: shareData.tags,
                                                status: shareData.postStatus.rawValue,
                                                siteID: siteID,
                                                localMediaFileURLs: localImageURLs,
@@ -605,6 +621,7 @@ fileprivate extension ShareModularViewController {
             // No media. just a simple post
             networkService.saveAndUploadPost(title: shareData.title,
                                              body: shareData.contentBody,
+                                             tags: shareData.tags,
                                              status: shareData.postStatus.rawValue,
                                              siteID: siteID,
                                              onComplete: {

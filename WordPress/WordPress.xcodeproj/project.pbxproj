@@ -419,6 +419,10 @@
 		747BA5EF202E1B3300FB15D0 /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 747BA5F1202E1B3300FB15D0 /* WordPressShared.framework */; };
 		747BA5F3202E1B8400FB15D0 /* ImgUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7E51051FBDDFA700AD2918 /* ImgUploadProcessor.swift */; };
 		747D09862034837C0085EABF /* WordPressShare.js in Resources */ = {isa = PBXBuildFile; fileRef = E1AFA8C21E8E34230004A323 /* WordPressShare.js */; };
+		747F88C1203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */; };
+		747F88C2203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */; };
+		747F88C32037791B00523C7C /* TableViewKeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */; };
+		747F88C42037791B00523C7C /* TableViewKeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E15632CB1EB9ECF40035A099 /* TableViewKeyboardObserver.swift */; };
 		748437EB1F1D4A4800E8DDAF /* gallery-reader-post-private.json in Resources */ = {isa = PBXBuildFile; fileRef = 748437E91F1D4A4800E8DDAF /* gallery-reader-post-private.json */; };
 		748437EC1F1D4A4800E8DDAF /* gallery-reader-post-public.json in Resources */ = {isa = PBXBuildFile; fileRef = 748437EA1F1D4A4800E8DDAF /* gallery-reader-post-public.json */; };
 		748437EE1F1D4A7300E8DDAF /* RichContentFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748437ED1F1D4A7300E8DDAF /* RichContentFormatterTests.swift */; };
@@ -1739,6 +1743,7 @@
 		7470840E1E269669002CA726 /* JetpackLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackLoginViewController.xib; sourceTree = "<group>"; };
 		747BA5F0202E1B3300FB15D0 /* WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		747BA5F1202E1B3300FB15D0 /* WordPressShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareTagsPickerViewController.swift; sourceTree = "<group>"; };
 		748437E91F1D4A4800E8DDAF /* gallery-reader-post-private.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-private.json"; sourceTree = "<group>"; };
 		748437EA1F1D4A4800E8DDAF /* gallery-reader-post-public.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "gallery-reader-post-public.json"; sourceTree = "<group>"; };
 		748437ED1F1D4A7300E8DDAF /* RichContentFormatterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RichContentFormatterTests.swift; sourceTree = "<group>"; };
@@ -3804,6 +3809,7 @@
 				745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */,
 				74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */,
 				BE6787F41FFF2886005D9F01 /* ShareModularViewController.swift */,
+				747F88C0203778E000523C7C /* ShareTagsPickerViewController.swift */,
 				745EAF4920040B220066F415 /* ShareData.swift */,
 			);
 			name = "Shared UI";
@@ -7607,6 +7613,7 @@
 				74021A07202E1307006CC39F /* UINavigationController+Extensions.swift in Sources */,
 				74021A1C202E158F006CC39F /* ShareExtensionService.swift in Sources */,
 				74021A24202E1747006CC39F /* ImageAttachment+WordPress.swift in Sources */,
+				747F88C2203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				74021A06202E1307006CC39F /* UIImageView+Extensions.swift in Sources */,
 				74021A1D202E15AF006CC39F /* Constants.m in Sources */,
 				740219FE202E12F4006CC39F /* UploadOperation.swift in Sources */,
@@ -7618,6 +7625,7 @@
 				740219FF202E12F4006CC39F /* PostUploadOperation.swift in Sources */,
 				74021A1A202E1502006CC39F /* WPStyleGuide+Gridicon.swift in Sources */,
 				74021A04202E1307006CC39F /* String+Extensions.swift in Sources */,
+				747F88C42037791B00523C7C /* TableViewKeyboardObserver.swift in Sources */,
 				74576675202B558C00F42E40 /* MainDraftActionViewController.swift in Sources */,
 				74021A13202E1383006CC39F /* ShareExtensionAbstractViewController.swift in Sources */,
 				74021A10202E1370006CC39F /* ExtensionPresentationController.swift in Sources */,
@@ -7670,6 +7678,7 @@
 				B50248AF1C96FF6200AFBDED /* WPStyleGuide+Share.swift in Sources */,
 				E1CE41661E8D1026000CF5A4 /* ShareExtractor.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
+				747F88C1203778E000523C7C /* ShareTagsPickerViewController.swift in Sources */,
 				74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */,
 				B5FA868C1D10A4C400AB5F7E /* UIImage+Extensions.swift in Sources */,
 				B50248B71C96FF8400AFBDED /* UIImageView+Extensions.swift in Sources */,
@@ -7681,6 +7690,7 @@
 				74D06FEC1FE0869D00AF1788 /* NSAttributedStringKey+Conversion.swift in Sources */,
 				E125F1E51E8E596200320B67 /* SharePost.swift in Sources */,
 				745EAF4A20040B220066F415 /* ShareData.swift in Sources */,
+				747F88C32037791B00523C7C /* TableViewKeyboardObserver.swift in Sources */,
 				74402F2C2005337D00A1D4A2 /* ExtensionTransitioningManager.swift in Sources */,
 				74337EDD20054D5500777997 /* MainShareViewController.swift in Sources */,
 				4020B2BE2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */,

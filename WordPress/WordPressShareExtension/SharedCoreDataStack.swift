@@ -285,6 +285,10 @@ extension SharedCoreDataStack {
         postUploadOp.groupID = groupIdentifier
         postUploadOp.created = NSDate()
         postUploadOp.currentStatus = status
+
+
+        // FIXME: Tags need to be persisted to the DB!!!!!
+
         saveContext()
         return postUploadOp.objectID
     }
