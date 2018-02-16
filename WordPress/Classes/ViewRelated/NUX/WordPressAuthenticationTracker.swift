@@ -1,6 +1,3 @@
-import Foundation
-
-
 // MARK: - Relays WordPressAutentication Flow Events over to WPAppAnalytics
 //
 class WordPressAuthenticationTracker {

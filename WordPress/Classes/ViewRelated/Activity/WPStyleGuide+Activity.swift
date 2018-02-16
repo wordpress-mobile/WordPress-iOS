@@ -96,6 +96,7 @@ extension WPStyleGuide {
         // fix to have all the names correctly mapping.
         private static let stringToGridiconTypeMapping: [String: GridiconType] = [
             "checkmark": GridiconType.checkmark,
+            "cloud": GridiconType.cloud,
             "cog": GridiconType.cog,
             "comment": GridiconType.comment,
             "cross": GridiconType.cross,

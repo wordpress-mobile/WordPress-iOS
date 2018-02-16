@@ -80,8 +80,8 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         nextButton.isEnabled = false
-        siteTitleField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        taglineField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        siteTitleField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        taglineField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     private func setLabelText() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ysJ-Zo-5Kb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u7b-jW-v8f">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -13,7 +13,7 @@
         <!--Share Extension Editor View Controller-->
         <scene sceneID="XV2-Y0-lVd">
             <objects>
-                <viewController id="u7b-jW-v8f" customClass="ShareExtensionEditorViewController" customModule="WordPressShareExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShareExtensionEditorViewController" id="u7b-jW-v8f" customClass="ShareExtensionEditorViewController" customModule="WordPressDraftActionExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CCa-df-jpl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -27,18 +27,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FBQ-IU-bjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="118" y="108"/>
+            <point key="canvasLocation" x="442" y="107"/>
         </scene>
         <!--Share Modular View Controller-->
         <scene sceneID="973-d8-sT6">
             <objects>
-                <viewController id="smc-Pp-8Yy" customClass="ShareModularViewController" customModule="WordPressShareExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShareModularViewController" id="smc-Pp-8Yy" customClass="ShareModularViewController" customModule="WordPressDraftActionExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sVy-D8-YUb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Q9s-fa-9u2">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Zay-kg-8re">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -52,7 +52,7 @@
                                         </connections>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dkr-rW-x8J">
-                                        <rect key="frame" x="0.0" y="44" width="375" height="559"/>
+                                        <rect key="frame" x="0.0" y="44" width="375" height="603"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="dataSource" destination="smc-Pp-8Yy" id="oql-8o-cfh"/>
@@ -80,37 +80,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PAr-KI-b8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="928.79999999999995" y="107.49625187406298"/>
-        </scene>
-        <!--Main Share View Controller-->
-        <scene sceneID="SDn-ec-486">
-            <objects>
-                <viewController definesPresentationContext="YES" providesPresentationContextTransitionStyle="YES" modalPresentationStyle="overCurrentContext" id="ysJ-Zo-5Kb" customClass="MainShareViewController" customModule="WordPressShareExtension" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" opaque="NO" alpha="0.0" contentMode="scaleToFill" id="qLW-q4-Vig">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="c3d-W8-dTj"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dA4-6q-Zpb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1471" y="108"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Hmy-jm-PHS">
-            <objects>
-                <navigationController storyboardIdentifier="ShareNavigationController" modalPresentationStyle="overCurrentContext" id="1Kl-6M-uIe" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="cLJ-zS-XGv">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="u7b-jW-v8f" kind="relationship" relationship="rootViewController" id="7Hg-0t-nVh"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="U2i-Ey-4d2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-680" y="109"/>
+            <point key="canvasLocation" x="1278" y="107"/>
         </scene>
     </scenes>
 </document>

@@ -43,7 +43,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WordPressAuthenticator.emit(event: .loginMagicLinkRequestFormViewed)
+        WordPressAuthenticator.post(event: .loginMagicLinkRequestFormViewed)
     }
 
     // MARK: - Configuration
@@ -98,8 +98,8 @@ class LoginLinkRequestViewController: LoginViewController {
                                             self?.configureLoading(false)
 
             }, failure: { [weak self] (error: Error) in
-                WordPressAuthenticator.emit(event: .loginMagicLinkFailed)
-                WordPressAuthenticator.emit(event: .loginFailed(error: error))
+                WordPressAuthenticator.post(event: .loginMagicLinkFailed)
+                WordPressAuthenticator.post(event: .loginFailed(error: error))
                 guard let strongSelf = self else {
                     return
                 }
@@ -115,12 +115,12 @@ class LoginLinkRequestViewController: LoginViewController {
     }
 
     @objc func didRequestAuthenticationLink() {
-        WordPressAuthenticator.emit(event: .loginMagicLinkRequested)
+        WordPressAuthenticator.post(event: .loginMagicLinkRequested)
         WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: .showLinkMailView, sender: self)
     }
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
-        WordPressAuthenticator.emit(event: .loginMagicLinkExited)
+        WordPressAuthenticator.post(event: .loginMagicLinkExited)
     }
 }
