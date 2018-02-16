@@ -98,7 +98,7 @@ import WordPressShared
     }
 
     private class func trackOpenedLogin() {
-        WordPressAuthenticator.emit(event: .openedLogin)
+        WordPressAuthenticator.post(event: .openedLogin)
     }
 
 
@@ -142,7 +142,7 @@ import WordPressShared
         loginController.email = loginFields.username
         loginController.token = token
         let controller = loginController
-        WordPressAuthenticator.emit(event: .loginMagicLinkOpened)
+        WordPressAuthenticator.post(event: .loginMagicLinkOpened)
 
         let navController = UINavigationController(rootViewController: controller)
 
@@ -419,7 +419,7 @@ import WordPressShared
         let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
                 DDLogError("OnePassword Error: \(error.localizedDescription)")
-                WordPressAuthenticator.emit(event: .onePasswordFailed)
+                WordPressAuthenticator.post(event: .onePasswordFailed)
                 return
             }
 
@@ -438,7 +438,7 @@ import WordPressShared
                 loginFields.multifactorCode = oneTimePassword
             }
 
-            WordPressAuthenticator.emit(event: .onePasswordLogin)
+            WordPressAuthenticator.post(event: .onePasswordLogin)
 
             success(loginFields)
         }
@@ -487,7 +487,7 @@ import WordPressShared
                 return
             }
             DispatchQueue.main.async(execute: {
-                WordPressAuthenticator.emit(event: .loginAutoFillCredentialsUpdated)
+                WordPressAuthenticator.post(event: .loginAutoFillCredentialsUpdated)
             })
         })
     }

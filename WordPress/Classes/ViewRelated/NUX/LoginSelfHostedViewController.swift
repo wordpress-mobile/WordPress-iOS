@@ -66,7 +66,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WordPressAuthenticator.emit(event: .loginUsernamePasswordFormViewed)
+        WordPressAuthenticator.post(event: .loginUsernamePasswordFormViewed)
     }
 
 
@@ -325,7 +325,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         WordPressAuthenticator.openForgotPasswordURL(loginFields)
-        WordPressAuthenticator.emit(event: .loginForgotPasswordClicked)
+        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
     }
 
 
