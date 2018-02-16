@@ -98,7 +98,7 @@ import WordPressShared
     }
 
     private class func trackOpenedLogin() {
-        WordPressAuthenticator.emit(event: .openedLogin)
+        WordPressAuthenticator.post(event: .openedLogin)
     }
 
 
@@ -142,7 +142,7 @@ import WordPressShared
         loginController.email = loginFields.username
         loginController.token = token
         let controller = loginController
-        WordPressAuthenticator.emit(event: .loginMagicLinkOpened)
+        WordPressAuthenticator.post(event: .loginMagicLinkOpened)
 
         let navController = UINavigationController(rootViewController: controller)
 
@@ -416,12 +416,11 @@ import WordPressShared
         let loginURL = loginFields.meta.userIsDotCom ? OnePasswordDefaults.dotcomURL : loginFields.siteAddress
 
         OnePasswordFacade().findLogin(for: loginURL, viewController: controller, sender: sourceView, success: { (username, password, otp) in
-
             loginFields.username = username
             loginFields.password = password
             loginFields.multifactorCode = otp ?? String()
 
-            WordPressAuthenticator.emit(event: .onePasswordLogin)
+            WordPressAuthenticator.post(event: .onePasswordLogin)
             success(loginFields)
 
         }, failure: { error in
@@ -474,7 +473,7 @@ import WordPressShared
                 return
             }
             DispatchQueue.main.async(execute: {
-                WordPressAuthenticator.emit(event: .loginAutoFillCredentialsUpdated)
+                WordPressAuthenticator.post(event: .loginAutoFillCredentialsUpdated)
             })
         })
     }
