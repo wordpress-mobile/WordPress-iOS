@@ -351,6 +351,7 @@
 		93F50A471F227F3600B5BEBA /* xmlrpc-response-getprofile.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */; };
 		93F50A481F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
+		B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B0202C9B7500485233 /* WordPressUI.framework */; };
 		E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */; };
 		E13EE1471F33258E00C15787 /* PluginServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13EE1461F33258E00C15787 /* PluginServiceRemote.swift */; };
 		E13EE1491F332B8500C15787 /* site-plugins-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E13EE1481F332B8500C15787 /* site-plugins-success.json */; };
@@ -740,6 +741,8 @@
 		9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
+		B56D96B0202C9B7500485233 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5A78828202B421B007874FB /* WordPressUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitePlugin.swift; sourceTree = "<group>"; };
 		E13EE1461F33258E00C15787 /* PluginServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PluginServiceRemote.swift; sourceTree = "<group>"; };
@@ -771,6 +774,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */,
 				930F52B81ECF88F9002F921B /* WordPressShared.framework in Frameworks */,
 				AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */,
 			);
@@ -791,6 +795,8 @@
 		38C6ABE94A27A12C9C4AD19D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B56D96B0202C9B7500485233 /* WordPressUI.framework */,
+				B5A78828202B421B007874FB /* WordPressUIKit.framework */,
 				930F52B71ECF88F9002F921B /* WordPressShared.framework */,
 				CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */,
 				9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */,

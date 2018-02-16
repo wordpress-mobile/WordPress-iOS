@@ -29,7 +29,6 @@ extension WPStyleGuide {
         onePasswordButton.sizeToFit()
 
         textField.rightView = onePasswordButton
-        textField.rightViewPadding = UIOffset(horizontal: 20.0, vertical: 0.0)
         textField.rightViewMode = .always
 
         onePasswordButton.addTarget(target, action: selector, for: .touchUpInside)
@@ -63,7 +62,11 @@ extension WPStyleGuide {
     ///
     ///
     @objc class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
-        return UIEdgeInsetsMake(7, 20, 7, 20)
+        return UIEdgeInsets(top: 7, left: 20, bottom: 7, right: 20)
+    }
+
+    @objc class func textInsetsForLoginTextFieldWithLeftView() -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
     }
 
     /// Return the system font in medium weight for the given style
@@ -89,7 +92,7 @@ extension WPStyleGuide {
         let button = UIButton()
         button.clipsToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.contentHorizontalAlignment = .left
+        button.naturalContentHorizontalAlignment = .leading
         button.titleLabel?.font = font
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byWordWrapping

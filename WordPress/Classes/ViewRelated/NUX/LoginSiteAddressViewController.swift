@@ -83,7 +83,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     @objc func configureTextFields() {
-        siteURLField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        siteURLField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         siteURLField.text = loginFields.siteAddress
     }
 
@@ -167,7 +167,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
                 strongSelf.displayError(message: msg)
 
             } else if err.domain == "WordPressKit.WordPressOrgXMLRPCValidatorError" && err.code == WordPressOrgXMLRPCValidatorError.invalid.rawValue {
-                let msg = NSLocalizedString("We're sure this is a great site -- but it's not a WordPress site, so you can't connect it to with this app.",
+                let msg = NSLocalizedString("We're sure this is a great site - but it's not a WordPress site, so you can't connect to it with this app.",
                                             comment: "Error message shown a URL points to a valid site but not a WordPress site.")
                 strongSelf.displayError(message: msg)
 
