@@ -99,7 +99,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     @objc func localizeControls() {
         if loginFields.meta.jetpackLogin {
-            instructionLabel?.text = NSLocalizedString("To view your stats, log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email address screen.")
+            instructionLabel?.text = NSLocalizedString("Log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email address screen.")
         } else {
             instructionLabel?.text = NSLocalizedString("Log in to WordPress.com using an email address to manage all your WordPress sites.", comment: "Instruction text on the login's email address screen.")
         }
@@ -115,6 +115,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
         selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
         selfHostedSigninButton.titleLabel?.numberOfLines = 0
+        selfHostedSigninButton.naturalContentHorizontalAlignment = .leading
     }
 
 
@@ -179,7 +180,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// in `loginFields`.
     ///
     @objc func configureEmailField() {
-        emailTextField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        emailTextField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailTextField.text = loginFields.username
     }
 

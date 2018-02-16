@@ -7,7 +7,7 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUI/WordPressUI.h>
 
 #ifdef BUDDYBUILD_ENABLED
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
