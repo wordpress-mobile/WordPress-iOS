@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 /// A stylized button used by Login controllers. It also can display a `UIActivityIndicatorView`.
-@objc class LoginButton: NUXSubmitButton {
+@objc class NUXButton: NUXSubmitButton {
     // MARK: - Configuration
     fileprivate let horizontalInset: CGFloat = 20
     fileprivate let verticalInset: CGFloat = 12
