@@ -12,6 +12,7 @@ public enum WordPressSupportSourceTag {
     case loginSiteAddress
     case loginUsernamePassword
     case loginWPComPassword
+    case wpComCreateSiteCreation
     case wpComCreateSiteDomain
     case wpComCreateSiteDetails
     case wpComSignupEmail

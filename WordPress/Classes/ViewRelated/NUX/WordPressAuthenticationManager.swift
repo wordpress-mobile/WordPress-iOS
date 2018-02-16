@@ -87,6 +87,8 @@ extension WordPressSupportSourceTag {
             return .loginUsernamePassword
         case .loginWPComPassword:
             return .loginWPComPassword
+        case .wpComCreateSiteCreation:
+            return .wpComCreateSiteCreation
         case .wpComCreateSiteDomain:
             return .wpComCreateSiteDomain
         case .wpComCreateSiteDetails:
