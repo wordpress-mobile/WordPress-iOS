@@ -47,7 +47,10 @@ public extension WordPressAuthenticator {
 // MARK: - Internal Helpers
 //
 extension WordPressAuthenticator {
-    static func emit(event: Event) {
+
+    /// Posts a `wordpressAuthenticationFlowEvent` notification, containing the specified Event.
+    ///
+    static func post(event: Event) {
         NotificationCenter.default.post(name: .wordpressAuthenticationFlowEvent, object: event)
     }
 }

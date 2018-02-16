@@ -51,7 +51,7 @@ class LoginProloguePageViewController: UIPageViewController {
 
         let direction: UIPageViewControllerNavigationDirection = sender.currentPage > currentIndex ? .forward : .reverse
         setViewControllers([pages[sender.currentPage]], direction: direction, animated: true)
-        WordPressAuthenticator.emit(event: .loginProloguePaged)
+        WordPressAuthenticator.post(event: .loginProloguePaged)
     }
 
     fileprivate func animateBackground(for index: Int, duration: TimeInterval = 0.5) {
@@ -107,7 +107,7 @@ extension LoginProloguePageViewController: UIPageViewControllerDelegate {
             pageControl?.currentPage = index
             animateBackground(for: index, duration: 0.2)
         } else {
-            WordPressAuthenticator.emit(event: .loginProloguePaged)
+            WordPressAuthenticator.post(event: .loginProloguePaged)
         }
     }
 

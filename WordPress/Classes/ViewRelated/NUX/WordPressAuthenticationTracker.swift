@@ -1,6 +1,3 @@
-import Foundation
-
-
 // MARK: - Relays WordPressAutentication Flow Events over to WPAppAnalytics
 //
 class WordPressAuthenticationTracker {
@@ -29,7 +26,7 @@ extension WordPressAuthenticationTracker {
 
         switch event {
         case .createAccountInitiated:
-            break
+            WPAppAnalytics.track(.createAccountInitiated)
         case .loginAutoFillCredentialsFilled:
             WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
         case .loginAutoFillCredentialsUpdated:
