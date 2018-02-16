@@ -40,9 +40,9 @@ class NUXLinkMailViewController: LoginViewController {
 
         switch emailMagicLinkSource {
         case .login:
-            WordPressAuthenticator.emit(event: .loginMagicLinkOpenEmailClientViewed)
+            WordPressAuthenticator.post(event: .loginMagicLinkOpenEmailClientViewed)
         case .signup:
-            WordPressAuthenticator.emit(event: .signupMagicLinkOpenEmailClientViewed)
+            WordPressAuthenticator.post(event: .signupMagicLinkOpenEmailClientViewed)
 
             let message = "Email was not actually sent. This is a work in progress. If you need to create an account, disable the socialSignup feature flag."
             let alertController = UIAlertController(title: nil,
@@ -92,6 +92,6 @@ class NUXLinkMailViewController: LoginViewController {
     }
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
-        WordPressAuthenticator.emit(event: .loginMagicLinkExited)
+        WordPressAuthenticator.post(event: .loginMagicLinkExited)
     }
 }

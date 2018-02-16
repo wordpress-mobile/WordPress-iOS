@@ -1,5 +1,8 @@
 #import "WPButtonForNavigationBar.h"
+#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
+
+
 
 static CGFloat kDefaultAnimationDuration = 0.3;
 static CGFloat kHighlightedAlpha = 0.2f;

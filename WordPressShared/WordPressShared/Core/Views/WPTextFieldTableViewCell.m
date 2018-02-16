@@ -1,5 +1,5 @@
 #import "WPTextFieldTableViewCell.h"
-#import "WPDeviceIdentification.h"
+
 
 CGFloat const TextFieldPadding = 15.0f;
 
