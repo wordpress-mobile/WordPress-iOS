@@ -274,8 +274,8 @@ private extension SiteCreationDomainsTableViewController {
         let noResultsSB = UIStoryboard(name: "NoResults", bundle: nil)
         noResultsViewController = noResultsSB.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController
 
-        let title = NSLocalizedString("No available site addresses with that name, maybe try another one?", comment: "Primary message shown when there are no domains that match the user entered text.")
-        let subtitle = NSLocalizedString("Enter another site name in the search field above.", comment: "Secondary message shown when there are no domains that match the user entered text.")
+        let title = NSLocalizedString("We couldn't find any available address with the words you entered - let's try again.", comment: "Primary message shown when there are no domains that match the user entered text.")
+        let subtitle = NSLocalizedString("Enter different words above and we'll look for an address that matches it.", comment: "Secondary message shown when there are no domains that match the user entered text.")
 
         noResultsViewController?.configure(title: title, buttonTitle: nil, subtitle: subtitle)
     }
