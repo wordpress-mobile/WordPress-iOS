@@ -47,7 +47,6 @@
 #import "NavBarTitleDropdownButton.h"
 #import "NSAttributedString+Util.h"
 #import "NSObject+Helpers.h"
-#import "NSURL+Util.h"
 
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
@@ -94,7 +93,6 @@
 
 #import "UIAlertControllerProxy.h"
 #import "UIApplication+Helpers.h"
-#import "UIImage+Resize.h"
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
@@ -144,5 +142,5 @@
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPAnalytics.h>
+#import <WordPressUI/UIImage+Util.h>
