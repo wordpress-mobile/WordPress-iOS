@@ -429,7 +429,7 @@ import WordPressShared
             }
 
             DDLogError("OnePassword Error: \(error.localizedDescription)")
-            WordPressAuthenticator.emit(event: .onePasswordFailed)
+            WordPressAuthenticator.post(event: .onePasswordFailed)
         })
     }
 
