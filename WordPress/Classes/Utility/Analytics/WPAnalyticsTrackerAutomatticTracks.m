@@ -1168,6 +1168,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatShareExtensionError:
             eventName = @"share_extension_error";
             break;
+        case WPAnalyticsStatSearchAdsAttribution:
+            eventName = @"searchads_attribution_detail_received";
+            break;
 
             // to be implemented
         case WPAnalyticsStatDefaultAccountChanged:
