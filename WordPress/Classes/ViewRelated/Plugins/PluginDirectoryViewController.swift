@@ -8,26 +8,6 @@ class PluginDirectoryViewController: UITableViewController {
     private var viewModelReceipt: Receipt?
     private var immuHandler: ImmuTableViewHandler?
 
-    private lazy var searchController: UISearchController = {
-        let resultsController = PluginListViewController(site: viewModel.site, query: .feed(type: .search(term: "")))
-
-        let controller = UISearchController(searchResultsController: resultsController)
-        controller.obscuresBackgroundDuringPresentation = false
-        controller.dimsBackgroundDuringPresentation = false
-        controller.hidesNavigationBarDuringPresentation = false
-        controller.searchResultsUpdater = self
-        controller.delegate = self
-
-        let searchBar = controller.searchBar
-        WPStyleGuide.configureSearchBar(searchBar)
-        searchBar.showsCancelButton = true
-        searchBar.barTintColor = WPStyleGuide.wordPressBlue()
-        searchBar.isTranslucent = false
-        searchBar.layer.borderWidth = 0
-        searchBar.clipsToBounds = true
-
-        return controller
-    }()
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
@@ -39,6 +19,14 @@ class PluginDirectoryViewController: UITableViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc convenience init?(blog: Blog) {
+        guard let site = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
+
+        self.init(site: site)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -67,23 +55,6 @@ class PluginDirectoryViewController: UITableViewController {
         WPStyleGuide.configureSearchBarAppearance()
     }
 
-    @objc convenience init?(blog: Blog) {
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        self.init(site: site)
-    }
-
-    lazy var searchBarButton: UIBarButtonItem = {
-        let icon = Gridicon.iconOfType(.search)
-
-        let buttonItem = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(searchButtonTapped))
-        buttonItem.tintColor = .white
-
-        return buttonItem
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -110,52 +81,32 @@ class PluginDirectoryViewController: UITableViewController {
         immuHandler = handler
 
         navigationItem.rightBarButtonItem = searchBarButton
+
+        setupSearchBar()
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        return CGFloat.leastNonzeroMagnitude
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 256
+        return CGFloat.leastNonzeroMagnitude
     }
 
     private func reloadTable() {
         immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
     }
 
+
     @objc private func searchButtonTapped() {
-        toggleSearchBar()
+        searchController.isActive = true
+        tableView.setContentOffset(.zero, animated: true)
     }
 
-    private func toggleSearchBar() {
+    private func setupSearchBar() {
         if #available(iOS 11.0, *) {
-
-            if navigationItem.searchController == nil {
-                showSearchBar()
-            } else {
-                hideSearchBar()
-            }
-
-        } else {
-
-            if searchController.searchBar.superview == nil {
-                showSearchBar()
-            } else {
-                hideSearchBar()
-            }
-        }
-    }
-
-    private func showSearchBar() {
-        if #available(iOS 11.0, *) {
-            navigationItem.hidesSearchBarWhenScrolling = false
+            navigationItem.hidesSearchBarWhenScrolling = true
             navigationItem.searchController = searchController
-            navigationItem.searchController?.searchBar.becomeFirstResponder()
 
             // This is extremely fragile and almost guaranteed to break in a future iOS update, but I couldn't
             // really find a way to achieve it any other way. (Setting `appearance` on `UITextField` contained
@@ -169,54 +120,55 @@ class PluginDirectoryViewController: UITableViewController {
                 }
             }
         } else {
-            let originalSize = searchController.searchBar.frame.size.height
-
-            searchController.searchBar.frame.size.height = 0
-            self.tableView.tableHeaderView = self.searchController.searchBar
-
-            UIView.animate(withDuration: 0.3, animations: {
-            self.tableView.tableHeaderView = self.searchController.searchBar
-                self.searchController.searchBar.frame.size.height = originalSize
-                self.tableView.tableHeaderView = self.searchController.searchBar
-                self.searchController.searchBar.becomeFirstResponder()
-            })
+            tableView.tableHeaderView = searchController.searchBar
         }
+
+        tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.height)
     }
 
-    private func hideSearchBar() {
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController?.isActive = false
+    private lazy var searchController: UISearchController = {
+        let resultsController = PluginListViewController(site: viewModel.site, query: .feed(type: .search(term: "")))
 
-            self.navigationItem.searchController = UISearchController(searchResultsController: nil)
-            self.navigationItem.searchController = nil
-            // For some reason, just setting the controller to `nil` doesn't resize the UINavigationBar and leaves a huge, ugly gap.
-            // Setting it to a "dummy", empty search controller and _then_ `nil`ing it out fixes it.
+        let controller = UISearchController(searchResultsController: resultsController)
+        controller.obscuresBackgroundDuringPresentation = false
+        controller.dimsBackgroundDuringPresentation = false
+        controller.searchResultsUpdater = self
+        controller.delegate = self
+
+        if #available(iOS 11, *) {
+            controller.hidesNavigationBarDuringPresentation = true
         } else {
-            let originalSize = searchController.searchBar.frame.size.height
-
-            UIView.animate(withDuration: 0.3, animations: {
-                self.searchController.searchBar.frame.size.height = 0
-                self.searchController.searchBar.removeFromSuperview()
-                self.tableView.tableHeaderView = nil
-            }, completion: { _ in
-                self.searchController.searchBar.frame.size.height = originalSize
-
-                if self.searchController.isActive {
-                    self.searchController.isActive = false
-                }
-            })
+            controller.hidesNavigationBarDuringPresentation = false
         }
-    }
+
+        let searchBar = controller.searchBar
+        WPStyleGuide.configureSearchBar(searchBar)
+        searchBar.showsCancelButton = true
+        searchBar.barTintColor = WPStyleGuide.wordPressBlue()
+        searchBar.isTranslucent = false
+        searchBar.layer.borderWidth = 0
+        searchBar.clipsToBounds = true
+
+        return controller
+    }()
+
+    lazy var searchBarButton: UIBarButtonItem = {
+        let icon = Gridicon.iconOfType(.search)
+
+        let buttonItem = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(searchButtonTapped))
+        buttonItem.tintColor = .white
+
+        return buttonItem
+    }()
+
 }
 
 extension PluginDirectoryViewController: UISearchControllerDelegate {
 
-    func willDismissSearchController(_ searchController: UISearchController) {
-        if searchController.searchBar.superview == nil, searchController.isActive == false {
-            return
+    func didPresentSearchController(_ searchController: UISearchController) {
+        DispatchQueue.main.async {
+            searchController.searchBar.becomeFirstResponder()
         }
-
-        hideSearchBar()
     }
 
 }
