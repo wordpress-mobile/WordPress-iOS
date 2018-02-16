@@ -46,6 +46,10 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         viewModelChangeReceipt = viewModel.onChange { [weak self] in
             self?.updateRefreshControl()
         }
+
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 72
+
         refreshModel(change: .replace)
         updateRefreshControl()
     }
