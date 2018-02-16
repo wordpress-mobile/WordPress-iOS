@@ -12,12 +12,12 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "Constants.h"
-#import <WordPressShared/NSString+XMLExtensions.h>
-#import <WordPressShared/WPNUXUtility.h>
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WordPressShared.h>
+#import <WordPressUI/WordPressUI.h>
+#import <WordPressKit/WordPressKit.h>
 #import "WordPress-Swift.h"
-@import WordPressKit;
-@import WordPressShared;
+
+
 
 NSString * const NewWPComBlogCreatedNotification = @"NewWPComBlogCreatedNotification";
 NSString * const NewWPComBlogCreatedNotificationBlogUserInfoKey = @"NewWPComBlogCreatedNotificationBlogUserInfoKey";

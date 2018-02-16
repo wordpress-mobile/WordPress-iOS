@@ -1,6 +1,1 @@
-Réglages du site, Écriture : vous pouvez maintenant modifier les étiquettes de votre site !
-Aztec, Média : Les utilisateurs peuvent maintenant importer des photos et vidéos depuis d’autres applications en utilisant le bouton … sur la barre d’outils de média dans Aztec et via la section bibliothèque des médias de l’app.
-Média : le téléversement est maintenant asynchrone !
-Détails : Vous pouvez maintenant glisser et déposer des images depuis d’autres apps sur l’icône de blavatar.
-Mon compte : Vous pouvez maintenant glisser et déposer des images depuis d’autres apps sur l’icône de gravatar.
-
+Une nouvelle et merveilleuse extension de partage est disponible dans cette version.

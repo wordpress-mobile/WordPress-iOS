@@ -77,6 +77,18 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     fileprivate var selectedNotification: Notification? = nil
 
+    /// JetpackLoginVC being presented.
+    ///
+    internal var jetpackLoginViewController: JetpackLoginViewController? = nil
+
+    /// Activity Indicator to be shown when refreshing a Jetpack site status.
+    ///
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+
     // MARK: - View Lifecycle
 
     deinit {
@@ -146,6 +158,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
+
+        if !AccountHelper.isDotcomAvailable() {
+            promptForJetpackCredentials()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1015,7 +1031,7 @@ private extension NotificationsViewController {
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-        return mainContext.countObjects(ofType: Notification.self) > 0
+        return mainContext.countObjects(ofType: Notification.self) > 0 && !shouldDisplayJetpackPrompt
     }
 }
 
@@ -1026,6 +1042,8 @@ private extension NotificationsViewController {
 private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
         updateSplitViewAppearanceForNoResultsView()
+        // Hide the filter header if we're showing the Jetpack prompt
+        hideFiltersSegmentedControlIfApplicable()
 
         // Remove + Show Filters, if needed
         guard shouldDisplayNoResultsView == true else {
@@ -1046,16 +1064,12 @@ private extension NotificationsViewController {
         // Refresh its properties: The user may have signed into WordPress.com
         noResultsView.titleText     = noResultsTitleText
         noResultsView.messageText   = noResultsMessageText
-        noResultsView.accessoryView = noResultsAccessoryView
         noResultsView.buttonTitle   = noResultsButtonText
-
-        // Hide the filter header if we're showing the Jetpack prompt
-        hideFiltersSegmentedControlIfApplicable()
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
         if let splitViewController = splitViewController as? WPSplitViewController {
-            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = shouldDisplayFullscreenNoResultsView ? .full : .default
+            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
             if splitViewController.wpPrimaryColumnWidth != columnWidth {
                 splitViewController.wpPrimaryColumnWidth = columnWidth
             }
@@ -1067,50 +1081,34 @@ private extension NotificationsViewController {
     }
 
     var noResultsTitleText: String {
-        guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Connect to Jetpack",
-                                     comment: "Notifications title displayed when a self-hosted user is not connected to Jetpack")
-        }
         return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsTitle ?? ""
     }
 
     var noResultsMessageText: String {
-        guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.",
-                                     comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
-        }
         return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsMessage ?? ""
     }
 
-    var noResultsAccessoryView: UIView? {
-        return shouldDisplayJetpackMessage ? UIImageView(image: UIImage(named: "icon-jetpack-gray")) : nil
-    }
-
     var noResultsButtonText: String {
-        guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Learn more", comment: "")
-        }
         return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsButtonTitle ?? ""
     }
 
-    var shouldDisplayJetpackMessage: Bool {
+    var shouldDisplayJetpackPrompt: Bool {
         return AccountHelper.isDotcomAvailable() == false
     }
 
     var shouldDisplayNoResultsView: Bool {
-        return tableViewHandler.resultsController.fetchedObjects?.count == 0
+        return tableViewHandler.resultsController.fetchedObjects?.count == 0 && !shouldDisplayJetpackPrompt
     }
 
     var shouldDisplayFullscreenNoResultsView: Bool {
         let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
-
-        return shouldDisplayNoResultsView && (shouldDisplayJetpackMessage || currentFilter == .none)
+        return shouldDisplayNoResultsView && currentFilter == .none
     }
 
     var shouldDimDetailViewController: Bool {
         let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
 
-        return shouldDisplayNoResultsView && !shouldDisplayJetpackMessage && currentFilter != .none
+        return shouldDisplayNoResultsView && currentFilter != .none
     }
 }
 
@@ -1119,19 +1117,6 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView) {
-        guard shouldDisplayJetpackMessage == false else {
-            guard let targetURL = URL(string: WPJetpackInformationURL) else {
-                fatalError()
-            }
-
-            let webViewController = WebViewControllerFactory.controller(url: targetURL)
-            let navController = UINavigationController(rootViewController: webViewController)
-            present(navController, animated: true, completion: nil)
-
-            let properties = [Stats.sourceKey: Stats.sourceValue]
-            WPAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
-            return
-        }
         if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
             let properties = [Stats.sourceKey: Stats.sourceValue]
             switch filter {

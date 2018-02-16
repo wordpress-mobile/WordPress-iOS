@@ -2,11 +2,13 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WordPressShared.h>
+#import <WordPressUI/WordPressUI.h>
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
 #import "FLAnimatedImage.h"
-@import WordPressShared;
+
+
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 

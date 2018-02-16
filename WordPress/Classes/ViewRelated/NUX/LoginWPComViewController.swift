@@ -113,7 +113,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
 
     @objc func configureTextFields() {
         passwordField?.text = loginFields.password
-        passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        passwordField?.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailLabel?.text = loginFields.username
     }
 
