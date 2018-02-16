@@ -86,7 +86,7 @@ extension SigninWPComSyncHandler {
             "dotcom_user": true.description
         ]
 
-        WordPressAuthenticator.emit(event: .signedIn(properties: properties))
+        WordPressAuthenticator.post(event: .signedIn(properties: properties))
     }
 
 
