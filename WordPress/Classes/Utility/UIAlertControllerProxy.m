@@ -1,5 +1,7 @@
 #import "UIAlertControllerProxy.h"
-#import "WordPress-Swift.h"
+#import <WordPressUI/WordPressUI.h>
+
+
 
 @implementation UIAlertControllerProxy
 
