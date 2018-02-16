@@ -49,7 +49,7 @@
                                         </subviews>
                                         <variation key="heightClass=compact" spacing="5"/>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="125.5" y="212" width="84" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
