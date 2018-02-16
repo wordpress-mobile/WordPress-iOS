@@ -49,7 +49,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         nc.addObserver(self, selector: #selector(applicationBecameInactive), name: .UIApplicationWillResignActive, object: nil)
         nc.addObserver(self, selector: #selector(applicationBecameActive), name: .UIApplicationDidBecomeActive, object: nil)
 
-        WordPressAuthenticator.emit(event: .loginTwoFactorFormViewed)
+        WordPressAuthenticator.post(event: .loginTwoFactorFormViewed)
     }
 
 
@@ -87,7 +87,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     /// configures the text fields
     ///
     @objc func configureTextFields() {
-        verificationCodeField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        verificationCodeField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     /// Configures the appearance and state of the submit button.
@@ -160,7 +160,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         syncWPCom(username, authToken: authToken, requiredMultifactor: true)
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WordPressAuthenticator.emit(event: .loginSocialSuccess)
+        WordPressAuthenticator.post(event: .loginSocialSuccess)
     }
 
     /// Only allow digits in the 2FA text field
