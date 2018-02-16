@@ -22,7 +22,9 @@ class PluginDirectoryViewController: UITableViewController {
         WPStyleGuide.configureSearchBar(searchBar)
         searchBar.showsCancelButton = true
         searchBar.barTintColor = WPStyleGuide.wordPressBlue()
+        searchBar.isTranslucent = false
         searchBar.layer.borderWidth = 0
+        searchBar.clipsToBounds = true
 
         return controller
     }()
@@ -55,7 +57,10 @@ class PluginDirectoryViewController: UITableViewController {
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
         barButtonItemAppearance.setTitleTextAttributes(barButtonTitleAttributes, for: UIControlState())
 
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.white)
+        if #available(iOS 11.0, *) {
+            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.white)
+        }
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -83,6 +88,7 @@ class PluginDirectoryViewController: UITableViewController {
         super.viewDidLoad()
 
         definesPresentationContext = true
+        extendedLayoutIncludesOpaqueBars = false
         tableView.backgroundColor = .white
 
         viewModelReceipt = viewModel.onChange { [weak self] in
@@ -114,6 +120,10 @@ class PluginDirectoryViewController: UITableViewController {
         return 0
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 256
+    }
+
     private func reloadTable() {
         immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
     }
@@ -133,21 +143,11 @@ class PluginDirectoryViewController: UITableViewController {
 
         } else {
 
-            let searchBar = searchController.searchBar
-            if searchBar.superview != nil {
-                // Fallback on earlier versions
-                searchBar.removeFromSuperview()
-                tableView.tableHeaderView = nil
+            if searchController.searchBar.superview == nil {
+                showSearchBar()
+            } else {
+                hideSearchBar()
             }
-
-            let height = searchBar.bounds.height
-
-            searchBar.bounds.size.height = 0
-
-            UIView.animate(withDuration: 0.3, animations: {
-                self.tableView.tableHeaderView = searchBar
-                searchBar.bounds.size.height = height
-            })
         }
     }
 
@@ -168,6 +168,18 @@ class PluginDirectoryViewController: UITableViewController {
                     backgroundView.clipsToBounds = true;
                 }
             }
+        } else {
+            let originalSize = searchController.searchBar.frame.size.height
+
+            searchController.searchBar.frame.size.height = 0
+            self.tableView.tableHeaderView = self.searchController.searchBar
+
+            UIView.animate(withDuration: 0.3, animations: {
+            self.tableView.tableHeaderView = self.searchController.searchBar
+                self.searchController.searchBar.frame.size.height = originalSize
+                self.tableView.tableHeaderView = self.searchController.searchBar
+                self.searchController.searchBar.becomeFirstResponder()
+            })
         }
     }
 
@@ -180,14 +192,30 @@ class PluginDirectoryViewController: UITableViewController {
             // For some reason, just setting the controller to `nil` doesn't resize the UINavigationBar and leaves a huge, ugly gap.
             // Setting it to a "dummy", empty search controller and _then_ `nil`ing it out fixes it.
         } else {
-           dump("whaaat")
+            let originalSize = searchController.searchBar.frame.size.height
+
+            UIView.animate(withDuration: 0.3, animations: {
+                self.searchController.searchBar.frame.size.height = 0
+                self.searchController.searchBar.removeFromSuperview()
+                self.tableView.tableHeaderView = nil
+            }, completion: { _ in
+                self.searchController.searchBar.frame.size.height = originalSize
+
+                if self.searchController.isActive {
+                    self.searchController.isActive = false
+                }
+            })
         }
     }
 }
 
 extension PluginDirectoryViewController: UISearchControllerDelegate {
 
-    func didDismissSearchController(_ searchController: UISearchController) {
+    func willDismissSearchController(_ searchController: UISearchController) {
+        if searchController.searchBar.superview == nil, searchController.isActive == false {
+            return
+        }
+
         hideSearchBar()
     }
 
