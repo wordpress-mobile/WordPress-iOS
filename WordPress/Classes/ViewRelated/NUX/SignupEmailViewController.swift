@@ -59,10 +59,6 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
         unregisterForKeyboardEvents()
     }
 
-    override func shouldShowCancelButton() -> Bool {
-        return true
-    }
-
     private func localizeControls() {
         instructionLabel?.text = NSLocalizedString("To create your new WordPress.com account, please enter your email address.", comment: "Text instructing the user to enter their email address.")
 
