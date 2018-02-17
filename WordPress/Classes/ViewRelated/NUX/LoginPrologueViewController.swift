@@ -54,6 +54,9 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
             vc.emailTapped = { [weak self] in
                 self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSigninV2.rawValue, sender: self)
             }
+            vc.googleTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showGoogle.rawValue, sender: self)
+            }
             vc.modalPresentationStyle = .custom
         }
     }

@@ -25,6 +25,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case showEmailLogin
         case showSignupMethod
         case showSigninV2
+        case showGoogle
         case showURLUsernamePassword
         case showSelfHostedLogin
         case showWPComLogin
