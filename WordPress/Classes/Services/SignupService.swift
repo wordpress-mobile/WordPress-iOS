@@ -156,8 +156,8 @@ open class SignupService: LocalCoreDataService {
                                             andClientID: ApiCredentials.client(),
                                             andClientSecret: ApiCredentials.secret(),
                                             success: { (responseDictionary) in
-                                                guard let username = responseDictionary?["username"] as? String,
-                                                    let bearer_token = responseDictionary?["bearer_token"] as? String else {
+                                                guard let username = responseDictionary?[ResponseKeys.username] as? String,
+                                                    let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
                                                         // without these we can't proceed.
                                                         failure(nil)
                                                         return
@@ -315,5 +315,11 @@ open class SignupService: LocalCoreDataService {
         case invalidResponse
         case missingRESTAPI
         case missingDefaultWPComAccount
+    }
+
+    /// A convenience struct for response keys
+    private struct ResponseKeys {
+        static let bearerToken = "bearer_token"
+        static let username = "username"
     }
 }
