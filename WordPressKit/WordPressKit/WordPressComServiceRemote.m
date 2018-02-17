@@ -68,6 +68,44 @@
     [self.wordPressComRestApi POST:requestUrl parameters:params success:successBlock failure:failureBlock];
 }
 
+// https://developer.wordpress.com/docs/api/console/
+// API v1 POST /users/social/new
+/*
+ client_id
+ client_secret
+ service
+ signup_flow_name
+ access_token // optional, I don't think we'll need it
+ id_token
+ */
+- (void)createWPComAccountWithGoogle:(NSString *)token
+                         andClientID:(NSString *)clientID
+                     andClientSecret:(NSString *)clientSecret
+                             success:(WordPressComServiceSuccessBlock)success
+                             failure:(WordPressComServiceFailureBlock)failure
+{
+    void (^successBlock)(id, NSHTTPURLResponse *) = ^(id responseObject, NSHTTPURLResponse *httpResponse) {
+        success(responseObject);
+    };
+
+    void (^failureBlock)(NSError *, NSHTTPURLResponse *) = ^(NSError *error, NSHTTPURLResponse *httpResponse){
+        NSError *errorWithLocalizedMessage = [self errorWithLocalizedMessage:error];
+        failure(errorWithLocalizedMessage);
+    };
+
+    NSDictionary *params = @{
+                             @"client_id": clientID,
+                             @"client_secret": clientSecret,
+                             @"id_token": token,
+                             @"service": @"google",
+                             @"signup_flow_name": @"social",
+                             };
+
+    NSString *requestUrl = [self pathForEndpoint:@"users/social/new" withVersion:ServiceRemoteWordPressComRESTApiVersion_1_0];
+
+    [self.wordPressComRestApi POST:requestUrl parameters:params success:successBlock failure:failureBlock];
+}
+
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
                     andBlogTitle:(NSString *)blogTitle
                    andLanguageId:(NSString *)languageId
