@@ -3,26 +3,42 @@ import CocoaLumberjack
 import WordPressShared
 
 class ShareTagsPickerViewController: UIViewController {
-    private let originalTags: [String]
-    private let siteID: Int
+
+    // MARK: - Public Properties
+
     @objc var onValueChanged: ((String) -> Void)?
-    @objc let keyboardObserver = TableViewKeyboardObserver()
 
-    init(siteID: Int, tags: String?) {
-        self.originalTags = tags?.arrayOfTags() ?? [String()]
-        self.siteID = siteID
-        super.init(nibName: nil, bundle: nil)
-        textView.text = normalizeInitialTags(tags: originalTags)
-        textViewDidChange(textView)
-        title = NSLocalizedString("Tags", comment: "Title for the tag selector view")
-    }
+    // MARK: - Private Properties
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    /// Tags orginally passed into init()
+    ///
+    fileprivate let originalTags: [String]
 
+    /// SiteID to fetch tags for
+    ///
+    fileprivate let siteID: Int
+
+    /// Apply Bar Button
+    ///
+    fileprivate lazy var applyButton: UIBarButtonItem = {
+        let applyTitle = NSLocalizedString("Apply", comment: "Apply action on the app extension tags picker screen. Saves the selected tags for the post.")
+        let button = UIBarButtonItem(title: applyTitle, style: .plain, target: self, action: #selector(applyWasPressed))
+        button.accessibilityIdentifier = "Apply Button"
+        return button
+    }()
+
+    /// Cancel Bar Button
+    ///
+    fileprivate lazy var cancelButton: UIBarButtonItem = {
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension tags picker screen.")
+        let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
+        button.accessibilityIdentifier = "Cancel Button"
+        return button
+    }()
+
+    @objc fileprivate let keyboardObserver = TableViewKeyboardObserver()
     fileprivate let textView = UITextView()
-    private let textViewContainer = UIView()
+    fileprivate let textViewContainer = UIView()
     fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
     fileprivate var dataSource: PostTagPickerDataSource = LoadingDataSource() {
         didSet {
@@ -31,13 +47,50 @@ class ShareTagsPickerViewController: UIViewController {
         }
     }
 
+    // MARK: - Initializers
+
+    init(siteID: Int, tags: String?) {
+        self.originalTags = tags?.arrayOfTags() ?? [String()]
+        self.siteID = siteID
+        super.init(nibName: nil, bundle: nil)
+        textView.text = normalizeInitialTags(tags: originalTags)
+        textViewDidChange(textView)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        // Initialize Interface
+        setupNavigationBar()
+        setupTableView()
+        setupTextView()
+        setupConstraints()
+        keyboardObserver.tableView = tableView
+    }
 
-        textView.delegate = self
-        // Do any additional setup after loading the view, typically from a nib.
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateSuggestions()
+        textView.becomeFirstResponder()
+        loadTags()
+    }
+
+    // MARK: - Setup Helpers
+
+    fileprivate func setupNavigationBar() {
+        self.navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.rightBarButtonItem = applyButton
+    }
+
+    fileprivate func setupTableView() {
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: SuggestionsDataSource.cellIdentifier)
         tableView.register(LoadingDataSource.Cell.self, forCellReuseIdentifier: LoadingDataSource.cellIdentifier)
         tableView.register(FailureDataSource.Cell.self, forCellReuseIdentifier: FailureDataSource.cellIdentifier)
@@ -45,17 +98,20 @@ class ShareTagsPickerViewController: UIViewController {
         tableView.dataSource = dataSource
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         reloadTableData()
+    }
 
+    fileprivate func setupTextView() {
+        textView.delegate = self
         textView.autocorrectionType = .yes
         textView.autocapitalizationType = .none
         textView.font = WPStyleGuide.tableviewTextFont()
         textView.textColor = WPStyleGuide.darkGrey()
         textView.isScrollEnabled = false
-        // Padding already provided by readable margins
-        // Don't add extra padding so text aligns with suggestions
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
+    }
 
+    fileprivate func setupConstraints() {
         view.addSubview(tableView)
         textViewContainer.addSubview(textView)
         view.addSubview(textViewContainer)
@@ -84,41 +140,37 @@ class ShareTagsPickerViewController: UIViewController {
         textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
         textViewContainer.layer.borderWidth = 0.5
         textViewContainer.layer.masksToBounds = false
-        textViewContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
-        textViewContainer.layer.shadowRadius = 2
-        textViewContainer.layer.shadowOpacity = 0.5
-        textViewContainer.layer.shadowColor = WPStyleGuide.greyDarken30().cgColor
+    }
+}
 
-        keyboardObserver.tableView = tableView
+// MARK: - Actions
+
+extension ShareTagsPickerViewController {
+    @objc func cancelWasPressed() {
+         stopEditing()
+        _ = navigationController?.popViewController(animated: true)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        updateSuggestions()
-        textView.becomeFirstResponder()
-        loadTags()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
+    @objc func applyWasPressed() {
         stopEditing()
         let tags = allTags
         if originalTags != tags {
             onValueChanged?(tags.joined(separator: ", "))
         }
+        _ = navigationController?.popViewController(animated: true)
     }
 
-    fileprivate func reloadTableData() {
-        tableView.reloadData()
-        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.5
+    func suggestionTapped(cell: UITableViewCell?) {
+        guard let tag = cell?.textLabel?.text else {
+            return
+        }
+        complete(tag: tag)
     }
 }
 
-
 // MARK: - Tags Loading
 
-private extension ShareTagsPickerViewController {
+fileprivate extension ShareTagsPickerViewController {
     func loadTags() {
         dataSource = LoadingDataSource()
         let service = AppExtensionsService()
@@ -256,12 +308,14 @@ extension ShareTagsPickerViewController: UITextViewDelegate {
         return tags.joined(separator: ", ")
     }
 
-    fileprivate func updateSuggestions() {
+    func updateSuggestions() {
         dataSource.selectedTags = completeTags
         dataSource.searchQuery = partialTag
         reloadTableData()
     }
 }
+
+// MARK: - UITableView Delegate Conformance
 
 extension ShareTagsPickerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -277,18 +331,11 @@ extension ShareTagsPickerViewController: UITableViewDelegate {
             assertionFailure("Unexpected data source")
         }
     }
-
-    private func suggestionTapped(cell: UITableViewCell?) {
-        guard let tag = cell?.textLabel?.text else {
-            return
-        }
-        complete(tag: tag)
-    }
 }
 
 // MARK: - Misc private helpers
 
-extension ShareTagsPickerViewController {
+fileprivate extension ShareTagsPickerViewController {
     func stopEditing() {
         view.endEditing(true)
         resetPresentationViewUsingKeyboardFrame()
@@ -299,6 +346,11 @@ extension ShareTagsPickerViewController {
             return
         }
         presentationController.resetViewUsingKeyboardFrame(keyboardFrame)
+    }
+
+    fileprivate func reloadTableData() {
+        tableView.reloadData()
+        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.5
     }
 }
 

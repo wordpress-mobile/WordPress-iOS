@@ -244,6 +244,7 @@ extension ShareModularViewController {
         let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
         tagsPicker.onValueChanged = { tagString in
             self.shareData.tags = tagString
+            self.refreshModulesTable()
         }
         self.navigationController?.pushViewController(tagsPicker, animated: true)
     }
@@ -368,7 +369,11 @@ fileprivate extension ShareModularViewController {
             cell.textLabel?.text            = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
             cell.accessoryType              = .disclosureIndicator
             cell.accessibilityLabel         = "Tags"
-            cell.detailTextLabel?.text      = NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+            var tagString = NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+            if let tags = shareData.tags, !tags.isEmpty {
+                tagString = tags
+            }
+            cell.detailTextLabel?.text      = tagString
             WPStyleGuide.Share.configureModuleCell(cell)
         }
     }
