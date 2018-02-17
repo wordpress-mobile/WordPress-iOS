@@ -203,6 +203,7 @@
 		430F2F7020333DE4001A7E98 /* LoginPrologueSignupMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430F2F6F20333DE4001A7E98 /* LoginPrologueSignupMethodViewController.swift */; };
 		433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432511E9ED18900915988 /* LoginEpilogueViewController.swift */; };
 		433432541E9EE0B100915988 /* EpilogueSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432531E9EE0B100915988 /* EpilogueSegue.swift */; };
+		43440D5020363C3000FA0349 /* SignupGoogleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43440D4F20363C3000FA0349 /* SignupGoogleViewController.swift */; };
 		4346FD9B1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */; };
 		4349B2661EE21F560075809A /* LoginProloguePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349B2651EE21F560075809A /* LoginProloguePageViewController.swift */; };
 		434D96061EA92A4A00B90B89 /* Login2FAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */; };
@@ -1446,6 +1447,7 @@
 		430F2F6F20333DE4001A7E98 /* LoginPrologueSignupMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPrologueSignupMethodViewController.swift; sourceTree = "<group>"; };
 		433432511E9ED18900915988 /* LoginEpilogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueViewController.swift; sourceTree = "<group>"; };
 		433432531E9EE0B100915988 /* EpilogueSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueSegue.swift; sourceTree = "<group>"; };
+		43440D4F20363C3000FA0349 /* SignupGoogleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupGoogleViewController.swift; sourceTree = "<group>"; };
 		4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueUserInfoCell.swift; sourceTree = "<group>"; };
 		4349B2651EE21F560075809A /* LoginProloguePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginProloguePageViewController.swift; sourceTree = "<group>"; };
 		434D96051EA92A4A00B90B89 /* Login2FAViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login2FAViewController.swift; sourceTree = "<group>"; };
@@ -3092,7 +3094,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -4260,6 +4262,7 @@
 			children = (
 				98C43E851FE98092006FEF54 /* SignupNavigationController.swift */,
 				98E47DF71FE9875A0066A71C /* SignupEmailViewController.swift */,
+				43440D4F20363C3000FA0349 /* SignupGoogleViewController.swift */,
 			);
 			name = "Social Signup";
 			sourceTree = "<group>";
@@ -6137,7 +6140,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -6827,6 +6830,7 @@
 				17F0AE301F091563007D5A6B /* ConfettiView.swift in Sources */,
 				5DED0E181B432E0400431FCD /* SourcePostAttribution.m in Sources */,
 				08D978561CD2AF7D0054F19A /* MenuItem+ViewDesign.m in Sources */,
+				43440D5020363C3000FA0349 /* SignupGoogleViewController.swift in Sources */,
 				B52C4C7F199D74AE009FD823 /* NoteTableViewCell.swift in Sources */,
 				315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */,
 				43F258AA1ED7772C0075406B /* LoginPrologueViewController.swift in Sources */,
@@ -8166,7 +8170,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 			};
 			name = "Release-Alpha";
 		};
@@ -8641,7 +8645,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";
 		};
@@ -8984,7 +8988,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
 		};
@@ -9034,7 +9038,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
 		};
