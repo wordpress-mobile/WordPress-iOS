@@ -35,7 +35,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 //                if let err = error {
 //                    WPAppAnalytics.track(.loginSocialButtonFailure, error: err)
 //                } else {
-//                    WPAppAnalytics.track(.loginSocialButtonFailure)
+                    WPAppAnalytics.track(.loginSocialButtonFailure)
 //                }
                 self.navigationController?.popViewController(animated: true)
                 return
@@ -52,7 +52,9 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
             
             self?.performSegue(withIdentifier: .showEpilogue, sender: self)
+            WPAnalytics.track(.signupSocialSuccess)
         }) { [weak self] (error) in
+            WPAnalytics.track(.signupSocialFailure)
             guard let error = error else {
                 self?.navigationController?.popViewController(animated: true)
                 return
