@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N83-gK-pDm">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,23 +31,23 @@
             <objects>
                 <viewController storyboardIdentifier="emailEntry" id="Opx-rl-H3d" customClass="SignupEmailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="F3A-pe-bcZ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HbI-Pt-4Fr">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="19Z-ie-Qfz">
-                                        <rect key="frame" x="0.0" y="190" width="600" height="100"/>
+                                        <rect key="frame" x="0.0" y="223.5" width="375" height="100"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
-                                                <rect key="frame" x="20" y="0.0" width="560" height="36"/>
+                                                <rect key="frame" x="20" y="0.0" width="335" height="36"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTy-KJ-his" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="58" width="375" height="44"/>
+                                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                 <constraints>
@@ -62,7 +66,7 @@
                                                 </connections>
                                             </textField>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYw-oM-W1K">
-                                                <rect key="frame" x="20" y="100" width="560" height="40"/>
+                                                <rect key="frame" x="20" y="100" width="335" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" placeholder="YES" id="li2-jI-jeL"/>
                                                 </constraints>
@@ -81,7 +85,7 @@
                                         </constraints>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Su-Zc-Omp" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="544" y="472" width="36" height="44"/>
+                                        <rect key="frame" x="319" y="539" width="36" height="44"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="6Qa-nw-X83"/>
@@ -133,6 +137,39 @@
             </objects>
             <point key="canvasLocation" x="-938" y="92"/>
         </scene>
+        <!--Signup Google View Controller-->
+        <scene sceneID="WBb-bn-nnr">
+            <objects>
+                <viewController storyboardIdentifier="googleSignup" id="cgk-WR-8PR" customClass="SignupGoogleViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3UA-HJ-Orw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WAITING FOR GOOGLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7aw-aC-HlF">
+                                <rect key="frame" x="97" y="333" width="181" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="hjV-mD-tbQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="7aw-aC-HlF" firstAttribute="centerY" secondItem="QNf-Kw-8hv" secondAttribute="centerY" id="Nlo-uS-sRs"/>
+                            <constraint firstItem="7aw-aC-HlF" firstAttribute="centerX" secondItem="QNf-Kw-8hv" secondAttribute="centerX" id="kKc-uH-t0y"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="QNf-Kw-8hv"/>
+                    </view>
+                    <connections>
+                        <segue destination="1sD-6N-6Pz" kind="show" identifier="showEpilogue" id="dpG-tw-yhw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5UK-0h-9ZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1692" y="779"/>
+        </scene>
         <!--LinkMailView-->
         <scene sceneID="lKY-0n-z5h">
             <objects>
@@ -140,6 +177,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DAI-Ik-KtV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-301" y="92"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="zgB-T1-hNp">
+            <objects>
+                <viewController id="1sD-6N-6Pz" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2ec-Tt-5LY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EPILOGUE STAND-IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cF6-ei-3ka">
+                                <rect key="frame" x="106" y="333" width="164" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="5FR-2O-ICj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="cF6-ei-3ka" firstAttribute="centerY" secondItem="xjG-RV-YfD" secondAttribute="centerY" id="EDU-46-wde"/>
+                            <constraint firstItem="cF6-ei-3ka" firstAttribute="centerX" secondItem="xjG-RV-YfD" secondAttribute="centerX" id="VWh-6r-jos"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xjG-RV-YfD"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XqP-YS-mRb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-686" y="779"/>
         </scene>
     </scenes>
     <resources>
