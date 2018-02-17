@@ -2,10 +2,14 @@ import GoogleSignIn
 
 /// View controller that handles the google signup code
 class SignupGoogleViewController: LoginViewController {
+    private var hasShownGoogle = false
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        showGoogleScreen()
+        if !hasShownGoogle {
+            showGoogleScreen()
+            hasShownGoogle = true
+        }
     }
 
     private func showGoogleScreen() {
@@ -31,12 +35,6 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         guard let user = user,
             let token = user.authentication.idToken,
             let email = user.profile.email else {
-                // The Google SignIn for may have been canceled.
-//                if let err = error {
-//                    WPAppAnalytics.track(.loginSocialButtonFailure, error: err)
-//                } else {
-                    WPAppAnalytics.track(.loginSocialButtonFailure)
-//                }
                 self.navigationController?.popViewController(animated: true)
                 return
         }
@@ -50,7 +48,6 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
         service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
-            
             self?.performSegue(withIdentifier: .showEpilogue, sender: self)
             WPAnalytics.track(.signupSocialSuccess)
         }) { [weak self] (error) in
