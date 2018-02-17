@@ -9,11 +9,7 @@ class ShareTagsPickerViewController: UIViewController {
     @objc let keyboardObserver = TableViewKeyboardObserver()
 
     init(siteID: Int, tags: String?) {
-        if let tags = tags {
-            self.originalTags = tags.arrayOfTags()
-        } else {
-            self.originalTags = [String()]
-        }
+        self.originalTags = tags?.arrayOfTags() ?? [String()]
         self.siteID = siteID
         super.init(nibName: nil, bundle: nil)
         textView.text = normalizeInitialTags(tags: originalTags)
