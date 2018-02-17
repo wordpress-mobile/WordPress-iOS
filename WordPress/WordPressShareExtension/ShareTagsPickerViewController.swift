@@ -109,6 +109,8 @@ class ShareTagsPickerViewController: UIViewController {
         textView.isScrollEnabled = false
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
+        textViewContainer.backgroundColor = UIColor.white
+        textViewContainer.layer.masksToBounds = false
     }
 
     fileprivate func setupConstraints() {
@@ -126,7 +128,7 @@ class ShareTagsPickerViewController: UIViewController {
             textView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
 
-            textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 35),
+            textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -1),
             textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1),
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
@@ -135,11 +137,6 @@ class ShareTagsPickerViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
-
-        textViewContainer.backgroundColor = UIColor.white
-        textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
-        textViewContainer.layer.borderWidth = 0.5
-        textViewContainer.layer.masksToBounds = false
     }
 }
 

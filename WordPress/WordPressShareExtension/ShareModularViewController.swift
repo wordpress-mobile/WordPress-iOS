@@ -473,8 +473,11 @@ fileprivate extension ShareModularViewController {
         sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
-        shareData.tags = String() // Clear the current tags when changing the selected site
         updatePublishButtonStatus()
+
+        // Clear the current tags when changing the selected site
+        shareData.tags = String()
+        self.refreshModulesTable()
     }
 
     func siteForRowAtIndexPath(_ indexPath: IndexPath) -> RemoteBlog? {
