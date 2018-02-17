@@ -463,10 +463,10 @@
 		74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
-		7E21C761202BBC8E00837CF5 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E21C760202BBC8D00837CF5 /* iAd.framework */; };
-		7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E21C764202BBF4400837CF5 /* SearchAdsAttribution.swift */; };
 		74FC2D05202B69C100AC3422 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4645AFC41961E1FB005F7509 /* AppImages.xcassets */; };
 		74FC2D06202B69C100AC3422 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
+		7E21C761202BBC8E00837CF5 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E21C760202BBC8D00837CF5 /* iAd.framework */; };
+		7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E21C764202BBF4400837CF5 /* SearchAdsAttribution.swift */; };
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */; };
 		820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */; };
@@ -6697,12 +6697,11 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
+				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HockeySDKResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
