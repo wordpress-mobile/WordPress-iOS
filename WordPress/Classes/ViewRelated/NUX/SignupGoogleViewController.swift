@@ -1,8 +1,15 @@
 import GoogleSignIn
+import SVProgressHUD
 
 /// View controller that handles the google signup code
 class SignupGoogleViewController: LoginViewController {
     private var hasShownGoogle = false
+    @IBOutlet var titleLabel: UILabel?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        titleLabel?.text = NSLocalizedString("Waiting for Google to complete…", comment: "Message shown on screen while waiting for Google to finish its signup process.")
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -32,6 +39,8 @@ class SignupGoogleViewController: LoginViewController {
 
 extension SignupGoogleViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
+        GIDSignIn.sharedInstance().disconnect()
+
         guard let user = user,
             let token = user.authentication.idToken,
             let email = user.profile.email else {
@@ -45,12 +54,16 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         loginFields.username = email
         loginFields.meta.socialServiceIDToken = token
 
+        SVProgressHUD.show(withStatus: NSLocalizedString("Completing Signup", comment: "Shown while the app waits for the site creation process to complete."))
+
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
         service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
+            SVProgressHUD.dismiss()
             self?.performSegue(withIdentifier: .showEpilogue, sender: self)
             WPAnalytics.track(.signupSocialSuccess)
         }) { [weak self] (error) in
+            SVProgressHUD.dismiss()
             WPAnalytics.track(.signupSocialFailure)
             guard let error = error else {
                 self?.navigationController?.popViewController(animated: true)
