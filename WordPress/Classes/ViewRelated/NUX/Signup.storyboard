@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -145,24 +146,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WAITING FOR GOOGLE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7aw-aC-HlF">
-                                <rect key="frame" x="97" y="333" width="181" height="21"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="site-creation-blog" translatesAutoresizingMaskIntoConstraints="NO" id="YhU-Hd-s0v">
+                                <rect key="frame" x="80" y="257.5" width="215" height="172"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="hjV-mD-tbQ"/>
+                                    <constraint firstAttribute="width" secondItem="YhU-Hd-s0v" secondAttribute="height" multiplier="243:194" id="C7u-Fh-NUi"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiA-2f-xfj">
+                                <rect key="frame" x="109" y="459.5" width="157.5" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="bqy-9g-gij"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="7aw-aC-HlF" firstAttribute="centerY" secondItem="QNf-Kw-8hv" secondAttribute="centerY" id="Nlo-uS-sRs"/>
-                            <constraint firstItem="7aw-aC-HlF" firstAttribute="centerX" secondItem="QNf-Kw-8hv" secondAttribute="centerX" id="kKc-uH-t0y"/>
+                            <constraint firstItem="fiA-2f-xfj" firstAttribute="top" secondItem="YhU-Hd-s0v" secondAttribute="bottom" constant="30" id="AUv-P7-HQL"/>
+                            <constraint firstItem="fiA-2f-xfj" firstAttribute="centerX" secondItem="YhU-Hd-s0v" secondAttribute="centerX" id="HjI-h1-oDK"/>
+                            <constraint firstItem="YhU-Hd-s0v" firstAttribute="centerX" secondItem="QNf-Kw-8hv" secondAttribute="centerX" id="dEa-Hr-ARh"/>
+                            <constraint firstItem="YhU-Hd-s0v" firstAttribute="leading" secondItem="3UA-HJ-Orw" secondAttribute="leading" constant="80" id="fLk-YO-NX6"/>
+                            <constraint firstItem="YhU-Hd-s0v" firstAttribute="centerY" secondItem="QNf-Kw-8hv" secondAttribute="centerY" id="tGz-A1-th3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QNf-Kw-8hv"/>
                     </view>
                     <connections>
+                        <outlet property="titleLabel" destination="fiA-2f-xfj" id="gJJ-nI-Zmw"/>
                         <segue destination="1sD-6N-6Pz" kind="show" identifier="showEpilogue" id="dpG-tw-yhw"/>
                     </connections>
                 </viewController>
@@ -211,5 +222,6 @@
     </scenes>
     <resources>
         <image name="icon-username-field" width="18" height="18"/>
+        <image name="site-creation-blog" width="1458" height="1164"/>
     </resources>
 </document>
