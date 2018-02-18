@@ -35,6 +35,15 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
                             success:(WordPressComServiceSuccessBlock)success
                             failure:(WordPressComServiceFailureBlock)failure;
 
+/**
+ Create a new account using Google
+
+ @param token token provided by Google
+ @param clientID wpcom client id
+ @param clientSecret wpcom secret
+ @param success success block
+ @param failure failure block
+ */
 - (void)createWPComAccountWithGoogle:(NSString *)token
                          andClientID:(NSString *)clientID
                      andClientSecret:(NSString *)clientSecret

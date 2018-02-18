@@ -68,16 +68,7 @@
     [self.wordPressComRestApi POST:requestUrl parameters:params success:successBlock failure:failureBlock];
 }
 
-// https://developer.wordpress.com/docs/api/console/
 // API v1 POST /users/social/new
-/*
- client_id
- client_secret
- service
- signup_flow_name
- access_token // optional, I don't think we'll need it
- id_token
- */
 - (void)createWPComAccountWithGoogle:(NSString *)token
                          andClientID:(NSString *)clientID
                      andClientSecret:(NSString *)clientSecret

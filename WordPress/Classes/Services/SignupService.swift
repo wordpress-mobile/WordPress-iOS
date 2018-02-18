@@ -136,14 +136,18 @@ open class SignupService: LocalCoreDataService {
                                             andClientSecret: ApiCredentials.secret(),
                                             success: { (responseDictionary) in
                                                 // Note: User creation is deferred until we have a WPCom auth token.
-//                                                signin
+                                                success()
                                             },
                                             failure: failure)
     }
 
-    /*
 
- */
+    /// Create a new WPcom account using Google signin token
+    ///
+    /// - Parameters:
+    ///   - token: the token from a successful Google login
+    ///   - success: block called when account is created successfully
+    ///   - failure: block called when account creation fails
     func createWPComeUserWithGoogle(token: String,
                                    success: @escaping SignupSuccessBlock,
                                    failure: @escaping SignupFailureBlock) {
