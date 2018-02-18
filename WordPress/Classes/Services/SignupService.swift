@@ -147,32 +147,29 @@ open class SignupService: LocalCoreDataService {
     func createWPComeUserWithGoogle(token: String,
                                    success: @escaping SignupSuccessBlock,
                                    failure: @escaping SignupFailureBlock) {
-//        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
 
         remote?.createWPComAccount(withGoogle: token,
-//                                   andUsername: params.username,
-//                                            andLocale: locale,
-                                            andClientID: ApiCredentials.client(),
-                                            andClientSecret: ApiCredentials.secret(),
-                                            success: { (responseDictionary) in
-                                                guard let username = responseDictionary?[ResponseKeys.username] as? String,
-                                                    let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
-                                                        // without these we can't proceed.
-                                                        failure(nil)
-                                                        return
-                                                }
+                                    andClientID: ApiCredentials.client(),
+                                    andClientSecret: ApiCredentials.secret(),
+                                    success: { (responseDictionary) in
+                                        guard let username = responseDictionary?[ResponseKeys.username] as? String,
+                                            let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
+                                                // without these we can't proceed.
+                                                failure(nil)
+                                                return
+                                        }
 
-                                                // create the local account
-                                                let service = AccountService(managedObjectContext: self.managedObjectContext)
-                                                let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
-                                                if service.defaultWordPressComAccount() == nil {
-                                                    service.setDefaultWordPressComAccount(account)
-                                                }
+                                        // create the local account
+                                        let service = AccountService(managedObjectContext: self.managedObjectContext)
+                                        let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
+                                        if service.defaultWordPressComAccount() == nil {
+                                            service.setDefaultWordPressComAccount(account)
+                                        }
 
-                                                success()
-                                            },
-                                            failure: failure)
+                                        success()
+                                    },
+                                    failure: failure)
     }
 
 
