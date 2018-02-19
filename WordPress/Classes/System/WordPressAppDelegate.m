@@ -7,7 +7,7 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUI/WordPressUI.h>
 
 #ifdef BUDDYBUILD_ENABLED
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
@@ -102,6 +102,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
+    [self configureWordPressAuthenticator];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupBuddyBuild];
     [self setupPingHub];
@@ -186,10 +187,16 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
-            
-        if ([URLString rangeOfString:@"magic-login"].length) {
+        if ([URLString rangeOfString:@"new_user"].length) {
+            // TODO: direct to Signup Epilogue
+            DDLogInfo(@"App launched with signup link");
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"This is a work in progress. If you need to create an account, disable the socialSignup feature flag." preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addDefaultActionWithTitle:@"OK" handler:nil];
+            [alertController presentFromRootViewController];
+        }
+        else if ([URLString rangeOfString:@"magic-login"].length) {
             DDLogInfo(@"App launched with authentication link");
-            returnValue = [SigninHelpers openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
+            returnValue = [WordPressAuthenticator openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -482,7 +489,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    [SigninHelpers showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
+    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
 }
 
 - (void)customizeAppearance

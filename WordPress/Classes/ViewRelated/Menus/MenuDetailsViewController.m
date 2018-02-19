@@ -3,7 +3,7 @@
 #import "Menu+ViewDesign.h"
 #import "Blog.h"
 #import "WPAppAnalytics.h"
-#import <WordPressShared/UIColor+Helpers.h>
+#import <WordPressUI/UIColor+Helpers.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 
