@@ -196,13 +196,13 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                              success:(void (^)(void))success
                              failure:(void (^)(NSError *error))failure
 {
-    [self requestWPComLinkForEmail:email
-                      endpointPath:@"auth/send-login-email"
-                          clientID:clientID
-                      clientSecret:clientSecret
-                       wpcomScheme:scheme
-                           success:success
-                           failure:failure];
+    [self requestWPComMagicLinkForEmail:email
+                           endpointPath:@"auth/send-login-email"
+                               clientID:clientID
+                           clientSecret:clientSecret
+                            wpcomScheme:scheme
+                                success:success
+                                failure:failure];
 }
 
 - (void)requestWPComSignupLinkForEmail:(NSString *)email
@@ -212,22 +212,22 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                                success:(void (^)(void))success
                                failure:(void (^)(NSError *error))failure
 {
-    [self requestWPComLinkForEmail:email
-                      endpointPath:@"auth/send-signup-email"
-                          clientID:clientID
-                      clientSecret:clientSecret
-                       wpcomScheme:scheme
-                           success:success
-                           failure:failure];
+    [self requestWPComMagicLinkForEmail:email
+                           endpointPath:@"auth/send-signup-email"
+                               clientID:clientID
+                           clientSecret:clientSecret
+                            wpcomScheme:scheme
+                                success:success
+                                failure:failure];
 }
 
-- (void)requestWPComLinkForEmail:(NSString *)email
-                    endpointPath:(NSString *)endpointPath
-                        clientID:(NSString *)clientID
-                    clientSecret:(NSString *)clientSecret
-                     wpcomScheme:(NSString *)scheme
-                         success:(void (^)(void))success
-                         failure:(void (^)(NSError *error))failure
+- (void)requestWPComMagicLinkForEmail:(NSString *)email
+                         endpointPath:(NSString *)endpointPath
+                             clientID:(NSString *)clientID
+                         clientSecret:(NSString *)clientSecret
+                          wpcomScheme:(NSString *)scheme
+                              success:(void (^)(void))success
+                              failure:(void (^)(NSError *error))failure
 {
     NSAssert([email length] > 0, @"Needs an email address.");
     
