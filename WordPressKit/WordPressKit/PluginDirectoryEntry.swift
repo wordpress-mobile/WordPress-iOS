@@ -9,9 +9,14 @@ public struct PluginDirectoryEntry: Equatable {
     public let icon: URL?
     public let banner: URL?
 
-    public let author: String
-    public let authorURL: URL?
+    public var author: String {
+        return extractAuthor(self.authorHTML).name
+    }
+    public var authorURL: URL? {
+        return extractAuthor(self.authorHTML).link
+    }
 
+    private let authorHTML: String
     private let descriptionHTML: String?
     private let installationHTML: String?
     private let faqHTML: String?
@@ -80,6 +85,7 @@ extension PluginDirectoryEntry: Decodable {
         let decodedName = try container.decode(String.self, forKey: .name)
         name = decodedName.stringByDecodingXMLCharacters()
         slug = try container.decode(String.self, forKey: .slug)
+        authorHTML = try container.decode(String.self, forKey: .author)
         version = try? container.decode(String.self, forKey: .version)
         lastUpdated = try? container.decode(Date.self, forKey: .lastUpdated)
         rating = try container.decode(Int.self, forKey: .rating)
@@ -98,11 +104,6 @@ extension PluginDirectoryEntry: Decodable {
         } else {
             banner = nil
         }
-
-        let extractedAuthor = extractAuthor(try container.decode(String.self, forKey: .author))
-
-        author = extractedAuthor.name
-        authorURL = extractedAuthor.link
 
         let sections = try? container.nestedContainer(keyedBy: SectionKeys.self, forKey: .sections)
 
@@ -130,9 +131,7 @@ extension PluginDirectoryEntry: Decodable {
         self.name = name
         self.slug = slug
         self.rating = rating
-
-        let author = extractAuthor(authorString)
-        self.author = author.name
+        self.authorHTML = authorString
 
         if let icon = (responseObject["icons"]?["2x"] as? String).flatMap({ URL(string: $0) }) {
             self.icon = icon
@@ -143,7 +142,6 @@ extension PluginDirectoryEntry: Decodable {
         self.version = nil
         self.lastUpdated = nil
         self.banner = nil
-        self.authorURL = nil
         self.descriptionHTML = nil
         self.installationHTML = nil
         self.faqHTML = nil
