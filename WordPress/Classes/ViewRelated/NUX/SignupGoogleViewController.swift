@@ -74,5 +74,6 @@ extension SignupGoogleViewController: GIDSignInDelegate {
     }
 }
 
+/// This is needed to set self as uiDelegate, even though none of the methods are called
 extension SignupGoogleViewController: GIDSignInUIDelegate {
 }
