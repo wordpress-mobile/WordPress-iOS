@@ -471,7 +471,7 @@ import SafariServices
 
     @IBAction func handleTermsOfServiceButtonTapped(_ sender: UIButton) {
         guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
-            fatalError()
+            return
         }
 
         let safariViewController = SFSafariViewController(url: url)
