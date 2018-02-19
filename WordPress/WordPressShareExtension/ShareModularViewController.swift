@@ -366,15 +366,17 @@ fileprivate extension ShareModularViewController {
             WPStyleGuide.Share.configureTableViewSummaryCell(cell)
         } else {
             // The only other module cell we have besides Summary is Tags...
+            WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text            = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
             cell.accessoryType              = .disclosureIndicator
             cell.accessibilityLabel         = "Tags"
-            var tagString = NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
             if let tags = shareData.tags, !tags.isEmpty {
-                tagString = tags
+                cell.detailTextLabel?.text = tags
+                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
+            } else {
+                cell.detailTextLabel?.text =  NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+                cell.detailTextLabel?.textColor = WPStyleGuide.grey()
             }
-            cell.detailTextLabel?.text      = tagString
-            WPStyleGuide.Share.configureModuleCell(cell)
         }
     }
 
