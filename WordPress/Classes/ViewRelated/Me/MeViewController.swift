@@ -444,7 +444,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         controller.addActionWithTitle(NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form."),
             style: .default,
             handler: { (_) in
-                SigninHelpers.showLoginForJustWPComFromPresenter(self)
+                WordPressAuthenticator.showLoginForJustWPComFromPresenter(self)
         })
         controller.addActionWithTitle(NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
                                       style: .default,

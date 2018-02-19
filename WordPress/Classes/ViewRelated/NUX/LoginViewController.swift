@@ -95,7 +95,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         displayError(message: "")
 
         // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
+        if !WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields) {
             let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
             displayError(message: errorMsg)
 
@@ -137,11 +137,11 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         accountService.connectToSocialService(service, serviceIDToken: token, success: {
-            WPAppAnalytics.track(.loginSocialConnectSuccess)
-            WPAppAnalytics.track(.loginSocialSuccess)
+            WordPressAuthenticator.post(event: .loginSocialConnectSuccess)
+            WordPressAuthenticator.post(event: .loginSocialSuccess)
         }, failure: { error in
             DDLogError(error.description)
-            WPAppAnalytics.track(.loginSocialConnectFailure, error: error)
+            WordPressAuthenticator.post(event: .loginSocialConnectFailure(error: error))
             // We're opting to let this call fail silently.
             // Our user has already successfully authenticated and can use the app --
             // connecting the social service isn't critical.  There's little to
@@ -179,13 +179,13 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         displayError(message: "")
         configureViewLoading(false)
 
-        WPAppAnalytics.track(.twoFactorCodeRequested)
+        WordPressAuthenticator.post(event: .twoFactorCodeRequested)
         self.performSegue(withIdentifier: .show2FA, sender: self)
     }
 
     // Update safari stored credentials. Call after a successful sign in.
     ///
     func updateSafariCredentialsIfNeeded() {
-        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
+        WordPressAuthenticator.updateSafariCredentialsIfNeeded(loginFields)
     }
 }

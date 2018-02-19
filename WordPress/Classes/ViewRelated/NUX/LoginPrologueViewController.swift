@@ -28,7 +28,7 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WPAppAnalytics.track(.loginPrologueViewed)
+        WordPressAuthenticator.post(event: .loginPrologueViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -260,7 +260,6 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatShortcutNotifications,
     WPAnalyticsStatSignedIn,
     WPAnalyticsStatSignedInToJetpack,
-    WPAnalyticsStatSignupFailed,
     WPAnalyticsStatSignupMagicLinkFailed,
     WPAnalyticsStatSignupMagicLinkOpenEmailClientViewed,
     WPAnalyticsStatSignupMagicLinkRequested,

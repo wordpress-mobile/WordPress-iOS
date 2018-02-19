@@ -35,7 +35,7 @@ class NUXLinkAuthViewController: LoginViewController {
                 // TODO: add new track
                 WPAppAnalytics.track(.loginMagicLinkSucceeded)
             case .login:
-                WPAppAnalytics.track(.loginMagicLinkSucceeded)
+                WordPressAuthenticator.post(event: .loginMagicLinkSucceeded)
             }
         }
     }
