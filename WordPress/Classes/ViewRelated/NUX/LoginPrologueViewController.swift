@@ -1,7 +1,9 @@
 import UIKit
 import Lottie
 
-class LoginPrologueViewController: UIViewController {
+class LoginPrologueViewController: UIViewController, UIViewControllerTransitioningDelegate {
+
+    private var buttonViewController: NUXButtonViewController?
 
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var signupButton: UIButton!
@@ -20,7 +22,7 @@ class LoginPrologueViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        configureButtonVC()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
@@ -39,6 +41,38 @@ class LoginPrologueViewController: UIViewController {
         return UIDevice.isPad() ? .all : .portrait
     }
 
+    // MARK: - Segue
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        if let vc = segue.destination as? NUXButtonViewController {
+            buttonViewController = vc
+        }
+        else if let vc = segue.destination as? LoginPrologueSignupMethodViewController {
+            vc.transitioningDelegate = self
+            vc.emailTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSigninV2.rawValue, sender: self)
+            }
+            vc.modalPresentationStyle = .custom
+        }
+    }
+
+    private func configureButtonVC() {
+        guard let buttonViewController = buttonViewController else {
+            return
+        }
+
+        let loginTitle = NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form.")
+        let createTitle = NSLocalizedString("Signup to WordPress.com", comment: "Button title. Tapping begins the process of creating a WordPress.com account.")
+        buttonViewController.setupTopButton(title: loginTitle, isPrimary: true) { [weak self] in
+            self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showEmailLogin.rawValue, sender: self)
+        }
+        buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
+            self?.signupTapped()
+        }
+    }
+
     // MARK: - Setup and Config
 
     @objc func localizeControls() {
@@ -55,17 +89,17 @@ class LoginPrologueViewController: UIViewController {
 
     @IBAction func signupTapped() {
         if Feature.enabled(.socialSignup) {
-
-            // TODO: replace with Signup Prologue implementation
-
-            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
-            let emailVC = storyboard.instantiateViewController(withIdentifier: "emailEntry")
-            let navController = SignupNavigationController(rootViewController: emailVC)
-            present(navController, animated: true, completion: nil)
-
-
+            performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSignupMethod.rawValue, sender: self)
         } else {
             performSegue(withIdentifier: "showSigninV1", sender: self)
         }
+    }
+
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is LoginPrologueSignupMethodViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
     }
 }
