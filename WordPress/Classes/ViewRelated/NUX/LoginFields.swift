@@ -66,8 +66,8 @@ class SafariStoredCredentials {
 /// An enum to indicate where the Magic Link Email was sent from.
 ///
 enum EmailMagicLinkSource: Int {
-    case login
-    case signup
+    case login = 1
+    case signup = 2
 }
 
 @objc
