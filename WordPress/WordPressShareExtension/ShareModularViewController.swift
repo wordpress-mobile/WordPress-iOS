@@ -474,9 +474,6 @@ fileprivate extension ShareModularViewController {
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
         updatePublishButtonStatus()
-
-        // Clear the current tags when changing the selected site
-        shareData.tags = String()
         self.refreshModulesTable()
     }
 
