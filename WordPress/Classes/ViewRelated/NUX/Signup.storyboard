@@ -38,16 +38,16 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="19Z-ie-Qfz">
-                                        <rect key="frame" x="0.0" y="223.5" width="375" height="100"/>
+                                        <rect key="frame" x="0.0" y="221.5" width="375" height="102"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
-                                                <rect key="frame" x="20" y="0.0" width="335" height="36"/>
+                                                <rect key="frame" x="20" y="0.0" width="335" height="38"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTy-KJ-his" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                                <rect key="frame" x="0.0" y="58" width="375" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                 <constraints>
@@ -66,7 +66,7 @@
                                                 </connections>
                                             </textField>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYw-oM-W1K">
-                                                <rect key="frame" x="20" y="100" width="335" height="40"/>
+                                                <rect key="frame" x="20" y="102" width="335" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" placeholder="YES" id="li2-jI-jeL"/>
                                                 </constraints>
@@ -153,25 +153,45 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I AM AN EPILOGUE!!!!!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNz-PH-MIF">
-                                <rect key="frame" x="102" y="333" width="171" height="21"/>
-                                <color key="backgroundColor" red="0.99953407049999998" green="0.98835557699999999" blue="0.47265523669999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U2X-ER-enM" userLabel="Table Container View">
+                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1I-3a-oLv" userLabel="Button Container View">
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="auc-yT-9Zj"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="zJU-DX-fZc"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="x4w-Kl-tfP" kind="embed" identifier="showSignupEpilogueButtonView" id="5eu-ZJ-HbM"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="mNz-PH-MIF" firstAttribute="centerX" secondItem="Ae9-4j-PcF" secondAttribute="centerX" id="Vdn-L5-ivb"/>
-                            <constraint firstItem="mNz-PH-MIF" firstAttribute="centerY" secondItem="Ae9-4j-PcF" secondAttribute="centerY" id="dqb-Xw-DrT"/>
+                            <constraint firstItem="U2X-ER-enM" firstAttribute="top" secondItem="Ae9-4j-PcF" secondAttribute="top" id="0r0-gk-HR1"/>
+                            <constraint firstItem="Ae9-4j-PcF" firstAttribute="trailing" secondItem="U2X-ER-enM" secondAttribute="trailing" id="5nl-rJ-qPY"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="trailing" secondItem="Ae9-4j-PcF" secondAttribute="trailing" id="DBe-AY-pLB"/>
+                            <constraint firstItem="U2X-ER-enM" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="glX-Af-Eae"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="top" secondItem="U2X-ER-enM" secondAttribute="bottom" id="lhw-7F-sow"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="bottom" secondItem="Ae9-4j-PcF" secondAttribute="bottom" id="maZ-1x-gSB"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="yGX-fn-rqf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ae9-4j-PcF"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kUL-CF-CHW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="101.59999999999999" y="86.806596701649184"/>
+            <point key="canvasLocation" x="151" y="92"/>
+        </scene>
+        <!--ButtonView-->
+        <scene sceneID="vX1-iV-bQB">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="x4w-Kl-tfP" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GCN-8K-LcG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="149" y="524"/>
         </scene>
     </scenes>
     <resources>
