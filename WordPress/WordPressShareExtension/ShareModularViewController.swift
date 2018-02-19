@@ -236,8 +236,7 @@ extension ShareModularViewController {
     }
 
     func showTagsPicker() {
-        guard let siteID = shareData.selectedSiteID else {
-            // FIXME: show an alert here or something telling the user to pick a site first
+        guard let siteID = shareData.selectedSiteID, isPublishingPost == false else {
             return
         }
 
