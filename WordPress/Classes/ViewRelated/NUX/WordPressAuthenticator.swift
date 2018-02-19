@@ -3,9 +3,10 @@ import CocoaLumberjack
 import NSURL_IDN
 import WordPressShared
 
+
 /// A collection of helper methods for NUX.
 ///
-@objc class SigninHelpers: NSObject {
+@objc public class WordPressAuthenticator: NSObject {
     fileprivate static let WPComSuffix = ".wordpress.com"
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
@@ -97,7 +98,7 @@ import WordPressShared
     }
 
     private class func trackOpenedLogin() {
-        WPAppAnalytics.track(.openedLogin)
+        WordPressAuthenticator.post(event: .openedLogin)
     }
 
 
@@ -141,7 +142,7 @@ import WordPressShared
         loginController.email = loginFields.username
         loginController.token = token
         let controller = loginController
-        WPAppAnalytics.track(.loginMagicLinkOpened)
+        WordPressAuthenticator.post(event: .loginMagicLinkOpened)
 
         let navController = UINavigationController(rootViewController: controller)
 
@@ -396,7 +397,7 @@ import WordPressShared
     /// - Parameter loginFields: A LoginFields instance.
     ///
     @objc class func openForgotPasswordURL(_ loginFields: LoginFields) {
-        let baseURL = loginFields.meta.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(string: loginFields.siteAddress)
+        let baseURL = loginFields.meta.userIsDotCom ? "https://wordpress.com" : WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
         UIApplication.shared.open(forgotPasswordURL)
     }
@@ -418,7 +419,7 @@ import WordPressShared
         let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
             if let error = error {
                 DDLogError("OnePassword Error: \(error.localizedDescription)")
-                WPAppAnalytics.track(.onePasswordFailed)
+                WordPressAuthenticator.post(event: .onePasswordFailed)
                 return
             }
 
@@ -437,7 +438,7 @@ import WordPressShared
                 loginFields.multifactorCode = oneTimePassword
             }
 
-            WPAppAnalytics.track(.onePasswordLogin)
+            WordPressAuthenticator.post(event: .onePasswordLogin)
 
             success(loginFields)
         }
@@ -486,7 +487,7 @@ import WordPressShared
                 return
             }
             DispatchQueue.main.async(execute: {
-                WPAppAnalytics.track(.loginAutoFillCredentialsUpdated)
+                WordPressAuthenticator.post(event: .loginAutoFillCredentialsUpdated)
             })
         })
     }
@@ -539,7 +540,9 @@ import WordPressShared
 }
 
 
+
 extension NSNotification.Name {
-    static let WPLoginCancelled = Foundation.Notification.Name(rawValue: "WPLoginCancelled")
-    static let WPLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WPLoginFinishedJetpackLogin")
+    static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
+    static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
+    static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
 }
