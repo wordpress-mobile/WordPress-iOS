@@ -103,26 +103,31 @@ extension WPStyleGuide {
     class func termsButton() -> UIButton {
         let baseString =  NSLocalizedString("By choosing \"Sign up\" you agree to our _Terms of Service_", comment: "Legal disclaimer for signup buttons. Sign Up must match button phrasing, two underscores _..._ denote underline")
 
-        let titleParagraphStyle = NSMutableParagraphStyle()
-        titleParagraphStyle.alignment = .center
-
         let labelParts = baseString.components(separatedBy: "_")
         let firstPart = labelParts[0]
         let underlinePart = labelParts.indices.contains(1) ? labelParts[1] : ""
         let lastPart = labelParts.indices.contains(2) ? labelParts[2] : ""
 
-        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.paragraphStyle: titleParagraphStyle])
+        let labelString = NSMutableAttributedString(string: firstPart)
         labelString.append(NSAttributedString(string: underlinePart, attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue]))
         labelString.append(NSAttributedString(string: lastPart))
 
         let font = WPStyleGuide.mediumWeightFont(forStyle: .caption2)
-        return textButton(normal: labelString, highlighted: labelString, font: font)
+        return textButton(normal: labelString, highlighted: labelString, font: font, alignment: .center)
     }
 
-    private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont) -> UIButton {
+    private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont, alignment: UIControlContentHorizontalAlignment = .left) -> UIButton {
         let button = UIButton()
         button.clipsToBounds = true
 
+        switch alignment {
+        case .left, .leading:
+            button.naturalContentHorizontalAlignment = .leading
+        case .right, .trailing:
+            button.naturalContentHorizontalAlignment = .trailing
+        default:
+            button.contentHorizontalAlignment = alignment
+        }
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = font
         button.titleLabel?.numberOfLines = 0
@@ -149,9 +154,7 @@ extension WPStyleGuide {
         // 👇 don't want to crash when a translation lacks "{G}"
         let lastPart = labelParts.indices.contains(1) ? labelParts[1] : ""
 
-        let titleParagraphStyle = NSMutableParagraphStyle()
-        titleParagraphStyle.alignment = .left
-        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: WPStyleGuide.greyDarken30(), .paragraphStyle: titleParagraphStyle])
+        let labelString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: WPStyleGuide.greyDarken30()])
 
         if let googleIcon = UIImage(named: "google"), lastPart != "" {
             let googleAttachment = NSTextAttachment()
