@@ -173,7 +173,6 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
             }, failure: { [weak self] (error: Error) in
                 DDLogError("Request for signup link email failed.")
                 WPAppAnalytics.track(.signupMagicLinkFailed)
-                WPAppAnalytics.track(.signupFailed, error: error)
                 self?.displayError(message: ErrorMessage.magicLinkRequestFail.description())
                 self?.configureSubmitButton(animating: false)
         })
