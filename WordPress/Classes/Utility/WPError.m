@@ -90,7 +90,7 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
         DDLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],
                    [error localizedDescription]);
         if (error.code == WordPressComRestApiErrorInvalidToken || error.code == WordPressComRestApiErrorAuthorizationRequired) {
-            [SigninHelpers showSigninForWPComFixingAuthToken];
+            [WordPressAuthenticator showSigninForWPComFixingAuthToken];
             return;
         }
     }
