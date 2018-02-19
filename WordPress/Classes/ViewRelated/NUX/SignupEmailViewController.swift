@@ -180,7 +180,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     private func didRequestSignupLink() {
         WPAppAnalytics.track(.signupMagicLinkRequested)
-        SigninHelpers.storeLoginInfoForTokenAuth(loginFields)
+        WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: "showLinkMailView", sender: nil)
     }
 
