@@ -1,7 +1,6 @@
 import UIKit
 import CocoaLumberjack
 import WordPressShared
-import SafariServices
 
 
 /// Create a new WordPress.com account and blog.
@@ -470,13 +469,10 @@ import SafariServices
 
 
     @IBAction func handleTermsOfServiceButtonTapped(_ sender: UIButton) {
-        guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
-            return
-        }
-
-        let safariViewController = SFSafariViewController(url: url)
-        safariViewController.modalPresentationStyle = .pageSheet
-        present(safariViewController, animated: true, completion: nil)
+        let url = URL(string: WPAutomatticTermsOfServiceURL)!
+        let controller = WebViewControllerFactory.controller(url: url)
+        let navController = RotationAwareNavigationViewController(rootViewController: controller)
+        present(navController, animated: true, completion: nil)
     }
 
 
