@@ -48,7 +48,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
-        WPAppAnalytics.track(.loginURLFormViewed)
+        WordPressAuthenticator.post(event: .loginURLFormViewed)
     }
 
 
@@ -132,7 +132,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     @objc func validateForm() {
         view.endEditing(true)
         displayError(message: "")
-        guard SigninHelpers.validateSiteForSignin(loginFields) else {
+        guard WordPressAuthenticator.validateSiteForSignin(loginFields) else {
             assertionFailure("Form should not be submitted unless there is a valid looking URL entered.")
             return
         }
@@ -151,8 +151,8 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
                 return
             }
             DDLogError(error.localizedDescription)
-            WPAppAnalytics.track(.loginFailedToGuessXMLRPC, error: error)
-            WPAppAnalytics.track(.loginFailed, error: error)
+            WordPressAuthenticator.post(event: .loginFailedToGuessXMLRPC(error: error))
+            WordPressAuthenticator.post(event: .loginFailed(error: error))
             strongSelf.configureViewLoading(false)
 
             let err = strongSelf.originalErrorOrError(error: error as NSError)
@@ -179,7 +179,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
 
     @objc func fetchSiteInfo() {
-        let baseSiteUrl = SigninHelpers.baseSiteURL(string: loginFields.siteAddress) as NSString
+        let baseSiteUrl = WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress) as NSString
         if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
 
             let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -222,7 +222,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     /// Whether the form can be submitted.
     ///
     @objc func canSubmit() -> Bool {
-        return SigninHelpers.validateSiteForSignin(loginFields)
+        return WordPressAuthenticator.validateSiteForSignin(loginFields)
     }
 
 
@@ -248,7 +248,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
-        loginFields.siteAddress = SigninHelpers.baseSiteURL(string: siteURLField.nonNilTrimmedText())
+        loginFields.siteAddress = WordPressAuthenticator.baseSiteURL(string: siteURLField.nonNilTrimmedText())
         configureSubmitButton(animating: false)
     }
 
