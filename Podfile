@@ -76,6 +76,15 @@ target 'WordPress' do
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
   end
 
+  target 'WordPressDraftActionExtension' do
+    inherit! :search_paths
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
+  end
+
   target 'WordPressTodayWidget' do
     inherit! :search_paths
 

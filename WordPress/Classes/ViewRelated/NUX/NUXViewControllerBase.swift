@@ -111,7 +111,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     func handleCancelButtonTapped() {
         dismiss(cancelled: true)
-        NotificationCenter.default.post(name: .WPLoginCancelled, object: nil)
+        NotificationCenter.default.post(name: .wordpressLoginCancelled, object: nil)
     }
 
     // Handle the help button being tapped
