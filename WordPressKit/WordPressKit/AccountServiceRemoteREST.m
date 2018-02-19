@@ -196,8 +196,12 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                              success:(void (^)(void))success
                              failure:(void (^)(NSError *error))failure
 {
+    
+    NSString *path = [self pathForEndpoint:@"auth/send-login-email"
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    
     [self requestWPComMagicLinkForEmail:email
-                           endpointPath:@"auth/send-login-email"
+                                   path:path
                                clientID:clientID
                            clientSecret:clientSecret
                             wpcomScheme:scheme
@@ -212,8 +216,12 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                                success:(void (^)(void))success
                                failure:(void (^)(NSError *error))failure
 {
+    
+    NSString *path = [self pathForEndpoint:@"auth/send-signup-email"
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    
     [self requestWPComMagicLinkForEmail:email
-                           endpointPath:@"auth/send-signup-email"
+                                   path:path
                                clientID:clientID
                            clientSecret:clientSecret
                             wpcomScheme:scheme
@@ -222,7 +230,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
 }
 
 - (void)requestWPComMagicLinkForEmail:(NSString *)email
-                         endpointPath:(NSString *)endpointPath
+                                 path:(NSString *)path
                              clientID:(NSString *)clientID
                          clientSecret:(NSString *)clientSecret
                           wpcomScheme:(NSString *)scheme
@@ -230,9 +238,6 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                               failure:(void (^)(NSError *error))failure
 {
     NSAssert([email length] > 0, @"Needs an email address.");
-    
-    NSString *path = [self pathForEndpoint:endpointPath
-                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                   @"email": email,
