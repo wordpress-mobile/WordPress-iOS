@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		828BEAC6203B59CD003F7078 /* UIImage+Crop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */; };
 		B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B529F288202C855B00895D88 /* UIColorHelpersTests.swift */; };
 		B59DCB66202B146D00BEBD8A /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */; };
 		B59DCB6D202B146D00BEBD8A /* WordPressUI.h in Headers */ = {isa = PBXBuildFile; fileRef = B59DCB5F202B146D00BEBD8A /* WordPressUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Crop.swift"; sourceTree = "<group>"; };
 		B529F288202C855B00895D88 /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59DCB5F202B146D00BEBD8A /* WordPressUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressUI.h; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */,
 				B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */,
 				B5A787A9202B2323007874FB /* UIDevice+Helpers.swift */,
+				828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */,
 				B5A787AC202B2323007874FB /* UIImage+Rotation.swift */,
 				B5A787A4202B2322007874FB /* UIImage+Tint.swift */,
 				B5A787AD202B2323007874FB /* UITableView+Helpers.swift */,
@@ -318,6 +321,7 @@
 				B5A787DC202B2AA7007874FB /* UIImage+Util.m in Sources */,
 				B5A787B5202B2324007874FB /* UIDevice+Helpers.swift in Sources */,
 				B5A787B3202B2324007874FB /* UITableViewController+Helpers.swift in Sources */,
+				828BEAC6203B59CD003F7078 /* UIImage+Crop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
