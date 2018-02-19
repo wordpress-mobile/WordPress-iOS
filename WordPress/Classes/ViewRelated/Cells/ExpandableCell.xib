@@ -38,12 +38,13 @@
                             </subviews>
                             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
                         </stackView>
-                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="A lot of text that you might want not to display at once! With potentially so many lines!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BUg-3D-JQz" customClass="TTTAttributedLabel">
-                            <rect key="frame" x="16" y="0.0" width="656" height="20.5"/>
-                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="k4e-3x-rsY">
+                            <rect key="frame" x="16" y="0.0" width="656" height="0.0"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
                     </subviews>
                     <edgeInsets key="layoutMargins" top="10" left="16" bottom="10" right="16"/>
                 </stackView>
@@ -59,7 +60,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="chevronImageView" destination="OCg-PO-NCH" id="7Tv-Co-gcf"/>
-                <outlet property="expandedTextLabel" destination="BUg-3D-JQz" id="KTJ-Gi-yQq"/>
+                <outlet property="expandableTextView" destination="k4e-3x-rsY" id="kqc-C6-tbD"/>
                 <outlet property="titleTextLabel" destination="3A3-oE-PH7" id="6dh-p6-f2K"/>
             </connections>
             <point key="canvasLocation" x="-30" y="-245"/>

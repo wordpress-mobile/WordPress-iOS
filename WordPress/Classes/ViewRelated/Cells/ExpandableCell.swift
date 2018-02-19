@@ -1,7 +1,6 @@
 import UIKit
 import WordPressShared.WPStyleGuide
 import Gridicons
-import TTTAttributedLabel
 import CoreGraphics
 
 class ExpandableCell: WPReusableTableViewCell {
@@ -19,14 +18,14 @@ class ExpandableCell: WPReusableTableViewCell {
     }
 
     @IBOutlet var titleTextLabel: UILabel?
-    @IBOutlet var expandedTextLabel: TTTAttributedLabel?
+    @IBOutlet var expandableTextView: UITextView!
     @IBOutlet var chevronImageView: UIImageView?
 
     public var urlCallback: ((URL) -> Void)?
 
     public var expanded: Bool = false {
         didSet {
-            self.expandedTextLabel?.isHidden = !self.expanded
+            self.expandableTextView?.isHidden = !self.expanded
 
             let transform: CGAffineTransform
             let alpha: CGFloat
@@ -41,7 +40,7 @@ class ExpandableCell: WPReusableTableViewCell {
 
             UIView.animate(withDuration: 0.2) { [unowned self] in
                 self.chevronImageView?.transform = transform
-                self.expandedTextLabel?.alpha = alpha
+                self.expandableTextView?.alpha = alpha
             }
         }
     }
@@ -59,16 +58,27 @@ class ExpandableCell: WPReusableTableViewCell {
         chevronImageView?.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
 
         titleTextLabel?.textColor = WPStyleGuide.darkGrey()
-        expandedTextLabel?.linkAttributes = [NSAttributedStringKey.foregroundColor: WPStyleGuide.wordPressBlue(),
-                                             NSAttributedStringKey.underlineStyle: 0]
-        expandedTextLabel?.enabledTextCheckingTypes = NSTextCheckingResult.CheckingType.link.rawValue
-        expandedTextLabel?.delegate = self
+        expandableTextView?.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: WPStyleGuide.wordPressBlue(),
+                                                  NSAttributedStringKey.underlineStyle.rawValue: 0,
+                                                  NSAttributedStringKey.underlineColor.rawValue: UIColor.clear]
+
+        expandableTextView?.delegate = self
+        expandableTextView?.textContainerInset = .zero
+        expandableTextView?.textContainer.lineFragmentPadding = 0
     }
 
 }
 
-extension ExpandableCell: TTTAttributedLabelDelegate {
-    func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
-        urlCallback?(url)
+extension ExpandableCell: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        switch interaction {
+        case .invokeDefaultAction:
+            urlCallback?(URL)
+            return false
+        case .preview, .presentActions:
+            return true
+        }
     }
 }
+
+
