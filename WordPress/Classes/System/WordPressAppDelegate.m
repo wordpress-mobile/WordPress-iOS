@@ -102,6 +102,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
+    [self configureWordPressAuthenticator];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupBuddyBuild];
     [self setupPingHub];
@@ -195,7 +196,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         }
         else if ([URLString rangeOfString:@"magic-login"].length) {
             DDLogInfo(@"App launched with authentication link");
-            returnValue = [SigninHelpers openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
+            returnValue = [WordPressAuthenticator openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -488,7 +489,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    [SigninHelpers showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
+    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
 }
 
 - (void)customizeAppearance
