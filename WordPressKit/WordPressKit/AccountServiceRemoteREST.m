@@ -247,7 +247,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
     if (![@"wordpress" isEqualToString:scheme]) {
         [params setObject:scheme forKey:@"scheme"];
     }
-    
+
     [self.wordPressComRestApi POST:path
                         parameters:[NSDictionary dictionaryWithDictionary:params]
                            success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
