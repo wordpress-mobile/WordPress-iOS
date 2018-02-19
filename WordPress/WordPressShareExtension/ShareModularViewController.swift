@@ -243,9 +243,14 @@ extension ShareModularViewController {
 
         let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
         tagsPicker.onValueChanged = { tagString in
-            self.shareData.tags = tagString
-            self.refreshModulesTable()
+            if self.shareData.tags != tagString {
+                self.tracks.trackExtensionTagsSelected(tagString)
+                self.shareData.tags = tagString
+                self.refreshModulesTable()
+            }
         }
+        
+        tracks.trackExtensionTagsOpened()
         self.navigationController?.pushViewController(tagsPicker, animated: true)
     }
 }
