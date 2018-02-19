@@ -37,6 +37,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case showCreateSite
         case showSiteCreationEpilogue
         case showSiteCreationError
+        case showSignupEpilogue
     }
 
     override func viewDidLoad() {

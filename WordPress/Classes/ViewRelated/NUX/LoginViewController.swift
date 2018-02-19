@@ -71,9 +71,18 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
 
     func dismiss() {
         if shouldShowEpilogue() {
-            self.performSegue(withIdentifier: .showEpilogue, sender: self)
+            if let linkSource = loginFields.meta.emailMagicLinkSource {
+                switch linkSource {
+                case .signup:
+                    self.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                case .login:
+                    self.performSegue(withIdentifier: .showEpilogue, sender: self)
+                }
+            }
+
             return
         }
+
         dismissBlock?(false)
         navigationController?.dismiss(animated: true, completion: nil)
     }
@@ -113,6 +122,8 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
             destination.restrictToWPCom = source.restrictToWPCom
             destination.dismissBlock = source.dismissBlock
             destination.errorToPresent = source.errorToPresent
+        } else if let destination = segue.destination as? SignupEpilogueViewController {
+            // TODO: ???
         }
     }
 
