@@ -31,5 +31,6 @@ class SignupEpilogueViewController: NUXViewController {
 
 extension SignupEpilogueViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 }
