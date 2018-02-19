@@ -2,7 +2,7 @@ import XCTest
 
 @testable import WordPress
 
-class SigninHelperTests: XCTestCase {
+class WordPressAuthenticatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
@@ -16,34 +16,34 @@ class SigninHelperTests: XCTestCase {
 
     func testBaseSiteURL() {
         var baseURL = "testsite.wordpress.com"
-        var url = SigninHelpers.baseSiteURL(string: "http://\(baseURL)")
+        var url = WordPressAuthenticator.baseSiteURL(string: "http://\(baseURL)")
         XCTAssert(url == "https://\(baseURL)", "Should force https for a wpcom site having http.")
 
-        url = SigninHelpers.baseSiteURL(string: baseURL)
+        url = WordPressAuthenticator.baseSiteURL(string: baseURL)
         XCTAssert(url == "https://\(baseURL)", "Should force https for a wpcom site without a scheme.")
 
         baseURL = "www.selfhostedsite.com"
-        url = SigninHelpers.baseSiteURL(string: baseURL)
+        url = WordPressAuthenticator.baseSiteURL(string: baseURL)
         XCTAssert((url == "http://\(baseURL)"), "Should add http:\\ for a non wpcom site missing a scheme.")
 
-        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/wp-login.php")
+        url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/wp-login.php")
         XCTAssert((url == "http://\(baseURL)"), "Should remove wp-login.php from the path.")
 
-        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/wp-admin")
+        url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/wp-admin")
         XCTAssert((url == "http://\(baseURL)"), "Should remove /wp-admin from the path.")
 
-        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/wp-admin/")
+        url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/wp-admin/")
         XCTAssert((url == "http://\(baseURL)"), "Should remove /wp-admin/ from the path.")
 
-        url = SigninHelpers.baseSiteURL(string: "\(baseURL)/")
+        url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/")
         XCTAssert((url == "http://\(baseURL)"), "Should remove a trailing slash from the url.")
 
         // Check non-latin characters and puny code
         baseURL = "http://例.例"
         let punycode = "http://xn--fsq.xn--fsq"
-        url = SigninHelpers.baseSiteURL(string: baseURL)
+        url = WordPressAuthenticator.baseSiteURL(string: baseURL)
         XCTAssert(url == baseURL)
-        url = SigninHelpers.baseSiteURL(string: punycode)
+        url = WordPressAuthenticator.baseSiteURL(string: punycode)
         XCTAssert(url == baseURL)
     }
 
@@ -52,50 +52,50 @@ class SigninHelperTests: XCTestCase {
         let loginFields = LoginFields()
         loginFields.meta.userIsDotCom = true
 
-        XCTAssert(!SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "Empty fields should not validate.")
+        XCTAssert(!WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields), "Empty fields should not validate.")
 
         loginFields.username = "user"
-        XCTAssert(!SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "Should not validate with just a username")
+        XCTAssert(!WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields), "Should not validate with just a username")
 
         loginFields.password = "password"
-        XCTAssert(SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "should validate wpcom with username and password.")
+        XCTAssert(WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields), "should validate wpcom with username and password.")
 
         loginFields.meta.userIsDotCom = false
-        XCTAssert(!SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "should not validate self-hosted with just username and password.")
+        XCTAssert(!WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields), "should not validate self-hosted with just username and password.")
 
         loginFields.siteAddress = "example.com"
-        XCTAssert(SigninHelpers.validateFieldsPopulatedForSignin(loginFields), "should validate self-hosted with username, password, and site.")
+        XCTAssert(WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields), "should validate self-hosted with username, password, and site.")
     }
 
     func testExtractUsernameFrom() {
         let plainUsername = "auser"
-        XCTAssertEqual(plainUsername, SigninHelpers.extractUsername(from: plainUsername))
+        XCTAssertEqual(plainUsername, WordPressAuthenticator.extractUsername(from: plainUsername))
 
         let nonWPComSite = "asite.mycompany.com"
-        XCTAssertEqual(nonWPComSite, SigninHelpers.extractUsername(from: nonWPComSite))
+        XCTAssertEqual(nonWPComSite, WordPressAuthenticator.extractUsername(from: nonWPComSite))
 
         let wpComSite = "testuser.wordpress.com"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSite))
+        XCTAssertEqual("testuser", WordPressAuthenticator.extractUsername(from: wpComSite))
 
         let wpComSiteSlash = "testuser.wordpress.com/"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSiteSlash))
+        XCTAssertEqual("testuser", WordPressAuthenticator.extractUsername(from: wpComSiteSlash))
 
         let wpComSiteHttp = "http://testuser.wordpress.com/"
-        XCTAssertEqual("testuser", SigninHelpers.extractUsername(from: wpComSiteHttp))
+        XCTAssertEqual("testuser", WordPressAuthenticator.extractUsername(from: wpComSiteHttp))
 
         let nonWPComSiteFtp = "ftp://asite.mycompany.co/"
-        XCTAssertEqual("asite.mycompany.co", SigninHelpers.extractUsername(from: nonWPComSiteFtp))
+        XCTAssertEqual("asite.mycompany.co", WordPressAuthenticator.extractUsername(from: nonWPComSiteFtp))
     }
 
     func testIsWPComDomain() {
         let plainUsername = "auser"
-        XCTAssertFalse(SigninHelpers.isWPComDomain(plainUsername))
+        XCTAssertFalse(WordPressAuthenticator.isWPComDomain(plainUsername))
 
         let nonWPComSite = "asite.mycompany.com"
-        XCTAssertFalse(SigninHelpers.isWPComDomain(nonWPComSite))
+        XCTAssertFalse(WordPressAuthenticator.isWPComDomain(nonWPComSite))
 
         let wpComSite = "testuser.wordpress.com"
-        XCTAssert(SigninHelpers.isWPComDomain(wpComSite))
+        XCTAssert(WordPressAuthenticator.isWPComDomain(wpComSite))
     }
 
 
@@ -103,13 +103,13 @@ class SigninHelperTests: XCTestCase {
         let loginFields = LoginFields()
 
         loginFields.siteAddress = ""
-        XCTAssert(!SigninHelpers.validateSiteForSignin(loginFields), "Empty site should not validate.")
+        XCTAssert(!WordPressAuthenticator.validateSiteForSignin(loginFields), "Empty site should not validate.")
 
         loginFields.siteAddress = "hostname"
-        XCTAssert(SigninHelpers.validateSiteForSignin(loginFields), "Just a host name should validate.")
+        XCTAssert(WordPressAuthenticator.validateSiteForSignin(loginFields), "Just a host name should validate.")
 
         loginFields.siteAddress = "host name.com"
-        XCTAssert(!SigninHelpers.validateSiteForSignin(loginFields), "Hostname with spaces should not validate.")
+        XCTAssert(!WordPressAuthenticator.validateSiteForSignin(loginFields), "Hostname with spaces should not validate.")
     }
 
 
@@ -117,14 +117,14 @@ class SigninHelperTests: XCTestCase {
         let email = "example@email.com"
         let loginFields = LoginFields()
         loginFields.username = email
-        SigninHelpers.storeLoginInfoForTokenAuth(loginFields)
+        WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
 
-        var retrievedLoginFields = SigninHelpers.retrieveLoginInfoForTokenAuth()
+        var retrievedLoginFields = WordPressAuthenticator.retrieveLoginInfoForTokenAuth()
         let retrievedEmail = loginFields.username
         XCTAssert(email == retrievedEmail, "The email retrived should match the email that was saved.")
 
-        SigninHelpers.deleteLoginInfoForTokenAuth()
-        retrievedLoginFields = SigninHelpers.retrieveLoginInfoForTokenAuth()
+        WordPressAuthenticator.deleteLoginInfoForTokenAuth()
+        retrievedLoginFields = WordPressAuthenticator.retrieveLoginInfoForTokenAuth()
 
         XCTAssert(retrievedLoginFields == nil, "Saved loginFields should be deleted after calling deleteLoginInfoForTokenAuth.")
     }

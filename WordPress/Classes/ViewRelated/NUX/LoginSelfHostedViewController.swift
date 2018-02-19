@@ -66,7 +66,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WPAppAnalytics.track(.loginUsernamePasswordFormViewed)
+        WordPressAuthenticator.post(event: .loginUsernamePasswordFormViewed)
     }
 
 
@@ -208,7 +208,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     /// Sanitize and format the site address we show to users.
     ///
     @objc func sanitizedSiteAddress(siteAddress: String) -> String {
-        let baseSiteUrl = SigninHelpers.baseSiteURL(string: siteAddress) as NSString
+        let baseSiteUrl = WordPressAuthenticator.baseSiteURL(string: siteAddress) as NSString
         if let str = baseSiteUrl.components(separatedBy: "://").last {
             return str
         }
@@ -315,7 +315,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
+        WordPressAuthenticator.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
             self.usernameField.text = loginFields.username
             self.passwordField.text = loginFields.password
             self.validateForm()
@@ -324,8 +324,8 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
-        SigninHelpers.openForgotPasswordURL(loginFields)
-        WPAppAnalytics.track(.loginForgotPasswordClicked)
+        WordPressAuthenticator.openForgotPasswordURL(loginFields)
+        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
     }
 
 
@@ -366,7 +366,7 @@ extension LoginSelfHostedViewController {
             }
 
             RecentSitesService().touch(blog: blog)
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
             self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
