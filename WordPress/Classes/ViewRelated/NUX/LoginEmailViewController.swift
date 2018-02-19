@@ -9,16 +9,16 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @IBOutlet var inputStack: UIStackView?
-    @objc var onePasswordButton: UIButton!
-    @objc var googleLoginButton: UIButton?
+    var onePasswordButton: UIButton!
+    var googleLoginButton: UIButton?
     override var sourceTag: SupportSourceTag {
         get {
             return .loginEmail
         }
     }
 
-    @objc var didFindSafariSharedCredentials = false
-    @objc var didRequestSafariSharedCredentials = false
+    var didFindSafariSharedCredentials = false
+    var didRequestSafariSharedCredentials = false
     fileprivate var awaitingGoogle = false
     override var restrictToWPCom: Bool {
         didSet {
@@ -84,7 +84,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Hides the self-hosted login option.
     ///
-    @objc func configureForWPComOnlyIfNeeded() {
+    func configureForWPComOnlyIfNeeded() {
         if restrictToWPCom {
             selfHostedSigninButton.isEnabled = false
             selfHostedSigninButton.alpha = 0.0
@@ -97,7 +97,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
-    @objc func localizeControls() {
+    func localizeControls() {
         if loginFields.meta.jetpackLogin {
             instructionLabel?.text = NSLocalizedString("Log in to the WordPress.com account you used to connect Jetpack.", comment: "Instruction text on the login's email address screen.")
         } else {
@@ -121,14 +121,14 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Sets up a 1Password button if 1Password is available.
     ///
-    @objc func setupOnePasswordButtonIfNeeded() {
+    func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(emailTextField,
                                                             target: self,
                                                             selector: #selector(handleOnePasswordButtonTapped(_:)))
     }
 
     /// Add the log in with Google button to the view
-    @objc func addGoogleButton() {
+    func addGoogleButton() {
         guard let instructionLabel = instructionLabel,
             let stackView = inputStack else {
             return
@@ -179,7 +179,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Configures the email text field, updating its text based on what's stored
     /// in `loginFields`.
     ///
-    @objc func configureEmailField() {
+    func configureEmailField() {
         emailTextField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailTextField.text = loginFields.username
     }
@@ -187,7 +187,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Configures whether appearance of the submit button.
     ///
-    @objc func configureSubmitButton() {
+    func configureSubmitButton() {
         submitButton?.isEnabled = canSubmit()
     }
 
@@ -208,7 +208,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Configure the view for an editing state. Should only be called from viewWillAppear
     /// as this method skips animating any change in height.
     ///
-    @objc func configureViewForEditingIfNeeded() {
+    func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editiing state should be assumed.
         adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
@@ -222,7 +222,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Makes the call to retrieve Safari shared credentials if they exist.
     ///
-    @objc func fetchSharedWebCredentialsIfAvailable() {
+    func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
         WordPressAuthenticator.requestSharedWebCredentials { [weak self] (found, username, password) in
             self?.handleFetchedWebCredentials(found, username: username, password: password)
@@ -237,7 +237,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///     - username: The selected username or nil.
     ///     - password: The selected password or nil.
     ///
-    @objc func handleFetchedWebCredentials(_ found: Bool, username: String?, password: String?) {
+    func handleFetchedWebCredentials(_ found: Bool, username: String?, password: String?) {
         didFindSafariSharedCredentials = found
 
         guard let username = username, let password = password else {
@@ -264,7 +264,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///     - immediately: True if the newly loaded controller should immedately attempt
     ///                        to authenticate the user with the available credentails.  Default is `false`.
     ///
-    @objc func loginWithUsernamePassword(immediately: Bool = false) {
+    func loginWithUsernamePassword(immediately: Bool = false) {
         if immediately {
             validateFormAndLogin()
         } else {
@@ -275,7 +275,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Displays the self-hosted sign in form.
     ///
-    @objc func loginToSelfHostedSite() {
+    func loginToSelfHostedSite() {
         performSegue(withIdentifier: .showSelfHostedLogin, sender: self)
     }
 
@@ -283,7 +283,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Proceeds along the "magic link" sign-in flow, showing a form that let's
     /// the user request a magic link.
     ///
-    @objc func requestLink() {
+    func requestLink() {
         performSegue(withIdentifier: .startMagicLinkFlow, sender: self)
     }
 
@@ -292,7 +292,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// proceeds with the submit action. Empties loginFields.meta.socialService as
     /// social signin does not require form validation.
     ///
-    @objc func validateForm() {
+    func validateForm() {
         loginFields.meta.socialService = nil
         displayError(message: "")
         guard EmailFormatValidator.validate(string: loginFields.username) else {
@@ -358,7 +358,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Whether the form can be submitted.
     ///
-    @objc func canSubmit() -> Bool {
+    func canSubmit() -> Bool {
         return EmailFormatValidator.validate(string: loginFields.username)
     }
 
@@ -422,7 +422,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         adjustGoogleButtonVisibility(false)
     }
 
-    @objc func adjustGoogleButtonVisibility(_ visible: Bool) {
+    func adjustGoogleButtonVisibility(_ visible: Bool) {
         let errorLength = errorLabel?.text?.count ?? 0
         let keyboardTallEnough = SigninEditingState.signinLastKeyboardHeightDelta > Constants.keyboardThreshold
         let keyboardVisible = visible && keyboardTallEnough
