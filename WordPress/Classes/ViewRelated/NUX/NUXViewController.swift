@@ -22,6 +22,9 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     // MARK: associated type for NUXSegueHandler
     /// Segue identifiers to avoid using strings
     enum SegueIdentifier: String {
+        case showEmailLogin
+        case showSignupMethod
+        case showSigninV2
         case showURLUsernamePassword
         case showSelfHostedLogin
         case showWPComLogin
@@ -33,6 +36,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case showDomains
         case showCreateSite
         case showSiteCreationEpilogue
+        case showSiteCreationError
     }
 
     override func viewDidLoad() {
