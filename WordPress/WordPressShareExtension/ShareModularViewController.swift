@@ -249,7 +249,7 @@ extension ShareModularViewController {
                 self.refreshModulesTable()
             }
         }
-        
+
         tracks.trackExtensionTagsOpened()
         self.navigationController?.pushViewController(tagsPicker, animated: true)
     }
