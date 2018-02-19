@@ -29,7 +29,15 @@ class NUXLinkAuthViewController: LoginViewController {
 
         // Count this as success since we're authed. Even if there is a glitch
         // while syncing the user has valid credentials.
-        WPAppAnalytics.track(.loginMagicLinkSucceeded)
+        if let linkSource = loginFields.meta.emailMagicLinkSource {
+            switch linkSource {
+            case .signup:
+                // TODO: add new track
+                WPAppAnalytics.track(.loginMagicLinkSucceeded)
+            case .login:
+                WPAppAnalytics.track(.loginMagicLinkSucceeded)
+            }
+        }
     }
 
     /// Displays the specified text in the status label.
