@@ -18,7 +18,7 @@ import UIKit
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var actionButton: LoginButton!
+    @IBOutlet weak var actionButton: NUXButton!
 
     // To allow storing values until view is loaded.
     private var titleText: String?
