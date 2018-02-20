@@ -97,14 +97,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		43067E29203C8CA4001DD610 /* Events without selectors */ = {
+		43067E29203C8CA4001DD610 /* BlockEvents */ = {
 			isa = PBXGroup;
 			children = (
 				43067E2A203C8CC4001DD610 /* UIControl+BlockEvents.swift */,
 				43067E2D203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift */,
 				43067E2F203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift */,
 			);
-			path = "Events without selectors";
+			path = BlockEvents;
 			sourceTree = "<group>";
 		};
 		B529F287202C855B00895D88 /* Extensions */ = {
@@ -166,7 +166,7 @@
 		B5A78799202B1A93007874FB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				43067E29203C8CA4001DD610 /* Events without selectors */,
+				43067E29203C8CA4001DD610 /* BlockEvents */,
 				B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */,
 				B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */,
 				B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */,
