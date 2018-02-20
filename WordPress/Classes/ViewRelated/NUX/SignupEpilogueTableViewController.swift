@@ -10,7 +10,13 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         let headerNib = UINib(nibName: "LoginEpilogueSectionHeader", bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
 
+        let displayNameNib = UINib(nibName: "SignupEpilogueDisplayNameCell", bundle: nil)
+        tableView.register(displayNameNib, forCellReuseIdentifier: "DisplayNameCell")
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
+        // remove empty cells
+        tableView.tableFooterView = UIView()
     }
 
 
@@ -45,8 +51,16 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "DisplayNameCell") as? SignupEpilogueDisplayNameCell else {
+                    fatalError("Failed to get a display name cell")
+                }
+                return cell
+            }
+        }
 
+        return UITableViewCell()
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
