@@ -6,6 +6,7 @@ class LoginPrologueSignupMethodViewController: UIViewController {
     fileprivate var dismissGestureRecognizer: UITapGestureRecognizer?
 
     open var emailTapped: (() -> Void)?
+    open var googleTapped: (() -> Void)?
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -36,8 +37,9 @@ class LoginPrologueSignupMethodViewController: UIViewController {
             self?.dismiss(animated: true)
             self?.emailTapped?()
         }
-        buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) {
-
+        buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
+            self?.dismiss(animated: true)
+            self?.googleTapped?()
         }
         let termsButton = WPStyleGuide.termsButton()
         termsButton.on(.touchUpInside) { [weak self] button in

@@ -142,6 +142,41 @@ open class SignupService: LocalCoreDataService {
     }
 
 
+    /// Create a new WPcom account using Google signin token
+    ///
+    /// - Parameters:
+    ///   - token: the token from a successful Google login
+    ///   - success: block called when account is created successfully
+    ///   - failure: block called when account creation fails
+    func createWPComeUserWithGoogle(token: String,
+                                   success: @escaping SignupSuccessBlock,
+                                   failure: @escaping SignupFailureBlock) {
+        let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
+
+        remote?.createWPComAccount(withGoogle: token,
+                                    andClientID: ApiCredentials.client(),
+                                    andClientSecret: ApiCredentials.secret(),
+                                    success: { (responseDictionary) in
+                                        guard let username = responseDictionary?[ResponseKeys.username] as? String,
+                                            let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
+                                                // without these we can't proceed.
+                                                failure(nil)
+                                                return
+                                        }
+
+                                        // create the local account
+                                        let service = AccountService(managedObjectContext: self.managedObjectContext)
+                                        let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
+                                        if service.defaultWordPressComAccount() == nil {
+                                            service.setDefaultWordPressComAccount(account)
+                                        }
+
+                                        success()
+                                    },
+                                    failure: failure)
+    }
+
+
     /// Authenticates a newly created WPCom user.
     ///
     /// - Paramaters:
@@ -283,4 +318,9 @@ open class SignupService: LocalCoreDataService {
         case missingDefaultWPComAccount
     }
 
+    /// A convenience struct for response keys
+    private struct ResponseKeys {
+        static let bearerToken = "bearer_token"
+        static let username = "username"
+    }
 }
