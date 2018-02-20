@@ -5,6 +5,14 @@ import UIKit
     @objc optional func secondaryButtonPressed()
 }
 
+private struct NUXButtonConfig {
+    typealias CallBackType = () -> Void
+
+    let title: String
+    let isPrimary: Bool
+    let callback: CallBackType?
+}
+
 class NUXButtonViewController: UIViewController {
     typealias CallBackType = () -> Void
 
@@ -17,10 +25,8 @@ class NUXButtonViewController: UIViewController {
 
     open var delegate: NUXButtonViewControllerDelegate?
 
-    private var bottomButtonTitle: String?
-    private var topButtonTitle: String?
-    private var topCallback: CallBackType?
-    private var bottomCallback: CallBackType?
+    private var topButtonConfig: NUXButtonConfig?
+    private var bottomButtonConfig: NUXButtonConfig?
 
     // MARK: - View
 
@@ -32,15 +38,23 @@ class NUXButtonViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        bottomButton?.setTitle(bottomButtonTitle, for: UIControlState())
-        bottomButton?.accessibilityIdentifier = accessibilityIdentifier(for: bottomButtonTitle)
+        if let buttonConfig = bottomButtonConfig, let bottomButton = bottomButton {
+            bottomButton.setTitle(buttonConfig.title, for: UIControlState())
+            bottomButton.accessibilityIdentifier = accessibilityIdentifier(for: buttonConfig.title)
+            bottomButton.isPrimary = buttonConfig.isPrimary
+            bottomButton.isHidden = false
+        } else {
+            bottomButton?.isHidden = true
+        }
 
-        topButton?.setTitle(topButtonTitle, for: UIControlState())
-        topButton?.accessibilityIdentifier = accessibilityIdentifier(for: topButtonTitle)
-
-        // Hide secondary button if title is not provided.
-        topButton?.isHidden = (topButtonTitle ?? "").isEmpty
-        bottomButton?.isHidden = (bottomButtonTitle ?? "").isEmpty
+        if let buttonConfig = topButtonConfig, let topButton = topButton {
+            topButton.setTitle(buttonConfig.title, for: UIControlState())
+            topButton.accessibilityIdentifier = accessibilityIdentifier(for: buttonConfig.title)
+            topButton.isPrimary = buttonConfig.isPrimary
+            topButton.isHidden = false
+        } else {
+            topButton?.isHidden = true
+        }
     }
 
     // MARK: public API
@@ -51,22 +65,18 @@ class NUXButtonViewController: UIViewController {
     ///   - primary: Title string for primary button. Required.
     ///   - secondary: Title string for secondary button. Optional.
     func setButtonTitles(primary: String, secondary: String? = nil) {
-        bottomButtonTitle = primary
-        topButtonTitle = secondary
+        bottomButtonConfig = NUXButtonConfig(title: primary, isPrimary: true, callback: nil)
+        if let secondaryTitle = secondary {
+            topButtonConfig = NUXButtonConfig(title: secondaryTitle, isPrimary: false, callback: nil)
+        }
     }
 
     func setupTopButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
-        topButtonTitle = title
-        topButton?.isPrimary = isPrimary
-        topButton?.isHidden = false
-        topCallback = callback
+        topButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
     }
 
     func setupButtomButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
-        bottomButtonTitle = title
-        bottomButton?.isPrimary = isPrimary
-        bottomButton?.isHidden = false
-        bottomCallback = callback
+        bottomButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
     }
 
     // MARK: - Helpers
@@ -79,7 +89,7 @@ class NUXButtonViewController: UIViewController {
     // MARK: - Button Handling
 
     @IBAction func primaryButtonPressed(_ sender: Any) {
-        guard let callback = bottomCallback else {
+        guard let callback = bottomButtonConfig?.callback else {
             delegate?.primaryButtonPressed()
             return
         }
@@ -87,7 +97,7 @@ class NUXButtonViewController: UIViewController {
     }
 
     @IBAction func secondaryButtonPressed(_ sender: Any) {
-        guard let callback = topCallback else {
+        guard let callback = topButtonConfig?.callback else {
             delegate?.secondaryButtonPressed?()
             return
         }
