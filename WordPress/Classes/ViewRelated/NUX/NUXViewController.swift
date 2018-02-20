@@ -61,3 +61,15 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         return shouldShowCancelButtonBase()
     }
 }
+
+extension NUXViewController {
+    // Required so that any FancyAlertViewControllers presented within the NUX
+    // use the correct dimmed backing view.
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
+    }
+}
