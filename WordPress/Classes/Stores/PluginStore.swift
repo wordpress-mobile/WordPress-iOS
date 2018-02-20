@@ -116,7 +116,7 @@ struct PluginStoreState {
     var updatesInProgress = [JetpackSiteRef: Set<String>]()
 
     var featuredPluginsSlugs = [String]()
-    var fetchingFeatured: Bool = false
+    var fetchingFeatured = false
 
     var directoryFeeds = [String: PluginDirectoryPageMetadata]()
     var fetchingDirectoryFeed = [String: Bool]()
@@ -192,7 +192,9 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     }
 
     private var featuredSiteToFetch: JetpackSiteRef? {
-        guard state.fetchingFeatured == false, state.featuredPluginsSlugs.isEmpty else { return nil }
+        guard state.fetchingFeatured == false, state.featuredPluginsSlugs.isEmpty else {
+            return nil
+        }
 
         return activeQueries
             .filter {

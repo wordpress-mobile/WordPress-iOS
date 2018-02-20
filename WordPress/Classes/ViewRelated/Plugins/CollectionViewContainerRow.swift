@@ -3,9 +3,9 @@
 /// but it should be possible to make it more generic in the future if there's a need to — it was deliberately
 /// not made as generic as possible, in case it won't be used.
 
-private let CellReuseIdentifier = "CollectionViewContainerRowReuseIdentifier"
 
 struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, Item>: ImmuTableRow {
+
     typealias CellType = CollectionViewContainerCell
 
     static var cell: ImmuTableCell {
@@ -16,7 +16,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
     let secondaryTitle: String?
     let action: ImmuTableAction?
 
-    private let helper: CollectionViewContainerRowHelper
+    private let helper: CollectionViewHandler
 
     init(data: [Item],
          title: String,
@@ -37,7 +37,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
             collectionCellSelected(item as! Item)
         }
 
-        helper = CollectionViewContainerRowHelper(dataSourceItems: data,
+        helper = CollectionViewHandler(dataSourceItems: data,
                                                   configureCollectionCellBlock: configurationBlock,
                                                   collectionCellSeletectedBlock: selectionBlock)
     }
@@ -48,9 +48,9 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
 
         if nil != Bundle.main.path(forResource: String(describing: CollectionViewCellType.self), ofType: "nib") {
             cell.collectionView.register(UINib(nibName: String(describing: CollectionViewCellType.self), bundle: nil),
-                                         forCellWithReuseIdentifier: CellReuseIdentifier)
+                                         forCellWithReuseIdentifier: CollectionViewHandler.CellReuseIdentifier)
         } else {
-            cell.collectionView.register(CollectionViewCellType.self, forCellWithReuseIdentifier: CellReuseIdentifier)
+            cell.collectionView.register(CollectionViewCellType.self, forCellWithReuseIdentifier: CollectionViewHandler.CellReuseIdentifier)
         }
 
         cell.titleLabel.text = title
@@ -66,7 +66,8 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
 }
 
 /// Generic Swift classes can't be made `@objc`, so we're using this helper object to be a `UICollectionView[DataSource|Delegate]`
-@objc private class CollectionViewContainerRowHelper: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+@objc private class CollectionViewHandler: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+    fileprivate static let CellReuseIdentifier = "CollectionViewContainerRowReuseIdentifier"
 
     let dataSourceItems: [Any]
     let configureCollectionCellBlock: ((UICollectionViewCell, Any) -> Void)
@@ -91,7 +92,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellReuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewHandler.CellReuseIdentifier, for: indexPath)
 
         let dataItem = dataSourceItems[indexPath.item]
         configureCollectionCellBlock(cell, dataItem)
@@ -134,8 +135,13 @@ class CollectionViewContainerCell: UITableViewCell {
 
         self.addSubview(titleLabel)
 
-        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 18).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: Constants.spacing).isActive = true
+
+        if #available(iOS 11.0, *) {
+            titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: Constants.spacing).isActive = true
+        } else {
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.spacing).isActive = true
+        }
 
         actionButton = UIButton(type: .custom)
         actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
@@ -145,7 +151,12 @@ class CollectionViewContainerCell: UITableViewCell {
 
         self.addSubview(actionButton)
 
-        actionButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -18).isActive = true
+        if #available(iOS 11.0, *) {
+            actionButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.spacing).isActive = true
+        } else {
+            actionButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.spacing).isActive = true
+        }
+
         actionButton.lastBaselineAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor).isActive = true
         actionButton.setContentHuggingPriority(.required, for: .horizontal)
 
@@ -153,9 +164,9 @@ class CollectionViewContainerCell: UITableViewCell {
 
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
-        flowLayout.itemSize = CGSize(width: 98, height: 98*2)
-        flowLayout.minimumLineSpacing = 18
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
+        flowLayout.itemSize = CGSize(width: Constants.cellWidth, height: Constants.cellHeight)
+        flowLayout.minimumLineSpacing = Constants.spacing
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: Constants.spacing, bottom: 0, right: Constants.spacing)
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
 
@@ -165,7 +176,7 @@ class CollectionViewContainerCell: UITableViewCell {
 
         self.addSubview(collectionView)
 
-        collectionView.topAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor, constant: 8).isActive = true
+        collectionView.topAnchor.constraint(equalTo: titleLabel.lastBaselineAnchor, constant: Constants.labelVerticalSpacing).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
@@ -173,6 +184,13 @@ class CollectionViewContainerCell: UITableViewCell {
 
     @objc private func actionButtonTapped() {
         buttonTappedAction?()
+    }
+
+    private enum Constants {
+        static var cellWidth: CGFloat = 98
+        static var cellHeight: CGFloat = cellWidth * 2
+        static var spacing: CGFloat = 18
+        static var labelVerticalSpacing: CGFloat = 8
     }
 
 }

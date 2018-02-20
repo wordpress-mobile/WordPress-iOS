@@ -260,7 +260,9 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatShortcutNotifications,
     WPAnalyticsStatSignedIn,
     WPAnalyticsStatSignedInToJetpack,
+    WPAnalyticsStatSignupMagicLinkFailed,
     WPAnalyticsStatSignupMagicLinkOpenEmailClientViewed,
+    WPAnalyticsStatSignupMagicLinkRequested,
     WPAnalyticsStatSiteSettingsDeleteSiteAccessed,
     WPAnalyticsStatSiteSettingsDeleteSitePurchasesRequested,
     WPAnalyticsStatSiteSettingsDeleteSitePurchasesShowClicked,
@@ -305,6 +307,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatTwoFactorCodeRequested,
     WPAnalyticsStatTwoFactorSentSMS,
     WPAnalyticsStatShareExtensionError,
+    WPAnalyticsStatSearchAdsAttribution,
     WPAnalyticsStatMaxValue
 };
 

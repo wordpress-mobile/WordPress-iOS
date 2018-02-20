@@ -1,15 +1,10 @@
 import UIKit
 import Aztec
 import Gridicons
+import WordPressUI
 import WordPressShared
 
 class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
-
-    // MARK: - Public Properties
-
-    /// The extension context data provided from the host app
-    ///
-    open var context: NSExtensionContext?
 
     // MARK: - Private Properties
 
@@ -248,6 +243,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
             destination.dismissalCompletionBlock = source.dismissalCompletionBlock
             destination.sites = source.sites
             destination.shareData = source.shareData
+            destination.originatingExtension = source.originatingExtension
         }
     }
 
