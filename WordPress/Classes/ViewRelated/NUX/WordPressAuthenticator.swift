@@ -9,29 +9,30 @@ import WordPressShared
 //
 public protocol WordPressAuthenticatorDelegate: class {
 
-    /// Indicates if the Support button should be rendered, or not.
+    /// Indicates if the Support button action should be enabled, or not.
     ///
     var supportActionEnabled: Bool { get }
 
-    /// Returns a Support UIViewController instance, to be displayed from a given source.
+    /// Indicates if the Livechat Action should be enabled, or not.
     ///
-    func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController
+    var livechatActionEnabled: Bool { get }
 
-    /// Indicates if Helpshift is Enabled.
+    /// Returns the Support's Badge Count.
     ///
-    var helpshiftEnabled: Bool { get }
+    var supportBadgeCount: Int { get }
 
-    /// Returns Helpshift's Unread Messages Count.
+    /// Refreshes Support's Badge Count.
     ///
-    var helpshiftUnreadCount: Int { get }
+    func refreshSupportBadgeCount()
 
-    /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
+    /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
-    func presentHelpshift(from viewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag)
 
-    /// Refreshes Helpshift's Unread Count.
+    /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
+    /// such as all of the User's Login details.
     ///
-    func refreshHelpshiftUnreadCount()
+    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
 }
 
 

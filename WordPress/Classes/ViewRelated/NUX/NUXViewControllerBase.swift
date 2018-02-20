@@ -105,7 +105,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     /// Updates the badge count and its visibility.
     ///
     func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = WordPressAuthenticator.shared.delegate?.helpshiftUnreadCount ?? 0
+        let count = WordPressAuthenticator.shared.delegate?.supportBadgeCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
     }
@@ -200,10 +200,10 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     /// Displays the support vc.
     ///
     func displaySupportViewController(from source: WordPressSupportSourceTag) {
-        guard let supporViewController = WordPressAuthenticator.shared.delegate?.supportViewController(from: source) else {
+        guard let navigationController = navigationController else {
             fatalError()
         }
 
-        navigationController?.present(supporViewController, animated: true, completion: nil)
+        WordPressAuthenticator.shared.delegate?.presentSupport(from: navigationController, sourceTag: source)
     }
 }
