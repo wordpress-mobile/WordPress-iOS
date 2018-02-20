@@ -2,6 +2,27 @@ import UIKit
 
 class SignupEpilogueTableViewController: NUXTableViewController {
 
+    // MARK: - Properties
+
+    private struct Constants {
+        static let numberOfSections = 3
+        static let namesSectionRows = 2
+        static let sectionRows = 1
+        static let headerHeight: CGFloat = 50
+    }
+
+    private struct TableSections {
+        static let userInfo = 0
+        static let names = 1
+        static let password = 2
+    }
+
+    private enum EpilogueCellType {
+        case displayName
+        case username
+        case password
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -10,8 +31,8 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         let headerNib = UINib(nibName: "LoginEpilogueSectionHeader", bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
 
-        let displayNameNib = UINib(nibName: "SignupEpilogueDisplayNameCell", bundle: nil)
-        tableView.register(displayNameNib, forCellReuseIdentifier: "DisplayNameCell")
+        let displayNameNib = UINib(nibName: "SignupEpilogueCell", bundle: nil)
+        tableView.register(displayNameNib, forCellReuseIdentifier: "SignupEpilogueCell")
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
@@ -23,22 +44,20 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return Constants.numberOfSections
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // display name & username section
-        if section == 1 {
-            return 2
+        if section == TableSections.names {
+            return Constants.namesSectionRows
         }
 
-        // user info, password sections
-        return 1
+        return Constants.sectionRows
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var sectionTitle = ""
-        if section == 0 {
+        if section == TableSections.userInfo {
             sectionTitle = NSLocalizedString("New Account", comment: "Header for user info, shown after account created.").localizedUppercase
         }
 
@@ -51,12 +70,20 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 1 {
+
+        if indexPath.section == TableSections.names {
             if indexPath.row == 0 {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "DisplayNameCell") as? SignupEpilogueDisplayNameCell else {
-                    fatalError("Failed to get a display name cell")
-                }
-                return cell
+                return getEpilogueCellFor(cellType: .displayName)
+            }
+
+            if indexPath.row == 1 {
+                return getEpilogueCellFor(cellType: .username)
+            }
+        }
+
+        if indexPath.section == TableSections.password {
+            if indexPath.row == 0 {
+                return getEpilogueCellFor(cellType: .password)
             }
         }
 
@@ -64,11 +91,34 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 50.0
+        return Constants.headerHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
+    // MARK: - Cell Creation
+
+    private func getEpilogueCellFor(cellType: EpilogueCellType) -> SignupEpilogueCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SignupEpilogueCell") as? SignupEpilogueCell else {
+            fatalError("Failed to get epilogue cell")
+        }
+
+        switch cellType {
+        case .displayName:
+
+            // TODO: use real user values
+
+            cell.configureCell(labelText: NSLocalizedString("Display Name", comment: "Display Name label text."), fieldValue: "Juanita Gonzales")
+        case .username:
+            cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: "juanitagonzales666")
+            cell.accessoryType = .disclosureIndicator
+            cell.cellField.isUserInteractionEnabled = false
+        case .password:
+            cell.configureCell(labelText: NSLocalizedString("Password", comment: "Password label text."), fieldValue: nil, fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"), showSecureTextEntry: true)
+        }
+
+        return cell
+    }
 }
