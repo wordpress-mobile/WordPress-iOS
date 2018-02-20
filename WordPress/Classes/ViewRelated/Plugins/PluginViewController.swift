@@ -2,11 +2,6 @@ import Foundation
 import WordPressFlux
 
 class PluginViewController: UITableViewController {
-    var plugin: Plugin {
-        didSet {
-            viewModel.plugin = plugin
-        }
-    }
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         let handler = ImmuTableViewHandler(takeOver: self)
@@ -18,9 +13,18 @@ class PluginViewController: UITableViewController {
     var viewModelReceipt: Receipt?
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
-        self.plugin = plugin
         viewModel = PluginViewModel(plugin: plugin, capabilities: capabilities, site: site)
         super.init(style: .grouped)
+        commonInit()
+    }
+
+    init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef) {
+        viewModel = PluginViewModel(directoryEntry: directoryEntry, site: site)
+        super.init(style: .grouped)
+        commonInit()
+    }
+
+    private func commonInit() {
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
         }
@@ -63,11 +67,7 @@ class PluginViewController: UITableViewController {
     }
 
     private func setupViews() {
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 0.01))
-        // This is a hack/work-around to remove the gap from the top of the tableView — the system leaves
-        // a gap with a `grouped` style by default — we want the banner up top, without any gaps.
         tableView.separatorInset = UIEdgeInsets()
-
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -88,4 +88,17 @@ class PluginViewController: UITableViewController {
         tableView.endUpdates()
     }
 
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // This is a hack/work-around to remove the gap from the top of the tableView — the system leaves
+        // a gap with a `grouped` style by default — we want the banner up top, without any gaps.
+        guard section != 0 else {
+            return 0
+        }
+
+        return Constants.tableViewHeaderHeight
+    }
+
+    private enum Constants {
+        static var tableViewHeaderHeight: CGFloat = 17.5
+    }
 }

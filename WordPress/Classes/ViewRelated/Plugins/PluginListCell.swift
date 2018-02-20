@@ -1,38 +1,32 @@
-class PluginListCell: WPTableViewCellSubtitle {
-    private let updateImageView = UIImageView(image: #imageLiteral(resourceName: "gridicon-sync-circled"))
-    private let spinningAnimationKey = "spinning"
+class PluginListCell: UITableViewCell {
 
-    var updateImageVisible: Bool {
-        get {
-            return accessoryView == updateImageView
-        }
-        set {
-            accessoryView = newValue ? updateImageView : nil
-        }
-    }
+    @IBOutlet var accessoryViewContainer: UIView!
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var authorLabel: UILabel!
+    @IBOutlet var iconImageView: UIImageView!
 
-    var updateImageAnimating: Bool {
-        get {
-            return updateImageView.layer.animation(forKey: spinningAnimationKey) != nil
+    var pluginAccessoryView: UIView? = nil {
+        willSet {
+            pluginAccessoryView?.removeFromSuperview()
         }
-        set {
-            guard updateImageAnimating != newValue else {
+
+        didSet {
+            guard let view = pluginAccessoryView else {
                 return
             }
-            if newValue {
-                updateImageView.layer.add(spinningAnimation, forKey: spinningAnimationKey)
-            } else {
-                updateImageView.layer.removeAnimation(forKey: spinningAnimationKey)
-            }
+
+            accessoryViewContainer.addSubview(view)
+
+
+            view.trailingAnchor.constraint(equalTo: accessoryViewContainer.trailingAnchor).isActive = true
+            view.bottomAnchor.constraint(equalTo: accessoryViewContainer.bottomAnchor).isActive = true
+            view.leadingAnchor.constraint(greaterThanOrEqualTo: accessoryViewContainer.leadingAnchor).isActive = true
         }
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
 
-    private var spinningAnimation: CAAnimation {
-        let animation = CABasicAnimation(keyPath: "transform.rotation")
-        animation.duration = 1
-        animation.repeatCount = .infinity
-        animation.fromValue = 0.0
-        animation.toValue = Float(Float.pi * 2.0)
-        return animation
+        iconImageView.cancelImageDownloadTask()
     }
+
 }
