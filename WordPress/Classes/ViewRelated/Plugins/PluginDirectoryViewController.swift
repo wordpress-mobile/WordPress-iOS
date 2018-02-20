@@ -8,7 +8,6 @@ class PluginDirectoryViewController: UITableViewController {
     private var viewModelReceipt: Receipt?
     private var immuHandler: ImmuTableViewHandler?
 
-
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
 
@@ -170,6 +169,8 @@ class PluginDirectoryViewController: UITableViewController {
 
 extension PluginDirectoryViewController: UISearchControllerDelegate {
     func didPresentSearchController(_ searchController: UISearchController) {
+        // This is required when programmatically `activate`ing the Search controller,
+        // e.g. when the user taps on the "Search" icon in the navbar
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
