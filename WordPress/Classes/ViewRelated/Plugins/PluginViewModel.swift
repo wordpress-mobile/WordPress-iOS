@@ -271,9 +271,9 @@ class PluginViewModel: Observable {
             title: NSLocalizedString("Description", comment: "Title of section that contains plugins' description"),
             expandedText: setHTMLTextAttributes(text),
             expanded: descriptionExpandedStatus,
-            action: { [unowned self] _ in
+            action: { [unowned self] row in
                 self.descriptionExpandedStatus = !self.descriptionExpandedStatus
-                //row?.expanded = self.descriptionExpandedStatus
+                (row as? ExpandableRow)?.expanded = self.descriptionExpandedStatus
             },
             onLinkTap: { [unowned self] url in
                 self.presentBrowser(for: url)
@@ -287,9 +287,9 @@ class PluginViewModel: Observable {
             title: NSLocalizedString("Installation", comment: "Title of section that contains plugins' installation instruction"),
             expandedText: setHTMLTextAttributes(text),
             expanded: installationExpandedStatus,
-            action: { [unowned self] _ in
+            action: { [unowned self] row in
                 self.installationExpandedStatus = !self.installationExpandedStatus
-                //installationRow?.expanded = self.installationExpandedStatus
+                (row as? ExpandableRow)?.expanded = self.installationExpandedStatus
             },
             onLinkTap: { [unowned self] url in
                 self.presentBrowser(for: url)
@@ -303,9 +303,9 @@ class PluginViewModel: Observable {
             title: NSLocalizedString("What's New", comment: "Title of section that contains plugins' change log"),
             expandedText: setHTMLTextAttributes(text),
             expanded: changeLogExpandedStatus,
-            action: { [unowned self] _ in
+            action: { [unowned self] row in
                 self.changeLogExpandedStatus = !self.changeLogExpandedStatus
-                //changelogRow?.expanded = self.changeLogExpandedStatus
+                (row as? ExpandableRow)?.expanded = self.changeLogExpandedStatus
             },
             onLinkTap: { [unowned self] url in
                 self.presentBrowser(for: url)
@@ -319,9 +319,9 @@ class PluginViewModel: Observable {
             title: NSLocalizedString("Frequently Asked Questions", comment: "Title of section that contains plugins' FAQ"),
             expandedText: setHTMLTextAttributes(text),
             expanded: faqExpandedStatus,
-            action: { [unowned self] _ in
+            action: { [unowned self] row in
                 self.faqExpandedStatus = !self.faqExpandedStatus
-                //faqRow?.expanded = self.faqExpandedStatus
+                (row as? ExpandableRow)?.expanded = self.faqExpandedStatus
             },
             onLinkTap: { [unowned self] url in
                 self.presentBrowser(for: url)
@@ -457,6 +457,8 @@ class PluginViewModel: Observable {
                 mutableParagraphStyle = mutableParagraphStyle ?? paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
                 mutableParagraphStyle?.tabStops = fixedTabStops
                 mutableParagraphStyle?.defaultTabInterval = 5
+                mutableParagraphStyle?.firstLineHeadIndent = 0
+                mutableParagraphStyle?.headIndent = 15
             }
 
             if ceil(paragraphStyle.paragraphSpacing) == 16 {
