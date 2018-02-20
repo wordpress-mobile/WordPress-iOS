@@ -43,6 +43,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     override func viewDidLoad() {
         addHelpButtonToNavController()
         setupCancelButtonIfNeeded()
+        setupBackgroundTapGestureRecognizer()
     }
 
     // properties specific to NUXViewController
