@@ -371,8 +371,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func registerChangeObserver() {
         assert(mediaLibraryChangeObserverKey == nil)
-        mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, _, _, _, _ in
+        mediaLibraryChangeObserverKey = pickerDataSource.registerChangeObserverBlock({ [weak self] _, removed, inserted, _, _ in
             guard let strongSelf = self else { return }
+            guard removed.count > 0 || inserted.count > 0 else { return }
 
             strongSelf.updateViewState(for: strongSelf.pickerDataSource.numberOfAssets())
 
