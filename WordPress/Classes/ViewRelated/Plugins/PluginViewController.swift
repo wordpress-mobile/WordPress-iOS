@@ -63,6 +63,10 @@ class PluginViewController: UITableViewController {
         viewModelReceipt = viewModel.onChange { [weak self] in
             self?.bindViewModel()
         }
+
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 44
+
         bindViewModel()
     }
 
@@ -92,7 +96,7 @@ class PluginViewController: UITableViewController {
         // This is a hack/work-around to remove the gap from the top of the tableView — the system leaves
         // a gap with a `grouped` style by default — we want the banner up top, without any gaps.
         guard section != 0 else {
-            return 0
+            return CGFloat.leastNonzeroMagnitude
         }
 
         return Constants.tableViewHeaderHeight
