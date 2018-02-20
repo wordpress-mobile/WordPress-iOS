@@ -11,12 +11,16 @@ class PluginListCell: UITableViewCell {
         }
 
         didSet {
-            guard let view = pluginAccessoryView else { return }
+            guard let view = pluginAccessoryView else {
+                return
+            }
 
             accessoryViewContainer.addSubview(view)
 
+
             view.trailingAnchor.constraint(equalTo: accessoryViewContainer.trailingAnchor).isActive = true
             view.bottomAnchor.constraint(equalTo: accessoryViewContainer.bottomAnchor).isActive = true
+            view.leadingAnchor.constraint(greaterThanOrEqualTo: accessoryViewContainer.leadingAnchor).isActive = true
         }
     }
     override func prepareForReuse() {

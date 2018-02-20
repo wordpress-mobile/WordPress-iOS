@@ -29,7 +29,7 @@ class NUXLinkAuthViewController: LoginViewController {
 
         // Count this as success since we're authed. Even if there is a glitch
         // while syncing the user has valid credentials.
-        WPAppAnalytics.track(.loginMagicLinkSucceeded)
+        WordPressAuthenticator.post(event: .loginMagicLinkSucceeded)
     }
 
     /// Displays the specified text in the status label.

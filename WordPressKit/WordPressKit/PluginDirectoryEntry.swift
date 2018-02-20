@@ -17,13 +17,24 @@ public struct PluginDirectoryEntry: Equatable {
     private let faqHTML: String?
     private let changelogHTML: String?
 
-    public var descriptionText: NSAttributedString? { return extractHTMLText(self.descriptionHTML) }
-    public var installationText: NSAttributedString? { return extractHTMLText(self.installationHTML) }
-    public var faqText: NSAttributedString?  { return extractHTMLText(self.faqHTML) }
-    public var changelogText: NSAttributedString? { return extractHTMLText(self.changelogHTML) }
+    public var descriptionText: NSAttributedString? {
+        return extractHTMLText(self.descriptionHTML)
+    }
+    public var installationText: NSAttributedString? {
+        return extractHTMLText(self.installationHTML)
+    }
+    public var faqText: NSAttributedString?  {
+        return extractHTMLText(self.faqHTML)
+    }
+    public var changelogText: NSAttributedString? {
+        return extractHTMLText(self.changelogHTML)
+    }
 
     private let rating: Int
-    public var starRating: Double { return (Double(rating) / 10).rounded() / 2 } // rounded to nearest half.
+    public var starRating: Double {
+        return (Double(rating) / 10).rounded() / 2
+        // rounded to nearest half.
+    }
 
 
     public static func ==(lhs: PluginDirectoryEntry, rhs: PluginDirectoryEntry) -> Bool {

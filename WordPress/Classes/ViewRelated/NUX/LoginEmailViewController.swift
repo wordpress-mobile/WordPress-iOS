@@ -69,7 +69,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WPAppAnalytics.track(.loginEmailFormViewed)
+        WordPressAuthenticator.post(event: .loginEmailFormViewed)
     }
 
 
@@ -172,7 +172,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         GIDSignIn.sharedInstance().signIn()
 
-        WPAppAnalytics.track(.loginSocialButtonClick)
+        WordPressAuthenticator.post(event: .loginSocialButtonClick)
     }
 
 
@@ -224,7 +224,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     @objc func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
-        SigninHelpers.requestSharedWebCredentials { [weak self] (found, username, password) in
+        WordPressAuthenticator.requestSharedWebCredentials { [weak self] (found, username, password) in
             self?.handleFetchedWebCredentials(found, username: username, password: password)
         }
     }
@@ -253,7 +253,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         loginWithUsernamePassword(immediately: true)
 
-        WPAppAnalytics.track(.loginAutoFillCredentialsFilled)
+        WordPressAuthenticator.post(event: .loginAutoFillCredentialsFilled)
     }
 
 
@@ -309,7 +309,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
                                         self?.requestLink()
             },
                                       failure: { [weak self] (error: Error) in
-                                        WPAppAnalytics.track(.loginFailed, error: error)
+                                        WordPressAuthenticator.post(event: .loginFailed(error: error))
                                         DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
                                             return
@@ -339,7 +339,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             if (error as NSError).code == WordPressComOAuthError.unknownUser.rawValue {
                 errorTitle = NSLocalizedString("Connected But…", comment: "Title shown when a user logs in with Google but no matching WordPress.com account is found")
                 errorDescription = NSLocalizedString("The Google account \"\(loginFields.username)\" doesn't match any account on WordPress.com", comment: "Description shown when a user logs in with Google but no matching WordPress.com account is found")
-                WPAppAnalytics.track(.loginSocialErrorUnknownUser)
+                WordPressAuthenticator.post(event: .loginSocialErrorUnknownUser)
             } else {
                 errorTitle = NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com")
                 errorDescription = error.localizedDescription
@@ -381,7 +381,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
+        WordPressAuthenticator.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
             self?.emailTextField.text = loginFields.username
             self?.loginWithUsernamePassword(immediately: true)
         }
@@ -443,7 +443,7 @@ extension LoginEmailViewController {
         syncWPCom(username, authToken: authToken, requiredMultifactor: false)
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WPAppAnalytics.track(.loginSocialSuccess)
+        WordPressAuthenticator.post(event: .loginSocialSuccess)
     }
 
 
@@ -455,7 +455,7 @@ extension LoginEmailViewController {
         loginFields.emailAddress = email
 
         performSegue(withIdentifier: .showWPComLogin, sender: self)
-        WPAppAnalytics.track(.loginSocialAccountsNeedConnecting)
+        WordPressAuthenticator.post(event: .loginSocialAccountsNeedConnecting)
         configureViewLoading(false)
     }
 
@@ -465,7 +465,7 @@ extension LoginEmailViewController {
         loginFields.nonceUserID = userID
 
         performSegue(withIdentifier: .show2FA, sender: self)
-        WPAppAnalytics.track(.loginSocial2faNeeded)
+        WordPressAuthenticator.post(event: .loginSocial2faNeeded)
         configureViewLoading(false)
     }
 }
@@ -476,11 +476,7 @@ extension LoginEmailViewController: GIDSignInDelegate {
             let token = user.authentication.idToken,
             let email = user.profile.email else {
                 // The Google SignIn for may have been canceled.
-                if let err = error {
-                    WPAppAnalytics.track(.loginSocialButtonFailure, error: err)
-                } else {
-                    WPAppAnalytics.track(.loginSocialButtonFailure)
-                }
+                WordPressAuthenticator.post(event: .loginSocialButtonFailure(error: error))
                 configureViewLoading(false)
                 return
         }
