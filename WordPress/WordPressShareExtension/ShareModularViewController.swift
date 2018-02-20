@@ -128,6 +128,12 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         reloadSitesIfNeeded()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        verifyAuthCredentials(onSuccess: nil)
+    }
+
     // MARK: - Setup Helpers
 
     fileprivate func loadContentIfNeeded() {
