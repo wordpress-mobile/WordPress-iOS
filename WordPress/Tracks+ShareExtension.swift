@@ -5,6 +5,7 @@ import Foundation
 ///
 extension Tracks {
     // MARK: - Public Methods
+
     public func trackExtensionLaunched(_ wpcomAvailable: Bool) {
         let properties = ["is_configured_dotcom": wpcomAvailable]
         trackExtensionEvent(.launched, properties: properties as [String: AnyObject]?)
@@ -24,18 +25,29 @@ extension Tracks {
         trackExtensionEvent(.canceled)
     }
 
+    public func trackExtensionTagsOpened() {
+        trackExtensionEvent(.tagsOpened)
+    }
+
+    public func trackExtensionTagsSelected(_ tags: String) {
+        let properties = ["selected_tags": tags]
+        trackExtensionEvent(.tagsSelected, properties: properties as [String: AnyObject]?)
+    }
 
     // MARK: - Private Helpers
+
     fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
         track(event.rawValue, properties: properties)
     }
 
-
     // MARK: - Private Enums
+
     fileprivate enum ExtensionEvents: String {
-        case launched   = "wpios_share_extension_launched"
-        case posted     = "wpios_share_extension_posted"
-        case canceled   = "wpios_share_extension_canceled"
-        case error      = "wpios_share_extension_error"
+        case launched       = "wpios_share_extension_launched"
+        case posted         = "wpios_share_extension_posted"
+        case tagsOpened     = "wpios_share_extension_tags_opened"
+        case tagsSelected   = "wpios_share_extension_tags_selected"
+        case canceled       = "wpios_share_extension_canceled"
+        case error          = "wpios_share_extension_error"
     }
 }
