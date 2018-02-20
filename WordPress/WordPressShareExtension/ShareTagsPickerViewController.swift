@@ -92,7 +92,7 @@ class ShareTagsPickerViewController: UIViewController {
     // MARK: - Setup Helpers
 
     fileprivate func setupNavigationBar() {
-        self.navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = applyButton
     }
