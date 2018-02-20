@@ -241,16 +241,16 @@ extension ShareModularViewController {
         }
 
         let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
-        tagsPicker.onValueChanged = { tagString in
-            if self.shareData.tags != tagString {
-                self.tracks.trackExtensionTagsSelected(tagString)
-                self.shareData.tags = tagString
-                self.refreshModulesTable()
+        tagsPicker.onValueChanged = { [weak self] tagString in
+            if self?.shareData.tags != tagString {
+                self?.tracks.trackExtensionTagsSelected(tagString)
+                self?.shareData.tags = tagString
+                self?.refreshModulesTable()
             }
         }
 
         tracks.trackExtensionTagsOpened()
-        self.navigationController?.pushViewController(tagsPicker, animated: true)
+        navigationController?.pushViewController(tagsPicker, animated: true)
     }
 }
 
@@ -673,8 +673,8 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     enum ModulesSection: Int {
-        case tags = 0
-        case summary = 1
+        case tags
+        case summary
 
         func headerText() -> String {
             switch self {

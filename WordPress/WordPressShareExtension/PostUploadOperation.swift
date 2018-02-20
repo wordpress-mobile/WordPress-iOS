@@ -37,7 +37,7 @@ extension PostUploadOperation {
         remotePost.title = postTitle
         remotePost.status = postStatus
         remotePost.siteID = NSNumber(value: siteID)
-        remotePost.tags = postTags?.arrayOfTags() ?? [String()]
+        remotePost.tags = postTags?.arrayOfTags() ?? []
         return remotePost
     }
 }

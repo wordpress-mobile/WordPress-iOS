@@ -10,7 +10,7 @@ class ShareTagsPickerViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    /// Tags orginally passed into init()
+    /// Tags originally passed into init()
     ///
     fileprivate let originalTags: [String]
 
@@ -50,7 +50,7 @@ class ShareTagsPickerViewController: UIViewController {
     // MARK: - Initializers
 
     init(siteID: Int, tags: String?) {
-        self.originalTags = tags?.arrayOfTags() ?? [String()]
+        self.originalTags = tags?.arrayOfTags() ?? []
         self.siteID = siteID
         super.init(nibName: nil, bundle: nil)
         textView.text = normalizeInitialTags(tags: originalTags)
@@ -116,7 +116,7 @@ class ShareTagsPickerViewController: UIViewController {
         textView.textColor = WPStyleGuide.darkGrey()
         textView.isScrollEnabled = false
         textView.textContainer.lineFragmentPadding = 0
-        textView.textContainerInset = UIEdgeInsets(top: 11, left: 0, bottom: 11, right: 0)
+        textView.textContainerInset = UIEdgeInsets(top: Constants.textViewTopBottomInset, left: 0, bottom: Constants.textViewTopBottomInset, right: 0)
         textViewContainer.backgroundColor = UIColor.white
         textViewContainer.layer.masksToBounds = false
     }
@@ -137,8 +137,8 @@ class ShareTagsPickerViewController: UIViewController {
             textView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
 
             textViewContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -1),
-            textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 1),
+            textViewContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.textContainerLeadingConstant),
+            textViewContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.textContainerTrailingConstant),
             textViewContainer.bottomAnchor.constraint(equalTo: tableView.topAnchor),
 
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -463,5 +463,15 @@ private class SuggestionsDataSource: NSObject, PostTagPickerDataSource {
         let font = UIFont.systemFont(ofSize: WPStyleGuide.tableviewTextFont().pointSize, weight: .bold)
         highlighted.setAttributes([.font: font], range: range)
         return highlighted
+    }
+}
+
+// MARK: - Constants
+
+extension ShareTagsPickerViewController {
+    struct Constants {
+        static let textViewTopBottomInset: CGFloat = 11.0
+        static let textContainerLeadingConstant: CGFloat = -1
+        static let textContainerTrailingConstant: CGFloat = 1
     }
 }
