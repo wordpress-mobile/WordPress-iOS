@@ -27,15 +27,15 @@ PODS:
   - CocoaLumberjack/Default (3.2.1)
   - CocoaLumberjack/Extensions (3.2.1):
     - CocoaLumberjack/Default
-  - Crashlytics (3.9.3):
-    - Fabric (~> 1.7.2)
+  - Crashlytics (3.10.0):
+    - Fabric (~> 1.7.3)
   - Expecta (1.0.6)
-  - Fabric (1.7.2)
+  - Fabric (1.7.3)
   - FLAnimatedImage (1.0.12)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
-  - GoogleSignIn (4.1.1):
+  - GoogleSignIn (4.1.2):
     - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
     - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
     - GTMOAuth2 (~> 1.0)
@@ -51,14 +51,14 @@ PODS:
   - Gridicons (0.14)
   - GTMOAuth2 (1.1.6):
     - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.1.12):
-    - GTMSessionFetcher/Full (= 1.1.12)
-  - GTMSessionFetcher/Core (1.1.12)
-  - GTMSessionFetcher/Full (1.1.12):
-    - GTMSessionFetcher/Core (= 1.1.12)
-  - HockeySDK (5.1.1):
-    - HockeySDK/DefaultLib (= 5.1.1)
-  - HockeySDK/DefaultLib (5.1.1)
+  - GTMSessionFetcher (1.1.13):
+    - GTMSessionFetcher/Full (= 1.1.13)
+  - GTMSessionFetcher/Core (1.1.13)
+  - GTMSessionFetcher/Full (1.1.13):
+    - GTMSessionFetcher/Core (= 1.1.13)
+  - HockeySDK (5.1.2):
+    - HockeySDK/DefaultLib (= 5.1.2)
+  - HockeySDK/DefaultLib (5.1.2)
   - lottie-ios (1.5.1)
   - MGSwipeTableCell (1.6.6)
   - MRProgress (0.8.3):
@@ -110,8 +110,8 @@ PODS:
     - OHHTTPStubs/Default
   - Reachability (3.2)
   - Specta (1.0.7)
-  - Starscream (3.0.3)
-  - SVProgressHUD (2.2.2)
+  - Starscream (3.0.4)
+  - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.18.1)
   - WPMediaPicker (0.26)
@@ -124,13 +124,13 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.1`)
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.2.1)
-  - Crashlytics (= 3.9.3)
+  - Crashlytics (= 3.10.0)
   - Expecta (= 1.0.6)
   - FLAnimatedImage (= 1.0.12)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - GoogleSignIn (= 4.1.1)
+  - GoogleSignIn (= 4.1.2)
   - Gridicons (= 0.14)
-  - HockeySDK (= 5.1.1)
+  - HockeySDK (= 5.1.2)
   - lottie-ios (= 1.5.1)
   - MGSwipeTableCell (= 1.6.6)
   - MRProgress (= 0.8.3)
@@ -142,8 +142,8 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
   - Specta (= 1.0.7)
-  - Starscream (= 3.0.3)
-  - SVProgressHUD (= 2.2.2)
+  - Starscream (= 3.0.4)
+  - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `1b9e6398f054f8726cf40de9e9a2ace753804502`)
   - WPMediaPicker (= 0.26)
@@ -172,17 +172,17 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: edc4365d31602490af88dbed181b0b666cbdcf75
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
-  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
+  Crashlytics: a989ef242b66605577a425733797f810bd2725eb
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
+  Fabric: bb495bb9a7a7677c6d03a1f8b83d95bc49b47e41
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
-  GoogleSignIn: 3fdaa34a2ba04dbd7a25d7db39aecb0da98d5bdc
+  GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   Gridicons: 558073b1ff34092a49336ee0955ad97d2ef799f0
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
-  GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
-  HockeySDK: a240b3c62ac6b8ccd4301ee65cf25a8e5c9c0556
+  GTMSessionFetcher: 5bb1eae636127de695590f50e7d248483eb891e6
+  HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
   lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
   MGSwipeTableCell: c3bc6e261e7bc06c112909fe3fb8205de286082c
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -193,13 +193,13 @@ SPEC CHECKSUMS:
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
-  Starscream: dfb1b3f39506717ee52b67fb48de0c8269504cbc
-  SVProgressHUD: 59b2d3dabacbd051576d21d32293ca7228dc18b0
+  Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 2e99ee80c61ba9d5f5a38560043b273830f2c9d6
   WPMediaPicker: 847c1f84f93fda7dda8cc9a8cbc1ffb6e47dea63
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: df7c671e3c88af6fce7c046057f81f905917f638
+PODFILE CHECKSUM: 9e5379f79e5f97e397f411b47b5c141f3d5f8ab1
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

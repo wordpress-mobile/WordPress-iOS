@@ -36,17 +36,17 @@ target 'WordPress' do
   # Third party libraries
   # ---------------------
   pod '1PasswordExtension', '1.8.5'
-  pod 'HockeySDK', '5.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
+  pod 'HockeySDK', '5.1.2', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
-  pod 'SVProgressHUD', '2.2.2'
-  pod 'Crashlytics', '3.9.3'
+  pod 'SVProgressHUD', '2.2.5'
+  pod 'Crashlytics', '3.10.0'
   pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '1.0.12'
   pod 'MGSwipeTableCell', '1.6.6'
   pod 'lottie-ios', '1.5.1'
-  pod 'Starscream', '3.0.3'
-  pod 'GoogleSignIn', '4.1.1'
+  pod 'Starscream', '3.0.4'
+  pod 'GoogleSignIn', '4.1.2'
 
   # --------------------
   # WordPress components
