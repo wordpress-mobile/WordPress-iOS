@@ -457,6 +457,8 @@ class PluginViewModel: Observable {
                 mutableParagraphStyle = mutableParagraphStyle ?? paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
                 mutableParagraphStyle?.tabStops = fixedTabStops
                 mutableParagraphStyle?.defaultTabInterval = 5
+                mutableParagraphStyle?.firstLineHeadIndent = 0
+                mutableParagraphStyle?.headIndent = 15
             }
 
             if ceil(paragraphStyle.paragraphSpacing) == 16 {
