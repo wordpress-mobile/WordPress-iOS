@@ -17,13 +17,13 @@ extension WPStyleGuide {
     /// - Parameters:
     ///     - view: The view to style.
     ///
-    @objc class func configureColorsForSigninView(_ view: UIView) {
+    class func configureColorsForSigninView(_ view: UIView) {
         view.backgroundColor = wordPressBlue()
     }
 
     /// Adds a 1password button to a WPWalkthroughTextField, if available
     ///
-    @objc class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
+    class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
         if !OnePasswordFacade().isOnePasswordEnabled() {
             return
         }
@@ -40,7 +40,7 @@ extension WPStyleGuide {
 
     /// Adds a 1password button to a stack view, if available
     ///
-    @objc class func configureOnePasswordButtonForStackView(_ stack: UIStackView, target: NSObject, selector: Selector) {
+    class func configureOnePasswordButtonForStackView(_ stack: UIStackView, target: NSObject, selector: Selector) {
         if !OnePasswordFacade().isOnePasswordEnabled() {
             return
         }
@@ -58,18 +58,18 @@ extension WPStyleGuide {
 
     ///
     ///
-    @objc class func colorForErrorView(_ opaque: Bool) -> UIColor {
+    class func colorForErrorView(_ opaque: Bool) -> UIColor {
         let alpha: CGFloat = opaque ? 1.0 : 0.95
         return UIColor(fromRGBAColorWithRed: 17.0, green: 17.0, blue: 17.0, alpha: alpha)
     }
 
     ///
     ///
-    @objc class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
+    class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
         return UIEdgeInsets(top: 7, left: 20, bottom: 7, right: 20)
     }
 
-    @objc class func textInsetsForLoginTextFieldWithLeftView() -> UIEdgeInsets {
+    class func textInsetsForLoginTextFieldWithLeftView() -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
     }
 
@@ -78,7 +78,7 @@ extension WPStyleGuide {
     /// - note: iOS won't return UIFontWeightMedium for dynamic system font :(
     /// So instead get the dynamic font size, then ask for the non-dynamic font at that size
     ///
-    @objc class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
+    class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
         let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
         return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: .medium)
     }
@@ -89,7 +89,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: A properly styled UIButton
     ///
-    @objc class func googleLoginButton() -> UIButton {
+    class func googleLoginButton() -> UIButton {
         let baseString =  NSLocalizedString("{G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
 
         let attrStrNormal = googleButtonString(baseString, linkColor: WPStyleGuide.wordPressBlue())
@@ -104,7 +104,7 @@ extension WPStyleGuide {
     ///
     /// - Returns: A properly styled UIButton
     ///
-    @objc class func selfHostedLoginButton() -> UIButton {
+    class func selfHostedLoginButton() -> UIButton {
         let baseString =  NSLocalizedString("Log in by entering your site address.", comment: "Label for button to log in using your site address.")
 
         let attrStrNormal = selfHostedButtonString(baseString, linkColor: WPStyleGuide.wordPressBlue())
