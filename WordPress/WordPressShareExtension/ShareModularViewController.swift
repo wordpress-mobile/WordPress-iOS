@@ -252,6 +252,16 @@ extension ShareModularViewController {
         tracks.trackExtensionTagsOpened()
         navigationController?.pushViewController(tagsPicker, animated: true)
     }
+
+    func showCategoriesPicker() {
+        guard let siteID = shareData.selectedSiteID, isPublishingPost == false else {
+            return
+        }
+
+        // FIXME: Load the categories from shareData, handle onChanged, and setup analytics
+        let categoriesPicker = ShareCategoriesPickerViewController(siteID: siteID, categories: nil)
+        navigationController?.pushViewController(categoriesPicker, animated: true)
+    }
 }
 
 // MARK: - UITableView DataSource Conformance
@@ -269,6 +279,8 @@ extension ShareModularViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == modulesTableView {
             switch ModulesSection(rawValue: section)! {
+            case .categories:
+                return 1
             case .tags:
                 return 1
             case .summary:
@@ -362,14 +374,21 @@ extension ShareModularViewController: UITableViewDelegate {
 
 fileprivate extension ShareModularViewController {
     func configureModulesCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        if isSummaryRow(indexPath) {
-            cell.textLabel?.text            = summaryRowText()
-            cell.textLabel?.textAlignment   = .natural
-            cell.accessoryType              = .none
-            cell.isUserInteractionEnabled   = false
-            WPStyleGuide.Share.configureTableViewSummaryCell(cell)
-        } else {
-            // The only other module cell we have besides Summary is Tags...
+        switch indexPath.section {
+        case ModulesSection.categories.rawValue:
+            WPStyleGuide.Share.configureModuleCell(cell)
+            cell.textLabel?.text            = NSLocalizedString("Category", comment: "Category menu item in share extension.")
+            cell.accessoryType              = .disclosureIndicator
+            cell.accessibilityLabel         = "Category"
+            // FIXME: Do this!
+            //            if let tags = shareData.tags, !tags.isEmpty {
+            //                cell.detailTextLabel?.text = tags
+            //                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
+            //            } else {
+            cell.detailTextLabel?.text =  NSLocalizedString("Uncategorized", comment: "Placeholder text for category module in share extension.")
+            cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+        //            }
+        case ModulesSection.tags.rawValue:
             WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text            = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
             cell.accessoryType              = .disclosureIndicator
@@ -381,15 +400,20 @@ fileprivate extension ShareModularViewController {
                 cell.detailTextLabel?.text =  NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
                 cell.detailTextLabel?.textColor = WPStyleGuide.grey()
             }
+        default:
+            // Summary section
+            cell.textLabel?.text            = summaryRowText()
+            cell.textLabel?.textAlignment   = .natural
+            cell.accessoryType              = .none
+            cell.isUserInteractionEnabled   = false
+            WPStyleGuide.Share.configureTableViewSummaryCell(cell)
         }
-    }
-
-    func isSummaryRow(_ path: IndexPath) -> Bool {
-        return path.section == ModulesSection.summary.rawValue
     }
 
     func isModulesSectionEmpty(_ sectionIndex: Int) -> Bool {
         switch ModulesSection(rawValue: sectionIndex)! {
+        case .categories:
+            return false
         case .tags:
             return false
         case .summary:
@@ -399,6 +423,9 @@ fileprivate extension ShareModularViewController {
 
     func selectedModulesTableRowAt(_ indexPath: IndexPath) {
         switch ModulesSection(rawValue: indexPath.section)! {
+        case .categories:
+            modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+            showCategoriesPicker()
         case .tags:
             modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
             showTagsPicker()
@@ -673,11 +700,14 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     enum ModulesSection: Int {
+        case categories
         case tags
         case summary
 
         func headerText() -> String {
             switch self {
+            case .categories:
+                return String()
             case .tags:
                 return String()
             case .summary:
@@ -687,6 +717,8 @@ fileprivate extension ShareModularViewController {
 
         func footerText() -> String {
             switch self {
+            case .categories:
+                return String()
             case .tags:
                 return String()
             case .summary:
