@@ -4,6 +4,11 @@ import WordPressFlux
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let site: JetpackSiteRef
+    var query: PluginQuery {
+        didSet {
+            viewModel.query = query
+        }
+    }
 
     fileprivate var viewModel: PluginListViewModel
     fileprivate var tableViewModel = ImmuTable.Empty
@@ -12,26 +17,19 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     var viewModelStateChangeReceipt: Receipt?
     var viewModelChangeReceipt: Receipt?
 
-    init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    init(site: JetpackSiteRef, query: PluginQuery, store: PluginStore = StoreContainer.shared.plugin) {
         self.site = site
-        viewModel = PluginListViewModel(site: site, store: store)
+        self.query = query
+        viewModel = PluginListViewModel(site: site, query: query, store: store)
 
         super.init(style: .grouped)
 
-        title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
+        title = viewModel.title
         noResultsView.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc convenience init?(blog: Blog) {
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        self.init(site: site)
     }
 
     override func viewDidLoad() {
@@ -83,6 +81,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     func refreshModel(change: PluginListViewModel.StateChange) {
+        title = viewModel.title
         tableViewModel = viewModel.tableViewModel(presenter: self)
         switch change {
         case .replace:
@@ -150,6 +149,11 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 // MARK: - PluginPresenter
 
 extension PluginListViewController: PluginPresenter {
+    func present(directoryEntry: PluginDirectoryEntry) {
+        let controller = PluginViewController(directoryEntry: directoryEntry, site: site)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
     func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
         let controller = PluginViewController(plugin: plugin, capabilities: capabilities, site: site)
         navigationController?.pushViewController(controller, animated: true)
