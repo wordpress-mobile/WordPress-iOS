@@ -1,10 +1,14 @@
 import WordPressShared
+import WordPressUI
+import Gridicons
 
 extension WPStyleGuide {
 
     private struct Constants {
         static let buttonMinHeight: CGFloat = 40.0
         static let googleIconOffset: CGFloat = -1.0
+        static let domainsIconPaddingToRemove: CGFloat = 2.0
+        static let domainsIconSize = CGSize(width: 18, height: 18)
         static let verticalLabelSpacing: CGFloat = 10.0
     }
 
@@ -86,10 +90,25 @@ extension WPStyleGuide {
     /// - Returns: A properly styled UIButton
     ///
     @objc class func googleLoginButton() -> UIButton {
-        let baseString =  NSLocalizedString("Or you can {G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
+        let baseString =  NSLocalizedString("{G} Log in with Google.", comment: "Label for button to log in using Google. The {G} will be replaced with the Google logo.")
 
         let attrStrNormal = googleButtonString(baseString, linkColor: WPStyleGuide.wordPressBlue())
         let attrStrHighlight = googleButtonString(baseString, linkColor: WPStyleGuide.lightBlue())
+
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+
+        return textButton(normal: attrStrNormal, highlighted: attrStrHighlight, font: font)
+    }
+
+    /// Creates a button for Self-hosted Login
+    ///
+    /// - Returns: A properly styled UIButton
+    ///
+    @objc class func selfHostedLoginButton() -> UIButton {
+        let baseString =  NSLocalizedString("Log in by entering your site address.", comment: "Label for button to log in using your site address.")
+
+        let attrStrNormal = selfHostedButtonString(baseString, linkColor: WPStyleGuide.wordPressBlue())
+        let attrStrHighlight = selfHostedButtonString(baseString, linkColor: WPStyleGuide.lightBlue())
 
         let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
 
@@ -165,6 +184,31 @@ extension WPStyleGuide {
         }
 
         labelString.append(NSAttributedString(string: lastPart, attributes: [.foregroundColor: linkColor]))
+
+        return labelString
+    }
+
+    private class func selfHostedButtonString(_ buttonText: String, linkColor: UIColor) -> NSAttributedString {
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+
+        let titleParagraphStyle = NSMutableParagraphStyle()
+        titleParagraphStyle.alignment = .left
+
+        let labelString = NSMutableAttributedString(string: "")
+
+        if let originalDomainsIcon = Gridicon.iconOfType(.domains).imageWithTintColor(WPStyleGuide.greyLighten10()) {
+            var domainsIcon = originalDomainsIcon.cropping(to: CGRect(x: Constants.domainsIconPaddingToRemove,
+                                                                      y: Constants.domainsIconPaddingToRemove,
+                                                                      width: originalDomainsIcon.size.width - Constants.domainsIconPaddingToRemove * 2,
+                                                                      height: originalDomainsIcon.size.height - Constants.domainsIconPaddingToRemove * 2))
+            domainsIcon = domainsIcon.resizedImage(Constants.domainsIconSize, interpolationQuality: .high)
+            let domainsAttachment = NSTextAttachment()
+            domainsAttachment.image = domainsIcon
+            domainsAttachment.bounds = CGRect(x: 0, y: font.descender, width: domainsIcon.size.width, height: domainsIcon.size.height)
+            let iconString = NSAttributedString(attachment: domainsAttachment)
+            labelString.append(iconString)
+        }
+        labelString.append(NSAttributedString(string: " " + buttonText, attributes: [.foregroundColor: linkColor]))
 
         return labelString
     }
