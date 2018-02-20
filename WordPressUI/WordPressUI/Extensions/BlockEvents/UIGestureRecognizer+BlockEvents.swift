@@ -1,4 +1,4 @@
-// MARK: - Gesture Recognizer
+/// Allows UIBarButtonItem to handle events programatically without using selectors or @objc
 
 private final class UITapGestureRecognizerEventHandler<Sender: UITapGestureRecognizer>: NSObject {
     let closure: (Sender) -> Void
@@ -25,7 +25,10 @@ extension ControlEventBindable where Self: UITapGestureRecognizer {
         set { objc_setAssociatedObject(self, &BlockEventKeys.ControlEventHandlers, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 
-    /// Listen for `UIControlEvents` executing the provided closure when triggered
+    /// Set the event handler on this UITapGestureRecognizer without using selectors
+    ///
+    /// - Parameter closure: the closure to call when the gesture is taped
+    /// - Note: this allows swift classes without @objc to create UITapGestureRecognizers
     public func on(call closure: @escaping (Self) -> Void) {
         let handler = UITapGestureRecognizerEventHandler<Self>(sender: self, closure: closure)
         self.controlEventHandlers.append(handler)

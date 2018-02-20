@@ -1,4 +1,4 @@
-// Adding UIBarButtonItem
+/// Allows UIBarButtonItem to handle events programatically without using selectors or @objc
 
 private final class BarButtonItemEventHandler<Sender: UIBarButtonItem>: NSObject {
     let closure: (Sender) -> Void
@@ -27,7 +27,10 @@ extension ControlEventBindable where Self: UIBarButtonItem {
         set { objc_setAssociatedObject(self, &BlockEventKeys.ControlEventHandlers, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 
-    /// Listen for `UIControlEvents` executing the provided closure when triggered
+    /// Set the event handler on this UIBarButtonItem without using selectors
+    ///
+    /// - Parameter closure: the closure to call when the button is taped
+    /// - Note: this allows swift classes without @objc to create UIBarButtonItems
     public func on(call closure: @escaping (Self) -> Void) {
         let handler = BarButtonItemEventHandler<Self>(sender: self, events: .touchUpInside, closure: closure)
         self.controlEventHandlers.append(handler)
