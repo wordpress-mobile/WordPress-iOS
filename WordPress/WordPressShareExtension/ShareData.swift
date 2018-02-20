@@ -33,4 +33,8 @@ class ShareData: NSObject {
     /// Dictionary of URLs mapped to attachment ID's
     ///
     var sharedImageDict = [URL: String]()
+
+    /// Comma-delimited list of tags
+    ///
+    var tags: String?
 }

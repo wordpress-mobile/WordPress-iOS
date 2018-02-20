@@ -262,6 +262,8 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatSignedInToJetpack,
     WPAnalyticsStatSignupMagicLinkFailed,
     WPAnalyticsStatSignupMagicLinkOpenEmailClientViewed,
+    WPAnalyticsStatSignupSocialSuccess,
+    WPAnalyticsStatSignupSocialFailure,
     WPAnalyticsStatSignupMagicLinkRequested,
     WPAnalyticsStatSiteSettingsDeleteSiteAccessed,
     WPAnalyticsStatSiteSettingsDeleteSitePurchasesRequested,

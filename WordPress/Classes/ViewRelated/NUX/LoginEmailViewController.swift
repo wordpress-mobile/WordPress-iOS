@@ -513,5 +513,6 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     }
 }
 
+/// This is needed to set self as uiDelegate, even though none of the methods are called
 extension LoginEmailViewController: GIDSignInUIDelegate {
 }
