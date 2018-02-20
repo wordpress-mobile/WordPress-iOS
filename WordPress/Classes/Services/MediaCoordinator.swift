@@ -9,7 +9,11 @@ class MediaCoordinator: NSObject {
 
     @objc static let shared = MediaCoordinator()
 
-    private(set) var backgroundContext = ContextManager.sharedInstance().newDerivedContext()
+    private(set) var backgroundContext: NSManagedObjectContext = {
+        let context = ContextManager.sharedInstance().newDerivedContext()
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
     private let mainContext = ContextManager.sharedInstance().mainContext
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
