@@ -5,12 +5,14 @@ import GoogleSignIn
 ///
 class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var emailTextField: WPWalkthroughTextField!
-    @IBOutlet var selfHostedSigninButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @IBOutlet var inputStack: UIStackView?
+    @IBOutlet var alternativeLoginLabel: UILabel?
+
     var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
+    var selfHostedLoginButton: UIButton?
     override var sourceTag: SupportSourceTag {
         get {
             return .loginEmail
@@ -29,8 +31,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     }
 
     private struct Constants {
-        static let googleButtonOffset: CGFloat = 10.0
-        static let googleButtonAnimationDuration: TimeInterval = 0.33
+        static let alternativeLogInAnimationDuration: TimeInterval = 0.33
         static let keyboardThreshold: CGFloat = 100.0
     }
 
@@ -43,8 +44,9 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         localizeControls()
         setupOnePasswordButtonIfNeeded()
-        configureForWPComOnlyIfNeeded()
         addGoogleButton()
+        addSelfHostedLogInButton()
+        configureForWPComOnlyIfNeeded()
     }
 
 
@@ -86,11 +88,11 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     func configureForWPComOnlyIfNeeded() {
         if restrictToWPCom {
-            selfHostedSigninButton.isEnabled = false
-            selfHostedSigninButton.alpha = 0.0
+            selfHostedLoginButton?.isEnabled = false
+            selfHostedLoginButton?.alpha = 0.0
         } else {
-            selfHostedSigninButton.isEnabled = true
-            selfHostedSigninButton.alpha = 1.0
+            selfHostedLoginButton?.isEnabled = true
+            selfHostedLoginButton?.alpha = 1.0
         }
     }
 
@@ -106,16 +108,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         emailTextField.placeholder = NSLocalizedString("Email address", comment: "Placeholder for a textfield. The user may enter their email address.")
         emailTextField.accessibilityIdentifier = "Email address"
 
+        alternativeLoginLabel?.text = NSLocalizedString("Alternatively:", comment: "String displayed before offering alternative login methods")
+
         let submitButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
         submitButton?.setTitle(submitButtonTitle, for: UIControlState())
         submitButton?.setTitle(submitButtonTitle, for: .highlighted)
         submitButton?.accessibilityIdentifier = "Next Button"
-
-        let selfHostedTitle = NSLocalizedString("Log in to your site by entering your site address instead.", comment: "A button title.")
-        selfHostedSigninButton.setTitle(selfHostedTitle, for: UIControlState())
-        selfHostedSigninButton.setTitle(selfHostedTitle, for: .highlighted)
-        selfHostedSigninButton.titleLabel?.numberOfLines = 0
-        selfHostedSigninButton.naturalContentHorizontalAlignment = .leading
     }
 
 
@@ -128,6 +126,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     }
 
     /// Add the log in with Google button to the view
+    ///
     func addGoogleButton() {
         guard let instructionLabel = instructionLabel,
             let stackView = inputStack else {
@@ -135,21 +134,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         }
 
         let button = WPStyleGuide.googleLoginButton()
-        let buttonWrapper = UIView()
-        buttonWrapper.addSubview(button)
-        stackView.addArrangedSubview(buttonWrapper)
+        stackView.addArrangedSubview(button)
         button.addTarget(self, action: #selector(googleLoginTapped), for: .touchUpInside)
 
-        buttonWrapper.addConstraints([
-            buttonWrapper.topAnchor.constraint(equalTo: button.topAnchor, constant: Constants.googleButtonOffset),
-            buttonWrapper.bottomAnchor.constraint(equalTo: button.bottomAnchor),
-            buttonWrapper.leadingAnchor.constraint(equalTo: button.leadingAnchor),
-            buttonWrapper.trailingAnchor.constraint(equalTo: button.trailingAnchor)
-            ])
-
         stackView.addConstraints([
-            buttonWrapper.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
-            buttonWrapper.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
+            button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
             ])
 
         googleLoginButton = button
@@ -175,6 +165,25 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         WordPressAuthenticator.post(event: .loginSocialButtonClick)
     }
 
+    /// Add the log in with site address button to the view
+    ///
+    func addSelfHostedLogInButton() {
+        guard let instructionLabel = instructionLabel,
+            let stackView = inputStack else {
+                return
+        }
+
+        let button = WPStyleGuide.selfHostedLoginButton()
+        stackView.addArrangedSubview(button)
+        button.addTarget(self, action: #selector(handleSelfHostedButtonTapped), for: .touchUpInside)
+
+        stackView.addConstraints([
+            button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
+            ])
+
+        selfHostedLoginButton = button
+    }
 
     /// Configures the email text field, updating its text based on what's stored
     /// in `loginFields`.
@@ -412,17 +421,17 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @objc func handleKeyboardWillShow(_ notification: Foundation.Notification) {
         keyboardWillShow(notification)
 
-        adjustGoogleButtonVisibility(true)
+        adjustAlternativeLogInElementsVisibility(true)
     }
 
 
     @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
 
-        adjustGoogleButtonVisibility(false)
+        adjustAlternativeLogInElementsVisibility(false)
     }
 
-    func adjustGoogleButtonVisibility(_ visible: Bool) {
+    func adjustAlternativeLogInElementsVisibility(_ visible: Bool) {
         let errorLength = errorLabel?.text?.count ?? 0
         let keyboardTallEnough = SigninEditingState.signinLastKeyboardHeightDelta > Constants.keyboardThreshold
         let keyboardVisible = visible && keyboardTallEnough
@@ -430,8 +439,13 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         let baseAlpha: CGFloat = errorLength > 0 ? 0.0 : 1.0
         let newAlpha: CGFloat = keyboardVisible ? baseAlpha : 1.0
 
-        UIView.animate(withDuration: Constants.googleButtonAnimationDuration) { [weak self] in
+        UIView.animate(withDuration: Constants.alternativeLogInAnimationDuration) { [weak self] in
+            self?.alternativeLoginLabel?.alpha = newAlpha
             self?.googleLoginButton?.alpha = newAlpha
+            if let selfHostedLoginButton = self?.selfHostedLoginButton,
+                selfHostedLoginButton.isEnabled {
+                selfHostedLoginButton.alpha = newAlpha
+            }
         }
     }
 }
