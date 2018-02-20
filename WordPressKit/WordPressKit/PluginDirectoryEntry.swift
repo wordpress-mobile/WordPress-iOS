@@ -9,15 +9,9 @@ public struct PluginDirectoryEntry {
     public let icon: URL?
     public let banner: URL?
 
-    public var author: String {
-        return extractAuthor(self.authorHTML).name
-    }
-    
-    public var authorURL: URL? {
-        return extractAuthor(self.authorHTML).link
-    }
+    public var author: String
+    public var authorURL: URL?
 
-    private let authorHTML: String
     private let descriptionHTML: String?
     private let installationHTML: String?
     private let faqHTML: String?
@@ -85,7 +79,6 @@ extension PluginDirectoryEntry: Decodable {
         let decodedName = try container.decode(String.self, forKey: .name)
         name = decodedName.stringByDecodingXMLCharacters()
         slug = try container.decode(String.self, forKey: .slug)
-        authorHTML = try container.decode(String.self, forKey: .author)
         version = try? container.decode(String.self, forKey: .version)
         lastUpdated = try? container.decode(Date.self, forKey: .lastUpdated)
         rating = try container.decode(Int.self, forKey: .rating)
@@ -104,6 +97,8 @@ extension PluginDirectoryEntry: Decodable {
         } else {
             banner = nil
         }
+
+        (author, authorURL) = try extractAuthor(container.decode(String.self, forKey: .author))
 
         let sections = try? container.nestedContainer(keyedBy: SectionKeys.self, forKey: .sections)
 
@@ -131,7 +126,7 @@ extension PluginDirectoryEntry: Decodable {
         self.name = name
         self.slug = slug
         self.rating = rating
-        self.authorHTML = authorString
+        self.author = extractAuthor(authorString).name
 
         if let icon = (responseObject["icons"]?["2x"] as? String).flatMap({ URL(string: $0) }) {
             self.icon = icon
@@ -139,6 +134,7 @@ extension PluginDirectoryEntry: Decodable {
             self.icon = (responseObject["icons"]?["1x"] as? String).flatMap { URL(string: $0) }
         }
 
+        self.authorURL = nil
         self.version = nil
         self.lastUpdated = nil
         self.banner = nil
