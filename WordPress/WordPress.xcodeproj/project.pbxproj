@@ -622,8 +622,8 @@
 		9859DF8A20210B2100FB848E /* SiteCreationInstructionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9859DF8920210B2100FB848E /* SiteCreationInstructionTableViewCell.xib */; };
 		98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98656BD72037A1770079DE67 /* SignupEpilogueViewController.swift */; };
 		9872CB30203B8A730066A293 /* SignupEpilogueTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9872CB2F203B8A730066A293 /* SignupEpilogueTableViewController.swift */; };
-		9872CB3C203BB7440066A293 /* SignupEpilogueDisplayNameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9872CB3B203BB7440066A293 /* SignupEpilogueDisplayNameCell.swift */; };
-		9872CB3E203BB76A0066A293 /* SignupEpilogueDisplayNameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9872CB3D203BB7690066A293 /* SignupEpilogueDisplayNameCell.xib */; };
+		98A25BD1203CB25F006A5807 /* SignupEpilogueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */; };
+		98A25BD3203CB278006A5807 /* SignupEpilogueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */; };
 		98A437AE20069098004A8A57 /* SiteCreationDomainsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */; };
 		98A437B0200693C0004A8A57 /* SiteCreationDomainsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */; };
 		98AD07651FFFF96B00485ACA /* SiteCreationSiteDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */; };
@@ -1502,9 +1502,9 @@
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		37E3F5EA2ED7005A5E0BBEC3 /* Pods-WordPressTodayWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release.xcconfig"; sourceTree = "<group>"; };
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
+		3B28C7D4D65D0CA6AB9FCFDC /* Pods-WordPressDraftActionExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		400F4624201E74EE000CFD9E /* CollectionViewContainerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewContainerRow.swift; sourceTree = "<group>"; };
 		401A3D012027DBD80099A127 /* PluginListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginListCell.xib; sourceTree = "<group>"; };
-		3B28C7D4D65D0CA6AB9FCFDC /* Pods-WordPressDraftActionExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Gridicon.swift"; sourceTree = "<group>"; };
 		403269912027719C00608441 /* PluginDirectoryAccessoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryAccessoryItem.swift; sourceTree = "<group>"; };
 		4034FDE92007C42400153B87 /* ExpandableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableCell.swift; sourceTree = "<group>"; };
@@ -2073,8 +2073,8 @@
 		9859DF8920210B2100FB848E /* SiteCreationInstructionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteCreationInstructionTableViewCell.xib; sourceTree = "<group>"; };
 		98656BD72037A1770079DE67 /* SignupEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEpilogueViewController.swift; sourceTree = "<group>"; };
 		9872CB2F203B8A730066A293 /* SignupEpilogueTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupEpilogueTableViewController.swift; sourceTree = "<group>"; };
-		9872CB3B203BB7440066A293 /* SignupEpilogueDisplayNameCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupEpilogueDisplayNameCell.swift; sourceTree = "<group>"; };
-		9872CB3D203BB7690066A293 /* SignupEpilogueDisplayNameCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignupEpilogueDisplayNameCell.xib; sourceTree = "<group>"; };
+		98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupEpilogueCell.swift; sourceTree = "<group>"; };
+		98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignupEpilogueCell.xib; sourceTree = "<group>"; };
 		98A437AD20069097004A8A57 /* SiteCreationDomainsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationDomainsTableViewController.swift; sourceTree = "<group>"; };
 		98A437AF200693C0004A8A57 /* SiteCreationDomainsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationDomainsViewController.swift; sourceTree = "<group>"; };
 		98AD07641FFFF96A00485ACA /* SiteCreationSiteDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationSiteDetailsViewController.swift; sourceTree = "<group>"; };
@@ -4462,8 +4462,8 @@
 		9872CB36203BB53F0066A293 /* Signin Epilogue */ = {
 			isa = PBXGroup;
 			children = (
-				9872CB3D203BB7690066A293 /* SignupEpilogueDisplayNameCell.xib */,
-				9872CB3B203BB7440066A293 /* SignupEpilogueDisplayNameCell.swift */,
+				98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */,
+				98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */,
 			);
 			name = "Signin Epilogue";
 			sourceTree = "<group>";
@@ -6411,13 +6411,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6ED090B1D46AFAF003283C4 /* ReaderFollowedSitesStreamHeader.xib in Resources */,
+				98A25BD3203CB278006A5807 /* SignupEpilogueCell.xib in Resources */,
 				93F2E53A1E9E596A0050D489 /* HsLocalization.bundle in Resources */,
 				9859DF8A20210B2100FB848E /* SiteCreationInstructionTableViewCell.xib in Resources */,
 				B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */,
 				B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */,
 				5D6C4AF61B603CA3005E3C43 /* WPTableViewActivityCell.xib in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
-				9872CB3E203BB76A0066A293 /* SignupEpilogueDisplayNameCell.xib in Resources */,
 				43A85B311E9E815B00FA990B /* Login.storyboard in Resources */,
 				4350359B1EDCAB99004ECF47 /* stats.json in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
@@ -7310,6 +7310,7 @@
 				B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */,
 				B55F1AA81C10936600FD04D4 /* BlogSettings+Discussion.swift in Sources */,
 				E155EC721E9B7DCE009D7F63 /* PostTagPickerViewController.swift in Sources */,
+				98A25BD1203CB25F006A5807 /* SignupEpilogueCell.swift in Sources */,
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
 				742C79981E5F511C00DB1608 /* DeleteSiteViewController.swift in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
@@ -7465,7 +7466,6 @@
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
-				9872CB3C203BB7440066A293 /* SignupEpilogueDisplayNameCell.swift in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,
 				B5BE31C41CB825A100BDF770 /* NSURLCache+Helpers.swift in Sources */,
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
