@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PluginDirectoryEntry: Equatable {
+public struct PluginDirectoryEntry {
     public let name: String
     public let slug: String
     public let version: String?
@@ -12,6 +12,7 @@ public struct PluginDirectoryEntry: Equatable {
     public var author: String {
         return extractAuthor(self.authorHTML).name
     }
+    
     public var authorURL: URL? {
         return extractAuthor(self.authorHTML).link
     }
@@ -28,7 +29,7 @@ public struct PluginDirectoryEntry: Equatable {
     public var installationText: NSAttributedString? {
         return extractHTMLText(self.installationHTML)
     }
-    public var faqText: NSAttributedString?  {
+    public var faqText: NSAttributedString? {
         return extractHTMLText(self.faqHTML)
     }
     public var changelogText: NSAttributedString? {
@@ -40,8 +41,9 @@ public struct PluginDirectoryEntry: Equatable {
         return (Double(rating) / 10).rounded() / 2
         // rounded to nearest half.
     }
+}
 
-
+extension PluginDirectoryEntry: Equatable {
     public static func ==(lhs: PluginDirectoryEntry, rhs: PluginDirectoryEntry) -> Bool {
         return lhs.name == rhs.name
             && lhs.slug == rhs.slug
@@ -49,8 +51,6 @@ public struct PluginDirectoryEntry: Equatable {
             && lhs.lastUpdated == rhs.lastUpdated
             && lhs.icon == rhs.icon
     }
-
-
 }
 
 extension PluginDirectoryEntry: Decodable {
@@ -150,15 +150,32 @@ extension PluginDirectoryEntry: Decodable {
 }
 
 // Since the WPOrg API returns `author` as a HTML string (or freeform text), we need to get ugly and parse out the important bits out of it ourselves.
+// Using the built-in NSAttributedString API for it is too slow — it's required to run on main thread and it calls out to WebKit APIs,
+// making the context switches excessively expensive when trying to display a list of plugins.
 typealias Author = (name: String, link: URL?)
-private func extractAuthor(_ string: String) -> Author {
-    guard let attributedString = extractHTMLText(string) else {
-        return (name: string, link: nil)
+
+private func extractAuthor(_ author: String) -> Author {
+    guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue),
+        let match = detector.firstMatch(in: author, options: [], range: NSRange(location: 0, length: author.count)),
+        let url = match.url else {
+            // If there's no URL, it's just a simple string and we can return it verbatim.
+            return Author(name: author, link: nil)
     }
 
-    let authorName = attributedString.string
-    let authorURL = attributedString.attributes(at: 0, effectiveRange: nil)[.link] as? URL
-    return (authorName, authorURL)
+    let endLinkIndex = author.index(author.startIndex, offsetBy: match.range.upperBound)
+    let subStringAfterLink = author[endLinkIndex...]
+    // After we found our link, we now need to extract the link title. It's _definitely_ after the link itself, so:
+
+    let closingTag = subStringAfterLink.index(after: subStringAfterLink.index(of: ">")!)
+    // Let's find first closing tag after the link...
+
+    let linkTitle = String(subStringAfterLink[closingTag...])
+    // And create a substring from that place until the end....
+
+    let author = linkTitle.removingSuffix("</a>")
+    // and remove the closing tag. Voila!
+
+    return Author(name: author, link: url)
 }
 
 private func extractHTMLText(_ text: String?) -> NSAttributedString? {
