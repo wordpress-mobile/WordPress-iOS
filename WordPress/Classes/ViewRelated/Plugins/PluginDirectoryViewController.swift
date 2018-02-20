@@ -30,8 +30,6 @@ class PluginDirectoryViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.shadowImage = UIImage()
-
         // There isn't a good way of styling a one, particular UISearchBar, without reaching deep into
         // it's own subview hierarchy (though we still need to do that to change the background color in iOS11...)
 
@@ -96,10 +94,6 @@ class PluginDirectoryViewController: UITableViewController {
     private func reloadTable() {
         immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
     }
-    private enum Constants {
-        static var rowHeight: CGFloat = 256
-        static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    }
 
     @objc private func searchButtonTapped() {
         searchController.isActive = true
@@ -118,9 +112,9 @@ class PluginDirectoryViewController: UITableViewController {
             // Inspired by https://stackoverflow.com/questions/45663169/uisearchcontroller-ios-11-customization
             if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
                 if let backgroundView = textfield.subviews.first {
-                    backgroundView.backgroundColor = UIColor.init(fromRGBColorWithRed: 27.0/255.0, green: 147.0/255.0, blue: 196.0/255.0)
-                    backgroundView.layer.cornerRadius = 10;
-                    backgroundView.clipsToBounds = true;
+                    backgroundView.backgroundColor = Constants.searchBarBackgroundColor
+                    backgroundView.layer.cornerRadius = Constants.searchBarCornerRadius
+                    backgroundView.clipsToBounds = true
                 }
             }
         } else {
@@ -165,16 +159,21 @@ class PluginDirectoryViewController: UITableViewController {
         return buttonItem
     }()
 
+    private enum Constants {
+        static var searchBarBackgroundColor = UIColor.black.withAlphaComponent(0.5)
+        static var searchBarCornerRadius: CGFloat = 10
+        static var rowHeight: CGFloat = 256
+        static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+
 }
 
 extension PluginDirectoryViewController: UISearchControllerDelegate {
-
     func didPresentSearchController(_ searchController: UISearchController) {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
     }
-
 }
 
 extension PluginDirectoryViewController: UISearchResultsUpdating {
