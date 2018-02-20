@@ -21,10 +21,8 @@ extension FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
-                guard let delegate = UIApplication.shared.delegate,
-                    let window = delegate.window,
-                    let viewController = window?.topmostPresentedViewController,
-                    WordPressAuthenticator.shared.delegate?.livechatActionEnabled == true
+                guard WordPressAuthenticator.shared.delegate?.livechatActionEnabled == true,
+                    let viewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController
                 else {
                     return
                 }
