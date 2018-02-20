@@ -9,8 +9,8 @@ public struct PluginDirectoryEntry {
     public let icon: URL?
     public let banner: URL?
 
-    public var author: String
-    public var authorURL: URL?
+    public let author: String
+    public let authorURL: URL?
 
     private let descriptionHTML: String?
     private let installationHTML: String?
