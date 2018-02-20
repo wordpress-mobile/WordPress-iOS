@@ -143,7 +143,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="LinkMailView" storyboardName="EmailMagicLink" referencedIdentifier="LinkMailView" id="Je3-5O-NYu" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DAI-Ik-KtV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-301" y="92"/>
+            <point key="canvasLocation" x="-416" y="219"/>
         </scene>
         <!--Signup Epilogue View Controller-->
         <scene sceneID="aLX-BA-7de">
@@ -153,9 +153,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U2X-ER-enM" userLabel="Table Container View">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pfn-Ox-xPa" userLabel="Table Container View">
                                 <rect key="frame" x="0.0" y="20" width="375" height="563"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <segue destination="hib-Bt-yge" kind="embed" identifier="showEpilogueTable" id="x5e-CD-ygB"/>
+                                </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1I-3a-oLv" userLabel="Button Container View">
                                 <rect key="frame" x="0.0" y="583" width="375" height="84"/>
@@ -170,13 +172,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="U2X-ER-enM" firstAttribute="top" secondItem="Ae9-4j-PcF" secondAttribute="top" id="0r0-gk-HR1"/>
-                            <constraint firstItem="Ae9-4j-PcF" firstAttribute="trailing" secondItem="U2X-ER-enM" secondAttribute="trailing" id="5nl-rJ-qPY"/>
+                            <constraint firstItem="Pfn-Ox-xPa" firstAttribute="top" secondItem="Ae9-4j-PcF" secondAttribute="top" id="9Uz-0Q-XbQ"/>
+                            <constraint firstItem="Ae9-4j-PcF" firstAttribute="trailing" secondItem="Pfn-Ox-xPa" secondAttribute="trailing" id="9lO-lg-WIO"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="trailing" secondItem="Ae9-4j-PcF" secondAttribute="trailing" id="DBe-AY-pLB"/>
-                            <constraint firstItem="U2X-ER-enM" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="glX-Af-Eae"/>
-                            <constraint firstItem="P1I-3a-oLv" firstAttribute="top" secondItem="U2X-ER-enM" secondAttribute="bottom" id="lhw-7F-sow"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="bottom" secondItem="Ae9-4j-PcF" secondAttribute="bottom" id="maZ-1x-gSB"/>
+                            <constraint firstItem="Pfn-Ox-xPa" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="qMk-VK-ZUv"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="yGX-fn-rqf"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="top" secondItem="Pfn-Ox-xPa" secondAttribute="bottom" id="yMT-vg-j6M"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ae9-4j-PcF"/>
                     </view>
@@ -184,6 +186,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kUL-CF-CHW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="151" y="92"/>
+        </scene>
+        <!--Signup Epilogue Table View Controller-->
+        <scene sceneID="Ymn-3i-TIR">
+            <objects>
+                <tableViewController id="hib-Bt-yge" customClass="SignupEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="AHY-lt-KSU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="hib-Bt-yge" id="uK1-re-C0b"/>
+                            <outlet property="delegate" destination="hib-Bt-yge" id="6BX-iu-clf"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8O3-Dw-vvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1047" y="-17"/>
         </scene>
         <!--ButtonView-->
         <scene sceneID="vX1-iV-bQB">
