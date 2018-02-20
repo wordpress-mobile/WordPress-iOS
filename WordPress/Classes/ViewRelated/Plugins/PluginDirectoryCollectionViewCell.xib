@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB" customClass="PluginDirectoryCollectionViewCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="98" height="196"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kDU-L0-NYI">
+                    <rect key="frame" x="0.0" y="0.0" width="98" height="98"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="98" id="OCb-U9-CHY"/>
+                        <constraint firstAttribute="width" constant="98" id="lrX-8T-h5f"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="huw-bc-DnN">
+                    <rect key="frame" x="0.0" y="114" width="98" height="33.5"/>
+                    <string key="text">Gutenberg
+with long title</string>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                    <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gutenberg Team" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tb-ga-CSc">
+                    <rect key="frame" x="0.0" y="149.5" width="98" height="14.5"/>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <color key="textColor" red="0.30980392156862746" green="0.45490196078431372" blue="0.55686274509803924" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="huw-bc-DnN" secondAttribute="trailing" id="Mhr-k4-l9t"/>
+                <constraint firstItem="kDU-L0-NYI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Rrv-tf-Udl"/>
+                <constraint firstAttribute="trailing" secondItem="4tb-ga-CSc" secondAttribute="trailing" id="S0C-Py-oub"/>
+                <constraint firstItem="4tb-ga-CSc" firstAttribute="top" secondItem="huw-bc-DnN" secondAttribute="bottom" constant="2" id="Ugt-1B-Xqb"/>
+                <constraint firstItem="kDU-L0-NYI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="XSU-5F-CdS"/>
+                <constraint firstAttribute="bottom" secondItem="kDU-L0-NYI" secondAttribute="bottom" constant="98" id="aD1-Ku-Dd9"/>
+                <constraint firstItem="huw-bc-DnN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cYE-ga-eLv"/>
+                <constraint firstAttribute="trailing" secondItem="kDU-L0-NYI" secondAttribute="trailing" id="ftk-jE-ss6"/>
+                <constraint firstItem="huw-bc-DnN" firstAttribute="top" secondItem="kDU-L0-NYI" secondAttribute="bottom" constant="16" id="mVl-jT-pEn"/>
+                <constraint firstItem="4tb-ga-CSc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="r4P-UT-NvV"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="authorLabel" destination="4tb-ga-CSc" id="5lH-nU-FyL"/>
+                <outlet property="logoImageView" destination="kDU-L0-NYI" id="NoY-Kh-7Ri"/>
+                <outlet property="nameLabel" destination="huw-bc-DnN" id="19r-c4-jVf"/>
+            </connections>
+            <point key="canvasLocation" x="-104" y="-188"/>
+        </view>
+    </objects>
+</document>
