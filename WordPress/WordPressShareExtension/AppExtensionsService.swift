@@ -116,6 +116,23 @@ extension AppExtensionsService {
             onFailure(error)
         })
     }
+
+    /// Retrieves the all categories for a site.
+    ///
+    /// - Parameters:
+    ///   - siteID: Site ID to fetch tags for
+    ///   - onSuccess: Completion handler executed after a successful fetch
+    ///   - onFailure: The failure handler
+    ///
+    func fetchCategoriesForSite(_ siteID: Int, onSuccess: @escaping ([RemotePostCategory]) -> (), onFailure: @escaping FailureWithErrorBlock) {
+        let remote = TaxonomyServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: siteID))
+        remote.getCategoriesWithSuccess({ categories in
+            onSuccess(categories)
+        }) { error in
+            DDLogError("Error retrieving categories for site ID \(siteID): \(String(describing: error))")
+            onFailure(error)
+        }
+    }
 }
 
 // MARK: - Uploading Posts
