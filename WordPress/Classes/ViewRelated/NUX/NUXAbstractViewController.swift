@@ -19,11 +19,11 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
     /// Displays the support vc.
     ///
     func displaySupportViewController(from source: WordPressSupportSourceTag) {
-        guard let supportViewController = WordPressAuthenticator.shared.delegate?.supportViewController(from: source) else {
+        guard let navigationController = navigationController else {
             fatalError()
         }
 
-        navigationController?.present(supportViewController, animated: true, completion: nil)
+        WordPressAuthenticator.shared.delegate?.presentSupport(from: navigationController, sourceTag: source)
     }
 }
 
@@ -93,7 +93,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        WordPressAuthenticator.shared.delegate?.refreshHelpshiftUnreadCount()
+        WordPressAuthenticator.shared.delegate?.refreshSupportBadgeCount()
     }
 
 
@@ -257,7 +257,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     /// Updates the badge count and its visibility.
     ///
     @objc func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = WordPressAuthenticator.shared.delegate?.helpshiftUnreadCount ?? 0
+        let count = WordPressAuthenticator.shared.delegate?.supportBadgeCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
     }

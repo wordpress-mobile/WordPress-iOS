@@ -19,46 +19,46 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
-    /// Returns an instance of SupportViewController, configured to be displayed from a specified Support Source.
-    ///
-    func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController {
-        let supportViewController = SupportViewController()
-        supportViewController.sourceTag = source.toSupportSourceTag()
-
-        let navController = UINavigationController(rootViewController: supportViewController)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
-
-        return supportViewController
-    }
-
     /// Indicates if Helpshift is Enabled.
     ///
-    var helpshiftEnabled: Bool {
+    var livechatActionEnabled: Bool {
         return HelpshiftUtils.isHelpshiftEnabled()
     }
 
     /// Returns Helpshift's Unread Messages Count.
     ///
-    var helpshiftUnreadCount: Int {
+    var supportBadgeCount: Int {
         return HelpshiftUtils.unreadNotificationCount()
-    }
-
-    /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
-    ///
-    func presentHelpshift(from viewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
-        let presenter = HelpshiftPresenter()
-        presenter.sourceTag = sourceTag.toSupportSourceTag()
-        presenter.optionsDictionary = options
-        presenter.presentHelpshiftConversationWindowFromViewController(viewController,
-                                                                       refreshUserDetails: true,
-                                                                       completion: nil)
     }
 
     /// Refreshes Helpshift's Unread Count.
     ///
-    func refreshHelpshiftUnreadCount() {
+    func refreshSupportBadgeCount() {
         HelpshiftUtils.refreshUnreadNotificationCount()
+    }
+
+    /// Returns an instance of SupportViewController, configured to be displayed from a specified Support Source.
+    ///
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
+        let supportViewController = SupportViewController()
+        supportViewController.sourceTag = sourceTag.toSupportSourceTag()
+
+        let navController = UINavigationController(rootViewController: supportViewController)
+        navController.navigationBar.isTranslucent = false
+        navController.modalPresentationStyle = .formSheet
+
+        sourceViewController.present(navController, animated: true, completion: nil)
+    }
+
+    /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
+    ///
+    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
+        let presenter = HelpshiftPresenter()
+        presenter.sourceTag = sourceTag.toSupportSourceTag()
+        presenter.optionsDictionary = options
+        presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
+                                                                       refreshUserDetails: true,
+                                                                       completion: nil)
     }
 }
 
