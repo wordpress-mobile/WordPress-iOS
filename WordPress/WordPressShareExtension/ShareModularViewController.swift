@@ -178,7 +178,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate func setupModulesTableView() {
         // Register the cells
-        modulesTableView.register(WPTableViewCell.self, forCellReuseIdentifier: Constants.modulesReuseIdentifier)
+        modulesTableView.register(WPTableViewCellValue1.self, forCellReuseIdentifier: Constants.modulesReuseIdentifier)
 
         // Hide the separators, whenever the table is empty
         modulesTableView.tableFooterView = UIView()
@@ -234,6 +234,24 @@ extension ShareModularViewController {
         clearSiteDataAndRefreshSitesTable()
         reloadSitesIfNeeded()
     }
+
+    func showTagsPicker() {
+        guard let siteID = shareData.selectedSiteID, isPublishingPost == false else {
+            return
+        }
+
+        let tagsPicker = ShareTagsPickerViewController(siteID: siteID, tags: shareData.tags)
+        tagsPicker.onValueChanged = { [weak self] tagString in
+            if self?.shareData.tags != tagString {
+                self?.tracks.trackExtensionTagsSelected(tagString)
+                self?.shareData.tags = tagString
+                self?.refreshModulesTable()
+            }
+        }
+
+        tracks.trackExtensionTagsOpened()
+        navigationController?.pushViewController(tagsPicker, animated: true)
+    }
 }
 
 // MARK: - UITableView DataSource Conformance
@@ -251,6 +269,8 @@ extension ShareModularViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == modulesTableView {
             switch ModulesSection(rawValue: section)! {
+            case .tags:
+                return 1
             case .summary:
                 return 1
             }
@@ -320,20 +340,11 @@ extension ShareModularViewController: UITableViewDataSource {
 
 extension ShareModularViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard tableView == sitesTableView else {
-            return
+        if tableView == sitesTableView {
+            selectedSitesTableRowAt(indexPath)
+        } else {
+            selectedModulesTableRowAt(indexPath)
         }
-        guard let cell = tableView.cellForRow(at: indexPath),
-            let site = siteForRowAtIndexPath(indexPath) else {
-            return
-        }
-
-        clearAllSelectedSiteRows()
-        cell.accessoryType = .checkmark
-        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
-        shareData.selectedSiteID = site.blogID.intValue
-        shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
-        updatePublishButtonStatus()
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -351,15 +362,26 @@ extension ShareModularViewController: UITableViewDelegate {
 
 fileprivate extension ShareModularViewController {
     func configureModulesCell(_ cell: UITableViewCell, indexPath: IndexPath) {
-        // Only doing the summary row right now. More will come.
-        guard isSummaryRow(indexPath) else {
-            return
+        if isSummaryRow(indexPath) {
+            cell.textLabel?.text            = summaryRowText()
+            cell.textLabel?.textAlignment   = .natural
+            cell.accessoryType              = .none
+            cell.isUserInteractionEnabled   = false
+            WPStyleGuide.Share.configureTableViewSummaryCell(cell)
+        } else {
+            // The only other module cell we have besides Summary is Tags...
+            WPStyleGuide.Share.configureModuleCell(cell)
+            cell.textLabel?.text            = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
+            cell.accessoryType              = .disclosureIndicator
+            cell.accessibilityLabel         = "Tags"
+            if let tags = shareData.tags, !tags.isEmpty {
+                cell.detailTextLabel?.text = tags
+                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
+            } else {
+                cell.detailTextLabel?.text =  NSLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+                cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+            }
         }
-
-        cell.textLabel?.text            = summaryRowText()
-        cell.textLabel?.textAlignment   = .natural
-        cell.accessoryType              = .none
-        WPStyleGuide.Share.configureTableViewSummaryCell(cell)
     }
 
     func isSummaryRow(_ path: IndexPath) -> Bool {
@@ -368,8 +390,21 @@ fileprivate extension ShareModularViewController {
 
     func isModulesSectionEmpty(_ sectionIndex: Int) -> Bool {
         switch ModulesSection(rawValue: sectionIndex)! {
+        case .tags:
+            return false
         case .summary:
             return false
+        }
+    }
+
+    func selectedModulesTableRowAt(_ indexPath: IndexPath) {
+        switch ModulesSection(rawValue: indexPath.section)! {
+        case .tags:
+            modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+            showTagsPicker()
+            return
+        case .summary:
+            return
         }
     }
 
@@ -383,7 +418,7 @@ fileprivate extension ShareModularViewController {
                                              singular: SummaryText.summaryDraftSingular,
                                              plural: SummaryText.summaryDraftPlural)
         } else {
-            return ""
+            return String()
         }
     }
 
@@ -432,6 +467,20 @@ fileprivate extension ShareModularViewController {
 
     var rowCountForSites: Int {
         return sites?.count ?? 0
+    }
+
+    func selectedSitesTableRowAt(_ indexPath: IndexPath) {
+        guard let cell = sitesTableView.cellForRow(at: indexPath), let site = siteForRowAtIndexPath(indexPath) else {
+            return
+        }
+
+        clearAllSelectedSiteRows()
+        cell.accessoryType = .checkmark
+        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+        shareData.selectedSiteID = site.blogID.intValue
+        shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
+        updatePublishButtonStatus()
+        self.refreshModulesTable()
     }
 
     func siteForRowAtIndexPath(_ indexPath: IndexPath) -> RemoteBlog? {
@@ -567,6 +616,7 @@ fileprivate extension ShareModularViewController {
             // We have media, so let's upload it with the post
             networkService.uploadPostWithMedia(title: shareData.title,
                                                body: shareData.contentBody,
+                                               tags: shareData.tags,
                                                status: shareData.postStatus.rawValue,
                                                siteID: siteID,
                                                localMediaFileURLs: localImageURLs,
@@ -582,6 +632,7 @@ fileprivate extension ShareModularViewController {
             // No media. just a simple post
             networkService.saveAndUploadPost(title: shareData.title,
                                              body: shareData.contentBody,
+                                             tags: shareData.tags,
                                              status: shareData.postStatus.rawValue,
                                              siteID: siteID,
                                              onComplete: {
@@ -622,10 +673,13 @@ fileprivate extension ShareModularViewController {
 
 fileprivate extension ShareModularViewController {
     enum ModulesSection: Int {
-        case summary = 0
+        case tags
+        case summary
 
         func headerText() -> String {
             switch self {
+            case .tags:
+                return String()
             case .summary:
                 return String()
             }
@@ -633,6 +687,8 @@ fileprivate extension ShareModularViewController {
 
         func footerText() -> String {
             switch self {
+            case .tags:
+                return String()
             case .summary:
                 return String()
             }

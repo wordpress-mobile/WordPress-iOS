@@ -42,9 +42,11 @@ extension Endpoint {
                         return .failure(error)
                     }
                 })
-                .responseData(completionHandler: { (response) in
+                .responseData(queue: DispatchQueue.global(qos: .utility), completionHandler: { (response) in
                     let result = response.result.flatMap(self.parseResponse(data:))
-                    completion(result)
+                    DispatchQueue.main.async {
+                        completion(result)
+                    }
                 })
         } catch {
             completion(.failure(error))
