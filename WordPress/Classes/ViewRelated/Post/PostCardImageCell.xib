@@ -89,7 +89,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zle-VU-ygo">
                                 <rect key="frame" x="16" y="333" width="196" height="18"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-clock" translatesAutoresizingMaskIntoConstraints="NO" id="ed0-E7-1lw">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-clock" translatesAutoresizingMaskIntoConstraints="NO" id="ed0-E7-1lw">
                                         <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="Ief-ts-XAf"/>
@@ -119,7 +119,7 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="2OR-ox-Csb">
                                 <rect key="frame" x="16" y="357" width="276" height="18"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-post-status-pending" translatesAutoresizingMaskIntoConstraints="NO" id="WhA-sd-qfz">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-post-status-pending" translatesAutoresizingMaskIntoConstraints="NO" id="WhA-sd-qfz">
                                         <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="Jyn-II-qDA"/>
