@@ -1,6 +1,6 @@
 import UIKit
 
-class LoginEpilogueUserInfoCell: UITableViewCell {
+class EpilogueUserInfoCell: UITableViewCell {
 
     @IBOutlet var gravatarView: UIImageView?
     @IBOutlet var fullNameLabel: UILabel?
