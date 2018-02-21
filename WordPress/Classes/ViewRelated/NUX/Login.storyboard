@@ -10,6 +10,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--googleSignup-->
+        <scene sceneID="GBa-1v-wvb">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="Signup" storyboardName="Signup" referencedIdentifier="googleSignup" id="MEg-KS-Afs" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bjg-XU-5Rh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-90" y="-231"/>
+        </scene>
         <!--Login Prologue Page View Controller-->
         <scene sceneID="Jbm-5H-sqY">
             <objects>
@@ -19,7 +27,54 @@
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sJg-F8-ikt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="341" y="-350"/>
+            <point key="canvasLocation" x="626" y="-345"/>
+        </scene>
+        <!--Login Prologue Signup Method View Controller-->
+        <scene sceneID="8K7-Gj-yNn">
+            <objects>
+                <viewController id="IwV-3R-6dB" customClass="LoginPrologueSignupMethodViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LS5-8f-iNn"/>
+                        <viewControllerLayoutGuide type="bottom" id="NZ0-gC-OHl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1bR-Uc-YPO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gpM-nW-lFQ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <connections>
+                                    <action selector="dismissTapped" destination="IwV-3R-6dB" eventType="touchDown" id="E6x-JG-Ve8"/>
+                                </connections>
+                            </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V2N-XU-yx0">
+                                <rect key="frame" x="0.0" y="501" width="375" height="166"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="166" placeholder="YES" id="c05-ur-bLz"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="A3H-HK-nmU" kind="embed" id="iD4-VS-n3M"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="gpM-nW-lFQ" secondAttribute="trailing" id="2id-by-lnA"/>
+                            <constraint firstItem="V2N-XU-yx0" firstAttribute="leading" secondItem="1bR-Uc-YPO" secondAttribute="leading" id="3e9-yc-R9r"/>
+                            <constraint firstItem="NZ0-gC-OHl" firstAttribute="top" secondItem="gpM-nW-lFQ" secondAttribute="bottom" id="Fiw-SH-C5m"/>
+                            <constraint firstItem="gpM-nW-lFQ" firstAttribute="top" secondItem="1bR-Uc-YPO" secondAttribute="top" id="Ivq-bt-puo"/>
+                            <constraint firstItem="gpM-nW-lFQ" firstAttribute="leading" secondItem="1bR-Uc-YPO" secondAttribute="leading" id="QDG-Ta-wW5"/>
+                            <constraint firstAttribute="trailing" secondItem="V2N-XU-yx0" secondAttribute="trailing" id="goV-pb-UDh"/>
+                            <constraint firstAttribute="bottom" secondItem="V2N-XU-yx0" secondAttribute="bottom" id="y2t-8w-Bh7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="fwZ-QE-5et" kind="show" identifier="showEmailLogin" id="1xT-tL-sp6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fbD-KM-2nK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="853.60000000000002" y="258.62068965517244"/>
         </scene>
         <!--Login Prologue View Controller-->
         <scene sceneID="nGd-KO-sMQ">
@@ -33,10 +88,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cw-FO-hjb">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="501"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="tlO-rf-p4Q"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="TP5-re-Ncg" kind="embed" id="mLC-uB-YYS"/>
+                                </connections>
+                            </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="Icw-wp-UXX" userLabel="Button Stack View">
                                 <rect key="frame" x="20" y="523" width="335" height="122"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lhb-JH-DQG" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lhb-JH-DQG" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="50"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                         <constraints>
@@ -50,10 +114,10 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="fwZ-QE-5et" kind="show" id="ttc-1d-dkK"/>
+                                            <segue destination="fwZ-QE-5et" kind="show" identifier="showEmailLogin" id="ttc-1d-dkK"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5na-fB-S4z" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5na-fB-S4z" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="335" height="50"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                         <constraints>
@@ -74,13 +138,13 @@
                                 <variation key="widthClass=regular" axis="horizontal"/>
                                 <variation key="heightClass=compact-widthClass=compact" axis="horizontal"/>
                             </stackView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cw-FO-hjb">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="501"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3G-Ap-6ix">
+                                <rect key="frame" x="0.0" y="501" width="375" height="166"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="tlO-rf-p4Q"/>
+                                    <constraint firstAttribute="height" constant="166" placeholder="YES" id="Cxl-Vh-qEI"/>
                                 </constraints>
                                 <connections>
-                                    <segue destination="TP5-re-Ncg" kind="embed" id="mLC-uB-YYS"/>
+                                    <segue destination="A3H-HK-nmU" kind="embed" id="swV-lc-6gI"/>
                                 </connections>
                             </containerView>
                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="X1p-73-aGm">
@@ -95,26 +159,31 @@
                             <constraint firstAttribute="trailing" secondItem="Icw-wp-UXX" secondAttribute="trailing" constant="20" id="1Nu-oS-ZG5"/>
                             <constraint firstItem="dPr-Tg-feW" firstAttribute="top" secondItem="Icw-wp-UXX" secondAttribute="bottom" constant="22" id="7IO-0C-0w6"/>
                             <constraint firstItem="6cw-FO-hjb" firstAttribute="leading" secondItem="EnO-7f-1yO" secondAttribute="leading" id="7Z8-mD-FWN"/>
-                            <constraint firstItem="Icw-wp-UXX" firstAttribute="top" secondItem="6cw-FO-hjb" secondAttribute="bottom" constant="22" id="DZw-9V-npd"/>
+                            <constraint firstAttribute="trailing" secondItem="G3G-Ap-6ix" secondAttribute="trailing" id="96a-eB-JlD"/>
+                            <constraint firstItem="G3G-Ap-6ix" firstAttribute="top" secondItem="6cw-FO-hjb" secondAttribute="bottom" id="Cuw-sd-C5k"/>
                             <constraint firstAttribute="trailing" secondItem="6cw-FO-hjb" secondAttribute="trailing" id="Hgo-qC-AqF"/>
                             <constraint firstItem="X1p-73-aGm" firstAttribute="leading" secondItem="EnO-7f-1yO" secondAttribute="leading" id="bvL-2u-7AR"/>
                             <constraint firstItem="6cw-FO-hjb" firstAttribute="top" secondItem="EnO-7f-1yO" secondAttribute="top" id="dXg-NZ-hRY"/>
                             <constraint firstItem="X1p-73-aGm" firstAttribute="bottom" secondItem="6cw-FO-hjb" secondAttribute="bottom" id="jeg-wN-ua6"/>
+                            <constraint firstAttribute="bottom" secondItem="G3G-Ap-6ix" secondAttribute="bottom" id="lOP-Up-00c"/>
                             <constraint firstAttribute="trailing" secondItem="X1p-73-aGm" secondAttribute="trailing" id="u95-1f-lmm"/>
                             <constraint firstItem="Icw-wp-UXX" firstAttribute="leading" secondItem="EnO-7f-1yO" secondAttribute="leading" constant="20" id="uOW-oB-IHd"/>
+                            <constraint firstItem="G3G-Ap-6ix" firstAttribute="leading" secondItem="EnO-7f-1yO" secondAttribute="leading" id="uzT-mw-eJq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="42E-2e-kOq"/>
                     <connections>
                         <outlet property="loginButton" destination="Lhb-JH-DQG" id="RIH-uM-wDl"/>
                         <outlet property="signupButton" destination="5na-fB-S4z" id="3Bd-jn-IhO"/>
-                        <segue destination="60d-o9-Asx" kind="show" identifier="showSigninV2" id="AM0-E9-ueb"/>
                         <segue destination="QDy-AC-sAr" kind="show" identifier="showSigninV1" id="32U-G0-qXg"/>
+                        <segue destination="IwV-3R-6dB" kind="presentation" identifier="showSignupMethod" id="gD5-d0-X3t"/>
+                        <segue destination="T5n-nb-cOW" kind="show" identifier="showSigninV2" id="nCA-u7-fKm"/>
+                        <segue destination="MEg-KS-Afs" kind="show" identifier="showGoogle" id="aSC-hU-lzE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ieq-Ar-5OF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-120" y="258.80281690140845"/>
+            <point key="canvasLocation" x="-120.8" y="258.62068965517244"/>
         </scene>
         <!--Login Navigation Controller-->
         <scene sceneID="1BJ-CW-C88">
@@ -131,6 +200,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fyf-cj-9zh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-948" y="260"/>
+        </scene>
+        <!--ButtonView-->
+        <scene sceneID="Ebq-7X-91Z">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="A3H-HK-nmU" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2gc-Kt-f0P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="362" y="717"/>
         </scene>
         <!--Login Email View Controller-->
         <scene sceneID="w6Y-pB-a3f">
@@ -222,7 +299,7 @@
                                                     <segue destination="anK-hg-K4j" kind="show" identifier="showSelfHostedLogin" id="avL-c6-SBY"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="307" y="0.0" width="36" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                                 <constraints>
@@ -299,40 +376,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wWl-qb-1Yp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="756" y="258.17091454272867"/>
+            <point key="canvasLocation" x="1730" y="255"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="asm-N9-Kfb">
+        <!--emailEntry-->
+        <scene sceneID="CQL-qu-sjW">
             <objects>
-                <viewController id="60d-o9-Asx" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6mW-NW-RvR"/>
-                        <viewControllerLayoutGuide type="bottom" id="q8x-Be-lmb"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="zA8-q0-Jk5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEW SIGNUP FLOW HERE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4r-1T-PUI">
-                                <rect key="frame" x="86.5" y="323" width="202" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="RL5-Xw-mqk"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="z4r-1T-PUI" firstAttribute="centerY" secondItem="zA8-q0-Jk5" secondAttribute="centerY" id="Awg-RM-WzW"/>
-                            <constraint firstItem="z4r-1T-PUI" firstAttribute="centerX" secondItem="zA8-q0-Jk5" secondAttribute="centerX" id="WEy-KR-dQY"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7X8-Jt-KHs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Signup" referencedIdentifier="emailEntry" id="T5n-nb-cOW" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UdV-y0-6AN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-856.79999999999995" y="1181.5592203898052"/>
+            <point key="canvasLocation" x="-530" y="760"/>
         </scene>
         <!--Signup View Controller-->
         <scene sceneID="w7c-Xj-AH8">
@@ -679,7 +731,7 @@
                                                     <action selector="handleForgotPasswordButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="YFl-yy-9UR"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="311" y="0.0" width="32" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
                                                 <constraints>
@@ -855,7 +907,7 @@
                                                     <action selector="handleForgotPasswordButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="q8s-z9-VIK"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="292" y="0.0" width="51" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
                                                 <constraints>
@@ -1021,7 +1073,7 @@
                                                     <action selector="handleSendVerificationButtonTapped:" destination="bAd-Df-IzS" eventType="touchUpInside" id="rvK-YF-gYu"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="296" y="0.0" width="47" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="eoc-KU-71N"/>
@@ -1090,7 +1142,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PwX-lW-aCa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3058" y="928"/>
+            <point key="canvasLocation" x="2964" y="1072"/>
         </scene>
         <!--Login Epilogue View Controller-->
         <scene sceneID="mq7-wS-hIR">
@@ -1376,7 +1428,7 @@
                                         <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="115.5" y="224.5" width="72" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="GRI-y6-q3i"/>
@@ -1446,7 +1498,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cja-vu-y88" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1752" y="262"/>
+            <point key="canvasLocation" x="2671" y="260"/>
         </scene>
         <!--Login Site Address View Controller-->
         <scene sceneID="idG-jg-gxH">
@@ -1526,7 +1578,7 @@
                                                     <action selector="handleSiteAddressHelpButtonTapped:" destination="anK-hg-K4j" eventType="touchUpInside" id="PXe-Yc-xaK"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ltO-hW-mbe" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ltO-hW-mbe" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="315" y="0.0" width="36" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                                 <constraints>
@@ -1607,7 +1659,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="LinkMailView" storyboardName="EmailMagicLink" referencedIdentifier="LinkMailView" id="Aii-0z-zLC" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WTT-3e-E71" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2456" y="261"/>
+            <point key="canvasLocation" x="3021" y="247"/>
         </scene>
     </scenes>
     <resources>
@@ -1622,8 +1674,10 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7lv-19-h36"/>
-        <segue reference="qLI-qX-rkG"/>
-        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="gAE-di-Wyf"/>
+        <segue reference="kRR-qz-Hu2"/>
+        <segue reference="0ao-yi-yZI"/>
+        <segue reference="ttc-1d-dkK"/>
+        <segue reference="swV-lc-6gI"/>
     </inferredMetricsTieBreakers>
 </document>

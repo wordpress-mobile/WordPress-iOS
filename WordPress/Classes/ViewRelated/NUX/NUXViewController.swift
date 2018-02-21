@@ -22,6 +22,10 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     // MARK: associated type for NUXSegueHandler
     /// Segue identifiers to avoid using strings
     enum SegueIdentifier: String {
+        case showEmailLogin
+        case showSignupMethod
+        case showSigninV2
+        case showGoogle
         case showURLUsernamePassword
         case showSelfHostedLogin
         case showWPComLogin
@@ -33,11 +37,13 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case showDomains
         case showCreateSite
         case showSiteCreationEpilogue
+        case showSiteCreationError
     }
 
     override func viewDidLoad() {
         addHelpButtonToNavController()
         setupCancelButtonIfNeeded()
+        setupBackgroundTapGestureRecognizer()
     }
 
     // properties specific to NUXViewController
@@ -55,5 +61,17 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
 
     func shouldShowCancelButton() -> Bool {
         return shouldShowCancelButtonBase()
+    }
+}
+
+extension NUXViewController {
+    // Required so that any FancyAlertViewControllers presented within the NUX
+    // use the correct dimmed backing view.
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        if presented is FancyAlertViewController {
+            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+        }
+
+        return nil
     }
 }
