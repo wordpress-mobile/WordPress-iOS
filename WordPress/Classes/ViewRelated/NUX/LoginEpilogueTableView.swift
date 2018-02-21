@@ -20,7 +20,7 @@ class LoginEpilogueTableView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let headerNib = UINib(nibName: "LoginEpilogueSectionHeader", bundle: nil)
+        let headerNib = UINib(nibName: "EpilogueSectionHeaderFooter", bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
 
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
@@ -73,7 +73,7 @@ class LoginEpilogueTableView: UITableViewController {
             }
         }
 
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as? LoginEpilogueSectionHeader else {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as? EpilogueSectionHeaderFooter else {
             fatalError("Failed to get a section header cell")
         }
         cell.titleLabel?.text = sectionTitle
