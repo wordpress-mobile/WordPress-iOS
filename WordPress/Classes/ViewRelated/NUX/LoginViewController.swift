@@ -78,9 +78,8 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
                 case .login:
                     self.performSegue(withIdentifier: .showEpilogue, sender: self)
                 }
+                return
             }
-
-            return
         }
 
         dismissBlock?(false)
