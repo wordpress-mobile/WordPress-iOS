@@ -170,6 +170,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
         shareData.selectedSiteID = primarySiteID
         shareData.selectedSiteName = primarySiteName
+        fetchSettingsForSelectedSite()
     }
 
     fileprivate func setupNavigationBar() {
@@ -512,6 +513,7 @@ fileprivate extension ShareModularViewController {
         sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
+        fetchSettingsForSelectedSite()
         updatePublishButtonStatus()
         self.refreshModulesTable()
     }
@@ -601,6 +603,22 @@ fileprivate extension ShareModularViewController {
 // MARK: - Backend Interaction
 
 fileprivate extension ShareModularViewController {
+    func fetchSettingsForSelectedSite() {
+        guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
+            return
+        }
+
+        let networkService = AppExtensionsService()
+        networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
+            guard let settings = settings else {
+                return
+            }
+            print(settings)
+        }) { error in
+            //TODO
+        }
+    }
+
     func reloadSitesIfNeeded() {
         guard !hasSites else {
             sitesTableView.reloadData()
