@@ -2,6 +2,7 @@ import UIKit
 
 protocol SignupEpilogueTableViewControllerDelegate {
     func displayNameUpdated(newDisplayName: String)
+    func passwordUpdated(newPassword: String)
 }
 
 class SignupEpilogueTableViewController: NUXTableViewController {
@@ -199,6 +200,7 @@ private extension SignupEpilogueTableViewController {
             cell.cellField.addTarget(self, action: #selector(usernameSelected(_:)), for: .editingDidBegin)
         case .password:
             cell.configureCell(labelText: NSLocalizedString("Password", comment: "Password label text."), fieldValue: nil, fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"), showSecureTextEntry: true)
+            cell.cellField.addTarget(self, action: #selector(passwordChanged(_:)), for: .editingDidEnd)
         }
 
         return cell
@@ -213,6 +215,12 @@ private extension SignupEpilogueTableViewController {
     @objc func displayNameChanged(_ textField: UITextField) {
         if let newDisplayName = textField.text {
             delegate?.displayNameUpdated(newDisplayName: newDisplayName)
+        }
+    }
+
+    @objc func passwordChanged(_ textField: UITextField) {
+        if let newPassword = textField.text {
+            delegate?.passwordUpdated(newPassword: newPassword)
         }
     }
 
