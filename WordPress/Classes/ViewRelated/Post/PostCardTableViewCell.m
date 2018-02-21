@@ -8,6 +8,7 @@
 #import "WordPress-Swift.h"
 #import "FLAnimatedImage.h"
 
+@import Gridicons;
 
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
@@ -187,6 +188,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [WPStyleGuide applyPostStatusStyle:self.statusLabel];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonRight];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonLeft];
+    self.dateImageView.tintColor = self.dateLabel.textColor;
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
     self.postContentView.layer.borderWidth = 1.0;
@@ -316,6 +318,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     AbstractPost *post = [self.post latest];
     self.dateLabel.text = [post dateStringForDisplay];
+    self.dateImageView.image = [Gridicon iconOfType:GridiconTypeTime];
 }
 
 - (void)configureStatusView
@@ -333,6 +336,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     self.statusLabel.text = model.status;
     self.statusImageView.image = model.statusImage;
+    self.statusImageView.tintColor = model.statusColor;
     self.statusLabel.textColor = model.statusColor;
 
     [self.statusView setNeedsUpdateConstraints];
@@ -384,8 +388,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureProgressView
 {
-    if (!self.progressView.isHidden) {
-        self.progressView.hidden = NO;
+    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
+    BOOL shouldHide = model.shouldHideProgressView;
+
+    if (self.progressView.isHidden != shouldHide) {
+        self.progressView.hidden = shouldHide;
     }
 }
 
