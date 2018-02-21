@@ -188,6 +188,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [WPStyleGuide applyPostStatusStyle:self.statusLabel];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonRight];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonLeft];
+    [WPStyleGuide applyPostProgressViewStyle:self.progressView];
+
     self.dateImageView.tintColor = self.dateLabel.textColor;
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
