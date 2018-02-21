@@ -74,6 +74,7 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
             self?.signupTapped()
         }
+        buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
     }
 
     // MARK: - Setup and Config
