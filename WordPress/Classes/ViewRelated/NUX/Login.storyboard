@@ -1255,91 +1255,8 @@
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                         <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="userInfo" rowHeight="148" id="rFk-m6-PzB" customClass="LoginEpilogueUserInfoCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="383" height="148"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rFk-m6-PzB" id="Be1-mM-Agr">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="148"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xKq-ni-wZB" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="161.5" y="20" width="60" height="60"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="60" id="Omr-X8-XDl"/>
-                                                <constraint firstAttribute="width" constant="60" id="pI0-bo-l6s"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ONy-ZJ-GTI">
-                                            <rect key="frame" x="0.0" y="109.5" width="383" height="18"/>
-                                            <accessibility key="accessibilityConfiguration" identifier="username"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="UkN-Od-n0K"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <color key="textColor" red="0.30980392156862746" green="0.45490196078431372" blue="0.55686274509803924" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4RV-hS-DYN" userLabel="bottom hairline">
-                                            <rect key="frame" x="0.0" y="139.5" width="383" height="0.5"/>
-                                            <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.84313725490196079" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="A3O-Oh-nqx"/>
-                                            </constraints>
-                                        </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hv-UB-D9b" userLabel="top hairline">
-                                            <rect key="frame" x="0.0" y="0.0" width="383" height="0.5"/>
-                                            <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="0.5" id="gaI-rY-zWc"/>
-                                            </constraints>
-                                        </view>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Full Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Men-mq-jKi">
-                                            <rect key="frame" x="20" y="89" width="343" height="20.5"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="Z2K-dy-J3D"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zfb-lS-v47" userLabel="bottom pad">
-                                            <rect key="frame" x="0.0" y="140" width="383" height="8"/>
-                                            <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="8" id="wB5-3u-5Pm"/>
-                                            </constraints>
-                                        </view>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstItem="3hv-UB-D9b" firstAttribute="top" secondItem="Be1-mM-Agr" secondAttribute="top" id="3SQ-hM-G4k"/>
-                                        <constraint firstItem="xKq-ni-wZB" firstAttribute="centerX" secondItem="Be1-mM-Agr" secondAttribute="centerX" id="865-hS-MlA"/>
-                                        <constraint firstAttribute="trailing" secondItem="3hv-UB-D9b" secondAttribute="trailing" id="AfD-je-v7d"/>
-                                        <constraint firstItem="Men-mq-jKi" firstAttribute="centerX" secondItem="Be1-mM-Agr" secondAttribute="centerX" id="AmR-HT-3sQ"/>
-                                        <constraint firstItem="4RV-hS-DYN" firstAttribute="leading" secondItem="Be1-mM-Agr" secondAttribute="leading" id="JoO-om-FiY"/>
-                                        <constraint firstAttribute="bottom" secondItem="Zfb-lS-v47" secondAttribute="bottom" id="Nm1-fL-9Vl"/>
-                                        <constraint firstItem="Zfb-lS-v47" firstAttribute="leading" secondItem="Be1-mM-Agr" secondAttribute="leading" id="PWq-dA-5sF"/>
-                                        <constraint firstItem="3hv-UB-D9b" firstAttribute="leading" secondItem="Be1-mM-Agr" secondAttribute="leading" id="TR0-Jy-8Nl"/>
-                                        <constraint firstAttribute="bottom" secondItem="ONy-ZJ-GTI" secondAttribute="bottom" constant="20" id="WIV-xZ-Axe"/>
-                                        <constraint firstItem="Men-mq-jKi" firstAttribute="top" secondItem="xKq-ni-wZB" secondAttribute="bottom" constant="9" id="aAf-qY-hmn"/>
-                                        <constraint firstAttribute="bottom" secondItem="4RV-hS-DYN" secondAttribute="bottom" constant="8" id="bZ7-1u-rKn"/>
-                                        <constraint firstItem="ONy-ZJ-GTI" firstAttribute="width" secondItem="Be1-mM-Agr" secondAttribute="width" id="cUP-rO-wRN"/>
-                                        <constraint firstItem="ONy-ZJ-GTI" firstAttribute="top" secondItem="Men-mq-jKi" secondAttribute="bottom" id="dP1-pm-lsf"/>
-                                        <constraint firstItem="xKq-ni-wZB" firstAttribute="top" secondItem="Be1-mM-Agr" secondAttribute="top" constant="20" id="lOz-D3-0B6"/>
-                                        <constraint firstItem="ONy-ZJ-GTI" firstAttribute="centerX" secondItem="Be1-mM-Agr" secondAttribute="centerX" id="mUZ-BR-fjP"/>
-                                        <constraint firstAttribute="trailing" secondItem="4RV-hS-DYN" secondAttribute="trailing" id="nNM-Cy-aG4"/>
-                                        <constraint firstAttribute="trailing" secondItem="Zfb-lS-v47" secondAttribute="trailing" id="nfF-ld-FcW"/>
-                                        <constraint firstItem="Men-mq-jKi" firstAttribute="width" secondItem="Be1-mM-Agr" secondAttribute="width" constant="-40" id="q7i-va-jYi"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="fullNameLabel" destination="Men-mq-jKi" id="Ha3-wY-J4z"/>
-                                    <outlet property="gravatarView" destination="xKq-ni-wZB" id="rvN-Oc-4wz"/>
-                                    <outlet property="usernameLabel" destination="ONy-ZJ-GTI" id="Gv8-6L-ylR"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="52" id="Efm-ja-Y8C" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="176" width="383" height="52"/>
+                                <rect key="frame" x="0.0" y="28" width="383" height="52"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Efm-ja-Y8C" id="Xid-Yh-Kpa">
                                     <rect key="frame" x="0.0" y="0.0" width="383" height="52"/>
@@ -1674,8 +1591,8 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gAE-di-Wyf"/>
-        <segue reference="kRR-qz-Hu2"/>
+        <segue reference="7lv-19-h36"/>
+        <segue reference="qLI-qX-rkG"/>
         <segue reference="0ao-yi-yZI"/>
         <segue reference="ttc-1d-dkK"/>
         <segue reference="swV-lc-6gI"/>

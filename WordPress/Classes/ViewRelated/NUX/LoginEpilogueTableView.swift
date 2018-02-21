@@ -19,8 +19,12 @@ class LoginEpilogueTableView: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         let headerNib = UINib(nibName: "LoginEpilogueSectionHeader", bundle: nil)
         tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
+
+        let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
+        tableView.register(userInfoNib, forCellReuseIdentifier: "userInfo")
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -39,7 +43,7 @@ class LoginEpilogueTableView: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "userInfo") as? LoginEpilogueUserInfoCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "userInfo") as? EpilogueUserInfoCell else {
                 fatalError("Failed to get a user info cell")
             }
 
