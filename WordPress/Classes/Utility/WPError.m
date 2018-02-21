@@ -3,8 +3,11 @@
 #import "WPAccount.h"
 #import "SupportViewController.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
+#import <WordPressUI/WordPressUI.h>
 #import <wpxmlrpc/WPXMLRPC.h>
 #import "WordPress-Swift.h"
+
+
 
 NSInteger const SupportButtonIndex = 0;
 NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";
@@ -87,7 +90,7 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
         DDLogError(@"wp.com API error: %@: %@", error.userInfo[WordPressComRestApi.ErrorKeyErrorCode],
                    [error localizedDescription]);
         if (error.code == WordPressComRestApiErrorInvalidToken || error.code == WordPressComRestApiErrorAuthorizationRequired) {
-            [SigninHelpers showSigninForWPComFixingAuthToken];
+            [WordPressAuthenticator showSigninForWPComFixingAuthToken];
             return;
         }
     }
