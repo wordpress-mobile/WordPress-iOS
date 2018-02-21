@@ -4092,6 +4092,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				D80EE638203DBB7E0094C34C /* Accessibility */,
 				82FC61181FA8ADAC00A1757E /* Activity */,
 				B50C0C441EF429D500372C65 /* Aztec */,
 				AC34397B0E11443300E5D79B /* Blog */,
@@ -4850,7 +4851,6 @@
 		B587796C19B799D800E57C5A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D807162D203DA03300B32FD9 /* Accessibility */,
 				086C4D0C1E81F7920011D960 /* Media */,
 				B587798319B799EB00E57C5A /* Notifications */,
 				FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */,
@@ -5440,7 +5440,7 @@
 			path = Reader;
 			sourceTree = "<group>";
 		};
-		D807162D203DA03300B32FD9 /* Accessibility */ = {
+		D80EE638203DBB7E0094C34C /* Accessibility */ = {
 			isa = PBXGroup;
 			children = (
 				D8071630203DA23700B32FD9 /* Accessible.swift */,

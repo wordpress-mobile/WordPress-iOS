@@ -1,3 +1,0 @@
-protocol Accessible {
-    func configureAccessibility()
-}
