@@ -41,6 +41,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIView *metaView;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
+@property (nonatomic, strong) IBOutlet UIProgressView *progressView;
 @property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
@@ -50,7 +51,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *dateViewLowerConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusViewLowerConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *postContentBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
@@ -209,6 +209,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self configureDate];
     [self configureStatusView];
     [self configureMetaButtons];
+    [self configureProgressView];
     [self configureActionBar];
 
     [self setNeedsUpdateConstraints];
@@ -394,6 +395,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     metaButton.hidden = NO;
 }
 
+#pragma mark - Configure Progress View
+
+- (void)configureProgressView
+{
+    if (!self.progressView.isHidden) {
+        self.progressView.hidden = NO;
+    }
+}
 
 #pragma mark - Configure Actionbar
 
