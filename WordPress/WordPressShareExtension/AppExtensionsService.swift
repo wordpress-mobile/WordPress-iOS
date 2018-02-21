@@ -93,6 +93,20 @@ extension AppExtensionsService {
     }
 }
 
+// MARK: - Blog Settings
+
+extension AppExtensionsService {
+    func fetchSettingsForSite(_ siteID: Int, onSuccess: @escaping (RemoteBlogSettings?) -> (), onFailure: @escaping FailureWithErrorBlock) {
+        let remote = BlogServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: siteID))
+        remote.syncBlogSettings(success: { settings in
+            onSuccess(settings)
+        }) { error in
+            DDLogError("Error retrieving settings for site ID \(siteID): \(String(describing: error))")
+            onFailure(error)
+        }
+    }
+}
+
 // MARK: - Taxonomy
 
 extension AppExtensionsService {
