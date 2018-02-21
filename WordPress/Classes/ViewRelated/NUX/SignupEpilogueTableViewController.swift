@@ -187,7 +187,7 @@ private extension SignupEpilogueTableViewController {
         case .username:
             cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: epilogueUserInfo?.username)
             cell.accessoryType = .disclosureIndicator
-            cell.cellField.isUserInteractionEnabled = false
+            cell.cellField.addTarget(self, action: #selector(usernameSelected(_:)), for: .editingDidBegin)
         case .password:
             cell.configureCell(labelText: NSLocalizedString("Password", comment: "Password label text."), fieldValue: nil, fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"), showSecureTextEntry: true)
         }
@@ -197,6 +197,12 @@ private extension SignupEpilogueTableViewController {
 
     @objc func displayNameDidChange(_ textField: UITextField) {
         userInfoCell?.fullNameLabel?.text = textField.text
+    }
+
+    @objc func usernameSelected(_ textField: UITextField) {
+        let alertController = UIAlertController(title: nil, message: "Username changer coming soon!", preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle("OK")
+        present(alertController, animated: true, completion: nil)
     }
 
 }
