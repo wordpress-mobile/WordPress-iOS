@@ -38,22 +38,18 @@ class NUXButtonViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let buttonConfig = bottomButtonConfig, let bottomButton = bottomButton {
-            bottomButton.setTitle(buttonConfig.title, for: UIControlState())
-            bottomButton.accessibilityIdentifier = accessibilityIdentifier(for: buttonConfig.title)
-            bottomButton.isPrimary = buttonConfig.isPrimary
-            bottomButton.isHidden = false
-        } else {
-            bottomButton?.isHidden = true
-        }
+        configure(button: bottomButton, withConfig: bottomButtonConfig)
+        configure(button: topButton, withConfig: topButtonConfig)
+    }
 
-        if let buttonConfig = topButtonConfig, let topButton = topButton {
-            topButton.setTitle(buttonConfig.title, for: UIControlState())
-            topButton.accessibilityIdentifier = accessibilityIdentifier(for: buttonConfig.title)
-            topButton.isPrimary = buttonConfig.isPrimary
-            topButton.isHidden = false
+    private func configure(button: NUXButton?, withConfig buttonConfig: NUXButtonConfig?) {
+        if let buttonConfig = buttonConfig, let button = button {
+            button.setTitle(buttonConfig.title, for: UIControlState())
+            button.accessibilityIdentifier = accessibilityIdentifier(for: buttonConfig.title)
+            button.isPrimary = buttonConfig.isPrimary
+            button.isHidden = false
         } else {
-            topButton?.isHidden = true
+            button?.isHidden = true
         }
     }
 
