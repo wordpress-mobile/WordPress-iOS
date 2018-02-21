@@ -170,7 +170,6 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
         shareData.selectedSiteID = primarySiteID
         shareData.selectedSiteName = primarySiteName
-        fetchSettingsForSelectedSite()
     }
 
     fileprivate func setupNavigationBar() {
@@ -238,6 +237,7 @@ extension ShareModularViewController {
     }
 
     @objc func pullToRefresh(sender: UIRefreshControl) {
+        clearCategoriesAndRefreshModulesTable()
         clearSiteDataAndRefreshSitesTable()
         reloadSitesIfNeeded()
     }
@@ -384,22 +384,28 @@ fileprivate extension ShareModularViewController {
         switch indexPath.section {
         case ModulesSection.categories.rawValue:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text            = NSLocalizedString("Category", comment: "Category menu item in share extension.")
-            cell.accessoryType              = .disclosureIndicator
-            cell.accessibilityLabel         = "Category"
-            // FIXME: Do this!
-            //            if let tags = shareData.tags, !tags.isEmpty {
-            //                cell.detailTextLabel?.text = tags
-            //                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
-            //            } else {
-            cell.detailTextLabel?.text =  NSLocalizedString("Uncategorized", comment: "Placeholder text for category module in share extension.")
-            cell.detailTextLabel?.textColor = WPStyleGuide.grey()
-        //            }
+            cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
+            cell.accessibilityLabel = "Category"
+            if shareData.totalCategoryCount > 1 {
+                cell.accessoryType = .disclosureIndicator
+                cell.isUserInteractionEnabled = true
+            } else {
+                cell.accessoryType = .none
+                cell.isUserInteractionEnabled = false
+            }
+
+            if !shareData.selectedCategoriesString.isEmpty {
+                cell.detailTextLabel?.text = shareData.selectedCategoriesString
+                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
+            } else {
+                cell.detailTextLabel?.text =  ""
+                cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+            }
         case ModulesSection.tags.rawValue:
             WPStyleGuide.Share.configureModuleCell(cell)
-            cell.textLabel?.text            = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
-            cell.accessoryType              = .disclosureIndicator
-            cell.accessibilityLabel         = "Tags"
+            cell.textLabel?.text = NSLocalizedString("Tags", comment: "Tags menu item in share extension.")
+            cell.accessoryType = .disclosureIndicator
+            cell.accessibilityLabel = "Tags"
             if let tags = shareData.tags, !tags.isEmpty {
                 cell.detailTextLabel?.text = tags
                 cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
@@ -431,8 +437,11 @@ fileprivate extension ShareModularViewController {
     func selectedModulesTableRowAt(_ indexPath: IndexPath) {
         switch ModulesSection(rawValue: indexPath.section)! {
         case .categories:
-            modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
-            showCategoriesPicker()
+            if shareData.totalCategoryCount > 1 {
+                modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+                showCategoriesPicker()
+            }
+            return
         case .tags:
             modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
             showTagsPicker()
@@ -458,6 +467,11 @@ fileprivate extension ShareModularViewController {
 
     func refreshModulesTable() {
         modulesTableView.reloadData()
+    }
+
+    func clearCategoriesAndRefreshModulesTable() {
+        shareData.clearCategoryInfo()
+        refreshModulesTable()
     }
 }
 
@@ -513,7 +527,7 @@ fileprivate extension ShareModularViewController {
         sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
-        fetchSettingsForSelectedSite()
+        fetchDefaultCategoryForSelectedSite()
         updatePublishButtonStatus()
         self.refreshModulesTable()
     }
@@ -603,19 +617,37 @@ fileprivate extension ShareModularViewController {
 // MARK: - Backend Interaction
 
 fileprivate extension ShareModularViewController {
-    func fetchSettingsForSelectedSite() {
+    func fetchDefaultCategoryForSelectedSite() {
         guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
             return
         }
 
+        clearCategoriesAndRefreshModulesTable()
         let networkService = AppExtensionsService()
         networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
-            guard let settings = settings else {
+            guard let settings = settings,
+                let defaultCategoryID = settings.defaultCategoryID else {
                 return
             }
-            print(settings)
-        }) { error in
-            //TODO
+
+            networkService.fetchCategoriesForSite(siteID, onSuccess: { categories in
+                let defaultCategoryArray = categories.filter { $0.categoryID == defaultCategoryID }
+                guard !defaultCategoryArray.isEmpty, let defaultCategoryName = defaultCategoryArray.first?.name else {
+                    return
+                }
+
+                self.shareData.totalCategoryCount = categories.count
+                self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
+                DispatchQueue.main.async {
+                    self.refreshModulesTable()
+                }
+            }, onFailure: { error in
+                let error = self.createErrorWithDescription("Could not successfully fetch the default category for site: \(siteID)")
+                self.tracks.trackExtensionError(error)
+            })
+        }) { _ in
+            let error = self.createErrorWithDescription("Could not successfully fetch the settings for site: \(siteID)")
+            self.tracks.trackExtensionError(error)
         }
     }
 
@@ -631,6 +663,7 @@ fileprivate extension ShareModularViewController {
                 self.sites = (blogs) ?? [RemoteBlog]()
                 self.sitesTableView.reloadData()
                 self.showEmptySitesIfNeeded()
+                self.fetchDefaultCategoryForSelectedSite()
             }
         }) {
             DispatchQueue.main.async {
