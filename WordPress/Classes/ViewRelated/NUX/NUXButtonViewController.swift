@@ -22,8 +22,10 @@ class NUXButtonViewController: UIViewController {
     @IBOutlet var stackView: UIStackView?
     @IBOutlet var bottomButton: NUXButton?
     @IBOutlet var topButton: NUXButton?
+    @IBOutlet var buttonHolder: UIView?
 
     open var delegate: NUXButtonViewControllerDelegate?
+    open var backgroundColor: UIColor?
 
     private var topButtonConfig: NUXButtonConfig?
     private var bottomButtonConfig: NUXButtonConfig?
@@ -40,6 +42,9 @@ class NUXButtonViewController: UIViewController {
 
         configure(button: bottomButton, withConfig: bottomButtonConfig)
         configure(button: topButton, withConfig: topButtonConfig)
+        if let bgColor = backgroundColor, let holder = buttonHolder {
+            holder.backgroundColor = bgColor
+        }
     }
 
     private func configure(button: NUXButton?, withConfig buttonConfig: NUXButtonConfig?) {
