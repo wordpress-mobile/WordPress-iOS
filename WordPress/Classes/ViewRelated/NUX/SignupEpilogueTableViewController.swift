@@ -4,11 +4,13 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
+    private var epilogueUserInfo: LoginEpilogueUserInfo?
+
     private struct Constants {
         static let numberOfSections = 3
         static let namesSectionRows = 2
         static let sectionRows = 1
-        static let headerHeight: CGFloat = 50
+        static let headerFooterHeight: CGFloat = 50
     }
 
     private struct TableSections {
@@ -17,7 +19,17 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         static let password = 2
     }
 
-    private enum EpilogueCellType {
+    private struct CellIdentifiers {
+        static let sectionHeaderFooter = "SectionHeaderFooter"
+        static let signupEpilogueCell = "SignupEpilogueCell"
+    }
+
+    private struct CellNibNames {
+        static let sectionHeaderFooter = "LoginEpilogueSectionHeader"
+        static let signupEpilogueCell = "SignupEpilogueCell"
+    }
+
+    fileprivate enum EpilogueCellType {
         case displayName
         case username
         case password
@@ -28,18 +40,9 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let headerNib = UINib(nibName: "LoginEpilogueSectionHeader", bundle: nil)
-        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
-
-        let displayNameNib = UINib(nibName: "SignupEpilogueCell", bundle: nil)
-        tableView.register(displayNameNib, forCellReuseIdentifier: "SignupEpilogueCell")
-
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
-
-        // remove empty cells
-        tableView.tableFooterView = UIView()
+        getUserInfo()
+        configureTable()
     }
-
 
     // MARK: - Table view data source
 
@@ -61,7 +64,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
             sectionTitle = NSLocalizedString("New Account", comment: "Header for user info, shown after account created.").localizedUppercase
         }
 
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as? LoginEpilogueSectionHeader else {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? LoginEpilogueSectionHeader else {
             fatalError("Failed to get a section header cell")
         }
         cell.titleLabel?.text = sectionTitle
@@ -69,7 +72,24 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+
+        if section == TableSections.password {
+            guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? LoginEpilogueSectionHeader else {
+                fatalError("Failed to get a section footer cell")
+            }
+            cell.titleLabel?.numberOfLines = 0
+            cell.titleLabel?.text = NSLocalizedString("Log in will be possible by getting a new email like the one you just used, but you can setup a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
+
+            return cell
+        }
+
+        return nil
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        // TODO: add user info cell
 
         if indexPath.section == TableSections.names {
             if indexPath.row == 0 {
@@ -91,25 +111,57 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return Constants.headerHeight
+        return Constants.headerFooterHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
-    // MARK: - Cell Creation
+    override func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return Constants.headerFooterHeight
+    }
 
-    private func getEpilogueCellFor(cellType: EpilogueCellType) -> SignupEpilogueCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SignupEpilogueCell") as? SignupEpilogueCell else {
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == TableSections.password {
+            return UITableViewAutomaticDimension
+        }
+        return 0
+    }
+
+}
+
+private extension SignupEpilogueTableViewController {
+
+    func configureTable() {
+        let headerFooterNib = UINib(nibName: CellNibNames.sectionHeaderFooter, bundle: nil)
+        tableView.register(headerFooterNib, forHeaderFooterViewReuseIdentifier: CellIdentifiers.sectionHeaderFooter)
+
+        let cellNib = UINib(nibName: CellNibNames.signupEpilogueCell, bundle: nil)
+        tableView.register(cellNib, forCellReuseIdentifier: CellIdentifiers.signupEpilogueCell)
+
+        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
+        // remove empty cells
+        tableView.tableFooterView = UIView()
+    }
+
+    func getUserInfo() {
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let account = service.defaultWordPressComAccount() {
+            epilogueUserInfo = LoginEpilogueUserInfo(account: account)
+        }
+    }
+
+    func getEpilogueCellFor(cellType: EpilogueCellType) -> SignupEpilogueCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.signupEpilogueCell) as? SignupEpilogueCell else {
             fatalError("Failed to get epilogue cell")
         }
 
+        // TODO: use real user values
+
         switch cellType {
         case .displayName:
-
-            // TODO: use real user values
-
             cell.configureCell(labelText: NSLocalizedString("Display Name", comment: "Display Name label text."), fieldValue: "Juanita Gonzales")
         case .username:
             cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: "juanitagonzales666")
