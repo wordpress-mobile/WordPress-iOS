@@ -98,8 +98,8 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
             // TODO: configure cell for this view
 
-            if let info = epilogueUserInfo {
-                cell.configure(userInfo: info)
+            if let epilogueUserInfo = epilogueUserInfo {
+                cell.configure(userInfo: epilogueUserInfo, showEmail: true)
             }
 
             return cell
@@ -173,13 +173,11 @@ private extension SignupEpilogueTableViewController {
             fatalError("Failed to get epilogue cell")
         }
 
-        // TODO: use real user values
-
         switch cellType {
         case .displayName:
-            cell.configureCell(labelText: NSLocalizedString("Display Name", comment: "Display Name label text."), fieldValue: "Juanita Gonzales")
+            cell.configureCell(labelText: NSLocalizedString("Display Name", comment: "Display Name label text."), fieldValue: epilogueUserInfo?.fullName)
         case .username:
-            cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: "juanitagonzales666")
+            cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: epilogueUserInfo?.username)
             cell.accessoryType = .disclosureIndicator
             cell.cellField.isUserInteractionEnabled = false
         case .password:
