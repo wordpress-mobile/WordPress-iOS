@@ -119,7 +119,7 @@ class MediaCoordinator: NSObject {
     ///
     func cancelUploadAndDeleteMedia(_ media: Media) {
         cancelUpload(of: media)
-        delete(media: media)
+        delete(media: [media])
     }
 
     /// Cancels any ongoing upload for the media object
@@ -136,13 +136,36 @@ class MediaCoordinator: NSObject {
         mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
     }
 
-    /// Deletes a media object from the storage
+    /// Deletes a single Media object. If the object is currently being uploaded,
+    /// the upload will be cancelled.
     ///
-    /// - Parameter media: the media object to delete
+    /// - Parameter media: The media object to delete
+    /// - Parameter onProgress: Optional progress block, called after each media item is deleted
+    /// - Parameter success: Optional block called after all media items are deleted successfully
+    /// - Parameter failure: Optional block called if deletion failed for any media items,
+    ///                      after attempted deletion of all media items
     ///
-    func delete(media: Media) {
+    func delete(_ media: Media, onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+        delete(media: [media], onProgress: onProgress, success: success, failure: failure)
+    }
+
+    /// Deletes media objects. If the objects are currently being uploaded,
+    /// the uploads will be cancelled.
+    ///
+    /// - Parameter media: The media objects to delete
+    /// - Parameter onProgress: Optional progress block, called after each media item is deleted
+    /// - Parameter success: Optional block called after all media items are deleted successfully
+    /// - Parameter failure: Optional block called if deletion failed for any media items,
+    ///                      after attempted deletion of all media items
+    ///
+    func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+        media.forEach({ self.cancelUpload(of: $0) })
+
         let service = MediaService(managedObjectContext: backgroundContext)
-        service.delete(media, success: nil, failure: nil)
+        service.deleteMedia(media,
+                            progress: { onProgress?($0) },
+                            success: success,
+                            failure: failure)
     }
 
     @discardableResult private func uploadMedia(_ media: Media) -> Progress {
