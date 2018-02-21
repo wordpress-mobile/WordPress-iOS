@@ -464,7 +464,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 return
             }
 
-            MediaCoordinator.shared.addMedia(from: media, to: blog)
+            MediaCoordinator.shared.addMedia(from: media, to: blog, origin: .mediaLibrary)
         }
 
         guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
@@ -490,7 +490,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         for documentURL in urls as [NSURL] {
-            MediaCoordinator.shared.addMedia(from: documentURL, to: blog)
+            MediaCoordinator.shared.addMedia(from: documentURL, to: blog, origin: .mediaLibrary)
         }
     }
 
@@ -535,7 +535,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             assets.count > 0 else { return }
 
         for asset in assets {
-            MediaCoordinator.shared.addMedia(from: asset, to: blog)
+            MediaCoordinator.shared.addMedia(from: asset, to: blog, origin: .mediaLibrary)
         }
     }
 
@@ -649,22 +649,6 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         selectedAsset = asset
 
         return MediaItemViewController(media: asset)
-    }
-
-    fileprivate func trackUploadFor(_ media: Media) {
-        let properties = WPAppAnalytics.properties(for: media)
-
-        switch media.mediaType {
-        case .image:
-            WPAppAnalytics.track(.mediaLibraryAddedPhoto,
-                                 withProperties: properties,
-                                 with: blog)
-        case .video:
-            WPAppAnalytics.track(.mediaLibraryAddedVideo,
-                                 withProperties: properties,
-                                 with: blog)
-        default: break
-        }
     }
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
