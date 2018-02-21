@@ -1,5 +1,11 @@
 import UIKit
 
+/// Allows certain presented view controllers to request themselves to be
+/// presented at full size instead of inset within the container.
+protocol ExtensionPresentationTarget {
+    var shouldFillContentContainer: Bool { get }
+}
+
 class ExtensionPresentationController: UIPresentationController {
 
     // MARK: - Private Properties
@@ -40,6 +46,11 @@ class ExtensionPresentationController: UIPresentationController {
     }
 
     override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
+        if let target = container as? ExtensionPresentationTarget,
+            target.shouldFillContentContainer == true {
+            return parentSize
+        }
+
         let widthRatio = traitCollection.verticalSizeClass != .compact ? Appearance.widthRatio : Appearance.widthRatioCompactVertical
         let heightRatio = traitCollection.verticalSizeClass != .compact ? Appearance.heightRatio : Appearance.heightRatioCompactVertical
         return CGSize(width: (parentSize.width * widthRatio), height: (parentSize.height * heightRatio))
