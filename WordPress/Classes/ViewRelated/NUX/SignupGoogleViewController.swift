@@ -35,6 +35,16 @@ class SignupGoogleViewController: LoginViewController {
 
         WPAppAnalytics.track(.loginSocialButtonClick)
     }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let vc = segue.destination as? SignupEpilogueViewController {
+            vc.loginFields = loginFields
+        }
+    }
+
 }
 
 extension SignupGoogleViewController: GIDSignInDelegate {
@@ -60,7 +70,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         let service = SignupService(managedObjectContext: context)
         service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
             SVProgressHUD.dismiss()
-            self?.performSegue(withIdentifier: .showEpilogue, sender: self)
+            self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
             WPAnalytics.track(.signupSocialSuccess)
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
