@@ -12,6 +12,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?
     private var userInfoCell: EpilogueUserInfoCell?
+    private var showPassword: Bool = true
 
     private struct Constants {
         static let numberOfSections = 3
@@ -56,7 +57,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return Constants.numberOfSections
+        return showPassword == true ? Constants.numberOfSections : Constants.numberOfSections - 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -168,6 +169,7 @@ private extension SignupEpilogueTableViewController {
 
     func getUserInfo() {
         if loginFields.meta.socialService == .google {
+            showPassword = false
             var userInfo = LoginEpilogueUserInfo()
             userInfo.email = loginFields.emailAddress
             userInfo.fullName = loginFields.username
