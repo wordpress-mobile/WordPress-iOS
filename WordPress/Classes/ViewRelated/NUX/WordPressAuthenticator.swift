@@ -147,8 +147,7 @@ import WordPressShared
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                // TODO: add new track
-                WPAppAnalytics.track(.loginMagicLinkOpened)
+                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
             case .login:
                 WordPressAuthenticator.post(event: .loginMagicLinkOpened)
             }
