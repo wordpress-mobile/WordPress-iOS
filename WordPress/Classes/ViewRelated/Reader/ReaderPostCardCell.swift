@@ -439,7 +439,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         // But only if it is from wpcom or jetpack (external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
         if contentProvider!.isWPCom() || contentProvider!.isJetpack() {
-            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().intValue > 0 {
+            let commentCount = contentProvider!.commentCount()?.intValue ?? 0
+            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || commentCount > 0 {
 
                 commentActionButton.tag = CardAction.comment.rawValue
                 commentActionButton.isHidden = false
