@@ -47,7 +47,6 @@ target 'WordPress' do
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '3.0.3'
   pod 'GoogleSignIn', '4.1.1'
-  pod 'TTTAttributedLabel', '2.0'
 
   # --------------------
   # WordPress components
@@ -68,6 +67,15 @@ target 'WordPress' do
   end
 
   target 'WordPressShareExtension' do
+    inherit! :search_paths
+
+    shared_with_all_pods
+    shared_with_networking_pods
+
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
+  end
+
+  target 'WordPressDraftActionExtension' do
     inherit! :search_paths
 
     shared_with_all_pods

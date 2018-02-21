@@ -5,37 +5,49 @@ import Foundation
 ///
 extension Tracks {
     // MARK: - Public Methods
+
     public func trackExtensionLaunched(_ wpcomAvailable: Bool) {
         let properties = ["is_configured_dotcom": wpcomAvailable]
-        trackExtensionEvent(.Launched, properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(.launched, properties: properties as [String: AnyObject]?)
     }
 
     public func trackExtensionPosted(_ status: String) {
         let properties = ["post_status": status]
-        trackExtensionEvent(.Posted, properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(.posted, properties: properties as [String: AnyObject]?)
     }
 
     public func trackExtensionError(_ error: NSError) {
         let properties = ["error_code": String(error.code), "error_domain": error.domain, "error_description": error.description]
-        trackExtensionEvent(.Error, properties: properties as [String: AnyObject]?)
+        trackExtensionEvent(.error, properties: properties as [String: AnyObject]?)
     }
 
     public func trackExtensionCancelled() {
-        trackExtensionEvent(.Canceled)
+        trackExtensionEvent(.canceled)
     }
 
+    public func trackExtensionTagsOpened() {
+        trackExtensionEvent(.tagsOpened)
+    }
+
+    public func trackExtensionTagsSelected(_ tags: String) {
+        let properties = ["selected_tags": tags]
+        trackExtensionEvent(.tagsSelected, properties: properties as [String: AnyObject]?)
+    }
 
     // MARK: - Private Helpers
+
     fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
         track(event.rawValue, properties: properties)
     }
 
-
     // MARK: - Private Enums
+
     fileprivate enum ExtensionEvents: String {
-        case Launched   = "wpios_share_extension_launched"
-        case Posted     = "wpios_share_extension_posted"
-        case Canceled   = "wpios_share_extension_canceled"
-        case Error      = "wpios_share_extension_error"
+        case launched       = "wpios_share_extension_launched"
+        case posted         = "wpios_share_extension_posted"
+        case tagsOpened     = "wpios_share_extension_tags_opened"
+        case tagsSelected   = "wpios_share_extension_tags_selected"
+        case canceled       = "wpios_share_extension_canceled"
+        case error          = "wpios_share_extension_error"
     }
 }
