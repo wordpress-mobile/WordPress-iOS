@@ -22,11 +22,13 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     private struct CellIdentifiers {
         static let sectionHeaderFooter = "SectionHeaderFooter"
         static let signupEpilogueCell = "SignupEpilogueCell"
+        static let epilogueUserInfoCell = "userInfo"
     }
 
     private struct CellNibNames {
         static let sectionHeaderFooter = "LoginEpilogueSectionHeader"
         static let signupEpilogueCell = "SignupEpilogueCell"
+        static let epilogueUserInfoCell = "EpilogueUserInfoCell"
     }
 
     fileprivate enum EpilogueCellType {
@@ -89,7 +91,19 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        // TODO: add user info cell
+        if indexPath.section == TableSections.userInfo {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.epilogueUserInfoCell) as? EpilogueUserInfoCell else {
+                fatalError("Failed to get a user info cell")
+            }
+
+            // TODO: configure cell for this view
+
+            if let info = epilogueUserInfo {
+                cell.configure(userInfo: info)
+            }
+
+            return cell
+        }
 
         if indexPath.section == TableSections.names {
             if indexPath.row == 0 {
@@ -102,12 +116,10 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         }
 
         if indexPath.section == TableSections.password {
-            if indexPath.row == 0 {
-                return getEpilogueCellFor(cellType: .password)
-            }
+            return getEpilogueCellFor(cellType: .password)
         }
 
-        return UITableViewCell()
+        return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -139,6 +151,9 @@ private extension SignupEpilogueTableViewController {
 
         let cellNib = UINib(nibName: CellNibNames.signupEpilogueCell, bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: CellIdentifiers.signupEpilogueCell)
+
+        let userInfoNib = UINib(nibName: CellNibNames.epilogueUserInfoCell, bundle: nil)
+        tableView.register(userInfoNib, forCellReuseIdentifier: CellIdentifiers.epilogueUserInfoCell)
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
