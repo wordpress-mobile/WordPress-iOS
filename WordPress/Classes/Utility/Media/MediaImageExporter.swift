@@ -275,24 +275,25 @@ class MediaImageExporter: MediaExporter {
             var imageProperties: [NSString: Any] = (CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? Dictionary) ?? [:]
             // Configure destination properties
             imageProperties[kCGImageDestinationLossyCompressionQuality] = lossyCompressionQuality
-            // Configure orientation properties to default .up or 1
-            imageProperties[kCGImagePropertyOrientation] = Int(CGImagePropertyOrientation.up.rawValue) as CFNumber
-            if var tiffProperties = imageProperties[kCGImagePropertyTIFFDictionary] as? [NSString: Any] {
-                // Remove TIFF orientation value
-                tiffProperties.removeValue(forKey: kCGImagePropertyTIFFOrientation)
-                imageProperties[kCGImagePropertyTIFFDictionary] = tiffProperties
-            }
-            if var iptcProperties = imageProperties[kCGImagePropertyIPTCImageOrientation] as? [NSString: Any] {
-                // Remove IPTC orientation value
-                iptcProperties.removeValue(forKey: kCGImagePropertyIPTCImageOrientation)
-                imageProperties[kCGImagePropertyIPTCImageOrientation] = iptcProperties
-            }
 
             // Keep track of the image's width and height
             var width: CGFloat?
             var height: CGFloat?
 
             if let maximumSize = maximumSize {
+                // Configure orientation properties to default .up or 1
+                imageProperties[kCGImagePropertyOrientation] = Int(CGImagePropertyOrientation.up.rawValue) as CFNumber
+                if var tiffProperties = imageProperties[kCGImagePropertyTIFFDictionary] as? [NSString: Any] {
+                    // Remove TIFF orientation value
+                    tiffProperties.removeValue(forKey: kCGImagePropertyTIFFOrientation)
+                    imageProperties[kCGImagePropertyTIFFDictionary] = tiffProperties
+                }
+                if var iptcProperties = imageProperties[kCGImagePropertyIPTCImageOrientation] as? [NSString: Any] {
+                    // Remove IPTC orientation value
+                    iptcProperties.removeValue(forKey: kCGImagePropertyIPTCImageOrientation)
+                    imageProperties[kCGImagePropertyIPTCImageOrientation] = iptcProperties
+                }
+
                 // Configure options for generating the thumbnail, such as the maximum size.
                 let thumbnailOptions: [NSString: Any] = [kCGImageSourceThumbnailMaxPixelSize: maximumSize,
                                                        kCGImageSourceCreateThumbnailFromImageAlways: true,
