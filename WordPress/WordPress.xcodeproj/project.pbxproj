@@ -4041,7 +4041,6 @@
 			isa = PBXGroup;
 			children = (
 				43A85B301E9E815B00FA990B /* Login.storyboard */,
-				43FB3F421EC0DDAD00FC8A62 /* LoginEpilogueSectionHeader.xib */,
 				98C43E871FE98137006FEF54 /* Signup.storyboard */,
 				982BED971FBCF392000B848E /* SiteCreation.storyboard */,
 				E6417B961CA07B060084050A /* Controllers */,
@@ -4459,13 +4458,13 @@
 			name = "Site Creation";
 			sourceTree = "<group>";
 		};
-		9872CB36203BB53F0066A293 /* Signin Epilogue */ = {
+		9872CB36203BB53F0066A293 /* Signup Epilogue */ = {
 			isa = PBXGroup;
 			children = (
 				98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */,
 				98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */,
 			);
-			name = "Signin Epilogue";
+			name = "Signup Epilogue";
 			sourceTree = "<group>";
 		};
 		98B24D5B2017E2C40082BA78 /* Button View */ = {
@@ -5849,13 +5848,14 @@
 		E6417B951CA07AFE0084050A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				9872CB36203BB53F0066A293 /* Signin Epilogue */,
+				9872CB36203BB53F0066A293 /* Signup Epilogue */,
 				98B24D5B2017E2C40082BA78 /* Button View */,
 				98DED29B1FC38DBE00015AE4 /* Select Site Type */,
 				982A65261FCCE2F0008236BA /* Select Theme */,
 				436269631ECD0726008692C7 /* NUXButton.swift */,
 				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				43FB3F441EC1020600FC8A62 /* LoginEpilogueSectionHeader.swift */,
+				43FB3F421EC0DDAD00FC8A62 /* LoginEpilogueSectionHeader.xib */,
 				4346FD9A1EBA4FF40031452F /* LoginEpilogueUserInfoCell.swift */,
 				982905AE2000233500F92779 /* EmailMagicLink.storyboard */,
 				43CC1EBF1ED898E30097E334 /* LoginTextField.swift */,
