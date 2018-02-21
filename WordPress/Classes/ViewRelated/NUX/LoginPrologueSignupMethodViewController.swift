@@ -51,6 +51,7 @@ class LoginPrologueSignupMethodViewController: UIViewController {
             self?.present(navController, animated: true, completion: nil)
         }
         buttonViewController.stackView?.insertArrangedSubview(termsButton, at: 0)
+        buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
     }
 
     @IBAction func dismissTapped() {
