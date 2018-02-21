@@ -161,9 +161,17 @@ private extension SignupEpilogueTableViewController {
     }
 
     func getUserInfo() {
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = service.defaultWordPressComAccount() {
-            epilogueUserInfo = LoginEpilogueUserInfo(account: account)
+        if loginFields.meta.socialService == .google {
+            var userInfo = LoginEpilogueUserInfo()
+            userInfo.email = loginFields.emailAddress
+            userInfo.fullName = loginFields.username
+            userInfo.username = loginFields.username
+            epilogueUserInfo = userInfo
+        } else {
+            let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            if let account = service.defaultWordPressComAccount() {
+                epilogueUserInfo = LoginEpilogueUserInfo(account: account)
+            }
         }
     }
 

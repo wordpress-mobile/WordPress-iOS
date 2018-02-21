@@ -23,6 +23,10 @@ class SignupEpilogueViewController: NUXViewController {
             buttonViewController?.delegate = self
             buttonViewController?.setButtonTitles(primary: NSLocalizedString("Continue", comment: "Button text on site creation epilogue page to proceed to My Sites."))
         }
+
+        if let vc = segue.destination as? SignupEpilogueTableViewController {
+            vc.loginFields = loginFields
+        }
     }
 
 }
