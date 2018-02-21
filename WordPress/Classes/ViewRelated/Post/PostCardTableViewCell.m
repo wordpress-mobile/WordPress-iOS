@@ -320,8 +320,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureStatusView
 {
-    NSString *str = [self.post statusForDisplay];
-    self.statusView.hidden = ([str length] == 0);
+    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
+
+    self.statusView.hidden = model.shouldHideStatusView;
     if (self.statusView.hidden) {
         self.dateViewLowerConstraint.constant = 0.0;
         self.statusHeightConstraint.constant = 0.0;
@@ -330,25 +331,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         self.statusHeightConstraint.constant = self.statusViewHeight;
     }
 
-    self.statusLabel.text = str;
-    // Set the correct icon and text color
-    if ([[self.post status] isEqualToString:PostStatusPending]) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
-        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
-    } else if ([[self.post status] isEqualToString:PostStatusScheduled]) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
-        self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
-    } else if ([[self.post status] isEqualToString:PostStatusTrash]) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
-        self.statusLabel.textColor = [WPStyleGuide errorRed];
-    } else if (!self.statusView.hidden) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
-        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
-    } else {
-        self.statusLabel.text = nil;
-        self.statusImageView.image = nil;
-        self.statusLabel.textColor = [WPStyleGuide grey];
-    }
+    self.statusLabel.text = model.status;
+    self.statusImageView.image = model.statusImage;
+    self.statusLabel.textColor = model.statusColor;
 
     [self.statusView setNeedsUpdateConstraints];
 }
