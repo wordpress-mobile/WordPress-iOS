@@ -1,0 +1,3 @@
+protocol Accessible {
+    func prepareForVoiceOver()
+}
