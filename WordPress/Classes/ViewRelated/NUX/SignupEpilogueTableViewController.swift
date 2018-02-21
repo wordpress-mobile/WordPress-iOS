@@ -1,8 +1,14 @@
 import UIKit
 
+protocol SignupEpilogueTableViewControllerDelegate {
+    func displayNameUpdated(newDisplayName: String)
+}
+
 class SignupEpilogueTableViewController: NUXTableViewController {
 
     // MARK: - Properties
+
+    open var delegate: SignupEpilogueTableViewControllerDelegate?
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?
     private var userInfoCell: EpilogueUserInfoCell?
@@ -184,6 +190,7 @@ private extension SignupEpilogueTableViewController {
         case .displayName:
             cell.configureCell(labelText: NSLocalizedString("Display Name", comment: "Display Name label text."), fieldValue: epilogueUserInfo?.fullName)
             cell.cellField.addTarget(self, action: #selector(displayNameDidChange(_:)), for: .editingChanged)
+            cell.cellField.addTarget(self, action: #selector(displayNameChanged(_:)), for: .editingDidEnd)
         case .username:
             cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: epilogueUserInfo?.username)
             cell.accessoryType = .disclosureIndicator
@@ -195,8 +202,16 @@ private extension SignupEpilogueTableViewController {
         return cell
     }
 
+    // MARK: - Cell Action Handling
+
     @objc func displayNameDidChange(_ textField: UITextField) {
         userInfoCell?.fullNameLabel?.text = textField.text
+    }
+
+    @objc func displayNameChanged(_ textField: UITextField) {
+        if let newDisplayName = textField.text {
+            delegate?.displayNameUpdated(newDisplayName: newDisplayName)
+        }
     }
 
     @objc func usernameSelected(_ textField: UITextField) {

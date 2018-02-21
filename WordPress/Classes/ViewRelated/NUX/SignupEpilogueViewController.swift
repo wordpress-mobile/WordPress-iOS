@@ -5,6 +5,7 @@ class SignupEpilogueViewController: NUXViewController {
     // MARK: - Properties
 
     private var buttonViewController: NUXButtonViewController?
+    private var updatedDisplayName: String?
 
     // MARK: - View
 
@@ -26,7 +27,29 @@ class SignupEpilogueViewController: NUXViewController {
 
         if let vc = segue.destination as? SignupEpilogueTableViewController {
             vc.loginFields = loginFields
+            vc.delegate = self
         }
+    }
+
+    // MARK: - Update User Settings
+
+    private func updateDisplayName() {
+
+        guard let updatedDisplayName = updatedDisplayName else {
+            return
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let restApi = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.wordPressComRestApi else {
+            return
+        }
+        let remote = AccountSettingsRemote.remoteWithApi(restApi)
+
+        let accountSettingsChange = AccountSettingsChange.displayName(updatedDisplayName)
+        remote.updateSetting(accountSettingsChange, success: { () in
+        }, failure: { error in
+            DDLogError("Error updating user display name: \(error)")
+        })
     }
 
 }
@@ -35,6 +58,15 @@ class SignupEpilogueViewController: NUXViewController {
 
 extension SignupEpilogueViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
+        updateDisplayName()
         navigationController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - SignupEpilogueTableViewControllerDelegate
+
+extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegate {
+    func displayNameUpdated(newDisplayName: String) {
+        updatedDisplayName = newDisplayName
     }
 }
