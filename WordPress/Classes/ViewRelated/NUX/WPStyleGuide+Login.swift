@@ -135,18 +135,11 @@ extension WPStyleGuide {
         return textButton(normal: labelString, highlighted: labelString, font: font, alignment: .center)
     }
 
-    private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont, alignment: UIControlContentHorizontalAlignment = .left) -> UIButton {
+    private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont, alignment: UIControl.NaturalContentHorizontalAlignment = .leading) -> UIButton {
         let button = UIButton()
         button.clipsToBounds = true
 
-        switch alignment {
-        case .left, .leading:
-            button.naturalContentHorizontalAlignment = .leading
-        case .right, .trailing:
-            button.naturalContentHorizontalAlignment = .trailing
-        default:
-            button.contentHorizontalAlignment = alignment
-        }
+        button.naturalContentHorizontalAlignment = alignment
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = font
         button.titleLabel?.numberOfLines = 0
