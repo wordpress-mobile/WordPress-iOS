@@ -27,7 +27,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     }
 
     private struct CellNibNames {
-        static let sectionHeaderFooter = "LoginEpilogueSectionHeader"
+        static let sectionHeaderFooter = "EpilogueSectionHeaderFooter"
         static let signupEpilogueCell = "SignupEpilogueCell"
         static let epilogueUserInfoCell = "EpilogueUserInfoCell"
     }
@@ -67,7 +67,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
             sectionTitle = NSLocalizedString("New Account", comment: "Header for user info, shown after account created.").localizedUppercase
         }
 
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? LoginEpilogueSectionHeader else {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
             fatalError("Failed to get a section header cell")
         }
         cell.titleLabel?.text = sectionTitle
@@ -78,7 +78,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 
         if section == TableSections.password {
-            guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? LoginEpilogueSectionHeader else {
+            guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellIdentifiers.sectionHeaderFooter) as? EpilogueSectionHeaderFooter else {
                 fatalError("Failed to get a section footer cell")
             }
             cell.titleLabel?.numberOfLines = 0
