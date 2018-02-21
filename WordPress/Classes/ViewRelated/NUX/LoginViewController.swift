@@ -122,8 +122,6 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
             destination.restrictToWPCom = source.restrictToWPCom
             destination.dismissBlock = source.dismissBlock
             destination.errorToPresent = source.errorToPresent
-        } else if let destination = segue.destination as? SignupEpilogueViewController {
-            // TODO: ???
         }
     }
 
