@@ -5,6 +5,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     // MARK: - Properties
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?
+    private var userInfoCell: EpilogueUserInfoCell?
 
     private struct Constants {
         static let numberOfSections = 3
@@ -96,12 +97,10 @@ class SignupEpilogueTableViewController: NUXTableViewController {
                 fatalError("Failed to get a user info cell")
             }
 
-            // TODO: configure cell for this view
-
             if let epilogueUserInfo = epilogueUserInfo {
                 cell.configure(userInfo: epilogueUserInfo, showEmail: true)
             }
-
+            userInfoCell = cell
             return cell
         }
 
@@ -176,6 +175,7 @@ private extension SignupEpilogueTableViewController {
         switch cellType {
         case .displayName:
             cell.configureCell(labelText: NSLocalizedString("Display Name", comment: "Display Name label text."), fieldValue: epilogueUserInfo?.fullName)
+            cell.cellField.addTarget(self, action: #selector(displayNameDidChange(_:)), for: .editingChanged)
         case .username:
             cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: epilogueUserInfo?.username)
             cell.accessoryType = .disclosureIndicator
@@ -186,4 +186,9 @@ private extension SignupEpilogueTableViewController {
 
         return cell
     }
+
+    @objc func displayNameDidChange(_ textField: UITextField) {
+        userInfoCell?.fullNameLabel?.text = textField.text
+    }
+
 }
