@@ -19,7 +19,7 @@ import WordPressShared.WPStyleGuide
         super.awakeFromNib()
 
         applyStyles()
-        configureAccessibility()
+        prepareForVoiceOver()
     }
 
 
@@ -76,7 +76,7 @@ import WordPressShared.WPStyleGuide
 
 // MARK: - Accessibility
 extension ReaderFollowedSitesStreamHeader: Accessible {
-    func configureAccessibility() {
+    func prepareForVoiceOver() {
         isAccessibilityElement = true
         accessibilityLabel = NSLocalizedString("Manage", comment: "Button title. Tapping lets the user manage the sites they follow.")
         accessibilityHint = NSLocalizedString("Tapping lets you manage the sites you follow.", comment: "Accessibility hint")
