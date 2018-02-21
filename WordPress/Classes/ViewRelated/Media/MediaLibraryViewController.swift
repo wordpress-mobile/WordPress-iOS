@@ -320,11 +320,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         // Initialize the progress HUD before we start
         updateProgress(nil)
         isEditing = false
-        let service = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.deleteMedia(assets, progress: updateProgress, success: { [weak self] () in
+
+        MediaCoordinator.shared.delete(media: assets,
+                                       onProgress: updateProgress,
+                                       success: { [weak self] in
             WPAppAnalytics.track(.mediaLibraryDeletedItems, withProperties: ["number_of_items_deleted": deletedItemsCount], with: self?.blog)
             SVProgressHUD.showSuccess(withStatus: NSLocalizedString("Deleted!", comment: "Text displayed in HUD after successfully deleting a media item"))
-        }, failure: { () in
+        },
+                                       failure: {
             SVProgressHUD.showError(withStatus: NSLocalizedString("Unable to delete all media items.", comment: "Text displayed in HUD if there was an error attempting to delete a group of media items."))
         })
     }
@@ -332,7 +335,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate func presentRetryOptions(for media: Media) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
-            MediaCoordinator.shared.cancelUploadAndDeleteMedia(media)
+            MediaCoordinator.shared.delete(media: [media])
         }
 
         if media.remoteStatus == .failed {
@@ -345,7 +348,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 }
             } else {
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Delete", comment: "User action to delete media.")) { _ in
-                    MediaCoordinator.shared.delete(media: media)
+                    MediaCoordinator.shared.delete(media: [media])
                 }
             }
         }
@@ -595,7 +598,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
         }
 
         guard !isEditing else {
-            return media.remoteStatus == .sync
+            return media.remoteStatus == .sync || media.remoteStatus == .failed
         }
 
         switch media.remoteStatus {
