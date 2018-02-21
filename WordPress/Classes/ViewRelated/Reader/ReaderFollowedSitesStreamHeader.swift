@@ -19,6 +19,7 @@ import WordPressShared.WPStyleGuide
         super.awakeFromNib()
 
         applyStyles()
+        configureAccessibility()
     }
 
 
