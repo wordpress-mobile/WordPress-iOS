@@ -1,4 +1,5 @@
 import UIKit
+import GoogleSignIn
 
 protocol SignupEpilogueTableViewControllerDelegate {
     func displayNameUpdated(newDisplayName: String)
@@ -11,6 +12,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
     open var delegate: SignupEpilogueTableViewControllerDelegate?
 
+    var googleUser: GIDGoogleUser?
     private var epilogueUserInfo: LoginEpilogueUserInfo?
     private var userInfoCell: EpilogueUserInfoCell?
     private var showPassword: Bool = true
@@ -175,8 +177,12 @@ private extension SignupEpilogueTableViewController {
             showPassword = false
             var userInfo = LoginEpilogueUserInfo()
             userInfo.email = loginFields.emailAddress
-            userInfo.fullName = loginFields.username
             userInfo.username = loginFields.username
+
+            if let fullName = googleUser?.profile.name {
+                userInfo.fullName = fullName
+            }
+
             epilogueUserInfo = userInfo
         } else {
             let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)

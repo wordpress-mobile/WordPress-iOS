@@ -1,9 +1,11 @@
 import UIKit
+import GoogleSignIn
 
 class SignupEpilogueViewController: NUXViewController {
 
     // MARK: - Properties
 
+    var googleUser: GIDGoogleUser?
     private var buttonViewController: NUXButtonViewController?
     private var updatedDisplayName: String?
     private var updatedPassword: String?
@@ -28,6 +30,7 @@ class SignupEpilogueViewController: NUXViewController {
 
         if let vc = segue.destination as? SignupEpilogueTableViewController {
             vc.loginFields = loginFields
+            vc.googleUser = googleUser
             vc.delegate = self
         }
     }
