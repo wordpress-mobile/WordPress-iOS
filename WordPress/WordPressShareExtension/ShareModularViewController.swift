@@ -74,23 +74,27 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     ///
     fileprivate lazy var loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
+    /// Activity indicator used when loading categories
+    ///
+    fileprivate lazy var categoryActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+
     /// No results view
     ///
-    @objc lazy var noResultsView: WPNoResultsView = {
+    @objc fileprivate lazy var noResultsView: WPNoResultsView = {
         let title = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
         return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
     }()
 
     /// Loading view
     ///
-    @objc lazy var loadingView: WPNoResultsView = {
+    @objc fileprivate lazy var loadingView: WPNoResultsView = {
         let title = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
         return WPNoResultsView(title: title, message: nil, accessoryView: loadingActivityIndicatorView, buttonTitle: nil)
     }()
 
     /// Publishing view
     ///
-    @objc lazy var publishingView: WPNoResultsView = {
+    @objc fileprivate lazy var publishingView: WPNoResultsView = {
         let title: String
         if self.originatingExtension == .share {
             title = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
@@ -104,7 +108,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     /// Cancelling view
     ///
-    @objc lazy var cancellingView: WPNoResultsView = {
+    @objc fileprivate lazy var cancellingView: WPNoResultsView = {
         let title = NSLocalizedString("Cancelling...", comment: "A short message that informs the user the share extension is being cancelled.")
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         activityIndicatorView.startAnimating()
@@ -386,12 +390,19 @@ fileprivate extension ShareModularViewController {
             WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
             cell.accessibilityLabel = "Category"
-            if shareData.totalCategoryCount > 1 {
-                cell.accessoryType = .disclosureIndicator
-                cell.isUserInteractionEnabled = true
-            } else {
+            switch shareData.totalCategoryCount {
+            case 0:
+                categoryActivityIndicator.startAnimating()
+                cell.accessoryView = categoryActivityIndicator
+                cell.isUserInteractionEnabled = false
+            case 1:
+                categoryActivityIndicator.stopAnimating()
                 cell.accessoryType = .none
                 cell.isUserInteractionEnabled = false
+            default:
+                categoryActivityIndicator.stopAnimating()
+                cell.accessoryType = .disclosureIndicator
+                cell.isUserInteractionEnabled = true
             }
 
             if !shareData.selectedCategoriesString.isEmpty {
@@ -638,9 +649,7 @@ fileprivate extension ShareModularViewController {
 
                 self.shareData.totalCategoryCount = categories.count
                 self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
-                DispatchQueue.main.async {
-                    self.refreshModulesTable()
-                }
+                self.refreshModulesTable()
             }, onFailure: { error in
                 let error = self.createErrorWithDescription("Could not successfully fetch the default category for site: \(siteID)")
                 self.tracks.trackExtensionError(error)
