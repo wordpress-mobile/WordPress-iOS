@@ -806,7 +806,7 @@ static NSInteger HideSearchMinSites = 3;
     [self.navigationController pushViewController:self.blogDetailsViewController animated:animated];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [WPBlogTableViewCell cellHeight];
 }
