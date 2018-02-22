@@ -119,6 +119,12 @@ target 'WordPressKit' do
   end
 end
 
+target 'WordPressUI' do
+  project 'WordPressUI/WordPressUI.xcodeproj'
+
+  pod 'Gridicons', '0.14'
+end
+
 target 'WordPressShared' do
   project 'WordPressShared/WordPressShared.xcodeproj'
 
