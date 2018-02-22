@@ -143,7 +143,11 @@ final class ReaderPostCardCellTests: XCTestCase {
     private var mock: ReaderPostContentProvider?
 
     private struct TestConstants {
-        static let shareLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        static let shareLabel = "Share"
+        static let moreLabel = "More"
+        static let likeLabel = "1"
+        static let commentLabel = "2 comments"
+        static let visitLabel = "Visit"
     }
 
 
@@ -169,7 +173,20 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testCommentsButtonLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, "2 comments", "Incorrect accessibility label: Comments button")
+        XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, TestConstants.moreLabel, "Incorrect accessibility label: Comments button")
+    }
+
+    func testLikeButtonLabelMathchesExpectation() {
+        XCTAssertEqual(cell?.getLikeButtonForTesting().accessibilityLabel, TestConstants.likeLabel, "Incorrect accessibility label: Likes button")
+    }
+
+    func testMenuButtonLabelMatchesExpectation() {
+        XCTAssertEqual(cell?.getMenuButtonForTesting().accessibilityLabel, TestConstants.moreLabel, "Incorrect accessibility label: Menu button")
+    }
+
+    func testVisitButtonLabelMatchesExpectation() {
+        XCTAssertEqual(cell?.getVisitButtonForTesting().accessibilityLabel, TestConstants.visitLabel, "Incorrect accessibility label: Menu button"
+    )
     }
     
 }
