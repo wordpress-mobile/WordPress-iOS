@@ -29,8 +29,8 @@ extension NotificationsViewController {
             self?.blogService.syncBlog(blog, success: {
                 self?.activityIndicator.stopAnimating()
                 if blog.account != nil || !AccountHelper.isDotcomAvailable() {
-                    WPAppAnalytics.track(.signedInToJetpack, with: blog)
-                    WPAppAnalytics.track(.performedJetpackSignInFromNotificationsScreen, with: blog)
+                    WPAppAnalytics.track(.signedInToJetpack, withProperties: ["source": "notifications"], with: blog)
+                    WPAppAnalytics.track(.performedJetpackSignIn, withProperties: ["source": "notifications"], with: blog)
                     controller?.view.removeFromSuperview()
                     controller?.removeFromParentViewController()
                     self?.jetpackLoginViewController = nil

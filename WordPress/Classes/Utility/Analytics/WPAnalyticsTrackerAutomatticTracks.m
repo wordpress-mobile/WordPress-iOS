@@ -753,11 +753,8 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedViewSite:
             eventName = @"site_menu_view_site_opened";
             break;
-        case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
-            eventName = @"stats_screen_signed_into_jetpack";
-            break;
-        case WPAnalyticsStatPerformedJetpackSignInFromNotificationsScreen:
-            eventName = @"notifications_screen_signed_into_jetpack";
+        case WPAnalyticsStatPerformedJetpackSignIn:
+            eventName = @"signed_into_jetpack";
             break;
         case WPAnalyticsStatPersonRemoved:
             eventName = @"people_management_person_removed";
@@ -1049,9 +1046,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsScrolledToBottom:
             eventName = @"stats_scrolled_to_bottom";
-            break;
-        case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
-            eventName = @"selected_learn_more_in_connect_to_jetpack";
             break;
         case WPAnalyticsStatStatsSinglePostAccessed:
             eventName = @"stats_single_post_accessed";
