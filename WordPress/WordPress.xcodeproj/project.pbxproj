@@ -4460,13 +4460,17 @@
 			name = "Site Creation";
 			sourceTree = "<group>";
 		};
-		9872CB36203BB53F0066A293 /* Signup Epilogue */ = {
+		9872CB36203BB53F0066A293 /* Epilogues */ = {
 			isa = PBXGroup;
 			children = (
+				98579BC5203DD86D004086E4 /* EpilogueSectionHeaderFooter.swift */,
+				98579BC6203DD86E004086E4 /* EpilogueSectionHeaderFooter.xib */,
+				9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */,
+				98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */,
 				98A25BD0203CB25F006A5807 /* SignupEpilogueCell.swift */,
 				98A25BD2203CB278006A5807 /* SignupEpilogueCell.xib */,
 			);
-			name = "Signup Epilogue";
+			name = Epilogues;
 			sourceTree = "<group>";
 		};
 		98B24D5B2017E2C40082BA78 /* Button View */ = {
@@ -4490,14 +4494,14 @@
 			name = "Social Signup";
 			sourceTree = "<group>";
 		};
-		98DED29B1FC38DBE00015AE4 /* Select Site Type */ = {
+		98DED29B1FC38DBE00015AE4 /* Select Site Category */ = {
 			isa = PBXGroup;
 			children = (
 				9859DF872021099800FB848E /* SiteCreationCategoryTableViewCell.xib */,
 				9859DF8920210B2100FB848E /* SiteCreationInstructionTableViewCell.xib */,
 				9859DF85202107C600FB848E /* SiteCreationCategoryTableViewCells.swift */,
 			);
-			name = "Select Site Type";
+			name = "Select Site Category";
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
@@ -5850,14 +5854,10 @@
 		E6417B951CA07AFE0084050A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				9872CB36203BB53F0066A293 /* Signup Epilogue */,
+				9872CB36203BB53F0066A293 /* Epilogues */,
 				98B24D5B2017E2C40082BA78 /* Button View */,
-				98DED29B1FC38DBE00015AE4 /* Select Site Type */,
+				98DED29B1FC38DBE00015AE4 /* Select Site Category */,
 				982A65261FCCE2F0008236BA /* Select Theme */,
-				98579BC5203DD86D004086E4 /* EpilogueSectionHeaderFooter.swift */,
-				98579BC6203DD86E004086E4 /* EpilogueSectionHeaderFooter.xib */,
-				9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */,
-				98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */,
 				982905AE2000233500F92779 /* EmailMagicLink.storyboard */,
 				43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */,
 				43CC1EBF1ED898E30097E334 /* LoginTextField.swift */,
