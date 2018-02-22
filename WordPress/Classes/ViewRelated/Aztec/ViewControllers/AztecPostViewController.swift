@@ -2928,7 +2928,7 @@ extension AztecPostViewController {
                 richTextView.remove(attachmentID: attachment.identifier)
             }
             if let media = mediaCoordinator.media(withIdentifier: mediaID) {
-                mediaCoordinator.cancelUploadAndDeleteMedia(media)
+                mediaCoordinator.delete(media)
             }
         }
     }
@@ -3030,7 +3030,7 @@ extension AztecPostViewController {
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
                                                    style: .destructive,
                                                    handler: { (action) in
-                                                    self.mediaCoordinator.cancelUploadAndDeleteMedia(media)
+                                                    self.mediaCoordinator.delete(media)
                 })
             }
         } else {
@@ -3353,7 +3353,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         else {
             return
         }
-        mediaCoordinator.cancelUploadAndDeleteMedia(media)
+        mediaCoordinator.delete(media)
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
