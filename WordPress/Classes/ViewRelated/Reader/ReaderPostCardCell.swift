@@ -146,8 +146,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupCommentActionButton()
         setupLikeActionButton()
         adjustInsetsForTextDirection()
-
-        prepareForVoiceOver()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -275,6 +273,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         configureAttribution()
         configureActionButtons()
         configureButtonTitles()
+        prepareForVoiceOver()
     }
 
     fileprivate func configureHeader() {
@@ -603,17 +602,18 @@ extension ReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
         prepareShareButton()
         prepareCommentsButton()
+        prepareLikeButton()
     }
 
     private func prepareShareButton() {
         shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        shareButton.accessibilityHint = NSLocalizedString("Double tap to share this post", comment: "Spoken accessibility hint for Share buttons")
+        shareButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
         shareButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
     private func prepareCommentsButton() {
         commentActionButton.accessibilityLabel = commentsLabel()
-        commentActionButton.accessibilityHint = NSLocalizedString("Double tap to show comments", comment: "Spoken accessibility hint for Comments buttons")
+        commentActionButton.accessibilityHint = NSLocalizedString("Shows comments", comment: "Spoken accessibility hint for Comments buttons")
         commentActionButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
@@ -631,5 +631,43 @@ extension ReaderPostCardCell: Accessible {
 
     private func pluralCommentFormat() -> String {
         return NSLocalizedString("%@ comments", comment: "Accesibility label for comments button (plural)")
+    }
+
+    private func prepareLikeButton() {
+        guard likeActionButton.isHidden == false else {
+            return
+        }
+
+        likeActionButton.accessibilityLabel = likeLabel()
+        likeActionButton.accessibilityHint = likeHint()
+        likeActionButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func likeLabel() -> String {
+        return contentIsLiked() ? isLikedLabel(): isNotLikedLabel()
+    }
+
+    private func contentIsLiked() -> Bool {
+        return contentProvider?.isLiked() ?? false
+    }
+
+    private func isLikedLabel() -> String {
+        return "You like this"
+    }
+
+    private func isNotLikedLabel() -> String {
+        return "You do not like this"
+    }
+
+    private func likeHint() -> String {
+        return contentIsLiked() ? doubleTapToUnlike() : doubleTapToLike()
+    }
+
+    private func doubleTapToUnlike() -> String {
+        return "Removes this post from My Likes"
+    }
+
+    private func doubleTapToLike() -> String {
+        return "Adds this post to My Likes"
     }
 }
