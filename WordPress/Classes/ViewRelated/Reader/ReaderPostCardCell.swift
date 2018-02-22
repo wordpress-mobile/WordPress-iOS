@@ -673,8 +673,8 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareMenuButton() {
-        likeActionButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
-        likeActionButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
-        likeActionButton.accessibilityTraits = UIAccessibilityTraitButton
+        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
+        menuButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
+        menuButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 }
