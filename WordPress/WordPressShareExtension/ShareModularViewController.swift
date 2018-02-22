@@ -423,12 +423,11 @@ fileprivate extension ShareModularViewController {
                 cell.isUserInteractionEnabled = true
             }
 
-            if !shareData.selectedCategoriesString.isEmpty {
-                cell.detailTextLabel?.text = shareData.selectedCategoriesString
-                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
-            } else {
-                cell.detailTextLabel?.text =  ""
+            cell.detailTextLabel?.text = shareData.selectedCategoriesString
+            if shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
                 cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+            } else {
+                cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
             }
         case ModulesSection.tags.rawValue:
             WPStyleGuide.Share.configureModuleCell(cell)
@@ -563,7 +562,7 @@ fileprivate extension ShareModularViewController {
         cell.accessoryType = .checkmark
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
-        fetchDefaultCategoryForSelectedSite()
+        fetchCategoriesForSelectedSite()
         updatePublishButtonStatus()
         self.refreshModulesTable()
     }
@@ -653,49 +652,70 @@ fileprivate extension ShareModularViewController {
 // MARK: - Backend Interaction
 
 fileprivate extension ShareModularViewController {
-    func fetchDefaultCategoryForSelectedSite() {
+    func fetchCategoriesForSelectedSite() {
         guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
             return
         }
 
-        if let cachedDefaultCategoryID = ShareExtensionAbstractViewController.cachedDefaultCategoryIDForSite(NSNumber(value: siteID)),
-            let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)), !cachedCategories.isEmpty {
-            // Cache hit — Use the cached default cat ID and categories
-            self.loadDefaultCategory(cachedDefaultCategoryID, from: cachedCategories)
+        isFetchingCategories = true
+        clearCategoriesAndRefreshModulesTable()
+        if let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)), !cachedCategories.isEmpty {
+            self.fetchDefaultCategoryForSelectedSite(onSuccess: { defaultCategoryID in
+                self.loadDefaultCategory(defaultCategoryID, from: cachedCategories)
+            }, onFailure: {
+                self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: cachedCategories)
+            })
         } else {
-            // Cache miss — load the default cat ID and categories list over the wire
-            isFetchingCategories = true
-            clearCategoriesAndRefreshModulesTable()
+            let networkService = AppExtensionsService()
+            networkService.fetchCategoriesForSite(siteID, onSuccess: { categories in
+                ShareExtensionAbstractViewController.storeCategories(categories, for: NSNumber(value: siteID))
+                self.fetchDefaultCategoryForSelectedSite(onSuccess: { defaultCategoryID in
+                    self.loadDefaultCategory(defaultCategoryID, from: categories)
+                }, onFailure: {
+                    self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: categories)
+                })
+            }, onFailure: { error in
+                let error = self.createErrorWithDescription("Could not successfully fetch categories for site: \(siteID). Error: \(String(describing: error))")
+                self.tracks.trackExtensionError(error)
+                self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: [])
+            })
+        }
+    }
+
+    func fetchDefaultCategoryForSelectedSite (onSuccess: @escaping (NSNumber) -> (), onFailure: @escaping () -> ()) {
+        guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
+            return
+        }
+
+        if let cachedDefaultCategoryID = ShareExtensionAbstractViewController.cachedDefaultCategoryIDForSite(NSNumber(value: siteID)) {
+            onSuccess(cachedDefaultCategoryID)
+        } else {
             let networkService = AppExtensionsService()
             networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
-                guard let settings = settings,
-                    let defaultCategoryID = settings.defaultCategoryID else {
-                        self.refreshModulesTable(categoriesLoaded: true)
-                        return
+                guard let settings = settings, let defaultCategoryID = settings.defaultCategoryID else {
+                    onFailure()
+                    return
                 }
                 ShareExtensionAbstractViewController.storeDefaultCategoryID(defaultCategoryID, for: NSNumber(value: siteID))
-
-                networkService.fetchCategoriesForSite(siteID, onSuccess: { categories in
-                    ShareExtensionAbstractViewController.storeCategories(categories, for: NSNumber(value: siteID))
-                    self.loadDefaultCategory(defaultCategoryID, from: categories)
-                }, onFailure: { error in
-                    let error = self.createErrorWithDescription("Could not successfully fetch the default category for site: \(siteID)")
-                    self.tracks.trackExtensionError(error)
-                    self.refreshModulesTable(categoriesLoaded: true)
-                })
-            }) { _ in
-                let error = self.createErrorWithDescription("Could not successfully fetch the settings for site: \(siteID)")
+                onSuccess(defaultCategoryID)
+            }) { error in
+                // The current user probably does not have permissions to access site settings OR needs to be VPNed.
+                let error = self.createErrorWithDescription("Could not successfully fetch the settings for site: \(siteID). Error: \(String(describing: error))")
                 self.tracks.trackExtensionError(error)
-                self.refreshModulesTable(categoriesLoaded: true)
+                onFailure()
             }
         }
     }
 
     func loadDefaultCategory(_ defaultCategoryID: NSNumber, from categories: [RemotePostCategory]) {
         self.shareData.totalCategoryCount = categories.count
-        let defaultCategoryArray = categories.filter { $0.categoryID == defaultCategoryID }
-        if !defaultCategoryArray.isEmpty, let defaultCategoryName = defaultCategoryArray.first?.name {
-            self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
+        if defaultCategoryID == Constants.unknownDefaultCategoryID {
+            self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: Constants.unknownDefaultCategoryName)
+        } else {
+            let defaultCategoryArray = categories.filter { $0.categoryID == defaultCategoryID }
+            if !defaultCategoryArray.isEmpty, let defaultCategoryName = defaultCategoryArray.first?.name {
+                self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
+            }
         }
         self.refreshModulesTable(categoriesLoaded: true)
     }
@@ -712,7 +732,7 @@ fileprivate extension ShareModularViewController {
                 self.sites = (blogs) ?? [RemoteBlog]()
                 self.sitesTableView.reloadData()
                 self.showEmptySitesIfNeeded()
-                self.fetchDefaultCategoryForSelectedSite()
+                self.fetchCategoriesForSelectedSite()
             }
         }) {
             DispatchQueue.main.async {
@@ -851,6 +871,8 @@ fileprivate extension ShareModularViewController {
         static let defaultRowHeight        = CGFloat(44.0)
         static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
+        static let unknownDefaultCategoryID     = NSNumber(value: -1)
+        static let unknownDefaultCategoryName   = NSLocalizedString("Default Category", comment: "Generic text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
     }
 
     struct SummaryText {
