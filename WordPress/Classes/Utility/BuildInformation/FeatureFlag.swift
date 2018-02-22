@@ -20,7 +20,7 @@ enum FeatureFlag: Int {
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteCreation:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         }
     }
 }

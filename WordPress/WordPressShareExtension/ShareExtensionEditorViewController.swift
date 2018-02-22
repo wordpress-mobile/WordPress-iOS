@@ -204,8 +204,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         super.viewDidAppear(animated)
 
         verifyAuthCredentials {
-            startListeningToNotifications()
-            makeRichTextViewFirstResponderAndPlaceCursorAtEnd()
+            self.startListeningToNotifications()
+            self.makeRichTextViewFirstResponderAndPlaceCursorAtEnd()
         }
     }
 
@@ -1241,26 +1241,6 @@ private extension ShareExtensionEditorViewController {
                 // Clear out the extension context after loading it once. We don't need it anymore.
                 self?.context = nil
         }
-    }
-
-    func verifyAuthCredentials(onSuccess: (() -> Void)) {
-        guard oauth2Token == nil else {
-            onSuccess()
-            return
-        }
-
-        let title = NSLocalizedString("Sharing error", comment: "Share extension dialog title - displayed when user is missing a login token.")
-        let message = NSLocalizedString("Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again.", comment: "Share extension dialog text  - displayed when user is missing a login token.")
-        let accept = NSLocalizedString("Cancel sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
-
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
-            self.cleanUpSharedContainer()
-            self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
-        }
-
-        alertController.addAction(alertAction)
-        present(alertController, animated: true, completion: nil)
     }
 }
 
