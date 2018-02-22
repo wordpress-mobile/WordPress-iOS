@@ -699,3 +699,33 @@ extension ReaderPostCardCell: Accessible {
         return contentProvider?.blogNameForDisplay() ?? ""
     }
 }
+
+
+/// Extension providing getters to some private outlets, for testability
+extension ReaderPostCardCell {
+
+    func getHeaderButtonForTesting() -> UIButton {
+        return headerBlogButton
+    }
+
+    func getShareButtonForTesting() -> UIButton {
+        return shareButton
+    }
+
+    func getCommentsButtonForTesting() -> UIButton {
+        return commentActionButton
+    }
+
+    func getLikeButtonForTesting() -> UIButton {
+        return likeActionButton
+    }
+
+    func getMenuButtonForTesting() -> UIButton {
+        return menuButton
+    }
+
+    func getVisitButtonForTesting() -> UIButton {
+        return visitButton
+    }
+}
+
