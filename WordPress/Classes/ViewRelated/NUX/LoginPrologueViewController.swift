@@ -54,6 +54,9 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
             vc.emailTapped = { [weak self] in
                 self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSigninV2.rawValue, sender: self)
             }
+            vc.googleTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showGoogle.rawValue, sender: self)
+            }
             vc.modalPresentationStyle = .custom
         }
     }
@@ -71,6 +74,7 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
             self?.signupTapped()
         }
+        buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
     }
 
     // MARK: - Setup and Config

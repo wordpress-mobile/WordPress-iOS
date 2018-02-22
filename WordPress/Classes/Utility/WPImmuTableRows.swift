@@ -273,7 +273,7 @@ class ExpandableRow: ImmuTableRow {
         let cell = cell as! CellType
 
         cell.titleTextLabel?.text = title
-        cell.expandedTextLabel?.setText(expandedText)
+        cell.expandableTextView.attributedText = expandedText
         cell.expanded = expanded
         cell.urlCallback = onLinkTap
     }

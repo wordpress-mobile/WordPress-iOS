@@ -201,7 +201,8 @@ private extension JetpackConnectionWebViewController {
 
     func isDotComLogin(url: URL) -> Bool {
         let dotComLoginURL = URL(string: "https://wordpress.com/log-in")!
-        return url.matchesPath(in: dotComLoginURL)
+        let dotComJetpackLoginURL = URL(string: "https://wordpress.com/log-in/jetpack")!
+        return url.matchesPath(in: dotComLoginURL) || url.matchesPath(in: dotComJetpackLoginURL)
     }
 
     func extractRedirect(url: URL) -> URL? {
