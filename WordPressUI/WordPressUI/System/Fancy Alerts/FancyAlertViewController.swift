@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 /// A small card-like view displaying helpful information or prompts to the user.
 /// Initialize using the `controllerWithConfiguration` static method.
