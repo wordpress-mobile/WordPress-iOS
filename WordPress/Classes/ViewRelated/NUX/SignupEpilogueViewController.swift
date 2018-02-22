@@ -110,7 +110,6 @@ private extension SignupEpilogueViewController {
         guard let account = service.defaultWordPressComAccount() else {
             self.navigationController?.dismiss(animated: true, completion: nil)
             return
-
         }
         service.updateUserDetails(for: account, success: { () in
             self.navigationController?.dismiss(animated: true, completion: nil)
