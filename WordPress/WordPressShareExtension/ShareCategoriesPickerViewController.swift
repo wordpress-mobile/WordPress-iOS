@@ -3,15 +3,13 @@ import CocoaLumberjack
 import WordPressKit
 import WordPressShared
 
-class ShareCategoriesPickerViewController: UIViewController {
+class ShareCategoriesPickerViewController: UITableViewController {
 
     // MARK: - Public Properties
 
     @objc var onValueChanged: (([RemotePostCategory]) -> Void)?
 
     // MARK: - Private Properties
-
-    fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
 
     /// Categories originally passed into init()
     ///
@@ -21,35 +19,26 @@ class ShareCategoriesPickerViewController: UIViewController {
     ///
     fileprivate var selectedCategories: [RemotePostCategory]?
 
-    /// SiteID to fetch tags for
+    /// SiteID to fetch categories for
     ///
     fileprivate let siteID: Int
 
     /// Apply Bar Button
     ///
-    fileprivate lazy var applyButton: UIBarButtonItem = {
-        let applyTitle = NSLocalizedString("Apply", comment: "Apply action on the app extension tags picker screen. Saves the selected tags for the post.")
-        let button = UIBarButtonItem(title: applyTitle, style: .plain, target: self, action: #selector(applyWasPressed))
-        button.accessibilityIdentifier = "Apply Button"
+    fileprivate lazy var selectButton: UIBarButtonItem = {
+        let applyTitle = NSLocalizedString("Select", comment: "Select action on the app extension category picker screen. Saves the selected categories for the post.")
+        let button = UIBarButtonItem(title: applyTitle, style: .plain, target: self, action: #selector(selectWasPressed))
+        button.accessibilityIdentifier = "Select Button"
         return button
     }()
 
     /// Cancel Bar Button
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension tags picker screen.")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action on the app extension category picker screen.")
         let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
         button.accessibilityIdentifier = "Cancel Button"
         return button
-    }()
-
-    /// Refresh Control
-    ///
-    fileprivate lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        // FIXME: Enable this
-        //refreshControl.addTarget(self, action: #selector(pullToRefresh(sender:)), for: .valueChanged)
-        return refreshControl
     }()
 
     /// Activity spinner used when loading sites
@@ -94,7 +83,6 @@ class ShareCategoriesPickerViewController: UIViewController {
         // Initialize Interface
         setupNavigationBar()
         setupTableView()
-        setupConstraints()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -107,28 +95,58 @@ class ShareCategoriesPickerViewController: UIViewController {
     fileprivate func setupNavigationBar() {
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = cancelButton
-        navigationItem.rightBarButtonItem = applyButton
+        navigationItem.rightBarButtonItem = selectButton
     }
 
     fileprivate func setupTableView() {
-        // FIXME: fix this setup
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellReuseIdentifier)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
+
+        // Hide the separators, whenever the table is empty
+        tableView.tableFooterView = UIView()
+
         reloadTableData()
     }
 
-    fileprivate func setupConstraints() {
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+    // MARK: - UITableView Overrides
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return rowCountForCategories
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier)!
+        configureCategoryCell(cell)
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constants.defaultRowHeight
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
+    }
+
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return nil
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // FIXME: Do something here!
     }
 }
 
@@ -139,7 +157,7 @@ extension ShareCategoriesPickerViewController {
         _ = navigationController?.popViewController(animated: true)
     }
 
-    @objc func applyWasPressed() {
+    @objc func selectWasPressed() {
         let categories = selectedCategories ?? []
         if categories != originalCategories {
             onValueChanged?(categories)
@@ -148,7 +166,7 @@ extension ShareCategoriesPickerViewController {
     }
 }
 
-// MARK: - Tags Loading
+// MARK: - Category Loading
 
 fileprivate extension ShareCategoriesPickerViewController {
     func loadCategories() {
@@ -166,52 +184,6 @@ fileprivate extension ShareCategoriesPickerViewController {
             DDLogError("Error loading categories: \(error)")
         }
         // FIXME: e.g. dataSource = FailureDataSource()
-    }
-}
-
-// MARK: - UITableView DataSource Conformance
-
-extension ShareCategoriesPickerViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rowCountForCategories
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier)!
-        configureCategoryCell(cell)
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return Constants.defaultRowHeight
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionHeader(view)
-    }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return nil
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        WPStyleGuide.configureTableViewSectionFooter(view)
-    }
-}
-
-// MARK: - UITableView Delegate Conformance
-
-extension ShareCategoriesPickerViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // FIXME: Do something here!
     }
 }
 
