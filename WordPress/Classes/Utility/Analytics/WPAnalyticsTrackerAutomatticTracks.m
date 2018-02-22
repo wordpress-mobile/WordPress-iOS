@@ -969,8 +969,19 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSignedInToJetpack:
             eventName = @"signed_into_jetpack";
             break;
+        case WPAnalyticsStatSignupMagicLinkFailed:
+            eventName = @"signup_magic_link_failed";
+            break;
         case WPAnalyticsStatSignupMagicLinkOpenEmailClientViewed:
             eventName = @"signup_magic_link_open_email_client_viewed";
+            break;
+        case WPAnalyticsStatSignupSocialSuccess:
+            eventName = @"signup_social_success";
+            break;
+        case WPAnalyticsStatSignupSocialFailure:
+            eventName = @"signup_social_failure";
+        case WPAnalyticsStatSignupMagicLinkRequested:
+            eventName = @"signup_magic_link_requested";
             break;
         case WPAnalyticsStatSiteSettingsDeleteSiteAccessed:
             eventName = @"site_settings_delete_site_accessed";
