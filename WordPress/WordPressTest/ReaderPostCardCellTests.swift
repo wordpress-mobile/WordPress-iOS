@@ -153,7 +153,7 @@ final class ReaderPostCardCellTests: XCTestCase {
         cell = Bundle.loadRootViewFromNib(type: ReaderPostCardCell.self)
         cell?.configureCell(mock!)
     }
-    
+
     override func tearDown() {
         cell = nil
         mock = nil
