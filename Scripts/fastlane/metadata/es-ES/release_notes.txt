@@ -1,1 +1,2 @@
-En esta versión está disponible una extensión de compartir totalmente nueva y deliciosa.
+Mejoras en la nueva extensión de compartir.
+Nuevo ajuste de Jetpack: Acelera tu sitio.
