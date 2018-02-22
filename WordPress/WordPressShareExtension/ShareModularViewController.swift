@@ -127,6 +127,9 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         setupModulesTableView()
         clearAllNoResultsViews()
 
+        // Setup Autolayout
+        view.setNeedsUpdateConstraints()
+
         // Load Data
         loadContentIfNeeded()
         setupPrimarySiteIfNeeded()
@@ -137,6 +140,11 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         super.viewDidAppear(animated)
 
         verifyAuthCredentials(onSuccess: nil)
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        view.setNeedsUpdateConstraints()
     }
 
     // MARK: - Setup Helpers
@@ -198,8 +206,6 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         WPStyleGuide.configureColors(for: view, andTableView: modulesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: modulesTableView)
 
-        // Update the height constraint to match the number of modules * default row height
-        modulesHeightConstraint.constant = (CGFloat(ModulesSection.count) * Constants.defaultRowHeight)
         view.layoutIfNeeded()
     }
 
@@ -216,6 +222,14 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         // Style!
         WPStyleGuide.configureColors(for: view, andTableView: sitesTableView)
         WPStyleGuide.configureAutomaticHeightRows(for: sitesTableView)
+    }
+
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+
+        // Update the height constraint to match the number of modules * row height
+        let modulesTableHeight = modulesTableView.rectForRow(at: IndexPath(row: 0, section: 0)).height
+        modulesHeightConstraint.constant = (CGFloat(ModulesSection.count) * modulesTableHeight)
     }
 }
 
@@ -315,7 +329,7 @@ extension ShareModularViewController: UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == modulesTableView {
             return Constants.defaultRowHeight
         } else {
