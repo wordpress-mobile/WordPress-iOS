@@ -113,8 +113,16 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     // MARK: - Actions
 
-    func handleBackgroundTapGesture(_ tgr: UITapGestureRecognizer) {
+    func handleBackgroundTapGesture() {
         view.endEditing(true)
+    }
+
+    func setupBackgroundTapGestureRecognizer() {
+        let tgr = UITapGestureRecognizer()
+        tgr.on() { [weak self] gestureRecognizer in
+            self?.handleBackgroundTapGesture()
+        }
+        view.addGestureRecognizer(tgr)
     }
 
     func handleCancelButtonTapped() {

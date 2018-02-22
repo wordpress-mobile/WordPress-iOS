@@ -285,6 +285,7 @@ extension SharedCoreDataStack {
         postUploadOp.groupID = groupIdentifier
         postUploadOp.created = NSDate()
         postUploadOp.currentStatus = status
+
         saveContext()
         return postUploadOp.objectID
     }
