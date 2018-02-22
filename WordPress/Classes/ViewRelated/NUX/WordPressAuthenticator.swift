@@ -27,7 +27,7 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
-    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag)
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
 
     /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
     /// such as all of the User's Login details.
