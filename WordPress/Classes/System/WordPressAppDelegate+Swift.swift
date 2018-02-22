@@ -67,9 +67,11 @@ extension WordPressAppDelegate {
 
     @objc func configureWordPressAuthenticator() {
         authManager = WordPressAuthenticationManager()
-        WordPressAuthenticator.shared.delegate = authManager
+        authTracker = WordPressAuthenticationTracker()
 
-        WordPressAuthenticationTracker.shared.startListeningToAuthenticationEvents()
+        authTracker.startListeningToAuthenticationEvents()
+
+        WordPressAuthenticator.shared.delegate = authManager
     }
 }
 
