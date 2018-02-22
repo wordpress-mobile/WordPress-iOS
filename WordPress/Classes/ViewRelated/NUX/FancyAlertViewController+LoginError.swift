@@ -105,21 +105,14 @@ extension FancyAlertViewController {
     private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
-                // Find the topmost view controller that we can present from
-                guard let appDelegate = UIApplication.shared.delegate,
-                    let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController else { return }
+                guard let sourceViewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController,
+                    let authDelegate = WordPressAuthenticator.shared.delegate
+                else {
+                    return
+                }
 
-                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
-                let supportController = SupportViewController()
-                supportController.sourceTag = sourceTag.toSupportSourceTag()
-                supportController.helpshiftOptions = loginFields.helpshiftLoginOptions()
-
-                let navController = UINavigationController(rootViewController: supportController)
-                navController.navigationBar.isTranslucent = false
-                navController.modalPresentationStyle = .formSheet
-
-                viewController.present(navController, animated: true, completion: nil)
+                let options = loginFields.helpshiftLoginOptions()
+                authDelegate.presentSupport(from: sourceViewController, sourceTag: sourceTag, options: options)
             }
         }
 
