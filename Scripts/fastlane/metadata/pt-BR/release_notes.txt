@@ -1,1 +1,2 @@
-Uma nova e deliciosa experiência de compartilhamento está disponível nessa versão.
+Melhorias na nova extensão de compartilhamento.
+Nova configuração do Jetpack: Aumente a velocidade do seu site.
