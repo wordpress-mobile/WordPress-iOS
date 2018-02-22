@@ -523,6 +523,7 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
         if FeatureFlag.socialSignup.enabled {
             let storyboard = UIStoryboard(name: "Signup", bundle: nil)
             if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
+                controller.loginFields = loginFields
                 navigationController?.pushViewController(controller, animated: true)
             }
         } else {
