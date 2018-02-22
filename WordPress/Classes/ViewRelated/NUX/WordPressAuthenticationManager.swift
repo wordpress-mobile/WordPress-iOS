@@ -3,8 +3,7 @@ import Foundation
 
 // MARK: - WordPressAuthenticationManager
 //
-@objc
-class WordPressAuthenticationManager: NSObject {
+class WordPressAuthenticationManager {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
