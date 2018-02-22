@@ -8,6 +8,37 @@ extension WPStyleGuide {
     class Share {
         static let blavatarPlaceholderImage = UIImage(named: "blavatar-default")
 
+        static func configureModuleCell(_ cell: UITableViewCell) {
+            cell.textLabel?.font = tableviewTextFont()
+            cell.textLabel?.sizeToFit()
+            cell.textLabel?.textColor = darkGrey()
+
+            cell.detailTextLabel?.font = tableviewSubtitleFont()
+            cell.detailTextLabel?.sizeToFit()
+            cell.detailTextLabel?.textColor = grey()
+
+            cell.backgroundColor = UIColor.white
+            cell.separatorInset = UIEdgeInsets.zero
+        }
+
+        static func configureTagCell(_ cell: UITableViewCell) {
+            cell.textLabel?.font = tableviewTextFont()
+            cell.textLabel?.sizeToFit()
+            cell.textLabel?.textColor = darkGrey()
+
+            cell.backgroundColor = UIColor.white
+            cell.separatorInset = UIEdgeInsets.zero
+        }
+
+        static func configureLoadingTagCell(_ cell: UITableViewCell) {
+            cell.textLabel?.font = tableviewTextFont()
+            cell.textLabel?.sizeToFit()
+            cell.textLabel?.textColor = darkGrey()
+
+            cell.backgroundColor = WPStyleGuide.greyLighten30()
+            cell.separatorInset = UIEdgeInsets.zero
+        }
+
         static func configureTableViewSummaryCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
