@@ -23,7 +23,6 @@ extension WPStyleGuide {
 
     /// Adds a 1password button to a WPWalkthroughTextField, if available
     ///
-    @objc 
     class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
         guard OnePasswordFacade.isOnePasswordEnabled else {
             return
