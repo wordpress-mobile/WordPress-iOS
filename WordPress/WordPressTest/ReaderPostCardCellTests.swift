@@ -173,7 +173,7 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testCommentsButtonLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, TestConstants.moreLabel, "Incorrect accessibility label: Comments button")
+        XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, TestConstants.commentLabel, "Incorrect accessibility label: Comments button")
     }
 
     func testLikeButtonLabelMathchesExpectation() {
