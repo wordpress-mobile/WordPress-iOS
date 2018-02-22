@@ -59,9 +59,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Returns an instance of SupportViewController, configured to be displayed from a specified Support Source.
     ///
-    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any] = [:]) {
         let supportViewController = SupportViewController()
         supportViewController.sourceTag = sourceTag.toSupportSourceTag()
+        supportViewController.helpshiftOptions = options
 
         let navController = UINavigationController(rootViewController: supportViewController)
         navController.navigationBar.isTranslucent = false

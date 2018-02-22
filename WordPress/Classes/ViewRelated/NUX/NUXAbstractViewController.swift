@@ -23,7 +23,7 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
             fatalError()
         }
 
-        WordPressAuthenticator.shared.delegate?.presentSupport(from: navigationController, sourceTag: source)
+        WordPressAuthenticator.shared.delegate?.presentSupport(from: navigationController, sourceTag: source, options: [:])
     }
 }
 
