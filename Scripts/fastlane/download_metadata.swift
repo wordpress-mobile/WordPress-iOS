@@ -70,7 +70,8 @@ func downloadTranslation(languageCode: String, folderName: String) {
         var storeDescription: String?
 
         jsonDict.forEach({ (key: String, value: Any) in
-            guard let index = key.characters.index(of: Character(UnicodeScalar(0004))) else {
+
+            guard let index = key.index(of: Character(UnicodeScalar(0004))) else {
             	return
             }
 
