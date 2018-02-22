@@ -65,6 +65,12 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
 
+    // MARK: - Public MethodsauthenticationInfoKey
+
+    func supportBadgeCountWasUpdated() {
+        NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
+    }
+
     // MARK: - Helpers for presenting the login flow
 
     /// Used to present the new login flow from the app delegate
@@ -594,4 +600,5 @@ extension NSNotification.Name {
     static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
     static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
     static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
+    static let wordpressSupportBadgeUpdated = NSNotification.Name(rawValue: "WordPressSupportBadgeUpdated")
 }
