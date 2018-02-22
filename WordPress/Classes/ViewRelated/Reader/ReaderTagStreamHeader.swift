@@ -15,7 +15,7 @@ import WordPressShared
         super.awakeFromNib()
 
         applyStyles()
-        adjustInsetsForTextDirection()
+        followButton.flipInsetsForRightToLeftLayoutDirection()
     }
 
     @objc func applyStyles() {
@@ -36,16 +36,6 @@ import WordPressShared
 
     @objc open func enableLoggedInFeatures(_ enable: Bool) {
         followButton.isHidden = !enable
-    }
-
-    fileprivate func adjustInsetsForTextDirection() {
-        guard userInterfaceLayoutDirection() == .rightToLeft else {
-            return
-        }
-
-        followButton.contentEdgeInsets = followButton.contentEdgeInsets.flippedForRightToLeftLayoutDirection()
-        followButton.imageEdgeInsets = followButton.imageEdgeInsets.flippedForRightToLeftLayoutDirection()
-        followButton.titleEdgeInsets = followButton.titleEdgeInsets.flippedForRightToLeftLayoutDirection()
     }
 
     // MARK: - Actions
