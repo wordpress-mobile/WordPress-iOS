@@ -146,6 +146,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupCommentActionButton()
         setupLikeActionButton()
         adjustInsetsForTextDirection()
+
+        prepareForVoiceOver()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -594,5 +596,18 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
+    }
+}
+
+extension ReaderPostCardCell: Accessible {
+    func prepareForVoiceOver() {
+        prepareShareButton()
+        //prepareCommentsButton()
+    }
+
+    private func prepareShareButton() {
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        shareButton.accessibilityHint = NSLocalizedString("Double tap to share this post", comment: "Spoken accessibility hint for Share buttons")
+        shareButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 }
