@@ -3,6 +3,8 @@ import SVProgressHUD
 
 /// View controller that handles the google signup code
 class SignupGoogleViewController: LoginViewController {
+
+    private var googleUser: GIDGoogleUser?
     private var hasShownGoogle = false
     @IBOutlet var titleLabel: UILabel?
 
@@ -42,6 +44,7 @@ class SignupGoogleViewController: LoginViewController {
         super.prepare(for: segue, sender: sender)
         if let vc = segue.destination as? SignupEpilogueViewController {
             vc.loginFields = loginFields
+            vc.googleUser = googleUser
         }
     }
 
@@ -57,6 +60,8 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self.navigationController?.popViewController(animated: true)
                 return
         }
+        googleUser = user
+
         NSLog(token)
 
         // Store the email address and token.
