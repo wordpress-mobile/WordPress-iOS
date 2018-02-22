@@ -145,7 +145,6 @@ final class ReaderPostCardCellTests: XCTestCase {
     private struct TestConstants {
         static let shareLabel = "Share"
         static let moreLabel = "More"
-        static let likeLabel = "1"
         static let commentLabel = "2 comments"
         static let visitLabel = "Visit"
     }
@@ -174,10 +173,6 @@ final class ReaderPostCardCellTests: XCTestCase {
 
     func testCommentsButtonLabelMatchesExpectation() {
         XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, TestConstants.commentLabel, "Incorrect accessibility label: Comments button")
-    }
-
-    func testLikeButtonLabelMathchesExpectation() {
-        XCTAssertEqual(cell?.getLikeButtonForTesting().accessibilityLabel, TestConstants.likeLabel, "Incorrect accessibility label: Likes button")
     }
 
     func testMenuButtonLabelMatchesExpectation() {
