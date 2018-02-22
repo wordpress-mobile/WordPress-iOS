@@ -663,7 +663,13 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func isLikedLabel() -> String {
-        return NSLocalizedString("Liked", comment: "Accessibility label for active Like Buttons")
+        guard let likeCount = contentProvider?.likeCountForDisplay() else {
+            return NSLocalizedString("Liked", comment: "Accessibility label for active Like Buttons")
+        }
+
+        let format = NSLocalizedString("Liked %@ times", comment: "Accessibility label for active Like Buttons, including count")
+
+        return String(format: format, likeCount)
     }
 
     private func isNotLikedLabel() -> String {
