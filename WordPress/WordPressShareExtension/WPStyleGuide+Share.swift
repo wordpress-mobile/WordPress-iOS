@@ -52,10 +52,12 @@ extension WPStyleGuide {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
             cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.numberOfLines = 0
 
             cell.detailTextLabel?.font = subtitleFont()
             cell.detailTextLabel?.sizeToFit()
             cell.detailTextLabel?.textColor = greyDarken10()
+            cell.detailTextLabel?.numberOfLines = 0
 
             cell.imageView?.layer.borderColor = UIColor.white.cgColor
             cell.imageView?.layer.borderWidth = 1

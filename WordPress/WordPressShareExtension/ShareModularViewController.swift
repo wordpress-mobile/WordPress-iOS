@@ -198,6 +198,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate func setupModulesTableView() {
         // Register the cells
         modulesTableView.register(WPTableViewCellValue1.self, forCellReuseIdentifier: Constants.modulesReuseIdentifier)
+        modulesTableView.estimatedRowHeight = Constants.defaultRowHeight
 
         // Hide the separators, whenever the table is empty
         modulesTableView.tableFooterView = UIView()
@@ -212,6 +213,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate func setupSitesTableView() {
         // Register the cells
         sitesTableView.register(ShareSitesTableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
+        sitesTableView.estimatedRowHeight = Constants.siteRowHeight
 
         // Hide the separators, whenever the table is empty
         sitesTableView.tableFooterView = UIView()
@@ -330,12 +332,12 @@ extension ShareModularViewController: UITableViewDataSource {
         }
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView == modulesTableView {
-            return Constants.defaultRowHeight
-        } else {
-            return Constants.siteRowHeight
-        }
+        return tableView.estimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -493,11 +495,11 @@ fileprivate extension ShareModularViewController {
     }
 
     func refreshModulesTable(categoriesLoaded: Bool = false) {
-        modulesTableView.reloadData()
         if categoriesLoaded {
             self.isFetchingCategories = false
             self.updatePublishButtonStatus()
         }
+        modulesTableView.reloadData()
     }
 
     func clearCategoriesAndRefreshModulesTable() {
@@ -657,7 +659,7 @@ fileprivate extension ShareModularViewController {
         }
 
         if let cachedDefaultCategoryID = ShareExtensionAbstractViewController.cachedDefaultCategoryIDForSite(NSNumber(value: siteID)),
-            let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)) {
+            let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)), !cachedCategories.isEmpty {
             // Cache hit — Use the cached default cat ID and categories
             self.loadDefaultCategory(cachedDefaultCategoryID, from: cachedCategories)
         } else {
