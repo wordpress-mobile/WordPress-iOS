@@ -297,7 +297,7 @@ extension PluginStore {
         return getPlugins(site: site)?.plugins.first(where: { $0.state.slug == slug })
     }
 
-    func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry] {
+    func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry]? {
         return state.featuredPluginsSlugs.flatMap { getPluginDirectoryEntry(slug: $0)}
     }
 
@@ -321,8 +321,8 @@ extension PluginStore {
         return state.updatesInProgress[site, default: Set()].contains(slug)
     }
 
-    func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry] {
-        guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return [] }
+    func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry]? {
+        guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return nil }
         let directoryEntries = fetchedFeed.pluginSlugs.flatMap { getPluginDirectoryEntry(slug: $0) }
 
         return directoryEntries
