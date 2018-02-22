@@ -603,6 +603,7 @@ extension ReaderPostCardCell: Accessible {
         prepareShareButton()
         prepareCommentsButton()
         prepareLikeButton()
+        prepareMenuButton()
     }
 
     private func prepareShareButton() {
@@ -669,5 +670,11 @@ extension ReaderPostCardCell: Accessible {
 
     private func doubleTapToLike() -> String {
         return NSLocalizedString("Adds this post to My Likes", comment: "Adds a post to My Likes. Spoken Hint.")
+    }
+
+    private func prepareMenuButton() {
+        likeActionButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
+        likeActionButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
+        likeActionButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 }
