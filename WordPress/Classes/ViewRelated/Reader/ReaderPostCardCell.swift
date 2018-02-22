@@ -633,7 +633,7 @@ extension ReaderPostCardCell: Accessible {
 
         let format = commentCount > 1 ? pluralCommentFormat() : singularCommentFormat()
 
-        return String(format: format, commentCount)
+        return String(format: format, "\(commentCount)")
     }
 
     private func singularCommentFormat() -> String {
