@@ -238,10 +238,24 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 // MARK: - Actions
 
 extension ShareModularViewController {
+    fileprivate func dismiss() {
+        // In regular width size classes (iPad), action extensions are displayed
+        // in a small modal, which looks strange when this VC is dismissed
+        // before the main / presenting controller with its white background.
+        // This workaround simply dismisses the modular VC along with the main extension VC.
+        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/8646 for more info.
+        guard UIDevice.isPad() == false && originatingExtension != .saveToDraft else {
+            dismissalCompletionBlock?()
+            return
+        }
+
+        dismiss(animated: true, completion: dismissalCompletionBlock)
+    }
+
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
         cleanUpSharedContainerAndCache()
-        dismiss(animated: true, completion: self.dismissalCompletionBlock)
+        dismiss()
     }
 
     @objc func backWasPressed() {
@@ -776,7 +790,7 @@ fileprivate extension ShareModularViewController {
                                                localMediaFileURLs: localImageURLs,
                                                requestEnqueued: {
                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+                                                self.dismiss()
             }, onFailure: {
                 let error = self.createErrorWithDescription("Failed to save and upload post with media.")
                 self.tracks.trackExtensionError(error)
@@ -791,7 +805,7 @@ fileprivate extension ShareModularViewController {
                                              siteID: siteID,
                                              onComplete: {
                                                 self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+                                                self.dismiss()
             }, onFailure: {
                 let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
                 self.tracks.trackExtensionError(error)
@@ -815,7 +829,7 @@ fileprivate extension ShareModularViewController {
         let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
             self.showCancellingView()
             self.cleanUpSharedContainerAndCache()
-            self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+            self.dismiss()
         }
         alertController.addAction(dismissAction)
 
