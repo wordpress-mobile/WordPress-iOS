@@ -600,11 +600,20 @@ extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
 
 extension ReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
+        prepareHeaderButtonForVoiceOver()
         prepareShareForVoiceOver()
         prepareCommentsForVoiceOver()
         prepareLikeForVoiceOver()
         prepareMenuForVoiceOver()
         prepareVisitForVoiceOver()
+    }
+
+    private func prepareHeaderButtonForVoiceOver() {
+        let name = blogName()
+        headerBlogButton.accessibilityLabel = name
+        let format = NSLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
+        headerBlogButton.accessibilityHint = String(format: format, name)
+        headerBlogButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
     private func prepareShareForVoiceOver() {
@@ -682,8 +691,11 @@ extension ReaderPostCardCell: Accessible {
     private func prepareVisitForVoiceOver() {
         visitButton.accessibilityLabel = NSLocalizedString("Visit", comment: "Verb. Button title. Accessibility label in Reader")
         let hintFormat = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog. Accessibility hint in Reader")
-        let blogName = contentProvider?.blogNameForDisplay() ?? ""
-        visitButton.accessibilityHint = String(format: hintFormat, blogName)
+        visitButton.accessibilityHint = String(format: hintFormat, blogName())
         visitButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func blogName() -> String {
+        return contentProvider?.blogNameForDisplay() ?? ""
     }
 }
