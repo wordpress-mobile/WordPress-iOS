@@ -238,7 +238,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 extension ShareModularViewController {
     @objc func cancelWasPressed() {
         tracks.trackExtensionCancelled()
-        cleanUpSharedContainer()
+        cleanUpSharedContainerAndCache()
         dismiss(animated: true, completion: self.dismissalCompletionBlock)
     }
 
@@ -256,6 +256,7 @@ extension ShareModularViewController {
     }
 
     @objc func pullToRefresh(sender: UIRefreshControl) {
+        ShareExtensionAbstractViewController.clearCache()
         clearCategoriesAndRefreshModulesTable()
         clearSiteDataAndRefreshSitesTable()
         reloadSitesIfNeeded()
@@ -654,34 +655,47 @@ fileprivate extension ShareModularViewController {
         guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
             return
         }
-        isFetchingCategories = true
-        clearCategoriesAndRefreshModulesTable()
-        let networkService = AppExtensionsService()
-        networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
-            guard let settings = settings,
-                let defaultCategoryID = settings.defaultCategoryID else {
-                return
-            }
 
-            networkService.fetchCategoriesForSite(siteID, onSuccess: { categories in
-                let defaultCategoryArray = categories.filter { $0.categoryID == defaultCategoryID }
-                guard !defaultCategoryArray.isEmpty, let defaultCategoryName = defaultCategoryArray.first?.name else {
-                    return
+        if let cachedDefaultCategoryID = ShareExtensionAbstractViewController.cachedDefaultCategoryIDForSite(NSNumber(value: siteID)),
+            let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)) {
+            // Cache hit — Use the cached default cat ID and categories
+            self.loadDefaultCategory(cachedDefaultCategoryID, from: cachedCategories)
+        } else {
+            // Cache miss — load the default cat ID and categories list over the wire
+            isFetchingCategories = true
+            clearCategoriesAndRefreshModulesTable()
+            let networkService = AppExtensionsService()
+            networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
+                guard let settings = settings,
+                    let defaultCategoryID = settings.defaultCategoryID else {
+                        self.refreshModulesTable(categoriesLoaded: true)
+                        return
                 }
+                ShareExtensionAbstractViewController.storeDefaultCategoryID(defaultCategoryID, for: NSNumber(value: siteID))
 
-                self.shareData.totalCategoryCount = categories.count
-                self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
-                self.refreshModulesTable(categoriesLoaded: true)
-            }, onFailure: { error in
-                let error = self.createErrorWithDescription("Could not successfully fetch the default category for site: \(siteID)")
+                networkService.fetchCategoriesForSite(siteID, onSuccess: { categories in
+                    ShareExtensionAbstractViewController.storeCategories(categories, for: NSNumber(value: siteID))
+                    self.loadDefaultCategory(defaultCategoryID, from: categories)
+                }, onFailure: { error in
+                    let error = self.createErrorWithDescription("Could not successfully fetch the default category for site: \(siteID)")
+                    self.tracks.trackExtensionError(error)
+                    self.refreshModulesTable(categoriesLoaded: true)
+                })
+            }) { _ in
+                let error = self.createErrorWithDescription("Could not successfully fetch the settings for site: \(siteID)")
                 self.tracks.trackExtensionError(error)
                 self.refreshModulesTable(categoriesLoaded: true)
-            })
-        }) { _ in
-            let error = self.createErrorWithDescription("Could not successfully fetch the settings for site: \(siteID)")
-            self.tracks.trackExtensionError(error)
-            self.refreshModulesTable(categoriesLoaded: true)
+            }
         }
+    }
+
+    func loadDefaultCategory(_ defaultCategoryID: NSNumber, from categories: [RemotePostCategory]) {
+        self.shareData.totalCategoryCount = categories.count
+        let defaultCategoryArray = categories.filter { $0.categoryID == defaultCategoryID }
+        if !defaultCategoryArray.isEmpty, let defaultCategoryName = defaultCategoryArray.first?.name {
+            self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
+        }
+        self.refreshModulesTable(categoriesLoaded: true)
     }
 
     func reloadSitesIfNeeded() {
@@ -720,6 +734,7 @@ fileprivate extension ShareModularViewController {
         sitesTableView.refreshControl = nil
         clearSiteDataAndRefreshSitesTable()
         showPublishingView()
+        ShareExtensionAbstractViewController.clearCache()
 
         // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
@@ -777,7 +792,7 @@ fileprivate extension ShareModularViewController {
         let dismissButtonText = NSLocalizedString("Nevermind", comment: "Share extension error dialog cancel button label.")
         let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
             self.showCancellingView()
-            self.cleanUpSharedContainer()
+            self.cleanUpSharedContainerAndCache()
             self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
         }
         alertController.addAction(dismissAction)
