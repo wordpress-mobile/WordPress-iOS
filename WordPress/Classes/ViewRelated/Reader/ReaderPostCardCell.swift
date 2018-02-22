@@ -664,10 +664,10 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func doubleTapToUnlike() -> String {
-        return "Removes this post from My Likes"
+        return NSLocalizedString("Removes this post from My Likes", comment: "Removes a post from My Likes. Spoken Hint.")
     }
 
     private func doubleTapToLike() -> String {
-        return "Adds this post to My Likes"
+        return NSLocalizedString("Adds this post to My Likes", comment: "Adds a post to My Likes. Spoken Hint.")
     }
 }
