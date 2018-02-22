@@ -912,7 +912,7 @@ extension ShareExtensionEditorViewController {
         dismissOptionsViewControllerIfNecessary()
         stopEditing()
         tracks.trackExtensionCancelled()
-        cleanUpSharedContainer()
+        cleanUpSharedContainerAndCache()
         dismiss(animated: true, completion: self.dismissalCompletionBlock)
     }
 

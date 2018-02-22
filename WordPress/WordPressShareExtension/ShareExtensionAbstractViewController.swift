@@ -18,6 +18,25 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     typealias CompletionBlock = () -> Void
 
+    // MARK: - Cache
+
+    internal static let cache = NSCache<AnyObject, AnyObject>()
+    static func clearCache() {
+        cache.removeAllObjects()
+    }
+    internal static func storeCategories(_ categories: [RemotePostCategory], for siteID: NSNumber) {
+        cache.setObject(categories as AnyObject, forKey: "\(siteID)-categories" as AnyObject)
+    }
+    internal static func cachedCategoriesForSite(_ siteID: NSNumber) -> [RemotePostCategory]? {
+        return cache.object(forKey: "\(siteID)-categories" as AnyObject) as? [RemotePostCategory]
+    }
+    internal static func storeDefaultCategoryID(_ defaultCategoryID: NSNumber, for siteID: NSNumber) {
+        cache.setObject(defaultCategoryID as AnyObject, forKey: "\(siteID)-default-category" as AnyObject)
+    }
+    internal static func cachedDefaultCategoryIDForSite(_ siteID: NSNumber) -> NSNumber? {
+        return cache.object(forKey: "\(siteID)-default-category" as AnyObject) as? NSNumber
+    }
+
     // MARK: - Public Properties
 
     /// Identifies which app extension launched this VC
@@ -121,7 +140,7 @@ extension ShareExtensionAbstractViewController {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
-            self.cleanUpSharedContainer()
+            self.cleanUpSharedContainerAndCache()
             self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
         }
 
@@ -147,7 +166,9 @@ extension ShareExtensionAbstractViewController {
         return fullPath
     }
 
-    func cleanUpSharedContainer() {
+    func cleanUpSharedContainerAndCache() {
+        ShareExtensionAbstractViewController.clearCache()
+
         // Remove the temp media files if needed
         for tempMediaFileURL in shareData.sharedImageDict.keys {
             if !tempMediaFileURL.pathExtension.isEmpty {
