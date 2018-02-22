@@ -732,4 +732,3 @@ extension ReaderPostCardCell {
         return visitButton
     }
 }
-
