@@ -600,20 +600,20 @@ extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
 
 extension ReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
-        prepareShareButton()
-        prepareCommentsButton()
-        prepareLikeButton()
-        prepareMenuButton()
-        prepareVisitButton()
+        prepareShareForVoiceOver()
+        prepareCommentsForVoiceOver()
+        prepareLikeForVoiceOver()
+        prepareMenuForVoiceOver()
+        prepareVisitForVoiceOver()
     }
 
-    private func prepareShareButton() {
+    private func prepareShareForVoiceOver() {
         shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         shareButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
         shareButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
-    private func prepareCommentsButton() {
+    private func prepareCommentsForVoiceOver() {
         commentActionButton.accessibilityLabel = commentsLabel()
         commentActionButton.accessibilityHint = NSLocalizedString("Shows comments", comment: "Spoken accessibility hint for Comments buttons")
         commentActionButton.accessibilityTraits = UIAccessibilityTraitButton
@@ -635,7 +635,7 @@ extension ReaderPostCardCell: Accessible {
         return NSLocalizedString("%@ comments", comment: "Accesibility label for comments button (plural)")
     }
 
-    private func prepareLikeButton() {
+    private func prepareLikeForVoiceOver() {
         guard likeActionButton.isHidden == false else {
             return
         }
@@ -646,10 +646,10 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func likeLabel() -> String {
-        return contentIsLiked() ? isLikedLabel(): isNotLikedLabel()
+        return isContentLiked() ? isLikedLabel(): isNotLikedLabel()
     }
 
-    private func contentIsLiked() -> Bool {
+    private func isContentLiked() -> Bool {
         return contentProvider?.isLiked() ?? false
     }
 
@@ -662,7 +662,7 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func likeHint() -> String {
-        return contentIsLiked() ? doubleTapToUnlike() : doubleTapToLike()
+        return isContentLiked() ? doubleTapToUnlike() : doubleTapToLike()
     }
 
     private func doubleTapToUnlike() -> String {
@@ -673,13 +673,13 @@ extension ReaderPostCardCell: Accessible {
         return NSLocalizedString("Adds this post to My Likes", comment: "Adds a post to My Likes. Spoken Hint.")
     }
 
-    private func prepareMenuButton() {
+    private func prepareMenuForVoiceOver() {
         menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
         menuButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
         menuButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
-    private func prepareVisitButton() {
+    private func prepareVisitForVoiceOver() {
         visitButton.accessibilityLabel = NSLocalizedString("Visit", comment: "Verb. Button title. Accessibility label in Reader")
         let hintFormat = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog. Accessibility hint in Reader")
         let blogName = contentProvider?.blogNameForDisplay() ?? ""
