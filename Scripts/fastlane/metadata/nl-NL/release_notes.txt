@@ -1,1 +1,2 @@
-Een compleet nieuwe en verrukkelijke Deel extensie is beschikbaar in deze versie.
+Verbeteringen aan de nieuwe Deel extensie.
+Nieuwe Jetpack instelling: Versnel jouw site.
