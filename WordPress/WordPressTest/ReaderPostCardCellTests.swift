@@ -139,33 +139,37 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
 
 final class ReaderPostCardCellTests: XCTestCase {
 
-
     private var cell: ReaderPostCardCell?
+    private var mock: ReaderPostContentProvider?
+
+    private struct TestConstants {
+        static let shareLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+    }
 
 
     override func setUp() {
         super.setUp()
-//        let nib = Bundle.main.loadNibNamed("ReaderPostCardCell", owner: self, options: nil)
-//        cell = nib?.first as? ReaderPostCardCell
+        mock = MockContentProvider()
         cell = Bundle.loadRootViewFromNib(type: ReaderPostCardCell.self)
-        cell?.configureCell(MockContentProvider())
+        cell?.configureCell(mock!)
     }
     
     override func tearDown() {
         cell = nil
+        mock = nil
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testHeaderLabelMatchesExpectation() {
+        XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, mock?.blogNameForDisplay(), "Incorrect accessibility label: Header Button ")
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testShareButtonLabelMatchesExpectation() {
+        XCTAssertEqual(cell?.getShareButtonForTesting().accessibilityLabel, TestConstants.shareLabel, "Incorrect accessibility label: Share button")
+    }
+
+    func testCommentsButtonLabelMatchesExpectation() {
+        XCTAssertEqual(cell?.getCommentsButtonForTesting().accessibilityLabel, "2 comments", "Incorrect accessibility label: Comments button")
     }
     
 }
