@@ -6,6 +6,27 @@ import Foundation
 @objc
 class WordPressAuthenticationManager: NSObject {
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    /// Helpshift is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
+    /// We'll setup a mechanism to relay the `helpshiftUnreadCountWasUpdated` event back to the Authenticator.
+    ///
+    func startRelayingHelpshiftNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
+    }
+}
+
+
+// MARK: - Notification Handlers
+//
+extension WordPressAuthenticationManager {
+
+    @objc
+    func helpshiftUnreadCountWasUpdated(_ notification: Foundation.Notification) {
+        WordPressAuthenticator.shared.supportBadgeCountWasUpdated()
+    }
 }
 
 
