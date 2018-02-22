@@ -4,31 +4,43 @@ extension UIControl {
     public enum NaturalContentHorizontalAlignment {
         case leading
         case trailing
+        case center
     }
 
     /// iOS 10 compatible leading/trailing contentHorizontalAlignment. Prefer this to set content alignment to respect Right-to-Left language layouts.
     ///
-    public var naturalContentHorizontalAlignment: NaturalContentHorizontalAlignment? {
+    public var naturalContentHorizontalAlignment: NaturalContentHorizontalAlignment {
         get {
             switch contentHorizontalAlignment {
             case .left, .leading:
                 return .leading
             case .right, .trailing:
                 return .trailing
+            case .center:
+                fallthrough
             default:
-                return nil
+                return .center
             }
         }
 
         set(alignment) {
-            if #available(iOS 11.0, *) {
-                contentHorizontalAlignment = (alignment == .leading) ? .leading : .trailing
-            } else {
-                if userInterfaceLayoutDirection() == .leftToRight {
-                    contentHorizontalAlignment = (alignment == .leading) ? .left : .right
+            switch alignment {
+            case .leading:
+                if #available(iOS 11.0, *) {
+                    contentHorizontalAlignment = .leading
                 } else {
-                    contentHorizontalAlignment = (alignment == .leading) ? .right : .left
+                    contentHorizontalAlignment = userInterfaceLayoutDirection() == .leftToRight ? .left : .right
                 }
+            case .trailing:
+                if #available(iOS 11.0, *) {
+                    contentHorizontalAlignment = .trailing
+                } else {
+                    contentHorizontalAlignment = userInterfaceLayoutDirection() == .leftToRight ? .right : .left
+                }
+            case .center:
+                fallthrough
+            default:
+                contentHorizontalAlignment = .center
             }
         }
     }
