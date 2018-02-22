@@ -133,8 +133,6 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
     func isCommentCrossPost() -> Bool {
         return false
     }
-
-
 }
 
 final class ReaderPostCardCellTests: XCTestCase {
@@ -149,7 +147,6 @@ final class ReaderPostCardCellTests: XCTestCase {
         static let visitLabel = "Visit"
     }
 
-
     override func setUp() {
         super.setUp()
         mock = MockContentProvider()
@@ -162,11 +159,11 @@ final class ReaderPostCardCellTests: XCTestCase {
         mock = nil
         super.tearDown()
     }
-    
+
     func testHeaderLabelMatchesExpectation() {
         XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, mock?.blogNameForDisplay(), "Incorrect accessibility label: Header Button ")
     }
-    
+
     func testShareButtonLabelMatchesExpectation() {
         XCTAssertEqual(cell?.getShareButtonForTesting().accessibilityLabel, TestConstants.shareLabel, "Incorrect accessibility label: Share button")
     }
@@ -183,5 +180,4 @@ final class ReaderPostCardCellTests: XCTestCase {
         XCTAssertEqual(cell?.getVisitButtonForTesting().accessibilityLabel, TestConstants.visitLabel, "Incorrect accessibility label: Visit button"
     )
     }
-    
 }
