@@ -652,11 +652,11 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func isLikedLabel() -> String {
-        return "You like this"
+        return NSLocalizedString("Liked", comment: "Accessibility label for active Like Buttons")
     }
 
     private func isNotLikedLabel() -> String {
-        return "You do not like this"
+        return NSLocalizedString("Like", comment: "Accessibility label for inactive Like Buttons")
     }
 
     private func likeHint() -> String {
