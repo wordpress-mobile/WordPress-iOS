@@ -7,6 +7,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     // MARK: - Private Properties
 
     fileprivate var isPublishingPost: Bool = false
+    fileprivate var isFetchingCategories: Bool = false
 
     /// StackView container for the tables
     ///
@@ -476,8 +477,12 @@ fileprivate extension ShareModularViewController {
         }
     }
 
-    func refreshModulesTable() {
+    func refreshModulesTable(categoriesLoaded: Bool = false) {
         modulesTableView.reloadData()
+        if categoriesLoaded {
+            self.isFetchingCategories = false
+            self.updatePublishButtonStatus()
+        }
     }
 
     func clearCategoriesAndRefreshModulesTable() {
@@ -529,13 +534,16 @@ fileprivate extension ShareModularViewController {
     }
 
     func selectedSitesTableRowAt(_ indexPath: IndexPath) {
-        guard let cell = sitesTableView.cellForRow(at: indexPath), let site = siteForRowAtIndexPath(indexPath) else {
+        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+
+        guard let cell = sitesTableView.cellForRow(at: indexPath),
+            let site = siteForRowAtIndexPath(indexPath),
+            site.blogID.intValue != shareData.selectedSiteID else {
             return
         }
 
         clearAllSelectedSiteRows()
         cell.accessoryType = .checkmark
-        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
         shareData.selectedSiteID = site.blogID.intValue
         shareData.selectedSiteName = (site.name?.count)! > 0 ? site.name : URL(string: site.url)?.host
         fetchDefaultCategoryForSelectedSite()
@@ -616,7 +624,7 @@ fileprivate extension ShareModularViewController {
     }
 
     func updatePublishButtonStatus() {
-        guard hasSites, shareData.selectedSiteID != nil, isPublishingPost == false else {
+        guard hasSites, shareData.selectedSiteID != nil, isFetchingCategories == false, isPublishingPost == false else {
             publishButton.isEnabled = false
             return
         }
@@ -632,7 +640,7 @@ fileprivate extension ShareModularViewController {
         guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
             return
         }
-
+        isFetchingCategories = true
         clearCategoriesAndRefreshModulesTable()
         let networkService = AppExtensionsService()
         networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
@@ -649,14 +657,16 @@ fileprivate extension ShareModularViewController {
 
                 self.shareData.totalCategoryCount = categories.count
                 self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
-                self.refreshModulesTable()
+                self.refreshModulesTable(categoriesLoaded: true)
             }, onFailure: { error in
                 let error = self.createErrorWithDescription("Could not successfully fetch the default category for site: \(siteID)")
                 self.tracks.trackExtensionError(error)
+                self.refreshModulesTable(categoriesLoaded: true)
             })
         }) { _ in
             let error = self.createErrorWithDescription("Could not successfully fetch the settings for site: \(siteID)")
             self.tracks.trackExtensionError(error)
+            self.refreshModulesTable(categoriesLoaded: true)
         }
     }
 
