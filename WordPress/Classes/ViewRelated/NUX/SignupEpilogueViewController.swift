@@ -42,7 +42,6 @@ class SignupEpilogueViewController: NUXViewController {
 extension SignupEpilogueViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
         updateUserInfo()
-        navigationController?.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -73,7 +72,13 @@ private extension SignupEpilogueViewController {
         if let updatedDisplayName = updatedDisplayName {
             let accountSettingsChange = AccountSettingsChange.displayName(updatedDisplayName)
             remote.updateSetting(accountSettingsChange, success: { () in
-                self.updatePassword()
+                // If the password needs updating, do that.
+                // If not, refresh the account so My Sites info is correct.
+                if let _ = self.updatedPassword {
+                    self.updatePassword()
+                } else {
+                    self.refreshAccountDetails()
+                }
             }, failure: { error in
                 DDLogError("Error updating user display name: \(error)")
             })
@@ -91,10 +96,25 @@ private extension SignupEpilogueViewController {
 
         if let updatedPassword = updatedPassword {
             remote.updatePassword(updatedPassword, success: { () in
+                // Refresh the account so My Sites info is correct.
+                self.refreshAccountDetails()
             }, failure: { error in
                 DDLogError("Error updating user password: \(error)")
             })
         }
+    }
+
+    func refreshAccountDetails() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        guard let account = service.defaultWordPressComAccount() else {
+            self.navigationController?.dismiss(animated: true, completion: nil)
+            return
+
+        }
+        service.updateUserDetails(for: account, success: { () in
+            self.navigationController?.dismiss(animated: true, completion: nil)
+        }, failure: { _ in })
     }
 
 }
