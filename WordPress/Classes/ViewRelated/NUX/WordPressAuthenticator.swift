@@ -147,7 +147,7 @@ import WordPressShared
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+                WordPressAuthenticator.post(event: .signupMagicLinkOpened)
             case .login:
                 WordPressAuthenticator.post(event: .loginMagicLinkOpened)
             }
