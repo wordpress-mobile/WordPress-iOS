@@ -150,6 +150,8 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
 }
 
+// MARK: - Private Extension
+
 private extension SignupEpilogueTableViewController {
 
     func configureTable() {
