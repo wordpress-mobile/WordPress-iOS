@@ -123,6 +123,9 @@ target 'WordPressUI' do
   project 'WordPressUI/WordPressUI.xcodeproj'
 
   pod 'Gridicons', '0.14'
+
+  target 'WordPressUITests' do
+  end
 end
 
 target 'WordPressShared' do
