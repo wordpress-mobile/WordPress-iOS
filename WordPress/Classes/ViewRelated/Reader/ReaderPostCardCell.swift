@@ -604,6 +604,7 @@ extension ReaderPostCardCell: Accessible {
         prepareCommentsButton()
         prepareLikeButton()
         prepareMenuButton()
+        prepareVisitButton()
     }
 
     private func prepareShareButton() {
@@ -676,5 +677,13 @@ extension ReaderPostCardCell: Accessible {
         menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
         menuButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
         menuButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func prepareVisitButton() {
+        visitButton.accessibilityLabel = NSLocalizedString("Visit", comment: "Verb. Button title. Accessibility label in Reader")
+        let hintFormat = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog. Accessibility hint in Reader")
+        let blogName = contentProvider?.blogNameForDisplay() ?? ""
+        visitButton.accessibilityHint = String(format: hintFormat, blogName)
+        visitButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 }
