@@ -602,12 +602,34 @@ extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
 extension ReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
         prepareShareButton()
-        //prepareCommentsButton()
+        prepareCommentsButton()
     }
 
     private func prepareShareButton() {
         shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
         shareButton.accessibilityHint = NSLocalizedString("Double tap to share this post", comment: "Spoken accessibility hint for Share buttons")
         shareButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func prepareCommentsButton() {
+        commentActionButton.accessibilityLabel = commentsLabel()
+        commentActionButton.accessibilityHint = NSLocalizedString("Double tap to show comments", comment: "Spoken accessibility hint for Comments buttons")
+        commentActionButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func commentsLabel() -> String {
+        let commentCount = contentProvider?.commentCount()?.intValue ?? 0
+
+        let format = commentCount > 1 ? pluralCommentFormat() : singularCommentFormat()
+
+        return String(format: format, commentCount)
+    }
+
+    private func singularCommentFormat() -> String {
+        return NSLocalizedString("%@ comment", comment: "Accesibility label for comments button (singular)")
+    }
+
+    private func pluralCommentFormat() -> String {
+        return NSLocalizedString("%@ comments", comment: "Accesibility label for comments button (plural)")
     }
 }
