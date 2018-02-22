@@ -73,7 +73,7 @@ private extension SignupEpilogueViewController {
             let accountSettingsChange = AccountSettingsChange.displayName(updatedDisplayName)
             remote.updateSetting(accountSettingsChange, success: { () in
                 // If the password needs updating, do that.
-                // If not, refresh the account so My Sites info is correct.
+                // If not, refresh the account so 'Me' tab info is correct.
                 if let _ = self.updatedPassword {
                     self.updatePassword()
                 } else {
@@ -96,7 +96,7 @@ private extension SignupEpilogueViewController {
 
         if let updatedPassword = updatedPassword {
             remote.updatePassword(updatedPassword, success: { () in
-                // Refresh the account so My Sites info is correct.
+                // Refresh the account so 'Me' tab info is correct.
                 self.refreshAccountDetails()
             }, failure: { error in
                 DDLogError("Error updating user password: \(error)")
