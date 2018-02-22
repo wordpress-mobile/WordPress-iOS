@@ -15,7 +15,7 @@ class SignupEpilogueCell: UITableViewCell {
                        showSecureTextEntry: Bool = false) {
         cellLabel.text = labelText
         cellField.text = fieldValue
-        cellField.showSecureTextEntryToggle = showSecureTextEntry
+        cellField.isSecureTextEntry = showSecureTextEntry
         cellField.placeholder = fieldPlaceholder
         selectionStyle = .none
     }
