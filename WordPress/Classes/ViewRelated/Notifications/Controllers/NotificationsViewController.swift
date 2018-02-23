@@ -773,6 +773,10 @@ extension NotificationsViewController {
     @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
         selectedNotification = nil
 
+        let filterTitle = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.title ?? ""
+        let properties = [Stats.selectedFilter: filterTitle]
+        WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
+
         updateUnreadNotificationsForSegmentedControlChange()
 
         reloadResultsController()
@@ -1493,6 +1497,7 @@ private extension NotificationsViewController {
         static let noteTypeUnknown = "unknown"
         static let sourceKey = "source"
         static let sourceValue = "notifications"
+        static let selectedFilter = "selected_filter"
     }
 
     enum Syncing {
