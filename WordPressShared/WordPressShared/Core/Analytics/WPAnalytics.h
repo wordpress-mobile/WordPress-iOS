@@ -150,6 +150,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatNotificationsMissingSyncWarning,
     WPAnalyticsStatNotificationsTappedNewPost,
     WPAnalyticsStatNotificationsTappedViewReader,
+    WPAnalyticsStatNotificationsTappedSegmentedControl,
     WPAnalyticsStatNotificationsSettingsUpdated,
     WPAnalyticsStatNotificationsSiteFollowAction,
     WPAnalyticsStatNotificationsSiteUnfollowAction,
