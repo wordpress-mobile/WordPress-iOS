@@ -62,8 +62,6 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         }
         googleUser = user
 
-        NSLog(token)
-
         // Store the email address and token.
         loginFields.emailAddress = email
         loginFields.username = email
