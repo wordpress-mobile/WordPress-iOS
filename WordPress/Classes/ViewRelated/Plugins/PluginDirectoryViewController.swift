@@ -8,6 +8,8 @@ class PluginDirectoryViewController: UITableViewController {
     private var viewModelReceipt: Receipt?
     private var immuHandler: ImmuTableViewHandler?
 
+    private var searchWrapperView: SearchWrapperView!
+
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
 
@@ -53,7 +55,6 @@ class PluginDirectoryViewController: UITableViewController {
 
         immuHandler = handler
 
-        navigationItem.rightBarButtonItem = searchBarButton
 
         setupSearchBar()
     }
@@ -75,19 +76,18 @@ class PluginDirectoryViewController: UITableViewController {
     }
 
     private func setupSearchBar() {
-        let containerView = UIView(frame: CGRect(origin: .zero,
-                                                 size: CGSize(width: tableView.frame.width,
-                                                              height: searchController.searchBar.frame.height)))
+        let containerView = SearchWrapperView(frame: CGRect(origin: .zero,
+                                                            size: CGSize(width: tableView.frame.width,
+                                                                         height: searchController.searchBar.frame.height)))
+
         containerView.addSubview(searchController.searchBar)
         tableView.tableHeaderView = containerView
+        tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
         // for some... particlar reason, which I haven't been able to fully track down, if the searchBar is added directly
         // as the tableHeaderView, the UITableView sort of freaks out and adds like 400pts of random padding
         // below the content of the tableView. Wrapping it in this container fixes it ¯\_(ツ)_/¯
-    }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        searchController.searchBar.frame.size.width = size.width
+        searchWrapperView = containerView
     }
 
     private lazy var searchController: UISearchController = {
@@ -119,6 +119,17 @@ class PluginDirectoryViewController: UITableViewController {
         static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
 
+    fileprivate func updateTableHeaderSize() {
+        if searchController.isActive {
+            // Account for the search bar being moved to the top of the screen.
+            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+        } else {
+            searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
+        }
+
+        // Resetting the tableHeaderView is necessary to get the new height to take effect
+        tableView.tableHeaderView = searchWrapperView
+    }
 }
 
 extension PluginDirectoryViewController: UISearchControllerDelegate {
@@ -128,6 +139,16 @@ extension PluginDirectoryViewController: UISearchControllerDelegate {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
+        if #available(iOS 11.0, *) {
+            updateTableHeaderSize()
+
+            tableView.scrollIndicatorInsets.top = searchWrapperView.bounds.height
+            tableView.contentInset.top = 0
+        }
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        updateTableHeaderSize()
     }
 }
 
@@ -139,6 +160,7 @@ extension PluginDirectoryViewController: UISearchResultsUpdating {
         }
 
         pluginListViewController.query = .feed(type: .search(term: searchedText))
+        pluginListViewController.tableView.contentInset.top = searchWrapperView.bounds.height
     }
 
 }
