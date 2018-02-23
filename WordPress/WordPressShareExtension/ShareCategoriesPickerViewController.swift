@@ -3,11 +3,17 @@ import CocoaLumberjack
 import WordPressKit
 import WordPressShared
 
+struct SiteCategories {
+    var siteID: Int
+    var allCategories: [RemotePostCategory]?
+    var selectedCategories: [RemotePostCategory]?
+}
+
 class ShareCategoriesPickerViewController: UITableViewController {
 
     // MARK: - Public Properties
 
-    @objc var onValueChanged: (([RemotePostCategory]) -> Void)?
+    var onValueChanged: ((SiteCategories) -> Void)?
 
     // MARK: - Private Properties
 
@@ -15,9 +21,13 @@ class ShareCategoriesPickerViewController: UITableViewController {
     ///
     fileprivate var allCategories: [RemotePostCategory]?
 
+    /// Originally selected categories
+    ///
+    fileprivate var originallySelectedCategories: [RemotePostCategory]
+
     /// Selected categories
     ///
-    fileprivate var selectedCategories: [RemotePostCategory]?
+    fileprivate var selectedCategories: [RemotePostCategory]
 
     /// SiteID to fetch categories for
     ///
@@ -61,9 +71,11 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
     // MARK: - Initializers
 
-    init(siteID: Int, categories: [RemotePostCategory]?) {
-        self.allCategories = categories ?? []
-        self.siteID = siteID
+    init(categoryInfo: SiteCategories) {
+        self.siteID = categoryInfo.siteID
+        self.allCategories = categoryInfo.allCategories ?? []
+        self.selectedCategories = categoryInfo.selectedCategories ?? []
+        self.originallySelectedCategories = categoryInfo.selectedCategories ?? []
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -79,9 +91,6 @@ class ShareCategoriesPickerViewController: UITableViewController {
         // Initialize Interface
         setupNavigationBar()
         setupTableView()
-
-        // Data
-        loadCategories()
     }
 
     // MARK: - Setup Helpers
@@ -96,6 +105,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.cellReuseIdentifier)
+        tableView.allowsMultipleSelection = true
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -140,7 +150,8 @@ class ShareCategoriesPickerViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // FIXME: Do something here!
+        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+        selectedCategoryTableRowAt(indexPath)
     }
 }
 
@@ -155,34 +166,36 @@ fileprivate extension ShareCategoriesPickerViewController {
         cell.textLabel?.text = category.name.nonEmptyString()
         cell.detailTextLabel?.isEnabled = false
         cell.detailTextLabel?.text = nil
-
-        // FIXME: Pre check the cell
-//        if already selected category
-//            cell.accessoryType = .checkmark
-//        } else {
-//            cell.accessoryType = .none
-//        }
-
+        let selectedCategory = selectedCategories.contains(where: { $0.categoryID == category.categoryID })
+        if selectedCategory {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
         WPStyleGuide.Share.configureTableViewSiteCell(cell)
     }
 
     var rowCountForCategories: Int {
-        guard let allCategories = allCategories, !allCategories.isEmpty else {
+        guard let allCategories = allCategories else {
             return 0
         }
         return allCategories.count
     }
 
     func selectedCategoryTableRowAt(_ indexPath: IndexPath) {
-        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
-
-        guard let cell = tableView.cellForRow(at: indexPath),
-            let category = categoryForRowAtIndexPath(indexPath) else {
-                return
+        guard let category = categoryForRowAtIndexPath(indexPath),
+            let cell = tableView.cellForRow(at: indexPath) else {
+            return
         }
 
-        cell.accessoryType = cell.isSelected ? .none : .checkmark
-        // FIXME: Handle cell selection
+        let selectedCategory = selectedCategories.contains(where: { $0.categoryID == category.categoryID })
+        if selectedCategory {
+            selectedCategories = selectedCategories.filter { $0.categoryID != category.categoryID }
+            cell.accessoryType = .none
+        } else {
+            selectedCategories.append(category)
+            cell.accessoryType = .checkmark
+        }
     }
 
     func categoryForRowAtIndexPath(_ indexPath: IndexPath) -> RemotePostCategory? {
@@ -213,9 +226,10 @@ extension ShareCategoriesPickerViewController {
     }
 
     @objc func selectWasPressed() {
-        let categories = selectedCategories ?? []
-        // FIXME: Check for change here
-        onValueChanged?(categories)
+        if originallySelectedCategories != selectedCategories {
+            let categoryInfo = SiteCategories(siteID: siteID, allCategories: allCategories, selectedCategories: selectedCategories)
+            onValueChanged?(categoryInfo)
+        }
         _ = navigationController?.popViewController(animated: true)
     }
 }
@@ -223,11 +237,12 @@ extension ShareCategoriesPickerViewController {
 // MARK: - Backend Interaction
 
 fileprivate extension ShareCategoriesPickerViewController {
+    // FIXME: Pull to refresh
     func loadCategories() {
         let service = AppExtensionsService()
         service.fetchCategoriesForSite(siteID, onSuccess: { categories in
             let categories = categories.flatMap { return $0 }
-            self.selectedCategories = categories
+            self.allCategories = categories
         }, onFailure: { error in
             self.categoriesFailedLoading(error)
         })

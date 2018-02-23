@@ -304,7 +304,14 @@ extension ShareModularViewController {
             return
         }
 
-        let categoriesPicker = ShareCategoriesPickerViewController(siteID: siteID, categories: categories)
+        let categoryInfo = SiteCategories(siteID: siteID, allCategories: categories, selectedCategories: shareData.userSelectedCategories)
+        let categoriesPicker = ShareCategoriesPickerViewController(categoryInfo: categoryInfo)
+        categoriesPicker.onValueChanged = { [weak self] categoryInfo in
+            self?.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
+            self?.shareData.userSelectedCategories = categoryInfo.selectedCategories
+            self?.tracks.trackExtensionCategoriesSelected(self?.shareData.selectedCategoriesNameString ?? "")
+            self?.refreshModulesTable()
+        }
         tracks.trackExtensionCategoriesOpened()
         navigationController?.pushViewController(categoriesPicker, animated: true)
     }
@@ -441,7 +448,8 @@ fileprivate extension ShareModularViewController {
             }
 
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
-            if shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
+            if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.count == 0)
+                && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
                 cell.detailTextLabel?.textColor = WPStyleGuide.grey()
             } else {
                 cell.detailTextLabel?.textColor = WPStyleGuide.darkGrey()
