@@ -63,44 +63,50 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
 private extension SignupEpilogueViewController {
 
     func updateUserInfo() {
-        let context = ContextManager.sharedInstance().mainContext
-        guard let restApi = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.wordPressComRestApi else {
+
+        guard let updatedDisplayName = updatedDisplayName else {
             return
         }
-        let remote = AccountSettingsRemote.remoteWithApi(restApi)
 
-        if let updatedDisplayName = updatedDisplayName {
-            let accountSettingsChange = AccountSettingsChange.displayName(updatedDisplayName)
-            remote.updateSetting(accountSettingsChange, success: { () in
-                // If the password needs updating, do that.
-                // If not, refresh the account so 'Me' tab info is correct.
-                if let _ = self.updatedPassword {
-                    self.updatePassword()
-                } else {
-                    self.refreshAccountDetails()
-                }
-            }, failure: { error in
-                DDLogError("Error updating user display name: \(error)")
-            })
-        } else {
-            updatePassword()
+        let context = ContextManager.sharedInstance().mainContext
+
+        guard let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
+        let restApi = defaultAccount.wordPressComRestApi else {
+            return
+        }
+
+        let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
+        let accountSettingsChange = AccountSettingsChange.displayName(updatedDisplayName)
+
+        accountSettingService.saveChange(accountSettingsChange) {
+            // If the password needs updating, do that.
+            // If not, refresh the account so 'Me' tab info is correct.
+            if let _ = self.updatedPassword {
+                self.updatePassword()
+            } else {
+                self.refreshAccountDetails()
+            }
         }
     }
 
     func updatePassword() {
-        let context = ContextManager.sharedInstance().mainContext
-        guard let restApi = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.wordPressComRestApi else {
+
+        guard let updatedPassword = updatedPassword else {
             return
         }
-        let remote = AccountSettingsRemote.remoteWithApi(restApi)
 
-        if let updatedPassword = updatedPassword {
-            remote.updatePassword(updatedPassword, success: { () in
-                // Refresh the account so 'Me' tab info is correct.
-                self.refreshAccountDetails()
-            }, failure: { error in
-                DDLogError("Error updating user password: \(error)")
-            })
+        let context = ContextManager.sharedInstance().mainContext
+
+        guard let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
+            let restApi = defaultAccount.wordPressComRestApi else {
+                return
+        }
+
+        let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
+
+        accountSettingService.updatePassword(updatedPassword) {
+            // Refresh the account so 'Me' tab info is correct.
+            self.refreshAccountDetails()
         }
     }
 
