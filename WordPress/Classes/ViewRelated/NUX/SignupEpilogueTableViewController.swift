@@ -42,12 +42,6 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         static let epilogueUserInfoCell = "EpilogueUserInfoCell"
     }
 
-    fileprivate enum EpilogueCellType {
-        case displayName
-        case username
-        case password
-    }
-
     // MARK: - View
 
     override func viewDidLoad() {
@@ -199,40 +193,48 @@ private extension SignupEpilogueTableViewController {
 
         switch cellType {
         case .displayName:
-            cell.configureCell(labelText: NSLocalizedString("Display Name", comment: "Display Name label text."), fieldValue: epilogueUserInfo?.fullName)
-            cell.cellField.addTarget(self, action: #selector(displayNameDidChange(_:)), for: .editingChanged)
-            cell.cellField.addTarget(self, action: #selector(displayNameChanged(_:)), for: .editingDidEnd)
+            cell.configureCell(forType: .displayName,
+                               labelText: NSLocalizedString("Display Name", comment: "Display Name label text."),
+                               fieldValue: epilogueUserInfo?.fullName)
         case .username:
-            cell.configureCell(labelText: NSLocalizedString("Username", comment: "Username label text."), fieldValue: epilogueUserInfo?.username)
-            cell.accessoryType = .disclosureIndicator
-            cell.cellField.addTarget(self, action: #selector(usernameSelected(_:)), for: .editingDidBegin)
+            cell.configureCell(forType: .username,
+                               labelText: NSLocalizedString("Username", comment: "Username label text."),
+                               fieldValue: epilogueUserInfo?.username)
         case .password:
-            cell.configureCell(labelText: NSLocalizedString("Password", comment: "Password label text."), fieldValue: nil, fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"), showSecureTextEntry: true)
-            cell.cellField.addTarget(self, action: #selector(passwordChanged(_:)), for: .editingDidEnd)
+            cell.configureCell(forType: .password,
+                               labelText: NSLocalizedString("Password", comment: "Password label text."),
+                               fieldValue: nil,
+                               fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"))
         }
 
+        cell.delegate = self
         return cell
     }
 
-    // MARK: - Cell Action Handling
+}
 
-    @objc func displayNameDidChange(_ textField: UITextField) {
-        userInfoCell?.fullNameLabel?.text = textField.text
-    }
+// MARK: - SignupEpilogueCellDelegate
 
-    @objc func displayNameChanged(_ textField: UITextField) {
-        if let newDisplayName = textField.text {
-            delegate?.displayNameUpdated(newDisplayName: newDisplayName)
+extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
+
+    func updated(value: String, forType: EpilogueCellType) {
+        switch forType {
+        case .displayName:
+            delegate?.displayNameUpdated(newDisplayName: value)
+        case .password:
+            delegate?.passwordUpdated(newPassword: value)
+        default:
+            break
         }
     }
 
-    @objc func passwordChanged(_ textField: UITextField) {
-        if let newPassword = textField.text {
-            delegate?.passwordUpdated(newPassword: newPassword)
+    func changed(value: String, forType: EpilogueCellType) {
+        if forType == .displayName {
+            userInfoCell?.fullNameLabel?.text = value
         }
     }
 
-    @objc func usernameSelected(_ textField: UITextField) {
+    func usernameSelected() {
         let alertController = UIAlertController(title: nil, message: "Username changer coming soon!", preferredStyle: .alert)
         alertController.addDefaultActionWithTitle("OK")
         present(alertController, animated: true, completion: nil)
