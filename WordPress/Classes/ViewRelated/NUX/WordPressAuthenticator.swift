@@ -4,16 +4,71 @@ import NSURL_IDN
 import WordPressShared
 
 
-/// A collection of helper methods for NUX.
-///
+
+// MARK: - WordPressAuthenticator Delegate Protocol
+//
+public protocol WordPressAuthenticatorDelegate: class {
+
+    /// Indicates if the Support button action should be enabled, or not.
+    ///
+    var supportActionEnabled: Bool { get }
+
+    /// Indicates if the Livechat Action should be enabled, or not.
+    ///
+    var livechatActionEnabled: Bool { get }
+
+    /// Returns the Support's Badge Count.
+    ///
+    var supportBadgeCount: Int { get }
+
+    /// Refreshes Support's Badge Count.
+    ///
+    func refreshSupportBadgeCount()
+
+    /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
+    ///
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+
+    /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
+    /// such as all of the User's Login details.
+    ///
+    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+}
+
+
+// MARK: - A collection of helper methods for NUX.
+//
 @objc public class WordPressAuthenticator: NSObject {
+
+    /// Authenticator's Delegate.
+    ///
+    public weak var delegate: WordPressAuthenticatorDelegate?
+
+    /// Shared Instance.
+    ///
+    public static let shared = WordPressAuthenticator()
+
+    /// WordPress.com domain.
+    ///
     fileprivate static let WPComSuffix = ".wordpress.com"
+
+    /// Notification to be posted whenever the signing flow completes.
+    ///
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
+    /// Internal Constants.
+    ///
     fileprivate enum Constants {
         static let authenticationInfoKey = "authenticationInfoKey"
         static let jetpackBlogIDURL = "jetpackBlogIDURL"
         static let username = "username"
+    }
+
+
+    // MARK: - Public MethodsauthenticationInfoKey
+
+    func supportBadgeCountWasUpdated() {
+        NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
     }
 
     // MARK: - Helpers for presenting the login flow
@@ -552,4 +607,5 @@ extension NSNotification.Name {
     static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
     static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
     static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
+    static let wordpressSupportBadgeUpdated = NSNotification.Name(rawValue: "WordPressSupportBadgeUpdated")
 }

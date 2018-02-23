@@ -13,7 +13,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
     var selfHostedLoginButton: UIButton?
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginEmail
         }

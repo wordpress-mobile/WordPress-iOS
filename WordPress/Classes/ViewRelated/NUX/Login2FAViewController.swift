@@ -13,7 +13,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var pasteboardBeforeBackground: String? = nil
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .login2FA
         }

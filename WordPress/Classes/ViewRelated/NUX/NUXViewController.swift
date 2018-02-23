@@ -9,7 +9,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     var helpButton: UIButton = UIButton(type: .custom)
     var dismissBlock: ((_ cancelled: Bool) -> Void)?
     var loginFields = LoginFields()
-    var sourceTag: SupportSourceTag {
+    var sourceTag: WordPressSupportSourceTag {
         get {
             return .generalLogin
         }
@@ -41,7 +41,8 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
     }
 
     override func viewDidLoad() {
-        addHelpButtonToNavController()
+        super.viewDidLoad()
+        setupHelpButtonIfNeeded()
         setupCancelButtonIfNeeded()
         setupBackgroundTapGestureRecognizer()
     }
