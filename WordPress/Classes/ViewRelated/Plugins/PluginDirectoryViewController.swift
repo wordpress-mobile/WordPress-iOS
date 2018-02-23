@@ -72,22 +72,22 @@ class PluginDirectoryViewController: UITableViewController {
 
     @objc private func searchButtonTapped() {
         searchController.isActive = true
-        tableView.setContentOffset(.zero, animated: true)
     }
 
     private func setupSearchBar() {
-        let containerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: searchController.searchBar.frame.width, height: searchController.searchBar.frame.height)))
-
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.heightAnchor.constraint(equalToConstant: searchController.searchBar.frame.height).isActive = true
+        let containerView = UIView(frame: CGRect(origin: .zero,
+                                                 size: CGSize(width: tableView.frame.width,
+                                                              height: searchController.searchBar.frame.height)))
         containerView.addSubview(searchController.searchBar)
-        containerView.pinSubviewToAllEdges(searchController.searchBar)
-
         tableView.tableHeaderView = containerView
-
         // for some... particlar reason, which I haven't been able to fully track down, if the searchBar is added directly
         // as the tableHeaderView, the UITableView sort of freaks out and adds like 400pts of random padding
         // below the content of the tableView. Wrapping it in this container fixes it ¯\_(ツ)_/¯
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        searchController.searchBar.frame.size.width = size.width
     }
 
     private lazy var searchController: UISearchController = {
@@ -128,10 +128,6 @@ extension PluginDirectoryViewController: UISearchControllerDelegate {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
-    }
-
-    func didDismissSearchController(_ searchController: UISearchController) {
-        tableView.setContentOffset(.zero, animated: true)
     }
 }
 
