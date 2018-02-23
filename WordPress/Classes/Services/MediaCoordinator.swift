@@ -361,6 +361,28 @@ class MediaCoordinator: NSObject {
         return uuid
     }
 
+    /// Add an observer to receive updates when media items for a post are updated.
+    ///
+    /// - parameter onUpdate: A block that will be called whenever media items
+    ///                       associated with the specified post are updated.
+    ///                       The update block will always be called on the main queue.
+    /// - parameter post: The post to receive updates for. The `onUpdate` block
+    ///                   for any upload progress changes for any media associated
+    ///                   with this post via its media relationship.
+    /// - returns: A UUID that can be used to unregister the observer block at a later time.
+    ///
+    func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
+        let uuid = UUID()
+
+        let observer = MediaObserver(post: post, onUpdate: onUpdate)
+
+        queue.async {
+            self.mediaObservers[uuid] = observer
+        }
+
+        return uuid
+    }
+
     /// Removes the observer block for the specified UUID.
     ///
     /// - parameter uuid: The UUID that matches the observer to be removed.
@@ -399,25 +421,52 @@ class MediaCoordinator: NSObject {
         }
     }
 
-    /// Encapsulates an observer block and an optional observed media item.
+    /// Encapsulates an observer block and an optional observed media item or post.
     struct MediaObserver {
         let media: Media?
+        let post: AbstractPost?
         let onUpdate: ObserverBlock
+
+        init(onUpdate: @escaping ObserverBlock) {
+            self.media = nil
+            self.post = nil
+            self.onUpdate = onUpdate
+        }
+
+        init(media: Media?, onUpdate: @escaping ObserverBlock) {
+            self.media = media
+            self.post = nil
+            self.onUpdate = onUpdate
+        }
+
+        init(post: AbstractPost, onUpdate: @escaping ObserverBlock) {
+            self.media = nil
+            self.post = post
+            self.onUpdate = onUpdate
+        }
     }
 
     /// Utility method to return all observers for a specific media item,
     /// including any 'wildcard' observers that are observing _all_ media items.
     ///
     private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        let values = mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
-        return values + wildcardObservers
+        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
+
+        let postObservers = self.mediaObservers.values.filter({
+            guard let posts = media.posts,
+                let post = $0.post else { return false }
+
+            return posts.contains(post)
+        })
+
+        return mediaObservers + postObservers + wildcardObservers
     }
 
     /// Utility method to return all 'wildcard' observers that are
     /// observing _all_ media items.
     ///
     private var wildcardObservers: [MediaObserver] {
-        return mediaObservers.values.filter({ $0.media == nil })
+        return mediaObservers.values.filter({ $0.media == nil && $0.post == nil })
     }
 
     // MARK: - Notifying observers
