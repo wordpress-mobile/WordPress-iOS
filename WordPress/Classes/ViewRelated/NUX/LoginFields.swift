@@ -1,4 +1,5 @@
 import Foundation
+import GoogleSignIn
 
 /// LoginFields is a state container for user textfield input on the login screens
 /// as well as other meta data regarding the nature of a login attempt.
@@ -108,4 +109,6 @@ class LoginFieldsMeta: NSObject {
     var socialService: SocialServiceName?
 
     @objc var socialServiceIDToken: String?
+
+    var googleUser: GIDGoogleUser?
 }
