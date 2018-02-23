@@ -377,10 +377,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
-    fileprivate lazy var mediaCoordinator: MediaCoordinator = {
-        let coordinator = MediaCoordinator()
-        return coordinator
-    }()
+    fileprivate let mediaCoordinator = MediaCoordinator.shared
 
     /// Media Progress View
     ///
