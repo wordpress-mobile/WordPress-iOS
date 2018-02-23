@@ -343,9 +343,14 @@ extension PluginStore {
     }
 
     func shouldFetchDirectory(feed: PluginDirectoryFeedType) -> Bool {
+        let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
+
+        if case .search = feed {
+            return !isFetching
+        }
+
         let lastFetch = state.lastDirectoryFeedFetch[feed.slug, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
         return needsRefresh && !isFetching
     }
 }
