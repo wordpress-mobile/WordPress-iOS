@@ -76,7 +76,6 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
                                  parameters: parameters as [String : AnyObject]?,
                                  success: {
                                     responseObject, httpResponse in
-                                    
                                     success()
         },
                                  failure: { error, httpResponse in
