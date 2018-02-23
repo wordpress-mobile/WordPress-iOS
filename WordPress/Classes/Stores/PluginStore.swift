@@ -10,10 +10,12 @@ enum PluginAction: Action {
     case update(id: String, site: JetpackSiteRef)
     case remove(id: String, site: JetpackSiteRef)
     case refreshPlugins(site: JetpackSiteRef)
+    case refreshFeaturedPlugins
+    case refreshFeed(feed: PluginDirectoryFeedType)
     case receivePlugins(site: JetpackSiteRef, plugins: SitePlugins)
     case receivePluginsFailed(site: JetpackSiteRef, error: Error)
-    case receiveFeaturedPlugins(site: JetpackSiteRef, plugins: [PluginDirectoryEntry])
-    case receiveFeaturedPluginsFailed(site: JetpackSiteRef, error: Error)
+    case receiveFeaturedPlugins(plugins: [PluginDirectoryEntry])
+    case receiveFeaturedPluginsFailed(error: Error)
     case receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry)
     case receivePluginDirectoryEntryFailed(slug: String, error: Error)
     case receivePluginDirectoryFeed(feed: PluginDirectoryFeedType, response: PluginDirectoryFeedPage)
@@ -22,17 +24,15 @@ enum PluginAction: Action {
 
 enum PluginQuery {
     case all(site: JetpackSiteRef)
-    case featured(site: JetpackSiteRef)
-    // `featured` endpoint isn't really site specific, but it still requires authorized requests.
-    // to avoid having the Store reach out to Core Data, get the default WPCom site etc, we're just gonna pass one here.
     case feed(type: PluginDirectoryFeedType)
     case directoryEntry(slug: String)
+    case featured
 
     var site: JetpackSiteRef? {
         switch self {
-        case .all(let site), .featured(let site):
+        case .all(let site):
             return site
-        case .feed, .directoryEntry:
+        case .feed, .directoryEntry, .featured:
             return nil
         }
     }
@@ -186,26 +186,9 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             .forEach { fetchPluginDirectoryEntry(slug: $0) }
 
         // Fetching featured plugins.
-        if let site = featuredSiteToFetch {
-            fetchFeaturedPlugins(site: site)
+        if shouldFetchFeatured() {
+            fetchFeaturedPlugins()
         }
-    }
-
-    private var featuredSiteToFetch: JetpackSiteRef? {
-        guard state.fetchingFeatured == false, state.featuredPluginsSlugs.isEmpty else {
-            return nil
-        }
-
-        return activeQueries
-            .filter {
-                if case .featured = $0 { return true }
-                else { return false }
-            }
-            .flatMap { $0.site }
-            .unique
-            .first
-        // It doesn't matter which site we're fetching from, we only need it to be able to create an authenticated
-        // API remote.
     }
 
     private var sitesToFetch: [JetpackSiteRef] {
@@ -224,6 +207,21 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             .flatMap { $0.feedType }
             .unique
             .filter { shouldFetchDirectory(feed: $0) }
+    }
+
+    private func shouldFetchFeatured() -> Bool {
+        let hasFeaturedQuery = activeQueries.contains {
+            if case .featured = $0  {
+                return true
+            }
+            return false
+        }
+
+        guard hasFeaturedQuery, state.featuredPluginsSlugs.isEmpty, !isFetchingFeatured() else {
+            return false
+        }
+
+        return true
     }
 
     private var pluginsToFetch: [String] {
@@ -254,12 +252,16 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             removePlugin(pluginID: pluginID, site: site)
         case .refreshPlugins(let site):
             refreshPlugins(site: site)
+        case .refreshFeaturedPlugins:
+            refreshFeaturedPlugins()
+        case .refreshFeed(let feed):
+            refreshFeed(feed: feed)
         case .receivePlugins(let site, let plugins):
             receivePlugins(site: site, plugins: plugins)
         case .receivePluginsFailed(let site, _):
             state.fetching[site] = false
-        case .receiveFeaturedPlugins(let site, let plugins):
-            receiveFeaturedPlugins(site: site, plugins: plugins)
+        case .receiveFeaturedPlugins(let plugins):
+            receiveFeaturedPlugins(plugins: plugins)
         case .receiveFeaturedPluginsFailed:
             state.fetchingFeatured = false
         case .receivePluginDirectoryEntry(let slug, let entry):
@@ -297,7 +299,10 @@ extension PluginStore {
         return getPlugins(site: site)?.plugins.first(where: { $0.state.slug == slug })
     }
 
-    func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry]? {
+    func getFeaturedPlugins() -> [PluginDirectoryEntry]? {
+        guard !state.featuredPluginsSlugs.isEmpty else {
+            return nil
+        }
         return state.featuredPluginsSlugs.flatMap { getPluginDirectoryEntry(slug: $0)}
     }
 
@@ -309,7 +314,7 @@ extension PluginStore {
         return state.fetching[site, default: false]
     }
 
-    func isFetchingFeatured(site: JetpackSiteRef) -> Bool {
+    func isFetchingFeatured() -> Bool {
         return state.fetchingFeatured
     }
 
@@ -546,6 +551,22 @@ private extension PluginStore {
         fetchPlugins(site: site)
     }
 
+    func refreshFeaturedPlugins() {
+        guard !isFetchingFeatured() else {
+            DDLogInfo("Featured plugins refresh triggered while one was in progress")
+            return
+        }
+        fetchFeaturedPlugins()
+    }
+
+    func refreshFeed(feed: PluginDirectoryFeedType) {
+        guard !isFetchingFeed(feed: feed) else {
+            DDLogInfo("Plugin feed refresh triggered while one was in progress")
+            return
+        }
+        fetchPluginDirectoryFeed(feed: feed)
+    }
+
     func fetchPlugins(site: JetpackSiteRef) {
         guard let remote = remote(site: site) else {
             return
@@ -635,21 +656,22 @@ private extension PluginStore {
         }
     }
 
-    func fetchFeaturedPlugins(site: JetpackSiteRef) {
-        guard let remote = remote(site: site) else {
-            return
+    func fetchFeaturedPlugins() {
+        guard let anonymousAPI = PluginServiceRemote.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress()),
+            let remote = PluginServiceRemote(wordPressComRestApi: anonymousAPI) else {
+                return
         }
 
         state.fetchingFeatured = true
 
         remote.getFeaturedPlugins(success: { [actionDispatcher] plugins in
-            actionDispatcher.dispatch(PluginAction.receiveFeaturedPlugins(site: site, plugins: plugins))
+            actionDispatcher.dispatch(PluginAction.receiveFeaturedPlugins(plugins: plugins))
         }, failure: { [actionDispatcher] error in
-            actionDispatcher.dispatch(PluginAction.receiveFeaturedPluginsFailed(site: site, error: error))
+            actionDispatcher.dispatch(PluginAction.receiveFeaturedPluginsFailed(error: error))
         })
     }
 
-    func receiveFeaturedPlugins(site: JetpackSiteRef, plugins: [PluginDirectoryEntry]) {
+    func receiveFeaturedPlugins(plugins: [PluginDirectoryEntry]) {
         let slugs = plugins.map { $0.slug }
         let pluginStates = Dictionary(uniqueKeysWithValues: zip(slugs, plugins.map { PluginDirectoryEntryState.partial($0) }))
 
