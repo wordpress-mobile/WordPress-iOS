@@ -322,16 +322,32 @@ extension WPStyleGuide {
 
         // Fonts
         fileprivate static var sectionHeaderFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .semibold)
+            if #available(iOS 11.0, *) {
+                return WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .semibold)
+            } else {
+                return WPFontManager.systemSemiBoldFont(ofSize: headerFontSize)
+            }
         }
         fileprivate static var subjectRegularFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.subheadline)
+            if #available(iOS 11.0, *) {
+                return WPStyleGuide.fontForTextStyle(.subheadline)
+            } else {
+                return WPFontManager.systemRegularFont(ofSize: subjectFontSize)
+            }
         }
         fileprivate static var subjectBoldFont: UIFont {
-            return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
+            if #available(iOS 11.0, *) {
+                return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .bold)
+            } else {
+                return WPFontManager.systemSemiBoldFont(ofSize: subjectFontSize)
+            }
         }
         fileprivate static var subjectItalicsFont: UIFont {
-            return  WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitItalic)
+            if #available(iOS 11.0, *) {
+                return  WPStyleGuide.fontForTextStyle(.subheadline, symbolicTraits: .traitItalic)
+            } else {
+                return WPFontManager.systemItalicFont(ofSize: subjectFontSize)
+            }
         }
 
         fileprivate static let subjectNoticonFont       = UIFont(name: "Noticons", size: subjectNoticonSize)!
