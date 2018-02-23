@@ -107,7 +107,7 @@ class Notification: NSManagedObject {
 
     /// Nukes any cached values.
     ///
-    fileprivate func resetCachedAttributes() {
+    func resetCachedAttributes() {
         cachedTimestampAsDate = nil
         cachedSubjectBlockGroup = nil
         cachedHeaderBlockGroup = nil
