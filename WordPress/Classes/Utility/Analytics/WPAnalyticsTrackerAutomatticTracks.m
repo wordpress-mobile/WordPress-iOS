@@ -774,6 +774,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPluginRemoved:
             eventName = @"plugin_removed";
             break;
+        case WPAnalyticsStatPostEpilogueDisplayed:
+            eventName = @"post_epilogue_displayed";
+            break;
+        case WPAnalyticsStatPostEpilogueEdit:
+            eventName = @"post_epilogue_edit";
+            break;
+        case WPAnalyticsStatPostEpilogueShare:
+            eventName = @"post_epilogue_share";
+            break;
+        case WPAnalyticsStatPostEpilogueView:
+            eventName = @"post_epilogue_view";
+            break;
         case WPAnalyticsStatPostListAuthorFilterChanged:
             eventName = @"post_list_author_filter_changed";
             break;
