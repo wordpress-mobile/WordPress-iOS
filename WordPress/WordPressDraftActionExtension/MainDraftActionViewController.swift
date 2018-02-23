@@ -35,7 +35,7 @@ class MainDraftActionViewController: UIViewController {
 
 private extension MainDraftActionViewController {
     func setupAppearance() {
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = .white
         let navigationBarAppearace = UINavigationBar.appearance()
         navigationBarAppearace.barTintColor = WPStyleGuide.lightGrey()
         navigationBarAppearace.barStyle = .default
@@ -50,15 +50,24 @@ private extension MainDraftActionViewController {
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
         }
 
-        let shareNavController = UINavigationController(rootViewController: modularController)
+        let shareNavController = MainDraftNavigationController(rootViewController: modularController)
         shareNavController.transitioningDelegate = extensionTransitioningManager
         shareNavController.modalPresentationStyle = .custom
-        present(shareNavController, animated: true, completion: nil)
+        present(shareNavController, animated: !shareNavController.shouldFillContentContainer, completion: nil)
     }
 
     func trackExtensionLaunch() {
         let tracks = Tracks(appGroupName: WPAppGroupName)
         let oauth2Token = ShareExtensionService.retrieveShareExtensionToken()
         tracks.trackExtensionLaunched(oauth2Token != nil)
+    }
+}
+
+private class MainDraftNavigationController: UINavigationController, ExtensionPresentationTarget {
+    var shouldFillContentContainer: Bool {
+        // On iPad, we want the draft action extension to be displayed full size within the
+        // presenting view controller, to avoid graphical issues.
+        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/8646 for more info.
+        return UIDevice.isPad()
     }
 }
