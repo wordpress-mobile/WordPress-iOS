@@ -71,15 +71,15 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
 
     func dismiss() {
         if shouldShowEpilogue() {
-            if let linkSource = loginFields.meta.emailMagicLinkSource {
-                switch linkSource {
-                case .signup:
-                    self.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-                case .login:
-                    self.performSegue(withIdentifier: .showEpilogue, sender: self)
-                }
-                return
+
+            if let linkSource = loginFields.meta.emailMagicLinkSource,
+                linkSource == .signup {
+                    performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+            } else {
+                performSegue(withIdentifier: .showEpilogue, sender: self)
             }
+
+            return
         }
 
         dismissBlock?(false)
