@@ -28,36 +28,12 @@ class PluginDirectoryViewController: UITableViewController {
         self.init(site: site)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        // There isn't a good way of styling a one, particular UISearchBar, without reaching deep into
-        // it's own subview hierarchy (though we still need to do that to change the background color in iOS11...)
-
-        // We're gonna override the appearance of the "Cancel" button here, then restore the app-wide
-        // one on `viewWillDisappear(_:)`.
-
-        let barButtonTitleAttributes: [NSAttributedStringKey: Any] = [.font: WPStyleGuide.fontForTextStyle(.headline),
-                                                                      .foregroundColor: UIColor.white]
-
-
-        let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
-        barButtonItemAppearance.setTitleTextAttributes(barButtonTitleAttributes, for: UIControlState())
-
-        if #available(iOS 11.0, *) {
-            UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.white)
-        }
-
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        WPStyleGuide.configureSearchBarAppearance()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         definesPresentationContext = true
-        extendedLayoutIncludesOpaqueBars = false
-        tableView.backgroundColor = .white
+        extendedLayoutIncludesOpaqueBars = true
 
         viewModelReceipt = viewModel.onChange { [weak self] in
             self?.reloadTable()
@@ -100,26 +76,7 @@ class PluginDirectoryViewController: UITableViewController {
     }
 
     private func setupSearchBar() {
-        if #available(iOS 11.0, *) {
-            navigationItem.hidesSearchBarWhenScrolling = true
-            navigationItem.searchController = searchController
-
-
-            // This is extremely fragile and almost guaranteed to break in a future iOS update, but I couldn't
-            // really find a way to achieve it any other way. (Setting `appearance` on `UITextField` contained
-            // in a `UISearchBar` didn't work).
-            // Inspired by https://stackoverflow.com/questions/45663169/uisearchcontroller-ios-11-customization
-            if let textfield = searchController.searchBar.value(forKey: "searchField") as? UITextField {
-                if let backgroundView = textfield.subviews.first {
-                    backgroundView.backgroundColor = Constants.searchBarBackgroundColor
-                    backgroundView.layer.cornerRadius = Constants.searchBarCornerRadius
-                    backgroundView.clipsToBounds = true
-                }
-            }
-        } else {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-
+        tableView.tableHeaderView = searchController.searchBar
         tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.height)
     }
 
@@ -132,19 +89,10 @@ class PluginDirectoryViewController: UITableViewController {
         controller.searchResultsUpdater = self
         controller.delegate = self
 
-        if #available(iOS 11, *) {
-            controller.hidesNavigationBarDuringPresentation = true
-        } else {
-            controller.hidesNavigationBarDuringPresentation = false
-        }
-
         let searchBar = controller.searchBar
         WPStyleGuide.configureSearchBar(searchBar)
         searchBar.showsCancelButton = true
-        searchBar.barTintColor = WPStyleGuide.wordPressBlue()
-        searchBar.isTranslucent = false
         searchBar.layer.borderWidth = 0
-        searchBar.clipsToBounds = true
 
         return controller
     }()
