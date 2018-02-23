@@ -82,11 +82,13 @@ class LoginLinkRequestViewController: LoginViewController {
 
         let email = loginFields.username
         guard email.isValidEmail() else {
-            // This is a bit of paranioa as in practice it should never happen.
+            // This is a bit of paranoia as in practice it should never happen.
             // However, let's make sure we give the user some useful feedback just in case.
             DDLogError("Attempted to request authentication link, but the email address did not appear valid.")
-            WPError.showAlert(withTitle: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
-                              message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."))
+            let alert = UIAlertController(title: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"), message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."), preferredStyle: .alert)
+            alert.addActionWithTitle(NSLocalizedString("Need help?", comment: "Takes the user to get help"), style: .cancel, handler: { _ in WordPressAuthenticator.shared.delegate?.presentLivechat(from: self, sourceTag: .loginEmail, options: [:]) })
+            alert.addActionWithTitle(NSLocalizedString("OK", comment: "Dismisses the alert"), style: .default, handler: nil)
+            self.present(alert, animated: true, completion: nil)
             return
         }
 
