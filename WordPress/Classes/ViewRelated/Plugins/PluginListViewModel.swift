@@ -134,11 +134,6 @@ class PluginListViewModel: Observable {
                 return nil
             }
             return error
-        case (.featured, PluginAction.receiveFeaturedPluginsFailed(let failedSite, let error)):
-            guard site == failedSite else {
-                return nil
-            }
-            return error
         case (.feed(let feed), PluginAction.receivePluginDirectoryFeedFailed(let failedFeed, let error)):
             guard feed == failedFeed else {
                 return nil
@@ -289,8 +284,8 @@ class PluginListViewModel: Observable {
 
         case .all(let site):
             return store.isFetchingPlugins(site: site)
-        case .featured(let site):
-            return store.isFetchingFeatured(site: site)
+        case .featured:
+            return store.isFetchingFeatured()
         case .feed(let feed):
             return store.isFetchingFeed(feed: feed)
         case .directoryEntry:
@@ -303,8 +298,8 @@ class PluginListViewModel: Observable {
 
         case .all(let site):
             return store.getPlugins(site: site).flatMap { PluginResults($0) }
-        case .featured(let site):
-            return store.getFeaturedPlugins(site: site).flatMap { PluginResults($0)}
+        case .featured:
+            return store.getFeaturedPlugins().flatMap { PluginResults($0)}
         case .feed(let feed):
             return store.getPluginDirectoryFeedPlugins(from: feed).flatMap { PluginResults($0) }
         case .directoryEntry:
