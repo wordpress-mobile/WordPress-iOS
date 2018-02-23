@@ -35,9 +35,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
-
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
         viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] (change) in
@@ -51,6 +48,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         tableView.estimatedRowHeight = 72
 
         refreshModel(change: .replace)
+        setupRefreshControl()
         updateRefreshControl()
     }
 
@@ -97,7 +95,16 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         updateNoResults()
     }
 
-    func updateRefreshControl() {
+    private func setupRefreshControl() {
+        if case .feed(let feedType) = query, case .search = feedType {
+            return
+        }
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
+    }
+
+    private func updateRefreshControl() {
         guard let refreshControl = refreshControl else {
                 return
         }

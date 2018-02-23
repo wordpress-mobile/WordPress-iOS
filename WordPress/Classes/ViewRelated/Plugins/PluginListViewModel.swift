@@ -157,9 +157,26 @@ class PluginListViewModel: Observable {
     var noResultsViewModel: WPNoResultsView.Model? {
         switch state {
         case .loading:
+
+            let accessoryView: UIView?
+            if case .feed(let feedType) = query,
+                case .search = feedType {
+                let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                activityView.startAnimating()
+
+                accessoryView = activityView
+            } else {
+                accessoryView = nil
+            }
+
+            // pull-to-refresh doesn't make sense as a interface in search, so there's no `UIRefreshcControl`
+            // for search queries, but we still want to show nice animated spinner.
+            // other feeds animate the UIRefreshControl
+
             return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site")
-            )
+                title: NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site"),
+                accessoryView: accessoryView)
+
         case .ready(let plugins):
             guard case .feed(let feedType) = query,
                 case .search = feedType,
