@@ -60,7 +60,6 @@
 		93AB05FF1EE840A100EF8764 /* Languages.json in Resources */ = {isa = PBXBuildFile; fileRef = 93AB05FE1EE840A100EF8764 /* Languages.json */; };
 		93C674F51EE83D4B00BFAF05 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C674F41EE83D4B00BFAF05 /* Languages.swift */; };
 		93C882AD1EEB1E2F00227A59 /* NSDate+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C882AC1EEB1E2F00227A59 /* NSDate+Helpers.swift */; };
-		B56D96D7202CB50700485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96D8202CB50700485233 /* WordPressUI.framework */; };
 		B5A787E6202B2BD3007874FB /* WPDeviceIdentification.m in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E2202B2BD2007874FB /* WPDeviceIdentification.m */; };
 		B5A787E7202B2BD3007874FB /* WPFontManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787E3202B2BD2007874FB /* WPFontManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A787E8202B2BD4007874FB /* WPDeviceIdentification.h in Headers */ = {isa = PBXBuildFile; fileRef = B5A787E4202B2BD2007874FB /* WPDeviceIdentification.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -190,7 +189,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B56D96D7202CB50700485233 /* WordPressUI.framework in Frameworks */,
 				F7CA9BAFD03F929A3A8D5C40 /* Pods_WordPressShared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
