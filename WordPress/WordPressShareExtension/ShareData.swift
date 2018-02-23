@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 enum PostStatus: String {
     case draft    = "draft"
@@ -48,31 +49,48 @@ class ShareData: NSObject {
 
     /// Selected post categories (IDs and Names)
     ///
-    var selectedCategories: [[NSNumber: String]]?
+    var userSelectedCategories: [RemotePostCategory]?
 
-    /// Total number of categories on selected site
+    /// All categories for the selected site
     ///
-    var totalCategoryCount: Int = 0
+    var allCategoriesForSelectedSite: [RemotePostCategory]?
 
-    /// Computed (read-only) var that returns a comma-delimted string of selected categories
+    // MARK: - Computed Vars
+
+    /// Total number of categories for selected site
     ///
-    var selectedCategoriesString: String {
-        guard let selectedCategories = selectedCategories, !selectedCategories.isEmpty else {
+    var categoryCountForSelectedSite: Int {
+        return allCategoriesForSelectedSite?.count ?? 0
+    }
+
+    /// Computed (read-only) var that returns a comma-delimted string of selected category names. If
+    /// selected categories is empty then return the default category name. Otherwise return "".
+    ///
+    var selectedCategoriesNameString: String {
+        guard let selectedCategories = userSelectedCategories, !selectedCategories.isEmpty else {
+            return defaultCategoryName ?? ""
+        }
+
+        return selectedCategories.map({ $0.name }).joined(separator: ", ")
+    }
+
+    /// Computed (read-only) var that returns a comma-delimted string of selected category IDs
+    ///
+    var selectedCategoriesIDString: String {
+        guard let selectedCategories = userSelectedCategories, !selectedCategories.isEmpty else {
             return ""
         }
 
-        let categoryNames = selectedCategories.flatMap {
-            category in category.map { $0.value }
-        }
-        return categoryNames.joined(separator: ", ")
+        return selectedCategories.map({ $0.categoryID.stringValue }).joined(separator: ", ")
     }
 
-    /// Helper function to set both the default category as well as the selected category in one shot.
+    // MARK: - Helper Functions
+
+    /// Helper function to set both the default category.
     ///
     func setDefaultCategory(categoryID: NSNumber, categoryName: String) {
         defaultCategoryID = categoryID
         defaultCategoryName = categoryName
-        selectedCategories = [[categoryID: categoryName]]
     }
 
     /// Clears out all category information
@@ -80,7 +98,7 @@ class ShareData: NSObject {
     func clearCategoryInfo() {
         defaultCategoryID = nil
         defaultCategoryName = nil
-        selectedCategories = nil
-        totalCategoryCount = 0
+        allCategoriesForSelectedSite = nil
+        userSelectedCategories = nil
     }
 }
