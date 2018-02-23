@@ -25,23 +25,18 @@ extension NotificationsViewController {
 
     fileprivate func configureControllerCompletion(_ controller: JetpackLoginViewController, withBlog blog: Blog) {
         controller.completionBlock = { [weak self, weak controller] in
-            self?.activityIndicator.stopAnimating()
-            self?.blogService.syncBlog(blog, success: {
+            if AccountHelper.isDotcomAvailable() {
                 self?.activityIndicator.stopAnimating()
-                if blog.account != nil || !AccountHelper.isDotcomAvailable() {
-                    WPAppAnalytics.track(.signedInToJetpack, withProperties: ["source": "notifications"], with: blog)
-                    WPAppAnalytics.track(.performedJetpackSignIn, withProperties: ["source": "notifications"], with: blog)
-                    controller?.view.removeFromSuperview()
-                    controller?.removeFromParentViewController()
-                    self?.jetpackLoginViewController = nil
-                    self?.tableView.reloadData()
-                } else {
-                    controller?.updateMessageAndButton()
-                }
-            }, failure: { (error) in
+                WPAppAnalytics.track(.signedInToJetpack, withProperties: ["source": "notifications"], with: blog)
+                WPAppAnalytics.track(.performedJetpackSignIn, withProperties: ["source": "notifications"], with: blog)
+                controller?.view.removeFromSuperview()
+                controller?.removeFromParentViewController()
+                self?.jetpackLoginViewController = nil
+                self?.tableView.reloadData()
+            } else {
                 self?.activityIndicator.stopAnimating()
-                DDLogError("Error syncing blog for Jetpack status from Notifications \(error)")
-            })
+                controller?.updateMessageAndButton()
+            }
         }
     }
 
