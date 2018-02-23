@@ -1,4 +1,5 @@
 import Foundation
+import GoogleSignIn
 
 /// A simple container for the user info shown on the login epilogue screen.
 ///
@@ -15,6 +16,15 @@ struct LoginEpilogueUserInfo {
         }
         email = account.email
         fullName = account.displayName
+    }
+
+    init(loginFields: LoginFields) {
+        email = loginFields.emailAddress
+        username = loginFields.username
+
+        if let googleFullName = loginFields.meta.googleUser?.profile.name {
+            fullName = googleFullName
+        }
     }
 
     init() {

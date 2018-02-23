@@ -167,15 +167,7 @@ private extension SignupEpilogueTableViewController {
     func getUserInfo() {
         if loginFields.meta.socialService == .google {
             showPassword = false
-            var userInfo = LoginEpilogueUserInfo()
-            userInfo.email = loginFields.emailAddress
-            userInfo.username = loginFields.username
-
-            if let fullName = loginFields.meta.googleUser?.profile.name {
-                userInfo.fullName = fullName
-            }
-
-            epilogueUserInfo = userInfo
+            epilogueUserInfo = LoginEpilogueUserInfo(loginFields: loginFields)
         } else {
             let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             if let account = service.defaultWordPressComAccount() {
