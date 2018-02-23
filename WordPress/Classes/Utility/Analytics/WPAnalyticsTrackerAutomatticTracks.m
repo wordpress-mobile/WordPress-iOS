@@ -279,6 +279,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatCreatedSite:
             eventName = @"site_created";
             break;
+        case WPAnalyticsStatCreateSiteValidationFailed:
+            eventName = @"create_site_validation_failed";
+            break;
+        case WPAnalyticsStatCreateSiteCreationFailed:
+            eventName = @"create_site_creation_failed";
+            break;
+        case WPAnalyticsStatCreateSiteSetTaglineFailed:
+            eventName = @"create_site_set_tagline_failed";
+            break;
+        case WPAnalyticsStatCreateSiteSetThemeFailed:
+            eventName = @"create_site_set_theme_failed";
+            break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"local_library" };
@@ -661,6 +673,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNotificationsUploadMediaSuccessWritePost:
             eventName = @"notifications_upload_media_success_write_post";
             break;
+        case WPAnalyticsStatNotificationsShareSuccessEditPost:
+            eventName = @"notifications_share_success_edit_post";
+            break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
             break;
@@ -739,6 +754,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
+            break;
+        case WPAnalyticsStatPerformedJetpackSignInFromNotificationsScreen:
+            eventName = @"notifications_screen_signed_into_jetpack";
             break;
         case WPAnalyticsStatPersonRemoved:
             eventName = @"people_management_person_removed";

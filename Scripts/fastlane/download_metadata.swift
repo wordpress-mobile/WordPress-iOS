@@ -3,7 +3,7 @@
 import Foundation
 
 let glotPressSubtitleKey = "app_store_subtitle"
-let glotPressWhatsNewKey = "v9.3-whats-new"
+let glotPressWhatsNewKey = "v9.4-whats-new"
 let glotPressDescriptionKey = "app_store_desc"
 let glotPressKeywordsKey = "app_store_keywords"
 let baseFolder = "./metadata"
@@ -70,7 +70,8 @@ func downloadTranslation(languageCode: String, folderName: String) {
         var storeDescription: String?
 
         jsonDict.forEach({ (key: String, value: Any) in
-            guard let index = key.characters.index(of: Character(UnicodeScalar(0004))) else {
+
+            guard let index = key.index(of: Character(UnicodeScalar(0004))) else {
             	return
             }
 
