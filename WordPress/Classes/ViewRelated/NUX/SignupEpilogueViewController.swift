@@ -38,7 +38,12 @@ class SignupEpilogueViewController: NUXViewController {
 
 extension SignupEpilogueViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        updateUserInfo()
+        
+        if updatedDisplayName != nil || updatedPassword != nil {
+            updateUserInfo()
+        } else {
+            self.navigationController?.dismiss(animated: true, completion: nil)
+        }
     }
 }
 

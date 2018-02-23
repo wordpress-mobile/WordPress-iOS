@@ -18,9 +18,12 @@ struct LoginEpilogueUserInfo {
         fullName = account.displayName
     }
 
-    init(loginFields: LoginFields) {
+    init(account: WPAccount, loginFields: LoginFields) {
         email = loginFields.emailAddress
-        username = loginFields.username
+
+        if let name = account.username {
+            username = name
+        }
 
         if let googleFullName = loginFields.meta.googleUser?.profile.name {
             fullName = googleFullName
