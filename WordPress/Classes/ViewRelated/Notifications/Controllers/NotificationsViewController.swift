@@ -351,6 +351,7 @@ private extension NotificationsViewController {
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
