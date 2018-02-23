@@ -7,6 +7,7 @@ enum FeatureFlag: Int {
     case jetpackDisconnect
     case activity
     case siteCreation
+    case usernameChanging
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -21,6 +22,8 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteCreation:
             return true
+        case .usernameChanging:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
