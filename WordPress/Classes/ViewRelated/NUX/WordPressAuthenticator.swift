@@ -21,12 +21,19 @@ import WordPressShared
 
     /// Used to present the new login flow from the app delegate
     @objc class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor, showCancel: false)
+    }
+
+    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool, showCancel: Bool) {
         defer {
             trackOpenedLogin()
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateInitialViewController() {
+            if let childController = controller.childViewControllers.first as? LoginPrologueViewController {
+                childController.showCancel = showCancel
+            }
             presenter.present(controller, animated: animated, completion: nil)
         }
     }
