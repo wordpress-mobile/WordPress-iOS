@@ -237,14 +237,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     // MARK: - UITableView Methods
 
-    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return NoteTableHeaderView.estimatedHeight
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
             return nil
@@ -359,6 +351,8 @@ private extension NotificationsViewController {
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -430,6 +424,9 @@ private extension NotificationsViewController {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        if #available(iOS 11.0, *) {
+            nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: .UIContentSizeCategoryDidChange, object: nil)
+        }
     }
 
     func startListeningToAccountNotifications() {
@@ -483,6 +480,12 @@ private extension NotificationsViewController {
             && isViewLoaded == true
             && view.window != nil {
             reloadResultsControllerIfNeeded()
+        }
+    }
+
+    @objc func dynamicTypeDidChange() {
+        tableViewHandler.resultsController.fetchedObjects?.forEach {
+            ($0 as? Notification)?.resetCachedAttributes()
         }
     }
 }
