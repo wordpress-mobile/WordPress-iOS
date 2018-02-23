@@ -9,6 +9,10 @@ import WordPressShared
 //
 public protocol WordPressAuthenticatorDelegate: class {
 
+    /// Indicates if the active Authenticator can be dismissed, or not.
+    ///
+    var dismissActionEnabled: Bool { get }
+
     /// Indicates if the Support button action should be enabled, or not.
     ///
     var supportActionEnabled: Bool { get }

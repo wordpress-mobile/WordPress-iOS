@@ -33,6 +33,16 @@ extension WordPressAuthenticationManager {
 //
 extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
+    /// Indicates if the active Authenticator can be dismissed, or not. Authentication is Dismissable when there is a
+    /// default wpcom account, or at least one self-hosted blog.
+    ///
+    var dismissActionEnabled: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
+    }
+
     /// Indicates whether if the Support Action should be enabled, or not.
     ///
     var supportActionEnabled: Bool {
