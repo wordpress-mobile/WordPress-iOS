@@ -33,6 +33,15 @@ extension Tracks {
         trackExtensionEvent(.tagsSelected, properties: properties as [String: AnyObject]?)
     }
 
+    public func trackExtensionCategoriesOpened() {
+        trackExtensionEvent(.categoriesOpened)
+    }
+
+    public func trackExtensionCategoriesSelected(_ categories: String) {
+        let properties = ["categories_tags": categories]
+        trackExtensionEvent(.categoriesSelected, properties: properties as [String: AnyObject]?)
+    }
+
     // MARK: - Private Helpers
 
     fileprivate func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
@@ -48,5 +57,7 @@ extension Tracks {
         case tagsSelected   = "wpios_draft_extension_tags_selected"
         case canceled       = "wpios_draft_extension_canceled"
         case error          = "wpios_draft_extension_error"
+        case categoriesOpened   = "wpios_draft_extension_categories_opened"
+        case categoriesSelected = "wpios_draft_extension_categories_selected"
     }
 }

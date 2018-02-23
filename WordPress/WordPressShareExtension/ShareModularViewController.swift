@@ -297,12 +297,15 @@ extension ShareModularViewController {
     }
 
     func showCategoriesPicker() {
-        guard let siteID = shareData.selectedSiteID, isPublishingPost == false else {
+        guard let siteID = shareData.selectedSiteID,
+            let categories = shareData.allCategoriesForSelectedSite,
+            isFetchingCategories == false,
+            isPublishingPost == false else {
             return
         }
 
-        // FIXME: Load the categories from shareData, handle onChanged, and setup analytics
-        let categoriesPicker = ShareCategoriesPickerViewController(siteID: siteID, categories: nil)
+        let categoriesPicker = ShareCategoriesPickerViewController(siteID: siteID, categories: categories)
+        tracks.trackExtensionCategoriesOpened()
         navigationController?.pushViewController(categoriesPicker, animated: true)
     }
 }
@@ -422,7 +425,7 @@ fileprivate extension ShareModularViewController {
             WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
             cell.accessibilityLabel = "Category"
-            switch shareData.totalCategoryCount {
+            switch shareData.categoryCountForSelectedSite {
             case 0:
                 categoryActivityIndicator.startAnimating()
                 cell.accessoryView = categoryActivityIndicator
@@ -437,7 +440,7 @@ fileprivate extension ShareModularViewController {
                 cell.isUserInteractionEnabled = true
             }
 
-            cell.detailTextLabel?.text = shareData.selectedCategoriesString
+            cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
             if shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
                 cell.detailTextLabel?.textColor = WPStyleGuide.grey()
             } else {
@@ -479,7 +482,7 @@ fileprivate extension ShareModularViewController {
     func selectedModulesTableRowAt(_ indexPath: IndexPath) {
         switch ModulesSection(rawValue: indexPath.section)! {
         case .categories:
-            if shareData.totalCategoryCount > 1 {
+            if shareData.categoryCountForSelectedSite > 1 {
                 modulesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
                 showCategoriesPicker()
             }
@@ -674,6 +677,7 @@ fileprivate extension ShareModularViewController {
         isFetchingCategories = true
         clearCategoriesAndRefreshModulesTable()
         if let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)), !cachedCategories.isEmpty {
+            shareData.allCategoriesForSelectedSite = cachedCategories
             self.fetchDefaultCategoryForSelectedSite(onSuccess: { defaultCategoryID in
                 self.loadDefaultCategory(defaultCategoryID, from: cachedCategories)
             }, onFailure: {
@@ -683,6 +687,7 @@ fileprivate extension ShareModularViewController {
             let networkService = AppExtensionsService()
             networkService.fetchCategoriesForSite(siteID, onSuccess: { categories in
                 ShareExtensionAbstractViewController.storeCategories(categories, for: NSNumber(value: siteID))
+                self.shareData.allCategoriesForSelectedSite = categories
                 self.fetchDefaultCategoryForSelectedSite(onSuccess: { defaultCategoryID in
                     self.loadDefaultCategory(defaultCategoryID, from: categories)
                 }, onFailure: {
@@ -722,7 +727,6 @@ fileprivate extension ShareModularViewController {
     }
 
     func loadDefaultCategory(_ defaultCategoryID: NSNumber, from categories: [RemotePostCategory]) {
-        self.shareData.totalCategoryCount = categories.count
         if defaultCategoryID == Constants.unknownDefaultCategoryID {
             self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: Constants.unknownDefaultCategoryName)
         } else {
@@ -886,7 +890,7 @@ fileprivate extension ShareModularViewController {
         static let emptyCount              = 0
         static let flashAnimationLength    = 0.2
         static let unknownDefaultCategoryID     = NSNumber(value: -1)
-        static let unknownDefaultCategoryName   = NSLocalizedString("Default Category", comment: "Generic text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
+        static let unknownDefaultCategoryName   = NSLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
     }
 
     struct SummaryText {

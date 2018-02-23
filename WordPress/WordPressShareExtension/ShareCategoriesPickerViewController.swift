@@ -11,9 +11,9 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    /// Categories originally passed into init()
+    /// All availible categories for selected site
     ///
-    fileprivate let originalCategories: [RemotePostCategory]
+    fileprivate var allCategories: [RemotePostCategory]?
 
     /// Selected categories
     ///
@@ -59,14 +59,10 @@ class ShareCategoriesPickerViewController: UITableViewController {
         return WPNoResultsView(title: title, message: nil, accessoryView: loadingActivityIndicatorView, buttonTitle: nil)
     }()
 
-    var rowCountForCategories: Int {
-        return selectedCategories?.count ?? 0
-    }
-
     // MARK: - Initializers
 
     init(siteID: Int, categories: [RemotePostCategory]?) {
-        self.originalCategories = categories ?? []
+        self.allCategories = categories ?? []
         self.siteID = siteID
         super.init(nibName: nil, bundle: nil)
     }
@@ -83,10 +79,8 @@ class ShareCategoriesPickerViewController: UITableViewController {
         // Initialize Interface
         setupNavigationBar()
         setupTableView()
-    }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        // Data
         loadCategories()
     }
 
@@ -106,7 +100,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
 
-        reloadTableData()
+        tableView.reloadData()
     }
 
     // MARK: - UITableView Overrides
@@ -121,7 +115,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier)!
-        configureCategoryCell(cell)
+        configureCategoryCell(cell, indexPath: indexPath)
         return cell
     }
 
@@ -150,6 +144,67 @@ class ShareCategoriesPickerViewController: UITableViewController {
     }
 }
 
+// MARK: - Category UITableView Helpers
+
+fileprivate extension ShareCategoriesPickerViewController {
+    func configureCategoryCell(_ cell: UITableViewCell, indexPath: IndexPath) {
+        guard let category = categoryForRowAtIndexPath(indexPath) else {
+            return
+        }
+
+        cell.textLabel?.text = category.name.nonEmptyString()
+        cell.detailTextLabel?.isEnabled = false
+        cell.detailTextLabel?.text = nil
+
+        // FIXME: Pre check the cell
+//        if already selected category
+//            cell.accessoryType = .checkmark
+//        } else {
+//            cell.accessoryType = .none
+//        }
+
+        WPStyleGuide.Share.configureTableViewSiteCell(cell)
+    }
+
+    var rowCountForCategories: Int {
+        guard let allCategories = allCategories, !allCategories.isEmpty else {
+            return 0
+        }
+        return allCategories.count
+    }
+
+    func selectedCategoryTableRowAt(_ indexPath: IndexPath) {
+        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+
+        guard let cell = tableView.cellForRow(at: indexPath),
+            let category = categoryForRowAtIndexPath(indexPath) else {
+                return
+        }
+
+        cell.accessoryType = cell.isSelected ? .none : .checkmark
+        // FIXME: Handle cell selection
+    }
+
+    func categoryForRowAtIndexPath(_ indexPath: IndexPath) -> RemotePostCategory? {
+        guard let allCategories = allCategories else {
+            return nil
+        }
+        return allCategories[indexPath.row]
+    }
+
+    func clearAllSelectedCategoryRows() {
+        for row in 0 ..< rowCountForCategories {
+            let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0))
+            cell?.accessoryType = .none
+        }
+    }
+
+    func clearCategoryDataAndRefreshSitesTable() {
+        allCategories = nil
+        tableView.reloadData()
+    }
+}
+
 // MARK: - Actions
 
 extension ShareCategoriesPickerViewController {
@@ -159,14 +214,13 @@ extension ShareCategoriesPickerViewController {
 
     @objc func selectWasPressed() {
         let categories = selectedCategories ?? []
-        if categories != originalCategories {
-            onValueChanged?(categories)
-        }
+        // FIXME: Check for change here
+        onValueChanged?(categories)
         _ = navigationController?.popViewController(animated: true)
     }
 }
 
-// MARK: - Category Loading
+// MARK: - Backend Interaction
 
 fileprivate extension ShareCategoriesPickerViewController {
     func loadCategories() {
@@ -187,25 +241,12 @@ fileprivate extension ShareCategoriesPickerViewController {
     }
 }
 
-// MARK: - Misc private helpers
-
-fileprivate extension ShareCategoriesPickerViewController {
-    func reloadTableData() {
-        tableView.reloadData()
-    }
-
-    func configureCategoryCell(_ cell: UITableViewCell) {
-        WPStyleGuide.Share.configureModuleCell(cell)
-    }
-}
-
 // MARK: - Constants
 
 fileprivate extension ShareCategoriesPickerViewController {
     struct Constants {
         static let cellReuseIdentifier  = String(describing: ShareCategoriesPickerViewController.self)
         static let defaultRowHeight     = CGFloat(44.0)
-        static let emptyCount           = 0
         static let flashAnimationLength = 0.2
     }
 }
