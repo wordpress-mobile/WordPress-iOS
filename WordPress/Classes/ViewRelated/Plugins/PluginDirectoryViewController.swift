@@ -76,8 +76,18 @@ class PluginDirectoryViewController: UITableViewController {
     }
 
     private func setupSearchBar() {
-        tableView.tableHeaderView = searchController.searchBar
-        tableView.contentOffset = CGPoint(x: 0, y: searchController.searchBar.frame.height)
+        let containerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: searchController.searchBar.frame.width, height: searchController.searchBar.frame.height)))
+
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.heightAnchor.constraint(equalToConstant: searchController.searchBar.frame.height).isActive = true
+        containerView.addSubview(searchController.searchBar)
+        containerView.pinSubviewToAllEdges(searchController.searchBar)
+
+        tableView.tableHeaderView = containerView
+
+        // for some... particlar reason, which I haven't been able to fully track down, if the searchBar is added directly
+        // as the tableHeaderView, the UITableView sort of freaks out and adds like 400pts of random padding
+        // below the content of the tableView. Wrapping it in this container fixes it ¯\_(ツ)_/¯
     }
 
     private lazy var searchController: UISearchController = {
@@ -91,8 +101,6 @@ class PluginDirectoryViewController: UITableViewController {
 
         let searchBar = controller.searchBar
         WPStyleGuide.configureSearchBar(searchBar)
-        searchBar.showsCancelButton = true
-        searchBar.layer.borderWidth = 0
 
         return controller
     }()
@@ -107,8 +115,6 @@ class PluginDirectoryViewController: UITableViewController {
     }()
 
     private enum Constants {
-        static var searchBarBackgroundColor = UIColor.black.withAlphaComponent(0.5)
-        static var searchBarCornerRadius: CGFloat = 10
         static var rowHeight: CGFloat = 256
         static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
@@ -122,6 +128,10 @@ extension PluginDirectoryViewController: UISearchControllerDelegate {
         DispatchQueue.main.async {
             searchController.searchBar.becomeFirstResponder()
         }
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        tableView.setContentOffset(.zero, animated: true)
     }
 }
 
