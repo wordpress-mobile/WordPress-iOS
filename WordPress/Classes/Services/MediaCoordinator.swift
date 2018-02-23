@@ -9,7 +9,11 @@ class MediaCoordinator: NSObject {
 
     @objc static let shared = MediaCoordinator()
 
-    private(set) var backgroundContext = ContextManager.sharedInstance().newDerivedContext()
+    private(set) var backgroundContext: NSManagedObjectContext = {
+        let context = ContextManager.sharedInstance().newDerivedContext()
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
     private let mainContext = ContextManager.sharedInstance().mainContext
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
@@ -27,10 +31,11 @@ class MediaCoordinator: NSObject {
     ///
     /// - parameter asset: The asset to add.
     /// - parameter blog: The blog that the asset should be added to.
+    /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to blog: Blog) -> Media {
-        return self.addMedia(from: asset, to: blog.objectID)
+    func addMedia(from asset: ExportableAsset, to blog: Blog, origin: MediaUploadOrigin? = nil) -> Media {
+        return self.addMedia(from: asset, to: blog.objectID, origin: origin)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -38,14 +43,15 @@ class MediaCoordinator: NSObject {
     ///
     /// - parameter asset: The asset to add.
     /// - parameter post: The post that the asset should be added to.
+    /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to post: AbstractPost) -> Media {
-        return self.addMedia(from: asset, to: post.objectID)
+    func addMedia(from asset: ExportableAsset, to post: AbstractPost, origin: MediaUploadOrigin? = nil) -> Media {
+        return self.addMedia(from: asset, to: post.objectID, origin: origin)
     }
 
     @discardableResult
-    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) -> Media {
+    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID, origin: MediaUploadOrigin? = nil) -> Media {
         mediaProgressCoordinator.track(numberOfItems: 1)
         let service = MediaService(managedObjectContext: mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
@@ -60,7 +66,7 @@ class MediaCoordinator: NSObject {
                                 guard let strongSelf = self else {
                                     return
                                 }
-                                if let error = error {
+                                if let error = error as NSError? {
                                     if let media = media {
                                         strongSelf.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
                                         strongSelf.fail(error as NSError, media: media)
@@ -74,7 +80,7 @@ class MediaCoordinator: NSObject {
                                     return
                                 }
 
-                                let uploadProgress = strongSelf.uploadMedia(media)
+                                let uploadProgress = strongSelf.uploadMedia(media, origin: origin)
                                 totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
         processing(media)
@@ -145,7 +151,7 @@ class MediaCoordinator: NSObject {
         service.delete(media, success: nil, failure: nil)
     }
 
-    @discardableResult private func uploadMedia(_ media: Media) -> Progress {
+    @discardableResult private func uploadMedia(_ media: Media, origin: MediaUploadOrigin? = nil) -> Progress {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
@@ -153,6 +159,7 @@ class MediaCoordinator: NSObject {
         service.uploadMedia(media,
                             progress: &progress,
                             success: {
+                                self.trackUploadOf(media, origin: origin)
                                 self.end(media)
         }, failure: { error in
             guard let nserror = error as NSError? else {
@@ -166,6 +173,18 @@ class MediaCoordinator: NSObject {
         } else {
             return Progress.discreteCompletedProgress()
         }
+    }
+
+    private func trackUploadOf(_ media: Media, origin: MediaUploadOrigin?) {
+        guard let origin = origin,
+            let event = origin.eventForMediaType(media.mediaType) else {
+            return
+        }
+
+        let properties = WPAppAnalytics.properties(for: media)
+        WPAppAnalytics.track(event,
+                             withProperties: properties,
+                             with: media.blog)
     }
 
     // MARK: - Progress
@@ -419,5 +438,23 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 extension Media {
     var uploadID: String {
         return objectID.uriRepresentation().absoluteString
+    }
+}
+
+/// Used for analytics to track where an upload was started within the app.
+/// Currently only supports media library, but we'll add editor support
+/// when we bring async there.
+///
+enum MediaUploadOrigin {
+    case mediaLibrary
+
+    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+        switch (self, mediaType) {
+        case (.mediaLibrary, .image):
+            return .mediaLibraryAddedPhoto
+        case (.mediaLibrary, .video):
+            return .mediaLibraryAddedVideo
+        default: return nil
+        }
     }
 }

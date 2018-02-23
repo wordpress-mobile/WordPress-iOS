@@ -27,16 +27,16 @@ static NSInteger HideSearchMinSites = 3;
                                         UIDataSourceModelAssociation,
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
-                                        WPNoResultsViewDelegate,
-                                        SiteCreationNoSitesViewControllerDelegate,
+                                        WPNoResultsViewDelegate, // To be removed with FeatureFlagSiteCreation.
+                                        BlogListNoResultsViewControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
-@property (nonatomic, strong) WPNoResultsView *noResultsView;
-@property (nonatomic, strong) SiteCreationNoSitesViewController *noSitesViewController;
+@property (nonatomic, strong) WPNoResultsView *noResultsView; // To be removed with FeatureFlagSiteCreation.
+@property (nonatomic, strong) BlogListNoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
@@ -241,85 +241,111 @@ static NSInteger HideSearchMinSites = 3;
     NSUInteger count = self.dataSource.allBlogsCount;
     NSUInteger visibleSitesCount = self.dataSource.visibleBlogsCount;
     
-    // Ensure No Sites view is not shown. Will be shown later if necessary.
-    [self removeNoSitesView];
+    // Ensure No Results VC is not shown. Will be shown later if necessary.
+    [self removeNoResultsFromView];
     
     // If the user has sites, but they're all hidden...
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
         [self showNoResultsViewForAllSitesHidden];
     } else {
-        if ([Feature enabled:FeatureFlagSiteCreation]) {
-            [self showNoSitesViewForSiteCount:count];
-        }
-        else {
-            [self showNoResultsViewForSiteCount:count];
-        }
-        
-        [self updateSplitViewAppearanceForSiteCount:count];
-    }
-}
-
-- (void)removeNoSitesView
-{
-    if (self.noSitesViewController) {
-        [self.noSitesViewController.view removeFromSuperview];
-        [self.noSitesViewController removeFromParentViewController];
-    }
-}
-
-- (void)showNoSitesViewForSiteCount:(NSUInteger)siteCount
-{
-    // If we've gone from no results to having just one site, the user has
-    // added a new site so we should auto-select it
-    if (self.noSitesViewController && siteCount == 1) {
-        [self bypassBlogListViewController];
+        [self showNoResultsViewForSiteCount:count];
     }
     
-    // If we have no sites, show the No Sites view.
-    if (siteCount == 0) {
-        // If we don't have a No Sites view yet, create one.
-        if (!self.noSitesViewController) {
-            [self configureNoSitesView];
-        }
+    [self updateSplitViewAppearanceForSiteCount:count];
+}
 
-        [self addChildViewController:self.noSitesViewController];
-        [self.view addSubview:self.noSitesViewController.view];
-        [self.noSitesViewController didMoveToParentViewController:self];
+- (void)removeNoResultsFromView
+{
+    if (self.noResultsViewController) {
+        [self.noResultsViewController.view removeFromSuperview];
+        [self.noResultsViewController removeFromParentViewController];
     }
+}
+
+- (void)addNoResultsToView
+{
+    if (!self.noResultsViewController) {
+        [self instantiateNoResultsViewController];
+    }
+    
+    [self addChildViewController:self.noResultsViewController];
+    [self.tableView addSubview:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.tableView.bounds;
+    [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 - (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
 {
-    // If we've gone from no results to having just one site, the user has
-    // added a new site so we should auto-select it
-    if (!self.noResultsView.hidden && siteCount == 1) {
-        [self bypassBlogListViewController];
-    }
-
-    self.noResultsView.hidden = siteCount > 0;
-
-    if (!self.noResultsView.hidden) {
-        self.noResultsView.titleText = NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.");
-        self.noResultsView.messageText = NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.");
-        self.noResultsView.buttonTitle = NSLocalizedString(@"Create Site", nil);
+    if ([Feature enabled:FeatureFlagSiteCreation]) {
+        // If we've gone from no results to having just one site, the user has
+        // added a new site so we should auto-select it
+        if (self.noResultsViewController.beingPresented && siteCount == 1) {
+            [self removeNoResultsFromView];
+            [self bypassBlogListViewController];
+        }
+        
+        // If we have no sites, show the No Results VC.
+        if (siteCount == 0) {
+            [self addNoResultsToView];
+            
+            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subTitle:nil];
+        }
+    } else {
+        // If we've gone from no results to having just one site, the user has
+        // added a new site so we should auto-select it
+        if (!self.noResultsView.hidden && siteCount == 1) {
+            [self bypassBlogListViewController];
+        }
+        
+        self.noResultsView.hidden = siteCount > 0;
+        
+        if (!self.noResultsView.hidden) {
+            self.noResultsView.titleText = NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.");
+            self.noResultsView.messageText = NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.");
+            self.noResultsView.buttonTitle = NSLocalizedString(@"Create Site", nil);
+        }
     }
 }
 
 - (void)showNoResultsViewForAllSitesHidden
 {
     NSUInteger count = self.dataSource.allBlogsCount;
-
-    if (count == 1) {
-        self.noResultsView.titleText = NSLocalizedString(@"You have 1 hidden WordPress site.", "Message informing the user that all of their sites are currently hidden (singular)");
-        self.noResultsView.messageText = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
+    
+    NSString *singularTitle = NSLocalizedString(@"You have 1 hidden WordPress site.", @"Message informing the user that all of their sites are currently hidden (singular)");
+    NSString *singularSubtitle = NSLocalizedString(@"To manage it here, set it to visible.", @"Prompt asking user to make sites visible in order to use them in the app (singular)");
+    
+    NSString *multipleTitle = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", @"Message informing the user that all of their sites are currently hidden (plural)"), count];
+    NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
+    
+    NSString *buttonTitle = NSLocalizedString(@"Change Visibility", @"Button title to edit visibility of sites.");
+    
+    
+    if ([Feature enabled:FeatureFlagSiteCreation]) {
+        [self addNoResultsToView];
+        
+        if (count == 1) {
+            [self.noResultsViewController configureWithTitle:singularTitle
+                                                 buttonTitle:buttonTitle
+                                                    subTitle:singularSubtitle];
+        } else {
+            [self.noResultsViewController configureWithTitle:multipleTitle
+                                                 buttonTitle:buttonTitle
+                                                    subTitle:multipleSubtitle];
+        }
+        
     } else {
-        self.noResultsView.titleText = [NSString stringWithFormat:NSLocalizedString(@"You have %lu hidden WordPress sites.", "Message informing the user that all of their sites are currently hidden (plural)"), count];
-        self.noResultsView.messageText = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
+        if (count == 1) {
+            self.noResultsView.titleText = singularTitle;
+            self.noResultsView.messageText = singularSubtitle;
+        } else {
+            self.noResultsView.titleText = multipleTitle;
+            self.noResultsView.messageText = multipleSubtitle;
+        }
+        
+        self.noResultsView.buttonTitle = buttonTitle;
+        
+        self.noResultsView.hidden = NO;
     }
-
-    self.noResultsView.buttonTitle = NSLocalizedString(@"Change Visibility", "Button title to edit visibility of sites.");
-
-    self.noResultsView.hidden = NO;
 }
 
 - (void)updateSplitViewAppearanceForSiteCount:(NSUInteger)siteCount
@@ -330,7 +356,8 @@ static NSInteger HideSearchMinSites = 3;
     WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
     if ([splitViewController isKindOfClass:[WPSplitViewController class]]) {
         splitViewController.dimsDetailViewControllerAutomatically = hasSites;
-        splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow : WPSplitViewControllerPrimaryColumnWidthFull;
+        splitViewController.wpPrimaryColumnWidth = (hasSites) ? WPSplitViewControllerPrimaryColumnWidthNarrow
+                                                              : WPSplitViewControllerPrimaryColumnWidthFull;
     }
 }
 
@@ -471,13 +498,14 @@ static NSInteger HideSearchMinSites = 3;
     [WPStyleGuide configureSearchBar:self.searchBar];
 }
 
-- (void)configureNoSitesView
+- (void)instantiateNoResultsViewController
 {
-    UIStoryboard *noSitesSB = [UIStoryboard storyboardWithName:@"SiteCreationNoSites" bundle:nil];
-    self.noSitesViewController = [noSitesSB instantiateViewControllerWithIdentifier:@"SiteCreationNoSites"];
-    self.noSitesViewController.delegate = self;
+    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"BlogListNoResults" bundle:nil];
+    self.noResultsViewController = [noResultsSB instantiateViewControllerWithIdentifier:@"NoResults"];
+    self.noResultsViewController.delegate = self;
 }
 
+// To be removed with FeatureFlagSiteCreation.
 - (void)configureNoResultsView
 {
     self.noResultsView = [WPNoResultsView noResultsViewWithTitle:nil
@@ -909,7 +937,7 @@ static NSInteger HideSearchMinSites = 3;
     
     if ([Feature enabled:FeatureFlagSiteCreation]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
-        SiteTypeTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteType"];
+        SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
         SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
                                                            initWithRootViewController:controller];
         [self presentViewController:navController animated:YES completion:nil];
@@ -980,12 +1008,13 @@ static NSInteger HideSearchMinSites = 3;
     [self validateBlogDetailsViewController];
 }
 
-#pragma mark - NoSitesViewControllerDelegate
+#pragma mark - BlogListNoResultsViewControllerDelegate
 
-- (void)addSiteButtonPressed {
-    [self showAddSiteAlertFromButton:self.noSitesViewController.addSiteButton];
+- (void)actionButtonPressed {
+    [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
 }
 
+// To be removed with FeatureFlagSiteCreation.
 #pragma mark - WPNoResultsViewDelegate
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
