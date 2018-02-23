@@ -13,7 +13,7 @@ func fix(file: String) throws {
     let regexp = try NSRegularExpression(pattern: "^\"(.*)\" = \"\";$", options: [])
     var output = ""
     contents.enumerateLines { line, _ in
-        let replaced = regexp.stringByReplacingMatches(in: line, options: [], range: NSRange(location: 0, length: line.characters.count), withTemplate: "\"$1\" = \"$1\";")
+        let replaced = regexp.stringByReplacingMatches(in: line, options: [], range: NSRange(location: 0, length: line.count), withTemplate: "\"$1\" = \"$1\";")
         output.append(replaced as String)
         output.append("\n")
     }

@@ -3,6 +3,7 @@ import UIKit
 @objc protocol NUXButtonViewControllerDelegate {
     func primaryButtonPressed()
     @objc optional func secondaryButtonPressed()
+    @objc optional func tertiaryButtonPressed()
 }
 
 private struct NUXButtonConfig {
@@ -22,6 +23,7 @@ class NUXButtonViewController: UIViewController {
     @IBOutlet var stackView: UIStackView?
     @IBOutlet var bottomButton: NUXButton?
     @IBOutlet var topButton: NUXButton?
+    @IBOutlet var tertiaryButton: NUXButton?
     @IBOutlet var buttonHolder: UIView?
 
     open var delegate: NUXButtonViewControllerDelegate?
@@ -29,6 +31,7 @@ class NUXButtonViewController: UIViewController {
 
     private var topButtonConfig: NUXButtonConfig?
     private var bottomButtonConfig: NUXButtonConfig?
+    private var tertiaryButtonConfig: NUXButtonConfig?
 
     // MARK: - View
 
@@ -42,6 +45,7 @@ class NUXButtonViewController: UIViewController {
 
         configure(button: bottomButton, withConfig: bottomButtonConfig)
         configure(button: topButton, withConfig: topButtonConfig)
+        configure(button: tertiaryButton, withConfig: tertiaryButtonConfig)
         if let bgColor = backgroundColor, let holder = buttonHolder {
             holder.backgroundColor = bgColor
         }
@@ -65,10 +69,15 @@ class NUXButtonViewController: UIViewController {
     /// - Parameters:
     ///   - primary: Title string for primary button. Required.
     ///   - secondary: Title string for secondary button. Optional.
-    func setButtonTitles(primary: String, secondary: String? = nil) {
+    ///   - tertiary: Title string for the tertiary button. Optional.
+    ///
+    func setButtonTitles(primary: String, secondary: String? = nil, tertiary: String? = nil) {
         bottomButtonConfig = NUXButtonConfig(title: primary, isPrimary: true, callback: nil)
         if let secondaryTitle = secondary {
             topButtonConfig = NUXButtonConfig(title: secondaryTitle, isPrimary: false, callback: nil)
+        }
+        if let tertiaryTitle = tertiary {
+            tertiaryButtonConfig = NUXButtonConfig(title: tertiaryTitle, isPrimary: false, callback: nil)
         }
     }
 
@@ -78,6 +87,11 @@ class NUXButtonViewController: UIViewController {
 
     func setupButtomButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
         bottomButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
+    }
+
+    func setupTertiaryButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
+        tertiaryButton?.isHidden = false
+        tertiaryButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
     }
 
     // MARK: - Helpers
@@ -100,6 +114,14 @@ class NUXButtonViewController: UIViewController {
     @IBAction func secondaryButtonPressed(_ sender: Any) {
         guard let callback = topButtonConfig?.callback else {
             delegate?.secondaryButtonPressed?()
+            return
+        }
+        callback()
+    }
+
+    @IBAction func tertiaryButtonPressed(_ sender: Any) {
+        guard let callback = tertiaryButtonConfig?.callback else {
+            delegate?.tertiaryButtonPressed?()
             return
         }
         callback()
