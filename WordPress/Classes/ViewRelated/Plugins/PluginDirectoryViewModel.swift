@@ -25,7 +25,7 @@ class PluginDirectoryViewModel: Observable {
         self.site = site
 
         installedReceipt = store.query(.all(site: site))
-        featuredReceipt = store.query(.featured(site: site))
+        featuredReceipt = store.query(.featured)
         popularReceipt = store.query(.feed(type: .popular))
         newReceipt = store.query(.feed(type: .newest))
 
