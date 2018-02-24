@@ -611,7 +611,8 @@ extension ReaderPostCardCell: Accessible {
 
     private func prepareCardForVoiceOver() {
         accessibilityLabel = cardAccessibilityLabel()
-        accessibilityHint = "Shows the post content"
+        accessibilityHint = cardAccessibilityHint()
+        accessibilityTraits = UIAccessibilityTraitButton
     }
 
     private func cardAccessibilityLabel() -> String {
@@ -619,6 +620,10 @@ extension ReaderPostCardCell: Accessible {
         let blogTitle = blogName()
 
         return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + "." + postTitle() + "." + postContent()
+    }
+
+    private func cardAccessibilityHint() -> String {
+        return NSLocalizedString("Shows the post content", comment: "Accessibility hint for the Reader Cell")
     }
 
     private func prepareHeaderButtonForVoiceOver() {
