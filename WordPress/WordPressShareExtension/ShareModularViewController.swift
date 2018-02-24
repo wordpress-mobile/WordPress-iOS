@@ -298,13 +298,13 @@ extension ShareModularViewController {
 
     func showCategoriesPicker() {
         guard let siteID = shareData.selectedSiteID,
-            let categories = shareData.allCategoriesForSelectedSite,
+            let allSiteCategories = shareData.allCategoriesForSelectedSite,
             isFetchingCategories == false,
             isPublishingPost == false else {
             return
         }
 
-        let categoryInfo = SiteCategories(siteID: siteID, allCategories: categories, selectedCategories: shareData.userSelectedCategories)
+        let categoryInfo = SiteCategories(siteID: siteID, allCategories: allSiteCategories, selectedCategories: shareData.userSelectedCategories, defaultCategoryID: shareData.defaultCategoryID)
         let categoriesPicker = ShareCategoriesPickerViewController(categoryInfo: categoryInfo)
         categoriesPicker.onValueChanged = { [weak self] categoryInfo in
             self?.shareData.allCategoriesForSelectedSite = categoryInfo.allCategories
@@ -739,8 +739,8 @@ fileprivate extension ShareModularViewController {
             self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: Constants.unknownDefaultCategoryName)
         } else {
             let defaultCategoryArray = categories.filter { $0.categoryID == defaultCategoryID }
-            if !defaultCategoryArray.isEmpty, let defaultCategoryName = defaultCategoryArray.first?.name {
-                self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategoryName)
+            if !defaultCategoryArray.isEmpty, let defaultCategory = defaultCategoryArray.first {
+                self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: defaultCategory.name)
             }
         }
         self.refreshModulesTable(categoriesLoaded: true)
