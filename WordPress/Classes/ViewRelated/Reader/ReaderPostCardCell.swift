@@ -600,6 +600,7 @@ extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
 
 extension ReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
+        prepareCardForVoiceOver()
         prepareHeaderButtonForVoiceOver()
         prepareShareForVoiceOver()
         prepareCommentsForVoiceOver()
@@ -608,22 +609,26 @@ extension ReaderPostCardCell: Accessible {
         prepareVisitForVoiceOver()
     }
 
+    private func prepareCardForVoiceOver() {
+        accessibilityLabel = "Cesar"
+    }
+
     private func prepareHeaderButtonForVoiceOver() {
         let authorName = postAuthor()
         let blogTitle = blogName()
 
-        headerBlogButton.accessibilityLabel = headerButtonAccessibillityLabel(name: authorName, title: blogTitle)
-        headerBlogButton.accessibilityHint = headerButtonAccessibillityHint(title: blogTitle)
+        headerBlogButton.accessibilityLabel = headerButtonAccessibilityLabel(name: authorName, title: blogTitle)
+        headerBlogButton.accessibilityHint = headerButtonAccessibilityHint(title: blogTitle)
         headerBlogButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
-    private func headerButtonAccessibillityLabel(name: String, title: String) -> String {
+    private func headerButtonAccessibilityLabel(name: String, title: String) -> String {
         let format = NSLocalizedString("Post by %@, from %@", comment: "Spoken accessibility label for blog author and name in Reader cell.")
 
         return String(format: format, name, title)
     }
 
-    private func headerButtonAccessibillityHint(title: String) -> String {
+    private func headerButtonAccessibilityHint(title: String) -> String {
         let format = NSLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
         return String(format: format, title)
     }
