@@ -23,10 +23,24 @@ class SignupUsernameViewController: NUXViewController {
         configureView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addConfirmationWarning()
+    }
+
     private func configureView() {
         _ = addHelpButtonToNavController()
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
+    }
+
+    private func addConfirmationWarning() {
+        let warningLabel = UILabel()
+        warningLabel.text = NSLocalizedString("Once changed, your old username will no longer be avilable for use.", comment: "Warning shown before user changes their username.")
+        warningLabel.numberOfLines = 0
+        warningLabel.textAlignment = .center
+        warningLabel.textColor = WPStyleGuide.darkGrey()
+        buttonViewController?.stackView?.insertArrangedSubview(warningLabel, at: 0)
     }
 
     private func showButtonView(show: Bool, withAnimation: Bool) {
@@ -63,8 +77,9 @@ class SignupUsernameViewController: NUXViewController {
 
         if let vc = segue.destination as? NUXButtonViewController {
             buttonViewController = vc
-            buttonViewController?.delegate = self
-            buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
+            vc.setupButtomButton(title: NSLocalizedString("Change Username", comment: "Button text for changing the user's username."), isPrimary: true) { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+            }
             showButtonView(show: false, withAnimation: false)
         }
     }
@@ -80,13 +95,5 @@ extension SignupUsernameViewController: SignupUsernameTableViewControllerDelegat
 
     func newSearchStarted() {
         showButtonView(show: false, withAnimation: true)
-    }
-}
-
-// MARK: - NUXButtonViewControllerDelegate
-
-extension SignupUsernameViewController: NUXButtonViewControllerDelegate {
-    func primaryButtonPressed() {
-        navigationController?.popViewController(animated: true)
     }
 }

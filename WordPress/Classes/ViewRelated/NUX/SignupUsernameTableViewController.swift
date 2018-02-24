@@ -169,9 +169,9 @@ extension SignupUsernameTableViewController {
     // MARK: table view cells
 
     private func titleAndDescriptionCell() -> UITableViewCell {
-        let title = String(format: NSLocalizedString("Your username is currently \"%@\"", comment: "Title displaying the user's current username. Placeholder is "), currentUsername ?? "")
-        let description = String(format: NSLocalizedString("It will be used for mentions and links, but otherwise people will just see your display name, \"%@\"", comment: "Description of how to pick a domain name during the site creation process"), displayName ?? "")
-        let cell = LoginSocialErrorCell(title: title, description: description)
+//        let title = String(format: NSLocalizedString("Your username is currently \"%@\"", comment: "Title displaying the user's current username. Placeholder is "), currentUsername ?? "")
+        let description = String(format: NSLocalizedString("Your username is currently \"%@\". It will be used for mentions and links, but otherwise people will just see your display name, \"%@\"", comment: "Description of how to pick a domain name during the site creation process"), currentUsername ?? "", displayName ?? "")
+        let cell = LoginSocialErrorCell(title: "", description: description)
         cell.selectionStyle = .none
         return cell
     }
