@@ -14,18 +14,26 @@ import WordPressShared
         static let authenticationInfoKey = "authenticationInfoKey"
         static let jetpackBlogIDURL = "jetpackBlogIDURL"
         static let username = "username"
+        static let emailMagicLinkSource = "emailMagicLinkSource"
     }
 
     // MARK: - Helpers for presenting the login flow
 
     /// Used to present the new login flow from the app delegate
     @objc class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor, showCancel: false)
+    }
+
+    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool, showCancel: Bool) {
         defer {
             trackOpenedLogin()
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateInitialViewController() {
+            if let childController = controller.childViewControllers.first as? LoginPrologueViewController {
+                childController.showCancel = showCancel
+            }
             presenter.present(controller, animated: animated, completion: nil)
         }
     }
@@ -142,13 +150,20 @@ import WordPressShared
         loginController.email = loginFields.username
         loginController.token = token
         let controller = loginController
-        WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+
+        if let linkSource = loginFields.meta.emailMagicLinkSource {
+            switch linkSource {
+            case .signup:
+                WordPressAuthenticator.post(event: .signupMagicLinkOpened)
+            case .login:
+                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+            }
+        }
 
         let navController = UINavigationController(rootViewController: controller)
 
-        // The way the magic link flow works the `SigninLinkMailViewController`,
-        // or some other view controller, might still be presented when the app
-        // is resumed by tapping on the auth link.
+        // The way the magic link flow works some view controller might
+        // still be presented when the app is resumed by tapping on the auth link.
         // We need to do a little work to present the SigninLinkAuth controller
         // from the right place.
         // - If the rootViewController is not presenting another vc then just
@@ -352,6 +367,11 @@ import WordPressShared
         if let url = loginFields.meta.jetpackBlogID?.uriRepresentation().absoluteString {
             dict[Constants.jetpackBlogIDURL] = url
         }
+
+        if let linkSource = loginFields.meta.emailMagicLinkSource {
+            dict[Constants.emailMagicLinkSource] = String(linkSource.rawValue)
+        }
+
         UserDefaults.standard.set(dict, forKey: Constants.authenticationInfoKey)
     }
 
@@ -361,6 +381,7 @@ import WordPressShared
     /// - Returns: A loginFields instance or nil.
     ///
     class func retrieveLoginInfoForTokenAuth() -> LoginFields? {
+
         guard let dict = UserDefaults.standard.dictionary(forKey: Constants.authenticationInfoKey) else {
             return nil
         }
@@ -368,6 +389,11 @@ import WordPressShared
         let loginFields = LoginFields()
         if let username = dict[Constants.username] as? String {
             loginFields.username = username
+        }
+
+        if let linkSource = dict[Constants.emailMagicLinkSource] as? String,
+            let linkSourceRawValue = Int(linkSource) {
+            loginFields.meta.emailMagicLinkSource = EmailMagicLinkSource(rawValue: linkSourceRawValue)
         }
 
         let store = ContextManager.sharedInstance().persistentStoreCoordinator

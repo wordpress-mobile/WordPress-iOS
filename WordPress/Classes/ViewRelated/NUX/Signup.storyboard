@@ -39,16 +39,16 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="19Z-ie-Qfz">
-                                        <rect key="frame" x="0.0" y="223.5" width="375" height="100"/>
+                                        <rect key="frame" x="0.0" y="221.5" width="375" height="102"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
-                                                <rect key="frame" x="20" y="0.0" width="335" height="36"/>
+                                                <rect key="frame" x="20" y="0.0" width="335" height="38"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTy-KJ-his" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                                <rect key="frame" x="0.0" y="58" width="375" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                 <constraints>
@@ -67,7 +67,7 @@
                                                 </connections>
                                             </textField>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYw-oM-W1K">
-                                                <rect key="frame" x="20" y="100" width="335" height="40"/>
+                                                <rect key="frame" x="20" y="102" width="335" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" placeholder="YES" id="li2-jI-jeL"/>
                                                 </constraints>
@@ -174,12 +174,12 @@
                     </view>
                     <connections>
                         <outlet property="titleLabel" destination="fiA-2f-xfj" id="gJJ-nI-Zmw"/>
-                        <segue destination="1sD-6N-6Pz" kind="show" identifier="showEpilogue" id="dpG-tw-yhw"/>
+                        <segue destination="xt0-gh-hzg" kind="show" identifier="showSignupEpilogue" id="LGz-VK-bVX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5UK-0h-9ZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1692" y="779"/>
+            <point key="canvasLocation" x="-938" y="791"/>
         </scene>
         <!--Signup Username View Controller-->
         <scene sceneID="CQ6-85-yH0">
@@ -261,37 +261,76 @@
                 <viewControllerPlaceholder storyboardIdentifier="LinkMailView" storyboardName="EmailMagicLink" referencedIdentifier="LinkMailView" id="Je3-5O-NYu" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DAI-Ik-KtV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-301" y="92"/>
+            <point key="canvasLocation" x="-358" y="190"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="zgB-T1-hNp">
+        <!--Signup Epilogue View Controller-->
+        <scene sceneID="aLX-BA-7de">
             <objects>
-                <viewController id="1sD-6N-6Pz" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="2ec-Tt-5LY">
+                <viewController storyboardIdentifier="SignupEpilogue" id="xt0-gh-hzg" customClass="SignupEpilogueViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5jy-Z9-HSJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="EPILOGUE STAND-IN (you're logged in)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cF6-ei-3ka">
-                                <rect key="frame" x="37" y="333" width="302" height="21"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pfn-Ox-xPa" userLabel="Table Container View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                                <connections>
+                                    <segue destination="hib-Bt-yge" kind="embed" identifier="showEpilogueTable" id="x5e-CD-ygB"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P1I-3a-oLv" userLabel="Button Container View">
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="5FR-2O-ICj"/>
+                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="auc-yT-9Zj"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="zJU-DX-fZc"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <connections>
+                                    <segue destination="x4w-Kl-tfP" kind="embed" identifier="showSignupEpilogueButtonView" id="5eu-ZJ-HbM"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="cF6-ei-3ka" firstAttribute="centerY" secondItem="xjG-RV-YfD" secondAttribute="centerY" id="EDU-46-wde"/>
-                            <constraint firstItem="cF6-ei-3ka" firstAttribute="centerX" secondItem="xjG-RV-YfD" secondAttribute="centerX" id="VWh-6r-jos"/>
+                            <constraint firstItem="Pfn-Ox-xPa" firstAttribute="top" secondItem="5jy-Z9-HSJ" secondAttribute="top" id="9Uz-0Q-XbQ"/>
+                            <constraint firstItem="Ae9-4j-PcF" firstAttribute="trailing" secondItem="Pfn-Ox-xPa" secondAttribute="trailing" id="9lO-lg-WIO"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="trailing" secondItem="Ae9-4j-PcF" secondAttribute="trailing" id="DBe-AY-pLB"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="bottom" secondItem="Ae9-4j-PcF" secondAttribute="bottom" id="maZ-1x-gSB"/>
+                            <constraint firstItem="Pfn-Ox-xPa" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="qMk-VK-ZUv"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="yGX-fn-rqf"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="top" secondItem="Pfn-Ox-xPa" secondAttribute="bottom" id="yMT-vg-j6M"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="xjG-RV-YfD"/>
+                        <viewLayoutGuide key="safeArea" id="Ae9-4j-PcF"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XqP-YS-mRb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kUL-CF-CHW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-686" y="779"/>
+            <point key="canvasLocation" x="166" y="352"/>
+        </scene>
+        <!--Signup Epilogue Table View Controller-->
+        <scene sceneID="Ymn-3i-TIR">
+            <objects>
+                <tableViewController id="hib-Bt-yge" customClass="SignupEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="AHY-lt-KSU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <connections>
+                            <outlet property="dataSource" destination="hib-Bt-yge" id="uK1-re-C0b"/>
+                            <outlet property="delegate" destination="hib-Bt-yge" id="6BX-iu-clf"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8O3-Dw-vvj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1062" y="243"/>
+        </scene>
+        <!--ButtonView-->
+        <scene sceneID="vX1-iV-bQB">
+            <objects>
+                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="x4w-Kl-tfP" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GCN-8K-LcG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="165" y="784"/>
         </scene>
         <!--ButtonView-->
         <scene sceneID="S07-eQ-m0X">

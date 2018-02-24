@@ -7,6 +7,7 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
 
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var signupButton: UIButton!
+    var showCancel = false
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -73,6 +74,12 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         }
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
             self?.signupTapped()
+        }
+        if showCancel {
+            let cancelTitle = NSLocalizedString("Cancel", comment: "Button title. Tapping it cancels the login flow.")
+            buttonViewController.setupTertiaryButton(title: cancelTitle, isPrimary: false) { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+            }
         }
         buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
     }

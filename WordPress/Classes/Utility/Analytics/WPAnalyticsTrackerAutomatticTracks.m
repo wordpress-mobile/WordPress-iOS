@@ -671,6 +671,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNotificationsTappedViewReader:
             eventName = @"notification_tapped_view_reader";
             break;
+        case WPAnalyticsStatNotificationsTappedSegmentedControl:
+            eventName = @"notification_tapped_segmented_control";
+            break;
         case WPAnalyticsStatNotificationsUploadMediaSuccessWritePost:
             eventName = @"notifications_upload_media_success_write_post";
             break;
@@ -770,6 +773,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatPluginRemoved:
             eventName = @"plugin_removed";
+            break;
+        case WPAnalyticsStatPostEpilogueDisplayed:
+            eventName = @"post_epilogue_displayed";
+            break;
+        case WPAnalyticsStatPostEpilogueEdit:
+            eventName = @"post_epilogue_edit";
+            break;
+        case WPAnalyticsStatPostEpilogueShare:
+            eventName = @"post_epilogue_share";
+            break;
+        case WPAnalyticsStatPostEpilogueView:
+            eventName = @"post_epilogue_view";
             break;
         case WPAnalyticsStatPostListAuthorFilterChanged:
             eventName = @"post_list_author_filter_changed";
@@ -974,6 +989,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatSignupMagicLinkOpenEmailClientViewed:
             eventName = @"signup_magic_link_open_email_client_viewed";
+            break;
+        case WPAnalyticsStatSignupMagicLinkOpened:
+            eventName = @"signup_magic_link_opened";
+            break;
+        case WPAnalyticsStatSignupMagicLinkSucceeded:
+            eventName = @"signup_magic_link_succeeded";
             break;
         case WPAnalyticsStatSignupSocialSuccess:
             eventName = @"signup_social_success";

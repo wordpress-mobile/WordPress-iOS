@@ -1,4 +1,5 @@
 import UIKit
+import MessageUI
 
 /// Step two in the auth link flow. This VC prompts the user to open their email
 /// app to look for the emailed authentication link.
@@ -43,13 +44,6 @@ class NUXLinkMailViewController: LoginViewController {
             WordPressAuthenticator.post(event: .loginMagicLinkOpenEmailClientViewed)
         case .signup:
             WordPressAuthenticator.post(event: .signupMagicLinkOpenEmailClientViewed)
-
-            let message = "Email was not actually sent. This is a work in progress. If you need to create an account, disable the socialSignup feature flag."
-            let alertController = UIAlertController(title: nil,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addDefaultActionWithTitle("OK")
-            self.present(alertController, animated: true, completion: nil)
         }
     }
 
@@ -87,9 +81,29 @@ class NUXLinkMailViewController: LoginViewController {
     // MARK: - Actions
 
     @IBAction func handleOpenMailTapped(_ sender: UIButton) {
-        let url = URL(string: "message://")!
-        UIApplication.shared.open(url)
+        if MFMailComposeViewController.canSendMail() {
+            let url = URL(string: "message://")!
+            UIApplication.shared.open(url)
+        } else if let googleMailURL = URL(string: "googlegmail://"),
+            UIApplication.shared.canOpenURL(googleMailURL) {
+            UIApplication.shared.open(googleMailURL)
+        } else {
+            showAlertToCheckEmail()
+        }
     }
+
+    func showAlertToCheckEmail() {
+        let title = NSLocalizedString("Please check your email", comment: "Alert title for check your email during logIn/signUp.")
+        let message = NSLocalizedString("Please open your email app and look for an email from WordPress.com.", comment: "Message to ask the user to check their email and look for a WordPress.com email.")
+
+        let alertController =  UIAlertController(title: title,
+                                                 message: message,
+                                                 preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(NSLocalizedString("OK",
+                                                                   comment: "Button title. An acknowledgement of the message displayed in a prompt."))
+        alertController.presentFromRootViewController()
+    }
+
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
         WordPressAuthenticator.post(event: .loginMagicLinkExited)

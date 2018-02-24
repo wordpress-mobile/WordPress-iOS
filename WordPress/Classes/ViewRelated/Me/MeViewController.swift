@@ -441,20 +441,27 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     ///
     fileprivate func promptForLoginOrSignup() {
         let controller = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.addActionWithTitle(NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form."),
-            style: .default,
-            handler: { (_) in
-                WordPressAuthenticator.showLoginForJustWPComFromPresenter(self)
-        })
-        controller.addActionWithTitle(NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
-                                      style: .default,
-                                      handler: { (_) in
-                                        let controller = SignupViewController.controller()
-                                        let navController = NUXNavigationController(rootViewController: controller)
-                                        self.present(navController, animated: true, completion: nil)
 
+        if FeatureFlag.socialSignup.enabled {
+            WordPressAuthenticator.showLoginFromPresenter(self, animated: true, thenEditor: false, showCancel: true)
+        } else {
+            controller.addActionWithTitle(NSLocalizedString("Log In",
+                                                            comment: "Button title.  Tapping takes the user to the login form."),
+                                          style: .default,
+                                          handler: { (_) in
+                                            WordPressAuthenticator.showLoginForJustWPComFromPresenter(self)
+                                          })
 
-        })
+            controller.addActionWithTitle(NSLocalizedString("Create a WordPress site",
+                                                            comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
+                                          style: .default,
+                                          handler: { (_) in
+                                            let controller = SignupViewController.controller()
+                                            let navController = NUXNavigationController(rootViewController: controller)
+                                            self.present(navController, animated: true, completion: nil)
+                                          })
+        }
+
         controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel"))
         controller.modalPresentationStyle = .popover
         present(controller, animated: true, completion: nil)
