@@ -110,8 +110,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 {
     [super viewDidLoad];
     
-    [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
-
+    [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
