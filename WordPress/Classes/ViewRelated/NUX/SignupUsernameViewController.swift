@@ -1,6 +1,9 @@
+import SVProgressHUD
+
 class SignupUsernameViewController: NUXViewController {
     // MARK: - Properties
     open var currentUsername: String?
+    private var newUsername: String?
     open var displayName: String?
 
     // Used to hide/show the Buttom View
@@ -63,6 +66,34 @@ class SignupUsernameViewController: NUXViewController {
         }, completion: nil)
     }
 
+    private func changeUsername() {
+        SVProgressHUD.show(withStatus: NSLocalizedString("Changing username", comment: "Shown while the app waits for the username changing web service to return."))
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard let account = accountService.defaultWordPressComAccount(),
+            let api = account.wordPressComRestApi,
+            let newUsername = newUsername else {
+                navigationController?.popViewController(animated: true)
+                return
+        }
+
+        let settingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
+        settingsService.changeUsername(to: newUsername, success: { [weak self] in
+            // now we refresh the account to get the new username
+            accountService.updateUserDetails(for: account, success: { [weak self] in
+                SVProgressHUD.dismiss()
+                self?.navigationController?.popViewController(animated: true)
+            }, failure: { [weak self] (error) in
+                SVProgressHUD.dismiss()
+                self?.navigationController?.popViewController(animated: true)
+            })
+        }) { [weak self] in
+            SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Username change failed", comment: "Shown when an attempt to change the username fails."))
+            self?.navigationController?.popViewController(animated: true)
+        }
+    }
+
     // MARK: - Segue
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -78,7 +109,7 @@ class SignupUsernameViewController: NUXViewController {
         if let vc = segue.destination as? NUXButtonViewController {
             buttonViewController = vc
             vc.setupButtomButton(title: NSLocalizedString("Change Username", comment: "Button text for changing the user's username."), isPrimary: true) { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
+                self?.changeUsername()
             }
             showButtonView(show: false, withAnimation: false)
         }
@@ -89,7 +120,7 @@ class SignupUsernameViewController: NUXViewController {
 
 extension SignupUsernameViewController: SignupUsernameTableViewControllerDelegate {
     func usernameSelected(_ username: String) {
-//        SiteCreationFields.sharedInstance.domain = domain
+        newUsername = username
         showButtonView(show: true, withAnimation: true)
     }
 
