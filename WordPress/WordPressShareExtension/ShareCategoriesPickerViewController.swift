@@ -7,6 +7,7 @@ struct SiteCategories {
     var siteID: Int
     var allCategories: [RemotePostCategory]?
     var selectedCategories: [RemotePostCategory]?
+    var defaultCategoryID: NSNumber?
 }
 
 class ShareCategoriesPickerViewController: UITableViewController {
@@ -32,6 +33,10 @@ class ShareCategoriesPickerViewController: UITableViewController {
     /// SiteID to fetch categories for
     ///
     fileprivate let siteID: Int
+
+    /// Default category ID
+    ///
+    fileprivate let defaultCategoryID: NSNumber?
 
     /// Apply Bar Button
     ///
@@ -73,9 +78,16 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
     init(categoryInfo: SiteCategories) {
         self.siteID = categoryInfo.siteID
+        self.defaultCategoryID = categoryInfo.defaultCategoryID
         self.allCategories = categoryInfo.allCategories ?? []
-        self.selectedCategories = categoryInfo.selectedCategories ?? []
-        self.originallySelectedCategories = categoryInfo.selectedCategories ?? []
+
+        // Add the default site to the selected list if it's empty.
+        var selected = categoryInfo.selectedCategories ?? []
+        if selected.isEmpty, let defaultCategory = categoryInfo.allCategories?.filter({$0.categoryID == categoryInfo.defaultCategoryID }).first {
+            selected.append(defaultCategory)
+        }
+        self.selectedCategories = selected
+        self.originallySelectedCategories = selected
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -205,13 +217,6 @@ fileprivate extension ShareCategoriesPickerViewController {
         return allCategories[indexPath.row]
     }
 
-    func clearAllSelectedCategoryRows() {
-        for row in 0 ..< rowCountForCategories {
-            let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0))
-            cell?.accessoryType = .none
-        }
-    }
-
     func clearCategoryDataAndRefreshSitesTable() {
         allCategories = nil
         tableView.reloadData()
@@ -227,7 +232,7 @@ extension ShareCategoriesPickerViewController {
 
     @objc func selectWasPressed() {
         if originallySelectedCategories != selectedCategories {
-            let categoryInfo = SiteCategories(siteID: siteID, allCategories: allCategories, selectedCategories: selectedCategories)
+            let categoryInfo = SiteCategories(siteID: siteID, allCategories: allCategories, selectedCategories: selectedCategories, defaultCategoryID: defaultCategoryID)
             onValueChanged?(categoryInfo)
         }
         _ = navigationController?.popViewController(animated: true)
