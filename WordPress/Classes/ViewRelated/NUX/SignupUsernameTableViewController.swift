@@ -207,7 +207,13 @@ extension SignupUsernameTableViewController {
 
 extension SignupUsernameTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedUsername = suggestions[indexPath.row]
+        let selectedUsername: String
+        switch indexPath.section {
+        case Sections.suggestions.rawValue:
+            selectedUsername = suggestions[indexPath.row]
+        default:
+            return
+        }
         delegate?.usernameSelected(selectedUsername)
 
         tableView.deselectSelectedRowWithAnimation(true)
