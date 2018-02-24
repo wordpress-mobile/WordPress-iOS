@@ -627,6 +627,14 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareHeaderButtonForVoiceOver() {
+        guard headerBlogButtonIsEnabled else {
+            /// When the headerbutton is disabled, hide it from VoiceOver as well.
+            headerBlogButton.isAccessibilityElement = false
+            return
+        }
+
+        headerBlogButton.isAccessibilityElement = true
+
         let authorName = postAuthor()
         let blogTitle = blogName()
 
