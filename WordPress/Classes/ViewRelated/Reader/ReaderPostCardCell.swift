@@ -618,7 +618,7 @@ extension ReaderPostCardCell: Accessible {
         let authorName = postAuthor()
         let blogTitle = blogName()
 
-        return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + postTitle() + postContent()
+        return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + "." + postTitle() + "." + postContent()
     }
 
     private func prepareHeaderButtonForVoiceOver() {
