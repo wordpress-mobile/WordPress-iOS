@@ -88,6 +88,15 @@ class SignupUsernameTableViewController: NUXTableViewController {
 //            SVProgressHUD.dismiss()
 //        }
     }
+
+    func setupBackgroundTapGestureRecognizer() {
+        let gestureRecognizer = UITapGestureRecognizer()
+        gestureRecognizer.on(call: { [weak self] (gesture) in
+            self?.view.endEditing(true)
+        })
+        gestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(gestureRecognizer)
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -180,7 +189,7 @@ extension SignupUsernameTableViewController {
         let cell = UITableViewCell()
 
         cell.textLabel?.attributedText = styleDomain(domain)
-        cell.textLabel?.textColor = WPStyleGuide.grey()
+        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
         return cell
