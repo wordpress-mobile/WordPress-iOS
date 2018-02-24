@@ -706,7 +706,7 @@ extension ReaderPostCardCell: Accessible {
 
     private func prepareVisitForVoiceOver() {
         visitButton.accessibilityLabel = NSLocalizedString("Visit", comment: "Verb. Button title. Accessibility label in Reader")
-        let hintFormat = NSLocalizedString("Visit %@", comment: "A call to action to visit the specified blog. Accessibility hint in Reader")
+        let hintFormat = NSLocalizedString("Visit %@ in a web view", comment: "A call to action to visit the specified blog via a web view. Accessibility hint in Reader")
         visitButton.accessibilityHint = String(format: hintFormat, blogName())
         visitButton.accessibilityTraits = UIAccessibilityTraitButton
     }
