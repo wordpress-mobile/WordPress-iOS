@@ -97,8 +97,8 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let parameters = ["name": base]
 
         wordPressComRestApi.GET(endpoint, parameters: parameters as [String: AnyObject]?, success: { (responseObject, httpResponse) in
-            guard let response = responseObject as? [[String: AnyObject]],
-                let suggestions = response[0]["suggestions"] as? [String] else {
+            guard let response = responseObject as? [String: AnyObject],
+                let suggestions = response["suggestions"] as? [String] else {
                 finished([])
                 return
             }
