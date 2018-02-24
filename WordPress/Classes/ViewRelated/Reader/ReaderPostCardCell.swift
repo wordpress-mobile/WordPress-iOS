@@ -301,7 +301,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         blogNameLabel.text = arr.joined(separator: ", ")
 
-        let byline = (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
+        let byline = datePublished()
         bylineLabel.text = byline
     }
 
@@ -610,7 +610,15 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareCardForVoiceOver() {
-        accessibilityLabel = "Cesar"
+        accessibilityLabel = cardAccessibilityLabel()
+        accessibilityHint = "Shows the post content"
+    }
+
+    private func cardAccessibilityLabel() -> String {
+        let authorName = postAuthor()
+        let blogTitle = blogName()
+
+        return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + postTitle() + postContent()
     }
 
     private func prepareHeaderButtonForVoiceOver() {
@@ -623,6 +631,10 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func headerButtonAccessibilityLabel(name: String, title: String) -> String {
+        return authorNameAndBlogTitle(name: name, title: title) + "," + datePublished()
+    }
+
+    private func authorNameAndBlogTitle(name: String, title: String) -> String {
         let format = NSLocalizedString("Post by %@, from %@", comment: "Spoken accessibility label for blog author and name in Reader cell.")
 
         return String(format: format, name, title)
@@ -722,6 +734,18 @@ extension ReaderPostCardCell: Accessible {
 
     private func postAuthor() -> String {
         return contentProvider?.authorForDisplay() ?? ""
+    }
+
+    private func postTitle() -> String {
+        return contentProvider?.titleForDisplay() ?? ""
+    }
+
+    private func postContent() -> String {
+        return contentProvider?.contentPreviewForDisplay() ?? ""
+    }
+
+    private func datePublished() -> String {
+        return (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
     }
 }
 
