@@ -609,11 +609,23 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareHeaderButtonForVoiceOver() {
-        let name = blogName()
-        headerBlogButton.accessibilityLabel = name
-        let format = NSLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
-        headerBlogButton.accessibilityHint = String(format: format, name)
+        let authorName = postAuthor()
+        let blogTitle = blogName()
+
+        headerBlogButton.accessibilityLabel = headerButtonAccessibillityLabel(name: authorName, title: blogTitle)
+        headerBlogButton.accessibilityHint = headerButtonAccessibillityHint(title: blogTitle)
         headerBlogButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func headerButtonAccessibillityLabel(name: String, title: String) -> String {
+        let format = NSLocalizedString("Post by %@, from %@", comment: "Spoken accessibility label for blog author and name in Reader cell.")
+
+        return String(format: format, name, title)
+    }
+
+    private func headerButtonAccessibillityHint(title: String) -> String {
+        let format = NSLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
+        return String(format: format, title)
     }
 
     private func prepareShareForVoiceOver() {
@@ -701,6 +713,10 @@ extension ReaderPostCardCell: Accessible {
 
     private func blogName() -> String {
         return contentProvider?.blogNameForDisplay() ?? ""
+    }
+
+    private func postAuthor() -> String {
+        return contentProvider?.authorForDisplay() ?? ""
     }
 }
 
