@@ -297,7 +297,7 @@ extension PluginStore {
         return getPlugins(site: site)?.plugins.first(where: { $0.state.slug == slug })
     }
 
-    func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry] {
+    func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry]? {
         return state.featuredPluginsSlugs.flatMap { getPluginDirectoryEntry(slug: $0)}
     }
 
@@ -321,8 +321,8 @@ extension PluginStore {
         return state.updatesInProgress[site, default: Set()].contains(slug)
     }
 
-    func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry] {
-        guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return [] }
+    func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry]? {
+        guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return nil }
         let directoryEntries = fetchedFeed.pluginSlugs.flatMap { getPluginDirectoryEntry(slug: $0) }
 
         return directoryEntries
@@ -343,9 +343,14 @@ extension PluginStore {
     }
 
     func shouldFetchDirectory(feed: PluginDirectoryFeedType) -> Bool {
+        let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
+
+        if case .search = feed {
+            return !isFetching
+        }
+
         let lastFetch = state.lastDirectoryFeedFetch[feed.slug, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
         return needsRefresh && !isFetching
     }
 }
