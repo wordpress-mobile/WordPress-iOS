@@ -51,7 +51,7 @@
     [self invertLayout];
 }
 
-/// Inverts the layout to show the image at the right side
+/// Inverts the layout to show the image on the trailing side
 ///
 - (void)invertLayout
 {
