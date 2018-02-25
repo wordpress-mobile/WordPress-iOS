@@ -197,6 +197,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if let _ = post {
             configureView()
         }
+
+        prepareForVoiceOver()
     }
 
 
@@ -1129,3 +1131,15 @@ extension ReaderDetailViewController: PrefersFullscreenDisplay {}
 
 // Let's the split view know this vc changes the status bar style.
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
+
+extension ReaderDetailViewController: Accessible {
+    func prepareForVoiceOver() {
+        prepareMenuForVoiceOver()
+    }
+
+    private func prepareMenuForVoiceOver() {
+        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader's post details")
+        menuButton.accessibilityTraits = UIAccessibilityTraitButton
+        menuButton.accessibilityHint = NSLocalizedString("Shows more options.", comment: "Accessibility hint for the More button on Reader's post details")
+    }
+}
