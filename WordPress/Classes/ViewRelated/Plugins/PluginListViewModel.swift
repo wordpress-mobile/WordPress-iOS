@@ -149,6 +149,24 @@ class PluginListViewModel: Observable {
         return stateChangeDispatcher.subscribe(handler)
     }
 
+    func refresh() {
+        let action: PluginAction?
+
+        switch query {
+        case .all(let site):
+            action = PluginAction.refreshPlugins(site: site)
+        case .feed(let feedType):
+            action = PluginAction.refreshFeed(feed: feedType)
+        default:
+            // We don't show this view for `featured` and `search`.
+            action = nil
+        }
+
+        if let action = action {
+            ActionDispatcher.dispatch(action)
+        }
+    }
+
     var noResultsViewModel: WPNoResultsView.Model? {
         switch state {
         case .loading:
@@ -257,13 +275,16 @@ class PluginListViewModel: Observable {
         refreshing = isFetching(for: query)
 
         guard !refreshing else {
-            state = .loading
+            if results(for: query) == nil {
+                state = .loading
+            }
             return
         }
 
         guard let plugins = results(for: query) else {
             return
         }
+
         state = .ready(plugins)
     }
 
