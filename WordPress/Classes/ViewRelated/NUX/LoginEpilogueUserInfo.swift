@@ -19,9 +19,11 @@ struct LoginEpilogueUserInfo {
     }
 
     init(account: WPAccount, loginFields: LoginFields) {
-        self.init(account: account)
-
         email = loginFields.emailAddress
+
+        if let name = account.username {
+            username = name
+        }
 
         if let googleFullName = loginFields.meta.googleUser?.profile.name {
             fullName = googleFullName
@@ -30,4 +32,5 @@ struct LoginEpilogueUserInfo {
 
     init() {
     }
+
 }
