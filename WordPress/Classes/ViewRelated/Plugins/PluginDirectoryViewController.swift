@@ -7,13 +7,14 @@ class PluginDirectoryViewController: UITableViewController {
     private let viewModel: PluginDirectoryViewModel
     private var viewModelReceipt: Receipt?
     private var immuHandler: ImmuTableViewHandler?
+    private let noResultsView = WPNoResultsView()
 
     private var searchWrapperView: SearchWrapperView!
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
 
-        super.init(style: .plain)
+        super.init(style: .grouped)
 
         title = NSLocalizedString("Plugins", comment: "Title for the plugin directory")
     }
@@ -34,15 +35,23 @@ class PluginDirectoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        WPStyleGuide.configureColors(for: nil, andTableView: tableView)
+
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true
 
         viewModelReceipt = viewModel.onChange { [weak self] in
             self?.reloadTable()
+            self?.updateNoResults()
         }
 
         tableView.rowHeight = Constants.rowHeight
         tableView.separatorInset = Constants.separatorInset
+
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
+        tableView.tableFooterView = footerView
+        // We want the tableView to be in `.grouped` style, so we can display the NoResultsView nicely, but
+        // we don't want the additional padding that comes with it, so we need to have this tiny useless footer.
 
         ImmuTable.registerRows([CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self,
                                 TextRow.self],
@@ -55,24 +64,36 @@ class PluginDirectoryViewController: UITableViewController {
 
         immuHandler = handler
 
+        noResultsView.delegate = self
 
         setupSearchBar()
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.leastNonzeroMagnitude
-    }
-
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNonzeroMagnitude
-    }
 
     private func reloadTable() {
         immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
     }
 
-    @objc private func searchButtonTapped() {
-        searchController.isActive = true
+    func updateNoResults() {
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
+        }
+    }
+
+    func showNoResults(_ viewModel: WPNoResultsView.Model) {
+        noResultsView.bindViewModel(viewModel)
+        if noResultsView.isDescendant(of: tableView) {
+            noResultsView.centerInSuperview()
+        } else {
+            tableView.addSubview(withFadeAnimation: noResultsView)
+        }
+
+    }
+
+    func hideNoResults() {
+        noResultsView.removeFromSuperview()
     }
 
     private func setupSearchBar() {
@@ -105,15 +126,6 @@ class PluginDirectoryViewController: UITableViewController {
         return controller
     }()
 
-    lazy var searchBarButton: UIBarButtonItem = {
-        let icon = Gridicon.iconOfType(.search)
-
-        let buttonItem = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(searchButtonTapped))
-        buttonItem.tintColor = .white
-
-        return buttonItem
-    }()
-
     private enum Constants {
         static var rowHeight: CGFloat = 256
         static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -129,6 +141,22 @@ class PluginDirectoryViewController: UITableViewController {
 
         // Resetting the tableHeaderView is necessary to get the new height to take effect
         tableView.tableHeaderView = searchWrapperView
+    }
+}
+
+extension PluginDirectoryViewController {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
+    }
+}
+
+extension PluginDirectoryViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        viewModel.refresh()
     }
 }
 

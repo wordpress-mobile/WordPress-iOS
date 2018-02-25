@@ -12,13 +12,22 @@ class PluginDirectoryViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
+    private(set) var refreshing = false {
+        didSet {
+            if refreshing != oldValue {
+                emitChange()
+            }
+        }
+    }
     private let store: PluginStore
-    private var storeReceipt: Receipt?
 
-    private var installedReceipt: Receipt?
-    private var featuredReceipt: Receipt?
-    private var popularReceipt: Receipt?
-    private var newReceipt: Receipt?
+    private let installedReceipt: Receipt
+    private let featuredReceipt: Receipt
+    private let popularReceipt: Receipt
+    private let newReceipt: Receipt
+
+    private var storeReceipt: Receipt?
+    private var actionReceipt: Receipt?
 
     public init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.store = store
@@ -32,16 +41,42 @@ class PluginDirectoryViewModel: Observable {
         storeReceipt = store.onChange { [weak self] in
             self?.changeDispatcher.dispatch()
         }
+
+        actionReceipt = ActionDispatcher.global.subscribe { [weak self] (action) in
+            self?.refreshRefreshing()
+        }
+
+        refreshRefreshing()
+    }
+
+    private func refreshRefreshing() {
+        refreshing = store.isFetchingPlugins(site: site) ||
+            store.isFetchingFeatured() ||
+            store.isFetchingFeed(feed: .popular) ||
+            store.isFetchingFeed(feed: .newest)
+    }
+
+    var noResultsViewModel: WPNoResultsView.Model? {
+        guard installedPlugins == nil,
+            featuredPlugins == nil,
+            popularPlugins == nil,
+            newPlugins == nil else {
+                // Only show the `no results` view when we have no data to show. otherwise let's just show what we can.
+                return nil
+        }
+
+        if refreshing {
+            let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+            indicatorView.startAnimating()
+            return WPNoResultsView.Model(title: NSLocalizedString("Loading plugins...", comment: "Messaged displayed when first loading plugins"),
+                                         accessoryView: indicatorView)
+        }
+
+        return WPNoResultsView.Model(title: NSLocalizedString("Error loading plugins.", comment: "Messaged displayed when fetching plugins failed."),
+                                     buttonTitle: NSLocalizedString("Try again", comment: "Button that lets users try to reload the plugin directory after loading failure"))
     }
 
     func tableViewModel(presenter: PluginPresenter & PluginListPresenter) -> ImmuTable {
-
-        let installedRow = CollectionViewContainerRow(title: NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins"),
-                                                      secondaryTitle: NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins"),
-                                                      sitePlugins: installedPlugins,
-                                                      site: site,
-                                                      listViewQuery: .all(site: site),
-                                                      presenter: presenter)
 
         let accessoryViewCallback = { [weak self] (entry: PluginDirectoryEntry) -> UIView in
             guard let strongSelf = self else {
@@ -53,32 +88,51 @@ class PluginDirectoryViewModel: Observable {
         // but passing the entire `PluginStore` to the CollectionViewContainerRow isn't the best idea.
         // Instead, we allow the row to reach back to us and ask for the accessoryView.
 
-        let featuredRow = CollectionViewContainerRow(title: NSLocalizedString("Featured", comment: "Header of section in Plugin Directory showing featured plugins"),
+        var installedRow: ImmuTableRow?
+        if let installed = installedPlugins {
+            installedRow = CollectionViewContainerRow(title: NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins"),
+                                                      secondaryTitle: NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins"),
+                                                      sitePlugins: installed,
+                                                      site: site,
+                                                      listViewQuery: .all(site: site),
+                                                      presenter: presenter)
+        }
+
+        var featuredRow: ImmuTableRow?
+        if let featured = featuredPlugins {
+            featuredRow = CollectionViewContainerRow(title: NSLocalizedString("Featured", comment: "Header of section in Plugin Directory showing featured plugins"),
                                                      secondaryTitle: nil,
-                                                     plugins: featuredPlugins,
+                                                     plugins: featured,
                                                      site: site,
                                                      accessoryViewCallback: accessoryViewCallback,
                                                      listViewQuery: nil,
                                                      presenter: presenter)
+        }
 
-        let popularRow = CollectionViewContainerRow(title: NSLocalizedString("Popular", comment: "Header of section in Plugin Directory showing popular plugins"),
+        var popularRow: ImmuTableRow?
+        if let popular = popularPlugins {
+            popularRow = CollectionViewContainerRow(title: NSLocalizedString("Popular", comment: "Header of section in Plugin Directory showing popular plugins"),
                                                     secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
-                                                    plugins: popularPlugins,
+                                                    plugins: popular,
                                                     site: site,
                                                     accessoryViewCallback: accessoryViewCallback,
                                                     listViewQuery: .feed(type: .popular),
                                                     presenter: presenter)
+        }
 
-        let newRow = CollectionViewContainerRow(title: NSLocalizedString("New", comment: "Header of section in Plugin Directory showing newest plugins"),
-                                                secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
-                                                plugins: newPlugins,
-                                                site: site,
-                                                accessoryViewCallback: accessoryViewCallback,
-                                                listViewQuery: .feed(type: .newest),
-                                                presenter: presenter)
+        var newRow: ImmuTableRow?
+        if let new = newPlugins {
+            newRow = CollectionViewContainerRow(title: NSLocalizedString("New", comment: "Header of section in Plugin Directory showing newest plugins"),
+                                                    secondaryTitle: NSLocalizedString("See All", comment: "Button in Plugin Directory letting users see more plugins"),
+                                                    plugins: new,
+                                                    site: site,
+                                                    accessoryViewCallback: accessoryViewCallback,
+                                                    listViewQuery: .feed(type: .newest),
+                                                    presenter: presenter)
+        }
 
-        return ImmuTable(sections: [
-            ImmuTableSection(rows: [
+        return ImmuTable(optionalSections: [
+            ImmuTableSection(optionalRows: [
                 installedRow,
                 featuredRow,
                 popularRow,
@@ -87,20 +141,33 @@ class PluginDirectoryViewModel: Observable {
             ])
     }
 
+    public func refresh() {
+        ActionDispatcher.dispatch(PluginAction.refreshPlugins(site: site))
+        ActionDispatcher.dispatch(PluginAction.refreshFeaturedPlugins)
+        ActionDispatcher.dispatch(PluginAction.refreshFeed(feed: .newest))
+        ActionDispatcher.dispatch(PluginAction.refreshFeed(feed: .popular))
+    }
+
     private var installedPlugins: Plugins? {
         return store.getPlugins(site: site)
     }
 
-    private var featuredPlugins: [PluginDirectoryEntry] {
-        return store.getFeaturedPlugins(site: site) ?? []
+    private var featuredPlugins: [PluginDirectoryEntry]? {
+        return store.getFeaturedPlugins()
     }
 
-    private var popularPlugins: [PluginDirectoryEntry] {
-        return Array(store.getPluginDirectoryFeedPlugins(from: .popular)?.prefix(6) ?? [])
+    private var popularPlugins: [PluginDirectoryEntry]? {
+        guard let popular = store.getPluginDirectoryFeedPlugins(from: .popular) else {
+            return nil
+        }
+        return Array(popular.prefix(6))
     }
 
-    private var newPlugins: [PluginDirectoryEntry] {
-        return Array(store.getPluginDirectoryFeedPlugins(from: .newest)?.prefix(6) ?? [])
+    private var newPlugins: [PluginDirectoryEntry]? {
+        guard let newest = store.getPluginDirectoryFeedPlugins(from: .newest) else {
+            return nil
+        }
+        return Array(newest.prefix(6))
     }
 
     private func accessoryView(`for` directoryEntry: PluginDirectoryEntry) -> UIView {
