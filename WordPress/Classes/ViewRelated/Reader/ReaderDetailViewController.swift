@@ -1173,7 +1173,20 @@ extension ReaderDetailViewController: Accessible {
     }
 
     private func prepareContentForVoiceOver() {
-        textView.accessibilityLabel = "Cesar"
-        textView.accessibilityTraits = UIAccessibilityTraitStaticText
+        preparePostTitleForVoiceOver()
+    }
+
+    private func preparePostTitleForVoiceOver() {
+        guard let post = post else {
+            return
+        }
+
+        guard let title = post.titleForDisplay() else {
+            return
+        }
+        textHeaderStackView.isAccessibilityElement = false
+
+        titleLabel.accessibilityLabel = title
+        titleLabel.accessibilityTraits = UIAccessibilityTraitStaticText
     }
 }
