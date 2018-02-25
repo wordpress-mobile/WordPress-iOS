@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)applyPostMetaButtonStyle:(UIButton *)button;
 
++ (void)applyPostProgressViewStyle:(UIProgressView *)progressView;
+
 + (void)applyRestorePostLabelStyle:(UILabel *)label;
 
 + (void)applyRestorePostButtonStyle:(UIButton *)button;
