@@ -73,4 +73,9 @@ extension SignupEpilogueCell: UITextFieldDelegate {
         }
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        cellField.endEditing(true)
+        return true
+    }
+
 }
