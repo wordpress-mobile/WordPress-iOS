@@ -456,6 +456,8 @@ private extension PluginStore {
 
                 let message = String(format: NSLocalizedString("Succesfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
                 ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
+                ActionDispatcher.dispatch(PluginAction.activate(id: installedPlugin.id, site: site))
+                ActionDispatcher.dispatch(PluginAction.enableAutoupdates(id: installedPlugin.id, site: site))
             },
             failure: { [weak self] error in
                 self?.state.updatesInProgress[site]?.remove(plugin.slug)
