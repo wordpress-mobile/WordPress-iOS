@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,14 +20,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="700" height="66"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" image="reader-postaction-time" translatesAutoresizingMaskIntoConstraints="NO" id="imt-VI-wdh" userLabel="Icon">
-                            <rect key="frame" x="14" y="25" width="16" height="16"/>
+                            <rect key="frame" x="20" y="25" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="4kI-NL-bJP"/>
                                 <constraint firstAttribute="height" constant="16" id="G7c-hu-Hc6"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="240" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zK2-Ta-Z1W" userLabel="Title">
-                            <rect key="frame" x="34" y="0.0" width="652" height="66"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="240" verticalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zK2-Ta-Z1W" userLabel="Title">
+                            <rect key="frame" x="40" y="4" width="640" height="58"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -39,10 +39,10 @@
                     <constraints>
                         <constraint firstItem="zK2-Ta-Z1W" firstAttribute="leading" secondItem="imt-VI-wdh" secondAttribute="trailing" constant="4" id="5gJ-xQ-IIv"/>
                         <constraint firstItem="imt-VI-wdh" firstAttribute="centerY" secondItem="AjL-Ni-9e0" secondAttribute="centerY" id="7ht-6A-0hZ"/>
-                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="top" secondItem="AjL-Ni-9e0" secondAttribute="top" id="84n-R2-3hp"/>
+                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="top" secondItem="AjL-Ni-9e0" secondAttribute="top" constant="4" id="84n-R2-3hp"/>
+                        <constraint firstAttribute="bottom" secondItem="zK2-Ta-Z1W" secondAttribute="bottom" constant="4" id="H5r-aJ-Jgz"/>
                         <constraint firstItem="imt-VI-wdh" firstAttribute="leading" secondItem="AjL-Ni-9e0" secondAttribute="leadingMargin" id="X3z-pE-0Uc"/>
                         <constraint firstItem="zK2-Ta-Z1W" firstAttribute="trailing" secondItem="AjL-Ni-9e0" secondAttribute="trailingMargin" id="seF-xR-8yi"/>
-                        <constraint firstItem="zK2-Ta-Z1W" firstAttribute="centerY" secondItem="imt-VI-wdh" secondAttribute="centerY" id="ttr-ae-OMz"/>
                     </constraints>
                 </view>
             </subviews>
