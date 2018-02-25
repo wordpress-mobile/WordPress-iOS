@@ -74,6 +74,7 @@ class PostPostViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        WPAnalytics.track(.postEpilogueDisplayed)
     }
 
     @objc func animatePostPost() {
@@ -161,15 +162,18 @@ class PostPostViewController: UIViewController {
             return
         }
 
+        WPAnalytics.track(.postEpilogueShare)
         let sharingController = PostSharingController()
         sharingController.sharePost(post, fromView: shareButton, inViewController: self)
     }
 
     @IBAction func editTapped() {
+        WPAnalytics.track(.postEpilogueEdit)
         reshowEditor?()
     }
 
     @IBAction func viewTapped() {
+        WPAnalytics.track(.postEpilogueView)
         preview?()
     }
 
