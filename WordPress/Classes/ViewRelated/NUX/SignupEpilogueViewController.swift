@@ -74,16 +74,6 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
 
 private extension SignupEpilogueViewController {
 
-    func getUserInfo() -> LoginEpilogueUserInfo {
-
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        guard let account = service.defaultWordPressComAccount() else {
-            return LoginEpilogueUserInfo()
-        }
-
-        return LoginEpilogueUserInfo(account: account, loginFields: loginFields)
-    }
-
     func updateUserInfo() {
 
         guard let updatedDisplayName = updatedDisplayName else {
