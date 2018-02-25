@@ -74,19 +74,6 @@ class SignupUsernameTableViewController: NUXTableViewController {
             SVProgressHUD.dismiss()
             addSuggestions(newSuggestions)
         }
-
-//        let api = WordPressComRestApi(oAuthToken: "")
-//        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
-//        SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
-//        service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
-//            self?.isSearching = false
-//            SVProgressHUD.dismiss()
-//            addSuggestions(suggestions)
-//        }) { [weak self] (error) in
-//            DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
-//            self?.isSearching = false
-//            SVProgressHUD.dismiss()
-//        }
     }
 
     func setupBackgroundTapGestureRecognizer() {
@@ -169,7 +156,6 @@ extension SignupUsernameTableViewController {
     // MARK: table view cells
 
     private func titleAndDescriptionCell() -> UITableViewCell {
-//        let title = String(format: NSLocalizedString("Your username is currently \"%@\"", comment: "Title displaying the user's current username. Placeholder is "), currentUsername ?? "")
         let description = String(format: NSLocalizedString("Your username is currently \"%@\". It will be used for mentions and links, but otherwise people will just see your display name, \"%@\"", comment: "Description of how to pick a domain name during the site creation process"), currentUsername ?? "", displayName ?? "")
         let cell = LoginSocialErrorCell(title: "", description: description)
         cell.selectionStyle = .none
