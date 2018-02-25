@@ -132,7 +132,7 @@ extension SignupUsernameTableViewController {
             fallthrough
         default:
             let suggestion = suggestions[indexPath.row]
-            cell = suggestionCell(domain: suggestion)
+            cell = suggestionCell(username: suggestion)
         }
         return cell
     }
@@ -171,23 +171,14 @@ extension SignupUsernameTableViewController {
         return cell
     }
 
-    private func suggestionCell(domain: String) -> UITableViewCell {
+    private func suggestionCell(username: String) -> UITableViewCell {
         let cell = UITableViewCell()
 
-        cell.textLabel?.attributedText = styleDomain(domain)
+        cell.textLabel?.text = username
         cell.textLabel?.textColor = WPStyleGuide.darkGrey()
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
         return cell
-    }
-
-    private func styleDomain(_ domain: String) -> NSAttributedString {
-        let styledDomain: NSMutableAttributedString = NSMutableAttributedString(string: domain)
-        guard let dotPosition = domain.index(of: ".") else {
-            return styledDomain
-        }
-        styledDomain.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: NSMakeRange(0, dotPosition.encodedOffset))
-        return styledDomain
     }
 }
 
