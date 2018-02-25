@@ -211,7 +211,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
 
     private func shouldFetchFeatured() -> Bool {
         let hasFeaturedQuery = activeQueries.contains {
-            if case .featured = $0  {
+            if case .featured = $0 {
                 return true
             }
             return false
