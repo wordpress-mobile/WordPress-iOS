@@ -121,7 +121,9 @@ private extension SignupEpilogueViewController {
         }
         service.updateUserDetails(for: account, success: { () in
             self.navigationController?.dismiss(animated: true, completion: nil)
-        }, failure: { _ in })
+        }, failure: { _ in
+            self.navigationController?.dismiss(animated: true, completion: nil)
+        })
     }
 
 }
