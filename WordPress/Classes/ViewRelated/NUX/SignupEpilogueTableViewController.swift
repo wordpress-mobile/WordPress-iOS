@@ -3,6 +3,7 @@ import UIKit
 protocol SignupEpilogueTableViewControllerDelegate {
     func displayNameUpdated(newDisplayName: String)
     func passwordUpdated(newPassword: String)
+    func usernameTapped(userInfo: LoginEpilogueUserInfo?)
 }
 
 class SignupEpilogueTableViewController: NUXTableViewController {
@@ -228,9 +229,7 @@ extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
     }
 
     func usernameSelected() {
-        let alertController = UIAlertController(title: nil, message: "Username changer coming soon!", preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        present(alertController, animated: true, completion: nil)
+        delegate?.usernameTapped(userInfo: epilogueUserInfo)
     }
 
 }

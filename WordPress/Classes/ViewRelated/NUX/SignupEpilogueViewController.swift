@@ -7,6 +7,7 @@ class SignupEpilogueViewController: NUXViewController {
     private var buttonViewController: NUXButtonViewController?
     private var updatedDisplayName: String?
     private var updatedPassword: String?
+    private var epilogueUserInfo: LoginEpilogueUserInfo?
 
     // MARK: - View
 
@@ -29,6 +30,11 @@ class SignupEpilogueViewController: NUXViewController {
         if let vc = segue.destination as? SignupEpilogueTableViewController {
             vc.loginFields = loginFields
             vc.delegate = self
+        }
+
+        if let vc = segue.destination as? SignupUsernameViewController {
+            vc.currentUsername = epilogueUserInfo?.username
+            vc.displayName = epilogueUserInfo?.fullName
         }
     }
 
@@ -58,11 +64,25 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
         updatedPassword = newPassword
     }
 
+    func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
+        epilogueUserInfo = userInfo
+        performSegue(withIdentifier: .showUsernames, sender: self)
+    }
 }
 
 // MARK: - Private Extension
 
 private extension SignupEpilogueViewController {
+
+    func getUserInfo() -> LoginEpilogueUserInfo {
+
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        guard let account = service.defaultWordPressComAccount() else {
+            return LoginEpilogueUserInfo()
+        }
+
+        return LoginEpilogueUserInfo(account: account, loginFields: loginFields)
+    }
 
     func updateUserInfo() {
 
