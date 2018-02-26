@@ -92,15 +92,15 @@ class PluginDirectoryViewModel: Observable {
     }
 
     private var featuredPlugins: [PluginDirectoryEntry] {
-        return store.getFeaturedPlugins(site: site)
+        return store.getFeaturedPlugins(site: site) ?? []
     }
 
     private var popularPlugins: [PluginDirectoryEntry] {
-        return Array(store.getPluginDirectoryFeedPlugins(from: .popular).prefix(6))
+        return Array(store.getPluginDirectoryFeedPlugins(from: .popular)?.prefix(6) ?? [])
     }
 
     private var newPlugins: [PluginDirectoryEntry] {
-        return Array(store.getPluginDirectoryFeedPlugins(from: .newest).prefix(6))
+        return Array(store.getPluginDirectoryFeedPlugins(from: .newest)?.prefix(6) ?? [])
     }
 
     private func accessoryView(`for` directoryEntry: PluginDirectoryEntry) -> UIView {
