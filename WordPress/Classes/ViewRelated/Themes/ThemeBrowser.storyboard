@@ -332,6 +332,7 @@
                                     </constraints>
                                     <connections>
                                         <outlet property="currentThemeBar" destination="1gq-o6-8td" id="h1z-AV-nja"/>
+                                        <outlet property="currentThemeContainer" destination="Jwo-3t-dLB" id="gkO-lQ-U5M"/>
                                         <outlet property="currentThemeDivider" destination="mll-1k-nOP" id="Xz9-zM-kly"/>
                                         <outlet property="currentThemeLabel" destination="dxt-YX-Xef" id="N7E-LR-C7h"/>
                                         <outlet property="currentThemeName" destination="QqI-lf-7WU" id="qGX-CK-8ey"/>
