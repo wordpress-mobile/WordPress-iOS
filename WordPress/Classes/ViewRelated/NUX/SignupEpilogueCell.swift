@@ -66,11 +66,13 @@ extension SignupEpilogueCell: UITextFieldDelegate {
         }
     }
 
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if let cellType = cellType,
             cellType == .username {
             delegate?.usernameSelected()
+            return false
         }
+        return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
