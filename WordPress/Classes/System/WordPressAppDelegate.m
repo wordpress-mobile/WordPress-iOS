@@ -389,7 +389,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [WPUserAgent useWordPressUserAgentInUIWebViews];
 
     // WORKAROUND: Preload the Noto regular font to ensure it is not overridden
-    // by any of the Noto varients.  Size is arbitrary.
+    // by any of the Noto variants.  Size is arbitrary.
     // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
     // Remove this when #79 is resolved.
     [WPFontManager notoRegularFontOfSize:16.0];
@@ -537,8 +537,12 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderTintColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setCellTintColor:[WPStyleGuide wordPressBlue]];
 
-    // Customize the appearence of the text elements
+    // Customize the appearance of the text elements
     [self customizeAppearanceForTextElements];
+    
+    // Eventually move towards app skinning
+    Skin *skin = [[Skin alloc] init];
+    [Skin setActive:WordPressSkin];
 }
 
 - (void)customizeAppearanceForTextElements
