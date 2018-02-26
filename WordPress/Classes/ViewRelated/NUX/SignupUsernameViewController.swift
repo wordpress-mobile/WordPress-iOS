@@ -29,6 +29,7 @@ class SignupUsernameViewController: NUXViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addConfirmationWarning()
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     private func configureView() {
