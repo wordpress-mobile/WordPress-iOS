@@ -797,6 +797,7 @@ fileprivate extension ShareModularViewController {
             networkService.uploadPostWithMedia(title: shareData.title,
                                                body: shareData.contentBody,
                                                tags: shareData.tags,
+                                               categories: shareData.selectedCategoriesIDString,
                                                status: shareData.postStatus.rawValue,
                                                siteID: siteID,
                                                localMediaFileURLs: localImageURLs,
@@ -813,6 +814,7 @@ fileprivate extension ShareModularViewController {
             networkService.saveAndUploadPost(title: shareData.title,
                                              body: shareData.contentBody,
                                              tags: shareData.tags,
+                                             categories: shareData.selectedCategoriesIDString,
                                              status: shareData.postStatus.rawValue,
                                              siteID: siteID,
                                              onComplete: {

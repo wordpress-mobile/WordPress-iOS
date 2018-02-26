@@ -1763,6 +1763,7 @@
 		745EAF442003FD050066F415 /* ShareSegueHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSegueHandler.swift; sourceTree = "<group>"; };
 		745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionAbstractViewController.swift; sourceTree = "<group>"; };
 		745EAF4920040B220066F415 /* ShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareData.swift; sourceTree = "<group>"; };
+		745F7A69204460A10058BF3E /* Extensions 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Extensions 3.xcdatamodel"; sourceTree = "<group>"; };
 		7462BFCF2028C49800B552D8 /* ShareNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeViewModel.swift; sourceTree = "<group>"; };
 		7462BFD32028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeNavigationCoordinator.swift; sourceTree = "<group>"; };
 		7467324E2034E0400037E85B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
@@ -10044,10 +10045,11 @@
 		74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				745F7A69204460A10058BF3E /* Extensions 3.xcdatamodel */,
 				740C7DB420386E7C00FF0229 /* Extensions 2.xcdatamodel */,
 				74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */,
 			);
-			currentVersion = 740C7DB420386E7C00FF0229 /* Extensions 2.xcdatamodel */;
+			currentVersion = 745F7A69204460A10058BF3E /* Extensions 3.xcdatamodel */;
 			path = Extensions.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
