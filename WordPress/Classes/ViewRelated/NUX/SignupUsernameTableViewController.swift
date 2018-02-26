@@ -1,19 +1,16 @@
-import UIKit
 import SVProgressHUD
 
-protocol SiteCreationDomainsTableViewControllerDelegate {
-    func domainSelected(_ domain: String)
+protocol SignupUsernameTableViewControllerDelegate {
+    func usernameSelected(_ username: String)
     func newSearchStarted()
 }
 
-class SiteCreationDomainsTableViewController: NUXTableViewController {
-
-    open var siteName: String?
-    open var delegate: SiteCreationDomainsTableViewControllerDelegate?
-
-    private var service: DomainsService?
-    private var siteTitleSuggestions: [String] = []
-    private var searchSuggestions: [String] = []
+class SignupUsernameTableViewController: NUXTableViewController {
+    open var currentUsername: String?
+    open var displayName: String?
+    open var delegate: SignupUsernameTableViewControllerDelegate?
+    private var service: AccountSettingsService?
+    private var suggestions: [String] = []
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
@@ -29,20 +26,20 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
-        navigationItem.title = NSLocalizedString("Create New Site", comment: "Title for the site creation flow.")
+        navigationItem.title = NSLocalizedString("Pick username", comment: "Title for selecting a new username in the site creation flow.")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // only procede with initial search if we don't have site title suggestions yet (hopefully only the first time)
-        guard siteTitleSuggestions.count < 1,
-            let nameToSearch = siteName else {
-            return
+        guard suggestions.count < 1,
+            let nameToSearch = displayName else {
+                return
         }
 
-        suggestDomains(for: nameToSearch) { [weak self] (suggestions) in
-            self?.siteTitleSuggestions = suggestions
+        suggestUsernames(for: nameToSearch) { [weak self] (suggestions) in
+            self?.suggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue), with: .automatic)
         }
     }
@@ -52,41 +49,34 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         SVProgressHUD.dismiss()
     }
 
-    /// Fetches new domain suggestions based on the provided string
-    ///
-    /// - Parameters:
-    ///   - searchTerm: string to base suggestions on
-    ///   - addSuggestions: function to call when results arrive
-    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [String]) ->()) {
+    private func suggestUsernames(for searchTerm: String, addSuggestions: @escaping ([String]) ->()) {
         guard !isSearching else {
             return
         }
 
         isSearching = true
 
-        let api = WordPressComRestApi(oAuthToken: "")
-        let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
-        SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
-        service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard let account = accountService.defaultWordPressComAccount(),
+            let api = account.wordPressComRestApi else {
+            return
+        }
+        SVProgressHUD.show(withStatus: NSLocalizedString("Loading usernames", comment: "Shown while the app waits for the username suggestions web service to return during the site creation process."))
+
+        let service = AccountSettingsService(userID: account.userID.intValue, api: api)
+        service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
             self?.isSearching = false
             SVProgressHUD.dismiss()
-            addSuggestions(suggestions)
-        }) { [weak self] (error) in
-            DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
-            self?.isSearching = false
-            SVProgressHUD.dismiss()
+            addSuggestions(newSuggestions)
         }
     }
 
-    // MARK: background gesture recognizer
-
-    /// Sets up a gesture recognizer to detect taps on the view, but not its content.
-    ///
     func setupBackgroundTapGestureRecognizer() {
         let gestureRecognizer = UITapGestureRecognizer()
-        gestureRecognizer.on { [weak self](gesture) in
+        gestureRecognizer.on(call: { [weak self] (gesture) in
             self?.view.endEditing(true)
-        }
+        })
         gestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(gestureRecognizer)
     }
@@ -94,7 +84,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
 // MARK: UITableViewDataSource
 
-extension SiteCreationDomainsTableViewController {
+extension SignupUsernameTableViewController {
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
         case searchField = 1
@@ -103,6 +93,11 @@ extension SiteCreationDomainsTableViewController {
         static var count: Int {
             return suggestions.rawValue + 1
         }
+    }
+
+    private enum SuggestionStyles {
+        static let indentationWidth: CGFloat = 20.0
+        static let indentationLevel = 1
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -114,13 +109,9 @@ extension SiteCreationDomainsTableViewController {
         case Sections.titleAndDescription.rawValue:
             return 1
         case Sections.searchField.rawValue:
-            if siteTitleSuggestions.count == 0 {
-                return 0
-            } else {
-                return 1
-            }
+            return suggestions.count > 0 ? 1 : 0
         case Sections.suggestions.rawValue:
-            return searchSuggestions.count > 0 ? searchSuggestions.count : siteTitleSuggestions.count
+            return suggestions.count + 1
         default:
             return 0
         }
@@ -136,13 +127,12 @@ extension SiteCreationDomainsTableViewController {
         case Sections.suggestions.rawValue:
             fallthrough
         default:
-            let suggestion: String
-            if searchSuggestions.count > 0 {
-                suggestion = searchSuggestions[indexPath.row]
+            if indexPath.row == 0 {
+                cell = suggestionCell(username: currentUsername ?? "username not found", checked: true)
+                selectedCell = cell
             } else {
-                suggestion = siteTitleSuggestions[indexPath.row]
+                cell = suggestionCell(username: suggestions[indexPath.row - 1], checked: false)
             }
-            cell = suggestionCell(domain: suggestion)
         }
         return cell
     }
@@ -166,11 +156,28 @@ extension SiteCreationDomainsTableViewController {
     // MARK: table view cells
 
     private func titleAndDescriptionCell() -> UITableViewCell {
-        let title = NSLocalizedString("Step 4 of 4", comment: "Title for last step in the site creation process.").localizedUppercase
-        let description = NSLocalizedString("Pick an available \"yourname.wordpress.com\" address to let people find you on the web.", comment: "Description of how to pick a domain name during the site creation process")
-        let cell = LoginSocialErrorCell(title: title, description: description)
+        let descriptionStyled = buildHeaderDescription()
+        let cell = LoginSocialErrorCell(title: "", description: descriptionStyled)
         cell.selectionStyle = .none
         return cell
+    }
+
+    private func buildHeaderDescription() -> NSAttributedString {
+        guard let currentUsername = currentUsername, let displayName = displayName else {
+            return NSAttributedString(string: "")
+        }
+
+        let baseDescription = String(format: NSLocalizedString("Your username is currently \"%@\". It will be used for mentions and links, but otherwise people will just see your display name, \"%@\"", comment: "Description of how to pick a domain name during the site creation process"), currentUsername, displayName)
+        guard let rangeOfUsername = baseDescription.range(of: currentUsername),
+            let rangeOfDisplayName = baseDescription.range(of: displayName) else {
+                return NSAttributedString(string: baseDescription)
+        }
+        let boldFont = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        let plainFont = UIFont.preferredFont(forTextStyle: .subheadline)
+        let description = NSMutableAttributedString(string: baseDescription, attributes: [.font: plainFont])
+        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfUsername))
+        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfDisplayName))
+        return description
     }
 
     private func searchFieldCell() -> SiteCreationDomainSearchTableViewCell {
@@ -182,45 +189,46 @@ extension SiteCreationDomainsTableViewController {
         return cell
     }
 
-    private func suggestionCell(domain: String) -> UITableViewCell {
+    private func suggestionCell(username: String, checked: Bool) -> UITableViewCell {
         let cell = UITableViewCell()
 
-        cell.textLabel?.attributedText = styleDomain(domain)
-        cell.textLabel?.textColor = WPStyleGuide.grey()
-        cell.indentationWidth = 20.0
-        cell.indentationLevel = 1
-        return cell
-    }
-
-    private func styleDomain(_ domain: String) -> NSAttributedString {
-        let styledDomain: NSMutableAttributedString = NSMutableAttributedString(string: domain)
-        guard let dotPosition = domain.index(of: ".") else {
-            return styledDomain
+        cell.textLabel?.text = username
+        cell.textLabel?.textColor = WPStyleGuide.darkGrey()
+        cell.indentationWidth = SuggestionStyles.indentationWidth
+        cell.indentationLevel = SuggestionStyles.indentationLevel
+        if checked {
+            cell.accessoryType = .checkmark
         }
-        styledDomain.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: NSMakeRange(0, dotPosition.encodedOffset))
-        return styledDomain
+        return cell
     }
 }
 
-// MARK: UITableViewDelegate
+extension String {
+    private func nsRange(from range: Range<Index>) -> NSRange {
+        let from = range.lowerBound
+        let to = range.upperBound
 
-extension SiteCreationDomainsTableViewController {
+        let location = distance(from: startIndex, to: from)
+        let length = distance(from: from, to: to)
+
+        return NSRange(location: location, length: length)
+    }
+}
+
+extension SignupUsernameTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedDomain: String
+        let selectedUsername: String
         switch indexPath.section {
         case Sections.suggestions.rawValue:
-            if searchSuggestions.count > 0 {
-                selectedDomain = searchSuggestions[indexPath.row]
+            if indexPath.row == 0 {
+                selectedUsername = ""
             } else {
-                selectedDomain = siteTitleSuggestions[indexPath.row]
+                selectedUsername = suggestions[indexPath.row - 1]
             }
         default:
             return
         }
-
-        // Remove ".wordpress.com" before sending it to the delegate
-        selectedDomain = selectedDomain.components(separatedBy: ".")[0]
-        delegate?.domainSelected(selectedDomain)
+        delegate?.usernameSelected(selectedUsername)
 
         tableView.deselectSelectedRowWithAnimation(true)
 
@@ -237,21 +245,20 @@ extension SiteCreationDomainsTableViewController {
     }
 }
 
+
 // MARK: SiteCreationDomainSearchTableViewCellDelegate
 
-extension SiteCreationDomainsTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
+extension SignupUsernameTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
         delegate?.newSearchStarted()
 
         guard searchTerm.count > 0 else {
-            searchSuggestions = []
-            tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
             return
         }
 
-        suggestDomains(for: searchTerm) { [weak self] (suggestions) in
-            self?.searchSuggestions = suggestions
+        suggestUsernames(for: searchTerm) { [weak self] (suggestions) in
+            self?.suggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
