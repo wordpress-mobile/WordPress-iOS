@@ -620,7 +620,7 @@ extension ReaderPostCardCell: Accessible {
         let authorName = postAuthor()
         let blogTitle = blogName()
 
-        return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + "," + postTitle() + "," + postContent()
+        return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + ", " + postTitle() + ", " + postContent()
     }
 
     private func cardAccessibilityHint() -> String {
@@ -645,7 +645,7 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func headerButtonAccessibilityLabel(name: String, title: String) -> String {
-        return authorNameAndBlogTitle(name: name, title: title) + "," + datePublished()
+        return authorNameAndBlogTitle(name: name, title: title) + ", " + datePublished()
     }
 
     private func authorNameAndBlogTitle(name: String, title: String) -> String {
@@ -719,7 +719,7 @@ extension ReaderPostCardCell: Accessible {
 
     private func appendLikedCount(label: String) -> String {
         if let likeCount = contentProvider?.likeCountForDisplay() {
-            return label + "," + likeCount
+            return label + ", " + likeCount
         } else {
             return label
         }
