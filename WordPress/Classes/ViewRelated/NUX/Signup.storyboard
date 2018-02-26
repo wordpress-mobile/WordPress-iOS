@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -208,7 +209,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="inn-oe-jvt" firstAttribute="top" secondItem="IqI-1c-b2S" secondAttribute="top" id="4Qy-07-V8Y"/>
+                            <constraint firstItem="inn-oe-jvt" firstAttribute="top" secondItem="IqI-1c-b2S" secondAttribute="topMargin" constant="-20" id="4Qy-07-V8Y"/>
                             <constraint firstItem="rjJ-Oz-vCa" firstAttribute="bottom" secondItem="IqI-1c-b2S" secondAttribute="bottom" id="gXB-2t-wqt"/>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="leading" secondItem="nKx-sI-ahu" secondAttribute="leading" id="jez-ad-Ryr"/>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="trailing" secondItem="nKx-sI-ahu" secondAttribute="trailing" id="kam-4m-1ir"/>
