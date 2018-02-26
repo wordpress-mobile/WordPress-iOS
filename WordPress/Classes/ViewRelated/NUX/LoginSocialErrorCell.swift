@@ -1,6 +1,7 @@
 class LoginSocialErrorCell: UITableViewCell {
     private let errorTitle: String
     private let errorDescription: String
+    private var errorDescriptionStyled: NSAttributedString?
     private let titleLabel: UILabel
     private let descriptionLabel: UILabel
     private let labelStack: UIStackView
@@ -14,6 +15,19 @@ class LoginSocialErrorCell: UITableViewCell {
     @objc init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
+        titleLabel = UILabel()
+        descriptionLabel = UILabel()
+        labelStack = UIStackView()
+
+        super.init(style: .default, reuseIdentifier: "LoginSocialErrorCell")
+
+        layoutLabels()
+    }
+
+    init(title: String, description styledDescription: NSAttributedString) {
+        errorDescriptionStyled = styledDescription
+        errorDescription = ""
+        errorTitle = title
         titleLabel = UILabel()
         descriptionLabel = UILabel()
         labelStack = UIStackView()
@@ -58,7 +72,11 @@ class LoginSocialErrorCell: UITableViewCell {
             ])
 
         titleLabel.text = errorTitle.localizedUppercase
-        descriptionLabel.text = errorDescription
+        if let styledDescription = errorDescriptionStyled {
+            descriptionLabel.attributedText = styledDescription
+        } else {
+            descriptionLabel.text = errorDescription
+        }
 
         backgroundColor = WPStyleGuide.greyLighten30()
     }
