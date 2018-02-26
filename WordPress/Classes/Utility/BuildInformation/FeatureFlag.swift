@@ -15,7 +15,7 @@ enum FeatureFlag: Int {
         case .exampleFeature:
             return true
         case .socialSignup:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .activity:
