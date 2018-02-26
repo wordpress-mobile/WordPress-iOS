@@ -48,6 +48,10 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureViewForEditingIfNeeded()
+
+        // If email address already exists, pre-populate it.
+        emailField.text = loginFields.emailAddress
+
         configureSubmitButton(animating: false)
     }
 
