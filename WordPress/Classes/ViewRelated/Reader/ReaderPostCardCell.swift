@@ -607,6 +607,7 @@ extension ReaderPostCardCell: Accessible {
         prepareLikeForVoiceOver()
         prepareMenuForVoiceOver()
         prepareVisitForVoiceOver()
+        prepareFollowButtonForVoiceOver()
     }
 
     private func prepareCardForVoiceOver() {
@@ -747,6 +748,44 @@ extension ReaderPostCardCell: Accessible {
         let hintFormat = NSLocalizedString("Visit %@ in a web view", comment: "A call to action to visit the specified blog via a web view. Accessibility hint in Reader")
         visitButton.accessibilityHint = String(format: hintFormat, blogName())
         visitButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    func prepareFollowButtonForVoiceOver() {
+        if hidesFollowButton {
+            return
+        }
+
+        followButton.accessibilityLabel = followLabel()
+        followButton.accessibilityHint = followHint()
+        followButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func followLabel() -> String {
+        return followButtonIsSelected() ? followingLabel() : notFollowingLabel()
+    }
+
+    private func followingLabel() -> String {
+        return NSLocalizedString("Following", comment: "Accessibility label for following buttons.")
+    }
+
+    private func notFollowingLabel() -> String {
+        return NSLocalizedString("Not following", comment: "Accessibility label for unselected following buttons.")
+    }
+
+    private func followHint() -> String {
+        return followButtonIsSelected() ? unfollow(): follow()
+    }
+
+    private func unfollow() -> String {
+        return NSLocalizedString("Unfollows blog", comment: "Spoken hint describing action for selected following buttons.")
+    }
+
+    private func follow() -> String {
+        return NSLocalizedString("Follows blog", comment: "Spoken hint describing action for unselected following buttons.")
+    }
+
+    private func followButtonIsSelected() -> Bool {
+        return contentProvider?.isFollowing() ?? false
     }
 
     private func blogName() -> String {
