@@ -195,7 +195,7 @@ private extension SignupEpilogueTableViewController {
         let nameLowercased = localCleaned.replacingOccurrences(of: ".", with: " ")
         // step 5: capitalize
         let autoDisplayName = nameLowercased.capitalized
-        
+
         return autoDisplayName
     }
 
