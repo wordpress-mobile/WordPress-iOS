@@ -59,58 +59,57 @@
                                             <color key="textColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="39.5" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="FCF-E3-KhT" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="87" y="51.5" width="39.5" height="16"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="16" id="H5Y-Fw-e4K"/>
-                                            </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="Editor"/>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                    <color key="value" red="0.97037827968597412" green="0.97034931182861328" blue="0.97036576271057129" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </view>
-                                        <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="71" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="ecj-mn-SNZ" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="134" y="51.5" width="71" height="16"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="Superadmin"/>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                    <color key="value" red="0.97037827968597412" green="0.97034931182861328" blue="0.97036576271057129" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="OYa-bW-ydS">
+                                            <rect key="frame" x="87" y="51.5" width="118.5" height="16"/>
+                                            <subviews>
+                                                <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="39.5" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="FCF-E3-KhT" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="39.5" height="16"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="text" value="Editor"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                            <color key="value" red="0.97037827968597412" green="0.97034931182861328" blue="0.97036576271057129" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                            <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="71" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="ecj-mn-SNZ" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
+                                                    <rect key="frame" x="47.5" y="0.0" width="71" height="16"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="text" value="Superadmin"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                            <color key="value" red="0.97037827968597412" green="0.97034931182861328" blue="0.97036576271057129" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                            <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="fUp-Sh-uv5" firstAttribute="centerY" secondItem="HXS-gQ-WaR" secondAttribute="centerY" id="3SD-YC-w0g"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Ake-ZW-wkV" secondAttribute="trailing" id="JHb-F8-9I3"/>
-                                        <constraint firstItem="FCF-E3-KhT" firstAttribute="leading" secondItem="Ake-ZW-wkV" secondAttribute="leading" id="O7s-V9-ShE"/>
+                                        <constraint firstItem="OYa-bW-ydS" firstAttribute="leading" secondItem="fUp-Sh-uv5" secondAttribute="trailing" constant="15" id="NTJ-Sa-GBI"/>
                                         <constraint firstItem="Ake-ZW-wkV" firstAttribute="top" secondItem="SRh-jK-Qmd" secondAttribute="baseline" constant="2" id="TnJ-il-F2r"/>
                                         <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="Ake-ZW-wkV" secondAttribute="leading" id="Wm0-WC-uBC"/>
                                         <constraint firstItem="fUp-Sh-uv5" firstAttribute="leading" secondItem="HXS-gQ-WaR" secondAttribute="leadingMargin" id="aLY-Pv-M2Y"/>
-                                        <constraint firstItem="ecj-mn-SNZ" firstAttribute="leading" secondItem="FCF-E3-KhT" secondAttribute="trailing" constant="8" id="d57-7i-RaC"/>
+                                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="OYa-bW-ydS" secondAttribute="trailing" id="d4S-lu-9qc"/>
                                         <constraint firstItem="SRh-jK-Qmd" firstAttribute="top" secondItem="HXS-gQ-WaR" secondAttribute="topMargin" constant="9" id="dCD-Nj-Mju"/>
-                                        <constraint firstItem="ecj-mn-SNZ" firstAttribute="centerY" secondItem="FCF-E3-KhT" secondAttribute="centerY" id="dEi-xM-Dr5"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="FCF-E3-KhT" secondAttribute="bottom" constant="7.5" id="fBF-XC-b2r"/>
                                         <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="fUp-Sh-uv5" secondAttribute="trailing" constant="15" id="jCI-Ib-bvd"/>
+                                        <constraint firstItem="OYa-bW-ydS" firstAttribute="top" secondItem="Ake-ZW-wkV" secondAttribute="bottom" constant="2.5" id="mph-af-JeV"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="SRh-jK-Qmd" secondAttribute="trailing" id="p9j-4O-zkj"/>
-                                        <constraint firstItem="FCF-E3-KhT" firstAttribute="top" secondItem="Ake-ZW-wkV" secondAttribute="bottom" constant="3" id="qmv-5j-PTa"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="ecj-mn-SNZ" secondAttribute="bottom" constant="7.5" id="vWR-qv-pQf"/>
-                                        <constraint firstItem="ecj-mn-SNZ" firstAttribute="height" secondItem="FCF-E3-KhT" secondAttribute="height" id="zm6-Il-wpY"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="OYa-bW-ydS" secondAttribute="bottom" constant="7.5" id="zWN-C6-adO"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
