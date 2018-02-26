@@ -197,6 +197,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         if let _ = post {
             configureView()
         }
+
+        prepareForVoiceOver()
     }
 
 
@@ -1130,3 +1132,62 @@ extension ReaderDetailViewController: PrefersFullscreenDisplay {}
 
 // Let's the split view know this vc changes the status bar style.
 extension ReaderDetailViewController: DefinesVariableStatusBarStyle {}
+
+extension ReaderDetailViewController: Accessible {
+    func prepareForVoiceOver() {
+        prepareMenuForVoiceOver()
+        prepareHeaderForVoiceOver()
+        prepareContentForVoiceOver()
+    }
+
+    private func prepareMenuForVoiceOver() {
+        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader's post details")
+        menuButton.accessibilityTraits = UIAccessibilityTraitButton
+        menuButton.accessibilityHint = NSLocalizedString("Shows more options.", comment: "Accessibility hint for the More button on Reader's post details")
+    }
+
+    private func prepareHeaderForVoiceOver() {
+        guard let post = post else {
+            blogNameButton.isAccessibilityElement = false
+            return
+        }
+        blogNameButton.isAccessibilityElement = true
+        blogNameButton.accessibilityTraits = UIAccessibilityTraitStaticText
+        if let label = blogNameLabel(post) {
+            blogNameButton.accessibilityLabel = label
+        }
+    }
+
+    private func blogNameLabel(_ post: ReaderPost) -> String? {
+        guard let postedIn = post.blogNameForDisplay(),
+            let postedBy = post.authorDisplayName else {
+                return nil
+        }
+
+        guard let postedOn = post.dateCreated?.mediumString() else {
+            let format = NSLocalizedString("Posted in %@, by %@.", comment: "Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, author name")
+            return String(format: format, postedIn, postedBy)
+        }
+
+        let format = NSLocalizedString("Posted in %@, by %@, %@", comment: "Accessibility label for the blog name in the Reader's post details. Placeholders are blog title, author name, published date")
+        return String(format: format, postedIn, postedBy, postedOn)
+    }
+
+    private func prepareContentForVoiceOver() {
+        preparePostTitleForVoiceOver()
+    }
+
+    private func preparePostTitleForVoiceOver() {
+        guard let post = post else {
+            return
+        }
+
+        guard let title = post.titleForDisplay() else {
+            return
+        }
+        textHeaderStackView.isAccessibilityElement = false
+
+        titleLabel.accessibilityLabel = title
+        titleLabel.accessibilityTraits = UIAccessibilityTraitStaticText
+    }
+}
