@@ -17,6 +17,7 @@ class PeopleRoleBadgeLabel: BadgeLabel {
 
     fileprivate func setupView() {
         adjustsFontForContentSizeCategory = true
+        adjustsFontSizeToFitWidth = true
         horizontalPadding = WPStyleGuide.People.RoleBadge.padding
         font = WPStyleGuide.People.RoleBadge.font
         layer.borderWidth = WPStyleGuide.People.RoleBadge.borderWidth
