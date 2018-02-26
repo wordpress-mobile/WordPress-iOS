@@ -223,7 +223,7 @@ extension SignupUsernameTableViewController {
             if indexPath.row == 0 {
                 selectedUsername = ""
             } else {
-                selectedUsername = suggestions[indexPath.row]
+                selectedUsername = suggestions[indexPath.row - 1]
             }
         default:
             return
