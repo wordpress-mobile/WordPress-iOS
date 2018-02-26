@@ -146,14 +146,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="site-creation-blog" translatesAutoresizingMaskIntoConstraints="NO" id="YhU-Hd-s0v">
-                                <rect key="frame" x="80" y="257.5" width="215" height="172"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="social-signup-waiting" translatesAutoresizingMaskIntoConstraints="NO" id="YhU-Hd-s0v">
+                                <rect key="frame" x="80" y="283.5" width="215" height="120"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="YhU-Hd-s0v" secondAttribute="height" multiplier="243:194" id="C7u-Fh-NUi"/>
+                                    <constraint firstAttribute="width" secondItem="YhU-Hd-s0v" secondAttribute="height" multiplier="273:152" id="C7u-Fh-NUi"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiA-2f-xfj">
-                                <rect key="frame" x="109" y="459.5" width="157.5" height="20.5"/>
+                                <rect key="frame" x="109" y="433.5" width="157.5" height="20.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="bqy-9g-gij"/>
                                 </constraints>
@@ -261,6 +261,6 @@
     </scenes>
     <resources>
         <image name="icon-username-field" width="18" height="18"/>
-        <image name="site-creation-blog" width="1458" height="1164"/>
+        <image name="social-signup-waiting" width="273" height="152"/>
     </resources>
 </document>
