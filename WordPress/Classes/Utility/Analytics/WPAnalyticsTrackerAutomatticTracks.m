@@ -786,6 +786,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPluginDeactivated:
             eventName = @"plugin_deactivated";
             break;
+        case WPAnalyticsStatPluginAutoupdateEnabled:
+            eventName = @"plugin_autoupdate_enabled";
+            break;
+        case WPAnalyticsStatPluginAutoupdateDisabled:
+            eventName = @"plugin_autoupdate_disabled";
+            break;
         case WPAnalyticsStatPluginSearchPerformed:
             eventName = @"plugin_search_performed";
             break;

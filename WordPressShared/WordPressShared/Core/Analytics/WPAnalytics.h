@@ -193,6 +193,8 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatPluginInstalled,
     WPAnalyticsStatPluginActivated,
     WPAnalyticsStatPluginDeactivated,
+    WPAnalyticsStatPluginAutoupdateEnabled,
+    WPAnalyticsStatPluginAutoupdateDisabled,
     WPAnalyticsStatPluginSearchPerformed,
     WPAnalyticsStatPostEpilogueDisplayed,
     WPAnalyticsStatPostEpilogueEdit,
