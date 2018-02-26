@@ -67,6 +67,48 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         })
     }
 
+    /// Change the current user's username
+    ///
+    /// - Parameters:
+    ///   - username: the new username
+    ///   - success: block for success
+    ///   - failure: block for failure
+    public func changeUsername(to username: String, success: @escaping () -> Void, failure: @escaping () -> Void) {
+        let endpoint = "me/username"
+        let action = "none"
+        let parameters = ["username": username, "action": action]
+
+        guard let path = self.path(forEndpoint: endpoint, withVersion: ._1_1) else {
+            failure()
+            return
+        }
+        wordPressComRestApi.POST(path,
+                                 parameters: parameters as [String : AnyObject]?,
+                                 success: { responseObject, httpResponse in
+                                    success()
+                                 },
+                                 failure: { error, httpResponse in
+                                    failure()
+                                 })
+    }
+
+    public func suggestUsernames(base: String, finished: @escaping ([String]) -> Void) {
+        let endpoint = "wpcom/v2/users/username/suggestions"
+        let parameters = ["name": base]
+
+        wordPressComRestApi.GET(endpoint, parameters: parameters as [String: AnyObject]?, success: { (responseObject, httpResponse) in
+            guard let response = responseObject as? [String: AnyObject],
+                let suggestions = response["suggestions"] as? [String] else {
+                finished([])
+                return
+            }
+
+            finished(suggestions)
+        }) { (error, httpResponse) in
+            finished([])
+        }
+    }
+
     public func updatePassword(_ password: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "me/settings"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
