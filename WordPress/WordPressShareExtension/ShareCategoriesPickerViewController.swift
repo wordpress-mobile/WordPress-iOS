@@ -56,6 +56,13 @@ class ShareCategoriesPickerViewController: UITableViewController {
         return button
     }()
 
+    fileprivate var categoryTree: CategoryTree? {
+        guard let allCategories = self.allCategories else {
+            return nil
+        }
+        return CategoryTree(categories: allCategories)
+    }
+
     // MARK: - Initializers
 
     init(categoryInfo: SiteCategories) {
