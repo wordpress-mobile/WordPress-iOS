@@ -134,6 +134,7 @@ class PluginDirectoryViewController: UITableViewController {
 
 extension PluginDirectoryViewController: UISearchControllerDelegate {
     func didPresentSearchController(_ searchController: UISearchController) {
+        WPAppAnalytics.track(.pluginSearchPerformed, withBlogID: viewModel.site.siteID as NSNumber)
         // This is required when programmatically `activate`ing the Search controller,
         // e.g. when the user taps on the "Search" icon in the navbar
         DispatchQueue.main.async {
@@ -180,6 +181,7 @@ extension PluginDirectoryViewController: PluginPresenter {
 
 extension PluginDirectoryViewController: PluginListPresenter {
     func present(site: JetpackSiteRef, query: PluginQuery) {
+        WPAppAnalytics.track(.openedPluginList, withBlogID: site.siteID as NSNumber)
         let listVC = PluginListViewController(site: site, query: query)
         navigationController?.pushViewController(listVC, animated: true)
     }
