@@ -56,24 +56,6 @@ class ShareCategoriesPickerViewController: UITableViewController {
         return button
     }()
 
-    /// Activity spinner used when loading sites
-    ///
-    fileprivate lazy var loadingActivityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-
-    /// No results view
-    ///
-    @objc lazy var noResultsView: WPNoResultsView = {
-        let title = NSLocalizedString("No available Categories", comment: "A short message that informs the user no categories could be loaded in the share extension.")
-        return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
-    }()
-
-    /// Loading view
-    ///
-    @objc lazy var loadingView: WPNoResultsView = {
-        let title = NSLocalizedString("Fetching Categories...", comment: "A short message to inform the user data for their categories are being fetched.")
-        return WPNoResultsView(title: title, message: nil, accessoryView: loadingActivityIndicatorView, buttonTitle: nil)
-    }()
-
     // MARK: - Initializers
 
     init(categoryInfo: SiteCategories) {
@@ -236,28 +218,6 @@ extension ShareCategoriesPickerViewController {
             onValueChanged?(categoryInfo)
         }
         _ = navigationController?.popViewController(animated: true)
-    }
-}
-
-// MARK: - Backend Interaction
-
-fileprivate extension ShareCategoriesPickerViewController {
-    // FIXME: Pull to refresh
-    func loadCategories() {
-        let service = AppExtensionsService()
-        service.fetchCategoriesForSite(siteID, onSuccess: { categories in
-            let categories = categories.flatMap { return $0 }
-            self.allCategories = categories
-        }, onFailure: { error in
-            self.categoriesFailedLoading(error)
-        })
-    }
-
-    func categoriesFailedLoading(_ error: Error?) {
-        if let error = error {
-            DDLogError("Error loading categories: \(error)")
-        }
-        // FIXME: e.g. dataSource = FailureDataSource()
     }
 }
 
