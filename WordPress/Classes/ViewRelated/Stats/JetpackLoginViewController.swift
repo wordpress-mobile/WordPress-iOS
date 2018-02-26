@@ -157,7 +157,7 @@ class JetpackLoginViewController: UIViewController {
     // MARK: - Browser
 
     fileprivate func openInstallJetpackURL() {
-        WPAppAnalytics.track(.selectedInstallJetpack)
+        trackStat(.selectedInstallJetpack)
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)
@@ -167,6 +167,17 @@ class JetpackLoginViewController: UIViewController {
     fileprivate func signIn() {
         observeLoginNotifications(true)
         WordPressAuthenticator.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+    }
+
+    fileprivate func trackStat(_ stat: WPAnalyticsStat) {
+        var properties = [String: String]()
+        switch promptType {
+        case .stats:
+            properties["source"] = "stats"
+        case .notifications:
+            properties["source"] = "notifications"
+        }
+        WPAnalytics.track(stat, withProperties: properties)
     }
 
     // MARK: - Actions
@@ -182,12 +193,12 @@ class JetpackLoginViewController: UIViewController {
 
 extension JetpackLoginViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCompleted() {
-        WPAppAnalytics.track(.installJetpackCompleted)
+        trackStat(.installJetpackCompleted)
         dismiss(animated: true, completion: completionBlock)
     }
 
     func jetpackConnectionCanceled() {
-        WPAppAnalytics.track(.installJetpackCanceled)
+        trackStat(.installJetpackCanceled)
         dismiss(animated: true, completion: completionBlock)
     }
 }

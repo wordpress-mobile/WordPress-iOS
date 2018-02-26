@@ -67,6 +67,22 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         })
     }
 
+    public func updatePassword(_ password: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let endpoint = "me/settings"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
+        let parameters = ["password": password]
+        
+        wordPressComRestApi.POST(path!,
+                                 parameters: parameters as [String : AnyObject]?,
+                                 success: {
+                                    responseObject, httpResponse in
+                                    success()
+        },
+                                 failure: { error, httpResponse in
+                                    failure(error)
+        })
+    }
+    
     fileprivate func settingsFromResponse(_ responseObject: AnyObject) throws -> AccountSettings {
         guard let
             response = responseObject as? [String: AnyObject],
