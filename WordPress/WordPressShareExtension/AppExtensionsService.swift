@@ -159,12 +159,13 @@ extension AppExtensionsService {
     ///   - title: Post title
     ///   - body: Post content body
     ///   - tags: Post tags
+    ///   - categories: Post Categories
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - onComplete: Completion handler executed after a post is uploaded to the server
     ///   - onFailure: The (optional) failure handler.
     ///
-    func saveAndUploadPost(title: String, body: String, tags: String?, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
+    func saveAndUploadPost(title: String, body: String, tags: String?, categories: String?, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
         guard let remotePost = RemotePost(siteID: NSNumber(value: siteID), status: status, title: title, content: body) else {
             DDLogError("Unable to create the post object required for uploading.")
             onFailure?()
@@ -173,6 +174,14 @@ extension AppExtensionsService {
 
         if let tags = tags {
             remotePost.tags = tags.arrayOfTags()
+        }
+
+        if let categories = categories {
+            remotePost.categories = categories.arrayOfTags().flatMap({Int($0)}).map({
+                let remoteCat = RemotePostCategory()
+                remoteCat.categoryID = NSNumber(value: $0)
+                return remoteCat
+            })
         }
 
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
@@ -203,6 +212,7 @@ extension AppExtensionsService {
     ///   - title: Post title
     ///   - body: Post content body
     ///   - tags: Post tags
+    ///   - tags: Post categories
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - localMediaFileURLs: An array of local URLs containing the media files to upload
@@ -212,6 +222,7 @@ extension AppExtensionsService {
     func uploadPostWithMedia(title: String,
                              body: String,
                              tags: String?,
+                             categories: String?,
                              status: String,
                              siteID: Int,
                              localMediaFileURLs: [URL],
@@ -230,6 +241,14 @@ extension AppExtensionsService {
 
         if let tags = tags {
             remotePost.tags = tags.arrayOfTags()
+        }
+
+        if let categories = categories {
+            remotePost.categories = categories.arrayOfTags().flatMap({Int($0)}).map({
+                let remoteCat = RemotePostCategory()
+                remoteCat.categoryID = NSNumber(value: $0)
+                return remoteCat
+            })
         }
 
         // Create the post & media upload ops

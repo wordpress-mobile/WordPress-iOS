@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D102" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="MediaUploadOperation" representedClassName="MediaUploadOperation" parentEntity="UploadOperation" syncable="YES">
+        <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="localURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteMediaID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="remoteURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="PostUploadOperation" representedClassName="PostUploadOperation" parentEntity="UploadOperation" syncable="YES">
+        <attribute name="postCategories" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postContent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postTags" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remotePostID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="UploadOperation" representedClassName="UploadOperation" isAbstract="YES" syncable="YES">
+        <attribute name="backgroundSessionIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="backgroundSessionTaskID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="groupID" attributeType="String" syncable="YES"/>
+        <attribute name="siteID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uploadStatus" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="MediaUploadOperation" positionX="-380" positionY="63" width="128" height="148"/>
+        <element name="PostUploadOperation" positionX="-252" positionY="356" width="128" height="135"/>
+        <element name="UploadOperation" positionX="-45" positionY="0" width="180" height="133"/>
+    </elements>
+</model>

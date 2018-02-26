@@ -76,9 +76,9 @@ class ShareData: NSObject {
 
     /// Computed (read-only) var that returns a comma-delimted string of selected category IDs
     ///
-    var selectedCategoriesIDString: String {
+    var selectedCategoriesIDString: String? {
         guard let selectedCategories = userSelectedCategories, !selectedCategories.isEmpty else {
-            return ""
+            return nil
         }
 
         return selectedCategories.map({ $0.categoryID.stringValue }).joined(separator: ", ")
