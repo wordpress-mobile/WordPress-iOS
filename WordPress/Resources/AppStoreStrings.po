@@ -40,7 +40,7 @@ msgstr ""
 
 msgctxt "v9.5-whats-new"
 msgid ""
-"A new share extension that adds support to save drafts.\n"
+"A new share extension that adds support to save drafts and handles tags.\n"
 "Plugin managment taken to the next level: you can now browse and install plugins.\n"
 msgstr ""
 
