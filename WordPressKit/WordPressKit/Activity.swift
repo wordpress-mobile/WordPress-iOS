@@ -158,6 +158,7 @@ public struct ActivityStatus {
 
 public class RewindStatus {
     public let state: State
+    public let lastUpdated: Date
     public let reason: String?
     public let restore: RestoreStatus?
 
@@ -168,8 +169,15 @@ public class RewindStatus {
         guard let rewindStateEnum = State(rawValue: rewindState) else {
             throw Error.invalidRewindState
         }
+        guard let lastUpdatedString = dictionary["last_updated"] as? String else {
+            throw Error.missingLastUpdatedDate
+        }
+        guard let lastUpdatedDate = Date.dateWithISO8601WithMillisecondsString(lastUpdatedString) else {
+            throw Error.incorrectLastUpdatedDateFormat
+        }
 
         state = rewindStateEnum
+        lastUpdated = lastUpdatedDate
         reason = dictionary["reason"] as? String
         if let rawRestore = dictionary["rewind"] as? [String: AnyObject] {
             restore = try RestoreStatus(dictionary: rawRestore)
@@ -192,6 +200,8 @@ public extension RewindStatus {
 private extension RewindStatus {
     enum Error: Swift.Error {
         case missingState
+        case missingLastUpdatedDate
+        case incorrectLastUpdatedDateFormat
         case invalidRewindState
     }
 }
