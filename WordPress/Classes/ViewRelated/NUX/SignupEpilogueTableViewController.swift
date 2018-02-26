@@ -15,6 +15,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
     private var epilogueUserInfo: LoginEpilogueUserInfo?
     private var userInfoCell: EpilogueUserInfoCell?
     private var showPassword: Bool = true
+    private var reloaded: Bool = false
 
     private struct Constants {
         static let numberOfSections = 3
@@ -43,11 +44,15 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
     // MARK: - View
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
         getUserInfo()
         configureTable()
+        if reloaded {
+            tableView.reloadData()
+        }
+        reloaded = true
     }
 
     // MARK: - Table view data source
