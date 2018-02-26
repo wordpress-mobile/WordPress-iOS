@@ -3,7 +3,7 @@ import UIKit
 /// Presents a view controller with a dimming view behind that slowly fades in
 /// as the presented view controller slides up.
 ///
-class FancyAlertPresentationController: UIPresentationController, UIViewControllerTransitioningDelegate {
+public class FancyAlertPresentationController: UIPresentationController, UIViewControllerTransitioningDelegate {
     private struct Constants {
         static let dimmingViewAlpha: CGFloat = 0.5
     }
@@ -15,7 +15,7 @@ class FancyAlertPresentationController: UIPresentationController, UIViewControll
         return $0
     }(UIView())
 
-    override func presentationTransitionWillBegin() {
+    override public func presentationTransitionWillBegin() {
         guard let containerView = containerView else { return }
 
         containerView.addSubview(dimmingView)
@@ -31,13 +31,13 @@ class FancyAlertPresentationController: UIPresentationController, UIViewControll
         })
     }
 
-    override func presentationTransitionDidEnd(_ completed: Bool) {
+    override public func presentationTransitionDidEnd(_ completed: Bool) {
         if !completed {
             dimmingView.removeFromSuperview()
         }
     }
 
-    override func dismissalTransitionWillBegin() {
+    override public func dismissalTransitionWillBegin() {
         guard let coordinator = presentedViewController.transitionCoordinator else {
             dimmingView.alpha = UIKitConstants.alphaZero
             return
@@ -49,7 +49,7 @@ class FancyAlertPresentationController: UIPresentationController, UIViewControll
         })
     }
 
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         guard presented == self.presentedViewController,
             presenting == self.presentingViewController else {
                 return nil
