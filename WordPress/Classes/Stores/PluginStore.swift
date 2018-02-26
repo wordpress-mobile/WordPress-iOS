@@ -410,6 +410,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = true
         }
+
+        WPAppAnalytics.track(.pluginAutoupdateEnabled, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.enableAutoupdates(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -430,6 +433,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = false
         }
+
+        WPAppAnalytics.track(.pluginAutoupdateDisabled, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.disableAutoupdates(
             pluginID: pluginID,
             siteID: site.siteID,
