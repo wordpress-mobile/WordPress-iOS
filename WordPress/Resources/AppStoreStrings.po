@@ -41,7 +41,7 @@ msgstr ""
 msgctxt "v9.5-whats-new"
 msgid ""
 "A new share extension that adds support to save drafts and handles tags.\n"
-"Plugin managment taken to the next level: you can now browse and install plugins.\n"
+"Plugin management taken to the next level: you can now browse and install plugins.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
