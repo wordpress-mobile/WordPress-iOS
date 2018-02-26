@@ -3,7 +3,7 @@ import UIKit
 /// A small card-like view displaying helpful information or prompts to the user.
 /// Initialize using the `controllerWithConfiguration` static method.
 ///
-class FancyAlertViewController: UIViewController {
+open class FancyAlertViewController: UIViewController {
 
     /// Intended method of initialization
     static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
@@ -25,7 +25,7 @@ class FancyAlertViewController: UIViewController {
 
     /// Enapsulates values for all UI components of the info dialog.
     ///
-    struct Config {
+    public struct Config {
         /// Convenience alias for a title and a handler for a UIButton
         typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
 
@@ -151,7 +151,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         accessibilityViewIsModal = true
@@ -186,13 +186,13 @@ class FancyAlertViewController: UIViewController {
         updateViewConfiguration()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         updateFlingableViewHandler()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) {
@@ -333,7 +333,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func accessibilityPerformEscape() -> Bool {
+    override open func accessibilityPerformEscape() -> Bool {
         dismissTapped()
         return true
     }
