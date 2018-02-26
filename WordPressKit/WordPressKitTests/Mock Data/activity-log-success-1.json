@@ -33,7 +33,7 @@
                          "role": "administrator"
                          },
                          "type": "Join",
-                         "published": "2017-10-24T15:16:38+00:00",
+                         "published": "2017-10-24T15:16:38.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
@@ -67,7 +67,7 @@
                          "role": "administrator"
                          },
                          "type": "Join",
-                         "published": "2017-10-11T17:10:02+00:00",
+                         "published": "2017-10-11T17:10:02.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
@@ -102,7 +102,7 @@
                          "role": ""
                          },
                          "type": "Update",
-                         "published": "2017-10-11T14:21:35+00:00",
+                         "published": "2017-10-11T14:21:35.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
@@ -137,7 +137,7 @@
                          "role": "administrator"
                          },
                          "type": "Update",
-                         "published": "2017-10-11T14:19:24+00:00",
+                         "published": "2017-10-11T14:19:24.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
@@ -172,7 +172,7 @@
                          "role": ""
                          },
                          "type": "Update",
-                         "published": "2017-10-11T14:15:10+00:00",
+                         "published": "2017-10-11T14:15:10.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
@@ -207,7 +207,7 @@
                          "role": "administrator"
                          },
                          "type": "Update",
-                         "published": "2017-10-11T14:12:18+00:00",
+                         "published": "2017-10-11T14:12:18.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
@@ -242,7 +242,7 @@
                          "role": "administrator"
                          },
                          "type": "Update",
-                         "published": "2017-10-11T14:11:56+00:00",
+                         "published": "2017-10-11T14:11:56.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
@@ -277,7 +277,7 @@
                          "role": "administrator"
                          },
                          "type": "Announce",
-                         "published": "2017-10-10T15:51:37+00:00",
+                         "published": "2017-10-10T15:51:37.123+00:00",
                          "generator": {
                          "jetpack_version": 5.4,
                          "blog_id": 135188029
