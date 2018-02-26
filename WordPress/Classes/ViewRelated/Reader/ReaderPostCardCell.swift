@@ -680,11 +680,11 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func singularCommentFormat() -> String {
-        return NSLocalizedString("%@ comment", comment: "Accesibility label for comments button (singular)")
+        return NSLocalizedString("%@ comment", comment: "Accessibility label for comments button (singular)")
     }
 
     private func pluralCommentFormat() -> String {
-        return NSLocalizedString("%@ comments", comment: "Accesibility label for comments button (plural)")
+        return NSLocalizedString("%@ comments", comment: "Accessibility label for comments button (plural)")
     }
 
     private func prepareLikeForVoiceOver() {
