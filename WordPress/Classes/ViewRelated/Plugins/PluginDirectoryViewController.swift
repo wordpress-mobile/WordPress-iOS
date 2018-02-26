@@ -181,7 +181,25 @@ extension PluginDirectoryViewController: PluginPresenter {
 
 extension PluginDirectoryViewController: PluginListPresenter {
     func present(site: JetpackSiteRef, query: PluginQuery) {
-        WPAppAnalytics.track(.openedPluginList, withBlogID: site.siteID as NSNumber)
+        let listType: String?
+        switch query {
+        case .all:
+            listType = "installed"
+        case .featured:
+            listType = "featured"
+        case .feed(.popular):
+            listType = "popular"
+        case .feed(.newest):
+            listType = "newest"
+        default:
+            listType = nil
+        }
+
+        if let listType = listType {
+            let properties = ["type": listType]
+            WPAppAnalytics.track(.openedPluginList, withProperties: properties, withBlogID: site.siteID as NSNumber)
+        }
+
         let listVC = PluginListViewController(site: site, query: query)
         navigationController?.pushViewController(listVC, animated: true)
     }
