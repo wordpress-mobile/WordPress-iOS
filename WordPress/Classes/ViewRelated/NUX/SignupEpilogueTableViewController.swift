@@ -177,10 +177,10 @@ private extension SignupEpilogueTableViewController {
             userInfo = LoginEpilogueUserInfo(account: account, loginFields: loginFields)
         } else {
             userInfo = LoginEpilogueUserInfo(account: account)
+            let autoDisplayName = generateDisplayName(from: userInfo.email)
+            userInfo.fullName = autoDisplayName
+            delegate?.displayNameUpdated(newDisplayName: autoDisplayName)
         }
-        let autoDisplayName = generateDisplayName(from: userInfo.email)
-        userInfo.fullName = autoDisplayName
-        delegate?.displayNameUpdated(newDisplayName: autoDisplayName)
         epilogueUserInfo = userInfo
     }
 
