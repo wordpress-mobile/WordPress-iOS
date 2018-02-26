@@ -61,12 +61,12 @@ class FancyAlertViewController: UIViewController {
 
     private struct Constants {
         static let cornerRadius: CGFloat = 15.0
-        static let buttonFont = WPStyleGuide.fontForTextStyle(.headline)
-        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
+//        static let buttonFont = WPStyleGuide.fontForTextStyle(.headline)
+//        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+//        static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
-        static let headerBackgroundColor = WPStyleGuide.lightGrey()
+//        static let headerBackgroundColor = WPStyleGuide.lightGrey()
 
         static let fadeAnimationDuration: TimeInterval = 0.3
         static let resizeAnimationDuration: TimeInterval = 0.3
@@ -164,22 +164,22 @@ class FancyAlertViewController: UIViewController {
         wrapperView.layer.masksToBounds = true
         wrapperView.layer.cornerRadius = Constants.cornerRadius
 
-        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
-        topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
-        bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
+//        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
+//        topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
+//        bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
 
-        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: .semibold)
-        titleLabel.textColor = WPStyleGuide.darkGrey()
-        WPStyleGuide.configureLabel(bodyLabel, textStyle: .body)
-        bodyLabel.textColor = WPStyleGuide.darkGrey()
+//        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: .semibold)
+//        titleLabel.textColor = WPStyleGuide.darkGrey()
+//        WPStyleGuide.configureLabel(bodyLabel, textStyle: .body)
+//        bodyLabel.textColor = WPStyleGuide.darkGrey()
 
-        WPStyleGuide.configureBetaButton(titleAccessoryButton)
+//        WPStyleGuide.configureBetaButton(titleAccessoryButton)
 
-        defaultButton.titleLabel?.font = Constants.buttonFont
-        cancelButton.titleLabel?.font = Constants.buttonFont
+//        defaultButton.titleLabel?.font = Constants.buttonFont
+//        cancelButton.titleLabel?.font = Constants.buttonFont
 
-        moreInfoButton.titleLabel?.font = Constants.moreInfoFont
-        moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
+//        moreInfoButton.titleLabel?.font = Constants.moreInfoFont
+//        moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
 
         updateViewConfiguration()
     }
