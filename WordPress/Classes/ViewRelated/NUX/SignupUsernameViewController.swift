@@ -67,13 +67,17 @@ class SignupUsernameViewController: NUXViewController {
     }
 
     private func changeUsername() {
+        guard let newUsername = newUsername, newUsername != "" else {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+
         SVProgressHUD.show(withStatus: NSLocalizedString("Changing username", comment: "Shown while the app waits for the username changing web service to return."))
 
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
         guard let account = accountService.defaultWordPressComAccount(),
-            let api = account.wordPressComRestApi,
-            let newUsername = newUsername else {
+            let api = account.wordPressComRestApi else {
                 navigationController?.popViewController(animated: true)
                 return
         }
@@ -121,7 +125,11 @@ class SignupUsernameViewController: NUXViewController {
 extension SignupUsernameViewController: SignupUsernameTableViewControllerDelegate {
     func usernameSelected(_ username: String) {
         newUsername = username
-        showButtonView(show: true, withAnimation: true)
+        if username == "" {
+            showButtonView(show: false, withAnimation: true)
+        } else {
+            showButtonView(show: true, withAnimation: true)
+        }
     }
 
     func newSearchStarted() {

@@ -111,7 +111,7 @@ extension SignupUsernameTableViewController {
         case Sections.searchField.rawValue:
             return suggestions.count > 0 ? 1 : 0
         case Sections.suggestions.rawValue:
-            return suggestions.count
+            return suggestions.count + 1
         default:
             return 0
         }
@@ -127,8 +127,12 @@ extension SignupUsernameTableViewController {
         case Sections.suggestions.rawValue:
             fallthrough
         default:
-            let suggestion = suggestions[indexPath.row]
-            cell = suggestionCell(username: suggestion)
+            if indexPath.row == 0 {
+                cell = suggestionCell(username: currentUsername ?? "username not found", checked: true)
+                selectedCell = cell
+            } else {
+                cell = suggestionCell(username: suggestions[indexPath.row - 1], checked: false)
+            }
         }
         return cell
     }
@@ -185,13 +189,16 @@ extension SignupUsernameTableViewController {
         return cell
     }
 
-    private func suggestionCell(username: String) -> UITableViewCell {
+    private func suggestionCell(username: String, checked: Bool) -> UITableViewCell {
         let cell = UITableViewCell()
 
         cell.textLabel?.text = username
         cell.textLabel?.textColor = WPStyleGuide.darkGrey()
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
+        if checked {
+            cell.accessoryType = .checkmark
+        }
         return cell
     }
 }
@@ -213,7 +220,11 @@ extension SignupUsernameTableViewController {
         let selectedUsername: String
         switch indexPath.section {
         case Sections.suggestions.rawValue:
-            selectedUsername = suggestions[indexPath.row]
+            if indexPath.row == 0 {
+                selectedUsername = ""
+            } else {
+                selectedUsername = suggestions[indexPath.row]
+            }
         default:
             return
         }
