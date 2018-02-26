@@ -20,6 +20,10 @@ public class PostUploadOperation: UploadOperation {
     ///
     @NSManaged public var postTags: String?
 
+    /// Post categories for this upload op
+    ///
+    @NSManaged public var postCategories: String?
+
     /// Post status for this upload op — e.g. "Draft" or "Publish" (Not used if `isMedia` is True)
     ///
     @NSManaged public var postStatus: String?
@@ -38,6 +42,13 @@ extension PostUploadOperation {
         remotePost.status = postStatus
         remotePost.siteID = NSNumber(value: siteID)
         remotePost.tags = postTags?.arrayOfTags() ?? []
+
+        remotePost.categories = postCategories?.arrayOfTags().flatMap({Int($0)}).map({
+            let remoteCat = RemotePostCategory()
+            remoteCat.categoryID = NSNumber(value: $0)
+            return remoteCat
+        }) ?? []
+
         return remotePost
     }
 }
@@ -61,6 +72,10 @@ extension PostUploadOperation {
 
         if let tags = remote.tags as? [String] {
             postTags = tags.joined(separator: ", ")
+        }
+
+        if let categories = remote.categories as? [RemotePostCategory], !categories.isEmpty {
+            postCategories = categories.map({ $0.categoryID.stringValue }).joined(separator: ", ")
         }
     }
 }
