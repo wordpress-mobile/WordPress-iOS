@@ -251,11 +251,14 @@ extension ThemeBrowserCell: Accessible {
 
     private func prepareCellForVoiceOver() {
         imageView.isAccessibilityElement = true
-        if let name = theme?.name, let details = theme?.details {
+        if let name = theme?.name {
             imageView.accessibilityLabel = name
+            imageView.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSummaryElement
+        }
+
+        if let details = theme?.details {
             imageView.accessibilityHint = details
         }
-        imageView.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSummaryElement
     }
 
     private func prepareActionButtonForVoiceOver() {
