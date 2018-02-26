@@ -40,7 +40,6 @@
 		CE4A03EB203F73DB00F1B288 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4A03E7203F73DB00F1B288 /* FlingableViewHandler.swift */; };
 		CE4A03EC203F73DB00F1B288 /* FancyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4A03E8203F73DB00F1B288 /* FancyAlertViewController.swift */; };
 		CE4A03ED203F73DB00F1B288 /* FancyAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4A03E9203F73DB00F1B288 /* FancyAlertPresentationController.swift */; };
-		CE4A03F0203F755200F1B288 /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A78798202B1A58007874FB /* WordPressShared.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,7 +106,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE4A03F0203F755200F1B288 /* WordPressShared.framework in Frameworks */,
 				3CE2062BF061977D52AD8990 /* Pods_WordPressUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
