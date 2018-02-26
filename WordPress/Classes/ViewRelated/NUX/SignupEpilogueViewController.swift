@@ -34,7 +34,7 @@ class SignupEpilogueViewController: NUXViewController {
 
         if let vc = segue.destination as? SignupUsernameViewController {
             vc.currentUsername = epilogueUserInfo?.username
-            vc.displayName = epilogueUserInfo?.fullName
+            vc.displayName = updatedDisplayName ?? epilogueUserInfo?.fullName
         }
     }
 
