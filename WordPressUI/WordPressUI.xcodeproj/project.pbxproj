@@ -36,6 +36,10 @@
 		B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */; };
 		B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787F4202B3587007874FB /* UIKitConstants.swift */; };
 		B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */; };
+		CE1C453E204483D4005A3848 /* Skin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C453D204483D4005A3848 /* Skin.swift */; };
+		CE1C4541204496E8005A3848 /* DefaultSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C4540204496E8005A3848 /* DefaultSkin.swift */; };
+		CE1C45432044971F005A3848 /* WordPressSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C45422044971F005A3848 /* WordPressSkin.swift */; };
+		CE1C454720449903005A3848 /* Skin+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1C454620449903005A3848 /* Skin+Helpers.swift */; };
 		CE4A03EA203F73DB00F1B288 /* FancyAlerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE4A03E6203F73DB00F1B288 /* FancyAlerts.storyboard */; };
 		CE4A03EB203F73DB00F1B288 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4A03E7203F73DB00F1B288 /* FlingableViewHandler.swift */; };
 		CE4A03EC203F73DB00F1B288 /* FancyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4A03E8203F73DB00F1B288 /* FancyAlertViewController.swift */; };
@@ -91,6 +95,10 @@
 		B5A787F4202B3587007874FB /* UIKitConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitConstants.swift; sourceTree = "<group>"; };
 		B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
 		C37B9FCD0D5FCB701E5375FC /* Pods-WordPressUI-WordPressUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressUI-WordPressUITests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressUI-WordPressUITests/Pods-WordPressUI-WordPressUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		CE1C453D204483D4005A3848 /* Skin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skin.swift; sourceTree = "<group>"; };
+		CE1C4540204496E8005A3848 /* DefaultSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSkin.swift; sourceTree = "<group>"; };
+		CE1C45422044971F005A3848 /* WordPressSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressSkin.swift; sourceTree = "<group>"; };
+		CE1C454620449903005A3848 /* Skin+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Skin+Helpers.swift"; sourceTree = "<group>"; };
 		CE4A03E6203F73DB00F1B288 /* FancyAlerts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FancyAlerts.storyboard; sourceTree = "<group>"; };
 		CE4A03E7203F73DB00F1B288 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		CE4A03E8203F73DB00F1B288 /* FancyAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +171,7 @@
 		B59DCB5E202B146D00BEBD8A /* WordPressUI */ = {
 			isa = PBXGroup;
 			children = (
+				CE1C453C204483B9005A3848 /* Core */,
 				B5A787CB202B2AA6007874FB /* Categories */,
 				B5A787F3202B3587007874FB /* Constants */,
 				B5A78799202B1A93007874FB /* Extensions */,
@@ -211,6 +220,7 @@
 				B5A787A6202B2322007874FB /* UIView+Helpers.swift */,
 				B5A787AB202B2323007874FB /* UIViewController+Helpers.swift */,
 				B5A787A8202B2323007874FB /* UIWindow+Helpers.swift */,
+				CE1C454620449903005A3848 /* Skin+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -234,6 +244,16 @@
 				B5A787F4202B3587007874FB /* UIKitConstants.swift */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		CE1C453C204483B9005A3848 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				CE1C453D204483D4005A3848 /* Skin.swift */,
+				CE1C4540204496E8005A3848 /* DefaultSkin.swift */,
+				CE1C45422044971F005A3848 /* WordPressSkin.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		CE4A03E4203F732D00F1B288 /* System */ = {
@@ -480,15 +500,19 @@
 				43067E30203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift in Sources */,
 				B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */,
 				B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */,
+				CE1C454720449903005A3848 /* Skin+Helpers.swift in Sources */,
 				B5A787DB202B2AA7007874FB /* UIColor+Helpers.m in Sources */,
 				B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */,
 				B5A787B6202B2324007874FB /* UIView+Animations.swift in Sources */,
 				CE4A03EB203F73DB00F1B288 /* FlingableViewHandler.swift in Sources */,
 				B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */,
+				CE1C453E204483D4005A3848 /* Skin.swift in Sources */,
 				43067E2B203C8CC4001DD610 /* UIControl+BlockEvents.swift in Sources */,
 				CE4A03ED203F73DB00F1B288 /* FancyAlertPresentationController.swift in Sources */,
 				B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */,
 				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
+				CE1C4541204496E8005A3848 /* DefaultSkin.swift in Sources */,
+				CE1C45432044971F005A3848 /* WordPressSkin.swift in Sources */,
 				B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */,
 				B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */,
 				B5A787B4202B2324007874FB /* UIWindow+Helpers.swift in Sources */,

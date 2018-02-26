@@ -9,7 +9,8 @@ class FancyAlertViewController: UIViewController {
     static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
         let infoController = controller()
         infoController.configuration = configuration
-
+        Skin.active = .wordPress
+        
         return infoController
     }
 
