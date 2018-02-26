@@ -23,7 +23,7 @@ enum FeatureFlag: Int {
         case .siteCreation:
             return true
         case .usernameChanging:
-            return true
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
