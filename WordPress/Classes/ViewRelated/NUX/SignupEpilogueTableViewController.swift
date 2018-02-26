@@ -177,12 +177,32 @@ private extension SignupEpilogueTableViewController {
             return
         }
 
+        var userInfo: LoginEpilogueUserInfo
         if loginFields.meta.socialService == .google {
             showPassword = false
-            epilogueUserInfo = LoginEpilogueUserInfo(account: account, loginFields: loginFields)
+            userInfo = LoginEpilogueUserInfo(account: account, loginFields: loginFields)
         } else {
-            epilogueUserInfo = LoginEpilogueUserInfo(account: account)
+            userInfo = LoginEpilogueUserInfo(account: account)
+            let autoDisplayName = generateDisplayName(from: userInfo.email)
+            userInfo.fullName = autoDisplayName
+            delegate?.displayNameUpdated(newDisplayName: autoDisplayName)
         }
+        epilogueUserInfo = userInfo
+    }
+
+    private func generateDisplayName(from rawEmail: String) -> String {
+        // step 1: lower case
+        let email = rawEmail.lowercased()
+        // step 2: remove the @ and everything after
+        let localPart = email.split(separator: "@")[0]
+        // step 3: remove all non-alpha characters
+        let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
+        // step 4: turn periods into spaces
+        let nameLowercased = localCleaned.replacingOccurrences(of: ".", with: " ")
+        // step 5: capitalize
+        let autoDisplayName = nameLowercased.capitalized
+
+        return autoDisplayName
     }
 
     func getEpilogueCellFor(cellType: EpilogueCellType) -> SignupEpilogueCell {
