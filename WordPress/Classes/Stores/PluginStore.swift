@@ -364,6 +364,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = true
         }
+
+        WPAppAnalytics.track(.pluginActivated, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.activatePlugin(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -384,6 +387,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = false
         }
+
+        WPAppAnalytics.track(.pluginDeactivated, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.deactivatePlugin(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -404,6 +410,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = true
         }
+
+        WPAppAnalytics.track(.pluginAutoupdateEnabled, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.enableAutoupdates(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -424,6 +433,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = false
         }
+
+        WPAppAnalytics.track(.pluginAutoupdateDisabled, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.disableAutoupdates(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -444,6 +456,7 @@ private extension PluginStore {
         }
 
         state.updatesInProgress[site, default: Set()].insert(plugin.slug)
+        WPAppAnalytics.track(.pluginInstalled, withBlogID: site.siteID as NSNumber)
 
         remote.install(
             pluginSlug: plugin.slug,
