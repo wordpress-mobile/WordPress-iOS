@@ -273,6 +273,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         configureAttribution()
         configureActionButtons()
         configureButtonTitles()
+        prepareForVoiceOver()
     }
 
     fileprivate func configureHeader() {
@@ -300,7 +301,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         blogNameLabel.text = arr.joined(separator: ", ")
 
-        let byline = (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
+        let byline = datePublished()
         bylineLabel.text = byline
     }
 
@@ -594,5 +595,245 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 extension ReaderPostCardCell: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
+    }
+}
+
+extension ReaderPostCardCell: Accessible {
+    func prepareForVoiceOver() {
+        prepareCardForVoiceOver()
+        prepareHeaderButtonForVoiceOver()
+        prepareShareForVoiceOver()
+        prepareCommentsForVoiceOver()
+        prepareLikeForVoiceOver()
+        prepareMenuForVoiceOver()
+        prepareVisitForVoiceOver()
+        prepareFollowButtonForVoiceOver()
+    }
+
+    private func prepareCardForVoiceOver() {
+        accessibilityLabel = cardAccessibilityLabel()
+        accessibilityHint = cardAccessibilityHint()
+        accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func cardAccessibilityLabel() -> String {
+        let authorName = postAuthor()
+        let blogTitle = blogName()
+
+        return headerButtonAccessibilityLabel(name: authorName, title: blogTitle) + "," + postTitle() + "," + postContent()
+    }
+
+    private func cardAccessibilityHint() -> String {
+        return NSLocalizedString("Shows the post content", comment: "Accessibility hint for the Reader Cell")
+    }
+
+    private func prepareHeaderButtonForVoiceOver() {
+        guard headerBlogButtonIsEnabled else {
+            /// When the headerbutton is disabled, hide it from VoiceOver as well.
+            headerBlogButton.isAccessibilityElement = false
+            return
+        }
+
+        headerBlogButton.isAccessibilityElement = true
+
+        let authorName = postAuthor()
+        let blogTitle = blogName()
+
+        headerBlogButton.accessibilityLabel = headerButtonAccessibilityLabel(name: authorName, title: blogTitle)
+        headerBlogButton.accessibilityHint = headerButtonAccessibilityHint(title: blogTitle)
+        headerBlogButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func headerButtonAccessibilityLabel(name: String, title: String) -> String {
+        return authorNameAndBlogTitle(name: name, title: title) + "," + datePublished()
+    }
+
+    private func authorNameAndBlogTitle(name: String, title: String) -> String {
+        let format = NSLocalizedString("Post by %@, from %@", comment: "Spoken accessibility label for blog author and name in Reader cell.")
+
+        return String(format: format, name, title)
+    }
+
+    private func headerButtonAccessibilityHint(title: String) -> String {
+        let format = NSLocalizedString("Shows all posts from %@", comment: "Spoken accessibility hint for blog name in Reader cell.")
+        return String(format: format, title)
+    }
+
+    private func prepareShareForVoiceOver() {
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        shareButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
+        shareButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func prepareCommentsForVoiceOver() {
+        commentActionButton.accessibilityLabel = commentsLabel()
+        commentActionButton.accessibilityHint = NSLocalizedString("Shows comments", comment: "Spoken accessibility hint for Comments buttons")
+        commentActionButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func commentsLabel() -> String {
+        let commentCount = contentProvider?.commentCount()?.intValue ?? 0
+
+        let format = commentCount > 1 ? pluralCommentFormat() : singularCommentFormat()
+
+        return String(format: format, "\(commentCount)")
+    }
+
+    private func singularCommentFormat() -> String {
+        return NSLocalizedString("%@ comment", comment: "Accesibility label for comments button (singular)")
+    }
+
+    private func pluralCommentFormat() -> String {
+        return NSLocalizedString("%@ comments", comment: "Accesibility label for comments button (plural)")
+    }
+
+    private func prepareLikeForVoiceOver() {
+        guard likeActionButton.isHidden == false else {
+            return
+        }
+
+        likeActionButton.accessibilityLabel = likeLabel()
+        likeActionButton.accessibilityHint = likeHint()
+        likeActionButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func likeLabel() -> String {
+        return isContentLiked() ? isLikedLabel(): isNotLikedLabel()
+    }
+
+    private func isContentLiked() -> Bool {
+        return contentProvider?.isLiked() ?? false
+    }
+
+    private func isLikedLabel() -> String {
+        let postInMyLikes = NSLocalizedString("This post is in My Likes", comment: "Post is in my likes. Accessibility label")
+
+        return appendLikedCount(label: postInMyLikes)
+    }
+
+    private func isNotLikedLabel() -> String {
+        let postNotInMyLikes = NSLocalizedString("This post is not in My Likes", comment: "Post is not in my likes. Accessibility label")
+
+        return appendLikedCount(label: postNotInMyLikes)
+    }
+
+    private func appendLikedCount(label: String) -> String {
+        if let likeCount = contentProvider?.likeCountForDisplay() {
+            return label + "," + likeCount
+        } else {
+            return label
+        }
+    }
+
+    private func likeHint() -> String {
+        return isContentLiked() ? doubleTapToUnlike() : doubleTapToLike()
+    }
+
+    private func doubleTapToUnlike() -> String {
+        return NSLocalizedString("Removes this post from My Likes", comment: "Removes a post from My Likes. Spoken Hint.")
+    }
+
+    private func doubleTapToLike() -> String {
+        return NSLocalizedString("Adds this post to My Likes", comment: "Adds a post to My Likes. Spoken Hint.")
+    }
+
+    private func prepareMenuForVoiceOver() {
+        menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader Cell")
+        menuButton.accessibilityHint = NSLocalizedString("Shows more actions", comment: "Accessibility label for the More button on Reader Cell.")
+        menuButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func prepareVisitForVoiceOver() {
+        visitButton.accessibilityLabel = NSLocalizedString("Visit", comment: "Verb. Button title. Accessibility label in Reader")
+        let hintFormat = NSLocalizedString("Visit %@ in a web view", comment: "A call to action to visit the specified blog via a web view. Accessibility hint in Reader")
+        visitButton.accessibilityHint = String(format: hintFormat, blogName())
+        visitButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    func prepareFollowButtonForVoiceOver() {
+        if hidesFollowButton {
+            return
+        }
+
+        followButton.accessibilityLabel = followLabel()
+        followButton.accessibilityHint = followHint()
+        followButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func followLabel() -> String {
+        return followButtonIsSelected() ? followingLabel() : notFollowingLabel()
+    }
+
+    private func followingLabel() -> String {
+        return NSLocalizedString("Following", comment: "Accessibility label for following buttons.")
+    }
+
+    private func notFollowingLabel() -> String {
+        return NSLocalizedString("Not following", comment: "Accessibility label for unselected following buttons.")
+    }
+
+    private func followHint() -> String {
+        return followButtonIsSelected() ? unfollow(): follow()
+    }
+
+    private func unfollow() -> String {
+        return NSLocalizedString("Unfollows blog", comment: "Spoken hint describing action for selected following buttons.")
+    }
+
+    private func follow() -> String {
+        return NSLocalizedString("Follows blog", comment: "Spoken hint describing action for unselected following buttons.")
+    }
+
+    private func followButtonIsSelected() -> Bool {
+        return contentProvider?.isFollowing() ?? false
+    }
+
+    private func blogName() -> String {
+        return contentProvider?.blogNameForDisplay() ?? ""
+    }
+
+    private func postAuthor() -> String {
+        return contentProvider?.authorForDisplay() ?? ""
+    }
+
+    private func postTitle() -> String {
+        return contentProvider?.titleForDisplay() ?? ""
+    }
+
+    private func postContent() -> String {
+        return contentProvider?.contentPreviewForDisplay() ?? ""
+    }
+
+    private func datePublished() -> String {
+        return (contentProvider?.dateForDisplay() as NSDate?)?.mediumString() ?? ""
+    }
+}
+
+
+/// Extension providing getters to some private outlets, for testability
+extension ReaderPostCardCell {
+
+    func getHeaderButtonForTesting() -> UIButton {
+        return headerBlogButton
+    }
+
+    func getShareButtonForTesting() -> UIButton {
+        return shareButton
+    }
+
+    func getCommentsButtonForTesting() -> UIButton {
+        return commentActionButton
+    }
+
+    func getLikeButtonForTesting() -> UIButton {
+        return likeActionButton
+    }
+
+    func getMenuButtonForTesting() -> UIButton {
+        return menuButton
+    }
+
+    func getVisitButtonForTesting() -> UIButton {
+        return visitButton
     }
 }
