@@ -17,10 +17,6 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
         tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
