@@ -246,6 +246,7 @@ extension ThemeBrowserCell: Accessible {
     func prepareForVoiceOver() {
         prepareCellForVoiceOver()
         prepareActionButtonForVoiceOver()
+        prepareNameLabelForVoiceOver()
     }
 
     private func prepareCellForVoiceOver() {
@@ -261,5 +262,9 @@ extension ThemeBrowserCell: Accessible {
         actionButton.isAccessibilityElement = true
         actionButton.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
         actionButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func prepareNameLabelForVoiceOver() {
+        nameLabel.isAccessibilityElement = false
     }
 }
