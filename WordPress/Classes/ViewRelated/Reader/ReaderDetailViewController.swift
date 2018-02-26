@@ -450,6 +450,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         blogNameButton.setTitle(blogName, for: UIControlState())
         blogNameButton.setTitle(blogName, for: .highlighted)
         blogNameButton.setTitle(blogName, for: .disabled)
+        blogNameButton.isAccessibilityElement = false
 
         // Enable button only if not previewing a site.
         if let topic = post!.topic {
