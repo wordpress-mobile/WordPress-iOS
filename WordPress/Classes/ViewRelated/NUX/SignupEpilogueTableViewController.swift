@@ -190,7 +190,7 @@ private extension SignupEpilogueTableViewController {
         // step 2: remove the @ and everything after
         let localPart = email.split(separator: "@")[0]
         // step 3: remove all non-alpha characters
-        let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression) //, range: nil)
+        let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
         // step 4: turn periods into spaces
         let nameLowercased = localCleaned.replacingOccurrences(of: ".", with: " ")
         // step 5: capitalize
