@@ -152,10 +152,28 @@ extension SignupUsernameTableViewController {
     // MARK: table view cells
 
     private func titleAndDescriptionCell() -> UITableViewCell {
-        let description = String(format: NSLocalizedString("Your username is currently \"%@\". It will be used for mentions and links, but otherwise people will just see your display name, \"%@\"", comment: "Description of how to pick a domain name during the site creation process"), currentUsername ?? "", displayName ?? "")
-        let cell = LoginSocialErrorCell(title: "", description: description)
+        let descriptionStyled = buildHeaderDescription()
+        let cell = LoginSocialErrorCell(title: "", description: descriptionStyled)
         cell.selectionStyle = .none
         return cell
+    }
+
+    private func buildHeaderDescription() -> NSAttributedString {
+        guard let currentUsername = currentUsername, let displayName = displayName else {
+            return NSAttributedString(string: "")
+        }
+
+        let baseDescription = String(format: NSLocalizedString("Your username is currently \"%@\". It will be used for mentions and links, but otherwise people will just see your display name, \"%@\"", comment: "Description of how to pick a domain name during the site creation process"), currentUsername, displayName)
+        guard let rangeOfUsername = baseDescription.range(of: currentUsername),
+            let rangeOfDisplayName = baseDescription.range(of: displayName) else {
+                return NSAttributedString(string: baseDescription)
+        }
+        let boldFont = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        let plainFont = UIFont.preferredFont(forTextStyle: .subheadline)
+        let description = NSMutableAttributedString(string: baseDescription, attributes: [.font: plainFont])
+        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfUsername))
+        description.addAttribute(.font, value: boldFont, range: baseDescription.nsRange(from: rangeOfDisplayName))
+        return description
     }
 
     private func searchFieldCell() -> SiteCreationDomainSearchTableViewCell {
@@ -175,6 +193,18 @@ extension SignupUsernameTableViewController {
         cell.indentationWidth = SuggestionStyles.indentationWidth
         cell.indentationLevel = SuggestionStyles.indentationLevel
         return cell
+    }
+}
+
+extension String {
+    private func nsRange(from range: Range<Index>) -> NSRange {
+        let from = range.lowerBound
+        let to = range.upperBound
+
+        let location = distance(from: startIndex, to: from)
+        let length = distance(from: from, to: to)
+
+        return NSRange(location: location, length: length)
     }
 }
 
