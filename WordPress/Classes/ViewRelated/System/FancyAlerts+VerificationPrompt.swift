@@ -1,6 +1,7 @@
 import UIKit
+import WordPressUI
 
-extension FancyAlertViewController {
+extension WordPressUI.FancyAlertViewController {
 
     private enum VerificationFailureError: Error {
         case alreadyVerified

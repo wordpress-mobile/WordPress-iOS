@@ -1,7 +1,8 @@
 import UIKit
 import wpxmlrpc
+import WordPressUI
 
-extension FancyAlertViewController {
+extension WordPressUI.FancyAlertViewController {
     private struct Strings {
         static let titleText = NSLocalizedString("What's my site address?", comment: "Title of alert helping users understand their site address")
         static let bodyText = NSLocalizedString("Your site address appears in the bar at the the top of the screen when you visit your site in Safari.", comment: "Body text of alert helping users understand their site address")

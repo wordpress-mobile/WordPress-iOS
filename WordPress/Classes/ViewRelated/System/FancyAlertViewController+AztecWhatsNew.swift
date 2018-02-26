@@ -1,12 +1,13 @@
 import UIKit
 import Gridicons
 import WordPressShared
+import WordPressUI
 
 let AztecAnnouncementWhatsNewURL = URL(string: "https://make.wordpress.org/mobile/whats-new-in-beta-ios-editor/")!
 
 // MARK: - What's New Web View
 
-extension FancyAlertViewController {
+extension WordPressUI.FancyAlertViewController {
     @objc static func presentWhatsNewWebView(from viewController: UIViewController) {
         // Replace the web view's options button with our own bug reporting button
         let bugButton = UIBarButtonItem(image: Gridicon.iconOfType(.bug), style: .plain, target: self, action: #selector(bugButtonTapped))
