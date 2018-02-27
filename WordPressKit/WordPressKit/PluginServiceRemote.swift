@@ -107,6 +107,14 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
+    public func activateAndEnableAutoupdated(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let parameters = [
+            "active": "true",
+            "autoupdate": "true"
+            ] as [String: AnyObject]
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+    }
+
     public func install(pluginSlug: String, siteID: Int, success: @escaping (PluginState) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/plugins/\(pluginSlug)/install"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)!
