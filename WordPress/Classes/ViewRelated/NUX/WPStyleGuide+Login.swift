@@ -79,8 +79,7 @@ extension WPStyleGuide {
     /// So instead get the dynamic font size, then ask for the non-dynamic font at that size
     ///
     class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
-        let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
-        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: .medium)
+        return WPStyleGuide.fontForTextStyle(style, fontWeight: .medium)
     }
 
     // MARK: - Google Signin Button Methods
