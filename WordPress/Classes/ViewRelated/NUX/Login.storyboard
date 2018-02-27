@@ -1617,5 +1617,10 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="fA5-mb-vrv"/>
+        <segue reference="kRR-qz-Hu2"/>
+        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="ttc-1d-dkK"/>
+        <segue reference="iD4-VS-n3M"/>
     </inferredMetricsTieBreakers>
 </document>
