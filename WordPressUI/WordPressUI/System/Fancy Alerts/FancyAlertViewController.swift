@@ -354,15 +354,15 @@ open class FancyAlertViewController: UIViewController {
 // MARK: - FlingableViewHandlerDelegate
 
 extension FancyAlertViewController: FlingableViewHandlerDelegate {
-    func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = false
     }
 
-    func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = true
     }
 
-    func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissTapped()
     }
 }

@@ -3,6 +3,7 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
+@import WordPressUI;
 
 static CGFloat const MaximumZoomScale = 4.0;
 static CGFloat const MinimumZoomScale = 0.1;
