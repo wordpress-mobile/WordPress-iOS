@@ -99,6 +99,10 @@ extension WordPressAuthenticationTracker {
             WPAppAnalytics.track(.openedLogin)
         case .signupMagicLinkOpenEmailClientViewed:
             WPAppAnalytics.track(.signupMagicLinkOpenEmailClientViewed)
+        case .signupMagicLinkOpened:
+            WPAppAnalytics.track(.signupMagicLinkOpened)
+        case .signupMagicLinkSucceeded:
+            WPAppAnalytics.track(.signupMagicLinkSucceeded)
         case .signedIn(let properties):
             WPAppAnalytics.track(.signedIn, withProperties: properties)
         case .twoFactorCodeRequested:
