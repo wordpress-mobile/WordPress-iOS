@@ -192,7 +192,12 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                     if (success) {
                         success(postInContext);
                     }
-                } failure:failure];
+                } failure:^(NSError *error){
+                    // Sergio Estevao: even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed what attaching the media to it.
+                    if (success) {
+                        success(postInContext);
+                    }
+                }];
             } else {
                 // This can happen if the post was deleted right after triggering the upload.
                 if (success) {
