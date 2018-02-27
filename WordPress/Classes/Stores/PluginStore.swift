@@ -6,6 +6,7 @@ enum PluginAction: Action {
     case deactivate(id: String, site: JetpackSiteRef)
     case enableAutoupdates(id: String, site: JetpackSiteRef)
     case disableAutoupdates(id: String, site: JetpackSiteRef)
+    case activateAndEnableAutoupdates(id: String, site: JetpackSiteRef)
     case install(plugin: PluginDirectoryEntry, site: JetpackSiteRef)
     case update(id: String, site: JetpackSiteRef)
     case remove(id: String, site: JetpackSiteRef)
@@ -246,6 +247,8 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
             enableAutoupdatesPlugin(pluginID: pluginID, site: site)
         case .disableAutoupdates(let pluginID, let site):
             disableAutoupdatesPlugin(pluginID: pluginID, site: site)
+        case .activateAndEnableAutoupdates(let pluginID, let site):
+            activateAndEnableAutoupdatesPlugin(pluginID: pluginID, site: site)
         case .install(let plugin, let site):
             installPlugin(plugin: plugin, site: site)
         case .update(let pluginID, let site):
@@ -297,7 +300,7 @@ extension PluginStore {
         return getPlugins(site: site)?.plugins.first(where: { $0.state.slug == slug })
     }
 
-    func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry] {
+    func getFeaturedPlugins(site: JetpackSiteRef) -> [PluginDirectoryEntry]? {
         return state.featuredPluginsSlugs.flatMap { getPluginDirectoryEntry(slug: $0)}
     }
 
@@ -321,8 +324,8 @@ extension PluginStore {
         return state.updatesInProgress[site, default: Set()].contains(slug)
     }
 
-    func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry] {
-        guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return [] }
+    func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry]? {
+        guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return nil }
         let directoryEntries = fetchedFeed.pluginSlugs.flatMap { getPluginDirectoryEntry(slug: $0) }
 
         return directoryEntries
@@ -343,9 +346,14 @@ extension PluginStore {
     }
 
     func shouldFetchDirectory(feed: PluginDirectoryFeedType) -> Bool {
+        let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
+
+        if case .search = feed {
+            return !isFetching
+        }
+
         let lastFetch = state.lastDirectoryFeedFetch[feed.slug, default: .distantPast]
         let needsRefresh = lastFetch + refreshInterval < Date()
-        let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
         return needsRefresh && !isFetching
     }
 }
@@ -359,6 +367,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = true
         }
+
+        WPAppAnalytics.track(.pluginActivated, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.activatePlugin(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -379,6 +390,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.active = false
         }
+
+        WPAppAnalytics.track(.pluginDeactivated, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.deactivatePlugin(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -399,6 +413,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = true
         }
+
+        WPAppAnalytics.track(.pluginAutoupdateEnabled, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.enableAutoupdates(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -419,6 +436,9 @@ private extension PluginStore {
         state.modifyPlugin(id: pluginID, site: site) { (plugin) in
             plugin.autoupdate = false
         }
+
+        WPAppAnalytics.track(.pluginAutoupdateDisabled, withBlogID: site.siteID as NSNumber)
+
         remote(site: site)?.disableAutoupdates(
             pluginID: pluginID,
             siteID: site.siteID,
@@ -432,6 +452,25 @@ private extension PluginStore {
         })
     }
 
+    func activateAndEnableAutoupdatesPlugin(pluginID: String, site: JetpackSiteRef) {
+        guard getPlugin(id: pluginID, site: site) != nil else {
+            return
+        }
+        state.modifyPlugin(id: pluginID, site: site) { plugin in
+            plugin.autoupdate = true
+            plugin.active = true
+        }
+        remote(site: site)?.activateAndEnableAutoupdated(pluginID: pluginID,
+                                                         siteID: site.siteID,
+                                                         success: {},
+                                                         failure: { [weak self] error in
+                                                            self?.state.modifyPlugin(id: pluginID, site: site) { plugin in
+                                                                plugin.autoupdate = false
+                                                                plugin.active = false
+                                                            }
+        })
+    }
+
     func installPlugin(plugin: PluginDirectoryEntry, site: JetpackSiteRef) {
         guard let remote = remote(site: site), !isInstallingPlugin(site: site, slug: plugin.slug),
             getPlugin(slug: plugin.slug, site: site) == nil else {
@@ -439,6 +478,7 @@ private extension PluginStore {
         }
 
         state.updatesInProgress[site, default: Set()].insert(plugin.slug)
+        WPAppAnalytics.track(.pluginInstalled, withBlogID: site.siteID as NSNumber)
 
         remote.install(
             pluginSlug: plugin.slug,
@@ -451,6 +491,7 @@ private extension PluginStore {
 
                 let message = String(format: NSLocalizedString("Succesfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
                 ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
+                ActionDispatcher.dispatch(PluginAction.activateAndEnableAutoupdates(id: installedPlugin.id, site: site))
             },
             failure: { [weak self] error in
                 self?.state.updatesInProgress[site]?.remove(plugin.slug)

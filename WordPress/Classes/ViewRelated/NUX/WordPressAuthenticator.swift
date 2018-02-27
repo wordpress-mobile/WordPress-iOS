@@ -62,6 +62,7 @@ public protocol WordPressAuthenticatorDelegate: class {
         static let authenticationInfoKey = "authenticationInfoKey"
         static let jetpackBlogIDURL = "jetpackBlogIDURL"
         static let username = "username"
+        static let emailMagicLinkSource = "emailMagicLinkSource"
     }
 
 
@@ -75,12 +76,19 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Used to present the new login flow from the app delegate
     @objc class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
+        showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor, showCancel: false)
+    }
+
+    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool, showCancel: Bool) {
         defer {
             trackOpenedLogin()
         }
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateInitialViewController() {
+            if let childController = controller.childViewControllers.first as? LoginPrologueViewController {
+                childController.showCancel = showCancel
+            }
             presenter.present(controller, animated: animated, completion: nil)
         }
     }
@@ -197,13 +205,20 @@ public protocol WordPressAuthenticatorDelegate: class {
         loginController.email = loginFields.username
         loginController.token = token
         let controller = loginController
-        WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+
+        if let linkSource = loginFields.meta.emailMagicLinkSource {
+            switch linkSource {
+            case .signup:
+                WordPressAuthenticator.post(event: .signupMagicLinkOpened)
+            case .login:
+                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+            }
+        }
 
         let navController = UINavigationController(rootViewController: controller)
 
-        // The way the magic link flow works the `SigninLinkMailViewController`,
-        // or some other view controller, might still be presented when the app
-        // is resumed by tapping on the auth link.
+        // The way the magic link flow works some view controller might
+        // still be presented when the app is resumed by tapping on the auth link.
         // We need to do a little work to present the SigninLinkAuth controller
         // from the right place.
         // - If the rootViewController is not presenting another vc then just
@@ -407,6 +422,11 @@ public protocol WordPressAuthenticatorDelegate: class {
         if let url = loginFields.meta.jetpackBlogID?.uriRepresentation().absoluteString {
             dict[Constants.jetpackBlogIDURL] = url
         }
+
+        if let linkSource = loginFields.meta.emailMagicLinkSource {
+            dict[Constants.emailMagicLinkSource] = String(linkSource.rawValue)
+        }
+
         UserDefaults.standard.set(dict, forKey: Constants.authenticationInfoKey)
     }
 
@@ -416,6 +436,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// - Returns: A loginFields instance or nil.
     ///
     class func retrieveLoginInfoForTokenAuth() -> LoginFields? {
+
         guard let dict = UserDefaults.standard.dictionary(forKey: Constants.authenticationInfoKey) else {
             return nil
         }
@@ -423,6 +444,11 @@ public protocol WordPressAuthenticatorDelegate: class {
         let loginFields = LoginFields()
         if let username = dict[Constants.username] as? String {
             loginFields.username = username
+        }
+
+        if let linkSource = dict[Constants.emailMagicLinkSource] as? String,
+            let linkSourceRawValue = Int(linkSource) {
+            loginFields.meta.emailMagicLinkSource = EmailMagicLinkSource(rawValue: linkSourceRawValue)
         }
 
         let store = ContextManager.sharedInstance().persistentStoreCoordinator
@@ -468,38 +494,24 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     @objc class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
 
-        let loginURL = loginFields.meta.userIsDotCom ? "wordpress.com" : loginFields.siteAddress
+        let loginURL = loginFields.meta.userIsDotCom ? OnePasswordDefaults.dotcomURL : loginFields.siteAddress
 
-
-        let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
-            if let error = error {
-                DDLogError("OnePassword Error: \(error.localizedDescription)")
-                WordPressAuthenticator.post(event: .onePasswordFailed)
-                return
-            }
-
-            guard let username = username, let password = password else {
-                return
-            }
-
-            if username.isEmpty || password.isEmpty {
-                return
-            }
-
+        OnePasswordFacade().findLogin(for: loginURL, viewController: controller, sender: sourceView, success: { (username, password, otp) in
             loginFields.username = username
             loginFields.password = password
-
-            if let oneTimePassword = oneTimePassword {
-                loginFields.multifactorCode = oneTimePassword
-            }
+            loginFields.multifactorCode = otp ?? String()
 
             WordPressAuthenticator.post(event: .onePasswordLogin)
-
             success(loginFields)
-        }
 
-        let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: completion)
+        }, failure: { error in
+            guard error != .cancelledByUser else {
+                return
+            }
+
+            DDLogError("OnePassword Error: \(error.localizedDescription)")
+            WordPressAuthenticator.post(event: .onePasswordFailed)
+        })
     }
 
 
