@@ -3,6 +3,7 @@ import SVProgressHUD
 
 /// View controller that handles the google signup code
 class SignupGoogleViewController: LoginViewController {
+
     private var hasShownGoogle = false
     @IBOutlet var titleLabel: UILabel?
 
@@ -35,6 +36,16 @@ class SignupGoogleViewController: LoginViewController {
 
         WPAppAnalytics.track(.loginSocialButtonClick)
     }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let vc = segue.destination as? SignupEpilogueViewController {
+            vc.loginFields = loginFields
+        }
+    }
+
 }
 
 extension SignupGoogleViewController: GIDSignInDelegate {
@@ -47,12 +58,12 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self.navigationController?.popViewController(animated: true)
                 return
         }
-        NSLog(token)
 
         // Store the email address and token.
         loginFields.emailAddress = email
         loginFields.username = email
         loginFields.meta.socialServiceIDToken = token
+        loginFields.meta.googleUser = user
 
         SVProgressHUD.show(withStatus: NSLocalizedString("Completing Signup", comment: "Shown while the app waits for the site creation process to complete."))
 
@@ -60,7 +71,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         let service = SignupService(managedObjectContext: context)
         service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
             SVProgressHUD.dismiss()
-            self?.performSegue(withIdentifier: .showEpilogue, sender: self)
+            self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
             WPAnalytics.track(.signupSocialSuccess)
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
