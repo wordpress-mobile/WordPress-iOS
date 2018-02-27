@@ -87,18 +87,17 @@ class LoginProloguePromoViewController: UIViewController {
         //headingLabel.font = WPStyleGuide.mediumWeightFont(forStyle: .title3)
         let traits = [UIFontDescriptor.TraitKey.weight: UIFont.Weight.medium]
         let fontDescriptor: UIFontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .headline)
-        let attributes = [UIFontDescriptor.AttributeName.traits:traits]
+        let attributes = [UIFontDescriptor.AttributeName.traits: traits]
         let newFontDescriptor = fontDescriptor.addingAttributes(attributes)
 
         headingLabel.font = UIFont(descriptor: newFontDescriptor, size: CGFloat(0.0))
-        
+
         headingLabel.textColor = type.headlineColor
         headingLabel.text = type.headlineText
         headingLabel.textAlignment = .center
         headingLabel.numberOfLines = 0
         headingLabel.adjustsFontForContentSizeCategory = true
         headingLabel.sizeToFit()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
