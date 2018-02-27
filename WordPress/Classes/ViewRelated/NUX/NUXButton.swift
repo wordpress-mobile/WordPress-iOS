@@ -13,6 +13,9 @@ import WordPressShared
         contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
 
         titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline)
+        titleLabel?.adjustsFontForContentSizeCategory = true
+        titleLabel?.textAlignment = .center
+        titleLabel?.adjustsFontSizeToFitWidth = true
 
         let normalImage: UIImage?
         let highlightImage: UIImage?
