@@ -79,6 +79,13 @@
     [button setTitleColor:[self grey] forState:UIControlStateNormal];
 }
 
++ (void)applyPostProgressViewStyle:(UIProgressView *)progressView
+{
+    progressView.trackTintColor = [WPStyleGuide greyLighten20];
+    progressView.progressTintColor = [WPStyleGuide mediumBlue];
+    progressView.tintColor = [WPStyleGuide mediumBlue];
+}
+
 + (void)applyRestorePostLabelStyle:(UILabel *)label
 {
     [self configureLabelForDeviceDependantStyle:label];
