@@ -6,19 +6,19 @@ import UIKit
 open class FancyAlertViewController: UIViewController {
 
     /// Intended method of initialization
-    static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
+    public static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
         let infoController = controller()
         infoController.configuration = configuration
         
         return infoController
     }
 
-    private static func controller() -> FancyAlertViewController {
+    public static func controller() -> FancyAlertViewController {
         return UIStoryboard(name: "FancyAlerts", bundle: Bundle.main)
             .instantiateInitialViewController() as! FancyAlertViewController
     }
 
-    enum DividerPosition {
+    public enum DividerPosition {
         case top
         case bottom
     }
@@ -27,7 +27,7 @@ open class FancyAlertViewController: UIViewController {
     ///
     public struct Config {
         /// Convenience alias for a title and a handler for a UIButton
-        typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
+        public typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
 
         /// The title of the dialog
         let titleText: String?
@@ -115,7 +115,7 @@ open class FancyAlertViewController: UIViewController {
     ///
     private var buttonHandlers = [UIButton: FancyAlertButtonHandler]()
 
-    typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
+    public typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
 
     private(set) var configuration: Config?
 
@@ -130,7 +130,7 @@ open class FancyAlertViewController: UIViewController {
     ///   - alongside: An optional animation block which will be animated 
     ///                alongside the new configuration's fade in animation.
     ///
-    func setViewConfiguration(_ configuration: Config,
+    public func setViewConfiguration(_ configuration: Config,
                               animated: Bool,
                               alongside animation: ((FancyAlertViewController) -> Void)? = nil) {
         self.configuration = configuration
