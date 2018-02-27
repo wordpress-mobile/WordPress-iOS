@@ -77,6 +77,8 @@ class LoginProloguePromoViewController: UIViewController {
         setupBackground()
         setupHeadingLabel()
         setupLayout()
+
+        registerDynamicTypeOberver()
     }
 
     private func setupBackground() {
@@ -89,8 +91,17 @@ class LoginProloguePromoViewController: UIViewController {
         headingLabel.text = type.headlineText
         headingLabel.textAlignment = .center
         headingLabel.numberOfLines = 0
-        headingLabel.adjustsFontForContentSizeCategory = true
+        headingLabel.adjustsFontSizeToFitWidth = true
         headingLabel.sizeToFit()
+    }
+
+    private func registerDynamicTypeOberver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangePreferredContentSize), name: .UIContentSizeCategoryDidChange, object: nil)
+    }
+
+    @objc
+    private func didChangePreferredContentSize() {
+        setupHeadingLabel()
     }
 
     override func viewWillAppear(_ animated: Bool) {
