@@ -157,6 +157,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
                                                             action: #selector(invitePersonWasPressed))
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
 
         // By default, let's display the Blog's Users
         filter = .Users
