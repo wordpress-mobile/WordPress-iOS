@@ -112,6 +112,7 @@ extension WPStyleGuide {
             "notice": GridiconType.notice,
             "notice-outline": GridiconType.noticeOutline,
             "pages": GridiconType.pages,
+            "plans": GridiconType.plans,
             "plugins": GridiconType.plugins,
             "posts": GridiconType.posts,
             "share": GridiconType.share,
