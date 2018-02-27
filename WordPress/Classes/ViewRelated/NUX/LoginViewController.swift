@@ -125,7 +125,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     // MARK: SigninWPComSyncHandler methods
-    dynamic func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    dynamic func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
         guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
             let token = loginFields.meta.socialServiceIDToken else {
@@ -159,7 +159,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     /// Overridden here to direct these errors to the login screen's error label
-    dynamic func displayRemoteError(_ error: Error!) {
+    dynamic func displayRemoteError(_ error: Error) {
         configureViewLoading(false)
 
         let err = error as NSError
