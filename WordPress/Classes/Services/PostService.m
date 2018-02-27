@@ -193,7 +193,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                         success(postInContext);
                     }
                 } failure:^(NSError *error){
-                    // Sergio Estevao: even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed what attaching the media to it.
+                    // Sergio Estevao (2018-02-27): even if media fails to attach we are answering with success because the post uploaded sucessfull and the only thing that failed was attaching the media to it.
                     if (success) {
                         success(postInContext);
                     }
