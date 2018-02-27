@@ -2,6 +2,7 @@ import UIKit
 import CocoaLumberjack
 import NSURL_IDN
 import WordPressShared
+import WordPressUI
 
 
 
@@ -227,7 +228,7 @@ public protocol WordPressAuthenticatorDelegate: class {
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
-        let presenter = controllerForAuthControllerPresenter(rootViewController)
+        let presenter = rootViewController.leafViewController
         if presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of: LoginNavigationController.self),
             let parent = presenter.presentingViewController {
             parent.dismiss(animated: false, completion: {
@@ -242,21 +243,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
 
-    /// Determine the proper UIViewController to use as a presenter for the auth controller.
-    ///
-    /// - Parameter controller: A UIViewController. By convention this should be the app's rootViewController
-    ///
-    /// - Return: The view controller to use as the presenter.
-    ///
-    @objc class func controllerForAuthControllerPresenter(_ controller: UIViewController) -> UIViewController {
-        var presenter = controller
-        while let presented = presenter.presentedViewController {
-            presenter = presented
-        }
-        return presenter
-    }
-
-
     // MARK: - Site URL helper
 
 
@@ -266,7 +252,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     /// - Returns: The base URL or an empty string.
     ///
-    @objc class func baseSiteURL(string: String) -> String {
+    class func baseSiteURL(string: String) -> String {
         guard let siteURL = NSURL(string: NSURL.idnEncodedURL(string)), string.count > 0 else {
             return ""
         }
