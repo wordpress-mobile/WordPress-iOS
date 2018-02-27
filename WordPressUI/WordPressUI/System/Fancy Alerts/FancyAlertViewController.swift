@@ -55,6 +55,18 @@ open class FancyAlertViewController: UIViewController {
 
         /// A block to execute after this view controller has been dismissed
         let dismissAction: (() -> Void)?
+        
+        public init(titleText: String?, bodyText: String?, headerImage: UIImage?, dividerPosition: DividerPosition?, defaultButton: ButtonConfig?, cancelButton: ButtonConfig?, moreInfoButton: ButtonConfig?, titleAccessoryButton: ButtonConfig?, dismissAction: (() -> Void)?) {
+            self.titleText = titleText
+            self.bodyText = bodyText
+            self.headerImage = headerImage
+            self.dividerPosition = dividerPosition
+            self.defaultButton = defaultButton
+            self.cancelButton = cancelButton
+            self.moreInfoButton = moreInfoButton
+            self.titleAccessoryButton = titleAccessoryButton
+            self.dismissAction = dismissAction
+        }
     }
 
     // MARK: - Constants
