@@ -274,7 +274,7 @@ import SafariServices
     /// - Parameters:
     ///     - message: The message to display
     ///
-    @objc func displayLoginMessage(_ message: String!) {
+    @objc func displayLoginMessage(_ message: String) {
         statusLabel.text = message
     }
 

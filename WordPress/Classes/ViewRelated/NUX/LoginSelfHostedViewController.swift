@@ -345,12 +345,12 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
 extension LoginSelfHostedViewController {
 
-    override func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    override func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
 
 
-    func finishedLogin(withUsername username: String!, password: String!, xmlrpc: String!, options: [AnyHashable: Any]!) {
+    func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
         BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
@@ -376,12 +376,12 @@ extension LoginSelfHostedViewController {
     }
 
 
-    func displayLoginMessage(_ message: String!) {
+    func displayLoginMessage(_ message: String) {
         configureForgotPasswordButton()
     }
 
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         displayLoginMessage("")
         configureViewLoading(false)
         let err = error as NSError
