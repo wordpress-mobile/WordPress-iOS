@@ -6,16 +6,14 @@ class PluginDirectoryViewController: UITableViewController {
 
     private let viewModel: PluginDirectoryViewModel
     private var viewModelReceipt: Receipt?
-    private var immuHandler: ImmuTableViewHandler?
-    private let noResultsView = WPNoResultsView()
-
+    private var tableViewModel: ImmuTable!
     private var searchWrapperView: SearchWrapperView!
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
 
         super.init(style: .grouped)
-
+        tableViewModel = viewModel.tableViewModel(presenter: self)
         title = NSLocalizedString("Plugins", comment: "Title for the plugin directory")
     }
 
@@ -42,58 +40,35 @@ class PluginDirectoryViewController: UITableViewController {
 
         viewModelReceipt = viewModel.onChange { [weak self] in
             self?.reloadTable()
-            self?.updateNoResults()
         }
 
+        viewModel.noResultsDelegate = self
+
         tableView.rowHeight = Constants.rowHeight
+        tableView.estimatedRowHeight = Constants.rowHeight
         tableView.separatorInset = Constants.separatorInset
 
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         tableView.tableFooterView = footerView
-        // We want the tableView to be in `.grouped` style, so we can display the NoResultsView nicely, but
-        // we don't want the additional padding that comes with it, so we need to have this tiny useless footer.
+        // We want the tableView to be in `.grouped` style, but we don't want the additional
+        // padding that comes with it, so we need to have this tiny useless footer.
 
         ImmuTable.registerRows([CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self,
                                 TextRow.self],
                                tableView: tableView)
 
-
-        let handler = ImmuTableViewHandler(takeOver: self)
-        handler.automaticallyDeselectCells = true
-        handler.viewModel = viewModel.tableViewModel(presenter: self)
-
-        immuHandler = handler
-
-        noResultsView.delegate = self
-
+        tableViewModel = viewModel.tableViewModel(presenter: self)
         setupSearchBar()
     }
 
-
     private func reloadTable() {
-        immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
-    }
+        tableViewModel = viewModel.tableViewModel(presenter: self)
 
-    func updateNoResults() {
-        if let noResultsViewModel = viewModel.noResultsViewModel {
-            showNoResults(noResultsViewModel)
+        if tableView.numberOfRows(inSection: 0) != tableViewModel.sections.first?.rows.count {
+            tableView.reloadData()
         } else {
-            hideNoResults()
+            tableView.reloadSections([0], with: .none)
         }
-    }
-
-    func showNoResults(_ viewModel: WPNoResultsView.Model) {
-        noResultsView.bindViewModel(viewModel)
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        } else {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-
-    }
-
-    func hideNoResults() {
-        noResultsView.removeFromSuperview()
     }
 
     private func setupSearchBar() {
@@ -144,19 +119,36 @@ class PluginDirectoryViewController: UITableViewController {
     }
 }
 
+
 extension PluginDirectoryViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return tableViewModel.sections.count
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableViewModel.sections[section].rows.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
+
+        row.configureCell(cell)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        row.action?(row)
+    }
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
-    }
-}
-
-extension PluginDirectoryViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
-        viewModel.refresh()
     }
 }
 
@@ -190,7 +182,12 @@ extension PluginDirectoryViewController: UISearchResultsUpdating {
         pluginListViewController.query = .feed(type: .search(term: searchedText))
         pluginListViewController.tableView.contentInset.top = searchWrapperView.bounds.height
     }
+}
 
+extension PluginDirectoryViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        viewModel.reloadFailed()
+    }
 }
 
 extension PluginDirectoryViewController: PluginPresenter {
