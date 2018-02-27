@@ -133,7 +133,9 @@ class MediaCoordinator: NSObject {
                                     return
                                 }
 
-                                let uploadProgress = strongSelf.uploadMedia(media, origin: origin)
+                                strongSelf.trackUploadOf(media, origin: origin)
+
+                                let uploadProgress = strongSelf.uploadMedia(media)
                                 totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
         processing(media)
@@ -231,7 +233,7 @@ class MediaCoordinator: NSObject {
                             failure: failure)
     }
 
-    @discardableResult private func uploadMedia(_ media: Media, origin: MediaUploadOrigin? = nil) -> Progress {
+    @discardableResult private func uploadMedia(_ media: Media) -> Progress {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
@@ -239,7 +241,6 @@ class MediaCoordinator: NSObject {
         service.uploadMedia(media,
                             progress: &progress,
                             success: {
-                                self.trackUploadOf(media, origin: origin)
                                 self.end(media)
         }, failure: { error in
             guard let nserror = error as NSError? else {
