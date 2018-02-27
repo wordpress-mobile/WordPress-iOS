@@ -358,19 +358,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
 
-    @objc class func promptForWPComReservedUsername(_ username: String, callback: @escaping () -> Void) {
-        let title = NSLocalizedString("Reserved Username", comment: "The title of a prompt")
-        let format = NSLocalizedString("'%@' is a reserved username on WordPress.com.",
-                                        comment: "Error message letting the user know the username they entered is reserved. The %@ is a placeholder for the username.")
-        let message = NSString(format: format as NSString, username) as String
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("OK", comment: "OK Button Title"), handler: {(action) in
-            callback()
-        })
-        alertController.presentFromRootViewController()
-    }
-
-
     /// Checks whether necessary info for account creation has been provided.
     ///
     /// - Parameters:
@@ -481,7 +468,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     /// - Parameter loginFields: A LoginFields instance.
     ///
-    @objc class func openForgotPasswordURL(_ loginFields: LoginFields) {
+    class func openForgotPasswordURL(_ loginFields: LoginFields) {
         let baseURL = loginFields.meta.userIsDotCom ? "https://wordpress.com" : WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
         UIApplication.shared.open(forgotPasswordURL)
@@ -496,7 +483,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     /// - Parameter sender: A UIView. Typically the button the user tapped on.
     ///
-    @objc class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
+    class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
 
         let loginURL = loginFields.meta.userIsDotCom ? OnePasswordDefaults.dotcomURL : loginFields.siteAddress
 
